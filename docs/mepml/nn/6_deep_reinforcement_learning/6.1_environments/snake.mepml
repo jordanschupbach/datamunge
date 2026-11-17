@@ -1,0 +1,727 @@
+//? Title: Snake: Pixel Observations, Reversal and Starvation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native C++ simulations expose explicit actions, seeded state transitions and owning observations. The complete editable source protocol retains its policy comparisons and checks. There is no hidden learning loop or external simulator process.
+)
+\toc
+
+> Follow one actual transition
+
+```{cpp, results="markdown", file="figures/snake_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle style;style.width=13;style.height=5;style.font_size=24;d.node("input",{-17,0},"Head / body / food planes",style);d.node("step",{0,0},"Movement and food update",style);d.node("result",{17,0},"Collision or starvation",style);d.edge("input","step").edge("step","result").save_svg("build/snake_method.svg");}
+```
+// result_begin: markdown
+\image(figures/snake_method.svg)
+// result_end
+
+> A reversal request keeps the current direction
+
+The reset head points right with its tail to the left. Requesting left would reverse into the body, so the source ignores it and advances one cell right. Observation planes describe the resulting head, body and food.
+
+```{cpp, results="markdown", file="figures/snake_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;std::filesystem::create_directories("build");e::Snake env;env.reset(1);auto before=env.head();env.step(3);auto after=env.head();std::vector<double>values{double(before.first),double(before.second),double(after.first),double(after.second)};if(after.first!=before.first||after.second!=before.second+1)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/snake_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);const double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1e-9,high-low);dm::graphics::RPlot::create().ylim(low-.05*span,high+.05*span).bars(x,values,"computed values",{37,99,235}).title("A reversal request keeps the current direction").x_label("Coordinate in displayed calculation").size(1000,550).save_svg("build/snake_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 4.000000000 |
+| 1 | 4.000000000 |
+| 2 | 4.000000000 |
+| 3 | 5.000000000 |
+\image(figures/snake_worked.svg)
+// result_end
+
+> Complete source experiment
+
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn snake
+// Snake: a simple Atari-like pixel game.
+//
+// Port of tflow's snake. The observation is an image: three planes (head,
+// body, food) over the grid, flattened to a float vector. That makes Snake the
+// stand-in for Atari in the pixel-based examples later on (DQN on pixels,
+// 6.3). The environment is common/rl/snake.hpp (copied from tflow, TF-free).
+// tflow films the greedy episode on a vsim 3D board; the port replays the same
+// episode without vsim/ffmpeg and instead writes its frames, drawn from the
+// board (common/rl/snake_frames.hpp), as one PNG filmstrip to
+// output/nn/frames/snake_greedy_policy.png. Checks are added.
+
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { return DataRoot() / name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/environment-models");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/snake.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Snake;
+}
+
+// Editable workflow support: rl/snake_frames.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::SnakeFrameRgb;
+using datamunge::rl::environments::SnakeFilmstrip;
+}
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+inline int ArgMax(const std::vector<float>& v) {
+  return static_cast<int>(std::max_element(v.begin(), v.end()) - v.begin());
+}
+
+// Argmax with ties broken uniformly at random.
+inline int ArgMaxRandomTie(const float* q, int n, std::mt19937_64& rng) {
+  float best = q[0];
+  for (int i = 1; i < n; ++i) best = std::max(best, q[i]);
+  std::vector<int> ties;
+  for (int i = 0; i < n; ++i)
+    if (q[i] == best) ties.push_back(i);
+  return ties[rng() % ties.size()];
+}
+
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunRandom(Env& env, int episodes, uint64_t seed) {
+  std::mt19937_64 rng(seed);
+  const ActionSpace space = env.action_space();
+  return RunEpisodes(env, episodes, seed, [&](const Obs&) { return space.Sample(rng); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+// Head for the food along whichever axis is further off, but never into a
+// wall or the body if another safe move exists.
+class GreedyPolicy {
+ public:
+  explicit GreedyPolicy(const rl::Snake& env) : env_(env) {}
+  rl::Action operator()(const rl::Obs&) {
+    auto [hr, hc] = env_.head();
+    auto [fr, fc] = env_.food();
+    int prefer[6];
+    int n = 0;
+    if (std::abs(fr - hr) >= std::abs(fc - hc)) {
+      prefer[n++] = fr < hr ? rl::Snake::kUp : rl::Snake::kDown;
+      prefer[n++] = fc < hc ? rl::Snake::kLeft : rl::Snake::kRight;
+    } else {
+      prefer[n++] = fc < hc ? rl::Snake::kLeft : rl::Snake::kRight;
+      prefer[n++] = fr < hr ? rl::Snake::kUp : rl::Snake::kDown;
+    }
+    for (int d = 0; d < 4; ++d) prefer[n++] = d;
+    for (int i = 0; i < n; ++i)
+      if (Safe(prefer[i])) return rl::Action(prefer[i]);
+    return rl::Action(prefer[0]);
+  }
+
+ private:
+  bool Safe(int dir) const {
+    static const int dr[4] = {-1, 0, 1, 0}, dc[4] = {0, 1, 0, -1};
+    auto [hr, hc] = env_.head();
+    const int r = hr + dr[dir], c = hc + dc[dir];
+    if (r < 0 || r >= env_.height() || c < 0 || c >= env_.width()) return false;
+    return !env_.Occupied(r, c);
+  }
+  const rl::Snake& env_;
+};
+
+}  // namespace
+
+int main() {
+  try {
+    rl::Snake env(8, 8);
+    auto shape = env.obs_shape();
+    std::printf("== %s: observation [planes=%d, height=%d, width=%d] = %d floats, %s, "
+                "+1 food, -1 death\n",
+                env.name().c_str(), shape[0], shape[1], shape[2], env.obs_size(),
+                env.action_space().ToString().c_str());
+
+    const rl::EpisodeStats random = rl::RunRandom(env, 200, 0);
+    rl::PrintStats("random, 200 episodes", random);
+    GreedyPolicy greedy(env);
+    const rl::EpisodeStats greedy_stats = rl::RunEpisodes(env, 200, 0, greedy);
+    rl::PrintStats("greedy toward food, 200 episodes", greedy_stats);
+
+    std::cout << "\n-- A greedy episode\n";
+    rl::Obs obs = env.reset(3);
+    int steps = 0;
+    bool game_over = false;
+    for (int t = 0;; ++t) {
+      rl::StepResult r = env.step(greedy(obs));
+      obs = r.obs;
+      steps = t + 1;
+      if (t % 15 == 0 || r.done()) {
+        std::printf("  t=%d length=%d reward=%+.0f%s\n", t, env.length(), r.reward,
+                    r.terminated ? "  GAME OVER" : "");
+      }
+      if (r.done()) {
+        game_over = r.terminated;
+        break;
+      }
+    }
+
+    std::cout << "\n-- The observation planes for that final state\n";
+    const char* names[3] = {"head", "body", "food"};
+    int counts[3] = {0, 0, 0};
+    for (int p = 0; p < 3; ++p) {
+      std::cout << "  " << names[p] << ":\n";
+      for (int r = 0; r < shape[1]; ++r) {
+        std::cout << "    ";
+        for (int c = 0; c < shape[2]; ++c) {
+          const bool on = obs[p * shape[1] * shape[2] + r * shape[2] + c] > 0;
+          counts[p] += on;
+          std::cout << (on ? '1' : '.');
+        }
+        std::cout << "\n";
+      }
+    }
+
+    std::cout << "\n-- The greedy episode replayed as frames (tflow films it on a 3D board; video omitted)\n";
+    rl::SnakeFilmstrip strip;
+    const rl::Playback pb = rl::PlayEpisode(env, greedy, "snake_greedy_policy", 3,
+                                            [&](const rl::Snake& e, const rl::Hud&) { strip.Add(e); });
+    const std::string png = (paths::OutputDir("frames") / "snake_greedy_policy.png").string();
+    strip.Save(png);
+    std::printf("  wrote %s (%d frames, one per step plus the reset)\n", png.c_str(), strip.frames());
+
+    check::Require(greedy_stats.mean_return() > 10.f && greedy_stats.min_return() > 0.f,
+                   "the greedy policy should eat food in every episode, > 10 on average");
+    check::Require(random.mean_return() < 0.f, "random moves should mostly die before eating");
+    check::Require(game_over, "the traced greedy episode should end in a collision");
+    check::Require(counts[0] == 1 && counts[2] == 1 && counts[1] == env.length() - 1,
+                   "the planes should hold one head, one food and length-1 body cells");
+    check::Require(pb.steps == steps && pb.ret == static_cast<float>(env.length() - 2),
+                   "the replay should reproduce the traced episode (food eaten - 1 = final length - 2, the fatal step drops the tail)");
+    check::Require(strip.frames() == steps + 1, "the filmstrip should have one frame per step plus the reset");
+    std::cout << "\nchecks passed (vsim video replaced by a PNG filmstrip)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == Snake: observation [planes=3, height=8, width=8] = 192 floats, Discrete(4), +1 food, -1 death
+//   random, 200 episodes             return mean    -0.85  min    -1.00  max     2.00   length mean   10.9
+//   greedy toward food, 200 episodes return mean    15.71  min     4.00  max    30.00   length mean  110.1
+//
+// -- A greedy episode
+//   t=0 length=2 reward=+0
+//   t=15 length=5 reward=+0
+//   t=30 length=8 reward=+0
+//   t=45 length=11 reward=+0
+//   t=60 length=13 reward=+0
+//   t=75 length=16 reward=+0
+//   t=90 length=19 reward=+0
+//   t=105 length=19 reward=+0
+//   t=107 length=18 reward=-1  GAME OVER
+//
+// -- The observation planes for that final state
+//   head:
+//     ........
+//     ........
+//     ........
+//     ........
+//     ........
+//     ........
+//     ........
+//     1.......
+//   body:
+//     .11.....
+//     .11.....
+//     .11.....
+//     .11.....
+//     111.....
+//     111.....
+//     11......
+//     .1......
+//   food:
+//     ........
+//     ........
+//     ........
+//     ........
+//     .....1..
+//     ........
+//     ........
+//     ........
+//
+// -- The greedy episode replayed as frames (tflow films it on a 3D board; video omitted)
+//   played snake_greedy_policy (video omitted): 108 steps, return 16.0
+//   wrote /mnt/projects/datamunge/docs/mepml/nn/6_deep_reinforcement_learning/6.1_environments/build/environment-models/frames/snake_greedy_policy.png (109 frames, one per step plus the reset)
+//
+// checks passed (vsim video replaced by a PNG filmstrip)
+// result_end
+
+> Inspect the captured source episode
+
+Head, body and food colours are rendered from the actual simulated state. Each cell is enlarged by the source factor, and the first frame is the reset state.
+
+```{cpp, results="markdown", file="figures/snake_greedy_policy.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::copy_file("build/environment-models/frames/snake_greedy_policy.png","build/snake_greedy_policy.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/snake_greedy_policy.png)
+// result_end
+
+> A fixed-action diagnostic trajectory
+
+This additional trace starts from seed1 and repeatedly applies the displayed constant action until the first done flag or200 steps. It shows state evolution and rewards; it is not a learned-policy result. The complete original policy comparison above remains the experiment.
+
+```{cpp, results="markdown", file="figures/snake_trajectory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;e::Snake env;auto observation=env.reset(1);std::vector<double>step{0},coordinate{double(env.head().second)},returns{0};for(int t=1;t<=200;++t){auto result=env.step(e::Action(1));step.push_back(t);coordinate.push_back(env.head().second);returns.push_back(returns.back()+result.reward);if(result.done())break;}dm::nn::save_npz("build/snake_trajectory.npz",{{"step",dm::nn::from_vector(step)},{"head_column",dm::nn::from_vector(coordinate)},{"return",dm::nn::from_vector(returns)}});dm::graphics::RPlot::create().lines(step,coordinate,"head column",{37,99,235}).x_label("Environment step").y_label("Head column").title("Snake fixed-action state trace").size(1000,550).save_svg("build/snake_trajectory.svg");std::print("{} transitions; cumulative reward {:.6f}.\n",step.size()-1,returns.back());}
+```
+// result_begin: markdown
+4 transitions; cumulative reward -1.000000.
+\image(figures/snake_trajectory.svg)
+// result_end
+
+> Interpretation
+
+The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.

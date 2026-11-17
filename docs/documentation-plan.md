@@ -9,6 +9,168 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-16: Common NN header consolidation adds40/40 documented definitions
+  in `nn/classical_components.hpp`, with15 compiled/running examples, three
+  passing definition hovers and an installed-header linked consumer. Seven
+  independent classical-component cases and a four-kind memory-binding case
+  pass ASan/UBSan;22 combined native regressions pass. The three amended reports
+  execute12 blocks and export11 figures. The317-header source routing inventory
+  is the canonical headers and binding adapters; evidence is
+  `build/nn-common-consolidation/completion.json`.
+
+
+- 2026-11-16: Final NN batch377–416 documents638/638 definitions in the
+  reconstructed-input/model and published-BERT/SafeTensors APIs and associated
+  preparation declarations. All142 public examples,13 clangd hovers, four
+  standalone installed headers and an installed-library consumer pass. Eleven
+  native and eleven ASan/UBSan cases cover live graph derivatives, masking,
+  detached memory, sparse routing and SafeTensors validation. Forty reports
+  execute299 blocks with212 reviewed figures and both exports. Frozen original
+  models match1426 archives/123122246 values, six PNGs and456 non-timing stdout
+  lines on the explicit reconstructed inputs; missing external-framework parity
+  is not claimed. Independent checks cover published BERT, tokenizer packing,
+  GAN metrics and raw translation groups. All416 NN conversions are complete.
+  Evidence: `build/nn-report-conversion/batch-377-416/completion.json`.
+
+
+- 2026-11-16: Recovered language/palette preparation and sequence APIs document
+  210/210 definitions across four new NN headers, one native preparation source
+  and associated adapter declarations. All41 public examples,12 clangd hovers,
+  five standalone installed headers and a linked consumer pass. Eight native and
+  eight ASan/UBSan cases cover live recurrence/attention, cache transitions,
+  sampling boundaries, masked lengths and CRF marginal conservation. Ten reports
+  execute70 blocks with50 reviewed figures and both exports. Frozen programs
+  match281 archives/54916975 values, six PNGs and317 non-timing stdout lines.
+  Five native preparations match original upstream recipes, with only ten
+  palette-objective Float64 reductions differing by at most1.25e-16.
+  Evidence: `build/nn-report-conversion/batch-367-376/completion.json`.
+
+
+- 2026-11-16: Pixel/native-environment conversion documents85/85 definitions in
+  five canonical headers;28 public examples, nine definition hovers, five
+  standalone installed headers and a linked consumer pass. Twelve native and
+  twelve ASan/UBSan cases check pooling/box resize, source landing equations,
+  final-state preservation across masked resets, explicit-bootstrap GAE and
+  exact pixel/policy graph names/values/partials. Nine reports execute46 blocks
+  with37 reviewed figures and both exports. Nine frozen archives/3718291 values
+  and78 non-timing stdout lines match, with two timing rows excluded and one
+  output-path prefix normalized; the actual Snake PNG is byte-identical.
+  Evidence: `build/nn-report-conversion/batch-358-366/completion.json`.
+
+
+- 2026-11-16: Model-based planning conversion documents143/143 definitions in
+  five canonical headers;59 public examples, nine definition hovers, five
+  standalone installed headers and a linked consumer pass. Twelve native and
+  twelve ASan/UBSan cases check PUCT game clones/backup, transition sampling,
+  model/KL/mixture partials, latent geometry and source maze/pixel adapters.
+  Ten reports execute59 blocks with49 reviewed native figures and both exports.
+  All228 source stdout lines and10 archives/801088 values match bit for bit.
+  Objectives, optimizers and experiment loops remain report-owned.
+  Evidence: `build/nn-report-conversion/batch-348-357/completion.json`.
+
+
+- 2026-11-16: Continuous/off-policy/recurrent control conversion documents94/94
+  definitions across five canonical headers. All32 public examples, nine clangd
+  hovers, five standalone installed headers and a linked consumer pass.
+  Fourteen native and fourteen ASan/UBSan cases check exact sequence/noise streams,
+  Gaussian/density partials, recurrent state, action adapters and Retrace/V-trace.
+  Ten reports execute60 blocks with50 reviewed figures and both exports.
+  Original default budgets, including1500 hybrid updates and2million histogram
+  draws, reproduce10 archives/524480 values bit for bit.
+  Evidence: `build/nn-report-conversion/batch-338-347/completion.json`.
+
+
+- 2026-11-16: Actor/value, return/GAE and normalized MountainCar APIs document
+  58/58 definitions across three headers. All19 public examples, seven clangd
+  hovers, three standalone installed headers and a linked consumer pass.
+  Twelve native and twelve ASan/UBSan cases check source initialization, live
+  policy second partials, return identities, K-FAC residuals and scaled dynamics.
+  Ten reports execute60 blocks with50 reviewed figures and both exports.
+  Original default budgets, including both200000-step entropy MountainCar
+  branches, reproduce10 archives/166941 values bit for bit.
+  Evidence: `build/nn-report-conversion/batch-328-337/completion.json`.
+
+
+- 2026-11-16: Deep-Q and replay conversion documents81/81 definitions across
+  `nn/deep_q.hpp` and `rl/replay.hpp`. All28 public examples, seven clangd hovers,
+  both standalone installed headers and a linked consumer pass. Thirteen native
+  and thirteen ASan/UBSan cases cover ring ownership, exact prioritized streams,
+  n-step prefixes, model/gradient endpoints, noise draws and categorical mass.
+  Ten reports execute60 blocks with50 reviewed native figures and both exports.
+  Frozen bounded-default programs match10 archives/757197 values bit for bit;
+  full convergence assertions remain explicitly deferred in that source mode.
+  Evidence: `build/nn-report-conversion/batch-318-327/completion.json`.
+
+
+- 2026-11-16: RL foundations and attention diagnostics document97/97 definitions
+  across seven new canonical headers. All47 public examples run; eight clangd
+  hovers and seven standalone installed headers plus a linked consumer pass.
+  Eleven native and eleven ASan/UBSan tests cover copy/RNG/coordinate semantics,
+  Bellman systems, policy partials and removal norms. Ten reports execute43 blocks
+  with33 reviewed figures and verified Markdown/HTML exports. Frozen original
+  checkpoints match11 archives/47897 values bit for bit. The original short
+  Thompson-playback assertion fails and is explicitly preserved as an unmet
+  threshold; the aggregate source checks pass. Evidence:
+  `build/nn-report-conversion/batch-308-317/completion.json`.
+
+
+- 2026-11-16: Ten local-RL-environment reports promote the canonical
+  `rl/environments.hpp` aggregate and nine standalone component headers.
+  All370 definitions have current contracts,241 public examples compile/run,
+  eight clangd hovers and all ten standalone installed headers pass. Fourteen
+  native and14 ASan/UBSan tests cover source dynamics, legal games, episode
+  boundaries, owning RGB frames, threaded determinism and worker exceptions.
+  Forty-one report blocks,31 reviewed figures and both exports pass. All270
+  source non-timing output lines and the Snake PNG match frozen originals.
+  Evidence: `build/nn-report-conversion/batch-298-307/completion.json`.
+
+- 2026-11-16: Energy/DNC/attention conversion documents112/112 definitions across
+  `nn/energy_components.hpp`, `nn/dnc.hpp` and `nn/attention_components.hpp`.
+  Forty-eight public examples compile/run, eight clangd hovers pass, and all
+  three headers compile independently from a development install. Twelve focused
+  native and twelve ASan/UBSan cases pass. The associated ten reports execute65
+  blocks;55 figures and both exports are verified. Frozen programs match156
+  archives/21179808 values and16 PNGs bit for bit. Evidence:
+  `build/nn-report-conversion/batch-288-297/completion.json`.
+
+- 2026-11-16: The ten-report diffusion conversion adds canonical compact tensor
+  predictors, source-rounded time features, DDIM/Langevin/VE transitions,
+  conditioning/guidance, unclipped latent posteriors, consistency teachers,
+  flow-matching steps and periodic signal fixtures/rendering. The new header has
+  96/96 documented definitions,34 compiled/running public examples and12 passing
+  clangd hovers. Thirteen focused native/sanitizer cases,14 existing DDPM tests,
+  an installed-header consumer and16 migration/catalogue checks pass. All122
+  report programs execute;111 reviewed figures and both exports preserve the
+  source experiments. Frozen originals match290 archives /41,752,867 values and
+  all71 original PNGs exactly. Sources retire only after their execution and
+  export gates. Evidence: `build/nn-report-conversion/batch-128-137/`.
+
+- 2026-11-14: FNV conversion adds a shared exact unsigned byte loop, owned complete
+  traces and native bucket/sensitivity helpers. Both affected headers pass 33/33
+  documentation definitions, fourteen compiled examples and three clangd hovers.
+  Seven tests pass normally and with ASan/UBSan; 133586 frozen scalar comparisons
+  preserve the old interfaces and 2746 independent Python checks verify hashes,
+  actual traces, occupancies, pair counts and bit flips. Golden-section's existing
+  header passes 45/45 definitions, eleven compiled examples and three hovers;
+  ten golden/search-order tests pass with ASan/UBSan. Its derivative reference is
+  independently checked at eighty decimal digits. Both reports execute through
+  MEP with eleven reviewed figures and verified HTML/Markdown figure bundles.
+  Evidence: `build/mepml-conversion/{fnv,golden-section}/`.
+
+- 2026-11-14: Added native `MLPClassifierSearch` for two-predictor classification:
+  stratified fit/validation/test partitions, cached integer-width GP expected-improvement
+  proposals, validation log-loss selection, development refit and untouched test scoring.
+  Its native plot shades predicted regions and overlays development rows only. The
+  binding-facing class and dataframe friendship have 25/25 documented declarations,
+  six compiled/running examples and three passing clangd hovers. Fifteen C++ tests
+  include an independently reconstructed validation/refit path and held-out-feature
+  invariance; three Python checks cover ownership, predictor-only inference, SVG export
+  and help. All sixteen Nix-backed README language examples execute through MEP;
+  their SVGs match byte for byte and each contains 120 development observations.
+  Default Iris run selects 14 nodes and scores 28/30 on the final test partition.
+  Existing unrelated documentation gaps in the umbrella header remain outside this
+  batch. Evidence: `build/readme-mlp/`.
+
 - 2026-11-10: Rust B-spline facade: `rustdatamunge::bspline_predict` documents
   borrowed inputs, owned output, cubic basis constraints, empty queries, boundary
   extrapolation and error handling. Its private `src/rustdatamunge/src/bspline.cpp`
@@ -7069,7 +7231,7 @@ states the single-seed and unmatched-compute limits. Evidence:
   completed conversions and 420 pending; next is `bitap_analysis`.
 
 - 2026-11-06: Converted B* multi-goal search, bilinear interpolation, binary GCD
-  and binary search into the newly requested `docs/examples/mepml/` collection.
+  and binary search into the newly requested `docs/mepml/` collection.
   Added canonical search/GCD traces, finite/overflow guards for informed search,
   checked/stable bilinear blending, and accurate boundary/closed-interval contracts.
   The new standalone headers and implementations cover 63/63 Doxygen definitions;
@@ -7081,7 +7243,7 @@ states the single-seed and unmatched-compute limits. Evidence:
   sorted duplicate sequences and exact search-tree probe sums. Both documentation
   collections retain stable site URLs and actual source links (19 website tests).
   One unrelated existing policy test still fails because it forbids the intentional
-  Python tabs in `docs/mepml/examples/cad/seeed_devarm.mepml`; it is not counted as
+  Python tabs in `docs/mepml/cad/seeed_devarm.mepml`; it is not counted as
   passing. The full completed-path gate has 35 existing undocumented fields in
   compute/cuda.cpp and sim/world.cpp; all 63 definitions in the new modules pass the scoped
   check. Legacy mepml/org sources are removed only after validation. Evidence:
@@ -7412,11 +7574,11 @@ states the single-seed and unmatched-compute limits. Evidence:
   API examples and two clangd hovers. Native parsing and HTML/TeX exports pass;
   direct native PDF compilation encounters existing SVG/LaTeX export limitations.
   Evidence: `build/hp-paper/`; compact outcomes and source digests are archived
-  under `docs/mepml/examples/results/hp_*`.
+  under `docs/mepml/results/hp_*`.
 
 - 2026-10-31: Moved the spline comparison into
-  `docs/mepml/examples/stats/regression/hierarchical_splines.mepml` and the
-  complete Seeed CAD workflow into `docs/mepml/examples/cad/seeed_devarm.mepml`.
+  `docs/mepml/stats/regression/hierarchical_splines.mepml` and the
+  complete Seeed CAD workflow into `docs/mepml/cad/seeed_devarm.mepml`.
   Each report retains its C++/Python/R tabs, cached results and six figures.
   Figure assets move beside their reports without byte changes; spline figure
   names now describe the comparison/refinement rather than the playground.
@@ -7499,7 +7661,7 @@ states the single-seed and unmatched-compute limits. Evidence:
 - 2026-10-31: Moved the playground's examples into standalone language-tab reports:
   `numerics/linear_algebra/matrix_expressions.mepml`,
   `math/computer_algebra.mepml` and `stats/regression/bspline_regression.mepml`
-  beneath `docs/mepml/examples/`. All twelve programs and their four C++/Python/R
+  beneath `docs/mepml/`. All twelve programs and their four C++/Python/R
   tab groups are preserved. Shell/interpreter paths are rebased for each report's
   depth, and all three spline SVGs move into the regression report's figures
   directory without changing bytes. All twelve fence commands execute from their
@@ -8514,7 +8676,7 @@ R 4.5.2 splineDesign and augmented QR independently reproduce eight fits, predic
 GCV minima and all 272 Old Faithful delete-one refits; maximum scalar discrepancy
 is 2.6e-9. SciPy basis evaluation, augmented least squares and a generalized penalty
 eigensystem verify all 41 lambda-path rows and the two unpenalized modes (largest
-scalar discrepancy 1.1e-8). The rewritten `docs/mepml/examples/stats/regression/pspline.mepml` has seven
+scalar discrepancy 1.1e-8). The rewritten `docs/mepml/stats/regression/pspline.mepml` has seven
 executed blocks, six SVGs inspected through Inkscape at browser width, and verified
 Markdown/Doxygen exports with nine display formulas and working source links.
 It covers hand calculations, a flat tuning criterion, boundary/nullspace distinctions,
@@ -8553,7 +8715,7 @@ nonuniform/repeated/unclamped knots and tiny/translated domains, with maximum
 coordinate discrepancy 1.8e-15. Exact rational arithmetic on the represented
 inputs checks 509 recorded blends, with maximum coordinate discrepancy 4.5e-16.
 
-The rewritten `docs/mepml/examples/numerics/interpolation/de_boor_analysis.mepml` has six executed blocks
+The rewritten `docs/mepml/numerics/interpolation/de_boor_analysis.mepml` has six executed blocks
 and six SVGs inspected through Inkscape at browser width. It derives the evaluator
 by collecting coefficients in the basis recursion, shows all intermediate steps,
 distinguishes absolute control conditioning from relative/knot sensitivity, verifies
@@ -8611,7 +8773,7 @@ The model is trained on 105 flowers and scored on 45 held out before any preproc
 or tuning: RMSE 0.402965 cm, 42/45 new-observation coverage versus 14/45 latent-interval
 coverage, with 95% nominal pointwise intervals.
 
-The rewritten `docs/mepml/examples/stats/bayes/gaussian_process_regression_iris_analysis.mepml`
+The rewritten `docs/mepml/stats/bayes/gaussian_process_regression_iris_analysis.mepml`
 has seven executed blocks, six SVGs inspected with Inkscape at browser width, and
 verified Markdown/Doxygen exports with nine display formulas and source links.
 It clarifies interval targets, variance units, fixed-fit conditional deletion and
@@ -8663,7 +8825,7 @@ Validation:
   all four SVG diagnostic recipes. Four clangd hover checks pass for the class, working-data
   method, boundary flag and iteration-limit field. The mep graphical K integration was
   not verified separately.
-- The rewritten `docs/mepml/examples/stats/regression/glm_iris_analysis.mepml` executes all seven programs.
+- The rewritten `docs/mepml/stats/regression/glm_iris_analysis.mepml` executes all seven programs.
   All seven SVGs were rendered with Inkscape and visually inspected at 1100 px, including
   fitted two-panel layouts and corrected distinct series colours. Both Markdown and
   Doxygen exports pass; the latter retains seven C++ programs, seven copied SVGs and
@@ -8736,7 +8898,7 @@ Validation:
 - All 13 header code examples compile and execute. Four clangd hover checks pass for
   the model class, working-data method, working-criterion accessor and known-SD field.
   The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/stats/regression/glmm_analysis.mepml` executes all 8 programs. All 7 SVGs were rendered
+- `docs/mepml/stats/regression/glmm_analysis.mepml` executes all 8 programs. All 7 SVGs were rendered
   with Inkscape and visually inspected at 1100 px; multi-panel layouts fit their panels.
   Markdown and Doxygen exports pass. The Doxygen export retains 8 C++ programs, 7 copied
   SVGs and 10 display formulas with reference links.
@@ -8795,7 +8957,7 @@ Validation:
 - All 13 header code examples compile and execute. Four clangd hover checks pass for the
   class, edge-table method, reference-diagnostic method and neighbour-count field. The
   mep graphical K integration was not separately verified.
-- `docs/mepml/examples/ml/dimensionality_reduction/isomap_iris_analysis.mepml` executes all 8 programs. All 7 SVGs were
+- `docs/mepml/ml/dimensionality_reduction/isomap_iris_analysis.mepml` executes all 8 programs. All 7 SVGs were
   rendered with Inkscape and visually inspected at 1100 px; multi-panel layouts fit their
   panels, titles are readable and square-cycle axis scales preserve the square's shape.
   Markdown and Doxygen exports pass. The Doxygen export retains 8 C++ programs, 7 copied
@@ -8866,7 +9028,7 @@ Validation:
 - All 29 header code examples compile and run. Five clangd hover checks pass for the
   alternative enum, Welch test, exact binomial test, operating-characteristic helper and
   fixed-null KS contract. The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/stats/inference/hypothesis_tests_analysis.mepml` executes all 10 programs. All 10
+- `docs/mepml/stats/inference/hypothesis_tests_analysis.mepml` executes all 10 programs. All 10
   SVGs were rendered with Inkscape and visually inspected at 1100 px, including fitted
   multi-panel layouts and the shortened interval legend. Markdown and Doxygen exports
   pass; the latter retains 10 C++ programs, 10 copied SVGs, 7 display formulas and rendered
@@ -8920,7 +9082,7 @@ Validation:
 - All 17 header code examples compile and run. Five clangd definition-hover checks pass
   for the model class, candidate option, bandwidth diagnostics, score and query weights.
   The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/stats/regression/kernel_regression_iris_analysis.mepml` executes all seven programs.
+- `docs/mepml/stats/regression/kernel_regression_iris_analysis.mepml` executes all seven programs.
   All seven SVGs were rendered with Inkscape and visually inspected at 1100 px, including
   fitted multi-panel layouts, legends and axis labels. Markdown and Doxygen exports pass;
   the latter retains seven C++ programs, seven copied SVGs, five display formulas and
@@ -8982,7 +9144,7 @@ Validation:
 - All ten header code examples compile and run. Five clangd definition-hover checks pass
   for the model class, polynomial degree, spectrum, frozen transform and projection loss.
   The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/ml/dimensionality_reduction/kernel_pca_iris_analysis.mepml` executes all eight programs. All
+- `docs/mepml/ml/dimensionality_reduction/kernel_pca_iris_analysis.mepml` executes all eight programs. All
   eight SVGs were rendered with Inkscape and visually inspected at 1100 px; iris panels
   were rerun with legend headroom, and long headings shortened. Markdown and Doxygen
   exports pass, retaining eight C++ programs, eight copied SVGs, five display formulas
@@ -9031,7 +9193,7 @@ six standalone SVG files. All six were rendered with Inkscape at 1100 px and vis
 reviewed; the TikZ diagram was arranged side by side with bounding-box padding, and long
 shell-plot legend labels shortened. Markdown/Doxygen exports retain five C++ programs,
 one shell build, six copied SVGs and four display formulas. TikZ source is retained in
-`docs/mepml/examples/math/coding_theory/diagrams/hamming_distance_concept.tikz`; LaTeX/dvisvgm save the diagram,
+`docs/mepml/math/coding_theory/diagrams/hamming_distance_concept.tikz`; LaTeX/dvisvgm save the diagram,
 intermediates and logs under local `build/`, without SVG XML in output. Legacy Mepml/Org
 copies were removed, and the checklist/index updated. The user's TikZ and local-image-file
 preferences are recorded in AGENTS.md, the conversion plan and the reports README.
@@ -9148,7 +9310,7 @@ original programs compiled and executed with C++23. Header-only workflows need
 no generated binding changes. Coverage/hover/example artifacts are under
 `build/debug/docs/foundations-coverage.json` and `build/foundations-validation/`.
 The 29 new literate reports and their retained figures are tracked in
-`docs/mepml/nn-conversion-plan.md`; this does not claim a full MNIST benchmark
+`docs/mepml/nn/`; this does not claim a full MNIST benchmark
 or graphical mep K verification. The checked header paths are in the completed
 manifest.
 
@@ -10091,7 +10253,7 @@ transformed design inference, dense complexity and zero-penalty limitations are
 explicit. Public references point to Kimeldorf–Wahba (1971) and Saunders et al.
 (1998); algorithm papers were verified through the publisher/author repository.
 
-The converted `docs/mepml/examples/stats/regression/kernel_ridge_analysis.mepml` opens with exact
+The converted `docs/mepml/stats/regression/kernel_ridge_analysis.mepml` opens with exact
 RBF/linear two-point calculations and a four-row preprocessing counterexample.
 Its sine-wave sweep separates training, fixed-metric tuning and generating-mean
 error. Correct free-intercept LOO changes default selection and curve recovery:
@@ -10158,7 +10320,7 @@ as hexadecimal strings. References were verified against the original 1998 paper
 authors' distinct 64-bit version page and the C++ working draft parameters and
 10000th reference output. The 32-bit engine's 623-dimensional claim is not transferred.
 
-The converted `docs/mepml/examples/random/generators/mersenne_twister64.mepml` derives scalar seeding,
+The converted `docs/mepml/random/generators/mersenne_twister64.mepml` derives scalar seeding,
 bit joining/twisting and the inverse of each nilpotent masked-shift map. Exact
 odd/even and input-one calculations precede the reference transcript, state
 recovery, single-seed battery and all forty-seed second-level checks. It preserves
@@ -12509,7 +12671,7 @@ Evidence:build/cnn-filter_activations-{coverage,hover}.json,validation/,review/.
 ### CNN folder complete (2026-10-30)
 
 All 129 C++ source examples in `examples/cpp/source/nn/1_convolutional_neural_networks`
-now have matching reports in `docs/mepml/examples/nn/1_convolutional_neural_networks`;
+now have matching reports in `docs/mepml/nn/1_convolutional_neural_networks`;
 no conversions remain. Reports use tensor computations, show explicit tensor
 optimizer loops wherever fitting or input optimization occurs, and explain cases
 with no fitted parameters. C++ blocks are formatted across readable lines. Data
@@ -12788,7 +12950,7 @@ Rendered SVG bounds, forward edges and label/glyph separation pass; representati
 previews were visually reviewed. Browser UI verification is not claimed. Detailed
 execution hashes, SVG audits, 32 compiled examples, exports and fresh Doxygen XML
 are under `build/cnn-figures-expansion/`; scope and frozen-count distinctions are
-recorded in `docs/mepml/nn-conversion-plan.md`.
+recorded in `docs/mepml/nn/`.
 
 - 2026-10-30: CIFAR-10 dataset-study helpers add native stratified preparation,
   persisted split/moment restoration, independent crop/flip augmentation and
@@ -13086,3 +13248,993 @@ results and fingerprints are archived in
 including code-block compilation, with 135.26 s program time; Nix builds are
 excluded. The full-training recipe has a configurable two-hour timeout to allow
 the longer learning/validation workflow; rendering remains a 20-second default.
+
+
+## Verified Goldschmidt report/core batch (2026-11-14)
+
+`include/datamunge/algorithms/goldschmidt_division.hpp` and
+`src/datamunge/algorithms/goldschmidt_division.cpp`: 31/31 definitions pass fresh
+Doxygen coverage; nine public examples compile/run and three representative
+clangd hovers pass. The historical arithmetic header forwards to the new header.
+Shared ordinary/work/trace execution preserves finite-input arithmetic and records
+actual normalization and updates, selected product work and denominator stop.
+Contracts specify invalid inputs, owned whole-record quotas, zero budgets and the
+limits from subnormal scaling, overflow and rounded-factor stagnation. Four
+ASan/UBSan cases, 20,000 seeded frozen comparisons, the existing 100,000-case
+quotient test and thirteen independent rational-state checks pass. Three report
+programs, three inspected figures and both exports with matching copied figures
+pass. Evidence: `build/mepml-conversion/goldschmidt/`.
+
+
+## Verified Golomb coding batch (2026-11-14)
+
+`include/datamunge/algorithms/golomb_coding.hpp` and
+`include/datamunge/algorithms/golomb_analysis.hpp`: fresh Doxygen passes all
+43 definitions; fifteen public examples compile/run and four clangd hovers pass.
+Contracts specify positive parameters, external framing, bounded attempted-word
+parsing, clean exhaustion, unread tails, checked size/value arithmetic, owned
+actual codeword spans, selected bit visits and whole-word quotas distinct from
+bit/byte memory limits. Rice order checks precede signed-compatible parameter
+construction. Native length and geometric expectation helpers document the
+zero-based source and conditional finite-window distinction. Five ASan/UBSan
+cases pass, along with twenty-one existing coding tests, 132,096 frozen original
+codewords and 192 independent seventy-digit expectation sums. Four complete
+report programs, four inspected native figures and HTML/Markdown exports with
+matching image copies pass. The Golomb report is retired only after these gates.
+Goldschmidt display formulas were also corrected to the conversion plan's
+accessible display-math syntax and both exports refreshed; its programs and
+figures are unchanged. Evidence: `build/mepml-conversion/golomb/` and
+`build/mepml-conversion/goldschmidt/`.
+
+
+## Verified Graham scan batch (2026-11-14)
+
+`include/datamunge/geometry/graham_scan.hpp`,
+`include/datamunge/geometry/graham_analysis.hpp` and
+`src/datamunge/geometry/graham_scan.cpp`: all 41 scoped definitions pass fresh
+Doxygen coverage; ten public examples compile/run and four clangd hovers pass.
+Shared scalar/counted/analyze/trace execution documents exact binary64 signs,
+polar ordering, earliest original identities, degeneracies, actual compact stack
+edits, selected work, full-domain-before-cap validation, online whole events and
+atomic checked legacy counter accumulation. Historical hull includes/signatures
+remain available; Chan group hulls delegate to the shared exact implementation.
+Five sanitizer tests instrument the kernel and exact predicate, checking all 512
+small lattice subsets and 500 integer clouds with independent supporting lines,
+actual event/identity/work reconstruction, finite extremes, cancellation,
+ownership, quotas and display limits. Seven existing hull tests pass; 5,000 frozen
+integer results/counts and 128 independent full-range Fraction hulls agree.
+The original twenty-point/eight-vertex example, tiny actual pop diagram and native
+square/parabola work sweeps execute in four complete report programs. All four
+figures were inspected, and both exports contain computed results and identical
+copied SVGs. Original paper pages 132–133 were inspected, with implementation
+variant differences stated. Legacy reports retired after gates. Evidence:
+`build/mepml-conversion/graham-scan/`.
+
+
+## Verified Gram–Schmidt batch (2026-11-14)
+
+`include/datamunge/algorithms/gram_schmidt.hpp`,
+`include/datamunge/algorithms/gram_schmidt_analysis.hpp` and
+`src/datamunge/algorithms/gram_schmidt.cpp`: 52/52 definitions pass fresh Doxygen,
+thirteen public examples compile/run and four clangd hovers pass. Contracts cover
+rectangular/finite validation, absolute residual acceptance, optional two-pass
+modified projection, actual owned before/after/coefficient and row decisions,
+selected work, complete input entries and online floating-value capture quotas.
+They distinguish approximate orthogonality from exact rank/span claims, permit
+computed underflow rejection, reject nonfinite arithmetic, and state the limits
+of rounded diagnostics, centering and order-dependent feature plots. Original
+signature/include and other linear-algebra implementations remain; 5,000 frozen
+ordinary matrices preserve 120,000 basis coordinates bit for bit. Five sanitizer
+cases instrument the shared kernel, reconstructing 500 random inputs with both
+pass counts plus boundary/null/ownership/counter checks. Six existing native
+tests pass. Independent ninety-digit calculations check four cases and 628 basis
+coordinates, including centered Iris columns, and expose diagnostic underreporting
+below machine precision. Four complete report programs and four inspected native
+figures pass; both exports contain the actual results and identical figure copies.
+The original report and org source are retired after these gates. Evidence:
+`build/mepml-conversion/gram-schmidt/`.
+
+
+## Verified degree-ordered graph coloring batch (2026-11-14)
+
+`include/datamunge/algorithms/graph_coloring.hpp`,
+`include/datamunge/algorithms/graph_coloring_analysis.hpp` and
+`src/datamunge/algorithms/graph_coloring.cpp`: fresh Doxygen passes 63/63
+scoped definitions; seventeen public examples compile/run and four clangd hovers
+pass. Contracts specify loop-deleted feasibility, preserved parallel degree
+ordering, deterministic ID ties, verifier limits, full endpoint validation before
+caps/allocation, actual owned order/work/events, online whole-record admission
+and selected work distinct from byte/peak-memory limits or timing. Public legacy
+signatures and result fields remain; all 33,768 frozen simple/multigraph outputs
+match. Four sanitizer cases instrument the shared kernel, reconstruct all 32,768
+six-vertex simple graph traces and 500 multigraphs, and test complete/online caps,
+ownership, invalid loops, labels and checked family boundaries. Independent exact
+color search finds 32,548 optimal and 220 suboptimal greedy results in that finite
+corpus; eight original coloring tests pass. Native crown families prove and
+verify unbounded paired-ID waste, explicit two-color witnesses and actual linear
+history/work bounds. Original five-cycle/clique examples and representation
+controls execute in five complete report programs; all five figures are inspected
+and both exports contain computed results and identical image copies. Both pages
+of Welsh–Powell (1967) were inspected for its degree-sequence bound and scheduling
+scope. Legacy reports retired only after these gates. Evidence:
+`build/mepml-conversion/graph-coloring/`.
+
+
+## Verified GRASP/MAX-CUT batch (2026-11-14)
+
+`include/datamunge/algorithms/grasp.hpp`,
+`include/datamunge/algorithms/grasp_analysis.hpp` and
+`src/datamunge/algorithms/grasp.cpp`: all 91 definitions pass fresh Doxygen;
+twenty-three examples actually compile/run, including the four indented RNG
+method examples, and four clangd hovers pass. A constructor comment attachment
+was corrected with the required blank line after the preceding trailing field
+description. Contracts cover symmetric finite loopless weighted adjacency,
+parallel/signed weights, RCL and local-improvement slacks, continuing biased
+modulo RNG selection, actual owned construction/flip/restart histories, selected
+work and complete/online/pass quotas. They reject the old self-loop infinite-flip
+case, distinguish tolerance-local from global optimum, and qualify floating
+termination and exhaustive-reference arithmetic. Six sanitizer cases instrument
+the producing kernel, compare all 4,096 small signed graphs with independent
+exhaustive masks, reconstruct actual histories and check domains, quotas,
+ownership, overflow and absolute-slack limits. 3,000 frozen valid runs preserve
+partition/value; five existing optimization tests pass. Independent Python
+checks the original generator, 8,192 complement masks and every final partition,
+prefix incumbent and exact single-flip gain across 100 original-graph restarts.
+Four complete programs, four inspected native figures, final-location replay in
+`optim/metaheuristics`, HTML/Markdown exports and source/build/export image parity
+pass. Legacy mepml/org files retired after gates. Evidence:
+`build/mepml-conversion/grasp/`.
+
+
+## Verified Grover state-vector batch (2026-11-14)
+
+`include/datamunge/algorithms/grover.hpp`,
+`include/datamunge/algorithms/grover_analysis.hpp` and
+`src/datamunge/algorithms/grover.cpp`: all 49 scoped definitions pass fresh
+Doxygen, thirteen public examples compile/run with exact documented output and
+four clangd hovers pass. Contracts distinguish deterministic first argmax from
+sampled measurement, retained approximate legacy stopping from explicit counts
+and first-lobe theory, native unclamped amplitudes from ideal probabilities, and
+quantum oracle counts from selected classical state-vector work. Complete state
+and full-phase capture limits precede allocations/gates; owned histories retain
+actual oracle states, sequential means and diffusion states without replay.
+Three ASan/UBSan tests instrument the shared kernel and certify all 127 marked
+targets through six qubits, checked domains/caps, deep ownership and complex
+single-step overflow. Nine original quantum tests pass. Frozen 2,047 summaries
+and 10,455 scalar samples match bit for bit. Independent 90-digit reduced-state
+and literal dense-matrix checks cover 21,303 phase amplitudes and 160 means,
+with maximum amplitude error below 1.811e-14. Four complete report programs run
+through MEP; four figures were inspected and both computed-result exports carry
+identical source/build/export image bundles. Grover (1996), revised sections3–4,
+was inspected for the phase flip, diffusion and distinct sampling operation.
+Legacy report files retired after these gates. Evidence:
+`build/mepml-conversion/grover/`.
+
+
+## Verified Halley iteration batch (2026-11-14)
+
+`include/datamunge/algorithms/halley.hpp` and
+`src/datamunge/algorithms/halley.cpp`: all 34 new module definitions pass fresh
+Doxygen; the existing forwarding root header/source are reaudited too. Eight
+public examples compile/run with exact documented output and four clangd
+hovers pass. The old root_finding include and public signature remain. Contracts
+distinguish actual loop inspections from updates, strict function-unit residual
+acceptance from coordinate accuracy, zero denominator from zero correction, and
+local simple-root cubic order from multiple-root behavior. Actual producing
+callback/update records require no second execution, have owned storage and
+whole-record online admission before callbacks. Optional count limits exclude
+bytes/peak RAM, and callback side effects survive failures. Nonfinite and invalid
+controls have explicit errors. Three ASan/UBSan cases instrument the shared
+kernel across 70 start/budget controls, exact caps, callback order and failures,
+zero budgets/tolerance, ownership and dyadic triple-root contraction. All 16,884
+frozen finite legacy outputs match bit for bit; three existing root-method tests
+pass. Independent 90-digit simplified rational updates and cubic error identities
+check 45 inspections, with update error below 1.066e-16. Four report programs
+execute through MEP; four native figures are inspected and both exports include
+computed results and identical image bundles. Original Halley1694 scan pp137–140
+was inspected, while the report supplies its own modern rational derivation.
+Original report files retired only after the gates. Evidence:
+`build/mepml-conversion/halley/`.
+
+
+## Verified Hamming(7,4) codec batch (2026-11-14)
+
+`include/datamunge/algorithms/hamming_code.hpp` and
+`include/datamunge/algorithms/hamming_code_analysis.hpp`: all 39 definitions pass
+fresh Doxygen, eleven public examples compile/run with exact output and four
+clangd hovers pass. Contracts distinguish applied correction from verified
+recovery, membership from error-free transmission, detection-only rejection from
+the actual correcting decoder, and binary domain validation from unsafe indexing.
+Fixed owned actual parity prefixes and correction records share the scalar
+producing path; selected work excludes validation/capture/syndrome assembly.
+The bounded exhaustive audit records all 16 codewords, 120 distances and 2,048
+word/error-mask pairs; the separate BSC probability helper states independence
+and equal flip probabilities. Two sanitizer tests verify all 128 received-word
+parity/nearest-codeword certificates, record ownership, every nonbinary position
+and probability boundaries. Four original error-detection tests pass. All 16
+encodes and 128 syndrome/decoded cases match the frozen implementation.
+Independent Python constructs the codebook from parity constraints, checks every
+nearest decode and all 2,048 word/mask outcomes, and derives exact p=.1 recovery
+531441/625000 with Fraction arithmetic. The core rebuild succeeds. Four complete
+MEP programs run from the final coding-theory chapter; four figures were inspected,
+including a corrected unsupported XOR glyph, and both computed-result exports
+contain identical source/build/export image bundles. Primary Hamming1950
+sections3–5/TableIII were inspected for parity positions, checking numbers, extra
+parity and distance conditions. Legacy files retired only after all gates.
+Evidence: `build/mepml-conversion/hamming-code/`.
+
+
+## Verified Heap permutation batch (2026-11-14)
+
+`include/datamunge/algorithms/heap_permutations.hpp` and
+`src/datamunge/algorithms/heap_permutations.cpp`: all 40 definitions pass fresh
+Doxygen, ten public examples compile/run with exact output and four clangd
+hovers pass. Existing permutations include/signature and generation order remain.
+Contracts distinguish positional permutations from unique value rows, actual
+equal-valued swaps from visible differences, minimal swap schedules from total
+materialization cost, and complete logical output/history caps from bytes/peak RAM.
+All known count/container/cap requirements precede copying, allocation and recursion.
+Histories own actual swap indices/prefix/block/before-values from the producing
+std::swap path; selected work excludes initial working copies and trace writes.
+Three sanitizer tests instrument the kernel through eight distinct positions and
+all243 five-position ternary inputs, with complete sets, actual event certificates,
+multiplicity, deep ownership, exact/one-short/disabled limits and count overflow.
+Seven original permutation tests pass. All738 frozen complete outputs match,
+including all729 six-position ternary inputs. Independent Python lexicographic
+sets and an iterative counter schedule verify 46,234 rows, 46,225 events, the
+exact factorial-series call identity and parity endpoint invariants. Core rebuild
+succeeds. Four complete report programs run through MEP; four figures are inspected
+with legend overlap corrected, and both computed-result exports carry identical
+source/build/export image bundles. Original Heap1963 text preview was inspected
+for the inductive block construction and parity-dependent second program, with
+publisher metadata checked. Legacy files retired only after these gates.
+Evidence: `build/mepml-conversion/heap-permutations/`.
+
+
+## Verified heapsort batch (2026-11-14)
+
+`include/datamunge/algorithms/heapsort.hpp` and
+`src/datamunge/algorithms/heapsort.cpp`: all 51 definitions pass fresh Doxygen,
+twelve public examples compile/run with exact output and four clangd hovers pass.
+Contracts distinguish constant-space in-place legacy sorting from copied owned
+output and quadratic full-state histories, selected key comparisons from total
+work/timing, and worst-case upper bounds from equal-value easy cases. Captured
+exchanges and heap/suffix checkpoints come from the actual shared execution;
+known snapshot units are admitted before copies and whole unknown swap records
+before each exchange, with explicit logical-unit and memory exclusions. All
+int64 values and legacy strict candidate ties remain; safe internal-node guards
+precede child arithmetic. Three sanitizer cases instrument the core and certify
+all 9,841 ternary arrays through eight positions, actual event/snapshot links,
+heap/suffix/multiset invariants, exact and one-short known/online caps, ownership,
+extremes and twelve larger families. Nine original tests pass. Frozen built heaps,
+verifier flags and sorted outputs agree on all 9,841 cases. Independent Python
+heapq and event certificates check 1,093 inputs, 7,109 snapshots and 9,037 swaps.
+The core rebuild passes. Four complete programs run through MEP; four native
+figures were inspected and both computed-result exports have identical image
+bundles. Indexed original ACM232/245 reprint excerpts were inspected; full PDF
+fetch was unavailable, and no historical comparison-count equivalence is claimed.
+The report derives the current algorithm's height bound and invariants directly.
+Legacy reports retired after these gates. Evidence:
+`build/mepml-conversion/heapsort/`.
+
+
+## Verified cubic Hermite batch (2026-11-14)
+
+`include/datamunge/algorithms/hermite.hpp` and
+`src/datamunge/algorithms/hermite.cpp`: all 21 definitions pass fresh Doxygen,
+four public examples compile/run with exact output and four clangd hovers pass.
+Legacy interpolation_extra inclusion/signature and ordinary arithmetic remain,
+with 40,625 frozen cubic/query values matching bit for bit. Contracts correct
+end-interval extrapolation versus query clamping, require finite ordered nodes
+and physical slopes, document overflow and O(n) validation, and distinguish
+actual fixed owned basis/weighted-term records from symbolic arithmetic. Batch
+evaluation validates all nodes once and all queries before optional complete
+output admission, preserving order with no partial result or references.
+Three sanitizer cases instrument the kernel across 625 cubics on irregular
+nodes, 40,625 queries including extrapolation, actual scalar/trace/batch equality,
+21 exact dyadic quartic errors, numeric slope checks, malformed inputs, overflow,
+limits and ownership. Four original interpolation tests pass. Independent
+Fraction elimination of three absolute-coordinate four-constraint cubic systems
+checks65 values with maximum error below3.553e-15. Core rebuild passes. Four
+complete MEP programs and four native figures were executed/inspected, with an
+overlapping diagram label moved, and both exports retain actual results and
+identical image bundles. The Markdown receipt handles brackets inside alt text.
+The report corrects its original bounded-fixture overshoot claim and supplies a
+genuine stationary-point witness, physical-width example and derived remainder.
+NIST DLMF3.3(vi) reference scope was verified; full formulas are derived in the
+report itself. Legacy reports retired after all gates. Evidence:
+`build/mepml-conversion/hermite/`.
+
+
+## Verified Hirschberg alignment batch (2026-11-14)
+
+`include/datamunge/algorithms/alignment_types.hpp`,
+`include/datamunge/algorithms/hirschberg.hpp` and
+`src/datamunge/algorithms/hirschberg.cpp`: all 60 definitions pass fresh Doxygen,
+ten public examples compile/run with exact output and four clangd hovers pass.
+Shared types preserve layout and old sequence_alignment inclusion. The legacy
+orientation, split ties and dense-NW base traceback ties remain: all 435,483
+frozen complete outputs agree across binary strings through length6 and27
+scoring schemes, including zero/positive gaps. Views, scoped row release and
+output appending replace retained substring/profile/recursive-result copies;
+one-character cases need no dense base matrix. New shorter-row orientation has
+explicit tied-output semantics and returns caller-order rows. Actual split
+records own producing forward/reverse/sum arrays; selected rolling/base/call/depth
+and score-row peaks exclude output, frames, trace copies, capacity and bytes.
+Domains reject reserved gap bytes and conservatively bound integer score
+arithmetic. Complete input and online whole-sweep/base/capture admission have
+explicit failure, unit and zero-disables contracts. Three sanitizer cases
+instrument107,163 short pair/scoring controls, actual split score certificates,
+work/capture exact limits, orientation, deep ownership, empty/NUL and overflow
+boundaries. Seven original alignment tests pass. Independent enumeration of
+all monotone paths verifies6,075 outputs,6,356 actual split records and22,712
+profile positions without a score-DP implementation. Core rebuild passes.
+Four complete MEP programs run; four figures are inspected, including shortened
+clipped legend labels, and both computed-result exports carry identical image
+bundles. All three pages of Hirschberg1975 author copy were inspected for
+AlgorithmsB/C, split theorem, first maximizing index and storage assumptions;
+its edit-distance extension and the current additive alignment variant are
+distinguished. Legacy files retired only after these gates. Evidence:
+`build/mepml-conversion/hirschberg/`.
+
+
+## Verified histogram equalization batch (2026-11-14)
+
+`include/datamunge/algorithms/histogram_equalization.hpp` and
+`include/datamunge/algorithms/histogram_equalization_analysis.hpp`: all33
+definitions pass fresh Doxygen, nine public examples compile/run with exact
+output and four clangd hovers pass. Contracts require rectangular input before
+output allocation, fixing ragged-row access, and specify clamping, first-nonzero
+CDF normalization, retained half-up floating arithmetic, constant/empty identity
+and large-count conversion limits. Fixed owned hist/CDF/lookup/output tables
+come from the producing pass pair, with selected work and complete row/pixel
+limits distinct from bytes/peak memory. Legacy output and signature remain;
+all9,842 frozen complete valid images match. Four sanitizer cases check9,841
+small ternary inputs against exact integer maps and table/output certificates,
+clamping/constant/ragged/empty/limits/ownership/overflow, the rare-level merge,
+original fixture/coarse counts and native grayscale series orientation. The
+zero-row generator returns before constructing an unused column prototype,
+including a SIZE_MAX column control; fixed grouped counts check overflow.
+Six original image tests pass. Independent Fraction calculations verify1,792
+lookup entries and5,108 mappings across seven complete fixtures. Core rebuild
+passes. Four complete MEP programs run; four native figures are inspected with
+fixed shared intensity scales, fitted panels and a shortened clipped legend.
+Both computed-result exports contain identical source/build/export bundles.
+The official OpenCV tutorial's CDF/global/CLAHE scope was inspected; its NumPy
+truncation is distinguished from the retained native half-up policy. The report
+limits claims to controlled synthetic pixels, discrete histogram pushforward,
+coarse/fine distinctions and actual merging, without a uniformity or perceptual
+quality guarantee. Legacy files retired only after all gates. Evidence:
+`build/mepml-conversion/histogram-equalization/`.
+
+## Verified HITS batch (2026-11-14)
+
+The new hits.hpp/hits.cpp module and affected network_analysis.hpp/.cpp pass
+fresh documentation coverage for all64 scoped definitions. Eleven public
+examples compile and run with exact expected output; four clangd hovers pass.
+The shared producing kernel preserves ordered alternating normalization and
+legacy HITSResult layout/signature while exposing owned actual histories,
+selected work, stop branches and checked input/online capture policies.
+Finite-positive tolerance, zero norms, zero iteration budget, duplicate/loop
+edges, empty graphs and repeated dominant components have explicit contracts.
+Three ASan/UBSan tests check every update for all512 directed binary three-vertex
+graphs against independent dense products, plus admission/domain/ownership and
+analytic controls. Frozen23,040 cases preserve scores and iteration counts bit
+for bit; an eighty-digit Decimal calculation checks140 values from20 actual
+paired updates. Seven existing graph tests and the core rebuild pass. Four
+complete MEP programs, four inspected native figures and both exports pass,
+including all computed results and identical source/build/export figure bytes.
+Kleinberg's primary paper supplies the mathematical reference; query-focused
+preprocessing is explicitly outside this supplied-graph implementation. Legacy
+reports retired only after all gates. Evidence: `build/mepml-conversion/hits/`.
+
+## Verified HMAC batch (2026-11-14)
+
+The shared `hmac.hpp` kernel and new `hmac_analysis.hpp` pass fresh coverage
+for all49 definitions, fifteen compiled/executed public examples and four
+clangd hovers. Legacy byte-string tag/hex interfaces retain complete results;
+actual producing key normalization, pads, prehash and inner digest are captured
+in fixed owned arrays without replay. Complete combined input admission and
+SHA bit/padded-length/count checks precede work. Call counts and padding-derived
+block totals are distinguished from internal compression traces, timings and
+allocation traffic. The one-shot implementation uses O(k+m+1) additional space.
+Native public RFC4231 fixtures cover all7 cases, with case5 explicitly checking
+only its published128-bit prefix. Complete bounded key-bit sensitivity returns
+all distances and an exact257-bin histogram, preserving the original fixture's
+155-bit maximum instead of clipping it. Empty-key summaries use explicit
+sentinels; finite sensitivity results make no unforgeability or PRF claim.
+Four ASan/UBSan cases verify56 key/message boundaries, actual intermediates/work,
+allRFC fixtures, limits/ownership and binary sensitivity;23 original crypto
+tests including PBKDF2 pass. Frozen63 cases preserve tags bit for bit. Python
+hmac/hashlib independently verifies those cases and intermediates, all136
+original key flips and all7 public fixtures. The core rebuild passes. Four
+complete MEP programs, four inspected native figures and both computed-result
+exports have matching source/build/export image bytes. Primary RFC2104/4231
+references checked; ordinary equality and educational trace storage have clear
+limits. Legacy reports retired only after every gate. Evidence:
+`build/mepml-conversion/hmac/`.
+
+## Verified Hopcroft batch (2026-11-14)
+
+`dfa_minimization.hpp` and `dfa_minimization_analysis.hpp` pass fresh coverage
+for all53 definitions, thirteen compiled/running examples and four clangd
+hovers. Full contracts cover the shared producing set-based kernel, exact
+legacy order/quotient numbering, projected sink-inclusive input admission,
+selected work and owned actual initial/preimage/split histories. Logical
+capture units and online copy admission are distinct from ordinary working
+sets, output, metadata/capacity and byte/peak-memory bounds. The legacy policy
+remains unlimited; run ignores the trace policy. Moore's signature-map and
+Hopcroft's whole-partition scans are distinguished from optimized textbook
+bounds. Native original and unary-threshold fixtures have explicit ownership,
+empty/domain/representation/cap behavior. Three sanitizer tests reconstruct
+all972 small partial machines, actual histories/work/capture and pairwise
+quotient distinguishability, plus policy/domain/ownership and generator limits.
+Nineteen existing automata/Brzozowski tests pass. Frozen4096 complete quotients
+preserve every field, including nonboolean acceptance bytes; Python table
+filling checks6804 machines/60596 state pairs and independently verifies16284
+reachable language-product pairs. The core rebuild passes. Four complete MEP
+programs, four inspected native figures and both computed-result exports pass
+with matching source/build/export bytes and final hashes of inspected figures.
+The original six-state graph and exact language equivalence are retained;
+measured unary counts expose n² scans versus2n-2 inverse visits. Primary1971
+representation/proof discussion checked; no unsupported optimal timing claim.
+Legacy reports retired only after every gate. Evidence:
+`build/mepml-conversion/hopcroft/`.
+
+## Verified Hopcroft–Karp batch (2026-11-14)
+
+The matching header/source and new analysis header pass fresh documentation
+coverage for all59 definitions, sixteen compiled/executed public examples and
+four clangd hovers. Actual shortest-layer blocking phases replace an observed
+old DFS path longer than its BFS shortest distance; frozen C++ instrumentation
+records the old3-versus4 forward-pair discrepancy. An explicit DFS stack and
+phase-local cursors avoid recursive path-stack exhaustion. The original result
+layout/signature and maximum cardinalities remain, with deterministic tie
+choices permitted to change. Terminal actual BFS supplies a minimum vertex
+cover with equal size, independently certifying the result. Complete graph
+admission precedes allocation; owned BFS/path capture has explicit logical units
+and online copy/flip admission, excluding ordinary work/output and byte/peak
+memory. Native fixtures, a bounded chain generator and validated bounded graph
+view replace report-local reusable code. Ten ASan/UBSan cases cover all65536
+4x4 simple graphs with an independent bitmask oracle, actual shortest/disjoint
+paths and flips, labels/work/capture/cover, policies/domains/ownership, fixtures,
+plot controls and a20k-per-side chain. Six existing tests include500 Kuhn
+comparisons. Frozen65536 cardinalities match,3767 matching choices differ, and
+the original5x4 matching arrays remain unchanged. Python independently checks
+1547 graph cases,3754 actual paths,10197 BFS labels, optima and terminal covers.
+The core rebuild passes. Five complete MEP programs and five inspected native
+figures pass both computed-result exports with byte-identical source/build/
+export bundles and final hashes matching inspected views. Primary1973paper
+checked; ordinary complexity includes isolated vertices and selected counters
+are distinct from timing/allocation traffic. Legacy reports retired only after
+all gates. Evidence: `build/mepml-conversion/hopcroft-karp/`.
+
+## Verified Hopfield batch (2026-11-14)
+
+The Hopfield network/analysis headers pass fresh coverage for all83 definitions,
+twenty compiled/executed public examples and four clangd hovers. Full contracts
+cover checked rectangular bipolar storage, finite square symmetric zero-diagonal
+matrices, complete states/Hamming dimensions, nonfinite arithmetic, ownership,
+ordinary arithmetic/shuffle compatibility, actual positive-zero ties and budget
+versus unchanged-sweep stops. Actual owned update/order/end-state histories
+separate producing work from extra boundary-energy observations; complete
+logical capture admission and all memory/count exclusions are explicit. Native
+original RNG/noise study and fixed-palette state views replace reusable report
+code, with bit agreement separated from exact-pattern recovery. Eight sanitizer
+tests cover all255 small memory subsets/every state/two seeds, actual events
+and work, safety/policies/ownership/overflow, helpers/orientation and the four
+existing Hopfield/SOM/RBF tests. Frozen12240 valid recalls,255 matrices and2040
+energies match exactly. A separate frozen original-study comparison preserves
+the draw stream, actual six-bit probe,330 outputs and11 summaries. Fraction
+arithmetic independently checks4084 histories,23040 updates and11701 observed
+energies against exact dyadic field/energy differences. The core build passes.
+Five complete MEP programs and five inspected final native figures pass both
+computed-result exports with identical source/build/export images and reviewed
+hashes. Primary1982 model/storage pages checked; bipolar normalized shuffled
+specialization and floating/budget limits are explicit. Correlated-memory,
+reversed-attractor and zero-energy tie examples remove unsupported stability,
+nearest-memory and capacity claims. Legacy reports retired only after all gates.
+Evidence: `build/mepml-conversion/hopfield/`.
+
+
+## Verified Huffman batch (2026-11-14)
+
+`docs/mepml/algorithm/compression/huffman_analysis.mepml`; original 89-byte pangram, tiny and classic actual merge trees, empty/singleton/wide-count/domain/quota controls and actual operation profiles. Shared compiled deterministic heap kernel captures actual owned topology, exact decimal weights/costs and merge/work records without replay. Private bounded 256-bit arithmetic covers all representable uint64 count vectors and integer depths, fixing overflowing sums without restricting the old input domain. Legacy signatures and byte-result aggregate layout preserved; complete codebook validation prevents cyclic/out-of-range/shared/unreachable topology and inconsistent maps; strict decode rejects nonbinary/incomplete payloads. Logical quotas admitted before work, ordinary legacy caps disabled, capture exclusions explicit. Derives greedy contraction, weighted-depth/merge identity and entropy/Kraft bounds with forced singleton exception; distinguishes byte symbols, ASCII bit digits, packed estimate and absent archive framing. Five ASan/UBSan tests include 4096 exhaustive optimal-merge DP cases, 1365 binary/high-byte strings, full alphabet, safety/caps/ownership/wide weights/helpers. Frozen 65536 count-length vectors and 1365 old payload costs/old-book decodes preserved; 35 original consumers pass. Independent arbitrary-precision Python verifies 5123 count cases/26799 actual merges and two byte payloads. Core build, fresh 92 definitions/24 compiled examples/four hovers pass. Five complete MEP programs, five Inkscape-inspected native figures, both computed-result exports and identical source/build/export images pass. Primary 1952 binary construction page inspected. Legacy files retired after gates. Evidence: `build/mepml-conversion/huffman/`.
+
+
+## Verified Hungarian batch (2026-11-14)
+
+`docs/mepml/graph/matching/hungarian_analysis.mepml`; original 3x3 costs/assignment (1,0,2)/cost9 preserved, tiny 2x2 actual reassignment, negative/tie/domain/quota controls and strict-diagonal versus all-tied work families. Shared checked native kernel retains legacy signature/result field layout, ordinary arithmetic and ascending-column strict-less tie choices; rejects complete nonfinite input and produced nonfinite slack/potentials/frontier/total, preventing invalid-frontier nontermination. Run/trace return actual computed potentials, selected work, reprice boundaries and post-flip matchings without replay. Full square finite input and complete cell admission precede arrays/copy; online complete 1+4n event admission precedes producing scans or path flips. Optional default million cell/history units, zero off, legacy caps off and untraced history ignored; all exclusions and owned values explicit. Native original/work fixtures, complete numerical diagnostics and bounded matched-pair Diagram replace reusable report code. Derives weak duality/tightness, active-prefix invariant for negative inputs (correcting globally feasible zero initialization), cubic loop bound and exact n² versus n(n+1)(2n+1)/6 slack formulas; floating checks distinguished from exact certificates. Eleven ASan/UBSan cases include six original tests, all19683 signed 3x3 matrices versus exhaustive permutation optimum with every captured prefix feasibility/tightness, actual path replacement, stable ties, exact/one-short caps, ownership, malformed/nonfinite/overflow controls, helpers and40work sizes. Frozen20000 signed dyadic assignments and total bits unchanged; independent integer Python verifies761cases/13519actualevents/all selected counters and brute-force optima through n7. Core rebuild, fresh55definitions/15compiled publicexamples/fourclangdhovers pass. Four final complete MEP programs, four Inkscape-inspected native figures (final original axis re-viewed), both computed-result exports and source/build/export image parity pass. Munkres1957 original assignment/reduction pages inspected; compact potential variant, finite square scope and non-timing operation counts explicit. Legacy files retired after gates. Evidence: `build/mepml-conversion/hungarian/`.
+
+
+## Verified planar ICP batch (2026-11-14)
+
+`docs/mepml/geometry/registration/icp_analysis.mepml`; original25-point perturbed grid and known .12/(.7,-.5) pose preserved, tiny one-point error-timing example, exact many-to-one local-failure control and forced-budget producing/diagnostic profiles. Shared compiled checked planar kernel preserves legacy result field order/types, ordinary finite pose/update/strict PRE-update stopping arithmetic and first-target ties, while correcting returned RMSE from stale pre-update error to actual final working-cloud error (one-point5->0). Complete finite coordinates/controls and combined point admission precede copies/working storage; negative budgets/tolerance/nonfinite coordinates rejected and produced overflow throws. Empty-cloud identity/zero-error convention distinguished from fit; zero budget reports actual initial directed RMSE. Run/trace own actual evolving final cloud, selected matches, before/after points, incremental/accumulated poses, three error observations and explicit plateau/budget/empty stop without replay; final pose application differs from repeated updates by rounding. Producing distance/update counts separated from extra fixed/nearest observation work. Complete online1+5N step admission before producing matching/copies/update; million-point/history policies, zero off, legacy caps off, untraced history ignored and all exclusions explicit. Native original fixture, checked pose application, alignment plot and bounded actual-step Diagram replace reusable report code. Derives planar centered atan2 minimizer, directed many-to-one objective and exact monotonic sandwich, distinguishing bounded objective from global/true-pose recovery. Vertical-to-horizontal two-point ties plateau atRMSE1 despite an available quarter-turn zero-loss alignment. Original actual target ordering preserved, correcting false shuffle prose; original native shuffled tests pass. Eleven ASan/UBSan selected cases include500generated6-step traces with complete matches/updates/pose composition/all errors/work and numerical monotonicity, original6batchcases, stale-error/zero/strictbudget/empty/tie/localfailure, caps/ownership/domain/overflow/helpers. Frozen2000 legacy poses/counts within1e-13; original3updates preserved with finalerror1.322520412702386e-15 versus oldpre1.3912743564900222e-15 on this toolchain. Independent Fraction/70-digit Decimal verifies259cases/1295actualsteps/7450matches, exact-input centroids/distances, closed-form optimal fixed losses and rigid distances. Core rebuild/fresh53definitions/14compiledpublicexamples/fourclangdhovers pass. Four final complete MEP programs/four Inkscape-inspected native figures including fitted2-panel original/bothcomputed-result exports/source-build-export parity/reviewedhashes pass. Primary1992paper pages243–244 least-squares/ICP/convergence proof inspected; planar incremental working-cloud and pre-RMSE-stop variants explicit. Legacy files retired after gates. Evidence: `build/mepml-conversion/icp/`.
+
+
+## Verified iterative deepening DFS batch (2026-11-14)
+
+`docs/mepml/graph/search/iddfs_analysis.mepml`; original2-vertex directed edge preserved with printed path[0,1]/foundtrue/3entries, actual binary-tree prefixes, unary/binary/ternary overhead and path-local revisit/SIZE_MAX/quota/domain controls. Dedicated shared compiled explicit-frame kernel removes recursive stack growth, preserves legacy signature/result layout/input-order arcs/loops/duplicates/current-path cycle exclusion and entry counts including goals/cutoffs. Effective min(requested,n-1) is complete for finite reachability and prevents SIZE_MAX wrap; only redundant unsuccessful larger passes intentionally omitted. Entire terminal/endpoint domain validation precedes complete graph caps/allocation, including unused invalid arcs/start=goal. Run/trace own actual pass counts, maximum frames and scalar chronological pass/enter/examine/cutoff/leave/goal transitions with original arc ids and cycle flags; successful path stays active without fake finish records, no replay. Default million complete vertices/original arcs/actual events; zero off, legacy caps off, untraced event cap ignored, event admission before append and all exclusions explicit. Native complete-tree generator admits all levels before allocation and native pass Diagram validates basic summaries with complete display admission. Derives minimum edge-depth/simple-path bound, complete-tree entry sum and closed form, b>1 ratio b/(b-1) relative to whole final pass, unary quadratic repetition and total stored-graph/membership/pass versus active-path memory. Actual path-local counterexample revisits vertex3 at a shallower depth to recover0,3,4,5; global visited would wrongly prune. Eleven ASan/UBSan selected cases include all4096 four-vertex no-self-loop graphs/every terminal pair plus512three-vertex loop graphs against recursive-order reference and independent BFS depth; every actual active path/edge id/cycle flag/pass counter checked, parallel arcs,2,001-vertex chain, caps/ownership/invalidunusedendpoints/helpers and six legacy search-more tests. Frozen264144 path/count/found results unchanged for depths<=n-1 incl2000orderedloop/parallel controls. Independent Python1027cases/2427actualpasses/15859scalar-events exact; all24producing report rows match exact integer complete-tree formulas. Core rebuild/fresh62definitions/12compiledexamples/fourclangdhovers pass. Four final complete MEPprograms/four Inkscape-inspected nativefigures/bothcomputed-result exports (actual HTML cells/prose checked as well as Markdown)/source-build-exportparity/reviewedhashes pass. Original Korf1985proof page101 inspected; root/pass-zero and final-pass-normalization conventions explicit; finite unweighted graph specialization distinguished from heuristicIDA*. Legacyfiles retired aftergates. Evidence: `build/mepml-conversion/iddfs/`.
+
+
+## Verified index-calculus batch (2026-11-14)
+
+`docs/mepml/algorithm/cryptography/index_calculus_analysis.mepml`; tiny p5/g2 actual accepted relations, modulo2->4 lift/base logs/verified target; original four p/g/x cases and exact target values preserved with separate actual preparation/query trials; default p11 rank3of4 failure, separately requested larger reused table, complete history/domain controls and original30..240-bit model formulas. Canonical checked shared prepare/query kernels retain legacy signature/result layout and ordinary RNG stream, validate prime/primitive generator/nonzero targets before shortcuts, exclude q>=p from factor bases, and solve composite p-1 through prime-field RREF, exact prime-power correction lifting and CRT instead of treating it as a field. Full-width widened modular products/add/sub avoid overflow; verified base logs and target exponents, no generic-log fallback/artificial p cap. Owned actual accepted-trial/exponent/residue/power records, prime-power rank/solution stages, statuses/work/query witnesses and copied query RNG state provide genuine reusable precomputation without replay. Public query validates complete table/group-factor/log data; validation/factorization costs distinguished from selected work. Complete B+1 sieve and (K+surplus)*K matrix admission, actual1+K trace-record units inclfailedempty stage, optional million caps/zerooff, exactattempt0meansnone, untracedhistoryignored and storage/metadata/capacity/peakRAM exclusions explicit. Defaults retain fixed K+20/4m trial behavior, honest rank/budget failures; old valid p5 failure corrected while p11 default remains legitimately rank deficient. Native actual-preparation Diagram and stable log-space model helper. Derives smooth equations, field/ring distinction, lift residual/CRT, target shift and dense costs; fixed capped uint64 implementation and selected counters distinguished from asymptotic/timing/security claims. Eight ASan/UBSan cases include every4181target of primes<=199 with larger batches, actual relation products/every stage equation, power-of-two lifts, four originals, failed statuses/caps/ownership/malformed tables/domains, full-width prime/group certificate/forced verified supplied-table witness and graphics/model controls, plus two old tests. Independent Python486preparations/17997acceptedrelations/1273linearstages/2430queries verifies exact RNG, row operations/pivots/statuses/logs/target witnesses/allselectedcounts;331ready/146rankdeficient/9relationlimited. Frozen256seeded original-prime cases preserve all211old successes exactly;6of45old failures now solve. All8original model rows independently verified. Core build/fresh90definitions/16compiledpublicexamples/fourclangdhovers pass. Four final complete MEP programs/four Inkscape-inspected nativefigures inclfitted2-panel original/bothactualcomputed-result exports(HTMLcells/prose+Markdown)/source-build-exportparity/reviewedhashes pass. Official HAC Algorithm3.68/Example3.69/Notes3.71,3.73 checked, algorithm page110 visually inspected; sampler/batch/linear-solve variants explicit. Legacyfiles retired aftergates. Evidence: `build/mepml-conversion/index-calculus/`.
+
+
+## Verified report catalogue batch (2026-11-14)
+
+`docs/mepml/overview/index.mepml`; navigation-only replacement for the historical collection index, deliberately no dummy executable blocks/figures. Preserves all478 original topic memberships/current source mappings in durable origins JSON with both legacy-source digests, and adds318 current sources omitted from the old catalogue. Deterministic source discovery lists533 documentation sources across both roots plus263 remaining legacy sources, excludes itself/predecessor, rejects missing/ambiguous historical stems and writes only changed content. Current titles/locations replace stale copied numerical abstracts, dead flat HTML/PDF promises and unqualified execution claims. Native mepml links are required: an actual export check caught Markdown table links rendered as literal text, corrected with native bullet links and a permanent real-MEP regression. `just docs-report-catalogue` refreshes; normal website build refreshes before discovery. Scoped .mepml anchor resolution maps source links to collision-checked site pages with fragments/query strings preserved, leaves non-mepml/remote/outside URLs unchanged and packages live legacy text verbatim for portable offline downloads. Overview placement avoids collision with generated reports/index.html. Twenty-nine focused pytest cases pass, covering migrations/no-op timestamps/missing/ambiguous membership, allhistorical/source coverage, encoded labels/paths and actual MEP links/exporter/byte-parity, related website toolchain/model-diagram behavior. Real MEP accepts zero blocks/zero failures and both exports resolve all796 checkout source links. Actual Site.build_reports smoke with catalogue plus one real old-root and one new-root report writes three genuine report pages and separate generated index/status; all533 documentation mappings match complete discovery and all263 downloaded legacy source bytes match. This does not claim execution/export of the entire historical corpus or a fresh API audit. Refresh/check commands pass; README navigation/workflow updated. Legacy index.mepml/index.org removed only after origin-hash/link/export gates. Evidence: `build/mepml-conversion/index/`.
+
+
+## Verified insertion-sort batch (2026-11-14)
+
+`docs/mepml/algorithm/sorting/insertion_sort_analysis.mepml`; tiny actual held-key example, all six original seven-value states, preserved40-size evolving MT19937 seed1/shuffle workload, tied identities/displaced minimum and complete-cap controls. Dedicated shared strict-shift kernel preserves legacy by-value signature/results/compatibility include, with value-only calls omitting identity/history storage. Run/trace own stable original identities, actual comparisons/shifts/placements and full actual post-insertion states without prefix replay. Complete input and known (n-1)*(1+2n) history admission precede copying/sorting; default million caps, zerooff, untracedhistoryignored, legacycapsdisabled and all original/working/output/scalar/capacity/bytepeakRAM exclusions explicit. Native bounded complete workload generator preserves all40 actual RNG/shuffle calls and owns all4100shuffled values; actual step Diagram validates visited identities. Derives stable prefix invariant, shifts=I, comparisons=I+n-1-M for strict new minima, placements=n-1, bodyTheta(n+I), uniform distinct expectation n(n-1)/4+n-Hn, and distinguishes lvalue copies/identity/snapshot storage and selected work from runtime. Current actual n200 sorted199/shuffled10652/reversed19900; oldcached10466 is not reproduced, but extracted original counter agrees on every actual current input. Seven selected ASan/UBSan cases include29524ternary arrays/40320eight-value permutations, independent stable identity sort/every prefix-suffix snapshot, pair-count inversion/new-min formulas, original/extreme/order/cap/ownership cases, nativeprofile/display checks and three existing comparison-sort cases. Python1350inputs/6784actualstates/40originalprofiles independently verifies stable prefix order, complete comparisons/shifts/placements and original counter parity. Corebuild/fresh42defs/11compiledexamples/fourclangdhovers pass. Four complete final MEPprograms/four Inkscape-inspected nativefigures/bothactualcomputed-result exports(HTMLcells/prose+Markdown)/source-build-exportparity/reviewedhashes pass. NIST case-sensitive insertionSort reference verified. Legacyfiles retired only after gates; catalogue refreshed. Evidence: `build/mepml-conversion/insertion-sort/`.
+
+
+## Verified interpolation-search batch (2026-11-14)
+
+Interpolation search: shared overflow-safe exact-floor kernel, actual scalar probe histories/work, bounded fixtures and native secant/probe graphics. Preserves original uniform/skew examples and derives sortedness/progress, probabilistic expectations and measured linear worst case. Four executed MEP blocks and four inspected SVGs; HTML/Markdown computed results and image parity pass. Ten ASan/UBSan cases, 37/37 documented definitions, twelve compiled examples and four clangd hovers pass. Independent Fraction/bisect oracle verifies 3498 cases and 3537 probes; 3491 safe frozen-legacy cases agree. Evidence: `build/mepml-conversion/interpolation-search/`.
+
+
+## Verified inverse-iteration batch (2026-11-14)
+
+`docs/mepml/numerics/linear_algebra/inverse_iteration_analysis.mepml`; diagonal two-component actual transition, original rounded 3x3 matrix/shift5.05/60solves, exact-thirds basis and three shifts, missing-component/tied-distance/singular/cap controls. Shared fixed-shift kernel factors partial-pivot extended-precision LU once and records every actual normalized iterate, Rayleigh quotient, original-matrix absolute/Frobenius-scaled residual and selected factor/solve counts without prefix replay. Validates finite nonempty square inputs and matching finite nonzero starts; robust norm, checked arithmetic/diagnostic range, explicit exact-zero-pivot failure, zero-solve initial diagnostics. Legacy signature/EigenPair layout retained; numerical policy changes and default-equal-start convergence assumptions explicit. Complete order/history-vector-entry admission, ownership and all scalar/capacity/LU/byte-RAM exclusions documented. Preserves original four-decimal Q rather than falsely claiming exact orthogonality: independent NumPy gives middle eigenvalue5.000333314809198, while the thirds control gives5. Derives eigenbasis contraction/nonzero-component/simple-nearest assumptions, quadratic Rayleigh error and symmetric residual bound; distinguishes backward error/target identity/rounding and numerical conditioning. Four executed MEP programs/four Inkscape-inspected native figures, actual HTML/Markdown result and source/build/export image parity pass. Nine selected CTest and ASan/UBSan cases include400 spectral recurrence paths,300 existing random symmetric recovery checks, full actual diagnostics/pivot/range/cap/ownership/graphics controls. Independent90-digit Decimal Gauss-Jordan verifies316inputs/4388states/4072solves; max next-vector discrepancy5.56e-17. Frozen402nonsingular legacy controls agree within2.67e-15 eigenvalue/2.23e-16 sign-aligned direction. Fresh40/40 definitions/10compiled examples/fourclangd hovers pass; Netlib primary reference verified. Separate pre-existing Rayleigh convergence failure reproduces with frozen original header; compatibility helper bodies unchanged, no broader solver claim. Legacy files retired only after gates; catalogue refreshed. Evidence: `build/mepml-conversion/inverse-iteration/`.
+
+
+## Verified ITP batch (2026-11-14)
+
+`docs/mepml/numerics/root_finding/itp_analysis.mepml`; three-stage tiny cubic example (interpolate0.5/truncate0.9/project1), original cosine [0,1] combined1e-12 summary plus matched position1e-12/residual1e-13 comparison, position-only histories,48fixed sign-bracket controls, scaled-residual/discontinuity/adjacent-double/five-ulp projection-limit/callback/cap controls. Dedicated shared checked ITP kernel retains legacy signature/RootResult layout and compatibility include, with actual pre-update I/T/P fields and terminal-midpoint records, separate coordinate/function tolerances, n0 allowance, callback counts and explicit stop reasons. Fixed scaled kappa1=.2/initial_width,kappa2=2; safe convex interpolation/truncation arithmetic, checked halving/exponent count before callbacks, finite values, online actual-record admission, ownership/side-effect/cap exclusions explicit. Derives exact-arithmetic width invariant and corrects false default minmax claim: n0=1 permits one extra worst-case trial; n0=0 matches the bisection upper bound, not every actual bisection run. Rounded projection-band departure/interior fallback, projection-limit and stagnation failures prevent unsupported interval success. Four final MEP programs/four inspected native SVGs (including fitted two-panel control), actual HTML/Markdown computed cells/prose and source/build/export image parity pass. Twelve CTest and directly instrumented ASan/UBSan cases include2432generated sign brackets, every actual stage/bracket/callback boundary, unit/finite-range/budget/cap/ownership/graphics controls and three existing scalar-root cases. Independent90-digit Decimal validates623runs/12546projection trials/615terminal-midpoint calls, including explicit rounding departure and projection-limit failure; Fraction verifies all12fixed-profile result rows. Frozen1003finite continuous legacy controls preserve trial counts and coordinate within2.23e-16. Fresh59/59definitions,11compiled public examples and fourclangdhovers pass. Maintained ITP package documentation/source inspected; original paper formal reference cited without claiming publisher-PDF access. Legacy files retired only after gates, hierarchy documentation updated and catalogue refreshed. Evidence: `build/mepml-conversion/itp/`.
+
+
+## Verified jackknife batch (2026-11-14)
+
+`docs/mepml/stats/inference/jackknife_analysis.mepml`; three-point actual mean deletion/pseudo-value Diagram, all six exact delete-two subsets, original150iris Sepal.Length mean/variance identities and influence plot, original d20/B3000/seed7 median with bootstrap4000/seed1,18deletion-count/seed sensitivity rows and invalid-budget/complete-cap controls. Canonical existing result/options layouts retained. Shared finite checked delete-one kernel owns actual LOO/pseudo-values with centred wide bias arithmetic and robust norm; optional complete2n output admission precedes callbacks/copies. Delete-d uses exact capped integer C(n,d) mode admission, original lexicographic enumeration or retained partial Fisher-Yates/MT19937-64 stream, streaming centred population variance and optional actual sorted deletion-set/statistic histories with complete B*(d+1) scalar-entry admission. Positive subset budgets, finite inputs/callbacks, checked output range, ownership/side effects and all cap/capacity/working/byte-RAM exclusions explicit. Native statistic bridges reuse mean/median/sample-SD APIs. Derives pseudo-value/replicate variance equivalence, mean all-d finite-population identity and exact plug-in variance bias correction; fixes reversed influence curvature and unconditional median-repair claim. Tied central5.8values explain zero delete-one median spread; raw retained130 histogram distinguished from6.5rescaled variance. Retains legacy Monte Carlo denominatorB and its conditional(B-1)/B variance factor; seed variation/bootstrap comparison are not coverage/consistency certificates. Current original-settings SE0.101577906609 and bootstrap0.101891927385 replace unreproduced historicalcached0.1001/0.1013; frozen original iris callback/loop confirms current delete-d result. Five final MEP programs/five inspected native SVGs including fitted median panels, actual HTML/Markdown result-cell/prose and source/build/export image parity pass. Twenty selected CTest/ASan/UBSan cases include1089ternary samples/4923complete mean fits across all deletion counts, actual callbacks/sets, binomial boundaries/huge counts, RNG/constant-maximal/tiny-scale/output-range/cap/ownership/graphics and existing bootstrap/U/V/permutation cases. Rational oracle verifies2438runs/62058actualsets/5266LOO/5266pseudo-values and4000actual bootstrap-replicate summary; R verifies all150inputs/600LOO/3000actual delete20 medians and summaries. Frozen476controls preserve all11972actualsets with SE difference<6.7e-16; all18profile rows and tiny tables independently checked. Fresh51/51definitions/13compiled public examples/fourclangdhovers pass. Shao-Wu publication metadata/DOI verified without claiming inaccessible theorem text. Legacyfiles retired only after gates; catalogue refreshed. Evidence: `build/mepml-conversion/jackknife/`.
+
+
+## Verified Jaro–Winkler batch (2026-11-14)
+
+`docs/mepml/algorithm/strings/jaro_winkler_analysis.mepml`; actual MARTHA/MARHTA accepted partners versus ordered-match comparisons and native crossing-edge Diagram, all five original pairs, odd half-disagreement/window/case/UTF8/NUL/empty/nonmetric/scale/cap controls, exact quadratic candidate-work family and controlled typo ranking all891canonical Titanic names. Dedicated shared raw-byte greedy kernel retains legacy signatures, original partner choices and valid-scale double operation order, with safe window endpoints and finite prefix-scale domain[0,.25]. Captures actual candidate-slot/occupied-skip/order/prefix events and selected logical counts, owns source bytes, admits complete combined byte count and online actual events before inspections; run/legacy input-copy/recording differences and all flag/capacity/byte-RAM exclusions explicit. Prefix bonus remains unconditional; boundedness/score-one saturation/nonmetric triangle counterexample and byte-versus-code-point distinctions derived. Native bounded ranking admits all candidate/query bytes before scoring, scores once per candidate, returns owned top-k rows with exact-score/original-index ties; no identity/probability calibration claim. Twenty-two selected CTest and directly instrumented ASan/UBSan cases include43923exhaustive NUL/A/FF string-scale traces, actual partners/events/odd disagreement, invalid domains, ownership/caps/ranking/graphics and all existing string-metric cases. Frozen142496inputpairs preserve712480base/four-valid-scale scores bitwise. Independent rational/event oracle verifies15682pairs/654158actualevents/25614occupiedskips/41odd-disagreement pairs, all891computed rankings and tie arithmetic; all891Name bytes/order match canonicalCSV and upstream source. All tiny/original/control/scale/seven-work/eight-ranking table rows independently verified. Five final MEP programs/five inspected SVGs (shortened legends and marker headroom re-rendered), actual HTML/Markdown computed-cell/prose and source/build/export image parity/reviewed hashes pass. Fresh55/55definitions/15compiled public examples/fourclangdhovers pass. Winkler1990primary paper inspected; Jaro1989publication metadata verified. No .i files reference the extracted legacy header. Legacyfiles retired only after gates; algorithm list corrected to similarity and catalogue refreshed. Evidence: `build/mepml-conversion/jaro-winkler/`.
+
+
+## Verified Jarvis march batch (2026-11-14)
+
+`docs/mepml/geometry/hulls/jarvis_march_analysis.mepml`; actual five-point candidate flow Diagram, original twenty-point/eight-vertex cloud, degenerate and full-range controls, and measured four-corner versus all-extreme parabola work. Dedicated shared exact-sign sorted wrapping kernel preserves legacy signatures, scan order and ordinary hull/count behavior; corrects rounded-distance subnormal collinear failure. Lexicographic same-ray tie selection avoids squared-distance overflow/underflow. Earliest original identities and signed-zero representation survive deduplication. Owned actual Start/Test/Select events and selected preparation/wrapping counts; complete finite validation/point admission and online event admission, million-record defaults/zero off, atomic signed legacy counter addition and byte/capacity exclusions documented. Derives supporting-edge invariant, strict hull closure, h(u-2) exact orientation count and hu events for u>=3, with separate small shortcuts and full O(n log n+uh) sorted-wrapper bound. Shared native graphics avoid replay and preserve equal geometry scales; plot-span limitations separate from finite-coordinate hull domain. Fourteen targeted CTest and directly instrumented ASan/UBSan cases pass, including512 grid subsets and1000 shuffled integer clouds, full-range/subnormal/near-cancellation/identity/cap controls. Independent unbounded rational hull/sign/squared-distance oracle verifies1834 clouds,251230 actual events,231412 orientation tests and300 full-exponent cases. Frozen5001 ordinary inputs preserve hulls/counts and1293757 actual operand triples; subnormal line changes from four vertices to two correct extremes. Fresh46/46 definitions,13 compiled/executed public examples and four clangd hovers pass. Four MEP programs/four Inkscape-inspected SVGs,30 independently checked computed rows, HTML/Markdown computed-cell/prose and source/build/export figure byte parity pass. Shared Graham helper gains its missing standalone stdexcept include. Jarvis1973 publication/first-page reference checked; no dataset forced. Legacy files retired after gates; algorithm-list complexity and navigation corrected. Evidence: `build/mepml-conversion/jarvis/`.
+
+
+## Verified Johnson all-pairs batch (2026-11-14)
+
+`docs/mepml/graph/shortest_paths/johnson_apsp_analysis.mepml`; preserves original three-edge/-1 result, actual potential-relaxation/reweight concept Diagram, five-vertex stale-heap and negative-edge cycle control, disconnected/zero/negative-cycle/parallel/isolate boundaries, and identical path graphs under ascending/reversed edge order. Dedicated shared compiled kernel retains legacy result aggregate/signature and routing compatibility include; owned analysis and actual chronological Potential/Reweight/Seed/Pop/Relax/Restore events capture producing arithmetic without replay. Implicit zero source, input-order in-place potential passes, original adjacency/edge identities, strict lazy-heap insertion and distance/vertex tie order documented. Complete endpoint/finite validation and checked n+m/n*n admission before copies/matrix, online actual-event admission before operations, million-record defaults/zero off, legacy caps off, no partial exposed histories, record-versus-byte/capacity/RAM exclusions. Long-double internal arithmetic with nonfinite/output-overflow/negative-reduced checks corrects a double-saturation missed negative cycle with an isolated third vertex; rounding/platform/no-exact-real-certificate and last-bit changes explicit. All-infinity negative-cycle matrix distinguished from unreachable cells, including diagonal convention. Derives endpoint telescoping/nonnegative feasibility, global-cycle scope and full O(n²+nm+n(m+1)log(m+2)) lazy multigraph bound, retaining matrix/isolate terms and heap-space costs. Path controls independently verify 2(n-1) versus n(n-1) BF checks and n(n-1)/2 Dijkstra checks. Seventeen directly instrumented ASan/UBSan and normal CTest cases pass, including exhaustive256 two-vertex graphs,1500 integer multigraphs,500 potential-generated cycle-safe graphs, guards/ownership/full-range/subnormal/arithmetic regression and graphics. Independent rational Floyd-Warshall plus complete event/heap oracle verifies5416 graphs/423252 actual events/2427 global negative cycles/7267 stale pops/60006 restored distances. Frozen5001 integer/dyadic inputs preserve194749 matrix cells bitwise;1000 decimal DAG controls quantify5491 last-bit changes with maximum1.33227e-15. Fresh61/61 scoped definitions,13 compiled/executed public examples and fourclangdhovers pass. Four final MEP programs/four Inkscape-inspected SVGs,38 independently verified computed rows, both HTML/Markdown computed-cell/prose and source/build/export image byte parity pass. Johnson1977 primary publication metadata and CMU author lecture reweight/telescoping derivations inspected; original publisher PDF inaccessible, no full-paper claim or forced dataset. Legacy mepml/org retired only after gates; catalogue and algorithm list refreshed. Evidence: `build/mepml-conversion/johnson/`.
+
+
+## Verified jump-and-walk batch (2026-11-14)
+
+`docs/mepml/geometry/point_location/jump_and_walk_analysis.mepml`; actual tiny sampled-start/negative-edge Diagram, original sixty seed7 points/four queries with complete entered-face route, exact boundary/subnormal controls and explicit one-step budget stop, plus full32-seed profiles on five controlled grids. Shared compiled exact-sign borrowed locator retains legacy points/tris/across fields, constructor/neighbor/locate call compatibility and xorshift/modulo stream, adds owned analysis/actual samples/step starts/edge-test traces. Complete finite/index/CCW and local incidence validation, checked packed ids/count arithmetic and mesh admission; normalized long-double centroid heuristic avoids raw squared overflow while exact binary64 turns control containment. Boundary, empty and StepLimit outcomes distinguished; legacy exhaustion throws rather than silently reporting outside. Borrowed immutable mesh lifetimes versus owned returned traces explicit; local validation does not certify global nonoverlap/convex coverage/Delaunay. Million complete mesh/online actual-record defaults, zero off, default4T+16/positive override, no partial exposed traces, storage/capacity/byte/RAM exclusions. Corrects false monotone-distance and universal cube-root claims; original actual centroid route increases2.939220->7.024464 once. Canonical Delaunay ordering supplies current face ids, old cached ids not evidence. Fifteen selected CTest and directly instrumented ASan/UBSan cases pass, including grid boundary/seed census,1000 random original-mesh queries, extreme/subnormal/caps/topology/ownership/formatting. Independent rational complete containment/sign/adjacency/RNG/history oracle verifies2682queries/11616samples/10212enteredfaces/21505exacttests/7532crossings/oneStepLimit. Frozen5004ordinaryqueries preserve returned faces and51937actualoperandtriples; subnormal exterior false containment corrected. Fresh74/74definitions,20compiled public examples and fourclangdhovers pass. Four final MEP programs/four inspected native SVGs,31 independently checked computed rows and centroid counterexample, HTML/Markdown computed-cell/prose and identical source/build/export image bytes pass. Primary Mucke/Saias/Zhu1999 pages64-65 and Devillers/Pion/Teillaud2001 straight/stochastic distinctions inspected; no forced dataset. Legacy mepml/org retired after gates. Evidence: `build/mepml-conversion/jump-and-walk/`.
+
+
+## Verified ten-report conversion batch 174–183 (2026-11-14)
+
+- `docs/mepml/graph/search/jump_point_search_analysis.mepml`
+- `docs/mepml/algorithm/search/jump_search_analysis.mepml`
+- `docs/mepml/geometry/registration/kabsch_analysis.mepml`
+- `docs/mepml/algorithm/sequences/kadane_analysis.mepml`
+- `docs/mepml/numerics/summation/kahan_summation_analysis.mepml`
+- `docs/mepml/stats/state_estimation/kalman_filter_analysis.mepml`
+- `docs/mepml/math/number_theory/karatsuba_analysis.mepml`
+- `docs/mepml/graph/cuts/karger_min_cut_analysis.mepml`
+- `docs/mepml/algorithm/networking/karn_analysis.mepml`
+- `docs/mepml/geometry/nearest_neighbors/kdtree_nn_analysis.mepml`
+
+One shared `build/debug/tests` core/test build followed all ten source/API preparations. Passed 131 native CTest cases, 38 directly instrumented ASan/UBSan cases, 388/388 scoped documented definitions, 89 compiled/executed public examples and ten representative clangd hovers. All 41 complete report programs executed, all 41 native figures were visually reviewed through Inkscape, and both raw exports preserve computed cells/prose and identical source/build/export SVG bytes. Independent checks include exhaustive BFS/subarrays/cuts, NumPy SVD/eigensystems and full KF/RTS, Python exact decimal products/Fraction distances and repeated-input errors, plus actual branch/recurrence/contraction histories. Frozen compatibility checks cover 104000 jump searches, 1000 ordinary Kadane/Kahan arrays, 100 decimal products/rigid fits/KD queries, 10000 Karn events and 1024 cut studies; reconstructed original Kalman data/seeds/full family trajectories and frozen KF/RTS match bitwise. Semantic corrections are explicit in each report: turn-preserving corridor jumps (not full JPS), exact integer Kadane selection, widened rounded KD metrics, unbiased rejection-sampled Karger draws, checked Kabsch inputs/scaling, validated Karn transitions and actual rather than invented work evidence. No external datasets forced. All ten legacy mepml/org pairs retired after gates. Completion 183/427, 244 remaining. Receipts and repeatable checks: `build/mepml-conversion/batch-174-183/`. Graphical mep UI interaction was not available; executable report paths and clangd hovers were checked directly.
+
+
+## Verified ten-report conversion batch184–193 (2026-11-14)
+
+- `docs/mepml/stats/clustering/k_medoids_analysis.mepml`
+- `docs/mepml/algorithm/strings/kmp_analysis.mepml`
+- `docs/mepml/math/rewriting/knuth_bendix_analysis.mepml`
+- `docs/mepml/graph/connectivity/kosaraju_analysis.mepml`
+- `docs/mepml/graph/spanning_trees/kruskal_analysis.mepml`
+- `docs/mepml/algorithm/merging/k_way_merge_analysis.mepml`
+- `docs/mepml/random/generators/lagged_fibonacci_analysis.mepml`
+- `docs/mepml/numerics/interpolation/lagrange_interpolation_analysis.mepml`
+- `docs/mepml/algorithm/distributed/lamport_clock_analysis.mepml`
+- `docs/mepml/linalg/krylov/lanczos_iteration_analysis.mepml`
+
+All ten documents/APIs/tests were prepared before one shared `build/debug/tests` core build. Passed141 selected CTest cases,45 directly instrumented ASan/UBSan cases,90 compiled/executed public examples,412/412 scoped file definitions plus11/11 exact changed LaggedFibonacci64 class/member definitions and ten representative clangd hovers. Shared random.hpp/random.cpp backlog is excluded from the completed-file manifest. All40 complete report programs execute, all40 native figures are visually inspected through Inkscape, and both raw exports preserve computed cells/prose and identical source/build/export SVG bytes. Corrected nonoverlapping shortlex diagram spacing, equal-scale medoid legend headroom and compact original SCC layout are reexecuted/reviewed.
+
+Independent202952 numerical/operation records cover101 medoid fits/226 states/4214 proposals,1000 byte searches/37560 comparisons,2047 S3 words/7315 replacements and overlaid critical-fork checks,500 graphs/45812 SCC events,101 Prim-checked forests/238 scans,1000 merges/72016 heap operations,16 seeded lag studies/16000 exact modular transitions/38 parity orbits,100 rational interpolations/2724 factors/546 term sums plus28014 grid values checked by80-digit Decimal barycentric represented-input references,10000 integer clock transitions, and13 NumPy-checked Lanczos/Ritz studies/133 stages/1223 Gram coefficients. Runge direct-vs-high-precision maximum absolute discrepancy1.29e-6 in ill-conditioned high-degree cases scales to about1.03e-15 relative to the absolute weighted-term scale; no certified rounding bound is claimed.
+
+Frozen compatibility preserves1000 integer-line medoid fits plus the original92-point identities/assignments(objective tolerance1e-10),1000 binary KMP/merge studies,2044 reductions on four completion systems,2000 SCC labelings,16000 raw generator words,5000 direct interpolations,10000 clock transitions and100 Lanczos fits. All Lanczos coefficients/full bases are bitwise identical in those ordinary controls. New checked contracts explicitly document random medoid starts/local rather than global/outlier guarantees, actual duplicate KMP comparisons, shortlex rather than strictly decreasing length, honest completion caps and invalid-rule rejection, sorted-run validation/actual tuple calls, parity projections versus full-word periods, finite direct-interpolation limits and unclipped Runge oscillations, atomic signed clock overflow and one-way causality, and full stored reorthogonalization/explicit Ritz residuals/missing start components. Kruskal reuses existing canonical work/trace APIs. No external datasets forced, no affected explicit SWIG header references found. Graphical mep UI verification remains unavailable; executable paths and clangd help were checked directly. All ten legacy mepml/org pairs retired after their gates;193/427 converted,234 remain. Evidence: `build/mepml-conversion/batch-184-193/`.
+
+The additional whole completed-manifest audit at this checkpoint reports27447/27482 definitions, with35 missing private CUDA parameter fields in `src/datamunge/compute/cuda.cpp`. This outside-batch coverage failure is recorded separately; it does not change the423/423 precise report scope or claim that the wider manifest passes. Existing unrelated CUDA work is preserved. Full evidence: `build/mepml-conversion/batch-184-193/completed-coverage.json`.
+
+
+## Verified ten-report conversion batch194–203 (2026-11-15)
+
+- `docs/mepml/numerics/resampling/lanczos_resampling_analysis.mepml`
+- `docs/mepml/geometry/smoothing/laplacian_smoothing_analysis.mepml`
+- `docs/mepml/numerics/pde/lax_wendroff_analysis.mepml`
+- `docs/mepml/algorithm/sequences/lcs_analysis.mepml`
+- `docs/mepml/stats/classification/lda_iris_analysis.mepml`
+- `docs/mepml/algorithm/networking/leaky_bucket_analysis.mepml`
+- `docs/mepml/math/number_theory/lenstra_ecm_analysis.mepml`
+- `docs/mepml/algorithm/strings/levenshtein_analysis.mepml`
+- `docs/mepml/algorithm/coding/levenshtein_coding_analysis.mepml`
+- `docs/mepml/linalg/toeplitz/levinson_analysis.mepml`
+
+All ten documents/APIs/tests were prepared before the first shared core compilation. The single test build tree then passed77 CTest cases and39 directly instrumented ASan/UBSan cases. All106 public examples compiled/executed;479/479 scoped file definitions and ten representative clangd hovers pass. Independent Python integer/Fraction/bitstring and NumPy references verified26044 actual records across all ten topics; frozen ordinary behavior checks pass, including1000 bitwise Lax trajectories,500 bitwise Levinson systems and both complete Iris fits. All41 report programs execute and all41 native figures were rendered/visually reviewed, with real legend/text-layer corrections rerun. HTML/Markdown parsed computed rows/prose and identical source/build/export figure bytes pass. Exact affected SWIG header references are absent; unrelated generated bindings are preserved. Legacy pairs were retired after all gates; this does not claim a fresh full-corpus execution or a clean wider CUDA documentation audit. Receipts: `build/mepml-conversion/batch-194-203/`.
+
+
+## Verified ten-report conversion batch204–213 (2026-11-15)
+
+- `docs/mepml/graph/search/lex_bfs_analysis.mepml`
+- `docs/mepml/algorithm/sorting/library_sort_analysis.mepml`
+- `docs/mepml/ml/clustering/linde_buzo_gray_analysis.mepml`
+- `docs/mepml/random/generators/linear_congruential_analysis.mepml`
+- `docs/mepml/numerics/interpolation/linear_interpolation_analysis.mepml`
+- `docs/mepml/algorithm/sequences/lis_analysis.mepml`
+- `docs/mepml/algorithm/parsing/ll1_analysis.mepml`
+- `docs/mepml/math/lattices/lll_analysis.mepml`
+- `docs/mepml/stats/classification/logitboost_analysis.mepml`
+- `docs/mepml/math/arithmetic/long_division_analysis.mepml`
+
+All ten preparations preceded the shared core build. Verification passed101 CTest cases,34 directly instrumented ASan/UBSan cases (including the modified shared random implementation),103 compiled/executed public examples,515/515 scoped file definitions plus10 exact LinearCongruential64 class definitions and ten representative hovers. Independent Python integer/Fraction, graph/DP and weighted-stump references passed69430 records, including a separately fitted80/20 Iris holdout. Frozen comparisons passed1000 Lex-BFS orders,1000 library sorts,100 LBG codebooks,100 five-round LogitBoost ensembles and200 LLL bases. LBG final stale labels/objectives were corrected; LLL floating completion remains separate from its observed strict reduction flags. All41 report programs and native figures pass execution/visual review. Both exports preserve computed rows/prose and identical image bytes, including escaped parser end markers. No exact affected SWIG header references; unrelated generated bindings preserved. Legacy pairs retired only after gates. Receipts: `build/mepml-conversion/batch-204-213/`. The separately recorded wider CUDA documentation gaps remain outside this scoped claim.
+
+
+## Verified ten-report conversion batch214–223 (2026-11-15)
+
+- `docs/mepml/algorithm/strings/longest_common_substring_analysis.mepml`
+- `docs/mepml/algorithm/search/lsh_analysis.mepml`
+- `docs/mepml/math/number-theory/lucas_primality_analysis.mepml`
+- `docs/mepml/algorithm/checksums/luhn_analysis.mepml`
+- `docs/mepml/compression/dictionary/lz77_analysis.mepml`
+- `docs/mepml/compression/dictionary/lzw_analysis.mepml`
+- `docs/mepml/algorithm/strings/manacher_analysis.mepml`
+- `docs/mepml/graphics/contours/marching_squares_analysis.mepml`
+- `docs/mepml/algorithm/memory/mark_compact_analysis.mepml`
+- `docs/mepml/algorithm/memory/mark_sweep_analysis.mepml`
+
+All ten preparations preceded shared compilation. Gates pass: 95 CTest/30 directly instrumented ASan-UBSan cases/121 executable examples/601 scoped documentation definitions/11 hovers/82729 independent records/frozen comparisons/13 checkout and13 installed standalone headers plus native consumer; four executed programs, reviewed figures and both exports. The independent oracle includes the complete original seeded LSH angle/data/200-query study and actual producing histories. Ordinary frozen results remain compatible; corrected malformed input, sentinel collisions, ownership, unused-edge arithmetic and bounded Lucas exhaustion are documented. Full-directory serialization prevents MEP newest-file figure contamination; source titles and identical export image bytes were checked. No exact affected SWIG header references; unrelated generated bindings preserved. This is a scoped API/header consumer audit, not a claim that every binding package was installed. Wider CUDA documentation gaps remain separately recorded. Receipts: `build/mepml-conversion/batch-214-223/`.
+
+
+## Verified ten-report conversion batch224–233 (2026-11-15)
+
+- `docs/mepml/algorithm/phonetics/match_rating_analysis.mepml`
+- `docs/mepml/algorithm/dynamic-programming/matrix_chain_analysis.mepml`
+- `docs/mepml/algorithm/graphs/max_clique_dyn_analysis.mepml`
+- `docs/mepml/algorithm/phylogenetics/maximum_parsimony_analysis.mepml`
+- `docs/mepml/algorithm/checksums/md5_analysis.mepml`
+- `docs/mepml/graphics/image-processing/median_filter_analysis.mepml`
+- `docs/mepml/algorithm/optimization/memetic_analysis.mepml`
+- `docs/mepml/algorithm/sorting/merge_sort_analysis.mepml`
+- `docs/mepml/algorithm/phonetics/metaphone_analysis.mepml`
+- `docs/mepml/graphics/rasterization/midpoint_circle_analysis.mepml`
+
+All ten preparations preceded shared compilation. Gates pass: 71 CTest/29 directly instrumented ASan-UBSan cases/130 executable examples/598 scoped documentation definitions/10 hovers/224229 independent records/frozen comparisons/12 checkout and12 installed standalone headers plus native consumer; each report has four executed programs/four reviewed figures and both exports (40 programs/40 figures in total). The independent oracle covers captured producing histories and the original seeded median-noise,40-vertex clique-density and16-vertex memetic fixtures. Native valid-input results match frozen full cliques, integer costs/expressions, digests, filters, raw circle emissions, phonetic keys/verdicts and memetic partitions. Checked geometry, malformed tree/graph/state guards and bounded search histories are documented. The legacy ParsimonyTree root0 default remains compatible. Directory serialization preserves figure provenance; corrected graph geometry/series colours and identical exported image bytes were reviewed. No exact affected SWIG header references; unrelated generated bindings preserved. This is a scoped API/header consumer audit, not a claim that every binding package was installed. Wider CUDA documentation gaps remain separately recorded. Receipts: `build/mepml-conversion/batch-224-233/`.
+
+
+## Verified ten-report conversion batch234–243 (2026-11-15)
+
+- `docs/mepml/algorithm/number-theory/miller_rabin_analysis.mepml`
+- `docs/mepml/geometry/bounds/min_bounding_box_analysis.mepml`
+- `docs/mepml/algorithm/constraint-satisfaction/min_conflicts_analysis.mepml`
+- `docs/mepml/geometry/bounds/min_enclosing_circle_analysis.mepml`
+- `docs/mepml/algorithm/graphs/minimum_degree_analysis.mepml`
+- `docs/mepml/algorithm/integration/miser_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/modular_exponentiation_analysis.mepml`
+- `docs/mepml/optimization/multi-objective/moead_analysis.mepml`
+- `docs/mepml/algorithm/interpolation/monotone_cubic_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/montgomery_analysis.mepml`
+
+The ten-report batch passes95 CTest cases,31 directly instrumented ASan/UBSan cases,83 compiled and executed public examples,363/363 scoped documentation definitions and ten representative hovers. Independent Python integer arithmetic, MT19937-64/variation replay, graph sets, analytic interpolation, circle boundary enumeration and actual-sample integration reconstruction agree on915459 captured records. All six original RMS summaries are separately checked using96 native MISER estimates and1600000 independently reproduced plain-comparator points. Frozen valid-input comparisons include the original seeded solver paths and full MOEA/D fronts. Ten checkout headers and ten identically installed development headers compile independently, and an installed-header native consumer links and runs. Each report has four executed complete programs, four reviewed native figures and both HTML/Markdown exports with computed-result and image-byte checks. This is a scoped native API audit, not an installation claim for every language binding. Receipts: `build/mepml-conversion/batch-234-243/`. All ten document/API/test preparations preceded the first shared core build. Valid-input frozen comparisons retain original MT choices, minimum-degree orderings, in-domain monotone results, geometry results within rounding, exact MISER estimates and full MOEA/D fronts. Intentional corrections cover the129-bit Montgomery sum carry, wrong-sign tangent restoration, documented endpoint clamping, invalid budgets and complete input guards. Existing generated geometry helper names remain callable; exact configured SWIG references were absent and generated bindings were preserved. Wider CUDA documentation gaps remain separately recorded.
+
+
+## Verified ten-report conversion batch244–253 (2026-11-15)
+
+- `docs/mepml/algorithm/automata/moore_analysis.mepml`
+- `docs/mepml/algorithm/compression/move_to_front_analysis.mepml`
+- `docs/mepml/algorithm/root-finding/muller_analysis.mepml`
+- `docs/mepml/algorithm/networking/nagle_analysis.mepml`
+- `docs/mepml/algorithm/interpolation/nearest_neighbor_interpolation_analysis.mepml`
+- `docs/mepml/algorithm/graphs/nearest_neighbor_tsp_analysis.mepml`
+- `docs/mepml/algorithm/sequence-alignment/needleman_wunsch_analysis.mepml`
+- `docs/mepml/bayes/evidence/nested_sampling_analysis.mepml`
+- `docs/mepml/algorithm/packing/nesting_analysis.mepml`
+- `docs/mepml/nn/0_foundations/0.6_classical_machine_learning/neural_network_analysis.mepml`
+
+This ten-report batch passes76 CTest cases,22 directly instrumented ASan/UBSan cases,119 compiled and executed public examples,513/513 scoped documentation definitions and ten representative clangd hovers. Independent Python Fraction arithmetic and likelihood/mass reconstruction verify5266 captured records with43990 checks, including the original Gaussian controls. Frozen valid-input comparisons cover DFA quotients, byte recoding, event streams, interpolation, tours, alignments, real-root paths, packing and nested-sampling trajectories. Ten checkout headers and ten byte-identical installed development headers compile independently; an installed-header native consumer links and runs. The batch has42 executed complete programs and42 visually reviewed native figures, with HTML/Markdown result and image-byte checks. These are scoped native checks, not an installation claim for every language binding. Receipts: `build/mepml-conversion/batch-244-253/`. All ten document/API/test preparations preceded shared compilation. Exact packing arithmetic replaces the old rounded/absolute-epsilon admission; nested sampling retains finite-walk limitations while correcting remaining mass, final-point information and normalization at extreme finite log likelihoods. Full global alignment validates reserved gaps and complete integer score geometry. Original valid producer trajectories remain compatible in the frozen scope. Neural fitting uses explicit dm::nn optimizer loops, original seeded fixtures/splits and training-only tensor statistics. Generated wrappers and unrelated README/binding work remain unchanged. Wider CUDA documentation gaps remain separately recorded.
+
+
+## Verified ten-report conversion batch254–263 (2026-11-15)
+
+- `docs/mepml/algorithm/interpolation/neville_analysis.mepml`
+- `docs/mepml/geometry/normals/newell_normal_analysis.mepml`
+- `docs/mepml/algorithm/arithmetic/newton_division_analysis.mepml`
+- `docs/mepml/algorithm/root-finding/newton_raphson_analysis.mepml`
+- `docs/mepml/algorithm/arithmetic/newton_raphson_division_analysis.mepml`
+- `docs/mepml/algorithm/networking/nonblocking_switch_analysis.mepml`
+- `docs/mepml/algorithm/arithmetic/non_restoring_division_analysis.mepml`
+- `docs/mepml/optimization/multi-objective/nsga2_analysis.mepml`
+- `docs/mepml/algorithm/arithmetic/nth_root_analysis.mepml`
+- `docs/mepml/algorithm/phonetics/nysiis_analysis.mepml`
+
+This ten-report batch passes75 CTest cases,22 directly instrumented ASan/UBSan cases,122 compiled and executed public examples,538/538 scoped documentation definitions and ten representative clangd hovers. Independent Python arbitrary-precision arithmetic verifies69365 captured division records with656460 checks; native independent polynomial, geometry, finite-range, graph, ranking and callback checks cover the remaining producers. Frozen valid-input comparisons preserve Neville recurrences, Newton result/callback paths, complete byte encodings, switch routes and NSGA-II complete objective-call sequences/final fronts. Ten checkout headers and ten byte-identical installed development headers compile independently; an installed-header native consumer links and runs. All40 complete programs execute, and40 native figures have been visually reviewed; HTML/Markdown exports preserve computed rows/prose and identical image bytes. Checks are scoped native checks, not an installation claim for every language binding. Receipts: `build/mepml-conversion/batch-254-263/`. All ten preparations preceded shared compilation. Checked same-producer histories cover interpolation, translated vector areas, Newton arithmetic/root finding, exact integer division, restricted switch routing, NSGA-II and native byte NYSIIS. Subnormal-power nth-root regression was found by the exponent sweep and fixed through wider arithmetic, with ASan/UBSan coverage. Native source-list paths are canonical and complete. Generated wrappers and unrelated README/binding work remain unchanged. Wider CUDA documentation gaps remain separately recorded.
+
+
+## Verified ten-report conversion batch264–273 (2026-11-15)
+
+- `docs/mepml/algorithm/sorting/odd_even_sort_analysis.mepml`
+- `docs/mepml/algorithm/optimal-stopping/odds_algorithm_analysis.mepml`
+- `docs/mepml/numerics/differential-equations/ode_solver_analysis.mepml`
+- `docs/mepml/ml/classification/one_r_analysis.mepml`
+- `docs/mepml/algorithm/streaming/online_variance_analysis.mepml`
+- `docs/mepml/ml/clustering/optics_analysis.mepml`
+- `docs/mepml/graphics/halftoning/ordered_dither_analysis.mepml`
+- `docs/mepml/algorithm/coding/package_merge_analysis.mepml`
+- `docs/mepml/algorithm/parsing/packrat_analysis.mepml`
+- `docs/mepml/graph/link-analysis/page_rank_analysis.mepml`
+
+This ten-report batch passes 50 CTest cases, 25 directly instrumented ASan/UBSan cases, 174 compiled and executed public examples, 707/707 scoped documentation definitions and ten representative clangd hovers. Independent Python checks verify 5662 records with 27916 checks: optimal prefix-code costs, train-only Titanic category counts and held-out confusion, and all 5001 actual original Lorenz RK4 steps. Frozen valid-input comparisons cover all ten producers, with intentional guard, ownership, arithmetic and endpoint corrections stated separately. Twelve checkout headers and twelve byte-identical installed development headers compile independently; an installed-header native consumer links and runs. All 40 complete programs execute, and 40 native figures have been visually reviewed. HTML/Markdown exports preserve computed results and image bytes. These are scoped native checks. Receipts: `build/mepml-conversion/batch-264-273/`. All ten preparations preceded shared compilation. Actual canonical histories replace report-side implementations. Independent prefix-tree optimization, held-out categorical prediction and complete Lorenz-step checks supplement native regression tests.
+
+
+## Verified ten-report conversion batch274–283 (2026-11-15)
+
+- `docs/mepml/graphics/visibility/painters_algorithm_analysis.mepml`
+- `docs/mepml/algorithm/sorting/pancake_sort_analysis.mepml`
+- `docs/mepml/algorithm/sorting/patience_sort_analysis.mepml`
+- `docs/mepml/algorithm/cryptography/pbkdf2_analysis.mepml`
+- `docs/mepml/random/generators/pcg32.mepml`
+- `docs/mepml/ml/image-processing/pcnn_analysis.mepml`
+- `docs/mepml/algorithm/hashing/pearson_analysis.mepml`
+- `docs/mepml/ml/classification/perceptron_analysis.mepml`
+- `docs/mepml/stats/inference/permutation_analysis.mepml`
+- `docs/mepml/algorithm/boolean-logic/petrick_analysis.mepml`
+
+This ten-report batch passes 89 CTest cases, 20 ASan/UBSan cases with all ten producing families directly instrumented, 62 compiled and executed public examples, 200/200 scoped file definitions plus 15/15 exact PCG class definitions, and ten representative clangd hovers. Independent Python hashlib/HMAC and arbitrary-integer PCG checks verify 75189 records with 123243 checks. Native independent per-pixel visibility, exhaustive prefix reversals, quadratic LIS, integer perceptron updates, sampled-label tail counts and exhaustive Boolean-cover checks supplement frozen valid-input comparisons for all ten producers. Ten checkout and ten byte-identical installed development headers compile independently; an installed-header native consumer links and runs. All 40 complete programs execute; all 40 native figures have been visually reviewed. HTML/Markdown exports preserve computed result rows and identical image bytes. These are scoped native checks. Receipts: `build/mepml-conversion/batch-274-283/`. All ten preparations preceded shared compilation. Actual producer histories cover visibility, prefix sorting, patience piles, key derivation, PCG, synchronous pulse dynamics, byte hashing, additive classification, Monte Carlo relabeling and exact Boolean covering. PCG coverage is an exact class scope in the random umbrella; unrelated generators are excluded from that claim.
+
+
+## Verified ten-report conversion batch284–293 (2026-11-15)
+
+- `docs/mepml/algorithm/quantum/phase_estimation_analysis.mepml`
+- `docs/mepml/algorithm/sorting/pigeonhole_sort_analysis.mepml`
+- `docs/mepml/graphics/plotting/plot.mepml`
+- `docs/mepml/algorithm/number-theory/pohlig_hellman_analysis.mepml`
+- `docs/mepml/geometry/polygons/point_in_polygon_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/pollard_kangaroo_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/pollard_p_minus_1_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/pollard_rho_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/pollard_rho_log_analysis.mepml`
+- `docs/mepml/geometry/polygons/polygon_triangulation_analysis.mepml`
+
+83 CTest cases;18 directly instrumented ASan/UBSan cases;84 executable public examples;391/391 scoped definitions;10 hovers;13318 independent records/28306 checks;frozen compatibility for nine changed algorithm producers;8 checkout/installed standalone headers and linked consumer;53 executed programs/53 reviewed figures, including16 languages, with both exports All ten preparations preceded shared compilation. Native producer histories, full-width number theory and exact polygon decisions are checked independently. Sixteen original language plotting programs execute against their canonical installed binding packages.
+
+
+## Verified ten-report conversion batch294–303 (2026-11-15)
+
+- `docs/mepml/algorithm/algebra/polynomial_long_division_analysis.mepml`
+- `docs/mepml/algorithm/sorting/postman_sort_analysis.mepml`
+- `docs/mepml/algorithm/linear-algebra/power_iteration_analysis.mepml`
+- `docs/mepml/algorithm/automata/powerset_construction_analysis.mepml`
+- `docs/mepml/algorithm/parsing/pratt_analysis.mepml`
+- `docs/mepml/algorithm/graphs/prim_analysis.mepml`
+- `docs/mepml/algorithm/graphs/prufer_analysis.mepml`
+- `docs/mepml/algorithm/graphs/push_relabel_analysis.mepml`
+- `docs/mepml/algorithm/quantum/qft_analysis.mepml`
+- `docs/mepml/machine-learning/reinforcement-learning/q_learning_analysis.mepml`
+
+106 algorithm CTest cases plus90 graphics cases;21 directly instrumented algorithm ASan/UBSan cases and renderer SVG/PNG sanitizer probe;119 executable public examples;587/587 scoped definitions plus9 changed legend definitions;10 hovers;56287 independent records/278204 checks;frozen compatibility for all ten algorithm families;13 checkout/installed standalone headers and linked consumer;40 executed programs/40 reviewed figures with both exports. All ten preparations preceded shared compilation. Changed legend helpers have9/9 exact scoped definitions; plot.cpp has unrelated pre-existing gaps and is not added to the full-file coverage manifest. Actual producer histories and independent replay replace report algorithms.
+
+
+## Verified ten-report conversion batch304–313 (2026-11-15)
+
+- `docs/mepml/algorithm/linear-algebra/qr_algorithm_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/quadratic_sieve_analysis.mepml`
+- `docs/mepml/geometry/convex-hulls/quickhull_analysis.mepml`
+- `docs/mepml/algorithm/selection/quickselect_analysis.mepml`
+- `docs/mepml/algorithm/sorting/quicksort_analysis.mepml`
+- `docs/mepml/algorithm/boolean-algebra/quine_mccluskey_analysis.mepml`
+- `docs/mepml/algorithm/string-matching/rabin_karp_analysis.mepml`
+- `docs/mepml/algorithm/sorting/radix_sort_analysis.mepml`
+- `docs/mepml/algorithm/geometry/ramer_douglas_peucker_analysis.mepml`
+- `docs/mepml/random/sampling/random_generation.mepml`
+
+108 scoped native cases (22 new plus86 existing; one unchanged Rayleigh failure baseline-confirmed and carried to batch314–323);22 directly instrumented ASan/UBSan cases;91 executable public examples;367/367 full-file definitions plus17/17 common-sampler/engine definitions;10 hovers;32478 independent records/106910 checks;frozen compatibility across all ten families;12 checkout/installed standalone headers and linked consumer;40 executed programs and40 inspected figures with both exports. All ten preparations preceded shared compilation. Common sampling classes have17/17 exact scoped definitions; unrelated random-header/implementation backlog is not claimed complete or added to the full-file coverage manifest. Actual producer histories and independent mathematical checks replace report algorithms. A baseline-confirmed untouched Rayleigh failure is carried to the next batch.
+
+
+## Verified ten-report conversion batch314–323 (2026-11-15)
+
+- `docs/mepml/algorithm/optimization/random_restart_hill_climbing_analysis.mepml`
+- `docs/mepml/algorithm/compression/range_coding_analysis.mepml`
+- `docs/mepml/algorithm/robust-estimation/ransac_analysis.mepml`
+- `docs/mepml/algorithm/scheduling/rate_monotonic_analysis.mepml`
+- `docs/mepml/algorithm/linear-algebra/rayleigh_quotient_iteration_analysis.mepml`
+- `docs/mepml/nn/kernel-methods/rbf_network_analysis.mepml`
+- `docs/mepml/algorithm/cryptography/rc4_analysis.mepml`
+- `docs/mepml/algorithm/parsing/recursive_descent_analysis.mepml`
+- `docs/mepml/algorithm/memory-management/reference_counting_analysis.mepml`
+- `docs/mepml/algorithm/integer-arithmetic/restoring_division_analysis.mepml`
+
+214 scoped native cases;15 directly instrumented ASan/UBSan cases;127 executable public examples;567/567 full-file definitions;10 hovers;1340 independent records/58514 checks;frozen compatibility across six changed legacy families;independent NumPy tensor-training comparisons with recorded tolerances;12 checkout/installed standalone headers and linked consumer;41 executed programs and41 inspected figures with both exports. All ten preparations preceded shared compilation. The full-file manifest contains only the22 verified scopes. Neural model computation uses native tensors with visible optimizer updates; independent NumPy training has explicitly recorded numerical tolerances. The previous Rayleigh regression is resolved without an exclusion.
+
+
+## Verified ten-report conversion batch314–323 (2026-11-15)
+
+- `docs/mepml/algorithm/minimum-spanning-trees/reverse_delete_analysis.mepml`
+- `docs/mepml/algorithm/compression/rice_coding_analysis.mepml`
+- `docs/mepml/algorithm/root-finding/ridders_analysis.mepml`
+- `docs/mepml/geometry/diameter/rotating_calipers_analysis.mepml`
+- `docs/mepml/algorithm/evolutionary-selection/roulette_wheel_analysis.mepml`
+- `docs/mepml/algorithm/numerical-arithmetic/rounding_functions_analysis.mepml`
+- `docs/mepml/algorithm/cpu-scheduling/round_robin_analysis.mepml`
+- `docs/mepml/algorithm/ordinary-differential-equations/runge_kutta4_analysis.mepml`
+- `docs/mepml/algorithm/compression/run_length_encoding_analysis.mepml`
+- `docs/mepml/algorithm/sequence-scoring/ruzzo_tompa_analysis.mepml`
+
+133 scoped native cases;20 directly instrumented ASan/UBSan cases;85 executable public examples;343/343 full-file definitions;10 hovers;1263 independent records/220175 checks;frozen compatibility across all ten families;11 checkout/installed standalone headers and linked consumer;40 executed programs and40 inspected figures with both exports. All ten preparations preceded shared compilation. The full-file manifest contains only the21 verified scopes. Original inputs and observed work are retained, with independent exhaustive forests, exact rational rounding, strict-interval enumeration and actual-stage numerical checks. Reused legacy headers retain unrelated functions without claiming their documentation backlog complete.
+
+
+## Verified ten-report conversion batch334–343 (2026-11-15)
+
+- `docs/mepml/ml/sparse-bayesian-regression/rvm_analysis.mepml`
+- `docs/mepml/algorithm/cryptography/salsa20_analysis.mepml`
+- `docs/mepml/algorithm/sorting/samplesort_analysis.mepml`
+- `docs/mepml/algorithm/reinforcement-learning/sarsa_analysis.mepml`
+- `docs/mepml/geometry/rasterization/scanline_fill_analysis.mepml`
+- `docs/mepml/algorithm/combinatorics/schensted_analysis.mepml`
+- `docs/mepml/algorithm/integer-arithmetic/schonhage_strassen_analysis.mepml`
+- `docs/mepml/algorithm/group-theory/schreier_sims_analysis.mepml`
+- `docs/mepml/algorithm/sequences/scs_analysis.mepml`
+- `docs/mepml/algorithm/root-finding/secant_analysis.mepml`
+
+89 scoped native cases;21 directly instrumented ASan/UBSan cases;95 executable public examples;469/469 full-file definitions;10 hovers;3677 independent records/28988 checks;frozen comparisons across all ten families with intentional RVM refit recorded;10 checkout/installed standalone headers and linked consumer;40 executed programs and40 inspected figures with both exports. All ten preparations preceded shared compilation. The completed manifest adds only the20 verified scopes. Independent rational rasterization, integer convolution, finite group closure, sequence DP, ARX rounds, sampled update equations and NumPy matched-posterior equations verify actual outputs. The RVM refit difference is intentional and recorded; finite evidence-update nonconvergence remains explicit. Reused compatibility headers retain unrelated legacy APIs.
+
+
+## Verified ten-report conversion batch344–353 (2026-11-15)
+
+- `docs/mepml/geometry/intersections/segment_intersection_analysis.mepml`
+- `docs/mepml/algorithm/sorting/selection_sort_analysis.mepml`
+- `docs/mepml/nn/0_foundations/0.6_classical_machine_learning/self_organizing_map_analysis.mepml`
+- `docs/mepml/algorithm/random-generation/sfc64.mepml`
+- `docs/mepml/algorithm/hashing/sha1_analysis.mepml`
+- `docs/mepml/algorithm/hashing/sha256_analysis.mepml`
+- `docs/mepml/algorithm/cryptography/shamir_secret_sharing_analysis.mepml`
+- `docs/mepml/geometry/intersections/shamos_hoey_analysis.mepml`
+- `docs/mepml/algorithm/compression/shannon_fano_analysis.mepml`
+- `docs/mepml/algorithm/compression/shannon_fano_elias_analysis.mepml`
+
+126 scoped native cases;21 directly instrumented ASan/UBSan cases;124 executable public examples;492/492 full-file definitions and10 exact Sfc64 members;10 hovers;1588 independent records/14377 checks;frozen comparisons across all ten families with endpoint/full-width field corrections recorded;17 checkout/installed standalone headers and linked/umbrella consumers;40 executed programs and40 inspected figures with both exports. All ten preparations preceded shared compilation. The completed manifest adds only the28 verified scopes. Independent exact geometry, hashlib/hmac, finite field arithmetic, prefix coding, integer SFC replay and NumPy SOM updates verify actual outputs. The broad random files are audited only for the ten Sfc64 definitions; they are not full-file completed scopes.
+
+
+## Verified ten-report conversion batch354–363 (2026-11-15)
+
+- `docs/mepml/algorithm/sorting/shell_sort_analysis.mepml`
+- `docs/mepml/geometry/polygons/shoelace_analysis.mepml`
+- `docs/mepml/algorithm/scheduling/shortest_job_next_analysis.mepml`
+- `docs/mepml/algorithm/scheduling/shortest_remaining_time_analysis.mepml`
+- `docs/mepml/algorithm/parsing/shunting_yard_analysis.mepml`
+- `docs/mepml/algorithm/number-theory/sieve_of_eratosthenes_analysis.mepml`
+- `docs/mepml/algorithm/bioinformatics/signed_reversals_analysis.mepml`
+- `docs/mepml/algorithm/quantum/simon_analysis.mepml`
+- `docs/mepml/optimisation/linear-programming/simplex_analysis.mepml`
+- `docs/mepml/algorithm/hashing/siphash_analysis.mepml`
+
+48 scoped native cases;20 directly instrumented ASan/UBSan cases;77 executable public examples;252/252 full-file definitions across21 scopes;10 hovers;1843 independent records/11127 checks;frozen comparisons across all ten families with translation-cancellation and strict-parser corrections recorded;11 checkout/installed standalone headers and linked ten-family consumer;40 executed programs and40 inspected figures with both exports. All ten preparations preceded shared compilation. The completed manifest adds only the21 verified scopes. Independent exact rational geometry/LP vertices, discrete tick scheduling, trial division, full signed-permutation graph, binary parity and integer SipHash round replay verify actual outputs. Frozen comparisons retain valid outputs; translation-cancellation and strict-parser corrections are explicit. No quantum runtime or floating-point LP certificate is claimed.
+
+
+## Verified ten-report conversion batch364–373 (2026-11-15)
+
+- `docs/mepml/algorithm/interpolation/slerp_analysis.mepml`
+- `docs/mepml/algorithm/parsing/slr_analysis.mepml`
+- `docs/mepml/algorithm/sequence-alignment/smith_waterman_analysis.mepml`
+- `docs/mepml/algorithm/image-processing/sobel_analysis.mepml`
+- `docs/mepml/algorithm/linear-algebra/sor_analysis.mepml`
+- `docs/mepml/algorithm/phonetics/soundex_analysis.mepml`
+- `docs/mepml/optimisation/multi-objective/spea2_analysis.mepml`
+- `docs/mepml/algorithm/graph-layout/spectral_layout_analysis.mepml`
+- `docs/mepml/algorithm/arithmetic/spigot_analysis.mepml`
+- `docs/mepml/algorithm/arithmetic/sqrt_digits_analysis.mepml`
+
+67 scoped native cases and9 formatter cases;20 directly instrumented ASan/UBSan cases;87 executable public examples;402/402 full-file definitions across29 scopes;10 hovers;10569 independent records/108541 checks;frozen comparisons across all ten families with density-rank, long-prefix arithmetic, initial residual and complete-input corrections recorded;15 checkout/installed standalone headers and linked ten-family consumer;40 executed programs and40 inspected figures with both exports. All ten preparations preceded shared compilation. The completed manifest adds only the29 verified scopes. Independent NumPy rotation/triangular-split/Sobel/eigen equations, recursive grammar recognition, integer alignment, regex Soundex, broadcast dominance/archive selection, Decimal.exp and Python integer square roots verify actual outputs. Frozen comparisons retain valid outputs and explicitly record density-rank, full-width-prefix, initial-residual and embedded-end-marker corrections. Broad linear-solver files retain unrelated legacy definitions; the simplex formatter change has its focused nine-case check.
+
+
+## Verified ten-report conversion batch374–383 (2026-11-15)
+
+- `docs/mepml/numeric/arithmetic/srt_division_analysis.mepml`
+- `docs/mepml/algorithm/game_search/sss_star_analysis.mepml`
+- `docs/mepml/algorithm/combinatorics/steinhaus_johnson_trotter_analysis.mepml`
+- `docs/mepml/optim/selection/stochastic_universal_sampling_analysis.mepml`
+- `docs/mepml/numeric/linear_solvers/stone_sip_analysis.mepml`
+- `docs/mepml/algorithm/sorting/stooge_sort_analysis.mepml`
+- `docs/mepml/algorithm/sorting/strand_sort_analysis.mepml`
+- `docs/mepml/numeric/linear_algebra/strassen_analysis.mepml`
+- `docs/mepml/ml/classification/structured_svm_analysis.mepml`
+- `docs/mepml/graph/matching/subgraph_isomorphism_analysis.mepml`
+
+58 scoped native cases;20 directly instrumented ASan/UBSan cases;90 executable public examples;416/416 definitions across25 full scopes;10 hovers;1968 independent records/417332 checks;frozen comparisons across all ten families with SIP returned-iterate correction recorded;14 checkout/installed standalone headers and linked ten-family consumer;40 executed programs and40 inspected figures with both exports. Only the25 verified scopes enter the complete manifest. Exact Fraction arithmetic, permutation sets, brute minimax/injections, NumPy matrix multiplication/linear solves and sampled subgradient/objective checks independently validate native outputs. The SIP returned-iterate counter/residual correction is frozen-baseline documented; SSS preflight leaf reads and unresolved probes are explicit.
+
+
+## Verified ten-report conversion batch384–393 (2026-11-15)
+
+- `docs/mepml/algorithm/combinatorics/subset_sum_analysis.mepml`
+- `docs/mepml/numeric/summation/summed_area_table_analysis.mepml`
+- `docs/mepml/numeric/number_theory/sundaram_sieve_analysis.mepml`
+- `docs/mepml/geometry/clipping/sutherland_hodgman_analysis.mepml`
+- `docs/mepml/numeric/sparse_linear_algebra/symbolic_cholesky_analysis.mepml`
+- `docs/mepml/graph/trees/tarjan_lca_analysis.mepml`
+- `docs/mepml/graph/connectivity/tarjan_scc_analysis.mepml`
+- `docs/mepml/ml/reinforcement_learning/td_learning_analysis.mepml`
+- `docs/mepml/cryptography/block_ciphers/tea_analysis.mepml`
+- `docs/mepml/numeric/optimization/ternary_search_analysis.mepml`
+
+72 scoped native cases;20 directly instrumented ASan/UBSan cases;82 executable public examples;327/327 definitions across23 full scopes;10 hovers;3797 independent records/1769203 checks;frozen valid-input comparisons across all ten families with cyclic-tree validation correction recorded;12 checkout/installed standalone headers and linked ten-family consumer;40 executed programs and40 inspected figures with both exports. Only23 verified full scopes enter the complete manifest. Actual exact half sums, integral-image cells/queries, odd-composite strikes, half-plane emissions, structural fill, union-find answers, SCC low links, TD transitions, TEA cycles and ternary brackets replace report replay. Full-width arithmetic, cyclic-tree validation, floating termination and episode truncation are explicit; original substantive fixtures are retained. Independent Python integer/Fraction and NumPy dense reference systems verify actual producer results. Broad primality and tabular-RL aggregations retain unrelated legacy documentation and are not newly marked complete.
+
+
+## Verified ten-report conversion batch394–403 (2026-11-15)
+
+- `docs/mepml/numeric/linear_solvers/thomas_algorithm_analysis.mepml`
+- `docs/mepml/algorithm/sorting/timsort_analysis.mepml`
+- `docs/mepml/algebra/groups/todd_coxeter_analysis.mepml`
+- `docs/mepml/systems/rate_limiting/token_bucket_analysis.mepml`
+- `docs/mepml/numeric/number_theory/tonelli_shanks_analysis.mepml`
+- `docs/mepml/numeric/arithmetic/toom3_analysis.mepml`
+- `docs/mepml/graph/orderings/topological_sort_analysis.mepml`
+- `docs/mepml/optim/selection/tournament_selection_analysis.mepml`
+- `docs/mepml/graph/reachability/transitive_closure_analysis.mepml`
+- `docs/mepml/numeric/ode/trapezoidal_ode_analysis.mepml`
+
+70 scoped native cases;20 directly instrumented ASan/UBSan cases;75 executable public examples;387/387 definitions across25 full scopes;10 hovers;9766 independent records/134784 checks;frozen valid-input comparisons across all ten families;13 checkout/installed standalone headers and linked ten-family consumer;40 executed programs and40 inspected figures with both exports. Only25 verified full scopes enter the complete manifest. Actual Thomas sweeps, stable natural-run merges, coset scans/coincidences, caller-time bucket refills, modular refinements, checked Toom coefficients, FIFO graph emissions, seeded tournament draws, Warshall updates and converged implicit steps replace report replay. Original substantive fixtures remain; arithmetic, validation, resource caps and unresolved statuses are explicit. Independent Python integer/Fraction and NumPy dense reference systems verify actual producer results. Broad primality and tabular-RL aggregations retain unrelated legacy documentation and are not newly marked complete.
+
+
+## Verified ten-report conversion batch404–413 (2026-11-15)
+
+- `docs/mepml/algorithm/sorting/tree_sort_analysis.mepml`
+- `docs/mepml/numeric/number_theory/trial_division_analysis.mepml`
+- `docs/mepml/numeric/interpolation/tricubic_interpolation_analysis.mepml`
+- `docs/mepml/text/search/trigram_search_analysis.mepml`
+- `docs/mepml/systems/networking/truncated_backoff_analysis.mepml`
+- `docs/mepml/text/coding/truncated_binary_analysis.mepml`
+- `docs/mepml/graph/ranking/trust_rank_analysis.mepml`
+- `docs/mepml/ml/dimensionality_reduction/tsne_iris_analysis.mepml`
+- `docs/mepml/text/indexing/ukkonen_analysis.mepml`
+- `docs/mepml/ml/dimensionality_reduction/umap_iris_analysis.mepml`
+
+85 scoped native cases;21 directly instrumented ASan/UBSan cases;36 executable public examples;63/63 definitions across13 full scopes plus8 changed mixed-scope contracts;10 hovers;14393 independent records/67914 checks;frozen valid-input comparisons across all ten families including bit-identical default Iris fits;11 checkout/installed standalone headers and linked ten-family consumer;40 executed programs and40 inspected figures with both exports. Only13 verified full scopes enter the complete manifest. Actual BST insertions, division tests,64-sample interpolation, padded-byte Jaccard, validated backoff/coding, Markov iterates, Ukkonen construction and native embedding affinities replace report replay. Both Iris fits preserve original default coordinates bit for bit. Tied-neighbor calibration failure is explicit; native plot ticks now require representable progress and suffix-tree layout keeps leaves contiguous. Independent Python integer/Fraction and NumPy dense reference systems verify actual producer results. Broad primality and tabular-RL aggregations retain unrelated legacy documentation and are not newly marked complete.
+
+
+## Verified ten-report conversion batch414–423 (2026-11-15)
+
+- `docs/mepml/text/coding/unary_coding_analysis.mepml`
+- `docs/mepml/algorithm/search/uniform_binary_search_analysis.mepml`
+- `docs/mepml/graph/paths/uniform_cost_search_analysis.mepml`
+- `docs/mepml/algorithm/merging/union_merge_analysis.mepml`
+- `docs/mepml/bio/clustering/upgma_analysis.mepml`
+- `docs/mepml/systems/distributed/vector_clock_analysis.mepml`
+- `docs/mepml/bio/assembly/velvet_analysis.mepml`
+- `docs/mepml/text/check_digits/verhoeff_analysis.mepml`
+- `docs/mepml/numeric/ode/verlet_analysis.mepml`
+- `docs/mepml/geometry/geodesy/vincenty_analysis.mepml`
+
+84 scoped native cases;20 directly instrumented ASan/UBSan cases;45 executable public examples;127/127 definitions across12 full scopes;10 hovers;2400 independent records/9344 checks;9 frozen valid-input families plus the unchanged shared merge producer;11 checkout/installed standalone headers and linked ten-family consumer;40 executed programs and40 inspected figures with both exports. Only12 verified full scopes enter the complete manifest. Actual complete unary words, fixed-schedule probes, Dijkstra settlements, heap duplicate discards, weighted cluster joins, vector timestamps, complete Euler trails, D5 table transitions, Verlet drift/kicks and Vincenty angular updates replace report replay. Unsafe input paths and bounded arithmetic are explicit; the legacy uneven-coverage assembly test now correctly requires rejection. Independent Python integer/Fraction and NumPy dense reference systems verify actual producer results. Broad primality and tabular-RL aggregations retain unrelated legacy documentation and are not newly marked complete.
+
+
+## Verified final report conversion batch424–427 (2026-11-15)
+
+- `docs/mepml/probability/hidden_markov/viterbi_analysis.mepml`
+- `docs/mepml/geometry/tessellation/voronoi_analysis.mepml`
+- `docs/mepml/stats/estimators/v_statistic_analysis.mepml`
+- `docs/mepml/physics/monte_carlo/wang_landau_analysis.mepml`
+
+46 scoped native cases;8 directly instrumented ASan/UBSan cases;42 executable public examples;168/168 definitions across10 full scopes;4 hovers;6866 independent records/32327 checks;four frozen surfaces with original seeded fixtures retained;5 checkout/installed standalone headers and linked four-family consumer;16 executed programs and16 inspected figures with both exports. Ten verified full scopes enter or refresh the complete manifest. The final batch exposes actual Viterbi maxima/backpointers and impossibility, true viewport-clipped nearest-site cells, actual repeated-index V-statistic tuples with explicit automatic/Monte Carlo policy, and bounded Wang-Landau proposals/flatness checks. Original fixtures are retained; legacy Voronoi dual semantics remain available and default valid-input numerical outputs match the frozen producers. The427-source conversion backlog is complete; unrelated historical symbol-documentation gaps remain outside this conversion scope.
+
+- [x] NN recurrent continuation batch138–147: `nn/recurrent_components.hpp`
+  and `nn/recurrent_data.hpp`;76/76 documented definitions,26 compiled examples,
+  seven clangd hovers,17 native/sanitizer cases and installed-header consumer.
+  Explicit masks, gate/state paths, caller-owned gradient policy and deterministic
+  synthetic fixtures; verification in `build/nn-report-conversion/batch-138-147/`.
+
+- [x] NN recurrent/memory continuation batch148–157: `nn/recurrent_extensions.hpp`
+  and `nn/memory_networks.hpp`;76/76 documented definitions,22 compiled public
+  examples, seven clangd hovers, twelve native/sanitizer cases and an installed
+  consumer. Explicit dropout/time/BPTT controls and differentiable memory paths;
+  receipts in `build/nn-report-conversion/batch-148-157/`.

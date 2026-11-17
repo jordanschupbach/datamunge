@@ -636,7 +636,7 @@ double top_k_accuracy(const Tensor& scores, const Tensor& labels, std::int64_t k
 
 %include "datamunge/nn/mt19937.hpp"
 
-// Shared example components (examples/nn/common), so the R and Python examples
+// Shared example components (prebindings/nn/include/common), so the R and Python examples
 // run the same main loops over the same C++ pieces as the C++ examples.
 // Public canonical configuration/forward API must precede legacy component imports.
 %include "datamunge/nn/wavenet_stack_models.hpp"

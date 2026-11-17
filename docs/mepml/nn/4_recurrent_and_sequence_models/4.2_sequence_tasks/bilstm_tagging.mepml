@@ -1,0 +1,898 @@
+//? Title: Bidirectional LSTM Tagging: Original-Time Alignment and Separate POS/NER Heads
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The exact upstream preparation protocol and the complete editable native C++ experiment preserve original source rows, seeds, fitting budgets and validation. Canonical components expose mathematical graphs; every objective, optimizer step, fitting/generation loop and deployment comparison remains visible.
+)
+\toc
+
+> Follow the actual data and model
+
+Complete CoNLL sentence -> forward / backward LSTM8 -> POS45 / NER9.
+
+```{cpp, results="markdown", file="figures/bilstm_tagging_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("source",{-18,0},"Pinned original input protocol",s).node("graph",{0,0},"Complete CoNLL sentence -> forward / backward LSTM8 -> POS45 / NER9",s).node("report",{18,0},"Explicit objectives / updates / generation",s).edge("source","graph").edge("graph","report").save_svg("build/bilstm_tagging_method.svg");}
+```
+// result_begin: markdown
+\image(figures/bilstm_tagging_method.svg)
+// result_end
+
+> Prepare the original inputs through datamunge
+
+The native adapter follows the recovered upstream preparation script, including source checksums, source row identities, fitting-only vocabulary/palette selection and held-out boundaries. Runtime preparation calls no Python or another checkout. Native byte-valued image arrays are stored as Int32 with identical numeric values. Optional external TensorFlow recordings are separate; their absence does not establish external parity.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto path=dm::datasets::prepare_example_data("bilstm_tagging");std::print("Prepared original bilstm_tagging protocol at {}\n",path);}
+```
+// result_begin: markdown
+Prepared original bilstm_tagging protocol at /home/jordan/.cache/datamunge/datasets/bilstm_tagging
+// result_end
+
+> A hand-checkable likelihood reference
+
+A uniform categorical distribution over9 classes gives negative log-likelihood log(9). For language/image models this is nats per predicted token; for a sequence tagger it is a single independent-token reference, not its CRF sequence likelihood.
+
+```{cpp, results="markdown", file="figures/bilstm_tagging_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto logp=dm::nn::log_softmax(dm::nn::zeros({1,9}),1);double computed=-logp.to_vector<double>()[0];std::print("| classes | native uniform NLL | analytic NLL |\n|---:|---:|---:|\n| 9 | {:.9f} | {:.9f} |\n",computed,std::log(9.));dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,std::log(9.)},"uniform NLL",{37,99,235}).ylim(0,std::log(9.)*1.2).title("bilstm tagging uniform reference").size(1000,550).save_svg("build/bilstm_tagging_worked.svg");}
+```
+// result_begin: markdown
+| classes | native uniform NLL | analytic NLL |
+|---:|---:|---:|
+| 9 | 2.197224617 | 2.197224577 |
+\image(figures/bilstm_tagging_worked.svg)
+// result_end
+
+> Inspect the native graph
+
+The preview groups actual native graph endpoints into named stages, using independent source-sized parameters. The grouped recurrent or attention block retains the full source context. Cache/filter/generation loops and CRF decoding remain explicit in the program below.
+
+```{cpp, results="markdown", file="figures/bilstm_tagging_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_directories("build");n::ParameterStore p(0);n::Module network([&](const n::Tensor&x){auto path=m::bilstm_tagging::BiLstmTagging(p,x,n::from_vector(std::vector<int>{24}),std::vector<n::Tensor>(4,n::zeros({1,8})));n::model_stage("Embedding and masked bidirectional LSTM",x,path.context.features);return n::model_stage("NER head",path.context.features,path.ner_logits);},"bilstm tagging source graph");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;network.plot(n::zeros({1,24,512}),options).save_svg("build/bilstm_tagging_network.svg");}
+```
+// result_begin: markdown
+\image(figures/bilstm_tagging_network.svg)
+// result_end
+
+> Complete preserved source experiment
+
+Original epoch/batch budgets, random streams, source guard tests and weak outcomes are preserved. All fitting and generation code is editable. This program uses native C++ data preparation and mathematical components; it does not execute the upstream Python preparers. Saved arrays and source stdout will be compared against a frozen copy of the pre-conversion program on the exact same prepared inputs. No external-framework equivalence is inferred when recordings are absent.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn bilstm_tagging
+// Joint POS and entity tagging on real short CoNLL sentences; independent
+// bidirectional LSTM, three epochs.
+//
+// Port of tflow's bilstm_tagging. Data: tflow's output/datasets/bilstm_tagging
+// (bilstm_tagging.npz: pinned CoNLL-2003 subset, 128 fit / 32 validation / 32
+// test complete sentences of length 2..24, fit-only 512-word vocabulary with
+// PAD 0 / UNK 1, 45 POS tags, 9 IOB2 NER tags; vocabulary.txt).
+// An 8-D embedding, two independent 8-unit LSTMs (forward, and backward over
+// the reversed valid words, re-aligned to original time) give 16-D features;
+// linear POS (45) and NER (9) heads, equal-weight masked mean token CE.
+// 6102 parameters, Adam .01, batch 8, three epochs (48 updates).
+// When tflow's recorded run (output/models/bilstm_tagging) is present, the port
+// replays it from TF's initial weights (initial outputs with every BPTT partial,
+// first-batch forward and gradients, history, final weights). The
+// own-initialisation run then audits restore, label-free prediction,
+// single/batch parity, the forward probe's causality and the backward probe's
+// real future context, padding and zero-length invariance, the frozen PAD
+// embedding row and immutability, and compares with fit-only word-majority
+// and all-O baselines (exact entity spans, not just token accuracy).
+// Options: epochs=3 data=PATH out=PATH tf=PATH.
+// Output: output/nn/models/bilstm_tagging/.
+
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+
+// Editable workflow support: bilstm_tagging.hpp
+namespace bilstm_tagging {using namespace dm::nn::models::bilstm_tagging;}
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { return DataRoot() / name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/recovered-language");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+// Editable workflow support: tagging_metrics.hpp
+// Exact entity spans with explicit I-after-O/type-change repair; padding
+// excluded by valid lengths (port of tflow's common/ml/tagging_metrics.h).
+// Tags are IOB2 with 0 = O, odd = B-type, even = I-type, type = (tag + 1) / 2.
+
+#include <algorithm>
+#include <cstdint>
+#include <set>
+#include <tuple>
+#include <vector>
+
+#include <datamunge/nn/tensor.hpp>
+
+namespace tagging {
+
+namespace nn = datamunge::nn;
+
+using EntitySpan = std::tuple<int, int, int>;  // [start, end), type
+
+inline std::set<EntitySpan> EntitySpans(const std::vector<int>& tags) {
+  std::set<EntitySpan> result;
+  int                  start = -1, type = 0;
+  for (int t = 0; t <= static_cast<int>(tags.size()); ++t) {
+    const int  tag   = t < static_cast<int>(tags.size()) ? tags[t] : 0;
+    const int  kind  = tag ? (tag + 1) / 2 : 0;
+    const bool begin = tag % 2 == 1;
+    if (start >= 0 && (tag == 0 || kind != type || begin)) {
+      result.emplace(start, t, type);
+      start = -1;
+    }
+    if (tag && start < 0) {
+      start = t;
+      type  = kind;
+    }
+  }
+  return result;
+}
+
+struct TaggingMetrics {
+  int    tokens = 0, ner_correct = 0, true_positive = 0, predicted_entities = 0, gold_entities = 0;
+  double NerAccuracy() const { return tokens ? double(ner_correct) / tokens : 0; }
+  double EntityPrecision() const { return predicted_entities ? double(true_positive) / predicted_entities : 0; }
+  double EntityRecall() const { return gold_entities ? double(true_positive) / gold_entities : 0; }
+  double EntityF1() const {
+    return predicted_entities + gold_entities ? 2. * true_positive / (predicted_entities + gold_entities) : 0;
+  }
+};
+
+/// Scores predicted against gold NER tags [B, T] over the first lengths[b] positions.
+inline TaggingMetrics ScoreTagging(const nn::Tensor& predicted, const nn::Tensor& gold, const nn::Tensor& lengths) {
+  TaggingMetrics out;
+  const auto     p = predicted.to_vector<int>(), g = gold.to_vector<int>(), n = lengths.to_vector<int>();
+  const int      T = static_cast<int>(predicted.shape()[1]);
+  for (std::size_t b = 0; b < n.size(); ++b) {
+    std::vector<int> a, e;
+    for (int t = 0; t < n[b]; ++t) {
+      ++out.tokens;
+      out.ner_correct += p[b * T + t] == g[b * T + t];
+      a.push_back(p[b * T + t]);
+      e.push_back(g[b * T + t]);
+    }
+    const auto sa = EntitySpans(a), sg = EntitySpans(e);
+    out.predicted_entities += static_cast<int>(sa.size());
+    out.gold_entities += static_cast<int>(sg.size());
+    for (const auto& s : sa) out.true_positive += static_cast<int>(sg.count(s));
+  }
+  return out;
+}
+
+/// Per-token argmax of logits [B, T, K] on valid positions, -1 elsewhere (int32 [B, T]).
+inline nn::Tensor TaggingArgmax(const nn::Tensor& logits, const nn::Tensor& lengths) {
+  const auto B = logits.shape()[0], T = logits.shape()[1], K = logits.shape()[2];
+  const auto v = logits.to_vector<float>();
+  const auto n = lengths.to_vector<int>();
+  std::vector<std::int32_t> out(static_cast<std::size_t>(B * T), -1);
+  for (std::int64_t b = 0; b < B; ++b)
+    for (std::int64_t t = 0; t < n[b]; ++t) {
+      const float* row = v.data() + (b * T + t) * K;
+      out[b * T + t]   = static_cast<std::int32_t>(std::max_element(row, row + K) - row);
+    }
+  return nn::from_vector(out, {B, T});
+}
+
+}  // namespace tagging
+
+// Editable workflow support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using replay::Map;
+using namespace bilstm_tagging;
+
+namespace {
+
+struct Model {
+  nn::ParameterStore p;
+  explicit Model(std::uint64_t seed) : p(seed) {
+    nn::NoGradGuard guard;
+    BiLstmTagging(p, nn::zeros({1, kSteps, kVocab}), nn::ones({1}, nn::DType::Int32), Initial(1));
+    check::Require(p.count() == 6102 && p.size() == 11, "6102EmbeddingTwoIndependentLSTMsAndPOSNERHeads");
+  }
+  static std::vector<Tensor> Initial(std::int64_t n) {
+    return {nn::zeros({n, kUnits}), nn::zeros({n, kUnits}), nn::zeros({n, kUnits}), nn::zeros({n, kUnits})};
+  }
+  static Tensor Encode(const Map& x) {
+    for (int v : x.at("input").to_vector<int>()) check::Require(v >= 0 && v < kVocab, "validTaggingWordID");
+    return nn::one_hot(x.at("input"), kVocab);
+  }
+  static Map Fields(const Path& path) {
+    const auto& c = path.context;
+    return {{"pos_logits", path.pos_logits.detach()},           {"ner_logits", path.ner_logits.detach()},
+            {"forward_states", c.forward_states.detach()},      {"forward_cells", c.forward_cells.detach()},
+            {"backward_processing", c.backward_processing.detach()}, {"backward_cells", c.backward_cells.detach()},
+            {"backward_aligned", c.backward_aligned.detach()},  {"features", c.features.detach()},
+            {"forward_gates", c.forward_gates.detach()},        {"backward_gates", c.backward_gates.detach()}};
+  }
+  struct Losses {
+    Tensor loss, pos_loss, ner_loss, selected;
+  };
+  static Losses Loss(const Path& path, const Map& x) {
+    const Tensor mask = nn::cast(nn::less(nn::reshape(nn::arange(0, kSteps, 1, nn::DType::Int32), {1, -1}),
+                                          nn::reshape(x.at("lengths"), {-1, 1})),
+                                 nn::DType::Float32);
+    const Tensor pt = nn::one_hot(x.at("pos"), kPos), nt = nn::one_hot(x.at("ner"), kNer);
+    const Tensor pos_ce = nn::neg(nn::sum(nn::mul(pt, nn::log_softmax(path.pos_logits, -1)), {2}));
+    const Tensor ner_ce = nn::neg(nn::sum(nn::mul(nt, nn::log_softmax(path.ner_logits, -1)), {2}));
+    const Tensor denominator = nn::maximum(nn::sum(mask), nn::scalar(1.0));
+    Losses       l;
+    l.pos_loss = nn::div(nn::sum(nn::mul(mask, pos_ce)), denominator);
+    l.ner_loss = nn::div(nn::sum(nn::mul(mask, ner_ce)), denominator);
+    l.loss     = nn::mul(nn::add(l.pos_loss, l.ner_loss), .5);
+    l.selected = nn::mul(nn::sum(nn::mul(mask, nn::add(nn::sum(nn::mul(pt, path.pos_logits), {2}),
+                                                      nn::sum(nn::mul(nt, path.ner_logits), {2})))),
+                         .5);
+    return l;
+  }
+  /// Words and lengths only.
+  Map Predict(const Map& x) {
+    nn::NoGradGuard guard;
+    return Fields(BiLstmTagging(p, Encode(x), x.at("lengths"), Initial(x.at("input").shape()[0])));
+  }
+  Map Evaluate(const Map& x) {
+    Tensor enc     = Encode(x);
+    auto   initial = Initial(x.at("input").shape()[0]);
+    enc.requires_grad_(true);
+    for (auto& t : initial) t.requires_grad_(true);
+    const Path   path = BiLstmTagging(p, enc, x.at("lengths"), initial);
+    const Losses l    = Loss(path, x);
+    nn::GradOptions o;
+    o.allow_unused = true;
+    o.retain_graph = true;
+    std::vector<Tensor> wrt{enc};
+    wrt.insert(wrt.end(), initial.begin(), initial.end());
+    const auto g  = nn::grad(std::vector<Tensor>{l.selected}, wrt, {}, o);
+    const auto ff = nn::grad(std::vector<Tensor>{nn::sum(nn::slice(path.context.forward_states, {0, 1, 0}, {-1, 1, 1}))}, {enc}, {}, o);
+    const auto bb = nn::grad(std::vector<Tensor>{nn::sum(nn::slice(path.context.backward_aligned, {0, 0, 0}, {-1, 1, 1}))}, {enc}, {}, o);
+    auto def = [](const Tensor& t, const Tensor& like) { return t.defined() ? t : nn::zeros_like(like).detach(); };
+    Map  out = Fields(path);
+    out["loss"]                    = l.loss.detach();
+    out["pos_loss"]                = l.pos_loss.detach();
+    out["ner_loss"]                = l.ner_loss.detach();
+    out["encoded_gradient"]        = def(g[0], enc);
+    out["forward_probe_gradient"]  = def(ff[0], enc);
+    out["backward_probe_gradient"] = def(bb[0], enc);
+    for (int j = 0; j < 4; ++j) out["initial_gradient" + std::to_string(j)] = def(g[j + 1], initial[j]);
+    return out;
+  }
+  std::vector<Tensor> Gradients(const Map& x) {
+    const Path path = BiLstmTagging(p, Encode(x), x.at("lengths"), Initial(x.at("input").shape()[0]));
+    nn::GradOptions o;
+    o.allow_unused = true;  // a batch without some words leaves their embedding rows at zero gradient
+    auto g = nn::grad(std::vector<Tensor>{Loss(path, x).loss}, p.parameters(), {}, o);
+    for (std::size_t i = 0; i < g.size(); ++i)
+      if (!g[i].defined()) g[i] = nn::zeros_like(p.parameters()[i]).detach();
+    return g;
+  }
+};
+
+struct Score {
+  tagging::TaggingMetrics ner;
+  int                     pos_correct = 0;
+  double PosAccuracy() const { return ner.tokens ? double(pos_correct) / ner.tokens : 0; }
+};
+
+Score ScoreAll(const Tensor& pos_pred, const Tensor& ner_pred, const Map& x) {
+  Score      s;
+  s.ner      = tagging::ScoreTagging(ner_pred, x.at("ner"), x.at("lengths"));
+  const auto p = pos_pred.to_vector<int>(), g = x.at("pos").to_vector<int>(), n = x.at("lengths").to_vector<int>();
+  for (std::size_t b = 0; b < n.size(); ++b)
+    for (int t = 0; t < n[b]; ++t) s.pos_correct += p[b * kSteps + t] == g[b * kSteps + t];
+  return s;
+}
+Score ScoreOutputs(const Map& out, const Map& x) {
+  return ScoreAll(tagging::TaggingArgmax(out.at("pos_logits"), x.at("lengths")),
+                  tagging::TaggingArgmax(out.at("ner_logits"), x.at("lengths")), x);
+}
+
+struct Epoch {
+  double loss, pos, f1;
+};
+
+std::vector<Epoch> Train(Model& m, const Map& fit, const Map& validation, int epochs, std::ofstream* batches,
+                         const std::filesystem::path* root) {
+  nn::Optimizer      opt(m.p, .01, replay::Adam());
+  nn::BatchOrder     order(128, 8, 44019);
+  std::vector<Epoch> history;
+  int                updates = 0;
+  for (int e = 1; e <= epochs; ++e) {
+    order.begin_epoch();
+    for (;;) {
+      const auto rows = order.next();
+      if (rows.empty()) break;
+      const auto b = replay::Rows(fit, rows);
+      if (!updates && root) {
+        nn::save_npz((*root / "first_batch.npz").string(), replay::ToNamed(b));
+        nn::save_npz((*root / "first_forward.npz").string(), replay::ToNamed(m.Evaluate(b)));
+        nn::save_npz((*root / "initial_gradients.npz").string(), replay::ToNamed(replay::Named(m.p, m.Gradients(b))));
+      }
+      opt.step(m.Gradients(b));
+      if (!updates && root) m.p.save((*root / "first_after.npz").string());
+      if (batches)
+        for (auto r : rows) *batches << e << '\t' << updates << '\t' << r << '\n';
+      ++updates;
+    }
+    const auto val   = m.Evaluate(validation);
+    const auto score = ScoreOutputs(val, validation);
+    history.push_back({val.at("loss").item<double>(), score.PosAccuracy(), score.ner.EntityF1()});
+    if (root) {
+      m.p.save((*root / ("epoch" + std::to_string(e) + "_arrays.npz")).string());
+      nn::save_npz((*root / ("epoch" + std::to_string(e) + "_validation.npz")).string(), replay::ToNamed(val));
+    }
+  }
+  return history;
+}
+
+void TfParity(const std::filesystem::path& tf, const Map& fit, const Map& validation, const Map& test, int epochs) {
+  if (!std::filesystem::exists(tf / "initial_arrays.npz")) {
+    std::cout << " (tflow run not found at " << tf << "; TF parity skipped)\n";
+    return;
+  }
+  Model m(0);
+  replay::LoadInto(m.p, tf / "initial_arrays.npz");
+  const double out = replay::MaxDiff(m.Evaluate(test), tf / "initial_outputs.npz");
+  const auto   fb  = replay::ToMap(nn::load_npz((tf / "first_batch.npz").string()));
+  const double fwd = replay::MaxDiff(m.Evaluate(fb), tf / "first_forward.npz");
+  const double gd  = replay::MaxDiff(replay::Named(m.p, m.Gradients(fb)), tf / "initial_gradients.npz");
+  check::Near(std::max(out, fwd), 0, 2e-6, "initial outputs, every BPTT partial and first-batch forward match TF");
+  check::Near(gd, 0, 2e-6, "first-batch parameter gradients match TF");
+  const auto hist = Train(m, fit, validation, epochs, nullptr, nullptr);
+  const auto tfh = replay::History(tf / "history.tsv", 1), tfp = replay::History(tf / "history.tsv", 2);
+  double     worst = 0;
+  for (std::size_t e = 0; e < hist.size() && e < tfh.size(); ++e) {
+    std::cout << "  replay epoch" << e + 1 << " validationLoss=" << hist[e].loss << " POS=" << hist[e].pos
+              << " entityF1=" << hist[e].f1 << " (TF " << tfh[e] << ", " << tfp[e] << ")\n";
+    worst = std::max(worst, std::abs(hist[e].loss - tfh[e]));
+  }
+  std::cout << " TF parity from TF's initial weights: initial outputs/partials max diff=" << out
+            << ", first-batch forward max diff=" << fwd << ", gradients max diff=" << gd;
+  if (epochs == 3) {
+    const double w = replay::MaxDiff(replay::Arrays(m.p), tf / "model_arrays.npz");
+    std::cout << ", final weights max diff=" << w;
+    check::Near(worst, 0, 1e-4, "validation history tracks TF's recorded run");
+    check::Near(w, 0, 1e-3, "final weights track TF's after 48 Adam updates");
+  }
+  std::cout << "\n";
+}
+
+}  // namespace
+
+int main(int argc, char** argv) {
+  try {
+    const auto            start = std::chrono::steady_clock::now();
+    int                   epochs = 3;
+    std::filesystem::path data = paths::Dataset("bilstm_tagging"), root = paths::OutputRoot() / "models/bilstm_tagging",
+                          tf = replay::TfModels("bilstm_tagging");
+    for (int i = 1; i < argc; ++i) {
+      const std::string a = argv[i];
+      if (a.rfind("epochs=", 0) == 0) epochs = std::stoi(a.substr(7));
+      else if (a.rfind("data=", 0) == 0) data = a.substr(5);
+      else if (a.rfind("out=", 0) == 0) root = a.substr(4);
+      else if (a.rfind("tf=", 0) == 0) tf = a.substr(3);
+      else throw std::invalid_argument("epochs=N data=PATH out=PATH tf=PATH");
+    }
+    check::Require(epochs > 0 && epochs <= 100, "threeCheapDefaultEpochs");
+    std::filesystem::create_directories(root);
+    const auto arrays = nn::load_npz((data / "bilstm_tagging.npz").string());
+    std::filesystem::copy_file(data / "bilstm_tagging.npz", root / "data.npz", std::filesystem::copy_options::overwrite_existing);
+    replay::CopyAssets(data, root, {"manifest.json", "vocabulary.txt"});
+    check::Require(tagging::EntitySpans({2, 2, 0, 3, 4, 5}) == std::set<tagging::EntitySpan>{{0, 2, 1}, {3, 5, 2}, {5, 6, 3}},
+                   "explicitIstartBIORepairAndExactSpanBoundaries");
+    const std::vector<std::string> keys{"input", "lengths", "pos", "ner", "source_ids"};
+    const Map fit = replay::Split(arrays, "fit", keys), validation = replay::Split(arrays, "validation", keys),
+              test = replay::Split(arrays, "test", keys);
+    TfParity(tf, fit, validation, test, epochs);
+
+    Model m(44003);
+    m.p.save((root / "initial_arrays.npz").string());
+    nn::save_npz((root / "initial_outputs.npz").string(), replay::ToNamed(m.Evaluate(test)));
+    std::ofstream history(root / "history.tsv"), batches(root / "batches.tsv");
+    history.precision(17);
+    history << "epoch\tvalidation_loss\tvalidation_pos_accuracy\tvalidation_entity_f1\n";
+    batches << "epoch\tstep\trow\n";
+    const auto hist = Train(m, fit, validation, epochs, &batches, &root);
+    for (std::size_t e = 0; e < hist.size(); ++e) {
+      history << e + 1 << '\t' << hist[e].loss << '\t' << hist[e].pos << '\t' << hist[e].f1 << '\n';
+      std::cout << "epoch" << e + 1 << " validationLoss=" << hist[e].loss << " POS=" << hist[e].pos
+                << " entityF1=" << hist[e].f1 << std::endl;
+    }
+    const Map first = replay::ToMap(nn::load_npz((root / "first_batch.npz").string()));
+    nn::save_npz((root / "final_gradients.npz").string(), replay::ToNamed(replay::Named(m.p, m.Gradients(first))));
+    m.p.save((root / "final.npz").string());
+    Model deployed(0);
+    deployed.p.load((root / "final.npz").string());
+    check::Require(replay::SameBits(replay::Arrays(m.p), replay::Arrays(deployed.p)), "all6102TaggerWeightsRestoreBitexact");
+    const Map before = replay::Arrays(deployed.p);
+    const Map output = deployed.Evaluate(test), pred = deployed.Predict(test), repeat = deployed.Predict(test);
+    for (const auto& [k, v] : pred) {
+      check::Require(replay::SameBits(v, output.at(k)), "noPOSorNERlabelsFedToPrediction");
+      check::Require(replay::SameBits(v, repeat.at(k)), "repeatTaggerInferenceBitexact");
+    }
+    nn::save_npz((root / "outputs.npz").string(), replay::ToNamed(output));
+    nn::save_npz((root / "model_arrays.npz").string(), replay::ToNamed(before));
+    {
+      const auto single = deployed.Predict(replay::Rows(test, {0}));
+      for (auto key : {"pos_logits", "ner_logits"}) {
+        const auto a = single.at(key).to_vector<float>(), b = output.at(key).to_vector<float>();
+        for (std::size_t j = 0; j < a.size(); ++j) check::Near(a[j], b[j], 2e-6, "singleBatchTokenLogitParity");
+      }
+    }
+    const auto ids = test.at("input").to_vector<std::int32_t>();
+    const auto lengths = test.at("lengths").to_vector<int>();
+    Map        padded = test, last = test;
+    double     backward_future = 0;
+    {
+      const auto fpg = output.at("forward_probe_gradient").to_vector<float>(), bpg = output.at("backward_probe_gradient").to_vector<float>(),
+                 eg = output.at("encoded_gradient").to_vector<float>();
+      auto       pi = ids, li = ids;
+      int        pad_positions = 0;
+      for (int b = 0; b < 32; ++b) {
+        const int length = lengths[b];
+        for (int t = 0; t < kSteps; ++t) {
+          if (t >= length) {
+            ++pad_positions;
+            pi[b * kSteps + t] = 2 + (b + t) % 510;
+          }
+          for (int c = 0; c < kVocab; ++c) {
+            const std::size_t i = (static_cast<std::size_t>(b) * kSteps + t) * kVocab + c;
+            if (t > 0) check::Require(fpg[i] == 0, "firstForwardStateCannotUseFutureWords");
+            if (t >= length) check::Require(eg[i] == 0 && bpg[i] == 0, "allPaddedEncodedAndBackwardContextPartialsZero");
+            else if (t > 0) backward_future = std::max(backward_future, double(std::abs(bpg[i])));
+          }
+        }
+        li[b * kSteps + length - 1] = 1;
+      }
+      check::Require(pad_positions > 100 && backward_future > 1e-4, "nonVacuousPaddingAndActualOfflineBackwardFutureContext");
+      padded.at("input") = nn::from_vector(pi, {32, kSteps});
+      last.at("input")   = nn::from_vector(li, {32, kSteps});
+    }
+    const Map padout = deployed.Evaluate(padded), lastout = deployed.Evaluate(last);
+    check::Require(replay::SameBits(output, padout), "allTaggerPathsLossesAndPartialsPaddingInvariant");
+    {
+      const auto f0 = output.at("forward_states").to_vector<float>(), f1 = lastout.at("forward_states").to_vector<float>();
+      for (int b = 0; b < 32; ++b)
+        for (int t = 0; t < lengths[b]; ++t)
+          for (int j = 0; j < kUnits; ++j)
+            check::Require(f0[(b * 25 + t) * kUnits + j] == f1[(b * 25 + t) * kUnits + j], "lastWordChangeCannotAffectEarlierFORWARDstates");
+    }
+    nn::save_npz((root / "padding_inputs.npz").string(), replay::ToNamed(padded));
+    nn::save_npz((root / "last_word_inputs.npz").string(), replay::ToNamed(last));
+    nn::save_npz((root / "padding_outputs.npz").string(), replay::ToNamed(padout));
+    nn::save_npz((root / "last_word_outputs.npz").string(), replay::ToNamed(lastout));
+    Map empty = replay::Rows(test, {0, 1});
+    empty.at("lengths") = nn::zeros({2}, nn::DType::Int32);
+    const Map emptyout = deployed.Evaluate(empty);
+    for (const auto& [k, v] : emptyout)
+      for (float x : v.to_vector<float>()) check::Require(x == 0, "zeroLengthTaggingHasNoTokenLossUnariesStateOrGradient");
+    nn::save_npz((root / "zero_length_inputs.npz").string(), replay::ToNamed(empty));
+    nn::save_npz((root / "zero_length_outputs.npz").string(), replay::ToNamed(emptyout));
+    {
+      const auto ia = nn::select(replay::Get(nn::load_npz((root / "initial_arrays.npz").string()), "embedding/W"), 0, 0);
+      check::Require(replay::SameBits(ia, nn::select(deployed.p.at("embedding/W"), 0, 0)), "maskedPADWordEmbeddingNeverUpdated");
+    }
+    // fit-only word-majority baselines
+    std::vector<std::int32_t> pc(kVocab * kPos, 0), nc(kVocab * kNer, 0), gp(kPos, 0), gn(kNer, 0);
+    {
+      const auto in = fit.at("input").to_vector<int>(), po = fit.at("pos").to_vector<int>(), ne = fit.at("ner").to_vector<int>(),
+                 n = fit.at("lengths").to_vector<int>();
+      for (int b = 0; b < 128; ++b)
+        for (int t = 0; t < n[b]; ++t) {
+          const int w = in[b * kSteps + t], p = po[b * kSteps + t], r = ne[b * kSteps + t];
+          ++pc[w * kPos + p], ++nc[w * kNer + r], ++gp[p], ++gn[r];
+        }
+    }
+    nn::save_npz((root / "baseline_counts.npz").string(),
+                 {{"pos", nn::from_vector(pc, {kVocab, kPos})}, {"ner", nn::from_vector(nc, {kVocab, kNer})},
+                  {"global_pos", nn::from_vector(gp)}, {"global_ner", nn::from_vector(gn)}});
+    auto baseline = [&](const std::vector<std::int32_t>& count, const std::vector<std::int32_t>& global) {
+      const int classes  = static_cast<int>(global.size());
+      const int fallback = static_cast<int>(std::max_element(global.begin(), global.end()) - global.begin());
+      std::vector<std::int32_t> result(32 * kSteps, -1);
+      for (int b = 0; b < 32; ++b)
+        for (int t = 0; t < lengths[b]; ++t) {
+          const std::int32_t* row = count.data() + classes * ids[b * kSteps + t];
+          result[b * kSteps + t]  = std::accumulate(row, row + classes, 0) ? static_cast<int>(std::max_element(row, row + classes) - row) : fallback;
+        }
+      return nn::from_vector(result, {32, kSteps});
+    };
+    const Tensor bp = baseline(pc, gp), bn = baseline(nc, gn);
+    const Tensor pp = tagging::TaggingArgmax(output.at("pos_logits"), test.at("lengths")),
+                 np = tagging::TaggingArgmax(output.at("ner_logits"), test.at("lengths"));
+    const Tensor all_o = nn::zeros({32, kSteps}, nn::DType::Int32);
+    const Score  score = ScoreAll(pp, np, test), base = ScoreAll(bp, bn, test), zeros = ScoreAll(bp, all_o, test);
+    check::Require(score.ner.gold_entities > 10 && zeros.ner.EntityF1() == 0, "allOTokenAccuracyMustNotHideZeroEntityRecall");
+    nn::save_npz((root / "decoded.npz").string(), {{"pos", pp}, {"ner", np}, {"baseline_pos", bp}, {"baseline_ner", bn}});
+    {
+      std::ofstream predictions(root / "predictions.tsv");
+      predictions << "source_id\tposition\tword_id\tgold_pos\tpredicted_pos\tgold_ner\tpredicted_ner\n";
+      const auto src = test.at("source_ids").to_vector<int>(), gpos = test.at("pos").to_vector<int>(),
+                 gner = test.at("ner").to_vector<int>(), ppv = pp.to_vector<int>(), npv = np.to_vector<int>();
+      for (int b = 0; b < 32; ++b)
+        for (int t = 0; t < lengths[b]; ++t) {
+          const int i = b * kSteps + t;
+          predictions << src[b] << '\t' << t << '\t' << ids[i] << '\t' << gpos[i] << '\t' << ppv[i] << '\t' << gner[i] << '\t'
+                      << npv[i] << '\n';
+        }
+      // first 16 test sentences: gold then predicted NER tags as colored cells
+      const int          colors[9][3] = {{255, 255, 255}, {80, 140, 255}, {160, 200, 255}, {255, 100, 70}, {255, 180, 150},
+                                         {70, 190, 100},  {170, 230, 185}, {180, 100, 220}, {225, 180, 240}};
+      std::vector<float> rgb(320 * 288 * 3, 220.f);
+      for (int b = 0; b < 16; ++b)
+        for (int row = 0; row < 2; ++row)
+          for (int t = 0; t < lengths[b]; ++t) {
+            const int tag = row ? npv[b * kSteps + t] : gner[b * kSteps + t];
+            for (int y = 0; y < 9; ++y)
+              for (int x = 0; x < 11; ++x)
+                for (int c = 0; c < 3; ++c) rgb[((b * 20 + row * 10 + y) * 288 + t * 12 + x) * 3 + c] = colors[tag][c];
+          }
+      nn::save_png(nn::from_vector(rgb, {320, 288, 3}), (root / "ner_tags.png").string(), 0, 255);
+    }
+    std::ofstream metrics(root / "metrics.json");
+    metrics.precision(17);
+    metrics << "{\"parameters\":6102,\"parameter_tensors\":11,\"epochs\":" << epochs << ",\"optimizer_updates\":" << epochs * 16
+            << ",\"test_loss\":" << output.at("loss").item<double>() << ",\"pos_accuracy\":" << score.PosAccuracy()
+            << ",\"ner_token_accuracy\":" << score.ner.NerAccuracy() << ",\"entity_precision\":" << score.ner.EntityPrecision()
+            << ",\"entity_recall\":" << score.ner.EntityRecall() << ",\"entity_f1\":" << score.ner.EntityF1()
+            << ",\"true_positive_entities\":" << score.ner.true_positive << ",\"predicted_entities\":" << score.ner.predicted_entities
+            << ",\"gold_entities\":" << score.ner.gold_entities << ",\"tokens\":" << score.ner.tokens
+            << ",\"word_majority_pos_accuracy\":" << base.PosAccuracy() << ",\"word_majority_entity_f1\":" << base.ner.EntityF1()
+            << ",\"all_o_token_accuracy\":" << zeros.ner.NerAccuracy() << ",\"all_o_entity_f1\":0,\"backward_future_derivative_max\":"
+            << backward_future << "}\n";
+    std::ofstream html(root / "index.html");
+    html << "<!doctype html><meta charset='utf-8'><title>BiLSTM POS and NER</title><style>body{font:16px system-ui;margin:30px;"
+            "max-width:1100px}img{max-width:100%;image-rendering:pixelated}</style><h1>Offline BiLSTM POS and entity tagging</h1>"
+            "<p>Pinned CoNLL-2003 subset (128 fit / 32 validation / 32 test complete sentences of length 2..24), fit-only "
+            "512-word vocabulary, 45 POS tags, 9 IOB2 NER tags. Embedding 8, independent 8-unit forward/backward LSTMs, "
+            "original-time 16-D features, POS/NER linear heads; 6102 parameters, three epochs of Adam .01. No CRF; exact "
+            "entity spans are scored (see metrics.json), next to word-majority and all-O baselines.</p><h2>First 16 held-out "
+            "NER sequences: gold then predicted</h2><p>gray padding, white O, blue PER, red ORG, green LOC, purple MISC; "
+            "darker B / lighter I.</p><img src='ner_tags.png'>";
+    check::Require(replay::SameBits(before, replay::Arrays(deployed.p)), "allJointTaggerControlsWeightsImmutable");
+    check::Require(bool(metrics) && bool(html) && bool(history) && bool(batches), "completeJointTaggingRecords");
+    std::cout << "testPOS=" << score.PosAccuracy() << " entityF1=" << score.ner.EntityF1() << " wordMajorityPOS=" << base.PosAccuracy()
+              << " wordMajorityF1=" << base.ner.EntityF1() << " allOtokenAccuracy=" << zeros.ner.NerAccuracy()
+              << " (TF recorded testPOS=0.213777 entityF1=0 wordMajority 0.529691/0.328358)"
+              << ";originalTimeBiLSTM/futureContext/masking/restore/labelFree/immutable PASS\nArtifacts:"
+              << (root / "index.html").string() << "\nwall "
+              << std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count() << " s\n";
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin:
+//  (tflow run not found at "/home/jordan/.cache/datamunge/models/bilstm_tagging"; TF parity skipped)
+// epoch1 validationLoss=2.11258 POS=0.101449 entityF1=0
+// epoch2 validationLoss=2.01605 POS=0.26087 entityF1=0
+// epoch3 validationLoss=1.9246 POS=0.257246 entityF1=0
+// testPOS=0.230404 entityF1=0 wordMajorityPOS=0.529691 wordMajorityF1=0.328358 allOtokenAccuracy=0.824228 (TF recorded testPOS=0.213777 entityF1=0 wordMajority 0.529691/0.328358);originalTimeBiLSTM/futureContext/masking/restore/labelFree/immutable PASS
+// Artifacts:/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/recovered-language/models/bilstm_tagging/index.html
+// wall 0.363676 s
+// result_end
+
+> Actual source diagnostics
+
+These figures read saved outputs of the complete run above. Validation loss, task accuracy and likelihood are different quantities. Few epochs and a compact subset do not establish benchmark convergence; keep the original held-out results and baseline comparisons in view.
+
+```{cpp, results="markdown", file="figures/bilstm_tagging_validation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::ifstream in("build/recovered-language/models/bilstm_tagging/history.tsv");if(!in)throw std::runtime_error("original history missing");std::string line;std::getline(in,line);std::vector<double>x,y;while(std::getline(in,line)){std::istringstream row(line);double epoch,loss;if(row>>epoch>>loss){x.push_back(epoch);y.push_back(loss);}}if(x.empty())throw std::runtime_error("source validation rows missing");dm::graphics::RPlot::create().lines(x,y,"source validation loss",{37,99,235}).points(x,y,"recorded epochs",{37,99,235},5).title("bilstm tagging original validation history").x_label("Epoch").y_label("Source validation objective").size(1100,600).save_svg("build/bilstm_tagging_validation.svg");}
+```
+// result_begin: markdown
+\image(figures/bilstm_tagging_validation.svg)
+// result_end
+
+> Inspect the source rendering: ner_tags.png
+
+This is the original native rendering of saved source predictions, gradients or generated samples, with its original scaling.
+
+```{cpp, results="markdown", file="figures/bilstm_tagging_ner_tags.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::copy_file("build/recovered-language/models/bilstm_tagging/ner_tags.png","build/bilstm_tagging_ner_tags.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/bilstm_tagging_ner_tags.png)
+// result_end
+
+> Scope and provenance
+
+Source partitions, fitting-only transformations, explicit update/generation loops and independent deployment guards are retained. Native preparation manifests record the recovered source hashes and protocol. The small models and samples are teaching experiments; no full-paper reproduction, benchmark ranking or unrecorded external parity is claimed.
+
+> Held-out pos confusion matrix
+
+Counts come from the original deployed predictions ledger, with rows as truth and columns as predictions. Sequence ledgers exclude padding; token accuracy and entity-span F1 answer different questions. Class IDs retain the original preparation ontology recorded in the manifest.
+
+```{cpp, results="markdown", file="figures/bilstm_tagging_pos_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::ifstream in("build/recovered-language/models/bilstm_tagging/predictions.tsv");if(!in)throw std::runtime_error("actual held-out predictions missing");std::string header;std::getline(in,header);dm::nn::ConfusionMatrix matrix(45);size_t count=0;int id,position,word,pos,pred_pos,ner,pred_ner;while(in>>id>>position>>word>>pos>>pred_pos>>ner>>pred_ner){matrix.add(pos,pred_pos);++count;}if(!count)throw std::runtime_error("empty held-out predictions");std::print("Counted {} held-out pos decisions; padded positions excluded by the source ledger.\n",count);dm::nn::ConfusionMatrixPlotOptions options;options.title="bilstm tagging actual held-out pos";matrix.save_svg("build/bilstm_tagging_pos_confusion.svg",options);}
+```
+// result_begin: markdown
+Counted 421 held-out pos decisions; padded positions excluded by the source ledger.
+\image(figures/bilstm_tagging_pos_confusion.svg)
+// result_end
+
+> Held-out ner confusion matrix
+
+Counts come from the original deployed predictions ledger, with rows as truth and columns as predictions. Sequence ledgers exclude padding; token accuracy and entity-span F1 answer different questions. Class IDs retain the original preparation ontology recorded in the manifest.
+
+```{cpp, results="markdown", file="figures/bilstm_tagging_ner_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::ifstream in("build/recovered-language/models/bilstm_tagging/predictions.tsv");if(!in)throw std::runtime_error("actual held-out predictions missing");std::string header;std::getline(in,header);dm::nn::ConfusionMatrix matrix(9);size_t count=0;int id,position,word,pos,pred_pos,ner,pred_ner;while(in>>id>>position>>word>>pos>>pred_pos>>ner>>pred_ner){matrix.add(ner,pred_ner);++count;}if(!count)throw std::runtime_error("empty held-out predictions");std::print("Counted {} held-out ner decisions; padded positions excluded by the source ledger.\n",count);dm::nn::ConfusionMatrixPlotOptions options;options.title="bilstm tagging actual held-out ner";matrix.save_svg("build/bilstm_tagging_ner_confusion.svg",options);}
+```
+// result_begin: markdown
+Counted 421 held-out ner decisions; padded positions excluded by the source ledger.
+\image(figures/bilstm_tagging_ner_confusion.svg)
+// result_end

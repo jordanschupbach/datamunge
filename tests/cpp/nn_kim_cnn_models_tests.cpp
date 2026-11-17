@@ -1,10 +1,9 @@
 
 #include <dm/dm.hpp>
+#include "../../examples/nn/common/sentence_assets.hpp"
 #include <gtest/gtest.h>
 #include <regex>
-#define main original_kim_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.cpp"
-#undef main
+#include "../fixtures/nn_kim_sentence_cnn_checks.hpp"
 #include "../fixtures/nn_sentence_reference.hpp"
 TEST(KimSentence, IndependentAll80WideConvolutionAndEmbeddingParameterDerivatives) {
   HostChecks();
@@ -24,7 +23,7 @@ TEST(KimSentence, FullEveryBranchAndEveryLearnedGradient) {
 }
 TEST(KimSentence, EveryOriginalWordLengthLabelSourceAndFitOnlyVocabulary) {
   namespace m = dm::nn::models;
-  const std::filesystem::path root = "build/cnn-datasets/sentence";
+  const std::filesystem::path root = (std::filesystem::path(dm::datasets::data_home()) / "sentence");
   const auto data = m::LoadSentences(root);
   const auto archive = dataset_assets::detail::Gunzip(root / "rt-polaritydata.tar.gz");
   std::vector<std::string> source;
@@ -95,7 +94,7 @@ TEST(KimSentence, EveryOriginalWordLengthLabelSourceAndFitOnlyVocabulary) {
 }
 TEST(KimSentence, EveryRealCountNbScoreAndVisibleSgdParity) {
   namespace m = dm::nn::models;
-  const auto data = m::LoadSentences("build/cnn-datasets/sentence");
+  const auto data = m::LoadSentences((std::filesystem::path(dm::datasets::data_home()) / "sentence"));
   const auto &fit = data.pools[0];
   const auto &test = data.pools[2];
   const int v = data.config.vocabulary;
@@ -131,7 +130,7 @@ TEST(KimSentence, EveryRealCountNbScoreAndVisibleSgdParity) {
 TEST(KimSentence, StructuralPadGradientsAndObservedOnlyTensorControls) {
   namespace m = dm::nn::models;
   nn::set_num_threads(2);
-  const auto data = m::LoadSentences("build/cnn-datasets/sentence");
+  const auto data = m::LoadSentences((std::filesystem::path(dm::datasets::data_home()) / "sentence"));
   const auto d = m::SentenceRows(data.pools[2], {0, 1});
   nn::ParameterStore p(317);
   const auto out = m::KimCnn(p, d.tokens, d.lengths, data.config);

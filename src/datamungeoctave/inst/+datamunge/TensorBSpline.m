@@ -59,7 +59,7 @@ classdef TensorBSpline < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 2990, false, varargin{:});
+      __datamunge__(-2, obj, 3001, false, varargin{:});
     end
     function r = dimensions (obj)
       % dimensions  Number of parameter dimensions d.
@@ -70,7 +70,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     r  integer: bases().size().
       %
       %   C++: std::size_t datamunge::fda::TensorBSpline::dimensions() const
-      r = __datamunge__(2977, obj);
+      r = __datamunge__(2988, obj);
     end
     function r = bases (obj)
       % bases  The per-axis bases.
@@ -81,7 +81,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     r  cell array of datamunge.BSplineBasis: Reference valid for the lifetime of this object.
       %
       %   C++: const std::vector<BSplineBasis> & datamunge::fda::TensorBSpline::bases() const
-      r = __datamunge__(2978, obj);
+      r = __datamunge__(2989, obj);
     end
     function r = shape (obj)
       % shape  Per-axis basis sizes, i.e. the shape of the coefficient net.
@@ -92,7 +92,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     r  integer vector: d sizes in axis order.
       %
       %   C++: std::vector<int> datamunge::fda::TensorBSpline::shape() const
-      r = __datamunge__(2979, obj);
+      r = __datamunge__(2990, obj);
     end
     function r = coefficient_count (obj)
       % coefficient_count  Total number of coefficients (product of shape()).
@@ -103,7 +103,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     r  integer: Coefficient count.
       %
       %   C++: std::size_t datamunge::fda::TensorBSpline::coefficient_count() const
-      r = __datamunge__(2980, obj);
+      r = __datamunge__(2991, obj);
     end
     function r = coefficients (obj)
       % coefficients  The row-major coefficient net.
@@ -114,7 +114,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     r  double vector: Reference valid until the next mutation of this object.
       %
       %   C++: const std::vector<double> & datamunge::fda::TensorBSpline::coefficients() const
-      r = __datamunge__(2981, obj);
+      r = __datamunge__(2992, obj);
     end
     function r = domain_min (obj)
       % domain_min  Lower corner of the parameter domain (each basis's first clamped knot).
@@ -125,7 +125,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     r  double vector: d coordinates.
       %
       %   C++: std::vector<double> datamunge::fda::TensorBSpline::domain_min() const
-      r = __datamunge__(2982, obj);
+      r = __datamunge__(2993, obj);
     end
     function r = domain_max (obj)
       % domain_max  Upper corner of the parameter domain.
@@ -136,7 +136,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     r  double vector: d coordinates.
       %
       %   C++: std::vector<double> datamunge::fda::TensorBSpline::domain_max() const
-      r = __datamunge__(2983, obj);
+      r = __datamunge__(2994, obj);
     end
     function r = coefficient (obj, index)
       % coefficient  Reads one coefficient by per-axis basis index.
@@ -159,7 +159,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  If a component is out of range. (C++ std::out_of_range)
       %
       %   C++: double datamunge::fda::TensorBSpline::coefficient(const std::vector<int> & index) const
-      r = __datamunge__(2984, obj, index);
+      r = __datamunge__(2995, obj, index);
     end
     function set_coefficient (obj, index, value_)
       % set_coefficient  Overwrites one coefficient by per-axis basis index.
@@ -180,7 +180,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  If a component is out of range. (C++ std::out_of_range)
       %
       %   C++: void datamunge::fda::TensorBSpline::set_coefficient(const std::vector<int> & index, double value)
-      __datamunge__(2985, obj, index, value_);
+      __datamunge__(2996, obj, index, value_);
     end
     function r = evaluate (obj, varargin)
       % evaluate  Evaluates a one-dimensional spline at `x` (clamped into the domain).
@@ -198,7 +198,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %   Overloads are chosen at run time from the argument types (C++):
       %   C++: double datamunge::fda::TensorBSpline::evaluate(double x) const
       %   C++: double datamunge::fda::TensorBSpline::evaluate(const std::vector<double> & point) const
-      r = __datamunge__(2986, obj, varargin{:});
+      r = __datamunge__(2997, obj, varargin{:});
     end
     function r = evaluate_points (obj, points)
       % evaluate_points  Evaluates at many points.
@@ -219,7 +219,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  As for evaluate(const std::vector<double>&). (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::TensorBSpline::evaluate_points(const std::vector<std::vector<double>> & points) const
-      r = __datamunge__(2987, obj, points);
+      r = __datamunge__(2998, obj, points);
     end
     function r = evaluate_grid (obj, axes)
       % evaluate_grid  Evaluates on the Cartesian product of per-axis sample values.
@@ -241,7 +241,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  If axes.size() != dimensions() or an axis is empty. (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::TensorBSpline::evaluate_grid(const std::vector<std::vector<double>> & axes) const
-      r = __datamunge__(2988, obj, axes);
+      r = __datamunge__(2999, obj, axes);
     end
     function r = dyadic_refine (obj)
       % dyadic_refine  Dyadically refines every axis and maps the coefficients, giving an identical function on the finer, nested tensor basis.
@@ -262,7 +262,7 @@ classdef TensorBSpline < datamunge.NativeObject
       %   C++: TensorBSpline datamunge::fda::TensorBSpline::dyadic_refine() const
       %
       %   See also: datamunge.dyadic_refine(const BSplineBasis&)
-      r = __datamunge__(2989, obj);
+      r = __datamunge__(3000, obj);
     end
   end
 end

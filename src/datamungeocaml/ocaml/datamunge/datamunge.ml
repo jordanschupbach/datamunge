@@ -1090,6 +1090,7 @@ type dual = [ `Dual ] obj
 type hyper_dual = [ `HyperDual ] obj
 type var = [ `Var ] obj
 type tape = [ `Tape ] obj
+type mlp_classifier_search = [ `MLPClassifierSearch ] obj
 type cad_solid = [ `CadSolid ] obj
 type cad_scene = [ `CadScene ] obj
 type spline_solve_options = [ `SplineSolveOptions ] obj
@@ -7789,43 +7790,73 @@ module Tape = struct
   let is_closed (x : [> `Tape ] obj) = Rosetta__.is_closed x
 end
 
+module MLPClassifierSearch = struct
+  type t = mlp_classifier_search
+  let create ?min_hidden:x4 ?max_hidden:x5 ?initial_samples:x6 ?iterations:x7 ?epochs:x8 ?seed:x9 x0 x1 x2 x3 =
+    Rosetta__.construct 2938 None (fun c -> Rosetta__.trailing [Rosetta__.obj_e c x0; Rosetta__.string_e c x1; Rosetta__.string_e c x2; Rosetta__.string_e c x3] [(Stdlib.Option.map (Rosetta__.int_e c) x4, Some (Rosetta__.int_e c 2), "min_hidden"); (Stdlib.Option.map (Rosetta__.int_e c) x5, Some (Rosetta__.int_e c 24), "max_hidden"); (Stdlib.Option.map (Rosetta__.int_e c) x6, Some (Rosetta__.int_e c 4), "initial_samples"); (Stdlib.Option.map (Rosetta__.int_e c) x7, Some (Rosetta__.int_e c 8), "iterations"); (Stdlib.Option.map (Rosetta__.int_e c) x8, Some (Rosetta__.int_e c 400), "epochs"); (Stdlib.Option.map (Rosetta__.int_e c) x9, Some (Rosetta__.int_e c 42), "seed")])
+  let best_hidden_nodes self =
+    Rosetta__.call 2928 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+  let validation_log_loss self =
+    Rosetta__.call 2929 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.float_d
+  let test_accuracy self =
+    Rosetta__.call 2930 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.float_d
+  let training_rows self =
+    Rosetta__.call 2931 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+  let validation_rows self =
+    Rosetta__.call 2932 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+  let test_rows self =
+    Rosetta__.call 2933 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+  let summary self =
+    Rosetta__.call 2934 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
+  let trials self =
+    Rosetta__.call 2935 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+  let predict self x0 =
+    Rosetta__.call 2936 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+  let plot_decision_regions ?grid_resolution:x0 self =
+    Rosetta__.call 2937 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c 120), "grid_resolution")]) Rosetta__.obj_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|252|] then Some x else None
+  let upcast (x : [> `MLPClassifierSearch ] obj) : t = x
+  let close (x : [> `MLPClassifierSearch ] obj) = Rosetta__.close x
+  let is_closed (x : [> `MLPClassifierSearch ] obj) = Rosetta__.is_closed x
+end
+
 module CadSolid = struct
   type t = cad_solid
   let box x0 x1 x2 =
-    Rosetta__.call 2928 (fun c -> [Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2]) Rosetta__.obj_d
+    Rosetta__.call 2939 (fun c -> [Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2]) Rosetta__.obj_d
   let cylinder x0 x1 =
-    Rosetta__.call 2929 (fun c -> [Rosetta__.float_e c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
+    Rosetta__.call 2940 (fun c -> [Rosetta__.float_e c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
   let sphere x0 =
-    Rosetta__.call 2930 (fun c -> [Rosetta__.float_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 2941 (fun c -> [Rosetta__.float_e c x0]) Rosetta__.obj_d
   let torus x0 x1 =
-    Rosetta__.call 2931 (fun c -> [Rosetta__.float_e c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
+    Rosetta__.call 2942 (fun c -> [Rosetta__.float_e c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
   let united self x0 =
-    Rosetta__.call 2932 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 2943 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let subtracted self x0 =
-    Rosetta__.call 2933 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 2944 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let intersected self x0 =
-    Rosetta__.call 2934 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 2945 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let translated self x0 x1 x2 =
-    Rosetta__.call 2935 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2]) Rosetta__.obj_d
+    Rosetta__.call 2946 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2]) Rosetta__.obj_d
   let rotated self x0 x1 x2 x3 =
-    Rosetta__.call 2936 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2; Rosetta__.float_e c x3]) Rosetta__.obj_d
+    Rosetta__.call 2947 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2; Rosetta__.float_e c x3]) Rosetta__.obj_d
   let filleted self x0 x1 =
-    Rosetta__.call 2937 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
+    Rosetta__.call 2948 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
   let chamfered self x0 x1 =
-    Rosetta__.call 2938 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
+    Rosetta__.call 2949 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1]) Rosetta__.obj_d
   let shelled ?open_faces:x1 self x0 =
-    Rosetta__.call 2939 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.float_e c x0] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x1, None, "open_faces")]) Rosetta__.obj_d
+    Rosetta__.call 2950 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.float_e c x0] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x1, None, "open_faces")]) Rosetta__.obj_d
   let volume ?chord:x0 self =
-    Rosetta__.call 2940 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.float_e c) x0, Some (Rosetta__.float_e c 0.01), "chord")]) Rosetta__.float_d
+    Rosetta__.call 2951 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.float_e c) x0, Some (Rosetta__.float_e c 0.01), "chord")]) Rosetta__.float_d
   let valid self =
-    Rosetta__.call 2941 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+    Rosetta__.call 2952 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
   let edges self =
-    Rosetta__.call 2942 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
+    Rosetta__.call 2953 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
   let faces self =
-    Rosetta__.call 2943 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
+    Rosetta__.call 2954 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
   let save ?chord:x1 self x0 =
-    Rosetta__.call 2944 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.string_e c x0] [(Stdlib.Option.map (Rosetta__.float_e c) x1, Some (Rosetta__.float_e c 0.01), "chord")]) Rosetta__.unit_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|252|] then Some x else None
+    Rosetta__.call 2955 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.string_e c x0] [(Stdlib.Option.map (Rosetta__.float_e c) x1, Some (Rosetta__.float_e c 0.01), "chord")]) Rosetta__.unit_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|253|] then Some x else None
   let upcast (x : [> `CadSolid ] obj) : t = x
   let close (x : [> `CadSolid ] obj) = Rosetta__.close x
   let is_closed (x : [> `CadSolid ] obj) = Rosetta__.is_closed x
@@ -7834,44 +7865,44 @@ end
 module CadScene = struct
   type t = cad_scene
   let create () =
-    Rosetta__.construct 2963 None (fun _ -> [])
+    Rosetta__.construct 2974 None (fun _ -> [])
   let from_file x0 =
-    Rosetta__.call 2945 (fun c -> [Rosetta__.string_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 2956 (fun c -> [Rosetta__.string_e c x0]) Rosetta__.obj_d
   let from_urdf x0 =
-    Rosetta__.call 2946 (fun c -> [Rosetta__.string_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 2957 (fun c -> [Rosetta__.string_e c x0]) Rosetta__.obj_d
   let set_joint self x0 x1 =
-    Rosetta__.call 2947 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.float_e c x1]) Rosetta__.unit_d
+    Rosetta__.call 2958 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.float_e c x1]) Rosetta__.unit_d
   let joint_names self =
-    Rosetta__.call 2948 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 2959 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
   let add ?color:x1 ?name:x2 self x0 =
-    Rosetta__.call 2949 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "#4080d9"), "color"); (Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "Solid"), "name")]) Rosetta__.int_d
+    Rosetta__.call 2960 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "#4080d9"), "color"); (Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "Solid"), "name")]) Rosetta__.int_d
   let primitive self x0 =
-    Rosetta__.call 2950 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
+    Rosetta__.call 2961 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
   let size self x0 x1 =
-    Rosetta__.call 2951 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.unit_d
+    Rosetta__.call 2962 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.unit_d
   let samples self x0 =
-    Rosetta__.call 2952 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 2963 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
   let style self x0 =
-    Rosetta__.call 2953 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 2964 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
   let shadows self x0 =
-    Rosetta__.call 2954 (fun c -> [Rosetta__.obj_e c self; Rosetta__.bool_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 2965 (fun c -> [Rosetta__.obj_e c self; Rosetta__.bool_e c x0]) Rosetta__.unit_d
   let camera self x0 x1 x2 x3 x4 x5 =
-    Rosetta__.call 2955 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2; Rosetta__.float_e c x3; Rosetta__.float_e c x4; Rosetta__.float_e c x5]) Rosetta__.unit_d
+    Rosetta__.call 2966 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2; Rosetta__.float_e c x3; Rosetta__.float_e c x4; Rosetta__.float_e c x5]) Rosetta__.unit_d
   let fit self =
-    Rosetta__.call 2956 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 2967 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let light ?color:x3 ?intensity:x4 self x0 x1 x2 =
-    Rosetta__.call 2957 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2] [(Stdlib.Option.map (Rosetta__.string_e c) x3, Some (Rosetta__.string_e c "#ffffff"), "color"); (Stdlib.Option.map (Rosetta__.float_e c) x4, Some (Rosetta__.float_e c 1.0), "intensity")]) Rosetta__.int_d
+    Rosetta__.call 2968 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1; Rosetta__.float_e c x2] [(Stdlib.Option.map (Rosetta__.string_e c) x3, Some (Rosetta__.string_e c "#ffffff"), "color"); (Stdlib.Option.map (Rosetta__.float_e c) x4, Some (Rosetta__.float_e c 1.0), "intensity")]) Rosetta__.int_d
   let render self x0 =
-    Rosetta__.call 2958 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 2969 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
   let save_gltf self x0 =
-    Rosetta__.call 2959 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 2970 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
   let pick_object self x0 x1 =
-    Rosetta__.call 2960 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1]) Rosetta__.int_d
+    Rosetta__.call 2971 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0; Rosetta__.float_e c x1]) Rosetta__.int_d
   let object_count self =
-    Rosetta__.call 2961 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 2972 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let triangle_count self =
-    Rosetta__.call 2962 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|253|] then Some x else None
+    Rosetta__.call 2973 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|254|] then Some x else None
   let upcast (x : [> `CadScene ] obj) : t = x
   let close (x : [> `CadScene ] obj) = Rosetta__.close x
   let is_closed (x : [> `CadScene ] obj) = Rosetta__.is_closed x
@@ -7880,16 +7911,16 @@ end
 module SplineSolveOptions = struct
   type t = spline_solve_options
   let create () =
-    Rosetta__.construct 2972 None (fun _ -> [])
-  let method_ self = Rosetta__.call 2964 (fun c -> [Rosetta__.obj_e c self]) SplineSolver.dec__
-  let set_method_ self v = Rosetta__.call 2965 (fun c -> [Rosetta__.obj_e c self; SplineSolver.enc__ c v]) Rosetta__.unit_d
-  let direct_limit self = Rosetta__.call 2966 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
-  let set_direct_limit self v = Rosetta__.call 2967 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c v]) Rosetta__.unit_d
-  let tolerance self = Rosetta__.call 2968 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.float_d
-  let set_tolerance self v = Rosetta__.call 2969 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c v]) Rosetta__.unit_d
-  let max_iterations self = Rosetta__.call 2970 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
-  let set_max_iterations self v = Rosetta__.call 2971 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c v]) Rosetta__.unit_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|254|] then Some x else None
+    Rosetta__.construct 2983 None (fun _ -> [])
+  let method_ self = Rosetta__.call 2975 (fun c -> [Rosetta__.obj_e c self]) SplineSolver.dec__
+  let set_method_ self v = Rosetta__.call 2976 (fun c -> [Rosetta__.obj_e c self; SplineSolver.enc__ c v]) Rosetta__.unit_d
+  let direct_limit self = Rosetta__.call 2977 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+  let set_direct_limit self v = Rosetta__.call 2978 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c v]) Rosetta__.unit_d
+  let tolerance self = Rosetta__.call 2979 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.float_d
+  let set_tolerance self v = Rosetta__.call 2980 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c v]) Rosetta__.unit_d
+  let max_iterations self = Rosetta__.call 2981 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+  let set_max_iterations self v = Rosetta__.call 2982 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c v]) Rosetta__.unit_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|255|] then Some x else None
   let upcast (x : [> `SplineSolveOptions ] obj) : t = x
   let close (x : [> `SplineSolveOptions ] obj) = Rosetta__.close x
   let is_closed (x : [> `SplineSolveOptions ] obj) = Rosetta__.is_closed x
@@ -7898,12 +7929,12 @@ end
 module BSplineRefinement = struct
   type t = b_spline_refinement
   let create () =
-    Rosetta__.construct 2976 None (fun _ -> [])
+    Rosetta__.construct 2987 None (fun _ -> [])
   let apply self x0 =
-    Rosetta__.call 2973 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.reals_d
-  let basis self = Rosetta__.call 2974 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
-  let set_basis self v = Rosetta__.call 2975 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c v]) Rosetta__.unit_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|255|] then Some x else None
+    Rosetta__.call 2984 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.reals_d
+  let basis self = Rosetta__.call 2985 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+  let set_basis self v = Rosetta__.call 2986 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c v]) Rosetta__.unit_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|256|] then Some x else None
   let upcast (x : [> `BSplineRefinement ] obj) : t = x
   let close (x : [> `BSplineRefinement ] obj) = Rosetta__.close x
   let is_closed (x : [> `BSplineRefinement ] obj) = Rosetta__.is_closed x
@@ -7912,38 +7943,38 @@ end
 module TensorBSpline = struct
   type t = tensor_b_spline
   let create x0 x1 =
-    Rosetta__.construct 2990 None (fun c -> [Rosetta__.obj_e c x0; Rosetta__.reals_e c x1])
+    Rosetta__.construct 3001 None (fun c -> [Rosetta__.obj_e c x0; Rosetta__.reals_e c x1])
   let create_b_spline_basis_list_float_array x0 x1 =
-    Rosetta__.construct 2990 None (fun c -> [(Rosetta__.list_e Rosetta__.obj_e) c x0; Rosetta__.reals_e c x1])
+    Rosetta__.construct 3001 None (fun c -> [(Rosetta__.list_e Rosetta__.obj_e) c x0; Rosetta__.reals_e c x1])
   let dimensions self =
-    Rosetta__.call 2977 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 2988 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let bases self =
-    Rosetta__.call 2978 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.obj_d)
+    Rosetta__.call 2989 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.obj_d)
   let shape self =
-    Rosetta__.call 2979 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
+    Rosetta__.call 2990 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
   let coefficient_count self =
-    Rosetta__.call 2980 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 2991 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let coefficients self =
-    Rosetta__.call 2981 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
+    Rosetta__.call 2992 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
   let domain_min self =
-    Rosetta__.call 2982 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
+    Rosetta__.call 2993 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
   let domain_max self =
-    Rosetta__.call 2983 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
+    Rosetta__.call 2994 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
   let coefficient self x0 =
-    Rosetta__.call 2984 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.float_d
+    Rosetta__.call 2995 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.float_d
   let set_coefficient self x0 x1 =
-    Rosetta__.call 2985 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1]) Rosetta__.unit_d
+    Rosetta__.call 2996 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1]) Rosetta__.unit_d
   let evaluate self x0 =
-    Rosetta__.call 2986 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.float_d
+    Rosetta__.call 2997 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.float_d
   let evaluate_float_array self x0 =
-    Rosetta__.call 2986 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.float_d
+    Rosetta__.call 2997 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.float_d
   let evaluate_points self x0 =
-    Rosetta__.call 2987 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
+    Rosetta__.call 2998 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
   let evaluate_grid self x0 =
-    Rosetta__.call 2988 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
+    Rosetta__.call 2999 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
   let dyadic_refine self =
-    Rosetta__.call 2989 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|256|] then Some x else None
+    Rosetta__.call 3000 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|257|] then Some x else None
   let upcast (x : [> `TensorBSpline ] obj) : t = x
   let close (x : [> `TensorBSpline ] obj) = Rosetta__.close x
   let is_closed (x : [> `TensorBSpline ] obj) = Rosetta__.is_closed x
@@ -7952,48 +7983,48 @@ end
 module OrthantCellTree = struct
   type t = orthant_cell_tree
   let create x0 x1 =
-    Rosetta__.construct 3011 None (fun c -> [Rosetta__.reals_e c x0; Rosetta__.reals_e c x1])
+    Rosetta__.construct 3022 None (fun c -> [Rosetta__.reals_e c x0; Rosetta__.reals_e c x1])
   let dimensions self =
-    Rosetta__.call 2991 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3002 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let arity self =
-    Rosetta__.call 2992 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3003 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let size self =
-    Rosetta__.call 2993 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3004 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let max_depth self =
-    Rosetta__.call 2994 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3005 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let check self x0 =
-    Rosetta__.call 2995 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3006 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
   let check_slot self x0 =
-    Rosetta__.call 2996 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3007 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
   let lo self x0 =
-    Rosetta__.call 2997 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
+    Rosetta__.call 3008 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
   let hi self x0 =
-    Rosetta__.call 2998 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
+    Rosetta__.call 3009 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
   let depth self x0 =
-    Rosetta__.call 2999 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3010 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
   let parent self x0 =
-    Rosetta__.call 3000 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3011 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
   let child self x0 x1 =
-    Rosetta__.call 3001 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
+    Rosetta__.call 3012 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
   let is_leaf self x0 =
-    Rosetta__.call 3002 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3013 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.bool_d
   let ensure_child self x0 x1 =
-    Rosetta__.call 3003 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
+    Rosetta__.call 3014 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
   let child_box self x0 x1 =
-    Rosetta__.call 3004 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.reals_d x1, Rosetta__.reals_d x2) | _ -> Rosetta__.malformed ())
+    Rosetta__.call 3015 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.reals_d x1, Rosetta__.reals_d x2) | _ -> Rosetta__.malformed ())
   let slot_for self x0 x1 =
-    Rosetta__.call 3005 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.reals_e c x1]) Rosetta__.int_d
+    Rosetta__.call 3016 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.reals_e c x1]) Rosetta__.int_d
   let contains self x0 x1 =
-    Rosetta__.call 3006 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.reals_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3017 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.reals_e c x1]) Rosetta__.bool_d
   let locate self x0 =
-    Rosetta__.call 3007 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3018 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.int_d
   let cells_at_depth self x0 =
-    Rosetta__.call 3008 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d Rosetta__.int_d)
+    Rosetta__.call 3019 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d Rosetta__.int_d)
   let overlaps x0 x1 x2 x3 =
-    Rosetta__.call 3009 (fun c -> [Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.reals_e c x2; Rosetta__.reals_e c x3]) Rosetta__.bool_d
+    Rosetta__.call 3020 (fun c -> [Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.reals_e c x2; Rosetta__.reals_e c x3]) Rosetta__.bool_d
   let covered_to_depth self x0 x1 x2 =
-    Rosetta__.call 3010 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.reals_e c x1; Rosetta__.reals_e c x2]) Rosetta__.bool_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|257|] then Some x else None
+    Rosetta__.call 3021 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.reals_e c x1; Rosetta__.reals_e c x2]) Rosetta__.bool_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|258|] then Some x else None
   let upcast (x : [> `OrthantCellTree ] obj) : t = x
   let close (x : [> `OrthantCellTree ] obj) = Rosetta__.close x
   let is_closed (x : [> `OrthantCellTree ] obj) = Rosetta__.is_closed x
@@ -8002,12 +8033,12 @@ end
 module AxisRefinement = struct
   type t = axis_refinement
   let create () =
-    Rosetta__.construct 3016 None (fun _ -> [])
-  let rows self = Rosetta__.call 3012 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.int_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ())))
-  let set_rows self v = Rosetta__.call 3013 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e (Rosetta__.list_e (fun c (x1, x2) -> Rosetta__.Tup [Rosetta__.int_e c x1; Rosetta__.float_e c x2]))) c v]) Rosetta__.unit_d
-  let cols self = Rosetta__.call 3014 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.int_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ())))
-  let set_cols self v = Rosetta__.call 3015 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e (Rosetta__.list_e (fun c (x1, x2) -> Rosetta__.Tup [Rosetta__.int_e c x1; Rosetta__.float_e c x2]))) c v]) Rosetta__.unit_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|258|] then Some x else None
+    Rosetta__.construct 3027 None (fun _ -> [])
+  let rows self = Rosetta__.call 3023 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.int_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ())))
+  let set_rows self v = Rosetta__.call 3024 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e (Rosetta__.list_e (fun c (x1, x2) -> Rosetta__.Tup [Rosetta__.int_e c x1; Rosetta__.float_e c x2]))) c v]) Rosetta__.unit_d
+  let cols self = Rosetta__.call 3025 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.int_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ())))
+  let set_cols self v = Rosetta__.call 3026 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e (Rosetta__.list_e (fun c (x1, x2) -> Rosetta__.Tup [Rosetta__.int_e c x1; Rosetta__.float_e c x2]))) c v]) Rosetta__.unit_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|259|] then Some x else None
   let upcast (x : [> `AxisRefinement ] obj) : t = x
   let close (x : [> `AxisRefinement ] obj) = Rosetta__.close x
   let is_closed (x : [> `AxisRefinement ] obj) = Rosetta__.is_closed x
@@ -8016,54 +8047,54 @@ end
 module HierarchicalBSpline = struct
   type t = hierarchical_b_spline
   let create x0 x1 =
-    Rosetta__.construct 3038 None (fun c -> [Rosetta__.reals_e c x0; Rosetta__.reals_e c x1])
+    Rosetta__.construct 3049 None (fun c -> [Rosetta__.reals_e c x0; Rosetta__.reals_e c x1])
   let dimensions self =
-    Rosetta__.call 3017 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3028 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let cell_count self =
-    Rosetta__.call 3018 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3029 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let root self =
-    Rosetta__.call 3019 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3030 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let parent self x0 =
-    Rosetta__.call 3020 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3031 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
   let child self x0 x1 =
-    Rosetta__.call 3021 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
+    Rosetta__.call 3032 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
   let depth self x0 =
-    Rosetta__.call 3022 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3033 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
   let cell_min self x0 =
-    Rosetta__.call 3023 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
+    Rosetta__.call 3034 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
   let cell_max self x0 =
-    Rosetta__.call 3024 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
+    Rosetta__.call 3035 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
   let locate self x0 =
-    Rosetta__.call 3025 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3036 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.int_d
   let has_spline self x0 =
-    Rosetta__.call 3026 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3037 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.bool_d
   let spline self x0 =
-    Rosetta__.call 3027 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3038 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.obj_d
   let set_spline self x0 x1 =
-    Rosetta__.call 3028 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.obj_e c x1]) Rosetta__.unit_d
+    Rosetta__.call 3039 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.obj_e c x1]) Rosetta__.unit_d
   let clear_spline self x0 =
-    Rosetta__.call 3029 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3040 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
   let subdivide self x0 =
-    Rosetta__.call 3030 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d Rosetta__.int_d)
+    Rosetta__.call 3041 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d Rosetta__.int_d)
   let refine self x0 x1 =
-    Rosetta__.call 3031 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
+    Rosetta__.call 3042 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
   let refine_int_int_tensor_b_spline self x0 x1 x2 =
-    Rosetta__.call 3031 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1; Rosetta__.obj_e c x2]) Rosetta__.int_d
+    Rosetta__.call 3042 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1; Rosetta__.obj_e c x2]) Rosetta__.int_d
   let refine_region self x0 x1 x2 =
-    Rosetta__.call 3032 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.int_e c x2]) Rosetta__.unit_d
+    Rosetta__.call 3043 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.int_e c x2]) Rosetta__.unit_d
   let refine_region_float_array_float_array_int_fn self x0 x1 x2 x3 =
-    Rosetta__.call 3032 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.int_e c x2; (fun c f -> Rosetta__.fn_e (fun c args -> (Rosetta__.option_e Rosetta__.obj_e) c (f (Rosetta__.reals_d (Stdlib.Array.get args 0)) (Rosetta__.reals_d (Stdlib.Array.get args 1)))) c) c x3]) Rosetta__.unit_d
+    Rosetta__.call 3043 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.int_e c x2; (fun c f -> Rosetta__.fn_e (fun c args -> (Rosetta__.option_e Rosetta__.obj_e) c (f (Rosetta__.reals_d (Stdlib.Array.get args 0)) (Rosetta__.reals_d (Stdlib.Array.get args 1)))) c) c x3]) Rosetta__.unit_d
   let fit_cell ?options:x4 self x0 x1 x2 x3 =
-    Rosetta__.call 3033 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.obj_e) c x1; (Rosetta__.list_e Rosetta__.reals_e) c x2; Rosetta__.reals_e c x3] [(Stdlib.Option.map (Rosetta__.obj_e c) x4, None, "options")]) Rosetta__.unit_d
+    Rosetta__.call 3044 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.obj_e) c x1; (Rosetta__.list_e Rosetta__.reals_e) c x2; Rosetta__.reals_e c x3] [(Stdlib.Option.map (Rosetta__.obj_e c) x4, None, "options")]) Rosetta__.unit_d
   let fit_cell_penalized ?order:x5 ?options:x6 self x0 x1 x2 x3 x4 =
-    Rosetta__.call 3034 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.obj_e) c x1; (Rosetta__.list_e Rosetta__.reals_e) c x2; Rosetta__.reals_e c x3; Rosetta__.reals_e c x4] [(Stdlib.Option.map (Rosetta__.int_e c) x5, Some (Rosetta__.int_e c 2), "order"); (Stdlib.Option.map (Rosetta__.obj_e c) x6, None, "options")]) Rosetta__.unit_d
+    Rosetta__.call 3045 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.obj_e) c x1; (Rosetta__.list_e Rosetta__.reals_e) c x2; Rosetta__.reals_e c x3; Rosetta__.reals_e c x4] [(Stdlib.Option.map (Rosetta__.int_e c) x5, Some (Rosetta__.int_e c 2), "order"); (Stdlib.Option.map (Rosetta__.obj_e c) x6, None, "options")]) Rosetta__.unit_d
   let evaluate self x0 =
-    Rosetta__.call 3035 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.float_d
+    Rosetta__.call 3046 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.float_d
   let evaluate_points self x0 =
-    Rosetta__.call 3036 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
+    Rosetta__.call 3047 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
   let evaluate_grid self x0 =
-    Rosetta__.call 3037 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|259|] then Some x else None
+    Rosetta__.call 3048 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|260|] then Some x else None
   let upcast (x : [> `HierarchicalBSpline ] obj) : t = x
   let close (x : [> `HierarchicalBSpline ] obj) = Rosetta__.close x
   let is_closed (x : [> `HierarchicalBSpline ] obj) = Rosetta__.is_closed x
@@ -8072,66 +8103,66 @@ end
 module TruncatedHierarchicalBSpline = struct
   type t = truncated_hierarchical_b_spline
   let create x0 =
-    Rosetta__.construct 3068 None (fun c -> [Rosetta__.obj_e c x0])
+    Rosetta__.construct 3079 None (fun c -> [Rosetta__.obj_e c x0])
   let dimensions self =
-    Rosetta__.call 3039 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3050 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let level_count self =
-    Rosetta__.call 3040 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3051 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let level self x0 =
-    Rosetta__.call 3041 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3052 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.obj_d
   let cell_count self =
-    Rosetta__.call 3042 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3053 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let root self =
-    Rosetta__.call 3043 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3054 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let parent self x0 =
-    Rosetta__.call 3044 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3055 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
   let child self x0 x1 =
-    Rosetta__.call 3045 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
+    Rosetta__.call 3056 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
   let depth self x0 =
-    Rosetta__.call 3046 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3057 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.int_d
   let cell_min self x0 =
-    Rosetta__.call 3047 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
+    Rosetta__.call 3058 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
   let cell_max self x0 =
-    Rosetta__.call 3048 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
+    Rosetta__.call 3059 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.reals_d
   let locate self x0 =
-    Rosetta__.call 3049 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3060 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.int_d
   let refine self x0 x1 =
-    Rosetta__.call 3050 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
+    Rosetta__.call 3061 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1]) Rosetta__.int_d
   let subdivide self x0 =
-    Rosetta__.call 3051 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d Rosetta__.int_d)
+    Rosetta__.call 3062 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d Rosetta__.int_d)
   let refine_region self x0 x1 x2 =
-    Rosetta__.call 3052 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.int_e c x2]) Rosetta__.unit_d
+    Rosetta__.call 3063 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0; Rosetta__.reals_e c x1; Rosetta__.int_e c x2]) Rosetta__.unit_d
   let support_min self x0 x1 =
-    Rosetta__.call 3053 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.reals_d
+    Rosetta__.call 3064 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.reals_d
   let support_max self x0 x1 =
-    Rosetta__.call 3054 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.reals_d
+    Rosetta__.call 3065 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.reals_d
   let is_active self x0 x1 =
-    Rosetta__.call 3055 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.bool_d
+    Rosetta__.call 3066 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.bool_d
   let active_indices self x0 =
-    Rosetta__.call 3056 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.int_d))
+    Rosetta__.call 3067 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.int_d))
   let basis_size self =
-    Rosetta__.call 3057 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3068 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let coefficient self x0 x1 =
-    Rosetta__.call 3058 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.float_d
+    Rosetta__.call 3069 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1]) Rosetta__.float_d
   let set_coefficient self x0 x1 x2 =
-    Rosetta__.call 3059 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1; Rosetta__.float_e c x2]) Rosetta__.unit_d
+    Rosetta__.call 3070 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1; Rosetta__.float_e c x2]) Rosetta__.unit_d
   let truncated_basis self x0 x1 x2 =
-    Rosetta__.call 3060 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1; Rosetta__.reals_e c x2]) Rosetta__.float_d
+    Rosetta__.call 3071 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1; Rosetta__.reals_e c x2]) Rosetta__.float_d
   let fit_level ?options:x3 self x0 x1 x2 =
-    Rosetta__.call 3061 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.reals_e) c x1; Rosetta__.reals_e c x2] [(Stdlib.Option.map (Rosetta__.obj_e c) x3, None, "options")]) Rosetta__.unit_d
+    Rosetta__.call 3072 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.reals_e) c x1; Rosetta__.reals_e c x2] [(Stdlib.Option.map (Rosetta__.obj_e c) x3, None, "options")]) Rosetta__.unit_d
   let fit_level_penalized ?order:x4 ?options:x5 self x0 x1 x2 x3 =
-    Rosetta__.call 3062 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.reals_e) c x1; Rosetta__.reals_e c x2; Rosetta__.reals_e c x3] [(Stdlib.Option.map (Rosetta__.int_e c) x4, Some (Rosetta__.int_e c 2), "order"); (Stdlib.Option.map (Rosetta__.obj_e c) x5, None, "options")]) Rosetta__.unit_d
+    Rosetta__.call 3073 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; (Rosetta__.list_e Rosetta__.reals_e) c x1; Rosetta__.reals_e c x2; Rosetta__.reals_e c x3] [(Stdlib.Option.map (Rosetta__.int_e c) x4, Some (Rosetta__.int_e c 2), "order"); (Stdlib.Option.map (Rosetta__.obj_e c) x5, None, "options")]) Rosetta__.unit_d
   let fit ?options:x2 self x0 x1 =
-    Rosetta__.call 3063 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0; Rosetta__.reals_e c x1] [(Stdlib.Option.map (Rosetta__.obj_e c) x2, None, "options")]) Rosetta__.unit_d
+    Rosetta__.call 3074 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0; Rosetta__.reals_e c x1] [(Stdlib.Option.map (Rosetta__.obj_e c) x2, None, "options")]) Rosetta__.unit_d
   let fit_penalized ?order:x3 ?options:x4 self x0 x1 x2 =
-    Rosetta__.call 3064 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0; Rosetta__.reals_e c x1; Rosetta__.reals_e c x2] [(Stdlib.Option.map (Rosetta__.int_e c) x3, Some (Rosetta__.int_e c 2), "order"); (Stdlib.Option.map (Rosetta__.obj_e c) x4, None, "options")]) Rosetta__.unit_d
+    Rosetta__.call 3075 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0; Rosetta__.reals_e c x1; Rosetta__.reals_e c x2] [(Stdlib.Option.map (Rosetta__.int_e c) x3, Some (Rosetta__.int_e c 2), "order"); (Stdlib.Option.map (Rosetta__.obj_e c) x4, None, "options")]) Rosetta__.unit_d
   let evaluate self x0 =
-    Rosetta__.call 3065 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.float_d
+    Rosetta__.call 3076 (fun c -> [Rosetta__.obj_e c self; Rosetta__.reals_e c x0]) Rosetta__.float_d
   let evaluate_points self x0 =
-    Rosetta__.call 3066 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
+    Rosetta__.call 3077 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
   let evaluate_grid self x0 =
-    Rosetta__.call 3067 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|260|] then Some x else None
+    Rosetta__.call 3078 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.reals_e) c x0]) Rosetta__.reals_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|261|] then Some x else None
   let upcast (x : [> `TruncatedHierarchicalBSpline ] obj) : t = x
   let close (x : [> `TruncatedHierarchicalBSpline ] obj) = Rosetta__.close x
   let is_closed (x : [> `TruncatedHierarchicalBSpline ] obj) = Rosetta__.is_closed x
@@ -8140,118 +8171,118 @@ end
 module NnTensor = struct
   type t = nn_tensor
   let create () =
-    Rosetta__.construct 3123 None (fun _ -> [])
+    Rosetta__.construct 3134 None (fun _ -> [])
   let create_float_array_int_list_string ?dtype:x2 x0 x1 =
-    Rosetta__.construct 3123 None (fun c -> Rosetta__.trailing [Rosetta__.reals_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "float32"), "dtype")])
+    Rosetta__.construct 3134 None (fun c -> Rosetta__.trailing [Rosetta__.reals_e c x0; (Rosetta__.list_e Rosetta__.int_e) c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "float32"), "dtype")])
   let zeros ?dtype:x1 x0 =
-    Rosetta__.call 3069 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
+    Rosetta__.call 3080 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
   let ones ?dtype:x1 x0 =
-    Rosetta__.call 3070 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
+    Rosetta__.call 3081 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
   let full ?dtype:x2 x0 x1 =
-    Rosetta__.call 3071 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
+    Rosetta__.call 3082 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.float_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
   let arange ?step:x2 ?dtype:x3 x0 x1 =
-    Rosetta__.call 3072 (fun c -> Rosetta__.trailing [Rosetta__.float_e c x0; Rosetta__.float_e c x1] [(Stdlib.Option.map (Rosetta__.float_e c) x2, Some (Rosetta__.float_e c 1.0), "step"); (Stdlib.Option.map (Rosetta__.string_e c) x3, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
+    Rosetta__.call 3083 (fun c -> Rosetta__.trailing [Rosetta__.float_e c x0; Rosetta__.float_e c x1] [(Stdlib.Option.map (Rosetta__.float_e c) x2, Some (Rosetta__.float_e c 1.0), "step"); (Stdlib.Option.map (Rosetta__.string_e c) x3, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
   let randn ?mean:x2 ?std:x3 ?dtype:x4 x0 x1 =
-    Rosetta__.call 3073 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.float_e c) x2, Some (Rosetta__.float_e c 0.0), "mean"); (Stdlib.Option.map (Rosetta__.float_e c) x3, Some (Rosetta__.float_e c 1.0), "std"); (Stdlib.Option.map (Rosetta__.string_e c) x4, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
+    Rosetta__.call 3084 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.float_e c) x2, Some (Rosetta__.float_e c 0.0), "mean"); (Stdlib.Option.map (Rosetta__.float_e c) x3, Some (Rosetta__.float_e c 1.0), "std"); (Stdlib.Option.map (Rosetta__.string_e c) x4, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
   let uniform ?low:x2 ?high:x3 ?dtype:x4 x0 x1 =
-    Rosetta__.call 3074 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.float_e c) x2, Some (Rosetta__.float_e c 0.0), "low"); (Stdlib.Option.map (Rosetta__.float_e c) x3, Some (Rosetta__.float_e c 1.0), "high"); (Stdlib.Option.map (Rosetta__.string_e c) x4, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
+    Rosetta__.call 3085 (fun c -> Rosetta__.trailing [(Rosetta__.list_e Rosetta__.int_e) c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.float_e c) x2, Some (Rosetta__.float_e c 0.0), "low"); (Stdlib.Option.map (Rosetta__.float_e c) x3, Some (Rosetta__.float_e c 1.0), "high"); (Stdlib.Option.map (Rosetta__.string_e c) x4, Some (Rosetta__.string_e c "float32"), "dtype")]) Rosetta__.obj_d
   let load_npy x0 =
-    Rosetta__.call 3075 (fun c -> [Rosetta__.string_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3086 (fun c -> [Rosetta__.string_e c x0]) Rosetta__.obj_d
   let save_npy self x0 =
-    Rosetta__.call 3076 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3087 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
   let defined self =
-    Rosetta__.call 3077 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+    Rosetta__.call 3088 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
   let values self =
-    Rosetta__.call 3078 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
+    Rosetta__.call 3089 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
   let shape self =
-    Rosetta__.call 3079 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
+    Rosetta__.call 3090 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.int_d)
   let dtype self =
-    Rosetta__.call 3080 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
+    Rosetta__.call 3091 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
   let ndim self =
-    Rosetta__.call 3081 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3092 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let numel self =
-    Rosetta__.call 3082 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3093 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let item self =
-    Rosetta__.call 3083 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.float_d
+    Rosetta__.call 3094 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.float_d
   let at self x0 =
-    Rosetta__.call 3084 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.float_d
+    Rosetta__.call 3095 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.float_d
   let str self =
-    Rosetta__.call 3085 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
+    Rosetta__.call 3096 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
   let astype self x0 =
-    Rosetta__.call 3086 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3097 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
   let reshape self x0 =
-    Rosetta__.call 3087 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.obj_d
+    Rosetta__.call 3098 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.obj_d
   let transpose ?perm:x0 self =
-    Rosetta__.call 3088 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "perm")]) Rosetta__.obj_d
+    Rosetta__.call 3099 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "perm")]) Rosetta__.obj_d
   let slice self x0 x1 x2 =
-    Rosetta__.call 3089 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1; Rosetta__.int_e c x2]) Rosetta__.obj_d
+    Rosetta__.call 3100 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1; Rosetta__.int_e c x2]) Rosetta__.obj_d
   let concat self x0 x1 =
-    Rosetta__.call 3090 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.int_e c x1]) Rosetta__.obj_d
+    Rosetta__.call 3101 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.int_e c x1]) Rosetta__.obj_d
   let add self x0 =
-    Rosetta__.call 3091 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3102 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let sub self x0 =
-    Rosetta__.call 3092 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3103 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let mul self x0 =
-    Rosetta__.call 3093 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3104 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let div self x0 =
-    Rosetta__.call 3094 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3105 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let add_scalar self x0 =
-    Rosetta__.call 3095 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3106 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.obj_d
   let mul_scalar self x0 =
-    Rosetta__.call 3096 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3107 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.obj_d
   let pow self x0 =
-    Rosetta__.call 3097 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3108 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.obj_d
   let neg self =
-    Rosetta__.call 3098 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3109 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let matmul ?transpose_a:x1 ?transpose_b:x2 self x0 =
-    Rosetta__.call 3099 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0] [(Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "transpose_a"); (Stdlib.Option.map (Rosetta__.bool_e c) x2, Some (Rosetta__.bool_e c false), "transpose_b")]) Rosetta__.obj_d
+    Rosetta__.call 3110 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0] [(Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "transpose_a"); (Stdlib.Option.map (Rosetta__.bool_e c) x2, Some (Rosetta__.bool_e c false), "transpose_b")]) Rosetta__.obj_d
   let exp self =
-    Rosetta__.call 3100 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3111 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let log self =
-    Rosetta__.call 3101 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3112 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let sqrt self =
-    Rosetta__.call 3102 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3113 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let abs self =
-    Rosetta__.call 3103 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3114 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let square self =
-    Rosetta__.call 3104 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3115 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let tanh self =
-    Rosetta__.call 3105 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3116 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let sigmoid self =
-    Rosetta__.call 3106 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3117 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let relu self =
-    Rosetta__.call 3107 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3118 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let activate self x0 =
-    Rosetta__.call 3108 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3119 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
   let softmax ?axis:x0 self =
-    Rosetta__.call 3109 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c (-1)), "axis")]) Rosetta__.obj_d
+    Rosetta__.call 3120 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c (-1)), "axis")]) Rosetta__.obj_d
   let log_softmax ?axis:x0 self =
-    Rosetta__.call 3110 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c (-1)), "axis")]) Rosetta__.obj_d
+    Rosetta__.call 3121 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c (-1)), "axis")]) Rosetta__.obj_d
   let sum ?axes:x0 ?keepdims:x1 self =
-    Rosetta__.call 3111 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
+    Rosetta__.call 3122 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
   let mean ?axes:x0 ?keepdims:x1 self =
-    Rosetta__.call 3112 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
+    Rosetta__.call 3123 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
   let max ?axes:x0 ?keepdims:x1 self =
-    Rosetta__.call 3113 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
+    Rosetta__.call 3124 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
   let min ?axes:x0 ?keepdims:x1 self =
-    Rosetta__.call 3114 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
+    Rosetta__.call 3125 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map ((Rosetta__.list_e Rosetta__.int_e) c) x0, None, "axes"); (Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "keepdims")]) Rosetta__.obj_d
   let argmax ?axis:x0 self =
-    Rosetta__.call 3115 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c (-1)), "axis")]) Rosetta__.obj_d
+    Rosetta__.call 3126 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c (-1)), "axis")]) Rosetta__.obj_d
   let set_requires_grad ?requires_grad:x0 self =
-    Rosetta__.call 3116 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.bool_e c) x0, Some (Rosetta__.bool_e c true), "requires_grad")]) Rosetta__.unit_d
+    Rosetta__.call 3127 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.bool_e c) x0, Some (Rosetta__.bool_e c true), "requires_grad")]) Rosetta__.unit_d
   let requires_grad self =
-    Rosetta__.call 3117 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+    Rosetta__.call 3128 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
   let backward self =
-    Rosetta__.call 3118 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 3129 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let grad self =
-    Rosetta__.call 3119 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3130 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let zero_grad self =
-    Rosetta__.call 3120 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 3131 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let detach self =
-    Rosetta__.call 3121 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3132 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let to_string self =
-    Rosetta__.call 3122 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|261|] then Some x else None
+    Rosetta__.call 3133 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|262|] then Some x else None
   let upcast (x : [> `NnTensor ] obj) : t = x
   let close (x : [> `NnTensor ] obj) = Rosetta__.close x
   let is_closed (x : [> `NnTensor ] obj) = Rosetta__.is_closed x
@@ -8260,60 +8291,60 @@ end
 module NnModel = struct
   type t = nn_model
   let create ?seed:x0 () =
-    Rosetta__.construct 3150 None (fun c -> Rosetta__.trailing [] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c 0), "seed")])
+    Rosetta__.construct 3161 None (fun c -> Rosetta__.trailing [] [(Stdlib.Option.map (Rosetta__.int_e c) x0, Some (Rosetta__.int_e c 0), "seed")])
   let add_dense ?activation:x1 self x0 =
-    Rosetta__.call 3124 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "none"), "activation")]) Rosetta__.unit_d
+    Rosetta__.call 3135 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0] [(Stdlib.Option.map (Rosetta__.string_e c) x1, Some (Rosetta__.string_e c "none"), "activation")]) Rosetta__.unit_d
   let add_conv2d ?stride:x2 ?padding:x3 ?activation:x4 self x0 x1 =
-    Rosetta__.call 3125 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.int_e c) x2, Some (Rosetta__.int_e c 1), "stride"); (Stdlib.Option.map (Rosetta__.string_e c) x3, Some (Rosetta__.string_e c "same"), "padding"); (Stdlib.Option.map (Rosetta__.string_e c) x4, Some (Rosetta__.string_e c "none"), "activation")]) Rosetta__.unit_d
+    Rosetta__.call 3136 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.int_e c) x2, Some (Rosetta__.int_e c 1), "stride"); (Stdlib.Option.map (Rosetta__.string_e c) x3, Some (Rosetta__.string_e c "same"), "padding"); (Stdlib.Option.map (Rosetta__.string_e c) x4, Some (Rosetta__.string_e c "none"), "activation")]) Rosetta__.unit_d
   let add_max_pool2d ?padding:x2 self x0 x1 =
-    Rosetta__.call 3126 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "valid"), "padding")]) Rosetta__.unit_d
+    Rosetta__.call 3137 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "valid"), "padding")]) Rosetta__.unit_d
   let add_avg_pool2d ?padding:x2 self x0 x1 =
-    Rosetta__.call 3127 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "valid"), "padding")]) Rosetta__.unit_d
+    Rosetta__.call 3138 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.int_e c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "valid"), "padding")]) Rosetta__.unit_d
   let add_global_avg_pool2d self =
-    Rosetta__.call 3128 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 3139 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let add_batch_norm ?momentum:x0 ?eps:x1 self =
-    Rosetta__.call 3129 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.float_e c) x0, Some (Rosetta__.float_e c 0.99), "momentum"); (Stdlib.Option.map (Rosetta__.float_e c) x1, Some (Rosetta__.float_e c 0.001), "eps")]) Rosetta__.unit_d
+    Rosetta__.call 3140 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.float_e c) x0, Some (Rosetta__.float_e c 0.99), "momentum"); (Stdlib.Option.map (Rosetta__.float_e c) x1, Some (Rosetta__.float_e c 0.001), "eps")]) Rosetta__.unit_d
   let add_layer_norm ?eps:x0 self =
-    Rosetta__.call 3130 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.float_e c) x0, Some (Rosetta__.float_e c 1e-05), "eps")]) Rosetta__.unit_d
+    Rosetta__.call 3141 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.float_e c) x0, Some (Rosetta__.float_e c 1e-05), "eps")]) Rosetta__.unit_d
   let add_dropout self x0 =
-    Rosetta__.call 3131 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3142 (fun c -> [Rosetta__.obj_e c self; Rosetta__.float_e c x0]) Rosetta__.unit_d
   let add_activation self x0 =
-    Rosetta__.call 3132 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3143 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
   let add_flatten self =
-    Rosetta__.call 3133 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 3144 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let add_reshape self x0 =
-    Rosetta__.call 3134 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.unit_d
+    Rosetta__.call 3145 (fun c -> [Rosetta__.obj_e c self; (Rosetta__.list_e Rosetta__.int_e) c x0]) Rosetta__.unit_d
   let num_layers self =
-    Rosetta__.call 3135 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3146 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let summary self =
-    Rosetta__.call 3136 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
+    Rosetta__.call 3147 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.string_d
   let forward ?training:x1 self x0 =
-    Rosetta__.call 3137 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0] [(Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "training")]) Rosetta__.obj_d
+    Rosetta__.call 3148 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0] [(Stdlib.Option.map (Rosetta__.bool_e c) x1, Some (Rosetta__.bool_e c false), "training")]) Rosetta__.obj_d
   let predict self x0 =
-    Rosetta__.call 3138 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3149 (fun c -> [Rosetta__.obj_e c self; Rosetta__.obj_e c x0]) Rosetta__.obj_d
   let loss ?loss:x2 ?training:x3 self x0 x1 =
-    Rosetta__.call 3139 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.obj_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "mse"), "loss"); (Stdlib.Option.map (Rosetta__.bool_e c) x3, Some (Rosetta__.bool_e c false), "training")]) Rosetta__.float_d
+    Rosetta__.call 3150 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.obj_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "mse"), "loss"); (Stdlib.Option.map (Rosetta__.bool_e c) x3, Some (Rosetta__.bool_e c false), "training")]) Rosetta__.float_d
   let compute_gradients ?loss:x2 self x0 x1 =
-    Rosetta__.call 3140 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.obj_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "mse"), "loss")]) Rosetta__.float_d
+    Rosetta__.call 3151 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.obj_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "mse"), "loss")]) Rosetta__.float_d
   let gradient self x0 =
-    Rosetta__.call 3141 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3152 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
   let set_optimizer ?kind:x0 ?learning_rate:x1 self =
-    Rosetta__.call 3142 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.string_e c) x0, Some (Rosetta__.string_e c "adam"), "kind"); (Stdlib.Option.map (Rosetta__.float_e c) x1, Some (Rosetta__.float_e c 0.001), "learning_rate")]) Rosetta__.unit_d
+    Rosetta__.call 3153 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.string_e c) x0, Some (Rosetta__.string_e c "adam"), "kind"); (Stdlib.Option.map (Rosetta__.float_e c) x1, Some (Rosetta__.float_e c 0.001), "learning_rate")]) Rosetta__.unit_d
   let train_step ?loss:x2 self x0 x1 =
-    Rosetta__.call 3143 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.obj_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "mse"), "loss")]) Rosetta__.float_d
+    Rosetta__.call 3154 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.obj_e c x0; Rosetta__.obj_e c x1] [(Stdlib.Option.map (Rosetta__.string_e c) x2, Some (Rosetta__.string_e c "mse"), "loss")]) Rosetta__.float_d
   let parameter_names self =
-    Rosetta__.call 3144 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3155 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
   let parameter self x0 =
-    Rosetta__.call 3145 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
+    Rosetta__.call 3156 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.obj_d
   let set_parameter self x0 x1 =
-    Rosetta__.call 3146 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.obj_e c x1]) Rosetta__.unit_d
+    Rosetta__.call 3157 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.obj_e c x1]) Rosetta__.unit_d
   let parameter_count self =
-    Rosetta__.call 3147 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3158 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let save self x0 =
-    Rosetta__.call 3148 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3159 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
   let load self x0 =
-    Rosetta__.call 3149 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|262|] then Some x else None
+    Rosetta__.call 3160 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.unit_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|263|] then Some x else None
   let upcast (x : [> `NnModel ] obj) : t = x
   let close (x : [> `NnModel ] obj) = Rosetta__.close x
   let is_closed (x : [> `NnModel ] obj) = Rosetta__.is_closed x
@@ -8322,14 +8353,14 @@ end
 module TaskOutput = struct
   type t = task_output
   let create () =
-    Rosetta__.construct 3163 None (fun _ -> [])
-  let observations self = Rosetta__.call 3151 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
-  let rewards self = Rosetta__.call 3153 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
-  let terminated self = Rosetta__.call 3155 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bytes_d
-  let truncated self = Rosetta__.call 3157 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bytes_d
-  let final_observations self = Rosetta__.call 3159 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
-  let final_valid self = Rosetta__.call 3161 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bytes_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|263|] then Some x else None
+    Rosetta__.construct 3174 None (fun _ -> [])
+  let observations self = Rosetta__.call 3162 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
+  let rewards self = Rosetta__.call 3164 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
+  let terminated self = Rosetta__.call 3166 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bytes_d
+  let truncated self = Rosetta__.call 3168 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bytes_d
+  let final_observations self = Rosetta__.call 3170 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.reals_d
+  let final_valid self = Rosetta__.call 3172 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bytes_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|264|] then Some x else None
   let upcast (x : [> `TaskOutput ] obj) : t = x
   let close (x : [> `TaskOutput ] obj) = Rosetta__.close x
   let is_closed (x : [> `TaskOutput ] obj) = Rosetta__.is_closed x
@@ -8338,22 +8369,22 @@ end
 module TaskBatch = struct
   type t = task_batch
   let size self =
-    Rosetta__.call 3164 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3175 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let observation_size self =
-    Rosetta__.call 3165 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3176 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let action_size self =
-    Rosetta__.call 3166 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3177 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let output self =
-    Rosetta__.call 3167 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3178 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let step ?mask:x1 self x0 =
-    Rosetta__.call 3168 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.reals_e c x0] [(Stdlib.Option.map (Rosetta__.bytes_e c) x1, None, "mask")]) Rosetta__.obj_d
+    Rosetta__.call 3179 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self; Rosetta__.reals_e c x0] [(Stdlib.Option.map (Rosetta__.bytes_e c) x1, None, "mask")]) Rosetta__.obj_d
   let reset ?mask:x0 self =
-    Rosetta__.call 3169 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.bytes_e c) x0, None, "mask")]) Rosetta__.obj_d
+    Rosetta__.call 3180 (fun c -> Rosetta__.trailing [Rosetta__.obj_e c self] [(Stdlib.Option.map (Rosetta__.bytes_e c) x0, None, "mask")]) Rosetta__.obj_d
   let seed self x0 =
-    Rosetta__.call 3170 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
+    Rosetta__.call 3181 (fun c -> [Rosetta__.obj_e c self; Rosetta__.int_e c x0]) Rosetta__.unit_d
   let create ?workers:x2 ?seed:x3 ?time_limit:x4 x0 x1 =
-    Rosetta__.call 3171 (fun c -> Rosetta__.trailing [Task.enc__ c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.int_e c) x2, Some (Rosetta__.int_e c 1), "workers"); (Stdlib.Option.map (Rosetta__.int_e c) x3, Some (Rosetta__.int_e c 0), "seed"); (Stdlib.Option.map (Rosetta__.int_e c) x4, Some (Rosetta__.int_e c 1000), "time_limit")]) Rosetta__.obj_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|264|] then Some x else None
+    Rosetta__.call 3182 (fun c -> Rosetta__.trailing [Task.enc__ c x0; Rosetta__.int_e c x1] [(Stdlib.Option.map (Rosetta__.int_e c) x2, Some (Rosetta__.int_e c 1), "workers"); (Stdlib.Option.map (Rosetta__.int_e c) x3, Some (Rosetta__.int_e c 0), "seed"); (Stdlib.Option.map (Rosetta__.int_e c) x4, Some (Rosetta__.int_e c 1000), "time_limit")]) Rosetta__.obj_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|265|] then Some x else None
   let upcast (x : [> `TaskBatch ] obj) : t = x
   let close (x : [> `TaskBatch ] obj) = Rosetta__.close x
   let is_closed (x : [> `TaskBatch ] obj) = Rosetta__.is_closed x
@@ -8362,52 +8393,52 @@ end
 module DirectedGraph = struct
   type t = directed_graph
   let create () =
-    Rosetta__.construct 3192 None (fun _ -> [])
+    Rosetta__.construct 3203 None (fun _ -> [])
   let create_string_list x0 =
-    Rosetta__.construct 3192 None (fun c -> [(Rosetta__.list_e Rosetta__.string_e) c x0])
+    Rosetta__.construct 3203 None (fun c -> [(Rosetta__.list_e Rosetta__.string_e) c x0])
   let empty self =
-    Rosetta__.call 3172 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+    Rosetta__.call 3183 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
   let vertex_count self =
-    Rosetta__.call 3173 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3184 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let edge_count self =
-    Rosetta__.call 3174 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3185 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let clear self =
-    Rosetta__.call 3175 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 3186 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let add_vertex self x0 =
-    Rosetta__.call 3176 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3187 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let add_vertex_string self x0 =
-    Rosetta__.call 3176 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3187 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let remove_vertex self x0 =
-    Rosetta__.call 3177 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3188 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let has_vertex self x0 =
-    Rosetta__.call 3178 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3189 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let add_edge self x0 x1 =
-    Rosetta__.call 3179 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3190 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let remove_edge self x0 x1 =
-    Rosetta__.call 3180 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3191 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let has_edge self x0 x1 =
-    Rosetta__.call 3181 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3192 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let vertices self =
-    Rosetta__.call 3182 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3193 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
   let outgoing_neighbors self x0 =
-    Rosetta__.call 3183 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3194 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
   let incoming_neighbors self x0 =
-    Rosetta__.call 3184 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3195 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
   let out_degree self x0 =
-    Rosetta__.call 3185 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3196 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
   let in_degree self x0 =
-    Rosetta__.call 3186 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3197 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
   let bfs self x0 =
-    Rosetta__.call 3187 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3198 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
   let dfs self x0 =
-    Rosetta__.call 3188 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3199 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
   let contains_path self x0 x1 =
-    Rosetta__.call 3189 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3200 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let transpose self =
-    Rosetta__.call 3190 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3201 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let topological_sort self =
-    Rosetta__.call 3191 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|265|] then Some x else None
+    Rosetta__.call 3202 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|266|] then Some x else None
   let upcast (x : [> `DirectedGraph ] obj) : t = x
   let close (x : [> `DirectedGraph ] obj) = Rosetta__.close x
   let is_closed (x : [> `DirectedGraph ] obj) = Rosetta__.is_closed x
@@ -8416,48 +8447,48 @@ end
 module UndirectedGraph = struct
   type t = undirected_graph
   let create () =
-    Rosetta__.construct 3211 None (fun _ -> [])
+    Rosetta__.construct 3222 None (fun _ -> [])
   let create_string_list x0 =
-    Rosetta__.construct 3211 None (fun c -> [(Rosetta__.list_e Rosetta__.string_e) c x0])
+    Rosetta__.construct 3222 None (fun c -> [(Rosetta__.list_e Rosetta__.string_e) c x0])
   let empty self =
-    Rosetta__.call 3193 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+    Rosetta__.call 3204 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
   let vertex_count self =
-    Rosetta__.call 3194 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3205 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let edge_count self =
-    Rosetta__.call 3195 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3206 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let clear self =
-    Rosetta__.call 3196 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 3207 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let add_vertex self x0 =
-    Rosetta__.call 3197 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3208 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let add_vertex_string self x0 =
-    Rosetta__.call 3197 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3208 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let remove_vertex self x0 =
-    Rosetta__.call 3198 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3209 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let has_vertex self x0 =
-    Rosetta__.call 3199 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+    Rosetta__.call 3210 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let add_edge self x0 x1 =
-    Rosetta__.call 3200 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3211 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let remove_edge self x0 x1 =
-    Rosetta__.call 3201 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3212 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let has_edge self x0 x1 =
-    Rosetta__.call 3202 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3213 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let vertices self =
-    Rosetta__.call 3203 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3214 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
   let neighbors self x0 =
-    Rosetta__.call 3204 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3215 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
   let degree self x0 =
-    Rosetta__.call 3205 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
+    Rosetta__.call 3216 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.int_d
   let bfs self x0 =
-    Rosetta__.call 3206 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3217 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
   let dfs self x0 =
-    Rosetta__.call 3207 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+    Rosetta__.call 3218 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
   let contains_path self x0 x1 =
-    Rosetta__.call 3208 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+    Rosetta__.call 3219 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
   let connected_components self =
-    Rosetta__.call 3209 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.string_d))
+    Rosetta__.call 3220 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.string_d))
   let has_cycle self =
-    Rosetta__.call 3210 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|266|] then Some x else None
+    Rosetta__.call 3221 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|267|] then Some x else None
   let upcast (x : [> `UndirectedGraph ] obj) : t = x
   let close (x : [> `UndirectedGraph ] obj) = Rosetta__.close x
   let is_closed (x : [> `UndirectedGraph ] obj) = Rosetta__.is_closed x
@@ -8466,52 +8497,52 @@ end
 module WeightedGraph = struct
   type t = weighted_graph
   let create x0 =
-    Rosetta__.construct 3233 None (fun c -> [Rosetta__.bool_e c x0])
+    Rosetta__.construct 3244 None (fun c -> [Rosetta__.bool_e c x0])
   let create_string_list_bool x0 x1 =
-    Rosetta__.construct 3233 None (fun c -> [(Rosetta__.list_e Rosetta__.string_e) c x0; Rosetta__.bool_e c x1])
+    Rosetta__.construct 3244 None (fun c -> [(Rosetta__.list_e Rosetta__.string_e) c x0; Rosetta__.bool_e c x1])
   let directed self =
-    Rosetta__.call 3212 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+    Rosetta__.call 3223 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
   let empty self =
-    Rosetta__.call 3213 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+    Rosetta__.call 3224 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
   let vertex_count self =
-    Rosetta__.call 3214 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3225 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let edge_count self =
-    Rosetta__.call 3215 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
+    Rosetta__.call 3226 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.int_d
   let clear self =
-    Rosetta__.call 3216 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
+    Rosetta__.call 3227 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.unit_d
   let add_vertex self x0 =
-    Rosetta__.call 3217 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
-  let remove_vertex self x0 =
-    Rosetta__.call 3218 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
-  let has_vertex self x0 =
-    Rosetta__.call 3219 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
-  let add_edge self x0 x1 x2 =
-    Rosetta__.call 3220 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1; Rosetta__.float_e c x2]) Rosetta__.bool_d
-  let remove_edge self x0 x1 =
-    Rosetta__.call 3221 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
-  let has_edge self x0 x1 =
-    Rosetta__.call 3222 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
-  let edge_weight self x0 x1 =
-    Rosetta__.call 3223 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.float_d
-  let vertices self =
-    Rosetta__.call 3224 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
-  let neighbors self x0 =
-    Rosetta__.call 3225 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
-  let dijkstra_distances self x0 =
-    Rosetta__.call 3226 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.string_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ()))
-  let bellman_ford_distances self x0 =
-    Rosetta__.call 3227 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.string_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ()))
-  let bellman_ford_has_negative_cycle self x0 =
     Rosetta__.call 3228 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+  let remove_vertex self x0 =
+    Rosetta__.call 3229 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+  let has_vertex self x0 =
+    Rosetta__.call 3230 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
+  let add_edge self x0 x1 x2 =
+    Rosetta__.call 3231 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1; Rosetta__.float_e c x2]) Rosetta__.bool_d
+  let remove_edge self x0 x1 =
+    Rosetta__.call 3232 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+  let has_edge self x0 x1 =
+    Rosetta__.call 3233 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.bool_d
+  let edge_weight self x0 x1 =
+    Rosetta__.call 3234 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0; Rosetta__.string_e c x1]) Rosetta__.float_d
+  let vertices self =
+    Rosetta__.call 3235 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d Rosetta__.string_d)
+  let neighbors self x0 =
+    Rosetta__.call 3236 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d Rosetta__.string_d)
+  let dijkstra_distances self x0 =
+    Rosetta__.call 3237 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.string_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ()))
+  let bellman_ford_distances self x0 =
+    Rosetta__.call 3238 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) (Rosetta__.list_d (fun n -> match Rosetta__.parts n 2 with [x1; x2] -> (Rosetta__.string_d x1, Rosetta__.float_d x2) | _ -> Rosetta__.malformed ()))
+  let bellman_ford_has_negative_cycle self x0 =
+    Rosetta__.call 3239 (fun c -> [Rosetta__.obj_e c self; Rosetta__.string_e c x0]) Rosetta__.bool_d
   let minimum_spanning_tree self =
-    Rosetta__.call 3229 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
+    Rosetta__.call 3240 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.obj_d
   let connected_components self =
-    Rosetta__.call 3230 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.string_d))
+    Rosetta__.call 3241 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.string_d))
   let strongly_connected_components self =
-    Rosetta__.call 3231 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.string_d))
+    Rosetta__.call 3242 (fun c -> [Rosetta__.obj_e c self]) (Rosetta__.list_d (Rosetta__.list_d Rosetta__.string_d))
   let has_cycle self =
-    Rosetta__.call 3232 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
-  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|267|] then Some x else None
+    Rosetta__.call 3243 (fun c -> [Rosetta__.obj_e c self]) Rosetta__.bool_d
+  let cast (x : 'a obj) : t option = if Rosetta__.is_a x [|268|] then Some x else None
   let upcast (x : [> `WeightedGraph ] obj) : t = x
   let close (x : [> `WeightedGraph ] obj) = Rosetta__.close x
   let is_closed (x : [> `WeightedGraph ] obj) = Rosetta__.is_closed x

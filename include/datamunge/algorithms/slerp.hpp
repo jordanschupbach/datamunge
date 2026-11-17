@@ -1,82 +1,137 @@
 #pragma once
-
-/// \file slerp.hpp
-/// \brief Spherical linear interpolation (Slerp) of unit quaternions.
-///
-/// A rotation in 3D is a unit quaternion, a point on the unit 3-sphere. To animate smoothly
-/// from orientation \f$q_0\f$ to \f$q_1\f$, we want to move along the *great-circle arc*
-/// between them at *constant angular velocity* -- not along the chord (which would speed up in
-/// the middle). *Slerp* (Shoemake, 1985) does exactly this:
-/// \f[
-///   \mathrm{slerp}(q_0, q_1; t) = \frac{\sin((1-t)\Omega)}{\sin\Omega}\,q_0
-///     + \frac{\sin(t\Omega)}{\sin\Omega}\,q_1,\qquad \cos\Omega = q_0\cdot q_1,
-/// \f]
-/// where \f$\Omega\f$ is the angle between the quaternions. The result stays on the unit
-/// sphere and sweeps equal angles in equal time. Two practical details: because \f$q\f$ and
-/// \f$-q\f$ are the same rotation, we flip \f$q_1\f$'s sign when the dot product is negative
-/// to take the *shorter* arc; and when the quaternions are nearly parallel we fall back to
-/// normalized linear interpolation to avoid dividing by \f$\sin\Omega\approx 0\f$.
-///
-/// Slerp is the standard tool for keyframe rotation animation, camera interpolation, and
-/// blending orientations.
-
+/// @file slerp.hpp
+/// @brief Checked scale-safe quaternion normalization and actual interpolation branches.
 #include <array>
-#include <cmath>
-
+/// @brief Canonical checked native producers and owned values.
 namespace datamunge::algorithms {
-
-/// \brief A quaternion \f$w + xi + yj + zk\f$ stored as {w, x, y, z}.
+/// @brief Store a scalar-first quaternion as four owned doubles.
+/// Order{w,x,y,z}; zero is a valid raw value but is not a rotation and cannot be normalized. Finite nonzero scaled rotations can be normalized. No shared state.
+/// @par Example
+/// @code
+/// const dm::algorithms::Quaternion q{1,0,0,0};
+/// std::print("{}\n",q[0]); // 1
+/// @endcode
+/// @see quat_normalize()
 using Quaternion = std::array<double, 4>;
-
-/// \brief Dot product of two quaternions.
-inline double quat_dot(const Quaternion& a, const Quaternion& b) {
-    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
-}
-
-/// \brief Euclidean norm of a quaternion.
-inline double quat_norm(const Quaternion& q) { return std::sqrt(quat_dot(q, q)); }
-
-/// \brief Return \p q scaled to unit length.
-inline Quaternion quat_normalize(const Quaternion& q) {
-    double n = quat_norm(q);
-    return {q[0] / n, q[1] / n, q[2] / n, q[3] / n};
-}
-
-/// \brief Spherical linear interpolation between unit quaternions \p q0 and \p q1 at \p t.
-/// \param t interpolation parameter, 0 gives q0 and 1 gives q1.
-/// \returns a unit quaternion on the shorter great-circle arc.
-inline Quaternion slerp(Quaternion q0, Quaternion q1, double t) {
-    q0 = quat_normalize(q0);
-    q1 = quat_normalize(q1);
-    double dot = quat_dot(q0, q1);
-
-    // Take the shorter arc: q and -q represent the same rotation.
-    if (dot < 0.0) {
-        for (double& c : q1) c = -c;
-        dot = -dot;
-    }
-
-    // Nearly parallel: fall back to normalized linear interpolation.
-    constexpr double kParallelThreshold = 0.9995;
-    if (dot > kParallelThreshold) {
-        Quaternion r = {q0[0] + t * (q1[0] - q0[0]), q0[1] + t * (q1[1] - q0[1]),
-                        q0[2] + t * (q1[2] - q0[2]), q0[3] + t * (q1[3] - q0[3])};
-        return quat_normalize(r);
-    }
-
-    double omega = std::acos(dot);
-    double sin_omega = std::sin(omega);
-    double a = std::sin((1.0 - t) * omega) / sin_omega;
-    double b = std::sin(t * omega) / sin_omega;
-    return {a * q0[0] + b * q1[0], a * q0[1] + b * q1[1],
-            a * q0[2] + b * q1[2], a * q0[3] + b * q1[3]};
-}
-
-/// \brief Angle (radians) of the shorter rotation between two unit quaternions.
-inline double quat_angle_between(const Quaternion& a, const Quaternion& b) {
-    double d = std::fabs(quat_dot(quat_normalize(a), quat_normalize(b)));
-    if (d > 1.0) d = 1.0;
-    return 2.0 * std::acos(d);  // full rotation angle
-}
-
-}  // namespace datamunge::algorithms
+/// @brief SlerpRun owns actual producer values or explicit invocation policies; fields state units and defaults.
+/// @par Example
+/// @code
+/// const dm::algorithms::SlerpRun value{};
+/// std::print("{}\n",value.dot); // 0
+/// @endcode
+struct SlerpRun {
+  Quaternion start{};         ///< Actual normalized starting representative.
+  Quaternion target{};        ///< Actual normalized target after optional sign flip.
+  Quaternion value{};         ///< Actual normalized interpolated representative.
+  double     dot{};           ///< Actual nonnegative clamped dot of normalized chosen endpoints.
+  double     omega{};         ///< Actual half rotation angle in quaternion space, radians.
+  double     first_weight{};  ///< Actual coefficient of start before final normalization.
+  double     second_weight{}; ///< Actual coefficient of target before final normalization.
+  bool       sign_flipped{};  ///< Actual original normalized target dot was negative.
+  bool       normalized_linear{}; ///< Actual dot>0.9995 branch used normalized chord interpolation.
+};
+/// @brief Return a finite raw quaternion dot product.
+/// Does not normalize. Sum/products use double; nonrepresentable result throws. Constant work, no mutation or shared state.
+/// @param a Complete finite raw quaternion.
+/// @param b Complete finite raw quaternion.
+/// @return Finite scalar dot.
+/// @throws std::invalid_argument Nonfinite component.
+/// @throws std::overflow_error Dot not representable.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::quat_dot({1,0,0,0},{1,0,0,0})); // 1
+/// @endcode
+/// @see slerp_run()
+double quat_dot(const Quaternion& a, const Quaternion& b);
+/// @brief Return the scale-safe Euclidean quaternion norm.
+/// Uses nested hypot; zero norm is allowed. Constant work, no shared state.
+/// @param q Complete finite raw quaternion.
+/// @return Nonnegative finite norm.
+/// @throws std::invalid_argument Nonfinite component.
+/// @throws std::overflow_error Norm exceeds double range.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::quat_norm({3,4,0,0})); // 5
+/// @endcode
+/// @see slerp_run()
+double quat_norm(const Quaternion& q);
+/// @brief Normalize a finite nonzero quaternion using scaled components.
+/// Divides by largest magnitude before computing the norm, allowing near-maximum and subnormal components without avoidable overflow/underflow. Returns owned values, no shared state.
+/// @param q Complete finite nonzero raw quaternion.
+/// @return Owned normalized quaternion.
+/// @throws std::invalid_argument Nonfinite component or all-zero quaternion.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::quat_normalize({2,0,0,0})[0]); // 1
+/// @endcode
+/// @see slerp_run()
+Quaternion quat_normalize(const Quaternion& q);
+/// @brief Return the shorter rotation angle in radians.
+/// Normalizes both and aligns their signs, then uses four times atan2(norm(a-b),norm(a+b)) for stable small-angle measurement. Range[0,pi]; q and -q have angle zero. Constant work, no mutation/shared state.
+/// @param a Finite nonzero rotation representative.
+/// @param b Finite nonzero rotation representative.
+/// @return Shorter full rotation angle in radians.
+/// @throws std::invalid_argument Nonfinite or all-zero representative.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::quat_angle_between({1,0,0,0},{-1,0,0,0})); // 0
+/// @endcode
+/// @see slerp_run()
+double quat_angle_between(const Quaternion& a, const Quaternion& b);
+/// @brief Construct a rotation about the positive z axis.
+/// Returns{cos(angle/2),0,0,sin(angle/2)}. Constant work and owned values, no shared state.
+/// @param radians Finite full rotation angle in radians.
+/// @return Owned unit rotation representative.
+/// @throws std::invalid_argument Nonfinite angle.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::quat_z_rotation(0)[0]); // 1
+/// @endcode
+/// @see slerp_run()
+Quaternion quat_z_rotation(double radians);
+/// @brief Interpolate a checked shortest quaternion arc and expose its actual branch.
+/// Both run/trace return identical constant-size actual state; no replay. Normalize endpoints safely; negative dot flips target sign because q and -q represent the same rotation. Dot>0.9995 uses normalized linear interpolation to avoid small sine denominators. Otherwise sine weights traverse the quaternion great circle at constant angular rate. The normalized-linear branch approximates this and is not exactly constant-rate. At t=1 the representative may be -q1 but the rotation matches; at exactly180degrees both shorter arcs are valid and the supplied representative selects one. Constant time/storage, owned output, no shared state.
+/// @param q0 Finite nonzero starting rotation representative.
+/// @param q1 Finite nonzero final rotation representative.
+/// @param t Finite interpolation fraction in[0,1].
+/// @return Owned normalized endpoints/result and actual branch/weights.
+/// @throws std::invalid_argument Nonfinite/zero representative or t outside[0,1].
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::slerp_run({1,0,0,0},{1,0,0,0},.5);
+/// std::print("{} {}\n",r.value[0],r.normalized_linear); // 1 true
+/// @endcode
+/// @par References
+/// - K. Shoemake, Animating rotation with quaternion curves, SIGGRAPH1985, DOI10.1145/325334.325242.
+/// @see slerp()
+SlerpRun slerp_run(Quaternion q0, Quaternion q1, double t);
+/// @brief Interpolate a checked shortest quaternion arc and expose its actual branch.
+/// Both run/trace return identical constant-size actual state; no replay. Normalize endpoints safely; negative dot flips target sign because q and -q represent the same rotation. Dot>0.9995 uses normalized linear interpolation to avoid small sine denominators. Otherwise sine weights traverse the quaternion great circle at constant angular rate. The normalized-linear branch approximates this and is not exactly constant-rate. At t=1 the representative may be -q1 but the rotation matches; at exactly180degrees both shorter arcs are valid and the supplied representative selects one. Constant time/storage, owned output, no shared state.
+/// @param q0 Finite nonzero starting rotation representative.
+/// @param q1 Finite nonzero final rotation representative.
+/// @param t Finite interpolation fraction in[0,1].
+/// @return Owned normalized endpoints/result and actual branch/weights.
+/// @throws std::invalid_argument Nonfinite/zero representative or t outside[0,1].
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::slerp_trace({1,0,0,0},{1,0,0,0},.5);
+/// std::print("{} {}\n",r.value[0],r.normalized_linear); // 1 true
+/// @endcode
+/// @par References
+/// - K. Shoemake, Animating rotation with quaternion curves, SIGGRAPH1985, DOI10.1145/325334.325242.
+/// @see slerp()
+SlerpRun slerp_trace(Quaternion q0, Quaternion q1, double t);
+/// @brief Return the checked shortest-arc quaternion interpolation.
+/// Same actual producer as slerp_run, including normalized-linear near-parallel branch and t validation.
+/// @param q0 Finite nonzero start representative.
+/// @param q1 Finite nonzero target representative.
+/// @param t Finite interpolation fraction in[0,1].
+/// @return Owned normalized representative.
+/// @throws std::invalid_argument Malformed rotation or fraction.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::slerp({1,0,0,0},{-1,0,0,0},.5)[0]); // 1
+/// @endcode
+/// @see slerp_run()
+Quaternion slerp(Quaternion q0, Quaternion q1, double t);
+} // namespace datamunge::algorithms

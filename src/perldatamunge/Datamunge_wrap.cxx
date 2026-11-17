@@ -1987,186 +1987,187 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__LaplacianEigenmaps swig_types[30]
 #define SWIGTYPE_p_datamunge__Lasso swig_types[31]
 #define SWIGTYPE_p_datamunge__MDS swig_types[32]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[33]
-#define SWIGTYPE_p_datamunge__PCA swig_types[34]
-#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[35]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[36]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[37]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[38]
-#define SWIGTYPE_p_datamunge__SVM swig_types[39]
-#define SWIGTYPE_p_datamunge__SammonMapping swig_types[40]
-#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[41]
-#define SWIGTYPE_p_datamunge__Splom swig_types[42]
-#define SWIGTYPE_p_datamunge__TSNE swig_types[43]
-#define SWIGTYPE_p_datamunge__Tape swig_types[44]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[45]
-#define SWIGTYPE_p_datamunge__UMAP swig_types[46]
-#define SWIGTYPE_p_datamunge__Var swig_types[47]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[48]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[49]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[50]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[51]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[52]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[53]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[54]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[55]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[56]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[57]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[58]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[59]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[60]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[61]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[62]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[63]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[64]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[65]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[66]
-#define SWIGTYPE_p_datamunge__datasets__ImageBatch swig_types[67]
-#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[68]
-#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[69]
-#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[70]
-#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[71]
-#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[72]
-#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[73]
-#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[74]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[75]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[76]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[77]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[78]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[79]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[80]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[81]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[82]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[83]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[84]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[85]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[86]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[87]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[88]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[89]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[90]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[91]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[92]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[93]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[94]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[95]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[96]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[97]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[98]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[99]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[100]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[101]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[102]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[103]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[104]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[105]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[106]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[107]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[108]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[109]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[110]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[111]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[112]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[113]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[114]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[115]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[116]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[117]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[118]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[119]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[120]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[121]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[122]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[123]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[124]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[125]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[126]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[127]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[128]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[129]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[130]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[131]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[132]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[133]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[134]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[135]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[136]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[137]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[138]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[139]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[140]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[141]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[142]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[143]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[144]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[145]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[146]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[147]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[148]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[149]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[150]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[151]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[152]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[153]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[154]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[155]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[156]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[157]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[158]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[159]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[160]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[161]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[162]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[163]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[164]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[165]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[166]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[167]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[168]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[169]
-#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[170]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[171]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[172]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[173]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[174]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[175]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[176]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[177]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[178]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[179]
-#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[180]
-#define SWIGTYPE_p_difference_type swig_types[181]
-#define SWIGTYPE_p_first_type swig_types[182]
-#define SWIGTYPE_p_int swig_types[183]
-#define SWIGTYPE_p_long_long swig_types[184]
-#define SWIGTYPE_p_second_type swig_types[185]
-#define SWIGTYPE_p_short swig_types[186]
-#define SWIGTYPE_p_signed_char swig_types[187]
-#define SWIGTYPE_p_size_t swig_types[188]
-#define SWIGTYPE_p_size_type swig_types[189]
-#define SWIGTYPE_p_std__out_of_range swig_types[190]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[191]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[192]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[193]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[194]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t swig_types[195]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t swig_types[196]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t swig_types[197]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t swig_types[198]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[199]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[200]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[201]
-#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[202]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[203]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[204]
-#define SWIGTYPE_p_std__vectorT_unsigned_char_t swig_types[205]
-#define SWIGTYPE_p_unsigned_char swig_types[206]
-#define SWIGTYPE_p_unsigned_int swig_types[207]
-#define SWIGTYPE_p_unsigned_long_long swig_types[208]
-#define SWIGTYPE_p_unsigned_short swig_types[209]
-#define SWIGTYPE_p_value_type swig_types[210]
-static swig_type_info *swig_types[212];
-static swig_module_info swig_module = {swig_types, 211, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__MLPClassifierSearch swig_types[33]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[34]
+#define SWIGTYPE_p_datamunge__PCA swig_types[35]
+#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[36]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[37]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[38]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[39]
+#define SWIGTYPE_p_datamunge__SVM swig_types[40]
+#define SWIGTYPE_p_datamunge__SammonMapping swig_types[41]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[42]
+#define SWIGTYPE_p_datamunge__Splom swig_types[43]
+#define SWIGTYPE_p_datamunge__TSNE swig_types[44]
+#define SWIGTYPE_p_datamunge__Tape swig_types[45]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[46]
+#define SWIGTYPE_p_datamunge__UMAP swig_types[47]
+#define SWIGTYPE_p_datamunge__Var swig_types[48]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[49]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[51]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[52]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[53]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[54]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[55]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[56]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[57]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[58]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[59]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[60]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[61]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[62]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[63]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[64]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[65]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[66]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[67]
+#define SWIGTYPE_p_datamunge__datasets__ImageBatch swig_types[68]
+#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[69]
+#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[70]
+#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[71]
+#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[72]
+#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[73]
+#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[74]
+#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[75]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[76]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[77]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[78]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[79]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[80]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[81]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[82]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[83]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[84]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[85]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[86]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[87]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[88]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[89]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[90]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[91]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[92]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[93]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[94]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[95]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[96]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[97]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[98]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[99]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[100]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[101]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[102]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[103]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[104]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[105]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[106]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[107]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[108]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[109]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[110]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[111]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[112]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[113]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[114]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[115]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[116]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[117]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[118]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[119]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[120]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[121]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[122]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[123]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[124]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[125]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[126]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[127]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[128]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[129]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[130]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[131]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[132]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[133]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[134]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[135]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[136]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[137]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[138]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[139]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[140]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[141]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[142]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[143]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[144]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[145]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[146]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[147]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[148]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[149]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[150]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[151]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[152]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[153]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[154]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[155]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[156]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[157]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[158]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[159]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[160]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[161]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[162]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[163]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[164]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[165]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[166]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[167]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[168]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[169]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[170]
+#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[171]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[172]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[173]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[174]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[175]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[176]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[177]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[178]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[179]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[180]
+#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[181]
+#define SWIGTYPE_p_difference_type swig_types[182]
+#define SWIGTYPE_p_first_type swig_types[183]
+#define SWIGTYPE_p_int swig_types[184]
+#define SWIGTYPE_p_long_long swig_types[185]
+#define SWIGTYPE_p_second_type swig_types[186]
+#define SWIGTYPE_p_short swig_types[187]
+#define SWIGTYPE_p_signed_char swig_types[188]
+#define SWIGTYPE_p_size_t swig_types[189]
+#define SWIGTYPE_p_size_type swig_types[190]
+#define SWIGTYPE_p_std__out_of_range swig_types[191]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[192]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[193]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[194]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[195]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t swig_types[196]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t swig_types[197]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t swig_types[198]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t swig_types[199]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[200]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[201]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[202]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[203]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[204]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[205]
+#define SWIGTYPE_p_std__vectorT_unsigned_char_t swig_types[206]
+#define SWIGTYPE_p_unsigned_char swig_types[207]
+#define SWIGTYPE_p_unsigned_int swig_types[208]
+#define SWIGTYPE_p_unsigned_long_long swig_types[209]
+#define SWIGTYPE_p_unsigned_short swig_types[210]
+#define SWIGTYPE_p_value_type swig_types[211]
+static swig_type_info *swig_types[213];
+static swig_module_info swig_module = {swig_types, 212, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -106777,6 +106778,1745 @@ XS(_wrap_delete_Var) {
 }
 
 
+XS(_wrap_new_MLPClassifierSearch__SWIG_0) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::size_t arg5 ;
+    std::size_t arg6 ;
+    std::size_t arg7 ;
+    std::size_t arg8 ;
+    std::size_t arg9 ;
+    std::uint64_t arg10 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    size_t val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    size_t val7 ;
+    int ecode7 = 0 ;
+    size_t val8 ;
+    int ecode8 = 0 ;
+    size_t val9 ;
+    int ecode9 = 0 ;
+    unsigned long long val10 ;
+    int ecode10 = 0 ;
+    int argvi = 0;
+    datamunge::MLPClassifierSearch *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 10) || (items > 10)) {
+      SWIG_croak("Usage: new_MLPClassifierSearch(data,response,x_feature,y_feature,min_hidden,max_hidden,initial_samples,iterations,epochs,seed);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_MLPClassifierSearch" "', argument " "5"" of type '" "std::size_t""'");
+    } 
+    arg5 = static_cast< std::size_t >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_MLPClassifierSearch" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_MLPClassifierSearch" "', argument " "7"" of type '" "std::size_t""'");
+    } 
+    arg7 = static_cast< std::size_t >(val7);
+    ecode8 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_MLPClassifierSearch" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    ecode9 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), &val9);
+    if (!SWIG_IsOK(ecode9)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "new_MLPClassifierSearch" "', argument " "9"" of type '" "std::size_t""'");
+    } 
+    arg9 = static_cast< std::size_t >(val9);
+    ecode10 = SWIG_AsVal_unsigned_SS_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(9), &val10);
+    if (!SWIG_IsOK(ecode10)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "new_MLPClassifierSearch" "', argument " "10"" of type '" "std::uint64_t""'");
+    } 
+    arg10 = static_cast< std::uint64_t >(val10);
+    result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)),SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_MLPClassifierSearch__SWIG_1) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::size_t arg5 ;
+    std::size_t arg6 ;
+    std::size_t arg7 ;
+    std::size_t arg8 ;
+    std::size_t arg9 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    size_t val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    size_t val7 ;
+    int ecode7 = 0 ;
+    size_t val8 ;
+    int ecode8 = 0 ;
+    size_t val9 ;
+    int ecode9 = 0 ;
+    int argvi = 0;
+    datamunge::MLPClassifierSearch *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 9) || (items > 9)) {
+      SWIG_croak("Usage: new_MLPClassifierSearch(data,response,x_feature,y_feature,min_hidden,max_hidden,initial_samples,iterations,epochs);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_MLPClassifierSearch" "', argument " "5"" of type '" "std::size_t""'");
+    } 
+    arg5 = static_cast< std::size_t >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_MLPClassifierSearch" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_MLPClassifierSearch" "', argument " "7"" of type '" "std::size_t""'");
+    } 
+    arg7 = static_cast< std::size_t >(val7);
+    ecode8 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_MLPClassifierSearch" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    ecode9 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), &val9);
+    if (!SWIG_IsOK(ecode9)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "new_MLPClassifierSearch" "', argument " "9"" of type '" "std::size_t""'");
+    } 
+    arg9 = static_cast< std::size_t >(val9);
+    result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)),SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_MLPClassifierSearch__SWIG_2) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::size_t arg5 ;
+    std::size_t arg6 ;
+    std::size_t arg7 ;
+    std::size_t arg8 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    size_t val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    size_t val7 ;
+    int ecode7 = 0 ;
+    size_t val8 ;
+    int ecode8 = 0 ;
+    int argvi = 0;
+    datamunge::MLPClassifierSearch *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 8) || (items > 8)) {
+      SWIG_croak("Usage: new_MLPClassifierSearch(data,response,x_feature,y_feature,min_hidden,max_hidden,initial_samples,iterations);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_MLPClassifierSearch" "', argument " "5"" of type '" "std::size_t""'");
+    } 
+    arg5 = static_cast< std::size_t >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_MLPClassifierSearch" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_MLPClassifierSearch" "', argument " "7"" of type '" "std::size_t""'");
+    } 
+    arg7 = static_cast< std::size_t >(val7);
+    ecode8 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_MLPClassifierSearch" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)),SWIG_STD_MOVE(*(&arg8)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_MLPClassifierSearch__SWIG_3) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::size_t arg5 ;
+    std::size_t arg6 ;
+    std::size_t arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    size_t val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    size_t val7 ;
+    int ecode7 = 0 ;
+    int argvi = 0;
+    datamunge::MLPClassifierSearch *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 7) || (items > 7)) {
+      SWIG_croak("Usage: new_MLPClassifierSearch(data,response,x_feature,y_feature,min_hidden,max_hidden,initial_samples);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_MLPClassifierSearch" "', argument " "5"" of type '" "std::size_t""'");
+    } 
+    arg5 = static_cast< std::size_t >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_MLPClassifierSearch" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_MLPClassifierSearch" "', argument " "7"" of type '" "std::size_t""'");
+    } 
+    arg7 = static_cast< std::size_t >(val7);
+    result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_MLPClassifierSearch__SWIG_4) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::size_t arg5 ;
+    std::size_t arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    size_t val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    int argvi = 0;
+    datamunge::MLPClassifierSearch *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: new_MLPClassifierSearch(data,response,x_feature,y_feature,min_hidden,max_hidden);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_MLPClassifierSearch" "', argument " "5"" of type '" "std::size_t""'");
+    } 
+    arg5 = static_cast< std::size_t >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_MLPClassifierSearch" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_MLPClassifierSearch__SWIG_5) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::size_t arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    size_t val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::MLPClassifierSearch *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: new_MLPClassifierSearch(data,response,x_feature,y_feature,min_hidden);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_MLPClassifierSearch" "', argument " "5"" of type '" "std::size_t""'");
+    } 
+    arg5 = static_cast< std::size_t >(val5);
+    result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_MLPClassifierSearch__SWIG_6) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::MLPClassifierSearch *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: new_MLPClassifierSearch(data,response,x_feature,y_feature);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MLPClassifierSearch" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_MLPClassifierSearch) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 7) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+    if (items == 8) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 5;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_5:
+    
+    if (items == 9) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 6;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_6:
+    
+    if (items == 10) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(9), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 7;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_7:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_MLPClassifierSearch__SWIG_6); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_MLPClassifierSearch__SWIG_5); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_MLPClassifierSearch__SWIG_4); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_MLPClassifierSearch__SWIG_3); return;
+    case 5:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_MLPClassifierSearch__SWIG_2); return;
+    case 6:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_MLPClassifierSearch__SWIG_1); return;
+    case 7:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_MLPClassifierSearch__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_MLPClassifierSearch'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_MLPClassifierSearch_best_hidden_nodes) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_best_hidden_nodes(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_best_hidden_nodes" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->best_hidden_nodes();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_validation_log_loss) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_validation_log_loss(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_validation_log_loss" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = (double)((datamunge::MLPClassifierSearch const *)arg1)->validation_log_loss();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_test_accuracy) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_test_accuracy(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_test_accuracy" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = (double)((datamunge::MLPClassifierSearch const *)arg1)->test_accuracy();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_training_rows) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_training_rows(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_training_rows" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->training_rows();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_validation_rows) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_validation_rows(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_validation_rows" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->validation_rows();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_test_rows) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_test_rows(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_test_rows" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->test_rows();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_summary) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_summary(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_summary" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->summary();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_trials) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_trials(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_trials" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = (datamunge::DataFrame *)((datamunge::MLPClassifierSearch const *)arg1)->trials();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_predict) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: MLPClassifierSearch_predict(self,newdata);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_predict" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MLPClassifierSearch_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MLPClassifierSearch_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_plot_decision_regions__SWIG_0) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: MLPClassifierSearch_plot_decision_regions(self,grid_resolution);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_plot_decision_regions" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MLPClassifierSearch_plot_decision_regions" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->plot_decision_regions(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_plot_decision_regions__SWIG_1) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MLPClassifierSearch_plot_decision_regions(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MLPClassifierSearch_plot_decision_regions" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    result = ((datamunge::MLPClassifierSearch const *)arg1)->plot_decision_regions();
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MLPClassifierSearch_plot_decision_regions) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__MLPClassifierSearch, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__MLPClassifierSearch, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_MLPClassifierSearch_plot_decision_regions__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_MLPClassifierSearch_plot_decision_regions__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'MLPClassifierSearch_plot_decision_regions'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_delete_MLPClassifierSearch) {
+  {
+    datamunge::MLPClassifierSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_MLPClassifierSearch(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__MLPClassifierSearch, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_MLPClassifierSearch" "', argument " "1"" of type '" "datamunge::MLPClassifierSearch *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::MLPClassifierSearch * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_RGB_r_set) {
   {
     datamunge::graphics::RGB *arg1 = 0 ;
@@ -183999,6 +185739,7 @@ static swig_type_info _swigt__p_datamunge__LMM = {"_p_datamunge__LMM", "datamung
 static swig_type_info _swigt__p_datamunge__LaplacianEigenmaps = {"_p_datamunge__LaplacianEigenmaps", "datamunge::LaplacianEigenmaps *", 0, 0, (void*)"Datamunge::LaplacianEigenmaps", 0};
 static swig_type_info _swigt__p_datamunge__Lasso = {"_p_datamunge__Lasso", "datamunge::Lasso *", 0, 0, (void*)"Datamunge::Lasso", 0};
 static swig_type_info _swigt__p_datamunge__MDS = {"_p_datamunge__MDS", "datamunge::MDS *", 0, 0, (void*)"Datamunge::MDS", 0};
+static swig_type_info _swigt__p_datamunge__MLPClassifierSearch = {"_p_datamunge__MLPClassifierSearch", "datamunge::MLPClassifierSearch *", 0, 0, (void*)"Datamunge::MLPClassifierSearch", 0};
 static swig_type_info _swigt__p_datamunge__NaiveBayesClassifier = {"_p_datamunge__NaiveBayesClassifier", "datamunge::NaiveBayesClassifier *", 0, 0, (void*)"Datamunge::NaiveBayesClassifier", 0};
 static swig_type_info _swigt__p_datamunge__PCA = {"_p_datamunge__PCA", "datamunge::PCA *", 0, 0, (void*)"Datamunge::PCA", 0};
 static swig_type_info _swigt__p_datamunge__PSplineRegression = {"_p_datamunge__PSplineRegression", "datamunge::PSplineRegression *", 0, 0, (void*)"Datamunge::PSplineRegression", 0};
@@ -184212,6 +185953,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__LaplacianEigenmaps,
   &_swigt__p_datamunge__Lasso,
   &_swigt__p_datamunge__MDS,
+  &_swigt__p_datamunge__MLPClassifierSearch,
   &_swigt__p_datamunge__NaiveBayesClassifier,
   &_swigt__p_datamunge__PCA,
   &_swigt__p_datamunge__PSplineRegression,
@@ -184425,6 +186167,7 @@ static swig_cast_info _swigc__p_datamunge__LMM[] = {  {&_swigt__p_datamunge__LMM
 static swig_cast_info _swigc__p_datamunge__LaplacianEigenmaps[] = {  {&_swigt__p_datamunge__LaplacianEigenmaps, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Lasso[] = {  {&_swigt__p_datamunge__Lasso, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__MDS[] = {  {&_swigt__p_datamunge__MDS, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__MLPClassifierSearch[] = {  {&_swigt__p_datamunge__MLPClassifierSearch, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__NaiveBayesClassifier[] = {  {&_swigt__p_datamunge__NaiveBayesClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__PCA[] = {  {&_swigt__p_datamunge__PCA, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__PSplineRegression[] = {  {&_swigt__p_datamunge__PSplineRegression, 0, 0, 0},{0, 0, 0, 0}};
@@ -184638,6 +186381,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__LaplacianEigenmaps,
   _swigc__p_datamunge__Lasso,
   _swigc__p_datamunge__MDS,
+  _swigc__p_datamunge__MLPClassifierSearch,
   _swigc__p_datamunge__NaiveBayesClassifier,
   _swigc__p_datamunge__PCA,
   _swigc__p_datamunge__PSplineRegression,
@@ -185862,6 +187606,18 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::Var_tanh", _wrap_Var_tanh},
 {"Datamungec::Var_abs", _wrap_Var_abs},
 {"Datamungec::delete_Var", _wrap_delete_Var},
+{"Datamungec::new_MLPClassifierSearch", _wrap_new_MLPClassifierSearch},
+{"Datamungec::MLPClassifierSearch_best_hidden_nodes", _wrap_MLPClassifierSearch_best_hidden_nodes},
+{"Datamungec::MLPClassifierSearch_validation_log_loss", _wrap_MLPClassifierSearch_validation_log_loss},
+{"Datamungec::MLPClassifierSearch_test_accuracy", _wrap_MLPClassifierSearch_test_accuracy},
+{"Datamungec::MLPClassifierSearch_training_rows", _wrap_MLPClassifierSearch_training_rows},
+{"Datamungec::MLPClassifierSearch_validation_rows", _wrap_MLPClassifierSearch_validation_rows},
+{"Datamungec::MLPClassifierSearch_test_rows", _wrap_MLPClassifierSearch_test_rows},
+{"Datamungec::MLPClassifierSearch_summary", _wrap_MLPClassifierSearch_summary},
+{"Datamungec::MLPClassifierSearch_trials", _wrap_MLPClassifierSearch_trials},
+{"Datamungec::MLPClassifierSearch_predict", _wrap_MLPClassifierSearch_predict},
+{"Datamungec::MLPClassifierSearch_plot_decision_regions", _wrap_MLPClassifierSearch_plot_decision_regions},
+{"Datamungec::delete_MLPClassifierSearch", _wrap_delete_MLPClassifierSearch},
 {"Datamungec::RGB_r_set", _wrap_RGB_r_set},
 {"Datamungec::RGB_r_get", _wrap_RGB_r_get},
 {"Datamungec::RGB_g_set", _wrap_RGB_g_set},
@@ -187743,6 +189499,7 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__HyperDual, (void*) "Datamunge::HyperDual");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__Tape, (void*) "Datamunge::Tape");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__Var, (void*) "Datamunge::Var");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__MLPClassifierSearch, (void*) "Datamunge::MLPClassifierSearch");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__RGB, (void*) "Datamunge::RGB");
   /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Scatter", TRUE | 0x2 | GV_ADDMULTI);

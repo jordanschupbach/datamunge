@@ -1,8 +1,6 @@
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main cnn_color_original_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/image_colorization.cpp"
-#undef main
+#include "../fixtures/nn_image_colorization_checks.hpp"
 namespace reference {
 using ColorTriple = std::array<double, 3>;
 inline double ColorLinear(double value) {

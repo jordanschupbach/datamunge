@@ -884,29 +884,12 @@ test-nn:
 
 # {{{ nn examples (datamunge::nn ports of ~/projects/tflow_examples)
 
-configure-nn-examples:
-  {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "cmake -S examples/nn -B build/nn-examples -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+# The standalone C++ tree is retired; resolve names to the verified literate reports.
+run-nn NAME *ARGS:
+  python3 scripts/run_nn_examples.py --force {{ quote(NAME) }} --example-args {{ ARGS }}
 
-build-nn-examples: configure-nn-examples
-  {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "cmake --build build/nn-examples -j{{ NN_JOBS }}"
-
-build-nn-sections: configure-nn-examples
-  {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/nn-examples --parallel {{ NN_JOBS }} --target nn_sections_1_2
-
-run-nn NAME *ARGS: configure-nn-examples
-  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --build-only {{ NAME }}
-  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --force {{ NAME }} --example-args {{ ARGS }}
-
-# Explicit opt-in to long convergence experiments.
-run-nn-full NAME *ARGS: configure-nn-examples
-  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --build-only {{ NAME }}
-  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --full --force {{ NAME }} --example-args {{ ARGS }}
-
-# Run the nn examples that changed since they last passed (each exits nonzero when its checks
-# fail). Keys hash each example and every repo header it includes; options: --force (run all),
-# --with-library (also rerun after library changes), --list, NAME... (only those examples).
-run-all-nn *ARGS: build-nn-examples
-  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py {{ ARGS }}
+run-all-nn *ARGS:
+  python3 scripts/run_nn_examples.py {{ ARGS }}
 
 # Optional SWIG-backed replicas of the migrated CNN / autoencoder sections.
 prebuild-nn-python: prebuild-python
@@ -998,14 +981,10 @@ nn-memory-assets-r: build-nn-r
   {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library Rscript --vanilla -e 'root <- Sys.getenv("DATAMUNGE_DATA_DIR", "build/datasets"); datamungerNN::nn_components$memory_components$PrepareData(root, FALSE); cat("Prepared local synthetic memory tasks in", root, "\n")'
 
 # Where each example keeps its workflow (main / local function / pasted or header harness),
-# which shared headers it uses and whether they are SWIG-bound. Writes examples/nn/example_audit.json
+# which shared headers it uses and whether they are SWIG-bound. Writes build/nn-example-audit.json
 # and docs/nn-example-audit.md; --check fails when a shared header owns a training loop.
 nn-audit *ARGS:
   {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/nn_example_audit.py --markdown docs/nn-example-audit.md {{ ARGS }}
-
-# Track literate NN replacements; --retire NAME requires mep --report evidence.
-nn-report-status *ARGS:
-  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/nn_report_migration.py {{ ARGS }}
 
 # Run C++/Python/R for each NAME (epochs=5) and record passing evidence in the ledger.
 validate-nn-ports *ARGS:
@@ -1034,7 +1013,7 @@ playground *FORMATS:
     set -euo pipefail
     if [ "$#" -eq 0 ]; then set -- html tex; fi
     output_dir="$PWD/build/playground"
-    document="docs/mepml/examples/playground.mepml"
+    document="docs/mepml/playground.mepml"
     mkdir -p "$output_dir"
     pc="{{ MEPML_PKG_CONFIG_PATH }}"
     {{ NIX_DEVELOP }} .#cpp --command env -u LD_LIBRARY_PATH ${pc:+PKG_CONFIG_PATH="$pc"} ${pc:+DATAMUNGE_CAD_PKG_CONFIG_PATH="$pc"} \
@@ -1291,7 +1270,11 @@ org-examples:
 mepml-from-org:
     python3 scripts/org_to_mepml.py --run examples/org examples/mepml
 
-# Run every code block of the docs' mepml reports (both documentation collections, or
+# Refresh the source catalogue without executing reports.
+docs-report-catalogue:
+    python3 scripts/website/catalogue.py
+
+# Run every code block of the docs' mepml reports (the documentation collection, or
 # FILES) with mep (the flake's, from the cpp shell), as its C-c C-c does, writing
 # each block's results and figures back into its report. The C++ blocks build against
 # datamunge found by pkg-config. Prints each block's outcome and fails if one failed
@@ -1299,7 +1282,7 @@ mepml-from-org:
 docs-mepml-run *FILES:
     #!/usr/bin/env bash
     set -euo pipefail
-    files=({{ if FILES == "" { "$(find docs/examples/mepml docs/mepml/examples -name '*.mepml' | sort)" } else { FILES } }})
+    files=({{ if FILES == "" { "$(find docs/mepml -name '*.mepml' | sort)" } else { FILES } }})
     pc="{{ MEPML_PKG_CONFIG_PATH }}"
     # mep finds its own libraries; an outside LD_LIBRARY_PATH can stop it starting.
     {{ NIX_DEVELOP }} .#cpp --command env -u LD_LIBRARY_PATH ${pc:+PKG_CONFIG_PATH="$pc"} \
@@ -1450,7 +1433,7 @@ test-simulation-examples: test-simulation
 # Real Doxygen fixtures verify that incomplete or stale inventories cannot pass.
 test-docs:
     {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m unittest discover -s tests/python -p test_documentation_audit.py -v
-    {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m pytest -q tests/python/test_website_toolchain.py tests/python/test_website_model_diagrams.py tests/python/test_nn_report_migration.py
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m pytest -q tests/python/test_website_toolchain.py tests/python/test_website_model_diagrams.py
 
 docs-bindings: prebuild-swig
     @echo "Binding documentation is emitted as SWIG-generated docstrings/comments (per language)."

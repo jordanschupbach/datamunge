@@ -12978,6 +12978,140 @@ function datamunge.Tape:value_at(index) end
 ---@return number[] # One adjoint per node, indexed by Var::index() (0-based; add 1 in R and Lua).
 function datamunge.Tape:backward(output) end
 
+---A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+---
+---Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+---test rows (per-class rounding applies). Four random widths followed by eight
+---Gaussian-process expected-improvement proposals are the default search budget.
+---Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+---widths reuse their cached validation log loss. Smaller loss wins; ties retain
+---the first proposal. Each candidate has one tanh hidden layer, softmax output,
+---training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+---penalty 0.0001. Initialization/shuffling use seed for every candidate.
+---
+---After selection the network is refitted on fitting plus validation rows,
+---with new standardization statistics, then scored once on the untouched test.
+---Validation loss belongs to the candidate fit, not the final refit, and is an
+---optimistic selection score. Neither split nor test performance is a guarantee
+---for other seeds or datasets. Owns all state, borrows inputs only during calls,
+---does not change data or global RNG state. Const methods may run concurrently.
+---Search cost is at most (initial_samples+iterations) fits plus one refit;
+---cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+---dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+---const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+---```
+---
+---**References**
+---
+---- D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+---  of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+---
+---See also: `stats::MLPClassifier`, `optim::BayesianOptimization`, `stats::train_test_split()`
+---@class datamunge.MLPClassifierSearch
+---@overload fun(data: datamunge.DataFrame, response: string, x_feature: string, y_feature: string, min_hidden?: integer, max_hidden?: integer, initial_samples?: integer, iterations?: integer, epochs?: integer, seed?: integer): datamunge.MLPClassifierSearch
+datamunge.MLPClassifierSearch = {}
+
+---Selected integer width of the single hidden layer.
+---@return integer # A value in the requested inclusive search range.
+function datamunge.MLPClassifierSearch:best_hidden_nodes() end
+
+---Minimum validation mean negative log probability of the true class.
+---@return number # Finite nonnegative loss of the selected candidate before refitting.
+function datamunge.MLPClassifierSearch:validation_log_loss() end
+
+---Held-out test accuracy of the final development-data refit.
+---@return number # Fraction correctly classified in [0,1]; test rows were never used for selection.
+function datamunge.MLPClassifierSearch:test_accuracy() end
+
+---Number of rows used to fit each search candidate.
+---@return integer # Fitting partition size, excluding validation and test.
+function datamunge.MLPClassifierSearch:training_rows() end
+
+---Number of rows used to choose hidden width.
+---@return integer # Validation partition size.
+function datamunge.MLPClassifierSearch:validation_rows() end
+
+---Number of untouched rows used for the final evaluation.
+---@return integer # Test partition size.
+function datamunge.MLPClassifierSearch:test_rows() end
+
+---Summarize split sizes, selected width, validation loss and final test accuracy.
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+---dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+---const bool named = fit.summary().find("Test accuracy") != std::string::npos; // true
+---```
+---
+---See also: `trials()`
+---@return string # Owned multiline text, without a trailing newline.
+function datamunge.MLPClassifierSearch:summary() end
+
+---Copy the complete Bayesian proposal history into an owned dataframe.
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+---dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+---const std::unique_ptr<dm::DataFrame> history(fit.trials());
+---const auto n = history->nrows(); // 12
+---```
+---
+---See also: `summary()`
+---@return datamunge.DataFrame? # New caller-owned frame with evaluation (1-based), hidden_nodes, validation_log_loss, best_log_loss, cached (0/1), and phase (initial/bayesian). One row per proposal, including repeated cached widths. Bindings own the result.
+function datamunge.MLPClassifierSearch:trials() end
+
+---Predict labels from the final refit using only its two predictor columns.
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+---dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+---const auto n = fit.predict(*iris).size(); // 150
+---```
+---
+---**Errors** (raised as Lua errors)
+---* `std::out_of_range`: If a required column is absent.
+---* `std::invalid_argument`: If predictor types are incompatible.
+---
+---See also: `stats::MLPClassifier::predict()`
+---@param newdata datamunge.DataFrame Borrowed frame, unchanged; missing predictors yield empty labels.
+---@return string[] # One class label per input row, in input order.
+function datamunge.MLPClassifierSearch:predict(newdata) end
+
+---Plot final predicted class regions and development observations in the predictor plane.
+---
+---Pale merged rectangles show the predicted class; saturated points show
+---observed development labels in the same palette. Test rows are excluded.
+---Axis ranges cover development points plus 10% padding, in original units.
+---Rendering samples cell centers, so boundaries are a grid approximation.
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+---dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+---auto plot = fit.plot_decision_regions();
+---plot.save_svg("build/iris-mlp.svg");
+---```
+---
+---**Errors** (raised as Lua errors)
+---* `std::invalid_argument`: If grid_resolution is less than 2.
+---
+---See also: `graphics::add_class_regions()`, `predict()`
+---@param grid_resolution? integer Cells per axis, default 120; at least 2. (default: `120`)
+---@return datamunge.RPlot # Owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+function datamunge.MLPClassifierSearch:plot_decision_regions(grid_resolution) end
+
 ---An owned B-rep solid with value-returning modelling and export operations.
 ---Geometry uses doubles in caller-selected consistent units. Copies own topology;
 ---immutable surfaces may be shared. Operations return new solids, preserving inputs.

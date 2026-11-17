@@ -1,119 +1,126 @@
 #pragma once
-
-/// \file sha256.hpp
-/// \brief The SHA-256 secure hash algorithm (FIPS 180-4, SHA-2 family).
-///
-/// SHA-256 produces a 256-bit digest. It is a Merkle-Damgard hash over 512-bit
-/// blocks with eight 32-bit state words \f$(a,\dots,h)\f$ and 64 rounds. Each block
-/// expands its sixteen message words to sixty-four with
-/// \f[
-///   W_t = \sigma_1(W_{t-2}) + W_{t-7} + \sigma_0(W_{t-15}) + W_{t-16},
-/// \f]
-/// then applies the round function using the majority/choice mixers and the big-sigma
-/// rotations, adding per-round constants \f$K_t\f$ (fractional parts of the cube roots of
-/// the first 64 primes). The initial state words are the fractional parts of the square
-/// roots of the first 8 primes.
-///
-/// Unlike MD5 and SHA-1, SHA-256 has *no known practical collision or preimage attack*
-/// and is a current standard for digital signatures, HMAC, TLS, and blockchains. This
-/// implementation reproduces the FIPS 180-4 test vectors.
-
+/// @file sha256.hpp
+/// @brief Checked FIPS 180 digest with actual schedules, working rounds and block feed-forward.
 #include <array>
-#include <cstddef>
 #include <cstdint>
-#include <string>
-
 #include <datamunge/algorithms/hex_encoding.hpp>
-
+#include <datamunge/algorithms/sha_types.hpp>
+/// @brief Canonical checked native producers and owned algorithm values.
 namespace datamunge::algorithms {
-
-namespace detail {
-
-inline constexpr std::uint32_t sha256_k[64] = {
-    0x428a2f98u, 0x71374491u, 0xb5c0fbcfu, 0xe9b5dba5u, 0x3956c25bu, 0x59f111f1u,
-    0x923f82a4u, 0xab1c5ed5u, 0xd807aa98u, 0x12835b01u, 0x243185beu, 0x550c7dc3u,
-    0x72be5d74u, 0x80deb1feu, 0x9bdc06a7u, 0xc19bf174u, 0xe49b69c1u, 0xefbe4786u,
-    0x0fc19dc6u, 0x240ca1ccu, 0x2de92c6fu, 0x4a7484aau, 0x5cb0a9dcu, 0x76f988dau,
-    0x983e5152u, 0xa831c66du, 0xb00327c8u, 0xbf597fc7u, 0xc6e00bf3u, 0xd5a79147u,
-    0x06ca6351u, 0x14292967u, 0x27b70a85u, 0x2e1b2138u, 0x4d2c6dfcu, 0x53380d13u,
-    0x650a7354u, 0x766a0abbu, 0x81c2c92eu, 0x92722c85u, 0xa2bfe8a1u, 0xa81a664bu,
-    0xc24b8b70u, 0xc76c51a3u, 0xd192e819u, 0xd6990624u, 0xf40e3585u, 0x106aa070u,
-    0x19a4c116u, 0x1e376c08u, 0x2748774cu, 0x34b0bcb5u, 0x391c0cb3u, 0x4ed8aa4au,
-    0x5b9cca4fu, 0x682e6ff3u, 0x748f82eeu, 0x78a5636fu, 0x84c87814u, 0x8cc70208u,
-    0x90befffau, 0xa4506cebu, 0xbef9a3f7u, 0xc67178f2u};
-
-inline std::uint32_t sha256_rotr(std::uint32_t x, int c) {
-    return (x >> c) | (x << (32 - c));
-}
-
-}  // namespace detail
-
-/// \brief Compute the 256-bit SHA-256 digest of a byte string.
-/// \returns the 32 digest bytes in big-endian FIPS 180-4 order.
-inline std::array<std::uint8_t, 32> sha256(const std::string& message) {
-    std::uint32_t h[8] = {0x6a09e667u, 0xbb67ae85u, 0x3c6ef372u, 0xa54ff53au,
-                          0x510e527fu, 0x9b05688cu, 0x1f83d9abu, 0x5be0cd19u};
-
-    std::string msg = message;
-    const std::uint64_t bit_len = static_cast<std::uint64_t>(message.size()) * 8u;
-    msg.push_back(static_cast<char>(0x80));
-    while (msg.size() % 64 != 56) msg.push_back(0);
-    for (int i = 7; i >= 0; --i) msg.push_back(static_cast<char>((bit_len >> (8 * i)) & 0xFF));
-
-    for (std::size_t off = 0; off < msg.size(); off += 64) {
-        std::uint32_t w[64];
-        for (int i = 0; i < 16; ++i) {
-            w[i] = (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i])) << 24) |
-                   (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i + 1])) << 16) |
-                   (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i + 2])) << 8) |
-                   (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i + 3])));
-        }
-        for (int i = 16; i < 64; ++i) {
-            std::uint32_t s0 = detail::sha256_rotr(w[i - 15], 7) ^
-                               detail::sha256_rotr(w[i - 15], 18) ^ (w[i - 15] >> 3);
-            std::uint32_t s1 = detail::sha256_rotr(w[i - 2], 17) ^
-                               detail::sha256_rotr(w[i - 2], 19) ^ (w[i - 2] >> 10);
-            w[i] = w[i - 16] + s0 + w[i - 7] + s1;
-        }
-
-        std::uint32_t a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6],
-                      hh = h[7];
-        for (int i = 0; i < 64; ++i) {
-            std::uint32_t S1 = detail::sha256_rotr(e, 6) ^ detail::sha256_rotr(e, 11) ^
-                               detail::sha256_rotr(e, 25);
-            std::uint32_t ch = (e & f) ^ (~e & g);
-            std::uint32_t t1 = hh + S1 + ch + detail::sha256_k[i] + w[i];
-            std::uint32_t S0 = detail::sha256_rotr(a, 2) ^ detail::sha256_rotr(a, 13) ^
-                               detail::sha256_rotr(a, 22);
-            std::uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
-            std::uint32_t t2 = S0 + maj;
-            hh = g;
-            g = f;
-            f = e;
-            e = d + t1;
-            d = c;
-            c = b;
-            b = a;
-            a = t1 + t2;
-        }
-        h[0] += a;
-        h[1] += b;
-        h[2] += c;
-        h[3] += d;
-        h[4] += e;
-        h[5] += f;
-        h[6] += g;
-        h[7] += hh;
-    }
-
-    std::array<std::uint8_t, 32> digest{};
-    for (int w = 0; w < 8; ++w)
-        for (int i = 0; i < 4; ++i)
-            digest[4 * w + i] = static_cast<std::uint8_t>((h[w] >> (24 - 8 * i)) & 0xFF);
-    return digest;
-}
-
-/// \brief SHA-256 digest of a string as a 64-character lowercase hex string.
-inline std::string sha256_hex(const std::string& message) { return to_hex(sha256(message)); }
-
-}  // namespace datamunge::algorithms
+/// @brief One actual producing sha256 working-state round.
+/// @par Example
+/// @code
+/// const dm::algorithms::SHA256Round value{};
+/// std::print("{}\n",value.index); // 0
+/// @endcode
+struct SHA256Round {
+  std::size_t                  index{};  ///< Actual zero-based round within its block.
+  std::uint32_t                word{};   ///< Actual scheduled message word consumed by this round.
+  std::array<std::uint32_t, 8> before{}; ///< Actual working words before mutation.
+  std::array<std::uint32_t, 8> after{};  ///< Actual working words after mutation.
+};
+/// @brief One actual producing sha256 compression block.
+/// @par Example
+/// @code
+/// const dm::algorithms::SHA256Block value{};
+/// std::print("{}\n",value.offset); // 0
+/// @endcode
+struct SHA256Block {
+  std::size_t                   offset{};   ///< Actual byte offset in the padded message.
+  std::array<std::uint32_t, 64> schedule{}; ///< Actual loaded and expanded schedule.
+  std::array<std::uint32_t, 8>  before{};   ///< Actual incoming chaining words.
+  std::array<std::uint32_t, 8>  after{};    ///< Actual chaining words after feed-forward.
+  std::vector<SHA256Round>      rounds;     ///< Actual optional chronological working rounds.
+};
+/// @brief Owned actual sha256 digest and selected compression work.
+/// @par Example
+/// @code
+/// const dm::algorithms::SHA256Run value{};
+/// std::print("{}\n",value.rounds); // 0
+/// @endcode
+struct SHA256Run {
+  std::array<std::uint8_t, 32> digest{};        ///< Actual big-endian digest bytes.
+  std::size_t                  message_bytes{}; ///< Complete original raw byte count.
+  std::size_t padded_bytes{};       ///< Actual complete padded byte count, including final length.
+  std::size_t compression_blocks{}; ///< Actual processed blocks.
+  std::size_t
+      schedule_expansions{}; ///< Actual newly generated words beyond the first sixteen per block.
+  std::size_t              rounds{}; ///< Actual executed working rounds.
+  std::vector<SHA256Block> blocks;   ///< Actual optional same-execution blocks and their rounds.
+};
+/// @brief Compute checked sha256 on complete raw bytes.
+/// Follows FIPS180-4 SHA256 padding, schedule, modulo2^32 round updates and block feed-forward. Empty and embedded-NUL messages are supported. Checks original length fits the FIPS64-bit bit-length field, padded container geometry, selected counters and complete optional capture before allocation or compression. Captured logical units per block are one block header+64 scheduled words+16 chain words+64*(one round header+16 working words+one scheduled-word copy). Does not retain a second padded-message copy in the result. O(bytes) time/intrinsic padded storage; optional history proportional to actual blocks with the stated fixed constants. Borrowed input unchanged; output owns its bytes/history; no shared state. Digest conformance and avalanche diagnostics do not establish resistance to attacks.
+/// @param message Borrowed complete raw bytes, including empty/binary strings.
+/// @param options Complete raw-byte and optional retained-history bounds.
+/// @return Owned actual digest, selected work and optional producing histories.
+/// @throws std::length_error Complete FIPS length, padding, counter, container or history policy/capacity exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::sha256_run("abc");
+/// std::print("{} {}\n",r.compression_blocks,r.rounds); // 1 64
+/// @endcode
+/// @par References
+/// - NIST FIPS180-4, Secure Hash Standard. https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+/// @see sha256_hex()
+SHA256Run sha256_run(const std::string& message, const SHAOptions& options = {});
+/// @brief Compute checked sha256 on complete raw bytes retaining actual schedules and rounds.
+/// Follows FIPS180-4 SHA256 padding, schedule, modulo2^32 round updates and block feed-forward. Empty and embedded-NUL messages are supported. Checks original length fits the FIPS64-bit bit-length field, padded container geometry, selected counters and complete optional capture before allocation or compression. Captured logical units per block are one block header+64 scheduled words+16 chain words+64*(one round header+16 working words+one scheduled-word copy). Does not retain a second padded-message copy in the result. O(bytes) time/intrinsic padded storage; optional history proportional to actual blocks with the stated fixed constants. Borrowed input unchanged; output owns its bytes/history; no shared state. Digest conformance and avalanche diagnostics do not establish resistance to attacks.
+/// @param message Borrowed complete raw bytes, including empty/binary strings.
+/// @param options Complete raw-byte and optional retained-history bounds.
+/// @return Owned actual digest, selected work and optional producing histories.
+/// @throws std::length_error Complete FIPS length, padding, counter, container or history policy/capacity exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::sha256_trace("abc");
+/// std::print("{} {}\n",r.compression_blocks,r.rounds); // 1 64
+/// @endcode
+/// @par References
+/// - NIST FIPS180-4, Secure Hash Standard. https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+/// @see sha256_hex()
+SHA256Run sha256_trace(const std::string& message, const SHAOptions& options = {});
+/// @brief Return the checked sha256 raw digest through the preserved signature.
+/// Delegates to the same native producer with no optional byte-size policy and no optional history, preserving historical arbitrary-message support within intrinsic FIPS and container bounds.
+/// @param message Borrowed complete raw bytes.
+/// @return Owned 32 big-endian digest bytes.
+/// @throws std::length_error Intrinsic FIPS length or container capacity exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::sha256("abc").size()); // 32
+/// @endcode
+/// @par References
+/// - NIST FIPS180-4. https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+/// @see sha256_run()
+std::array<std::uint8_t, 32> sha256(const std::string& message);
+/// @brief Return the checked sha256 digest as lowercase hexadecimal.
+/// Uses the canonical native digest and hex encoder without a separate hashing implementation.
+/// @param message Borrowed complete raw bytes.
+/// @return Owned exactly 64 lowercase hexadecimal characters.
+/// @throws std::length_error Intrinsic FIPS length or container capacity exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::sha256_hex("abc")); // ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+/// @endcode
+/// @par References
+/// - NIST FIPS180-4. https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+/// @see sha256()
+std::string sha256_hex(const std::string& message);
+/// @brief Measure actual sha256 output changes for every single input-bit flip.
+/// Hashes the unchanged baseline once, then one same-length message per input bit in byte order and least-significant-bit-first order. Native digest-Hamming popcounts feed a full support histogram, without the historical clipped tail bins. Empty input still hashes the baseline once and returns a zero mean and empty flip history. Complete bit count and requested flip cap checked before any hashing. Retains only current message/digest plus owned O(bits+digest_bits) summary. This fixed-message diagnostic is not a security proof or statistical independence test.
+/// @param message Borrowed complete raw baseline message.
+/// @param max_flips Complete number of input-bit variants; default4096, zero disables.
+/// @param options Per-call complete message policy; trace policy unused because calls retain no rounds.
+/// @return Owned baseline digest, actual per-bit distances, full histogram, mean and actual total producing calls/blocks.
+/// @throws std::length_error Complete variant, FIPS byte or cumulative count geometry/capacity/policy exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::sha256_avalanche("a");
+/// std::print("{} {}\n",r.changed_bits.size(),r.hash_calls); // 8 9
+/// @endcode
+/// @par References
+/// - NIST FIPS180-4 digest specification. https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+/// @see sha256_run()
+HashAvalanche sha256_avalanche(
+    const std::string& message,
+    std::size_t        max_flips = 4096,
+    const SHAOptions&  options   = {});
+} // namespace datamunge::algorithms

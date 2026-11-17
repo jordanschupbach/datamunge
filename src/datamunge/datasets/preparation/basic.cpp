@@ -4,6 +4,7 @@
 #include <datamunge/datasets/download.hpp>
 #include <datamunge/nn/nn.hpp>
 #include <map>
+#include <numeric>
 #include <random>
 #include <set>
 
@@ -273,10 +274,35 @@ static void SentenceAssets(const fs::path& root) {
   fs::rename(stage.path / "sentences.npz", directory / "sentences.npz");
 }
 
+/// @brief Prepare checksummed original MovieLens100K warm-user teaching ratings.
+/// @param root Dedicated autorec cache directory.
+/// @throws std::runtime_error For source ingress, schema or fixed-count failures.
+static void AutoRecRatings(const fs::path&root){
+ const std::string digest="50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229";
+ fetch_file("https://files.grouplens.org/datasets/movielens/ml-100k.zip",(root/"ml-100k.zip").string(),digest,4924029,"autorec");
+ Temporary stage(root);extract_archive((root/"ml-100k.zip").string(),stage.path.string(),{"ml-100k/u.data"});
+ fs::copy_file(stage.path/"ml-100k/u.data",root/"u.data",fs::copy_options::overwrite_existing);
+ std::ifstream raw(root/"u.data");std::map<std::pair<int,int>,int> original;std::vector<int> counts(257);
+ int user,item,rating,timestamp;
+ while(raw>>user>>item>>rating>>timestamp){if(user<1||user>943||item<1||item>1682||rating<1||rating>5||!original.emplace(std::make_pair(user,item),rating).second)throw std::runtime_error("original MovieLens record invalid");if(user<=256&&item<=256)++counts[user];}
+ if(!raw.eof()||original.size()!=100000)throw std::runtime_error("original MovieLens100K count mismatch");
+ std::vector<int> users,items(256);std::iota(items.begin(),items.end(),1);for(int u=1;u<=256;++u)if(counts[u]>=10)users.push_back(u);
+ if(users.size()!=199)throw std::runtime_error("original warm-user window changed");
+ std::vector<float> input(199*256),ratings(input.size()),train(input.size()),validation(input.size()),test(input.size());
+ MetadataRandom random(4601);std::array<int,3> totals{};
+ for(int row=0;row<199;++row){std::vector<int> observed;for(int i=0;i<256;++i){auto found=original.find({users[row],i+1});if(found!=original.end()){ratings[row*256+i]=float(found->second);observed.push_back(i);}}
+ random.shuffle(observed);const int heldout=std::max(1,int(observed.size())/10);
+ for(int j=0;j<int(observed.size());++j){const int at=row*256+observed[j];if(j<heldout){validation[at]=1;++totals[1];}else if(j<2*heldout){test[at]=1;++totals[2];}else{train[at]=1;input[at]=ratings[at]/5.f;++totals[0];}}
+ }
+ if(totals!=std::array<int,3>{8079,898,898})throw std::runtime_error("AutoRec split support mismatch");
+ const nn::Shape shape{199,256};nn::save_npz((root/"ratings.npz").string(),{{"input",nn::from_vector(input,shape)},{"ratings",nn::from_vector(ratings,shape)},{"train_mask",nn::from_vector(train,shape)},{"validation_mask",nn::from_vector(validation,shape)},{"test_mask",nn::from_vector(test,shape)},{"user_ids",nn::from_vector(users)},{"item_ids",nn::from_vector(items)}});
+ save(root/"manifest.json",Json{{"generator","datamunge native AutoRec warm-user split v1"},{"source_url","https://files.grouplens.org/datasets/movielens/ml-100k.zip"},{"archive_sha256",digest},{"archive_bytes",4924029},{"source_ratings",100000},{"users",199},{"items",256},{"split_seed",4601},{"split_rng","Python-compatible MT19937 rejection shuffle"},{"split_rule","ascending users and items; shuffle each observed item list; first floor(n/10) validation, next test, remaining train"},{"counts",totals},{"input","training stars divided by five; all held-out and unknown entries zero"},{"scope","canonical native partition; external TensorFlow preparation archive is unavailable and split parity is not asserted"}});
+}
 /// @brief Prepare local teaching tasks or original MNIST plus its balanced teaching pools.
-/// @param name "memory", "mnist-assets", "beta-vae-assets" or "sequence-vae-assets".
+/// @param name "autorec", "memory", "mnist-assets", "beta-vae-assets" or "sequence-vae-assets".
 /// @param root Parent dataset cache.
 void prepare_basic(const std::string& name, const fs::path& root) {
+  if(name=="autorec"){AutoRecRatings(root);return;}
   if(name=="beta-vae-assets"){FactorLattice(root);return;}
   if (name == "sequence-vae-assets") { SentenceAssets(root); return; }
   if (name == "mnist-assets") {

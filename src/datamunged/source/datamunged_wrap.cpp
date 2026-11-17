@@ -27309,6 +27309,455 @@ SWIGEXPORT void D_delete_Var(void * jarg1) {
 }
 
 
+SWIGEXPORT void * D_new_MLPClassifierSearch__SWIG_0(void * jarg1, char * jarg2, char * jarg3, char * jarg4, size_t jarg5, size_t jarg6, size_t jarg7, size_t jarg8, size_t jarg9, unsigned long long jarg10) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  std::uint64_t arg10 ;
+  datamunge::MLPClassifierSearch *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (std::size_t)jarg5;
+  arg6 = (std::size_t)jarg6;
+  arg7 = (std::size_t)jarg7;
+  arg8 = (std::size_t)jarg8;
+  arg9 = (std::size_t)jarg9;
+  arg10 = (std::uint64_t)jarg10;
+  result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)),SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_MLPClassifierSearch__SWIG_1(void * jarg1, char * jarg2, char * jarg3, char * jarg4, size_t jarg5, size_t jarg6, size_t jarg7, size_t jarg8, size_t jarg9) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  datamunge::MLPClassifierSearch *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (std::size_t)jarg5;
+  arg6 = (std::size_t)jarg6;
+  arg7 = (std::size_t)jarg7;
+  arg8 = (std::size_t)jarg8;
+  arg9 = (std::size_t)jarg9;
+  result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)),SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_MLPClassifierSearch__SWIG_2(void * jarg1, char * jarg2, char * jarg3, char * jarg4, size_t jarg5, size_t jarg6, size_t jarg7, size_t jarg8) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  std::size_t arg8 ;
+  datamunge::MLPClassifierSearch *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (std::size_t)jarg5;
+  arg6 = (std::size_t)jarg6;
+  arg7 = (std::size_t)jarg7;
+  arg8 = (std::size_t)jarg8;
+  result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)),SWIG_STD_MOVE(*(&arg8)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_MLPClassifierSearch__SWIG_3(void * jarg1, char * jarg2, char * jarg3, char * jarg4, size_t jarg5, size_t jarg6, size_t jarg7) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  datamunge::MLPClassifierSearch *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (std::size_t)jarg5;
+  arg6 = (std::size_t)jarg6;
+  arg7 = (std::size_t)jarg7;
+  result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),SWIG_STD_MOVE(*(&arg7)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_MLPClassifierSearch__SWIG_4(void * jarg1, char * jarg2, char * jarg3, char * jarg4, size_t jarg5, size_t jarg6) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  datamunge::MLPClassifierSearch *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (std::size_t)jarg5;
+  arg6 = (std::size_t)jarg6;
+  result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_MLPClassifierSearch__SWIG_5(void * jarg1, char * jarg2, char * jarg3, char * jarg4, size_t jarg5) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  datamunge::MLPClassifierSearch *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (std::size_t)jarg5;
+  result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(*(&arg5)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_MLPClassifierSearch__SWIG_6(void * jarg1, char * jarg2, char * jarg3, char * jarg4) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::MLPClassifierSearch *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  result = (datamunge::MLPClassifierSearch *)new datamunge::MLPClassifierSearch((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_MLPClassifierSearch_best_hidden_nodes(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->best_hidden_nodes();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_MLPClassifierSearch_validation_log_loss(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = (double)((datamunge::MLPClassifierSearch const *)arg1)->validation_log_loss();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_MLPClassifierSearch_test_accuracy(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = (double)((datamunge::MLPClassifierSearch const *)arg1)->test_accuracy();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_MLPClassifierSearch_training_rows(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->training_rows();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_MLPClassifierSearch_validation_rows(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->validation_rows();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_MLPClassifierSearch_test_rows(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->test_rows();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_MLPClassifierSearch_summary(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->summary();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_MLPClassifierSearch_trials(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = (datamunge::DataFrame *)((datamunge::MLPClassifierSearch const *)arg1)->trials();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_MLPClassifierSearch_predict(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_MLPClassifierSearch_plot_decision_regions__SWIG_0(void * jarg1, size_t jarg2) {
+  void * jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::graphics::RPlot result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->plot_decision_regions(SWIG_STD_MOVE(*(&arg2)));
+  jresult = new datamunge::graphics::RPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_MLPClassifierSearch_plot_decision_regions__SWIG_1(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  datamunge::graphics::RPlot result;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  result = ((datamunge::MLPClassifierSearch const *)arg1)->plot_decision_regions();
+  jresult = new datamunge::graphics::RPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_delete_MLPClassifierSearch(void * jarg1) {
+  datamunge::MLPClassifierSearch *arg1 = 0 ;
+  
+  arg1 = (datamunge::MLPClassifierSearch *)jarg1;
+  delete arg1;
+}
+
+
 SWIGEXPORT void D_RGB_r_set(void * jarg1, int jarg2) {
   datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;

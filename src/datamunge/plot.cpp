@@ -354,7 +354,9 @@ struct AxisTick {
 };
 
 /// @brief Ticks for one axis: the custom labels (at their positions, or 0, 1, 2, ...) when any
-///        are set, otherwise six evenly spaced numeric ticks across the visible range.
+///        are set, otherwise pretty numeric ticks or six evenly spaced pixel ticks.
+///        Nice-step iteration is bounded and must advance representably; sub-ULP or
+///        underflowed increments fall back to bounded pixel ticks.
 std::vector<AxisTick> axis_ticks(const Layout&                   layout,
                                  bool                            horizontal,
                                  bool                            pretty,
@@ -377,17 +379,26 @@ std::vector<AxisTick> axis_ticks(const Layout&                   layout,
     const double fraction = raw / magnitude;
     const double nice = fraction < 1.5 ? 1.0 : fraction < 3.0 ? 2.0 : fraction < 7.0 ? 5.0 : 10.0;
     const double step = nice * magnitude;
-    for (double v = std::ceil(lo / step) * step; v <= hi + step * 1e-9; v += step) {
-      const double value = std::abs(v) < step * 1e-9 ? 0.0 : v;
-      ticks.push_back({horizontal ? map_x(layout, value) : map_y(layout, value), format_tick(value)});
+    // A nice increment can be smaller than one ULP near a large offset. Repeated
+    // addition must make representable progress; otherwise use bounded pixel ticks.
+    if (std::isfinite(step) && step > 0.0) {
+      double v = std::ceil(lo / step) * step;
+      for (int count = 0; count < 64 && v <= hi + step * 1e-9; ++count) {
+        const double value = std::abs(v) < step * 1e-9 ? 0.0 : v;
+        ticks.push_back({horizontal ? map_x(layout, value) : map_y(layout, value), format_tick(value)});
+        const double next = v + step;
+        if (!(next > v)) break;
+        v = next;
+      }
+      if (ticks.size() >= 2) return ticks;
+      ticks.clear();
     }
-    return ticks;
   }
   for (int i = 0; i <= 5; ++i) {
     const double fraction = static_cast<double>(i) / 5.0;
     const double pixel = horizontal ? layout.left + layout.plot_w * fraction
                                     : layout.top + layout.plot_h - layout.plot_h * fraction;
-    ticks.push_back({pixel, format_tick(lo + (hi - lo) * fraction)});
+    ticks.push_back({pixel, format_tick(std::lerp(lo, hi, fraction))});
   }
   return ticks;
 }
@@ -607,6 +618,38 @@ std::size_t legend_row_count(const Plot& plot) {
   return rows;
 }
 
+/// @brief Shared horizontal legend layout for vector and raster output.
+struct LegendGeometry {
+  double x;             ///< Left edge of the color swatch, in pixels.
+  double scale;         ///< Swatch and spacing scale for narrow plotting areas.
+  double font_px;       ///< Label font size fitted to the available width.
+  double backing_x;     ///< Left edge of the translucent backing.
+  double backing_width; ///< Width of the translucent backing.
+};
+
+/// @brief Measures labels with the embedded font and fits the legend inside the plotting area.
+/// @param plot Plot supplying manual entries or automatic series labels.
+/// @param layout Validated plotting rectangle.
+/// @return Geometry shared by SVG and raster renderers; long labels retain their full text.
+LegendGeometry legend_geometry(const Plot& plot, const Layout& layout) {
+  double widest = 0.0;
+  if (!plot.legend_entries().empty()) {
+    for (const auto& entry : plot.legend_entries())
+      widest = std::max(widest, text_width(entry.label, 12.0));
+  } else {
+    for (const auto& series : plot.series())
+      if (!series.label.empty() && series.kind != DataSeries::Kind::Text)
+        widest = std::max(widest, text_width(series.label, 12.0));
+  }
+  const double scale = std::min(1.0, layout.plot_w / 64.0);
+  const double span = std::min(std::max(140.0 * scale, widest + 38.0 * scale),
+                               layout.plot_w - 8.0 * scale);
+  const double available = std::max(0.0, span - 38.0 * scale);
+  const double font_px = widest > 0.0 ? 12.0 * std::min(1.0, available / widest) : 12.0;
+  const double x = layout.left + layout.plot_w - span;
+  return {x, scale, font_px, x - 8.0 * scale, span + 2.0 * scale};
+}
+
 /// @brief Pixel geometry of one box-and-whisker series (see DataSeries::Kind::Box).
 struct BoxGeometry {
   double cx, left, right, cap_left, cap_right;  ///< Horizontal pixel positions.
@@ -637,6 +680,10 @@ RGB scatter_color(const DataSeries& series, std::size_t index) {
   return series.point_colors.empty() ? series.color : series.point_colors[index % series.point_colors.size()];
 }
 
+/// @brief Draws data, reference lines and the fitted legend into SVG.
+/// @param out Destination SVG body stream.
+/// @param plot Plot supplying series and legend entries.
+/// @param layout Validated plotting rectangle.
 void write_series(std::ostringstream& out, const Plot& plot, const Layout& layout) {
   for (const auto& line : plot.reference_lines()) {
     const std::string color = rgb_css(line.color);
@@ -766,23 +813,24 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
     }
   }
 
+  out << "  <g id=\"dm-legend\">\n";
   double legend_y = layout.top;
+  const auto legend = legend_geometry(plot, layout);
   if (const std::size_t rows = legend_row_count(plot); rows > 0) {
     // Translucent backing so the legend stays readable over data.
-    const double x0 = layout.left + layout.plot_w - 140.0;
-    out << "  <rect x=\"" << x0 - 8 << "\" y=\"" << legend_y - 18 << "\" width=\"" << 140.0 - 6 + 8
+    out << "  <rect x=\"" << legend.backing_x << "\" y=\"" << legend_y - 18 << "\" width=\"" << legend.backing_width
         << "\" height=\"" << 20.0 * static_cast<double>(rows) + 6 << "\" rx=\"3\" fill=\""
         << rgb_css(plot.background_color()) << "\" fill-opacity=\"0.85\"/>\n";
   }
   if (!plot.legend_entries().empty()) {
     for (const auto& entry : plot.legend_entries()) {
-      const double x0 = layout.left + layout.plot_w - 140.0;
+      const double x0 = legend.x;
       out << "  <rect x=\"" << x0 << "\" y=\"" << legend_y - 12
-          << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(entry.color) << "\"";
+          << "\" width=\"" << 18.0 * legend.scale << "\" height=\"8\" fill=\"" << rgb_css(entry.color) << "\"";
       if (entry.color.alpha < 1.0)
         out << " fill-opacity=\"" << std::clamp(entry.color.alpha, 0.0, 1.0) << "\"";
       out << "/>\n";
-      svg_text(out, x0 + 26, legend_y - 4, entry.label, 12.0, TextAnchor::Start, rgb_css(plot.axes_color()));
+      svg_text(out, x0 + 26 * legend.scale, legend_y - 4, entry.label, legend.font_px, TextAnchor::Start, rgb_css(plot.axes_color()));
       legend_y += 20.0;
     }
   } else {
@@ -790,13 +838,14 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
       if (series.label.empty() || series.kind == DataSeries::Kind::Text) {
         continue;
       }
-      const double x0 = layout.left + layout.plot_w - 140.0;
+      const double x0 = legend.x;
       out << "  <rect x=\"" << x0 << "\" y=\"" << legend_y - 12
-          << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(series.color) << "\"/>\n";
-      svg_text(out, x0 + 26, legend_y - 4, series.label, 12.0, TextAnchor::Start, rgb_css(plot.axes_color()));
+          << "\" width=\"" << 18.0 * legend.scale << "\" height=\"8\" fill=\"" << rgb_css(series.color) << "\"/>\n";
+      svg_text(out, x0 + 26 * legend.scale, legend_y - 4, series.label, legend.font_px, TextAnchor::Start, rgb_css(plot.axes_color()));
       legend_y += 20.0;
     }
   }
+  out << "  </g>\n";
 }
 
 std::string svg_body(const Plot& plot) {
@@ -1042,22 +1091,26 @@ void draw_text(Image&             image,
 }
 
 /// @brief Draws manual legend entries, or the automatic non-text series legend when none exist.
+/// @param image Raster receiving the fitted legend.
+/// @param plot Plot supplying labels, colors and background.
+/// @param layout Validated plotting rectangle.
 void draw_legend(Image& image, const Plot& plot, const Layout& layout) {
   int legend_y = static_cast<int>(layout.top);
-  const int x0 = static_cast<int>(layout.left + layout.plot_w - 140.0);
+  const auto legend = legend_geometry(plot, layout);
+  const int x0 = static_cast<int>(legend.x);
   /// @brief Draws one legend swatch and label, then advances to the next row (same geometry as SVG).
   const auto draw_entry = [&](const std::string& label, RGB color) {
-    image.fill_rect(x0, legend_y - 12, x0 + 18, legend_y - 4, color);
-    draw_text(image, x0 + 26, legend_y - 4, label, plot.axes_color(), 12.0);
+    image.fill_rect(x0, legend_y - 12, static_cast<int>(legend.x + 18 * legend.scale), legend_y - 4, color);
+    draw_text(image, legend.x + 26 * legend.scale, legend_y - 4, label, plot.axes_color(), legend.font_px);
     legend_y += 20;
   };
   const std::size_t rows = legend_row_count(plot);
   if (rows > 0) {
     // Translucent backing so the legend stays readable over data.
     const RGB bg = plot.background_color();
-    const int right = static_cast<int>(layout.left + layout.plot_w) - 6;
+    const int right = static_cast<int>(legend.backing_x + legend.backing_width);
     for (int y = legend_y - 18; y < legend_y - 18 + 20 * static_cast<int>(rows) + 6; ++y)
-      for (int x = x0 - 8; x < right; ++x) image.blend_pixel(x, y, bg, 0.85);
+      for (int x = static_cast<int>(legend.backing_x); x < right; ++x) image.blend_pixel(x, y, bg, 0.85);
   }
   if (!plot.legend_entries().empty()) {
     for (const auto& entry : plot.legend_entries()) draw_entry(entry.label, entry.color);

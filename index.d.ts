@@ -16370,6 +16370,171 @@ export declare class Tape {
 }
 
 /**
+ * A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+ *
+ * Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+ * test rows (per-class rounding applies). Four random widths followed by eight
+ * Gaussian-process expected-improvement proposals are the default search budget.
+ * Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+ * widths reuse their cached validation log loss. Smaller loss wins; ties retain
+ * the first proposal. Each candidate has one tanh hidden layer, softmax output,
+ * training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+ * penalty 0.0001. Initialization/shuffling use seed for every candidate.
+ *
+ * After selection the network is refitted on fitting plus validation rows,
+ * with new standardization statistics, then scored once on the untouched test.
+ * Validation loss belongs to the candidate fit, not the final refit, and is an
+ * optimistic selection score. Neither split nor test performance is a guarantee
+ * for other seeds or datasets. Owns all state, borrows inputs only during calls,
+ * does not change data or global RNG state. Const methods may run concurrently.
+ * Search cost is at most (initial_samples+iterations) fits plus one refit;
+ * cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+ * dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+ * const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+ * ```
+ *
+ * **References**
+ *
+ * - D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+ *   of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+ * @see stats::MLPClassifier, optim::BayesianOptimization, stats::train_test_split()
+ */
+export declare class MLPClassifierSearch {
+    /**
+     * Tune a single hidden layer, refit on development rows and evaluate the test rows.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+     * dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+     * const auto n = fit.test_rows(); // 30
+     * ```
+     * @param data Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+     * @param response String response column, with nonempty labels and at least five rows per class.
+     * @param x_feature First numeric predictor, distinct from response and y_feature.
+     * @param y_feature Second numeric predictor; these two are the only model inputs.
+     * @param min_hidden Smallest hidden width, default 2; at least 1 and below max_hidden. (default: `2`)
+     * @param max_hidden Largest hidden width, default 24; at most 1000000. (default: `24`)
+     * @param initial_samples Random initial proposals, default 4; at least 1. (default: `4`)
+     * @param iterations Surrogate-guided proposals, default 8; zero permits initial design only. (default: `8`)
+     * @param epochs SGD passes for each candidate and the final refit, default 400; at least 1. (default: `400`)
+     * @param seed Local split/search/initialization seed, default 42; validation split uses seed+1 modulo 2^64. (default: `42`)
+     * @throws {Error} `std::invalid_argument`: For invalid columns, labels, nonfinite/missing data or search controls.
+     * @throws {Error} `std::runtime_error`: If fitting or scoring fails to produce finite probabilities.
+     * @see MLPClassifierSearch, summary()
+     */
+    constructor(data: DataFrame, response: string, x_feature: string, y_feature: string, min_hidden?: number, max_hidden?: number, initial_samples?: number, iterations?: number, epochs?: number, seed?: number);
+    /**
+     * Selected integer width of the single hidden layer.
+     * @returns A value in the requested inclusive search range.
+     */
+    best_hidden_nodes(): number;
+    /**
+     * Minimum validation mean negative log probability of the true class.
+     * @returns Finite nonnegative loss of the selected candidate before refitting.
+     */
+    validation_log_loss(): number;
+    /**
+     * Held-out test accuracy of the final development-data refit.
+     * @returns Fraction correctly classified in [0,1]; test rows were never used for selection.
+     */
+    test_accuracy(): number;
+    /**
+     * Number of rows used to fit each search candidate.
+     * @returns Fitting partition size, excluding validation and test.
+     */
+    training_rows(): number;
+    /**
+     * Number of rows used to choose hidden width.
+     * @returns Validation partition size.
+     */
+    validation_rows(): number;
+    /**
+     * Number of untouched rows used for the final evaluation.
+     * @returns Test partition size.
+     */
+    test_rows(): number;
+    /**
+     * Summarize split sizes, selected width, validation loss and final test accuracy.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+     * dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+     * const bool named = fit.summary().find("Test accuracy") != std::string::npos; // true
+     * ```
+     * @returns Owned multiline text, without a trailing newline.
+     * @see trials()
+     */
+    summary(): string;
+    /**
+     * Copy the complete Bayesian proposal history into an owned dataframe.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+     * dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+     * const std::unique_ptr<dm::DataFrame> history(fit.trials());
+     * const auto n = history->nrows(); // 12
+     * ```
+     * @returns New caller-owned frame with evaluation (1-based), hidden_nodes, validation_log_loss, best_log_loss, cached (0/1), and phase (initial/bayesian). One row per proposal, including repeated cached widths. Bindings own the result.
+     * @see summary()
+     */
+    trials(): DataFrame | null;
+    /**
+     * Predict labels from the final refit using only its two predictor columns.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+     * dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+     * const auto n = fit.predict(*iris).size(); // 150
+     * ```
+     * @param newdata Borrowed frame, unchanged; missing predictors yield empty labels.
+     * @returns One class label per input row, in input order.
+     * @throws {Error} `std::out_of_range`: If a required column is absent.
+     * @throws {Error} `std::invalid_argument`: If predictor types are incompatible.
+     * @see stats::MLPClassifier::predict()
+     */
+    predict(newdata: DataFrame): string[];
+    /**
+     * Plot final predicted class regions and development observations in the predictor plane.
+     *
+     * Pale merged rectangles show the predicted class; saturated points show
+     * observed development labels in the same palette. Test rows are excluded.
+     * Axis ranges cover development points plus 10% padding, in original units.
+     * Rendering samples cell centers, so boundaries are a grid approximation.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+     * dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+     * auto plot = fit.plot_decision_regions();
+     * plot.save_svg("build/iris-mlp.svg");
+     * ```
+     * @param grid_resolution Cells per axis, default 120; at least 2. (default: `120`)
+     * @returns Owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+     * @throws {Error} `std::invalid_argument`: If grid_resolution is less than 2.
+     * @see graphics::add_class_regions(), predict()
+     */
+    plot_decision_regions(grid_resolution?: number): RPlot;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
  * An owned B-rep solid with value-returning modelling and export operations.
  * Geometry uses doubles in caller-selected consistent units. Copies own topology;
  * immutable surfaces may be shared. Operations return new solids, preserving inputs.

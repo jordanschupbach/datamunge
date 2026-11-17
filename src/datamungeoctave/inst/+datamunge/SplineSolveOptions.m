@@ -33,31 +33,31 @@ classdef SplineSolveOptions < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 2972, false, varargin{:});
+      __datamunge__(-2, obj, 2983, false, varargin{:});
     end
     function v = get.method (obj)
-      v = __datamunge__(2964, obj);
+      v = __datamunge__(2975, obj);
     end
     function set.method (obj, v)
-      __datamunge__(2965, obj, v);
+      __datamunge__(2976, obj, v);
     end
     function v = get.direct_limit (obj)
-      v = __datamunge__(2966, obj);
+      v = __datamunge__(2977, obj);
     end
     function set.direct_limit (obj, v)
-      __datamunge__(2967, obj, v);
+      __datamunge__(2978, obj, v);
     end
     function v = get.tolerance (obj)
-      v = __datamunge__(2968, obj);
+      v = __datamunge__(2979, obj);
     end
     function set.tolerance (obj, v)
-      __datamunge__(2969, obj, v);
+      __datamunge__(2980, obj, v);
     end
     function v = get.max_iterations (obj)
-      v = __datamunge__(2970, obj);
+      v = __datamunge__(2981, obj);
     end
     function set.max_iterations (obj, v)
-      __datamunge__(2971, obj, v);
+      __datamunge__(2982, obj, v);
     end
   end
 end

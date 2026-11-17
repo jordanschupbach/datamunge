@@ -30,7 +30,7 @@ public class NnModel extends NativeObject {
     @SuppressWarnings("this-escape")
     public NnModel() {
         super(RAW);
-        Rosetta.construct(this, NnModel.class, false, 3150);
+        Rosetta.construct(this, NnModel.class, false, 3161);
     }
 
     /**
@@ -43,7 +43,7 @@ public class NnModel extends NativeObject {
     @SuppressWarnings("this-escape")
     public NnModel(long seed) {
         super(RAW);
-        Rosetta.construct(this, NnModel.class, false, 3150, seed);
+        Rosetta.construct(this, NnModel.class, false, 3161, seed);
     }
 
     /**
@@ -56,7 +56,7 @@ public class NnModel extends NativeObject {
      * @param units the C++ argument {@code units}
      */
     public void addDense(int units) {
-        Rosetta.call(3124, this, units);
+        Rosetta.call(3135, this, units);
     }
 
     /**
@@ -68,7 +68,7 @@ public class NnModel extends NativeObject {
      * @param activation the C++ argument {@code activation}
      */
     public void addDense(int units, String activation) {
-        Rosetta.call(3124, this, units, activation);
+        Rosetta.call(3135, this, units, activation);
     }
 
     /**
@@ -82,7 +82,7 @@ public class NnModel extends NativeObject {
      * @param kernel the C++ argument {@code kernel}
      */
     public void addConv2d(int filters, int kernel) {
-        Rosetta.call(3125, this, filters, kernel);
+        Rosetta.call(3136, this, filters, kernel);
     }
 
     /**
@@ -97,7 +97,7 @@ public class NnModel extends NativeObject {
      * @param stride the C++ argument {@code stride}
      */
     public void addConv2d(int filters, int kernel, int stride) {
-        Rosetta.call(3125, this, filters, kernel, stride);
+        Rosetta.call(3136, this, filters, kernel, stride);
     }
 
     /**
@@ -113,7 +113,7 @@ public class NnModel extends NativeObject {
      * @param padding the C++ argument {@code padding}
      */
     public void addConv2d(int filters, int kernel, int stride, String padding) {
-        Rosetta.call(3125, this, filters, kernel, stride, padding);
+        Rosetta.call(3136, this, filters, kernel, stride, padding);
     }
 
     /**
@@ -128,7 +128,7 @@ public class NnModel extends NativeObject {
      * @param activation the C++ argument {@code activation}
      */
     public void addConv2d(int filters, int kernel, int stride, String padding, String activation) {
-        Rosetta.call(3125, this, filters, kernel, stride, padding, activation);
+        Rosetta.call(3136, this, filters, kernel, stride, padding, activation);
     }
 
     /**
@@ -142,7 +142,7 @@ public class NnModel extends NativeObject {
      * @param stride the C++ argument {@code stride}
      */
     public void addMaxPool2d(int window, int stride) {
-        Rosetta.call(3126, this, window, stride);
+        Rosetta.call(3137, this, window, stride);
     }
 
     /**
@@ -155,7 +155,7 @@ public class NnModel extends NativeObject {
      * @param padding the C++ argument {@code padding}
      */
     public void addMaxPool2d(int window, int stride, String padding) {
-        Rosetta.call(3126, this, window, stride, padding);
+        Rosetta.call(3137, this, window, stride, padding);
     }
 
     /**
@@ -169,7 +169,7 @@ public class NnModel extends NativeObject {
      * @param stride the C++ argument {@code stride}
      */
     public void addAvgPool2d(int window, int stride) {
-        Rosetta.call(3127, this, window, stride);
+        Rosetta.call(3138, this, window, stride);
     }
 
     /**
@@ -182,7 +182,7 @@ public class NnModel extends NativeObject {
      * @param padding the C++ argument {@code padding}
      */
     public void addAvgPool2d(int window, int stride, String padding) {
-        Rosetta.call(3127, this, window, stride, padding);
+        Rosetta.call(3138, this, window, stride, padding);
     }
 
     /**
@@ -191,7 +191,7 @@ public class NnModel extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnModel::add_global_avg_pool2d()}
      */
     public void addGlobalAvgPool2d() {
-        Rosetta.call(3128, this);
+        Rosetta.call(3139, this);
     }
 
     /**
@@ -202,7 +202,7 @@ public class NnModel extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnModel::add_batch_norm(double momentum = 0.98999999999999999, double eps = 0.001)}
      */
     public void addBatchNorm() {
-        Rosetta.call(3129, this);
+        Rosetta.call(3140, this);
     }
 
     /**
@@ -215,7 +215,7 @@ public class NnModel extends NativeObject {
      * @param momentum the C++ argument {@code momentum}
      */
     public void addBatchNorm(double momentum) {
-        Rosetta.call(3129, this, momentum);
+        Rosetta.call(3140, this, momentum);
     }
 
     /**
@@ -227,7 +227,7 @@ public class NnModel extends NativeObject {
      * @param eps the C++ argument {@code eps}
      */
     public void addBatchNorm(double momentum, double eps) {
-        Rosetta.call(3129, this, momentum, eps);
+        Rosetta.call(3140, this, momentum, eps);
     }
 
     /**
@@ -238,7 +238,7 @@ public class NnModel extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnModel::add_layer_norm(double eps = 1.0000000000000001E-5)}
      */
     public void addLayerNorm() {
-        Rosetta.call(3130, this);
+        Rosetta.call(3141, this);
     }
 
     /**
@@ -249,7 +249,7 @@ public class NnModel extends NativeObject {
      * @param eps the C++ argument {@code eps}
      */
     public void addLayerNorm(double eps) {
-        Rosetta.call(3130, this, eps);
+        Rosetta.call(3141, this, eps);
     }
 
     /**
@@ -260,7 +260,7 @@ public class NnModel extends NativeObject {
      * @param rate the C++ argument {@code rate}
      */
     public void addDropout(double rate) {
-        Rosetta.call(3131, this, rate);
+        Rosetta.call(3142, this, rate);
     }
 
     /**
@@ -271,7 +271,7 @@ public class NnModel extends NativeObject {
      * @param activation the C++ argument {@code activation}
      */
     public void addActivation(String activation) {
-        Rosetta.call(3132, this, activation);
+        Rosetta.call(3143, this, activation);
     }
 
     /**
@@ -280,7 +280,7 @@ public class NnModel extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnModel::add_flatten()}
      */
     public void addFlatten() {
-        Rosetta.call(3133, this);
+        Rosetta.call(3144, this);
     }
 
     /**
@@ -291,7 +291,7 @@ public class NnModel extends NativeObject {
      * @param shape the C++ argument {@code shape}
      */
     public void addReshape(int[] shape) {
-        Rosetta.call(3134, this, shape);
+        Rosetta.call(3145, this, shape);
     }
 
     /**
@@ -302,7 +302,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public int numLayers() {
-        return Rosetta.asInt(Rosetta.call(3135, this));
+        return Rosetta.asInt(Rosetta.call(3146, this));
     }
 
     /**
@@ -313,7 +313,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public String summary() {
-        return Rosetta.asString(Rosetta.call(3136, this));
+        return Rosetta.asString(Rosetta.call(3147, this));
     }
 
     /**
@@ -328,7 +328,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public NnTensor forward(NnTensor x) {
-        return Rosetta.asObject(Rosetta.call(3137, this, x), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3148, this, x), NnTensor.class);
     }
 
     /**
@@ -342,7 +342,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public NnTensor forward(NnTensor x, boolean training) {
-        return Rosetta.asObject(Rosetta.call(3137, this, x, training), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3148, this, x, training), NnTensor.class);
     }
 
     /**
@@ -354,7 +354,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public NnTensor predict(NnTensor x) {
-        return Rosetta.asObject(Rosetta.call(3138, this, x), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3149, this, x), NnTensor.class);
     }
 
     /**
@@ -370,7 +370,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public double loss(NnTensor x, NnTensor y) {
-        return Rosetta.asDouble(Rosetta.call(3139, this, x, y));
+        return Rosetta.asDouble(Rosetta.call(3150, this, x, y));
     }
 
     /**
@@ -387,7 +387,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public double loss(NnTensor x, NnTensor y, String loss) {
-        return Rosetta.asDouble(Rosetta.call(3139, this, x, y, loss));
+        return Rosetta.asDouble(Rosetta.call(3150, this, x, y, loss));
     }
 
     /**
@@ -403,7 +403,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public double loss(NnTensor x, NnTensor y, String loss, boolean training) {
-        return Rosetta.asDouble(Rosetta.call(3139, this, x, y, loss, training));
+        return Rosetta.asDouble(Rosetta.call(3150, this, x, y, loss, training));
     }
 
     /**
@@ -419,7 +419,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public double computeGradients(NnTensor x, NnTensor y) {
-        return Rosetta.asDouble(Rosetta.call(3140, this, x, y));
+        return Rosetta.asDouble(Rosetta.call(3151, this, x, y));
     }
 
     /**
@@ -434,7 +434,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public double computeGradients(NnTensor x, NnTensor y, String loss) {
-        return Rosetta.asDouble(Rosetta.call(3140, this, x, y, loss));
+        return Rosetta.asDouble(Rosetta.call(3151, this, x, y, loss));
     }
 
     /**
@@ -446,7 +446,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public NnTensor gradient(String name) {
-        return Rosetta.asObject(Rosetta.call(3141, this, name), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3152, this, name), NnTensor.class);
     }
 
     /**
@@ -457,7 +457,7 @@ public class NnModel extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnModel::set_optimizer(const std::string & kind = "adam", double learning_rate = 0.001)}
      */
     public void setOptimizer() {
-        Rosetta.call(3142, this);
+        Rosetta.call(3153, this);
     }
 
     /**
@@ -470,7 +470,7 @@ public class NnModel extends NativeObject {
      * @param kind the C++ argument {@code kind}
      */
     public void setOptimizer(String kind) {
-        Rosetta.call(3142, this, kind);
+        Rosetta.call(3153, this, kind);
     }
 
     /**
@@ -482,7 +482,7 @@ public class NnModel extends NativeObject {
      * @param learningRate the C++ argument {@code learning_rate}
      */
     public void setOptimizer(String kind, double learningRate) {
-        Rosetta.call(3142, this, kind, learningRate);
+        Rosetta.call(3153, this, kind, learningRate);
     }
 
     /**
@@ -497,7 +497,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public double trainStep(NnTensor x, NnTensor y) {
-        return Rosetta.asDouble(Rosetta.call(3143, this, x, y));
+        return Rosetta.asDouble(Rosetta.call(3154, this, x, y));
     }
 
     /**
@@ -511,7 +511,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public double trainStep(NnTensor x, NnTensor y, String loss) {
-        return Rosetta.asDouble(Rosetta.call(3143, this, x, y, loss));
+        return Rosetta.asDouble(Rosetta.call(3154, this, x, y, loss));
     }
 
     /**
@@ -522,7 +522,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public List<String> parameterNames() {
-        return Rosetta.asList(Rosetta.call(3144, this), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3155, this), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -534,7 +534,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public NnTensor parameter(String name) {
-        return Rosetta.asObject(Rosetta.call(3145, this, name), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3156, this, name), NnTensor.class);
     }
 
     /**
@@ -546,7 +546,7 @@ public class NnModel extends NativeObject {
      * @param value the C++ argument {@code value}
      */
     public void setParameter(String name, NnTensor value) {
-        Rosetta.call(3146, this, name, value);
+        Rosetta.call(3157, this, name, value);
     }
 
     /**
@@ -557,7 +557,7 @@ public class NnModel extends NativeObject {
      * @return the result
      */
     public int parameterCount() {
-        return Rosetta.asInt(Rosetta.call(3147, this));
+        return Rosetta.asInt(Rosetta.call(3158, this));
     }
 
     /**
@@ -568,7 +568,7 @@ public class NnModel extends NativeObject {
      * @param path the C++ argument {@code path}
      */
     public void save(String path) {
-        Rosetta.call(3148, this, path);
+        Rosetta.call(3159, this, path);
     }
 
     /**
@@ -579,6 +579,6 @@ public class NnModel extends NativeObject {
      * @param path the C++ argument {@code path}
      */
     public void load(String path) {
-        Rosetta.call(3149, this, path);
+        Rosetta.call(3160, this, path);
     }
 }

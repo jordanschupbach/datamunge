@@ -1,51 +1,9 @@
-#include <datamunge/algorithms/comparison_sorts.hpp>
-
+/// @file comparison_sorts.cpp
+/// @brief Compatibility translation unit; checked sort producers live in dedicated files.
 #include <cstddef>
+#include <datamunge/algorithms/comparison_sorts.hpp>
 #include <utility>
 #include <vector>
 
-namespace datamunge::algorithms {
-
-std::vector<int> insertion_sort(std::vector<int> a) {
-    for (std::size_t i = 1; i < a.size(); ++i) {
-        const int   key = a[i];
-        std::size_t j   = i;
-        while (j > 0 && a[j - 1] > key) { // shift larger elements one place right
-            a[j] = a[j - 1];
-            --j;
-        }
-        a[j] = key;
-    }
-    return a;
-}
-
-std::vector<int> selection_sort(std::vector<int> a) {
-    const std::size_t n = a.size();
-    for (std::size_t i = 0; i + 1 < n; ++i) {
-        std::size_t min_idx = i;
-        for (std::size_t j = i + 1; j < n; ++j)
-            if (a[j] < a[min_idx]) min_idx = j;
-        if (min_idx != i) std::swap(a[i], a[min_idx]); // exactly one swap per position (at most n-1)
-    }
-    return a;
-}
-
-std::vector<int> shell_sort(std::vector<int> a) {
-    const std::size_t n = a.size();
-    // Shell's original halving gap sequence: n/2, n/4, ..., 1.
-    for (std::size_t gap = n / 2; gap > 0; gap /= 2) {
-        // Gapped insertion sort: insertion sort on each interleaved subsequence.
-        for (std::size_t i = gap; i < n; ++i) {
-            const int   key = a[i];
-            std::size_t j   = i;
-            while (j >= gap && a[j - gap] > key) {
-                a[j] = a[j - gap];
-                j -= gap;
-            }
-            a[j] = key;
-        }
-    }
-    return a;
-}
-
-} // namespace datamunge::algorithms
+/// @brief Canonical checked native producers and owned algorithm values.
+namespace datamunge::algorithms {} // namespace datamunge::algorithms

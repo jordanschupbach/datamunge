@@ -2,7 +2,7 @@
 
 Goal: train as many epochs as possible in a fixed wall-clock budget with the
 exact loop of the SqueezeNet report
-(`docs/mepml/examples/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml`):
+(`docs/mepml/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml`):
 SqueezeNet v1.0 with the CIFAR stem, batch 32, per-image pad/crop/flip
 augmentation, L2 penalty on every weight, Adam with warm-up + cosine schedule,
 CPU training. The metric is **epochs per minute** (250 steps of 32 images).

@@ -1,154 +1,178 @@
 #pragma once
-
-/// \file quine_mccluskey.hpp
-/// \brief The Quine-McCluskey algorithm for Boolean function minimization.
-///
-/// Quine-McCluskey is the tabular, mechanizable cousin of the Karnaugh map: it minimizes a
-/// Boolean function given as a set of *minterms* (and optional *don't-cares*). It first finds
-/// all *prime implicants* by repeatedly merging pairs of terms that differ in a single bit
-/// (replacing that bit with a dash), then selects a minimum subset of prime implicants that
-/// covers every minterm -- the *essential* prime implicants plus, for the remainder, a minimum
-/// cover found by Petrick's method. The result is a minimum sum-of-products expression. This
-/// module returns the prime implicants, the essential ones, and a minimal cover.
-
-#include <datamunge/algorithms/petrick.hpp>
-
-#include <algorithm>
+/// @file quine_mccluskey.hpp
+/// @brief Checked exact Boolean minimization, actual merge rounds and native Petrick covering.
 #include <cstddef>
 #include <cstdint>
+#include <datamunge/algorithms/petrick.hpp>
 #include <string>
 #include <vector>
-
+/// @brief Canonical Boolean minimization and owned execution records.
 namespace datamunge::algorithms {
-
-/// A product term (implicant): fixed bits plus dashed (don't-care) positions.
+/// @brief Product term: bits fix non-dashed positions; one mask bit denotes a dash.
+/// @par Example
+/// @code
+/// const dm::algorithms::Implicant x{};
+/// std::print("{}\n",x.bits); // 0
+/// @endcode
+/// @see quine_mccluskey_run()
 struct Implicant {
-    std::uint32_t bits;  ///< Value on the non-dashed positions.
-    std::uint32_t mask;  ///< 1 = this position is a dash (don't care).
+  std::uint32_t bits; ///< Fixed values; masked positions are ignored by covers().
+  std::uint32_t mask; ///< Dashed positions, with one indicating a don't-care variable.
 
-    bool operator==(const Implicant& o) const { return bits == o.bits && mask == o.mask; }
-    /// Does this implicant cover minterm \c m?
-    bool covers(std::uint32_t m) const { return ((m ^ bits) & ~mask) == 0; }
+                      /// @brief Compare the stored bit and mask representation.
+                      /// @param other Other implicant.
+                      /// @return Whether both stored words are equal.
+                      /// @par Example
+                      /// @code
+                      /// const dm::algorithms::Implicant a{1,0};
+                      /// std::print("{}\n",a==dm::algorithms::Implicant{1,0}); // true
+                      /// @endcode
+                      /// @see covers()
+  bool operator==(const Implicant& other) const { return bits == other.bits && mask == other.mask; }
+  /// @brief Test whether a raw minterm agrees in every fixed position.
+  /// Pure 32-bit comparison; no variable-count policy, allocation or mutation.
+  /// @param m Raw 32-bit minterm.
+  /// @return True when every nondashed bit agrees.
+  /// @par Example
+  /// @code
+  /// const dm::algorithms::Implicant a{0,1};
+  /// std::print("{}\n",a.covers(1)); // true
+  /// @endcode
+  /// @see implicant_to_string()
+  bool covers(std::uint32_t m) const { return ((m ^ bits) & ~mask) == 0; }
 };
-
-/// Result of Quine-McCluskey minimization.
+/// @brief Exact minimum sum-of-products result, preserving the historical field layout.
+/// @par Example
+/// @code
+/// const dm::algorithms::QuineMcCluskeyResult x{};
+/// std::print("{}\n",x.minimal_cover.size()); // 0
+/// @endcode
+/// @see quine_mccluskey_run()
 struct QuineMcCluskeyResult {
-    std::vector<Implicant> prime_implicants;  ///< All prime implicants.
-    std::vector<Implicant> essential;         ///< Essential prime implicants.
-    std::vector<Implicant> minimal_cover;     ///< A minimum sum-of-products cover.
+  std::vector<Implicant>
+      prime_implicants; ///< All deduplicated prime implicants from minterms and don't-cares.
+  std::vector<Implicant>
+      essential; ///< Prime implicants that alone cover at least one required minterm.
+  std::vector<Implicant> minimal_cover; ///< Cover minimizing term count, then total literal count.
 };
-
-namespace detail {
-inline int popcount32(std::uint32_t x) {
-    int c = 0;
-    while (x) { c += x & 1; x >>= 1; }
-    return c;
-}
-}  // namespace detail
-
-/// \brief Render an implicant as a variable string over \c n variables (e.g. "1-0-").
-inline std::string implicant_to_string(const Implicant& imp, int n) {
-    std::string s;
-    for (int i = n - 1; i >= 0; --i) {
-        if (imp.mask & (1u << i)) s += '-';
-        else                     s += ((imp.bits >> i) & 1) ? '1' : '0';
-    }
-    return s;
-}
-
-/// \brief Minimize a Boolean function via Quine-McCluskey (+ Petrick for the covering step).
-///
-/// \param n          number of Boolean variables.
-/// \param minterms   inputs where the function is 1.
-/// \param dontcares  inputs where the output is unspecified (usable in implicants, but need
-///                   not be covered).
-inline QuineMcCluskeyResult quine_mccluskey(int n, std::vector<std::uint32_t> minterms,
-                                            std::vector<std::uint32_t> dontcares = {}) {
-    QuineMcCluskeyResult result;
-
-    // --- Prime-implicant generation by iterated single-bit merging. ---
-    std::vector<Implicant> current;
-    for (std::uint32_t m : minterms)  current.push_back({m, 0});
-    for (std::uint32_t m : dontcares) current.push_back({m, 0});
-    // Dedup.
-    std::sort(current.begin(), current.end(),
-              [](const Implicant& a, const Implicant& b) { return a.bits < b.bits; });
-    current.erase(std::unique(current.begin(), current.end()), current.end());
-
-    std::vector<Implicant> primes;
-    while (!current.empty()) {
-        std::vector<char>      used(current.size(), 0);
-        std::vector<Implicant> next;
-        for (std::size_t i = 0; i < current.size(); ++i)
-            for (std::size_t j = i + 1; j < current.size(); ++j) {
-                if (current[i].mask != current[j].mask) continue;      // same dash pattern
-                std::uint32_t diff = current[i].bits ^ current[j].bits;
-                if (diff && (diff & (diff - 1)) == 0) {                // differ in exactly one bit
-                    used[i] = used[j] = 1;
-                    next.push_back({current[i].bits & ~diff, current[i].mask | diff});
-                }
-            }
-        for (std::size_t i = 0; i < current.size(); ++i)
-            if (!used[i]) primes.push_back(current[i]);                // unmerged -> prime
-        std::sort(next.begin(), next.end(), [](const Implicant& a, const Implicant& b) {
-            return a.bits != b.bits ? a.bits < b.bits : a.mask < b.mask;
-        });
-        next.erase(std::unique(next.begin(), next.end()), next.end());
-        current = std::move(next);
-    }
-    // Dedup primes.
-    std::sort(primes.begin(), primes.end(), [](const Implicant& a, const Implicant& b) {
-        return a.bits != b.bits ? a.bits < b.bits : a.mask < b.mask;
-    });
-    primes.erase(std::unique(primes.begin(), primes.end()), primes.end());
-    result.prime_implicants = primes;
-
-    // --- Coverage chart over the minterms (don't-cares need not be covered). ---
-    std::vector<std::vector<int>> covers_of_minterm(minterms.size());
-    for (std::size_t mi = 0; mi < minterms.size(); ++mi)
-        for (std::size_t pi = 0; pi < primes.size(); ++pi)
-            if (primes[pi].covers(minterms[mi])) covers_of_minterm[mi].push_back(static_cast<int>(pi));
-
-    // --- Essential prime implicants: the sole cover of some minterm. ---
-    std::vector<char> is_essential(primes.size(), 0);
-    for (const auto& cov : covers_of_minterm)
-        if (cov.size() == 1) is_essential[cov[0]] = 1;
-    for (std::size_t pi = 0; pi < primes.size(); ++pi)
-        if (is_essential[pi]) result.essential.push_back(primes[pi]);
-
-    // --- Minimal cover: essentials, plus Petrick over the still-uncovered minterms. ---
-    std::vector<char> covered(minterms.size(), 0);
-    for (std::size_t mi = 0; mi < minterms.size(); ++mi)
-        for (int pi : covers_of_minterm[mi])
-            if (is_essential[pi]) { covered[mi] = 1; break; }
-
-    std::vector<std::vector<int>> remaining;
-    for (std::size_t mi = 0; mi < minterms.size(); ++mi)
-        if (!covered[mi]) remaining.push_back(covers_of_minterm[mi]);
-
-    std::vector<int> chosen;
-    for (std::size_t pi = 0; pi < primes.size(); ++pi)
-        if (is_essential[pi]) chosen.push_back(static_cast<int>(pi));
-
-    if (!remaining.empty()) {
-        PetrickResult pr = petrick(remaining);
-        if (!pr.minimal_covers.empty()) {
-            // Prefer the extra cover with the fewest total literals.
-            const std::vector<int>* best = &pr.minimal_covers.front();
-            int best_lits = INT32_MAX;
-            for (const auto& cover : pr.minimal_covers) {
-                int lits = 0;
-                for (int pi : cover) lits += n - detail::popcount32(primes[pi].mask);
-                if (lits < best_lits) { best_lits = lits; best = &cover; }
-            }
-            for (int pi : *best) chosen.push_back(pi);
-        }
-    }
-
-    std::sort(chosen.begin(), chosen.end());
-    chosen.erase(std::unique(chosen.begin(), chosen.end()), chosen.end());
-    for (int pi : chosen) result.minimal_cover.push_back(primes[pi]);
-    return result;
-}
-
-}  // namespace datamunge::algorithms
+/// @brief Finite selected-search and allocation policies; zero size/work caps disable them.
+/// @par Example
+/// @code
+/// const dm::algorithms::QuineMcCluskeyOptions x{};
+/// std::print("{}\n",x.max_variables); // 16
+/// @endcode
+/// @see quine_mccluskey_run()
+struct QuineMcCluskeyOptions {
+  std::size_t max_variables{16}; ///< Policy bound on variables; hard representable range is0..32.
+  std::size_t max_terms{
+      4096}; ///< Bound on input/working/generated/prime term vectors before deduplication.
+  std::size_t    max_pair_tests{10000000};   ///< Cumulative actual merge pair tests.
+  std::size_t    max_chart_entries{1000000}; ///< Actual prime ids stored in the coverage chart.
+  std::size_t    max_trace_entries{1000000}; ///< Retained round scalar/header entries.
+  PetrickOptions covering{}; ///< Independent native Petrick candidate and stage-history bounds.
+};
+/// @brief One actual completed prime-generation merge round.
+/// @par Example
+/// @code
+/// const dm::algorithms::QuineMcCluskeyRound x{};
+/// std::print("{}\n",x.terms.size()); // 0
+/// @endcode
+/// @see quine_mccluskey_run()
+struct QuineMcCluskeyRound {
+  std::vector<Implicant> terms;  ///< Actual deduplicated terms considered this round.
+  std::vector<bool>      used;   ///< Whether each term participated in an actual single-bit merge.
+  std::vector<Implicant> next;   ///< Actual deduplicated next round.
+  std::vector<Implicant> primes; ///< Actual unmerged terms appended to the prime list this round.
+};
+/// @brief Owned exact minimization, chart and actual selected search work.
+/// @par Example
+/// @code
+/// const dm::algorithms::QuineMcCluskeyRun x{};
+/// std::print("{}\n",x.pair_tests); // 0
+/// @endcode
+/// @see quine_mccluskey_run()
+struct QuineMcCluskeyRun {
+  QuineMcCluskeyResult       result;    ///< Exact term-count/literal-count minimized expression.
+  std::vector<std::uint32_t> minterms;  ///< Sorted unique required minterms.
+  std::vector<std::uint32_t> dontcares; ///< Sorted unique optional minterms; overlap is permitted.
+  std::vector<std::vector<int>>
+      chart; ///< Actual covering prime ids for each normalized required minterm.
+  std::vector<QuineMcCluskeyRound> rounds; ///< Actual merge histories, populated only by the trace.
+  PetrickTrace
+      covering; ///< Actual residual covering expansion; empty if essentials already cover all.
+  std::size_t pair_tests{}; ///< Actual term pairs tested for possible merging.
+  std::size_t merges{};     ///< Actual successful pair merges, including duplicate generated terms.
+};
+/// @brief Render an implicant as an n-character high-bit-first Boolean pattern.
+/// Positions masked by one render as a dash. Permits n=0 (empty string) and n=32, with no undefined shifts. Rejects any stored bit/mask outside the declared n-variable domain; masked bits within the domain are allowed. O(n) time and owned string storage.
+/// @param imp Bit/mask product term.
+/// @param n Variable count in0..32.
+/// @return Owned string of zeros, ones and dashes.
+/// @throws std::invalid_argument Invalid variable count or out-of-domain stored bit.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::implicant_to_string({8,5},4)); // 1-0-
+/// @endcode
+/// @see Implicant::covers()
+std::string implicant_to_string(const Implicant& imp, int n);
+/// @brief Minimize a Boolean function with native prime generation and exact Petrick covering.
+/// Validates0..32 variables and every minterm before any shifts/search. Duplicate required/optional terms normalize; overlap is allowed, and required values remain required. Empty required set returns an empty cover; n=0 permits the single empty-variable minterm0. Uses exponential worst-case time/storage, independently bounded by input/working terms, pair tests, chart ids, and native Petrick candidate/history policies. Chooses minimum product count then minimum literal count; residual ties retain deterministic native Petrick order. No global mutation, borrowed inputs unchanged, outputs owned. The residual native Petrick stages are retained even in this non-round-capturing entry point.
+/// @param n Variable count in0..32, also bounded by policy.
+/// @param minterms Required one-valued domain assignments.
+/// @param dontcares Optional assignments, not required to be covered.
+/// @param options Independent work/allocation and covering policies.
+/// @return Exact minimized expression, complete chart, actual covering expansion and selected counts.
+/// @throws std::invalid_argument Variable count or minterm outside the declared domain.
+/// @throws std::length_error Any search/allocation policy or representable id/history bound exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::quine_mccluskey_run(2,{0,1});
+/// std::print("{}\n",dm::algorithms::implicant_to_string(r.result.minimal_cover[0],2)); // 0-
+/// @endcode
+/// @par References
+/// - W. V. Quine (1952), https://doi.org/10.1080/00029890.1952.11988183; E. J. McCluskey (1956), https://doi.org/10.1002/j.1538-7305.1956.tb03835.x
+/// @see quine_mccluskey_trace(), petrick_trace()
+QuineMcCluskeyRun quine_mccluskey_run(
+    int                          n,
+    std::vector<std::uint32_t>   minterms,
+    std::vector<std::uint32_t>   dontcares = {},
+    const QuineMcCluskeyOptions& options   = {});
+/// @brief Capture actual prime merge rounds from the same minimization producer.
+/// Retains before/used/next/new-prime arrays for each real round. A record costs3*current+2*next+2*newprimes+1 scalar/header entries, admitted before copying. Other semantics and independent covering-history policy match quine_mccluskey_run().
+/// @param n Variable count0..32.
+/// @param minterms Required domain assignments.
+/// @param dontcares Optional domain assignments, default empty.
+/// @param options Input, search, chart and retained-history policies.
+/// @return Owned exact minimized result and actual rounds/chart/native covering.
+/// @throws std::invalid_argument Invalid variable count or minterm.
+/// @throws std::length_error Any policy or representable capacity exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::quine_mccluskey_trace(1,{0,1});
+/// std::print("{}\n",r.rounds.size()); // 2
+/// @endcode
+/// @see quine_mccluskey_run()
+QuineMcCluskeyRun quine_mccluskey_trace(
+    int                          n,
+    std::vector<std::uint32_t>   minterms,
+    std::vector<std::uint32_t>   dontcares = {},
+    const QuineMcCluskeyOptions& options   = {});
+/// @brief Return the exact minimum sum-of-products result with default checked policies.
+/// Signature and three-vector result layout preserved. Delegates to the shared producer; invalid domain/shift inputs now throw. Use quine_mccluskey_run() to configure exponential search policies.
+/// @param n Variable count0..32, default policy allows at most16.
+/// @param minterms Required assignments.
+/// @param dontcares Optional assignments, default empty.
+/// @return All primes, essentials and a term/literal-minimal cover.
+/// @throws std::invalid_argument Invalid domain.
+/// @throws std::length_error Default policy exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::quine_mccluskey(1,{0,1});
+/// std::print("{}\n",dm::algorithms::implicant_to_string(r.minimal_cover[0],1)); // -
+/// @endcode
+/// @see quine_mccluskey_run()
+QuineMcCluskeyResult quine_mccluskey(
+    int                        n,
+    std::vector<std::uint32_t> minterms,
+    std::vector<std::uint32_t> dontcares = {});
+} // namespace datamunge::algorithms

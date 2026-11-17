@@ -90,7 +90,7 @@ def main():
        reference_library_sha256=digest(reference) if reference else None,
        reference_source_sha256=digest(reference.parent/'devarm_camera.cpp') if reference and (reference.parent/'devarm_camera.cpp').is_file() else None,
        source_hashes={p: digest(ROOT/p) for p in source_files},
-       input_hashes={p: digest(ROOT/'docs/mepml/examples/build/fruit_stream_realistic'/p) for p in ['trajectory.csv', 'fruit_trajectory.csv']})
+       input_hashes={p: digest(ROOT/'docs/mepml/build/fruit_stream_realistic'/p) for p in ['trajectory.csv', 'fruit_trajectory.csv']})
     if reference:
         result['video_mean_reduction_percent'] = 100*(1-stats['candidate']['video']['mean_ms']/stats['reference']['video']['mean_ms'])
         result['offscreen_mean_reduction_percent'] = 100*(1-stats['candidate']['offscreen']['mean_ms']/stats['reference']['offscreen']['mean_ms'])

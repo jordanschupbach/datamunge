@@ -25,29 +25,29 @@ def document(path, code="#include <dm/dm.hpp>\nint main() {}"):
     return str(path)
 
 
-def test_report_collections_keep_stable_urls_and_discover_both(tmp_path):
-    current, earlier = map(Path, reports.example_roots(tmp_path))
-    for collection, name in [(current, "graph/search/new"), (earlier, "math/old")]:
-        source = collection / (name + ".mepml")
+def test_report_collection_keeps_stable_urls_and_discovers_topics(tmp_path):
+    current, = map(Path, reports.example_roots(tmp_path))
+    for name in ["graph/search/new", "math/old"]:
+        source = current / (name + ".mepml")
         source.parent.mkdir(parents=True)
         source.write_text("Report")
     found = reports.discover_reports(tmp_path)
-    assert [reports.report_rel(p, [current, earlier]) for p in found] == [
+    assert [reports.report_rel(p, [current]) for p in found] == [
         "graph/search/new.mepml", "math/old.mepml"]
-    assert reports.Report(found[0], reports.report_rel(found[0], [current, earlier])).url == (
+    assert reports.Report(found[0], reports.report_rel(found[0], [current])).url == (
         "reports/graph/search/new.html")
 
 
-def test_report_collections_reject_duplicate_site_paths(tmp_path):
-    for collection in reports.example_roots(tmp_path):
-        source = Path(collection) / "same.mepml"
-        source.parent.mkdir(parents=True)
-        source.write_text("Report")
+def test_report_collections_reject_duplicate_site_paths(tmp_path, monkeypatch):
+    current = tmp_path / "docs/mepml"
+    current.mkdir(parents=True)
+    (current / "same.mepml").write_text("Report")
+    monkeypatch.setattr(reports, "example_roots", lambda _: [str(current)] * 2)
     with pytest.raises(reports.ToolchainError, match="Duplicate report path same.mepml"):
         reports.discover_reports(tmp_path)
 
 
-@pytest.mark.parametrize("collection", ["docs/examples/mepml", "docs/mepml/examples"])
+@pytest.mark.parametrize("collection", ["docs/mepml"])
 def test_report_source_link_uses_its_actual_collection(tmp_path, monkeypatch, collection):
     pytest.importorskip("markdown_it", reason="website rendering uses the docs shell dependencies")
     monkeypatch.setitem(sys.modules, "reports", reports)
@@ -170,14 +170,14 @@ def test_nonlibrary_blocks_do_not_require_an_installed_package(tmp_path, monkeyp
 
 
 def test_report_data_preparation_is_native_and_independent_of_checkout_scripts():
-    reports = list((ROOT / "docs/mepml/examples").rglob("*.mepml"))
+    reports = list((ROOT / "docs/mepml").rglob("*.mepml"))
     native = []
     for path in reports:
         text = path.read_text()
         assert "scripts/prepare_" not in text, path
         # NN reports perform model/data work in C++; other collections may
         # also demonstrate native Python/R bindings after native preparation.
-        if path.is_relative_to(ROOT / "docs/mepml/examples/nn"):
+        if path.is_relative_to(ROOT / "docs/mepml/nn"):
             assert not re.search(r"^```\{?python", text, re.M), path
         for block in re.findall(r'^```[^\n]*\n(.*?)^```', text, re.M | re.S):
             assert not re.search(r"python(?:3(?:\.\d+)?)? .*prepare_", block), path
@@ -260,7 +260,7 @@ def test_sibling_reports_cannot_capture_each_others_newest_figure(tmp_path, monk
 
 def test_public_dataset_reads_acquire_missing_sources_natively():
     checked = 0
-    for path in (ROOT / "docs/mepml/examples").rglob("*.mepml"):
+    for path in (ROOT / "docs/mepml").rglob("*.mepml"):
         for block in re.findall(r'^```[^\n]*\n(.*?)^```', path.read_text(), re.M | re.S):
             if "LoadSaliency(cache" in block:
                 assert 'prepare_example_data("mnist-assets", cache.string())' in block, path

@@ -66,61 +66,17 @@ std::vector<Point2D> unique_in_order(const std::vector<Point2D>& points) {
     return out;
 }
 
-/// @brief Graham scan on points, adding its orientation tests to @p tests.
+/// @brief Delegate group-hull computation to the shared exact-sign Graham kernel.
+/// @param points Finite copied group records, moved into the native by-value API.
+/// @param tests Accumulated selected angular/sweep tests, updated only on success.
+/// @return Owned strict group hull with the public Graham ordering policy.
+/// @throws std::invalid_argument On nonfinite group coordinates.
+/// @throws std::length_error On work/container exhaustion.
+/// @throws std::overflow_error On selected signed-counter overflow.
+/// @throws std::bad_alloc On allocation failure.
+/// @see graham_scan()
 std::vector<Point2D> graham_counted(std::vector<Point2D> points, long long& tests) {
-    std::vector<Point2D> pts = sorted_unique(std::move(points));
-    const int            n   = static_cast<int>(pts.size());
-    if (n < 3) return pts;
-
-    int piv = 0;
-    for (int i = 1; i < n; ++i)
-        if (pts[i].y < pts[piv].y || (pts[i].y == pts[piv].y && pts[i].x < pts[piv].x)) piv = i;
-    std::swap(pts[0], pts[piv]);
-    const Point2D p0 = pts[0];
-    std::sort(pts.begin() + 1, pts.end(), [&](const Point2D& a, const Point2D& b) {
-        ++tests;
-        const double c = cross(p0, a, b);
-        if (c != 0) return c > 0; // a before b when p0->a->b turns left
-        return squared_distance(p0, a) < squared_distance(p0, b);
-    });
-
-    std::vector<Point2D> hull;
-    for (const Point2D& p : pts) {
-        while (hull.size() >= 2) {
-            ++tests;
-            if (cross(hull[hull.size() - 2], hull.back(), p) > 0) break;
-            hull.pop_back();
-        }
-        hull.push_back(p);
-    }
-    return hull; // counterclockwise
-}
-
-/// @brief Jarvis march on points, adding its orientation tests to @p tests.
-std::vector<Point2D> jarvis_counted(std::vector<Point2D> points, long long& tests) {
-    std::vector<Point2D> pts = sorted_unique(std::move(points));
-    const int            n   = static_cast<int>(pts.size());
-    if (n < 3) return pts;
-
-    const int            start = 0; // leftmost (lowest on ties) after the sort
-    std::vector<Point2D> hull;
-    int                  cur = start;
-    do {
-        hull.push_back(pts[cur]);
-        const int first = (cur + 1) % n;
-        int       next  = first;
-        for (int q = 0; q < n; ++q) {
-            if (q == cur || q == first) continue;
-            ++tests;
-            const double o = cross(pts[cur], pts[next], pts[q]);
-            if (o < 0 || (o == 0 && squared_distance(pts[cur], pts[q]) > squared_distance(pts[cur], pts[next])))
-                next = q;
-        }
-        cur = next;
-    } while (cur != start && static_cast<int>(hull.size()) <= n + 1);
-
-    make_ccw(hull);
-    return hull;
+    return graham_scan(std::move(points), tests);
 }
 
 /// @brief Whether candidate @p q beats @p best as the next wrap vertex from @p cur: more
@@ -139,49 +95,8 @@ int tangent_scan(const std::vector<Point2D>& poly, const Point2D& p, long long& 
     return best;
 }
 
-/// @brief Recursively collect the hull vertices strictly left of the directed edge a->b.
-void quickhull_rec(const std::vector<Point2D>& pts, const Point2D& a, const Point2D& b, std::vector<Point2D>& out) {
-    int    far  = -1;
-    double best = 0;
-    for (std::size_t i = 0; i < pts.size(); ++i) {
-        const double c = cross(a, b, pts[i]);
-        if (c > best) {
-            best = c;
-            far  = static_cast<int>(i);
-        }
-    }
-    if (far < 0) return; // no point strictly left: edge a->b is on the hull
-    const Point2D c = pts[far];
-
-    std::vector<Point2D> left_ac, left_cb;
-    for (const Point2D& p : pts) {
-        if (cross(a, c, p) > 0) left_ac.push_back(p);
-        else if (cross(c, b, p) > 0) left_cb.push_back(p);
-    }
-    quickhull_rec(left_ac, a, c, out);
-    out.push_back(c);
-    quickhull_rec(left_cb, c, b, out);
-}
 
 } // namespace
-
-std::vector<Point2D> graham_scan(std::vector<Point2D> points) {
-    long long tests = 0;
-    return graham_counted(std::move(points), tests);
-}
-
-std::vector<Point2D> graham_scan(std::vector<Point2D> points, long long& orientation_tests) {
-    return graham_counted(std::move(points), orientation_tests);
-}
-
-std::vector<Point2D> jarvis_march(std::vector<Point2D> points) {
-    long long tests = 0;
-    return jarvis_counted(std::move(points), tests);
-}
-
-std::vector<Point2D> jarvis_march(std::vector<Point2D> points, long long& orientation_tests) {
-    return jarvis_counted(std::move(points), orientation_tests);
-}
 
 TangentSearch convex_polygon_tangent(const std::vector<Point2D>& polygon, const Point2D& p) {
     TangentSearch out;
@@ -321,29 +236,7 @@ ChanResult chans_algorithm_trace(const std::vector<Point2D>& points, const ChanO
 
 std::vector<Point2D> chans_algorithm(std::vector<Point2D> points) { return chans_algorithm_trace(points).hull; }
 
-std::vector<Point2D> quickhull(std::vector<Point2D> points) {
-    std::vector<Point2D> pts = sorted_unique(std::move(points));
-    const int            n   = static_cast<int>(pts.size());
-    if (n < 3) return pts;
 
-    const Point2D a = pts.front(); // leftmost (sorted by x, then y)
-    const Point2D b = pts.back();  // rightmost
-
-    std::vector<Point2D> above, below;
-    for (const Point2D& p : pts) {
-        const double c = cross(a, b, p);
-        if (c > 0) above.push_back(p);
-        else if (c < 0) below.push_back(p);
-    }
-
-    std::vector<Point2D> hull;
-    hull.push_back(a);
-    quickhull_rec(above, a, b, hull); // upper chain a -> b
-    hull.push_back(b);
-    quickhull_rec(below, b, a, hull); // lower chain b -> a
-    make_ccw(hull);
-    return hull;
-}
 
 std::vector<int> convex_layers(const std::vector<Point2D>& points) {
     std::vector<int>     layer(points.size(), -1);

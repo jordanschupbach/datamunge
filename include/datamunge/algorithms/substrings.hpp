@@ -1,42 +1,13 @@
+#include <datamunge/plot/plot.hpp>
 #pragma once
-
 #include <cstddef>
+#include <datamunge/algorithms/kadane.hpp>
+#include <datamunge/algorithms/longest_common_substring.hpp>
 #include <map>
 #include <string>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// @brief The result of @ref kadane: the maximum sum over any non-empty contiguous subarray and the
-///        half-open index range @c [begin, end) achieving it.
-struct MaxSubarray {
-    double      sum{0.0}; ///< the maximum contiguous-subarray sum.
-    std::size_t begin{0}; ///< first index of the best subarray (inclusive).
-    std::size_t end{0};   ///< one past the last index of the best subarray (exclusive).
-};
-
-/// @brief *Kadane's algorithm* (Bentley 1984, after Kadane): finds the contiguous subarray of @p a
-///        with the largest sum, in a single \(O(n)\) pass. It maintains the best sum of a subarray
-///        *ending at the current position* -- either extend the previous best or start fresh here --
-///        and tracks the global maximum. Correct with negative values: for an all-negative input it
-///        returns the single least-negative element (the best non-empty subarray). An empty input
-///        yields sum 0 over the empty range @c [0,0).
-///
-/// @param a the input values (may be negative).
-/// @return the maximum-sum subarray and its index range.
-MaxSubarray kadane(const std::vector<int>& a);
-
-/// @brief The *longest common substring* of two sequences @p a and @p b: a longest run of elements
-///        that occurs *contiguously* in both (unlike a subsequence, which may skip elements).
-///        Computed by the dynamic program @c L(i,j)=L(i-1,j-1)+1 when @c a_i=b_j and 0 otherwise --
-///        the length of the common suffix of the two prefixes -- tracking the largest value seen.
-///        Runs in \(O(|a||b|)\) time and space. When several longest common substrings exist, one
-///        is returned.
-///
-/// @param a the first sequence.
-/// @param b the second sequence.
-/// @return one longest common (contiguous) substring; empty if the sequences share no element.
-std::vector<int> longest_common_substring(const std::vector<int>& a, const std::vector<int>& b);
 
 /// @brief Case-sensitive whole-string byte matching with only star and question-mark metacharacters.
 ///
@@ -62,7 +33,7 @@ std::vector<int> longest_common_substring(const std::vector<int>& a, const std::
 ///   https://developforperformance.com/MatchingWildcards_AnImprovedAlgorithmForBigData.html
 ///   (non-recursive matching family; this is a simpler length-aware last-star scan).
 /// @see wildcard_match_stats(), wildcard_match_trace(), wildcard_dp_table()
-bool wildcard_match(const std::string& text,const std::string& pattern);
+bool wildcard_match(const std::string& text, const std::string& pattern);
 
 /// @brief One node of a @ref SuffixTree. An edge into this node spans text positions
 ///        @c [start, end] inclusive; an @ref end of -1 is the sentinel "current leaf end", i.e. the
@@ -70,22 +41,51 @@ bool wildcard_match(const std::string& text,const std::string& pattern);
 ///        link (or -1), and @ref children maps a character code (0..255, or 256 for the virtual
 ///        terminal) to a child node index.
 struct SuffixTreeNode {
-    int                start{-1};
-    int                end{-1};
-    int                suffix_link{-1};
-    std::map<int, int> children;
+  int                start{-1};
+  int                end{-1};
+  int                suffix_link{-1};
+  std::map<int, int> children;
 };
 
 /// @brief A suffix tree over a text: the compressed trie of all its suffixes. @ref text is the
 ///        original string (a unique terminal is handled virtually at index @c text.size()), and
 ///        @ref nodes holds the tree with @c nodes[0] the root. Build it with @ref build_suffix_tree.
 struct SuffixTree {
-    std::string                text;
-    std::vector<SuffixTreeNode> nodes;
+  std::string                 text;
+  std::vector<SuffixTreeNode> nodes;
 };
 
+/// @brief Actual Ukkonen construction operation counters.
+/// @par Example
+/// @code
+/// dm::algorithms::SuffixTreeWork r;
+/// @endcode
+/// @par References
+/// - Actual canonical producer; report derives the recurrence.
+/// @see Related legacy convenience overloads in this header.
+struct SuffixTreeWork {
+  SuffixTree               tree;              ///< Owned final compressed suffix tree.
+  std::size_t              phases{0};         ///< Actual phases, including virtual terminal.
+  std::size_t              extensions{0};     ///< Actual active-point loop iterations.
+  std::size_t              splits{0};         ///< Actual edge splits.
+  std::size_t              walk_downs{0};     ///< Actual skip/count hops.
+  std::vector<std::size_t> nodes_after_phase; ///< Actual node count at each phase end.
+};
+/// @brief Build a byte suffix tree and expose actual construction work.
+/// Virtual terminal256 is outside byte alphabet. std::map transitions give O(n log alphabet) construction and O(m log alphabet) lookup; alphabet bounded257. No recursion or shared mutable state.
+/// @param text Borrowed arbitrary byte string; at most1000000 bytes.
+/// @return Owned final tree and actual counters.
+/// @throws std::length_error More than1000000 text bytes.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::build_suffix_tree_work("banana"); //15 distinct substrings
+/// @endcode
+/// @par References
+/// - Actual canonical producer; report derives the recurrence.
+/// @see Related legacy convenience overloads in this header.
+SuffixTreeWork build_suffix_tree_work(const std::string& text);
 /// @brief *Ukkonen's algorithm* (Ukkonen 1995): constructs the @ref SuffixTree of @p text in
-///        *linear time*, *online* (processing the text left to right, one character at a time).
+///        *O(n log alphabet) time* with ordered transitions, *online* (processing the text left to right, one character at a time).
 ///        It maintains an "active point" and suffix links so that all suffix insertions for a new
 ///        character are performed in amortized constant time, using the tricks of a global growing
 ///        leaf end, skip/count edge walking, and deferred suffix-link creation. The suffix tree
@@ -115,4 +115,16 @@ bool suffix_tree_contains(const SuffixTree& tree, const std::string& pattern);
 /// @return the number of distinct non-empty substrings of the text.
 std::size_t distinct_substring_count(const SuffixTree& tree);
 
+/// @brief Draw an actual canonical suffix tree without reconstructing it.
+/// Iterative layout uses leaf order and descendant means. Byte labels suit printable input; use numeric diagnostics for binary strings. O(nodes+total displayed edge bytes) output; caller saves figure.
+/// @param tree Unmodified result of build_suffix_tree; empty text accepted.
+/// @return Owned plot with actual edge substrings; virtual terminal rendered as $.
+/// @par Example
+/// @code
+/// auto p=dm::algorithms::suffix_tree_plot(dm::algorithms::build_suffix_tree("banana"));
+/// @endcode
+/// @par References
+/// - Actual canonical producer; report derives the recurrence.
+/// @see Related legacy convenience overloads in this header.
+graphics::RPlot suffix_tree_plot(const SuffixTree& tree);
 } // namespace datamunge::algorithms

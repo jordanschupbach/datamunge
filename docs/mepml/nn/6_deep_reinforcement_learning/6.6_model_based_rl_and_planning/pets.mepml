@@ -1,0 +1,1045 @@
+//? Title: PETS: Probabilistic Ensembles and Trajectory Sampling
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Canonical native graphs and owning search/data objects support a complete editable source experiment. Original seeds, parameter names, actual default budgets, objectives and random streams are retained. Fitting, self-play, episode collection and planning schedules remain visible.
+)
+\toc
+
+> Follow the model and data
+
+Candidate sequences -> sampled ensemble particles -> CEM elites.
+
+```{cpp, results="markdown", file="figures/pets_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("input",{-18,0},"Source data / observations",s).node("graph",{0,0},"Candidate sequences -> sampled ensemble particles -> CEM elites",s).node("loop",{18,0},"Editable experiment / evaluation",s).edge("input","graph").edge("graph","loop").save_svg("build/pets_method.svg");}
+```
+// result_begin: markdown
+\image(figures/pets_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+Unit-variance delta/reward noise.5,-1 from state1 gives successor1.5 and reward-1. The source samples a member at each particle step (TS1), rather than fixing a member for a whole trajectory.
+
+```{cpp, results="markdown", file="figures/pets_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::nn::models::DynamicsGaussian p{dm::nn::zeros({1,2}),dm::nn::zeros({1,2})};auto next=dm::nn::models::DynamicsNext(dm::nn::ones({1,1}),p,dm::nn::from_vector(std::vector<float>{.5f,-1},{1,2}));std::vector<double>values{next.next_s.item<double>(),next.r.item<double>()};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"computed values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("pets worked calculation").size(1000,550).save_svg("build/pets_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 1.500000000 |
+| 1 | -1.000000000 |
+\image(figures/pets_worked.svg)
+// result_end
+
+> Inspect the native model architecture
+
+One source ensemble member (two ReLU128 layers) with an explicit zero action; all ensemble members remain in the experiment. This trace uses an independent store and does not change fitting.
+
+```{cpp, results="markdown", file="figures/pets_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_directories("build");n::ParameterStore p(0);n::Module network([&](const n::Tensor&x){return m::DynamicsMember(p,x,n::zeros({1,1}),128).mean;},"pets source model");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;network.plot(n::zeros({1,3}),options).save_svg("build/pets_network.svg");}
+```
+// result_begin: markdown
+\image(figures/pets_network.svg)
+// result_end
+
+> Complete preserved source experiment
+
+The original default protocol below is retained, including existing bounded-mode limits and deferred quality assertions where present. AlphaZero retains25 iterations of20 self-play games and60 updates per iteration. World Models retains300 random episodes,2000 VAE steps,1500 recurrent steps and60 generations with24 candidates. DATAMUNGE_EXAMPLES_FULL=1 restores full budgets only where the original helper uses that flag. No external-framework parity is asserted. Capture hooks read existing histories and final parameters without additional random draws or evaluation calls.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;inline std::map<std::string,std::vector<double>> traces;
+inline void Trace(const std::string&name,double value){traces[name].push_back(value);}inline int monitor_index=0,checkpoint_index=0;
+template<class T>void Save(const std::string& name,const std::vector<T>&v){arrays.push_back({name,dm::nn::from_vector(v)});}
+struct Checkpoint{dm::nn::ParameterStore& store;~Checkpoint(){auto tag=std::to_string(checkpoint_index++);for(const auto& name:store.names())arrays.push_back({"parameters_"+tag+"_"+name,store.at(name).detach().clone()});}};
+struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/pets_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn pets
+// PETS: probabilistic ensembles with trajectory sampling.
+//
+// Port of tflow's pets.
+// Chua et al. 2018 make model-predictive control robust to model error by
+// (1) using an ensemble of probabilistic networks, which captures both the
+// noise in the dynamics (the predicted variance) and the model's own
+// uncertainty (disagreement between members), and (2) planning over
+// *particles*: each candidate action sequence is rolled out several times,
+// each particle following a randomly chosen member and sampling from its
+// Gaussian (TS1), and the candidate is scored by its mean return. CEM picks
+// the sequence; data collected is added to the model's training set.
+//
+// The ensemble is common/rl/dynamics_model.hpp (eager port of tflow's
+// dynamics_model.h). TF predicts every row with every member and keeps the
+// rows assigned to that member; the port evaluates each member only on its own
+// rows (5x less work) but draws the same Gaussian noise for all rows, so the
+// random stream is the same as TF's. Pendulum, CEM and every random draw use
+// the same std::mt19937_64 as TF; weights use nn's generator, so returns match
+// TF statistically. The vsim video is replaced by PlayEpisode (same episode,
+// printed, no video). Options: threads=N, seed=0 (model weights and random
+// stream; TF fixes 0). The port adds checks (exit 1 on failure).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <datamunge/nn/nn.hpp>
+#include <functional>
+#include <random>
+#include <string>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/classic_control.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::kPi;
+using datamunge::rl::environments::Clamp;
+using datamunge::rl::environments::WrapAngle;
+using datamunge::rl::environments::CartPole;
+using datamunge::rl::environments::MountainCar;
+using datamunge::rl::environments::MountainCarContinuous;
+using datamunge::rl::environments::Pendulum;
+using datamunge::rl::environments::Acrobot;
+}
+
+// Editable workflow support: rl/continuous.hpp
+// datamunge::nn port of tflow_examples src/common/rl/continuous.h.
+// Pieces shared by the continuous-control examples: config, deterministic
+// and Gaussian actors, tanh-squashed sampling with its log-density
+// correction, state-action critics, and deterministic evaluation. Actions
+// inside the networks live in [-1, 1]; the environment's bounds are applied
+// at the boundary with ScaleAction.
+//
+// Changes from the TF version: the networks are eager functions of a
+// ParameterStore and a tensor (calling one twice with the same store and
+// name shares its weights, as nn::Params did), NormalNoise returns an
+// nn::Tensor, and the TF hardware options are accepted and ignored except
+// threads=N, which sets nn's thread count.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <datamunge/nn/nn.hpp>
+#include <functional>
+#include <random>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/dqn_common.hpp
+// datamunge::nn port of tflow_examples src/common/rl/dqn_common.h.
+// Pieces shared by the DQN-family examples: hyper-parameters, the epsilon
+// schedule, a training monitor, Q-value heads (plain / dueling), greedy
+// evaluation, the C51 distribution projection, and Adam with global-norm
+// clipping (tflow's nn::Adam).
+//
+// Changes from the TF version: the TF hardware options (device=, threads=,
+// xla=) are accepted and ignored, since nn runs eagerly on the CPU; QHead
+// builds on a ParameterStore and returns a tensor instead of adding graph
+// nodes; the noisy-network head (nn::NoisyDense) is not included, because
+// datamunge::nn has no noisy layer yet.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <datamunge/nn/nn.hpp>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+
+namespace nn = datamunge::nn;
+
+struct DqnConfig {
+  int steps = 50000;          // environment steps
+  int warmup = 1000;          // steps before training starts
+  int batch = 64;
+  int buffer = 50000;
+  float gamma = 0.98f;        // 0.99 is the usual choice; 0.98 bounds Q by 50 and makes CartPole far more stable
+  float lr = 5e-4f;
+  float clip_norm = 10.f;
+  int target_sync = 500;      // hard target update period (steps), used when tau == 1
+  float tau = 0.005f;         // target <- tau * online + (1 - tau) * target every step; tau = 1 means a hard copy every target_sync steps
+  float eps_start = 1.f, eps_end = 0.05f;
+  int eps_decay_steps = 10000;
+  int hidden = 128;
+  int train_every = 2;
+  int log_every = 5000;
+  int eval_every = 5000;
+  int eval_episodes = 5;
+  uint64_t seed = 0;
+};
+
+// TF-only options that the ports accept and ignore.
+inline bool IsHardwareOption(const std::string& key) {
+  return key == "device" || key == "threads" || key == "intra_threads" || key == "inter_threads" || key == "xla";
+}
+
+// Overrides from the command line, e.g. `just run-nn dqn steps=50000 lr=5e-4`.
+inline void ParseConfig(int argc, char** argv, DqnConfig* c) {
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    const size_t eq = arg.find('=');
+    if (eq == std::string::npos) continue;
+    const std::string key = arg.substr(0, eq);
+    const float v = std::strtof(arg.c_str() + eq + 1, nullptr);
+    if (IsHardwareOption(key)) continue;
+    if (key == "steps") c->steps = static_cast<int>(v);
+    else if (key == "warmup") c->warmup = static_cast<int>(v);
+    else if (key == "batch") c->batch = static_cast<int>(v);
+    else if (key == "buffer") c->buffer = static_cast<int>(v);
+    else if (key == "gamma") c->gamma = v;
+    else if (key == "lr") c->lr = v;
+    else if (key == "clip_norm") c->clip_norm = v;
+    else if (key == "target_sync") c->target_sync = static_cast<int>(v);
+    else if (key == "tau") c->tau = v;
+    else if (key == "eps_start") c->eps_start = v;
+    else if (key == "eps_end") c->eps_end = v;
+    else if (key == "eps_decay_steps") c->eps_decay_steps = static_cast<int>(v);
+    else if (key == "hidden") c->hidden = static_cast<int>(v);
+    else if (key == "train_every") c->train_every = static_cast<int>(v);
+    else if (key == "log_every") c->log_every = static_cast<int>(v);
+    else if (key == "eval_every") c->eval_every = static_cast<int>(v);
+    else if (key == "seed") c->seed = static_cast<uint64_t>(v);
+    else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 512);
+    c->warmup = std::min(c->warmup, 32);
+    c->batch = std::min(c->batch, 8);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    c->eps_decay_steps = std::min(c->eps_decay_steps, c->steps);
+    example_runtime::Describe();
+  }
+}
+
+inline float Epsilon(const DqnConfig& c, int step) {
+  const float frac = std::min(1.f, static_cast<float>(step) / c.eps_decay_steps);
+  return c.eps_start + frac * (c.eps_end - c.eps_start);
+}
+
+// Greedy evaluation with any action function.
+inline float Evaluate(Env& env, const std::function<int(const Obs&)>& act, int episodes, uint64_t seed) {
+  double total = 0;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    while (true) {
+      StepResult r = env.step(act(obs));
+      total += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+  }
+  report_capture::Trace("eval_call",static_cast<float>(total/episodes));
+  return static_cast<float>(total / episodes);
+}
+
+// Tracks episode returns and losses and prints one line per log period.
+class Monitor {
+ public:
+  explicit Monitor(const DqnConfig& cfg, const char* third_column = "eps") : cfg_(cfg) {
+    std::printf("  %8s %8s %12s %7s %10s %10s\n", "step", "episodes", "return(20)", third_column, "loss", "eval");
+  }
+  void EndEpisode(float ret) { returns_.push_back(ret); }
+  ~Monitor(){auto tag=std::to_string(id_);report_capture::Save("return_"+tag,returns_);report_capture::Save("step_"+tag,steps_);report_capture::Save("eval_"+tag,evaluation_);report_capture::Save("loss_"+tag,mean_losses_);}
+  void AddLoss(float loss) { losses_.push_back(loss); }
+  int episodes() const { return static_cast<int>(returns_.size()); }
+  float RecentReturn(int n = 20) const {
+    if (returns_.empty()) return 0.f;
+    const size_t from = returns_.size() > static_cast<size_t>(n) ? returns_.size() - n : 0;
+    return std::accumulate(returns_.begin() + from, returns_.end(), 0.f) / (returns_.size() - from);
+  }
+  void Log(int step, float eps, float eval_return) {
+    const float loss = losses_.empty() ? 0.f : std::accumulate(losses_.begin(), losses_.end(), 0.f) / losses_.size();
+    steps_.push_back(step);evaluation_.push_back(eval_return);mean_losses_.push_back(loss);
+    losses_.clear();
+    char eval[16];
+    if (std::isnan(eval_return)) std::snprintf(eval, sizeof eval, "%10s", "");
+    else std::snprintf(eval, sizeof eval, "%10.1f", eval_return);
+    std::printf("  %8d %8d %12.1f %7.3f %10.4f %s\n", step, episodes(), RecentReturn(), eps, loss, eval);
+    std::fflush(stdout);
+  }
+
+ private:
+  int id_=report_capture::monitor_index++;std::vector<double>steps_,evaluation_,mean_losses_;
+  DqnConfig cfg_;
+  std::vector<float> returns_, losses_;
+};
+
+using dm::nn::models::ProjectDistribution;
+
+// One observation as a [1, obs_dim] tensor.
+inline nn::Tensor Row(const Obs& o) { return nn::from_vector(o, {1, static_cast<std::int64_t>(o.size())}); }
+
+}  // namespace rl
+
+
+// Editable workflow support: rl/replay.hpp
+#include <datamunge/rl/replay.hpp>
+namespace rl {using dm::rl::replay::Experience;using dm::rl::replay::Batch;using dm::rl::replay::ReplayBuffer;using dm::rl::replay::PrioritizedReplay;using dm::rl::replay::NStepBuffer;using dm::rl::replay::SeqBatch;using dm::rl::replay::SequenceReplay;}
+
+namespace rl {
+
+struct CConfig {
+  int steps = 200000;
+  int warmup = 1000;       // random actions before training
+  int batch = 128;
+  int buffer = 100000;
+  float gamma = 0.99f;
+  float tau = 0.005f;      // Polyak factor for target networks
+  float actor_lr = 1e-3f, critic_lr = 1e-3f;
+  int hidden = 128;
+  float noise = 0.1f;      // exploration noise std (fraction of the action range)
+  int log_every = 2000;
+  int eval_every = 4000;
+  int eval_episodes = 5;
+  uint64_t seed = 0;
+};
+
+inline void ParseCConfig(int argc, char** argv, CConfig* c) {
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    const size_t eq = arg.find('=');
+    if (eq == std::string::npos) continue;
+    const std::string key = arg.substr(0, eq);
+    const float v = std::strtof(arg.c_str() + eq + 1, nullptr);
+    if (key == "threads") {
+      datamunge::nn::set_num_threads(static_cast<int>(v));
+      continue;
+    }
+    if (IsHardwareOption(key)) continue;
+    if (key == "steps") c->steps = static_cast<int>(v);
+    else if (key == "warmup") c->warmup = static_cast<int>(v);
+    else if (key == "batch") c->batch = static_cast<int>(v);
+    else if (key == "buffer") c->buffer = static_cast<int>(v);
+    else if (key == "gamma") c->gamma = v;
+    else if (key == "tau") c->tau = v;
+    else if (key == "actor_lr") c->actor_lr = v;
+    else if (key == "critic_lr") c->critic_lr = v;
+    else if (key == "lr") c->actor_lr = c->critic_lr = v;
+    else if (key == "hidden") c->hidden = static_cast<int>(v);
+    else if (key == "noise") c->noise = v;
+    else if (key == "log_every") c->log_every = static_cast<int>(v);
+    else if (key == "eval_every") c->eval_every = static_cast<int>(v);
+    else if (key == "seed") c->seed = static_cast<uint64_t>(v);
+    else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 256);
+    c->warmup = std::min(c->warmup, 32);
+    c->batch = std::min(c->batch, 8);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    example_runtime::Describe();
+  }
+}
+
+inline DqnConfig MonitorConfig(const CConfig& c) {
+  DqnConfig d;
+  d.log_every = c.log_every;
+  d.eval_every = c.eval_every;
+  d.eval_episodes = c.eval_episodes;
+  return d;
+}
+
+// [-1, 1]^dim -> the environment's box.
+using dm::rl::continuous::ScaleAction;using dm::rl::continuous::NormalNoise;
+using dm::nn::models::DeterministicActor;using dm::nn::models::Gaussian;using dm::nn::models::GaussianActor;
+using dm::nn::models::Squashed;using dm::nn::models::SquashedSample;using dm::nn::models::GaussianLogProb;using dm::nn::models::QNetwork;
+// Evaluation with a deterministic policy returning actions in [-1, 1].
+inline float EvaluateC(Env& env, const std::function<std::vector<float>(const Obs&)>& act, int episodes, uint64_t seed) {
+  const ActionSpace space = env.action_space();
+  double total = 0;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    while (true) {
+      StepResult r = env.step(ScaleAction(act(obs), space));
+      total += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+  }
+  report_capture::Trace("eval_call",static_cast<float>(total/episodes));
+  return static_cast<float>(total / episodes);
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/dynamics_model.hpp
+// Editable ensemble stores and inference wiring; the fitting objective and native optimizers live in main.
+#include <cstdint>
+#include <datamunge/nn/nn.hpp>
+#include <memory>
+#include <random>
+#include <string>
+#include <utility>
+#include <vector>
+
+
+
+namespace rl {
+
+class DynamicsEnsemble {
+ public:
+  using TensorStore=datamunge::nn::ParameterStore;
+  using Tensor = datamunge::nn::Tensor;
+
+  DynamicsEnsemble(int members, int obs_dim, int act_dim, int hidden, float lr, uint64_t seed)
+      : obs_dim_(obs_dim), hidden_(hidden) {
+    namespace nn = datamunge::nn;
+    for (int m = 0; m < members; ++m) {
+      Member mem;
+      mem.params = std::make_unique<nn::ParameterStore>(seed + m);
+      members_.push_back(std::move(mem));
+      {
+        nn::NoGradGuard no_grad;
+        Forward(m, nn::zeros({1, obs_dim}), nn::zeros({1, act_dim}));
+      }
+
+    }
+  }
+
+  int members() const { return static_cast<int>(members_.size()); }
+
+  using Output=dm::nn::models::DynamicsGaussian;
+  // Member m's Gaussian over (s' - s, r) for states S [N, obs] and actions A [N, act].
+  Output Forward(int m, const Tensor& S, const Tensor& A) const {
+return dm::nn::models::DynamicsMember(*members_.at(m).params,S,A,hidden_);
+}
+
+  TensorStore& Params(int m)const{return *members_.at(m).params;}
+  // Predict next states and rewards with member m, sampling from its
+  // Gaussian when `sample` is set, else using the mean.
+  using Prediction=dm::nn::models::DynamicsPrediction;
+  Prediction Predict(int m, const Tensor& S, const Tensor& A, bool sample, std::mt19937_64& rng) const {
+namespace nn=dm::nn;nn::NoGradGuard no_grad;const auto o=Forward(m,S,A);Tensor noise;if(sample){std::vector<float> e(size_t(S.size(0))*(obs_dim_+1));std::normal_distribution<float> normal(0,1);for(auto&x:e)x=normal(rng);noise=nn::from_vector(e,{S.size(0),obs_dim_+1});}return nn::models::DynamicsNext(S,o,noise);
+}
+
+ private:
+  struct Member {
+    std::unique_ptr<datamunge::nn::ParameterStore> params;
+
+  };
+  int obs_dim_, hidden_;
+  std::vector<Member> members_;
+};
+
+using TransitionSet=dm::rl::planning::TransitionSet;
+} // namespace rl
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+
+int main(int argc, char** argv) {
+  try {
+  uint64_t seed = 0;  // model weights and the planner's random stream (TF: 0)
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    if (arg.rfind("threads=", 0) == 0) nn::set_num_threads(std::atoi(arg.c_str() + 8));
+    if (arg.rfind("seed=", 0) == 0) seed = std::strtoull(arg.c_str() + 5, nullptr, 10);
+  }
+  rl::Pendulum env;
+  const rl::ActionSpace space = env.action_space();
+  const int obs_dim = env.obs_size(), act_dim = space.dim;
+  const int members = 5, particles = example_runtime::Limit(10, 2), candidates = example_runtime::Limit(100, 16),
+            elites = example_runtime::Limit(10, 4), horizon = example_runtime::Limit(15, 5),
+            cem_iters = example_runtime::Limit(4, 2);
+  const int iterations = example_runtime::Limit(6, 2), model_steps = example_runtime::Limit(400, 8), batch = example_runtime::Limit(128, 8);
+  std::printf("== PETS on Pendulum: %d-member ensemble, %d particles per candidate, CEM with %d candidates over %d steps\n",
+              members, particles, candidates, horizon);
+
+  rl::DynamicsEnsemble model(members, obs_dim, act_dim, 128, 1e-3f, seed);
+  std::vector<std::unique_ptr<nn::Optimizer>> model_optimizers;
+  for(int m=0;m<model.members();++m)model_optimizers.push_back(std::make_unique<nn::Optimizer>(model.Params(m),1e-3,nn::OptimizerConfig{nn::OptimizerKind::Adam}));
+  auto fit_model_batch=[&](const Tensor&S,const Tensor&A,const Tensor&S2,const Tensor&R){
+    const Tensor target=nn::concat({S2-S,nn::expand_dims(R,1)},1);float nll=0,mse=0;
+    for(int m=0;m<model.members();++m){const auto o=model.Forward(m,S,A);const Tensor err=target-o.mean;
+      const Tensor loss=nn::mean(nn::sum(nn::square(err)*nn::exp(-o.logvar)+o.logvar,{1}),{0});
+      const float mse_m=nn::mean(nn::sum(nn::square(err.detach()),{1}),{0}).item<float>();const float loss_m=loss.item<float>();
+      auto gradients=nn::grad(loss,model_optimizers[m]->parameters());model_optimizers[m]->step(gradients);
+      nll+=loss_m/model.members();mse+=mse_m/model.members();}return std::pair<float,float>{nll,mse};};
+
+struct EnsembleCheckpoint{rl::DynamicsEnsemble& m;~EnsembleCheckpoint(){for(int i=0;i<m.members();++i){report_capture::Checkpoint c{m.Params(i)};}}} ensemble_checkpoint{model};
+  std::mt19937_64 rng(seed);
+  rl::TransitionSet data;
+
+  // CEM with trajectory sampling. Rows are (candidate, particle) pairs; at
+  // every step each row is advanced by a random ensemble member.
+  float last_plan_return = 0;  // the ensemble's return of the best sequence of the last plan()
+  auto plan = [&](const rl::Obs& obs, bool trajectory_sampling) {
+    const int H = horizon, N = candidates, P = trajectory_sampling ? particles : 1;
+    std::vector<float> mean(H * act_dim, 0.f), stdv(H * act_dim, 1.f), best(act_dim, 0.f);
+    float best_return = -1e30f;
+    std::normal_distribution<float> normal(0.f, 1.f);
+    for (int it = 0; it < cem_iters; ++it) {
+      std::vector<std::vector<float>> seqs(N, std::vector<float>(H * act_dim));
+      for (auto& s : seqs)
+        for (int j = 0; j < H * act_dim; ++j) s[j] = std::max(-1.f, std::min(1.f, mean[j] + stdv[j] * normal(rng)));
+      const int rows = N * P;
+      std::vector<float> S(static_cast<size_t>(rows) * obs_dim);  // current state of every row
+      for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < obs_dim; ++j) S[i * obs_dim + j] = obs[j];
+      std::vector<float> returns(N, 0.f);
+      for (int t = 0; t < H; ++t) {
+        // Each row follows one randomly chosen member for this step (TS1).
+        std::vector<int> member_of(rows);
+        for (int& m : member_of) m = trajectory_sampling ? static_cast<int>(rng() % members) : 0;
+        for (int m = 0; m < members; ++m) {
+          // TF's Predict(m, all rows) draws [rows, obs + 1] standard normals when sampling.
+          std::vector<float> eps;
+          if (trajectory_sampling) {
+            eps.resize(static_cast<size_t>(rows) * (obs_dim + 1));
+            std::normal_distribution<float> noise(0.f, 1.f);
+            for (float& x : eps) x = noise(rng);
+          }
+          std::vector<int> idx;
+          for (int i = 0; i < rows; ++i)
+            if (member_of[i] == m) idx.push_back(i);
+          if (idx.empty()) continue;
+          const int n = static_cast<int>(idx.size());
+          std::vector<float> s(static_cast<size_t>(n) * obs_dim), a(static_cast<size_t>(n) * act_dim);
+          for (int k = 0; k < n; ++k) {
+            for (int j = 0; j < obs_dim; ++j) s[k * obs_dim + j] = S[idx[k] * obs_dim + j];
+            for (int d = 0; d < act_dim; ++d) a[k * act_dim + d] = seqs[idx[k] / P][t * act_dim + d] * 2.f;
+          }
+          std::vector<float> out;
+          {
+            nn::NoGradGuard no_grad;
+            const rl::DynamicsEnsemble::Output o = model.Forward(m, nn::from_vector(s, {n, obs_dim}), nn::from_vector(a, {n, act_dim}));
+            Tensor y = o.mean;
+            if (trajectory_sampling) {
+              std::vector<float> e(static_cast<size_t>(n) * (obs_dim + 1));
+              for (int k = 0; k < n; ++k)
+                for (int j = 0; j <= obs_dim; ++j) e[k * (obs_dim + 1) + j] = eps[idx[k] * (obs_dim + 1) + j];
+              y = o.mean + nn::exp(0.5 * o.logvar) * nn::from_vector(e, {n, obs_dim + 1});
+            }
+            out = y.to_vector<float>();
+          }
+          for (int k = 0; k < n; ++k) {
+            for (int j = 0; j < obs_dim; ++j) S[idx[k] * obs_dim + j] += out[k * (obs_dim + 1) + j];
+            returns[idx[k] / P] += out[k * (obs_dim + 1) + obs_dim] / P;
+          }
+        }
+      }
+      std::vector<int> order(N);
+      for (int i = 0; i < N; ++i) order[i] = i;
+      std::partial_sort(order.begin(), order.begin() + elites, order.end(), [&](int x, int y) { return returns[x] > returns[y]; });
+      if (returns[order[0]] > best_return) {
+        best_return = returns[order[0]];
+        best.assign(seqs[order[0]].begin(), seqs[order[0]].begin() + act_dim);
+      }
+      for (int j = 0; j < H * act_dim; ++j) {
+        float m = 0, v = 0;
+        for (int k = 0; k < elites; ++k) m += seqs[order[k]][j] / elites;
+        for (int k = 0; k < elites; ++k) v += (seqs[order[k]][j] - m) * (seqs[order[k]][j] - m) / elites;
+        mean[j] = m, stdv[j] = std::sqrt(v) + 0.05f;
+      }
+    }
+    last_plan_return = best_return;
+    return best;
+  };
+  auto run_episode = [&](const std::function<std::vector<float>(const rl::Obs&)>& policy, uint64_t seed) {
+    rl::Obs obs = env.reset(seed);
+    float ret = 0;
+    while (true) {
+      rl::Action a = rl::ScaleAction(policy(obs), space);
+      rl::StepResult sr = env.step(a);
+      data.Add(obs, a.continuous, sr.obs, sr.reward);
+      ret += sr.reward;
+      obs = sr.obs;
+      if (sr.done()) break;
+    }
+    report_capture::Trace("episode_return",ret);return ret;
+  };
+
+  std::printf("  %5s %10s %12s %12s %20s %20s\n", "round", "data", "model NLL", "model MSE", "PETS (ensemble+TS)", "single det. model");
+  run_episode([&](const rl::Obs&) { return std::vector<float>{std::uniform_real_distribution<float>(-1, 1)(rng)}; }, 1);
+  run_episode([&](const rl::Obs&) { return std::vector<float>{std::uniform_real_distribution<float>(-1, 1)(rng)}; }, 2);
+  float first_nll = 1e30f, last_nll = 0, best_pets = -1e30f;
+  for (int round = 1; round <= iterations; ++round) {
+    std::pair<float, float> stats{0, 0};
+    for (int i = 0; i < model_steps; ++i) {
+      Tensor S, A, S2, R;
+      auto sampled=data.Sample(batch,rng);S=sampled.state;A=sampled.action;S2=sampled.next_state;R=sampled.reward;
+      stats = fit_model_batch(S, A, S2, R);report_capture::Trace("model_nll",stats.first);report_capture::Trace("model_mse",stats.second);
+      if (first_nll > 1e29f) first_nll = stats.first;
+    }
+    const float r_pets = run_episode([&](const rl::Obs& o) { return plan(o, true); }, 100 + round);
+    const float r_single = run_episode([&](const rl::Obs& o) { return plan(o, false); }, 200 + round);
+    std::printf("  %5d %10d %12.3f %12.4f %20.1f %20.1f\n", round, data.size(), stats.first, stats.second, r_pets, r_single);
+    std::fflush(stdout);
+    last_nll = stats.first, best_pets = std::max(best_pets, r_pets);
+  }
+  // On film in TF: the overlay shows the torque and the ensemble's return for
+  // the plan it was taken from (averaged over the particles).
+  const rl::Playback pb = rl::PlayEpisode(env, [&](const rl::Obs& o) {
+    const std::vector<float> u = plan(o, true);
+    return rl::Explain(rl::ScaleAction(u, space), last_plan_return, "planned return (15 steps)", "CEM, 5-member ensemble, 10 particles per candidate");
+  }, "pets_pendulum", 777);
+  // Ensemble disagreement as an uncertainty signal: far from the data it grows.
+  const Tensor S = nn::from_vector(std::vector<float>{1, 0, 0, 1, 0, 8}, {2, obs_dim});  // upright at rest (seen often) vs. upright spinning at max speed (rare)
+  const Tensor A = nn::zeros({2, act_dim});
+  std::vector<std::vector<float>> preds(2);
+  for (int m = 0; m < members; ++m) {
+    const std::vector<float> next = model.Predict(m, S, A, false, rng).next_s.to_vector<float>();
+    for (int i = 0; i < 2; ++i) preds[i].push_back(next[i * obs_dim + 2]);
+  }
+  float spread[2];
+  for (int i = 0; i < 2; ++i) {
+    float m = 0, v = 0;
+    for (float x : preds[i]) m += x / members;
+    for (float x : preds[i]) v += (x - m) * (x - m) / members;
+    spread[i] = std::sqrt(v);
+    std::printf("  predicted next angular velocity, %s: members' std %.4f\n", i == 0 ? "common state" : "rare state  ", std::sqrt(v));
+  }
+
+  // Checks added by the port (tflow prints the table only).
+  check::Require(std::isfinite(last_nll) && std::isfinite(first_nll), "finite model fitting losses in both runtime profiles");
+  check::TrainingQuality(last_nll < first_nll, "the ensemble's NLL falls as it is refit");
+  check::TrainingQuality(best_pets > -400, "PETS swings the pendulum up in some round (return > -400)");
+  check::TrainingQuality(pb.ret > -600, "the PETS episode played at the end does well (return > -600)");
+  check::TrainingQuality(spread[1] > spread[0], "the members disagree more on the rare state than on the common one");
+  std::printf("\nchecks passed (vsim video omitted)\n");
+  } catch (const std::exception& e) {
+    std::fprintf(stderr, "CHECK FAILED: %s\n", e.what());
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == PETS on Pendulum: 5-member ensemble, 2 particles per candidate, CEM with 16 candidates over 5 steps
+//   round       data    model NLL    model MSE   PETS (ensemble+TS)    single det. model
+//       1        800       65.567      55.3955              -1682.9              -1808.8
+//       2       1200       53.781      58.9095              -1057.1              -1837.6
+//   played pets_pendulum (video omitted): 200 steps, return -1425.0
+//   predicted next angular velocity, common state: members' std 0.0565
+//   predicted next angular velocity, rare state  : members' std 0.5197
+//   full-training quality check deferred: the ensemble's NLL falls as it is refit
+//   full-training quality check deferred: PETS swings the pendulum up in some round (return > -400)
+//   full-training quality check deferred: the PETS episode played at the end does well (return > -600)
+//   full-training quality check deferred: the members disagree more on the rare state than on the common one
+//
+// checks passed (vsim video omitted)
+// result_end
+
+> Actual source performance
+
+These measurements come from the complete source run above; each series retains source execution order. A bounded run or one evaluation point does not establish convergence. Model loss and task return use separate figures.
+
+```{cpp, results="markdown", file="figures/pets_diagnostic0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto data=dm::nn::load_npz("build/pets_source.npz");auto it=std::find_if(data.begin(),data.end(),[](const auto&v){return v.first=="episode_return";});auto all=it->second.to_vector<double>();auto plot=dm::graphics::RPlot::create();for(int method=0;method<2;++method){std::vector<double>x,y;for(size_t j=2+method;j<all.size();j+=2){x.push_back((j-2)/2+1);y.push_back(all[j]);}plot.lines(x,y,method?"single deterministic member":"PETS ensemble TS1",{37+method*150,99,235-method*150});}plot.title("PETS original planner comparison").x_label("Collect/refit round").y_label("Task return").size(1100,600).save_svg("build/pets_diagnostic0.svg");}
+```
+// result_begin: markdown
+\image(figures/pets_diagnostic0.svg)
+// result_end
+
+> Actual source model/search diagnostics
+
+These measurements come from the complete source run above; each series retains source execution order. A bounded run or one evaluation point does not establish convergence. Model loss and task return use separate figures.
+
+```{cpp, results="markdown", file="figures/pets_diagnostic1.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/pets_source.npz");auto plot=dm::graphics::RPlot::create();int series=0;for(const auto&[key,t]:archive){if(!key.starts_with("model_mse"))continue;auto y=t.to_vector<double>();std::vector<double>x(y.size());std::iota(x.begin(),x.end(),0.);plot.lines(x,y,key,{37+(series%4)*50,99,235-(series%4)*50}).points(x,y,key+" points",{37+(series%4)*50,99,235-(series%4)*50},3);++series;}if(!series)throw std::runtime_error("source diagnostic missing");plot.title("pets actual source diagnostics").x_label("Member-update batch").y_label("Summed-coordinate model MSE").size(1100,600).save_svg("build/pets_diagnostic1.svg");}
+```
+// result_begin: markdown
+\image(figures/pets_diagnostic1.svg)
+// result_end
+
+> Interpretation and provenance
+
+The retained checks and printed outcomes determine what this run supports. Weak or deferred quality checks are not evidence of full convergence. Native APIs provide pure differentiable model components, owning transitions and cloned-game search; every objective, optimizer, episode/self-play loop, controller search and training schedule stays editable above.
+
+The planner comparison excludes the first two random-policy collection episodes; their returns remain in the captured archive. Each displayed method retains the original per-round episode and seed.

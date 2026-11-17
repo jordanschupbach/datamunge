@@ -1,89 +1,136 @@
 #pragma once
-
-// The simplex algorithm (Dantzig, 1947) for linear programming. A linear program
-// maximizes a linear objective over a polytope defined by linear inequalities;
-// its optimum, if finite, is attained at a vertex. The simplex method walks from
-// vertex to adjacent vertex along improving edges of the polytope until no
-// improving move remains. Here it is implemented as a tableau pivot for the
-// standard inequality form
-//
-//     maximize   c . x   subject to   A x <= b,   x >= 0   (with b >= 0),
-//
-// so the slack variables form an initial feasible basis (no Phase I needed).
-// Bland's rule chooses the pivots, which guarantees termination (no cycling).
-
-#include <cmath>
+/// @file simplex.hpp
+/// @brief Checked feasible-origin primal simplex and actual pivot states.
 #include <cstddef>
 #include <vector>
-
+/// @brief Canonical checked native producers and owned algorithm values.
 namespace datamunge::algorithms {
-
-enum class SimplexStatus { Optimal, Unbounded };
-
-struct SimplexResult {
-    SimplexStatus       status{SimplexStatus::Optimal};
-    double              value{0};    // optimal objective
-    std::vector<double> x;           // optimal decision variables (size n)
+/// @brief SimplexStatus stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const auto value=dm::algorithms::SimplexStatus::Optimal;
+/// std::print("{}\n",static_cast<int>(value)); // 0
+/// @endcode
+enum class SimplexStatus {
+  Optimal,       ///< No reduced cost below -tolerance; approximate floating-point termination.
+  Unbounded,     ///< Improving entering column has no pivot coefficient above tolerance.
+  IterationLimit ///< Improving column remains when requested pivot limit is reached.
 };
-
-// Maximize c.x subject to A x <= b, x >= 0, with every b_i >= 0.
-inline SimplexResult simplex_maximize(const std::vector<double>&              c,
-                                      const std::vector<std::vector<double>>& A,
-                                      const std::vector<double>&              b) {
-    const std::size_t m = A.size();          // constraints
-    const std::size_t n = c.size();          // structural variables
-    const std::size_t total = n + m;         // + slacks
-    const double      eps = 1e-9;
-
-    // Tableau: m constraint rows + 1 objective row; columns = total vars + RHS.
-    std::vector<std::vector<double>> T(m + 1, std::vector<double>(total + 1, 0.0));
-    std::vector<std::size_t>         basis(m);
-    for (std::size_t i = 0; i < m; ++i) {
-        for (std::size_t j = 0; j < n; ++j) T[i][j] = A[i][j];
-        T[i][n + i]   = 1.0;      // slack
-        T[i][total]   = b[i];     // RHS
-        basis[i]      = n + i;
-    }
-    for (std::size_t j = 0; j < n; ++j) T[m][j] = -c[j]; // objective row (reduced costs)
-
-    for (int iter = 0; iter < 100000; ++iter) {
-        // Entering variable: smallest index with negative reduced cost (Bland).
-        std::size_t entering = total;
-        for (std::size_t j = 0; j < total; ++j)
-            if (T[m][j] < -eps) { entering = j; break; }
-        if (entering == total) break; // optimal
-
-        // Ratio test: smallest RHS/col among positive column entries; Bland tie-break.
-        std::size_t leaving = m;
-        double      best_ratio = 0.0;
-        for (std::size_t i = 0; i < m; ++i) {
-            if (T[i][entering] > eps) {
-                const double ratio = T[i][total] / T[i][entering];
-                if (leaving == m || ratio < best_ratio - eps ||
-                    (std::fabs(ratio - best_ratio) <= eps && basis[i] < basis[leaving])) {
-                    best_ratio = ratio;
-                    leaving    = i;
-                }
-            }
-        }
-        if (leaving == m) return {SimplexStatus::Unbounded, 0.0, {}};
-
-        // Pivot on (leaving, entering).
-        const double piv = T[leaving][entering];
-        for (double& v : T[leaving]) v /= piv;
-        for (std::size_t i = 0; i <= m; ++i) {
-            if (i == leaving) continue;
-            const double factor = T[i][entering];
-            if (std::fabs(factor) < eps) continue;
-            for (std::size_t j = 0; j <= total; ++j) T[i][j] -= factor * T[leaving][j];
-        }
-        basis[leaving] = entering;
-    }
-
-    std::vector<double> x(n, 0.0);
-    for (std::size_t i = 0; i < m; ++i)
-        if (basis[i] < n) x[basis[i]] = T[i][total];
-    return {SimplexStatus::Optimal, T[m][total], x};
-}
-
+/// @brief SimplexResult stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimplexResult value{};
+/// std::print("{}\n",value.value); // 0
+/// @endcode
+struct SimplexResult {
+  SimplexStatus status{
+      SimplexStatus::Optimal}; ///< Actual stopping condition; not a rigorous numerical certificate.
+  double value{};        ///< Current feasible-basis objective; zero in legacy unbounded result.
+  std::vector<double> x; ///< Current structural values; empty in legacy unbounded result.
+};
+/// @brief SimplexOptions stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimplexOptions value{};
+/// std::print("{}\n",value.max_pivots); // 100000
+/// @endcode
+struct SimplexOptions {
+  double      tolerance{1e-9}; ///< Finite positive entering/positive-column threshold.
+  std::size_t max_pivots{
+      100000}; ///< Maximum actual pivots; zero allows only initial termination check.
+  std::size_t max_cells{1000000}; ///< Complete tableau cell count; zero disables policy.
+  std::size_t max_history_values{
+      1000000}; ///< Captured records plus tableau cells/basis entries; zero disables.
+};
+/// @brief SimplexPivot stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimplexPivot value{};
+/// std::print("{}\n",value.pivot); // 0
+/// @endcode
+struct SimplexPivot {
+  std::size_t              entering{}; ///< Actual chosen smallest improving variable index.
+  std::size_t              leaving{};  ///< Actual leaving basic variable before pivot.
+  std::size_t              row{};      ///< Actual pivot row.
+  double                   pivot{};    ///< Actual pre-normalization pivot coefficient.
+  std::vector<std::size_t> basis;      ///< Actual basis after pivot.
+  std::vector<std::vector<double>>
+      tableau; ///< Actual complete tableau after pivot; objective is final row.
+};
+/// @brief SimplexRun stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimplexRun value{};
+/// std::print("{}\n",value.pivots); // 0
+/// @endcode
+struct SimplexRun {
+  SimplexResult result;         ///< Actual stopping result.
+  std::size_t   pivots{};       ///< Actual executed pivots.
+  std::size_t   cell_updates{}; ///< Actual pivot-row divisions plus elimination cell subtractions.
+  std::vector<SimplexPivot> history; ///< Optional actual post-pivot basis/tableau states.
+};
+/// @brief Maximize a finite feasible-origin inequality LP.
+/// Maximize c dot x subject to A x<=b, x>=0, b>=0. Rectangular finite A with b.size()==A.size() and row width c.size(); zero constraints/variables allowed. Slack variables supply initial feasible basis; no PhaseI or infeasibility solver. Smallest improving reduced-cost index enters, minimum positive-column ratio leaves, exact ratio ties use smallest basic index (Bland). Arithmetic uses tolerance for entering/positive-column tests; exact-arithmetic Bland termination is not a floating-point guarantee. IterationLimit explicitly reports unresolved improvement. Optimal/Unbounded are tolerance-based outcomes, not certified decisions on ill-scaled LPs. Complete tableau/capture geometry and finite arithmetic checked. One pivot O((m+1)(m+n+1)); worst-case pivot count exponential. Borrowed inputs, owned output, no shared state.
+/// @param c Complete finite objective coefficients.
+/// @param A Complete finite rectangular constraint rows.
+/// @param b Complete finite nonnegative right-hand sides.
+/// @param options Tolerance, pivot limit, complete tableau and optional retained-value policies.
+/// @return Owned actual current result, executed work and optional real tableaux.
+/// @throws std::invalid_argument Malformed shape, nonfinite input, negative b or invalid tolerance.
+/// @throws std::length_error Tableau/history/counter policy or capacity exceeded.
+/// @throws std::domain_error Nonfinite tableau arithmetic or output objective.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::simplex_run({5,4},{{6,4},{1,2}},{24,6});
+/// std::print("{} {}\n",r.result.value,r.pivots); // 21 2
+/// @endcode
+/// @par References
+/// - G. B. Dantzig, Linear Programming and Extensions,1963; R. G. Bland, New finite pivoting rules for the simplex method,1977, DOI10.1287/moor.2.2.103.
+/// @see simplex_maximize()
+SimplexRun simplex_run(
+    const std::vector<double>&              c,
+    const std::vector<std::vector<double>>& A,
+    const std::vector<double>&              b,
+    const SimplexOptions&                   options = {});
+/// @brief Maximize a finite feasible-origin inequality LP with actual pivot tableaux.
+/// Maximize c dot x subject to A x<=b, x>=0, b>=0. Rectangular finite A with b.size()==A.size() and row width c.size(); zero constraints/variables allowed. Slack variables supply initial feasible basis; no PhaseI or infeasibility solver. Smallest improving reduced-cost index enters, minimum positive-column ratio leaves, exact ratio ties use smallest basic index (Bland). Arithmetic uses tolerance for entering/positive-column tests; exact-arithmetic Bland termination is not a floating-point guarantee. IterationLimit explicitly reports unresolved improvement. Optimal/Unbounded are tolerance-based outcomes, not certified decisions on ill-scaled LPs. Complete tableau/capture geometry and finite arithmetic checked. One pivot O((m+1)(m+n+1)); worst-case pivot count exponential. Borrowed inputs, owned output, no shared state.
+/// @param c Complete finite objective coefficients.
+/// @param A Complete finite rectangular constraint rows.
+/// @param b Complete finite nonnegative right-hand sides.
+/// @param options Tolerance, pivot limit, complete tableau and optional retained-value policies.
+/// @return Owned actual current result, executed work and optional real tableaux.
+/// @throws std::invalid_argument Malformed shape, nonfinite input, negative b or invalid tolerance.
+/// @throws std::length_error Tableau/history/counter policy or capacity exceeded.
+/// @throws std::domain_error Nonfinite tableau arithmetic or output objective.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::simplex_trace({5,4},{{6,4},{1,2}},{24,6});
+/// std::print("{} {}\n",r.result.value,r.pivots); // 21 2
+/// @endcode
+/// @par References
+/// - G. B. Dantzig, Linear Programming and Extensions,1963; R. G. Bland, New finite pivoting rules for the simplex method,1977, DOI10.1287/moor.2.2.103.
+/// @see simplex_maximize()
+SimplexRun simplex_trace(
+    const std::vector<double>&              c,
+    const std::vector<std::vector<double>>& A,
+    const std::vector<double>&              b,
+    const SimplexOptions&                   options = {});
+/// @brief Return the preserved feasible-origin simplex result.
+/// Uses the same checked producer/default policies; IterationLimit is now distinct from Optimal. Requires b>=0, not arbitrary inequality LPs.
+/// @param c Finite objective.
+/// @param A Finite rectangular constraints.
+/// @param b Finite nonnegative right-hand side.
+/// @return Owned stopping result.
+/// @throws std::invalid_argument Malformed input.
+/// @throws std::length_error Default geometry/capacity exceeded.
+/// @throws std::domain_error Nonfinite arithmetic.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::simplex_maximize({5,4},{{6,4},{1,2}},{24,6}).value); // 21
+/// @endcode
+/// @see simplex_run()
+SimplexResult simplex_maximize(
+    const std::vector<double>&              c,
+    const std::vector<std::vector<double>>& A,
+    const std::vector<double>&              b);
 } // namespace datamunge::algorithms

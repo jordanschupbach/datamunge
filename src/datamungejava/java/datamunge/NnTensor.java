@@ -25,7 +25,7 @@ public class NnTensor extends NativeObject {
     @SuppressWarnings("this-escape")
     public NnTensor() {
         super(RAW);
-        Rosetta.construct(this, NnTensor.class, false, 3123);
+        Rosetta.construct(this, NnTensor.class, false, 3134);
     }
 
     /**
@@ -41,7 +41,7 @@ public class NnTensor extends NativeObject {
     @SuppressWarnings("this-escape")
     public NnTensor(double[] values, int[] shape) {
         super(RAW);
-        Rosetta.construct(this, NnTensor.class, false, 3123, values, shape);
+        Rosetta.construct(this, NnTensor.class, false, 3134, values, shape);
     }
 
     /**
@@ -56,7 +56,7 @@ public class NnTensor extends NativeObject {
     @SuppressWarnings("this-escape")
     public NnTensor(double[] values, int[] shape, String dtype) {
         super(RAW);
-        Rosetta.construct(this, NnTensor.class, false, 3123, values, shape, dtype);
+        Rosetta.construct(this, NnTensor.class, false, 3134, values, shape, dtype);
     }
 
     /**
@@ -70,7 +70,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor zeros(int[] shape) {
-        return Rosetta.asObject(Rosetta.call(3069, shape), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3080, shape), NnTensor.class);
     }
 
     /**
@@ -83,7 +83,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor zeros(int[] shape, String dtype) {
-        return Rosetta.asObject(Rosetta.call(3069, shape, dtype), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3080, shape, dtype), NnTensor.class);
     }
 
     /**
@@ -97,7 +97,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor ones(int[] shape) {
-        return Rosetta.asObject(Rosetta.call(3070, shape), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3081, shape), NnTensor.class);
     }
 
     /**
@@ -110,7 +110,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor ones(int[] shape, String dtype) {
-        return Rosetta.asObject(Rosetta.call(3070, shape, dtype), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3081, shape, dtype), NnTensor.class);
     }
 
     /**
@@ -125,7 +125,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor full(int[] shape, double value) {
-        return Rosetta.asObject(Rosetta.call(3071, shape, value), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3082, shape, value), NnTensor.class);
     }
 
     /**
@@ -139,7 +139,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor full(int[] shape, double value, String dtype) {
-        return Rosetta.asObject(Rosetta.call(3071, shape, value, dtype), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3082, shape, value, dtype), NnTensor.class);
     }
 
     /**
@@ -154,7 +154,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor arange(double start, double stop) {
-        return Rosetta.asObject(Rosetta.call(3072, start, stop), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3083, start, stop), NnTensor.class);
     }
 
     /**
@@ -170,7 +170,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor arange(double start, double stop, double step) {
-        return Rosetta.asObject(Rosetta.call(3072, start, stop, step), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3083, start, stop, step), NnTensor.class);
     }
 
     /**
@@ -185,7 +185,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor arange(double start, double stop, double step, String dtype) {
-        return Rosetta.asObject(Rosetta.call(3072, start, stop, step, dtype), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3083, start, stop, step, dtype), NnTensor.class);
     }
 
     /**
@@ -200,7 +200,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor randn(int[] shape, long seed) {
-        return Rosetta.asObject(Rosetta.call(3073, shape, seed), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3084, shape, seed), NnTensor.class);
     }
 
     /**
@@ -216,7 +216,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor randn(int[] shape, long seed, double mean) {
-        return Rosetta.asObject(Rosetta.call(3073, shape, seed, mean), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3084, shape, seed, mean), NnTensor.class);
     }
 
     /**
@@ -233,7 +233,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor randn(int[] shape, long seed, double mean, double std) {
-        return Rosetta.asObject(Rosetta.call(3073, shape, seed, mean, std), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3084, shape, seed, mean, std), NnTensor.class);
     }
 
     /**
@@ -249,7 +249,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor randn(int[] shape, long seed, double mean, double std, String dtype) {
-        return Rosetta.asObject(Rosetta.call(3073, shape, seed, mean, std, dtype), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3084, shape, seed, mean, std, dtype), NnTensor.class);
     }
 
     /**
@@ -264,7 +264,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor uniform(int[] shape, long seed) {
-        return Rosetta.asObject(Rosetta.call(3074, shape, seed), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3085, shape, seed), NnTensor.class);
     }
 
     /**
@@ -280,7 +280,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor uniform(int[] shape, long seed, double low) {
-        return Rosetta.asObject(Rosetta.call(3074, shape, seed, low), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3085, shape, seed, low), NnTensor.class);
     }
 
     /**
@@ -297,7 +297,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor uniform(int[] shape, long seed, double low, double high) {
-        return Rosetta.asObject(Rosetta.call(3074, shape, seed, low, high), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3085, shape, seed, low, high), NnTensor.class);
     }
 
     /**
@@ -313,7 +313,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor uniform(int[] shape, long seed, double low, double high, String dtype) {
-        return Rosetta.asObject(Rosetta.call(3074, shape, seed, low, high, dtype), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3085, shape, seed, low, high, dtype), NnTensor.class);
     }
 
     /**
@@ -325,7 +325,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public static NnTensor loadNpy(String path) {
-        return Rosetta.asObject(Rosetta.call(3075, path), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3086, path), NnTensor.class);
     }
 
     /**
@@ -336,7 +336,7 @@ public class NnTensor extends NativeObject {
      * @param path the C++ argument {@code path}
      */
     public void saveNpy(String path) {
-        Rosetta.call(3076, this, path);
+        Rosetta.call(3087, this, path);
     }
 
     /**
@@ -347,7 +347,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public boolean defined() {
-        return Rosetta.asBoolean(Rosetta.call(3077, this));
+        return Rosetta.asBoolean(Rosetta.call(3088, this));
     }
 
     /**
@@ -358,7 +358,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public double[] values() {
-        return Rosetta.asDoubles(Rosetta.call(3078, this));
+        return Rosetta.asDoubles(Rosetta.call(3089, this));
     }
 
     /**
@@ -369,7 +369,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public int[] shape() {
-        return Rosetta.asInts(Rosetta.call(3079, this));
+        return Rosetta.asInts(Rosetta.call(3090, this));
     }
 
     /**
@@ -380,7 +380,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public String dtype() {
-        return Rosetta.asString(Rosetta.call(3080, this));
+        return Rosetta.asString(Rosetta.call(3091, this));
     }
 
     /**
@@ -391,7 +391,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public int ndim() {
-        return Rosetta.asInt(Rosetta.call(3081, this));
+        return Rosetta.asInt(Rosetta.call(3092, this));
     }
 
     /**
@@ -402,7 +402,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public int numel() {
-        return Rosetta.asInt(Rosetta.call(3082, this));
+        return Rosetta.asInt(Rosetta.call(3093, this));
     }
 
     /**
@@ -413,7 +413,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public double item() {
-        return Rosetta.asDouble(Rosetta.call(3083, this));
+        return Rosetta.asDouble(Rosetta.call(3094, this));
     }
 
     /**
@@ -425,7 +425,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public double at(int[] index) {
-        return Rosetta.asDouble(Rosetta.call(3084, this, index));
+        return Rosetta.asDouble(Rosetta.call(3095, this, index));
     }
 
     /**
@@ -436,7 +436,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public String str() {
-        return Rosetta.asString(Rosetta.call(3085, this));
+        return Rosetta.asString(Rosetta.call(3096, this));
     }
 
     /**
@@ -448,7 +448,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor astype(String dtype) {
-        return Rosetta.asObject(Rosetta.call(3086, this, dtype), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3097, this, dtype), NnTensor.class);
     }
 
     /**
@@ -460,7 +460,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor reshape(int[] shape) {
-        return Rosetta.asObject(Rosetta.call(3087, this, shape), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3098, this, shape), NnTensor.class);
     }
 
     /**
@@ -473,7 +473,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor transpose() {
-        return Rosetta.asObject(Rosetta.call(3088, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3099, this), NnTensor.class);
     }
 
     /**
@@ -485,7 +485,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor transpose(int[] perm) {
-        return Rosetta.asObject(Rosetta.call(3088, this, perm), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3099, this, perm), NnTensor.class);
     }
 
     /**
@@ -499,7 +499,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor slice(int axis, int start, int stop) {
-        return Rosetta.asObject(Rosetta.call(3089, this, axis, start, stop), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3100, this, axis, start, stop), NnTensor.class);
     }
 
     /**
@@ -512,7 +512,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor concat(NnTensor other, int axis) {
-        return Rosetta.asObject(Rosetta.call(3090, this, other, axis), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3101, this, other, axis), NnTensor.class);
     }
 
     /**
@@ -524,7 +524,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor add(NnTensor other) {
-        return Rosetta.asObject(Rosetta.call(3091, this, other), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3102, this, other), NnTensor.class);
     }
 
     /**
@@ -536,7 +536,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor sub(NnTensor other) {
-        return Rosetta.asObject(Rosetta.call(3092, this, other), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3103, this, other), NnTensor.class);
     }
 
     /**
@@ -548,7 +548,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor mul(NnTensor other) {
-        return Rosetta.asObject(Rosetta.call(3093, this, other), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3104, this, other), NnTensor.class);
     }
 
     /**
@@ -560,7 +560,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor div(NnTensor other) {
-        return Rosetta.asObject(Rosetta.call(3094, this, other), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3105, this, other), NnTensor.class);
     }
 
     /**
@@ -572,7 +572,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor addScalar(double value) {
-        return Rosetta.asObject(Rosetta.call(3095, this, value), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3106, this, value), NnTensor.class);
     }
 
     /**
@@ -584,7 +584,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor mulScalar(double value) {
-        return Rosetta.asObject(Rosetta.call(3096, this, value), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3107, this, value), NnTensor.class);
     }
 
     /**
@@ -596,7 +596,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor pow(double exponent) {
-        return Rosetta.asObject(Rosetta.call(3097, this, exponent), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3108, this, exponent), NnTensor.class);
     }
 
     /**
@@ -607,7 +607,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor neg() {
-        return Rosetta.asObject(Rosetta.call(3098, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3109, this), NnTensor.class);
     }
 
     /**
@@ -621,7 +621,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor matmul(NnTensor other) {
-        return Rosetta.asObject(Rosetta.call(3099, this, other), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3110, this, other), NnTensor.class);
     }
 
     /**
@@ -636,7 +636,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor matmul(NnTensor other, boolean transposeA) {
-        return Rosetta.asObject(Rosetta.call(3099, this, other, transposeA), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3110, this, other, transposeA), NnTensor.class);
     }
 
     /**
@@ -650,7 +650,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor matmul(NnTensor other, boolean transposeA, boolean transposeB) {
-        return Rosetta.asObject(Rosetta.call(3099, this, other, transposeA, transposeB), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3110, this, other, transposeA, transposeB), NnTensor.class);
     }
 
     /**
@@ -661,7 +661,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor exp() {
-        return Rosetta.asObject(Rosetta.call(3100, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3111, this), NnTensor.class);
     }
 
     /**
@@ -672,7 +672,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor log() {
-        return Rosetta.asObject(Rosetta.call(3101, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3112, this), NnTensor.class);
     }
 
     /**
@@ -683,7 +683,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor sqrt() {
-        return Rosetta.asObject(Rosetta.call(3102, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3113, this), NnTensor.class);
     }
 
     /**
@@ -694,7 +694,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor abs() {
-        return Rosetta.asObject(Rosetta.call(3103, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3114, this), NnTensor.class);
     }
 
     /**
@@ -705,7 +705,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor square() {
-        return Rosetta.asObject(Rosetta.call(3104, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3115, this), NnTensor.class);
     }
 
     /**
@@ -716,7 +716,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor tanh() {
-        return Rosetta.asObject(Rosetta.call(3105, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3116, this), NnTensor.class);
     }
 
     /**
@@ -727,7 +727,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor sigmoid() {
-        return Rosetta.asObject(Rosetta.call(3106, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3117, this), NnTensor.class);
     }
 
     /**
@@ -738,7 +738,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor relu() {
-        return Rosetta.asObject(Rosetta.call(3107, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3118, this), NnTensor.class);
     }
 
     /**
@@ -750,7 +750,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor activate(String activation) {
-        return Rosetta.asObject(Rosetta.call(3108, this, activation), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3119, this, activation), NnTensor.class);
     }
 
     /**
@@ -763,7 +763,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor softmax() {
-        return Rosetta.asObject(Rosetta.call(3109, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3120, this), NnTensor.class);
     }
 
     /**
@@ -775,7 +775,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor softmax(int axis) {
-        return Rosetta.asObject(Rosetta.call(3109, this, axis), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3120, this, axis), NnTensor.class);
     }
 
     /**
@@ -788,7 +788,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor logSoftmax() {
-        return Rosetta.asObject(Rosetta.call(3110, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3121, this), NnTensor.class);
     }
 
     /**
@@ -800,7 +800,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor logSoftmax(int axis) {
-        return Rosetta.asObject(Rosetta.call(3110, this, axis), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3121, this, axis), NnTensor.class);
     }
 
     /**
@@ -813,7 +813,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor sum() {
-        return Rosetta.asObject(Rosetta.call(3111, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3122, this), NnTensor.class);
     }
 
     /**
@@ -827,7 +827,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor sum(int[] axes) {
-        return Rosetta.asObject(Rosetta.call(3111, this, axes), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3122, this, axes), NnTensor.class);
     }
 
     /**
@@ -840,7 +840,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor sum(int[] axes, boolean keepdims) {
-        return Rosetta.asObject(Rosetta.call(3111, this, axes, keepdims), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3122, this, axes, keepdims), NnTensor.class);
     }
 
     /**
@@ -853,7 +853,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor mean() {
-        return Rosetta.asObject(Rosetta.call(3112, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3123, this), NnTensor.class);
     }
 
     /**
@@ -867,7 +867,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor mean(int[] axes) {
-        return Rosetta.asObject(Rosetta.call(3112, this, axes), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3123, this, axes), NnTensor.class);
     }
 
     /**
@@ -880,7 +880,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor mean(int[] axes, boolean keepdims) {
-        return Rosetta.asObject(Rosetta.call(3112, this, axes, keepdims), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3123, this, axes, keepdims), NnTensor.class);
     }
 
     /**
@@ -893,7 +893,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor max() {
-        return Rosetta.asObject(Rosetta.call(3113, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3124, this), NnTensor.class);
     }
 
     /**
@@ -907,7 +907,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor max(int[] axes) {
-        return Rosetta.asObject(Rosetta.call(3113, this, axes), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3124, this, axes), NnTensor.class);
     }
 
     /**
@@ -920,7 +920,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor max(int[] axes, boolean keepdims) {
-        return Rosetta.asObject(Rosetta.call(3113, this, axes, keepdims), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3124, this, axes, keepdims), NnTensor.class);
     }
 
     /**
@@ -933,7 +933,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor min() {
-        return Rosetta.asObject(Rosetta.call(3114, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3125, this), NnTensor.class);
     }
 
     /**
@@ -947,7 +947,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor min(int[] axes) {
-        return Rosetta.asObject(Rosetta.call(3114, this, axes), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3125, this, axes), NnTensor.class);
     }
 
     /**
@@ -960,7 +960,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor min(int[] axes, boolean keepdims) {
-        return Rosetta.asObject(Rosetta.call(3114, this, axes, keepdims), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3125, this, axes, keepdims), NnTensor.class);
     }
 
     /**
@@ -973,7 +973,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor argmax() {
-        return Rosetta.asObject(Rosetta.call(3115, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3126, this), NnTensor.class);
     }
 
     /**
@@ -985,7 +985,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor argmax(int axis) {
-        return Rosetta.asObject(Rosetta.call(3115, this, axis), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3126, this, axis), NnTensor.class);
     }
 
     /**
@@ -996,7 +996,7 @@ public class NnTensor extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnTensor::set_requires_grad(bool requires_grad = true)}
      */
     public void setRequiresGrad() {
-        Rosetta.call(3116, this);
+        Rosetta.call(3127, this);
     }
 
     /**
@@ -1007,7 +1007,7 @@ public class NnTensor extends NativeObject {
      * @param requiresGrad the C++ argument {@code requires_grad}
      */
     public void setRequiresGrad(boolean requiresGrad) {
-        Rosetta.call(3116, this, requiresGrad);
+        Rosetta.call(3127, this, requiresGrad);
     }
 
     /**
@@ -1018,7 +1018,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public boolean requiresGrad() {
-        return Rosetta.asBoolean(Rosetta.call(3117, this));
+        return Rosetta.asBoolean(Rosetta.call(3128, this));
     }
 
     /**
@@ -1027,7 +1027,7 @@ public class NnTensor extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnTensor::backward()}
      */
     public void backward() {
-        Rosetta.call(3118, this);
+        Rosetta.call(3129, this);
     }
 
     /**
@@ -1038,7 +1038,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor grad() {
-        return Rosetta.asObject(Rosetta.call(3119, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3130, this), NnTensor.class);
     }
 
     /**
@@ -1047,7 +1047,7 @@ public class NnTensor extends NativeObject {
      * <p>C++: {@code void datamunge::nn::NnTensor::zero_grad()}
      */
     public void zeroGrad() {
-        Rosetta.call(3120, this);
+        Rosetta.call(3131, this);
     }
 
     /**
@@ -1058,7 +1058,7 @@ public class NnTensor extends NativeObject {
      * @return the result
      */
     public NnTensor detach() {
-        return Rosetta.asObject(Rosetta.call(3121, this), NnTensor.class);
+        return Rosetta.asObject(Rosetta.call(3132, this), NnTensor.class);
     }
 
     /**
@@ -1070,6 +1070,6 @@ public class NnTensor extends NativeObject {
      */
     @Override
     public String toString() {
-        return Rosetta.asString(Rosetta.call(3122, this));
+        return Rosetta.asString(Rosetta.call(3133, this));
     }
 }

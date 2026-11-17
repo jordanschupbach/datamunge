@@ -2,7 +2,7 @@
 """SqueezeNet (CIFAR-10, v1.0/v1.1) training-throughput baseline in PyTorch.
 
 Reproduces the training block of
-docs/mepml/examples/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml
+docs/mepml/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml
 (model: include/datamunge/nn/squeezenet_models.hpp) so that the in-house C++
 implementation can be compared against an external framework on the SAME
 workload:

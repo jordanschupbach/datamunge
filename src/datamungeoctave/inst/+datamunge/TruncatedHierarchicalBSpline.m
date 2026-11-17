@@ -87,7 +87,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3068, false, varargin{:});
+      __datamunge__(-2, obj, 3079, false, varargin{:});
     end
     function r = dimensions (obj)
       % dimensions  Number of dimensions d.
@@ -98,7 +98,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     r  integer: d.
       %
       %   C++: std::size_t datamunge::fda::TruncatedHierarchicalBSpline::dimensions() const
-      r = __datamunge__(3039, obj);
+      r = __datamunge__(3050, obj);
     end
     function r = level_count (obj)
       % level_count  Number of materialized levels (1 + deepest cell depth).
@@ -109,7 +109,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     r  integer: Level count.
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::level_count() const
-      r = __datamunge__(3040, obj);
+      r = __datamunge__(3051, obj);
     end
     function r = level (obj, level)
       % level  The level- `l` spline on the whole domain; it equals the hierarchy wherever Omega^l but not Omega^(l+1) applies.
@@ -126,7 +126,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid level. (C++ std::out_of_range)
       %
       %   C++: const TensorBSpline & datamunge::fda::TruncatedHierarchicalBSpline::level(int level) const
-      r = __datamunge__(3041, obj, level);
+      r = __datamunge__(3052, obj, level);
     end
     function r = cell_count (obj)
       % cell_count  Number of cells.
@@ -137,7 +137,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     r  integer: Cell count.
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::cell_count() const
-      r = __datamunge__(3042, obj);
+      r = __datamunge__(3053, obj);
     end
     function r = root (obj)
       % root  Root cell id.
@@ -148,7 +148,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     r  integer: Always 0.
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::root() const
-      r = __datamunge__(3043, obj);
+      r = __datamunge__(3054, obj);
     end
     function r = parent (obj, cell)
       % parent  Parent id.
@@ -165,7 +165,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::parent(int cell) const
-      r = __datamunge__(3044, obj, cell);
+      r = __datamunge__(3055, obj, cell);
     end
     function r = child (obj, cell, slot)
       % child  Child id.
@@ -183,7 +183,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For invalid ids/slots. (C++ std::out_of_range)
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::child(int cell, int slot) const
-      r = __datamunge__(3045, obj, cell, slot);
+      r = __datamunge__(3056, obj, cell, slot);
     end
     function r = depth (obj, cell)
       % depth  Depth (= level used there if it is a leaf).
@@ -200,7 +200,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::depth(int cell) const
-      r = __datamunge__(3046, obj, cell);
+      r = __datamunge__(3057, obj, cell);
     end
     function r = cell_min (obj, cell)
       % cell_min  Lower corner.
@@ -217,7 +217,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: std::vector<double> datamunge::fda::TruncatedHierarchicalBSpline::cell_min(int cell) const
-      r = __datamunge__(3047, obj, cell);
+      r = __datamunge__(3058, obj, cell);
     end
     function r = cell_max (obj, cell)
       % cell_max  Upper corner.
@@ -234,7 +234,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: std::vector<double> datamunge::fda::TruncatedHierarchicalBSpline::cell_max(int cell) const
-      r = __datamunge__(3048, obj, cell);
+      r = __datamunge__(3059, obj, cell);
     end
     function r = locate (obj, point)
       % locate  Deepest cell containing `point` (its depth is the finest level there).
@@ -251,7 +251,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  If point.size() != dimensions(). (C++ std::invalid_argument)
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::locate(const std::vector<double> & point) const
-      r = __datamunge__(3049, obj, point);
+      r = __datamunge__(3060, obj, point);
     end
     function r = refine (obj, cell, slot)
       % refine  Creates (if needed) the child of `cell` at `slot`, materializing the next level when first reached. The represented function is unchanged.
@@ -275,7 +275,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id or slot. (C++ std::out_of_range)
       %
       %   C++: int datamunge::fda::TruncatedHierarchicalBSpline::refine(int cell, int slot)
-      r = __datamunge__(3050, obj, cell, slot);
+      r = __datamunge__(3061, obj, cell, slot);
     end
     function r = subdivide (obj, cell)
       % subdivide  Creates all 2^d children of `cell`.
@@ -295,7 +295,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: std::vector<int> datamunge::fda::TruncatedHierarchicalBSpline::subdivide(int cell)
-      r = __datamunge__(3051, obj, cell);
+      r = __datamunge__(3062, obj, cell);
     end
     function refine_region (obj, region_min, region_max, depth)
       % refine_region  Subdivides, down to depth `depth`, every cell overlapping the open box (region_min, region_max). The represented function is unchanged.
@@ -314,7 +314,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On mismatched sizes or min >= max. (C++ std::invalid_argument)
       %
       %   C++: void datamunge::fda::TruncatedHierarchicalBSpline::refine_region(const std::vector<double> & region_min, const std::vector<double> & region_max, int depth)
-      __datamunge__(3052, obj, region_min, region_max, depth);
+      __datamunge__(3063, obj, region_min, region_max, depth);
     end
     function r = support_min (obj, level, index)
       % support_min  Lower corner of the support box of basis function `index` at `level`.
@@ -333,7 +333,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a dimension mismatch. (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::TruncatedHierarchicalBSpline::support_min(int level, const std::vector<int> & index) const
-      r = __datamunge__(3053, obj, level, index);
+      r = __datamunge__(3064, obj, level, index);
     end
     function r = support_max (obj, level, index)
       % support_max  Upper corner of the support box.
@@ -352,7 +352,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a dimension mismatch. (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::TruncatedHierarchicalBSpline::support_max(int level, const std::vector<int> & index) const
-      r = __datamunge__(3054, obj, level, index);
+      r = __datamunge__(3065, obj, level, index);
     end
     function r = is_active (obj, level, index)
       % is_active  Whether level- `level` function `index` is in the THB basis (support in Omega^level but not in Omega^(level+1)).
@@ -377,7 +377,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a dimension mismatch. (C++ std::invalid_argument)
       %
       %   C++: bool datamunge::fda::TruncatedHierarchicalBSpline::is_active(int level, const std::vector<int> & index) const
-      r = __datamunge__(3055, obj, level, index);
+      r = __datamunge__(3066, obj, level, index);
     end
     function r = active_indices (obj, level)
       % active_indices  Every active multi-index at `level`, in row-major order.
@@ -399,7 +399,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid level. (C++ std::out_of_range)
       %
       %   C++: std::vector<std::vector<int>> datamunge::fda::TruncatedHierarchicalBSpline::active_indices(int level) const
-      r = __datamunge__(3056, obj, level);
+      r = __datamunge__(3067, obj, level);
     end
     function r = basis_size (obj)
       % basis_size  Total number of THB basis functions over all levels.
@@ -416,7 +416,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     r  integer: Count.
       %
       %   C++: std::size_t datamunge::fda::TruncatedHierarchicalBSpline::basis_size() const
-      r = __datamunge__(3057, obj);
+      r = __datamunge__(3068, obj);
     end
     function r = coefficient (obj, level, index)
       % coefficient  THB coefficient of a basis function (for active functions; inactive entries are internal bookkeeping).
@@ -435,7 +435,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a dimension mismatch. (C++ std::invalid_argument)
       %
       %   C++: double datamunge::fda::TruncatedHierarchicalBSpline::coefficient(int level, const std::vector<int> & index) const
-      r = __datamunge__(3058, obj, level, index);
+      r = __datamunge__(3069, obj, level, index);
     end
     function set_coefficient (obj, level, index, value_)
       % set_coefficient  Sets the coefficient of an active function and propagates the change, with truncation, to every finer level. The edit is local to the function's support.
@@ -458,7 +458,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a dimension mismatch or an inactive index. (C++ std::invalid_argument)
       %
       %   C++: void datamunge::fda::TruncatedHierarchicalBSpline::set_coefficient(int level, const std::vector<int> & index, double value)
-      __datamunge__(3059, obj, level, index, value_);
+      __datamunge__(3070, obj, level, index, value_);
     end
     function r = truncated_basis (obj, level, index, point)
       % truncated_basis  Value of the truncated basis function (level, index) at `point`.
@@ -483,7 +483,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a size mismatch or a point outside the domain. (C++ std::invalid_argument)
       %
       %   C++: double datamunge::fda::TruncatedHierarchicalBSpline::truncated_basis(int level, const std::vector<int> & index, const std::vector<double> & point) const
-      r = __datamunge__(3060, obj, level, index, point);
+      r = __datamunge__(3071, obj, level, index, point);
     end
     function fit_level (obj, varargin)
       % fit_level  Least-squares update of the active coefficients at `level` only.
@@ -515,7 +515,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:native  If the normal equations are singular. (C++ std::runtime_error)
       %
       %   C++: void datamunge::fda::TruncatedHierarchicalBSpline::fit_level(int level, const std::vector<std::vector<double>> & points, const std::vector<double> & values, const SplineSolveOptions & options = {})
-      __datamunge__(3061, obj, varargin{:});
+      __datamunge__(3072, obj, varargin{:});
     end
     function fit_level_penalized (obj, varargin)
       % fit_level_penalized  Penalized variant of fit_level(): adds the level's full-grid tensor difference penalty restricted to its active functions, applied to the coefficient change.
@@ -544,7 +544,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:native  If the normal equations are singular. (C++ std::runtime_error)
       %
       %   C++: void datamunge::fda::TruncatedHierarchicalBSpline::fit_level_penalized(int level, const std::vector<std::vector<double>> & points, const std::vector<double> & values, const std::vector<double> & lambdas, int order = 2, const SplineSolveOptions & options = {})
-      __datamunge__(3062, obj, varargin{:});
+      __datamunge__(3073, obj, varargin{:});
     end
     function fit (obj, varargin)
       % fit  Least-squares fit of every active coefficient on every level at once (replaces the current function).
@@ -569,7 +569,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:native  If some active function has too little data (singular). (C++ std::runtime_error)
       %
       %   C++: void datamunge::fda::TruncatedHierarchicalBSpline::fit(const std::vector<std::vector<double>> & points, const std::vector<double> & values, const SplineSolveOptions & options = {})
-      __datamunge__(3063, obj, varargin{:});
+      __datamunge__(3074, obj, varargin{:});
     end
     function fit_penalized (obj, varargin)
       % fit_penalized  Penalized all-level fit: adds lambda_k times the squared order-q differences along axis k of every run of q + 1 neighbouring active coefficients of a level.
@@ -601,7 +601,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:native  If the normal equations are singular. (C++ std::runtime_error)
       %
       %   C++: void datamunge::fda::TruncatedHierarchicalBSpline::fit_penalized(const std::vector<std::vector<double>> & points, const std::vector<double> & values, const std::vector<double> & lambdas, int order = 2, const SplineSolveOptions & options = {})
-      __datamunge__(3064, obj, varargin{:});
+      __datamunge__(3075, obj, varargin{:});
     end
     function r = evaluate (obj, point)
       % evaluate  Evaluates the hierarchical spline (finest level covering `point`).
@@ -621,7 +621,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a size mismatch or a point outside the domain. (C++ std::invalid_argument)
       %
       %   C++: double datamunge::fda::TruncatedHierarchicalBSpline::evaluate(const std::vector<double> & point) const
-      r = __datamunge__(3065, obj, point);
+      r = __datamunge__(3076, obj, point);
     end
     function r = evaluate_points (obj, points)
       % evaluate_points  Evaluates at many points.
@@ -643,7 +643,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  As for evaluate(). (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::TruncatedHierarchicalBSpline::evaluate_points(const std::vector<std::vector<double>> & points) const
-      r = __datamunge__(3066, obj, points);
+      r = __datamunge__(3077, obj, points);
     end
     function r = evaluate_grid (obj, axes)
       % evaluate_grid  Evaluates on a Cartesian grid.
@@ -665,7 +665,7 @@ classdef TruncatedHierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a dimension mismatch, empty axis, or outside point. (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::TruncatedHierarchicalBSpline::evaluate_grid(const std::vector<std::vector<double>> & axes) const
-      r = __datamunge__(3067, obj, axes);
+      r = __datamunge__(3078, obj, axes);
     end
   end
 end

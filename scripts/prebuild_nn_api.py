@@ -26,9 +26,9 @@ def generate(language, reference=False):
             refresh()
         from prebuild_bindings import generate_rosetta
         bindings = Path('src/pydatamunge/rosetta')
-        # examples/bindings and examples/nn hold the shared example components it binds.
+        # Canonical headers and binding-owned compatibility adapters supply the native surface.
         generate_rosetta(bindings / 'nn_bindings.hpp', bindings / 'nn_policy.json', 'pydatamunge._nn_native',
-                         'nn_python_wrap', PYTHON_PARTS, ('include', 'examples/bindings', 'examples/nn'))
+                         'nn_python_wrap', PYTHON_PARTS, ('include', 'examples/bindings', 'prebindings/nn/include'))
         return ROOT / 'src/nn_python_wrap.cpp'
     directory = ROOT / ('src/pydatamunge' if language == 'python' else 'prebindings/nn/r/R')
     directory.mkdir(parents=True, exist_ok=True)
@@ -36,8 +36,8 @@ def generate(language, reference=False):
     wrapper.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.swig-', dir=wrapper.parent) as temporary:
         temporary = Path(temporary)
-        # examples/bindings holds nn_components.i; examples/nn holds the component headers it binds.
-        command = ['swig', '-c++', '-' + language, '-Iinclude', '-Iexamples/bindings', '-Iexamples/nn']
+        # examples/bindings holds nn_components.i; prebindings/nn/include holds its adapters.
+        command = ['swig', '-c++', '-' + language, '-Iinclude', '-Iexamples/bindings', '-Iprebindings/nn/include']
         if reference:
             command += ['-DDATAMUNGE_NN_REFERENCE_EXAMPLES']
         if sys.platform.startswith('linux'):

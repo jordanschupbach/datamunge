@@ -2,14 +2,13 @@
 /// @file exchange_sorts.hpp
 /// @brief Integer adjacent-exchange and prefix-reversal sorting entry points.
 
+#include <cstddef>
 #include <datamunge/algorithms/cocktail_shaker_sort.hpp>
 #include <datamunge/algorithms/gnome_sort.hpp>
-#include <cstddef>
+#include <datamunge/algorithms/odd_even_sort.hpp>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-
 
 /// @brief Return a stable nondecreasing integer copy using alternating adjacent exchanges.
 /// Forward passes fix the rightmost remaining maximum, backward passes the
@@ -36,34 +35,65 @@ namespace datamunge::algorithms {
 /// @see cocktail_shaker_sort_trace()
 std::vector<int> cocktail_shaker_sort(std::vector<int> a);
 
-/// @brief *Odd-even sort* (brick sort): repeatedly compares and swaps all (odd, even)-indexed
-///        adjacent pairs, then all (even, odd) pairs, until a full round makes no swap. Each phase's
-///        comparisons are independent, so it is a classic *parallel* sorting network -- every pair
-///        in a phase can be compared at once. Serially it is @c O(n^2); on parallel hardware it runs
-///        in @c O(n) phases. In-place and stable.
-///
-/// @param a the input values.
-/// @return a sorted (non-decreasing) copy of @p a.
-std::vector<int> odd_even_sort(std::vector<int> a);
-
-/// @brief The result of @ref pancake_sort: the @ref sorted array and the sequence of @ref flips that
-///        produced it. Each flip value @c k means "reverse the prefix of length @c k"; applying the
-///        flips in order to the original array yields the sorted array.
+/// @brief Owned sorted integers and actual prefix lengths reversed by pancake_sort().
+/// Applying flips to the original input reproduces sorted; no optimal-flip claim.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pancake_sort({2,1}).flips); // [2]
+/// @endcode
 struct PancakeResult {
-    std::vector<int>         sorted; ///< the sorted array.
-    std::vector<std::size_t> flips;  ///< prefix lengths reversed, in order.
+  std::vector<int>         sorted; ///< Nondecreasing integers, preserving multiplicities.
+  std::vector<std::size_t> flips;  ///< Actual prefix lengths, each at least two.
 };
-
-/// @brief *Pancake sort*: sort using only *prefix reversals* ("flips"), like sorting a stack of
-///        pancakes with a spatula. Repeatedly find the largest unsorted element, flip the prefix
-///        that ends at it to bring it to the top, then flip the whole unsorted prefix to drop it
-///        into its final place at the bottom of the unsorted region. This uses at most @c 2(n-1)
-///        flips -- the metric of interest, since here the number of *reversals*, not comparisons,
-///        is what counts (it models problems where only whole-prefix reversal is available). Runs in
-///        @c O(n^2) comparisons.
-///
-/// @param a the input values.
-/// @return the @ref PancakeResult with the sorted array and the flip sequence.
+/// @brief One actual greedy maximum search, including any resulting reversals.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pancake_sort_trace({2,1}).steps[0].maximum_index); // 0
+/// @endcode
+struct PancakeStep {
+  std::size_t      prefix;        ///< Current unsorted prefix length.
+  std::size_t      maximum_index; ///< First maximal value in that prefix before flips.
+  std::size_t      comparisons;   ///< Actual value comparisons, prefix minus one.
+  std::size_t      flip_begin;    ///< Begin index into result.flips.
+  std::size_t      flip_end;      ///< Exclusive end of this search's actual flips.
+  std::vector<int> values;        ///< Complete array immediately after this prefix is settled.
+};
+/// @brief Same-producer greedy decisions and post-reversal states, with owned output.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pancake_sort_trace({2,1}).result.sorted); // [1, 2]
+/// @endcode
+struct PancakeTrace {
+  PancakeResult                 result; ///< Ordinary output from this actual run.
+  std::vector<PancakeStep>      steps;  ///< Actual searches, including already-settled skips.
+  std::vector<std::vector<int>> states; ///< Initial array followed by each actual reversal result.
+};
+/// @brief Greedily sort integers using only prefix reversals.
+/// First maximum wins ties; no stability guarantee. At most 2(n-1) reversals for
+/// n>=1, O(n^2) comparisons and element swaps, O(n) owned output/flip storage.
+/// Lvalue input is copied, never mutated. Empty/singleton returns without flips.
+/// @param a Owned integers, including duplicates and signed extremes.
+/// @return Sorted values and actual reversal lengths; not a shortest sequence.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pancake_sort({3,1,2}).sorted); // [1, 2, 3]
+/// @endcode
+/// @par References
+/// - W. H. Gates and C. H. Papadimitriou (1979), Bounds for sorting by prefix
+///   reversal, Discrete Mathematics 27, 47-57, doi:10.1016/0012-365X(79)90068-2.
 PancakeResult pancake_sort(std::vector<int> a);
+/// @brief Retain actual prefix searches and reversal snapshots from pancake_sort's kernel.
+/// O(n^2) history entries in the worst case. No replay or second sort is used.
+/// @param a Owned input, unchanged for lvalue callers.
+/// @param max_entries Logical retained scalar cap: initial values, each step's
+/// full values plus one record, and each reversal snapshot; default one million,
+/// zero disables policy. Does not count ordinary result storage or peak bytes.
+/// @return Owned result, actual searches and initial/post-reversal states.
+/// @throws std::length_error If the history cap or representable storage is exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pancake_sort_trace({2,1}).states.size()); // 2
+/// @endcode
+PancakeTrace pancake_sort_trace(std::vector<int> a, std::size_t max_entries = 1000000);
 
 } // namespace datamunge::algorithms

@@ -25,7 +25,7 @@ public class DirectedGraph extends NativeObject {
     @SuppressWarnings("this-escape")
     public DirectedGraph() {
         super(RAW);
-        Rosetta.construct(this, DirectedGraph.class, false, 3192);
+        Rosetta.construct(this, DirectedGraph.class, false, 3203);
     }
 
     /**
@@ -38,7 +38,7 @@ public class DirectedGraph extends NativeObject {
     @SuppressWarnings("this-escape")
     public DirectedGraph(List<String> vertices) {
         super(RAW);
-        Rosetta.construct(this, DirectedGraph.class, false, 3192, vertices);
+        Rosetta.construct(this, DirectedGraph.class, false, 3203, vertices);
     }
 
     /**
@@ -49,7 +49,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean empty() {
-        return Rosetta.asBoolean(Rosetta.call(3172, this));
+        return Rosetta.asBoolean(Rosetta.call(3183, this));
     }
 
     /**
@@ -60,7 +60,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public long vertexCount() {
-        return Rosetta.asLong(Rosetta.call(3173, this));
+        return Rosetta.asLong(Rosetta.call(3184, this));
     }
 
     /**
@@ -71,7 +71,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public long edgeCount() {
-        return Rosetta.asLong(Rosetta.call(3174, this));
+        return Rosetta.asLong(Rosetta.call(3185, this));
     }
 
     /**
@@ -80,7 +80,7 @@ public class DirectedGraph extends NativeObject {
      * <p>C++: {@code void datamunge::dstruct::DirectedGraph<std::string>::clear()}
      */
     public void clear() {
-        Rosetta.call(3175, this);
+        Rosetta.call(3186, this);
     }
 
     /**
@@ -92,7 +92,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean addVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3176, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3187, this, vertex));
     }
 
     /**
@@ -104,7 +104,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean removeVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3177, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3188, this, vertex));
     }
 
     /**
@@ -116,7 +116,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3178, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3189, this, vertex));
     }
 
     /**
@@ -129,7 +129,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean addEdge(String src, String dst) {
-        return Rosetta.asBoolean(Rosetta.call(3179, this, src, dst));
+        return Rosetta.asBoolean(Rosetta.call(3190, this, src, dst));
     }
 
     /**
@@ -142,7 +142,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean removeEdge(String src, String dst) {
-        return Rosetta.asBoolean(Rosetta.call(3180, this, src, dst));
+        return Rosetta.asBoolean(Rosetta.call(3191, this, src, dst));
     }
 
     /**
@@ -155,7 +155,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasEdge(String src, String dst) {
-        return Rosetta.asBoolean(Rosetta.call(3181, this, src, dst));
+        return Rosetta.asBoolean(Rosetta.call(3192, this, src, dst));
     }
 
     /**
@@ -166,7 +166,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> vertices() {
-        return Rosetta.asList(Rosetta.call(3182, this), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3193, this), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -178,7 +178,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> outgoingNeighbors(String vertex) {
-        return Rosetta.asList(Rosetta.call(3183, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3194, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -190,7 +190,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> incomingNeighbors(String vertex) {
-        return Rosetta.asList(Rosetta.call(3184, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3195, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -202,7 +202,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public long outDegree(String vertex) {
-        return Rosetta.asLong(Rosetta.call(3185, this, vertex));
+        return Rosetta.asLong(Rosetta.call(3196, this, vertex));
     }
 
     /**
@@ -214,7 +214,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public long inDegree(String vertex) {
-        return Rosetta.asLong(Rosetta.call(3186, this, vertex));
+        return Rosetta.asLong(Rosetta.call(3197, this, vertex));
     }
 
     /**
@@ -226,7 +226,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> bfs(String start) {
-        return Rosetta.asList(Rosetta.call(3187, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3198, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -238,7 +238,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> dfs(String start) {
-        return Rosetta.asList(Rosetta.call(3188, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3199, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -251,7 +251,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean containsPath(String src, String dst) {
-        return Rosetta.asBoolean(Rosetta.call(3189, this, src, dst));
+        return Rosetta.asBoolean(Rosetta.call(3200, this, src, dst));
     }
 
     /**
@@ -262,7 +262,7 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public DirectedGraph transpose() {
-        return Rosetta.asObject(Rosetta.call(3190, this), DirectedGraph.class);
+        return Rosetta.asObject(Rosetta.call(3201, this), DirectedGraph.class);
     }
 
     /**
@@ -273,6 +273,6 @@ public class DirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> topologicalSort() {
-        return Rosetta.asList(Rosetta.call(3191, this), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3202, this), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 }

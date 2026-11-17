@@ -1,6 +1,8 @@
 /// @file
 /// @brief Uniform Poisson, periodic advection and scalar trapezoidal ODE solvers.
 #pragma once
+#include <datamunge/algorithms/trapezoidal_ode.hpp>
+#include <datamunge/algorithms/lax_wendroff.hpp>
 
 #include <datamunge/algorithms/crank_nicolson.hpp>
 #include <functional>
@@ -92,50 +94,6 @@ std::vector<double> finite_difference_poisson(const std::function<double(double)
 FiniteDifferencePoissonResult finite_difference_poisson_solve(
     const std::function<double(double)>& f, double alpha, double beta, int n);
 
-/// @brief The *Lax-Wendroff scheme* for the linear advection (one-way wave) equation
-///        @c u_t + a·u_x = 0 on a *periodic* domain. It is derived from a second-order Taylor
-///        expansion in time (using the PDE to convert @c u_tt into @c a^2·u_xx), yielding an explicit
-///        update that is *second-order accurate* in space and time -- far less diffusive than
-///        first-order upwind. It is stable when the Courant number @c |a|·dt/dx <= 1 (the CFL
-///        condition).
-///
-/// @param u0 the initial values on the periodic grid.
-/// @param a the advection speed.
-/// @param dx the grid spacing.
-/// @param dt the time step (must satisfy @c |a|·dt/dx <= 1).
-/// @param nsteps the number of time steps.
-/// @return the solution on the grid after @p nsteps steps.
-std::vector<double> lax_wendroff_advection(const std::vector<double>& u0, double a, double dx, double dt,
-                                           int nsteps);
 
-/// @brief The *trapezoidal rule for ODEs*: the implicit integrator
-///        @c y_{n+1} = y_n + (h/2)·(f(t_n,y_n) + f(t_{n+1},y_{n+1})) for @c y'=f(t,y). Averaging the
-///        slopes at both ends of the step makes it *second-order accurate* and *A-stable* for exact implicit solves of the linear test equation, and the
-///        ODE counterpart of Crank-Nicolson.
-///        Each step uses a forward-Euler predictor and up to 60 Newton iterations with a numerical
-///        derivative; it returns the last iterate without a convergence-status certificate.
-///
-/// The legacy routine assumes positive steps, finite times/initial value and a
-/// nonempty finite-valued callback; it does not validate those preconditions.
-/// Source exceptions propagate. Owns its trajectory; no shared state or input mutation.
-/// Work is O(steps) with at most 60 Newton iterations per step, plus callback costs.
-/// @param f the ODE right-hand side.
-/// @param y0 the initial value at @p t0.
-/// @param t0 the initial integration time.
-/// @param t1 the final integration time.
-/// @param steps the positive number of equal steps (caller precondition).
-/// @return the owned times and values @c (t_i, y_i), with @c steps+1 points.
-/// @throws std::bad_alloc If trajectory storage cannot be allocated.
-/// @par Example
-/// @code
-/// const auto t=dm::algorithms::trapezoidal_ode([](double,double){return 0.;},2,0,1,1);
-/// std::cout << t.size() << ' ' << t.back().second; // 2 2
-/// @endcode
-/// @par References
-/// - M. T. Heath, Interactive Educational Modules in Scientific Computing,
-///   Trapezoid Method, https://heath.cs.illinois.edu/iem/ode/trapzoid/ .
-/// @see crank_nicolson_heat()
-std::vector<std::pair<double, double>> trapezoidal_ode(const std::function<double(double, double)>& f,
-                                                       double y0, double t0, double t1, int steps);
 
 } // namespace datamunge::algorithms

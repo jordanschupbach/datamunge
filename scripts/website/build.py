@@ -3,7 +3,7 @@
 
 The site is the project's own; its pieces come from:
   - Doxygen's XML (docs/Doxyfile, the GenerateDocsXml target): the API reference;
-  - mep (`mep-mepml`): reports in docs/examples/mepml and docs/mepml/examples, optionally run
+  - mep (`mep-mepml`): reports in docs/mepml, optionally run
     first (--run) so their results are current, with a page saying how every
     report's code blocks went;
   - Markdown: README.md as the home page and the guides docs/website.toml lists.
@@ -38,6 +38,7 @@ import apiref  # noqa: E402
 import highlight as hl  # noqa: E402
 import pages  # noqa: E402
 import reports as rep  # noqa: E402
+import catalogue  # noqa: E402
 from jinja2 import Environment, FileSystemLoader, select_autoescape  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -184,11 +185,18 @@ class Site:
     # -- reports -----------------------------------------------------------------
     def build_reports(self):
         a = self.args
+        if not a.no_reports:
+            catalogue.write(ROOT)
         examples = rep.example_roots(ROOT)
         files = a.reports or rep.discover_reports(ROOT)
         self.reports = []
         if a.no_reports or not files:
             return []
+        report_urls = {os.path.realpath(path): rep.Report(path, rep.report_rel(path, examples)).url
+                       for path in rep.discover_reports(ROOT)}
+
+        def source_link(path):
+            return rep.package_legacy_source(ROOT, self.out, path) or self.repo_file_url(path)
         status_dir = a.status_dir or os.path.join(os.path.dirname(os.path.abspath(self.out)), "mepml-status")
         print(f"{len(files)} reports" + (" (running the changed ones with mep)" if a.run else ""), flush=True)
         def status_path(path):
@@ -208,7 +216,9 @@ class Site:
             r.status = rep.load_status(status_path(path))
             self.current_report = r
             self.linker.base = base_of(r.url)
-            rep.export(a.mep_mepml, r, self.out, lambda code, lang: hl.highlight(code, lang, self.linker))
+            rep.export(a.mep_mepml, r, self.out, lambda code, lang: hl.highlight(code, lang, self.linker),
+                       link=lambda href: rep.resolve_source_link(href, r.path, r.url,
+                                                                report_urls, ROOT, source_link))
             self.current_report = None
             self.reports.append(r)
         groups = defaultdict(list)
@@ -726,7 +736,7 @@ def main():
     ap.add_argument("--project-name", help="the site's title (default: the CMake project name)")
     ap.add_argument("--version", help="the version shown (default: the CMake project version)")
     ap.add_argument("--namespace", help="the C++ root namespace (default: the CMake project name)")
-    ap.add_argument("reports", nargs="*", help="the reports (default: both docs/examples/mepml and docs/mepml/examples)")
+    ap.add_argument("reports", nargs="*", help="the reports (default: docs/mepml)")
     args = ap.parse_args()
     site = Site(args)
     try:

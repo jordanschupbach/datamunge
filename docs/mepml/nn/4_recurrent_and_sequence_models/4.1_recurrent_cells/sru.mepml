@@ -1,0 +1,1390 @@
+//? Title: SRU: Explicit State, Masks and Updates
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The original sru experiment, with reusable native tensor components and a complete editable C++ fitting program. Source seeds, budgets, derivative checks and baseline limitations are retained.
+)
+\toc
+
+
+> Read the component and its controls
+
+The input-only z/f/o projections are batched across time. The channelwise memory uses a tanh readout and an explicitly projected highway skip.
+
+The source uses512 fitting,128 validation and128 test marked sequences; twelve padded steps, two channels and twelve units. Adam(.01),32-row batches and three epochs give48 updates per policy. Targets are balanced marker signs; the marked token precedes the last valid token.
+
+The actual source graph has146 learned values. The complete program records initialization, first update, every validation epoch, final parameters and source invariance probes.
+
+```{cpp, results="markdown", file="figures/sru_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram          d(28, 1150);
+  dm::graphics::DiagramNodeStyle s;
+  s.width     = 12;
+  s.height    = 5;
+  s.font_size = 28;
+  d.node("in", {-21, 0}, "Observations + lengths", s)
+      .node("cell", {-7, 0}, "Input-only gates; highway skip", s)
+      .node("out", {7, 0}, "Live states + readout", s)
+      .node("fit", {21, 0}, "Explicit Adam writes", s)
+      .edge("in", "cell")
+      .edge("cell", "out")
+      .edge("out", "fit")
+      .save_svg("build/sru_method.svg");
+}
+```
+// result_begin: markdown
+\image(figures/sru_method.svg)
+// result_end
+
+> Calculate memory and tanh readout
+
+One valid step with zero projections, initial memory .4 and zero highway gives c=.2 and h=.5*tanh(.2).
+
+```{cpp, results="markdown", file="figures/sru_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <iostream>
+namespace n = dm::nn;
+namespace m = n::models;
+void Zero(n::ParameterStore& p) {
+  for (const auto& name : p.names())
+    p.set(name, n::zeros(p.at(name).shape(), p.dtype()));
+}
+int main() {
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(1, n::DType::Float64);
+  auto x = n::zeros({1, 12, 2}, n::DType::Float64), h = n::zeros({1, 12}, n::DType::Float64),
+       c = n::full({1, 12}, .4, n::DType::Float64),
+       l = n::from_vector(std::vector<std::int32_t>{1});
+  m::MaskedSruSequence(p, x, l, {h, c});
+  Zero(p);
+  auto y      = m::MaskedSruSequence(p, x, l, {h, c});
+  auto native = n::from_vector(
+      std::vector<double>{
+          y.final_cell.to_vector<double>()[0], y.final_state.to_vector<double>()[0]});
+  auto hand = n::from_vector(std::vector<double>{.2, .5 * std::tanh(.2)});
+  if (n::max(n::abs(native - hand)).item() > 2e-7)
+    throw std::runtime_error("Worked native/reference mismatch");
+  auto                a = native.to_vector<double>(), reference_values = hand.to_vector<double>();
+  std::vector<double> index(a.size());
+  std::iota(index.begin(), index.end(), 0.);
+  n::save_npz("build/sru_worked.npz", {{"native", native}, {"reference", hand}});
+  std::cout << "| Index | Native | Reference |\n|---:|---:|---:|\n";
+  for (std::size_t i = 0; i < a.size(); ++i)
+    std::cout << "|" << i << "|" << a[i] << "|" << reference_values[i] << "|\n";
+  dm::graphics::RPlot::create()
+      .lines(index, a, "Native endpoint", {37, 99, 235})
+      .points(index, reference_values, "Explicit reference", {234, 88, 12}, 4)
+      .x_label("Endpoint index")
+      .y_label("Endpoint value")
+      .title("Calculate memory and tanh readout")
+      .size(950, 520)
+      .save_svg("build/sru_worked.svg");
+}
+```
+// result_begin: markdown
+| Index | Native | Reference |
+|---:|---:|---:|
+|0|0.2|0.2|
+|1|0.0986877|0.0986877|
+\image(figures/sru_worked.svg)
+// result_end
+
+> Trace the actual source graph
+
+The composite stage contains the native source path; its parameter census is traced from the actual caller store.
+
+```{cpp, results="markdown", file="figures/sru_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n = dm::nn;
+namespace m = n::models;
+int main() {
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(34003);
+  auto x = n::zeros({1, 12, 2}), lengths = n::from_vector(std::vector<std::int32_t>{12});
+  auto h0 = n::zeros({1, 12});
+  auto h1 = n::zeros({1, 12});
+  n::Module model([&](const n::Tensor& observed){ auto result=m::MaskedSruSequence(p, observed, lengths, {h0, h1}); return n::model_stage("Source component and readout",std::vector<n::Tensor>{observed, lengths, h0, h1},result.logits);},"sru source graph");
+  n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;auto graph=model.plot(x,options);
+  if (p.count() != 146 || graph.parameter_count() != 146)
+    throw std::runtime_error("Actual source parameter census");
+  graph.save_svg("build/sru_network.svg");
+}
+```
+// result_begin: markdown
+\image(figures/sru_network.svg)
+// result_end
+
+> Complete editable source experiment
+
+The report owns its parameter store, objective, minibatches and Adam writes. Inference has no target input. Optional TensorFlow parity is skipped when the independent recordings are absent.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn sru
+// Original input-only SRU with linear candidate, channelwise memory and
+// projected highway; three epochs.
+//
+// Port of tflow's sru (common/ml/sru.h). No dataset: the 512/128/128 marked
+// sequences are generated with tflow's std::mt19937 recipe (bit-identical
+// data.npz). candidate = x W, f = sigmoid(x Wf + bf), r = sigmoid(x Wr + br),
+// c = f c_prev + (1 - f) candidate, h = r tanh(c) + (1 - r) x Wskip; 146
+// parameters in 5 tensors, 12 channels, 12->2 head; Adam .01, batch 32, three
+// epochs. Checks: tflow's marked-sequence audit plus the SRU fo-pooling and
+// highway algebra on every valid step, cell retention and zero gate
+// diagnostics on padding, and the first-step gates never reading future inputs.
+// Weights initialise from nn's generator (statistical parity); init=PATH
+// (tflow's output/models/sru/initial_arrays.npz) replays tflow's run.
+// Options: epochs=3 out=PATH init=PATH tf=PATH. Output: output/nn/models/sru/.
+// Report-local workflow and diagnostics: sru.hpp
+// Original input-only SRU gates, channelwise memory, tanh readout and projected
+// highway skip. Port of tflow's common/nn/sru.h (path) and common/ml/sru.h
+// (model: 146 parameters in 5 tensors, Adam .01, seed 34003).
+//
+//   [z | f~ | o~] = x W (input only, batched across time),  skip = x Wskip
+//   f = sigmoid(f~ + bf), o = sigmoid(o~ + bo)
+//   c' = f c + (1 - f) z,  h' = o tanh(c') + (1 - o) skip
+
+#include <cmath>
+#include <memory>
+
+// Report-local workflow and diagnostics: recurrent_model.hpp
+// Generic eager harness for tflow's small explicit-unroll recurrent models
+// (the ml::<Name>Model classes of tflow's common/ml/{bidirectional_rnn,
+// clockwork_rnn,conv_lstm,gated_sequence,gradient_clipping,indrnn,mgu}.h).
+//
+// Every tflow model there has the same shape: placeholders for a sequence
+// batch, its valid lengths and zero initial states; a cell unrolled with an
+// explicit length mask; a head; a loss and a "chosen logit" whose gradients
+// with respect to the inputs and initial states are fetched next to the
+// forward values; Adam (or SGD with a gradient policy) over every parameter;
+// a SaveV2 checkpoint. Here the graph is the `Forward` function, the session
+// fetches are eager calls, gradients come from nn::grad and checkpoints are
+// .npz files of the parameter store.
+//
+// A Forward returns named tensors and must contain "logits". Evaluate()
+// returns the forward fields, "probability", "loss", "input_gradient", one
+// gradient per initial state (named by `initial_gradient_names`) and any
+// probe gradients, exactly like tflow's Evaluate fetches.
+
+#include <cstring>
+#include <datamunge/nn/nn.hpp>
+#include <filesystem>
+#include <functional>
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Report-local workflow and diagnostics: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Report-local workflow and diagnostics: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template<typename T>
+T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+} // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition)
+    throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full())
+    Require(condition, message);
+  else
+    std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(
+        message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template<typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+} // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+namespace rnn_cells {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Outputs = std::map<std::string, Tensor>;
+
+/// (store, input, lengths, initial states) -> named outputs incl. "logits".
+using Forward = std::function<
+    Outputs(nn::ParameterStore&, const Tensor&, const Tensor&, const std::vector<Tensor>&)>;
+/// (outputs, labels) -> {loss, chosen}: the training loss and the scalar whose
+/// input/initial-state gradients Evaluate reports.
+using LossFn = std::function<std::pair<Tensor, Tensor>(const Outputs&, const Tensor&)>;
+
+/// A gradient probe: d target(outputs) / d (input when wrt == 0, else initial state wrt - 1).
+struct Probe {
+  std::string                           name;
+  std::function<Tensor(const Outputs&)> target;
+  int                                   wrt{0};
+};
+
+/// One batch fed to a model: inputs, int32 lengths and labels.
+struct Feed {
+  Tensor inputs, lengths, labels;
+};
+
+/// Softmax cross-entropy over two classes with int32 labels, and the summed
+/// target logit (tflow's `loss` and `chosen`).
+inline std::pair<Tensor, Tensor> SoftmaxLoss(const Outputs& out, const Tensor& labels) {
+  const Tensor& logits  = out.at("logits");
+  const Tensor  one_hot = nn::one_hot(labels, logits.shape().back());
+  const Tensor  loss =
+      nn::neg(nn::mean(nn::sum(nn::mul(one_hot, nn::log_softmax(logits, -1)), {1}), {0}));
+  return {loss, nn::sum(nn::mul(logits, one_hot))};
+}
+
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape())
+    return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0;
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32:
+      return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64:
+      return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32:
+      return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default:
+      return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const nn::NamedTensors& a, const nn::NamedTensors& b) {
+  if (a.size() != b.size())
+    return false;
+  for (std::size_t i = 0; i < a.size(); ++i)
+    if (a[i].first != b[i].first || !SameBits(a[i].second, b[i].second))
+      return false;
+  return true;
+}
+
+inline nn::NamedTensors Named(const Outputs& out) {
+  return {out.begin(), out.end()};
+}
+
+inline Tensor Find(const nn::NamedTensors& arrays, const std::string& name) {
+  for (const auto& [key, value] : arrays)
+    if (key == name)
+      return value;
+  throw std::runtime_error("missing array " + name);
+}
+
+/// A gradient from nn::grad (detached), or zeros shaped like `like` when the
+/// target did not depend on it (allow_unused).
+inline Tensor DefinedGradient(const Tensor& g, const Tensor& like) {
+  return g.defined() ? g.detach() : nn::zeros_like(like.detach());
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  if (x.size() != y.size())
+    return INFINITY;
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i)
+    m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+class RecurrentModel {
+ public:
+  nn::ParameterStore                   store;
+  Forward                              forward;
+  LossFn                               loss_fn     = SoftmaxLoss;
+  std::function<Tensor(const Tensor&)> probability = [](const Tensor& logits) {
+    return nn::softmax(logits, -1);
+  };
+  /// Per-example shapes of the input and of each zero initial state.
+  nn::Shape              input_shape;
+  std::vector<nn::Shape> initial_shapes;
+  /// Names of the initial-state gradients in Evaluate (empty: not reported).
+  std::vector<std::string> initial_gradient_names;
+  /// Forward fields returned by Predict (Evaluate returns these plus losses and gradients).
+  std::vector<std::string> fields;
+  std::vector<Probe>       evaluate_probes;
+  /// Optional transform of the raw parameter gradients before the optimizer (gradient policies).
+  std::function<std::vector<Tensor>(const std::vector<Tensor>&)> gradient_policy;
+  /// Optional projection after each update (IndRNN coefficient bound).
+  std::function<void(nn::ParameterStore&)> after_update;
+  /// Extra named inputs a Forward may read through a captured model pointer
+  /// (tflow's additional placeholders: dropout masks, timestamps, leak). Set by
+  /// the caller around Evaluate/Gradient/Update; empty by default.
+  std::map<std::string, Tensor> side_inputs;
+  /// Optional extra Evaluate fields (e.g. gradients w.r.t. a side input), added to the result.
+  std::function<void(Outputs& result, const Feed&)> evaluate_extra;
+
+  RecurrentModel(
+      std::uint64_t            seed,
+      Forward                  f,
+      nn::Shape                input,
+      std::vector<nn::Shape>   initials,
+      std::vector<std::string> initial_names,
+      std::vector<std::string> fetch)
+      : store(seed),
+        forward(std::move(f)),
+        input_shape(std::move(input)),
+        initial_shapes(std::move(initials)),
+        initial_gradient_names(std::move(initial_names)),
+        fields(std::move(fetch)) {}
+
+  /// Creates every parameter (tflow builds them with the graph) by running one
+  /// example through the forward pass; with `training`, adds the optimizer.
+  void Build(
+      bool              training,
+      double            learning_rate = .01,
+      nn::OptimizerKind kind          = nn::OptimizerKind::Adam) {
+    nn::NoGradGuard guard;
+    nn::Shape       shape{1};
+    shape.insert(shape.end(), input_shape.begin(), input_shape.end());
+    forward(store, nn::zeros(shape), nn::zeros({1}, nn::DType::Int32), Initials(1));
+  }
+
+  std::vector<Tensor> Initials(std::int64_t n) const {
+    std::vector<Tensor> out;
+    for (const auto& s : initial_shapes) {
+      nn::Shape shape{n};
+      shape.insert(shape.end(), s.begin(), s.end());
+      out.push_back(nn::zeros(shape));
+    }
+    return out;
+  }
+
+  /// Sequence and lengths only, no labels (tflow's Predict).
+  Outputs Predict(const Feed& x) {
+    nn::NoGradGuard guard;
+    Outputs         out = forward(store, x.inputs, x.lengths, Initials(x.inputs.shape()[0]));
+    Outputs         result;
+    for (const auto& f : fields)
+      result[f] = f == "probability" ? probability(out.at("logits")) : out.at(f);
+    return result;
+  }
+
+  // Transitional bundles (forward + loss + gradients [+ optimizer step]).
+  // The 4.1 examples bidirectional_rnn, clockwork_rnn, conv_lstm,
+  // gradient_clipping, gru, indrnn, layer_norm_lstm, lstm and mgu write these
+  // steps out themselves; Evaluate/ProbeGradients/Gradient/RawGradients/Update
+  // remain only for the examples that have not been unbundled yet (the other
+  // 4.1 cells and 4.3 memory networks). Delete them once nothing uses them.
+
+  /// Forward fields, loss and the full-BPTT input/initial-state gradients of the chosen logit.
+  Outputs Evaluate(const Feed& x) {
+    Tensor              input    = x.inputs.detach().clone();
+    std::vector<Tensor> initials = Initials(x.inputs.shape()[0]);
+    input.requires_grad_(true);
+    for (auto& s : initials)
+      s.requires_grad_(true);
+    Outputs out               = forward(store, input, x.lengths, initials);
+    out["probability"]        = probability(out.at("logits"));
+    const auto [loss, chosen] = loss_fn(out, x.labels);
+    std::vector<Tensor> wrt{input};
+    wrt.insert(wrt.end(), initials.begin(), initials.end());
+    nn::GradOptions options;
+    options.retain_graph = true;
+    options.allow_unused = true;
+    const auto g         = nn::grad(std::vector<Tensor>{chosen}, wrt, {}, options);
+    Outputs    result;
+    for (const auto& f : fields)
+      result[f] = out.at(f).detach();
+    result["loss"]           = loss.detach();
+    result["input_gradient"] = Defined(g[0], input);
+    for (std::size_t k = 0; k < initial_gradient_names.size(); ++k)
+      if (!initial_gradient_names[k].empty())
+        result[initial_gradient_names[k]] = Defined(g[k + 1], initials[k]);
+    for (const auto& probe : evaluate_probes) {
+      const Tensor& target = wrt.at(static_cast<std::size_t>(probe.wrt));
+      result[probe.name]   = Defined(
+          nn::grad(std::vector<Tensor>{probe.target(out)}, {target}, {}, options)[0], target);
+    }
+    if (evaluate_extra)
+      evaluate_extra(result, x);
+    return result;
+  }
+
+  /// Gradients of each probe target (tflow's ModuleGradients / ChannelGradients).
+  Outputs ProbeGradients(const Feed& x, const std::vector<Probe>& probes) {
+    Tensor              input    = x.inputs.detach().clone();
+    std::vector<Tensor> initials = Initials(x.inputs.shape()[0]);
+    input.requires_grad_(true);
+    for (auto& s : initials)
+      s.requires_grad_(true);
+    const Outputs       out = forward(store, input, x.lengths, initials);
+    std::vector<Tensor> wrt{input};
+    wrt.insert(wrt.end(), initials.begin(), initials.end());
+    nn::GradOptions options;
+    options.retain_graph = true;
+    options.allow_unused = true;
+    Outputs result;
+    for (const auto& probe : probes) {
+      const Tensor& target = wrt.at(static_cast<std::size_t>(probe.wrt));
+      result[probe.name]   = Defined(
+          nn::grad(std::vector<Tensor>{probe.target(out)}, {target}, {}, options)[0], target);
+    }
+    return result;
+  }
+
+  /// Raw loss gradient of every parameter, by name.
+  nn::NamedTensors Gradient(const Feed& x) {
+    const auto       g = RawGradients(x);
+    nn::NamedTensors result;
+    for (std::size_t i = 0; i < g.size(); ++i)
+      result.emplace_back(store.names()[i], g[i]);
+    return result;
+  }
+
+  std::vector<Tensor> RawGradients(const Feed& x) {
+    Outputs         out    = forward(store, x.inputs, x.lengths, Initials(x.inputs.shape()[0]));
+    const auto      params = store.parameters();
+    nn::GradOptions options;
+    options.allow_unused = true;
+    auto g = nn::grad(std::vector<Tensor>{loss_fn(out, x.labels).first}, params, {}, options);
+    for (std::size_t i = 0; i < g.size(); ++i)
+      g[i] = Defined(g[i], params[i]);
+    return g;
+  }
+
+  /// Copies of every parameter, by name.
+  nn::NamedTensors Arrays() const {
+    nn::NamedTensors out;
+    for (const auto& name : store.names())
+      out.emplace_back(name, store.at(name).detach().clone());
+    return out;
+  }
+
+  void Save(const std::filesystem::path& file) const { store.save(file.string()); }
+  void Restore(const std::filesystem::path& file) { store.load(file.string(), true); }
+
+  /// Overwrites every parameter from an .npz written by tflow (initial_arrays.npz).
+  void LoadArrays(const std::filesystem::path& file) {
+    const auto arrays = nn::load_npz(file.string());
+    check::Require(
+        arrays.size() == store.size(), "init arrays cover exactly the model's parameters");
+    for (const auto& [name, value] : arrays) {
+      check::Require(store.contains(name), "init array " + name + " is a model parameter");
+      store.set(name, nn::cast(value, store.at(name).dtype()));
+    }
+  }
+
+ private:
+  static Tensor Defined(const Tensor& g, const Tensor& like) { return DefinedGradient(g, like); }
+};
+
+} // namespace rnn_cells
+
+// Report-local workflow and diagnostics: rnn.hpp
+// Helpers shared by the explicit-unroll recurrent cells (tflow's common/nn/rnn.h
+// and the masking idiom its 4.1 cells repeat). The cells themselves are
+// datamunge::nn::rnn_step / gru_step / lstm_step or are written out in the
+// per-cell headers when an example needs intermediate gate values.
+
+#include <datamunge/nn/nn.hpp>
+#include <string>
+#include <vector>
+
+namespace rnn_cells {
+
+/// Float [B, 1] mask: 1 where lengths > t (tflow: ExpandDims(Cast(Greater(lengths, t)), 1)).
+inline Tensor StepMask(const Tensor& lengths, int t) {
+  return nn::expand_dims(nn::cast(nn::greater(lengths, double(t)), nn::DType::Float32), 1);
+}
+
+/// Bool [B, 1] mask for SelectV2-style blends.
+inline Tensor StepValid(const Tensor& lengths, int t) {
+  return nn::expand_dims(nn::greater(lengths, double(t)), 1);
+}
+
+/// mask * next + (1 - mask) * previous, exactly tflow's arithmetic masking.
+inline Tensor Blend(const Tensor& mask, const Tensor& next, const Tensor& previous) {
+  return nn::add(nn::mul(mask, next), nn::mul(nn::sub(1.0, mask), previous));
+}
+
+/// Dense head "<name>/W" ~ N(0, 0.1^2), "<name>/b" = 0 (tflow pre-adds head/W
+/// with AddNormal(.1) before calling Dense, so the normal init wins).
+inline Tensor Head(
+    nn::ParameterStore& p,
+    const std::string&  name,
+    const Tensor&       x,
+    std::int64_t        in,
+    std::int64_t        out) {
+  const Tensor W = p.get(name + "/W", {in, out}, nn::init::normal(.1));
+  const Tensor b = p.get(name + "/b", {out}, nn::init::zeros());
+  return nn::bias_add(nn::matmul(x, W), b);
+}
+
+/// Zeros where the [B, 1] bool mask is false (tflow: SelectV2(valid, x, ZerosLike(x))).
+inline Tensor MaskedDiagnostics(const Tensor& valid, const Tensor& x) {
+  return nn::where(valid, x, nn::zeros_like(x));
+}
+
+} // namespace rnn_cells
+
+namespace rnn_cells {
+
+inline Outputs Sru(
+    nn::ParameterStore&        p,
+    const Tensor&              input,
+    const Tensor&              lengths,
+    const std::vector<Tensor>& initial) {
+  auto path = nn::models::MaskedSruSequence(p, input, lengths, initial);
+  return {
+      {"logits", path.logits},
+      {"states", path.states},
+      {"cell_states", path.cell_states},
+      {"final_state", path.final_state},
+      {"final_cell", path.final_cell},
+      {"gates", path.gates}};
+}
+
+inline std::unique_ptr<RecurrentModel> SruModel(bool training = true) {
+  auto m = std::make_unique<RecurrentModel>(
+      34003,
+      Sru,
+      nn::Shape{12, 2},
+      std::vector<nn::Shape>{{12}, {12}},
+      std::vector<std::string>{"initial_gradient", ""},
+      std::vector<std::string>{
+          "logits", "probability", "states", "final_state", "cell_states", "final_cell", "gates"});
+  // Sum of every first-step gate diagnostic, differentiated w.r.t. the input.
+  m->evaluate_probes = {
+      {"first_gate_input_gradient",
+       [](const Outputs& o) { return nn::sum(nn::slice(o.at("gates"), {0, 0, 0}, {-1, 1, -1})); },
+       0}};
+  m->Build(training);
+  return m;
+}
+
+} // namespace rnn_cells
+
+#include <cmath>
+
+// Report-local workflow and diagnostics: marked_sequence_demo.hpp
+// The three-epoch marked-token memory experiment shared by tflow's 4.1
+// recurrent-cell examples (bidirectional_rnn, clockwork_rnn, gradient_clipping,
+// indrnn, mgu and, through tflow's common/ml/gated_sequence_demo.h, lstm, gru,
+// peephole_lstm and layer_norm_lstm). tflow repeats this Run() in every .cc;
+// here it is written once with hooks for each example's extra checks.
+//
+// Flow (identical to tflow): 512/128/128 marked sequences, Adam .01 (or the
+// example's optimizer), batch 32 with tflow's BatchOrder(512, 32, 26019), three
+// epochs = 48 updates; npz records of the initial/first/epoch/final state;
+// save -> restore into a fresh model (bit-exact); label-free prediction equals
+// evaluation; repeat and single-row parity; arbitrary padding cannot change any
+// output or gradient; flipping the last valid token cannot change earlier
+// states; zero-length sequences keep the zero state; weights immutable under
+// inference. Checkpoints are .npz files of the parameter store.
+//
+// Parity with tflow: the data and batch order are bit-identical to tflow's.
+// Parameters initialise from nn's generator, so a default run matches tflow
+// only statistically; `init=PATH` (tflow's initial_arrays.npz) replays tflow's
+// run, and when the tflow run directory (`tf=`) has the same files the port
+// prints and checks the differences.
+
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
+
+// Report-local workflow and diagnostics: marked_sequence_data.hpp
+// Synthetic variable-length single-marker memory task; padding is never a
+// model input through the mask. Port of tflow's common/ml/marked_sequence_data.h
+// plus the per-example helpers (SaveData, Copy, Accuracy, Heatmap) that the
+// tflow 4.1 recurrent-cell examples repeat in every .cc file.
+//
+// The generator is std::mt19937 exactly as in tflow, so every split is
+// bit-identical to tflow's data.npz.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <datamunge/nn/nn.hpp>
+#include <filesystem>
+#include <numeric>
+#include <random>
+#include <vector>
+
+namespace rnn_cells {
+
+/// inputs float [n, 12, 2] (value, marker), lengths/labels/source_ids int32 [n], uniforms float64 [n, 14].
+struct MarkedSequences {
+  Tensor                     inputs, lengths, labels, source_ids, uniforms;
+  [[nodiscard]] Feed         feed() const { return {inputs, lengths, labels}; }
+  [[nodiscard]] std::int64_t size() const { return inputs.shape()[0]; }
+};
+
+inline MarkedSequences MakeMarkedSequences(int n, int seed, int offset) {
+  auto y = nn::models::MakeMarkedSequences(n, std::uint32_t(seed), offset);
+  return {y.inputs, y.lengths, y.labels, y.source_ids, y.uniforms};
+}
+
+inline MarkedSequences MarkedRows(const MarkedSequences& x, const std::vector<std::int64_t>& rows) {
+  return {
+      nn::take_rows(x.inputs, rows),
+      nn::take_rows(x.lengths, rows),
+      nn::take_rows(x.labels, rows),
+      nn::take_rows(x.source_ids, rows),
+      nn::take_rows(x.uniforms, rows)};
+}
+
+inline MarkedSequences Copy(const MarkedSequences& x) {
+  std::vector<std::int64_t> rows(static_cast<std::size_t>(x.size()));
+  std::iota(rows.begin(), rows.end(), 0);
+  return MarkedRows(x, rows);
+}
+
+inline void SaveData(const std::filesystem::path& file, const MarkedSequences& x) {
+  nn::save_npz(
+      file.string(),
+      {{"inputs", x.inputs},
+       {"lengths", x.lengths},
+       {"labels", x.labels},
+       {"source_ids", x.source_ids},
+       {"uniforms", x.uniforms}});
+}
+
+inline MarkedSequences LoadData(const std::filesystem::path& file) {
+  const auto a = nn::load_npz(file.string());
+  return {
+      Find(a, "inputs"),
+      Find(a, "lengths"),
+      Find(a, "labels"),
+      Find(a, "source_ids"),
+      Find(a, "uniforms")};
+}
+
+/// The three splits (512 fit / 128 validation / 128 test) and their data.npz arrays.
+inline std::vector<MarkedSequences> MarkedPools(nn::NamedTensors* arrays = nullptr) {
+  std::vector<MarkedSequences> pools;
+  for (int k = 0; k < 3; ++k) {
+    const std::string split = k == 0 ? "fit" : k == 1 ? "validation" : "test";
+    pools.push_back(MakeMarkedSequences(k ? 128 : 512, 26001 + 2 * k, 10000 * k));
+    const auto& x = pools.back();
+    if (arrays) {
+      arrays->emplace_back(split + "_inputs", x.inputs);
+      arrays->emplace_back(split + "_lengths", x.lengths);
+      arrays->emplace_back(split + "_labels", x.labels);
+      arrays->emplace_back(split + "_source_ids", x.source_ids);
+      arrays->emplace_back(split + "_uniforms", x.uniforms);
+    }
+  }
+  return pools;
+}
+
+/// Fraction of rows whose logit 1 exceeds logit 0 exactly when the label is 1.
+inline double Accuracy(const Tensor& logits, const Tensor& labels) {
+  const auto correct = nn::sum(
+                           nn::cast(
+                               nn::equal(nn::argmax(logits, 1), nn::cast(labels, nn::DType::Int64)),
+                               nn::DType::Int64))
+                           .item<std::int64_t>();
+  return double(correct) / double(labels.size(0));
+}
+
+/// tflow's Heatmap: first 24 sequences, 12 columns of 29x15 cells; blue = -1,
+/// red = +1, white = 0, black strip = marker. With `gradients`, values are
+/// scaled by the global peak |value| of channel 0.
+inline void Heatmap(const std::filesystem::path& file, const Tensor& x, bool gradients = false) {
+  nn::save_png(nn::models::MarkedSequenceHeatmap(x, gradients), file.string(), 0, 255);
+}
+
+} // namespace rnn_cells
+
+// Report-local workflow and diagnostics: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Report-local workflow and diagnostics: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets {
+inline std::string DataRoot() {
+  return datamunge::datasets::data_home();
+}
+inline void EnsureSaliency(const std::string& directory) {
+  datamunge::datasets::prepare_example_data(
+      "mnist-assets", std::filesystem::path(directory).parent_path().string());
+}
+} // namespace dataset_assets
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return std::filesystem::absolute("build/datasets");
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) {
+  return DataRoot() / name;
+}
+
+inline std::filesystem::path OutputRoot() {
+  if (const char* dir = std::getenv("DATAMUNGE_OUTPUT_DIR"); dir && *dir)
+    return dir;
+  return example_runtime::Full() ? "build/recurrent-models" : "build/recurrent-models";
+}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+} // namespace paths
+
+namespace rnn_cells {
+
+namespace fs = std::filesystem;
+
+struct DemoOptions {
+  int      epochs = 3;
+  fs::path out;  // output directory
+  fs::path init; // optional initial arrays (tflow's initial_arrays.npz)
+  fs::path tf;   // tflow's run directory for comparisons (skipped when missing)
+};
+
+/// tflow's output/models/<name> (where its examples write their runs).
+inline fs::path TflowRunDir(const std::string& name) {
+  return std::filesystem::absolute("build/no-tflow-records") / name;
+}
+
+/// Parses epochs=N out=PATH init=PATH tf=PATH.
+inline DemoOptions ParseDemoOptions(int argc, char** argv, const std::string& name) {
+  DemoOptions o;
+  o.out = paths::OutputRoot() / "models" / name;
+  o.tf  = TflowRunDir(name);
+  for (int i = 1; i < argc; ++i) {
+    const std::string a = argv[i];
+    if (a.rfind("epochs=", 0) == 0)
+      o.epochs = std::stoi(a.substr(7));
+    else if (a.rfind("out=", 0) == 0)
+      o.out = a.substr(4);
+    else if (a.rfind("init=", 0) == 0)
+      o.init = a.substr(5);
+    else if (a.rfind("tf=", 0) == 0)
+      o.tf = a.substr(3);
+    else
+      throw std::invalid_argument("options: epochs=N out=PATH init=PATH tf=PATH");
+  }
+  check::Require(o.epochs > 0 && o.epochs <= 100, "threeCheapDefaultEpochs");
+  return o;
+}
+
+struct DemoContext {
+  fs::path                      root;
+  std::vector<MarkedSequences>& pools;
+  RecurrentModel&               model;    // the trained model
+  RecurrentModel*               deployed; // restored, inference only (null before restore)
+  Outputs                       output, last_output, cue_output;
+  nn::NamedTensors              initial_arrays;
+  std::ostringstream            metrics; // extra ",\"key\":value" metrics.json entries
+};
+
+struct MarkedDemo {
+  std::string                                                   name;
+  std::int64_t                                                  parameters = 0, tensors = 0;
+  std::string                                                   count_message, restore_message;
+  std::function<std::unique_ptr<RecurrentModel>(bool training)> make;
+  /// Extra leading metrics.json entries ("\"key\":value," each).
+  std::string metrics_prefix;
+  std::string title, description,
+      pass_tag = "fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable";
+  /// Called for every update with the batch, before Update (gradient_clipping's per-step records).
+  std::function<void(RecurrentModel&, const MarkedSequences&, const fs::path&, int step)>
+                                    before_update, after_update;
+  std::function<void(DemoContext&)> after_training; // after the last epoch, before saving
+  /// Called at the start of every batch, before the first-batch records and the
+  /// update (per-step dropout masks, training-mode switches).
+  std::function<void(RecurrentModel&, const MarkedSequences&, const fs::path&, int step)>
+                                    before_batch;
+  std::function<void(DemoContext&)> after_outputs; // right after outputs.npz (structure checks)
+  std::function<void(DemoContext&)> after_counterfactuals; // after padding/flip evaluations
+  std::function<void(DemoContext&)> after_predictions;     // after predictions.tsv
+};
+
+inline void SaveOutputs(const fs::path& file, const Outputs& out) {
+  nn::save_npz(file.string(), Named(out));
+}
+
+/// Max |ours - tflow| over the arrays both npz files contain; -1 when tflow's file is missing.
+inline double CompareNpz(const fs::path& ours, const fs::path& theirs) {
+  if (!fs::exists(theirs))
+    return -1;
+  const auto a = nn::load_npz(ours.string()), b = nn::load_npz(theirs.string());
+  double     worst = 0;
+  for (const auto& [name, value] : a)
+    for (const auto& [other, tf_value] : b)
+      if (name == other)
+        worst = std::max(worst, MaxAbsDiff(value, tf_value));
+  return worst;
+}
+
+inline std::string ReadText(const fs::path& file) {
+  std::ifstream f(file, std::ios::binary);
+  return {std::istreambuf_iterator<char>(f), {}};
+}
+
+/// Compares this run with tflow's run directory: data and batch order always
+/// (they must be identical); with init= also every replayed record.
+/// The number after "key": in a flat JSON object (NaN when absent).
+inline double JsonNumber(const std::string& json, const std::string& key) {
+  const auto at = json.find("\"" + key + "\":");
+  return at == std::string::npos ? NAN : std::stod(json.substr(at + key.size() + 3));
+}
+
+inline void CompareWithTflow(
+    const fs::path&                 root,
+    const DemoOptions&              options,
+    const std::vector<std::string>& records,
+    const std::string&              test_key = "test_ce") {
+  if (options.tf.empty() || !fs::exists(options.tf / "data.npz")) {
+    std::cout << "tflow run " << options.tf << " not found; skipping the comparison\n";
+    return;
+  }
+  check::Near(
+      CompareNpz(root / "data.npz", options.tf / "data.npz"), 0, 0, "dataBitIdenticalToTflow");
+  if (fs::exists(options.tf / "batches.tsv")) {
+    // tflow ran three epochs; with another epochs= budget the shorter record
+    // must be a prefix of the longer one (same BatchOrder stream).
+    const std::string ours   = ReadText(root / "batches.tsv"),
+                      theirs = ReadText(options.tf / "batches.tsv");
+    check::Require(
+        ours.rfind(theirs, 0) == 0 || theirs.rfind(ours, 0) == 0, "batchOrderIdenticalToTflow");
+  }
+  std::cout << "vs tflow: data.npz and batches.tsv identical";
+  if (options.init.empty()) {
+    std::cout << " (pass init=" << (options.tf / "initial_arrays.npz").string()
+              << " to replay tflow's run)\n";
+    return;
+  }
+  double worst_initial = 0, worst_final = 0;
+  for (const auto& file : records) {
+    const double d = CompareNpz(root / file, options.tf / file);
+    if (d < 0)
+      continue;
+    std::cout << "\n  " << file << " max|diff|=" << d;
+    double& worst =
+        file.rfind("initial", 0) == 0 || file.rfind("first", 0) == 0 ? worst_initial : worst_final;
+    worst = std::max(worst, d);
+  }
+  std::cout << "\n";
+  check::Require(worst_initial <= 1e-5, "replayedInitialForwardGradientsAndFirstUpdateMatchTflow");
+  // Later records drift with float32 rounding (Adam divides by tiny second
+  // moments), so the trained run is checked through its test loss.
+  const double ours   = JsonNumber(ReadText(root / "metrics.json"), test_key),
+               theirs = JsonNumber(ReadText(options.tf / "metrics.json"), test_key);
+  if (!std::isnan(theirs)) {
+    std::cout << "  " << test_key << " ours=" << ours << " tflow=" << theirs
+              << " (trained records max|diff|=" << worst_final << ")\n";
+    check::Near(ours, theirs, 5e-3, "replayedTrainedTestLossMatchesTflow");
+  }
+}
+
+} // namespace rnn_cells
+
+using namespace rnn_cells;
+
+int main(int argc, char** argv) {
+  try {
+    MarkedDemo d;
+    d.name = "sru", d.parameters = 146, d.tensors = 5;
+    d.count_message   = "146SharedTanhRNNParameters5Tensors";
+    d.restore_message = "all146WeightsBitexactRestore";
+    d.make            = [](bool training) { return SruModel(training); };
+    d.title           = "Simple Recurrent Unit";
+    d.description =
+        "The original input-only SRU gates: candidate = x W, f = sigmoid(x Wf + bf), r = sigmoid(x "
+        "Wr + br); c = f c_previous + "
+        "(1-f) candidate, h = r tanh(c) + (1-r) skip. Because the two input features differ from "
+        "the twelve memory channels, "
+        "skip = x Wskip is an explicit learned projection. The candidate is linear, not tanh. All "
+        "input projections are computed "
+        "in parallel across time, followed by channelwise pooling; there are no hidden-to-hidden "
+        "matrices. 146 parameters in 5 "
+        "tensors, 12 channels, final 12->2 head. A single-layer teaching adaptation of the 2017 "
+        "SRU equations, without CUDA "
+        "fusion or a speed benchmark. Both state paths retain values during padding.";
+    d.after_outputs = [](DemoContext& ctx) {
+      const auto& out     = ctx.output;
+      const auto  lengths = ctx.pools[2].lengths.to_vector<std::int32_t>();
+      const auto  first   = out.at("first_gate_input_gradient").to_vector<float>(),
+                 gates    = out.at("gates").to_vector<float>();
+      const auto cells    = out.at("cell_states").to_vector<float>(),
+                 states   = out.at("states").to_vector<float>();
+      auto g              = [&](int b, int t, int k) {
+        return double(gates[(static_cast<std::size_t>(b) * 12 + t) * 48 + k]);
+      };
+      auto s = [](const std::vector<float>& v, int b, int t, int j) {
+        return v[(static_cast<std::size_t>(b) * 13 + t) * 12 + j];
+      };
+      for (int b = 0; b < 128; ++b)
+        for (int t = 0; t < 12; ++t) {
+          if (t > 0)
+            for (int c = 0; c < 2; ++c)
+              check::Require(
+                  first[(static_cast<std::size_t>(b) * 12 + t) * 2 + c] == 0,
+                  "firstGateCannotReadFutureInput");
+          for (int j = 0; j < 12; ++j) {
+            if (t < lengths[b]) {
+              const double next =
+                  g(b, t, 12 + j) * s(cells, b, t, j) + (1 - g(b, t, 12 + j)) * g(b, t, j);
+              check::Near(next, s(cells, b, t + 1, j), 2e-6, "actualSruFoPooling");
+              check::Near(
+                  g(b, t, 24 + j) * std::tanh(next) + (1 - g(b, t, 24 + j)) * g(b, t, 36 + j),
+                  s(states, b, t + 1, j),
+                  2e-6,
+                  "sruResetTanhCellPlusProjectedHighway");
+            } else {
+              check::Require(s(cells, b, t + 1, j) == s(cells, b, t, j), "paddingRetainsCell");
+              for (int part = 0; part < 4; ++part)
+                check::Require(g(b, t, part * 12 + j) == 0, "paddingGateDiagnosticZero");
+            }
+          }
+        }
+    };
+    nn::set_num_threads(4);
+    const auto options = ParseDemoOptions(argc, argv, d.name);
+    // Raw loss gradients are computed here, before the example applies its
+    // gradient policy and optimizer. Diagnostics reuse this same calculation.
+    auto loss_gradients = [](RecurrentModel& network, const Feed& feed) {
+      const auto outputs = network.forward(
+          network.store, feed.inputs, feed.lengths, network.Initials(feed.inputs.shape()[0]));
+      const auto      parameters = network.store.parameters();
+      nn::GradOptions gradient_options;
+      gradient_options.allow_unused = true;
+      auto gradients                = nn::grad(
+          std::vector<Tensor>{network.loss_fn(outputs, feed.labels).first},
+          parameters,
+          {},
+          gradient_options);
+      for (std::size_t i = 0; i < gradients.size(); ++i)
+        gradients[i] = DefinedGradient(gradients[i], parameters[i]);
+      return gradients;
+    };
+    auto named_gradients = [&](RecurrentModel& network, const Feed& feed) {
+      const auto       gradients = loss_gradients(network, feed);
+      nn::NamedTensors result;
+      for (std::size_t i = 0; i < gradients.size(); ++i)
+        result.emplace_back(network.store.names()[i], gradients[i]);
+      return result;
+    };
+
+    const auto     start = std::chrono::steady_clock::now();
+    const fs::path root  = options.out;
+    fs::create_directories(root);
+    nn::NamedTensors data;
+    auto             pools = MarkedPools(&data);
+    nn::save_npz((root / "data.npz").string(), data);
+    auto                model = d.make(true);
+    nn::OptimizerConfig report_config;
+    report_config.kind = nn::OptimizerKind::Adam;
+    nn::Optimizer report_optimizer(model->store, .01, report_config);
+    check::Require(
+        model->store.count() == d.parameters &&
+            static_cast<std::int64_t>(model->store.size()) == d.tensors,
+        d.count_message);
+    if (!options.init.empty())
+      model->LoadArrays(options.init);
+    DemoContext ctx{root, pools, *model, nullptr, {}, {}, {}, model->Arrays(), {}};
+    nn::save_npz((root / "initial_arrays.npz").string(), ctx.initial_arrays);
+    SaveOutputs(root / "initial_outputs.npz", model->Evaluate(pools[2].feed()));
+    std::ofstream history(root / "history.tsv"), batches(root / "batches.tsv");
+    history.precision(17);
+    history << "epoch\tvalidation_ce\tvalidation_accuracy\n";
+    batches << "epoch\tstep\trow\n";
+    nn::BatchOrder order(512, 32, 26019);
+    int            updates = 0;
+    for (int epoch = 1; epoch <= options.epochs; ++epoch) {
+      order.begin_epoch();
+      for (;;) {
+        const auto rows = order.next();
+        if (rows.empty())
+          break;
+        const auto x = MarkedRows(pools[0], rows);
+        if (d.before_batch)
+          d.before_batch(*model, x, root, updates);
+        if (!updates) {
+          SaveData(root / "first_batch.npz", x);
+          SaveOutputs(root / "first_forward.npz", model->Evaluate(x.feed()));
+          nn::save_npz(
+              (root / "initial_gradients.npz").string(), named_gradients(*model, x.feed()));
+        }
+        if (d.before_update)
+          d.before_update(*model, x, root, updates);
+        auto gradients = loss_gradients(*model, x.feed());
+        if (model->gradient_policy)
+          gradients = model->gradient_policy(gradients);
+        report_optimizer.step(gradients);
+        if (model->after_update)
+          model->after_update(model->store);
+        if (d.after_update)
+          d.after_update(*model, x, root, updates);
+        if (!updates)
+          nn::save_npz((root / "first_after.npz").string(), model->Arrays());
+        for (auto row : rows)
+          batches << epoch << '\t' << updates << '\t' << row << '\n';
+        ++updates;
+      }
+      const auto   valid    = model->Evaluate(pools[1].feed());
+      const double ce       = valid.at("loss").item<double>(),
+                   accuracy = Accuracy(valid.at("logits"), pools[1].labels);
+      history << epoch << '\t' << float(ce) << '\t' << accuracy << '\n';
+      nn::save_npz(
+          (root / ("epoch" + std::to_string(epoch) + "_arrays.npz")).string(), model->Arrays());
+      SaveOutputs(root / ("epoch" + std::to_string(epoch) + "_validation.npz"), valid);
+      std::cout << "epoch" << epoch << " validationCE=" << float(ce) << " accuracy=" << accuracy
+                << std::endl;
+    }
+    batches.flush();
+    if (d.after_training)
+      d.after_training(ctx);
+    nn::save_npz(
+        (root / "final_gradients.npz").string(),
+        named_gradients(*model, LoadData(root / "first_batch.npz").feed()));
+    model->Save(root / "final.npz");
+    auto deployed = d.make(false);
+    deployed->Restore(root / "final.npz");
+    ctx.deployed = deployed.get();
+    check::Require(SameBits(model->Arrays(), deployed->Arrays()), d.restore_message);
+    const auto before      = deployed->Arrays();
+    auto&      test        = pools[2];
+    ctx.output             = deployed->Evaluate(test.feed());
+    const auto  prediction = deployed->Predict(test.feed());
+    const auto& output     = ctx.output;
+    for (const auto& [k, v] : prediction)
+      check::Require(SameBits(v, output.at(k)), "labelFreePredictionMatchesEvaluation");
+    nn::save_npz((root / "model_arrays.npz").string(), deployed->Arrays());
+    SaveOutputs(root / "outputs.npz", output);
+    if (d.after_outputs)
+      d.after_outputs(ctx);
+    const auto repeat = deployed->Predict(test.feed());
+    for (const auto& [k, v] : prediction)
+      check::Require(SameBits(v, repeat.at(k)), "RNNPredictRepeatBitexact");
+    const auto single        = deployed->Predict(MarkedRows(test, {0}).feed());
+    const auto single_logits = single.at("logits").to_vector<float>(),
+               logits        = output.at("logits").to_vector<float>();
+    for (int c = 0; c < 2; ++c)
+      check::Near(single_logits[c], logits[c], 2e-6, "singleBatchRNNParityWithResetState");
+
+    // Counterfactual copies: padding garbage, flipped marked value, flipped last valid value.
+    const auto test_inputs    = test.inputs.to_vector<float>();
+    const auto lengths        = test.lengths.to_vector<std::int32_t>(),
+               labels         = test.labels.to_vector<std::int32_t>();
+    const auto input_gradient = output.at("input_gradient").to_vector<float>(),
+               states         = output.at("states").to_vector<float>();
+    auto padded = test_inputs, cue_flip = test_inputs, last_flip = test_inputs;
+    auto cue_labels     = labels;
+    int  oracle_correct = 0, last_correct = 0;
+    auto idx  = [](int b, int t, int c) { return (static_cast<std::size_t>(b) * 12 + t) * 2 + c; };
+    auto sidx = [](int b, int t, int j) { return (static_cast<std::size_t>(b) * 13 + t) * 12 + j; };
+    for (int b = 0; b < 128; ++b) {
+      const int length   = lengths[b];
+      double    selected = 0;
+      for (int t = 0; t < 12; ++t) {
+        if (t >= length) {
+          padded[idx(b, t, 0)] = 123.f + b + t;
+          padded[idx(b, t, 1)] = -57.f;
+          for (int c = 0; c < 2; ++c)
+            check::Require(
+                input_gradient[idx(b, t, c)] == 0, "ALLpaddedInputLogitGradientExactlyZero");
+          for (int j = 0; j < 12; ++j)
+            check::Require(
+                states[sidx(b, t + 1, j)] == states[sidx(b, t, j)],
+                "stateRetainedAcrossEveryPaddingStep");
+        }
+        if (test_inputs[idx(b, t, 1)] > 0) {
+          selected += test_inputs[idx(b, t, 0)];
+          cue_flip[idx(b, t, 0)] *= -1;
+        }
+      }
+      oracle_correct += (selected > 0) == (labels[b] != 0);
+      last_correct += (test_inputs[idx(b, length - 1, 0)] > 0) == (labels[b] != 0);
+      cue_labels[b] = 1 - labels[b];
+      last_flip[idx(b, length - 1, 0)] *= -1;
+    }
+    check::Require(oracle_correct == 128, "deterministicMarkerValueOracle");
+    MarkedSequences pad_data = Copy(test), cue_data = Copy(test), last_data = Copy(test);
+    pad_data.inputs       = nn::from_vector(padded, {128, 12, 2});
+    cue_data.inputs       = nn::from_vector(cue_flip, {128, 12, 2});
+    cue_data.labels       = nn::from_vector(cue_labels);
+    last_data.inputs      = nn::from_vector(last_flip, {128, 12, 2});
+    const auto pad_output = deployed->Evaluate(pad_data.feed());
+    ctx.cue_output        = deployed->Evaluate(cue_data.feed());
+    ctx.last_output       = deployed->Evaluate(last_data.feed());
+    for (const auto& [k, v] : output)
+      check::Require(
+          SameBits(v, pad_output.at(k)),
+          "arbitraryPaddingValuesCannotAffectAnyOutputOrGradient:" + k);
+    const auto last_states = ctx.last_output.at("states").to_vector<float>();
+    for (int b = 0; b < 128; ++b)
+      for (int t = 0; t < lengths[b]; ++t)
+        for (int j = 0; j < 12; ++j)
+          check::Require(
+              last_states[sidx(b, t, j)] == states[sidx(b, t, j)],
+              "changingLastValidTokenCannotChangeEarlierHiddenStates");
+    if (d.after_counterfactuals)
+      d.after_counterfactuals(ctx);
+    SaveData(root / "padding_inputs.npz", pad_data);
+    SaveData(root / "cue_flip_inputs.npz", cue_data);
+    SaveData(root / "last_flip_inputs.npz", last_data);
+    SaveOutputs(root / "padding_outputs.npz", pad_output);
+    SaveOutputs(root / "cue_flip_outputs.npz", ctx.cue_output);
+    SaveOutputs(root / "last_flip_outputs.npz", ctx.last_output);
+    auto empty              = MarkedRows(test, {0, 1, 2, 3});
+    empty.lengths           = nn::zeros({4}, nn::DType::Int32);
+    const auto empty_output = deployed->Evaluate(empty.feed());
+    for (float v : empty_output.at("states").to_vector<float>())
+      check::Require(v == 0, "zeroLengthSequenceRetainsZeroInitialState");
+    for (float v : empty_output.at("input_gradient").to_vector<float>())
+      check::Require(v == 0, "zeroLengthAllInputGradientsZero");
+    SaveData(root / "zero_length_inputs.npz", empty);
+    SaveOutputs(root / "zero_length_outputs.npz", empty_output);
+    Heatmap(root / "sequences.png", test.inputs);
+    Heatmap(root / "input_gradients.png", output.at("input_gradient"), true);
+    std::ofstream predictions(root / "predictions.tsv");
+    predictions << "source_id\tlength\tlabel\tpredicted\tmarked_oracle\tlast_value_baseline\n";
+    const auto ids = test.source_ids.to_vector<std::int32_t>();
+    for (int b = 0; b < 128; ++b)
+      predictions << ids[b] << '\t' << lengths[b] << '\t' << labels[b] << '\t'
+                  << (logits[b * 2 + 1] > logits[b * 2]) << '\t' << labels[b] << '\t'
+                  << (test_inputs[idx(b, lengths[b] - 1, 0)] > 0) << '\n';
+    if (d.after_predictions)
+      d.after_predictions(ctx);
+    check::Require(
+        SameBits(before, deployed->Arrays()),
+        "allRecurrentInferenceAndGradientControlsWeightsImmutable");
+    nn::ConfusionMatrix confusion(2);
+    confusion.add(test.labels, nn::argmax(output.at("logits"), 1));
+    std::uint64_t evaluated = 0;
+    std::cout << "  confusion (truth rows):\n";
+    for (const auto& row : confusion.cells()) {
+      std::cout << "   ";
+      for (auto count : row) {
+        std::cout << ' ' << count;
+        evaluated += count;
+      }
+      std::cout << '\n';
+    }
+    check::Require(evaluated == 128, "all held-out recurrent sequences evaluated");
+    check::Near(
+        confusion.accuracy(),
+        Accuracy(output.at("logits"), test.labels),
+        1e-7,
+        "recurrent confusion agrees with accuracy");
+    const double test_ce        = output.at("loss").item<double>(),
+                 accuracy       = Accuracy(output.at("logits"), test.labels);
+    const double  cue_accuracy  = Accuracy(ctx.cue_output.at("logits"), cue_data.labels);
+    const double  last_accuracy = Accuracy(ctx.last_output.at("logits"), test.labels);
+    std::ofstream meta(root / "metrics.json");
+    meta.precision(17);
+    meta << "{" << d.metrics_prefix << "\"parameters\":" << d.parameters
+         << ",\"parameter_tensors\":" << d.tensors
+         << ",\"hidden_units\":12,\"maximum_steps\":12,\"epochs\":" << options.epochs
+         << ",\"optimizer_updates\":" << updates << ",\"test_ce\":" << float(test_ce)
+         << ",\"test_accuracy\":" << accuracy << ",\"cue_flip_accuracy\":" << cue_accuracy
+         << ",\"last_distractor_flip_accuracy\":" << last_accuracy
+         << ",\"last_value_baseline_accuracy\":" << last_correct / 128.
+         << ",\"majority_baseline_accuracy\":0.5,\"marked_value_oracle_accuracy\":1"
+         << ctx.metrics.str() << "}\n";
+    std::ofstream html(root / "index.html");
+    html << "<!doctype html><meta charset='utf-8'><title>" << d.title
+         << "</title><style>body{font:16px "
+            "system-ui;margin:30px;max-width:1100px}img{max-width:100%;image-rendering:pixelated}</"
+            "style>"
+         << "<h1>" << d.title << "</h1><p>" << d.description << "</p>"
+         << "<p>Synthetic marked-token memory task: 512 fit / 128 validation / 128 test, balanced "
+            "labels, valid length 4..12, one "
+            "marker before the last token whose +/-1 value sets the binary target; padding zeros. "
+            "Three epochs, 48 updates. The task "
+            "has a perfect deterministic marker-times-value oracle; it is not a natural-language "
+            "benchmark.</p>"
+         << "<h2>First 24 held-out sequences</h2><p>12 time columns; blue=-1, red=+1, "
+            "white=padding, black top strip=marked "
+            "token.</p><img src='sequences.png'><h2>Target-logit input-value gradients</h2><p>Same "
+            "cases, global symmetric colour "
+            "peak. Masked padding derivatives are exactly zero.</p><img src='input_gradients.png'>"
+         << "<p>Test CE " << float(test_ce) << ", accuracy " << accuracy << ", cue-flip accuracy "
+         << cue_accuracy << ", last-distractor-flip accuracy " << last_accuracy
+         << ", last-value baseline " << last_correct / 128.
+         << ". See metrics.json and predictions.tsv.</p>";
+    check::Require(
+        bool(meta) && bool(html) && bool(history) && bool(batches) && bool(predictions),
+        "completeUnrolledRNNRecords");
+    meta.close(), html.close(), history.close(), batches.close(), predictions.close();
+    const double seconds =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+    std::cout << "testCE=" << float(test_ce) << " accuracy=" << accuracy
+              << " cueFlip=" << cue_accuracy << " lastBaseline=" << last_correct / 128. << ";"
+              << d.pass_tag << " PASS (" << seconds << " s)\nArtifacts:" << (root / "index.html")
+              << std::endl;
+    CompareWithTflow(
+        root,
+        options,
+        {"initial_outputs.npz",
+         "first_forward.npz",
+         "initial_gradients.npz",
+         "first_after.npz",
+         "epoch1_arrays.npz",
+         "epoch" + std::to_string(options.epochs) + "_arrays.npz",
+         "final_gradients.npz",
+         "outputs.npz",
+         "cue_flip_outputs.npz",
+         "last_flip_outputs.npz"});
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+```
+// result_begin: markdown
+epoch1 validationCE=0.680118 accuracy=0.601562
+epoch2 validationCE=0.66397 accuracy=0.617188
+epoch3 validationCE=0.632875 accuracy=0.734375
+  confusion (truth rows):
+    40 24
+    22 42
+testCE=0.657551 accuracy=0.640625 cueFlip=0.726562 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.094158 s)
+Artifacts:"build/recurrent-models/models/sru/index.html"
+tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/sru" not found; skipping the comparison
+// result_end
+
+> Recorded outcomes and limits
+
+Held-out accuracy is 0.6406, with cross-entropy 0.6576; the last-value baseline is 0.5625, majority baseline 0.5000 and marked-value oracle 1.0000. Flipping the marked cue gives 0.7266, while flipping the last distractor gives 0.6484. The source short budget and held-out errors remain part of the result.
+
+All three validation epochs are shown. The test observations do not select an additional checkpoint.
+
+```{cpp, results="markdown", file="figures/sru_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/sru/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("All three source epochs required");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").title("SRU: validation history").size(950,520).save_svg("build/sru_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
+
+```
+// result_begin: markdown
+| Epoch | Validation objective |
+|---:|---:|
+|1|0.680118|
+|2|0.66397|
+|3|0.632875|
+\image(figures/sru_history.svg)
+// result_end
+
+```{cpp, results="markdown", file="figures/sru_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <map>
+#include <iostream>
+int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/sru/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/sru/data.npz"))data.emplace(key,value);auto truth=data.at("test_labels"),pred=n::argmax(output.at("logits"),1); n::ConfusionMatrix cm(2);cm.add(truth,pred);cm.save_svg("build/sru_confusion.svg",{.title="SRU: held-out confusion"});n::save_npz("build/sru_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<truth.numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
+
+```
+// result_begin: markdown
+Truth rows, prediction columns; 128 held-out observations
+40 24 
+22 42 
+\image(figures/sru_confusion.svg)
+// result_end
+
+> Preserved source diagnostics
+
+Every original PNG is reproduced by the complete program and copied below. Red/blue sequence cells encode token signs, black strips identify cues, and derivative previews show the source input signal with padded positions zero. Truncated-BPTT images show the stopped backward graph, not full forward sensitivity.
+
+input_gradients.png.
+
+```{cpp, results="markdown", file="figures/sru_input_gradients.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/recurrent-models/models/sru/input_gradients.png","build/sru_input_gradients.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/sru_input_gradients.png)
+// result_end
+
+sequences.png.
+
+```{cpp, results="markdown", file="figures/sru_sequences.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/recurrent-models/models/sru/sequences.png","build/sru_sequences.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/sru_sequences.png)
+// result_end
+
+Optional TensorFlow parity is skipped because its independent recordings are absent; native source parity is checked separately with pinned original programs.
+
+> References
+
+https://arxiv.org/abs/1709.02755
+
+This report preserves the repository's compact source preset and short budget; it does not claim the full paper benchmark.

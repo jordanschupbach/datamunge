@@ -1,0 +1,407 @@
+//? Title: Grid Worlds: Transition Models, Walls and Cliff Rewards
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native C++ simulations expose explicit actions, seeded state transitions and owning observations. The complete editable source protocol retains its policy comparisons and checks. There is no hidden learning loop or external simulator process.
+)
+\toc
+
+> Follow one actual transition
+
+```{cpp, results="markdown", file="figures/grid_world_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle style;style.width=13;style.height=5;style.font_size=24;d.node("input",{-17,0},"Finite state and action",style);d.node("step",{0,0},"Walls, slip and cliff rules",style);d.node("result",{17,0},"Exact transition model",style);d.edge("input","step").edge("step","result").save_svg("build/grid_world_method.svg");}
+```
+// result_begin: markdown
+\image(figures/grid_world_method.svg)
+// result_end
+
+> A cliff penalty returns to the start
+
+From the bottom-left start, moving right hits the cliff: reward-100, state36 again, and no terminal flag. Moving up then pays-1 and reaches state24. The cliff is a costly transition, not an absorbing loss state.
+
+```{cpp, results="markdown", file="figures/grid_world_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;std::filesystem::create_directories("build");e::CliffWalking env;env.reset(1);auto a=env.step(1);auto c=env.step(0);std::vector<double>values{a.reward,a.obs[0],double(a.terminated),c.reward,c.obs[0]};if(a.reward!=-100||a.obs[0]!=36||a.terminated||c.obs[0]!=24)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/grid_world_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);const double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1e-9,high-low);dm::graphics::RPlot::create().ylim(low-.05*span,high+.05*span).bars(x,values,"computed values",{37,99,235}).title("A cliff penalty returns to the start").x_label("Coordinate in displayed calculation").size(1000,550).save_svg("build/grid_world_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | -100.000000000 |
+| 1 | 36.000000000 |
+| 2 | 0.000000000 |
+| 3 | -1.000000000 |
+| 4 | 24.000000000 |
+\image(figures/grid_world_worked.svg)
+// result_end
+
+> Complete source experiment
+
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn grid_world
+// Grid world and cliff walking.
+//
+// Port of tflow's grid_world. Two small finite MDPs used by the tabular
+// examples in 6.2 (common/rl/grid_world.hpp, copied from tflow). Both expose
+// their transition model (TabularEnv::transitions) so dynamic programming can
+// plan on them, and both render as text. The vsim videos of the policies are
+// omitted; the port adds checks that the transition models are distributions
+// and that the cliff paths have Sutton & Barto's returns (-13 and -17).
+
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/grid_world.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::GridBase;
+using datamunge::rl::environments::GridWorld;
+using datamunge::rl::environments::CliffWalking;
+}
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+inline int ArgMax(const std::vector<float>& v) {
+  return static_cast<int>(std::max_element(v.begin(), v.end()) - v.begin());
+}
+
+// Argmax with ties broken uniformly at random.
+inline int ArgMaxRandomTie(const float* q, int n, std::mt19937_64& rng) {
+  float best = q[0];
+  for (int i = 1; i < n; ++i) best = std::max(best, q[i]);
+  std::vector<int> ties;
+  for (int i = 0; i < n; ++i)
+    if (q[i] == best) ties.push_back(i);
+  return ties[rng() % ties.size()];
+}
+
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunRandom(Env& env, int episodes, uint64_t seed) {
+  std::mt19937_64 rng(seed);
+  const ActionSpace space = env.action_space();
+  return RunEpisodes(env, episodes, seed, [&](const Obs&) { return space.Sample(rng); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+void Describe(rl::GridBase& env) {
+  std::cout << "== " << env.name() << ": " << env.height() << "x" << env.width() << ", "
+            << env.num_states() << " states, " << env.action_space().ToString()
+            << ", max_steps=" << env.max_steps() << "\n";
+  env.reset(0);
+  std::cout << env.render();
+  std::cout << "  (A agent, S start, G goal, # wall, ~ cliff)\n";
+}
+
+void ShowModel(const rl::GridBase& env, int s) {
+  auto [r, c] = env.Coords(s);
+  std::printf("  model from state %d (row %d, col %d):\n", s, r, c);
+  for (int a = 0; a < 4; ++a) {
+    std::printf("    action %s:", rl::GridBase::kArrows[a]);
+    for (const rl::Transition& t : env.transitions(s, a))
+      std::printf("  p=%.2f -> s'=%d r=%+.0f%s", t.prob, t.next_state, t.reward,
+                  t.terminal ? " (terminal)" : "");
+    std::printf("\n");
+  }
+}
+
+// Every (s, a) model sums to probability 1 (walls and terminal states have no model).
+void CheckModel(const rl::GridBase& env) {
+  for (int s = 0; s < env.num_states(); ++s)
+    for (int a = 0; a < 4; ++a) {
+      double p = 0;
+      if (env.transitions(s, a).empty()) continue;
+      for (const rl::Transition& t : env.transitions(s, a)) p += t.prob;
+      check::Near(p, 1.0, 1e-5, env.name() + ": transition probabilities from state " + std::to_string(s));
+    }
+}
+
+}  // namespace
+
+int main() {
+  try {
+    rl::GridWorld grid(/*slip_prob=*/0.2f);
+    Describe(grid);
+    ShowModel(grid, grid.Index(0, 2));
+    CheckModel(grid);
+    rl::PrintStats("random policy, 200 episodes", rl::RunRandom(grid, 200, 0));
+
+    // A hand-written policy: go down the left side, along the bottom, to G.
+    auto manual = [&](const rl::Obs& o) {
+      auto [r, c] = grid.Coords(static_cast<int>(o[0]));
+      return rl::Action(r < 4 ? rl::GridBase::kDown : rl::GridBase::kRight);
+    };
+    rl::PrintStats("manual policy, slip 0.2", rl::RunEpisodes(grid, 200, 0, manual));
+    rl::GridWorld det(/*slip_prob=*/0.f);
+    const rl::EpisodeStats det_stats = rl::RunEpisodes(det, 10, 0, manual);
+    rl::PrintStats("manual policy, no slip", det_stats);
+    check::Require(det_stats.min_return() == det_stats.max_return(), "without slip the manual policy is deterministic");
+
+    std::cout << "\n";
+    rl::CliffWalking cliff;
+    Describe(cliff);
+    ShowModel(cliff, cliff.Index(2, 1));
+    CheckModel(cliff);
+    rl::PrintStats("random policy, 100 episodes", rl::RunRandom(cliff, 100, 0));
+    // The two policies from Sutton & Barto's figure: hug the cliff, or go up
+    // and around. Both reach the goal; the safe one takes 4 extra steps.
+    auto risky = [&](const rl::Obs& o) {
+      auto [r, c] = cliff.Coords(static_cast<int>(o[0]));
+      if (r == 3 && c == 0) return rl::Action(rl::GridBase::kUp);
+      if (r == 2 && c < 11) return rl::Action(rl::GridBase::kRight);
+      return rl::Action(rl::GridBase::kDown);
+    };
+    auto safe = [&](const rl::Obs& o) {
+      auto [r, c] = cliff.Coords(static_cast<int>(o[0]));
+      if (c == 0 && r > 0) return rl::Action(rl::GridBase::kUp);
+      if (r == 0 && c < 11) return rl::Action(rl::GridBase::kRight);
+      return rl::Action(rl::GridBase::kDown);
+    };
+    const rl::EpisodeStats risky_stats = rl::RunEpisodes(cliff, 5, 0, risky);
+    const rl::EpisodeStats safe_stats = rl::RunEpisodes(cliff, 5, 0, safe);
+    rl::PrintStats("risky path (along the cliff)", risky_stats);
+    rl::PrintStats("safe path (top row)", safe_stats);
+    check::Near(risky_stats.mean_return(), -13, 1e-6, "risky cliff path return");
+    check::Near(safe_stats.mean_return(), -17, 1e-6, "safe cliff path return");
+
+    std::cout << "\n-- Walking into the cliff: -100 and back to the start, episode continues\n";
+    cliff.reset(0);
+    cliff.step(rl::GridBase::kUp);
+    rl::StepResult r = cliff.step(rl::GridBase::kRight);
+    r = cliff.step(rl::GridBase::kDown);
+    std::printf("  reward %+.0f terminated=%d, now at state %d\n", r.reward, r.terminated,
+                cliff.state());
+    check::Require(r.reward == -100.f && !r.terminated && cliff.state() == cliff.Index(3, 0),
+                   "the cliff costs -100 and sends the agent back to the start");
+    std::cout << "\nchecks passed (vsim videos omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == GridWorld: 5x6, 30 states, Discrete(4), max_steps=100
+// A . . # . . 
+// . . . # . . 
+// . . . # . . 
+// . . . # . . 
+// . . . . . G 
+//   (A agent, S start, G goal, # wall, ~ cliff)
+//   model from state 2 (row 0, col 2):
+//     action ^:  p=0.80 -> s'=2 r=-1  p=0.10 -> s'=2 r=-1  p=0.10 -> s'=1 r=-1
+//     action >:  p=0.80 -> s'=2 r=-1  p=0.10 -> s'=8 r=-1  p=0.10 -> s'=2 r=-1
+//     action v:  p=0.80 -> s'=8 r=-1  p=0.10 -> s'=1 r=-1  p=0.10 -> s'=2 r=-1
+//     action <:  p=0.80 -> s'=1 r=-1  p=0.10 -> s'=2 r=-1  p=0.10 -> s'=8 r=-1
+//   random policy, 200 episodes      return mean   -91.24  min  -100.00  max   -13.00   length mean   91.2
+//   manual policy, slip 0.2          return mean   -11.19  min   -17.00  max    -9.00   length mean   11.2
+//   manual policy, no slip           return mean    -9.00  min    -9.00  max    -9.00   length mean    9.0
+//
+// == CliffWalking: 4x12, 48 states, Discrete(4), max_steps=500
+// . . . . . . . . . . . . 
+// . . . . . . . . . . . . 
+// . . . . . . . . . . . . 
+// A ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ G 
+//   (A agent, S start, G goal, # wall, ~ cliff)
+//   model from state 25 (row 2, col 1):
+//     action ^:  p=1.00 -> s'=13 r=-1
+//     action >:  p=1.00 -> s'=26 r=-1
+//     action v:  p=1.00 -> s'=36 r=-100
+//     action <:  p=1.00 -> s'=24 r=-1
+//   random policy, 100 episodes      return mean -4938.31  min -7727.00  max  -454.00   length mean  486.3
+//   risky path (along the cliff)     return mean   -13.00  min   -13.00  max   -13.00   length mean   13.0
+//   safe path (top row)              return mean   -17.00  min   -17.00  max   -17.00   length mean   17.0
+//
+// -- Walking into the cliff: -100 and back to the start, episode continues
+//   reward -100 terminated=0, now at state 36
+//
+// checks passed (vsim videos omitted)
+// result_end
+
+> Inspect the actual board state
+
+The native diagram reads the current object directly. Board games display the five-move worked result; the grid displays its original start, walls and goal.
+
+```{cpp, results="markdown", file="figures/grid_world_board.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;e::GridWorld env;env.reset(1);int rows=env.height(),cols=env.width();dm::graphics::Diagram diagram(32,850);dm::graphics::DiagramNodeStyle style;style.width=1.3;style.height=1.3;style.font_size=24;for(int r=0;r<rows;++r)for(int c=0;c<cols;++c){std::string text=env.IsWall(r,c)?"#":env.IsGoal(r,c)?"G":r==0&&c==0?"S":".";diagram.node("cell"+std::to_string(r*cols+c),{double(c)*2.2,double(-r)*2.2},text,style);}diagram.save_svg("build/grid_world_board.svg");}
+```
+// result_begin: markdown
+\image(figures/grid_world_board.svg)
+// result_end
+
+> Interpretation
+
+The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.

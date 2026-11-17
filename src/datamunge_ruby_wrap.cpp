@@ -1688,6 +1688,7 @@ template<> struct Bound<datamunge::Dual> : std::true_type {};
 template<> struct Bound<datamunge::HyperDual> : std::true_type {};
 template<> struct Bound<datamunge::Var> : std::true_type {};
 template<> struct Bound<datamunge::Tape> : std::true_type {};
+template<> struct Bound<datamunge::MLPClassifierSearch> : std::true_type {};
 template<> struct Bound<datamunge::cad::Solid> : std::true_type {};
 template<> struct Bound<datamunge::cad::View> : std::true_type {};
 template<> struct Bound<datamunge::fda::SplineSolveOptions> : std::true_type {};
@@ -2015,7 +2016,6 @@ struct rosetta_class_181_director final : datamunge::optim::RBFGaussianProcessSu
 };
 }
 namespace ROSETTA_RB_MODULE {
-VALUE rosetta_function_811(int, VALUE*, VALUE);
 VALUE rosetta_function_812(int, VALUE*, VALUE);
 VALUE rosetta_function_813(int, VALUE*, VALUE);
 VALUE rosetta_function_814(int, VALUE*, VALUE);
@@ -2278,8 +2278,8 @@ VALUE rosetta_function_1070(int, VALUE*, VALUE);
 VALUE rosetta_function_1071(int, VALUE*, VALUE);
 VALUE rosetta_function_1072(int, VALUE*, VALUE);
 VALUE rosetta_function_1073(int, VALUE*, VALUE);
-VALUE rosetta_class_0_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1074(int, VALUE*, VALUE);
+VALUE rosetta_class_0_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1075(int, VALUE*, VALUE);
 VALUE rosetta_function_1076(int, VALUE*, VALUE);
 VALUE rosetta_function_1077(int, VALUE*, VALUE);
@@ -2294,47 +2294,47 @@ VALUE rosetta_function_1085(int, VALUE*, VALUE);
 VALUE rosetta_function_1086(int, VALUE*, VALUE);
 VALUE rosetta_function_1087(int, VALUE*, VALUE);
 VALUE rosetta_function_1088(int, VALUE*, VALUE);
+VALUE rosetta_function_1089(int, VALUE*, VALUE);
 VALUE rosetta_class_1_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_268_get(VALUE);
-VALUE rosetta_field_268_set(VALUE, VALUE);
 VALUE rosetta_field_269_get(VALUE);
 VALUE rosetta_field_269_set(VALUE, VALUE);
 VALUE rosetta_field_270_get(VALUE);
 VALUE rosetta_field_270_set(VALUE, VALUE);
-VALUE rosetta_class_2_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_271_get(VALUE);
 VALUE rosetta_field_271_set(VALUE, VALUE);
+VALUE rosetta_class_2_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_272_get(VALUE);
 VALUE rosetta_field_272_set(VALUE, VALUE);
-VALUE rosetta_class_3_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1089(int, VALUE*, VALUE);
-VALUE rosetta_function_1090(int, VALUE*, VALUE);
 VALUE rosetta_field_273_get(VALUE);
 VALUE rosetta_field_273_set(VALUE, VALUE);
+VALUE rosetta_class_3_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1090(int, VALUE*, VALUE);
+VALUE rosetta_function_1091(int, VALUE*, VALUE);
 VALUE rosetta_field_274_get(VALUE);
 VALUE rosetta_field_274_set(VALUE, VALUE);
-VALUE rosetta_class_4_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_275_get(VALUE);
 VALUE rosetta_field_275_set(VALUE, VALUE);
+VALUE rosetta_class_4_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_276_get(VALUE);
 VALUE rosetta_field_276_set(VALUE, VALUE);
-VALUE rosetta_class_5_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_277_get(VALUE);
 VALUE rosetta_field_277_set(VALUE, VALUE);
+VALUE rosetta_class_5_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_278_get(VALUE);
 VALUE rosetta_field_278_set(VALUE, VALUE);
-VALUE rosetta_class_6_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_279_get(VALUE);
 VALUE rosetta_field_279_set(VALUE, VALUE);
+VALUE rosetta_class_6_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_280_get(VALUE);
 VALUE rosetta_field_280_set(VALUE, VALUE);
-VALUE rosetta_class_7_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1091(int, VALUE*, VALUE);
-VALUE rosetta_function_1092(int, VALUE*, VALUE);
 VALUE rosetta_field_281_get(VALUE);
 VALUE rosetta_field_281_set(VALUE, VALUE);
-VALUE rosetta_class_8_initialize(int, VALUE*, VALUE);
+VALUE rosetta_class_7_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1092(int, VALUE*, VALUE);
 VALUE rosetta_function_1093(int, VALUE*, VALUE);
+VALUE rosetta_field_282_get(VALUE);
+VALUE rosetta_field_282_set(VALUE, VALUE);
+VALUE rosetta_class_8_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1094(int, VALUE*, VALUE);
 VALUE rosetta_function_1095(int, VALUE*, VALUE);
 VALUE rosetta_function_1096(int, VALUE*, VALUE);
@@ -2347,15 +2347,15 @@ VALUE rosetta_function_1102(int, VALUE*, VALUE);
 VALUE rosetta_function_1103(int, VALUE*, VALUE);
 VALUE rosetta_function_1104(int, VALUE*, VALUE);
 VALUE rosetta_function_1105(int, VALUE*, VALUE);
+VALUE rosetta_function_1106(int, VALUE*, VALUE);
 VALUE rosetta_class_9_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_282_get(VALUE);
-VALUE rosetta_field_282_set(VALUE, VALUE);
 VALUE rosetta_field_283_get(VALUE);
 VALUE rosetta_field_283_set(VALUE, VALUE);
 VALUE rosetta_field_284_get(VALUE);
 VALUE rosetta_field_284_set(VALUE, VALUE);
+VALUE rosetta_field_285_get(VALUE);
+VALUE rosetta_field_285_set(VALUE, VALUE);
 VALUE rosetta_class_10_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1106(int, VALUE*, VALUE);
 VALUE rosetta_function_1107(int, VALUE*, VALUE);
 VALUE rosetta_function_1108(int, VALUE*, VALUE);
 VALUE rosetta_function_1109(int, VALUE*, VALUE);
@@ -2364,36 +2364,35 @@ VALUE rosetta_function_1111(int, VALUE*, VALUE);
 VALUE rosetta_function_1112(int, VALUE*, VALUE);
 VALUE rosetta_function_1113(int, VALUE*, VALUE);
 VALUE rosetta_function_1114(int, VALUE*, VALUE);
-VALUE rosetta_class_11_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1115(int, VALUE*, VALUE);
-VALUE rosetta_class_12_initialize(int, VALUE*, VALUE);
+VALUE rosetta_class_11_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1116(int, VALUE*, VALUE);
-VALUE rosetta_class_13_initialize(int, VALUE*, VALUE);
+VALUE rosetta_class_12_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1117(int, VALUE*, VALUE);
+VALUE rosetta_class_13_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1118(int, VALUE*, VALUE);
 VALUE rosetta_function_1119(int, VALUE*, VALUE);
-VALUE rosetta_class_14_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1120(int, VALUE*, VALUE);
+VALUE rosetta_class_14_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1121(int, VALUE*, VALUE);
 VALUE rosetta_function_1122(int, VALUE*, VALUE);
 VALUE rosetta_function_1123(int, VALUE*, VALUE);
 VALUE rosetta_function_1124(int, VALUE*, VALUE);
-VALUE rosetta_class_15_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1125(int, VALUE*, VALUE);
-VALUE rosetta_class_16_initialize(int, VALUE*, VALUE);
+VALUE rosetta_class_15_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1126(int, VALUE*, VALUE);
-VALUE rosetta_class_17_initialize(int, VALUE*, VALUE);
+VALUE rosetta_class_16_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1127(int, VALUE*, VALUE);
+VALUE rosetta_class_17_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1128(int, VALUE*, VALUE);
-VALUE rosetta_class_18_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1129(int, VALUE*, VALUE);
+VALUE rosetta_class_18_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1130(int, VALUE*, VALUE);
-VALUE rosetta_class_19_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1131(int, VALUE*, VALUE);
+VALUE rosetta_class_19_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1132(int, VALUE*, VALUE);
+VALUE rosetta_function_1133(int, VALUE*, VALUE);
 VALUE rosetta_class_20_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_285_get(VALUE);
-VALUE rosetta_field_285_set(VALUE, VALUE);
 VALUE rosetta_field_286_get(VALUE);
 VALUE rosetta_field_286_set(VALUE, VALUE);
 VALUE rosetta_field_287_get(VALUE);
@@ -2402,19 +2401,19 @@ VALUE rosetta_field_288_get(VALUE);
 VALUE rosetta_field_288_set(VALUE, VALUE);
 VALUE rosetta_field_289_get(VALUE);
 VALUE rosetta_field_289_set(VALUE, VALUE);
-VALUE rosetta_class_21_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_290_get(VALUE);
 VALUE rosetta_field_290_set(VALUE, VALUE);
+VALUE rosetta_class_21_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_291_get(VALUE);
 VALUE rosetta_field_291_set(VALUE, VALUE);
 VALUE rosetta_field_292_get(VALUE);
 VALUE rosetta_field_292_set(VALUE, VALUE);
-VALUE rosetta_class_22_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1133(int, VALUE*, VALUE);
-VALUE rosetta_function_1134(int, VALUE*, VALUE);
-VALUE rosetta_class_23_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_293_get(VALUE);
 VALUE rosetta_field_293_set(VALUE, VALUE);
+VALUE rosetta_class_22_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1134(int, VALUE*, VALUE);
+VALUE rosetta_function_1135(int, VALUE*, VALUE);
+VALUE rosetta_class_23_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_294_get(VALUE);
 VALUE rosetta_field_294_set(VALUE, VALUE);
 VALUE rosetta_field_295_get(VALUE);
@@ -2425,46 +2424,46 @@ VALUE rosetta_field_297_get(VALUE);
 VALUE rosetta_field_297_set(VALUE, VALUE);
 VALUE rosetta_field_298_get(VALUE);
 VALUE rosetta_field_298_set(VALUE, VALUE);
-VALUE rosetta_class_24_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_299_get(VALUE);
 VALUE rosetta_field_299_set(VALUE, VALUE);
+VALUE rosetta_class_24_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_300_get(VALUE);
 VALUE rosetta_field_300_set(VALUE, VALUE);
 VALUE rosetta_field_301_get(VALUE);
 VALUE rosetta_field_301_set(VALUE, VALUE);
-VALUE rosetta_class_25_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1135(int, VALUE*, VALUE);
-VALUE rosetta_function_1136(int, VALUE*, VALUE);
-VALUE rosetta_class_26_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_302_get(VALUE);
 VALUE rosetta_field_302_set(VALUE, VALUE);
+VALUE rosetta_class_25_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1136(int, VALUE*, VALUE);
+VALUE rosetta_function_1137(int, VALUE*, VALUE);
+VALUE rosetta_class_26_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_303_get(VALUE);
 VALUE rosetta_field_303_set(VALUE, VALUE);
-VALUE rosetta_class_27_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_304_get(VALUE);
 VALUE rosetta_field_304_set(VALUE, VALUE);
+VALUE rosetta_class_27_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_305_get(VALUE);
 VALUE rosetta_field_305_set(VALUE, VALUE);
 VALUE rosetta_field_306_get(VALUE);
 VALUE rosetta_field_306_set(VALUE, VALUE);
 VALUE rosetta_field_307_get(VALUE);
 VALUE rosetta_field_307_set(VALUE, VALUE);
-VALUE rosetta_class_28_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1137(int, VALUE*, VALUE);
-VALUE rosetta_function_1138(int, VALUE*, VALUE);
-VALUE rosetta_class_29_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_308_get(VALUE);
 VALUE rosetta_field_308_set(VALUE, VALUE);
+VALUE rosetta_class_28_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1138(int, VALUE*, VALUE);
+VALUE rosetta_function_1139(int, VALUE*, VALUE);
+VALUE rosetta_class_29_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_309_get(VALUE);
 VALUE rosetta_field_309_set(VALUE, VALUE);
 VALUE rosetta_field_310_get(VALUE);
 VALUE rosetta_field_310_set(VALUE, VALUE);
-VALUE rosetta_class_30_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1139(int, VALUE*, VALUE);
-VALUE rosetta_function_1140(int, VALUE*, VALUE);
-VALUE rosetta_class_31_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_311_get(VALUE);
 VALUE rosetta_field_311_set(VALUE, VALUE);
+VALUE rosetta_class_30_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1140(int, VALUE*, VALUE);
+VALUE rosetta_function_1141(int, VALUE*, VALUE);
+VALUE rosetta_class_31_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_312_get(VALUE);
 VALUE rosetta_field_312_set(VALUE, VALUE);
 VALUE rosetta_field_313_get(VALUE);
@@ -2477,9 +2476,9 @@ VALUE rosetta_field_316_get(VALUE);
 VALUE rosetta_field_316_set(VALUE, VALUE);
 VALUE rosetta_field_317_get(VALUE);
 VALUE rosetta_field_317_set(VALUE, VALUE);
-VALUE rosetta_class_32_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_318_get(VALUE);
 VALUE rosetta_field_318_set(VALUE, VALUE);
+VALUE rosetta_class_32_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_319_get(VALUE);
 VALUE rosetta_field_319_set(VALUE, VALUE);
 VALUE rosetta_field_320_get(VALUE);
@@ -2494,12 +2493,12 @@ VALUE rosetta_field_324_get(VALUE);
 VALUE rosetta_field_324_set(VALUE, VALUE);
 VALUE rosetta_field_325_get(VALUE);
 VALUE rosetta_field_325_set(VALUE, VALUE);
-VALUE rosetta_class_33_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1141(int, VALUE*, VALUE);
-VALUE rosetta_function_1142(int, VALUE*, VALUE);
-VALUE rosetta_class_34_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_326_get(VALUE);
 VALUE rosetta_field_326_set(VALUE, VALUE);
+VALUE rosetta_class_33_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1142(int, VALUE*, VALUE);
+VALUE rosetta_function_1143(int, VALUE*, VALUE);
+VALUE rosetta_class_34_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_327_get(VALUE);
 VALUE rosetta_field_327_set(VALUE, VALUE);
 VALUE rosetta_field_328_get(VALUE);
@@ -2510,29 +2509,30 @@ VALUE rosetta_field_330_get(VALUE);
 VALUE rosetta_field_330_set(VALUE, VALUE);
 VALUE rosetta_field_331_get(VALUE);
 VALUE rosetta_field_331_set(VALUE, VALUE);
-VALUE rosetta_class_35_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_332_get(VALUE);
 VALUE rosetta_field_332_set(VALUE, VALUE);
+VALUE rosetta_class_35_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_333_get(VALUE);
 VALUE rosetta_field_333_set(VALUE, VALUE);
 VALUE rosetta_field_334_get(VALUE);
 VALUE rosetta_field_334_set(VALUE, VALUE);
 VALUE rosetta_field_335_get(VALUE);
 VALUE rosetta_field_335_set(VALUE, VALUE);
-VALUE rosetta_class_36_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1143(int, VALUE*, VALUE);
-VALUE rosetta_function_1144(int, VALUE*, VALUE);
-VALUE rosetta_class_37_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_336_get(VALUE);
 VALUE rosetta_field_336_set(VALUE, VALUE);
+VALUE rosetta_class_36_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1144(int, VALUE*, VALUE);
+VALUE rosetta_function_1145(int, VALUE*, VALUE);
+VALUE rosetta_class_37_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_337_get(VALUE);
 VALUE rosetta_field_337_set(VALUE, VALUE);
 VALUE rosetta_field_338_get(VALUE);
 VALUE rosetta_field_338_set(VALUE, VALUE);
 VALUE rosetta_field_339_get(VALUE);
 VALUE rosetta_field_339_set(VALUE, VALUE);
+VALUE rosetta_field_340_get(VALUE);
+VALUE rosetta_field_340_set(VALUE, VALUE);
 VALUE rosetta_class_38_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1145(int, VALUE*, VALUE);
 VALUE rosetta_function_1146(int, VALUE*, VALUE);
 VALUE rosetta_function_1147(int, VALUE*, VALUE);
 VALUE rosetta_function_1148(int, VALUE*, VALUE);
@@ -2541,82 +2541,82 @@ VALUE rosetta_function_1150(int, VALUE*, VALUE);
 VALUE rosetta_function_1151(int, VALUE*, VALUE);
 VALUE rosetta_function_1152(int, VALUE*, VALUE);
 VALUE rosetta_function_1153(int, VALUE*, VALUE);
+VALUE rosetta_function_1154(int, VALUE*, VALUE);
 VALUE rosetta_class_39_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_340_get(VALUE);
-VALUE rosetta_field_340_set(VALUE, VALUE);
 VALUE rosetta_field_341_get(VALUE);
 VALUE rosetta_field_341_set(VALUE, VALUE);
 VALUE rosetta_field_342_get(VALUE);
 VALUE rosetta_field_342_set(VALUE, VALUE);
-VALUE rosetta_class_40_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_343_get(VALUE);
 VALUE rosetta_field_343_set(VALUE, VALUE);
+VALUE rosetta_class_40_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_344_get(VALUE);
 VALUE rosetta_field_344_set(VALUE, VALUE);
 VALUE rosetta_field_345_get(VALUE);
 VALUE rosetta_field_345_set(VALUE, VALUE);
 VALUE rosetta_field_346_get(VALUE);
 VALUE rosetta_field_346_set(VALUE, VALUE);
-VALUE rosetta_class_41_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_347_get(VALUE);
 VALUE rosetta_field_347_set(VALUE, VALUE);
+VALUE rosetta_class_41_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_348_get(VALUE);
 VALUE rosetta_field_348_set(VALUE, VALUE);
 VALUE rosetta_field_349_get(VALUE);
 VALUE rosetta_field_349_set(VALUE, VALUE);
-VALUE rosetta_class_42_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_350_get(VALUE);
 VALUE rosetta_field_350_set(VALUE, VALUE);
+VALUE rosetta_class_42_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_351_get(VALUE);
 VALUE rosetta_field_351_set(VALUE, VALUE);
 VALUE rosetta_field_352_get(VALUE);
 VALUE rosetta_field_352_set(VALUE, VALUE);
-VALUE rosetta_class_43_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_353_get(VALUE);
 VALUE rosetta_field_353_set(VALUE, VALUE);
+VALUE rosetta_class_43_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_354_get(VALUE);
 VALUE rosetta_field_354_set(VALUE, VALUE);
 VALUE rosetta_field_355_get(VALUE);
 VALUE rosetta_field_355_set(VALUE, VALUE);
-VALUE rosetta_class_44_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_356_get(VALUE);
 VALUE rosetta_field_356_set(VALUE, VALUE);
+VALUE rosetta_class_44_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_357_get(VALUE);
 VALUE rosetta_field_357_set(VALUE, VALUE);
 VALUE rosetta_field_358_get(VALUE);
 VALUE rosetta_field_358_set(VALUE, VALUE);
 VALUE rosetta_field_359_get(VALUE);
 VALUE rosetta_field_359_set(VALUE, VALUE);
-VALUE rosetta_class_45_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_360_get(VALUE);
 VALUE rosetta_field_360_set(VALUE, VALUE);
+VALUE rosetta_class_45_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_361_get(VALUE);
 VALUE rosetta_field_361_set(VALUE, VALUE);
 VALUE rosetta_field_362_get(VALUE);
 VALUE rosetta_field_362_set(VALUE, VALUE);
-VALUE rosetta_class_46_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_363_get(VALUE);
 VALUE rosetta_field_363_set(VALUE, VALUE);
+VALUE rosetta_class_46_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_364_get(VALUE);
 VALUE rosetta_field_364_set(VALUE, VALUE);
 VALUE rosetta_field_365_get(VALUE);
 VALUE rosetta_field_365_set(VALUE, VALUE);
 VALUE rosetta_field_366_get(VALUE);
 VALUE rosetta_field_366_set(VALUE, VALUE);
-VALUE rosetta_class_47_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1154(int, VALUE*, VALUE);
-VALUE rosetta_function_1155(int, VALUE*, VALUE);
-VALUE rosetta_function_1156(int, VALUE*, VALUE);
 VALUE rosetta_field_367_get(VALUE);
 VALUE rosetta_field_367_set(VALUE, VALUE);
+VALUE rosetta_class_47_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1155(int, VALUE*, VALUE);
+VALUE rosetta_function_1156(int, VALUE*, VALUE);
+VALUE rosetta_function_1157(int, VALUE*, VALUE);
 VALUE rosetta_field_368_get(VALUE);
 VALUE rosetta_field_368_set(VALUE, VALUE);
 VALUE rosetta_field_369_get(VALUE);
 VALUE rosetta_field_369_set(VALUE, VALUE);
 VALUE rosetta_field_370_get(VALUE);
 VALUE rosetta_field_370_set(VALUE, VALUE);
+VALUE rosetta_field_371_get(VALUE);
+VALUE rosetta_field_371_set(VALUE, VALUE);
 VALUE rosetta_class_48_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1157(int, VALUE*, VALUE);
 VALUE rosetta_function_1158(int, VALUE*, VALUE);
 VALUE rosetta_function_1159(int, VALUE*, VALUE);
 VALUE rosetta_function_1160(int, VALUE*, VALUE);
@@ -2650,53 +2650,52 @@ VALUE rosetta_function_1187(int, VALUE*, VALUE);
 VALUE rosetta_function_1188(int, VALUE*, VALUE);
 VALUE rosetta_function_1189(int, VALUE*, VALUE);
 VALUE rosetta_function_1190(int, VALUE*, VALUE);
-VALUE rosetta_class_49_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1191(int, VALUE*, VALUE);
+VALUE rosetta_class_49_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1192(int, VALUE*, VALUE);
 VALUE rosetta_function_1193(int, VALUE*, VALUE);
 VALUE rosetta_function_1194(int, VALUE*, VALUE);
-VALUE rosetta_class_50_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1195(int, VALUE*, VALUE);
-VALUE rosetta_class_51_initialize(int, VALUE*, VALUE);
+VALUE rosetta_class_50_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1196(int, VALUE*, VALUE);
+VALUE rosetta_class_51_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1197(int, VALUE*, VALUE);
 VALUE rosetta_class_52_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_371_get(VALUE);
-VALUE rosetta_field_371_set(VALUE, VALUE);
 VALUE rosetta_field_372_get(VALUE);
 VALUE rosetta_field_372_set(VALUE, VALUE);
 VALUE rosetta_field_373_get(VALUE);
 VALUE rosetta_field_373_set(VALUE, VALUE);
+VALUE rosetta_field_374_get(VALUE);
+VALUE rosetta_field_374_set(VALUE, VALUE);
 VALUE rosetta_class_53_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1197(int, VALUE*, VALUE);
 VALUE rosetta_function_1198(int, VALUE*, VALUE);
 VALUE rosetta_function_1199(int, VALUE*, VALUE);
-VALUE rosetta_class_54_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1200(int, VALUE*, VALUE);
+VALUE rosetta_class_54_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1201(int, VALUE*, VALUE);
 VALUE rosetta_function_1202(int, VALUE*, VALUE);
 VALUE rosetta_function_1203(int, VALUE*, VALUE);
 VALUE rosetta_function_1204(int, VALUE*, VALUE);
-VALUE rosetta_class_55_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1205(int, VALUE*, VALUE);
+VALUE rosetta_class_55_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1206(int, VALUE*, VALUE);
 VALUE rosetta_function_1207(int, VALUE*, VALUE);
 VALUE rosetta_function_1208(int, VALUE*, VALUE);
-VALUE rosetta_class_56_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1209(int, VALUE*, VALUE);
-VALUE rosetta_field_374_get(VALUE);
-VALUE rosetta_field_374_set(VALUE, VALUE);
+VALUE rosetta_class_56_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1210(int, VALUE*, VALUE);
 VALUE rosetta_field_375_get(VALUE);
 VALUE rosetta_field_375_set(VALUE, VALUE);
-VALUE rosetta_class_57_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_376_get(VALUE);
 VALUE rosetta_field_376_set(VALUE, VALUE);
+VALUE rosetta_class_57_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_377_get(VALUE);
 VALUE rosetta_field_377_set(VALUE, VALUE);
 VALUE rosetta_field_378_get(VALUE);
 VALUE rosetta_field_378_set(VALUE, VALUE);
-VALUE rosetta_class_58_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_379_get(VALUE);
 VALUE rosetta_field_379_set(VALUE, VALUE);
+VALUE rosetta_class_58_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_380_get(VALUE);
 VALUE rosetta_field_380_set(VALUE, VALUE);
 VALUE rosetta_field_381_get(VALUE);
@@ -2709,9 +2708,9 @@ VALUE rosetta_field_384_get(VALUE);
 VALUE rosetta_field_384_set(VALUE, VALUE);
 VALUE rosetta_field_385_get(VALUE);
 VALUE rosetta_field_385_set(VALUE, VALUE);
-VALUE rosetta_class_59_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_386_get(VALUE);
 VALUE rosetta_field_386_set(VALUE, VALUE);
+VALUE rosetta_class_59_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_387_get(VALUE);
 VALUE rosetta_field_387_set(VALUE, VALUE);
 VALUE rosetta_field_388_get(VALUE);
@@ -2722,9 +2721,9 @@ VALUE rosetta_field_390_get(VALUE);
 VALUE rosetta_field_390_set(VALUE, VALUE);
 VALUE rosetta_field_391_get(VALUE);
 VALUE rosetta_field_391_set(VALUE, VALUE);
-VALUE rosetta_class_60_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_392_get(VALUE);
 VALUE rosetta_field_392_set(VALUE, VALUE);
+VALUE rosetta_class_60_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_393_get(VALUE);
 VALUE rosetta_field_393_set(VALUE, VALUE);
 VALUE rosetta_field_394_get(VALUE);
@@ -2739,9 +2738,9 @@ VALUE rosetta_field_398_get(VALUE);
 VALUE rosetta_field_398_set(VALUE, VALUE);
 VALUE rosetta_field_399_get(VALUE);
 VALUE rosetta_field_399_set(VALUE, VALUE);
-VALUE rosetta_class_61_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_400_get(VALUE);
 VALUE rosetta_field_400_set(VALUE, VALUE);
+VALUE rosetta_class_61_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_401_get(VALUE);
 VALUE rosetta_field_401_set(VALUE, VALUE);
 VALUE rosetta_field_402_get(VALUE);
@@ -2756,40 +2755,41 @@ VALUE rosetta_field_406_get(VALUE);
 VALUE rosetta_field_406_set(VALUE, VALUE);
 VALUE rosetta_field_407_get(VALUE);
 VALUE rosetta_field_407_set(VALUE, VALUE);
+VALUE rosetta_field_408_get(VALUE);
+VALUE rosetta_field_408_set(VALUE, VALUE);
 VALUE rosetta_class_62_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1210(int, VALUE*, VALUE);
 VALUE rosetta_function_1211(int, VALUE*, VALUE);
 VALUE rosetta_function_1212(int, VALUE*, VALUE);
 VALUE rosetta_function_1213(int, VALUE*, VALUE);
-VALUE rosetta_class_63_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1214(int, VALUE*, VALUE);
+VALUE rosetta_class_63_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1215(int, VALUE*, VALUE);
 VALUE rosetta_function_1216(int, VALUE*, VALUE);
-VALUE rosetta_class_64_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1217(int, VALUE*, VALUE);
+VALUE rosetta_class_64_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1218(int, VALUE*, VALUE);
+VALUE rosetta_function_1219(int, VALUE*, VALUE);
 VALUE rosetta_class_65_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_408_get(VALUE);
-VALUE rosetta_field_408_set(VALUE, VALUE);
 VALUE rosetta_field_409_get(VALUE);
 VALUE rosetta_field_409_set(VALUE, VALUE);
+VALUE rosetta_field_410_get(VALUE);
+VALUE rosetta_field_410_set(VALUE, VALUE);
 VALUE rosetta_class_66_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1219(int, VALUE*, VALUE);
 VALUE rosetta_function_1220(int, VALUE*, VALUE);
 VALUE rosetta_function_1221(int, VALUE*, VALUE);
 VALUE rosetta_function_1222(int, VALUE*, VALUE);
 VALUE rosetta_function_1223(int, VALUE*, VALUE);
 VALUE rosetta_function_1224(int, VALUE*, VALUE);
 VALUE rosetta_function_1225(int, VALUE*, VALUE);
+VALUE rosetta_function_1226(int, VALUE*, VALUE);
 VALUE rosetta_class_67_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_410_get(VALUE);
-VALUE rosetta_field_410_set(VALUE, VALUE);
 VALUE rosetta_field_411_get(VALUE);
 VALUE rosetta_field_411_set(VALUE, VALUE);
 VALUE rosetta_field_412_get(VALUE);
 VALUE rosetta_field_412_set(VALUE, VALUE);
+VALUE rosetta_field_413_get(VALUE);
+VALUE rosetta_field_413_set(VALUE, VALUE);
 VALUE rosetta_class_68_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1226(int, VALUE*, VALUE);
 VALUE rosetta_function_1227(int, VALUE*, VALUE);
 VALUE rosetta_function_1228(int, VALUE*, VALUE);
 VALUE rosetta_function_1229(int, VALUE*, VALUE);
@@ -2798,80 +2798,79 @@ VALUE rosetta_function_1231(int, VALUE*, VALUE);
 VALUE rosetta_function_1232(int, VALUE*, VALUE);
 VALUE rosetta_function_1233(int, VALUE*, VALUE);
 VALUE rosetta_function_1234(int, VALUE*, VALUE);
+VALUE rosetta_function_1235(int, VALUE*, VALUE);
 VALUE rosetta_class_69_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_413_get(VALUE);
-VALUE rosetta_field_413_set(VALUE, VALUE);
 VALUE rosetta_field_414_get(VALUE);
 VALUE rosetta_field_414_set(VALUE, VALUE);
-VALUE rosetta_class_70_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_415_get(VALUE);
 VALUE rosetta_field_415_set(VALUE, VALUE);
+VALUE rosetta_class_70_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_416_get(VALUE);
 VALUE rosetta_field_416_set(VALUE, VALUE);
+VALUE rosetta_field_417_get(VALUE);
+VALUE rosetta_field_417_set(VALUE, VALUE);
 VALUE rosetta_class_71_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1235(int, VALUE*, VALUE);
 VALUE rosetta_function_1236(int, VALUE*, VALUE);
 VALUE rosetta_function_1237(int, VALUE*, VALUE);
 VALUE rosetta_function_1238(int, VALUE*, VALUE);
 VALUE rosetta_function_1239(int, VALUE*, VALUE);
 VALUE rosetta_function_1240(int, VALUE*, VALUE);
-VALUE rosetta_class_72_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1241(int, VALUE*, VALUE);
-VALUE rosetta_class_73_initialize(int, VALUE*, VALUE);
+VALUE rosetta_class_72_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1242(int, VALUE*, VALUE);
+VALUE rosetta_class_73_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1243(int, VALUE*, VALUE);
 VALUE rosetta_function_1244(int, VALUE*, VALUE);
 VALUE rosetta_function_1245(int, VALUE*, VALUE);
 VALUE rosetta_function_1246(int, VALUE*, VALUE);
-VALUE rosetta_class_74_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1247(int, VALUE*, VALUE);
+VALUE rosetta_class_74_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1248(int, VALUE*, VALUE);
 VALUE rosetta_function_1249(int, VALUE*, VALUE);
 VALUE rosetta_function_1250(int, VALUE*, VALUE);
 VALUE rosetta_function_1251(int, VALUE*, VALUE);
-VALUE rosetta_class_75_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1252(int, VALUE*, VALUE);
+VALUE rosetta_class_75_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1253(int, VALUE*, VALUE);
 VALUE rosetta_function_1254(int, VALUE*, VALUE);
 VALUE rosetta_function_1255(int, VALUE*, VALUE);
 VALUE rosetta_function_1256(int, VALUE*, VALUE);
-VALUE rosetta_class_76_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1257(int, VALUE*, VALUE);
+VALUE rosetta_class_76_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1258(int, VALUE*, VALUE);
 VALUE rosetta_function_1259(int, VALUE*, VALUE);
 VALUE rosetta_function_1260(int, VALUE*, VALUE);
 VALUE rosetta_function_1261(int, VALUE*, VALUE);
-VALUE rosetta_class_77_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1262(int, VALUE*, VALUE);
+VALUE rosetta_class_77_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1263(int, VALUE*, VALUE);
 VALUE rosetta_function_1264(int, VALUE*, VALUE);
 VALUE rosetta_function_1265(int, VALUE*, VALUE);
 VALUE rosetta_function_1266(int, VALUE*, VALUE);
+VALUE rosetta_function_1267(int, VALUE*, VALUE);
 VALUE rosetta_class_78_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_417_get(VALUE);
-VALUE rosetta_field_417_set(VALUE, VALUE);
 VALUE rosetta_field_418_get(VALUE);
 VALUE rosetta_field_418_set(VALUE, VALUE);
-VALUE rosetta_class_79_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_419_get(VALUE);
 VALUE rosetta_field_419_set(VALUE, VALUE);
+VALUE rosetta_class_79_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_420_get(VALUE);
 VALUE rosetta_field_420_set(VALUE, VALUE);
 VALUE rosetta_field_421_get(VALUE);
 VALUE rosetta_field_421_set(VALUE, VALUE);
-VALUE rosetta_class_80_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_422_get(VALUE);
 VALUE rosetta_field_422_set(VALUE, VALUE);
+VALUE rosetta_class_80_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_423_get(VALUE);
 VALUE rosetta_field_423_set(VALUE, VALUE);
-VALUE rosetta_class_81_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_424_get(VALUE);
 VALUE rosetta_field_424_set(VALUE, VALUE);
+VALUE rosetta_class_81_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_425_get(VALUE);
 VALUE rosetta_field_425_set(VALUE, VALUE);
-VALUE rosetta_class_82_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_426_get(VALUE);
 VALUE rosetta_field_426_set(VALUE, VALUE);
+VALUE rosetta_class_82_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_427_get(VALUE);
 VALUE rosetta_field_427_set(VALUE, VALUE);
 VALUE rosetta_field_428_get(VALUE);
@@ -2886,9 +2885,9 @@ VALUE rosetta_field_432_get(VALUE);
 VALUE rosetta_field_432_set(VALUE, VALUE);
 VALUE rosetta_field_433_get(VALUE);
 VALUE rosetta_field_433_set(VALUE, VALUE);
-VALUE rosetta_class_83_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_434_get(VALUE);
 VALUE rosetta_field_434_set(VALUE, VALUE);
+VALUE rosetta_class_83_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_435_get(VALUE);
 VALUE rosetta_field_435_set(VALUE, VALUE);
 VALUE rosetta_field_436_get(VALUE);
@@ -2903,16 +2902,16 @@ VALUE rosetta_field_440_get(VALUE);
 VALUE rosetta_field_440_set(VALUE, VALUE);
 VALUE rosetta_field_441_get(VALUE);
 VALUE rosetta_field_441_set(VALUE, VALUE);
-VALUE rosetta_class_84_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_442_get(VALUE);
 VALUE rosetta_field_442_set(VALUE, VALUE);
+VALUE rosetta_class_84_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_443_get(VALUE);
 VALUE rosetta_field_443_set(VALUE, VALUE);
 VALUE rosetta_field_444_get(VALUE);
 VALUE rosetta_field_444_set(VALUE, VALUE);
-VALUE rosetta_class_85_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_445_get(VALUE);
 VALUE rosetta_field_445_set(VALUE, VALUE);
+VALUE rosetta_class_85_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_446_get(VALUE);
 VALUE rosetta_field_446_set(VALUE, VALUE);
 VALUE rosetta_field_447_get(VALUE);
@@ -2921,20 +2920,20 @@ VALUE rosetta_field_448_get(VALUE);
 VALUE rosetta_field_448_set(VALUE, VALUE);
 VALUE rosetta_field_449_get(VALUE);
 VALUE rosetta_field_449_set(VALUE, VALUE);
-VALUE rosetta_class_86_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1267(int, VALUE*, VALUE);
-VALUE rosetta_class_87_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_450_get(VALUE);
 VALUE rosetta_field_450_set(VALUE, VALUE);
+VALUE rosetta_class_86_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1268(int, VALUE*, VALUE);
+VALUE rosetta_class_87_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_451_get(VALUE);
 VALUE rosetta_field_451_set(VALUE, VALUE);
 VALUE rosetta_field_452_get(VALUE);
 VALUE rosetta_field_452_set(VALUE, VALUE);
 VALUE rosetta_field_453_get(VALUE);
 VALUE rosetta_field_453_set(VALUE, VALUE);
-VALUE rosetta_class_88_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_454_get(VALUE);
 VALUE rosetta_field_454_set(VALUE, VALUE);
+VALUE rosetta_class_88_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_455_get(VALUE);
 VALUE rosetta_field_455_set(VALUE, VALUE);
 VALUE rosetta_field_456_get(VALUE);
@@ -2953,9 +2952,9 @@ VALUE rosetta_field_462_get(VALUE);
 VALUE rosetta_field_462_set(VALUE, VALUE);
 VALUE rosetta_field_463_get(VALUE);
 VALUE rosetta_field_463_set(VALUE, VALUE);
-VALUE rosetta_class_89_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_464_get(VALUE);
 VALUE rosetta_field_464_set(VALUE, VALUE);
+VALUE rosetta_class_89_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_465_get(VALUE);
 VALUE rosetta_field_465_set(VALUE, VALUE);
 VALUE rosetta_field_466_get(VALUE);
@@ -2964,13 +2963,14 @@ VALUE rosetta_field_467_get(VALUE);
 VALUE rosetta_field_467_set(VALUE, VALUE);
 VALUE rosetta_field_468_get(VALUE);
 VALUE rosetta_field_468_set(VALUE, VALUE);
-VALUE rosetta_class_90_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_469_get(VALUE);
 VALUE rosetta_field_469_set(VALUE, VALUE);
+VALUE rosetta_class_90_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_470_get(VALUE);
 VALUE rosetta_field_470_set(VALUE, VALUE);
+VALUE rosetta_field_471_get(VALUE);
+VALUE rosetta_field_471_set(VALUE, VALUE);
 VALUE rosetta_class_91_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1268(int, VALUE*, VALUE);
 VALUE rosetta_function_1269(int, VALUE*, VALUE);
 VALUE rosetta_function_1270(int, VALUE*, VALUE);
 VALUE rosetta_function_1271(int, VALUE*, VALUE);
@@ -3029,8 +3029,8 @@ VALUE rosetta_function_1323(int, VALUE*, VALUE);
 VALUE rosetta_function_1324(int, VALUE*, VALUE);
 VALUE rosetta_function_1325(int, VALUE*, VALUE);
 VALUE rosetta_function_1326(int, VALUE*, VALUE);
-VALUE rosetta_class_92_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1327(int, VALUE*, VALUE);
+VALUE rosetta_class_92_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1328(int, VALUE*, VALUE);
 VALUE rosetta_function_1329(int, VALUE*, VALUE);
 VALUE rosetta_function_1330(int, VALUE*, VALUE);
@@ -3081,8 +3081,8 @@ VALUE rosetta_function_1374(int, VALUE*, VALUE);
 VALUE rosetta_function_1375(int, VALUE*, VALUE);
 VALUE rosetta_function_1376(int, VALUE*, VALUE);
 VALUE rosetta_function_1377(int, VALUE*, VALUE);
-VALUE rosetta_class_93_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1378(int, VALUE*, VALUE);
+VALUE rosetta_class_93_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1379(int, VALUE*, VALUE);
 VALUE rosetta_function_1380(int, VALUE*, VALUE);
 VALUE rosetta_function_1381(int, VALUE*, VALUE);
@@ -3103,28 +3103,27 @@ VALUE rosetta_function_1395(int, VALUE*, VALUE);
 VALUE rosetta_function_1396(int, VALUE*, VALUE);
 VALUE rosetta_function_1397(int, VALUE*, VALUE);
 VALUE rosetta_function_1398(int, VALUE*, VALUE);
+VALUE rosetta_function_1399(int, VALUE*, VALUE);
 VALUE rosetta_class_94_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_471_get(VALUE);
-VALUE rosetta_field_471_set(VALUE, VALUE);
 VALUE rosetta_field_472_get(VALUE);
 VALUE rosetta_field_472_set(VALUE, VALUE);
 VALUE rosetta_field_473_get(VALUE);
 VALUE rosetta_field_473_set(VALUE, VALUE);
-VALUE rosetta_class_95_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_474_get(VALUE);
 VALUE rosetta_field_474_set(VALUE, VALUE);
+VALUE rosetta_class_95_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_475_get(VALUE);
 VALUE rosetta_field_475_set(VALUE, VALUE);
 VALUE rosetta_field_476_get(VALUE);
 VALUE rosetta_field_476_set(VALUE, VALUE);
-VALUE rosetta_class_96_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_477_get(VALUE);
 VALUE rosetta_field_477_set(VALUE, VALUE);
+VALUE rosetta_class_96_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_478_get(VALUE);
 VALUE rosetta_field_478_set(VALUE, VALUE);
-VALUE rosetta_class_97_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_479_get(VALUE);
 VALUE rosetta_field_479_set(VALUE, VALUE);
+VALUE rosetta_class_97_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_480_get(VALUE);
 VALUE rosetta_field_480_set(VALUE, VALUE);
 VALUE rosetta_field_481_get(VALUE);
@@ -3137,40 +3136,41 @@ VALUE rosetta_field_484_get(VALUE);
 VALUE rosetta_field_484_set(VALUE, VALUE);
 VALUE rosetta_field_485_get(VALUE);
 VALUE rosetta_field_485_set(VALUE, VALUE);
+VALUE rosetta_field_486_get(VALUE);
+VALUE rosetta_field_486_set(VALUE, VALUE);
 VALUE rosetta_class_98_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1399(int, VALUE*, VALUE);
 VALUE rosetta_function_1400(int, VALUE*, VALUE);
 VALUE rosetta_function_1401(int, VALUE*, VALUE);
 VALUE rosetta_function_1402(int, VALUE*, VALUE);
 VALUE rosetta_function_1403(int, VALUE*, VALUE);
+VALUE rosetta_function_1404(int, VALUE*, VALUE);
 VALUE rosetta_class_99_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_486_get(VALUE);
-VALUE rosetta_field_486_set(VALUE, VALUE);
 VALUE rosetta_field_487_get(VALUE);
 VALUE rosetta_field_487_set(VALUE, VALUE);
-VALUE rosetta_class_100_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_488_get(VALUE);
 VALUE rosetta_field_488_set(VALUE, VALUE);
+VALUE rosetta_class_100_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_489_get(VALUE);
 VALUE rosetta_field_489_set(VALUE, VALUE);
 VALUE rosetta_field_490_get(VALUE);
 VALUE rosetta_field_490_set(VALUE, VALUE);
-VALUE rosetta_class_101_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_491_get(VALUE);
 VALUE rosetta_field_491_set(VALUE, VALUE);
+VALUE rosetta_class_101_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_492_get(VALUE);
 VALUE rosetta_field_492_set(VALUE, VALUE);
 VALUE rosetta_field_493_get(VALUE);
 VALUE rosetta_field_493_set(VALUE, VALUE);
 VALUE rosetta_field_494_get(VALUE);
 VALUE rosetta_field_494_set(VALUE, VALUE);
-VALUE rosetta_class_102_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_495_get(VALUE);
 VALUE rosetta_field_495_set(VALUE, VALUE);
+VALUE rosetta_class_102_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_496_get(VALUE);
 VALUE rosetta_field_496_set(VALUE, VALUE);
+VALUE rosetta_field_497_get(VALUE);
+VALUE rosetta_field_497_set(VALUE, VALUE);
 VALUE rosetta_class_103_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1404(int, VALUE*, VALUE);
 VALUE rosetta_function_1405(int, VALUE*, VALUE);
 VALUE rosetta_function_1406(int, VALUE*, VALUE);
 VALUE rosetta_function_1407(int, VALUE*, VALUE);
@@ -3180,11 +3180,10 @@ VALUE rosetta_function_1410(int, VALUE*, VALUE);
 VALUE rosetta_function_1411(int, VALUE*, VALUE);
 VALUE rosetta_function_1412(int, VALUE*, VALUE);
 VALUE rosetta_function_1413(int, VALUE*, VALUE);
-VALUE rosetta_class_104_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1414(int, VALUE*, VALUE);
+VALUE rosetta_class_104_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1415(int, VALUE*, VALUE);
 VALUE rosetta_class_105_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_497_get(VALUE);
-VALUE rosetta_field_497_set(VALUE, VALUE);
 VALUE rosetta_field_498_get(VALUE);
 VALUE rosetta_field_498_set(VALUE, VALUE);
 VALUE rosetta_field_499_get(VALUE);
@@ -3195,21 +3194,21 @@ VALUE rosetta_field_501_get(VALUE);
 VALUE rosetta_field_501_set(VALUE, VALUE);
 VALUE rosetta_field_502_get(VALUE);
 VALUE rosetta_field_502_set(VALUE, VALUE);
-VALUE rosetta_class_106_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1415(int, VALUE*, VALUE);
-VALUE rosetta_function_1416(int, VALUE*, VALUE);
-VALUE rosetta_function_1417(int, VALUE*, VALUE);
 VALUE rosetta_field_503_get(VALUE);
 VALUE rosetta_field_503_set(VALUE, VALUE);
+VALUE rosetta_class_106_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1416(int, VALUE*, VALUE);
+VALUE rosetta_function_1417(int, VALUE*, VALUE);
+VALUE rosetta_function_1418(int, VALUE*, VALUE);
 VALUE rosetta_field_504_get(VALUE);
 VALUE rosetta_field_504_set(VALUE, VALUE);
-VALUE rosetta_class_107_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1418(int, VALUE*, VALUE);
-VALUE rosetta_function_1419(int, VALUE*, VALUE);
-VALUE rosetta_function_1420(int, VALUE*, VALUE);
-VALUE rosetta_class_108_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_505_get(VALUE);
 VALUE rosetta_field_505_set(VALUE, VALUE);
+VALUE rosetta_class_107_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1419(int, VALUE*, VALUE);
+VALUE rosetta_function_1420(int, VALUE*, VALUE);
+VALUE rosetta_function_1421(int, VALUE*, VALUE);
+VALUE rosetta_class_108_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_506_get(VALUE);
 VALUE rosetta_field_506_set(VALUE, VALUE);
 VALUE rosetta_field_507_get(VALUE);
@@ -3222,12 +3221,12 @@ VALUE rosetta_field_510_get(VALUE);
 VALUE rosetta_field_510_set(VALUE, VALUE);
 VALUE rosetta_field_511_get(VALUE);
 VALUE rosetta_field_511_set(VALUE, VALUE);
-VALUE rosetta_class_109_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1421(int, VALUE*, VALUE);
-VALUE rosetta_function_1422(int, VALUE*, VALUE);
-VALUE rosetta_class_110_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_512_get(VALUE);
 VALUE rosetta_field_512_set(VALUE, VALUE);
+VALUE rosetta_class_109_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1422(int, VALUE*, VALUE);
+VALUE rosetta_function_1423(int, VALUE*, VALUE);
+VALUE rosetta_class_110_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_513_get(VALUE);
 VALUE rosetta_field_513_set(VALUE, VALUE);
 VALUE rosetta_field_514_get(VALUE);
@@ -3238,36 +3237,36 @@ VALUE rosetta_field_516_get(VALUE);
 VALUE rosetta_field_516_set(VALUE, VALUE);
 VALUE rosetta_field_517_get(VALUE);
 VALUE rosetta_field_517_set(VALUE, VALUE);
-VALUE rosetta_class_111_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1423(int, VALUE*, VALUE);
-VALUE rosetta_function_1424(int, VALUE*, VALUE);
-VALUE rosetta_class_112_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_518_get(VALUE);
 VALUE rosetta_field_518_set(VALUE, VALUE);
+VALUE rosetta_class_111_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1424(int, VALUE*, VALUE);
+VALUE rosetta_function_1425(int, VALUE*, VALUE);
+VALUE rosetta_class_112_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_519_get(VALUE);
 VALUE rosetta_field_519_set(VALUE, VALUE);
 VALUE rosetta_field_520_get(VALUE);
 VALUE rosetta_field_520_set(VALUE, VALUE);
 VALUE rosetta_field_521_get(VALUE);
 VALUE rosetta_field_521_set(VALUE, VALUE);
-VALUE rosetta_class_113_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1425(int, VALUE*, VALUE);
-VALUE rosetta_function_1426(int, VALUE*, VALUE);
-VALUE rosetta_class_114_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_522_get(VALUE);
 VALUE rosetta_field_522_set(VALUE, VALUE);
+VALUE rosetta_class_113_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1426(int, VALUE*, VALUE);
+VALUE rosetta_function_1427(int, VALUE*, VALUE);
+VALUE rosetta_class_114_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_523_get(VALUE);
 VALUE rosetta_field_523_set(VALUE, VALUE);
 VALUE rosetta_field_524_get(VALUE);
 VALUE rosetta_field_524_set(VALUE, VALUE);
 VALUE rosetta_field_525_get(VALUE);
 VALUE rosetta_field_525_set(VALUE, VALUE);
-VALUE rosetta_class_115_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1427(int, VALUE*, VALUE);
-VALUE rosetta_function_1428(int, VALUE*, VALUE);
-VALUE rosetta_class_116_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_526_get(VALUE);
 VALUE rosetta_field_526_set(VALUE, VALUE);
+VALUE rosetta_class_115_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1428(int, VALUE*, VALUE);
+VALUE rosetta_function_1429(int, VALUE*, VALUE);
+VALUE rosetta_class_116_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_527_get(VALUE);
 VALUE rosetta_field_527_set(VALUE, VALUE);
 VALUE rosetta_field_528_get(VALUE);
@@ -3278,12 +3277,12 @@ VALUE rosetta_field_530_get(VALUE);
 VALUE rosetta_field_530_set(VALUE, VALUE);
 VALUE rosetta_field_531_get(VALUE);
 VALUE rosetta_field_531_set(VALUE, VALUE);
-VALUE rosetta_class_117_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1429(int, VALUE*, VALUE);
-VALUE rosetta_function_1430(int, VALUE*, VALUE);
-VALUE rosetta_class_118_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_532_get(VALUE);
 VALUE rosetta_field_532_set(VALUE, VALUE);
+VALUE rosetta_class_117_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1430(int, VALUE*, VALUE);
+VALUE rosetta_function_1431(int, VALUE*, VALUE);
+VALUE rosetta_class_118_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_533_get(VALUE);
 VALUE rosetta_field_533_set(VALUE, VALUE);
 VALUE rosetta_field_534_get(VALUE);
@@ -3292,12 +3291,12 @@ VALUE rosetta_field_535_get(VALUE);
 VALUE rosetta_field_535_set(VALUE, VALUE);
 VALUE rosetta_field_536_get(VALUE);
 VALUE rosetta_field_536_set(VALUE, VALUE);
-VALUE rosetta_class_119_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1431(int, VALUE*, VALUE);
-VALUE rosetta_function_1432(int, VALUE*, VALUE);
-VALUE rosetta_class_120_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_537_get(VALUE);
 VALUE rosetta_field_537_set(VALUE, VALUE);
+VALUE rosetta_class_119_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1432(int, VALUE*, VALUE);
+VALUE rosetta_function_1433(int, VALUE*, VALUE);
+VALUE rosetta_class_120_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_538_get(VALUE);
 VALUE rosetta_field_538_set(VALUE, VALUE);
 VALUE rosetta_field_539_get(VALUE);
@@ -3306,15 +3305,15 @@ VALUE rosetta_field_540_get(VALUE);
 VALUE rosetta_field_540_set(VALUE, VALUE);
 VALUE rosetta_field_541_get(VALUE);
 VALUE rosetta_field_541_set(VALUE, VALUE);
-VALUE rosetta_class_121_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1433(int, VALUE*, VALUE);
-VALUE rosetta_function_1434(int, VALUE*, VALUE);
-VALUE rosetta_class_122_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1435(int, VALUE*, VALUE);
-VALUE rosetta_function_1436(int, VALUE*, VALUE);
-VALUE rosetta_class_123_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_542_get(VALUE);
 VALUE rosetta_field_542_set(VALUE, VALUE);
+VALUE rosetta_class_121_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1434(int, VALUE*, VALUE);
+VALUE rosetta_function_1435(int, VALUE*, VALUE);
+VALUE rosetta_class_122_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1436(int, VALUE*, VALUE);
+VALUE rosetta_function_1437(int, VALUE*, VALUE);
+VALUE rosetta_class_123_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_543_get(VALUE);
 VALUE rosetta_field_543_set(VALUE, VALUE);
 VALUE rosetta_field_544_get(VALUE);
@@ -3323,9 +3322,9 @@ VALUE rosetta_field_545_get(VALUE);
 VALUE rosetta_field_545_set(VALUE, VALUE);
 VALUE rosetta_field_546_get(VALUE);
 VALUE rosetta_field_546_set(VALUE, VALUE);
-VALUE rosetta_class_124_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_547_get(VALUE);
 VALUE rosetta_field_547_set(VALUE, VALUE);
+VALUE rosetta_class_124_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_548_get(VALUE);
 VALUE rosetta_field_548_set(VALUE, VALUE);
 VALUE rosetta_field_549_get(VALUE);
@@ -3336,13 +3335,13 @@ VALUE rosetta_field_551_get(VALUE);
 VALUE rosetta_field_551_set(VALUE, VALUE);
 VALUE rosetta_field_552_get(VALUE);
 VALUE rosetta_field_552_set(VALUE, VALUE);
-VALUE rosetta_class_125_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1437(int, VALUE*, VALUE);
-VALUE rosetta_function_1438(int, VALUE*, VALUE);
-VALUE rosetta_function_1439(int, VALUE*, VALUE);
-VALUE rosetta_class_126_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_553_get(VALUE);
 VALUE rosetta_field_553_set(VALUE, VALUE);
+VALUE rosetta_class_125_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1438(int, VALUE*, VALUE);
+VALUE rosetta_function_1439(int, VALUE*, VALUE);
+VALUE rosetta_function_1440(int, VALUE*, VALUE);
+VALUE rosetta_class_126_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_554_get(VALUE);
 VALUE rosetta_field_554_set(VALUE, VALUE);
 VALUE rosetta_field_555_get(VALUE);
@@ -3351,12 +3350,12 @@ VALUE rosetta_field_556_get(VALUE);
 VALUE rosetta_field_556_set(VALUE, VALUE);
 VALUE rosetta_field_557_get(VALUE);
 VALUE rosetta_field_557_set(VALUE, VALUE);
-VALUE rosetta_class_127_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1440(int, VALUE*, VALUE);
-VALUE rosetta_function_1441(int, VALUE*, VALUE);
-VALUE rosetta_class_128_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_558_get(VALUE);
 VALUE rosetta_field_558_set(VALUE, VALUE);
+VALUE rosetta_class_127_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1441(int, VALUE*, VALUE);
+VALUE rosetta_function_1442(int, VALUE*, VALUE);
+VALUE rosetta_class_128_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_559_get(VALUE);
 VALUE rosetta_field_559_set(VALUE, VALUE);
 VALUE rosetta_field_560_get(VALUE);
@@ -3365,12 +3364,12 @@ VALUE rosetta_field_561_get(VALUE);
 VALUE rosetta_field_561_set(VALUE, VALUE);
 VALUE rosetta_field_562_get(VALUE);
 VALUE rosetta_field_562_set(VALUE, VALUE);
-VALUE rosetta_class_129_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1442(int, VALUE*, VALUE);
-VALUE rosetta_function_1443(int, VALUE*, VALUE);
-VALUE rosetta_class_130_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_563_get(VALUE);
 VALUE rosetta_field_563_set(VALUE, VALUE);
+VALUE rosetta_class_129_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1443(int, VALUE*, VALUE);
+VALUE rosetta_function_1444(int, VALUE*, VALUE);
+VALUE rosetta_class_130_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_564_get(VALUE);
 VALUE rosetta_field_564_set(VALUE, VALUE);
 VALUE rosetta_field_565_get(VALUE);
@@ -3381,12 +3380,12 @@ VALUE rosetta_field_567_get(VALUE);
 VALUE rosetta_field_567_set(VALUE, VALUE);
 VALUE rosetta_field_568_get(VALUE);
 VALUE rosetta_field_568_set(VALUE, VALUE);
-VALUE rosetta_class_131_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1444(int, VALUE*, VALUE);
-VALUE rosetta_function_1445(int, VALUE*, VALUE);
-VALUE rosetta_class_132_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_569_get(VALUE);
 VALUE rosetta_field_569_set(VALUE, VALUE);
+VALUE rosetta_class_131_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1445(int, VALUE*, VALUE);
+VALUE rosetta_function_1446(int, VALUE*, VALUE);
+VALUE rosetta_class_132_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_570_get(VALUE);
 VALUE rosetta_field_570_set(VALUE, VALUE);
 VALUE rosetta_field_571_get(VALUE);
@@ -3399,12 +3398,12 @@ VALUE rosetta_field_574_get(VALUE);
 VALUE rosetta_field_574_set(VALUE, VALUE);
 VALUE rosetta_field_575_get(VALUE);
 VALUE rosetta_field_575_set(VALUE, VALUE);
-VALUE rosetta_class_133_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1446(int, VALUE*, VALUE);
-VALUE rosetta_function_1447(int, VALUE*, VALUE);
-VALUE rosetta_class_134_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_576_get(VALUE);
 VALUE rosetta_field_576_set(VALUE, VALUE);
+VALUE rosetta_class_133_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1447(int, VALUE*, VALUE);
+VALUE rosetta_function_1448(int, VALUE*, VALUE);
+VALUE rosetta_class_134_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_577_get(VALUE);
 VALUE rosetta_field_577_set(VALUE, VALUE);
 VALUE rosetta_field_578_get(VALUE);
@@ -3417,12 +3416,12 @@ VALUE rosetta_field_581_get(VALUE);
 VALUE rosetta_field_581_set(VALUE, VALUE);
 VALUE rosetta_field_582_get(VALUE);
 VALUE rosetta_field_582_set(VALUE, VALUE);
-VALUE rosetta_class_135_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1448(int, VALUE*, VALUE);
-VALUE rosetta_function_1449(int, VALUE*, VALUE);
-VALUE rosetta_class_136_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_583_get(VALUE);
 VALUE rosetta_field_583_set(VALUE, VALUE);
+VALUE rosetta_class_135_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1449(int, VALUE*, VALUE);
+VALUE rosetta_function_1450(int, VALUE*, VALUE);
+VALUE rosetta_class_136_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_584_get(VALUE);
 VALUE rosetta_field_584_set(VALUE, VALUE);
 VALUE rosetta_field_585_get(VALUE);
@@ -3437,12 +3436,12 @@ VALUE rosetta_field_589_get(VALUE);
 VALUE rosetta_field_589_set(VALUE, VALUE);
 VALUE rosetta_field_590_get(VALUE);
 VALUE rosetta_field_590_set(VALUE, VALUE);
-VALUE rosetta_class_137_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1450(int, VALUE*, VALUE);
-VALUE rosetta_function_1451(int, VALUE*, VALUE);
-VALUE rosetta_class_138_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_591_get(VALUE);
 VALUE rosetta_field_591_set(VALUE, VALUE);
+VALUE rosetta_class_137_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1451(int, VALUE*, VALUE);
+VALUE rosetta_function_1452(int, VALUE*, VALUE);
+VALUE rosetta_class_138_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_592_get(VALUE);
 VALUE rosetta_field_592_set(VALUE, VALUE);
 VALUE rosetta_field_593_get(VALUE);
@@ -3455,12 +3454,12 @@ VALUE rosetta_field_596_get(VALUE);
 VALUE rosetta_field_596_set(VALUE, VALUE);
 VALUE rosetta_field_597_get(VALUE);
 VALUE rosetta_field_597_set(VALUE, VALUE);
-VALUE rosetta_class_139_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1452(int, VALUE*, VALUE);
-VALUE rosetta_function_1453(int, VALUE*, VALUE);
-VALUE rosetta_class_140_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_598_get(VALUE);
 VALUE rosetta_field_598_set(VALUE, VALUE);
+VALUE rosetta_class_139_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1453(int, VALUE*, VALUE);
+VALUE rosetta_function_1454(int, VALUE*, VALUE);
+VALUE rosetta_class_140_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_599_get(VALUE);
 VALUE rosetta_field_599_set(VALUE, VALUE);
 VALUE rosetta_field_600_get(VALUE);
@@ -3473,12 +3472,12 @@ VALUE rosetta_field_603_get(VALUE);
 VALUE rosetta_field_603_set(VALUE, VALUE);
 VALUE rosetta_field_604_get(VALUE);
 VALUE rosetta_field_604_set(VALUE, VALUE);
-VALUE rosetta_class_141_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1454(int, VALUE*, VALUE);
-VALUE rosetta_function_1455(int, VALUE*, VALUE);
-VALUE rosetta_class_142_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_605_get(VALUE);
 VALUE rosetta_field_605_set(VALUE, VALUE);
+VALUE rosetta_class_141_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1455(int, VALUE*, VALUE);
+VALUE rosetta_function_1456(int, VALUE*, VALUE);
+VALUE rosetta_class_142_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_606_get(VALUE);
 VALUE rosetta_field_606_set(VALUE, VALUE);
 VALUE rosetta_field_607_get(VALUE);
@@ -3493,22 +3492,22 @@ VALUE rosetta_field_611_get(VALUE);
 VALUE rosetta_field_611_set(VALUE, VALUE);
 VALUE rosetta_field_612_get(VALUE);
 VALUE rosetta_field_612_set(VALUE, VALUE);
-VALUE rosetta_class_143_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1456(int, VALUE*, VALUE);
-VALUE rosetta_function_1457(int, VALUE*, VALUE);
-VALUE rosetta_class_144_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_613_get(VALUE);
 VALUE rosetta_field_613_set(VALUE, VALUE);
+VALUE rosetta_class_143_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1457(int, VALUE*, VALUE);
+VALUE rosetta_function_1458(int, VALUE*, VALUE);
+VALUE rosetta_class_144_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_614_get(VALUE);
 VALUE rosetta_field_614_set(VALUE, VALUE);
 VALUE rosetta_field_615_get(VALUE);
 VALUE rosetta_field_615_set(VALUE, VALUE);
-VALUE rosetta_class_145_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1458(int, VALUE*, VALUE);
-VALUE rosetta_function_1459(int, VALUE*, VALUE);
-VALUE rosetta_class_146_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_616_get(VALUE);
 VALUE rosetta_field_616_set(VALUE, VALUE);
+VALUE rosetta_class_145_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1459(int, VALUE*, VALUE);
+VALUE rosetta_function_1460(int, VALUE*, VALUE);
+VALUE rosetta_class_146_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_617_get(VALUE);
 VALUE rosetta_field_617_set(VALUE, VALUE);
 VALUE rosetta_field_618_get(VALUE);
@@ -3533,36 +3532,36 @@ VALUE rosetta_field_627_get(VALUE);
 VALUE rosetta_field_627_set(VALUE, VALUE);
 VALUE rosetta_field_628_get(VALUE);
 VALUE rosetta_field_628_set(VALUE, VALUE);
-VALUE rosetta_class_147_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1460(int, VALUE*, VALUE);
-VALUE rosetta_function_1461(int, VALUE*, VALUE);
-VALUE rosetta_class_148_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_629_get(VALUE);
 VALUE rosetta_field_629_set(VALUE, VALUE);
+VALUE rosetta_class_147_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1461(int, VALUE*, VALUE);
+VALUE rosetta_function_1462(int, VALUE*, VALUE);
+VALUE rosetta_class_148_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_630_get(VALUE);
 VALUE rosetta_field_630_set(VALUE, VALUE);
 VALUE rosetta_field_631_get(VALUE);
 VALUE rosetta_field_631_set(VALUE, VALUE);
 VALUE rosetta_field_632_get(VALUE);
 VALUE rosetta_field_632_set(VALUE, VALUE);
-VALUE rosetta_class_149_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1462(int, VALUE*, VALUE);
-VALUE rosetta_function_1463(int, VALUE*, VALUE);
-VALUE rosetta_class_150_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_633_get(VALUE);
 VALUE rosetta_field_633_set(VALUE, VALUE);
+VALUE rosetta_class_149_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1463(int, VALUE*, VALUE);
+VALUE rosetta_function_1464(int, VALUE*, VALUE);
+VALUE rosetta_class_150_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_634_get(VALUE);
 VALUE rosetta_field_634_set(VALUE, VALUE);
 VALUE rosetta_field_635_get(VALUE);
 VALUE rosetta_field_635_set(VALUE, VALUE);
 VALUE rosetta_field_636_get(VALUE);
 VALUE rosetta_field_636_set(VALUE, VALUE);
-VALUE rosetta_class_151_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1464(int, VALUE*, VALUE);
-VALUE rosetta_function_1465(int, VALUE*, VALUE);
-VALUE rosetta_class_152_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_637_get(VALUE);
 VALUE rosetta_field_637_set(VALUE, VALUE);
+VALUE rosetta_class_151_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1465(int, VALUE*, VALUE);
+VALUE rosetta_function_1466(int, VALUE*, VALUE);
+VALUE rosetta_class_152_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_638_get(VALUE);
 VALUE rosetta_field_638_set(VALUE, VALUE);
 VALUE rosetta_field_639_get(VALUE);
@@ -3575,12 +3574,12 @@ VALUE rosetta_field_642_get(VALUE);
 VALUE rosetta_field_642_set(VALUE, VALUE);
 VALUE rosetta_field_643_get(VALUE);
 VALUE rosetta_field_643_set(VALUE, VALUE);
-VALUE rosetta_class_153_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1466(int, VALUE*, VALUE);
-VALUE rosetta_function_1467(int, VALUE*, VALUE);
-VALUE rosetta_class_154_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_644_get(VALUE);
 VALUE rosetta_field_644_set(VALUE, VALUE);
+VALUE rosetta_class_153_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1467(int, VALUE*, VALUE);
+VALUE rosetta_function_1468(int, VALUE*, VALUE);
+VALUE rosetta_class_154_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_645_get(VALUE);
 VALUE rosetta_field_645_set(VALUE, VALUE);
 VALUE rosetta_field_646_get(VALUE);
@@ -3589,12 +3588,12 @@ VALUE rosetta_field_647_get(VALUE);
 VALUE rosetta_field_647_set(VALUE, VALUE);
 VALUE rosetta_field_648_get(VALUE);
 VALUE rosetta_field_648_set(VALUE, VALUE);
-VALUE rosetta_class_155_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1468(int, VALUE*, VALUE);
-VALUE rosetta_function_1469(int, VALUE*, VALUE);
-VALUE rosetta_class_156_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_649_get(VALUE);
 VALUE rosetta_field_649_set(VALUE, VALUE);
+VALUE rosetta_class_155_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1469(int, VALUE*, VALUE);
+VALUE rosetta_function_1470(int, VALUE*, VALUE);
+VALUE rosetta_class_156_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_650_get(VALUE);
 VALUE rosetta_field_650_set(VALUE, VALUE);
 VALUE rosetta_field_651_get(VALUE);
@@ -3605,22 +3604,22 @@ VALUE rosetta_field_653_get(VALUE);
 VALUE rosetta_field_653_set(VALUE, VALUE);
 VALUE rosetta_field_654_get(VALUE);
 VALUE rosetta_field_654_set(VALUE, VALUE);
-VALUE rosetta_class_157_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1470(int, VALUE*, VALUE);
-VALUE rosetta_function_1471(int, VALUE*, VALUE);
-VALUE rosetta_class_158_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_655_get(VALUE);
 VALUE rosetta_field_655_set(VALUE, VALUE);
+VALUE rosetta_class_157_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1471(int, VALUE*, VALUE);
+VALUE rosetta_function_1472(int, VALUE*, VALUE);
+VALUE rosetta_class_158_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_656_get(VALUE);
 VALUE rosetta_field_656_set(VALUE, VALUE);
 VALUE rosetta_field_657_get(VALUE);
 VALUE rosetta_field_657_set(VALUE, VALUE);
-VALUE rosetta_class_159_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1472(int, VALUE*, VALUE);
-VALUE rosetta_function_1473(int, VALUE*, VALUE);
-VALUE rosetta_class_160_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_658_get(VALUE);
 VALUE rosetta_field_658_set(VALUE, VALUE);
+VALUE rosetta_class_159_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1473(int, VALUE*, VALUE);
+VALUE rosetta_function_1474(int, VALUE*, VALUE);
+VALUE rosetta_class_160_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_659_get(VALUE);
 VALUE rosetta_field_659_set(VALUE, VALUE);
 VALUE rosetta_field_660_get(VALUE);
@@ -3633,24 +3632,24 @@ VALUE rosetta_field_663_get(VALUE);
 VALUE rosetta_field_663_set(VALUE, VALUE);
 VALUE rosetta_field_664_get(VALUE);
 VALUE rosetta_field_664_set(VALUE, VALUE);
-VALUE rosetta_class_161_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1474(int, VALUE*, VALUE);
-VALUE rosetta_function_1475(int, VALUE*, VALUE);
-VALUE rosetta_class_162_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_665_get(VALUE);
 VALUE rosetta_field_665_set(VALUE, VALUE);
+VALUE rosetta_class_161_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1475(int, VALUE*, VALUE);
+VALUE rosetta_function_1476(int, VALUE*, VALUE);
+VALUE rosetta_class_162_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_666_get(VALUE);
 VALUE rosetta_field_666_set(VALUE, VALUE);
 VALUE rosetta_field_667_get(VALUE);
 VALUE rosetta_field_667_set(VALUE, VALUE);
 VALUE rosetta_field_668_get(VALUE);
 VALUE rosetta_field_668_set(VALUE, VALUE);
-VALUE rosetta_class_163_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1476(int, VALUE*, VALUE);
-VALUE rosetta_function_1477(int, VALUE*, VALUE);
-VALUE rosetta_class_164_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_669_get(VALUE);
 VALUE rosetta_field_669_set(VALUE, VALUE);
+VALUE rosetta_class_163_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1477(int, VALUE*, VALUE);
+VALUE rosetta_function_1478(int, VALUE*, VALUE);
+VALUE rosetta_class_164_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_670_get(VALUE);
 VALUE rosetta_field_670_set(VALUE, VALUE);
 VALUE rosetta_field_671_get(VALUE);
@@ -3661,22 +3660,22 @@ VALUE rosetta_field_673_get(VALUE);
 VALUE rosetta_field_673_set(VALUE, VALUE);
 VALUE rosetta_field_674_get(VALUE);
 VALUE rosetta_field_674_set(VALUE, VALUE);
-VALUE rosetta_class_165_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1478(int, VALUE*, VALUE);
-VALUE rosetta_function_1479(int, VALUE*, VALUE);
-VALUE rosetta_class_166_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_675_get(VALUE);
 VALUE rosetta_field_675_set(VALUE, VALUE);
+VALUE rosetta_class_165_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1479(int, VALUE*, VALUE);
+VALUE rosetta_function_1480(int, VALUE*, VALUE);
+VALUE rosetta_class_166_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_676_get(VALUE);
 VALUE rosetta_field_676_set(VALUE, VALUE);
 VALUE rosetta_field_677_get(VALUE);
 VALUE rosetta_field_677_set(VALUE, VALUE);
-VALUE rosetta_class_167_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1480(int, VALUE*, VALUE);
-VALUE rosetta_function_1481(int, VALUE*, VALUE);
-VALUE rosetta_class_168_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_678_get(VALUE);
 VALUE rosetta_field_678_set(VALUE, VALUE);
+VALUE rosetta_class_167_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1481(int, VALUE*, VALUE);
+VALUE rosetta_function_1482(int, VALUE*, VALUE);
+VALUE rosetta_class_168_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_679_get(VALUE);
 VALUE rosetta_field_679_set(VALUE, VALUE);
 VALUE rosetta_field_680_get(VALUE);
@@ -3689,12 +3688,12 @@ VALUE rosetta_field_683_get(VALUE);
 VALUE rosetta_field_683_set(VALUE, VALUE);
 VALUE rosetta_field_684_get(VALUE);
 VALUE rosetta_field_684_set(VALUE, VALUE);
-VALUE rosetta_class_169_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1482(int, VALUE*, VALUE);
-VALUE rosetta_function_1483(int, VALUE*, VALUE);
-VALUE rosetta_class_170_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_685_get(VALUE);
 VALUE rosetta_field_685_set(VALUE, VALUE);
+VALUE rosetta_class_169_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1483(int, VALUE*, VALUE);
+VALUE rosetta_function_1484(int, VALUE*, VALUE);
+VALUE rosetta_class_170_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_686_get(VALUE);
 VALUE rosetta_field_686_set(VALUE, VALUE);
 VALUE rosetta_field_687_get(VALUE);
@@ -3715,22 +3714,22 @@ VALUE rosetta_field_694_get(VALUE);
 VALUE rosetta_field_694_set(VALUE, VALUE);
 VALUE rosetta_field_695_get(VALUE);
 VALUE rosetta_field_695_set(VALUE, VALUE);
-VALUE rosetta_class_171_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1484(int, VALUE*, VALUE);
-VALUE rosetta_function_1485(int, VALUE*, VALUE);
-VALUE rosetta_class_172_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_696_get(VALUE);
 VALUE rosetta_field_696_set(VALUE, VALUE);
+VALUE rosetta_class_171_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1485(int, VALUE*, VALUE);
+VALUE rosetta_function_1486(int, VALUE*, VALUE);
+VALUE rosetta_class_172_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_697_get(VALUE);
 VALUE rosetta_field_697_set(VALUE, VALUE);
 VALUE rosetta_field_698_get(VALUE);
 VALUE rosetta_field_698_set(VALUE, VALUE);
-VALUE rosetta_class_173_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1486(int, VALUE*, VALUE);
-VALUE rosetta_function_1487(int, VALUE*, VALUE);
-VALUE rosetta_class_174_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_699_get(VALUE);
 VALUE rosetta_field_699_set(VALUE, VALUE);
+VALUE rosetta_class_173_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1487(int, VALUE*, VALUE);
+VALUE rosetta_function_1488(int, VALUE*, VALUE);
+VALUE rosetta_class_174_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_700_get(VALUE);
 VALUE rosetta_field_700_set(VALUE, VALUE);
 VALUE rosetta_field_701_get(VALUE);
@@ -3745,12 +3744,12 @@ VALUE rosetta_field_705_get(VALUE);
 VALUE rosetta_field_705_set(VALUE, VALUE);
 VALUE rosetta_field_706_get(VALUE);
 VALUE rosetta_field_706_set(VALUE, VALUE);
-VALUE rosetta_class_175_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1488(int, VALUE*, VALUE);
-VALUE rosetta_function_1489(int, VALUE*, VALUE);
-VALUE rosetta_class_176_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_707_get(VALUE);
 VALUE rosetta_field_707_set(VALUE, VALUE);
+VALUE rosetta_class_175_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1489(int, VALUE*, VALUE);
+VALUE rosetta_function_1490(int, VALUE*, VALUE);
+VALUE rosetta_class_176_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_708_get(VALUE);
 VALUE rosetta_field_708_set(VALUE, VALUE);
 VALUE rosetta_field_709_get(VALUE);
@@ -3759,17 +3758,17 @@ VALUE rosetta_field_710_get(VALUE);
 VALUE rosetta_field_710_set(VALUE, VALUE);
 VALUE rosetta_field_711_get(VALUE);
 VALUE rosetta_field_711_set(VALUE, VALUE);
-VALUE rosetta_class_177_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1490(int, VALUE*, VALUE);
-VALUE rosetta_function_1491(int, VALUE*, VALUE);
-VALUE rosetta_class_178_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_712_get(VALUE);
 VALUE rosetta_field_712_set(VALUE, VALUE);
+VALUE rosetta_class_177_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1491(int, VALUE*, VALUE);
+VALUE rosetta_function_1492(int, VALUE*, VALUE);
+VALUE rosetta_class_178_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_713_get(VALUE);
 VALUE rosetta_field_713_set(VALUE, VALUE);
-VALUE rosetta_class_179_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_714_get(VALUE);
 VALUE rosetta_field_714_set(VALUE, VALUE);
+VALUE rosetta_class_179_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_715_get(VALUE);
 VALUE rosetta_field_715_set(VALUE, VALUE);
 VALUE rosetta_field_716_get(VALUE);
@@ -3790,8 +3789,9 @@ VALUE rosetta_field_723_get(VALUE);
 VALUE rosetta_field_723_set(VALUE, VALUE);
 VALUE rosetta_field_724_get(VALUE);
 VALUE rosetta_field_724_set(VALUE, VALUE);
+VALUE rosetta_field_725_get(VALUE);
+VALUE rosetta_field_725_set(VALUE, VALUE);
 VALUE rosetta_class_180_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1492(int, VALUE*, VALUE);
 VALUE rosetta_function_1493(int, VALUE*, VALUE);
 VALUE rosetta_function_1494(int, VALUE*, VALUE);
 VALUE rosetta_function_1495(int, VALUE*, VALUE);
@@ -3803,9 +3803,8 @@ VALUE rosetta_function_1500(int, VALUE*, VALUE);
 VALUE rosetta_function_1501(int, VALUE*, VALUE);
 VALUE rosetta_function_1502(int, VALUE*, VALUE);
 VALUE rosetta_function_1503(int, VALUE*, VALUE);
+VALUE rosetta_function_1504(int, VALUE*, VALUE);
 VALUE rosetta_class_181_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_725_get(VALUE);
-VALUE rosetta_field_725_set(VALUE, VALUE);
 VALUE rosetta_field_726_get(VALUE);
 VALUE rosetta_field_726_set(VALUE, VALUE);
 VALUE rosetta_field_727_get(VALUE);
@@ -3816,12 +3815,12 @@ VALUE rosetta_field_729_get(VALUE);
 VALUE rosetta_field_729_set(VALUE, VALUE);
 VALUE rosetta_field_730_get(VALUE);
 VALUE rosetta_field_730_set(VALUE, VALUE);
-VALUE rosetta_class_182_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1504(int, VALUE*, VALUE);
-VALUE rosetta_function_1505(int, VALUE*, VALUE);
-VALUE rosetta_class_183_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_731_get(VALUE);
 VALUE rosetta_field_731_set(VALUE, VALUE);
+VALUE rosetta_class_182_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1505(int, VALUE*, VALUE);
+VALUE rosetta_function_1506(int, VALUE*, VALUE);
+VALUE rosetta_class_183_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_732_get(VALUE);
 VALUE rosetta_field_732_set(VALUE, VALUE);
 VALUE rosetta_field_733_get(VALUE);
@@ -3830,24 +3829,24 @@ VALUE rosetta_field_734_get(VALUE);
 VALUE rosetta_field_734_set(VALUE, VALUE);
 VALUE rosetta_field_735_get(VALUE);
 VALUE rosetta_field_735_set(VALUE, VALUE);
-VALUE rosetta_class_184_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1506(int, VALUE*, VALUE);
-VALUE rosetta_function_1507(int, VALUE*, VALUE);
-VALUE rosetta_class_185_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_736_get(VALUE);
 VALUE rosetta_field_736_set(VALUE, VALUE);
+VALUE rosetta_class_184_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1507(int, VALUE*, VALUE);
+VALUE rosetta_function_1508(int, VALUE*, VALUE);
+VALUE rosetta_class_185_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_737_get(VALUE);
 VALUE rosetta_field_737_set(VALUE, VALUE);
 VALUE rosetta_field_738_get(VALUE);
 VALUE rosetta_field_738_set(VALUE, VALUE);
 VALUE rosetta_field_739_get(VALUE);
 VALUE rosetta_field_739_set(VALUE, VALUE);
-VALUE rosetta_class_186_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1508(int, VALUE*, VALUE);
-VALUE rosetta_function_1509(int, VALUE*, VALUE);
-VALUE rosetta_class_187_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_740_get(VALUE);
 VALUE rosetta_field_740_set(VALUE, VALUE);
+VALUE rosetta_class_186_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1509(int, VALUE*, VALUE);
+VALUE rosetta_function_1510(int, VALUE*, VALUE);
+VALUE rosetta_class_187_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_741_get(VALUE);
 VALUE rosetta_field_741_set(VALUE, VALUE);
 VALUE rosetta_field_742_get(VALUE);
@@ -3856,36 +3855,36 @@ VALUE rosetta_field_743_get(VALUE);
 VALUE rosetta_field_743_set(VALUE, VALUE);
 VALUE rosetta_field_744_get(VALUE);
 VALUE rosetta_field_744_set(VALUE, VALUE);
-VALUE rosetta_class_188_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1510(int, VALUE*, VALUE);
-VALUE rosetta_function_1511(int, VALUE*, VALUE);
-VALUE rosetta_class_189_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_745_get(VALUE);
 VALUE rosetta_field_745_set(VALUE, VALUE);
+VALUE rosetta_class_188_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1511(int, VALUE*, VALUE);
+VALUE rosetta_function_1512(int, VALUE*, VALUE);
+VALUE rosetta_class_189_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_746_get(VALUE);
 VALUE rosetta_field_746_set(VALUE, VALUE);
 VALUE rosetta_field_747_get(VALUE);
 VALUE rosetta_field_747_set(VALUE, VALUE);
 VALUE rosetta_field_748_get(VALUE);
 VALUE rosetta_field_748_set(VALUE, VALUE);
-VALUE rosetta_class_190_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1512(int, VALUE*, VALUE);
-VALUE rosetta_function_1513(int, VALUE*, VALUE);
-VALUE rosetta_class_191_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_749_get(VALUE);
 VALUE rosetta_field_749_set(VALUE, VALUE);
+VALUE rosetta_class_190_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1513(int, VALUE*, VALUE);
+VALUE rosetta_function_1514(int, VALUE*, VALUE);
+VALUE rosetta_class_191_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_750_get(VALUE);
 VALUE rosetta_field_750_set(VALUE, VALUE);
 VALUE rosetta_field_751_get(VALUE);
 VALUE rosetta_field_751_set(VALUE, VALUE);
 VALUE rosetta_field_752_get(VALUE);
 VALUE rosetta_field_752_set(VALUE, VALUE);
-VALUE rosetta_class_192_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1514(int, VALUE*, VALUE);
-VALUE rosetta_function_1515(int, VALUE*, VALUE);
-VALUE rosetta_class_193_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_753_get(VALUE);
 VALUE rosetta_field_753_set(VALUE, VALUE);
+VALUE rosetta_class_192_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_1515(int, VALUE*, VALUE);
+VALUE rosetta_function_1516(int, VALUE*, VALUE);
+VALUE rosetta_class_193_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_754_get(VALUE);
 VALUE rosetta_field_754_set(VALUE, VALUE);
 VALUE rosetta_field_755_get(VALUE);
@@ -3894,18 +3893,18 @@ VALUE rosetta_field_756_get(VALUE);
 VALUE rosetta_field_756_set(VALUE, VALUE);
 VALUE rosetta_field_757_get(VALUE);
 VALUE rosetta_field_757_set(VALUE, VALUE);
+VALUE rosetta_field_758_get(VALUE);
+VALUE rosetta_field_758_set(VALUE, VALUE);
 VALUE rosetta_class_194_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1516(int, VALUE*, VALUE);
 VALUE rosetta_function_1517(int, VALUE*, VALUE);
-VALUE rosetta_class_195_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1518(int, VALUE*, VALUE);
+VALUE rosetta_class_195_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1519(int, VALUE*, VALUE);
 VALUE rosetta_function_1520(int, VALUE*, VALUE);
 VALUE rosetta_function_1521(int, VALUE*, VALUE);
 VALUE rosetta_function_1522(int, VALUE*, VALUE);
+VALUE rosetta_function_1523(int, VALUE*, VALUE);
 VALUE rosetta_class_196_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_758_get(VALUE);
-VALUE rosetta_field_758_set(VALUE, VALUE);
 VALUE rosetta_field_759_get(VALUE);
 VALUE rosetta_field_759_set(VALUE, VALUE);
 VALUE rosetta_field_760_get(VALUE);
@@ -3926,9 +3925,9 @@ VALUE rosetta_field_767_get(VALUE);
 VALUE rosetta_field_767_set(VALUE, VALUE);
 VALUE rosetta_field_768_get(VALUE);
 VALUE rosetta_field_768_set(VALUE, VALUE);
-VALUE rosetta_class_197_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_769_get(VALUE);
 VALUE rosetta_field_769_set(VALUE, VALUE);
+VALUE rosetta_class_197_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_770_get(VALUE);
 VALUE rosetta_field_770_set(VALUE, VALUE);
 VALUE rosetta_field_771_get(VALUE);
@@ -3951,8 +3950,9 @@ VALUE rosetta_field_779_get(VALUE);
 VALUE rosetta_field_779_set(VALUE, VALUE);
 VALUE rosetta_field_780_get(VALUE);
 VALUE rosetta_field_780_set(VALUE, VALUE);
+VALUE rosetta_field_781_get(VALUE);
+VALUE rosetta_field_781_set(VALUE, VALUE);
 VALUE rosetta_class_198_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1523(int, VALUE*, VALUE);
 VALUE rosetta_function_1524(int, VALUE*, VALUE);
 VALUE rosetta_function_1525(int, VALUE*, VALUE);
 VALUE rosetta_function_1526(int, VALUE*, VALUE);
@@ -3971,9 +3971,8 @@ VALUE rosetta_function_1538(int, VALUE*, VALUE);
 VALUE rosetta_function_1539(int, VALUE*, VALUE);
 VALUE rosetta_function_1540(int, VALUE*, VALUE);
 VALUE rosetta_function_1541(int, VALUE*, VALUE);
+VALUE rosetta_function_1542(int, VALUE*, VALUE);
 VALUE rosetta_class_199_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_781_get(VALUE);
-VALUE rosetta_field_781_set(VALUE, VALUE);
 VALUE rosetta_field_782_get(VALUE);
 VALUE rosetta_field_782_set(VALUE, VALUE);
 VALUE rosetta_field_783_get(VALUE);
@@ -3986,9 +3985,9 @@ VALUE rosetta_field_786_get(VALUE);
 VALUE rosetta_field_786_set(VALUE, VALUE);
 VALUE rosetta_field_787_get(VALUE);
 VALUE rosetta_field_787_set(VALUE, VALUE);
-VALUE rosetta_class_200_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_788_get(VALUE);
 VALUE rosetta_field_788_set(VALUE, VALUE);
+VALUE rosetta_class_200_initialize(int, VALUE*, VALUE);
 VALUE rosetta_field_789_get(VALUE);
 VALUE rosetta_field_789_set(VALUE, VALUE);
 VALUE rosetta_field_790_get(VALUE);
@@ -4007,8 +4006,9 @@ VALUE rosetta_field_796_get(VALUE);
 VALUE rosetta_field_796_set(VALUE, VALUE);
 VALUE rosetta_field_797_get(VALUE);
 VALUE rosetta_field_797_set(VALUE, VALUE);
+VALUE rosetta_field_798_get(VALUE);
+VALUE rosetta_field_798_set(VALUE, VALUE);
 VALUE rosetta_class_201_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1542(int, VALUE*, VALUE);
 VALUE rosetta_function_1543(int, VALUE*, VALUE);
 VALUE rosetta_function_1544(int, VALUE*, VALUE);
 VALUE rosetta_function_1545(int, VALUE*, VALUE);
@@ -4022,9 +4022,9 @@ VALUE rosetta_function_1552(int, VALUE*, VALUE);
 VALUE rosetta_function_1553(int, VALUE*, VALUE);
 VALUE rosetta_function_1554(int, VALUE*, VALUE);
 VALUE rosetta_function_1555(int, VALUE*, VALUE);
+VALUE rosetta_function_1556(int, VALUE*, VALUE);
 VALUE rosetta_class_202_initialize(int, VALUE*, VALUE);
 VALUE rosetta_class_203_initialize(int, VALUE*, VALUE);
-VALUE rosetta_function_1556(int, VALUE*, VALUE);
 VALUE rosetta_function_1557(int, VALUE*, VALUE);
 VALUE rosetta_function_1558(int, VALUE*, VALUE);
 VALUE rosetta_function_1559(int, VALUE*, VALUE);
@@ -4033,8 +4033,8 @@ VALUE rosetta_function_1561(int, VALUE*, VALUE);
 VALUE rosetta_function_1562(int, VALUE*, VALUE);
 VALUE rosetta_function_1563(int, VALUE*, VALUE);
 VALUE rosetta_function_1564(int, VALUE*, VALUE);
-VALUE rosetta_class_204_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1565(int, VALUE*, VALUE);
+VALUE rosetta_class_204_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1566(int, VALUE*, VALUE);
 VALUE rosetta_function_1567(int, VALUE*, VALUE);
 VALUE rosetta_function_1568(int, VALUE*, VALUE);
@@ -4048,8 +4048,8 @@ VALUE rosetta_function_1575(int, VALUE*, VALUE);
 VALUE rosetta_function_1576(int, VALUE*, VALUE);
 VALUE rosetta_function_1577(int, VALUE*, VALUE);
 VALUE rosetta_function_1578(int, VALUE*, VALUE);
-VALUE rosetta_class_205_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1579(int, VALUE*, VALUE);
+VALUE rosetta_class_205_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1580(int, VALUE*, VALUE);
 VALUE rosetta_function_1581(int, VALUE*, VALUE);
 VALUE rosetta_function_1582(int, VALUE*, VALUE);
@@ -4107,16 +4107,16 @@ VALUE rosetta_function_1633(int, VALUE*, VALUE);
 VALUE rosetta_function_1634(int, VALUE*, VALUE);
 VALUE rosetta_function_1635(int, VALUE*, VALUE);
 VALUE rosetta_function_1636(int, VALUE*, VALUE);
-VALUE rosetta_class_206_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1637(int, VALUE*, VALUE);
+VALUE rosetta_class_206_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1638(int, VALUE*, VALUE);
 VALUE rosetta_function_1639(int, VALUE*, VALUE);
 VALUE rosetta_function_1640(int, VALUE*, VALUE);
 VALUE rosetta_function_1641(int, VALUE*, VALUE);
 VALUE rosetta_function_1642(int, VALUE*, VALUE);
 VALUE rosetta_function_1643(int, VALUE*, VALUE);
-VALUE rosetta_class_207_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1644(int, VALUE*, VALUE);
+VALUE rosetta_class_207_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1645(int, VALUE*, VALUE);
 VALUE rosetta_function_1646(int, VALUE*, VALUE);
 VALUE rosetta_function_1647(int, VALUE*, VALUE);
@@ -4159,8 +4159,8 @@ VALUE rosetta_function_1683(int, VALUE*, VALUE);
 VALUE rosetta_function_1684(int, VALUE*, VALUE);
 VALUE rosetta_function_1685(int, VALUE*, VALUE);
 VALUE rosetta_function_1686(int, VALUE*, VALUE);
-VALUE rosetta_class_209_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1687(int, VALUE*, VALUE);
+VALUE rosetta_class_209_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1688(int, VALUE*, VALUE);
 VALUE rosetta_function_1689(int, VALUE*, VALUE);
 VALUE rosetta_function_1690(int, VALUE*, VALUE);
@@ -4186,8 +4186,8 @@ VALUE rosetta_function_1709(int, VALUE*, VALUE);
 VALUE rosetta_function_1710(int, VALUE*, VALUE);
 VALUE rosetta_function_1711(int, VALUE*, VALUE);
 VALUE rosetta_function_1712(int, VALUE*, VALUE);
-VALUE rosetta_class_210_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1713(int, VALUE*, VALUE);
+VALUE rosetta_class_210_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1714(int, VALUE*, VALUE);
 VALUE rosetta_function_1715(int, VALUE*, VALUE);
 VALUE rosetta_function_1716(int, VALUE*, VALUE);
@@ -4220,8 +4220,8 @@ VALUE rosetta_function_1742(int, VALUE*, VALUE);
 VALUE rosetta_function_1743(int, VALUE*, VALUE);
 VALUE rosetta_function_1744(int, VALUE*, VALUE);
 VALUE rosetta_function_1745(int, VALUE*, VALUE);
-VALUE rosetta_class_211_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1746(int, VALUE*, VALUE);
+VALUE rosetta_class_211_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1747(int, VALUE*, VALUE);
 VALUE rosetta_function_1748(int, VALUE*, VALUE);
 VALUE rosetta_function_1749(int, VALUE*, VALUE);
@@ -4249,8 +4249,8 @@ VALUE rosetta_function_1770(int, VALUE*, VALUE);
 VALUE rosetta_function_1771(int, VALUE*, VALUE);
 VALUE rosetta_function_1772(int, VALUE*, VALUE);
 VALUE rosetta_function_1773(int, VALUE*, VALUE);
-VALUE rosetta_class_212_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1774(int, VALUE*, VALUE);
+VALUE rosetta_class_212_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1775(int, VALUE*, VALUE);
 VALUE rosetta_function_1776(int, VALUE*, VALUE);
 VALUE rosetta_function_1777(int, VALUE*, VALUE);
@@ -4275,8 +4275,8 @@ VALUE rosetta_function_1795(int, VALUE*, VALUE);
 VALUE rosetta_function_1796(int, VALUE*, VALUE);
 VALUE rosetta_function_1797(int, VALUE*, VALUE);
 VALUE rosetta_function_1798(int, VALUE*, VALUE);
-VALUE rosetta_class_213_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1799(int, VALUE*, VALUE);
+VALUE rosetta_class_213_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1800(int, VALUE*, VALUE);
 VALUE rosetta_function_1801(int, VALUE*, VALUE);
 VALUE rosetta_function_1802(int, VALUE*, VALUE);
@@ -4294,8 +4294,8 @@ VALUE rosetta_function_1813(int, VALUE*, VALUE);
 VALUE rosetta_function_1814(int, VALUE*, VALUE);
 VALUE rosetta_function_1815(int, VALUE*, VALUE);
 VALUE rosetta_function_1816(int, VALUE*, VALUE);
-VALUE rosetta_class_214_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1817(int, VALUE*, VALUE);
+VALUE rosetta_class_214_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1818(int, VALUE*, VALUE);
 VALUE rosetta_function_1819(int, VALUE*, VALUE);
 VALUE rosetta_function_1820(int, VALUE*, VALUE);
@@ -4313,8 +4313,8 @@ VALUE rosetta_function_1831(int, VALUE*, VALUE);
 VALUE rosetta_function_1832(int, VALUE*, VALUE);
 VALUE rosetta_function_1833(int, VALUE*, VALUE);
 VALUE rosetta_function_1834(int, VALUE*, VALUE);
-VALUE rosetta_class_215_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1835(int, VALUE*, VALUE);
+VALUE rosetta_class_215_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1836(int, VALUE*, VALUE);
 VALUE rosetta_function_1837(int, VALUE*, VALUE);
 VALUE rosetta_function_1838(int, VALUE*, VALUE);
@@ -4324,8 +4324,8 @@ VALUE rosetta_function_1841(int, VALUE*, VALUE);
 VALUE rosetta_function_1842(int, VALUE*, VALUE);
 VALUE rosetta_function_1843(int, VALUE*, VALUE);
 VALUE rosetta_function_1844(int, VALUE*, VALUE);
-VALUE rosetta_class_216_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1845(int, VALUE*, VALUE);
+VALUE rosetta_class_216_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1846(int, VALUE*, VALUE);
 VALUE rosetta_function_1847(int, VALUE*, VALUE);
 VALUE rosetta_function_1848(int, VALUE*, VALUE);
@@ -4340,8 +4340,8 @@ VALUE rosetta_function_1856(int, VALUE*, VALUE);
 VALUE rosetta_function_1857(int, VALUE*, VALUE);
 VALUE rosetta_function_1858(int, VALUE*, VALUE);
 VALUE rosetta_function_1859(int, VALUE*, VALUE);
-VALUE rosetta_class_217_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1860(int, VALUE*, VALUE);
+VALUE rosetta_class_217_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1861(int, VALUE*, VALUE);
 VALUE rosetta_function_1862(int, VALUE*, VALUE);
 VALUE rosetta_function_1863(int, VALUE*, VALUE);
@@ -4355,8 +4355,8 @@ VALUE rosetta_function_1870(int, VALUE*, VALUE);
 VALUE rosetta_function_1871(int, VALUE*, VALUE);
 VALUE rosetta_function_1872(int, VALUE*, VALUE);
 VALUE rosetta_function_1873(int, VALUE*, VALUE);
-VALUE rosetta_class_218_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1874(int, VALUE*, VALUE);
+VALUE rosetta_class_218_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1875(int, VALUE*, VALUE);
 VALUE rosetta_function_1876(int, VALUE*, VALUE);
 VALUE rosetta_function_1877(int, VALUE*, VALUE);
@@ -4371,8 +4371,8 @@ VALUE rosetta_function_1885(int, VALUE*, VALUE);
 VALUE rosetta_function_1886(int, VALUE*, VALUE);
 VALUE rosetta_function_1887(int, VALUE*, VALUE);
 VALUE rosetta_function_1888(int, VALUE*, VALUE);
-VALUE rosetta_class_219_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1889(int, VALUE*, VALUE);
+VALUE rosetta_class_219_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1890(int, VALUE*, VALUE);
 VALUE rosetta_function_1891(int, VALUE*, VALUE);
 VALUE rosetta_function_1892(int, VALUE*, VALUE);
@@ -4387,8 +4387,8 @@ VALUE rosetta_function_1900(int, VALUE*, VALUE);
 VALUE rosetta_function_1901(int, VALUE*, VALUE);
 VALUE rosetta_function_1902(int, VALUE*, VALUE);
 VALUE rosetta_function_1903(int, VALUE*, VALUE);
-VALUE rosetta_class_220_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1904(int, VALUE*, VALUE);
+VALUE rosetta_class_220_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1905(int, VALUE*, VALUE);
 VALUE rosetta_function_1906(int, VALUE*, VALUE);
 VALUE rosetta_function_1907(int, VALUE*, VALUE);
@@ -4411,8 +4411,8 @@ VALUE rosetta_function_1923(int, VALUE*, VALUE);
 VALUE rosetta_function_1924(int, VALUE*, VALUE);
 VALUE rosetta_function_1925(int, VALUE*, VALUE);
 VALUE rosetta_function_1926(int, VALUE*, VALUE);
-VALUE rosetta_class_221_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1927(int, VALUE*, VALUE);
+VALUE rosetta_class_221_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1928(int, VALUE*, VALUE);
 VALUE rosetta_function_1929(int, VALUE*, VALUE);
 VALUE rosetta_function_1930(int, VALUE*, VALUE);
@@ -4433,8 +4433,8 @@ VALUE rosetta_function_1944(int, VALUE*, VALUE);
 VALUE rosetta_function_1945(int, VALUE*, VALUE);
 VALUE rosetta_function_1946(int, VALUE*, VALUE);
 VALUE rosetta_function_1947(int, VALUE*, VALUE);
-VALUE rosetta_class_222_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1948(int, VALUE*, VALUE);
+VALUE rosetta_class_222_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1949(int, VALUE*, VALUE);
 VALUE rosetta_function_1950(int, VALUE*, VALUE);
 VALUE rosetta_function_1951(int, VALUE*, VALUE);
@@ -4456,8 +4456,8 @@ VALUE rosetta_function_1966(int, VALUE*, VALUE);
 VALUE rosetta_function_1967(int, VALUE*, VALUE);
 VALUE rosetta_function_1968(int, VALUE*, VALUE);
 VALUE rosetta_function_1969(int, VALUE*, VALUE);
-VALUE rosetta_class_223_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1970(int, VALUE*, VALUE);
+VALUE rosetta_class_223_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1971(int, VALUE*, VALUE);
 VALUE rosetta_function_1972(int, VALUE*, VALUE);
 VALUE rosetta_function_1973(int, VALUE*, VALUE);
@@ -4469,8 +4469,8 @@ VALUE rosetta_function_1978(int, VALUE*, VALUE);
 VALUE rosetta_function_1979(int, VALUE*, VALUE);
 VALUE rosetta_function_1980(int, VALUE*, VALUE);
 VALUE rosetta_function_1981(int, VALUE*, VALUE);
-VALUE rosetta_class_224_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1982(int, VALUE*, VALUE);
+VALUE rosetta_class_224_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1983(int, VALUE*, VALUE);
 VALUE rosetta_function_1984(int, VALUE*, VALUE);
 VALUE rosetta_function_1985(int, VALUE*, VALUE);
@@ -4481,8 +4481,8 @@ VALUE rosetta_function_1989(int, VALUE*, VALUE);
 VALUE rosetta_function_1990(int, VALUE*, VALUE);
 VALUE rosetta_function_1991(int, VALUE*, VALUE);
 VALUE rosetta_function_1992(int, VALUE*, VALUE);
-VALUE rosetta_class_225_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1993(int, VALUE*, VALUE);
+VALUE rosetta_class_225_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_1994(int, VALUE*, VALUE);
 VALUE rosetta_function_1995(int, VALUE*, VALUE);
 VALUE rosetta_function_1996(int, VALUE*, VALUE);
@@ -4492,8 +4492,8 @@ VALUE rosetta_function_1999(int, VALUE*, VALUE);
 VALUE rosetta_function_2000(int, VALUE*, VALUE);
 VALUE rosetta_function_2001(int, VALUE*, VALUE);
 VALUE rosetta_function_2002(int, VALUE*, VALUE);
-VALUE rosetta_class_226_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2003(int, VALUE*, VALUE);
+VALUE rosetta_class_226_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2004(int, VALUE*, VALUE);
 VALUE rosetta_function_2005(int, VALUE*, VALUE);
 VALUE rosetta_function_2006(int, VALUE*, VALUE);
@@ -4509,8 +4509,8 @@ VALUE rosetta_function_2015(int, VALUE*, VALUE);
 VALUE rosetta_function_2016(int, VALUE*, VALUE);
 VALUE rosetta_function_2017(int, VALUE*, VALUE);
 VALUE rosetta_function_2018(int, VALUE*, VALUE);
-VALUE rosetta_class_227_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2019(int, VALUE*, VALUE);
+VALUE rosetta_class_227_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2020(int, VALUE*, VALUE);
 VALUE rosetta_function_2021(int, VALUE*, VALUE);
 VALUE rosetta_function_2022(int, VALUE*, VALUE);
@@ -4522,8 +4522,8 @@ VALUE rosetta_function_2027(int, VALUE*, VALUE);
 VALUE rosetta_function_2028(int, VALUE*, VALUE);
 VALUE rosetta_function_2029(int, VALUE*, VALUE);
 VALUE rosetta_function_2030(int, VALUE*, VALUE);
-VALUE rosetta_class_228_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2031(int, VALUE*, VALUE);
+VALUE rosetta_class_228_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2032(int, VALUE*, VALUE);
 VALUE rosetta_function_2033(int, VALUE*, VALUE);
 VALUE rosetta_function_2034(int, VALUE*, VALUE);
@@ -4535,8 +4535,8 @@ VALUE rosetta_function_2039(int, VALUE*, VALUE);
 VALUE rosetta_function_2040(int, VALUE*, VALUE);
 VALUE rosetta_function_2041(int, VALUE*, VALUE);
 VALUE rosetta_function_2042(int, VALUE*, VALUE);
-VALUE rosetta_class_229_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2043(int, VALUE*, VALUE);
+VALUE rosetta_class_229_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2044(int, VALUE*, VALUE);
 VALUE rosetta_function_2045(int, VALUE*, VALUE);
 VALUE rosetta_function_2046(int, VALUE*, VALUE);
@@ -4547,8 +4547,8 @@ VALUE rosetta_function_2050(int, VALUE*, VALUE);
 VALUE rosetta_function_2051(int, VALUE*, VALUE);
 VALUE rosetta_function_2052(int, VALUE*, VALUE);
 VALUE rosetta_function_2053(int, VALUE*, VALUE);
-VALUE rosetta_class_230_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2054(int, VALUE*, VALUE);
+VALUE rosetta_class_230_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2055(int, VALUE*, VALUE);
 VALUE rosetta_function_2056(int, VALUE*, VALUE);
 VALUE rosetta_function_2057(int, VALUE*, VALUE);
@@ -4559,8 +4559,8 @@ VALUE rosetta_function_2061(int, VALUE*, VALUE);
 VALUE rosetta_function_2062(int, VALUE*, VALUE);
 VALUE rosetta_function_2063(int, VALUE*, VALUE);
 VALUE rosetta_function_2064(int, VALUE*, VALUE);
-VALUE rosetta_class_231_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2065(int, VALUE*, VALUE);
+VALUE rosetta_class_231_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2066(int, VALUE*, VALUE);
 VALUE rosetta_function_2067(int, VALUE*, VALUE);
 VALUE rosetta_function_2068(int, VALUE*, VALUE);
@@ -4571,8 +4571,8 @@ VALUE rosetta_function_2072(int, VALUE*, VALUE);
 VALUE rosetta_function_2073(int, VALUE*, VALUE);
 VALUE rosetta_function_2074(int, VALUE*, VALUE);
 VALUE rosetta_function_2075(int, VALUE*, VALUE);
-VALUE rosetta_class_232_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2076(int, VALUE*, VALUE);
+VALUE rosetta_class_232_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2077(int, VALUE*, VALUE);
 VALUE rosetta_function_2078(int, VALUE*, VALUE);
 VALUE rosetta_function_2079(int, VALUE*, VALUE);
@@ -4583,8 +4583,8 @@ VALUE rosetta_function_2083(int, VALUE*, VALUE);
 VALUE rosetta_function_2084(int, VALUE*, VALUE);
 VALUE rosetta_function_2085(int, VALUE*, VALUE);
 VALUE rosetta_function_2086(int, VALUE*, VALUE);
-VALUE rosetta_class_233_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2087(int, VALUE*, VALUE);
+VALUE rosetta_class_233_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2088(int, VALUE*, VALUE);
 VALUE rosetta_function_2089(int, VALUE*, VALUE);
 VALUE rosetta_function_2090(int, VALUE*, VALUE);
@@ -4595,8 +4595,8 @@ VALUE rosetta_function_2094(int, VALUE*, VALUE);
 VALUE rosetta_function_2095(int, VALUE*, VALUE);
 VALUE rosetta_function_2096(int, VALUE*, VALUE);
 VALUE rosetta_function_2097(int, VALUE*, VALUE);
-VALUE rosetta_class_234_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2098(int, VALUE*, VALUE);
+VALUE rosetta_class_234_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2099(int, VALUE*, VALUE);
 VALUE rosetta_function_2100(int, VALUE*, VALUE);
 VALUE rosetta_function_2101(int, VALUE*, VALUE);
@@ -4608,8 +4608,8 @@ VALUE rosetta_function_2106(int, VALUE*, VALUE);
 VALUE rosetta_function_2107(int, VALUE*, VALUE);
 VALUE rosetta_function_2108(int, VALUE*, VALUE);
 VALUE rosetta_function_2109(int, VALUE*, VALUE);
-VALUE rosetta_class_235_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2110(int, VALUE*, VALUE);
+VALUE rosetta_class_235_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2111(int, VALUE*, VALUE);
 VALUE rosetta_function_2112(int, VALUE*, VALUE);
 VALUE rosetta_function_2113(int, VALUE*, VALUE);
@@ -4621,8 +4621,8 @@ VALUE rosetta_function_2118(int, VALUE*, VALUE);
 VALUE rosetta_function_2119(int, VALUE*, VALUE);
 VALUE rosetta_function_2120(int, VALUE*, VALUE);
 VALUE rosetta_function_2121(int, VALUE*, VALUE);
-VALUE rosetta_class_236_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2122(int, VALUE*, VALUE);
+VALUE rosetta_class_236_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2123(int, VALUE*, VALUE);
 VALUE rosetta_function_2124(int, VALUE*, VALUE);
 VALUE rosetta_function_2125(int, VALUE*, VALUE);
@@ -4633,16 +4633,16 @@ VALUE rosetta_function_2129(int, VALUE*, VALUE);
 VALUE rosetta_function_2130(int, VALUE*, VALUE);
 VALUE rosetta_function_2131(int, VALUE*, VALUE);
 VALUE rosetta_function_2132(int, VALUE*, VALUE);
-VALUE rosetta_class_237_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2133(int, VALUE*, VALUE);
+VALUE rosetta_class_237_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2134(int, VALUE*, VALUE);
 VALUE rosetta_function_2135(int, VALUE*, VALUE);
 VALUE rosetta_function_2136(int, VALUE*, VALUE);
 VALUE rosetta_function_2137(int, VALUE*, VALUE);
 VALUE rosetta_function_2138(int, VALUE*, VALUE);
 VALUE rosetta_function_2139(int, VALUE*, VALUE);
-VALUE rosetta_class_238_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2140(int, VALUE*, VALUE);
+VALUE rosetta_class_238_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2141(int, VALUE*, VALUE);
 VALUE rosetta_function_2142(int, VALUE*, VALUE);
 VALUE rosetta_function_2143(int, VALUE*, VALUE);
@@ -4657,8 +4657,8 @@ VALUE rosetta_function_2151(int, VALUE*, VALUE);
 VALUE rosetta_function_2152(int, VALUE*, VALUE);
 VALUE rosetta_function_2153(int, VALUE*, VALUE);
 VALUE rosetta_function_2154(int, VALUE*, VALUE);
-VALUE rosetta_class_239_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2155(int, VALUE*, VALUE);
+VALUE rosetta_class_239_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2156(int, VALUE*, VALUE);
 VALUE rosetta_function_2157(int, VALUE*, VALUE);
 VALUE rosetta_function_2158(int, VALUE*, VALUE);
@@ -4672,8 +4672,8 @@ VALUE rosetta_function_2165(int, VALUE*, VALUE);
 VALUE rosetta_function_2166(int, VALUE*, VALUE);
 VALUE rosetta_function_2167(int, VALUE*, VALUE);
 VALUE rosetta_function_2168(int, VALUE*, VALUE);
-VALUE rosetta_class_240_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2169(int, VALUE*, VALUE);
+VALUE rosetta_class_240_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2170(int, VALUE*, VALUE);
 VALUE rosetta_function_2171(int, VALUE*, VALUE);
 VALUE rosetta_function_2172(int, VALUE*, VALUE);
@@ -4688,8 +4688,8 @@ VALUE rosetta_function_2180(int, VALUE*, VALUE);
 VALUE rosetta_function_2181(int, VALUE*, VALUE);
 VALUE rosetta_function_2182(int, VALUE*, VALUE);
 VALUE rosetta_function_2183(int, VALUE*, VALUE);
-VALUE rosetta_class_241_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2184(int, VALUE*, VALUE);
+VALUE rosetta_class_241_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2185(int, VALUE*, VALUE);
 VALUE rosetta_function_2186(int, VALUE*, VALUE);
 VALUE rosetta_function_2187(int, VALUE*, VALUE);
@@ -4703,8 +4703,8 @@ VALUE rosetta_function_2194(int, VALUE*, VALUE);
 VALUE rosetta_function_2195(int, VALUE*, VALUE);
 VALUE rosetta_function_2196(int, VALUE*, VALUE);
 VALUE rosetta_function_2197(int, VALUE*, VALUE);
-VALUE rosetta_class_242_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2198(int, VALUE*, VALUE);
+VALUE rosetta_class_242_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2199(int, VALUE*, VALUE);
 VALUE rosetta_function_2200(int, VALUE*, VALUE);
 VALUE rosetta_function_2201(int, VALUE*, VALUE);
@@ -4720,8 +4720,8 @@ VALUE rosetta_function_2210(int, VALUE*, VALUE);
 VALUE rosetta_function_2211(int, VALUE*, VALUE);
 VALUE rosetta_function_2212(int, VALUE*, VALUE);
 VALUE rosetta_function_2213(int, VALUE*, VALUE);
-VALUE rosetta_class_243_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2214(int, VALUE*, VALUE);
+VALUE rosetta_class_243_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2215(int, VALUE*, VALUE);
 VALUE rosetta_function_2216(int, VALUE*, VALUE);
 VALUE rosetta_function_2217(int, VALUE*, VALUE);
@@ -4742,8 +4742,8 @@ VALUE rosetta_function_2231(int, VALUE*, VALUE);
 VALUE rosetta_function_2232(int, VALUE*, VALUE);
 VALUE rosetta_function_2233(int, VALUE*, VALUE);
 VALUE rosetta_function_2234(int, VALUE*, VALUE);
-VALUE rosetta_class_244_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2235(int, VALUE*, VALUE);
+VALUE rosetta_class_244_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2236(int, VALUE*, VALUE);
 VALUE rosetta_function_2237(int, VALUE*, VALUE);
 VALUE rosetta_function_2238(int, VALUE*, VALUE);
@@ -4755,8 +4755,8 @@ VALUE rosetta_function_2243(int, VALUE*, VALUE);
 VALUE rosetta_function_2244(int, VALUE*, VALUE);
 VALUE rosetta_function_2245(int, VALUE*, VALUE);
 VALUE rosetta_function_2246(int, VALUE*, VALUE);
-VALUE rosetta_class_245_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2247(int, VALUE*, VALUE);
+VALUE rosetta_class_245_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2248(int, VALUE*, VALUE);
 VALUE rosetta_function_2249(int, VALUE*, VALUE);
 VALUE rosetta_function_2250(int, VALUE*, VALUE);
@@ -4788,8 +4788,8 @@ VALUE rosetta_function_2275(int, VALUE*, VALUE);
 VALUE rosetta_function_2276(int, VALUE*, VALUE);
 VALUE rosetta_function_2277(int, VALUE*, VALUE);
 VALUE rosetta_function_2278(int, VALUE*, VALUE);
-VALUE rosetta_class_246_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2279(int, VALUE*, VALUE);
+VALUE rosetta_class_246_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2280(int, VALUE*, VALUE);
 VALUE rosetta_function_2281(int, VALUE*, VALUE);
 VALUE rosetta_function_2282(int, VALUE*, VALUE);
@@ -4868,8 +4868,8 @@ VALUE rosetta_function_2354(int, VALUE*, VALUE);
 VALUE rosetta_function_2355(int, VALUE*, VALUE);
 VALUE rosetta_function_2356(int, VALUE*, VALUE);
 VALUE rosetta_function_2357(int, VALUE*, VALUE);
-VALUE rosetta_class_247_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2358(int, VALUE*, VALUE);
+VALUE rosetta_class_247_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2359(int, VALUE*, VALUE);
 VALUE rosetta_function_2360(int, VALUE*, VALUE);
 VALUE rosetta_function_2361(int, VALUE*, VALUE);
@@ -4889,8 +4889,8 @@ VALUE rosetta_function_2374(int, VALUE*, VALUE);
 VALUE rosetta_function_2375(int, VALUE*, VALUE);
 VALUE rosetta_function_2376(int, VALUE*, VALUE);
 VALUE rosetta_function_2377(int, VALUE*, VALUE);
-VALUE rosetta_class_248_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2378(int, VALUE*, VALUE);
+VALUE rosetta_class_248_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2379(int, VALUE*, VALUE);
 VALUE rosetta_function_2380(int, VALUE*, VALUE);
 VALUE rosetta_function_2381(int, VALUE*, VALUE);
@@ -4911,8 +4911,8 @@ VALUE rosetta_function_2395(int, VALUE*, VALUE);
 VALUE rosetta_function_2396(int, VALUE*, VALUE);
 VALUE rosetta_function_2397(int, VALUE*, VALUE);
 VALUE rosetta_function_2398(int, VALUE*, VALUE);
-VALUE rosetta_class_249_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2399(int, VALUE*, VALUE);
+VALUE rosetta_class_249_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2400(int, VALUE*, VALUE);
 VALUE rosetta_function_2401(int, VALUE*, VALUE);
 VALUE rosetta_function_2402(int, VALUE*, VALUE);
@@ -4932,12 +4932,12 @@ VALUE rosetta_function_2415(int, VALUE*, VALUE);
 VALUE rosetta_function_2416(int, VALUE*, VALUE);
 VALUE rosetta_function_2417(int, VALUE*, VALUE);
 VALUE rosetta_function_2418(int, VALUE*, VALUE);
-VALUE rosetta_class_250_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2419(int, VALUE*, VALUE);
+VALUE rosetta_class_250_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2420(int, VALUE*, VALUE);
 VALUE rosetta_function_2421(int, VALUE*, VALUE);
-VALUE rosetta_class_251_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2422(int, VALUE*, VALUE);
+VALUE rosetta_class_251_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2423(int, VALUE*, VALUE);
 VALUE rosetta_function_2424(int, VALUE*, VALUE);
 VALUE rosetta_function_2425(int, VALUE*, VALUE);
@@ -4948,6 +4948,7 @@ VALUE rosetta_function_2429(int, VALUE*, VALUE);
 VALUE rosetta_function_2430(int, VALUE*, VALUE);
 VALUE rosetta_function_2431(int, VALUE*, VALUE);
 VALUE rosetta_function_2432(int, VALUE*, VALUE);
+VALUE rosetta_class_252_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2433(int, VALUE*, VALUE);
 VALUE rosetta_function_2434(int, VALUE*, VALUE);
 VALUE rosetta_function_2435(int, VALUE*, VALUE);
@@ -4972,20 +4973,7 @@ VALUE rosetta_function_2453(int, VALUE*, VALUE);
 VALUE rosetta_function_2454(int, VALUE*, VALUE);
 VALUE rosetta_function_2455(int, VALUE*, VALUE);
 VALUE rosetta_function_2456(int, VALUE*, VALUE);
-VALUE rosetta_class_253_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_798_get(VALUE);
-VALUE rosetta_field_798_set(VALUE, VALUE);
-VALUE rosetta_field_799_get(VALUE);
-VALUE rosetta_field_799_set(VALUE, VALUE);
-VALUE rosetta_field_800_get(VALUE);
-VALUE rosetta_field_800_set(VALUE, VALUE);
-VALUE rosetta_field_801_get(VALUE);
-VALUE rosetta_field_801_set(VALUE, VALUE);
-VALUE rosetta_class_254_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2457(int, VALUE*, VALUE);
-VALUE rosetta_field_802_get(VALUE);
-VALUE rosetta_field_802_set(VALUE, VALUE);
-VALUE rosetta_class_255_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2458(int, VALUE*, VALUE);
 VALUE rosetta_function_2459(int, VALUE*, VALUE);
 VALUE rosetta_function_2460(int, VALUE*, VALUE);
@@ -4996,10 +4984,22 @@ VALUE rosetta_function_2464(int, VALUE*, VALUE);
 VALUE rosetta_function_2465(int, VALUE*, VALUE);
 VALUE rosetta_function_2466(int, VALUE*, VALUE);
 VALUE rosetta_function_2467(int, VALUE*, VALUE);
+VALUE rosetta_class_254_initialize(int, VALUE*, VALUE);
+VALUE rosetta_field_799_get(VALUE);
+VALUE rosetta_field_799_set(VALUE, VALUE);
+VALUE rosetta_field_800_get(VALUE);
+VALUE rosetta_field_800_set(VALUE, VALUE);
+VALUE rosetta_field_801_get(VALUE);
+VALUE rosetta_field_801_set(VALUE, VALUE);
+VALUE rosetta_field_802_get(VALUE);
+VALUE rosetta_field_802_set(VALUE, VALUE);
+VALUE rosetta_class_255_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2468(int, VALUE*, VALUE);
+VALUE rosetta_field_803_get(VALUE);
+VALUE rosetta_field_803_set(VALUE, VALUE);
+VALUE rosetta_class_256_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2469(int, VALUE*, VALUE);
 VALUE rosetta_function_2470(int, VALUE*, VALUE);
-VALUE rosetta_class_256_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2471(int, VALUE*, VALUE);
 VALUE rosetta_function_2472(int, VALUE*, VALUE);
 VALUE rosetta_function_2473(int, VALUE*, VALUE);
@@ -5011,6 +5011,7 @@ VALUE rosetta_function_2478(int, VALUE*, VALUE);
 VALUE rosetta_function_2479(int, VALUE*, VALUE);
 VALUE rosetta_function_2480(int, VALUE*, VALUE);
 VALUE rosetta_function_2481(int, VALUE*, VALUE);
+VALUE rosetta_class_257_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2482(int, VALUE*, VALUE);
 VALUE rosetta_function_2483(int, VALUE*, VALUE);
 VALUE rosetta_function_2484(int, VALUE*, VALUE);
@@ -5020,12 +5021,6 @@ VALUE rosetta_function_2487(int, VALUE*, VALUE);
 VALUE rosetta_function_2488(int, VALUE*, VALUE);
 VALUE rosetta_function_2489(int, VALUE*, VALUE);
 VALUE rosetta_function_2490(int, VALUE*, VALUE);
-VALUE rosetta_class_257_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_803_get(VALUE);
-VALUE rosetta_field_803_set(VALUE, VALUE);
-VALUE rosetta_field_804_get(VALUE);
-VALUE rosetta_field_804_set(VALUE, VALUE);
-VALUE rosetta_class_258_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2491(int, VALUE*, VALUE);
 VALUE rosetta_function_2492(int, VALUE*, VALUE);
 VALUE rosetta_function_2493(int, VALUE*, VALUE);
@@ -5037,6 +5032,12 @@ VALUE rosetta_function_2498(int, VALUE*, VALUE);
 VALUE rosetta_function_2499(int, VALUE*, VALUE);
 VALUE rosetta_function_2500(int, VALUE*, VALUE);
 VALUE rosetta_function_2501(int, VALUE*, VALUE);
+VALUE rosetta_class_258_initialize(int, VALUE*, VALUE);
+VALUE rosetta_field_804_get(VALUE);
+VALUE rosetta_field_804_set(VALUE, VALUE);
+VALUE rosetta_field_805_get(VALUE);
+VALUE rosetta_field_805_set(VALUE, VALUE);
+VALUE rosetta_class_259_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2502(int, VALUE*, VALUE);
 VALUE rosetta_function_2503(int, VALUE*, VALUE);
 VALUE rosetta_function_2504(int, VALUE*, VALUE);
@@ -5047,7 +5048,6 @@ VALUE rosetta_function_2508(int, VALUE*, VALUE);
 VALUE rosetta_function_2509(int, VALUE*, VALUE);
 VALUE rosetta_function_2510(int, VALUE*, VALUE);
 VALUE rosetta_function_2511(int, VALUE*, VALUE);
-VALUE rosetta_class_259_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2512(int, VALUE*, VALUE);
 VALUE rosetta_function_2513(int, VALUE*, VALUE);
 VALUE rosetta_function_2514(int, VALUE*, VALUE);
@@ -5059,6 +5059,7 @@ VALUE rosetta_function_2519(int, VALUE*, VALUE);
 VALUE rosetta_function_2520(int, VALUE*, VALUE);
 VALUE rosetta_function_2521(int, VALUE*, VALUE);
 VALUE rosetta_function_2522(int, VALUE*, VALUE);
+VALUE rosetta_class_260_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2523(int, VALUE*, VALUE);
 VALUE rosetta_function_2524(int, VALUE*, VALUE);
 VALUE rosetta_function_2525(int, VALUE*, VALUE);
@@ -5077,7 +5078,6 @@ VALUE rosetta_function_2537(int, VALUE*, VALUE);
 VALUE rosetta_function_2538(int, VALUE*, VALUE);
 VALUE rosetta_function_2539(int, VALUE*, VALUE);
 VALUE rosetta_function_2540(int, VALUE*, VALUE);
-VALUE rosetta_class_260_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2541(int, VALUE*, VALUE);
 VALUE rosetta_function_2542(int, VALUE*, VALUE);
 VALUE rosetta_function_2543(int, VALUE*, VALUE);
@@ -5089,6 +5089,7 @@ VALUE rosetta_function_2548(int, VALUE*, VALUE);
 VALUE rosetta_function_2549(int, VALUE*, VALUE);
 VALUE rosetta_function_2550(int, VALUE*, VALUE);
 VALUE rosetta_function_2551(int, VALUE*, VALUE);
+VALUE rosetta_class_261_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2552(int, VALUE*, VALUE);
 VALUE rosetta_function_2553(int, VALUE*, VALUE);
 VALUE rosetta_function_2554(int, VALUE*, VALUE);
@@ -5132,7 +5133,6 @@ VALUE rosetta_function_2591(int, VALUE*, VALUE);
 VALUE rosetta_function_2592(int, VALUE*, VALUE);
 VALUE rosetta_function_2593(int, VALUE*, VALUE);
 VALUE rosetta_function_2594(int, VALUE*, VALUE);
-VALUE rosetta_class_261_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2595(int, VALUE*, VALUE);
 VALUE rosetta_function_2596(int, VALUE*, VALUE);
 VALUE rosetta_function_2597(int, VALUE*, VALUE);
@@ -5144,6 +5144,7 @@ VALUE rosetta_function_2602(int, VALUE*, VALUE);
 VALUE rosetta_function_2603(int, VALUE*, VALUE);
 VALUE rosetta_function_2604(int, VALUE*, VALUE);
 VALUE rosetta_function_2605(int, VALUE*, VALUE);
+VALUE rosetta_class_262_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2606(int, VALUE*, VALUE);
 VALUE rosetta_function_2607(int, VALUE*, VALUE);
 VALUE rosetta_function_2608(int, VALUE*, VALUE);
@@ -5159,14 +5160,6 @@ VALUE rosetta_function_2617(int, VALUE*, VALUE);
 VALUE rosetta_function_2618(int, VALUE*, VALUE);
 VALUE rosetta_function_2619(int, VALUE*, VALUE);
 VALUE rosetta_function_2620(int, VALUE*, VALUE);
-VALUE rosetta_class_262_initialize(int, VALUE*, VALUE);
-VALUE rosetta_field_805_get(VALUE);
-VALUE rosetta_field_806_get(VALUE);
-VALUE rosetta_field_807_get(VALUE);
-VALUE rosetta_field_808_get(VALUE);
-VALUE rosetta_field_809_get(VALUE);
-VALUE rosetta_field_810_get(VALUE);
-VALUE rosetta_class_263_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2621(int, VALUE*, VALUE);
 VALUE rosetta_function_2622(int, VALUE*, VALUE);
 VALUE rosetta_function_2623(int, VALUE*, VALUE);
@@ -5178,6 +5171,14 @@ VALUE rosetta_function_2628(int, VALUE*, VALUE);
 VALUE rosetta_function_2629(int, VALUE*, VALUE);
 VALUE rosetta_function_2630(int, VALUE*, VALUE);
 VALUE rosetta_function_2631(int, VALUE*, VALUE);
+VALUE rosetta_class_263_initialize(int, VALUE*, VALUE);
+VALUE rosetta_field_806_get(VALUE);
+VALUE rosetta_field_807_get(VALUE);
+VALUE rosetta_field_808_get(VALUE);
+VALUE rosetta_field_809_get(VALUE);
+VALUE rosetta_field_810_get(VALUE);
+VALUE rosetta_field_811_get(VALUE);
+VALUE rosetta_class_264_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2632(int, VALUE*, VALUE);
 VALUE rosetta_function_2633(int, VALUE*, VALUE);
 VALUE rosetta_function_2634(int, VALUE*, VALUE);
@@ -5195,7 +5196,6 @@ VALUE rosetta_function_2645(int, VALUE*, VALUE);
 VALUE rosetta_function_2646(int, VALUE*, VALUE);
 VALUE rosetta_function_2647(int, VALUE*, VALUE);
 VALUE rosetta_function_2648(int, VALUE*, VALUE);
-VALUE rosetta_class_265_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2649(int, VALUE*, VALUE);
 VALUE rosetta_function_2650(int, VALUE*, VALUE);
 VALUE rosetta_function_2651(int, VALUE*, VALUE);
@@ -5207,6 +5207,7 @@ VALUE rosetta_function_2656(int, VALUE*, VALUE);
 VALUE rosetta_function_2657(int, VALUE*, VALUE);
 VALUE rosetta_function_2658(int, VALUE*, VALUE);
 VALUE rosetta_function_2659(int, VALUE*, VALUE);
+VALUE rosetta_class_266_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2660(int, VALUE*, VALUE);
 VALUE rosetta_function_2661(int, VALUE*, VALUE);
 VALUE rosetta_function_2662(int, VALUE*, VALUE);
@@ -5214,7 +5215,6 @@ VALUE rosetta_function_2663(int, VALUE*, VALUE);
 VALUE rosetta_function_2664(int, VALUE*, VALUE);
 VALUE rosetta_function_2665(int, VALUE*, VALUE);
 VALUE rosetta_function_2666(int, VALUE*, VALUE);
-VALUE rosetta_class_266_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2667(int, VALUE*, VALUE);
 VALUE rosetta_function_2668(int, VALUE*, VALUE);
 VALUE rosetta_function_2669(int, VALUE*, VALUE);
@@ -5226,6 +5226,7 @@ VALUE rosetta_function_2674(int, VALUE*, VALUE);
 VALUE rosetta_function_2675(int, VALUE*, VALUE);
 VALUE rosetta_function_2676(int, VALUE*, VALUE);
 VALUE rosetta_function_2677(int, VALUE*, VALUE);
+VALUE rosetta_class_267_initialize(int, VALUE*, VALUE);
 VALUE rosetta_function_2678(int, VALUE*, VALUE);
 VALUE rosetta_function_2679(int, VALUE*, VALUE);
 VALUE rosetta_function_2680(int, VALUE*, VALUE);
@@ -5236,7 +5237,18 @@ VALUE rosetta_function_2684(int, VALUE*, VALUE);
 VALUE rosetta_function_2685(int, VALUE*, VALUE);
 VALUE rosetta_function_2686(int, VALUE*, VALUE);
 VALUE rosetta_function_2687(int, VALUE*, VALUE);
-VALUE rosetta_class_267_initialize(int, VALUE*, VALUE);
+VALUE rosetta_function_2688(int, VALUE*, VALUE);
+VALUE rosetta_function_2689(int, VALUE*, VALUE);
+VALUE rosetta_function_2690(int, VALUE*, VALUE);
+VALUE rosetta_function_2691(int, VALUE*, VALUE);
+VALUE rosetta_function_2692(int, VALUE*, VALUE);
+VALUE rosetta_function_2693(int, VALUE*, VALUE);
+VALUE rosetta_function_2694(int, VALUE*, VALUE);
+VALUE rosetta_function_2695(int, VALUE*, VALUE);
+VALUE rosetta_function_2696(int, VALUE*, VALUE);
+VALUE rosetta_function_2697(int, VALUE*, VALUE);
+VALUE rosetta_function_2698(int, VALUE*, VALUE);
+VALUE rosetta_class_268_initialize(int, VALUE*, VALUE);
 static VALUE rosetta_init(VALUE) {
     return rosetta_rb::guard([&]() -> VALUE {
         VALUE module = rb_define_module("Datamunge");
@@ -6763,6 +6775,12 @@ static VALUE rosetta_init(VALUE) {
             info.bases.clear();
         }
         {
+            VALUE klass = rb_define_class_under(module, "MLPClassifierSearch", rosetta_rb::root_class());
+            auto& info = rosetta_rb::Info<datamunge::MLPClassifierSearch>::value;
+            rosetta_rb::register_type<datamunge::MLPClassifierSearch>(info, "Datamunge::MLPClassifierSearch", klass);
+            info.bases.clear();
+        }
+        {
             VALUE klass = rb_define_class_under(module, "CadSolid", rosetta_rb::root_class());
             auto& info = rosetta_rb::Info<datamunge::cad::Solid>::value;
             rosetta_rb::register_type<datamunge::cad::Solid>(info, "Datamunge::CadSolid", klass);
@@ -6860,2926 +6878,2926 @@ static VALUE rosetta_init(VALUE) {
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::Expr>::value.klass;
-            rb_define_singleton_method(klass, "constant", RUBY_METHOD_FUNC(rosetta_function_1056), -1);
-            rb_define_singleton_method(klass, "variable", RUBY_METHOD_FUNC(rosetta_function_1057), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1058), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1059), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1060), -1);
-            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_1061), -1);
-            rb_define_method(klass, "power", RUBY_METHOD_FUNC(rosetta_function_1062), -1);
-            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_1063), -1);
-            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_1064), -1);
-            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_1065), -1);
-            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_1066), -1);
-            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_1067), -1);
-            rb_define_method(klass, "differentiate", RUBY_METHOD_FUNC(rosetta_function_1068), -1);
-            rb_define_method(klass, "integrate", RUBY_METHOD_FUNC(rosetta_function_1069), -1);
-            rb_define_method(klass, "simplify", RUBY_METHOD_FUNC(rosetta_function_1070), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1071), -1);
-            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1072), -1);
-            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1072), -1);
-            rb_define_method(klass, "to_tex", RUBY_METHOD_FUNC(rosetta_function_1073), -1);
+            rb_define_singleton_method(klass, "constant", RUBY_METHOD_FUNC(rosetta_function_1057), -1);
+            rb_define_singleton_method(klass, "variable", RUBY_METHOD_FUNC(rosetta_function_1058), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1059), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1060), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1061), -1);
+            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_1062), -1);
+            rb_define_method(klass, "power", RUBY_METHOD_FUNC(rosetta_function_1063), -1);
+            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_1064), -1);
+            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_1065), -1);
+            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_1066), -1);
+            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_1067), -1);
+            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_1068), -1);
+            rb_define_method(klass, "differentiate", RUBY_METHOD_FUNC(rosetta_function_1069), -1);
+            rb_define_method(klass, "integrate", RUBY_METHOD_FUNC(rosetta_function_1070), -1);
+            rb_define_method(klass, "simplify", RUBY_METHOD_FUNC(rosetta_function_1071), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1072), -1);
+            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1073), -1);
+            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1073), -1);
+            rb_define_method(klass, "to_tex", RUBY_METHOD_FUNC(rosetta_function_1074), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_0_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::Polynomial>::value.klass;
-            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1074), -1);
-            rb_define_method(klass, "zero\?", RUBY_METHOD_FUNC(rosetta_function_1075), -1);
-            rb_define_method(klass, "coefficient", RUBY_METHOD_FUNC(rosetta_function_1076), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1077), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1078), -1);
-            rb_define_method(klass, "derivative", RUBY_METHOD_FUNC(rosetta_function_1079), -1);
-            rb_define_method(klass, "antiderivative", RUBY_METHOD_FUNC(rosetta_function_1080), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1081), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1082), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1083), -1);
-            rb_define_method(klass, "scale", RUBY_METHOD_FUNC(rosetta_function_1084), -1);
-            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_1085), -1);
-            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1086), -1);
-            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1086), -1);
-            rb_define_method(klass, "==", RUBY_METHOD_FUNC(rosetta_function_1087), -1);
-            rb_define_method(klass, "to_tex", RUBY_METHOD_FUNC(rosetta_function_1088), -1);
+            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1075), -1);
+            rb_define_method(klass, "zero\?", RUBY_METHOD_FUNC(rosetta_function_1076), -1);
+            rb_define_method(klass, "coefficient", RUBY_METHOD_FUNC(rosetta_function_1077), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1078), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1079), -1);
+            rb_define_method(klass, "derivative", RUBY_METHOD_FUNC(rosetta_function_1080), -1);
+            rb_define_method(klass, "antiderivative", RUBY_METHOD_FUNC(rosetta_function_1081), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1082), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1083), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1084), -1);
+            rb_define_method(klass, "scale", RUBY_METHOD_FUNC(rosetta_function_1085), -1);
+            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_1086), -1);
+            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1087), -1);
+            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1087), -1);
+            rb_define_method(klass, "==", RUBY_METHOD_FUNC(rosetta_function_1088), -1);
+            rb_define_method(klass, "to_tex", RUBY_METHOD_FUNC(rosetta_function_1089), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_1_initialize), -1);
             rosetta_rb::define_hash<datamunge::algebra::Polynomial>(klass);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::PolyExtendedGcdResult>::value.klass;
-            rb_define_method(klass, "gcd", RUBY_METHOD_FUNC(rosetta_field_268_get), 0);
+            rb_define_method(klass, "gcd", RUBY_METHOD_FUNC(rosetta_field_269_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::PolyExtendedGcdResult&>().gcd)>>)
-                rb_define_method(klass, "gcd=", RUBY_METHOD_FUNC(rosetta_field_268_set), 1);
-            rb_define_method(klass, "s", RUBY_METHOD_FUNC(rosetta_field_269_get), 0);
+                rb_define_method(klass, "gcd=", RUBY_METHOD_FUNC(rosetta_field_269_set), 1);
+            rb_define_method(klass, "s", RUBY_METHOD_FUNC(rosetta_field_270_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::PolyExtendedGcdResult&>().s)>>)
-                rb_define_method(klass, "s=", RUBY_METHOD_FUNC(rosetta_field_269_set), 1);
-            rb_define_method(klass, "t", RUBY_METHOD_FUNC(rosetta_field_270_get), 0);
+                rb_define_method(klass, "s=", RUBY_METHOD_FUNC(rosetta_field_270_set), 1);
+            rb_define_method(klass, "t", RUBY_METHOD_FUNC(rosetta_field_271_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::PolyExtendedGcdResult&>().t)>>)
-                rb_define_method(klass, "t=", RUBY_METHOD_FUNC(rosetta_field_270_set), 1);
+                rb_define_method(klass, "t=", RUBY_METHOD_FUNC(rosetta_field_271_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_2_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::RealRootIntervals>::value.klass;
-            rb_define_method(klass, "lower", RUBY_METHOD_FUNC(rosetta_field_271_get), 0);
+            rb_define_method(klass, "lower", RUBY_METHOD_FUNC(rosetta_field_272_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::RealRootIntervals&>().lower)>>)
-                rb_define_method(klass, "lower=", RUBY_METHOD_FUNC(rosetta_field_271_set), 1);
-            rb_define_method(klass, "upper", RUBY_METHOD_FUNC(rosetta_field_272_get), 0);
+                rb_define_method(klass, "lower=", RUBY_METHOD_FUNC(rosetta_field_272_set), 1);
+            rb_define_method(klass, "upper", RUBY_METHOD_FUNC(rosetta_field_273_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::RealRootIntervals&>().upper)>>)
-                rb_define_method(klass, "upper=", RUBY_METHOD_FUNC(rosetta_field_272_set), 1);
+                rb_define_method(klass, "upper=", RUBY_METHOD_FUNC(rosetta_field_273_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_3_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::Complex>::value.klass;
-            rb_define_method(klass, "modulus", RUBY_METHOD_FUNC(rosetta_function_1089), -1);
-            rb_define_method(klass, "==", RUBY_METHOD_FUNC(rosetta_function_1090), -1);
-            rb_define_method(klass, "re", RUBY_METHOD_FUNC(rosetta_field_273_get), 0);
+            rb_define_method(klass, "modulus", RUBY_METHOD_FUNC(rosetta_function_1090), -1);
+            rb_define_method(klass, "==", RUBY_METHOD_FUNC(rosetta_function_1091), -1);
+            rb_define_method(klass, "re", RUBY_METHOD_FUNC(rosetta_field_274_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::Complex&>().re)>>)
-                rb_define_method(klass, "re=", RUBY_METHOD_FUNC(rosetta_field_273_set), 1);
-            rb_define_method(klass, "im", RUBY_METHOD_FUNC(rosetta_field_274_get), 0);
+                rb_define_method(klass, "re=", RUBY_METHOD_FUNC(rosetta_field_274_set), 1);
+            rb_define_method(klass, "im", RUBY_METHOD_FUNC(rosetta_field_275_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::Complex&>().im)>>)
-                rb_define_method(klass, "im=", RUBY_METHOD_FUNC(rosetta_field_274_set), 1);
+                rb_define_method(klass, "im=", RUBY_METHOD_FUNC(rosetta_field_275_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_4_initialize), -1);
             rosetta_rb::define_hash<datamunge::algebra::Complex>(klass);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::detail::Cplx>::value.klass;
-            rb_define_method(klass, "re", RUBY_METHOD_FUNC(rosetta_field_275_get), 0);
+            rb_define_method(klass, "re", RUBY_METHOD_FUNC(rosetta_field_276_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::detail::Cplx&>().re)>>)
-                rb_define_method(klass, "re=", RUBY_METHOD_FUNC(rosetta_field_275_set), 1);
-            rb_define_method(klass, "im", RUBY_METHOD_FUNC(rosetta_field_276_get), 0);
+                rb_define_method(klass, "re=", RUBY_METHOD_FUNC(rosetta_field_276_set), 1);
+            rb_define_method(klass, "im", RUBY_METHOD_FUNC(rosetta_field_277_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::detail::Cplx&>().im)>>)
-                rb_define_method(klass, "im=", RUBY_METHOD_FUNC(rosetta_field_276_set), 1);
+                rb_define_method(klass, "im=", RUBY_METHOD_FUNC(rosetta_field_277_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_5_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::SquareFreeFactor>::value.klass;
-            rb_define_method(klass, "factor", RUBY_METHOD_FUNC(rosetta_field_277_get), 0);
+            rb_define_method(klass, "factor", RUBY_METHOD_FUNC(rosetta_field_278_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::SquareFreeFactor&>().factor)>>)
-                rb_define_method(klass, "factor=", RUBY_METHOD_FUNC(rosetta_field_277_set), 1);
-            rb_define_method(klass, "multiplicity", RUBY_METHOD_FUNC(rosetta_field_278_get), 0);
+                rb_define_method(klass, "factor=", RUBY_METHOD_FUNC(rosetta_field_278_set), 1);
+            rb_define_method(klass, "multiplicity", RUBY_METHOD_FUNC(rosetta_field_279_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::SquareFreeFactor&>().multiplicity)>>)
-                rb_define_method(klass, "multiplicity=", RUBY_METHOD_FUNC(rosetta_field_278_set), 1);
+                rb_define_method(klass, "multiplicity=", RUBY_METHOD_FUNC(rosetta_field_279_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_6_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::RealFactor>::value.klass;
-            rb_define_method(klass, "factor", RUBY_METHOD_FUNC(rosetta_field_279_get), 0);
+            rb_define_method(klass, "factor", RUBY_METHOD_FUNC(rosetta_field_280_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::RealFactor&>().factor)>>)
-                rb_define_method(klass, "factor=", RUBY_METHOD_FUNC(rosetta_field_279_set), 1);
-            rb_define_method(klass, "multiplicity", RUBY_METHOD_FUNC(rosetta_field_280_get), 0);
+                rb_define_method(klass, "factor=", RUBY_METHOD_FUNC(rosetta_field_280_set), 1);
+            rb_define_method(klass, "multiplicity", RUBY_METHOD_FUNC(rosetta_field_281_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::RealFactor&>().multiplicity)>>)
-                rb_define_method(klass, "multiplicity=", RUBY_METHOD_FUNC(rosetta_field_280_set), 1);
+                rb_define_method(klass, "multiplicity=", RUBY_METHOD_FUNC(rosetta_field_281_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_7_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::RealFactorization>::value.klass;
-            rb_define_method(klass, "num_factors", RUBY_METHOD_FUNC(rosetta_function_1091), -1);
-            rb_define_method(klass, "factor_at", RUBY_METHOD_FUNC(rosetta_function_1092), -1);
-            rb_define_method(klass, "leading_coefficient", RUBY_METHOD_FUNC(rosetta_field_281_get), 0);
+            rb_define_method(klass, "num_factors", RUBY_METHOD_FUNC(rosetta_function_1092), -1);
+            rb_define_method(klass, "factor_at", RUBY_METHOD_FUNC(rosetta_function_1093), -1);
+            rb_define_method(klass, "leading_coefficient", RUBY_METHOD_FUNC(rosetta_field_282_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::RealFactorization&>().leading_coefficient)>>)
-                rb_define_method(klass, "leading_coefficient=", RUBY_METHOD_FUNC(rosetta_field_281_set), 1);
+                rb_define_method(klass, "leading_coefficient=", RUBY_METHOD_FUNC(rosetta_field_282_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_8_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::MultivariatePolynomial>::value.klass;
-            rb_define_method(klass, "num_variables", RUBY_METHOD_FUNC(rosetta_function_1093), -1);
-            rb_define_method(klass, "num_terms", RUBY_METHOD_FUNC(rosetta_function_1094), -1);
-            rb_define_method(klass, "zero\?", RUBY_METHOD_FUNC(rosetta_function_1095), -1);
-            rb_define_method(klass, "exponents", RUBY_METHOD_FUNC(rosetta_function_1096), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1097), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1098), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1099), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1100), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1101), -1);
-            rb_define_method(klass, "scale", RUBY_METHOD_FUNC(rosetta_function_1102), -1);
-            rb_define_method(klass, "leading_exponent", RUBY_METHOD_FUNC(rosetta_function_1103), -1);
-            rb_define_method(klass, "leading_coefficient", RUBY_METHOD_FUNC(rosetta_function_1104), -1);
-            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1105), -1);
-            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1105), -1);
+            rb_define_method(klass, "num_variables", RUBY_METHOD_FUNC(rosetta_function_1094), -1);
+            rb_define_method(klass, "num_terms", RUBY_METHOD_FUNC(rosetta_function_1095), -1);
+            rb_define_method(klass, "zero\?", RUBY_METHOD_FUNC(rosetta_function_1096), -1);
+            rb_define_method(klass, "exponents", RUBY_METHOD_FUNC(rosetta_function_1097), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1098), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1099), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1100), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1101), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1102), -1);
+            rb_define_method(klass, "scale", RUBY_METHOD_FUNC(rosetta_function_1103), -1);
+            rb_define_method(klass, "leading_exponent", RUBY_METHOD_FUNC(rosetta_function_1104), -1);
+            rb_define_method(klass, "leading_coefficient", RUBY_METHOD_FUNC(rosetta_function_1105), -1);
+            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1106), -1);
+            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1106), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_9_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::GfFactorization>::value.klass;
-            rb_define_method(klass, "leading", RUBY_METHOD_FUNC(rosetta_field_282_get), 0);
+            rb_define_method(klass, "leading", RUBY_METHOD_FUNC(rosetta_field_283_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::GfFactorization&>().leading)>>)
-                rb_define_method(klass, "leading=", RUBY_METHOD_FUNC(rosetta_field_282_set), 1);
-            rb_define_method(klass, "factors", RUBY_METHOD_FUNC(rosetta_field_283_get), 0);
+                rb_define_method(klass, "leading=", RUBY_METHOD_FUNC(rosetta_field_283_set), 1);
+            rb_define_method(klass, "factors", RUBY_METHOD_FUNC(rosetta_field_284_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::GfFactorization&>().factors)>>)
-                rb_define_method(klass, "factors=", RUBY_METHOD_FUNC(rosetta_field_283_set), 1);
-            rb_define_method(klass, "multiplicities", RUBY_METHOD_FUNC(rosetta_field_284_get), 0);
+                rb_define_method(klass, "factors=", RUBY_METHOD_FUNC(rosetta_field_284_set), 1);
+            rb_define_method(klass, "multiplicities", RUBY_METHOD_FUNC(rosetta_field_285_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::algebra::GfFactorization&>().multiplicities)>>)
-                rb_define_method(klass, "multiplicities=", RUBY_METHOD_FUNC(rosetta_field_284_set), 1);
+                rb_define_method(klass, "multiplicities=", RUBY_METHOD_FUNC(rosetta_field_285_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_10_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::algebra::RationalFunction>::value.klass;
-            rb_define_method(klass, "numerator", RUBY_METHOD_FUNC(rosetta_function_1106), -1);
-            rb_define_method(klass, "denominator", RUBY_METHOD_FUNC(rosetta_function_1107), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1108), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1109), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1110), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1111), -1);
-            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_1112), -1);
-            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1113), -1);
-            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1113), -1);
-            rb_define_method(klass, "to_tex", RUBY_METHOD_FUNC(rosetta_function_1114), -1);
+            rb_define_method(klass, "numerator", RUBY_METHOD_FUNC(rosetta_function_1107), -1);
+            rb_define_method(klass, "denominator", RUBY_METHOD_FUNC(rosetta_function_1108), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1109), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1110), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_1111), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1112), -1);
+            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_1113), -1);
+            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1114), -1);
+            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1114), -1);
+            rb_define_method(klass, "to_tex", RUBY_METHOD_FUNC(rosetta_function_1115), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_11_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ArbitraryFunction>::value.klass;
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1115), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1116), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_12_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::DifferentiableFunction>::value.klass;
-            rb_define_method(klass, "gradient", RUBY_METHOD_FUNC(rosetta_function_1116), -1);
+            rb_define_method(klass, "gradient", RUBY_METHOD_FUNC(rosetta_function_1117), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_13_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SeparableFunction>::value.klass;
-            rb_define_method(klass, "num_functions", RUBY_METHOD_FUNC(rosetta_function_1117), -1);
-            rb_define_method(klass, "evaluate_term", RUBY_METHOD_FUNC(rosetta_function_1118), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1119), -1);
+            rb_define_method(klass, "num_functions", RUBY_METHOD_FUNC(rosetta_function_1118), -1);
+            rb_define_method(klass, "evaluate_term", RUBY_METHOD_FUNC(rosetta_function_1119), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1120), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_14_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::DifferentiableSeparableFunction>::value.klass;
-            rb_define_method(klass, "num_functions", RUBY_METHOD_FUNC(rosetta_function_1120), -1);
-            rb_define_method(klass, "evaluate_term", RUBY_METHOD_FUNC(rosetta_function_1121), -1);
-            rb_define_method(klass, "gradient_term", RUBY_METHOD_FUNC(rosetta_function_1122), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1123), -1);
-            rb_define_method(klass, "gradient", RUBY_METHOD_FUNC(rosetta_function_1124), -1);
+            rb_define_method(klass, "num_functions", RUBY_METHOD_FUNC(rosetta_function_1121), -1);
+            rb_define_method(klass, "evaluate_term", RUBY_METHOD_FUNC(rosetta_function_1122), -1);
+            rb_define_method(klass, "gradient_term", RUBY_METHOD_FUNC(rosetta_function_1123), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1124), -1);
+            rb_define_method(klass, "gradient", RUBY_METHOD_FUNC(rosetta_function_1125), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_15_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ProximalFunction>::value.klass;
-            rb_define_method(klass, "proximal", RUBY_METHOD_FUNC(rosetta_function_1125), -1);
+            rb_define_method(klass, "proximal", RUBY_METHOD_FUNC(rosetta_function_1126), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_16_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::HessianFunction>::value.klass;
-            rb_define_method(klass, "hessian", RUBY_METHOD_FUNC(rosetta_function_1126), -1);
+            rb_define_method(klass, "hessian", RUBY_METHOD_FUNC(rosetta_function_1127), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_17_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::EqualityConstrainedFunction>::value.klass;
-            rb_define_method(klass, "constraints", RUBY_METHOD_FUNC(rosetta_function_1127), -1);
-            rb_define_method(klass, "constraint_jacobian", RUBY_METHOD_FUNC(rosetta_function_1128), -1);
+            rb_define_method(klass, "constraints", RUBY_METHOD_FUNC(rosetta_function_1128), -1);
+            rb_define_method(klass, "constraint_jacobian", RUBY_METHOD_FUNC(rosetta_function_1129), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_18_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::InequalityConstrainedFunction>::value.klass;
-            rb_define_method(klass, "inequalities", RUBY_METHOD_FUNC(rosetta_function_1129), -1);
-            rb_define_method(klass, "inequality_jacobian", RUBY_METHOD_FUNC(rosetta_function_1130), -1);
+            rb_define_method(klass, "inequalities", RUBY_METHOD_FUNC(rosetta_function_1130), -1);
+            rb_define_method(klass, "inequality_jacobian", RUBY_METHOD_FUNC(rosetta_function_1131), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_19_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ResidualFunction>::value.klass;
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1131), -1);
-            rb_define_method(klass, "jacobian", RUBY_METHOD_FUNC(rosetta_function_1132), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1132), -1);
+            rb_define_method(klass, "jacobian", RUBY_METHOD_FUNC(rosetta_function_1133), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_20_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::GibbsOptions>::value.klass;
-            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_285_get), 0);
+            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_286_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsOptions&>().num_samples)>>)
-                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_285_set), 1);
-            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_286_get), 0);
+                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_286_set), 1);
+            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_287_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsOptions&>().num_warmup)>>)
-                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_286_set), 1);
-            rb_define_method(klass, "initial_step_sizes", RUBY_METHOD_FUNC(rosetta_field_287_get), 0);
+                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_287_set), 1);
+            rb_define_method(klass, "initial_step_sizes", RUBY_METHOD_FUNC(rosetta_field_288_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsOptions&>().initial_step_sizes)>>)
-                rb_define_method(klass, "initial_step_sizes=", RUBY_METHOD_FUNC(rosetta_field_287_set), 1);
-            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_288_get), 0);
+                rb_define_method(klass, "initial_step_sizes=", RUBY_METHOD_FUNC(rosetta_field_288_set), 1);
+            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_289_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsOptions&>().target_accept_rate)>>)
-                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_288_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_289_get), 0);
+                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_289_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_290_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_289_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_290_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_21_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::GibbsResult>::value.klass;
-            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_290_get), 0);
+            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_291_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsResult&>().samples)>>)
-                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_290_set), 1);
-            rb_define_method(klass, "accept_rates", RUBY_METHOD_FUNC(rosetta_field_291_get), 0);
+                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_291_set), 1);
+            rb_define_method(klass, "accept_rates", RUBY_METHOD_FUNC(rosetta_field_292_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsResult&>().accept_rates)>>)
-                rb_define_method(klass, "accept_rates=", RUBY_METHOD_FUNC(rosetta_field_291_set), 1);
-            rb_define_method(klass, "final_step_sizes", RUBY_METHOD_FUNC(rosetta_field_292_get), 0);
+                rb_define_method(klass, "accept_rates=", RUBY_METHOD_FUNC(rosetta_field_292_set), 1);
+            rb_define_method(klass, "final_step_sizes", RUBY_METHOD_FUNC(rosetta_field_293_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::GibbsResult&>().final_step_sizes)>>)
-                rb_define_method(klass, "final_step_sizes=", RUBY_METHOD_FUNC(rosetta_field_292_set), 1);
+                rb_define_method(klass, "final_step_sizes=", RUBY_METHOD_FUNC(rosetta_field_293_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_22_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::GibbsSampler>::value.klass;
-            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1133), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1134), -1);
+            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1134), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1135), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_23_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::HMCOptions>::value.klass;
-            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_293_get), 0);
+            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_294_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCOptions&>().num_samples)>>)
-                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_293_set), 1);
-            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_294_get), 0);
+                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_294_set), 1);
+            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_295_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCOptions&>().num_warmup)>>)
-                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_294_set), 1);
-            rb_define_method(klass, "num_leapfrog_steps", RUBY_METHOD_FUNC(rosetta_field_295_get), 0);
+                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_295_set), 1);
+            rb_define_method(klass, "num_leapfrog_steps", RUBY_METHOD_FUNC(rosetta_field_296_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCOptions&>().num_leapfrog_steps)>>)
-                rb_define_method(klass, "num_leapfrog_steps=", RUBY_METHOD_FUNC(rosetta_field_295_set), 1);
-            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_296_get), 0);
+                rb_define_method(klass, "num_leapfrog_steps=", RUBY_METHOD_FUNC(rosetta_field_296_set), 1);
+            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_297_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCOptions&>().initial_step_size)>>)
-                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_296_set), 1);
-            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_297_get), 0);
+                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_297_set), 1);
+            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_298_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCOptions&>().target_accept_rate)>>)
-                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_297_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_298_get), 0);
+                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_298_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_299_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_298_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_299_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_24_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::HMCResult>::value.klass;
-            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_299_get), 0);
+            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_300_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCResult&>().samples)>>)
-                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_299_set), 1);
-            rb_define_method(klass, "accept_rate", RUBY_METHOD_FUNC(rosetta_field_300_get), 0);
+                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_300_set), 1);
+            rb_define_method(klass, "accept_rate", RUBY_METHOD_FUNC(rosetta_field_301_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCResult&>().accept_rate)>>)
-                rb_define_method(klass, "accept_rate=", RUBY_METHOD_FUNC(rosetta_field_300_set), 1);
-            rb_define_method(klass, "final_step_size", RUBY_METHOD_FUNC(rosetta_field_301_get), 0);
+                rb_define_method(klass, "accept_rate=", RUBY_METHOD_FUNC(rosetta_field_301_set), 1);
+            rb_define_method(klass, "final_step_size", RUBY_METHOD_FUNC(rosetta_field_302_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::HMCResult&>().final_step_size)>>)
-                rb_define_method(klass, "final_step_size=", RUBY_METHOD_FUNC(rosetta_field_301_set), 1);
+                rb_define_method(klass, "final_step_size=", RUBY_METHOD_FUNC(rosetta_field_302_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_25_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::HMC>::value.klass;
-            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1135), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1136), -1);
+            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1136), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1137), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_26_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::ImportanceSamplingOptions>::value.klass;
-            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_302_get), 0);
+            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_303_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::ImportanceSamplingOptions&>().num_samples)>>)
-                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_302_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_303_get), 0);
+                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_303_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_304_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::ImportanceSamplingOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_303_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_304_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_27_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::ImportanceSamplingResult>::value.klass;
-            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_304_get), 0);
+            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_305_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::ImportanceSamplingResult&>().samples)>>)
-                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_304_set), 1);
-            rb_define_method(klass, "normalized_weights", RUBY_METHOD_FUNC(rosetta_field_305_get), 0);
+                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_305_set), 1);
+            rb_define_method(klass, "normalized_weights", RUBY_METHOD_FUNC(rosetta_field_306_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::ImportanceSamplingResult&>().normalized_weights)>>)
-                rb_define_method(klass, "normalized_weights=", RUBY_METHOD_FUNC(rosetta_field_305_set), 1);
-            rb_define_method(klass, "effective_sample_size", RUBY_METHOD_FUNC(rosetta_field_306_get), 0);
+                rb_define_method(klass, "normalized_weights=", RUBY_METHOD_FUNC(rosetta_field_306_set), 1);
+            rb_define_method(klass, "effective_sample_size", RUBY_METHOD_FUNC(rosetta_field_307_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::ImportanceSamplingResult&>().effective_sample_size)>>)
-                rb_define_method(klass, "effective_sample_size=", RUBY_METHOD_FUNC(rosetta_field_306_set), 1);
-            rb_define_method(klass, "log_evidence", RUBY_METHOD_FUNC(rosetta_field_307_get), 0);
+                rb_define_method(klass, "effective_sample_size=", RUBY_METHOD_FUNC(rosetta_field_307_set), 1);
+            rb_define_method(klass, "log_evidence", RUBY_METHOD_FUNC(rosetta_field_308_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::ImportanceSamplingResult&>().log_evidence)>>)
-                rb_define_method(klass, "log_evidence=", RUBY_METHOD_FUNC(rosetta_field_307_set), 1);
+                rb_define_method(klass, "log_evidence=", RUBY_METHOD_FUNC(rosetta_field_308_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_28_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::ImportanceSampling>::value.klass;
-            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1137), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1138), -1);
+            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1138), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1139), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_29_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::MAPOptions>::value.klass;
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_308_get), 0);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_309_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::MAPOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_308_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_309_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_309_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_310_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::MAPOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_309_set), 1);
-            rb_define_method(klass, "history_size", RUBY_METHOD_FUNC(rosetta_field_310_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_310_set), 1);
+            rb_define_method(klass, "history_size", RUBY_METHOD_FUNC(rosetta_field_311_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::MAPOptions&>().history_size)>>)
-                rb_define_method(klass, "history_size=", RUBY_METHOD_FUNC(rosetta_field_310_set), 1);
+                rb_define_method(klass, "history_size=", RUBY_METHOD_FUNC(rosetta_field_311_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_30_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::MAP>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1139), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1140), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1140), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1141), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_31_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::NUTSOptions>::value.klass;
-            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_311_get), 0);
+            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_312_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSOptions&>().num_samples)>>)
-                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_311_set), 1);
-            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_312_get), 0);
+                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_312_set), 1);
+            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_313_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSOptions&>().num_warmup)>>)
-                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_312_set), 1);
-            rb_define_method(klass, "max_tree_depth", RUBY_METHOD_FUNC(rosetta_field_313_get), 0);
+                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_313_set), 1);
+            rb_define_method(klass, "max_tree_depth", RUBY_METHOD_FUNC(rosetta_field_314_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSOptions&>().max_tree_depth)>>)
-                rb_define_method(klass, "max_tree_depth=", RUBY_METHOD_FUNC(rosetta_field_313_set), 1);
-            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_314_get), 0);
+                rb_define_method(klass, "max_tree_depth=", RUBY_METHOD_FUNC(rosetta_field_314_set), 1);
+            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_315_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSOptions&>().initial_step_size)>>)
-                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_314_set), 1);
-            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_315_get), 0);
+                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_315_set), 1);
+            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_316_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSOptions&>().target_accept_rate)>>)
-                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_315_set), 1);
-            rb_define_method(klass, "max_delta_error", RUBY_METHOD_FUNC(rosetta_field_316_get), 0);
+                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_316_set), 1);
+            rb_define_method(klass, "max_delta_error", RUBY_METHOD_FUNC(rosetta_field_317_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSOptions&>().max_delta_error)>>)
-                rb_define_method(klass, "max_delta_error=", RUBY_METHOD_FUNC(rosetta_field_316_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_317_get), 0);
+                rb_define_method(klass, "max_delta_error=", RUBY_METHOD_FUNC(rosetta_field_317_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_318_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_317_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_318_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_32_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::NUTSResult>::value.klass;
-            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_318_get), 0);
+            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_319_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().samples)>>)
-                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_318_set), 1);
-            rb_define_method(klass, "accept_rate", RUBY_METHOD_FUNC(rosetta_field_319_get), 0);
+                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_319_set), 1);
+            rb_define_method(klass, "accept_rate", RUBY_METHOD_FUNC(rosetta_field_320_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().accept_rate)>>)
-                rb_define_method(klass, "accept_rate=", RUBY_METHOD_FUNC(rosetta_field_319_set), 1);
-            rb_define_method(klass, "final_step_size", RUBY_METHOD_FUNC(rosetta_field_320_get), 0);
+                rb_define_method(klass, "accept_rate=", RUBY_METHOD_FUNC(rosetta_field_320_set), 1);
+            rb_define_method(klass, "final_step_size", RUBY_METHOD_FUNC(rosetta_field_321_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().final_step_size)>>)
-                rb_define_method(klass, "final_step_size=", RUBY_METHOD_FUNC(rosetta_field_320_set), 1);
-            rb_define_method(klass, "num_divergences", RUBY_METHOD_FUNC(rosetta_field_321_get), 0);
+                rb_define_method(klass, "final_step_size=", RUBY_METHOD_FUNC(rosetta_field_321_set), 1);
+            rb_define_method(klass, "num_divergences", RUBY_METHOD_FUNC(rosetta_field_322_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().num_divergences)>>)
-                rb_define_method(klass, "num_divergences=", RUBY_METHOD_FUNC(rosetta_field_321_set), 1);
-            rb_define_method(klass, "divergent", RUBY_METHOD_FUNC(rosetta_field_322_get), 0);
+                rb_define_method(klass, "num_divergences=", RUBY_METHOD_FUNC(rosetta_field_322_set), 1);
+            rb_define_method(klass, "divergent", RUBY_METHOD_FUNC(rosetta_field_323_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().divergent)>>)
-                rb_define_method(klass, "divergent=", RUBY_METHOD_FUNC(rosetta_field_322_set), 1);
-            rb_define_method(klass, "tree_depth", RUBY_METHOD_FUNC(rosetta_field_323_get), 0);
+                rb_define_method(klass, "divergent=", RUBY_METHOD_FUNC(rosetta_field_323_set), 1);
+            rb_define_method(klass, "tree_depth", RUBY_METHOD_FUNC(rosetta_field_324_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().tree_depth)>>)
-                rb_define_method(klass, "tree_depth=", RUBY_METHOD_FUNC(rosetta_field_323_set), 1);
-            rb_define_method(klass, "n_leapfrog", RUBY_METHOD_FUNC(rosetta_field_324_get), 0);
+                rb_define_method(klass, "tree_depth=", RUBY_METHOD_FUNC(rosetta_field_324_set), 1);
+            rb_define_method(klass, "n_leapfrog", RUBY_METHOD_FUNC(rosetta_field_325_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().n_leapfrog)>>)
-                rb_define_method(klass, "n_leapfrog=", RUBY_METHOD_FUNC(rosetta_field_324_set), 1);
-            rb_define_method(klass, "energy", RUBY_METHOD_FUNC(rosetta_field_325_get), 0);
+                rb_define_method(klass, "n_leapfrog=", RUBY_METHOD_FUNC(rosetta_field_325_set), 1);
+            rb_define_method(klass, "energy", RUBY_METHOD_FUNC(rosetta_field_326_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().energy)>>)
-                rb_define_method(klass, "energy=", RUBY_METHOD_FUNC(rosetta_field_325_set), 1);
+                rb_define_method(klass, "energy=", RUBY_METHOD_FUNC(rosetta_field_326_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_33_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::NUTS>::value.klass;
-            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1141), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1142), -1);
+            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1142), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1143), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_34_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::RWMOptions>::value.klass;
-            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_326_get), 0);
+            rb_define_method(klass, "num_samples", RUBY_METHOD_FUNC(rosetta_field_327_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMOptions&>().num_samples)>>)
-                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_326_set), 1);
-            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_327_get), 0);
+                rb_define_method(klass, "num_samples=", RUBY_METHOD_FUNC(rosetta_field_327_set), 1);
+            rb_define_method(klass, "num_warmup", RUBY_METHOD_FUNC(rosetta_field_328_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMOptions&>().num_warmup)>>)
-                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_327_set), 1);
-            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_328_get), 0);
+                rb_define_method(klass, "num_warmup=", RUBY_METHOD_FUNC(rosetta_field_328_set), 1);
+            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_329_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMOptions&>().initial_step_size)>>)
-                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_328_set), 1);
-            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_329_get), 0);
+                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_329_set), 1);
+            rb_define_method(klass, "target_accept_rate", RUBY_METHOD_FUNC(rosetta_field_330_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMOptions&>().target_accept_rate)>>)
-                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_329_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_330_get), 0);
+                rb_define_method(klass, "target_accept_rate=", RUBY_METHOD_FUNC(rosetta_field_330_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_331_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_330_set), 1);
-            rb_define_method(klass, "adapt_covariance", RUBY_METHOD_FUNC(rosetta_field_331_get), 0);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_331_set), 1);
+            rb_define_method(klass, "adapt_covariance", RUBY_METHOD_FUNC(rosetta_field_332_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMOptions&>().adapt_covariance)>>)
-                rb_define_method(klass, "adapt_covariance=", RUBY_METHOD_FUNC(rosetta_field_331_set), 1);
+                rb_define_method(klass, "adapt_covariance=", RUBY_METHOD_FUNC(rosetta_field_332_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_35_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::RWMResult>::value.klass;
-            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_332_get), 0);
+            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_field_333_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMResult&>().samples)>>)
-                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_332_set), 1);
-            rb_define_method(klass, "accept_rate", RUBY_METHOD_FUNC(rosetta_field_333_get), 0);
+                rb_define_method(klass, "samples=", RUBY_METHOD_FUNC(rosetta_field_333_set), 1);
+            rb_define_method(klass, "accept_rate", RUBY_METHOD_FUNC(rosetta_field_334_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMResult&>().accept_rate)>>)
-                rb_define_method(klass, "accept_rate=", RUBY_METHOD_FUNC(rosetta_field_333_set), 1);
-            rb_define_method(klass, "final_step_size", RUBY_METHOD_FUNC(rosetta_field_334_get), 0);
+                rb_define_method(klass, "accept_rate=", RUBY_METHOD_FUNC(rosetta_field_334_set), 1);
+            rb_define_method(klass, "final_step_size", RUBY_METHOD_FUNC(rosetta_field_335_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMResult&>().final_step_size)>>)
-                rb_define_method(klass, "final_step_size=", RUBY_METHOD_FUNC(rosetta_field_334_set), 1);
-            rb_define_method(klass, "proposal_covariance", RUBY_METHOD_FUNC(rosetta_field_335_get), 0);
+                rb_define_method(klass, "final_step_size=", RUBY_METHOD_FUNC(rosetta_field_335_set), 1);
+            rb_define_method(klass, "proposal_covariance", RUBY_METHOD_FUNC(rosetta_field_336_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::bayes::RWMResult&>().proposal_covariance)>>)
-                rb_define_method(klass, "proposal_covariance=", RUBY_METHOD_FUNC(rosetta_field_335_set), 1);
+                rb_define_method(klass, "proposal_covariance=", RUBY_METHOD_FUNC(rosetta_field_336_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_36_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::bayes::RandomWalkMetropolis>::value.klass;
-            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1143), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1144), -1);
+            rb_define_method(klass, "sample", RUBY_METHOD_FUNC(rosetta_function_1144), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1145), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_37_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::image::Pixel>::value.klass;
-            rb_define_method(klass, "r", RUBY_METHOD_FUNC(rosetta_field_336_get), 0);
+            rb_define_method(klass, "r", RUBY_METHOD_FUNC(rosetta_field_337_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::image::Pixel&>().r)>>)
-                rb_define_method(klass, "r=", RUBY_METHOD_FUNC(rosetta_field_336_set), 1);
-            rb_define_method(klass, "g", RUBY_METHOD_FUNC(rosetta_field_337_get), 0);
+                rb_define_method(klass, "r=", RUBY_METHOD_FUNC(rosetta_field_337_set), 1);
+            rb_define_method(klass, "g", RUBY_METHOD_FUNC(rosetta_field_338_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::image::Pixel&>().g)>>)
-                rb_define_method(klass, "g=", RUBY_METHOD_FUNC(rosetta_field_337_set), 1);
-            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_338_get), 0);
+                rb_define_method(klass, "g=", RUBY_METHOD_FUNC(rosetta_field_338_set), 1);
+            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_339_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::image::Pixel&>().b)>>)
-                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_338_set), 1);
-            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_339_get), 0);
+                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_339_set), 1);
+            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_340_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::image::Pixel&>().a)>>)
-                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_339_set), 1);
+                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_340_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_38_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::image::Image>::value.klass;
-            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1145), -1);
-            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1146), -1);
-            rb_define_method(klass, "mode", RUBY_METHOD_FUNC(rosetta_function_1147), -1);
-            rb_define_method(klass, "channels", RUBY_METHOD_FUNC(rosetta_function_1148), -1);
-            rb_define_method(klass, "data", RUBY_METHOD_FUNC(rosetta_function_1149), -1);
-            rb_define_method(klass, "get_pixel", RUBY_METHOD_FUNC(rosetta_function_1150), -1);
-            rb_define_method(klass, "set_pixel", RUBY_METHOD_FUNC(rosetta_function_1151), -1);
-            rb_define_method(klass, "fill", RUBY_METHOD_FUNC(rosetta_function_1152), -1);
-            rb_define_singleton_method(klass, "channel_count", RUBY_METHOD_FUNC(rosetta_function_1153), -1);
+            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1146), -1);
+            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1147), -1);
+            rb_define_method(klass, "mode", RUBY_METHOD_FUNC(rosetta_function_1148), -1);
+            rb_define_method(klass, "channels", RUBY_METHOD_FUNC(rosetta_function_1149), -1);
+            rb_define_method(klass, "data", RUBY_METHOD_FUNC(rosetta_function_1150), -1);
+            rb_define_method(klass, "get_pixel", RUBY_METHOD_FUNC(rosetta_function_1151), -1);
+            rb_define_method(klass, "set_pixel", RUBY_METHOD_FUNC(rosetta_function_1152), -1);
+            rb_define_method(klass, "fill", RUBY_METHOD_FUNC(rosetta_function_1153), -1);
+            rb_define_singleton_method(klass, "channel_count", RUBY_METHOD_FUNC(rosetta_function_1154), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_39_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::image::HSV>::value.klass;
-            rb_define_method(klass, "h", RUBY_METHOD_FUNC(rosetta_field_340_get), 0);
+            rb_define_method(klass, "h", RUBY_METHOD_FUNC(rosetta_field_341_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::image::HSV&>().h)>>)
-                rb_define_method(klass, "h=", RUBY_METHOD_FUNC(rosetta_field_340_set), 1);
-            rb_define_method(klass, "s", RUBY_METHOD_FUNC(rosetta_field_341_get), 0);
+                rb_define_method(klass, "h=", RUBY_METHOD_FUNC(rosetta_field_341_set), 1);
+            rb_define_method(klass, "s", RUBY_METHOD_FUNC(rosetta_field_342_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::image::HSV&>().s)>>)
-                rb_define_method(klass, "s=", RUBY_METHOD_FUNC(rosetta_field_341_set), 1);
-            rb_define_method(klass, "v", RUBY_METHOD_FUNC(rosetta_field_342_get), 0);
+                rb_define_method(klass, "s=", RUBY_METHOD_FUNC(rosetta_field_342_set), 1);
+            rb_define_method(klass, "v", RUBY_METHOD_FUNC(rosetta_field_343_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::image::HSV&>().v)>>)
-                rb_define_method(klass, "v=", RUBY_METHOD_FUNC(rosetta_field_342_set), 1);
+                rb_define_method(klass, "v=", RUBY_METHOD_FUNC(rosetta_field_343_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_40_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cv::KeyPoint>::value.klass;
-            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_343_get), 0);
+            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_344_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::KeyPoint&>().x)>>)
-                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_343_set), 1);
-            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_344_get), 0);
+                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_344_set), 1);
+            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_345_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::KeyPoint&>().y)>>)
-                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_344_set), 1);
-            rb_define_method(klass, "scale", RUBY_METHOD_FUNC(rosetta_field_345_get), 0);
+                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_345_set), 1);
+            rb_define_method(klass, "scale", RUBY_METHOD_FUNC(rosetta_field_346_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::KeyPoint&>().scale)>>)
-                rb_define_method(klass, "scale=", RUBY_METHOD_FUNC(rosetta_field_345_set), 1);
-            rb_define_method(klass, "response", RUBY_METHOD_FUNC(rosetta_field_346_get), 0);
+                rb_define_method(klass, "scale=", RUBY_METHOD_FUNC(rosetta_field_346_set), 1);
+            rb_define_method(klass, "response", RUBY_METHOD_FUNC(rosetta_field_347_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::KeyPoint&>().response)>>)
-                rb_define_method(klass, "response=", RUBY_METHOD_FUNC(rosetta_field_346_set), 1);
+                rb_define_method(klass, "response=", RUBY_METHOD_FUNC(rosetta_field_347_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_41_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cv::Corner>::value.klass;
-            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_347_get), 0);
+            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_348_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::Corner&>().x)>>)
-                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_347_set), 1);
-            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_348_get), 0);
+                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_348_set), 1);
+            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_349_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::Corner&>().y)>>)
-                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_348_set), 1);
-            rb_define_method(klass, "response", RUBY_METHOD_FUNC(rosetta_field_349_get), 0);
+                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_349_set), 1);
+            rb_define_method(klass, "response", RUBY_METHOD_FUNC(rosetta_field_350_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::Corner&>().response)>>)
-                rb_define_method(klass, "response=", RUBY_METHOD_FUNC(rosetta_field_349_set), 1);
+                rb_define_method(klass, "response=", RUBY_METHOD_FUNC(rosetta_field_350_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_42_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cv::detail::StructureTensorField>::value.klass;
-            rb_define_method(klass, "sxx", RUBY_METHOD_FUNC(rosetta_field_350_get), 0);
+            rb_define_method(klass, "sxx", RUBY_METHOD_FUNC(rosetta_field_351_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxx)>>)
-                rb_define_method(klass, "sxx=", RUBY_METHOD_FUNC(rosetta_field_350_set), 1);
-            rb_define_method(klass, "syy", RUBY_METHOD_FUNC(rosetta_field_351_get), 0);
+                rb_define_method(klass, "sxx=", RUBY_METHOD_FUNC(rosetta_field_351_set), 1);
+            rb_define_method(klass, "syy", RUBY_METHOD_FUNC(rosetta_field_352_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().syy)>>)
-                rb_define_method(klass, "syy=", RUBY_METHOD_FUNC(rosetta_field_351_set), 1);
-            rb_define_method(klass, "sxy", RUBY_METHOD_FUNC(rosetta_field_352_get), 0);
+                rb_define_method(klass, "syy=", RUBY_METHOD_FUNC(rosetta_field_352_set), 1);
+            rb_define_method(klass, "sxy", RUBY_METHOD_FUNC(rosetta_field_353_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxy)>>)
-                rb_define_method(klass, "sxy=", RUBY_METHOD_FUNC(rosetta_field_352_set), 1);
+                rb_define_method(klass, "sxy=", RUBY_METHOD_FUNC(rosetta_field_353_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_43_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cv::HoughLine>::value.klass;
-            rb_define_method(klass, "rho", RUBY_METHOD_FUNC(rosetta_field_353_get), 0);
+            rb_define_method(klass, "rho", RUBY_METHOD_FUNC(rosetta_field_354_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::HoughLine&>().rho)>>)
-                rb_define_method(klass, "rho=", RUBY_METHOD_FUNC(rosetta_field_353_set), 1);
-            rb_define_method(klass, "theta", RUBY_METHOD_FUNC(rosetta_field_354_get), 0);
+                rb_define_method(klass, "rho=", RUBY_METHOD_FUNC(rosetta_field_354_set), 1);
+            rb_define_method(klass, "theta", RUBY_METHOD_FUNC(rosetta_field_355_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::HoughLine&>().theta)>>)
-                rb_define_method(klass, "theta=", RUBY_METHOD_FUNC(rosetta_field_354_set), 1);
-            rb_define_method(klass, "votes", RUBY_METHOD_FUNC(rosetta_field_355_get), 0);
+                rb_define_method(klass, "theta=", RUBY_METHOD_FUNC(rosetta_field_355_set), 1);
+            rb_define_method(klass, "votes", RUBY_METHOD_FUNC(rosetta_field_356_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::HoughLine&>().votes)>>)
-                rb_define_method(klass, "votes=", RUBY_METHOD_FUNC(rosetta_field_355_set), 1);
+                rb_define_method(klass, "votes=", RUBY_METHOD_FUNC(rosetta_field_356_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_44_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cv::HoughCircle>::value.klass;
-            rb_define_method(klass, "cx", RUBY_METHOD_FUNC(rosetta_field_356_get), 0);
+            rb_define_method(klass, "cx", RUBY_METHOD_FUNC(rosetta_field_357_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::HoughCircle&>().cx)>>)
-                rb_define_method(klass, "cx=", RUBY_METHOD_FUNC(rosetta_field_356_set), 1);
-            rb_define_method(klass, "cy", RUBY_METHOD_FUNC(rosetta_field_357_get), 0);
+                rb_define_method(klass, "cx=", RUBY_METHOD_FUNC(rosetta_field_357_set), 1);
+            rb_define_method(klass, "cy", RUBY_METHOD_FUNC(rosetta_field_358_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::HoughCircle&>().cy)>>)
-                rb_define_method(klass, "cy=", RUBY_METHOD_FUNC(rosetta_field_357_set), 1);
-            rb_define_method(klass, "radius", RUBY_METHOD_FUNC(rosetta_field_358_get), 0);
+                rb_define_method(klass, "cy=", RUBY_METHOD_FUNC(rosetta_field_358_set), 1);
+            rb_define_method(klass, "radius", RUBY_METHOD_FUNC(rosetta_field_359_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::HoughCircle&>().radius)>>)
-                rb_define_method(klass, "radius=", RUBY_METHOD_FUNC(rosetta_field_358_set), 1);
-            rb_define_method(klass, "votes", RUBY_METHOD_FUNC(rosetta_field_359_get), 0);
+                rb_define_method(klass, "radius=", RUBY_METHOD_FUNC(rosetta_field_359_set), 1);
+            rb_define_method(klass, "votes", RUBY_METHOD_FUNC(rosetta_field_360_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::HoughCircle&>().votes)>>)
-                rb_define_method(klass, "votes=", RUBY_METHOD_FUNC(rosetta_field_359_set), 1);
+                rb_define_method(klass, "votes=", RUBY_METHOD_FUNC(rosetta_field_360_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_45_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cv::FlowVector>::value.klass;
-            rb_define_method(klass, "dx", RUBY_METHOD_FUNC(rosetta_field_360_get), 0);
+            rb_define_method(klass, "dx", RUBY_METHOD_FUNC(rosetta_field_361_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::FlowVector&>().dx)>>)
-                rb_define_method(klass, "dx=", RUBY_METHOD_FUNC(rosetta_field_360_set), 1);
-            rb_define_method(klass, "dy", RUBY_METHOD_FUNC(rosetta_field_361_get), 0);
+                rb_define_method(klass, "dx=", RUBY_METHOD_FUNC(rosetta_field_361_set), 1);
+            rb_define_method(klass, "dy", RUBY_METHOD_FUNC(rosetta_field_362_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::FlowVector&>().dy)>>)
-                rb_define_method(klass, "dy=", RUBY_METHOD_FUNC(rosetta_field_361_set), 1);
-            rb_define_method(klass, "valid", RUBY_METHOD_FUNC(rosetta_field_362_get), 0);
+                rb_define_method(klass, "dy=", RUBY_METHOD_FUNC(rosetta_field_362_set), 1);
+            rb_define_method(klass, "valid", RUBY_METHOD_FUNC(rosetta_field_363_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::FlowVector&>().valid)>>)
-                rb_define_method(klass, "valid=", RUBY_METHOD_FUNC(rosetta_field_362_set), 1);
+                rb_define_method(klass, "valid=", RUBY_METHOD_FUNC(rosetta_field_363_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_46_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cv::LabelMap>::value.klass;
-            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_field_363_get), 0);
+            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_field_364_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::LabelMap&>().labels)>>)
-                rb_define_method(klass, "labels=", RUBY_METHOD_FUNC(rosetta_field_363_set), 1);
-            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_field_364_get), 0);
+                rb_define_method(klass, "labels=", RUBY_METHOD_FUNC(rosetta_field_364_set), 1);
+            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_field_365_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::LabelMap&>().width)>>)
-                rb_define_method(klass, "width=", RUBY_METHOD_FUNC(rosetta_field_364_set), 1);
-            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_field_365_get), 0);
+                rb_define_method(klass, "width=", RUBY_METHOD_FUNC(rosetta_field_365_set), 1);
+            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_field_366_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::LabelMap&>().height)>>)
-                rb_define_method(klass, "height=", RUBY_METHOD_FUNC(rosetta_field_365_set), 1);
-            rb_define_method(klass, "count", RUBY_METHOD_FUNC(rosetta_field_366_get), 0);
+                rb_define_method(klass, "height=", RUBY_METHOD_FUNC(rosetta_field_366_set), 1);
+            rb_define_method(klass, "count", RUBY_METHOD_FUNC(rosetta_field_367_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::cv::LabelMap&>().count)>>)
-                rb_define_method(klass, "count=", RUBY_METHOD_FUNC(rosetta_field_366_set), 1);
+                rb_define_method(klass, "count=", RUBY_METHOD_FUNC(rosetta_field_367_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_47_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::datasets::ImageBatch>::value.klass;
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1154), -1);
-            rb_define_method(klass, "features", RUBY_METHOD_FUNC(rosetta_function_1155), -1);
-            rb_define_method(klass, "image", RUBY_METHOD_FUNC(rosetta_function_1156), -1);
-            rb_define_method(klass, "pixels", RUBY_METHOD_FUNC(rosetta_field_367_get), 0);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1155), -1);
+            rb_define_method(klass, "features", RUBY_METHOD_FUNC(rosetta_function_1156), -1);
+            rb_define_method(klass, "image", RUBY_METHOD_FUNC(rosetta_function_1157), -1);
+            rb_define_method(klass, "pixels", RUBY_METHOD_FUNC(rosetta_field_368_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::datasets::ImageBatch&>().pixels)>>)
-                rb_define_method(klass, "pixels=", RUBY_METHOD_FUNC(rosetta_field_367_set), 1);
-            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_field_368_get), 0);
+                rb_define_method(klass, "pixels=", RUBY_METHOD_FUNC(rosetta_field_368_set), 1);
+            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_field_369_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::datasets::ImageBatch&>().labels)>>)
-                rb_define_method(klass, "labels=", RUBY_METHOD_FUNC(rosetta_field_368_set), 1);
-            rb_define_method(klass, "indices", RUBY_METHOD_FUNC(rosetta_field_369_get), 0);
+                rb_define_method(klass, "labels=", RUBY_METHOD_FUNC(rosetta_field_369_set), 1);
+            rb_define_method(klass, "indices", RUBY_METHOD_FUNC(rosetta_field_370_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::datasets::ImageBatch&>().indices)>>)
-                rb_define_method(klass, "indices=", RUBY_METHOD_FUNC(rosetta_field_369_set), 1);
-            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_field_370_get), 0);
+                rb_define_method(klass, "indices=", RUBY_METHOD_FUNC(rosetta_field_370_set), 1);
+            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_field_371_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::datasets::ImageBatch&>().shape)>>)
-                rb_define_method(klass, "shape=", RUBY_METHOD_FUNC(rosetta_field_370_set), 1);
+                rb_define_method(klass, "shape=", RUBY_METHOD_FUNC(rosetta_field_371_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_48_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::datasets::ImageLoader>::value.klass;
-            rb_define_method(klass, "set_batch_size", RUBY_METHOD_FUNC(rosetta_function_1157), -1);
-            rb_define_method(klass, "batch_size=", RUBY_METHOD_FUNC(rosetta_function_1157), -1);
-            rb_define_method(klass, "set_shuffle", RUBY_METHOD_FUNC(rosetta_function_1158), -1);
-            rb_define_method(klass, "shuffle=", RUBY_METHOD_FUNC(rosetta_function_1158), -1);
-            rb_define_method(klass, "set_seed", RUBY_METHOD_FUNC(rosetta_function_1159), -1);
-            rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_function_1159), -1);
-            rb_define_method(klass, "set_drop_last", RUBY_METHOD_FUNC(rosetta_function_1160), -1);
-            rb_define_method(klass, "drop_last=", RUBY_METHOD_FUNC(rosetta_function_1160), -1);
-            rb_define_method(klass, "set_normalize", RUBY_METHOD_FUNC(rosetta_function_1161), -1);
-            rb_define_method(klass, "normalize=", RUBY_METHOD_FUNC(rosetta_function_1161), -1);
-            rb_define_method(klass, "set_layout", RUBY_METHOD_FUNC(rosetta_function_1162), -1);
-            rb_define_method(klass, "layout=", RUBY_METHOD_FUNC(rosetta_function_1162), -1);
-            rb_define_method(klass, "set_limit", RUBY_METHOD_FUNC(rosetta_function_1163), -1);
-            rb_define_method(klass, "limit=", RUBY_METHOD_FUNC(rosetta_function_1163), -1);
-            rb_define_method(klass, "set_coarse_labels", RUBY_METHOD_FUNC(rosetta_function_1164), -1);
-            rb_define_method(klass, "coarse_labels=", RUBY_METHOD_FUNC(rosetta_function_1164), -1);
-            rb_define_method(klass, "dataset", RUBY_METHOD_FUNC(rosetta_function_1165), -1);
-            rb_define_method(klass, "split", RUBY_METHOD_FUNC(rosetta_function_1166), -1);
-            rb_define_method(klass, "directory", RUBY_METHOD_FUNC(rosetta_function_1167), -1);
-            rb_define_method(klass, "batch_size", RUBY_METHOD_FUNC(rosetta_function_1168), -1);
-            rb_define_method(klass, "shuffle", RUBY_METHOD_FUNC(rosetta_function_1169), -1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_function_1170), -1);
-            rb_define_method(klass, "drop_last", RUBY_METHOD_FUNC(rosetta_function_1171), -1);
-            rb_define_method(klass, "normalize", RUBY_METHOD_FUNC(rosetta_function_1172), -1);
-            rb_define_method(klass, "layout", RUBY_METHOD_FUNC(rosetta_function_1173), -1);
-            rb_define_method(klass, "coarse_labels", RUBY_METHOD_FUNC(rosetta_function_1174), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1175), -1);
-            rb_define_method(klass, "split_size", RUBY_METHOD_FUNC(rosetta_function_1176), -1);
-            rb_define_method(klass, "num_batches", RUBY_METHOD_FUNC(rosetta_function_1177), -1);
-            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1178), -1);
-            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1179), -1);
-            rb_define_method(klass, "channels", RUBY_METHOD_FUNC(rosetta_function_1180), -1);
-            rb_define_method(klass, "num_classes", RUBY_METHOD_FUNC(rosetta_function_1181), -1);
-            rb_define_method(klass, "class_names", RUBY_METHOD_FUNC(rosetta_function_1182), -1);
-            rb_define_method(klass, "epoch", RUBY_METHOD_FUNC(rosetta_function_1183), -1);
-            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_function_1184), -1);
-            rb_define_method(klass, "has_next\?", RUBY_METHOD_FUNC(rosetta_function_1185), -1);
-            rb_define_method(klass, "next_", RUBY_METHOD_FUNC(rosetta_function_1186), -1);
-            rb_define_method(klass, "reset", RUBY_METHOD_FUNC(rosetta_function_1187), -1);
-            rb_define_method(klass, "batch", RUBY_METHOD_FUNC(rosetta_function_1188), -1);
-            rb_define_method(klass, "take", RUBY_METHOD_FUNC(rosetta_function_1189), -1);
-            rb_define_method(klass, "load_all", RUBY_METHOD_FUNC(rosetta_function_1190), -1);
+            rb_define_method(klass, "set_batch_size", RUBY_METHOD_FUNC(rosetta_function_1158), -1);
+            rb_define_method(klass, "batch_size=", RUBY_METHOD_FUNC(rosetta_function_1158), -1);
+            rb_define_method(klass, "set_shuffle", RUBY_METHOD_FUNC(rosetta_function_1159), -1);
+            rb_define_method(klass, "shuffle=", RUBY_METHOD_FUNC(rosetta_function_1159), -1);
+            rb_define_method(klass, "set_seed", RUBY_METHOD_FUNC(rosetta_function_1160), -1);
+            rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_function_1160), -1);
+            rb_define_method(klass, "set_drop_last", RUBY_METHOD_FUNC(rosetta_function_1161), -1);
+            rb_define_method(klass, "drop_last=", RUBY_METHOD_FUNC(rosetta_function_1161), -1);
+            rb_define_method(klass, "set_normalize", RUBY_METHOD_FUNC(rosetta_function_1162), -1);
+            rb_define_method(klass, "normalize=", RUBY_METHOD_FUNC(rosetta_function_1162), -1);
+            rb_define_method(klass, "set_layout", RUBY_METHOD_FUNC(rosetta_function_1163), -1);
+            rb_define_method(klass, "layout=", RUBY_METHOD_FUNC(rosetta_function_1163), -1);
+            rb_define_method(klass, "set_limit", RUBY_METHOD_FUNC(rosetta_function_1164), -1);
+            rb_define_method(klass, "limit=", RUBY_METHOD_FUNC(rosetta_function_1164), -1);
+            rb_define_method(klass, "set_coarse_labels", RUBY_METHOD_FUNC(rosetta_function_1165), -1);
+            rb_define_method(klass, "coarse_labels=", RUBY_METHOD_FUNC(rosetta_function_1165), -1);
+            rb_define_method(klass, "dataset", RUBY_METHOD_FUNC(rosetta_function_1166), -1);
+            rb_define_method(klass, "split", RUBY_METHOD_FUNC(rosetta_function_1167), -1);
+            rb_define_method(klass, "directory", RUBY_METHOD_FUNC(rosetta_function_1168), -1);
+            rb_define_method(klass, "batch_size", RUBY_METHOD_FUNC(rosetta_function_1169), -1);
+            rb_define_method(klass, "shuffle", RUBY_METHOD_FUNC(rosetta_function_1170), -1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_function_1171), -1);
+            rb_define_method(klass, "drop_last", RUBY_METHOD_FUNC(rosetta_function_1172), -1);
+            rb_define_method(klass, "normalize", RUBY_METHOD_FUNC(rosetta_function_1173), -1);
+            rb_define_method(klass, "layout", RUBY_METHOD_FUNC(rosetta_function_1174), -1);
+            rb_define_method(klass, "coarse_labels", RUBY_METHOD_FUNC(rosetta_function_1175), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1176), -1);
+            rb_define_method(klass, "split_size", RUBY_METHOD_FUNC(rosetta_function_1177), -1);
+            rb_define_method(klass, "num_batches", RUBY_METHOD_FUNC(rosetta_function_1178), -1);
+            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1179), -1);
+            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1180), -1);
+            rb_define_method(klass, "channels", RUBY_METHOD_FUNC(rosetta_function_1181), -1);
+            rb_define_method(klass, "num_classes", RUBY_METHOD_FUNC(rosetta_function_1182), -1);
+            rb_define_method(klass, "class_names", RUBY_METHOD_FUNC(rosetta_function_1183), -1);
+            rb_define_method(klass, "epoch", RUBY_METHOD_FUNC(rosetta_function_1184), -1);
+            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_function_1185), -1);
+            rb_define_method(klass, "has_next\?", RUBY_METHOD_FUNC(rosetta_function_1186), -1);
+            rb_define_method(klass, "next_", RUBY_METHOD_FUNC(rosetta_function_1187), -1);
+            rb_define_method(klass, "reset", RUBY_METHOD_FUNC(rosetta_function_1188), -1);
+            rb_define_method(klass, "batch", RUBY_METHOD_FUNC(rosetta_function_1189), -1);
+            rb_define_method(klass, "take", RUBY_METHOD_FUNC(rosetta_function_1190), -1);
+            rb_define_method(klass, "load_all", RUBY_METHOD_FUNC(rosetta_function_1191), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_49_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::Mesh1D>::value.klass;
-            rb_define_method(klass, "num_nodes", RUBY_METHOD_FUNC(rosetta_function_1191), -1);
-            rb_define_method(klass, "num_elements", RUBY_METHOD_FUNC(rosetta_function_1192), -1);
-            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1193), -1);
-            rb_define_method(klass, "element_length", RUBY_METHOD_FUNC(rosetta_function_1194), -1);
+            rb_define_method(klass, "num_nodes", RUBY_METHOD_FUNC(rosetta_function_1192), -1);
+            rb_define_method(klass, "num_elements", RUBY_METHOD_FUNC(rosetta_function_1193), -1);
+            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1194), -1);
+            rb_define_method(klass, "element_length", RUBY_METHOD_FUNC(rosetta_function_1195), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_50_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::ScalarField1D>::value.klass;
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1195), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1196), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_51_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::ScalarField2D>::value.klass;
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1196), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1197), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_52_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::BoundaryCondition1D>::value.klass;
-            rb_define_method(klass, "type", RUBY_METHOD_FUNC(rosetta_field_371_get), 0);
+            rb_define_method(klass, "type", RUBY_METHOD_FUNC(rosetta_field_372_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fem::BoundaryCondition1D&>().type)>>)
-                rb_define_method(klass, "type=", RUBY_METHOD_FUNC(rosetta_field_371_set), 1);
-            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_field_372_get), 0);
+                rb_define_method(klass, "type=", RUBY_METHOD_FUNC(rosetta_field_372_set), 1);
+            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_field_373_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fem::BoundaryCondition1D&>().value)>>)
-                rb_define_method(klass, "value=", RUBY_METHOD_FUNC(rosetta_field_372_set), 1);
-            rb_define_method(klass, "robin_coefficient", RUBY_METHOD_FUNC(rosetta_field_373_get), 0);
+                rb_define_method(klass, "value=", RUBY_METHOD_FUNC(rosetta_field_373_set), 1);
+            rb_define_method(klass, "robin_coefficient", RUBY_METHOD_FUNC(rosetta_field_374_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fem::BoundaryCondition1D&>().robin_coefficient)>>)
-                rb_define_method(klass, "robin_coefficient=", RUBY_METHOD_FUNC(rosetta_field_373_set), 1);
+                rb_define_method(klass, "robin_coefficient=", RUBY_METHOD_FUNC(rosetta_field_374_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_53_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::FEM1DResult>::value.klass;
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1197), -1);
-            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1198), -1);
-            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_1199), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1198), -1);
+            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1199), -1);
+            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_1200), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_54_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::FEM1DTimeSeries>::value.klass;
-            rb_define_method(klass, "num_steps", RUBY_METHOD_FUNC(rosetta_function_1200), -1);
-            rb_define_method(klass, "num_nodes", RUBY_METHOD_FUNC(rosetta_function_1201), -1);
-            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1202), -1);
-            rb_define_method(klass, "time_at", RUBY_METHOD_FUNC(rosetta_function_1203), -1);
-            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_1204), -1);
+            rb_define_method(klass, "num_steps", RUBY_METHOD_FUNC(rosetta_function_1201), -1);
+            rb_define_method(klass, "num_nodes", RUBY_METHOD_FUNC(rosetta_function_1202), -1);
+            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1203), -1);
+            rb_define_method(klass, "time_at", RUBY_METHOD_FUNC(rosetta_function_1204), -1);
+            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_1205), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_55_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::FEM1D>::value.klass;
-            rb_define_singleton_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1205), -1);
-            rb_define_singleton_method(klass, "solve_builtin", RUBY_METHOD_FUNC(rosetta_function_1206), -1);
-            rb_define_singleton_method(klass, "solve_transient", RUBY_METHOD_FUNC(rosetta_function_1207), -1);
-            rb_define_singleton_method(klass, "solve_transient_builtin", RUBY_METHOD_FUNC(rosetta_function_1208), -1);
+            rb_define_singleton_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1206), -1);
+            rb_define_singleton_method(klass, "solve_builtin", RUBY_METHOD_FUNC(rosetta_function_1207), -1);
+            rb_define_singleton_method(klass, "solve_transient", RUBY_METHOD_FUNC(rosetta_function_1208), -1);
+            rb_define_singleton_method(klass, "solve_transient_builtin", RUBY_METHOD_FUNC(rosetta_function_1209), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_56_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::Point2D>::value.klass;
-            rb_define_method(klass, "==", RUBY_METHOD_FUNC(rosetta_function_1209), -1);
-            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_374_get), 0);
+            rb_define_method(klass, "==", RUBY_METHOD_FUNC(rosetta_function_1210), -1);
+            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_375_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::Point2D&>().x)>>)
-                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_374_set), 1);
-            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_375_get), 0);
+                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_375_set), 1);
+            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_376_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::Point2D&>().y)>>)
-                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_375_set), 1);
+                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_376_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_57_initialize), -1);
             rosetta_rb::define_hash<datamunge::geometry::Point2D>(klass);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::Triangle>::value.klass;
-            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_376_get), 0);
+            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_377_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::Triangle&>().a)>>)
-                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_376_set), 1);
-            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_377_get), 0);
+                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_377_set), 1);
+            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_378_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::Triangle&>().b)>>)
-                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_377_set), 1);
-            rb_define_method(klass, "c", RUBY_METHOD_FUNC(rosetta_field_378_get), 0);
+                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_378_set), 1);
+            rb_define_method(klass, "c", RUBY_METHOD_FUNC(rosetta_field_379_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::Triangle&>().c)>>)
-                rb_define_method(klass, "c=", RUBY_METHOD_FUNC(rosetta_field_378_set), 1);
+                rb_define_method(klass, "c=", RUBY_METHOD_FUNC(rosetta_field_379_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_58_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DelaunayWork>::value.klass;
-            rb_define_method(klass, "seed_orientation_tests", RUBY_METHOD_FUNC(rosetta_field_379_get), 0);
+            rb_define_method(klass, "seed_orientation_tests", RUBY_METHOD_FUNC(rosetta_field_380_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayWork&>().seed_orientation_tests)>>)
-                rb_define_method(klass, "seed_orientation_tests=", RUBY_METHOD_FUNC(rosetta_field_379_set), 1);
-            rb_define_method(klass, "insertions", RUBY_METHOD_FUNC(rosetta_field_380_get), 0);
+                rb_define_method(klass, "seed_orientation_tests=", RUBY_METHOD_FUNC(rosetta_field_380_set), 1);
+            rb_define_method(klass, "insertions", RUBY_METHOD_FUNC(rosetta_field_381_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayWork&>().insertions)>>)
-                rb_define_method(klass, "insertions=", RUBY_METHOD_FUNC(rosetta_field_380_set), 1);
-            rb_define_method(klass, "incircle_tests", RUBY_METHOD_FUNC(rosetta_field_381_get), 0);
+                rb_define_method(klass, "insertions=", RUBY_METHOD_FUNC(rosetta_field_381_set), 1);
+            rb_define_method(klass, "incircle_tests", RUBY_METHOD_FUNC(rosetta_field_382_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayWork&>().incircle_tests)>>)
-                rb_define_method(klass, "incircle_tests=", RUBY_METHOD_FUNC(rosetta_field_381_set), 1);
-            rb_define_method(klass, "hull_side_tests", RUBY_METHOD_FUNC(rosetta_field_382_get), 0);
+                rb_define_method(klass, "incircle_tests=", RUBY_METHOD_FUNC(rosetta_field_382_set), 1);
+            rb_define_method(klass, "hull_side_tests", RUBY_METHOD_FUNC(rosetta_field_383_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayWork&>().hull_side_tests)>>)
-                rb_define_method(klass, "hull_side_tests=", RUBY_METHOD_FUNC(rosetta_field_382_set), 1);
-            rb_define_method(klass, "removed_faces", RUBY_METHOD_FUNC(rosetta_field_383_get), 0);
+                rb_define_method(klass, "hull_side_tests=", RUBY_METHOD_FUNC(rosetta_field_383_set), 1);
+            rb_define_method(klass, "removed_faces", RUBY_METHOD_FUNC(rosetta_field_384_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayWork&>().removed_faces)>>)
-                rb_define_method(klass, "removed_faces=", RUBY_METHOD_FUNC(rosetta_field_383_set), 1);
-            rb_define_method(klass, "boundary_edges", RUBY_METHOD_FUNC(rosetta_field_384_get), 0);
+                rb_define_method(klass, "removed_faces=", RUBY_METHOD_FUNC(rosetta_field_384_set), 1);
+            rb_define_method(klass, "boundary_edges", RUBY_METHOD_FUNC(rosetta_field_385_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayWork&>().boundary_edges)>>)
-                rb_define_method(klass, "boundary_edges=", RUBY_METHOD_FUNC(rosetta_field_384_set), 1);
-            rb_define_method(klass, "created_faces", RUBY_METHOD_FUNC(rosetta_field_385_get), 0);
+                rb_define_method(klass, "boundary_edges=", RUBY_METHOD_FUNC(rosetta_field_385_set), 1);
+            rb_define_method(klass, "created_faces", RUBY_METHOD_FUNC(rosetta_field_386_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayWork&>().created_faces)>>)
-                rb_define_method(klass, "created_faces=", RUBY_METHOD_FUNC(rosetta_field_385_set), 1);
+                rb_define_method(klass, "created_faces=", RUBY_METHOD_FUNC(rosetta_field_386_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_59_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DelaunayInsertion>::value.klass;
-            rb_define_method(klass, "input_index", RUBY_METHOD_FUNC(rosetta_field_386_get), 0);
+            rb_define_method(klass, "input_index", RUBY_METHOD_FUNC(rosetta_field_387_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayInsertion&>().input_index)>>)
-                rb_define_method(klass, "input_index=", RUBY_METHOD_FUNC(rosetta_field_386_set), 1);
-            rb_define_method(klass, "faces_before", RUBY_METHOD_FUNC(rosetta_field_387_get), 0);
+                rb_define_method(klass, "input_index=", RUBY_METHOD_FUNC(rosetta_field_387_set), 1);
+            rb_define_method(klass, "faces_before", RUBY_METHOD_FUNC(rosetta_field_388_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayInsertion&>().faces_before)>>)
-                rb_define_method(klass, "faces_before=", RUBY_METHOD_FUNC(rosetta_field_387_set), 1);
-            rb_define_method(klass, "faces_after", RUBY_METHOD_FUNC(rosetta_field_388_get), 0);
+                rb_define_method(klass, "faces_before=", RUBY_METHOD_FUNC(rosetta_field_388_set), 1);
+            rb_define_method(klass, "faces_after", RUBY_METHOD_FUNC(rosetta_field_389_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayInsertion&>().faces_after)>>)
-                rb_define_method(klass, "faces_after=", RUBY_METHOD_FUNC(rosetta_field_388_set), 1);
-            rb_define_method(klass, "removed", RUBY_METHOD_FUNC(rosetta_field_389_get), 0);
+                rb_define_method(klass, "faces_after=", RUBY_METHOD_FUNC(rosetta_field_389_set), 1);
+            rb_define_method(klass, "removed", RUBY_METHOD_FUNC(rosetta_field_390_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayInsertion&>().removed)>>)
-                rb_define_method(klass, "removed=", RUBY_METHOD_FUNC(rosetta_field_389_set), 1);
-            rb_define_method(klass, "boundary", RUBY_METHOD_FUNC(rosetta_field_390_get), 0);
+                rb_define_method(klass, "removed=", RUBY_METHOD_FUNC(rosetta_field_390_set), 1);
+            rb_define_method(klass, "boundary", RUBY_METHOD_FUNC(rosetta_field_391_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayInsertion&>().boundary)>>)
-                rb_define_method(klass, "boundary=", RUBY_METHOD_FUNC(rosetta_field_390_set), 1);
-            rb_define_method(klass, "added", RUBY_METHOD_FUNC(rosetta_field_391_get), 0);
+                rb_define_method(klass, "boundary=", RUBY_METHOD_FUNC(rosetta_field_391_set), 1);
+            rb_define_method(klass, "added", RUBY_METHOD_FUNC(rosetta_field_392_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayInsertion&>().added)>>)
-                rb_define_method(klass, "added=", RUBY_METHOD_FUNC(rosetta_field_391_set), 1);
+                rb_define_method(klass, "added=", RUBY_METHOD_FUNC(rosetta_field_392_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_60_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DelaunayTrace>::value.klass;
-            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_field_392_get), 0);
+            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_field_393_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().points)>>)
-                rb_define_method(klass, "points=", RUBY_METHOD_FUNC(rosetta_field_392_set), 1);
-            rb_define_method(klass, "representatives", RUBY_METHOD_FUNC(rosetta_field_393_get), 0);
+                rb_define_method(klass, "points=", RUBY_METHOD_FUNC(rosetta_field_393_set), 1);
+            rb_define_method(klass, "representatives", RUBY_METHOD_FUNC(rosetta_field_394_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().representatives)>>)
-                rb_define_method(klass, "representatives=", RUBY_METHOD_FUNC(rosetta_field_393_set), 1);
-            rb_define_method(klass, "representative_for_input", RUBY_METHOD_FUNC(rosetta_field_394_get), 0);
+                rb_define_method(klass, "representatives=", RUBY_METHOD_FUNC(rosetta_field_394_set), 1);
+            rb_define_method(klass, "representative_for_input", RUBY_METHOD_FUNC(rosetta_field_395_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().representative_for_input)>>)
-                rb_define_method(klass, "representative_for_input=", RUBY_METHOD_FUNC(rosetta_field_394_set), 1);
-            rb_define_method(klass, "has_seed", RUBY_METHOD_FUNC(rosetta_field_395_get), 0);
+                rb_define_method(klass, "representative_for_input=", RUBY_METHOD_FUNC(rosetta_field_395_set), 1);
+            rb_define_method(klass, "has_seed", RUBY_METHOD_FUNC(rosetta_field_396_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().has_seed)>>)
-                rb_define_method(klass, "has_seed=", RUBY_METHOD_FUNC(rosetta_field_395_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_396_get), 0);
+                rb_define_method(klass, "has_seed=", RUBY_METHOD_FUNC(rosetta_field_396_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_397_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_396_set), 1);
-            rb_define_method(klass, "triangles", RUBY_METHOD_FUNC(rosetta_field_397_get), 0);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_397_set), 1);
+            rb_define_method(klass, "triangles", RUBY_METHOD_FUNC(rosetta_field_398_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().triangles)>>)
-                rb_define_method(klass, "triangles=", RUBY_METHOD_FUNC(rosetta_field_397_set), 1);
-            rb_define_method(klass, "steps", RUBY_METHOD_FUNC(rosetta_field_398_get), 0);
+                rb_define_method(klass, "triangles=", RUBY_METHOD_FUNC(rosetta_field_398_set), 1);
+            rb_define_method(klass, "steps", RUBY_METHOD_FUNC(rosetta_field_399_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().steps)>>)
-                rb_define_method(klass, "steps=", RUBY_METHOD_FUNC(rosetta_field_398_set), 1);
-            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_399_get), 0);
+                rb_define_method(klass, "steps=", RUBY_METHOD_FUNC(rosetta_field_399_set), 1);
+            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_400_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().work)>>)
-                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_399_set), 1);
+                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_400_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_61_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DelaunayAnalysis>::value.klass;
-            rb_define_method(klass, "distinct_points", RUBY_METHOD_FUNC(rosetta_field_400_get), 0);
+            rb_define_method(klass, "distinct_points", RUBY_METHOD_FUNC(rosetta_field_401_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().distinct_points)>>)
-                rb_define_method(klass, "distinct_points=", RUBY_METHOD_FUNC(rosetta_field_400_set), 1);
-            rb_define_method(klass, "used_points", RUBY_METHOD_FUNC(rosetta_field_401_get), 0);
+                rb_define_method(klass, "distinct_points=", RUBY_METHOD_FUNC(rosetta_field_401_set), 1);
+            rb_define_method(klass, "used_points", RUBY_METHOD_FUNC(rosetta_field_402_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().used_points)>>)
-                rb_define_method(klass, "used_points=", RUBY_METHOD_FUNC(rosetta_field_401_set), 1);
-            rb_define_method(klass, "triangles", RUBY_METHOD_FUNC(rosetta_field_402_get), 0);
+                rb_define_method(klass, "used_points=", RUBY_METHOD_FUNC(rosetta_field_402_set), 1);
+            rb_define_method(klass, "triangles", RUBY_METHOD_FUNC(rosetta_field_403_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().triangles)>>)
-                rb_define_method(klass, "triangles=", RUBY_METHOD_FUNC(rosetta_field_402_set), 1);
-            rb_define_method(klass, "edges", RUBY_METHOD_FUNC(rosetta_field_403_get), 0);
+                rb_define_method(klass, "triangles=", RUBY_METHOD_FUNC(rosetta_field_403_set), 1);
+            rb_define_method(klass, "edges", RUBY_METHOD_FUNC(rosetta_field_404_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().edges)>>)
-                rb_define_method(klass, "edges=", RUBY_METHOD_FUNC(rosetta_field_403_set), 1);
-            rb_define_method(klass, "boundary_edges", RUBY_METHOD_FUNC(rosetta_field_404_get), 0);
+                rb_define_method(klass, "edges=", RUBY_METHOD_FUNC(rosetta_field_404_set), 1);
+            rb_define_method(klass, "boundary_edges", RUBY_METHOD_FUNC(rosetta_field_405_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().boundary_edges)>>)
-                rb_define_method(klass, "boundary_edges=", RUBY_METHOD_FUNC(rosetta_field_404_set), 1);
-            rb_define_method(klass, "circle_tests", RUBY_METHOD_FUNC(rosetta_field_405_get), 0);
+                rb_define_method(klass, "boundary_edges=", RUBY_METHOD_FUNC(rosetta_field_405_set), 1);
+            rb_define_method(klass, "circle_tests", RUBY_METHOD_FUNC(rosetta_field_406_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().circle_tests)>>)
-                rb_define_method(klass, "circle_tests=", RUBY_METHOD_FUNC(rosetta_field_405_set), 1);
-            rb_define_method(klass, "interior_violations", RUBY_METHOD_FUNC(rosetta_field_406_get), 0);
+                rb_define_method(klass, "circle_tests=", RUBY_METHOD_FUNC(rosetta_field_406_set), 1);
+            rb_define_method(klass, "interior_violations", RUBY_METHOD_FUNC(rosetta_field_407_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().interior_violations)>>)
-                rb_define_method(klass, "interior_violations=", RUBY_METHOD_FUNC(rosetta_field_406_set), 1);
-            rb_define_method(klass, "minimum_angle_degrees", RUBY_METHOD_FUNC(rosetta_field_407_get), 0);
+                rb_define_method(klass, "interior_violations=", RUBY_METHOD_FUNC(rosetta_field_407_set), 1);
+            rb_define_method(klass, "minimum_angle_degrees", RUBY_METHOD_FUNC(rosetta_field_408_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DelaunayAnalysis&>().minimum_angle_degrees)>>)
-                rb_define_method(klass, "minimum_angle_degrees=", RUBY_METHOD_FUNC(rosetta_field_407_set), 1);
+                rb_define_method(klass, "minimum_angle_degrees=", RUBY_METHOD_FUNC(rosetta_field_408_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_62_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::Mesh2D>::value.klass;
-            rb_define_method(klass, "num_nodes", RUBY_METHOD_FUNC(rosetta_function_1210), -1);
-            rb_define_method(klass, "num_triangles", RUBY_METHOD_FUNC(rosetta_function_1211), -1);
-            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1212), -1);
-            rb_define_method(klass, "triangle_at", RUBY_METHOD_FUNC(rosetta_function_1213), -1);
+            rb_define_method(klass, "num_nodes", RUBY_METHOD_FUNC(rosetta_function_1211), -1);
+            rb_define_method(klass, "num_triangles", RUBY_METHOD_FUNC(rosetta_function_1212), -1);
+            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1213), -1);
+            rb_define_method(klass, "triangle_at", RUBY_METHOD_FUNC(rosetta_function_1214), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_63_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::FEM2DResult>::value.klass;
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1214), -1);
-            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1215), -1);
-            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_1216), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1215), -1);
+            rb_define_method(klass, "node_at", RUBY_METHOD_FUNC(rosetta_function_1216), -1);
+            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_1217), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_64_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fem::FEM2D>::value.klass;
-            rb_define_singleton_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1217), -1);
-            rb_define_singleton_method(klass, "solve_builtin", RUBY_METHOD_FUNC(rosetta_function_1218), -1);
+            rb_define_singleton_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1218), -1);
+            rb_define_singleton_method(klass, "solve_builtin", RUBY_METHOD_FUNC(rosetta_function_1219), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_65_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::AlphaBetaState>::value.klass;
-            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_field_408_get), 0);
+            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_field_409_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::AlphaBetaState&>().position)>>)
-                rb_define_method(klass, "position=", RUBY_METHOD_FUNC(rosetta_field_408_set), 1);
-            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_field_409_get), 0);
+                rb_define_method(klass, "position=", RUBY_METHOD_FUNC(rosetta_field_409_set), 1);
+            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_field_410_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::AlphaBetaState&>().velocity)>>)
-                rb_define_method(klass, "velocity=", RUBY_METHOD_FUNC(rosetta_field_409_set), 1);
+                rb_define_method(klass, "velocity=", RUBY_METHOD_FUNC(rosetta_field_410_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_66_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::AlphaBetaFilter>::value.klass;
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1219), -1);
-            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_function_1220), -1);
-            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_function_1221), -1);
-            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1222), -1);
-            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_function_1223), -1);
-            rb_define_method(klass, "dt", RUBY_METHOD_FUNC(rosetta_function_1224), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1225), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1220), -1);
+            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_function_1221), -1);
+            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_function_1222), -1);
+            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1223), -1);
+            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_function_1224), -1);
+            rb_define_method(klass, "dt", RUBY_METHOD_FUNC(rosetta_function_1225), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1226), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_67_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::AlphaBetaGammaState>::value.klass;
-            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_field_410_get), 0);
+            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_field_411_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::AlphaBetaGammaState&>().position)>>)
-                rb_define_method(klass, "position=", RUBY_METHOD_FUNC(rosetta_field_410_set), 1);
-            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_field_411_get), 0);
+                rb_define_method(klass, "position=", RUBY_METHOD_FUNC(rosetta_field_411_set), 1);
+            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_field_412_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::AlphaBetaGammaState&>().velocity)>>)
-                rb_define_method(klass, "velocity=", RUBY_METHOD_FUNC(rosetta_field_411_set), 1);
-            rb_define_method(klass, "acceleration", RUBY_METHOD_FUNC(rosetta_field_412_get), 0);
+                rb_define_method(klass, "velocity=", RUBY_METHOD_FUNC(rosetta_field_412_set), 1);
+            rb_define_method(klass, "acceleration", RUBY_METHOD_FUNC(rosetta_field_413_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::AlphaBetaGammaState&>().acceleration)>>)
-                rb_define_method(klass, "acceleration=", RUBY_METHOD_FUNC(rosetta_field_412_set), 1);
+                rb_define_method(klass, "acceleration=", RUBY_METHOD_FUNC(rosetta_field_413_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_68_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::AlphaBetaGammaFilter>::value.klass;
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1226), -1);
-            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_function_1227), -1);
-            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_function_1228), -1);
-            rb_define_method(klass, "acceleration", RUBY_METHOD_FUNC(rosetta_function_1229), -1);
-            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1230), -1);
-            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_function_1231), -1);
-            rb_define_method(klass, "gamma", RUBY_METHOD_FUNC(rosetta_function_1232), -1);
-            rb_define_method(klass, "dt", RUBY_METHOD_FUNC(rosetta_function_1233), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1234), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1227), -1);
+            rb_define_method(klass, "position", RUBY_METHOD_FUNC(rosetta_function_1228), -1);
+            rb_define_method(klass, "velocity", RUBY_METHOD_FUNC(rosetta_function_1229), -1);
+            rb_define_method(klass, "acceleration", RUBY_METHOD_FUNC(rosetta_function_1230), -1);
+            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1231), -1);
+            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_function_1232), -1);
+            rb_define_method(klass, "gamma", RUBY_METHOD_FUNC(rosetta_function_1233), -1);
+            rb_define_method(klass, "dt", RUBY_METHOD_FUNC(rosetta_function_1234), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1235), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_69_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::KalmanState>::value.klass;
-            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_413_get), 0);
+            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_414_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::KalmanState&>().x)>>)
-                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_413_set), 1);
-            rb_define_method(klass, "p_", RUBY_METHOD_FUNC(rosetta_field_414_get), 0);
+                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_414_set), 1);
+            rb_define_method(klass, "p_", RUBY_METHOD_FUNC(rosetta_field_415_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::KalmanState&>().P)>>)
-                rb_define_method(klass, "p_=", RUBY_METHOD_FUNC(rosetta_field_414_set), 1);
+                rb_define_method(klass, "p_=", RUBY_METHOD_FUNC(rosetta_field_415_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_70_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::SmoothResult>::value.klass;
-            rb_define_method(klass, "filtered", RUBY_METHOD_FUNC(rosetta_field_415_get), 0);
+            rb_define_method(klass, "filtered", RUBY_METHOD_FUNC(rosetta_field_416_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::SmoothResult&>().filtered)>>)
-                rb_define_method(klass, "filtered=", RUBY_METHOD_FUNC(rosetta_field_415_set), 1);
-            rb_define_method(klass, "smoothed", RUBY_METHOD_FUNC(rosetta_field_416_get), 0);
+                rb_define_method(klass, "filtered=", RUBY_METHOD_FUNC(rosetta_field_416_set), 1);
+            rb_define_method(klass, "smoothed", RUBY_METHOD_FUNC(rosetta_field_417_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::filter::SmoothResult&>().smoothed)>>)
-                rb_define_method(klass, "smoothed=", RUBY_METHOD_FUNC(rosetta_field_416_set), 1);
+                rb_define_method(klass, "smoothed=", RUBY_METHOD_FUNC(rosetta_field_417_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_71_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::KalmanFilter>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1235), -1);
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1236), -1);
-            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1237), -1);
-            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1238), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1239), -1);
-            rb_define_method(klass, "smooth", RUBY_METHOD_FUNC(rosetta_function_1240), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1236), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1237), -1);
+            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1238), -1);
+            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1239), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1240), -1);
+            rb_define_method(klass, "smooth", RUBY_METHOD_FUNC(rosetta_function_1241), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_72_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::VectorFunction>::value.klass;
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1241), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1242), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_73_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::EnsembleKalmanFilter>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1242), -1);
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1243), -1);
-            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1244), -1);
-            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1245), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1246), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1243), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1244), -1);
+            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1245), -1);
+            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1246), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1247), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_74_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::ExtendedKalmanFilter>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1247), -1);
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1248), -1);
-            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1249), -1);
-            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1250), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1251), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1248), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1249), -1);
+            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1250), -1);
+            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1251), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1252), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_75_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::InformationFilter>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1252), -1);
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1253), -1);
-            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1254), -1);
-            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1255), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1256), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1253), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1254), -1);
+            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1255), -1);
+            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1256), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1257), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_76_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::ParticleFilter>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1257), -1);
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1258), -1);
-            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1259), -1);
-            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1260), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1261), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1258), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1259), -1);
+            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1260), -1);
+            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1261), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1262), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_77_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::filter::UnscentedKalmanFilter>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1262), -1);
-            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1263), -1);
-            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1264), -1);
-            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1265), -1);
-            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1266), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1263), -1);
+            rb_define_method(klass, "update", RUBY_METHOD_FUNC(rosetta_function_1264), -1);
+            rb_define_method(klass, "state", RUBY_METHOD_FUNC(rosetta_function_1265), -1);
+            rb_define_method(klass, "covariance", RUBY_METHOD_FUNC(rosetta_function_1266), -1);
+            rb_define_method(klass, "filter", RUBY_METHOD_FUNC(rosetta_function_1267), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_78_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::BoundingBox>::value.klass;
-            rb_define_method(klass, "min", RUBY_METHOD_FUNC(rosetta_field_417_get), 0);
+            rb_define_method(klass, "min", RUBY_METHOD_FUNC(rosetta_field_418_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::BoundingBox&>().min)>>)
-                rb_define_method(klass, "min=", RUBY_METHOD_FUNC(rosetta_field_417_set), 1);
-            rb_define_method(klass, "max", RUBY_METHOD_FUNC(rosetta_field_418_get), 0);
+                rb_define_method(klass, "min=", RUBY_METHOD_FUNC(rosetta_field_418_set), 1);
+            rb_define_method(klass, "max", RUBY_METHOD_FUNC(rosetta_field_419_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::BoundingBox&>().max)>>)
-                rb_define_method(klass, "max=", RUBY_METHOD_FUNC(rosetta_field_418_set), 1);
+                rb_define_method(klass, "max=", RUBY_METHOD_FUNC(rosetta_field_419_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_79_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::ClosestPairResult>::value.klass;
-            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_419_get), 0);
+            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_420_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().a)>>)
-                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_419_set), 1);
-            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_420_get), 0);
+                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_420_set), 1);
+            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_421_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().b)>>)
-                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_420_set), 1);
-            rb_define_method(klass, "distance", RUBY_METHOD_FUNC(rosetta_field_421_get), 0);
+                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_421_set), 1);
+            rb_define_method(klass, "distance", RUBY_METHOD_FUNC(rosetta_field_422_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().distance)>>)
-                rb_define_method(klass, "distance=", RUBY_METHOD_FUNC(rosetta_field_421_set), 1);
+                rb_define_method(klass, "distance=", RUBY_METHOD_FUNC(rosetta_field_422_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_80_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::ConvexHullOptions>::value.klass;
-            rb_define_method(klass, "max_points", RUBY_METHOD_FUNC(rosetta_field_422_get), 0);
+            rb_define_method(klass, "max_points", RUBY_METHOD_FUNC(rosetta_field_423_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullOptions&>().max_points)>>)
-                rb_define_method(klass, "max_points=", RUBY_METHOD_FUNC(rosetta_field_422_set), 1);
-            rb_define_method(klass, "max_events", RUBY_METHOD_FUNC(rosetta_field_423_get), 0);
+                rb_define_method(klass, "max_points=", RUBY_METHOD_FUNC(rosetta_field_423_set), 1);
+            rb_define_method(klass, "max_events", RUBY_METHOD_FUNC(rosetta_field_424_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullOptions&>().max_events)>>)
-                rb_define_method(klass, "max_events=", RUBY_METHOD_FUNC(rosetta_field_423_set), 1);
+                rb_define_method(klass, "max_events=", RUBY_METHOD_FUNC(rosetta_field_424_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_81_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::HullIndexedPoint>::value.klass;
-            rb_define_method(klass, "point", RUBY_METHOD_FUNC(rosetta_field_424_get), 0);
+            rb_define_method(klass, "point", RUBY_METHOD_FUNC(rosetta_field_425_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullIndexedPoint&>().point)>>)
-                rb_define_method(klass, "point=", RUBY_METHOD_FUNC(rosetta_field_424_set), 1);
-            rb_define_method(klass, "input_index", RUBY_METHOD_FUNC(rosetta_field_425_get), 0);
+                rb_define_method(klass, "point=", RUBY_METHOD_FUNC(rosetta_field_425_set), 1);
+            rb_define_method(klass, "input_index", RUBY_METHOD_FUNC(rosetta_field_426_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullIndexedPoint&>().input_index)>>)
-                rb_define_method(klass, "input_index=", RUBY_METHOD_FUNC(rosetta_field_425_set), 1);
+                rb_define_method(klass, "input_index=", RUBY_METHOD_FUNC(rosetta_field_426_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_82_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::ConvexHullWork>::value.klass;
-            rb_define_method(klass, "input_points", RUBY_METHOD_FUNC(rosetta_field_426_get), 0);
+            rb_define_method(klass, "input_points", RUBY_METHOD_FUNC(rosetta_field_427_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().input_points)>>)
-                rb_define_method(klass, "input_points=", RUBY_METHOD_FUNC(rosetta_field_426_set), 1);
-            rb_define_method(klass, "distinct_points", RUBY_METHOD_FUNC(rosetta_field_427_get), 0);
+                rb_define_method(klass, "input_points=", RUBY_METHOD_FUNC(rosetta_field_427_set), 1);
+            rb_define_method(klass, "distinct_points", RUBY_METHOD_FUNC(rosetta_field_428_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().distinct_points)>>)
-                rb_define_method(klass, "distinct_points=", RUBY_METHOD_FUNC(rosetta_field_427_set), 1);
-            rb_define_method(klass, "sort_comparisons", RUBY_METHOD_FUNC(rosetta_field_428_get), 0);
+                rb_define_method(klass, "distinct_points=", RUBY_METHOD_FUNC(rosetta_field_428_set), 1);
+            rb_define_method(klass, "sort_comparisons", RUBY_METHOD_FUNC(rosetta_field_429_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().sort_comparisons)>>)
-                rb_define_method(klass, "sort_comparisons=", RUBY_METHOD_FUNC(rosetta_field_428_set), 1);
-            rb_define_method(klass, "duplicate_comparisons", RUBY_METHOD_FUNC(rosetta_field_429_get), 0);
+                rb_define_method(klass, "sort_comparisons=", RUBY_METHOD_FUNC(rosetta_field_429_set), 1);
+            rb_define_method(klass, "duplicate_comparisons", RUBY_METHOD_FUNC(rosetta_field_430_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().duplicate_comparisons)>>)
-                rb_define_method(klass, "duplicate_comparisons=", RUBY_METHOD_FUNC(rosetta_field_429_set), 1);
-            rb_define_method(klass, "orientation_tests", RUBY_METHOD_FUNC(rosetta_field_430_get), 0);
+                rb_define_method(klass, "duplicate_comparisons=", RUBY_METHOD_FUNC(rosetta_field_430_set), 1);
+            rb_define_method(klass, "orientation_tests", RUBY_METHOD_FUNC(rosetta_field_431_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().orientation_tests)>>)
-                rb_define_method(klass, "orientation_tests=", RUBY_METHOD_FUNC(rosetta_field_430_set), 1);
-            rb_define_method(klass, "pushes", RUBY_METHOD_FUNC(rosetta_field_431_get), 0);
+                rb_define_method(klass, "orientation_tests=", RUBY_METHOD_FUNC(rosetta_field_431_set), 1);
+            rb_define_method(klass, "pushes", RUBY_METHOD_FUNC(rosetta_field_432_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().pushes)>>)
-                rb_define_method(klass, "pushes=", RUBY_METHOD_FUNC(rosetta_field_431_set), 1);
-            rb_define_method(klass, "pops", RUBY_METHOD_FUNC(rosetta_field_432_get), 0);
+                rb_define_method(klass, "pushes=", RUBY_METHOD_FUNC(rosetta_field_432_set), 1);
+            rb_define_method(klass, "pops", RUBY_METHOD_FUNC(rosetta_field_433_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().pops)>>)
-                rb_define_method(klass, "pops=", RUBY_METHOD_FUNC(rosetta_field_432_set), 1);
-            rb_define_method(klass, "max_stack", RUBY_METHOD_FUNC(rosetta_field_433_get), 0);
+                rb_define_method(klass, "pops=", RUBY_METHOD_FUNC(rosetta_field_433_set), 1);
+            rb_define_method(klass, "max_stack", RUBY_METHOD_FUNC(rosetta_field_434_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().max_stack)>>)
-                rb_define_method(klass, "max_stack=", RUBY_METHOD_FUNC(rosetta_field_433_set), 1);
+                rb_define_method(klass, "max_stack=", RUBY_METHOD_FUNC(rosetta_field_434_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_83_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::HullEvent>::value.klass;
-            rb_define_method(klass, "pass", RUBY_METHOD_FUNC(rosetta_field_434_get), 0);
+            rb_define_method(klass, "pass", RUBY_METHOD_FUNC(rosetta_field_435_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().pass)>>)
-                rb_define_method(klass, "pass=", RUBY_METHOD_FUNC(rosetta_field_434_set), 1);
-            rb_define_method(klass, "action", RUBY_METHOD_FUNC(rosetta_field_435_get), 0);
+                rb_define_method(klass, "pass=", RUBY_METHOD_FUNC(rosetta_field_435_set), 1);
+            rb_define_method(klass, "action", RUBY_METHOD_FUNC(rosetta_field_436_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().action)>>)
-                rb_define_method(klass, "action=", RUBY_METHOD_FUNC(rosetta_field_435_set), 1);
-            rb_define_method(klass, "candidate", RUBY_METHOD_FUNC(rosetta_field_436_get), 0);
+                rb_define_method(klass, "action=", RUBY_METHOD_FUNC(rosetta_field_436_set), 1);
+            rb_define_method(klass, "candidate", RUBY_METHOD_FUNC(rosetta_field_437_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().candidate)>>)
-                rb_define_method(klass, "candidate=", RUBY_METHOD_FUNC(rosetta_field_436_set), 1);
-            rb_define_method(klass, "point", RUBY_METHOD_FUNC(rosetta_field_437_get), 0);
+                rb_define_method(klass, "candidate=", RUBY_METHOD_FUNC(rosetta_field_437_set), 1);
+            rb_define_method(klass, "point", RUBY_METHOD_FUNC(rosetta_field_438_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().point)>>)
-                rb_define_method(klass, "point=", RUBY_METHOD_FUNC(rosetta_field_437_set), 1);
-            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_438_get), 0);
+                rb_define_method(klass, "point=", RUBY_METHOD_FUNC(rosetta_field_438_set), 1);
+            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_439_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().a)>>)
-                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_438_set), 1);
-            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_439_get), 0);
+                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_439_set), 1);
+            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_440_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().b)>>)
-                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_439_set), 1);
-            rb_define_method(klass, "turn", RUBY_METHOD_FUNC(rosetta_field_440_get), 0);
+                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_440_set), 1);
+            rb_define_method(klass, "turn", RUBY_METHOD_FUNC(rosetta_field_441_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().turn)>>)
-                rb_define_method(klass, "turn=", RUBY_METHOD_FUNC(rosetta_field_440_set), 1);
-            rb_define_method(klass, "stack_size", RUBY_METHOD_FUNC(rosetta_field_441_get), 0);
+                rb_define_method(klass, "turn=", RUBY_METHOD_FUNC(rosetta_field_441_set), 1);
+            rb_define_method(klass, "stack_size", RUBY_METHOD_FUNC(rosetta_field_442_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::HullEvent&>().stack_size)>>)
-                rb_define_method(klass, "stack_size=", RUBY_METHOD_FUNC(rosetta_field_441_set), 1);
+                rb_define_method(klass, "stack_size=", RUBY_METHOD_FUNC(rosetta_field_442_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_84_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::ConvexHullAnalysis>::value.klass;
-            rb_define_method(klass, "hull", RUBY_METHOD_FUNC(rosetta_field_442_get), 0);
+            rb_define_method(klass, "hull", RUBY_METHOD_FUNC(rosetta_field_443_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullAnalysis&>().hull)>>)
-                rb_define_method(klass, "hull=", RUBY_METHOD_FUNC(rosetta_field_442_set), 1);
-            rb_define_method(klass, "input_indices", RUBY_METHOD_FUNC(rosetta_field_443_get), 0);
+                rb_define_method(klass, "hull=", RUBY_METHOD_FUNC(rosetta_field_443_set), 1);
+            rb_define_method(klass, "input_indices", RUBY_METHOD_FUNC(rosetta_field_444_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullAnalysis&>().input_indices)>>)
-                rb_define_method(klass, "input_indices=", RUBY_METHOD_FUNC(rosetta_field_443_set), 1);
-            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_444_get), 0);
+                rb_define_method(klass, "input_indices=", RUBY_METHOD_FUNC(rosetta_field_444_set), 1);
+            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_445_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullAnalysis&>().work)>>)
-                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_444_set), 1);
+                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_445_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_85_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::ConvexHullTrace>::value.klass;
-            rb_define_method(klass, "analysis", RUBY_METHOD_FUNC(rosetta_field_445_get), 0);
+            rb_define_method(klass, "analysis", RUBY_METHOD_FUNC(rosetta_field_446_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullTrace&>().analysis)>>)
-                rb_define_method(klass, "analysis=", RUBY_METHOD_FUNC(rosetta_field_445_set), 1);
-            rb_define_method(klass, "sorted", RUBY_METHOD_FUNC(rosetta_field_446_get), 0);
+                rb_define_method(klass, "analysis=", RUBY_METHOD_FUNC(rosetta_field_446_set), 1);
+            rb_define_method(klass, "sorted", RUBY_METHOD_FUNC(rosetta_field_447_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullTrace&>().sorted)>>)
-                rb_define_method(klass, "sorted=", RUBY_METHOD_FUNC(rosetta_field_446_set), 1);
-            rb_define_method(klass, "events", RUBY_METHOD_FUNC(rosetta_field_447_get), 0);
+                rb_define_method(klass, "sorted=", RUBY_METHOD_FUNC(rosetta_field_447_set), 1);
+            rb_define_method(klass, "events", RUBY_METHOD_FUNC(rosetta_field_448_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullTrace&>().events)>>)
-                rb_define_method(klass, "events=", RUBY_METHOD_FUNC(rosetta_field_447_set), 1);
-            rb_define_method(klass, "lower", RUBY_METHOD_FUNC(rosetta_field_448_get), 0);
+                rb_define_method(klass, "events=", RUBY_METHOD_FUNC(rosetta_field_448_set), 1);
+            rb_define_method(klass, "lower", RUBY_METHOD_FUNC(rosetta_field_449_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullTrace&>().lower)>>)
-                rb_define_method(klass, "lower=", RUBY_METHOD_FUNC(rosetta_field_448_set), 1);
-            rb_define_method(klass, "upper", RUBY_METHOD_FUNC(rosetta_field_449_get), 0);
+                rb_define_method(klass, "lower=", RUBY_METHOD_FUNC(rosetta_field_449_set), 1);
+            rb_define_method(klass, "upper", RUBY_METHOD_FUNC(rosetta_field_450_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::ConvexHullTrace&>().upper)>>)
-                rb_define_method(klass, "upper=", RUBY_METHOD_FUNC(rosetta_field_449_set), 1);
+                rb_define_method(klass, "upper=", RUBY_METHOD_FUNC(rosetta_field_450_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_86_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Callback>::value.klass;
-            rb_define_method(klass, "call", RUBY_METHOD_FUNC(rosetta_function_1267), -1);
+            rb_define_method(klass, "call", RUBY_METHOD_FUNC(rosetta_function_1268), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_87_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::graphics::RGB>::value.klass;
-            rb_define_method(klass, "r", RUBY_METHOD_FUNC(rosetta_field_450_get), 0);
+            rb_define_method(klass, "r", RUBY_METHOD_FUNC(rosetta_field_451_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::RGB&>().r)>>)
-                rb_define_method(klass, "r=", RUBY_METHOD_FUNC(rosetta_field_450_set), 1);
-            rb_define_method(klass, "g", RUBY_METHOD_FUNC(rosetta_field_451_get), 0);
+                rb_define_method(klass, "r=", RUBY_METHOD_FUNC(rosetta_field_451_set), 1);
+            rb_define_method(klass, "g", RUBY_METHOD_FUNC(rosetta_field_452_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::RGB&>().g)>>)
-                rb_define_method(klass, "g=", RUBY_METHOD_FUNC(rosetta_field_451_set), 1);
-            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_452_get), 0);
+                rb_define_method(klass, "g=", RUBY_METHOD_FUNC(rosetta_field_452_set), 1);
+            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_453_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::RGB&>().b)>>)
-                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_452_set), 1);
-            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_field_453_get), 0);
+                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_453_set), 1);
+            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_field_454_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::RGB&>().alpha)>>)
-                rb_define_method(klass, "alpha=", RUBY_METHOD_FUNC(rosetta_field_453_set), 1);
+                rb_define_method(klass, "alpha=", RUBY_METHOD_FUNC(rosetta_field_454_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_88_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::graphics::DataSeries>::value.klass;
-            rb_define_method(klass, "kind", RUBY_METHOD_FUNC(rosetta_field_454_get), 0);
+            rb_define_method(klass, "kind", RUBY_METHOD_FUNC(rosetta_field_455_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().kind)>>)
-                rb_define_method(klass, "kind=", RUBY_METHOD_FUNC(rosetta_field_454_set), 1);
-            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_455_get), 0);
+                rb_define_method(klass, "kind=", RUBY_METHOD_FUNC(rosetta_field_455_set), 1);
+            rb_define_method(klass, "x", RUBY_METHOD_FUNC(rosetta_field_456_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().x)>>)
-                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_455_set), 1);
-            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_456_get), 0);
+                rb_define_method(klass, "x=", RUBY_METHOD_FUNC(rosetta_field_456_set), 1);
+            rb_define_method(klass, "y", RUBY_METHOD_FUNC(rosetta_field_457_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().y)>>)
-                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_456_set), 1);
-            rb_define_method(klass, "label", RUBY_METHOD_FUNC(rosetta_field_457_get), 0);
+                rb_define_method(klass, "y=", RUBY_METHOD_FUNC(rosetta_field_457_set), 1);
+            rb_define_method(klass, "label", RUBY_METHOD_FUNC(rosetta_field_458_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().label)>>)
-                rb_define_method(klass, "label=", RUBY_METHOD_FUNC(rosetta_field_457_set), 1);
-            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_field_458_get), 0);
+                rb_define_method(klass, "label=", RUBY_METHOD_FUNC(rosetta_field_458_set), 1);
+            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_field_459_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().color)>>)
-                rb_define_method(klass, "color=", RUBY_METHOD_FUNC(rosetta_field_458_set), 1);
-            rb_define_method(klass, "stroke_width", RUBY_METHOD_FUNC(rosetta_field_459_get), 0);
+                rb_define_method(klass, "color=", RUBY_METHOD_FUNC(rosetta_field_459_set), 1);
+            rb_define_method(klass, "stroke_width", RUBY_METHOD_FUNC(rosetta_field_460_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().stroke_width)>>)
-                rb_define_method(klass, "stroke_width=", RUBY_METHOD_FUNC(rosetta_field_459_set), 1);
-            rb_define_method(klass, "marker_size", RUBY_METHOD_FUNC(rosetta_field_460_get), 0);
+                rb_define_method(klass, "stroke_width=", RUBY_METHOD_FUNC(rosetta_field_460_set), 1);
+            rb_define_method(klass, "marker_size", RUBY_METHOD_FUNC(rosetta_field_461_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().marker_size)>>)
-                rb_define_method(klass, "marker_size=", RUBY_METHOD_FUNC(rosetta_field_460_set), 1);
-            rb_define_method(klass, "bar_width", RUBY_METHOD_FUNC(rosetta_field_461_get), 0);
+                rb_define_method(klass, "marker_size=", RUBY_METHOD_FUNC(rosetta_field_461_set), 1);
+            rb_define_method(klass, "bar_width", RUBY_METHOD_FUNC(rosetta_field_462_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().bar_width)>>)
-                rb_define_method(klass, "bar_width=", RUBY_METHOD_FUNC(rosetta_field_461_set), 1);
-            rb_define_method(klass, "filled", RUBY_METHOD_FUNC(rosetta_field_462_get), 0);
+                rb_define_method(klass, "bar_width=", RUBY_METHOD_FUNC(rosetta_field_462_set), 1);
+            rb_define_method(klass, "filled", RUBY_METHOD_FUNC(rosetta_field_463_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().filled)>>)
-                rb_define_method(klass, "filled=", RUBY_METHOD_FUNC(rosetta_field_462_set), 1);
-            rb_define_method(klass, "point_colors", RUBY_METHOD_FUNC(rosetta_field_463_get), 0);
+                rb_define_method(klass, "filled=", RUBY_METHOD_FUNC(rosetta_field_463_set), 1);
+            rb_define_method(klass, "point_colors", RUBY_METHOD_FUNC(rosetta_field_464_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::DataSeries&>().point_colors)>>)
-                rb_define_method(klass, "point_colors=", RUBY_METHOD_FUNC(rosetta_field_463_set), 1);
+                rb_define_method(klass, "point_colors=", RUBY_METHOD_FUNC(rosetta_field_464_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_89_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::graphics::ABLine>::value.klass;
-            rb_define_method(klass, "vertical", RUBY_METHOD_FUNC(rosetta_field_464_get), 0);
+            rb_define_method(klass, "vertical", RUBY_METHOD_FUNC(rosetta_field_465_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::ABLine&>().vertical)>>)
-                rb_define_method(klass, "vertical=", RUBY_METHOD_FUNC(rosetta_field_464_set), 1);
-            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_field_465_get), 0);
+                rb_define_method(klass, "vertical=", RUBY_METHOD_FUNC(rosetta_field_465_set), 1);
+            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_field_466_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::ABLine&>().value)>>)
-                rb_define_method(klass, "value=", RUBY_METHOD_FUNC(rosetta_field_465_set), 1);
-            rb_define_method(klass, "slope", RUBY_METHOD_FUNC(rosetta_field_466_get), 0);
+                rb_define_method(klass, "value=", RUBY_METHOD_FUNC(rosetta_field_466_set), 1);
+            rb_define_method(klass, "slope", RUBY_METHOD_FUNC(rosetta_field_467_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::ABLine&>().slope)>>)
-                rb_define_method(klass, "slope=", RUBY_METHOD_FUNC(rosetta_field_466_set), 1);
-            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_field_467_get), 0);
+                rb_define_method(klass, "slope=", RUBY_METHOD_FUNC(rosetta_field_467_set), 1);
+            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_field_468_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::ABLine&>().color)>>)
-                rb_define_method(klass, "color=", RUBY_METHOD_FUNC(rosetta_field_467_set), 1);
-            rb_define_method(klass, "stroke_width", RUBY_METHOD_FUNC(rosetta_field_468_get), 0);
+                rb_define_method(klass, "color=", RUBY_METHOD_FUNC(rosetta_field_468_set), 1);
+            rb_define_method(klass, "stroke_width", RUBY_METHOD_FUNC(rosetta_field_469_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::ABLine&>().stroke_width)>>)
-                rb_define_method(klass, "stroke_width=", RUBY_METHOD_FUNC(rosetta_field_468_set), 1);
+                rb_define_method(klass, "stroke_width=", RUBY_METHOD_FUNC(rosetta_field_469_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_90_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::graphics::LegendEntry>::value.klass;
-            rb_define_method(klass, "label", RUBY_METHOD_FUNC(rosetta_field_469_get), 0);
+            rb_define_method(klass, "label", RUBY_METHOD_FUNC(rosetta_field_470_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::LegendEntry&>().label)>>)
-                rb_define_method(klass, "label=", RUBY_METHOD_FUNC(rosetta_field_469_set), 1);
-            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_field_470_get), 0);
+                rb_define_method(klass, "label=", RUBY_METHOD_FUNC(rosetta_field_470_set), 1);
+            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_field_471_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::graphics::LegendEntry&>().color)>>)
-                rb_define_method(klass, "color=", RUBY_METHOD_FUNC(rosetta_field_470_set), 1);
+                rb_define_method(klass, "color=", RUBY_METHOD_FUNC(rosetta_field_471_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_91_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::graphics::Plot>::value.klass;
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1268), -1);
-            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1269), -1);
-            rb_define_method(klass, "subtitle", RUBY_METHOD_FUNC(rosetta_function_1270), -1);
-            rb_define_method(klass, "x_label", RUBY_METHOD_FUNC(rosetta_function_1271), -1);
-            rb_define_method(klass, "y_label", RUBY_METHOD_FUNC(rosetta_function_1272), -1);
-            rb_define_method(klass, "background", RUBY_METHOD_FUNC(rosetta_function_1273), -1);
-            rb_define_method(klass, "axis_color", RUBY_METHOD_FUNC(rosetta_function_1274), -1);
-            rb_define_method(klass, "grid_color", RUBY_METHOD_FUNC(rosetta_function_1275), -1);
-            rb_define_method(klass, "show_grid", RUBY_METHOD_FUNC(rosetta_function_1276), -1);
-            rb_define_method(klass, "x_limits", RUBY_METHOD_FUNC(rosetta_function_1277), -1);
-            rb_define_method(klass, "y_limits", RUBY_METHOD_FUNC(rosetta_function_1278), -1);
-            rb_define_method(klass, "hide_axes", RUBY_METHOD_FUNC(rosetta_function_1279), -1);
-            rb_define_method(klass, "x_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1280), -1);
-            rb_define_method(klass, "x_ticks", RUBY_METHOD_FUNC(rosetta_function_1281), -1);
-            rb_define_method(klass, "y_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1282), -1);
-            rb_define_method(klass, "y_ticks", RUBY_METHOD_FUNC(rosetta_function_1283), -1);
-            rb_define_method(klass, "margins", RUBY_METHOD_FUNC(rosetta_function_1284), -1);
-            rb_define_method(klass, "tick_font_size", RUBY_METHOD_FUNC(rosetta_function_1285), -1);
-            rb_define_method(klass, "pretty_ticks", RUBY_METHOD_FUNC(rosetta_function_1286), -1);
-            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1287), -1);
-            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1288), -1);
-            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1289), -1);
-            rb_define_method(klass, "subtitle_text", RUBY_METHOD_FUNC(rosetta_function_1290), -1);
-            rb_define_method(klass, "x_label_text", RUBY_METHOD_FUNC(rosetta_function_1291), -1);
-            rb_define_method(klass, "y_label_text", RUBY_METHOD_FUNC(rosetta_function_1292), -1);
-            rb_define_method(klass, "series", RUBY_METHOD_FUNC(rosetta_function_1293), -1);
-            rb_define_method(klass, "background_color", RUBY_METHOD_FUNC(rosetta_function_1294), -1);
-            rb_define_method(klass, "axes_color", RUBY_METHOD_FUNC(rosetta_function_1295), -1);
-            rb_define_method(klass, "major_grid_color", RUBY_METHOD_FUNC(rosetta_function_1296), -1);
-            rb_define_method(klass, "grid_visible", RUBY_METHOD_FUNC(rosetta_function_1297), -1);
-            rb_define_method(klass, "has_x_limits\?", RUBY_METHOD_FUNC(rosetta_function_1298), -1);
-            rb_define_method(klass, "has_y_limits\?", RUBY_METHOD_FUNC(rosetta_function_1299), -1);
-            rb_define_method(klass, "x_min", RUBY_METHOD_FUNC(rosetta_function_1300), -1);
-            rb_define_method(klass, "x_max", RUBY_METHOD_FUNC(rosetta_function_1301), -1);
-            rb_define_method(klass, "y_min", RUBY_METHOD_FUNC(rosetta_function_1302), -1);
-            rb_define_method(klass, "y_max", RUBY_METHOD_FUNC(rosetta_function_1303), -1);
-            rb_define_method(klass, "axes_hidden", RUBY_METHOD_FUNC(rosetta_function_1304), -1);
-            rb_define_method(klass, "x_tick_label_list", RUBY_METHOD_FUNC(rosetta_function_1305), -1);
-            rb_define_method(klass, "x_tick_position_list", RUBY_METHOD_FUNC(rosetta_function_1306), -1);
-            rb_define_method(klass, "y_tick_label_list", RUBY_METHOD_FUNC(rosetta_function_1307), -1);
-            rb_define_method(klass, "y_tick_position_list", RUBY_METHOD_FUNC(rosetta_function_1308), -1);
-            rb_define_method(klass, "reference_lines", RUBY_METHOD_FUNC(rosetta_function_1309), -1);
-            rb_define_method(klass, "legend_entries", RUBY_METHOD_FUNC(rosetta_function_1310), -1);
-            rb_define_method(klass, "has_custom_margins\?", RUBY_METHOD_FUNC(rosetta_function_1311), -1);
-            rb_define_method(klass, "margin_left", RUBY_METHOD_FUNC(rosetta_function_1312), -1);
-            rb_define_method(klass, "margin_right", RUBY_METHOD_FUNC(rosetta_function_1313), -1);
-            rb_define_method(klass, "margin_top", RUBY_METHOD_FUNC(rosetta_function_1314), -1);
-            rb_define_method(klass, "margin_bottom", RUBY_METHOD_FUNC(rosetta_function_1315), -1);
-            rb_define_method(klass, "tick_font_px", RUBY_METHOD_FUNC(rosetta_function_1316), -1);
-            rb_define_method(klass, "pretty_ticks_enabled", RUBY_METHOD_FUNC(rosetta_function_1317), -1);
-            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1318), -1);
-            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1319), -1);
-            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1320), -1);
-            rb_define_method(klass, "to_png", RUBY_METHOD_FUNC(rosetta_function_1321), -1);
-            rb_define_method(klass, "to_pdf", RUBY_METHOD_FUNC(rosetta_function_1322), -1);
-            rb_define_method(klass, "save_png", RUBY_METHOD_FUNC(rosetta_function_1323), -1);
-            rb_define_method(klass, "save_pdf", RUBY_METHOD_FUNC(rosetta_function_1324), -1);
-            rb_define_method(klass, "view", RUBY_METHOD_FUNC(rosetta_function_1325), -1);
-            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1326), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1269), -1);
+            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1270), -1);
+            rb_define_method(klass, "subtitle", RUBY_METHOD_FUNC(rosetta_function_1271), -1);
+            rb_define_method(klass, "x_label", RUBY_METHOD_FUNC(rosetta_function_1272), -1);
+            rb_define_method(klass, "y_label", RUBY_METHOD_FUNC(rosetta_function_1273), -1);
+            rb_define_method(klass, "background", RUBY_METHOD_FUNC(rosetta_function_1274), -1);
+            rb_define_method(klass, "axis_color", RUBY_METHOD_FUNC(rosetta_function_1275), -1);
+            rb_define_method(klass, "grid_color", RUBY_METHOD_FUNC(rosetta_function_1276), -1);
+            rb_define_method(klass, "show_grid", RUBY_METHOD_FUNC(rosetta_function_1277), -1);
+            rb_define_method(klass, "x_limits", RUBY_METHOD_FUNC(rosetta_function_1278), -1);
+            rb_define_method(klass, "y_limits", RUBY_METHOD_FUNC(rosetta_function_1279), -1);
+            rb_define_method(klass, "hide_axes", RUBY_METHOD_FUNC(rosetta_function_1280), -1);
+            rb_define_method(klass, "x_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1281), -1);
+            rb_define_method(klass, "x_ticks", RUBY_METHOD_FUNC(rosetta_function_1282), -1);
+            rb_define_method(klass, "y_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1283), -1);
+            rb_define_method(klass, "y_ticks", RUBY_METHOD_FUNC(rosetta_function_1284), -1);
+            rb_define_method(klass, "margins", RUBY_METHOD_FUNC(rosetta_function_1285), -1);
+            rb_define_method(klass, "tick_font_size", RUBY_METHOD_FUNC(rosetta_function_1286), -1);
+            rb_define_method(klass, "pretty_ticks", RUBY_METHOD_FUNC(rosetta_function_1287), -1);
+            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1288), -1);
+            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1289), -1);
+            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1290), -1);
+            rb_define_method(klass, "subtitle_text", RUBY_METHOD_FUNC(rosetta_function_1291), -1);
+            rb_define_method(klass, "x_label_text", RUBY_METHOD_FUNC(rosetta_function_1292), -1);
+            rb_define_method(klass, "y_label_text", RUBY_METHOD_FUNC(rosetta_function_1293), -1);
+            rb_define_method(klass, "series", RUBY_METHOD_FUNC(rosetta_function_1294), -1);
+            rb_define_method(klass, "background_color", RUBY_METHOD_FUNC(rosetta_function_1295), -1);
+            rb_define_method(klass, "axes_color", RUBY_METHOD_FUNC(rosetta_function_1296), -1);
+            rb_define_method(klass, "major_grid_color", RUBY_METHOD_FUNC(rosetta_function_1297), -1);
+            rb_define_method(klass, "grid_visible", RUBY_METHOD_FUNC(rosetta_function_1298), -1);
+            rb_define_method(klass, "has_x_limits\?", RUBY_METHOD_FUNC(rosetta_function_1299), -1);
+            rb_define_method(klass, "has_y_limits\?", RUBY_METHOD_FUNC(rosetta_function_1300), -1);
+            rb_define_method(klass, "x_min", RUBY_METHOD_FUNC(rosetta_function_1301), -1);
+            rb_define_method(klass, "x_max", RUBY_METHOD_FUNC(rosetta_function_1302), -1);
+            rb_define_method(klass, "y_min", RUBY_METHOD_FUNC(rosetta_function_1303), -1);
+            rb_define_method(klass, "y_max", RUBY_METHOD_FUNC(rosetta_function_1304), -1);
+            rb_define_method(klass, "axes_hidden", RUBY_METHOD_FUNC(rosetta_function_1305), -1);
+            rb_define_method(klass, "x_tick_label_list", RUBY_METHOD_FUNC(rosetta_function_1306), -1);
+            rb_define_method(klass, "x_tick_position_list", RUBY_METHOD_FUNC(rosetta_function_1307), -1);
+            rb_define_method(klass, "y_tick_label_list", RUBY_METHOD_FUNC(rosetta_function_1308), -1);
+            rb_define_method(klass, "y_tick_position_list", RUBY_METHOD_FUNC(rosetta_function_1309), -1);
+            rb_define_method(klass, "reference_lines", RUBY_METHOD_FUNC(rosetta_function_1310), -1);
+            rb_define_method(klass, "legend_entries", RUBY_METHOD_FUNC(rosetta_function_1311), -1);
+            rb_define_method(klass, "has_custom_margins\?", RUBY_METHOD_FUNC(rosetta_function_1312), -1);
+            rb_define_method(klass, "margin_left", RUBY_METHOD_FUNC(rosetta_function_1313), -1);
+            rb_define_method(klass, "margin_right", RUBY_METHOD_FUNC(rosetta_function_1314), -1);
+            rb_define_method(klass, "margin_top", RUBY_METHOD_FUNC(rosetta_function_1315), -1);
+            rb_define_method(klass, "margin_bottom", RUBY_METHOD_FUNC(rosetta_function_1316), -1);
+            rb_define_method(klass, "tick_font_px", RUBY_METHOD_FUNC(rosetta_function_1317), -1);
+            rb_define_method(klass, "pretty_ticks_enabled", RUBY_METHOD_FUNC(rosetta_function_1318), -1);
+            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1319), -1);
+            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1320), -1);
+            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1321), -1);
+            rb_define_method(klass, "to_png", RUBY_METHOD_FUNC(rosetta_function_1322), -1);
+            rb_define_method(klass, "to_pdf", RUBY_METHOD_FUNC(rosetta_function_1323), -1);
+            rb_define_method(klass, "save_png", RUBY_METHOD_FUNC(rosetta_function_1324), -1);
+            rb_define_method(klass, "save_pdf", RUBY_METHOD_FUNC(rosetta_function_1325), -1);
+            rb_define_method(klass, "view", RUBY_METHOD_FUNC(rosetta_function_1326), -1);
+            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1327), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_92_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::graphics::RPlot>::value.klass;
-            rb_define_singleton_method(klass, "create", RUBY_METHOD_FUNC(rosetta_function_1327), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1328), -1);
-            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1329), -1);
-            rb_define_method(klass, "subtitle", RUBY_METHOD_FUNC(rosetta_function_1330), -1);
-            rb_define_method(klass, "x_label", RUBY_METHOD_FUNC(rosetta_function_1331), -1);
-            rb_define_method(klass, "y_label", RUBY_METHOD_FUNC(rosetta_function_1332), -1);
-            rb_define_method(klass, "xlab", RUBY_METHOD_FUNC(rosetta_function_1333), -1);
-            rb_define_method(klass, "ylab", RUBY_METHOD_FUNC(rosetta_function_1334), -1);
-            rb_define_method(klass, "set_title", RUBY_METHOD_FUNC(rosetta_function_1335), -1);
-            rb_define_method(klass, "title=", RUBY_METHOD_FUNC(rosetta_function_1335), -1);
-            rb_define_method(klass, "set_subtitle", RUBY_METHOD_FUNC(rosetta_function_1336), -1);
-            rb_define_method(klass, "subtitle=", RUBY_METHOD_FUNC(rosetta_function_1336), -1);
-            rb_define_method(klass, "set_xlab", RUBY_METHOD_FUNC(rosetta_function_1337), -1);
-            rb_define_method(klass, "xlab=", RUBY_METHOD_FUNC(rosetta_function_1337), -1);
-            rb_define_method(klass, "set_ylab", RUBY_METHOD_FUNC(rosetta_function_1338), -1);
-            rb_define_method(klass, "ylab=", RUBY_METHOD_FUNC(rosetta_function_1338), -1);
-            rb_define_method(klass, "set_col", RUBY_METHOD_FUNC(rosetta_function_1339), -1);
-            rb_define_method(klass, "col=", RUBY_METHOD_FUNC(rosetta_function_1339), -1);
-            rb_define_method(klass, "background", RUBY_METHOD_FUNC(rosetta_function_1340), -1);
-            rb_define_method(klass, "axis_color", RUBY_METHOD_FUNC(rosetta_function_1341), -1);
-            rb_define_method(klass, "grid_color", RUBY_METHOD_FUNC(rosetta_function_1342), -1);
-            rb_define_method(klass, "show_grid", RUBY_METHOD_FUNC(rosetta_function_1343), -1);
-            rb_define_method(klass, "x_limits", RUBY_METHOD_FUNC(rosetta_function_1344), -1);
-            rb_define_method(klass, "y_limits", RUBY_METHOD_FUNC(rosetta_function_1345), -1);
-            rb_define_method(klass, "xlim", RUBY_METHOD_FUNC(rosetta_function_1346), -1);
-            rb_define_method(klass, "ylim", RUBY_METHOD_FUNC(rosetta_function_1347), -1);
-            rb_define_method(klass, "hide_axes", RUBY_METHOD_FUNC(rosetta_function_1348), -1);
-            rb_define_method(klass, "x_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1349), -1);
-            rb_define_method(klass, "x_ticks", RUBY_METHOD_FUNC(rosetta_function_1350), -1);
-            rb_define_method(klass, "y_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1351), -1);
-            rb_define_method(klass, "y_ticks", RUBY_METHOD_FUNC(rosetta_function_1352), -1);
-            rb_define_method(klass, "margins", RUBY_METHOD_FUNC(rosetta_function_1353), -1);
-            rb_define_method(klass, "tick_font_size", RUBY_METHOD_FUNC(rosetta_function_1354), -1);
-            rb_define_method(klass, "pretty_ticks", RUBY_METHOD_FUNC(rosetta_function_1355), -1);
-            rb_define_singleton_method(klass, "plot", RUBY_METHOD_FUNC(rosetta_function_1356), -1);
-            rb_define_singleton_method(klass, "hist", RUBY_METHOD_FUNC(rosetta_function_1357), -1);
-            rb_define_singleton_method(klass, "barplot", RUBY_METHOD_FUNC(rosetta_function_1358), -1);
-            rb_define_singleton_method(klass, "boxplot", RUBY_METHOD_FUNC(rosetta_function_1359), -1);
-            rb_define_singleton_method(klass, "pie", RUBY_METHOD_FUNC(rosetta_function_1360), -1);
-            rb_define_singleton_method(klass, "curve", RUBY_METHOD_FUNC(rosetta_function_1361), -1);
-            rb_define_singleton_method(klass, "qqnorm", RUBY_METHOD_FUNC(rosetta_function_1362), -1);
-            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_function_1363), -1);
-            rb_define_method(klass, "points_colored", RUBY_METHOD_FUNC(rosetta_function_1364), -1);
-            rb_define_method(klass, "line", RUBY_METHOD_FUNC(rosetta_function_1365), -1);
-            rb_define_method(klass, "lines", RUBY_METHOD_FUNC(rosetta_function_1366), -1);
-            rb_define_method(klass, "bars", RUBY_METHOD_FUNC(rosetta_function_1367), -1);
-            rb_define_method(klass, "box", RUBY_METHOD_FUNC(rosetta_function_1368), -1);
-            rb_define_method(klass, "abline", RUBY_METHOD_FUNC(rosetta_function_1369), -1);
-            rb_define_method(klass, "abline_h", RUBY_METHOD_FUNC(rosetta_function_1370), -1);
-            rb_define_method(klass, "abline_v", RUBY_METHOD_FUNC(rosetta_function_1371), -1);
-            rb_define_method(klass, "qqline", RUBY_METHOD_FUNC(rosetta_function_1372), -1);
-            rb_define_method(klass, "legend", RUBY_METHOD_FUNC(rosetta_function_1373), -1);
-            rb_define_method(klass, "text", RUBY_METHOD_FUNC(rosetta_function_1374), -1);
-            rb_define_method(klass, "polygon", RUBY_METHOD_FUNC(rosetta_function_1375), -1);
-            rb_define_method(klass, "image", RUBY_METHOD_FUNC(rosetta_function_1376), -1);
-            rb_define_method(klass, "segments", RUBY_METHOD_FUNC(rosetta_function_1377), -1);
+            rb_define_singleton_method(klass, "create", RUBY_METHOD_FUNC(rosetta_function_1328), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1329), -1);
+            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1330), -1);
+            rb_define_method(klass, "subtitle", RUBY_METHOD_FUNC(rosetta_function_1331), -1);
+            rb_define_method(klass, "x_label", RUBY_METHOD_FUNC(rosetta_function_1332), -1);
+            rb_define_method(klass, "y_label", RUBY_METHOD_FUNC(rosetta_function_1333), -1);
+            rb_define_method(klass, "xlab", RUBY_METHOD_FUNC(rosetta_function_1334), -1);
+            rb_define_method(klass, "ylab", RUBY_METHOD_FUNC(rosetta_function_1335), -1);
+            rb_define_method(klass, "set_title", RUBY_METHOD_FUNC(rosetta_function_1336), -1);
+            rb_define_method(klass, "title=", RUBY_METHOD_FUNC(rosetta_function_1336), -1);
+            rb_define_method(klass, "set_subtitle", RUBY_METHOD_FUNC(rosetta_function_1337), -1);
+            rb_define_method(klass, "subtitle=", RUBY_METHOD_FUNC(rosetta_function_1337), -1);
+            rb_define_method(klass, "set_xlab", RUBY_METHOD_FUNC(rosetta_function_1338), -1);
+            rb_define_method(klass, "xlab=", RUBY_METHOD_FUNC(rosetta_function_1338), -1);
+            rb_define_method(klass, "set_ylab", RUBY_METHOD_FUNC(rosetta_function_1339), -1);
+            rb_define_method(klass, "ylab=", RUBY_METHOD_FUNC(rosetta_function_1339), -1);
+            rb_define_method(klass, "set_col", RUBY_METHOD_FUNC(rosetta_function_1340), -1);
+            rb_define_method(klass, "col=", RUBY_METHOD_FUNC(rosetta_function_1340), -1);
+            rb_define_method(klass, "background", RUBY_METHOD_FUNC(rosetta_function_1341), -1);
+            rb_define_method(klass, "axis_color", RUBY_METHOD_FUNC(rosetta_function_1342), -1);
+            rb_define_method(klass, "grid_color", RUBY_METHOD_FUNC(rosetta_function_1343), -1);
+            rb_define_method(klass, "show_grid", RUBY_METHOD_FUNC(rosetta_function_1344), -1);
+            rb_define_method(klass, "x_limits", RUBY_METHOD_FUNC(rosetta_function_1345), -1);
+            rb_define_method(klass, "y_limits", RUBY_METHOD_FUNC(rosetta_function_1346), -1);
+            rb_define_method(klass, "xlim", RUBY_METHOD_FUNC(rosetta_function_1347), -1);
+            rb_define_method(klass, "ylim", RUBY_METHOD_FUNC(rosetta_function_1348), -1);
+            rb_define_method(klass, "hide_axes", RUBY_METHOD_FUNC(rosetta_function_1349), -1);
+            rb_define_method(klass, "x_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1350), -1);
+            rb_define_method(klass, "x_ticks", RUBY_METHOD_FUNC(rosetta_function_1351), -1);
+            rb_define_method(klass, "y_tick_labels", RUBY_METHOD_FUNC(rosetta_function_1352), -1);
+            rb_define_method(klass, "y_ticks", RUBY_METHOD_FUNC(rosetta_function_1353), -1);
+            rb_define_method(klass, "margins", RUBY_METHOD_FUNC(rosetta_function_1354), -1);
+            rb_define_method(klass, "tick_font_size", RUBY_METHOD_FUNC(rosetta_function_1355), -1);
+            rb_define_method(klass, "pretty_ticks", RUBY_METHOD_FUNC(rosetta_function_1356), -1);
+            rb_define_singleton_method(klass, "plot", RUBY_METHOD_FUNC(rosetta_function_1357), -1);
+            rb_define_singleton_method(klass, "hist", RUBY_METHOD_FUNC(rosetta_function_1358), -1);
+            rb_define_singleton_method(klass, "barplot", RUBY_METHOD_FUNC(rosetta_function_1359), -1);
+            rb_define_singleton_method(klass, "boxplot", RUBY_METHOD_FUNC(rosetta_function_1360), -1);
+            rb_define_singleton_method(klass, "pie", RUBY_METHOD_FUNC(rosetta_function_1361), -1);
+            rb_define_singleton_method(klass, "curve", RUBY_METHOD_FUNC(rosetta_function_1362), -1);
+            rb_define_singleton_method(klass, "qqnorm", RUBY_METHOD_FUNC(rosetta_function_1363), -1);
+            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_function_1364), -1);
+            rb_define_method(klass, "points_colored", RUBY_METHOD_FUNC(rosetta_function_1365), -1);
+            rb_define_method(klass, "line", RUBY_METHOD_FUNC(rosetta_function_1366), -1);
+            rb_define_method(klass, "lines", RUBY_METHOD_FUNC(rosetta_function_1367), -1);
+            rb_define_method(klass, "bars", RUBY_METHOD_FUNC(rosetta_function_1368), -1);
+            rb_define_method(klass, "box", RUBY_METHOD_FUNC(rosetta_function_1369), -1);
+            rb_define_method(klass, "abline", RUBY_METHOD_FUNC(rosetta_function_1370), -1);
+            rb_define_method(klass, "abline_h", RUBY_METHOD_FUNC(rosetta_function_1371), -1);
+            rb_define_method(klass, "abline_v", RUBY_METHOD_FUNC(rosetta_function_1372), -1);
+            rb_define_method(klass, "qqline", RUBY_METHOD_FUNC(rosetta_function_1373), -1);
+            rb_define_method(klass, "legend", RUBY_METHOD_FUNC(rosetta_function_1374), -1);
+            rb_define_method(klass, "text", RUBY_METHOD_FUNC(rosetta_function_1375), -1);
+            rb_define_method(klass, "polygon", RUBY_METHOD_FUNC(rosetta_function_1376), -1);
+            rb_define_method(klass, "image", RUBY_METHOD_FUNC(rosetta_function_1377), -1);
+            rb_define_method(klass, "segments", RUBY_METHOD_FUNC(rosetta_function_1378), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_93_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::graphics::RLayout>::value.klass;
-            rb_define_singleton_method(klass, "create", RUBY_METHOD_FUNC(rosetta_function_1378), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1379), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1380), -1);
-            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1381), -1);
-            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_function_1382), -1);
-            rb_define_method(klass, "cols", RUBY_METHOD_FUNC(rosetta_function_1383), -1);
-            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1384), -1);
-            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1385), -1);
-            rb_define_method(klass, "panel_count", RUBY_METHOD_FUNC(rosetta_function_1386), -1);
-            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1387), -1);
-            rb_define_method(klass, "panel", RUBY_METHOD_FUNC(rosetta_function_1388), -1);
-            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1389), -1);
-            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1390), -1);
-            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1391), -1);
-            rb_define_method(klass, "to_png", RUBY_METHOD_FUNC(rosetta_function_1392), -1);
-            rb_define_method(klass, "to_pdf", RUBY_METHOD_FUNC(rosetta_function_1393), -1);
-            rb_define_method(klass, "save_png", RUBY_METHOD_FUNC(rosetta_function_1394), -1);
-            rb_define_method(klass, "save_pdf", RUBY_METHOD_FUNC(rosetta_function_1395), -1);
-            rb_define_method(klass, "fit_panels", RUBY_METHOD_FUNC(rosetta_function_1396), -1);
-            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1397), -1);
-            rb_define_method(klass, "view", RUBY_METHOD_FUNC(rosetta_function_1398), -1);
+            rb_define_singleton_method(klass, "create", RUBY_METHOD_FUNC(rosetta_function_1379), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_1380), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1381), -1);
+            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1382), -1);
+            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_function_1383), -1);
+            rb_define_method(klass, "cols", RUBY_METHOD_FUNC(rosetta_function_1384), -1);
+            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1385), -1);
+            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1386), -1);
+            rb_define_method(klass, "panel_count", RUBY_METHOD_FUNC(rosetta_function_1387), -1);
+            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1388), -1);
+            rb_define_method(klass, "panel", RUBY_METHOD_FUNC(rosetta_function_1389), -1);
+            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1390), -1);
+            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1391), -1);
+            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1392), -1);
+            rb_define_method(klass, "to_png", RUBY_METHOD_FUNC(rosetta_function_1393), -1);
+            rb_define_method(klass, "to_pdf", RUBY_METHOD_FUNC(rosetta_function_1394), -1);
+            rb_define_method(klass, "save_png", RUBY_METHOD_FUNC(rosetta_function_1395), -1);
+            rb_define_method(klass, "save_pdf", RUBY_METHOD_FUNC(rosetta_function_1396), -1);
+            rb_define_method(klass, "fit_panels", RUBY_METHOD_FUNC(rosetta_function_1397), -1);
+            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1398), -1);
+            rb_define_method(klass, "view", RUBY_METHOD_FUNC(rosetta_function_1399), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_94_initialize), -1);
             rb_define_const(klass, "TITLE_BAND_PX", rosetta_rb::Value<std::remove_cv_t<decltype(datamunge::graphics::RLayout::title_band_px)>>::cast(static_cast<std::remove_cv_t<decltype(datamunge::graphics::RLayout::title_band_px)>>(datamunge::graphics::RLayout::title_band_px)));
             rb_define_const(klass, "MIN_PANEL_PX", rosetta_rb::Value<std::remove_cv_t<decltype(datamunge::graphics::RLayout::min_panel_px)>>::cast(static_cast<std::remove_cv_t<decltype(datamunge::graphics::RLayout::min_panel_px)>>(datamunge::graphics::RLayout::min_panel_px)));
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DTWResult>::value.klass;
-            rb_define_method(klass, "distance", RUBY_METHOD_FUNC(rosetta_field_471_get), 0);
+            rb_define_method(klass, "distance", RUBY_METHOD_FUNC(rosetta_field_472_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWResult&>().distance)>>)
-                rb_define_method(klass, "distance=", RUBY_METHOD_FUNC(rosetta_field_471_set), 1);
-            rb_define_method(klass, "path_a", RUBY_METHOD_FUNC(rosetta_field_472_get), 0);
+                rb_define_method(klass, "distance=", RUBY_METHOD_FUNC(rosetta_field_472_set), 1);
+            rb_define_method(klass, "path_a", RUBY_METHOD_FUNC(rosetta_field_473_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWResult&>().path_a)>>)
-                rb_define_method(klass, "path_a=", RUBY_METHOD_FUNC(rosetta_field_472_set), 1);
-            rb_define_method(klass, "path_b", RUBY_METHOD_FUNC(rosetta_field_473_get), 0);
+                rb_define_method(klass, "path_a=", RUBY_METHOD_FUNC(rosetta_field_473_set), 1);
+            rb_define_method(klass, "path_b", RUBY_METHOD_FUNC(rosetta_field_474_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWResult&>().path_b)>>)
-                rb_define_method(klass, "path_b=", RUBY_METHOD_FUNC(rosetta_field_473_set), 1);
+                rb_define_method(klass, "path_b=", RUBY_METHOD_FUNC(rosetta_field_474_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_95_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DTWWork>::value.klass;
-            rb_define_method(klass, "cells", RUBY_METHOD_FUNC(rosetta_field_474_get), 0);
+            rb_define_method(klass, "cells", RUBY_METHOD_FUNC(rosetta_field_475_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWWork&>().cells)>>)
-                rb_define_method(klass, "cells=", RUBY_METHOD_FUNC(rosetta_field_474_set), 1);
-            rb_define_method(klass, "predecessor_reads", RUBY_METHOD_FUNC(rosetta_field_475_get), 0);
+                rb_define_method(klass, "cells=", RUBY_METHOD_FUNC(rosetta_field_475_set), 1);
+            rb_define_method(klass, "predecessor_reads", RUBY_METHOD_FUNC(rosetta_field_476_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWWork&>().predecessor_reads)>>)
-                rb_define_method(klass, "predecessor_reads=", RUBY_METHOD_FUNC(rosetta_field_475_set), 1);
-            rb_define_method(klass, "traceback_steps", RUBY_METHOD_FUNC(rosetta_field_476_get), 0);
+                rb_define_method(klass, "predecessor_reads=", RUBY_METHOD_FUNC(rosetta_field_476_set), 1);
+            rb_define_method(klass, "traceback_steps", RUBY_METHOD_FUNC(rosetta_field_477_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWWork&>().traceback_steps)>>)
-                rb_define_method(klass, "traceback_steps=", RUBY_METHOD_FUNC(rosetta_field_476_set), 1);
+                rb_define_method(klass, "traceback_steps=", RUBY_METHOD_FUNC(rosetta_field_477_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_96_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DTWComputation>::value.klass;
-            rb_define_method(klass, "result", RUBY_METHOD_FUNC(rosetta_field_477_get), 0);
+            rb_define_method(klass, "result", RUBY_METHOD_FUNC(rosetta_field_478_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().result)>>)
-                rb_define_method(klass, "result=", RUBY_METHOD_FUNC(rosetta_field_477_set), 1);
-            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_478_get), 0);
+                rb_define_method(klass, "result=", RUBY_METHOD_FUNC(rosetta_field_478_set), 1);
+            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_479_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().work)>>)
-                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_478_set), 1);
+                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_479_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_97_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DTWTrace>::value.klass;
-            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_479_get), 0);
+            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_480_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWTrace&>().a)>>)
-                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_479_set), 1);
-            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_480_get), 0);
+                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_480_set), 1);
+            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_481_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWTrace&>().b)>>)
-                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_480_set), 1);
-            rb_define_method(klass, "cumulative", RUBY_METHOD_FUNC(rosetta_field_481_get), 0);
+                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_481_set), 1);
+            rb_define_method(klass, "cumulative", RUBY_METHOD_FUNC(rosetta_field_482_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWTrace&>().cumulative)>>)
-                rb_define_method(klass, "cumulative=", RUBY_METHOD_FUNC(rosetta_field_481_set), 1);
-            rb_define_method(klass, "predecessors", RUBY_METHOD_FUNC(rosetta_field_482_get), 0);
+                rb_define_method(klass, "cumulative=", RUBY_METHOD_FUNC(rosetta_field_482_set), 1);
+            rb_define_method(klass, "predecessors", RUBY_METHOD_FUNC(rosetta_field_483_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWTrace&>().predecessors)>>)
-                rb_define_method(klass, "predecessors=", RUBY_METHOD_FUNC(rosetta_field_482_set), 1);
-            rb_define_method(klass, "result", RUBY_METHOD_FUNC(rosetta_field_483_get), 0);
+                rb_define_method(klass, "predecessors=", RUBY_METHOD_FUNC(rosetta_field_483_set), 1);
+            rb_define_method(klass, "result", RUBY_METHOD_FUNC(rosetta_field_484_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWTrace&>().result)>>)
-                rb_define_method(klass, "result=", RUBY_METHOD_FUNC(rosetta_field_483_set), 1);
-            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_484_get), 0);
+                rb_define_method(klass, "result=", RUBY_METHOD_FUNC(rosetta_field_484_set), 1);
+            rb_define_method(klass, "work", RUBY_METHOD_FUNC(rosetta_field_485_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWTrace&>().work)>>)
-                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_484_set), 1);
-            rb_define_method(klass, "captured_entries", RUBY_METHOD_FUNC(rosetta_field_485_get), 0);
+                rb_define_method(klass, "work=", RUBY_METHOD_FUNC(rosetta_field_485_set), 1);
+            rb_define_method(klass, "captured_entries", RUBY_METHOD_FUNC(rosetta_field_486_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DTWTrace&>().captured_entries)>>)
-                rb_define_method(klass, "captured_entries=", RUBY_METHOD_FUNC(rosetta_field_485_set), 1);
+                rb_define_method(klass, "captured_entries=", RUBY_METHOD_FUNC(rosetta_field_486_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_98_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::KDTree2D>::value.klass;
-            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_1399), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1400), -1);
-            rb_define_method(klass, "nearest", RUBY_METHOD_FUNC(rosetta_function_1401), -1);
-            rb_define_method(klass, "k_nearest", RUBY_METHOD_FUNC(rosetta_function_1402), -1);
-            rb_define_method(klass, "points_in_radius", RUBY_METHOD_FUNC(rosetta_function_1403), -1);
+            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_1400), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1401), -1);
+            rb_define_method(klass, "nearest", RUBY_METHOD_FUNC(rosetta_function_1402), -1);
+            rb_define_method(klass, "k_nearest", RUBY_METHOD_FUNC(rosetta_function_1403), -1);
+            rb_define_method(klass, "points_in_radius", RUBY_METHOD_FUNC(rosetta_function_1404), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_99_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::Circle>::value.klass;
-            rb_define_method(klass, "center", RUBY_METHOD_FUNC(rosetta_field_486_get), 0);
+            rb_define_method(klass, "center", RUBY_METHOD_FUNC(rosetta_field_487_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::Circle&>().center)>>)
-                rb_define_method(klass, "center=", RUBY_METHOD_FUNC(rosetta_field_486_set), 1);
-            rb_define_method(klass, "radius", RUBY_METHOD_FUNC(rosetta_field_487_get), 0);
+                rb_define_method(klass, "center=", RUBY_METHOD_FUNC(rosetta_field_487_set), 1);
+            rb_define_method(klass, "radius", RUBY_METHOD_FUNC(rosetta_field_488_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::Circle&>().radius)>>)
-                rb_define_method(klass, "radius=", RUBY_METHOD_FUNC(rosetta_field_487_set), 1);
+                rb_define_method(klass, "radius=", RUBY_METHOD_FUNC(rosetta_field_488_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_100_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::DiameterResult>::value.klass;
-            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_488_get), 0);
+            rb_define_method(klass, "a", RUBY_METHOD_FUNC(rosetta_field_489_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DiameterResult&>().a)>>)
-                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_488_set), 1);
-            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_489_get), 0);
+                rb_define_method(klass, "a=", RUBY_METHOD_FUNC(rosetta_field_489_set), 1);
+            rb_define_method(klass, "b", RUBY_METHOD_FUNC(rosetta_field_490_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DiameterResult&>().b)>>)
-                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_489_set), 1);
-            rb_define_method(klass, "distance", RUBY_METHOD_FUNC(rosetta_field_490_get), 0);
+                rb_define_method(klass, "b=", RUBY_METHOD_FUNC(rosetta_field_490_set), 1);
+            rb_define_method(klass, "distance", RUBY_METHOD_FUNC(rosetta_field_491_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::DiameterResult&>().distance)>>)
-                rb_define_method(klass, "distance=", RUBY_METHOD_FUNC(rosetta_field_490_set), 1);
+                rb_define_method(klass, "distance=", RUBY_METHOD_FUNC(rosetta_field_491_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_101_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::MinimumBoundingRectangle>::value.klass;
-            rb_define_method(klass, "corners", RUBY_METHOD_FUNC(rosetta_field_491_get), 0);
+            rb_define_method(klass, "corners", RUBY_METHOD_FUNC(rosetta_field_492_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::MinimumBoundingRectangle&>().corners)>>)
-                rb_define_method(klass, "corners=", RUBY_METHOD_FUNC(rosetta_field_491_set), 1);
-            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_field_492_get), 0);
+                rb_define_method(klass, "corners=", RUBY_METHOD_FUNC(rosetta_field_492_set), 1);
+            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_field_493_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::MinimumBoundingRectangle&>().width)>>)
-                rb_define_method(klass, "width=", RUBY_METHOD_FUNC(rosetta_field_492_set), 1);
-            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_field_493_get), 0);
+                rb_define_method(klass, "width=", RUBY_METHOD_FUNC(rosetta_field_493_set), 1);
+            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_field_494_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::MinimumBoundingRectangle&>().height)>>)
-                rb_define_method(klass, "height=", RUBY_METHOD_FUNC(rosetta_field_493_set), 1);
-            rb_define_method(klass, "area", RUBY_METHOD_FUNC(rosetta_field_494_get), 0);
+                rb_define_method(klass, "height=", RUBY_METHOD_FUNC(rosetta_field_494_set), 1);
+            rb_define_method(klass, "area", RUBY_METHOD_FUNC(rosetta_field_495_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::MinimumBoundingRectangle&>().area)>>)
-                rb_define_method(klass, "area=", RUBY_METHOD_FUNC(rosetta_field_494_set), 1);
+                rb_define_method(klass, "area=", RUBY_METHOD_FUNC(rosetta_field_495_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_102_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::geometry::VoronoiDiagram>::value.klass;
-            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_field_495_get), 0);
+            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_field_496_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::VoronoiDiagram&>().vertices)>>)
-                rb_define_method(klass, "vertices=", RUBY_METHOD_FUNC(rosetta_field_495_set), 1);
-            rb_define_method(klass, "cells", RUBY_METHOD_FUNC(rosetta_field_496_get), 0);
+                rb_define_method(klass, "vertices=", RUBY_METHOD_FUNC(rosetta_field_496_set), 1);
+            rb_define_method(klass, "cells", RUBY_METHOD_FUNC(rosetta_field_497_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::geometry::VoronoiDiagram&>().cells)>>)
-                rb_define_method(klass, "cells=", RUBY_METHOD_FUNC(rosetta_field_496_set), 1);
+                rb_define_method(klass, "cells=", RUBY_METHOD_FUNC(rosetta_field_497_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_103_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::LinalgMatrix>::value.klass;
-            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_function_1404), -1);
-            rb_define_method(klass, "cols", RUBY_METHOD_FUNC(rosetta_function_1405), -1);
-            rb_define_method(klass, "sparse\?", RUBY_METHOD_FUNC(rosetta_function_1406), -1);
-            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_1407), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1408), -1);
-            rb_define_method(klass, "inverse_action", RUBY_METHOD_FUNC(rosetta_function_1409), -1);
-            rb_define_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1410), -1);
-            rb_define_method(klass, "eval", RUBY_METHOD_FUNC(rosetta_function_1411), -1);
-            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_function_1412), -1);
-            rb_define_method(klass, "text", RUBY_METHOD_FUNC(rosetta_function_1413), -1);
+            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_function_1405), -1);
+            rb_define_method(klass, "cols", RUBY_METHOD_FUNC(rosetta_function_1406), -1);
+            rb_define_method(klass, "sparse\?", RUBY_METHOD_FUNC(rosetta_function_1407), -1);
+            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_1408), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_1409), -1);
+            rb_define_method(klass, "inverse_action", RUBY_METHOD_FUNC(rosetta_function_1410), -1);
+            rb_define_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1411), -1);
+            rb_define_method(klass, "eval", RUBY_METHOD_FUNC(rosetta_function_1412), -1);
+            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_function_1413), -1);
+            rb_define_method(klass, "text", RUBY_METHOD_FUNC(rosetta_function_1414), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_104_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::ode::RHS>::value.klass;
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1414), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_1415), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_105_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::ode::ODEOptions>::value.klass;
-            rb_define_method(klass, "method_", RUBY_METHOD_FUNC(rosetta_field_497_get), 0);
+            rb_define_method(klass, "method_", RUBY_METHOD_FUNC(rosetta_field_498_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODEOptions&>().method)>>)
-                rb_define_method(klass, "method_=", RUBY_METHOD_FUNC(rosetta_field_497_set), 1);
-            rb_define_method(klass, "multistep_order", RUBY_METHOD_FUNC(rosetta_field_498_get), 0);
+                rb_define_method(klass, "method_=", RUBY_METHOD_FUNC(rosetta_field_498_set), 1);
+            rb_define_method(klass, "multistep_order", RUBY_METHOD_FUNC(rosetta_field_499_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODEOptions&>().multistep_order)>>)
-                rb_define_method(klass, "multistep_order=", RUBY_METHOD_FUNC(rosetta_field_498_set), 1);
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_499_get), 0);
+                rb_define_method(klass, "multistep_order=", RUBY_METHOD_FUNC(rosetta_field_499_set), 1);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_500_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODEOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_499_set), 1);
-            rb_define_method(klass, "abs_tol", RUBY_METHOD_FUNC(rosetta_field_500_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_500_set), 1);
+            rb_define_method(klass, "abs_tol", RUBY_METHOD_FUNC(rosetta_field_501_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODEOptions&>().abs_tol)>>)
-                rb_define_method(klass, "abs_tol=", RUBY_METHOD_FUNC(rosetta_field_500_set), 1);
-            rb_define_method(klass, "rel_tol", RUBY_METHOD_FUNC(rosetta_field_501_get), 0);
+                rb_define_method(klass, "abs_tol=", RUBY_METHOD_FUNC(rosetta_field_501_set), 1);
+            rb_define_method(klass, "rel_tol", RUBY_METHOD_FUNC(rosetta_field_502_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODEOptions&>().rel_tol)>>)
-                rb_define_method(klass, "rel_tol=", RUBY_METHOD_FUNC(rosetta_field_501_set), 1);
-            rb_define_method(klass, "max_step", RUBY_METHOD_FUNC(rosetta_field_502_get), 0);
+                rb_define_method(klass, "rel_tol=", RUBY_METHOD_FUNC(rosetta_field_502_set), 1);
+            rb_define_method(klass, "max_step", RUBY_METHOD_FUNC(rosetta_field_503_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODEOptions&>().max_step)>>)
-                rb_define_method(klass, "max_step=", RUBY_METHOD_FUNC(rosetta_field_502_set), 1);
+                rb_define_method(klass, "max_step=", RUBY_METHOD_FUNC(rosetta_field_503_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_106_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::ode::ODESolution>::value.klass;
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1415), -1);
-            rb_define_method(klass, "time_at", RUBY_METHOD_FUNC(rosetta_function_1416), -1);
-            rb_define_method(klass, "state_at", RUBY_METHOD_FUNC(rosetta_function_1417), -1);
-            rb_define_method(klass, "steps_taken", RUBY_METHOD_FUNC(rosetta_field_503_get), 0);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1416), -1);
+            rb_define_method(klass, "time_at", RUBY_METHOD_FUNC(rosetta_function_1417), -1);
+            rb_define_method(klass, "state_at", RUBY_METHOD_FUNC(rosetta_function_1418), -1);
+            rb_define_method(klass, "steps_taken", RUBY_METHOD_FUNC(rosetta_field_504_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODESolution&>().steps_taken)>>)
-                rb_define_method(klass, "steps_taken=", RUBY_METHOD_FUNC(rosetta_field_503_set), 1);
-            rb_define_method(klass, "function_evaluations", RUBY_METHOD_FUNC(rosetta_field_504_get), 0);
+                rb_define_method(klass, "steps_taken=", RUBY_METHOD_FUNC(rosetta_field_504_set), 1);
+            rb_define_method(klass, "function_evaluations", RUBY_METHOD_FUNC(rosetta_field_505_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::ode::ODESolution&>().function_evaluations)>>)
-                rb_define_method(klass, "function_evaluations=", RUBY_METHOD_FUNC(rosetta_field_504_set), 1);
+                rb_define_method(klass, "function_evaluations=", RUBY_METHOD_FUNC(rosetta_field_505_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_107_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::ode::ODESolver>::value.klass;
-            rb_define_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1418), -1);
-            rb_define_method(klass, "solve_builtin", RUBY_METHOD_FUNC(rosetta_function_1419), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1420), -1);
+            rb_define_method(klass, "solve", RUBY_METHOD_FUNC(rosetta_function_1419), -1);
+            rb_define_method(klass, "solve_builtin", RUBY_METHOD_FUNC(rosetta_function_1420), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1421), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_108_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ACOROptions>::value.klass;
-            rb_define_method(klass, "archive_size", RUBY_METHOD_FUNC(rosetta_field_505_get), 0);
+            rb_define_method(klass, "archive_size", RUBY_METHOD_FUNC(rosetta_field_506_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ACOROptions&>().archive_size)>>)
-                rb_define_method(klass, "archive_size=", RUBY_METHOD_FUNC(rosetta_field_505_set), 1);
-            rb_define_method(klass, "samples_per_iteration", RUBY_METHOD_FUNC(rosetta_field_506_get), 0);
+                rb_define_method(klass, "archive_size=", RUBY_METHOD_FUNC(rosetta_field_506_set), 1);
+            rb_define_method(klass, "samples_per_iteration", RUBY_METHOD_FUNC(rosetta_field_507_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ACOROptions&>().samples_per_iteration)>>)
-                rb_define_method(klass, "samples_per_iteration=", RUBY_METHOD_FUNC(rosetta_field_506_set), 1);
-            rb_define_method(klass, "locality", RUBY_METHOD_FUNC(rosetta_field_507_get), 0);
+                rb_define_method(klass, "samples_per_iteration=", RUBY_METHOD_FUNC(rosetta_field_507_set), 1);
+            rb_define_method(klass, "locality", RUBY_METHOD_FUNC(rosetta_field_508_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ACOROptions&>().locality)>>)
-                rb_define_method(klass, "locality=", RUBY_METHOD_FUNC(rosetta_field_507_set), 1);
-            rb_define_method(klass, "convergence_speed", RUBY_METHOD_FUNC(rosetta_field_508_get), 0);
+                rb_define_method(klass, "locality=", RUBY_METHOD_FUNC(rosetta_field_508_set), 1);
+            rb_define_method(klass, "convergence_speed", RUBY_METHOD_FUNC(rosetta_field_509_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ACOROptions&>().convergence_speed)>>)
-                rb_define_method(klass, "convergence_speed=", RUBY_METHOD_FUNC(rosetta_field_508_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_509_get), 0);
+                rb_define_method(klass, "convergence_speed=", RUBY_METHOD_FUNC(rosetta_field_509_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_510_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ACOROptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_509_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_510_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_510_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_511_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ACOROptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_510_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_511_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_511_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_512_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ACOROptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_511_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_512_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_109_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ACOR>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1421), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1422), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1422), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1423), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_110_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AdamOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_512_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_513_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdamOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_512_set), 1);
-            rb_define_method(klass, "beta1", RUBY_METHOD_FUNC(rosetta_field_513_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_513_set), 1);
+            rb_define_method(klass, "beta1", RUBY_METHOD_FUNC(rosetta_field_514_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdamOptions&>().beta1)>>)
-                rb_define_method(klass, "beta1=", RUBY_METHOD_FUNC(rosetta_field_513_set), 1);
-            rb_define_method(klass, "beta2", RUBY_METHOD_FUNC(rosetta_field_514_get), 0);
+                rb_define_method(klass, "beta1=", RUBY_METHOD_FUNC(rosetta_field_514_set), 1);
+            rb_define_method(klass, "beta2", RUBY_METHOD_FUNC(rosetta_field_515_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdamOptions&>().beta2)>>)
-                rb_define_method(klass, "beta2=", RUBY_METHOD_FUNC(rosetta_field_514_set), 1);
-            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_515_get), 0);
+                rb_define_method(klass, "beta2=", RUBY_METHOD_FUNC(rosetta_field_515_set), 1);
+            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_516_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdamOptions&>().epsilon)>>)
-                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_515_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_516_get), 0);
+                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_516_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_517_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdamOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_516_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_517_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_517_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_518_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdamOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_517_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_518_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_111_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::Adam>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1423), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1424), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1424), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1425), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_112_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AdaGradOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_518_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_519_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaGradOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_518_set), 1);
-            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_519_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_519_set), 1);
+            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_520_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaGradOptions&>().epsilon)>>)
-                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_519_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_520_get), 0);
+                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_520_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_521_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaGradOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_520_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_521_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_521_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_522_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaGradOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_521_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_522_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_113_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AdaGrad>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1425), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1426), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1426), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1427), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_114_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AdaDeltaOptions>::value.klass;
-            rb_define_method(klass, "decay_rate", RUBY_METHOD_FUNC(rosetta_field_522_get), 0);
+            rb_define_method(klass, "decay_rate", RUBY_METHOD_FUNC(rosetta_field_523_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaDeltaOptions&>().decay_rate)>>)
-                rb_define_method(klass, "decay_rate=", RUBY_METHOD_FUNC(rosetta_field_522_set), 1);
-            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_523_get), 0);
+                rb_define_method(klass, "decay_rate=", RUBY_METHOD_FUNC(rosetta_field_523_set), 1);
+            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_524_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaDeltaOptions&>().epsilon)>>)
-                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_523_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_524_get), 0);
+                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_524_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_525_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaDeltaOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_524_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_525_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_525_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_526_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AdaDeltaOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_525_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_526_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_115_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AdaDelta>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1427), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1428), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1428), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1429), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_116_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AMSGradOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_526_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_527_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AMSGradOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_526_set), 1);
-            rb_define_method(klass, "beta1", RUBY_METHOD_FUNC(rosetta_field_527_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_527_set), 1);
+            rb_define_method(klass, "beta1", RUBY_METHOD_FUNC(rosetta_field_528_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AMSGradOptions&>().beta1)>>)
-                rb_define_method(klass, "beta1=", RUBY_METHOD_FUNC(rosetta_field_527_set), 1);
-            rb_define_method(klass, "beta2", RUBY_METHOD_FUNC(rosetta_field_528_get), 0);
+                rb_define_method(klass, "beta1=", RUBY_METHOD_FUNC(rosetta_field_528_set), 1);
+            rb_define_method(klass, "beta2", RUBY_METHOD_FUNC(rosetta_field_529_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AMSGradOptions&>().beta2)>>)
-                rb_define_method(klass, "beta2=", RUBY_METHOD_FUNC(rosetta_field_528_set), 1);
-            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_529_get), 0);
+                rb_define_method(klass, "beta2=", RUBY_METHOD_FUNC(rosetta_field_529_set), 1);
+            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_530_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AMSGradOptions&>().epsilon)>>)
-                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_529_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_530_get), 0);
+                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_530_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_531_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AMSGradOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_530_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_531_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_531_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_532_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AMSGradOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_531_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_532_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_117_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AMSGrad>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1429), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1430), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1430), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1431), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_118_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ArtificialBeeColonyOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_532_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_533_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ArtificialBeeColonyOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_532_set), 1);
-            rb_define_method(klass, "abandonment_limit", RUBY_METHOD_FUNC(rosetta_field_533_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_533_set), 1);
+            rb_define_method(klass, "abandonment_limit", RUBY_METHOD_FUNC(rosetta_field_534_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ArtificialBeeColonyOptions&>().abandonment_limit)>>)
-                rb_define_method(klass, "abandonment_limit=", RUBY_METHOD_FUNC(rosetta_field_533_set), 1);
-            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_534_get), 0);
+                rb_define_method(klass, "abandonment_limit=", RUBY_METHOD_FUNC(rosetta_field_534_set), 1);
+            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_535_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ArtificialBeeColonyOptions&>().max_generations)>>)
-                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_534_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_535_get), 0);
+                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_535_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_536_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ArtificialBeeColonyOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_535_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_536_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_536_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_537_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ArtificialBeeColonyOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_536_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_537_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_119_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ArtificialBeeColony>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1431), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1432), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1432), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1433), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_120_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AugmentedLagrangianOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_537_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_538_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AugmentedLagrangianOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_537_set), 1);
-            rb_define_method(klass, "initial_penalty", RUBY_METHOD_FUNC(rosetta_field_538_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_538_set), 1);
+            rb_define_method(klass, "initial_penalty", RUBY_METHOD_FUNC(rosetta_field_539_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AugmentedLagrangianOptions&>().initial_penalty)>>)
-                rb_define_method(klass, "initial_penalty=", RUBY_METHOD_FUNC(rosetta_field_538_set), 1);
-            rb_define_method(klass, "max_outer_iterations", RUBY_METHOD_FUNC(rosetta_field_539_get), 0);
+                rb_define_method(klass, "initial_penalty=", RUBY_METHOD_FUNC(rosetta_field_539_set), 1);
+            rb_define_method(klass, "max_outer_iterations", RUBY_METHOD_FUNC(rosetta_field_540_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AugmentedLagrangianOptions&>().max_outer_iterations)>>)
-                rb_define_method(klass, "max_outer_iterations=", RUBY_METHOD_FUNC(rosetta_field_539_set), 1);
-            rb_define_method(klass, "inner_iterations", RUBY_METHOD_FUNC(rosetta_field_540_get), 0);
+                rb_define_method(klass, "max_outer_iterations=", RUBY_METHOD_FUNC(rosetta_field_540_set), 1);
+            rb_define_method(klass, "inner_iterations", RUBY_METHOD_FUNC(rosetta_field_541_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AugmentedLagrangianOptions&>().inner_iterations)>>)
-                rb_define_method(klass, "inner_iterations=", RUBY_METHOD_FUNC(rosetta_field_540_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_541_get), 0);
+                rb_define_method(klass, "inner_iterations=", RUBY_METHOD_FUNC(rosetta_field_541_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_542_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::AugmentedLagrangianOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_541_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_542_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_121_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::AugmentedLagrangian>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1433), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1434), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1434), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1435), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_122_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::BayesianSurrogate>::value.klass;
-            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_1435), -1);
-            rb_define_method(klass, "acquisition", RUBY_METHOD_FUNC(rosetta_function_1436), -1);
+            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_1436), -1);
+            rb_define_method(klass, "acquisition", RUBY_METHOD_FUNC(rosetta_function_1437), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_123_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::BayesianOptimizationOptions>::value.klass;
-            rb_define_method(klass, "initial_samples", RUBY_METHOD_FUNC(rosetta_field_542_get), 0);
+            rb_define_method(klass, "initial_samples", RUBY_METHOD_FUNC(rosetta_field_543_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationOptions&>().initial_samples)>>)
-                rb_define_method(klass, "initial_samples=", RUBY_METHOD_FUNC(rosetta_field_542_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_543_get), 0);
+                rb_define_method(klass, "initial_samples=", RUBY_METHOD_FUNC(rosetta_field_543_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_544_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_543_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_544_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_544_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_545_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_544_set), 1);
-            rb_define_method(klass, "candidates", RUBY_METHOD_FUNC(rosetta_field_545_get), 0);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_545_set), 1);
+            rb_define_method(klass, "candidates", RUBY_METHOD_FUNC(rosetta_field_546_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationOptions&>().candidates)>>)
-                rb_define_method(klass, "candidates=", RUBY_METHOD_FUNC(rosetta_field_545_set), 1);
-            rb_define_method(klass, "refine_iterations", RUBY_METHOD_FUNC(rosetta_field_546_get), 0);
+                rb_define_method(klass, "candidates=", RUBY_METHOD_FUNC(rosetta_field_546_set), 1);
+            rb_define_method(klass, "refine_iterations", RUBY_METHOD_FUNC(rosetta_field_547_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationOptions&>().refine_iterations)>>)
-                rb_define_method(klass, "refine_iterations=", RUBY_METHOD_FUNC(rosetta_field_546_set), 1);
+                rb_define_method(klass, "refine_iterations=", RUBY_METHOD_FUNC(rosetta_field_547_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_124_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::BayesianOptimizationResult>::value.klass;
-            rb_define_method(klass, "best_point", RUBY_METHOD_FUNC(rosetta_field_547_get), 0);
+            rb_define_method(klass, "best_point", RUBY_METHOD_FUNC(rosetta_field_548_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationResult&>().best_point)>>)
-                rb_define_method(klass, "best_point=", RUBY_METHOD_FUNC(rosetta_field_547_set), 1);
-            rb_define_method(klass, "best_value", RUBY_METHOD_FUNC(rosetta_field_548_get), 0);
+                rb_define_method(klass, "best_point=", RUBY_METHOD_FUNC(rosetta_field_548_set), 1);
+            rb_define_method(klass, "best_value", RUBY_METHOD_FUNC(rosetta_field_549_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationResult&>().best_value)>>)
-                rb_define_method(klass, "best_value=", RUBY_METHOD_FUNC(rosetta_field_548_set), 1);
-            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_field_549_get), 0);
+                rb_define_method(klass, "best_value=", RUBY_METHOD_FUNC(rosetta_field_549_set), 1);
+            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_field_550_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationResult&>().points)>>)
-                rb_define_method(klass, "points=", RUBY_METHOD_FUNC(rosetta_field_549_set), 1);
-            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_field_550_get), 0);
+                rb_define_method(klass, "points=", RUBY_METHOD_FUNC(rosetta_field_550_set), 1);
+            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_field_551_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationResult&>().values)>>)
-                rb_define_method(klass, "values=", RUBY_METHOD_FUNC(rosetta_field_550_set), 1);
-            rb_define_method(klass, "best_values", RUBY_METHOD_FUNC(rosetta_field_551_get), 0);
+                rb_define_method(klass, "values=", RUBY_METHOD_FUNC(rosetta_field_551_set), 1);
+            rb_define_method(klass, "best_values", RUBY_METHOD_FUNC(rosetta_field_552_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationResult&>().best_values)>>)
-                rb_define_method(klass, "best_values=", RUBY_METHOD_FUNC(rosetta_field_551_set), 1);
-            rb_define_method(klass, "acquisition_values", RUBY_METHOD_FUNC(rosetta_field_552_get), 0);
+                rb_define_method(klass, "best_values=", RUBY_METHOD_FUNC(rosetta_field_552_set), 1);
+            rb_define_method(klass, "acquisition_values", RUBY_METHOD_FUNC(rosetta_field_553_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::BayesianOptimizationResult&>().acquisition_values)>>)
-                rb_define_method(klass, "acquisition_values=", RUBY_METHOD_FUNC(rosetta_field_552_set), 1);
+                rb_define_method(klass, "acquisition_values=", RUBY_METHOD_FUNC(rosetta_field_553_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_125_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::BayesianOptimization>::value.klass;
-            rb_define_method(klass, "run", RUBY_METHOD_FUNC(rosetta_function_1437), -1);
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1438), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1439), -1);
+            rb_define_method(klass, "run", RUBY_METHOD_FUNC(rosetta_function_1438), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1439), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1440), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_126_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ConjugateGradientOptions>::value.klass;
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_553_get), 0);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_554_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ConjugateGradientOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_553_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_554_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_554_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_555_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ConjugateGradientOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_554_set), 1);
-            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_555_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_555_set), 1);
+            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_556_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ConjugateGradientOptions&>().armijo_c1)>>)
-                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_555_set), 1);
-            rb_define_method(klass, "backtracking_factor", RUBY_METHOD_FUNC(rosetta_field_556_get), 0);
+                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_556_set), 1);
+            rb_define_method(klass, "backtracking_factor", RUBY_METHOD_FUNC(rosetta_field_557_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ConjugateGradientOptions&>().backtracking_factor)>>)
-                rb_define_method(klass, "backtracking_factor=", RUBY_METHOD_FUNC(rosetta_field_556_set), 1);
-            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_557_get), 0);
+                rb_define_method(klass, "backtracking_factor=", RUBY_METHOD_FUNC(rosetta_field_557_set), 1);
+            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_558_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ConjugateGradientOptions&>().max_line_search_trials)>>)
-                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_557_set), 1);
+                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_558_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_127_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ConjugateGradient>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1440), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1441), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1441), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1442), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_128_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CMAESOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_558_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_559_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_558_set), 1);
-            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_559_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_559_set), 1);
+            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_560_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().initial_step_size)>>)
-                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_559_set), 1);
-            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_560_get), 0);
+                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_560_set), 1);
+            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_561_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().max_generations)>>)
-                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_560_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_561_get), 0);
+                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_561_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_562_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_561_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_562_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_562_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_563_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_562_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_563_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_129_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CMAES>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1442), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1443), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1443), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1444), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_130_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CoordinateDescentOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_563_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_564_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CoordinateDescentOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_563_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_564_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_564_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_565_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CoordinateDescentOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_564_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_565_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_565_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_566_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CoordinateDescentOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_565_set), 1);
-            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_566_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_566_set), 1);
+            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_567_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CoordinateDescentOptions&>().armijo_c1)>>)
-                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_566_set), 1);
-            rb_define_method(klass, "backtracking_factor", RUBY_METHOD_FUNC(rosetta_field_567_get), 0);
+                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_567_set), 1);
+            rb_define_method(klass, "backtracking_factor", RUBY_METHOD_FUNC(rosetta_field_568_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CoordinateDescentOptions&>().backtracking_factor)>>)
-                rb_define_method(klass, "backtracking_factor=", RUBY_METHOD_FUNC(rosetta_field_567_set), 1);
-            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_568_get), 0);
+                rb_define_method(klass, "backtracking_factor=", RUBY_METHOD_FUNC(rosetta_field_568_set), 1);
+            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_569_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CoordinateDescentOptions&>().max_line_search_trials)>>)
-                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_568_set), 1);
+                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_569_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_131_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CoordinateDescent>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1444), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1445), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1445), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1446), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_132_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CrossEntropyMethodOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_569_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_570_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CrossEntropyMethodOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_569_set), 1);
-            rb_define_method(klass, "elite_ratio", RUBY_METHOD_FUNC(rosetta_field_570_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_570_set), 1);
+            rb_define_method(klass, "elite_ratio", RUBY_METHOD_FUNC(rosetta_field_571_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CrossEntropyMethodOptions&>().elite_ratio)>>)
-                rb_define_method(klass, "elite_ratio=", RUBY_METHOD_FUNC(rosetta_field_570_set), 1);
-            rb_define_method(klass, "initial_std_dev", RUBY_METHOD_FUNC(rosetta_field_571_get), 0);
+                rb_define_method(klass, "elite_ratio=", RUBY_METHOD_FUNC(rosetta_field_571_set), 1);
+            rb_define_method(klass, "initial_std_dev", RUBY_METHOD_FUNC(rosetta_field_572_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CrossEntropyMethodOptions&>().initial_std_dev)>>)
-                rb_define_method(klass, "initial_std_dev=", RUBY_METHOD_FUNC(rosetta_field_571_set), 1);
-            rb_define_method(klass, "smoothing", RUBY_METHOD_FUNC(rosetta_field_572_get), 0);
+                rb_define_method(klass, "initial_std_dev=", RUBY_METHOD_FUNC(rosetta_field_572_set), 1);
+            rb_define_method(klass, "smoothing", RUBY_METHOD_FUNC(rosetta_field_573_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CrossEntropyMethodOptions&>().smoothing)>>)
-                rb_define_method(klass, "smoothing=", RUBY_METHOD_FUNC(rosetta_field_572_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_573_get), 0);
+                rb_define_method(klass, "smoothing=", RUBY_METHOD_FUNC(rosetta_field_573_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_574_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CrossEntropyMethodOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_573_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_574_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_574_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_575_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CrossEntropyMethodOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_574_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_575_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_575_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_576_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CrossEntropyMethodOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_575_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_576_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_133_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CrossEntropyMethod>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1446), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1447), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1447), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1448), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_134_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CuckooSearchOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_576_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_577_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CuckooSearchOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_576_set), 1);
-            rb_define_method(klass, "discovery_rate", RUBY_METHOD_FUNC(rosetta_field_577_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_577_set), 1);
+            rb_define_method(klass, "discovery_rate", RUBY_METHOD_FUNC(rosetta_field_578_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CuckooSearchOptions&>().discovery_rate)>>)
-                rb_define_method(klass, "discovery_rate=", RUBY_METHOD_FUNC(rosetta_field_577_set), 1);
-            rb_define_method(klass, "levy_beta", RUBY_METHOD_FUNC(rosetta_field_578_get), 0);
+                rb_define_method(klass, "discovery_rate=", RUBY_METHOD_FUNC(rosetta_field_578_set), 1);
+            rb_define_method(klass, "levy_beta", RUBY_METHOD_FUNC(rosetta_field_579_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CuckooSearchOptions&>().levy_beta)>>)
-                rb_define_method(klass, "levy_beta=", RUBY_METHOD_FUNC(rosetta_field_578_set), 1);
-            rb_define_method(klass, "step_scale", RUBY_METHOD_FUNC(rosetta_field_579_get), 0);
+                rb_define_method(klass, "levy_beta=", RUBY_METHOD_FUNC(rosetta_field_579_set), 1);
+            rb_define_method(klass, "step_scale", RUBY_METHOD_FUNC(rosetta_field_580_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CuckooSearchOptions&>().step_scale)>>)
-                rb_define_method(klass, "step_scale=", RUBY_METHOD_FUNC(rosetta_field_579_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_580_get), 0);
+                rb_define_method(klass, "step_scale=", RUBY_METHOD_FUNC(rosetta_field_580_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_581_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CuckooSearchOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_580_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_581_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_581_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_582_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CuckooSearchOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_581_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_582_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_582_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_583_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::CuckooSearchOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_582_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_583_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_135_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::CuckooSearch>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1448), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1449), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1449), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1450), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_136_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::DEOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_583_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_584_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_583_set), 1);
-            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_584_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_584_set), 1);
+            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_585_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().max_generations)>>)
-                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_584_set), 1);
-            rb_define_method(klass, "differential_weight", RUBY_METHOD_FUNC(rosetta_field_585_get), 0);
+                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_585_set), 1);
+            rb_define_method(klass, "differential_weight", RUBY_METHOD_FUNC(rosetta_field_586_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().differential_weight)>>)
-                rb_define_method(klass, "differential_weight=", RUBY_METHOD_FUNC(rosetta_field_585_set), 1);
-            rb_define_method(klass, "crossover_rate", RUBY_METHOD_FUNC(rosetta_field_586_get), 0);
+                rb_define_method(klass, "differential_weight=", RUBY_METHOD_FUNC(rosetta_field_586_set), 1);
+            rb_define_method(klass, "crossover_rate", RUBY_METHOD_FUNC(rosetta_field_587_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().crossover_rate)>>)
-                rb_define_method(klass, "crossover_rate=", RUBY_METHOD_FUNC(rosetta_field_586_set), 1);
-            rb_define_method(klass, "mutation_strategy", RUBY_METHOD_FUNC(rosetta_field_587_get), 0);
+                rb_define_method(klass, "crossover_rate=", RUBY_METHOD_FUNC(rosetta_field_587_set), 1);
+            rb_define_method(klass, "mutation_strategy", RUBY_METHOD_FUNC(rosetta_field_588_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().mutation_strategy)>>)
-                rb_define_method(klass, "mutation_strategy=", RUBY_METHOD_FUNC(rosetta_field_587_set), 1);
-            rb_define_method(klass, "crossover_strategy", RUBY_METHOD_FUNC(rosetta_field_588_get), 0);
+                rb_define_method(klass, "mutation_strategy=", RUBY_METHOD_FUNC(rosetta_field_588_set), 1);
+            rb_define_method(klass, "crossover_strategy", RUBY_METHOD_FUNC(rosetta_field_589_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().crossover_strategy)>>)
-                rb_define_method(klass, "crossover_strategy=", RUBY_METHOD_FUNC(rosetta_field_588_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_589_get), 0);
+                rb_define_method(klass, "crossover_strategy=", RUBY_METHOD_FUNC(rosetta_field_589_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_590_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_589_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_590_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_590_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_591_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::DEOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_590_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_591_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_137_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::DifferentialEvolution>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1450), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1451), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1451), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1452), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_138_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::EstimationOfDistributionOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_591_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_592_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EstimationOfDistributionOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_591_set), 1);
-            rb_define_method(klass, "selection_ratio", RUBY_METHOD_FUNC(rosetta_field_592_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_592_set), 1);
+            rb_define_method(klass, "selection_ratio", RUBY_METHOD_FUNC(rosetta_field_593_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EstimationOfDistributionOptions&>().selection_ratio)>>)
-                rb_define_method(klass, "selection_ratio=", RUBY_METHOD_FUNC(rosetta_field_592_set), 1);
-            rb_define_method(klass, "initial_std_dev", RUBY_METHOD_FUNC(rosetta_field_593_get), 0);
+                rb_define_method(klass, "selection_ratio=", RUBY_METHOD_FUNC(rosetta_field_593_set), 1);
+            rb_define_method(klass, "initial_std_dev", RUBY_METHOD_FUNC(rosetta_field_594_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EstimationOfDistributionOptions&>().initial_std_dev)>>)
-                rb_define_method(klass, "initial_std_dev=", RUBY_METHOD_FUNC(rosetta_field_593_set), 1);
-            rb_define_method(klass, "covariance_regularization", RUBY_METHOD_FUNC(rosetta_field_594_get), 0);
+                rb_define_method(klass, "initial_std_dev=", RUBY_METHOD_FUNC(rosetta_field_594_set), 1);
+            rb_define_method(klass, "covariance_regularization", RUBY_METHOD_FUNC(rosetta_field_595_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EstimationOfDistributionOptions&>().covariance_regularization)>>)
-                rb_define_method(klass, "covariance_regularization=", RUBY_METHOD_FUNC(rosetta_field_594_set), 1);
-            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_595_get), 0);
+                rb_define_method(klass, "covariance_regularization=", RUBY_METHOD_FUNC(rosetta_field_595_set), 1);
+            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_596_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EstimationOfDistributionOptions&>().max_generations)>>)
-                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_595_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_596_get), 0);
+                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_596_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_597_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EstimationOfDistributionOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_596_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_597_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_597_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_598_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EstimationOfDistributionOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_597_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_598_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_139_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::EstimationOfDistribution>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1452), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1453), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1453), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1454), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_140_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::EvolutionStrategyOptions>::value.klass;
-            rb_define_method(klass, "mu", RUBY_METHOD_FUNC(rosetta_field_598_get), 0);
+            rb_define_method(klass, "mu", RUBY_METHOD_FUNC(rosetta_field_599_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EvolutionStrategyOptions&>().mu)>>)
-                rb_define_method(klass, "mu=", RUBY_METHOD_FUNC(rosetta_field_598_set), 1);
-            rb_define_method(klass, "offspring_size", RUBY_METHOD_FUNC(rosetta_field_599_get), 0);
+                rb_define_method(klass, "mu=", RUBY_METHOD_FUNC(rosetta_field_599_set), 1);
+            rb_define_method(klass, "offspring_size", RUBY_METHOD_FUNC(rosetta_field_600_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EvolutionStrategyOptions&>().offspring_size)>>)
-                rb_define_method(klass, "offspring_size=", RUBY_METHOD_FUNC(rosetta_field_599_set), 1);
-            rb_define_method(klass, "strategy", RUBY_METHOD_FUNC(rosetta_field_600_get), 0);
+                rb_define_method(klass, "offspring_size=", RUBY_METHOD_FUNC(rosetta_field_600_set), 1);
+            rb_define_method(klass, "strategy", RUBY_METHOD_FUNC(rosetta_field_601_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EvolutionStrategyOptions&>().strategy)>>)
-                rb_define_method(klass, "strategy=", RUBY_METHOD_FUNC(rosetta_field_600_set), 1);
-            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_601_get), 0);
+                rb_define_method(klass, "strategy=", RUBY_METHOD_FUNC(rosetta_field_601_set), 1);
+            rb_define_method(klass, "initial_step_size", RUBY_METHOD_FUNC(rosetta_field_602_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EvolutionStrategyOptions&>().initial_step_size)>>)
-                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_601_set), 1);
-            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_602_get), 0);
+                rb_define_method(klass, "initial_step_size=", RUBY_METHOD_FUNC(rosetta_field_602_set), 1);
+            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_603_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EvolutionStrategyOptions&>().max_generations)>>)
-                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_602_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_603_get), 0);
+                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_603_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_604_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EvolutionStrategyOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_603_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_604_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_604_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_605_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::EvolutionStrategyOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_604_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_605_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_141_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::EvolutionStrategy>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1454), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1455), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1455), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1456), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_142_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::FireflyAlgorithmOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_605_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_606_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_605_set), 1);
-            rb_define_method(klass, "attractiveness_at_zero", RUBY_METHOD_FUNC(rosetta_field_606_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_606_set), 1);
+            rb_define_method(klass, "attractiveness_at_zero", RUBY_METHOD_FUNC(rosetta_field_607_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().attractiveness_at_zero)>>)
-                rb_define_method(klass, "attractiveness_at_zero=", RUBY_METHOD_FUNC(rosetta_field_606_set), 1);
-            rb_define_method(klass, "light_absorption", RUBY_METHOD_FUNC(rosetta_field_607_get), 0);
+                rb_define_method(klass, "attractiveness_at_zero=", RUBY_METHOD_FUNC(rosetta_field_607_set), 1);
+            rb_define_method(klass, "light_absorption", RUBY_METHOD_FUNC(rosetta_field_608_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().light_absorption)>>)
-                rb_define_method(klass, "light_absorption=", RUBY_METHOD_FUNC(rosetta_field_607_set), 1);
-            rb_define_method(klass, "randomization_step", RUBY_METHOD_FUNC(rosetta_field_608_get), 0);
+                rb_define_method(klass, "light_absorption=", RUBY_METHOD_FUNC(rosetta_field_608_set), 1);
+            rb_define_method(klass, "randomization_step", RUBY_METHOD_FUNC(rosetta_field_609_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().randomization_step)>>)
-                rb_define_method(klass, "randomization_step=", RUBY_METHOD_FUNC(rosetta_field_608_set), 1);
-            rb_define_method(klass, "randomization_decay", RUBY_METHOD_FUNC(rosetta_field_609_get), 0);
+                rb_define_method(klass, "randomization_step=", RUBY_METHOD_FUNC(rosetta_field_609_set), 1);
+            rb_define_method(klass, "randomization_decay", RUBY_METHOD_FUNC(rosetta_field_610_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().randomization_decay)>>)
-                rb_define_method(klass, "randomization_decay=", RUBY_METHOD_FUNC(rosetta_field_609_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_610_get), 0);
+                rb_define_method(klass, "randomization_decay=", RUBY_METHOD_FUNC(rosetta_field_610_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_611_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_610_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_611_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_611_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_612_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_611_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_612_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_612_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_613_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FireflyAlgorithmOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_612_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_613_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_143_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::FireflyAlgorithm>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1456), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1457), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1457), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1458), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_144_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::FISTAOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_613_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_614_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FISTAOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_613_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_614_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_614_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_615_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FISTAOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_614_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_615_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_615_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_616_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::FISTAOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_615_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_616_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_145_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::FISTA>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1458), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1459), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1459), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1460), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_146_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::GAOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_616_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_617_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_616_set), 1);
-            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_617_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_617_set), 1);
+            rb_define_method(klass, "max_generations", RUBY_METHOD_FUNC(rosetta_field_618_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().max_generations)>>)
-                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_617_set), 1);
-            rb_define_method(klass, "crossover_rate", RUBY_METHOD_FUNC(rosetta_field_618_get), 0);
+                rb_define_method(klass, "max_generations=", RUBY_METHOD_FUNC(rosetta_field_618_set), 1);
+            rb_define_method(klass, "crossover_rate", RUBY_METHOD_FUNC(rosetta_field_619_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().crossover_rate)>>)
-                rb_define_method(klass, "crossover_rate=", RUBY_METHOD_FUNC(rosetta_field_618_set), 1);
-            rb_define_method(klass, "mutation_rate", RUBY_METHOD_FUNC(rosetta_field_619_get), 0);
+                rb_define_method(klass, "crossover_rate=", RUBY_METHOD_FUNC(rosetta_field_619_set), 1);
+            rb_define_method(klass, "mutation_rate", RUBY_METHOD_FUNC(rosetta_field_620_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().mutation_rate)>>)
-                rb_define_method(klass, "mutation_rate=", RUBY_METHOD_FUNC(rosetta_field_619_set), 1);
-            rb_define_method(klass, "mutation_std_dev", RUBY_METHOD_FUNC(rosetta_field_620_get), 0);
+                rb_define_method(klass, "mutation_rate=", RUBY_METHOD_FUNC(rosetta_field_620_set), 1);
+            rb_define_method(klass, "mutation_std_dev", RUBY_METHOD_FUNC(rosetta_field_621_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().mutation_std_dev)>>)
-                rb_define_method(klass, "mutation_std_dev=", RUBY_METHOD_FUNC(rosetta_field_620_set), 1);
-            rb_define_method(klass, "selection_strategy", RUBY_METHOD_FUNC(rosetta_field_621_get), 0);
+                rb_define_method(klass, "mutation_std_dev=", RUBY_METHOD_FUNC(rosetta_field_621_set), 1);
+            rb_define_method(klass, "selection_strategy", RUBY_METHOD_FUNC(rosetta_field_622_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().selection_strategy)>>)
-                rb_define_method(klass, "selection_strategy=", RUBY_METHOD_FUNC(rosetta_field_621_set), 1);
-            rb_define_method(klass, "tournament_size", RUBY_METHOD_FUNC(rosetta_field_622_get), 0);
+                rb_define_method(klass, "selection_strategy=", RUBY_METHOD_FUNC(rosetta_field_622_set), 1);
+            rb_define_method(klass, "tournament_size", RUBY_METHOD_FUNC(rosetta_field_623_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().tournament_size)>>)
-                rb_define_method(klass, "tournament_size=", RUBY_METHOD_FUNC(rosetta_field_622_set), 1);
-            rb_define_method(klass, "crossover_strategy", RUBY_METHOD_FUNC(rosetta_field_623_get), 0);
+                rb_define_method(klass, "tournament_size=", RUBY_METHOD_FUNC(rosetta_field_623_set), 1);
+            rb_define_method(klass, "crossover_strategy", RUBY_METHOD_FUNC(rosetta_field_624_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().crossover_strategy)>>)
-                rb_define_method(klass, "crossover_strategy=", RUBY_METHOD_FUNC(rosetta_field_623_set), 1);
-            rb_define_method(klass, "blend_alpha", RUBY_METHOD_FUNC(rosetta_field_624_get), 0);
+                rb_define_method(klass, "crossover_strategy=", RUBY_METHOD_FUNC(rosetta_field_624_set), 1);
+            rb_define_method(klass, "blend_alpha", RUBY_METHOD_FUNC(rosetta_field_625_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().blend_alpha)>>)
-                rb_define_method(klass, "blend_alpha=", RUBY_METHOD_FUNC(rosetta_field_624_set), 1);
-            rb_define_method(klass, "elitism", RUBY_METHOD_FUNC(rosetta_field_625_get), 0);
+                rb_define_method(klass, "blend_alpha=", RUBY_METHOD_FUNC(rosetta_field_625_set), 1);
+            rb_define_method(klass, "elitism", RUBY_METHOD_FUNC(rosetta_field_626_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().elitism)>>)
-                rb_define_method(klass, "elitism=", RUBY_METHOD_FUNC(rosetta_field_625_set), 1);
-            rb_define_method(klass, "elite_count", RUBY_METHOD_FUNC(rosetta_field_626_get), 0);
+                rb_define_method(klass, "elitism=", RUBY_METHOD_FUNC(rosetta_field_626_set), 1);
+            rb_define_method(klass, "elite_count", RUBY_METHOD_FUNC(rosetta_field_627_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().elite_count)>>)
-                rb_define_method(klass, "elite_count=", RUBY_METHOD_FUNC(rosetta_field_626_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_627_get), 0);
+                rb_define_method(klass, "elite_count=", RUBY_METHOD_FUNC(rosetta_field_627_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_628_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_627_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_628_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_628_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_629_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GAOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_628_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_629_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_147_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::GeneticAlgorithm>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1460), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1461), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1461), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1462), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_148_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::GradientDescentOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_629_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_630_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_629_set), 1);
-            rb_define_method(klass, "momentum", RUBY_METHOD_FUNC(rosetta_field_630_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_630_set), 1);
+            rb_define_method(klass, "momentum", RUBY_METHOD_FUNC(rosetta_field_631_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().momentum)>>)
-                rb_define_method(klass, "momentum=", RUBY_METHOD_FUNC(rosetta_field_630_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_631_get), 0);
+                rb_define_method(klass, "momentum=", RUBY_METHOD_FUNC(rosetta_field_631_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_632_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_631_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_632_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_632_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_633_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_632_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_633_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_149_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::GradientDescent>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1462), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1463), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1463), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1464), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_150_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::GreyWolfOptimizerOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_633_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_634_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_633_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_634_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_634_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_635_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_634_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_635_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_635_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_636_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_635_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_636_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_636_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_637_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_636_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_637_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_151_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::GreyWolfOptimizer>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1464), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1465), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1465), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1466), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_152_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::HarmonySearchOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_637_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_638_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::HarmonySearchOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_637_set), 1);
-            rb_define_method(klass, "memory_consideration_rate", RUBY_METHOD_FUNC(rosetta_field_638_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_638_set), 1);
+            rb_define_method(klass, "memory_consideration_rate", RUBY_METHOD_FUNC(rosetta_field_639_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::HarmonySearchOptions&>().memory_consideration_rate)>>)
-                rb_define_method(klass, "memory_consideration_rate=", RUBY_METHOD_FUNC(rosetta_field_638_set), 1);
-            rb_define_method(klass, "pitch_adjustment_rate", RUBY_METHOD_FUNC(rosetta_field_639_get), 0);
+                rb_define_method(klass, "memory_consideration_rate=", RUBY_METHOD_FUNC(rosetta_field_639_set), 1);
+            rb_define_method(klass, "pitch_adjustment_rate", RUBY_METHOD_FUNC(rosetta_field_640_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::HarmonySearchOptions&>().pitch_adjustment_rate)>>)
-                rb_define_method(klass, "pitch_adjustment_rate=", RUBY_METHOD_FUNC(rosetta_field_639_set), 1);
-            rb_define_method(klass, "bandwidth_fraction", RUBY_METHOD_FUNC(rosetta_field_640_get), 0);
+                rb_define_method(klass, "pitch_adjustment_rate=", RUBY_METHOD_FUNC(rosetta_field_640_set), 1);
+            rb_define_method(klass, "bandwidth_fraction", RUBY_METHOD_FUNC(rosetta_field_641_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::HarmonySearchOptions&>().bandwidth_fraction)>>)
-                rb_define_method(klass, "bandwidth_fraction=", RUBY_METHOD_FUNC(rosetta_field_640_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_641_get), 0);
+                rb_define_method(klass, "bandwidth_fraction=", RUBY_METHOD_FUNC(rosetta_field_641_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_642_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::HarmonySearchOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_641_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_642_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_642_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_643_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::HarmonySearchOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_642_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_643_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_643_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_644_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::HarmonySearchOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_643_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_644_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_153_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::HarmonySearch>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1466), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1467), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1467), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1468), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_154_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::InteriorPointOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_644_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_645_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::InteriorPointOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_644_set), 1);
-            rb_define_method(klass, "initial_barrier", RUBY_METHOD_FUNC(rosetta_field_645_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_645_set), 1);
+            rb_define_method(klass, "initial_barrier", RUBY_METHOD_FUNC(rosetta_field_646_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::InteriorPointOptions&>().initial_barrier)>>)
-                rb_define_method(klass, "initial_barrier=", RUBY_METHOD_FUNC(rosetta_field_645_set), 1);
-            rb_define_method(klass, "barrier_decay", RUBY_METHOD_FUNC(rosetta_field_646_get), 0);
+                rb_define_method(klass, "initial_barrier=", RUBY_METHOD_FUNC(rosetta_field_646_set), 1);
+            rb_define_method(klass, "barrier_decay", RUBY_METHOD_FUNC(rosetta_field_647_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::InteriorPointOptions&>().barrier_decay)>>)
-                rb_define_method(klass, "barrier_decay=", RUBY_METHOD_FUNC(rosetta_field_646_set), 1);
-            rb_define_method(klass, "max_outer_iterations", RUBY_METHOD_FUNC(rosetta_field_647_get), 0);
+                rb_define_method(klass, "barrier_decay=", RUBY_METHOD_FUNC(rosetta_field_647_set), 1);
+            rb_define_method(klass, "max_outer_iterations", RUBY_METHOD_FUNC(rosetta_field_648_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::InteriorPointOptions&>().max_outer_iterations)>>)
-                rb_define_method(klass, "max_outer_iterations=", RUBY_METHOD_FUNC(rosetta_field_647_set), 1);
-            rb_define_method(klass, "inner_iterations", RUBY_METHOD_FUNC(rosetta_field_648_get), 0);
+                rb_define_method(klass, "max_outer_iterations=", RUBY_METHOD_FUNC(rosetta_field_648_set), 1);
+            rb_define_method(klass, "inner_iterations", RUBY_METHOD_FUNC(rosetta_field_649_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::InteriorPointOptions&>().inner_iterations)>>)
-                rb_define_method(klass, "inner_iterations=", RUBY_METHOD_FUNC(rosetta_field_648_set), 1);
+                rb_define_method(klass, "inner_iterations=", RUBY_METHOD_FUNC(rosetta_field_649_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_155_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::InteriorPoint>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1468), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1469), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1469), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1470), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_156_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::LBFGSOptions>::value.klass;
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_649_get), 0);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_650_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LBFGSOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_649_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_650_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_650_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_651_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LBFGSOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_650_set), 1);
-            rb_define_method(klass, "history_size", RUBY_METHOD_FUNC(rosetta_field_651_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_651_set), 1);
+            rb_define_method(klass, "history_size", RUBY_METHOD_FUNC(rosetta_field_652_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LBFGSOptions&>().history_size)>>)
-                rb_define_method(klass, "history_size=", RUBY_METHOD_FUNC(rosetta_field_651_set), 1);
-            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_652_get), 0);
+                rb_define_method(klass, "history_size=", RUBY_METHOD_FUNC(rosetta_field_652_set), 1);
+            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_653_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LBFGSOptions&>().armijo_c1)>>)
-                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_652_set), 1);
-            rb_define_method(klass, "wolfe_c2", RUBY_METHOD_FUNC(rosetta_field_653_get), 0);
+                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_653_set), 1);
+            rb_define_method(klass, "wolfe_c2", RUBY_METHOD_FUNC(rosetta_field_654_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LBFGSOptions&>().wolfe_c2)>>)
-                rb_define_method(klass, "wolfe_c2=", RUBY_METHOD_FUNC(rosetta_field_653_set), 1);
-            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_654_get), 0);
+                rb_define_method(klass, "wolfe_c2=", RUBY_METHOD_FUNC(rosetta_field_654_set), 1);
+            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_655_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LBFGSOptions&>().max_line_search_trials)>>)
-                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_654_set), 1);
+                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_655_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_157_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::LBFGS>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1470), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1471), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1471), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1472), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_158_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::LevenbergMarquardtOptions>::value.klass;
-            rb_define_method(klass, "initial_damping", RUBY_METHOD_FUNC(rosetta_field_655_get), 0);
+            rb_define_method(klass, "initial_damping", RUBY_METHOD_FUNC(rosetta_field_656_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LevenbergMarquardtOptions&>().initial_damping)>>)
-                rb_define_method(klass, "initial_damping=", RUBY_METHOD_FUNC(rosetta_field_655_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_656_get), 0);
+                rb_define_method(klass, "initial_damping=", RUBY_METHOD_FUNC(rosetta_field_656_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_657_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LevenbergMarquardtOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_656_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_657_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_657_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_658_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::LevenbergMarquardtOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_657_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_658_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_159_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::LevenbergMarquardt>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1472), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1473), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1473), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1474), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_160_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::NelderMeadOptions>::value.klass;
-            rb_define_method(klass, "initial_simplex_scale", RUBY_METHOD_FUNC(rosetta_field_658_get), 0);
+            rb_define_method(klass, "initial_simplex_scale", RUBY_METHOD_FUNC(rosetta_field_659_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().initial_simplex_scale)>>)
-                rb_define_method(klass, "initial_simplex_scale=", RUBY_METHOD_FUNC(rosetta_field_658_set), 1);
-            rb_define_method(klass, "reflection", RUBY_METHOD_FUNC(rosetta_field_659_get), 0);
+                rb_define_method(klass, "initial_simplex_scale=", RUBY_METHOD_FUNC(rosetta_field_659_set), 1);
+            rb_define_method(klass, "reflection", RUBY_METHOD_FUNC(rosetta_field_660_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().reflection)>>)
-                rb_define_method(klass, "reflection=", RUBY_METHOD_FUNC(rosetta_field_659_set), 1);
-            rb_define_method(klass, "expansion", RUBY_METHOD_FUNC(rosetta_field_660_get), 0);
+                rb_define_method(klass, "reflection=", RUBY_METHOD_FUNC(rosetta_field_660_set), 1);
+            rb_define_method(klass, "expansion", RUBY_METHOD_FUNC(rosetta_field_661_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().expansion)>>)
-                rb_define_method(klass, "expansion=", RUBY_METHOD_FUNC(rosetta_field_660_set), 1);
-            rb_define_method(klass, "contraction", RUBY_METHOD_FUNC(rosetta_field_661_get), 0);
+                rb_define_method(klass, "expansion=", RUBY_METHOD_FUNC(rosetta_field_661_set), 1);
+            rb_define_method(klass, "contraction", RUBY_METHOD_FUNC(rosetta_field_662_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().contraction)>>)
-                rb_define_method(klass, "contraction=", RUBY_METHOD_FUNC(rosetta_field_661_set), 1);
-            rb_define_method(klass, "shrink", RUBY_METHOD_FUNC(rosetta_field_662_get), 0);
+                rb_define_method(klass, "contraction=", RUBY_METHOD_FUNC(rosetta_field_662_set), 1);
+            rb_define_method(klass, "shrink", RUBY_METHOD_FUNC(rosetta_field_663_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().shrink)>>)
-                rb_define_method(klass, "shrink=", RUBY_METHOD_FUNC(rosetta_field_662_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_663_get), 0);
+                rb_define_method(klass, "shrink=", RUBY_METHOD_FUNC(rosetta_field_663_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_664_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_663_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_664_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_664_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_665_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_664_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_665_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_161_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::NelderMead>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1474), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1475), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1475), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1476), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_162_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::NesterovAcceleratedGradientOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_665_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_666_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NesterovAcceleratedGradientOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_665_set), 1);
-            rb_define_method(klass, "momentum", RUBY_METHOD_FUNC(rosetta_field_666_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_666_set), 1);
+            rb_define_method(klass, "momentum", RUBY_METHOD_FUNC(rosetta_field_667_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NesterovAcceleratedGradientOptions&>().momentum)>>)
-                rb_define_method(klass, "momentum=", RUBY_METHOD_FUNC(rosetta_field_666_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_667_get), 0);
+                rb_define_method(klass, "momentum=", RUBY_METHOD_FUNC(rosetta_field_667_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_668_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NesterovAcceleratedGradientOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_667_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_668_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_668_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_669_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NesterovAcceleratedGradientOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_668_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_669_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_163_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::NesterovAcceleratedGradient>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1476), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1477), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1477), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1478), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_164_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::NadamOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_669_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_670_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NadamOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_669_set), 1);
-            rb_define_method(klass, "beta1", RUBY_METHOD_FUNC(rosetta_field_670_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_670_set), 1);
+            rb_define_method(klass, "beta1", RUBY_METHOD_FUNC(rosetta_field_671_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NadamOptions&>().beta1)>>)
-                rb_define_method(klass, "beta1=", RUBY_METHOD_FUNC(rosetta_field_670_set), 1);
-            rb_define_method(klass, "beta2", RUBY_METHOD_FUNC(rosetta_field_671_get), 0);
+                rb_define_method(klass, "beta1=", RUBY_METHOD_FUNC(rosetta_field_671_set), 1);
+            rb_define_method(klass, "beta2", RUBY_METHOD_FUNC(rosetta_field_672_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NadamOptions&>().beta2)>>)
-                rb_define_method(klass, "beta2=", RUBY_METHOD_FUNC(rosetta_field_671_set), 1);
-            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_672_get), 0);
+                rb_define_method(klass, "beta2=", RUBY_METHOD_FUNC(rosetta_field_672_set), 1);
+            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_673_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NadamOptions&>().epsilon)>>)
-                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_672_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_673_get), 0);
+                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_673_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_674_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NadamOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_673_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_674_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_674_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_675_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NadamOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_674_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_675_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_165_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::Nadam>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1478), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1479), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1479), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1480), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_166_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::NewtonOptions>::value.klass;
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_675_get), 0);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_676_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NewtonOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_675_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_676_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_676_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_677_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NewtonOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_676_set), 1);
-            rb_define_method(klass, "damping", RUBY_METHOD_FUNC(rosetta_field_677_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_677_set), 1);
+            rb_define_method(klass, "damping", RUBY_METHOD_FUNC(rosetta_field_678_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::NewtonOptions&>().damping)>>)
-                rb_define_method(klass, "damping=", RUBY_METHOD_FUNC(rosetta_field_677_set), 1);
+                rb_define_method(klass, "damping=", RUBY_METHOD_FUNC(rosetta_field_678_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_167_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::Newton>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1480), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1481), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1481), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1482), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_168_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ParallelTemperingOptions>::value.klass;
-            rb_define_method(klass, "num_replicas", RUBY_METHOD_FUNC(rosetta_field_678_get), 0);
+            rb_define_method(klass, "num_replicas", RUBY_METHOD_FUNC(rosetta_field_679_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ParallelTemperingOptions&>().num_replicas)>>)
-                rb_define_method(klass, "num_replicas=", RUBY_METHOD_FUNC(rosetta_field_678_set), 1);
-            rb_define_method(klass, "initial_temperature", RUBY_METHOD_FUNC(rosetta_field_679_get), 0);
+                rb_define_method(klass, "num_replicas=", RUBY_METHOD_FUNC(rosetta_field_679_set), 1);
+            rb_define_method(klass, "initial_temperature", RUBY_METHOD_FUNC(rosetta_field_680_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ParallelTemperingOptions&>().initial_temperature)>>)
-                rb_define_method(klass, "initial_temperature=", RUBY_METHOD_FUNC(rosetta_field_679_set), 1);
-            rb_define_method(klass, "final_temperature", RUBY_METHOD_FUNC(rosetta_field_680_get), 0);
+                rb_define_method(klass, "initial_temperature=", RUBY_METHOD_FUNC(rosetta_field_680_set), 1);
+            rb_define_method(klass, "final_temperature", RUBY_METHOD_FUNC(rosetta_field_681_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ParallelTemperingOptions&>().final_temperature)>>)
-                rb_define_method(klass, "final_temperature=", RUBY_METHOD_FUNC(rosetta_field_680_set), 1);
-            rb_define_method(klass, "step_std_dev", RUBY_METHOD_FUNC(rosetta_field_681_get), 0);
+                rb_define_method(klass, "final_temperature=", RUBY_METHOD_FUNC(rosetta_field_681_set), 1);
+            rb_define_method(klass, "step_std_dev", RUBY_METHOD_FUNC(rosetta_field_682_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ParallelTemperingOptions&>().step_std_dev)>>)
-                rb_define_method(klass, "step_std_dev=", RUBY_METHOD_FUNC(rosetta_field_681_set), 1);
-            rb_define_method(klass, "swap_interval", RUBY_METHOD_FUNC(rosetta_field_682_get), 0);
+                rb_define_method(klass, "step_std_dev=", RUBY_METHOD_FUNC(rosetta_field_682_set), 1);
+            rb_define_method(klass, "swap_interval", RUBY_METHOD_FUNC(rosetta_field_683_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ParallelTemperingOptions&>().swap_interval)>>)
-                rb_define_method(klass, "swap_interval=", RUBY_METHOD_FUNC(rosetta_field_682_set), 1);
-            rb_define_method(klass, "max_sweeps", RUBY_METHOD_FUNC(rosetta_field_683_get), 0);
+                rb_define_method(klass, "swap_interval=", RUBY_METHOD_FUNC(rosetta_field_683_set), 1);
+            rb_define_method(klass, "max_sweeps", RUBY_METHOD_FUNC(rosetta_field_684_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ParallelTemperingOptions&>().max_sweeps)>>)
-                rb_define_method(klass, "max_sweeps=", RUBY_METHOD_FUNC(rosetta_field_683_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_684_get), 0);
+                rb_define_method(klass, "max_sweeps=", RUBY_METHOD_FUNC(rosetta_field_684_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_685_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ParallelTemperingOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_684_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_685_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_169_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ParallelTempering>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1482), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1483), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1483), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1484), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_170_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::PSOOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_685_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_686_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_685_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_686_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_686_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_687_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_686_set), 1);
-            rb_define_method(klass, "inertia_weight", RUBY_METHOD_FUNC(rosetta_field_687_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_687_set), 1);
+            rb_define_method(klass, "inertia_weight", RUBY_METHOD_FUNC(rosetta_field_688_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().inertia_weight)>>)
-                rb_define_method(klass, "inertia_weight=", RUBY_METHOD_FUNC(rosetta_field_687_set), 1);
-            rb_define_method(klass, "cognitive_coefficient", RUBY_METHOD_FUNC(rosetta_field_688_get), 0);
+                rb_define_method(klass, "inertia_weight=", RUBY_METHOD_FUNC(rosetta_field_688_set), 1);
+            rb_define_method(klass, "cognitive_coefficient", RUBY_METHOD_FUNC(rosetta_field_689_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().cognitive_coefficient)>>)
-                rb_define_method(klass, "cognitive_coefficient=", RUBY_METHOD_FUNC(rosetta_field_688_set), 1);
-            rb_define_method(klass, "social_coefficient", RUBY_METHOD_FUNC(rosetta_field_689_get), 0);
+                rb_define_method(klass, "cognitive_coefficient=", RUBY_METHOD_FUNC(rosetta_field_689_set), 1);
+            rb_define_method(klass, "social_coefficient", RUBY_METHOD_FUNC(rosetta_field_690_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().social_coefficient)>>)
-                rb_define_method(klass, "social_coefficient=", RUBY_METHOD_FUNC(rosetta_field_689_set), 1);
-            rb_define_method(klass, "topology", RUBY_METHOD_FUNC(rosetta_field_690_get), 0);
+                rb_define_method(klass, "social_coefficient=", RUBY_METHOD_FUNC(rosetta_field_690_set), 1);
+            rb_define_method(klass, "topology", RUBY_METHOD_FUNC(rosetta_field_691_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().topology)>>)
-                rb_define_method(klass, "topology=", RUBY_METHOD_FUNC(rosetta_field_690_set), 1);
-            rb_define_method(klass, "ring_neighbors", RUBY_METHOD_FUNC(rosetta_field_691_get), 0);
+                rb_define_method(klass, "topology=", RUBY_METHOD_FUNC(rosetta_field_691_set), 1);
+            rb_define_method(klass, "ring_neighbors", RUBY_METHOD_FUNC(rosetta_field_692_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().ring_neighbors)>>)
-                rb_define_method(klass, "ring_neighbors=", RUBY_METHOD_FUNC(rosetta_field_691_set), 1);
-            rb_define_method(klass, "inertia_strategy", RUBY_METHOD_FUNC(rosetta_field_692_get), 0);
+                rb_define_method(klass, "ring_neighbors=", RUBY_METHOD_FUNC(rosetta_field_692_set), 1);
+            rb_define_method(klass, "inertia_strategy", RUBY_METHOD_FUNC(rosetta_field_693_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().inertia_strategy)>>)
-                rb_define_method(klass, "inertia_strategy=", RUBY_METHOD_FUNC(rosetta_field_692_set), 1);
-            rb_define_method(klass, "final_inertia_weight", RUBY_METHOD_FUNC(rosetta_field_693_get), 0);
+                rb_define_method(klass, "inertia_strategy=", RUBY_METHOD_FUNC(rosetta_field_693_set), 1);
+            rb_define_method(klass, "final_inertia_weight", RUBY_METHOD_FUNC(rosetta_field_694_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().final_inertia_weight)>>)
-                rb_define_method(klass, "final_inertia_weight=", RUBY_METHOD_FUNC(rosetta_field_693_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_694_get), 0);
+                rb_define_method(klass, "final_inertia_weight=", RUBY_METHOD_FUNC(rosetta_field_694_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_695_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_694_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_695_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_695_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_696_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::PSOOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_695_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_696_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_171_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::PSO>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1484), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1485), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1485), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1486), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_172_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ProximalGradientOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_696_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_697_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ProximalGradientOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_696_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_697_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_697_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_698_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ProximalGradientOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_697_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_698_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_698_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_699_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::ProximalGradientOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_698_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_699_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_173_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::ProximalGradient>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1486), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1487), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1487), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1488), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_174_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::RandomizedBlockCoordinateDescentOptions>::value.klass;
-            rb_define_method(klass, "block_size", RUBY_METHOD_FUNC(rosetta_field_699_get), 0);
+            rb_define_method(klass, "block_size", RUBY_METHOD_FUNC(rosetta_field_700_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().block_size)>>)
-                rb_define_method(klass, "block_size=", RUBY_METHOD_FUNC(rosetta_field_699_set), 1);
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_700_get), 0);
+                rb_define_method(klass, "block_size=", RUBY_METHOD_FUNC(rosetta_field_700_set), 1);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_701_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_700_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_701_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_701_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_702_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_701_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_702_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_702_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_703_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_702_set), 1);
-            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_703_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_703_set), 1);
+            rb_define_method(klass, "armijo_c1", RUBY_METHOD_FUNC(rosetta_field_704_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().armijo_c1)>>)
-                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_703_set), 1);
-            rb_define_method(klass, "backtracking_factor", RUBY_METHOD_FUNC(rosetta_field_704_get), 0);
+                rb_define_method(klass, "armijo_c1=", RUBY_METHOD_FUNC(rosetta_field_704_set), 1);
+            rb_define_method(klass, "backtracking_factor", RUBY_METHOD_FUNC(rosetta_field_705_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().backtracking_factor)>>)
-                rb_define_method(klass, "backtracking_factor=", RUBY_METHOD_FUNC(rosetta_field_704_set), 1);
-            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_705_get), 0);
+                rb_define_method(klass, "backtracking_factor=", RUBY_METHOD_FUNC(rosetta_field_705_set), 1);
+            rb_define_method(klass, "max_line_search_trials", RUBY_METHOD_FUNC(rosetta_field_706_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().max_line_search_trials)>>)
-                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_705_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_706_get), 0);
+                rb_define_method(klass, "max_line_search_trials=", RUBY_METHOD_FUNC(rosetta_field_706_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_707_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RandomizedBlockCoordinateDescentOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_706_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_707_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_175_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::RandomizedBlockCoordinateDescent>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1488), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1489), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1489), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1490), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_176_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::RMSPropOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_707_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_708_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RMSPropOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_707_set), 1);
-            rb_define_method(klass, "decay_rate", RUBY_METHOD_FUNC(rosetta_field_708_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_708_set), 1);
+            rb_define_method(klass, "decay_rate", RUBY_METHOD_FUNC(rosetta_field_709_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RMSPropOptions&>().decay_rate)>>)
-                rb_define_method(klass, "decay_rate=", RUBY_METHOD_FUNC(rosetta_field_708_set), 1);
-            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_709_get), 0);
+                rb_define_method(klass, "decay_rate=", RUBY_METHOD_FUNC(rosetta_field_709_set), 1);
+            rb_define_method(klass, "epsilon", RUBY_METHOD_FUNC(rosetta_field_710_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RMSPropOptions&>().epsilon)>>)
-                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_709_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_710_get), 0);
+                rb_define_method(klass, "epsilon=", RUBY_METHOD_FUNC(rosetta_field_710_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_711_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RMSPropOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_710_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_711_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_711_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_712_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::RMSPropOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_711_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_712_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_177_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::RMSProp>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1490), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1491), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1491), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1492), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_178_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SurrogatePrediction>::value.klass;
-            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_field_712_get), 0);
+            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_field_713_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SurrogatePrediction&>().mean)>>)
-                rb_define_method(klass, "mean=", RUBY_METHOD_FUNC(rosetta_field_712_set), 1);
-            rb_define_method(klass, "sd", RUBY_METHOD_FUNC(rosetta_field_713_get), 0);
+                rb_define_method(klass, "mean=", RUBY_METHOD_FUNC(rosetta_field_713_set), 1);
+            rb_define_method(klass, "sd", RUBY_METHOD_FUNC(rosetta_field_714_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SurrogatePrediction&>().sd)>>)
-                rb_define_method(klass, "sd=", RUBY_METHOD_FUNC(rosetta_field_713_set), 1);
+                rb_define_method(klass, "sd=", RUBY_METHOD_FUNC(rosetta_field_714_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_179_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::GaussianProcessSurrogateOptions>::value.klass;
-            rb_define_method(klass, "length_scale", RUBY_METHOD_FUNC(rosetta_field_714_get), 0);
+            rb_define_method(klass, "length_scale", RUBY_METHOD_FUNC(rosetta_field_715_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().length_scale)>>)
-                rb_define_method(klass, "length_scale=", RUBY_METHOD_FUNC(rosetta_field_714_set), 1);
-            rb_define_method(klass, "signal_variance", RUBY_METHOD_FUNC(rosetta_field_715_get), 0);
+                rb_define_method(klass, "length_scale=", RUBY_METHOD_FUNC(rosetta_field_715_set), 1);
+            rb_define_method(klass, "signal_variance", RUBY_METHOD_FUNC(rosetta_field_716_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().signal_variance)>>)
-                rb_define_method(klass, "signal_variance=", RUBY_METHOD_FUNC(rosetta_field_715_set), 1);
-            rb_define_method(klass, "noise", RUBY_METHOD_FUNC(rosetta_field_716_get), 0);
+                rb_define_method(klass, "signal_variance=", RUBY_METHOD_FUNC(rosetta_field_716_set), 1);
+            rb_define_method(klass, "noise", RUBY_METHOD_FUNC(rosetta_field_717_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().noise)>>)
-                rb_define_method(klass, "noise=", RUBY_METHOD_FUNC(rosetta_field_716_set), 1);
-            rb_define_method(klass, "normalize_values", RUBY_METHOD_FUNC(rosetta_field_717_get), 0);
+                rb_define_method(klass, "noise=", RUBY_METHOD_FUNC(rosetta_field_717_set), 1);
+            rb_define_method(klass, "normalize_values", RUBY_METHOD_FUNC(rosetta_field_718_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().normalize_values)>>)
-                rb_define_method(klass, "normalize_values=", RUBY_METHOD_FUNC(rosetta_field_717_set), 1);
-            rb_define_method(klass, "fit_hyperparameters", RUBY_METHOD_FUNC(rosetta_field_718_get), 0);
+                rb_define_method(klass, "normalize_values=", RUBY_METHOD_FUNC(rosetta_field_718_set), 1);
+            rb_define_method(klass, "fit_hyperparameters", RUBY_METHOD_FUNC(rosetta_field_719_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().fit_hyperparameters)>>)
-                rb_define_method(klass, "fit_hyperparameters=", RUBY_METHOD_FUNC(rosetta_field_718_set), 1);
-            rb_define_method(klass, "fit_noise", RUBY_METHOD_FUNC(rosetta_field_719_get), 0);
+                rb_define_method(klass, "fit_hyperparameters=", RUBY_METHOD_FUNC(rosetta_field_719_set), 1);
+            rb_define_method(klass, "fit_noise", RUBY_METHOD_FUNC(rosetta_field_720_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().fit_noise)>>)
-                rb_define_method(klass, "fit_noise=", RUBY_METHOD_FUNC(rosetta_field_719_set), 1);
-            rb_define_method(klass, "min_length_scale", RUBY_METHOD_FUNC(rosetta_field_720_get), 0);
+                rb_define_method(klass, "fit_noise=", RUBY_METHOD_FUNC(rosetta_field_720_set), 1);
+            rb_define_method(klass, "min_length_scale", RUBY_METHOD_FUNC(rosetta_field_721_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().min_length_scale)>>)
-                rb_define_method(klass, "min_length_scale=", RUBY_METHOD_FUNC(rosetta_field_720_set), 1);
-            rb_define_method(klass, "max_length_scale", RUBY_METHOD_FUNC(rosetta_field_721_get), 0);
+                rb_define_method(klass, "min_length_scale=", RUBY_METHOD_FUNC(rosetta_field_721_set), 1);
+            rb_define_method(klass, "max_length_scale", RUBY_METHOD_FUNC(rosetta_field_722_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().max_length_scale)>>)
-                rb_define_method(klass, "max_length_scale=", RUBY_METHOD_FUNC(rosetta_field_721_set), 1);
-            rb_define_method(klass, "acquisition", RUBY_METHOD_FUNC(rosetta_field_722_get), 0);
+                rb_define_method(klass, "max_length_scale=", RUBY_METHOD_FUNC(rosetta_field_722_set), 1);
+            rb_define_method(klass, "acquisition", RUBY_METHOD_FUNC(rosetta_field_723_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().acquisition)>>)
-                rb_define_method(klass, "acquisition=", RUBY_METHOD_FUNC(rosetta_field_722_set), 1);
-            rb_define_method(klass, "exploration", RUBY_METHOD_FUNC(rosetta_field_723_get), 0);
+                rb_define_method(klass, "acquisition=", RUBY_METHOD_FUNC(rosetta_field_723_set), 1);
+            rb_define_method(klass, "exploration", RUBY_METHOD_FUNC(rosetta_field_724_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().exploration)>>)
-                rb_define_method(klass, "exploration=", RUBY_METHOD_FUNC(rosetta_field_723_set), 1);
-            rb_define_method(klass, "kappa", RUBY_METHOD_FUNC(rosetta_field_724_get), 0);
+                rb_define_method(klass, "exploration=", RUBY_METHOD_FUNC(rosetta_field_724_set), 1);
+            rb_define_method(klass, "kappa", RUBY_METHOD_FUNC(rosetta_field_725_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::GaussianProcessSurrogateOptions&>().kappa)>>)
-                rb_define_method(klass, "kappa=", RUBY_METHOD_FUNC(rosetta_field_724_set), 1);
+                rb_define_method(klass, "kappa=", RUBY_METHOD_FUNC(rosetta_field_725_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_180_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value.klass;
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1492), -1);
-            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_1493), -1);
-            rb_define_method(klass, "acquisition", RUBY_METHOD_FUNC(rosetta_function_1494), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1495), -1);
-            rb_define_method(klass, "log_marginal_likelihood", RUBY_METHOD_FUNC(rosetta_function_1496), -1);
-            rb_define_method(klass, "length_scale", RUBY_METHOD_FUNC(rosetta_function_1497), -1);
-            rb_define_method(klass, "noise", RUBY_METHOD_FUNC(rosetta_function_1498), -1);
-            rb_define_method(klass, "signal_variance", RUBY_METHOD_FUNC(rosetta_function_1499), -1);
-            rb_define_method(klass, "prior_mean", RUBY_METHOD_FUNC(rosetta_function_1500), -1);
-            rb_define_method(klass, "value_scale", RUBY_METHOD_FUNC(rosetta_function_1501), -1);
-            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_function_1502), -1);
-            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_function_1503), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1493), -1);
+            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_1494), -1);
+            rb_define_method(klass, "acquisition", RUBY_METHOD_FUNC(rosetta_function_1495), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1496), -1);
+            rb_define_method(klass, "log_marginal_likelihood", RUBY_METHOD_FUNC(rosetta_function_1497), -1);
+            rb_define_method(klass, "length_scale", RUBY_METHOD_FUNC(rosetta_function_1498), -1);
+            rb_define_method(klass, "noise", RUBY_METHOD_FUNC(rosetta_function_1499), -1);
+            rb_define_method(klass, "signal_variance", RUBY_METHOD_FUNC(rosetta_function_1500), -1);
+            rb_define_method(klass, "prior_mean", RUBY_METHOD_FUNC(rosetta_function_1501), -1);
+            rb_define_method(klass, "value_scale", RUBY_METHOD_FUNC(rosetta_function_1502), -1);
+            rb_define_method(klass, "points", RUBY_METHOD_FUNC(rosetta_function_1503), -1);
+            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_function_1504), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_181_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SGDOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_725_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_726_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SGDOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_725_set), 1);
-            rb_define_method(klass, "max_epochs", RUBY_METHOD_FUNC(rosetta_field_726_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_726_set), 1);
+            rb_define_method(klass, "max_epochs", RUBY_METHOD_FUNC(rosetta_field_727_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SGDOptions&>().max_epochs)>>)
-                rb_define_method(klass, "max_epochs=", RUBY_METHOD_FUNC(rosetta_field_726_set), 1);
-            rb_define_method(klass, "batch_size", RUBY_METHOD_FUNC(rosetta_field_727_get), 0);
+                rb_define_method(klass, "max_epochs=", RUBY_METHOD_FUNC(rosetta_field_727_set), 1);
+            rb_define_method(klass, "batch_size", RUBY_METHOD_FUNC(rosetta_field_728_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SGDOptions&>().batch_size)>>)
-                rb_define_method(klass, "batch_size=", RUBY_METHOD_FUNC(rosetta_field_727_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_728_get), 0);
+                rb_define_method(klass, "batch_size=", RUBY_METHOD_FUNC(rosetta_field_728_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_729_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SGDOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_728_set), 1);
-            rb_define_method(klass, "shuffle", RUBY_METHOD_FUNC(rosetta_field_729_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_729_set), 1);
+            rb_define_method(klass, "shuffle", RUBY_METHOD_FUNC(rosetta_field_730_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SGDOptions&>().shuffle)>>)
-                rb_define_method(klass, "shuffle=", RUBY_METHOD_FUNC(rosetta_field_729_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_730_get), 0);
+                rb_define_method(klass, "shuffle=", RUBY_METHOD_FUNC(rosetta_field_730_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_731_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SGDOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_730_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_731_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_182_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SGD>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1504), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1505), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1505), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1506), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_183_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SimulatedAnnealingOptions>::value.klass;
-            rb_define_method(klass, "initial_temperature", RUBY_METHOD_FUNC(rosetta_field_731_get), 0);
+            rb_define_method(klass, "initial_temperature", RUBY_METHOD_FUNC(rosetta_field_732_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SimulatedAnnealingOptions&>().initial_temperature)>>)
-                rb_define_method(klass, "initial_temperature=", RUBY_METHOD_FUNC(rosetta_field_731_set), 1);
-            rb_define_method(klass, "cooling_rate", RUBY_METHOD_FUNC(rosetta_field_732_get), 0);
+                rb_define_method(klass, "initial_temperature=", RUBY_METHOD_FUNC(rosetta_field_732_set), 1);
+            rb_define_method(klass, "cooling_rate", RUBY_METHOD_FUNC(rosetta_field_733_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SimulatedAnnealingOptions&>().cooling_rate)>>)
-                rb_define_method(klass, "cooling_rate=", RUBY_METHOD_FUNC(rosetta_field_732_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_733_get), 0);
+                rb_define_method(klass, "cooling_rate=", RUBY_METHOD_FUNC(rosetta_field_733_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_734_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SimulatedAnnealingOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_733_set), 1);
-            rb_define_method(klass, "step_std_dev", RUBY_METHOD_FUNC(rosetta_field_734_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_734_set), 1);
+            rb_define_method(klass, "step_std_dev", RUBY_METHOD_FUNC(rosetta_field_735_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SimulatedAnnealingOptions&>().step_std_dev)>>)
-                rb_define_method(klass, "step_std_dev=", RUBY_METHOD_FUNC(rosetta_field_734_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_735_get), 0);
+                rb_define_method(klass, "step_std_dev=", RUBY_METHOD_FUNC(rosetta_field_735_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_736_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SimulatedAnnealingOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_735_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_736_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_184_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SimulatedAnnealing>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1506), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1507), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1507), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1508), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_185_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SAGAOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_736_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_737_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SAGAOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_736_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_737_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_737_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_738_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SAGAOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_737_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_738_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_738_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_739_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SAGAOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_738_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_739_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_739_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_740_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SAGAOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_739_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_740_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_186_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SAGA>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1508), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1509), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1509), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1510), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_187_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SVRGOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_740_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_741_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SVRGOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_740_set), 1);
-            rb_define_method(klass, "max_epochs", RUBY_METHOD_FUNC(rosetta_field_741_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_741_set), 1);
+            rb_define_method(klass, "max_epochs", RUBY_METHOD_FUNC(rosetta_field_742_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SVRGOptions&>().max_epochs)>>)
-                rb_define_method(klass, "max_epochs=", RUBY_METHOD_FUNC(rosetta_field_741_set), 1);
-            rb_define_method(klass, "inner_iterations", RUBY_METHOD_FUNC(rosetta_field_742_get), 0);
+                rb_define_method(klass, "max_epochs=", RUBY_METHOD_FUNC(rosetta_field_742_set), 1);
+            rb_define_method(klass, "inner_iterations", RUBY_METHOD_FUNC(rosetta_field_743_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SVRGOptions&>().inner_iterations)>>)
-                rb_define_method(klass, "inner_iterations=", RUBY_METHOD_FUNC(rosetta_field_742_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_743_get), 0);
+                rb_define_method(klass, "inner_iterations=", RUBY_METHOD_FUNC(rosetta_field_743_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_744_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SVRGOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_743_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_744_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_744_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_745_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SVRGOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_744_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_745_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_188_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SVRG>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1510), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1511), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1511), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1512), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_189_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SQPOptions>::value.klass;
-            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_745_get), 0);
+            rb_define_method(klass, "step_size", RUBY_METHOD_FUNC(rosetta_field_746_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SQPOptions&>().step_size)>>)
-                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_745_set), 1);
-            rb_define_method(klass, "regularization", RUBY_METHOD_FUNC(rosetta_field_746_get), 0);
+                rb_define_method(klass, "step_size=", RUBY_METHOD_FUNC(rosetta_field_746_set), 1);
+            rb_define_method(klass, "regularization", RUBY_METHOD_FUNC(rosetta_field_747_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SQPOptions&>().regularization)>>)
-                rb_define_method(klass, "regularization=", RUBY_METHOD_FUNC(rosetta_field_746_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_747_get), 0);
+                rb_define_method(klass, "regularization=", RUBY_METHOD_FUNC(rosetta_field_747_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_748_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SQPOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_747_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_748_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_748_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_749_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::SQPOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_748_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_749_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_190_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::SQP>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1512), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1513), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1513), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1514), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_191_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::TrustRegionNewtonOptions>::value.klass;
-            rb_define_method(klass, "initial_radius", RUBY_METHOD_FUNC(rosetta_field_749_get), 0);
+            rb_define_method(klass, "initial_radius", RUBY_METHOD_FUNC(rosetta_field_750_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::TrustRegionNewtonOptions&>().initial_radius)>>)
-                rb_define_method(klass, "initial_radius=", RUBY_METHOD_FUNC(rosetta_field_749_set), 1);
-            rb_define_method(klass, "max_radius", RUBY_METHOD_FUNC(rosetta_field_750_get), 0);
+                rb_define_method(klass, "initial_radius=", RUBY_METHOD_FUNC(rosetta_field_750_set), 1);
+            rb_define_method(klass, "max_radius", RUBY_METHOD_FUNC(rosetta_field_751_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::TrustRegionNewtonOptions&>().max_radius)>>)
-                rb_define_method(klass, "max_radius=", RUBY_METHOD_FUNC(rosetta_field_750_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_751_get), 0);
+                rb_define_method(klass, "max_radius=", RUBY_METHOD_FUNC(rosetta_field_751_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_752_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::TrustRegionNewtonOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_751_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_752_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_752_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_753_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::TrustRegionNewtonOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_752_set), 1);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_753_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_192_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::TrustRegionNewton>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1514), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1515), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1515), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1516), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_193_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::WhaleOptimizationOptions>::value.klass;
-            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_753_get), 0);
+            rb_define_method(klass, "population_size", RUBY_METHOD_FUNC(rosetta_field_754_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::WhaleOptimizationOptions&>().population_size)>>)
-                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_753_set), 1);
-            rb_define_method(klass, "spiral_constant", RUBY_METHOD_FUNC(rosetta_field_754_get), 0);
+                rb_define_method(klass, "population_size=", RUBY_METHOD_FUNC(rosetta_field_754_set), 1);
+            rb_define_method(klass, "spiral_constant", RUBY_METHOD_FUNC(rosetta_field_755_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::WhaleOptimizationOptions&>().spiral_constant)>>)
-                rb_define_method(klass, "spiral_constant=", RUBY_METHOD_FUNC(rosetta_field_754_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_755_get), 0);
+                rb_define_method(klass, "spiral_constant=", RUBY_METHOD_FUNC(rosetta_field_755_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_756_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::WhaleOptimizationOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_755_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_756_get), 0);
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_756_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_757_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::WhaleOptimizationOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_756_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_757_get), 0);
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_757_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_758_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::optim::WhaleOptimizationOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_757_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_758_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_194_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::optim::WhaleOptimization>::value.klass;
-            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1516), -1);
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1517), -1);
+            rb_define_method(klass, "optimize", RUBY_METHOD_FUNC(rosetta_function_1517), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1518), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_195_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::fda::BSplineBasis>::value.klass;
-            rb_define_singleton_method(klass, "open_uniform", RUBY_METHOD_FUNC(rosetta_function_1518), -1);
-            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1519), -1);
-            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_1520), -1);
-            rb_define_method(klass, "knots", RUBY_METHOD_FUNC(rosetta_function_1521), -1);
-            rb_define_method(klass, "domain", RUBY_METHOD_FUNC(rosetta_function_1522), -1);
+            rb_define_singleton_method(klass, "open_uniform", RUBY_METHOD_FUNC(rosetta_function_1519), -1);
+            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1520), -1);
+            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_1521), -1);
+            rb_define_method(klass, "knots", RUBY_METHOD_FUNC(rosetta_function_1522), -1);
+            rb_define_method(klass, "domain", RUBY_METHOD_FUNC(rosetta_function_1523), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_196_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::stats::HypothesisTestResult>::value.klass;
-            rb_define_method(klass, "statistic", RUBY_METHOD_FUNC(rosetta_field_758_get), 0);
+            rb_define_method(klass, "statistic", RUBY_METHOD_FUNC(rosetta_field_759_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().statistic)>>)
-                rb_define_method(klass, "statistic=", RUBY_METHOD_FUNC(rosetta_field_758_set), 1);
-            rb_define_method(klass, "parameter1", RUBY_METHOD_FUNC(rosetta_field_759_get), 0);
+                rb_define_method(klass, "statistic=", RUBY_METHOD_FUNC(rosetta_field_759_set), 1);
+            rb_define_method(klass, "parameter1", RUBY_METHOD_FUNC(rosetta_field_760_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().parameter1)>>)
-                rb_define_method(klass, "parameter1=", RUBY_METHOD_FUNC(rosetta_field_759_set), 1);
-            rb_define_method(klass, "parameter2", RUBY_METHOD_FUNC(rosetta_field_760_get), 0);
+                rb_define_method(klass, "parameter1=", RUBY_METHOD_FUNC(rosetta_field_760_set), 1);
+            rb_define_method(klass, "parameter2", RUBY_METHOD_FUNC(rosetta_field_761_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().parameter2)>>)
-                rb_define_method(klass, "parameter2=", RUBY_METHOD_FUNC(rosetta_field_760_set), 1);
-            rb_define_method(klass, "p_value", RUBY_METHOD_FUNC(rosetta_field_761_get), 0);
+                rb_define_method(klass, "parameter2=", RUBY_METHOD_FUNC(rosetta_field_761_set), 1);
+            rb_define_method(klass, "p_value", RUBY_METHOD_FUNC(rosetta_field_762_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().p_value)>>)
-                rb_define_method(klass, "p_value=", RUBY_METHOD_FUNC(rosetta_field_761_set), 1);
-            rb_define_method(klass, "estimate1", RUBY_METHOD_FUNC(rosetta_field_762_get), 0);
+                rb_define_method(klass, "p_value=", RUBY_METHOD_FUNC(rosetta_field_762_set), 1);
+            rb_define_method(klass, "estimate1", RUBY_METHOD_FUNC(rosetta_field_763_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().estimate1)>>)
-                rb_define_method(klass, "estimate1=", RUBY_METHOD_FUNC(rosetta_field_762_set), 1);
-            rb_define_method(klass, "estimate2", RUBY_METHOD_FUNC(rosetta_field_763_get), 0);
+                rb_define_method(klass, "estimate1=", RUBY_METHOD_FUNC(rosetta_field_763_set), 1);
+            rb_define_method(klass, "estimate2", RUBY_METHOD_FUNC(rosetta_field_764_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().estimate2)>>)
-                rb_define_method(klass, "estimate2=", RUBY_METHOD_FUNC(rosetta_field_763_set), 1);
-            rb_define_method(klass, "conf_int_lower", RUBY_METHOD_FUNC(rosetta_field_764_get), 0);
+                rb_define_method(klass, "estimate2=", RUBY_METHOD_FUNC(rosetta_field_764_set), 1);
+            rb_define_method(klass, "conf_int_lower", RUBY_METHOD_FUNC(rosetta_field_765_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().conf_int_lower)>>)
-                rb_define_method(klass, "conf_int_lower=", RUBY_METHOD_FUNC(rosetta_field_764_set), 1);
-            rb_define_method(klass, "conf_int_upper", RUBY_METHOD_FUNC(rosetta_field_765_get), 0);
+                rb_define_method(klass, "conf_int_lower=", RUBY_METHOD_FUNC(rosetta_field_765_set), 1);
+            rb_define_method(klass, "conf_int_upper", RUBY_METHOD_FUNC(rosetta_field_766_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().conf_int_upper)>>)
-                rb_define_method(klass, "conf_int_upper=", RUBY_METHOD_FUNC(rosetta_field_765_set), 1);
-            rb_define_method(klass, "has_conf_int", RUBY_METHOD_FUNC(rosetta_field_766_get), 0);
+                rb_define_method(klass, "conf_int_upper=", RUBY_METHOD_FUNC(rosetta_field_766_set), 1);
+            rb_define_method(klass, "has_conf_int", RUBY_METHOD_FUNC(rosetta_field_767_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().has_conf_int)>>)
-                rb_define_method(klass, "has_conf_int=", RUBY_METHOD_FUNC(rosetta_field_766_set), 1);
-            rb_define_method(klass, "alternative", RUBY_METHOD_FUNC(rosetta_field_767_get), 0);
+                rb_define_method(klass, "has_conf_int=", RUBY_METHOD_FUNC(rosetta_field_767_set), 1);
+            rb_define_method(klass, "alternative", RUBY_METHOD_FUNC(rosetta_field_768_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().alternative)>>)
-                rb_define_method(klass, "alternative=", RUBY_METHOD_FUNC(rosetta_field_767_set), 1);
-            rb_define_method(klass, "method_", RUBY_METHOD_FUNC(rosetta_field_768_get), 0);
+                rb_define_method(klass, "alternative=", RUBY_METHOD_FUNC(rosetta_field_768_set), 1);
+            rb_define_method(klass, "method_", RUBY_METHOD_FUNC(rosetta_field_769_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().method)>>)
-                rb_define_method(klass, "method_=", RUBY_METHOD_FUNC(rosetta_field_768_set), 1);
+                rb_define_method(klass, "method_=", RUBY_METHOD_FUNC(rosetta_field_769_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_197_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::stats::ARIMAOptions>::value.klass;
-            rb_define_method(klass, "p_", RUBY_METHOD_FUNC(rosetta_field_769_get), 0);
+            rb_define_method(klass, "p_", RUBY_METHOD_FUNC(rosetta_field_770_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().p)>>)
-                rb_define_method(klass, "p_=", RUBY_METHOD_FUNC(rosetta_field_769_set), 1);
-            rb_define_method(klass, "d", RUBY_METHOD_FUNC(rosetta_field_770_get), 0);
+                rb_define_method(klass, "p_=", RUBY_METHOD_FUNC(rosetta_field_770_set), 1);
+            rb_define_method(klass, "d", RUBY_METHOD_FUNC(rosetta_field_771_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().d)>>)
-                rb_define_method(klass, "d=", RUBY_METHOD_FUNC(rosetta_field_770_set), 1);
-            rb_define_method(klass, "q", RUBY_METHOD_FUNC(rosetta_field_771_get), 0);
+                rb_define_method(klass, "d=", RUBY_METHOD_FUNC(rosetta_field_771_set), 1);
+            rb_define_method(klass, "q", RUBY_METHOD_FUNC(rosetta_field_772_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().q)>>)
-                rb_define_method(klass, "q=", RUBY_METHOD_FUNC(rosetta_field_771_set), 1);
-            rb_define_method(klass, "seasonal_p", RUBY_METHOD_FUNC(rosetta_field_772_get), 0);
+                rb_define_method(klass, "q=", RUBY_METHOD_FUNC(rosetta_field_772_set), 1);
+            rb_define_method(klass, "seasonal_p", RUBY_METHOD_FUNC(rosetta_field_773_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().seasonal_p)>>)
-                rb_define_method(klass, "seasonal_p=", RUBY_METHOD_FUNC(rosetta_field_772_set), 1);
-            rb_define_method(klass, "seasonal_d", RUBY_METHOD_FUNC(rosetta_field_773_get), 0);
+                rb_define_method(klass, "seasonal_p=", RUBY_METHOD_FUNC(rosetta_field_773_set), 1);
+            rb_define_method(klass, "seasonal_d", RUBY_METHOD_FUNC(rosetta_field_774_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().seasonal_d)>>)
-                rb_define_method(klass, "seasonal_d=", RUBY_METHOD_FUNC(rosetta_field_773_set), 1);
-            rb_define_method(klass, "seasonal_q", RUBY_METHOD_FUNC(rosetta_field_774_get), 0);
+                rb_define_method(klass, "seasonal_d=", RUBY_METHOD_FUNC(rosetta_field_774_set), 1);
+            rb_define_method(klass, "seasonal_q", RUBY_METHOD_FUNC(rosetta_field_775_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().seasonal_q)>>)
-                rb_define_method(klass, "seasonal_q=", RUBY_METHOD_FUNC(rosetta_field_774_set), 1);
-            rb_define_method(klass, "seasonal_period", RUBY_METHOD_FUNC(rosetta_field_775_get), 0);
+                rb_define_method(klass, "seasonal_q=", RUBY_METHOD_FUNC(rosetta_field_775_set), 1);
+            rb_define_method(klass, "seasonal_period", RUBY_METHOD_FUNC(rosetta_field_776_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().seasonal_period)>>)
-                rb_define_method(klass, "seasonal_period=", RUBY_METHOD_FUNC(rosetta_field_775_set), 1);
-            rb_define_method(klass, "include_mean", RUBY_METHOD_FUNC(rosetta_field_776_get), 0);
+                rb_define_method(klass, "seasonal_period=", RUBY_METHOD_FUNC(rosetta_field_776_set), 1);
+            rb_define_method(klass, "include_mean", RUBY_METHOD_FUNC(rosetta_field_777_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().include_mean)>>)
-                rb_define_method(klass, "include_mean=", RUBY_METHOD_FUNC(rosetta_field_776_set), 1);
-            rb_define_method(klass, "de_population_size", RUBY_METHOD_FUNC(rosetta_field_777_get), 0);
+                rb_define_method(klass, "include_mean=", RUBY_METHOD_FUNC(rosetta_field_777_set), 1);
+            rb_define_method(klass, "de_population_size", RUBY_METHOD_FUNC(rosetta_field_778_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().de_population_size)>>)
-                rb_define_method(klass, "de_population_size=", RUBY_METHOD_FUNC(rosetta_field_777_set), 1);
-            rb_define_method(klass, "de_max_generations", RUBY_METHOD_FUNC(rosetta_field_778_get), 0);
+                rb_define_method(klass, "de_population_size=", RUBY_METHOD_FUNC(rosetta_field_778_set), 1);
+            rb_define_method(klass, "de_max_generations", RUBY_METHOD_FUNC(rosetta_field_779_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().de_max_generations)>>)
-                rb_define_method(klass, "de_max_generations=", RUBY_METHOD_FUNC(rosetta_field_778_set), 1);
-            rb_define_method(klass, "coefficient_bound", RUBY_METHOD_FUNC(rosetta_field_779_get), 0);
+                rb_define_method(klass, "de_max_generations=", RUBY_METHOD_FUNC(rosetta_field_779_set), 1);
+            rb_define_method(klass, "coefficient_bound", RUBY_METHOD_FUNC(rosetta_field_780_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().coefficient_bound)>>)
-                rb_define_method(klass, "coefficient_bound=", RUBY_METHOD_FUNC(rosetta_field_779_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_780_get), 0);
+                rb_define_method(klass, "coefficient_bound=", RUBY_METHOD_FUNC(rosetta_field_780_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_781_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ARIMAOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_780_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_781_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_198_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::stats::ARIMA>::value.klass;
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1523), -1);
-            rb_define_method(klass, "ar_coefficients", RUBY_METHOD_FUNC(rosetta_function_1524), -1);
-            rb_define_method(klass, "ma_coefficients", RUBY_METHOD_FUNC(rosetta_function_1525), -1);
-            rb_define_method(klass, "seasonal_ar_coefficients", RUBY_METHOD_FUNC(rosetta_function_1526), -1);
-            rb_define_method(klass, "seasonal_ma_coefficients", RUBY_METHOD_FUNC(rosetta_function_1527), -1);
-            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_function_1528), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1529), -1);
-            rb_define_method(klass, "n_used", RUBY_METHOD_FUNC(rosetta_function_1530), -1);
-            rb_define_method(klass, "sigma2", RUBY_METHOD_FUNC(rosetta_function_1531), -1);
-            rb_define_method(klass, "log_likelihood", RUBY_METHOD_FUNC(rosetta_function_1532), -1);
-            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1533), -1);
-            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1534), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1535), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1536), -1);
-            rb_define_method(klass, "forecast", RUBY_METHOD_FUNC(rosetta_function_1537), -1);
-            rb_define_method(klass, "expanded_ar_coefficients", RUBY_METHOD_FUNC(rosetta_function_1538), -1);
-            rb_define_method(klass, "expanded_ma_coefficients", RUBY_METHOD_FUNC(rosetta_function_1539), -1);
-            rb_define_method(klass, "psi_weights", RUBY_METHOD_FUNC(rosetta_function_1540), -1);
-            rb_define_method(klass, "forecast_with_intervals", RUBY_METHOD_FUNC(rosetta_function_1541), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1524), -1);
+            rb_define_method(klass, "ar_coefficients", RUBY_METHOD_FUNC(rosetta_function_1525), -1);
+            rb_define_method(klass, "ma_coefficients", RUBY_METHOD_FUNC(rosetta_function_1526), -1);
+            rb_define_method(klass, "seasonal_ar_coefficients", RUBY_METHOD_FUNC(rosetta_function_1527), -1);
+            rb_define_method(klass, "seasonal_ma_coefficients", RUBY_METHOD_FUNC(rosetta_function_1528), -1);
+            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_function_1529), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1530), -1);
+            rb_define_method(klass, "n_used", RUBY_METHOD_FUNC(rosetta_function_1531), -1);
+            rb_define_method(klass, "sigma2", RUBY_METHOD_FUNC(rosetta_function_1532), -1);
+            rb_define_method(klass, "log_likelihood", RUBY_METHOD_FUNC(rosetta_function_1533), -1);
+            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1534), -1);
+            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1535), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1536), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1537), -1);
+            rb_define_method(klass, "forecast", RUBY_METHOD_FUNC(rosetta_function_1538), -1);
+            rb_define_method(klass, "expanded_ar_coefficients", RUBY_METHOD_FUNC(rosetta_function_1539), -1);
+            rb_define_method(klass, "expanded_ma_coefficients", RUBY_METHOD_FUNC(rosetta_function_1540), -1);
+            rb_define_method(klass, "psi_weights", RUBY_METHOD_FUNC(rosetta_function_1541), -1);
+            rb_define_method(klass, "forecast_with_intervals", RUBY_METHOD_FUNC(rosetta_function_1542), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_199_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::stats::KendallTau>::value.klass;
-            rb_define_method(klass, "concordant", RUBY_METHOD_FUNC(rosetta_field_781_get), 0);
+            rb_define_method(klass, "concordant", RUBY_METHOD_FUNC(rosetta_field_782_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::KendallTau&>().concordant)>>)
-                rb_define_method(klass, "concordant=", RUBY_METHOD_FUNC(rosetta_field_781_set), 1);
-            rb_define_method(klass, "discordant", RUBY_METHOD_FUNC(rosetta_field_782_get), 0);
+                rb_define_method(klass, "concordant=", RUBY_METHOD_FUNC(rosetta_field_782_set), 1);
+            rb_define_method(klass, "discordant", RUBY_METHOD_FUNC(rosetta_field_783_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::KendallTau&>().discordant)>>)
-                rb_define_method(klass, "discordant=", RUBY_METHOD_FUNC(rosetta_field_782_set), 1);
-            rb_define_method(klass, "ties_x", RUBY_METHOD_FUNC(rosetta_field_783_get), 0);
+                rb_define_method(klass, "discordant=", RUBY_METHOD_FUNC(rosetta_field_783_set), 1);
+            rb_define_method(klass, "ties_x", RUBY_METHOD_FUNC(rosetta_field_784_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::KendallTau&>().ties_x)>>)
-                rb_define_method(klass, "ties_x=", RUBY_METHOD_FUNC(rosetta_field_783_set), 1);
-            rb_define_method(klass, "ties_y", RUBY_METHOD_FUNC(rosetta_field_784_get), 0);
+                rb_define_method(klass, "ties_x=", RUBY_METHOD_FUNC(rosetta_field_784_set), 1);
+            rb_define_method(klass, "ties_y", RUBY_METHOD_FUNC(rosetta_field_785_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::KendallTau&>().ties_y)>>)
-                rb_define_method(klass, "ties_y=", RUBY_METHOD_FUNC(rosetta_field_784_set), 1);
-            rb_define_method(klass, "ties_xy", RUBY_METHOD_FUNC(rosetta_field_785_get), 0);
+                rb_define_method(klass, "ties_y=", RUBY_METHOD_FUNC(rosetta_field_785_set), 1);
+            rb_define_method(klass, "ties_xy", RUBY_METHOD_FUNC(rosetta_field_786_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::KendallTau&>().ties_xy)>>)
-                rb_define_method(klass, "ties_xy=", RUBY_METHOD_FUNC(rosetta_field_785_set), 1);
-            rb_define_method(klass, "tau_a", RUBY_METHOD_FUNC(rosetta_field_786_get), 0);
+                rb_define_method(klass, "ties_xy=", RUBY_METHOD_FUNC(rosetta_field_786_set), 1);
+            rb_define_method(klass, "tau_a", RUBY_METHOD_FUNC(rosetta_field_787_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::KendallTau&>().tau_a)>>)
-                rb_define_method(klass, "tau_a=", RUBY_METHOD_FUNC(rosetta_field_786_set), 1);
-            rb_define_method(klass, "tau_b", RUBY_METHOD_FUNC(rosetta_field_787_get), 0);
+                rb_define_method(klass, "tau_a=", RUBY_METHOD_FUNC(rosetta_field_787_set), 1);
+            rb_define_method(klass, "tau_b", RUBY_METHOD_FUNC(rosetta_field_788_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::KendallTau&>().tau_b)>>)
-                rb_define_method(klass, "tau_b=", RUBY_METHOD_FUNC(rosetta_field_787_set), 1);
+                rb_define_method(klass, "tau_b=", RUBY_METHOD_FUNC(rosetta_field_788_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_200_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::stats::ExponentialSmoothingOptions>::value.klass;
-            rb_define_method(klass, "trend", RUBY_METHOD_FUNC(rosetta_field_788_get), 0);
+            rb_define_method(klass, "trend", RUBY_METHOD_FUNC(rosetta_field_789_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().trend)>>)
-                rb_define_method(klass, "trend=", RUBY_METHOD_FUNC(rosetta_field_788_set), 1);
-            rb_define_method(klass, "seasonal", RUBY_METHOD_FUNC(rosetta_field_789_get), 0);
+                rb_define_method(klass, "trend=", RUBY_METHOD_FUNC(rosetta_field_789_set), 1);
+            rb_define_method(klass, "seasonal", RUBY_METHOD_FUNC(rosetta_field_790_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().seasonal)>>)
-                rb_define_method(klass, "seasonal=", RUBY_METHOD_FUNC(rosetta_field_789_set), 1);
-            rb_define_method(klass, "seasonal_period", RUBY_METHOD_FUNC(rosetta_field_790_get), 0);
+                rb_define_method(klass, "seasonal=", RUBY_METHOD_FUNC(rosetta_field_790_set), 1);
+            rb_define_method(klass, "seasonal_period", RUBY_METHOD_FUNC(rosetta_field_791_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().seasonal_period)>>)
-                rb_define_method(klass, "seasonal_period=", RUBY_METHOD_FUNC(rosetta_field_790_set), 1);
-            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_field_791_get), 0);
+                rb_define_method(klass, "seasonal_period=", RUBY_METHOD_FUNC(rosetta_field_791_set), 1);
+            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_field_792_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().alpha)>>)
-                rb_define_method(klass, "alpha=", RUBY_METHOD_FUNC(rosetta_field_791_set), 1);
-            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_field_792_get), 0);
+                rb_define_method(klass, "alpha=", RUBY_METHOD_FUNC(rosetta_field_792_set), 1);
+            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_field_793_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().beta)>>)
-                rb_define_method(klass, "beta=", RUBY_METHOD_FUNC(rosetta_field_792_set), 1);
-            rb_define_method(klass, "gamma", RUBY_METHOD_FUNC(rosetta_field_793_get), 0);
+                rb_define_method(klass, "beta=", RUBY_METHOD_FUNC(rosetta_field_793_set), 1);
+            rb_define_method(klass, "gamma", RUBY_METHOD_FUNC(rosetta_field_794_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().gamma)>>)
-                rb_define_method(klass, "gamma=", RUBY_METHOD_FUNC(rosetta_field_793_set), 1);
-            rb_define_method(klass, "phi", RUBY_METHOD_FUNC(rosetta_field_794_get), 0);
+                rb_define_method(klass, "gamma=", RUBY_METHOD_FUNC(rosetta_field_794_set), 1);
+            rb_define_method(klass, "phi", RUBY_METHOD_FUNC(rosetta_field_795_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().phi)>>)
-                rb_define_method(klass, "phi=", RUBY_METHOD_FUNC(rosetta_field_794_set), 1);
-            rb_define_method(klass, "de_population_size", RUBY_METHOD_FUNC(rosetta_field_795_get), 0);
+                rb_define_method(klass, "phi=", RUBY_METHOD_FUNC(rosetta_field_795_set), 1);
+            rb_define_method(klass, "de_population_size", RUBY_METHOD_FUNC(rosetta_field_796_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().de_population_size)>>)
-                rb_define_method(klass, "de_population_size=", RUBY_METHOD_FUNC(rosetta_field_795_set), 1);
-            rb_define_method(klass, "de_max_generations", RUBY_METHOD_FUNC(rosetta_field_796_get), 0);
+                rb_define_method(klass, "de_population_size=", RUBY_METHOD_FUNC(rosetta_field_796_set), 1);
+            rb_define_method(klass, "de_max_generations", RUBY_METHOD_FUNC(rosetta_field_797_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().de_max_generations)>>)
-                rb_define_method(klass, "de_max_generations=", RUBY_METHOD_FUNC(rosetta_field_796_set), 1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_797_get), 0);
+                rb_define_method(klass, "de_max_generations=", RUBY_METHOD_FUNC(rosetta_field_797_set), 1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_field_798_get), 0);
             if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::stats::ExponentialSmoothingOptions&>().seed)>>)
-                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_797_set), 1);
+                rb_define_method(klass, "seed=", RUBY_METHOD_FUNC(rosetta_field_798_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_201_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::stats::ExponentialSmoothing>::value.klass;
-            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1542), -1);
-            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1543), -1);
-            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_function_1544), -1);
-            rb_define_method(klass, "gamma", RUBY_METHOD_FUNC(rosetta_function_1545), -1);
-            rb_define_method(klass, "phi", RUBY_METHOD_FUNC(rosetta_function_1546), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1547), -1);
-            rb_define_method(klass, "sse", RUBY_METHOD_FUNC(rosetta_function_1548), -1);
-            rb_define_method(klass, "sigma2", RUBY_METHOD_FUNC(rosetta_function_1549), -1);
-            rb_define_method(klass, "log_likelihood", RUBY_METHOD_FUNC(rosetta_function_1550), -1);
-            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1551), -1);
-            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1552), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1553), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1554), -1);
-            rb_define_method(klass, "forecast", RUBY_METHOD_FUNC(rosetta_function_1555), -1);
+            rb_define_method(klass, "options", RUBY_METHOD_FUNC(rosetta_function_1543), -1);
+            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1544), -1);
+            rb_define_method(klass, "beta", RUBY_METHOD_FUNC(rosetta_function_1545), -1);
+            rb_define_method(klass, "gamma", RUBY_METHOD_FUNC(rosetta_function_1546), -1);
+            rb_define_method(klass, "phi", RUBY_METHOD_FUNC(rosetta_function_1547), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1548), -1);
+            rb_define_method(klass, "sse", RUBY_METHOD_FUNC(rosetta_function_1549), -1);
+            rb_define_method(klass, "sigma2", RUBY_METHOD_FUNC(rosetta_function_1550), -1);
+            rb_define_method(klass, "log_likelihood", RUBY_METHOD_FUNC(rosetta_function_1551), -1);
+            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1552), -1);
+            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1553), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1554), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1555), -1);
+            rb_define_method(klass, "forecast", RUBY_METHOD_FUNC(rosetta_function_1556), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_202_initialize), -1);
         }
         {
@@ -9788,1424 +9806,1438 @@ static VALUE rosetta_init(VALUE) {
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::BSplineRegression>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1556), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1557), -1);
-            rb_define_method(klass, "fitted", RUBY_METHOD_FUNC(rosetta_function_1558), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1559), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1560), -1);
-            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_1561), -1);
-            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1562), -1);
-            rb_define_method(klass, "knots", RUBY_METHOD_FUNC(rosetta_function_1563), -1);
-            rb_define_method(klass, "domain", RUBY_METHOD_FUNC(rosetta_function_1564), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1557), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1558), -1);
+            rb_define_method(klass, "fitted", RUBY_METHOD_FUNC(rosetta_function_1559), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1560), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1561), -1);
+            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_1562), -1);
+            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1563), -1);
+            rb_define_method(klass, "knots", RUBY_METHOD_FUNC(rosetta_function_1564), -1);
+            rb_define_method(klass, "domain", RUBY_METHOD_FUNC(rosetta_function_1565), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_204_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::PSplineRegression>::value.klass;
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1565), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1566), -1);
-            rb_define_method(klass, "fitted", RUBY_METHOD_FUNC(rosetta_function_1567), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1568), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1569), -1);
-            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1570), -1);
-            rb_define_method(klass, "penalty_order", RUBY_METHOD_FUNC(rosetta_function_1571), -1);
-            rb_define_method(klass, "effective_df", RUBY_METHOD_FUNC(rosetta_function_1572), -1);
-            rb_define_method(klass, "gcv", RUBY_METHOD_FUNC(rosetta_function_1573), -1);
-            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_1574), -1);
-            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1575), -1);
-            rb_define_method(klass, "knots", RUBY_METHOD_FUNC(rosetta_function_1576), -1);
-            rb_define_method(klass, "domain", RUBY_METHOD_FUNC(rosetta_function_1577), -1);
-            rb_define_method(klass, "coefficient_differences", RUBY_METHOD_FUNC(rosetta_function_1578), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1566), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1567), -1);
+            rb_define_method(klass, "fitted", RUBY_METHOD_FUNC(rosetta_function_1568), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1569), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1570), -1);
+            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1571), -1);
+            rb_define_method(klass, "penalty_order", RUBY_METHOD_FUNC(rosetta_function_1572), -1);
+            rb_define_method(klass, "effective_df", RUBY_METHOD_FUNC(rosetta_function_1573), -1);
+            rb_define_method(klass, "gcv", RUBY_METHOD_FUNC(rosetta_function_1574), -1);
+            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_1575), -1);
+            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_1576), -1);
+            rb_define_method(klass, "knots", RUBY_METHOD_FUNC(rosetta_function_1577), -1);
+            rb_define_method(klass, "domain", RUBY_METHOD_FUNC(rosetta_function_1578), -1);
+            rb_define_method(klass, "coefficient_differences", RUBY_METHOD_FUNC(rosetta_function_1579), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_205_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::DataFrame>::value.klass;
-            rb_define_singleton_method(klass, "empty", RUBY_METHOD_FUNC(rosetta_function_1579), -1);
-            rb_define_method(klass, "nrows", RUBY_METHOD_FUNC(rosetta_function_1580), -1);
-            rb_define_method(klass, "ncols", RUBY_METHOD_FUNC(rosetta_function_1581), -1);
-            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_1582), -1);
-            rb_define_method(klass, "columns", RUBY_METHOD_FUNC(rosetta_function_1583), -1);
-            rb_define_method(klass, "add_numeric_column", RUBY_METHOD_FUNC(rosetta_function_1584), -1);
-            rb_define_method(klass, "add_string_column", RUBY_METHOD_FUNC(rosetta_function_1585), -1);
-            rb_define_method(klass, "add_string_column_encoded", RUBY_METHOD_FUNC(rosetta_function_1586), -1);
-            rb_define_method(klass, "fill_null_numeric", RUBY_METHOD_FUNC(rosetta_function_1587), -1);
-            rb_define_method(klass, "fill_null_string", RUBY_METHOD_FUNC(rosetta_function_1588), -1);
-            rb_define_method(klass, "mutate_numeric", RUBY_METHOD_FUNC(rosetta_function_1589), -1);
-            rb_define_method(klass, "mutate_string", RUBY_METHOD_FUNC(rosetta_function_1590), -1);
-            rb_define_method(klass, "mutate_string_encoded", RUBY_METHOD_FUNC(rosetta_function_1591), -1);
-            rb_define_method(klass, "rename", RUBY_METHOD_FUNC(rosetta_function_1592), -1);
-            rb_define_method(klass, "select", RUBY_METHOD_FUNC(rosetta_function_1593), -1);
-            rb_define_method(klass, "select_encoded", RUBY_METHOD_FUNC(rosetta_function_1594), -1);
-            rb_define_method(klass, "relocate", RUBY_METHOD_FUNC(rosetta_function_1595), -1);
-            rb_define_method(klass, "relocate_encoded", RUBY_METHOD_FUNC(rosetta_function_1596), -1);
-            rb_define_method(klass, "sort_by", RUBY_METHOD_FUNC(rosetta_function_1597), -1);
-            rb_define_method(klass, "arrange", RUBY_METHOD_FUNC(rosetta_function_1598), -1);
-            rb_define_method(klass, "arrange_encoded", RUBY_METHOD_FUNC(rosetta_function_1599), -1);
-            rb_define_method(klass, "drop_duplicates", RUBY_METHOD_FUNC(rosetta_function_1600), -1);
-            rb_define_method(klass, "drop_duplicates_encoded", RUBY_METHOD_FUNC(rosetta_function_1601), -1);
-            rb_define_method(klass, "distinct", RUBY_METHOD_FUNC(rosetta_function_1602), -1);
-            rb_define_method(klass, "distinct_encoded", RUBY_METHOD_FUNC(rosetta_function_1603), -1);
-            rb_define_method(klass, "pull_numeric", RUBY_METHOD_FUNC(rosetta_function_1604), -1);
-            rb_define_method(klass, "pull_numeric_valid", RUBY_METHOD_FUNC(rosetta_function_1605), -1);
-            rb_define_method(klass, "pull_string", RUBY_METHOD_FUNC(rosetta_function_1606), -1);
-            rb_define_method(klass, "pull_string_valid", RUBY_METHOD_FUNC(rosetta_function_1607), -1);
-            rb_define_method(klass, "n_distinct", RUBY_METHOD_FUNC(rosetta_function_1608), -1);
-            rb_define_method(klass, "group_by_sum", RUBY_METHOD_FUNC(rosetta_function_1609), -1);
-            rb_define_method(klass, "group_by_sum_encoded", RUBY_METHOD_FUNC(rosetta_function_1610), -1);
-            rb_define_method(klass, "count", RUBY_METHOD_FUNC(rosetta_function_1611), -1);
-            rb_define_method(klass, "count_encoded", RUBY_METHOD_FUNC(rosetta_function_1612), -1);
-            rb_define_method(klass, "summarise", RUBY_METHOD_FUNC(rosetta_function_1613), -1);
-            rb_define_method(klass, "summarise_encoded", RUBY_METHOD_FUNC(rosetta_function_1614), -1);
-            rb_define_method(klass, "pivot_longer", RUBY_METHOD_FUNC(rosetta_function_1615), -1);
-            rb_define_method(klass, "pivot_longer_encoded", RUBY_METHOD_FUNC(rosetta_function_1616), -1);
-            rb_define_method(klass, "pivot_wider", RUBY_METHOD_FUNC(rosetta_function_1617), -1);
-            rb_define_method(klass, "pivot_wider_encoded", RUBY_METHOD_FUNC(rosetta_function_1618), -1);
-            rb_define_method(klass, "bind_rows", RUBY_METHOD_FUNC(rosetta_function_1619), -1);
-            rb_define_method(klass, "bind_cols", RUBY_METHOD_FUNC(rosetta_function_1620), -1);
-            rb_define_method(klass, "join", RUBY_METHOD_FUNC(rosetta_function_1621), -1);
-            rb_define_method(klass, "numeric_count", RUBY_METHOD_FUNC(rosetta_function_1622), -1);
-            rb_define_method(klass, "numeric_null_count", RUBY_METHOD_FUNC(rosetta_function_1623), -1);
-            rb_define_method(klass, "numeric_sum", RUBY_METHOD_FUNC(rosetta_function_1624), -1);
-            rb_define_method(klass, "numeric_mean", RUBY_METHOD_FUNC(rosetta_function_1625), -1);
-            rb_define_method(klass, "numeric_min", RUBY_METHOD_FUNC(rosetta_function_1626), -1);
-            rb_define_method(klass, "numeric_max", RUBY_METHOD_FUNC(rosetta_function_1627), -1);
-            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1628), -1);
-            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1628), -1);
-            rb_define_method(klass, "to_md", RUBY_METHOD_FUNC(rosetta_function_1629), -1);
-            rb_define_method(klass, "is_numeric_column", RUBY_METHOD_FUNC(rosetta_function_1630), -1);
-            rb_define_method(klass, "is_null", RUBY_METHOD_FUNC(rosetta_function_1631), -1);
-            rb_define_method(klass, "numeric_at", RUBY_METHOD_FUNC(rosetta_function_1632), -1);
-            rb_define_method(klass, "string_at", RUBY_METHOD_FUNC(rosetta_function_1633), -1);
-            rb_define_singleton_method(klass, "read_csv", RUBY_METHOD_FUNC(rosetta_function_1634), -1);
-            rb_define_singleton_method(klass, "parse_csv", RUBY_METHOD_FUNC(rosetta_function_1635), -1);
-            rb_define_singleton_method(klass, "from_image_batch", RUBY_METHOD_FUNC(rosetta_function_1636), -1);
+            rb_define_singleton_method(klass, "empty", RUBY_METHOD_FUNC(rosetta_function_1580), -1);
+            rb_define_method(klass, "nrows", RUBY_METHOD_FUNC(rosetta_function_1581), -1);
+            rb_define_method(klass, "ncols", RUBY_METHOD_FUNC(rosetta_function_1582), -1);
+            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_1583), -1);
+            rb_define_method(klass, "columns", RUBY_METHOD_FUNC(rosetta_function_1584), -1);
+            rb_define_method(klass, "add_numeric_column", RUBY_METHOD_FUNC(rosetta_function_1585), -1);
+            rb_define_method(klass, "add_string_column", RUBY_METHOD_FUNC(rosetta_function_1586), -1);
+            rb_define_method(klass, "add_string_column_encoded", RUBY_METHOD_FUNC(rosetta_function_1587), -1);
+            rb_define_method(klass, "fill_null_numeric", RUBY_METHOD_FUNC(rosetta_function_1588), -1);
+            rb_define_method(klass, "fill_null_string", RUBY_METHOD_FUNC(rosetta_function_1589), -1);
+            rb_define_method(klass, "mutate_numeric", RUBY_METHOD_FUNC(rosetta_function_1590), -1);
+            rb_define_method(klass, "mutate_string", RUBY_METHOD_FUNC(rosetta_function_1591), -1);
+            rb_define_method(klass, "mutate_string_encoded", RUBY_METHOD_FUNC(rosetta_function_1592), -1);
+            rb_define_method(klass, "rename", RUBY_METHOD_FUNC(rosetta_function_1593), -1);
+            rb_define_method(klass, "select", RUBY_METHOD_FUNC(rosetta_function_1594), -1);
+            rb_define_method(klass, "select_encoded", RUBY_METHOD_FUNC(rosetta_function_1595), -1);
+            rb_define_method(klass, "relocate", RUBY_METHOD_FUNC(rosetta_function_1596), -1);
+            rb_define_method(klass, "relocate_encoded", RUBY_METHOD_FUNC(rosetta_function_1597), -1);
+            rb_define_method(klass, "sort_by", RUBY_METHOD_FUNC(rosetta_function_1598), -1);
+            rb_define_method(klass, "arrange", RUBY_METHOD_FUNC(rosetta_function_1599), -1);
+            rb_define_method(klass, "arrange_encoded", RUBY_METHOD_FUNC(rosetta_function_1600), -1);
+            rb_define_method(klass, "drop_duplicates", RUBY_METHOD_FUNC(rosetta_function_1601), -1);
+            rb_define_method(klass, "drop_duplicates_encoded", RUBY_METHOD_FUNC(rosetta_function_1602), -1);
+            rb_define_method(klass, "distinct", RUBY_METHOD_FUNC(rosetta_function_1603), -1);
+            rb_define_method(klass, "distinct_encoded", RUBY_METHOD_FUNC(rosetta_function_1604), -1);
+            rb_define_method(klass, "pull_numeric", RUBY_METHOD_FUNC(rosetta_function_1605), -1);
+            rb_define_method(klass, "pull_numeric_valid", RUBY_METHOD_FUNC(rosetta_function_1606), -1);
+            rb_define_method(klass, "pull_string", RUBY_METHOD_FUNC(rosetta_function_1607), -1);
+            rb_define_method(klass, "pull_string_valid", RUBY_METHOD_FUNC(rosetta_function_1608), -1);
+            rb_define_method(klass, "n_distinct", RUBY_METHOD_FUNC(rosetta_function_1609), -1);
+            rb_define_method(klass, "group_by_sum", RUBY_METHOD_FUNC(rosetta_function_1610), -1);
+            rb_define_method(klass, "group_by_sum_encoded", RUBY_METHOD_FUNC(rosetta_function_1611), -1);
+            rb_define_method(klass, "count", RUBY_METHOD_FUNC(rosetta_function_1612), -1);
+            rb_define_method(klass, "count_encoded", RUBY_METHOD_FUNC(rosetta_function_1613), -1);
+            rb_define_method(klass, "summarise", RUBY_METHOD_FUNC(rosetta_function_1614), -1);
+            rb_define_method(klass, "summarise_encoded", RUBY_METHOD_FUNC(rosetta_function_1615), -1);
+            rb_define_method(klass, "pivot_longer", RUBY_METHOD_FUNC(rosetta_function_1616), -1);
+            rb_define_method(klass, "pivot_longer_encoded", RUBY_METHOD_FUNC(rosetta_function_1617), -1);
+            rb_define_method(klass, "pivot_wider", RUBY_METHOD_FUNC(rosetta_function_1618), -1);
+            rb_define_method(klass, "pivot_wider_encoded", RUBY_METHOD_FUNC(rosetta_function_1619), -1);
+            rb_define_method(klass, "bind_rows", RUBY_METHOD_FUNC(rosetta_function_1620), -1);
+            rb_define_method(klass, "bind_cols", RUBY_METHOD_FUNC(rosetta_function_1621), -1);
+            rb_define_method(klass, "join", RUBY_METHOD_FUNC(rosetta_function_1622), -1);
+            rb_define_method(klass, "numeric_count", RUBY_METHOD_FUNC(rosetta_function_1623), -1);
+            rb_define_method(klass, "numeric_null_count", RUBY_METHOD_FUNC(rosetta_function_1624), -1);
+            rb_define_method(klass, "numeric_sum", RUBY_METHOD_FUNC(rosetta_function_1625), -1);
+            rb_define_method(klass, "numeric_mean", RUBY_METHOD_FUNC(rosetta_function_1626), -1);
+            rb_define_method(klass, "numeric_min", RUBY_METHOD_FUNC(rosetta_function_1627), -1);
+            rb_define_method(klass, "numeric_max", RUBY_METHOD_FUNC(rosetta_function_1628), -1);
+            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_1629), -1);
+            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_1629), -1);
+            rb_define_method(klass, "to_md", RUBY_METHOD_FUNC(rosetta_function_1630), -1);
+            rb_define_method(klass, "is_numeric_column", RUBY_METHOD_FUNC(rosetta_function_1631), -1);
+            rb_define_method(klass, "is_null", RUBY_METHOD_FUNC(rosetta_function_1632), -1);
+            rb_define_method(klass, "numeric_at", RUBY_METHOD_FUNC(rosetta_function_1633), -1);
+            rb_define_method(klass, "string_at", RUBY_METHOD_FUNC(rosetta_function_1634), -1);
+            rb_define_singleton_method(klass, "read_csv", RUBY_METHOD_FUNC(rosetta_function_1635), -1);
+            rb_define_singleton_method(klass, "parse_csv", RUBY_METHOD_FUNC(rosetta_function_1636), -1);
+            rb_define_singleton_method(klass, "from_image_batch", RUBY_METHOD_FUNC(rosetta_function_1637), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_206_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::CsvReader>::value.klass;
-            rb_define_method(klass, "has_next\?", RUBY_METHOD_FUNC(rosetta_function_1637), -1);
-            rb_define_method(klass, "next_", RUBY_METHOD_FUNC(rosetta_function_1638), -1);
-            rb_define_method(klass, "reset", RUBY_METHOD_FUNC(rosetta_function_1639), -1);
-            rb_define_method(klass, "batch_size", RUBY_METHOD_FUNC(rosetta_function_1640), -1);
-            rb_define_method(klass, "set_batch_size", RUBY_METHOD_FUNC(rosetta_function_1641), -1);
-            rb_define_method(klass, "batch_size=", RUBY_METHOD_FUNC(rosetta_function_1641), -1);
-            rb_define_method(klass, "column_names", RUBY_METHOD_FUNC(rosetta_function_1642), -1);
-            rb_define_method(klass, "rows_read", RUBY_METHOD_FUNC(rosetta_function_1643), -1);
+            rb_define_method(klass, "has_next\?", RUBY_METHOD_FUNC(rosetta_function_1638), -1);
+            rb_define_method(klass, "next_", RUBY_METHOD_FUNC(rosetta_function_1639), -1);
+            rb_define_method(klass, "reset", RUBY_METHOD_FUNC(rosetta_function_1640), -1);
+            rb_define_method(klass, "batch_size", RUBY_METHOD_FUNC(rosetta_function_1641), -1);
+            rb_define_method(klass, "set_batch_size", RUBY_METHOD_FUNC(rosetta_function_1642), -1);
+            rb_define_method(klass, "batch_size=", RUBY_METHOD_FUNC(rosetta_function_1642), -1);
+            rb_define_method(klass, "column_names", RUBY_METHOD_FUNC(rosetta_function_1643), -1);
+            rb_define_method(klass, "rows_read", RUBY_METHOD_FUNC(rosetta_function_1644), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_207_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::ShapeLayer>::value.klass;
-            rb_define_singleton_method(klass, "read", RUBY_METHOD_FUNC(rosetta_function_1644), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1645), -1);
-            rb_define_method(klass, "shape_type", RUBY_METHOD_FUNC(rosetta_function_1646), -1);
-            rb_define_method(klass, "bounds", RUBY_METHOD_FUNC(rosetta_function_1647), -1);
-            rb_define_method(klass, "attributes", RUBY_METHOD_FUNC(rosetta_function_1648), -1);
-            rb_define_method(klass, "shape_kind", RUBY_METHOD_FUNC(rosetta_function_1649), -1);
-            rb_define_method(klass, "num_parts", RUBY_METHOD_FUNC(rosetta_function_1650), -1);
-            rb_define_method(klass, "part_x", RUBY_METHOD_FUNC(rosetta_function_1651), -1);
-            rb_define_method(klass, "part_y", RUBY_METHOD_FUNC(rosetta_function_1652), -1);
-            rb_define_method(klass, "point_x", RUBY_METHOD_FUNC(rosetta_function_1653), -1);
-            rb_define_method(klass, "point_y", RUBY_METHOD_FUNC(rosetta_function_1654), -1);
-            rb_define_method(klass, "plot", RUBY_METHOD_FUNC(rosetta_function_1655), -1);
+            rb_define_singleton_method(klass, "read", RUBY_METHOD_FUNC(rosetta_function_1645), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1646), -1);
+            rb_define_method(klass, "shape_type", RUBY_METHOD_FUNC(rosetta_function_1647), -1);
+            rb_define_method(klass, "bounds", RUBY_METHOD_FUNC(rosetta_function_1648), -1);
+            rb_define_method(klass, "attributes", RUBY_METHOD_FUNC(rosetta_function_1649), -1);
+            rb_define_method(klass, "shape_kind", RUBY_METHOD_FUNC(rosetta_function_1650), -1);
+            rb_define_method(klass, "num_parts", RUBY_METHOD_FUNC(rosetta_function_1651), -1);
+            rb_define_method(klass, "part_x", RUBY_METHOD_FUNC(rosetta_function_1652), -1);
+            rb_define_method(klass, "part_y", RUBY_METHOD_FUNC(rosetta_function_1653), -1);
+            rb_define_method(klass, "point_x", RUBY_METHOD_FUNC(rosetta_function_1654), -1);
+            rb_define_method(klass, "point_y", RUBY_METHOD_FUNC(rosetta_function_1655), -1);
+            rb_define_method(klass, "plot", RUBY_METHOD_FUNC(rosetta_function_1656), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_rb::uninitialized_method), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::GGPlot>::value.klass;
-            rb_define_method(klass, "geom_point", RUBY_METHOD_FUNC(rosetta_function_1656), -1);
-            rb_define_method(klass, "geom_line", RUBY_METHOD_FUNC(rosetta_function_1657), -1);
-            rb_define_method(klass, "geom_bar", RUBY_METHOD_FUNC(rosetta_function_1658), -1);
-            rb_define_method(klass, "geom_col", RUBY_METHOD_FUNC(rosetta_function_1659), -1);
-            rb_define_method(klass, "geom_histogram", RUBY_METHOD_FUNC(rosetta_function_1660), -1);
-            rb_define_method(klass, "geom_boxplot", RUBY_METHOD_FUNC(rosetta_function_1661), -1);
-            rb_define_method(klass, "geom_smooth", RUBY_METHOD_FUNC(rosetta_function_1662), -1);
-            rb_define_method(klass, "geom_area", RUBY_METHOD_FUNC(rosetta_function_1663), -1);
-            rb_define_method(klass, "geom_ribbon", RUBY_METHOD_FUNC(rosetta_function_1664), -1);
-            rb_define_method(klass, "geom_density", RUBY_METHOD_FUNC(rosetta_function_1665), -1);
-            rb_define_method(klass, "facet_wrap", RUBY_METHOD_FUNC(rosetta_function_1666), -1);
-            rb_define_method(klass, "theme_minimal", RUBY_METHOD_FUNC(rosetta_function_1667), -1);
-            rb_define_method(klass, "theme_bw", RUBY_METHOD_FUNC(rosetta_function_1668), -1);
-            rb_define_method(klass, "theme_classic", RUBY_METHOD_FUNC(rosetta_function_1669), -1);
-            rb_define_method(klass, "scale_color_manual", RUBY_METHOD_FUNC(rosetta_function_1670), -1);
-            rb_define_method(klass, "labs", RUBY_METHOD_FUNC(rosetta_function_1671), -1);
-            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1672), -1);
-            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1673), -1);
-            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1674), -1);
-            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1675), -1);
-            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_function_1676), -1);
-            rb_define_method(klass, "x_column", RUBY_METHOD_FUNC(rosetta_function_1677), -1);
-            rb_define_method(klass, "y_column", RUBY_METHOD_FUNC(rosetta_function_1678), -1);
-            rb_define_method(klass, "color_column", RUBY_METHOD_FUNC(rosetta_function_1679), -1);
-            rb_define_method(klass, "layer_count", RUBY_METHOD_FUNC(rosetta_function_1680), -1);
-            rb_define_method(klass, "layer_kinds", RUBY_METHOD_FUNC(rosetta_function_1681), -1);
-            rb_define_method(klass, "theme_name", RUBY_METHOD_FUNC(rosetta_function_1682), -1);
-            rb_define_method(klass, "facet_column", RUBY_METHOD_FUNC(rosetta_function_1683), -1);
-            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1684), -1);
-            rb_define_method(klass, "x_label", RUBY_METHOD_FUNC(rosetta_function_1685), -1);
-            rb_define_method(klass, "y_label", RUBY_METHOD_FUNC(rosetta_function_1686), -1);
+            rb_define_method(klass, "geom_point", RUBY_METHOD_FUNC(rosetta_function_1657), -1);
+            rb_define_method(klass, "geom_line", RUBY_METHOD_FUNC(rosetta_function_1658), -1);
+            rb_define_method(klass, "geom_bar", RUBY_METHOD_FUNC(rosetta_function_1659), -1);
+            rb_define_method(klass, "geom_col", RUBY_METHOD_FUNC(rosetta_function_1660), -1);
+            rb_define_method(klass, "geom_histogram", RUBY_METHOD_FUNC(rosetta_function_1661), -1);
+            rb_define_method(klass, "geom_boxplot", RUBY_METHOD_FUNC(rosetta_function_1662), -1);
+            rb_define_method(klass, "geom_smooth", RUBY_METHOD_FUNC(rosetta_function_1663), -1);
+            rb_define_method(klass, "geom_area", RUBY_METHOD_FUNC(rosetta_function_1664), -1);
+            rb_define_method(klass, "geom_ribbon", RUBY_METHOD_FUNC(rosetta_function_1665), -1);
+            rb_define_method(klass, "geom_density", RUBY_METHOD_FUNC(rosetta_function_1666), -1);
+            rb_define_method(klass, "facet_wrap", RUBY_METHOD_FUNC(rosetta_function_1667), -1);
+            rb_define_method(klass, "theme_minimal", RUBY_METHOD_FUNC(rosetta_function_1668), -1);
+            rb_define_method(klass, "theme_bw", RUBY_METHOD_FUNC(rosetta_function_1669), -1);
+            rb_define_method(klass, "theme_classic", RUBY_METHOD_FUNC(rosetta_function_1670), -1);
+            rb_define_method(klass, "scale_color_manual", RUBY_METHOD_FUNC(rosetta_function_1671), -1);
+            rb_define_method(klass, "labs", RUBY_METHOD_FUNC(rosetta_function_1672), -1);
+            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1673), -1);
+            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1674), -1);
+            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1675), -1);
+            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1676), -1);
+            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_function_1677), -1);
+            rb_define_method(klass, "x_column", RUBY_METHOD_FUNC(rosetta_function_1678), -1);
+            rb_define_method(klass, "y_column", RUBY_METHOD_FUNC(rosetta_function_1679), -1);
+            rb_define_method(klass, "color_column", RUBY_METHOD_FUNC(rosetta_function_1680), -1);
+            rb_define_method(klass, "layer_count", RUBY_METHOD_FUNC(rosetta_function_1681), -1);
+            rb_define_method(klass, "layer_kinds", RUBY_METHOD_FUNC(rosetta_function_1682), -1);
+            rb_define_method(klass, "theme_name", RUBY_METHOD_FUNC(rosetta_function_1683), -1);
+            rb_define_method(klass, "facet_column", RUBY_METHOD_FUNC(rosetta_function_1684), -1);
+            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1685), -1);
+            rb_define_method(klass, "x_label", RUBY_METHOD_FUNC(rosetta_function_1686), -1);
+            rb_define_method(klass, "y_label", RUBY_METHOD_FUNC(rosetta_function_1687), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_209_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Splom>::value.klass;
-            rb_define_method(klass, "set_col", RUBY_METHOD_FUNC(rosetta_function_1687), -1);
-            rb_define_method(klass, "col=", RUBY_METHOD_FUNC(rosetta_function_1687), -1);
-            rb_define_method(klass, "set_title", RUBY_METHOD_FUNC(rosetta_function_1688), -1);
-            rb_define_method(klass, "title=", RUBY_METHOD_FUNC(rosetta_function_1688), -1);
-            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1689), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1690), -1);
-            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_function_1691), -1);
-            rb_define_method(klass, "group_by", RUBY_METHOD_FUNC(rosetta_function_1692), -1);
-            rb_define_method(klass, "point_colors", RUBY_METHOD_FUNC(rosetta_function_1693), -1);
-            rb_define_method(klass, "level_palette", RUBY_METHOD_FUNC(rosetta_function_1694), -1);
-            rb_define_method(klass, "marker_size", RUBY_METHOD_FUNC(rosetta_function_1695), -1);
-            rb_define_method(klass, "diagonal_names", RUBY_METHOD_FUNC(rosetta_function_1696), -1);
-            rb_define_method(klass, "diagonal_density", RUBY_METHOD_FUNC(rosetta_function_1697), -1);
-            rb_define_method(klass, "diagonal_histogram", RUBY_METHOD_FUNC(rosetta_function_1698), -1);
-            rb_define_method(klass, "span", RUBY_METHOD_FUNC(rosetta_function_1699), -1);
-            rb_define_method(klass, "prediction_level", RUBY_METHOD_FUNC(rosetta_function_1700), -1);
-            rb_define_method(klass, "bins", RUBY_METHOD_FUNC(rosetta_function_1701), -1);
-            rb_define_method(klass, "show_grid", RUBY_METHOD_FUNC(rosetta_function_1702), -1);
-            rb_define_method(klass, "variables", RUBY_METHOD_FUNC(rosetta_function_1703), -1);
-            rb_define_method(klass, "groups", RUBY_METHOD_FUNC(rosetta_function_1704), -1);
-            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1705), -1);
-            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1706), -1);
-            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1707), -1);
-            rb_define_method(klass, "panel", RUBY_METHOD_FUNC(rosetta_function_1708), -1);
-            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1709), -1);
-            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1710), -1);
-            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1711), -1);
-            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1712), -1);
+            rb_define_method(klass, "set_col", RUBY_METHOD_FUNC(rosetta_function_1688), -1);
+            rb_define_method(klass, "col=", RUBY_METHOD_FUNC(rosetta_function_1688), -1);
+            rb_define_method(klass, "set_title", RUBY_METHOD_FUNC(rosetta_function_1689), -1);
+            rb_define_method(klass, "title=", RUBY_METHOD_FUNC(rosetta_function_1689), -1);
+            rb_define_method(klass, "title", RUBY_METHOD_FUNC(rosetta_function_1690), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_1691), -1);
+            rb_define_method(klass, "color", RUBY_METHOD_FUNC(rosetta_function_1692), -1);
+            rb_define_method(klass, "group_by", RUBY_METHOD_FUNC(rosetta_function_1693), -1);
+            rb_define_method(klass, "point_colors", RUBY_METHOD_FUNC(rosetta_function_1694), -1);
+            rb_define_method(klass, "level_palette", RUBY_METHOD_FUNC(rosetta_function_1695), -1);
+            rb_define_method(klass, "marker_size", RUBY_METHOD_FUNC(rosetta_function_1696), -1);
+            rb_define_method(klass, "diagonal_names", RUBY_METHOD_FUNC(rosetta_function_1697), -1);
+            rb_define_method(klass, "diagonal_density", RUBY_METHOD_FUNC(rosetta_function_1698), -1);
+            rb_define_method(klass, "diagonal_histogram", RUBY_METHOD_FUNC(rosetta_function_1699), -1);
+            rb_define_method(klass, "span", RUBY_METHOD_FUNC(rosetta_function_1700), -1);
+            rb_define_method(klass, "prediction_level", RUBY_METHOD_FUNC(rosetta_function_1701), -1);
+            rb_define_method(klass, "bins", RUBY_METHOD_FUNC(rosetta_function_1702), -1);
+            rb_define_method(klass, "show_grid", RUBY_METHOD_FUNC(rosetta_function_1703), -1);
+            rb_define_method(klass, "variables", RUBY_METHOD_FUNC(rosetta_function_1704), -1);
+            rb_define_method(klass, "groups", RUBY_METHOD_FUNC(rosetta_function_1705), -1);
+            rb_define_method(klass, "title_text", RUBY_METHOD_FUNC(rosetta_function_1706), -1);
+            rb_define_method(klass, "width", RUBY_METHOD_FUNC(rosetta_function_1707), -1);
+            rb_define_method(klass, "height", RUBY_METHOD_FUNC(rosetta_function_1708), -1);
+            rb_define_method(klass, "panel", RUBY_METHOD_FUNC(rosetta_function_1709), -1);
+            rb_define_method(klass, "to_svg", RUBY_METHOD_FUNC(rosetta_function_1710), -1);
+            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_1711), -1);
+            rb_define_method(klass, "save_svg", RUBY_METHOD_FUNC(rosetta_function_1712), -1);
+            rb_define_method(klass, "show", RUBY_METHOD_FUNC(rosetta_function_1713), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_210_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::LM>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1713), -1);
-            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1714), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1715), -1);
-            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_1716), -1);
-            rb_define_method(klass, "degrees_of_freedom", RUBY_METHOD_FUNC(rosetta_function_1717), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1718), -1);
-            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1719), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1720), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1721), -1);
-            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_1722), -1);
-            rb_define_method(klass, "t_values", RUBY_METHOD_FUNC(rosetta_function_1723), -1);
-            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_1724), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1725), -1);
-            rb_define_method(klass, "adjusted_r_squared", RUBY_METHOD_FUNC(rosetta_function_1726), -1);
-            rb_define_method(klass, "sigma", RUBY_METHOD_FUNC(rosetta_function_1727), -1);
-            rb_define_method(klass, "f_statistic", RUBY_METHOD_FUNC(rosetta_function_1728), -1);
-            rb_define_method(klass, "f_p_value", RUBY_METHOD_FUNC(rosetta_function_1729), -1);
-            rb_define_method(klass, "confidence_interval_lower", RUBY_METHOD_FUNC(rosetta_function_1730), -1);
-            rb_define_method(klass, "confidence_interval_upper", RUBY_METHOD_FUNC(rosetta_function_1731), -1);
-            rb_define_method(klass, "leverage", RUBY_METHOD_FUNC(rosetta_function_1732), -1);
-            rb_define_method(klass, "standardized_residuals", RUBY_METHOD_FUNC(rosetta_function_1733), -1);
-            rb_define_method(klass, "studentized_residuals", RUBY_METHOD_FUNC(rosetta_function_1734), -1);
-            rb_define_method(klass, "cooks_distance", RUBY_METHOD_FUNC(rosetta_function_1735), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1736), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1737), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1738), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1739), -1);
-            rb_define_method(klass, "anova", RUBY_METHOD_FUNC(rosetta_function_1740), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1741), -1);
-            rb_define_method(klass, "plot_normal_qq", RUBY_METHOD_FUNC(rosetta_function_1742), -1);
-            rb_define_method(klass, "plot_scale_location", RUBY_METHOD_FUNC(rosetta_function_1743), -1);
-            rb_define_method(klass, "plot_residuals_vs_leverage", RUBY_METHOD_FUNC(rosetta_function_1744), -1);
-            rb_define_method(klass, "save_diagnostic_plots", RUBY_METHOD_FUNC(rosetta_function_1745), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1714), -1);
+            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1715), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1716), -1);
+            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_1717), -1);
+            rb_define_method(klass, "degrees_of_freedom", RUBY_METHOD_FUNC(rosetta_function_1718), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1719), -1);
+            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1720), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1721), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1722), -1);
+            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_1723), -1);
+            rb_define_method(klass, "t_values", RUBY_METHOD_FUNC(rosetta_function_1724), -1);
+            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_1725), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1726), -1);
+            rb_define_method(klass, "adjusted_r_squared", RUBY_METHOD_FUNC(rosetta_function_1727), -1);
+            rb_define_method(klass, "sigma", RUBY_METHOD_FUNC(rosetta_function_1728), -1);
+            rb_define_method(klass, "f_statistic", RUBY_METHOD_FUNC(rosetta_function_1729), -1);
+            rb_define_method(klass, "f_p_value", RUBY_METHOD_FUNC(rosetta_function_1730), -1);
+            rb_define_method(klass, "confidence_interval_lower", RUBY_METHOD_FUNC(rosetta_function_1731), -1);
+            rb_define_method(klass, "confidence_interval_upper", RUBY_METHOD_FUNC(rosetta_function_1732), -1);
+            rb_define_method(klass, "leverage", RUBY_METHOD_FUNC(rosetta_function_1733), -1);
+            rb_define_method(klass, "standardized_residuals", RUBY_METHOD_FUNC(rosetta_function_1734), -1);
+            rb_define_method(klass, "studentized_residuals", RUBY_METHOD_FUNC(rosetta_function_1735), -1);
+            rb_define_method(klass, "cooks_distance", RUBY_METHOD_FUNC(rosetta_function_1736), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1737), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1738), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1739), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1740), -1);
+            rb_define_method(klass, "anova", RUBY_METHOD_FUNC(rosetta_function_1741), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1742), -1);
+            rb_define_method(klass, "plot_normal_qq", RUBY_METHOD_FUNC(rosetta_function_1743), -1);
+            rb_define_method(klass, "plot_scale_location", RUBY_METHOD_FUNC(rosetta_function_1744), -1);
+            rb_define_method(klass, "plot_residuals_vs_leverage", RUBY_METHOD_FUNC(rosetta_function_1745), -1);
+            rb_define_method(klass, "save_diagnostic_plots", RUBY_METHOD_FUNC(rosetta_function_1746), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_211_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::LMM>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1746), -1);
-            rb_define_method(klass, "group_variable", RUBY_METHOD_FUNC(rosetta_function_1747), -1);
-            rb_define_method(klass, "has_random_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1748), -1);
-            rb_define_method(klass, "random_effect_names", RUBY_METHOD_FUNC(rosetta_function_1749), -1);
-            rb_define_method(klass, "reml\?", RUBY_METHOD_FUNC(rosetta_function_1750), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1751), -1);
-            rb_define_method(klass, "num_groups", RUBY_METHOD_FUNC(rosetta_function_1752), -1);
-            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_1753), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1754), -1);
-            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1755), -1);
-            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_1756), -1);
-            rb_define_method(klass, "z_values", RUBY_METHOD_FUNC(rosetta_function_1757), -1);
-            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_1758), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1759), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1760), -1);
-            rb_define_method(klass, "residual_variance", RUBY_METHOD_FUNC(rosetta_function_1761), -1);
-            rb_define_method(klass, "residual_std_dev", RUBY_METHOD_FUNC(rosetta_function_1762), -1);
-            rb_define_method(klass, "random_effect_std_devs", RUBY_METHOD_FUNC(rosetta_function_1763), -1);
-            rb_define_method(klass, "random_effect_correlation", RUBY_METHOD_FUNC(rosetta_function_1764), -1);
-            rb_define_method(klass, "group_labels", RUBY_METHOD_FUNC(rosetta_function_1765), -1);
-            rb_define_method(klass, "random_effects_for_group", RUBY_METHOD_FUNC(rosetta_function_1766), -1);
-            rb_define_method(klass, "log_likelihood", RUBY_METHOD_FUNC(rosetta_function_1767), -1);
-            rb_define_method(klass, "deviance", RUBY_METHOD_FUNC(rosetta_function_1768), -1);
-            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1769), -1);
-            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1770), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1771), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1772), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1773), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1747), -1);
+            rb_define_method(klass, "group_variable", RUBY_METHOD_FUNC(rosetta_function_1748), -1);
+            rb_define_method(klass, "has_random_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1749), -1);
+            rb_define_method(klass, "random_effect_names", RUBY_METHOD_FUNC(rosetta_function_1750), -1);
+            rb_define_method(klass, "reml\?", RUBY_METHOD_FUNC(rosetta_function_1751), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1752), -1);
+            rb_define_method(klass, "num_groups", RUBY_METHOD_FUNC(rosetta_function_1753), -1);
+            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_1754), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1755), -1);
+            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1756), -1);
+            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_1757), -1);
+            rb_define_method(klass, "z_values", RUBY_METHOD_FUNC(rosetta_function_1758), -1);
+            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_1759), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1760), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1761), -1);
+            rb_define_method(klass, "residual_variance", RUBY_METHOD_FUNC(rosetta_function_1762), -1);
+            rb_define_method(klass, "residual_std_dev", RUBY_METHOD_FUNC(rosetta_function_1763), -1);
+            rb_define_method(klass, "random_effect_std_devs", RUBY_METHOD_FUNC(rosetta_function_1764), -1);
+            rb_define_method(klass, "random_effect_correlation", RUBY_METHOD_FUNC(rosetta_function_1765), -1);
+            rb_define_method(klass, "group_labels", RUBY_METHOD_FUNC(rosetta_function_1766), -1);
+            rb_define_method(klass, "random_effects_for_group", RUBY_METHOD_FUNC(rosetta_function_1767), -1);
+            rb_define_method(klass, "log_likelihood", RUBY_METHOD_FUNC(rosetta_function_1768), -1);
+            rb_define_method(klass, "deviance", RUBY_METHOD_FUNC(rosetta_function_1769), -1);
+            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1770), -1);
+            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1771), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1772), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1773), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1774), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_212_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::GLMM>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1774), -1);
-            rb_define_method(klass, "family", RUBY_METHOD_FUNC(rosetta_function_1775), -1);
-            rb_define_method(klass, "group_variable", RUBY_METHOD_FUNC(rosetta_function_1776), -1);
-            rb_define_method(klass, "has_random_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1777), -1);
-            rb_define_method(klass, "random_effect_names", RUBY_METHOD_FUNC(rosetta_function_1778), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1779), -1);
-            rb_define_method(klass, "num_groups", RUBY_METHOD_FUNC(rosetta_function_1780), -1);
-            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_1781), -1);
-            rb_define_method(klass, "iterations", RUBY_METHOD_FUNC(rosetta_function_1782), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1783), -1);
-            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1784), -1);
-            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_1785), -1);
-            rb_define_method(klass, "z_values", RUBY_METHOD_FUNC(rosetta_function_1786), -1);
-            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_1787), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1788), -1);
-            rb_define_method(klass, "random_effect_std_devs", RUBY_METHOD_FUNC(rosetta_function_1789), -1);
-            rb_define_method(klass, "random_effect_correlation", RUBY_METHOD_FUNC(rosetta_function_1790), -1);
-            rb_define_method(klass, "group_labels", RUBY_METHOD_FUNC(rosetta_function_1791), -1);
-            rb_define_method(klass, "random_effects_for_group", RUBY_METHOD_FUNC(rosetta_function_1792), -1);
-            rb_define_method(klass, "deviance", RUBY_METHOD_FUNC(rosetta_function_1793), -1);
-            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1794), -1);
-            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1795), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1796), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1797), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1798), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1775), -1);
+            rb_define_method(klass, "family", RUBY_METHOD_FUNC(rosetta_function_1776), -1);
+            rb_define_method(klass, "group_variable", RUBY_METHOD_FUNC(rosetta_function_1777), -1);
+            rb_define_method(klass, "has_random_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1778), -1);
+            rb_define_method(klass, "random_effect_names", RUBY_METHOD_FUNC(rosetta_function_1779), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1780), -1);
+            rb_define_method(klass, "num_groups", RUBY_METHOD_FUNC(rosetta_function_1781), -1);
+            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_1782), -1);
+            rb_define_method(klass, "iterations", RUBY_METHOD_FUNC(rosetta_function_1783), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1784), -1);
+            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1785), -1);
+            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_1786), -1);
+            rb_define_method(klass, "z_values", RUBY_METHOD_FUNC(rosetta_function_1787), -1);
+            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_1788), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1789), -1);
+            rb_define_method(klass, "random_effect_std_devs", RUBY_METHOD_FUNC(rosetta_function_1790), -1);
+            rb_define_method(klass, "random_effect_correlation", RUBY_METHOD_FUNC(rosetta_function_1791), -1);
+            rb_define_method(klass, "group_labels", RUBY_METHOD_FUNC(rosetta_function_1792), -1);
+            rb_define_method(klass, "random_effects_for_group", RUBY_METHOD_FUNC(rosetta_function_1793), -1);
+            rb_define_method(klass, "deviance", RUBY_METHOD_FUNC(rosetta_function_1794), -1);
+            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_1795), -1);
+            rb_define_method(klass, "bic", RUBY_METHOD_FUNC(rosetta_function_1796), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1797), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1798), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1799), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_213_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::INLAMixedModel>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1799), -1);
-            rb_define_method(klass, "family", RUBY_METHOD_FUNC(rosetta_function_1800), -1);
-            rb_define_method(klass, "group_variable", RUBY_METHOD_FUNC(rosetta_function_1801), -1);
-            rb_define_method(klass, "random_effect_names", RUBY_METHOD_FUNC(rosetta_function_1802), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1803), -1);
-            rb_define_method(klass, "num_groups", RUBY_METHOD_FUNC(rosetta_function_1804), -1);
-            rb_define_method(klass, "fixed_effects_mean", RUBY_METHOD_FUNC(rosetta_function_1805), -1);
-            rb_define_method(klass, "fixed_effects_sd", RUBY_METHOD_FUNC(rosetta_function_1806), -1);
-            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1807), -1);
-            rb_define_method(klass, "random_effect_std_devs", RUBY_METHOD_FUNC(rosetta_function_1808), -1);
-            rb_define_method(klass, "residual_std_dev", RUBY_METHOD_FUNC(rosetta_function_1809), -1);
-            rb_define_method(klass, "group_labels", RUBY_METHOD_FUNC(rosetta_function_1810), -1);
-            rb_define_method(klass, "random_effects_mean_for_group", RUBY_METHOD_FUNC(rosetta_function_1811), -1);
-            rb_define_method(klass, "random_effects_sd_for_group", RUBY_METHOD_FUNC(rosetta_function_1812), -1);
-            rb_define_method(klass, "log_marginal_likelihood", RUBY_METHOD_FUNC(rosetta_function_1813), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1814), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1815), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1816), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1800), -1);
+            rb_define_method(klass, "family", RUBY_METHOD_FUNC(rosetta_function_1801), -1);
+            rb_define_method(klass, "group_variable", RUBY_METHOD_FUNC(rosetta_function_1802), -1);
+            rb_define_method(klass, "random_effect_names", RUBY_METHOD_FUNC(rosetta_function_1803), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1804), -1);
+            rb_define_method(klass, "num_groups", RUBY_METHOD_FUNC(rosetta_function_1805), -1);
+            rb_define_method(klass, "fixed_effects_mean", RUBY_METHOD_FUNC(rosetta_function_1806), -1);
+            rb_define_method(klass, "fixed_effects_sd", RUBY_METHOD_FUNC(rosetta_function_1807), -1);
+            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_1808), -1);
+            rb_define_method(klass, "random_effect_std_devs", RUBY_METHOD_FUNC(rosetta_function_1809), -1);
+            rb_define_method(klass, "residual_std_dev", RUBY_METHOD_FUNC(rosetta_function_1810), -1);
+            rb_define_method(klass, "group_labels", RUBY_METHOD_FUNC(rosetta_function_1811), -1);
+            rb_define_method(klass, "random_effects_mean_for_group", RUBY_METHOD_FUNC(rosetta_function_1812), -1);
+            rb_define_method(klass, "random_effects_sd_for_group", RUBY_METHOD_FUNC(rosetta_function_1813), -1);
+            rb_define_method(klass, "log_marginal_likelihood", RUBY_METHOD_FUNC(rosetta_function_1814), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1815), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1816), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1817), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_214_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::LDA>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1817), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1818), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1819), -1);
-            rb_define_method(klass, "num_discriminants", RUBY_METHOD_FUNC(rosetta_function_1820), -1);
-            rb_define_method(klass, "priors", RUBY_METHOD_FUNC(rosetta_function_1821), -1);
-            rb_define_method(klass, "group_means", RUBY_METHOD_FUNC(rosetta_function_1822), -1);
-            rb_define_method(klass, "scaling", RUBY_METHOD_FUNC(rosetta_function_1823), -1);
-            rb_define_method(klass, "proportion_of_trace", RUBY_METHOD_FUNC(rosetta_function_1824), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1825), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1826), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1827), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1828), -1);
-            rb_define_method(klass, "to_md", RUBY_METHOD_FUNC(rosetta_function_1829), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1830), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1831), -1);
-            rb_define_method(klass, "plot_discriminants", RUBY_METHOD_FUNC(rosetta_function_1832), -1);
-            rb_define_method(klass, "save_discriminant_plot", RUBY_METHOD_FUNC(rosetta_function_1833), -1);
-            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1834), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1818), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1819), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1820), -1);
+            rb_define_method(klass, "num_discriminants", RUBY_METHOD_FUNC(rosetta_function_1821), -1);
+            rb_define_method(klass, "priors", RUBY_METHOD_FUNC(rosetta_function_1822), -1);
+            rb_define_method(klass, "group_means", RUBY_METHOD_FUNC(rosetta_function_1823), -1);
+            rb_define_method(klass, "scaling", RUBY_METHOD_FUNC(rosetta_function_1824), -1);
+            rb_define_method(klass, "proportion_of_trace", RUBY_METHOD_FUNC(rosetta_function_1825), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1826), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1827), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1828), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1829), -1);
+            rb_define_method(klass, "to_md", RUBY_METHOD_FUNC(rosetta_function_1830), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1831), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1832), -1);
+            rb_define_method(klass, "plot_discriminants", RUBY_METHOD_FUNC(rosetta_function_1833), -1);
+            rb_define_method(klass, "save_discriminant_plot", RUBY_METHOD_FUNC(rosetta_function_1834), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1835), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_215_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::SVM>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1835), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1836), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1837), -1);
-            rb_define_method(klass, "num_support_vectors", RUBY_METHOD_FUNC(rosetta_function_1838), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1839), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1840), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1841), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1842), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1843), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1844), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1836), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1837), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1838), -1);
+            rb_define_method(klass, "num_support_vectors", RUBY_METHOD_FUNC(rosetta_function_1839), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1840), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1841), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1842), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1843), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1844), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1845), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_216_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::DecisionTreeClassifier>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1845), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1846), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1847), -1);
-            rb_define_method(klass, "node_count", RUBY_METHOD_FUNC(rosetta_function_1848), -1);
-            rb_define_method(klass, "leaf_count", RUBY_METHOD_FUNC(rosetta_function_1849), -1);
-            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_1850), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1851), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1852), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1853), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1854), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1855), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1856), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1857), -1);
-            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_1858), -1);
-            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1859), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1846), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1847), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1848), -1);
+            rb_define_method(klass, "node_count", RUBY_METHOD_FUNC(rosetta_function_1849), -1);
+            rb_define_method(klass, "leaf_count", RUBY_METHOD_FUNC(rosetta_function_1850), -1);
+            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_1851), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1852), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1853), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1854), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1855), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1856), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1857), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1858), -1);
+            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_1859), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1860), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_217_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::DecisionTreeRegressor>::value.klass;
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1860), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1861), -1);
-            rb_define_method(klass, "node_count", RUBY_METHOD_FUNC(rosetta_function_1862), -1);
-            rb_define_method(klass, "leaf_count", RUBY_METHOD_FUNC(rosetta_function_1863), -1);
-            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_1864), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1865), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1866), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1867), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1868), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1869), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1870), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1871), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1872), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1873), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1861), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1862), -1);
+            rb_define_method(klass, "node_count", RUBY_METHOD_FUNC(rosetta_function_1863), -1);
+            rb_define_method(klass, "leaf_count", RUBY_METHOD_FUNC(rosetta_function_1864), -1);
+            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_1865), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1866), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1867), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1868), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1869), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1870), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1871), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1872), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1873), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1874), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_218_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::RandomForestClassifier>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1874), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1875), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1876), -1);
-            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_1877), -1);
-            rb_define_method(klass, "max_features_used", RUBY_METHOD_FUNC(rosetta_function_1878), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1879), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1880), -1);
-            rb_define_method(klass, "oob_accuracy", RUBY_METHOD_FUNC(rosetta_function_1881), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1882), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1883), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1884), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1885), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1886), -1);
-            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_1887), -1);
-            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1888), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1875), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1876), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1877), -1);
+            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_1878), -1);
+            rb_define_method(klass, "max_features_used", RUBY_METHOD_FUNC(rosetta_function_1879), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1880), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1881), -1);
+            rb_define_method(klass, "oob_accuracy", RUBY_METHOD_FUNC(rosetta_function_1882), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1883), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1884), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1885), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1886), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1887), -1);
+            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_1888), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1889), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_219_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::RandomForestRegressor>::value.klass;
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1889), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1890), -1);
-            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_1891), -1);
-            rb_define_method(klass, "max_features_used", RUBY_METHOD_FUNC(rosetta_function_1892), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1893), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1894), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1895), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1896), -1);
-            rb_define_method(klass, "oob_r_squared", RUBY_METHOD_FUNC(rosetta_function_1897), -1);
-            rb_define_method(klass, "oob_rmse", RUBY_METHOD_FUNC(rosetta_function_1898), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1899), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1900), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1901), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1902), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1903), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1890), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1891), -1);
+            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_1892), -1);
+            rb_define_method(klass, "max_features_used", RUBY_METHOD_FUNC(rosetta_function_1893), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_1894), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1895), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1896), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1897), -1);
+            rb_define_method(klass, "oob_r_squared", RUBY_METHOD_FUNC(rosetta_function_1898), -1);
+            rb_define_method(klass, "oob_rmse", RUBY_METHOD_FUNC(rosetta_function_1899), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1900), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1901), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1902), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1903), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1904), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_220_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::ElasticNet>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1904), -1);
-            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1905), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1906), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1907), -1);
-            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1908), -1);
-            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1909), -1);
-            rb_define_method(klass, "lambda_was_selected", RUBY_METHOD_FUNC(rosetta_function_1910), -1);
-            rb_define_method(klass, "lambda_path", RUBY_METHOD_FUNC(rosetta_function_1911), -1);
-            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_1912), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1913), -1);
-            rb_define_method(klass, "intercept", RUBY_METHOD_FUNC(rosetta_function_1914), -1);
-            rb_define_method(klass, "non_zero_coefficients", RUBY_METHOD_FUNC(rosetta_function_1915), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1916), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1917), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1918), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1919), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1920), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1921), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1922), -1);
-            rb_define_method(klass, "plot_coefficient_path", RUBY_METHOD_FUNC(rosetta_function_1923), -1);
-            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_1924), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1925), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1926), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1905), -1);
+            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1906), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1907), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1908), -1);
+            rb_define_method(klass, "alpha", RUBY_METHOD_FUNC(rosetta_function_1909), -1);
+            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1910), -1);
+            rb_define_method(klass, "lambda_was_selected", RUBY_METHOD_FUNC(rosetta_function_1911), -1);
+            rb_define_method(klass, "lambda_path", RUBY_METHOD_FUNC(rosetta_function_1912), -1);
+            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_1913), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1914), -1);
+            rb_define_method(klass, "intercept", RUBY_METHOD_FUNC(rosetta_function_1915), -1);
+            rb_define_method(klass, "non_zero_coefficients", RUBY_METHOD_FUNC(rosetta_function_1916), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1917), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1918), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1919), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1920), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1921), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1922), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1923), -1);
+            rb_define_method(klass, "plot_coefficient_path", RUBY_METHOD_FUNC(rosetta_function_1924), -1);
+            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_1925), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1926), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1927), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_221_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Ridge>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1927), -1);
-            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1928), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1929), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1930), -1);
-            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1931), -1);
-            rb_define_method(klass, "lambda_was_selected", RUBY_METHOD_FUNC(rosetta_function_1932), -1);
-            rb_define_method(klass, "lambda_path", RUBY_METHOD_FUNC(rosetta_function_1933), -1);
-            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_1934), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1935), -1);
-            rb_define_method(klass, "intercept", RUBY_METHOD_FUNC(rosetta_function_1936), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1937), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1938), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1939), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1940), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1941), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1942), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1943), -1);
-            rb_define_method(klass, "plot_coefficient_path", RUBY_METHOD_FUNC(rosetta_function_1944), -1);
-            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_1945), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1946), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1947), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1928), -1);
+            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1929), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1930), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1931), -1);
+            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1932), -1);
+            rb_define_method(klass, "lambda_was_selected", RUBY_METHOD_FUNC(rosetta_function_1933), -1);
+            rb_define_method(klass, "lambda_path", RUBY_METHOD_FUNC(rosetta_function_1934), -1);
+            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_1935), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1936), -1);
+            rb_define_method(klass, "intercept", RUBY_METHOD_FUNC(rosetta_function_1937), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1938), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1939), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1940), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1941), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1942), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1943), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1944), -1);
+            rb_define_method(klass, "plot_coefficient_path", RUBY_METHOD_FUNC(rosetta_function_1945), -1);
+            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_1946), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1947), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1948), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_222_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Lasso>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1948), -1);
-            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1949), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1950), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1951), -1);
-            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1952), -1);
-            rb_define_method(klass, "lambda_was_selected", RUBY_METHOD_FUNC(rosetta_function_1953), -1);
-            rb_define_method(klass, "lambda_path", RUBY_METHOD_FUNC(rosetta_function_1954), -1);
-            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_1955), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1956), -1);
-            rb_define_method(klass, "intercept", RUBY_METHOD_FUNC(rosetta_function_1957), -1);
-            rb_define_method(klass, "non_zero_coefficients", RUBY_METHOD_FUNC(rosetta_function_1958), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1959), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1960), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1961), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1962), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1963), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1964), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1965), -1);
-            rb_define_method(klass, "plot_coefficient_path", RUBY_METHOD_FUNC(rosetta_function_1966), -1);
-            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_1967), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1968), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1969), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_1949), -1);
+            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_1950), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1951), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1952), -1);
+            rb_define_method(klass, "lambda_", RUBY_METHOD_FUNC(rosetta_function_1953), -1);
+            rb_define_method(klass, "lambda_was_selected", RUBY_METHOD_FUNC(rosetta_function_1954), -1);
+            rb_define_method(klass, "lambda_path", RUBY_METHOD_FUNC(rosetta_function_1955), -1);
+            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_1956), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_1957), -1);
+            rb_define_method(klass, "intercept", RUBY_METHOD_FUNC(rosetta_function_1958), -1);
+            rb_define_method(klass, "non_zero_coefficients", RUBY_METHOD_FUNC(rosetta_function_1959), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1960), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_1961), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1962), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1963), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1964), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1965), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1966), -1);
+            rb_define_method(klass, "plot_coefficient_path", RUBY_METHOD_FUNC(rosetta_function_1967), -1);
+            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_1968), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1969), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1970), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_223_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::KNNClassifier>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1970), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1971), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1972), -1);
-            rb_define_method(klass, "k", RUBY_METHOD_FUNC(rosetta_function_1973), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1974), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1975), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1976), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1977), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1978), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1979), -1);
-            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_1980), -1);
-            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1981), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_1971), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1972), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1973), -1);
+            rb_define_method(klass, "k", RUBY_METHOD_FUNC(rosetta_function_1974), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_1975), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_1976), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1977), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1978), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1979), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_1980), -1);
+            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_1981), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_1982), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_224_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::KNNRegressor>::value.klass;
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1982), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1983), -1);
-            rb_define_method(klass, "k", RUBY_METHOD_FUNC(rosetta_function_1984), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1985), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1986), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1987), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1988), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1989), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1990), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1991), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1992), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_1983), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1984), -1);
+            rb_define_method(klass, "k", RUBY_METHOD_FUNC(rosetta_function_1985), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_1986), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_1987), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_1988), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_1989), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_1990), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_1991), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_1992), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_1993), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_225_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::KMeans>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_1993), -1);
-            rb_define_method(klass, "n_clusters", RUBY_METHOD_FUNC(rosetta_function_1994), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1995), -1);
-            rb_define_method(klass, "iterations_used", RUBY_METHOD_FUNC(rosetta_function_1996), -1);
-            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_function_1997), -1);
-            rb_define_method(klass, "inertia", RUBY_METHOD_FUNC(rosetta_function_1998), -1);
-            rb_define_method(klass, "cluster_center", RUBY_METHOD_FUNC(rosetta_function_1999), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2000), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2001), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2002), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_1994), -1);
+            rb_define_method(klass, "n_clusters", RUBY_METHOD_FUNC(rosetta_function_1995), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_1996), -1);
+            rb_define_method(klass, "iterations_used", RUBY_METHOD_FUNC(rosetta_function_1997), -1);
+            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_function_1998), -1);
+            rb_define_method(klass, "inertia", RUBY_METHOD_FUNC(rosetta_function_1999), -1);
+            rb_define_method(klass, "cluster_center", RUBY_METHOD_FUNC(rosetta_function_2000), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2001), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2002), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2003), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_226_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::PCA>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2003), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2004), -1);
-            rb_define_method(klass, "num_components", RUBY_METHOD_FUNC(rosetta_function_2005), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2006), -1);
-            rb_define_method(klass, "explained_variance", RUBY_METHOD_FUNC(rosetta_function_2007), -1);
-            rb_define_method(klass, "explained_variance_ratio", RUBY_METHOD_FUNC(rosetta_function_2008), -1);
-            rb_define_method(klass, "cumulative_explained_variance_ratio", RUBY_METHOD_FUNC(rosetta_function_2009), -1);
-            rb_define_method(klass, "component_loadings", RUBY_METHOD_FUNC(rosetta_function_2010), -1);
-            rb_define_method(klass, "component_scores", RUBY_METHOD_FUNC(rosetta_function_2011), -1);
-            rb_define_method(klass, "scores_frame", RUBY_METHOD_FUNC(rosetta_function_2012), -1);
-            rb_define_method(klass, "transform", RUBY_METHOD_FUNC(rosetta_function_2013), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2014), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2015), -1);
-            rb_define_method(klass, "plot_scores", RUBY_METHOD_FUNC(rosetta_function_2016), -1);
-            rb_define_method(klass, "plot_scores_grouped", RUBY_METHOD_FUNC(rosetta_function_2017), -1);
-            rb_define_method(klass, "plot_scree", RUBY_METHOD_FUNC(rosetta_function_2018), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2004), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2005), -1);
+            rb_define_method(klass, "num_components", RUBY_METHOD_FUNC(rosetta_function_2006), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2007), -1);
+            rb_define_method(klass, "explained_variance", RUBY_METHOD_FUNC(rosetta_function_2008), -1);
+            rb_define_method(klass, "explained_variance_ratio", RUBY_METHOD_FUNC(rosetta_function_2009), -1);
+            rb_define_method(klass, "cumulative_explained_variance_ratio", RUBY_METHOD_FUNC(rosetta_function_2010), -1);
+            rb_define_method(klass, "component_loadings", RUBY_METHOD_FUNC(rosetta_function_2011), -1);
+            rb_define_method(klass, "component_scores", RUBY_METHOD_FUNC(rosetta_function_2012), -1);
+            rb_define_method(klass, "scores_frame", RUBY_METHOD_FUNC(rosetta_function_2013), -1);
+            rb_define_method(klass, "transform", RUBY_METHOD_FUNC(rosetta_function_2014), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2015), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2016), -1);
+            rb_define_method(klass, "plot_scores", RUBY_METHOD_FUNC(rosetta_function_2017), -1);
+            rb_define_method(klass, "plot_scores_grouped", RUBY_METHOD_FUNC(rosetta_function_2018), -1);
+            rb_define_method(klass, "plot_scree", RUBY_METHOD_FUNC(rosetta_function_2019), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_227_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::MDS>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2019), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2020), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2021), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2022), -1);
-            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2023), -1);
-            rb_define_method(klass, "goodness_of_fit", RUBY_METHOD_FUNC(rosetta_function_2024), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2025), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2026), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2027), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2028), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2029), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2030), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2020), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2021), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2022), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2023), -1);
+            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2024), -1);
+            rb_define_method(klass, "goodness_of_fit", RUBY_METHOD_FUNC(rosetta_function_2025), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2026), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2027), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2028), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2029), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2030), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2031), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_228_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Isomap>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2031), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2032), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2033), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2034), -1);
-            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2035), -1);
-            rb_define_method(klass, "goodness_of_fit", RUBY_METHOD_FUNC(rosetta_function_2036), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2037), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2038), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2039), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2040), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2041), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2042), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2032), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2033), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2034), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2035), -1);
+            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2036), -1);
+            rb_define_method(klass, "goodness_of_fit", RUBY_METHOD_FUNC(rosetta_function_2037), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2038), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2039), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2040), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2041), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2042), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2043), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_229_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::LLE>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2043), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2044), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2045), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2046), -1);
-            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2047), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2048), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2049), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2050), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2051), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2052), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2053), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2044), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2045), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2046), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2047), -1);
+            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2048), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2049), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2050), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2051), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2052), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2053), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2054), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_230_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::TSNE>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2054), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2055), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2056), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2057), -1);
-            rb_define_method(klass, "achieved_perplexity", RUBY_METHOD_FUNC(rosetta_function_2058), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2059), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2060), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2061), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2062), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2063), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2064), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2055), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2056), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2057), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2058), -1);
+            rb_define_method(klass, "achieved_perplexity", RUBY_METHOD_FUNC(rosetta_function_2059), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2060), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2061), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2062), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2063), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2064), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2065), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_231_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::LaplacianEigenmaps>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2065), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2066), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2067), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2068), -1);
-            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2069), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2070), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2071), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2072), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2073), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2074), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2075), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2066), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2067), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2068), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2069), -1);
+            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2070), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2071), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2072), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2073), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2074), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2075), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2076), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_232_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::DiffusionMaps>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2076), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2077), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2078), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2079), -1);
-            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2080), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2081), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2082), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2083), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2084), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2085), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2086), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2077), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2078), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2079), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2080), -1);
+            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2081), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2082), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2083), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2084), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2085), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2086), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2087), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_233_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::KernelPCA>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2087), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2088), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2089), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2090), -1);
-            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2091), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2092), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2093), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2094), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2095), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2096), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2097), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2088), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2089), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2090), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2091), -1);
+            rb_define_method(klass, "eigenvalues", RUBY_METHOD_FUNC(rosetta_function_2092), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2093), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2094), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2095), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2096), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2097), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2098), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_234_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::SammonMapping>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2098), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2099), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2100), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2101), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2102), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2103), -1);
-            rb_define_method(klass, "stress", RUBY_METHOD_FUNC(rosetta_function_2104), -1);
-            rb_define_method(klass, "iterations_run", RUBY_METHOD_FUNC(rosetta_function_2105), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2106), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2107), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2108), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2109), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2099), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2100), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2101), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2102), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2103), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2104), -1);
+            rb_define_method(klass, "stress", RUBY_METHOD_FUNC(rosetta_function_2105), -1);
+            rb_define_method(klass, "iterations_run", RUBY_METHOD_FUNC(rosetta_function_2106), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2107), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2108), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2109), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2110), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_235_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::UMAP>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2110), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2111), -1);
-            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2112), -1);
-            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2113), -1);
-            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2114), -1);
-            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2115), -1);
-            rb_define_method(klass, "sigmas", RUBY_METHOD_FUNC(rosetta_function_2116), -1);
-            rb_define_method(klass, "rhos", RUBY_METHOD_FUNC(rosetta_function_2117), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2118), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2119), -1);
-            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2120), -1);
-            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2121), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2111), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2112), -1);
+            rb_define_method(klass, "n_components", RUBY_METHOD_FUNC(rosetta_function_2113), -1);
+            rb_define_method(klass, "kept_row_indices", RUBY_METHOD_FUNC(rosetta_function_2114), -1);
+            rb_define_method(klass, "dimension", RUBY_METHOD_FUNC(rosetta_function_2115), -1);
+            rb_define_method(klass, "embedding_frame", RUBY_METHOD_FUNC(rosetta_function_2116), -1);
+            rb_define_method(klass, "sigmas", RUBY_METHOD_FUNC(rosetta_function_2117), -1);
+            rb_define_method(klass, "rhos", RUBY_METHOD_FUNC(rosetta_function_2118), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2119), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2120), -1);
+            rb_define_method(klass, "plot_embedding", RUBY_METHOD_FUNC(rosetta_function_2121), -1);
+            rb_define_method(klass, "plot_embedding_grouped", RUBY_METHOD_FUNC(rosetta_function_2122), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_236_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::AgglomerativeClustering>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2122), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2123), -1);
-            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_function_2124), -1);
-            rb_define_method(klass, "cut", RUBY_METHOD_FUNC(rosetta_function_2125), -1);
-            rb_define_method(klass, "num_merges", RUBY_METHOD_FUNC(rosetta_function_2126), -1);
-            rb_define_method(klass, "merge_cluster_a", RUBY_METHOD_FUNC(rosetta_function_2127), -1);
-            rb_define_method(klass, "merge_cluster_b", RUBY_METHOD_FUNC(rosetta_function_2128), -1);
-            rb_define_method(klass, "merge_distance", RUBY_METHOD_FUNC(rosetta_function_2129), -1);
-            rb_define_method(klass, "merge_size", RUBY_METHOD_FUNC(rosetta_function_2130), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2131), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2132), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2123), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2124), -1);
+            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_function_2125), -1);
+            rb_define_method(klass, "cut", RUBY_METHOD_FUNC(rosetta_function_2126), -1);
+            rb_define_method(klass, "num_merges", RUBY_METHOD_FUNC(rosetta_function_2127), -1);
+            rb_define_method(klass, "merge_cluster_a", RUBY_METHOD_FUNC(rosetta_function_2128), -1);
+            rb_define_method(klass, "merge_cluster_b", RUBY_METHOD_FUNC(rosetta_function_2129), -1);
+            rb_define_method(klass, "merge_distance", RUBY_METHOD_FUNC(rosetta_function_2130), -1);
+            rb_define_method(klass, "merge_size", RUBY_METHOD_FUNC(rosetta_function_2131), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2132), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2133), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_237_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::DBSCAN>::value.klass;
-            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2133), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2134), -1);
-            rb_define_method(klass, "n_clusters", RUBY_METHOD_FUNC(rosetta_function_2135), -1);
-            rb_define_method(klass, "n_noise", RUBY_METHOD_FUNC(rosetta_function_2136), -1);
-            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_function_2137), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2138), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2139), -1);
+            rb_define_method(klass, "feature_names", RUBY_METHOD_FUNC(rosetta_function_2134), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2135), -1);
+            rb_define_method(klass, "n_clusters", RUBY_METHOD_FUNC(rosetta_function_2136), -1);
+            rb_define_method(klass, "n_noise", RUBY_METHOD_FUNC(rosetta_function_2137), -1);
+            rb_define_method(klass, "labels", RUBY_METHOD_FUNC(rosetta_function_2138), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2139), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2140), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_238_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::GBMClassifier>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_2140), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2141), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2142), -1);
-            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2143), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2144), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_2145), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_2146), -1);
-            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2147), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2148), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2149), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2150), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2151), -1);
-            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_2152), -1);
-            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_2153), -1);
-            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2154), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_2141), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2142), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2143), -1);
+            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2144), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2145), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_2146), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_2147), -1);
+            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2148), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2149), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2150), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2151), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2152), -1);
+            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_2153), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_2154), -1);
+            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2155), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_239_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::GBMRegressor>::value.klass;
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2155), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2156), -1);
-            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2157), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2158), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2159), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2160), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2161), -1);
-            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2162), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2163), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2164), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2165), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2166), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2167), -1);
-            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2168), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2156), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2157), -1);
+            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2158), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2159), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2160), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2161), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2162), -1);
+            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2163), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2164), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2165), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2166), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2167), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2168), -1);
+            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2169), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_240_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::XGBoostClassifier>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_2169), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2170), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2171), -1);
-            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2172), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2173), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_2174), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_2175), -1);
-            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2176), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2177), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2178), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2179), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2180), -1);
-            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_2181), -1);
-            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_2182), -1);
-            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2183), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_2170), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2171), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2172), -1);
+            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2173), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2174), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_2175), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_2176), -1);
+            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2177), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2178), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2179), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2180), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2181), -1);
+            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_2182), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_2183), -1);
+            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2184), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_241_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::XGBoostRegressor>::value.klass;
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2184), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2185), -1);
-            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2186), -1);
-            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2187), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2188), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2189), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2190), -1);
-            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2191), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2192), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2193), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2194), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2195), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2196), -1);
-            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2197), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2185), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2186), -1);
+            rb_define_method(klass, "n_trees", RUBY_METHOD_FUNC(rosetta_function_2187), -1);
+            rb_define_method(klass, "feature_importance", RUBY_METHOD_FUNC(rosetta_function_2188), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2189), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2190), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2191), -1);
+            rb_define_method(klass, "training_deviance", RUBY_METHOD_FUNC(rosetta_function_2192), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2193), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2194), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2195), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2196), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2197), -1);
+            rb_define_method(klass, "plot_training_deviance", RUBY_METHOD_FUNC(rosetta_function_2198), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_242_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::KernelRegression>::value.klass;
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2198), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2199), -1);
-            rb_define_method(klass, "bandwidth", RUBY_METHOD_FUNC(rosetta_function_2200), -1);
-            rb_define_method(klass, "bandwidth_was_selected", RUBY_METHOD_FUNC(rosetta_function_2201), -1);
-            rb_define_method(klass, "bandwidth_grid", RUBY_METHOD_FUNC(rosetta_function_2202), -1);
-            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_2203), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2204), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2205), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2206), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2207), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2208), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2209), -1);
-            rb_define_method(klass, "plot_fit", RUBY_METHOD_FUNC(rosetta_function_2210), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2211), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2212), -1);
-            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_2213), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2199), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2200), -1);
+            rb_define_method(klass, "bandwidth", RUBY_METHOD_FUNC(rosetta_function_2201), -1);
+            rb_define_method(klass, "bandwidth_was_selected", RUBY_METHOD_FUNC(rosetta_function_2202), -1);
+            rb_define_method(klass, "bandwidth_grid", RUBY_METHOD_FUNC(rosetta_function_2203), -1);
+            rb_define_method(klass, "cv_mean_squared_error", RUBY_METHOD_FUNC(rosetta_function_2204), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2205), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2206), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2207), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2208), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2209), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2210), -1);
+            rb_define_method(klass, "plot_fit", RUBY_METHOD_FUNC(rosetta_function_2211), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2212), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2213), -1);
+            rb_define_method(klass, "plot_cv_curve", RUBY_METHOD_FUNC(rosetta_function_2214), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_243_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::GaussianProcessRegression>::value.klass;
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2214), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2215), -1);
-            rb_define_method(klass, "length_scale", RUBY_METHOD_FUNC(rosetta_function_2216), -1);
-            rb_define_method(klass, "signal_variance", RUBY_METHOD_FUNC(rosetta_function_2217), -1);
-            rb_define_method(klass, "noise_variance", RUBY_METHOD_FUNC(rosetta_function_2218), -1);
-            rb_define_method(klass, "log_marginal_likelihood", RUBY_METHOD_FUNC(rosetta_function_2219), -1);
-            rb_define_method(klass, "length_scale_was_selected", RUBY_METHOD_FUNC(rosetta_function_2220), -1);
-            rb_define_method(klass, "noise_ratio_was_selected", RUBY_METHOD_FUNC(rosetta_function_2221), -1);
-            rb_define_method(klass, "length_scale_grid", RUBY_METHOD_FUNC(rosetta_function_2222), -1);
-            rb_define_method(klass, "length_scale_profile_log_likelihood", RUBY_METHOD_FUNC(rosetta_function_2223), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2224), -1);
-            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2225), -1);
-            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2226), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2227), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2228), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2229), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2230), -1);
-            rb_define_method(klass, "plot_fit", RUBY_METHOD_FUNC(rosetta_function_2231), -1);
-            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2232), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2233), -1);
-            rb_define_method(klass, "plot_length_scale_profile", RUBY_METHOD_FUNC(rosetta_function_2234), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2215), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2216), -1);
+            rb_define_method(klass, "length_scale", RUBY_METHOD_FUNC(rosetta_function_2217), -1);
+            rb_define_method(klass, "signal_variance", RUBY_METHOD_FUNC(rosetta_function_2218), -1);
+            rb_define_method(klass, "noise_variance", RUBY_METHOD_FUNC(rosetta_function_2219), -1);
+            rb_define_method(klass, "log_marginal_likelihood", RUBY_METHOD_FUNC(rosetta_function_2220), -1);
+            rb_define_method(klass, "length_scale_was_selected", RUBY_METHOD_FUNC(rosetta_function_2221), -1);
+            rb_define_method(klass, "noise_ratio_was_selected", RUBY_METHOD_FUNC(rosetta_function_2222), -1);
+            rb_define_method(klass, "length_scale_grid", RUBY_METHOD_FUNC(rosetta_function_2223), -1);
+            rb_define_method(klass, "length_scale_profile_log_likelihood", RUBY_METHOD_FUNC(rosetta_function_2224), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2225), -1);
+            rb_define_method(klass, "r_squared", RUBY_METHOD_FUNC(rosetta_function_2226), -1);
+            rb_define_method(klass, "rmse", RUBY_METHOD_FUNC(rosetta_function_2227), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2228), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2229), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2230), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2231), -1);
+            rb_define_method(klass, "plot_fit", RUBY_METHOD_FUNC(rosetta_function_2232), -1);
+            rb_define_method(klass, "plot_predicted_vs_actual", RUBY_METHOD_FUNC(rosetta_function_2233), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2234), -1);
+            rb_define_method(klass, "plot_length_scale_profile", RUBY_METHOD_FUNC(rosetta_function_2235), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_244_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::NaiveBayesClassifier>::value.klass;
-            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_2235), -1);
-            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2236), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2237), -1);
-            rb_define_method(klass, "class_priors", RUBY_METHOD_FUNC(rosetta_function_2238), -1);
-            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_2239), -1);
-            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_2240), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2241), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2242), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2243), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2244), -1);
-            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_2245), -1);
-            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_2246), -1);
+            rb_define_method(klass, "classes", RUBY_METHOD_FUNC(rosetta_function_2236), -1);
+            rb_define_method(klass, "predictor_names", RUBY_METHOD_FUNC(rosetta_function_2237), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2238), -1);
+            rb_define_method(klass, "class_priors", RUBY_METHOD_FUNC(rosetta_function_2239), -1);
+            rb_define_method(klass, "training_accuracy", RUBY_METHOD_FUNC(rosetta_function_2240), -1);
+            rb_define_method(klass, "confusion_matrix", RUBY_METHOD_FUNC(rosetta_function_2241), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2242), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2243), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2244), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2245), -1);
+            rb_define_method(klass, "plot_classification", RUBY_METHOD_FUNC(rosetta_function_2246), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_2247), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_245_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::GLM>::value.klass;
-            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_2247), -1);
-            rb_define_method(klass, "family", RUBY_METHOD_FUNC(rosetta_function_2248), -1);
-            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_2249), -1);
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2250), -1);
-            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_2251), -1);
-            rb_define_method(klass, "degrees_of_freedom", RUBY_METHOD_FUNC(rosetta_function_2252), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_2253), -1);
-            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_2254), -1);
-            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2255), -1);
-            rb_define_method(klass, "linear_predictors", RUBY_METHOD_FUNC(rosetta_function_2256), -1);
-            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_2257), -1);
-            rb_define_method(klass, "pearson_residuals", RUBY_METHOD_FUNC(rosetta_function_2258), -1);
-            rb_define_method(klass, "standardized_residuals", RUBY_METHOD_FUNC(rosetta_function_2259), -1);
-            rb_define_method(klass, "leverage", RUBY_METHOD_FUNC(rosetta_function_2260), -1);
-            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_2261), -1);
-            rb_define_method(klass, "test_statistics", RUBY_METHOD_FUNC(rosetta_function_2262), -1);
-            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_2263), -1);
-            rb_define_method(klass, "deviance", RUBY_METHOD_FUNC(rosetta_function_2264), -1);
-            rb_define_method(klass, "null_deviance", RUBY_METHOD_FUNC(rosetta_function_2265), -1);
-            rb_define_method(klass, "dispersion", RUBY_METHOD_FUNC(rosetta_function_2266), -1);
-            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_2267), -1);
-            rb_define_method(klass, "confidence_interval_lower", RUBY_METHOD_FUNC(rosetta_function_2268), -1);
-            rb_define_method(klass, "confidence_interval_upper", RUBY_METHOD_FUNC(rosetta_function_2269), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2270), -1);
-            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2271), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2272), -1);
-            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2273), -1);
-            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2274), -1);
-            rb_define_method(klass, "plot_normal_qq", RUBY_METHOD_FUNC(rosetta_function_2275), -1);
-            rb_define_method(klass, "plot_scale_location", RUBY_METHOD_FUNC(rosetta_function_2276), -1);
-            rb_define_method(klass, "plot_residuals_vs_leverage", RUBY_METHOD_FUNC(rosetta_function_2277), -1);
-            rb_define_method(klass, "save_diagnostic_plots", RUBY_METHOD_FUNC(rosetta_function_2278), -1);
+            rb_define_method(klass, "formula_text", RUBY_METHOD_FUNC(rosetta_function_2248), -1);
+            rb_define_method(klass, "family", RUBY_METHOD_FUNC(rosetta_function_2249), -1);
+            rb_define_method(klass, "has_intercept\?", RUBY_METHOD_FUNC(rosetta_function_2250), -1);
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_function_2251), -1);
+            rb_define_method(klass, "rank", RUBY_METHOD_FUNC(rosetta_function_2252), -1);
+            rb_define_method(klass, "degrees_of_freedom", RUBY_METHOD_FUNC(rosetta_function_2253), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_2254), -1);
+            rb_define_method(klass, "coefficient_names", RUBY_METHOD_FUNC(rosetta_function_2255), -1);
+            rb_define_method(klass, "fitted_values", RUBY_METHOD_FUNC(rosetta_function_2256), -1);
+            rb_define_method(klass, "linear_predictors", RUBY_METHOD_FUNC(rosetta_function_2257), -1);
+            rb_define_method(klass, "residuals", RUBY_METHOD_FUNC(rosetta_function_2258), -1);
+            rb_define_method(klass, "pearson_residuals", RUBY_METHOD_FUNC(rosetta_function_2259), -1);
+            rb_define_method(klass, "standardized_residuals", RUBY_METHOD_FUNC(rosetta_function_2260), -1);
+            rb_define_method(klass, "leverage", RUBY_METHOD_FUNC(rosetta_function_2261), -1);
+            rb_define_method(klass, "standard_errors", RUBY_METHOD_FUNC(rosetta_function_2262), -1);
+            rb_define_method(klass, "test_statistics", RUBY_METHOD_FUNC(rosetta_function_2263), -1);
+            rb_define_method(klass, "p_values", RUBY_METHOD_FUNC(rosetta_function_2264), -1);
+            rb_define_method(klass, "deviance", RUBY_METHOD_FUNC(rosetta_function_2265), -1);
+            rb_define_method(klass, "null_deviance", RUBY_METHOD_FUNC(rosetta_function_2266), -1);
+            rb_define_method(klass, "dispersion", RUBY_METHOD_FUNC(rosetta_function_2267), -1);
+            rb_define_method(klass, "aic", RUBY_METHOD_FUNC(rosetta_function_2268), -1);
+            rb_define_method(klass, "confidence_interval_lower", RUBY_METHOD_FUNC(rosetta_function_2269), -1);
+            rb_define_method(klass, "confidence_interval_upper", RUBY_METHOD_FUNC(rosetta_function_2270), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2271), -1);
+            rb_define_method(klass, "print_summary", RUBY_METHOD_FUNC(rosetta_function_2272), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2273), -1);
+            rb_define_method(klass, "predict_frame", RUBY_METHOD_FUNC(rosetta_function_2274), -1);
+            rb_define_method(klass, "plot_residuals_vs_fitted", RUBY_METHOD_FUNC(rosetta_function_2275), -1);
+            rb_define_method(klass, "plot_normal_qq", RUBY_METHOD_FUNC(rosetta_function_2276), -1);
+            rb_define_method(klass, "plot_scale_location", RUBY_METHOD_FUNC(rosetta_function_2277), -1);
+            rb_define_method(klass, "plot_residuals_vs_leverage", RUBY_METHOD_FUNC(rosetta_function_2278), -1);
+            rb_define_method(klass, "save_diagnostic_plots", RUBY_METHOD_FUNC(rosetta_function_2279), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_246_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Tensor>::value.klass;
-            rb_define_singleton_method(klass, "zeros", RUBY_METHOD_FUNC(rosetta_function_2279), -1);
-            rb_define_singleton_method(klass, "ones", RUBY_METHOD_FUNC(rosetta_function_2280), -1);
-            rb_define_singleton_method(klass, "full", RUBY_METHOD_FUNC(rosetta_function_2281), -1);
-            rb_define_singleton_method(klass, "from_values", RUBY_METHOD_FUNC(rosetta_function_2282), -1);
-            rb_define_singleton_method(klass, "from_bool_values", RUBY_METHOD_FUNC(rosetta_function_2283), -1);
-            rb_define_singleton_method(klass, "from_string_values", RUBY_METHOD_FUNC(rosetta_function_2284), -1);
-            rb_define_singleton_method(klass, "arange", RUBY_METHOD_FUNC(rosetta_function_2285), -1);
-            rb_define_singleton_method(klass, "eye", RUBY_METHOD_FUNC(rosetta_function_2286), -1);
-            rb_define_method(klass, "ndim", RUBY_METHOD_FUNC(rosetta_function_2287), -1);
-            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_2288), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2289), -1);
-            rb_define_method(klass, "dtype_name", RUBY_METHOD_FUNC(rosetta_function_2290), -1);
-            rb_define_method(klass, "at", RUBY_METHOD_FUNC(rosetta_function_2291), -1);
-            rb_define_method(klass, "set", RUBY_METHOD_FUNC(rosetta_function_2292), -1);
-            rb_define_method(klass, "string_at", RUBY_METHOD_FUNC(rosetta_function_2293), -1);
-            rb_define_method(klass, "set_string", RUBY_METHOD_FUNC(rosetta_function_2294), -1);
-            rb_define_method(klass, "at_flat", RUBY_METHOD_FUNC(rosetta_function_2295), -1);
-            rb_define_method(klass, "set_flat", RUBY_METHOD_FUNC(rosetta_function_2296), -1);
-            rb_define_method(klass, "string_at_flat", RUBY_METHOD_FUNC(rosetta_function_2297), -1);
-            rb_define_method(klass, "set_string_flat", RUBY_METHOD_FUNC(rosetta_function_2298), -1);
-            rb_define_method(klass, "reshape", RUBY_METHOD_FUNC(rosetta_function_2299), -1);
-            rb_define_method(klass, "flatten", RUBY_METHOD_FUNC(rosetta_function_2300), -1);
-            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_2301), -1);
-            rb_define_method(klass, "squeeze", RUBY_METHOD_FUNC(rosetta_function_2302), -1);
-            rb_define_method(klass, "squeeze_axis", RUBY_METHOD_FUNC(rosetta_function_2303), -1);
-            rb_define_method(klass, "expand_dims", RUBY_METHOD_FUNC(rosetta_function_2304), -1);
-            rb_define_method(klass, "slice", RUBY_METHOD_FUNC(rosetta_function_2305), -1);
-            rb_define_method(klass, "index_select", RUBY_METHOD_FUNC(rosetta_function_2306), -1);
-            rb_define_singleton_method(klass, "concatenate2", RUBY_METHOD_FUNC(rosetta_function_2307), -1);
-            rb_define_singleton_method(klass, "stack2", RUBY_METHOD_FUNC(rosetta_function_2308), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2309), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2310), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2311), -1);
-            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2312), -1);
-            rb_define_method(klass, "power", RUBY_METHOD_FUNC(rosetta_function_2313), -1);
-            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2314), -1);
-            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2315), -1);
-            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2316), -1);
-            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2317), -1);
-            rb_define_method(klass, "power_scalar", RUBY_METHOD_FUNC(rosetta_function_2318), -1);
-            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2319), -1);
-            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2320), -1);
-            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2321), -1);
-            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2322), -1);
-            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2323), -1);
-            rb_define_method(klass, "apply", RUBY_METHOD_FUNC(rosetta_function_2324), -1);
-            rb_define_method(klass, "equal", RUBY_METHOD_FUNC(rosetta_function_2325), -1);
-            rb_define_method(klass, "not_equal", RUBY_METHOD_FUNC(rosetta_function_2326), -1);
-            rb_define_method(klass, "less", RUBY_METHOD_FUNC(rosetta_function_2327), -1);
-            rb_define_method(klass, "less_equal", RUBY_METHOD_FUNC(rosetta_function_2328), -1);
-            rb_define_method(klass, "greater", RUBY_METHOD_FUNC(rosetta_function_2329), -1);
-            rb_define_method(klass, "greater_equal", RUBY_METHOD_FUNC(rosetta_function_2330), -1);
-            rb_define_method(klass, "sum", RUBY_METHOD_FUNC(rosetta_function_2331), -1);
-            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_function_2332), -1);
-            rb_define_method(klass, "max", RUBY_METHOD_FUNC(rosetta_function_2333), -1);
-            rb_define_method(klass, "min", RUBY_METHOD_FUNC(rosetta_function_2334), -1);
-            rb_define_method(klass, "prod", RUBY_METHOD_FUNC(rosetta_function_2335), -1);
-            rb_define_method(klass, "argmax", RUBY_METHOD_FUNC(rosetta_function_2336), -1);
-            rb_define_method(klass, "argmin", RUBY_METHOD_FUNC(rosetta_function_2337), -1);
-            rb_define_method(klass, "all", RUBY_METHOD_FUNC(rosetta_function_2338), -1);
-            rb_define_method(klass, "any", RUBY_METHOD_FUNC(rosetta_function_2339), -1);
-            rb_define_method(klass, "sum_axis", RUBY_METHOD_FUNC(rosetta_function_2340), -1);
-            rb_define_method(klass, "mean_axis", RUBY_METHOD_FUNC(rosetta_function_2341), -1);
-            rb_define_method(klass, "max_axis", RUBY_METHOD_FUNC(rosetta_function_2342), -1);
-            rb_define_method(klass, "min_axis", RUBY_METHOD_FUNC(rosetta_function_2343), -1);
-            rb_define_method(klass, "prod_axis", RUBY_METHOD_FUNC(rosetta_function_2344), -1);
-            rb_define_method(klass, "argmax_axis", RUBY_METHOD_FUNC(rosetta_function_2345), -1);
-            rb_define_method(klass, "argmin_axis", RUBY_METHOD_FUNC(rosetta_function_2346), -1);
-            rb_define_method(klass, "matmul", RUBY_METHOD_FUNC(rosetta_function_2347), -1);
-            rb_define_method(klass, "dot", RUBY_METHOD_FUNC(rosetta_function_2348), -1);
-            rb_define_method(klass, "outer", RUBY_METHOD_FUNC(rosetta_function_2349), -1);
-            rb_define_singleton_method(klass, "from_image", RUBY_METHOD_FUNC(rosetta_function_2350), -1);
-            rb_define_singleton_method(klass, "conv2d", RUBY_METHOD_FUNC(rosetta_function_2351), -1);
-            rb_define_method(klass, "max_pool2d", RUBY_METHOD_FUNC(rosetta_function_2352), -1);
-            rb_define_method(klass, "avg_pool2d", RUBY_METHOD_FUNC(rosetta_function_2353), -1);
-            rb_define_method(klass, "relu", RUBY_METHOD_FUNC(rosetta_function_2354), -1);
-            rb_define_method(klass, "sigmoid", RUBY_METHOD_FUNC(rosetta_function_2355), -1);
-            rb_define_method(klass, "softmax", RUBY_METHOD_FUNC(rosetta_function_2356), -1);
-            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_2357), -1);
-            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_2357), -1);
+            rb_define_singleton_method(klass, "zeros", RUBY_METHOD_FUNC(rosetta_function_2280), -1);
+            rb_define_singleton_method(klass, "ones", RUBY_METHOD_FUNC(rosetta_function_2281), -1);
+            rb_define_singleton_method(klass, "full", RUBY_METHOD_FUNC(rosetta_function_2282), -1);
+            rb_define_singleton_method(klass, "from_values", RUBY_METHOD_FUNC(rosetta_function_2283), -1);
+            rb_define_singleton_method(klass, "from_bool_values", RUBY_METHOD_FUNC(rosetta_function_2284), -1);
+            rb_define_singleton_method(klass, "from_string_values", RUBY_METHOD_FUNC(rosetta_function_2285), -1);
+            rb_define_singleton_method(klass, "arange", RUBY_METHOD_FUNC(rosetta_function_2286), -1);
+            rb_define_singleton_method(klass, "eye", RUBY_METHOD_FUNC(rosetta_function_2287), -1);
+            rb_define_method(klass, "ndim", RUBY_METHOD_FUNC(rosetta_function_2288), -1);
+            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_2289), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2290), -1);
+            rb_define_method(klass, "dtype_name", RUBY_METHOD_FUNC(rosetta_function_2291), -1);
+            rb_define_method(klass, "at", RUBY_METHOD_FUNC(rosetta_function_2292), -1);
+            rb_define_method(klass, "set", RUBY_METHOD_FUNC(rosetta_function_2293), -1);
+            rb_define_method(klass, "string_at", RUBY_METHOD_FUNC(rosetta_function_2294), -1);
+            rb_define_method(klass, "set_string", RUBY_METHOD_FUNC(rosetta_function_2295), -1);
+            rb_define_method(klass, "at_flat", RUBY_METHOD_FUNC(rosetta_function_2296), -1);
+            rb_define_method(klass, "set_flat", RUBY_METHOD_FUNC(rosetta_function_2297), -1);
+            rb_define_method(klass, "string_at_flat", RUBY_METHOD_FUNC(rosetta_function_2298), -1);
+            rb_define_method(klass, "set_string_flat", RUBY_METHOD_FUNC(rosetta_function_2299), -1);
+            rb_define_method(klass, "reshape", RUBY_METHOD_FUNC(rosetta_function_2300), -1);
+            rb_define_method(klass, "flatten", RUBY_METHOD_FUNC(rosetta_function_2301), -1);
+            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_2302), -1);
+            rb_define_method(klass, "squeeze", RUBY_METHOD_FUNC(rosetta_function_2303), -1);
+            rb_define_method(klass, "squeeze_axis", RUBY_METHOD_FUNC(rosetta_function_2304), -1);
+            rb_define_method(klass, "expand_dims", RUBY_METHOD_FUNC(rosetta_function_2305), -1);
+            rb_define_method(klass, "slice", RUBY_METHOD_FUNC(rosetta_function_2306), -1);
+            rb_define_method(klass, "index_select", RUBY_METHOD_FUNC(rosetta_function_2307), -1);
+            rb_define_singleton_method(klass, "concatenate2", RUBY_METHOD_FUNC(rosetta_function_2308), -1);
+            rb_define_singleton_method(klass, "stack2", RUBY_METHOD_FUNC(rosetta_function_2309), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2310), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2311), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2312), -1);
+            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2313), -1);
+            rb_define_method(klass, "power", RUBY_METHOD_FUNC(rosetta_function_2314), -1);
+            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2315), -1);
+            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2316), -1);
+            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2317), -1);
+            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2318), -1);
+            rb_define_method(klass, "power_scalar", RUBY_METHOD_FUNC(rosetta_function_2319), -1);
+            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2320), -1);
+            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2321), -1);
+            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2322), -1);
+            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2323), -1);
+            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2324), -1);
+            rb_define_method(klass, "apply", RUBY_METHOD_FUNC(rosetta_function_2325), -1);
+            rb_define_method(klass, "equal", RUBY_METHOD_FUNC(rosetta_function_2326), -1);
+            rb_define_method(klass, "not_equal", RUBY_METHOD_FUNC(rosetta_function_2327), -1);
+            rb_define_method(klass, "less", RUBY_METHOD_FUNC(rosetta_function_2328), -1);
+            rb_define_method(klass, "less_equal", RUBY_METHOD_FUNC(rosetta_function_2329), -1);
+            rb_define_method(klass, "greater", RUBY_METHOD_FUNC(rosetta_function_2330), -1);
+            rb_define_method(klass, "greater_equal", RUBY_METHOD_FUNC(rosetta_function_2331), -1);
+            rb_define_method(klass, "sum", RUBY_METHOD_FUNC(rosetta_function_2332), -1);
+            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_function_2333), -1);
+            rb_define_method(klass, "max", RUBY_METHOD_FUNC(rosetta_function_2334), -1);
+            rb_define_method(klass, "min", RUBY_METHOD_FUNC(rosetta_function_2335), -1);
+            rb_define_method(klass, "prod", RUBY_METHOD_FUNC(rosetta_function_2336), -1);
+            rb_define_method(klass, "argmax", RUBY_METHOD_FUNC(rosetta_function_2337), -1);
+            rb_define_method(klass, "argmin", RUBY_METHOD_FUNC(rosetta_function_2338), -1);
+            rb_define_method(klass, "all", RUBY_METHOD_FUNC(rosetta_function_2339), -1);
+            rb_define_method(klass, "any", RUBY_METHOD_FUNC(rosetta_function_2340), -1);
+            rb_define_method(klass, "sum_axis", RUBY_METHOD_FUNC(rosetta_function_2341), -1);
+            rb_define_method(klass, "mean_axis", RUBY_METHOD_FUNC(rosetta_function_2342), -1);
+            rb_define_method(klass, "max_axis", RUBY_METHOD_FUNC(rosetta_function_2343), -1);
+            rb_define_method(klass, "min_axis", RUBY_METHOD_FUNC(rosetta_function_2344), -1);
+            rb_define_method(klass, "prod_axis", RUBY_METHOD_FUNC(rosetta_function_2345), -1);
+            rb_define_method(klass, "argmax_axis", RUBY_METHOD_FUNC(rosetta_function_2346), -1);
+            rb_define_method(klass, "argmin_axis", RUBY_METHOD_FUNC(rosetta_function_2347), -1);
+            rb_define_method(klass, "matmul", RUBY_METHOD_FUNC(rosetta_function_2348), -1);
+            rb_define_method(klass, "dot", RUBY_METHOD_FUNC(rosetta_function_2349), -1);
+            rb_define_method(klass, "outer", RUBY_METHOD_FUNC(rosetta_function_2350), -1);
+            rb_define_singleton_method(klass, "from_image", RUBY_METHOD_FUNC(rosetta_function_2351), -1);
+            rb_define_singleton_method(klass, "conv2d", RUBY_METHOD_FUNC(rosetta_function_2352), -1);
+            rb_define_method(klass, "max_pool2d", RUBY_METHOD_FUNC(rosetta_function_2353), -1);
+            rb_define_method(klass, "avg_pool2d", RUBY_METHOD_FUNC(rosetta_function_2354), -1);
+            rb_define_method(klass, "relu", RUBY_METHOD_FUNC(rosetta_function_2355), -1);
+            rb_define_method(klass, "sigmoid", RUBY_METHOD_FUNC(rosetta_function_2356), -1);
+            rb_define_method(klass, "softmax", RUBY_METHOD_FUNC(rosetta_function_2357), -1);
+            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_2358), -1);
+            rb_define_method(klass, "to_s", RUBY_METHOD_FUNC(rosetta_function_2358), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_247_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Dual>::value.klass;
-            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_function_2358), -1);
-            rb_define_method(klass, "derivative", RUBY_METHOD_FUNC(rosetta_function_2359), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2360), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2361), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2362), -1);
-            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2363), -1);
-            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2364), -1);
-            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2365), -1);
-            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2366), -1);
-            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2367), -1);
-            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2368), -1);
-            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2369), -1);
-            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2370), -1);
-            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2371), -1);
-            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2372), -1);
-            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_2373), -1);
-            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_2374), -1);
-            rb_define_method(klass, "tan", RUBY_METHOD_FUNC(rosetta_function_2375), -1);
-            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2376), -1);
-            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2377), -1);
+            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_function_2359), -1);
+            rb_define_method(klass, "derivative", RUBY_METHOD_FUNC(rosetta_function_2360), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2361), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2362), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2363), -1);
+            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2364), -1);
+            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2365), -1);
+            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2366), -1);
+            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2367), -1);
+            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2368), -1);
+            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2369), -1);
+            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2370), -1);
+            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2371), -1);
+            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2372), -1);
+            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2373), -1);
+            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_2374), -1);
+            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_2375), -1);
+            rb_define_method(klass, "tan", RUBY_METHOD_FUNC(rosetta_function_2376), -1);
+            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2377), -1);
+            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2378), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_248_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::HyperDual>::value.klass;
-            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_function_2378), -1);
-            rb_define_method(klass, "eps1", RUBY_METHOD_FUNC(rosetta_function_2379), -1);
-            rb_define_method(klass, "eps2", RUBY_METHOD_FUNC(rosetta_function_2380), -1);
-            rb_define_method(klass, "eps1eps2", RUBY_METHOD_FUNC(rosetta_function_2381), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2382), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2383), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2384), -1);
-            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2385), -1);
-            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2386), -1);
-            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2387), -1);
-            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2388), -1);
-            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2389), -1);
-            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2390), -1);
-            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2391), -1);
-            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2392), -1);
-            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2393), -1);
-            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2394), -1);
-            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_2395), -1);
-            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_2396), -1);
-            rb_define_method(klass, "tan", RUBY_METHOD_FUNC(rosetta_function_2397), -1);
-            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2398), -1);
+            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_function_2379), -1);
+            rb_define_method(klass, "eps1", RUBY_METHOD_FUNC(rosetta_function_2380), -1);
+            rb_define_method(klass, "eps2", RUBY_METHOD_FUNC(rosetta_function_2381), -1);
+            rb_define_method(klass, "eps1eps2", RUBY_METHOD_FUNC(rosetta_function_2382), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2383), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2384), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2385), -1);
+            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2386), -1);
+            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2387), -1);
+            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2388), -1);
+            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2389), -1);
+            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2390), -1);
+            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2391), -1);
+            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2392), -1);
+            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2393), -1);
+            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2394), -1);
+            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2395), -1);
+            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_2396), -1);
+            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_2397), -1);
+            rb_define_method(klass, "tan", RUBY_METHOD_FUNC(rosetta_function_2398), -1);
+            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2399), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_249_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Var>::value.klass;
-            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_function_2399), -1);
-            rb_define_method(klass, "index", RUBY_METHOD_FUNC(rosetta_function_2400), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2401), -1);
-            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2402), -1);
-            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2403), -1);
-            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2404), -1);
-            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2405), -1);
-            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2406), -1);
-            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2407), -1);
-            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2408), -1);
-            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2409), -1);
-            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2410), -1);
-            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2411), -1);
-            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2412), -1);
-            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2413), -1);
-            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_2414), -1);
-            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_2415), -1);
-            rb_define_method(klass, "tan", RUBY_METHOD_FUNC(rosetta_function_2416), -1);
-            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2417), -1);
-            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2418), -1);
+            rb_define_method(klass, "value", RUBY_METHOD_FUNC(rosetta_function_2400), -1);
+            rb_define_method(klass, "index", RUBY_METHOD_FUNC(rosetta_function_2401), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2402), -1);
+            rb_define_method(klass, "subtract", RUBY_METHOD_FUNC(rosetta_function_2403), -1);
+            rb_define_method(klass, "multiply", RUBY_METHOD_FUNC(rosetta_function_2404), -1);
+            rb_define_method(klass, "divide", RUBY_METHOD_FUNC(rosetta_function_2405), -1);
+            rb_define_method(klass, "negate", RUBY_METHOD_FUNC(rosetta_function_2406), -1);
+            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2407), -1);
+            rb_define_method(klass, "subtract_scalar", RUBY_METHOD_FUNC(rosetta_function_2408), -1);
+            rb_define_method(klass, "multiply_scalar", RUBY_METHOD_FUNC(rosetta_function_2409), -1);
+            rb_define_method(klass, "divide_scalar", RUBY_METHOD_FUNC(rosetta_function_2410), -1);
+            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2411), -1);
+            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2412), -1);
+            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2413), -1);
+            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2414), -1);
+            rb_define_method(klass, "sin", RUBY_METHOD_FUNC(rosetta_function_2415), -1);
+            rb_define_method(klass, "cos", RUBY_METHOD_FUNC(rosetta_function_2416), -1);
+            rb_define_method(klass, "tan", RUBY_METHOD_FUNC(rosetta_function_2417), -1);
+            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2418), -1);
+            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2419), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_250_initialize), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::Tape>::value.klass;
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2419), -1);
-            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_2420), -1);
-            rb_define_method(klass, "backward", RUBY_METHOD_FUNC(rosetta_function_2421), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2420), -1);
+            rb_define_method(klass, "value_at", RUBY_METHOD_FUNC(rosetta_function_2421), -1);
+            rb_define_method(klass, "backward", RUBY_METHOD_FUNC(rosetta_function_2422), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_251_initialize), -1);
         }
         {
+            VALUE klass = rosetta_rb::Info<datamunge::MLPClassifierSearch>::value.klass;
+            rb_define_method(klass, "best_hidden_nodes", RUBY_METHOD_FUNC(rosetta_function_2423), -1);
+            rb_define_method(klass, "validation_log_loss", RUBY_METHOD_FUNC(rosetta_function_2424), -1);
+            rb_define_method(klass, "test_accuracy", RUBY_METHOD_FUNC(rosetta_function_2425), -1);
+            rb_define_method(klass, "training_rows", RUBY_METHOD_FUNC(rosetta_function_2426), -1);
+            rb_define_method(klass, "validation_rows", RUBY_METHOD_FUNC(rosetta_function_2427), -1);
+            rb_define_method(klass, "test_rows", RUBY_METHOD_FUNC(rosetta_function_2428), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2429), -1);
+            rb_define_method(klass, "trials", RUBY_METHOD_FUNC(rosetta_function_2430), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2431), -1);
+            rb_define_method(klass, "plot_decision_regions", RUBY_METHOD_FUNC(rosetta_function_2432), -1);
+            rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_252_initialize), -1);
+        }
+        {
             VALUE klass = rosetta_rb::Info<datamunge::cad::Solid>::value.klass;
-            rb_define_singleton_method(klass, "box", RUBY_METHOD_FUNC(rosetta_function_2422), -1);
-            rb_define_singleton_method(klass, "cylinder", RUBY_METHOD_FUNC(rosetta_function_2423), -1);
-            rb_define_singleton_method(klass, "sphere", RUBY_METHOD_FUNC(rosetta_function_2424), -1);
-            rb_define_singleton_method(klass, "torus", RUBY_METHOD_FUNC(rosetta_function_2425), -1);
-            rb_define_method(klass, "united", RUBY_METHOD_FUNC(rosetta_function_2426), -1);
-            rb_define_method(klass, "subtracted", RUBY_METHOD_FUNC(rosetta_function_2427), -1);
-            rb_define_method(klass, "intersected", RUBY_METHOD_FUNC(rosetta_function_2428), -1);
-            rb_define_method(klass, "translated", RUBY_METHOD_FUNC(rosetta_function_2429), -1);
-            rb_define_method(klass, "rotated", RUBY_METHOD_FUNC(rosetta_function_2430), -1);
-            rb_define_method(klass, "filleted", RUBY_METHOD_FUNC(rosetta_function_2431), -1);
-            rb_define_method(klass, "chamfered", RUBY_METHOD_FUNC(rosetta_function_2432), -1);
-            rb_define_method(klass, "shelled", RUBY_METHOD_FUNC(rosetta_function_2433), -1);
-            rb_define_method(klass, "volume", RUBY_METHOD_FUNC(rosetta_function_2434), -1);
-            rb_define_method(klass, "valid", RUBY_METHOD_FUNC(rosetta_function_2435), -1);
-            rb_define_method(klass, "edges", RUBY_METHOD_FUNC(rosetta_function_2436), -1);
-            rb_define_method(klass, "faces", RUBY_METHOD_FUNC(rosetta_function_2437), -1);
-            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_2438), -1);
+            rb_define_singleton_method(klass, "box", RUBY_METHOD_FUNC(rosetta_function_2433), -1);
+            rb_define_singleton_method(klass, "cylinder", RUBY_METHOD_FUNC(rosetta_function_2434), -1);
+            rb_define_singleton_method(klass, "sphere", RUBY_METHOD_FUNC(rosetta_function_2435), -1);
+            rb_define_singleton_method(klass, "torus", RUBY_METHOD_FUNC(rosetta_function_2436), -1);
+            rb_define_method(klass, "united", RUBY_METHOD_FUNC(rosetta_function_2437), -1);
+            rb_define_method(klass, "subtracted", RUBY_METHOD_FUNC(rosetta_function_2438), -1);
+            rb_define_method(klass, "intersected", RUBY_METHOD_FUNC(rosetta_function_2439), -1);
+            rb_define_method(klass, "translated", RUBY_METHOD_FUNC(rosetta_function_2440), -1);
+            rb_define_method(klass, "rotated", RUBY_METHOD_FUNC(rosetta_function_2441), -1);
+            rb_define_method(klass, "filleted", RUBY_METHOD_FUNC(rosetta_function_2442), -1);
+            rb_define_method(klass, "chamfered", RUBY_METHOD_FUNC(rosetta_function_2443), -1);
+            rb_define_method(klass, "shelled", RUBY_METHOD_FUNC(rosetta_function_2444), -1);
+            rb_define_method(klass, "volume", RUBY_METHOD_FUNC(rosetta_function_2445), -1);
+            rb_define_method(klass, "valid", RUBY_METHOD_FUNC(rosetta_function_2446), -1);
+            rb_define_method(klass, "edges", RUBY_METHOD_FUNC(rosetta_function_2447), -1);
+            rb_define_method(klass, "faces", RUBY_METHOD_FUNC(rosetta_function_2448), -1);
+            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_2449), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_rb::uninitialized_method), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::cad::View>::value.klass;
-            rb_define_singleton_method(klass, "from_file", RUBY_METHOD_FUNC(rosetta_function_2439), -1);
-            rb_define_singleton_method(klass, "from_urdf", RUBY_METHOD_FUNC(rosetta_function_2440), -1);
-            rb_define_method(klass, "set_joint", RUBY_METHOD_FUNC(rosetta_function_2441), -1);
-            rb_define_method(klass, "joint_names", RUBY_METHOD_FUNC(rosetta_function_2442), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2443), -1);
-            rb_define_method(klass, "primitive", RUBY_METHOD_FUNC(rosetta_function_2444), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2445), -1);
-            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_function_2446), -1);
-            rb_define_method(klass, "style", RUBY_METHOD_FUNC(rosetta_function_2447), -1);
-            rb_define_method(klass, "shadows", RUBY_METHOD_FUNC(rosetta_function_2448), -1);
-            rb_define_method(klass, "camera", RUBY_METHOD_FUNC(rosetta_function_2449), -1);
-            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_2450), -1);
-            rb_define_method(klass, "light", RUBY_METHOD_FUNC(rosetta_function_2451), -1);
-            rb_define_method(klass, "render", RUBY_METHOD_FUNC(rosetta_function_2452), -1);
-            rb_define_method(klass, "save_gltf", RUBY_METHOD_FUNC(rosetta_function_2453), -1);
-            rb_define_method(klass, "pick_object", RUBY_METHOD_FUNC(rosetta_function_2454), -1);
-            rb_define_method(klass, "object_count", RUBY_METHOD_FUNC(rosetta_function_2455), -1);
-            rb_define_method(klass, "triangle_count", RUBY_METHOD_FUNC(rosetta_function_2456), -1);
-            rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_253_initialize), -1);
-        }
-        {
-            VALUE klass = rosetta_rb::Info<datamunge::fda::SplineSolveOptions>::value.klass;
-            rb_define_method(klass, "method_", RUBY_METHOD_FUNC(rosetta_field_798_get), 0);
-            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().method)>>)
-                rb_define_method(klass, "method_=", RUBY_METHOD_FUNC(rosetta_field_798_set), 1);
-            rb_define_method(klass, "direct_limit", RUBY_METHOD_FUNC(rosetta_field_799_get), 0);
-            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().direct_limit)>>)
-                rb_define_method(klass, "direct_limit=", RUBY_METHOD_FUNC(rosetta_field_799_set), 1);
-            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_800_get), 0);
-            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().tolerance)>>)
-                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_800_set), 1);
-            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_801_get), 0);
-            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().max_iterations)>>)
-                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_801_set), 1);
+            rb_define_singleton_method(klass, "from_file", RUBY_METHOD_FUNC(rosetta_function_2450), -1);
+            rb_define_singleton_method(klass, "from_urdf", RUBY_METHOD_FUNC(rosetta_function_2451), -1);
+            rb_define_method(klass, "set_joint", RUBY_METHOD_FUNC(rosetta_function_2452), -1);
+            rb_define_method(klass, "joint_names", RUBY_METHOD_FUNC(rosetta_function_2453), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2454), -1);
+            rb_define_method(klass, "primitive", RUBY_METHOD_FUNC(rosetta_function_2455), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2456), -1);
+            rb_define_method(klass, "samples", RUBY_METHOD_FUNC(rosetta_function_2457), -1);
+            rb_define_method(klass, "style", RUBY_METHOD_FUNC(rosetta_function_2458), -1);
+            rb_define_method(klass, "shadows", RUBY_METHOD_FUNC(rosetta_function_2459), -1);
+            rb_define_method(klass, "camera", RUBY_METHOD_FUNC(rosetta_function_2460), -1);
+            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_2461), -1);
+            rb_define_method(klass, "light", RUBY_METHOD_FUNC(rosetta_function_2462), -1);
+            rb_define_method(klass, "render", RUBY_METHOD_FUNC(rosetta_function_2463), -1);
+            rb_define_method(klass, "save_gltf", RUBY_METHOD_FUNC(rosetta_function_2464), -1);
+            rb_define_method(klass, "pick_object", RUBY_METHOD_FUNC(rosetta_function_2465), -1);
+            rb_define_method(klass, "object_count", RUBY_METHOD_FUNC(rosetta_function_2466), -1);
+            rb_define_method(klass, "triangle_count", RUBY_METHOD_FUNC(rosetta_function_2467), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_254_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::fda::BSplineRefinement>::value.klass;
-            rb_define_method(klass, "apply", RUBY_METHOD_FUNC(rosetta_function_2457), -1);
-            rb_define_method(klass, "basis", RUBY_METHOD_FUNC(rosetta_field_802_get), 0);
-            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::BSplineRefinement&>().basis)>>)
-                rb_define_method(klass, "basis=", RUBY_METHOD_FUNC(rosetta_field_802_set), 1);
+            VALUE klass = rosetta_rb::Info<datamunge::fda::SplineSolveOptions>::value.klass;
+            rb_define_method(klass, "method_", RUBY_METHOD_FUNC(rosetta_field_799_get), 0);
+            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().method)>>)
+                rb_define_method(klass, "method_=", RUBY_METHOD_FUNC(rosetta_field_799_set), 1);
+            rb_define_method(klass, "direct_limit", RUBY_METHOD_FUNC(rosetta_field_800_get), 0);
+            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().direct_limit)>>)
+                rb_define_method(klass, "direct_limit=", RUBY_METHOD_FUNC(rosetta_field_800_set), 1);
+            rb_define_method(klass, "tolerance", RUBY_METHOD_FUNC(rosetta_field_801_get), 0);
+            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().tolerance)>>)
+                rb_define_method(klass, "tolerance=", RUBY_METHOD_FUNC(rosetta_field_801_set), 1);
+            rb_define_method(klass, "max_iterations", RUBY_METHOD_FUNC(rosetta_field_802_get), 0);
+            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::SplineSolveOptions&>().max_iterations)>>)
+                rb_define_method(klass, "max_iterations=", RUBY_METHOD_FUNC(rosetta_field_802_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_255_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::fda::TensorBSpline>::value.klass;
-            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2458), -1);
-            rb_define_method(klass, "bases", RUBY_METHOD_FUNC(rosetta_function_2459), -1);
-            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_2460), -1);
-            rb_define_method(klass, "coefficient_count", RUBY_METHOD_FUNC(rosetta_function_2461), -1);
-            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_2462), -1);
-            rb_define_method(klass, "domain_min", RUBY_METHOD_FUNC(rosetta_function_2463), -1);
-            rb_define_method(klass, "domain_max", RUBY_METHOD_FUNC(rosetta_function_2464), -1);
-            rb_define_method(klass, "coefficient", RUBY_METHOD_FUNC(rosetta_function_2465), -1);
-            rb_define_method(klass, "set_coefficient", RUBY_METHOD_FUNC(rosetta_function_2466), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_2467), -1);
-            rb_define_method(klass, "evaluate_points", RUBY_METHOD_FUNC(rosetta_function_2468), -1);
-            rb_define_method(klass, "evaluate_grid", RUBY_METHOD_FUNC(rosetta_function_2469), -1);
-            rb_define_method(klass, "dyadic_refine", RUBY_METHOD_FUNC(rosetta_function_2470), -1);
+            VALUE klass = rosetta_rb::Info<datamunge::fda::BSplineRefinement>::value.klass;
+            rb_define_method(klass, "apply", RUBY_METHOD_FUNC(rosetta_function_2468), -1);
+            rb_define_method(klass, "basis", RUBY_METHOD_FUNC(rosetta_field_803_get), 0);
+            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::BSplineRefinement&>().basis)>>)
+                rb_define_method(klass, "basis=", RUBY_METHOD_FUNC(rosetta_field_803_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_256_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::fda::detail::OrthantCellTree>::value.klass;
-            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2471), -1);
-            rb_define_method(klass, "arity", RUBY_METHOD_FUNC(rosetta_function_2472), -1);
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2473), -1);
-            rb_define_method(klass, "max_depth", RUBY_METHOD_FUNC(rosetta_function_2474), -1);
-            rb_define_method(klass, "check", RUBY_METHOD_FUNC(rosetta_function_2475), -1);
-            rb_define_method(klass, "check_slot", RUBY_METHOD_FUNC(rosetta_function_2476), -1);
-            rb_define_method(klass, "lo", RUBY_METHOD_FUNC(rosetta_function_2477), -1);
-            rb_define_method(klass, "hi", RUBY_METHOD_FUNC(rosetta_function_2478), -1);
-            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_2479), -1);
-            rb_define_method(klass, "parent", RUBY_METHOD_FUNC(rosetta_function_2480), -1);
-            rb_define_method(klass, "child", RUBY_METHOD_FUNC(rosetta_function_2481), -1);
-            rb_define_method(klass, "is_leaf", RUBY_METHOD_FUNC(rosetta_function_2482), -1);
-            rb_define_method(klass, "ensure_child", RUBY_METHOD_FUNC(rosetta_function_2483), -1);
-            rb_define_method(klass, "child_box", RUBY_METHOD_FUNC(rosetta_function_2484), -1);
-            rb_define_method(klass, "slot_for", RUBY_METHOD_FUNC(rosetta_function_2485), -1);
-            rb_define_method(klass, "contains", RUBY_METHOD_FUNC(rosetta_function_2486), -1);
-            rb_define_method(klass, "locate", RUBY_METHOD_FUNC(rosetta_function_2487), -1);
-            rb_define_method(klass, "cells_at_depth", RUBY_METHOD_FUNC(rosetta_function_2488), -1);
-            rb_define_singleton_method(klass, "overlaps", RUBY_METHOD_FUNC(rosetta_function_2489), -1);
-            rb_define_method(klass, "covered_to_depth", RUBY_METHOD_FUNC(rosetta_function_2490), -1);
+            VALUE klass = rosetta_rb::Info<datamunge::fda::TensorBSpline>::value.klass;
+            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2469), -1);
+            rb_define_method(klass, "bases", RUBY_METHOD_FUNC(rosetta_function_2470), -1);
+            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_2471), -1);
+            rb_define_method(klass, "coefficient_count", RUBY_METHOD_FUNC(rosetta_function_2472), -1);
+            rb_define_method(klass, "coefficients", RUBY_METHOD_FUNC(rosetta_function_2473), -1);
+            rb_define_method(klass, "domain_min", RUBY_METHOD_FUNC(rosetta_function_2474), -1);
+            rb_define_method(klass, "domain_max", RUBY_METHOD_FUNC(rosetta_function_2475), -1);
+            rb_define_method(klass, "coefficient", RUBY_METHOD_FUNC(rosetta_function_2476), -1);
+            rb_define_method(klass, "set_coefficient", RUBY_METHOD_FUNC(rosetta_function_2477), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_2478), -1);
+            rb_define_method(klass, "evaluate_points", RUBY_METHOD_FUNC(rosetta_function_2479), -1);
+            rb_define_method(klass, "evaluate_grid", RUBY_METHOD_FUNC(rosetta_function_2480), -1);
+            rb_define_method(klass, "dyadic_refine", RUBY_METHOD_FUNC(rosetta_function_2481), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_257_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::fda::detail::AxisRefinement>::value.klass;
-            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_field_803_get), 0);
-            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::detail::AxisRefinement&>().rows)>>)
-                rb_define_method(klass, "rows=", RUBY_METHOD_FUNC(rosetta_field_803_set), 1);
-            rb_define_method(klass, "cols", RUBY_METHOD_FUNC(rosetta_field_804_get), 0);
-            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::detail::AxisRefinement&>().cols)>>)
-                rb_define_method(klass, "cols=", RUBY_METHOD_FUNC(rosetta_field_804_set), 1);
+            VALUE klass = rosetta_rb::Info<datamunge::fda::detail::OrthantCellTree>::value.klass;
+            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2482), -1);
+            rb_define_method(klass, "arity", RUBY_METHOD_FUNC(rosetta_function_2483), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2484), -1);
+            rb_define_method(klass, "max_depth", RUBY_METHOD_FUNC(rosetta_function_2485), -1);
+            rb_define_method(klass, "check", RUBY_METHOD_FUNC(rosetta_function_2486), -1);
+            rb_define_method(klass, "check_slot", RUBY_METHOD_FUNC(rosetta_function_2487), -1);
+            rb_define_method(klass, "lo", RUBY_METHOD_FUNC(rosetta_function_2488), -1);
+            rb_define_method(klass, "hi", RUBY_METHOD_FUNC(rosetta_function_2489), -1);
+            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_2490), -1);
+            rb_define_method(klass, "parent", RUBY_METHOD_FUNC(rosetta_function_2491), -1);
+            rb_define_method(klass, "child", RUBY_METHOD_FUNC(rosetta_function_2492), -1);
+            rb_define_method(klass, "is_leaf", RUBY_METHOD_FUNC(rosetta_function_2493), -1);
+            rb_define_method(klass, "ensure_child", RUBY_METHOD_FUNC(rosetta_function_2494), -1);
+            rb_define_method(klass, "child_box", RUBY_METHOD_FUNC(rosetta_function_2495), -1);
+            rb_define_method(klass, "slot_for", RUBY_METHOD_FUNC(rosetta_function_2496), -1);
+            rb_define_method(klass, "contains", RUBY_METHOD_FUNC(rosetta_function_2497), -1);
+            rb_define_method(klass, "locate", RUBY_METHOD_FUNC(rosetta_function_2498), -1);
+            rb_define_method(klass, "cells_at_depth", RUBY_METHOD_FUNC(rosetta_function_2499), -1);
+            rb_define_singleton_method(klass, "overlaps", RUBY_METHOD_FUNC(rosetta_function_2500), -1);
+            rb_define_method(klass, "covered_to_depth", RUBY_METHOD_FUNC(rosetta_function_2501), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_258_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::fda::HierarchicalBSpline>::value.klass;
-            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2491), -1);
-            rb_define_method(klass, "cell_count", RUBY_METHOD_FUNC(rosetta_function_2492), -1);
-            rb_define_method(klass, "root", RUBY_METHOD_FUNC(rosetta_function_2493), -1);
-            rb_define_method(klass, "parent", RUBY_METHOD_FUNC(rosetta_function_2494), -1);
-            rb_define_method(klass, "child", RUBY_METHOD_FUNC(rosetta_function_2495), -1);
-            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_2496), -1);
-            rb_define_method(klass, "cell_min", RUBY_METHOD_FUNC(rosetta_function_2497), -1);
-            rb_define_method(klass, "cell_max", RUBY_METHOD_FUNC(rosetta_function_2498), -1);
-            rb_define_method(klass, "locate", RUBY_METHOD_FUNC(rosetta_function_2499), -1);
-            rb_define_method(klass, "has_spline", RUBY_METHOD_FUNC(rosetta_function_2500), -1);
-            rb_define_method(klass, "spline", RUBY_METHOD_FUNC(rosetta_function_2501), -1);
-            rb_define_method(klass, "set_spline", RUBY_METHOD_FUNC(rosetta_function_2502), -1);
-            rb_define_method(klass, "clear_spline", RUBY_METHOD_FUNC(rosetta_function_2503), -1);
-            rb_define_method(klass, "subdivide", RUBY_METHOD_FUNC(rosetta_function_2504), -1);
-            rb_define_method(klass, "refine", RUBY_METHOD_FUNC(rosetta_function_2505), -1);
-            rb_define_method(klass, "refine_region", RUBY_METHOD_FUNC(rosetta_function_2506), -1);
-            rb_define_method(klass, "fit_cell", RUBY_METHOD_FUNC(rosetta_function_2507), -1);
-            rb_define_method(klass, "fit_cell_penalized", RUBY_METHOD_FUNC(rosetta_function_2508), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_2509), -1);
-            rb_define_method(klass, "evaluate_points", RUBY_METHOD_FUNC(rosetta_function_2510), -1);
-            rb_define_method(klass, "evaluate_grid", RUBY_METHOD_FUNC(rosetta_function_2511), -1);
+            VALUE klass = rosetta_rb::Info<datamunge::fda::detail::AxisRefinement>::value.klass;
+            rb_define_method(klass, "rows", RUBY_METHOD_FUNC(rosetta_field_804_get), 0);
+            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::detail::AxisRefinement&>().rows)>>)
+                rb_define_method(klass, "rows=", RUBY_METHOD_FUNC(rosetta_field_804_set), 1);
+            rb_define_method(klass, "cols", RUBY_METHOD_FUNC(rosetta_field_805_get), 0);
+            if (std::is_copy_assignable_v<std::remove_cv_t<decltype(std::declval<datamunge::fda::detail::AxisRefinement&>().cols)>>)
+                rb_define_method(klass, "cols=", RUBY_METHOD_FUNC(rosetta_field_805_set), 1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_259_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::fda::TruncatedHierarchicalBSpline>::value.klass;
-            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2512), -1);
-            rb_define_method(klass, "level_count", RUBY_METHOD_FUNC(rosetta_function_2513), -1);
-            rb_define_method(klass, "level", RUBY_METHOD_FUNC(rosetta_function_2514), -1);
-            rb_define_method(klass, "cell_count", RUBY_METHOD_FUNC(rosetta_function_2515), -1);
-            rb_define_method(klass, "root", RUBY_METHOD_FUNC(rosetta_function_2516), -1);
-            rb_define_method(klass, "parent", RUBY_METHOD_FUNC(rosetta_function_2517), -1);
-            rb_define_method(klass, "child", RUBY_METHOD_FUNC(rosetta_function_2518), -1);
-            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_2519), -1);
-            rb_define_method(klass, "cell_min", RUBY_METHOD_FUNC(rosetta_function_2520), -1);
-            rb_define_method(klass, "cell_max", RUBY_METHOD_FUNC(rosetta_function_2521), -1);
-            rb_define_method(klass, "locate", RUBY_METHOD_FUNC(rosetta_function_2522), -1);
-            rb_define_method(klass, "refine", RUBY_METHOD_FUNC(rosetta_function_2523), -1);
-            rb_define_method(klass, "subdivide", RUBY_METHOD_FUNC(rosetta_function_2524), -1);
-            rb_define_method(klass, "refine_region", RUBY_METHOD_FUNC(rosetta_function_2525), -1);
-            rb_define_method(klass, "support_min", RUBY_METHOD_FUNC(rosetta_function_2526), -1);
-            rb_define_method(klass, "support_max", RUBY_METHOD_FUNC(rosetta_function_2527), -1);
-            rb_define_method(klass, "is_active", RUBY_METHOD_FUNC(rosetta_function_2528), -1);
-            rb_define_method(klass, "active_indices", RUBY_METHOD_FUNC(rosetta_function_2529), -1);
-            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_2530), -1);
-            rb_define_method(klass, "coefficient", RUBY_METHOD_FUNC(rosetta_function_2531), -1);
-            rb_define_method(klass, "set_coefficient", RUBY_METHOD_FUNC(rosetta_function_2532), -1);
-            rb_define_method(klass, "truncated_basis", RUBY_METHOD_FUNC(rosetta_function_2533), -1);
-            rb_define_method(klass, "fit_level", RUBY_METHOD_FUNC(rosetta_function_2534), -1);
-            rb_define_method(klass, "fit_level_penalized", RUBY_METHOD_FUNC(rosetta_function_2535), -1);
-            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_2536), -1);
-            rb_define_method(klass, "fit_penalized", RUBY_METHOD_FUNC(rosetta_function_2537), -1);
-            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_2538), -1);
-            rb_define_method(klass, "evaluate_points", RUBY_METHOD_FUNC(rosetta_function_2539), -1);
-            rb_define_method(klass, "evaluate_grid", RUBY_METHOD_FUNC(rosetta_function_2540), -1);
+            VALUE klass = rosetta_rb::Info<datamunge::fda::HierarchicalBSpline>::value.klass;
+            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2502), -1);
+            rb_define_method(klass, "cell_count", RUBY_METHOD_FUNC(rosetta_function_2503), -1);
+            rb_define_method(klass, "root", RUBY_METHOD_FUNC(rosetta_function_2504), -1);
+            rb_define_method(klass, "parent", RUBY_METHOD_FUNC(rosetta_function_2505), -1);
+            rb_define_method(klass, "child", RUBY_METHOD_FUNC(rosetta_function_2506), -1);
+            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_2507), -1);
+            rb_define_method(klass, "cell_min", RUBY_METHOD_FUNC(rosetta_function_2508), -1);
+            rb_define_method(klass, "cell_max", RUBY_METHOD_FUNC(rosetta_function_2509), -1);
+            rb_define_method(klass, "locate", RUBY_METHOD_FUNC(rosetta_function_2510), -1);
+            rb_define_method(klass, "has_spline", RUBY_METHOD_FUNC(rosetta_function_2511), -1);
+            rb_define_method(klass, "spline", RUBY_METHOD_FUNC(rosetta_function_2512), -1);
+            rb_define_method(klass, "set_spline", RUBY_METHOD_FUNC(rosetta_function_2513), -1);
+            rb_define_method(klass, "clear_spline", RUBY_METHOD_FUNC(rosetta_function_2514), -1);
+            rb_define_method(klass, "subdivide", RUBY_METHOD_FUNC(rosetta_function_2515), -1);
+            rb_define_method(klass, "refine", RUBY_METHOD_FUNC(rosetta_function_2516), -1);
+            rb_define_method(klass, "refine_region", RUBY_METHOD_FUNC(rosetta_function_2517), -1);
+            rb_define_method(klass, "fit_cell", RUBY_METHOD_FUNC(rosetta_function_2518), -1);
+            rb_define_method(klass, "fit_cell_penalized", RUBY_METHOD_FUNC(rosetta_function_2519), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_2520), -1);
+            rb_define_method(klass, "evaluate_points", RUBY_METHOD_FUNC(rosetta_function_2521), -1);
+            rb_define_method(klass, "evaluate_grid", RUBY_METHOD_FUNC(rosetta_function_2522), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_260_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::nn::NnTensor>::value.klass;
-            rb_define_singleton_method(klass, "zeros", RUBY_METHOD_FUNC(rosetta_function_2541), -1);
-            rb_define_singleton_method(klass, "ones", RUBY_METHOD_FUNC(rosetta_function_2542), -1);
-            rb_define_singleton_method(klass, "full", RUBY_METHOD_FUNC(rosetta_function_2543), -1);
-            rb_define_singleton_method(klass, "arange", RUBY_METHOD_FUNC(rosetta_function_2544), -1);
-            rb_define_singleton_method(klass, "randn", RUBY_METHOD_FUNC(rosetta_function_2545), -1);
-            rb_define_singleton_method(klass, "uniform", RUBY_METHOD_FUNC(rosetta_function_2546), -1);
-            rb_define_singleton_method(klass, "load_npy", RUBY_METHOD_FUNC(rosetta_function_2547), -1);
-            rb_define_method(klass, "save_npy", RUBY_METHOD_FUNC(rosetta_function_2548), -1);
-            rb_define_method(klass, "defined", RUBY_METHOD_FUNC(rosetta_function_2549), -1);
-            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_function_2550), -1);
-            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_2551), -1);
-            rb_define_method(klass, "dtype", RUBY_METHOD_FUNC(rosetta_function_2552), -1);
-            rb_define_method(klass, "ndim", RUBY_METHOD_FUNC(rosetta_function_2553), -1);
-            rb_define_method(klass, "numel", RUBY_METHOD_FUNC(rosetta_function_2554), -1);
-            rb_define_method(klass, "item", RUBY_METHOD_FUNC(rosetta_function_2555), -1);
-            rb_define_method(klass, "at", RUBY_METHOD_FUNC(rosetta_function_2556), -1);
-            rb_define_method(klass, "str", RUBY_METHOD_FUNC(rosetta_function_2557), -1);
-            rb_define_method(klass, "astype", RUBY_METHOD_FUNC(rosetta_function_2558), -1);
-            rb_define_method(klass, "reshape", RUBY_METHOD_FUNC(rosetta_function_2559), -1);
-            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_2560), -1);
-            rb_define_method(klass, "slice", RUBY_METHOD_FUNC(rosetta_function_2561), -1);
-            rb_define_method(klass, "concat", RUBY_METHOD_FUNC(rosetta_function_2562), -1);
-            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2563), -1);
-            rb_define_method(klass, "sub", RUBY_METHOD_FUNC(rosetta_function_2564), -1);
-            rb_define_method(klass, "mul", RUBY_METHOD_FUNC(rosetta_function_2565), -1);
-            rb_define_method(klass, "div", RUBY_METHOD_FUNC(rosetta_function_2566), -1);
-            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2567), -1);
-            rb_define_method(klass, "mul_scalar", RUBY_METHOD_FUNC(rosetta_function_2568), -1);
-            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2569), -1);
-            rb_define_method(klass, "neg", RUBY_METHOD_FUNC(rosetta_function_2570), -1);
-            rb_define_method(klass, "matmul", RUBY_METHOD_FUNC(rosetta_function_2571), -1);
-            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2572), -1);
-            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2573), -1);
-            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2574), -1);
-            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2575), -1);
-            rb_define_method(klass, "square", RUBY_METHOD_FUNC(rosetta_function_2576), -1);
-            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2577), -1);
-            rb_define_method(klass, "sigmoid", RUBY_METHOD_FUNC(rosetta_function_2578), -1);
-            rb_define_method(klass, "relu", RUBY_METHOD_FUNC(rosetta_function_2579), -1);
-            rb_define_method(klass, "activate", RUBY_METHOD_FUNC(rosetta_function_2580), -1);
-            rb_define_method(klass, "softmax", RUBY_METHOD_FUNC(rosetta_function_2581), -1);
-            rb_define_method(klass, "log_softmax", RUBY_METHOD_FUNC(rosetta_function_2582), -1);
-            rb_define_method(klass, "sum", RUBY_METHOD_FUNC(rosetta_function_2583), -1);
-            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_function_2584), -1);
-            rb_define_method(klass, "max", RUBY_METHOD_FUNC(rosetta_function_2585), -1);
-            rb_define_method(klass, "min", RUBY_METHOD_FUNC(rosetta_function_2586), -1);
-            rb_define_method(klass, "argmax", RUBY_METHOD_FUNC(rosetta_function_2587), -1);
-            rb_define_method(klass, "set_requires_grad", RUBY_METHOD_FUNC(rosetta_function_2588), -1);
-            rb_define_method(klass, "requires_grad=", RUBY_METHOD_FUNC(rosetta_function_2588), -1);
-            rb_define_method(klass, "requires_grad", RUBY_METHOD_FUNC(rosetta_function_2589), -1);
-            rb_define_method(klass, "backward", RUBY_METHOD_FUNC(rosetta_function_2590), -1);
-            rb_define_method(klass, "grad", RUBY_METHOD_FUNC(rosetta_function_2591), -1);
-            rb_define_method(klass, "zero_grad", RUBY_METHOD_FUNC(rosetta_function_2592), -1);
-            rb_define_method(klass, "detach", RUBY_METHOD_FUNC(rosetta_function_2593), -1);
-            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_2594), -1);
+            VALUE klass = rosetta_rb::Info<datamunge::fda::TruncatedHierarchicalBSpline>::value.klass;
+            rb_define_method(klass, "dimensions", RUBY_METHOD_FUNC(rosetta_function_2523), -1);
+            rb_define_method(klass, "level_count", RUBY_METHOD_FUNC(rosetta_function_2524), -1);
+            rb_define_method(klass, "level", RUBY_METHOD_FUNC(rosetta_function_2525), -1);
+            rb_define_method(klass, "cell_count", RUBY_METHOD_FUNC(rosetta_function_2526), -1);
+            rb_define_method(klass, "root", RUBY_METHOD_FUNC(rosetta_function_2527), -1);
+            rb_define_method(klass, "parent", RUBY_METHOD_FUNC(rosetta_function_2528), -1);
+            rb_define_method(klass, "child", RUBY_METHOD_FUNC(rosetta_function_2529), -1);
+            rb_define_method(klass, "depth", RUBY_METHOD_FUNC(rosetta_function_2530), -1);
+            rb_define_method(klass, "cell_min", RUBY_METHOD_FUNC(rosetta_function_2531), -1);
+            rb_define_method(klass, "cell_max", RUBY_METHOD_FUNC(rosetta_function_2532), -1);
+            rb_define_method(klass, "locate", RUBY_METHOD_FUNC(rosetta_function_2533), -1);
+            rb_define_method(klass, "refine", RUBY_METHOD_FUNC(rosetta_function_2534), -1);
+            rb_define_method(klass, "subdivide", RUBY_METHOD_FUNC(rosetta_function_2535), -1);
+            rb_define_method(klass, "refine_region", RUBY_METHOD_FUNC(rosetta_function_2536), -1);
+            rb_define_method(klass, "support_min", RUBY_METHOD_FUNC(rosetta_function_2537), -1);
+            rb_define_method(klass, "support_max", RUBY_METHOD_FUNC(rosetta_function_2538), -1);
+            rb_define_method(klass, "is_active", RUBY_METHOD_FUNC(rosetta_function_2539), -1);
+            rb_define_method(klass, "active_indices", RUBY_METHOD_FUNC(rosetta_function_2540), -1);
+            rb_define_method(klass, "basis_size", RUBY_METHOD_FUNC(rosetta_function_2541), -1);
+            rb_define_method(klass, "coefficient", RUBY_METHOD_FUNC(rosetta_function_2542), -1);
+            rb_define_method(klass, "set_coefficient", RUBY_METHOD_FUNC(rosetta_function_2543), -1);
+            rb_define_method(klass, "truncated_basis", RUBY_METHOD_FUNC(rosetta_function_2544), -1);
+            rb_define_method(klass, "fit_level", RUBY_METHOD_FUNC(rosetta_function_2545), -1);
+            rb_define_method(klass, "fit_level_penalized", RUBY_METHOD_FUNC(rosetta_function_2546), -1);
+            rb_define_method(klass, "fit", RUBY_METHOD_FUNC(rosetta_function_2547), -1);
+            rb_define_method(klass, "fit_penalized", RUBY_METHOD_FUNC(rosetta_function_2548), -1);
+            rb_define_method(klass, "evaluate", RUBY_METHOD_FUNC(rosetta_function_2549), -1);
+            rb_define_method(klass, "evaluate_points", RUBY_METHOD_FUNC(rosetta_function_2550), -1);
+            rb_define_method(klass, "evaluate_grid", RUBY_METHOD_FUNC(rosetta_function_2551), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_261_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::nn::NnModel>::value.klass;
-            rb_define_method(klass, "add_dense", RUBY_METHOD_FUNC(rosetta_function_2595), -1);
-            rb_define_method(klass, "add_conv2d", RUBY_METHOD_FUNC(rosetta_function_2596), -1);
-            rb_define_method(klass, "add_max_pool2d", RUBY_METHOD_FUNC(rosetta_function_2597), -1);
-            rb_define_method(klass, "add_avg_pool2d", RUBY_METHOD_FUNC(rosetta_function_2598), -1);
-            rb_define_method(klass, "add_global_avg_pool2d", RUBY_METHOD_FUNC(rosetta_function_2599), -1);
-            rb_define_method(klass, "add_batch_norm", RUBY_METHOD_FUNC(rosetta_function_2600), -1);
-            rb_define_method(klass, "add_layer_norm", RUBY_METHOD_FUNC(rosetta_function_2601), -1);
-            rb_define_method(klass, "add_dropout", RUBY_METHOD_FUNC(rosetta_function_2602), -1);
-            rb_define_method(klass, "add_activation", RUBY_METHOD_FUNC(rosetta_function_2603), -1);
-            rb_define_method(klass, "add_flatten", RUBY_METHOD_FUNC(rosetta_function_2604), -1);
-            rb_define_method(klass, "add_reshape", RUBY_METHOD_FUNC(rosetta_function_2605), -1);
-            rb_define_method(klass, "num_layers", RUBY_METHOD_FUNC(rosetta_function_2606), -1);
-            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2607), -1);
-            rb_define_method(klass, "forward", RUBY_METHOD_FUNC(rosetta_function_2608), -1);
-            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2609), -1);
-            rb_define_method(klass, "loss", RUBY_METHOD_FUNC(rosetta_function_2610), -1);
-            rb_define_method(klass, "compute_gradients", RUBY_METHOD_FUNC(rosetta_function_2611), -1);
-            rb_define_method(klass, "gradient", RUBY_METHOD_FUNC(rosetta_function_2612), -1);
-            rb_define_method(klass, "set_optimizer", RUBY_METHOD_FUNC(rosetta_function_2613), -1);
-            rb_define_method(klass, "train_step", RUBY_METHOD_FUNC(rosetta_function_2614), -1);
-            rb_define_method(klass, "parameter_names", RUBY_METHOD_FUNC(rosetta_function_2615), -1);
-            rb_define_method(klass, "parameter", RUBY_METHOD_FUNC(rosetta_function_2616), -1);
-            rb_define_method(klass, "set_parameter", RUBY_METHOD_FUNC(rosetta_function_2617), -1);
-            rb_define_method(klass, "parameter_count", RUBY_METHOD_FUNC(rosetta_function_2618), -1);
-            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_2619), -1);
-            rb_define_method(klass, "load_", RUBY_METHOD_FUNC(rosetta_function_2620), -1);
+            VALUE klass = rosetta_rb::Info<datamunge::nn::NnTensor>::value.klass;
+            rb_define_singleton_method(klass, "zeros", RUBY_METHOD_FUNC(rosetta_function_2552), -1);
+            rb_define_singleton_method(klass, "ones", RUBY_METHOD_FUNC(rosetta_function_2553), -1);
+            rb_define_singleton_method(klass, "full", RUBY_METHOD_FUNC(rosetta_function_2554), -1);
+            rb_define_singleton_method(klass, "arange", RUBY_METHOD_FUNC(rosetta_function_2555), -1);
+            rb_define_singleton_method(klass, "randn", RUBY_METHOD_FUNC(rosetta_function_2556), -1);
+            rb_define_singleton_method(klass, "uniform", RUBY_METHOD_FUNC(rosetta_function_2557), -1);
+            rb_define_singleton_method(klass, "load_npy", RUBY_METHOD_FUNC(rosetta_function_2558), -1);
+            rb_define_method(klass, "save_npy", RUBY_METHOD_FUNC(rosetta_function_2559), -1);
+            rb_define_method(klass, "defined", RUBY_METHOD_FUNC(rosetta_function_2560), -1);
+            rb_define_method(klass, "values", RUBY_METHOD_FUNC(rosetta_function_2561), -1);
+            rb_define_method(klass, "shape", RUBY_METHOD_FUNC(rosetta_function_2562), -1);
+            rb_define_method(klass, "dtype", RUBY_METHOD_FUNC(rosetta_function_2563), -1);
+            rb_define_method(klass, "ndim", RUBY_METHOD_FUNC(rosetta_function_2564), -1);
+            rb_define_method(klass, "numel", RUBY_METHOD_FUNC(rosetta_function_2565), -1);
+            rb_define_method(klass, "item", RUBY_METHOD_FUNC(rosetta_function_2566), -1);
+            rb_define_method(klass, "at", RUBY_METHOD_FUNC(rosetta_function_2567), -1);
+            rb_define_method(klass, "str", RUBY_METHOD_FUNC(rosetta_function_2568), -1);
+            rb_define_method(klass, "astype", RUBY_METHOD_FUNC(rosetta_function_2569), -1);
+            rb_define_method(klass, "reshape", RUBY_METHOD_FUNC(rosetta_function_2570), -1);
+            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_2571), -1);
+            rb_define_method(klass, "slice", RUBY_METHOD_FUNC(rosetta_function_2572), -1);
+            rb_define_method(klass, "concat", RUBY_METHOD_FUNC(rosetta_function_2573), -1);
+            rb_define_method(klass, "add", RUBY_METHOD_FUNC(rosetta_function_2574), -1);
+            rb_define_method(klass, "sub", RUBY_METHOD_FUNC(rosetta_function_2575), -1);
+            rb_define_method(klass, "mul", RUBY_METHOD_FUNC(rosetta_function_2576), -1);
+            rb_define_method(klass, "div", RUBY_METHOD_FUNC(rosetta_function_2577), -1);
+            rb_define_method(klass, "add_scalar", RUBY_METHOD_FUNC(rosetta_function_2578), -1);
+            rb_define_method(klass, "mul_scalar", RUBY_METHOD_FUNC(rosetta_function_2579), -1);
+            rb_define_method(klass, "pow", RUBY_METHOD_FUNC(rosetta_function_2580), -1);
+            rb_define_method(klass, "neg", RUBY_METHOD_FUNC(rosetta_function_2581), -1);
+            rb_define_method(klass, "matmul", RUBY_METHOD_FUNC(rosetta_function_2582), -1);
+            rb_define_method(klass, "exp", RUBY_METHOD_FUNC(rosetta_function_2583), -1);
+            rb_define_method(klass, "log", RUBY_METHOD_FUNC(rosetta_function_2584), -1);
+            rb_define_method(klass, "sqrt", RUBY_METHOD_FUNC(rosetta_function_2585), -1);
+            rb_define_method(klass, "abs", RUBY_METHOD_FUNC(rosetta_function_2586), -1);
+            rb_define_method(klass, "square", RUBY_METHOD_FUNC(rosetta_function_2587), -1);
+            rb_define_method(klass, "tanh", RUBY_METHOD_FUNC(rosetta_function_2588), -1);
+            rb_define_method(klass, "sigmoid", RUBY_METHOD_FUNC(rosetta_function_2589), -1);
+            rb_define_method(klass, "relu", RUBY_METHOD_FUNC(rosetta_function_2590), -1);
+            rb_define_method(klass, "activate", RUBY_METHOD_FUNC(rosetta_function_2591), -1);
+            rb_define_method(klass, "softmax", RUBY_METHOD_FUNC(rosetta_function_2592), -1);
+            rb_define_method(klass, "log_softmax", RUBY_METHOD_FUNC(rosetta_function_2593), -1);
+            rb_define_method(klass, "sum", RUBY_METHOD_FUNC(rosetta_function_2594), -1);
+            rb_define_method(klass, "mean", RUBY_METHOD_FUNC(rosetta_function_2595), -1);
+            rb_define_method(klass, "max", RUBY_METHOD_FUNC(rosetta_function_2596), -1);
+            rb_define_method(klass, "min", RUBY_METHOD_FUNC(rosetta_function_2597), -1);
+            rb_define_method(klass, "argmax", RUBY_METHOD_FUNC(rosetta_function_2598), -1);
+            rb_define_method(klass, "set_requires_grad", RUBY_METHOD_FUNC(rosetta_function_2599), -1);
+            rb_define_method(klass, "requires_grad=", RUBY_METHOD_FUNC(rosetta_function_2599), -1);
+            rb_define_method(klass, "requires_grad", RUBY_METHOD_FUNC(rosetta_function_2600), -1);
+            rb_define_method(klass, "backward", RUBY_METHOD_FUNC(rosetta_function_2601), -1);
+            rb_define_method(klass, "grad", RUBY_METHOD_FUNC(rosetta_function_2602), -1);
+            rb_define_method(klass, "zero_grad", RUBY_METHOD_FUNC(rosetta_function_2603), -1);
+            rb_define_method(klass, "detach", RUBY_METHOD_FUNC(rosetta_function_2604), -1);
+            rb_define_method(klass, "to_string", RUBY_METHOD_FUNC(rosetta_function_2605), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_262_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::sim::TaskOutput>::value.klass;
-            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_field_805_get), 0);
-            rb_define_method(klass, "rewards", RUBY_METHOD_FUNC(rosetta_field_806_get), 0);
-            rb_define_method(klass, "terminated", RUBY_METHOD_FUNC(rosetta_field_807_get), 0);
-            rb_define_method(klass, "truncated", RUBY_METHOD_FUNC(rosetta_field_808_get), 0);
-            rb_define_method(klass, "final_observations", RUBY_METHOD_FUNC(rosetta_field_809_get), 0);
-            rb_define_method(klass, "final_valid", RUBY_METHOD_FUNC(rosetta_field_810_get), 0);
+            VALUE klass = rosetta_rb::Info<datamunge::nn::NnModel>::value.klass;
+            rb_define_method(klass, "add_dense", RUBY_METHOD_FUNC(rosetta_function_2606), -1);
+            rb_define_method(klass, "add_conv2d", RUBY_METHOD_FUNC(rosetta_function_2607), -1);
+            rb_define_method(klass, "add_max_pool2d", RUBY_METHOD_FUNC(rosetta_function_2608), -1);
+            rb_define_method(klass, "add_avg_pool2d", RUBY_METHOD_FUNC(rosetta_function_2609), -1);
+            rb_define_method(klass, "add_global_avg_pool2d", RUBY_METHOD_FUNC(rosetta_function_2610), -1);
+            rb_define_method(klass, "add_batch_norm", RUBY_METHOD_FUNC(rosetta_function_2611), -1);
+            rb_define_method(klass, "add_layer_norm", RUBY_METHOD_FUNC(rosetta_function_2612), -1);
+            rb_define_method(klass, "add_dropout", RUBY_METHOD_FUNC(rosetta_function_2613), -1);
+            rb_define_method(klass, "add_activation", RUBY_METHOD_FUNC(rosetta_function_2614), -1);
+            rb_define_method(klass, "add_flatten", RUBY_METHOD_FUNC(rosetta_function_2615), -1);
+            rb_define_method(klass, "add_reshape", RUBY_METHOD_FUNC(rosetta_function_2616), -1);
+            rb_define_method(klass, "num_layers", RUBY_METHOD_FUNC(rosetta_function_2617), -1);
+            rb_define_method(klass, "summary", RUBY_METHOD_FUNC(rosetta_function_2618), -1);
+            rb_define_method(klass, "forward", RUBY_METHOD_FUNC(rosetta_function_2619), -1);
+            rb_define_method(klass, "predict", RUBY_METHOD_FUNC(rosetta_function_2620), -1);
+            rb_define_method(klass, "loss", RUBY_METHOD_FUNC(rosetta_function_2621), -1);
+            rb_define_method(klass, "compute_gradients", RUBY_METHOD_FUNC(rosetta_function_2622), -1);
+            rb_define_method(klass, "gradient", RUBY_METHOD_FUNC(rosetta_function_2623), -1);
+            rb_define_method(klass, "set_optimizer", RUBY_METHOD_FUNC(rosetta_function_2624), -1);
+            rb_define_method(klass, "train_step", RUBY_METHOD_FUNC(rosetta_function_2625), -1);
+            rb_define_method(klass, "parameter_names", RUBY_METHOD_FUNC(rosetta_function_2626), -1);
+            rb_define_method(klass, "parameter", RUBY_METHOD_FUNC(rosetta_function_2627), -1);
+            rb_define_method(klass, "set_parameter", RUBY_METHOD_FUNC(rosetta_function_2628), -1);
+            rb_define_method(klass, "parameter_count", RUBY_METHOD_FUNC(rosetta_function_2629), -1);
+            rb_define_method(klass, "save", RUBY_METHOD_FUNC(rosetta_function_2630), -1);
+            rb_define_method(klass, "load_", RUBY_METHOD_FUNC(rosetta_function_2631), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_263_initialize), -1);
         }
         {
+            VALUE klass = rosetta_rb::Info<datamunge::sim::TaskOutput>::value.klass;
+            rb_define_method(klass, "observations", RUBY_METHOD_FUNC(rosetta_field_806_get), 0);
+            rb_define_method(klass, "rewards", RUBY_METHOD_FUNC(rosetta_field_807_get), 0);
+            rb_define_method(klass, "terminated", RUBY_METHOD_FUNC(rosetta_field_808_get), 0);
+            rb_define_method(klass, "truncated", RUBY_METHOD_FUNC(rosetta_field_809_get), 0);
+            rb_define_method(klass, "final_observations", RUBY_METHOD_FUNC(rosetta_field_810_get), 0);
+            rb_define_method(klass, "final_valid", RUBY_METHOD_FUNC(rosetta_field_811_get), 0);
+            rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_264_initialize), -1);
+        }
+        {
             VALUE klass = rosetta_rb::Info<datamunge::sim::TaskBatch>::value.klass;
-            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2621), -1);
-            rb_define_method(klass, "observation_size", RUBY_METHOD_FUNC(rosetta_function_2622), -1);
-            rb_define_method(klass, "action_size", RUBY_METHOD_FUNC(rosetta_function_2623), -1);
-            rb_define_method(klass, "output", RUBY_METHOD_FUNC(rosetta_function_2624), -1);
-            rb_define_method(klass, "step", RUBY_METHOD_FUNC(rosetta_function_2625), -1);
-            rb_define_method(klass, "reset", RUBY_METHOD_FUNC(rosetta_function_2626), -1);
-            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_function_2627), -1);
-            rb_define_singleton_method(klass, "create", RUBY_METHOD_FUNC(rosetta_function_2628), -1);
+            rb_define_method(klass, "size", RUBY_METHOD_FUNC(rosetta_function_2632), -1);
+            rb_define_method(klass, "observation_size", RUBY_METHOD_FUNC(rosetta_function_2633), -1);
+            rb_define_method(klass, "action_size", RUBY_METHOD_FUNC(rosetta_function_2634), -1);
+            rb_define_method(klass, "output", RUBY_METHOD_FUNC(rosetta_function_2635), -1);
+            rb_define_method(klass, "step", RUBY_METHOD_FUNC(rosetta_function_2636), -1);
+            rb_define_method(klass, "reset", RUBY_METHOD_FUNC(rosetta_function_2637), -1);
+            rb_define_method(klass, "seed", RUBY_METHOD_FUNC(rosetta_function_2638), -1);
+            rb_define_singleton_method(klass, "create", RUBY_METHOD_FUNC(rosetta_function_2639), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_rb::uninitialized_method), -1);
         }
         {
             VALUE klass = rosetta_rb::Info<datamunge::dstruct::DirectedGraph<std::string>>::value.klass;
-            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_2629), -1);
-            rb_define_method(klass, "vertex_count", RUBY_METHOD_FUNC(rosetta_function_2630), -1);
-            rb_define_method(klass, "edge_count", RUBY_METHOD_FUNC(rosetta_function_2631), -1);
-            rb_define_method(klass, "clear", RUBY_METHOD_FUNC(rosetta_function_2632), -1);
-            rb_define_method(klass, "add_vertex", RUBY_METHOD_FUNC(rosetta_function_2633), -1);
-            rb_define_method(klass, "remove_vertex", RUBY_METHOD_FUNC(rosetta_function_2634), -1);
-            rb_define_method(klass, "has_vertex", RUBY_METHOD_FUNC(rosetta_function_2635), -1);
-            rb_define_method(klass, "add_edge", RUBY_METHOD_FUNC(rosetta_function_2636), -1);
-            rb_define_method(klass, "remove_edge", RUBY_METHOD_FUNC(rosetta_function_2637), -1);
-            rb_define_method(klass, "has_edge", RUBY_METHOD_FUNC(rosetta_function_2638), -1);
-            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_function_2639), -1);
-            rb_define_method(klass, "outgoing_neighbors", RUBY_METHOD_FUNC(rosetta_function_2640), -1);
-            rb_define_method(klass, "incoming_neighbors", RUBY_METHOD_FUNC(rosetta_function_2641), -1);
-            rb_define_method(klass, "out_degree", RUBY_METHOD_FUNC(rosetta_function_2642), -1);
-            rb_define_method(klass, "in_degree", RUBY_METHOD_FUNC(rosetta_function_2643), -1);
-            rb_define_method(klass, "bfs", RUBY_METHOD_FUNC(rosetta_function_2644), -1);
-            rb_define_method(klass, "dfs", RUBY_METHOD_FUNC(rosetta_function_2645), -1);
-            rb_define_method(klass, "contains_path", RUBY_METHOD_FUNC(rosetta_function_2646), -1);
-            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_2647), -1);
-            rb_define_method(klass, "topological_sort", RUBY_METHOD_FUNC(rosetta_function_2648), -1);
-            rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_265_initialize), -1);
-        }
-        {
-            VALUE klass = rosetta_rb::Info<datamunge::dstruct::UndirectedGraph<std::string>>::value.klass;
-            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_2649), -1);
-            rb_define_method(klass, "vertex_count", RUBY_METHOD_FUNC(rosetta_function_2650), -1);
-            rb_define_method(klass, "edge_count", RUBY_METHOD_FUNC(rosetta_function_2651), -1);
-            rb_define_method(klass, "clear", RUBY_METHOD_FUNC(rosetta_function_2652), -1);
-            rb_define_method(klass, "add_vertex", RUBY_METHOD_FUNC(rosetta_function_2653), -1);
-            rb_define_method(klass, "remove_vertex", RUBY_METHOD_FUNC(rosetta_function_2654), -1);
-            rb_define_method(klass, "has_vertex", RUBY_METHOD_FUNC(rosetta_function_2655), -1);
-            rb_define_method(klass, "add_edge", RUBY_METHOD_FUNC(rosetta_function_2656), -1);
-            rb_define_method(klass, "remove_edge", RUBY_METHOD_FUNC(rosetta_function_2657), -1);
-            rb_define_method(klass, "has_edge", RUBY_METHOD_FUNC(rosetta_function_2658), -1);
-            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_function_2659), -1);
-            rb_define_method(klass, "neighbors", RUBY_METHOD_FUNC(rosetta_function_2660), -1);
-            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_2661), -1);
-            rb_define_method(klass, "bfs", RUBY_METHOD_FUNC(rosetta_function_2662), -1);
-            rb_define_method(klass, "dfs", RUBY_METHOD_FUNC(rosetta_function_2663), -1);
-            rb_define_method(klass, "contains_path", RUBY_METHOD_FUNC(rosetta_function_2664), -1);
-            rb_define_method(klass, "connected_components", RUBY_METHOD_FUNC(rosetta_function_2665), -1);
-            rb_define_method(klass, "has_cycle\?", RUBY_METHOD_FUNC(rosetta_function_2666), -1);
+            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_2640), -1);
+            rb_define_method(klass, "vertex_count", RUBY_METHOD_FUNC(rosetta_function_2641), -1);
+            rb_define_method(klass, "edge_count", RUBY_METHOD_FUNC(rosetta_function_2642), -1);
+            rb_define_method(klass, "clear", RUBY_METHOD_FUNC(rosetta_function_2643), -1);
+            rb_define_method(klass, "add_vertex", RUBY_METHOD_FUNC(rosetta_function_2644), -1);
+            rb_define_method(klass, "remove_vertex", RUBY_METHOD_FUNC(rosetta_function_2645), -1);
+            rb_define_method(klass, "has_vertex", RUBY_METHOD_FUNC(rosetta_function_2646), -1);
+            rb_define_method(klass, "add_edge", RUBY_METHOD_FUNC(rosetta_function_2647), -1);
+            rb_define_method(klass, "remove_edge", RUBY_METHOD_FUNC(rosetta_function_2648), -1);
+            rb_define_method(klass, "has_edge", RUBY_METHOD_FUNC(rosetta_function_2649), -1);
+            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_function_2650), -1);
+            rb_define_method(klass, "outgoing_neighbors", RUBY_METHOD_FUNC(rosetta_function_2651), -1);
+            rb_define_method(klass, "incoming_neighbors", RUBY_METHOD_FUNC(rosetta_function_2652), -1);
+            rb_define_method(klass, "out_degree", RUBY_METHOD_FUNC(rosetta_function_2653), -1);
+            rb_define_method(klass, "in_degree", RUBY_METHOD_FUNC(rosetta_function_2654), -1);
+            rb_define_method(klass, "bfs", RUBY_METHOD_FUNC(rosetta_function_2655), -1);
+            rb_define_method(klass, "dfs", RUBY_METHOD_FUNC(rosetta_function_2656), -1);
+            rb_define_method(klass, "contains_path", RUBY_METHOD_FUNC(rosetta_function_2657), -1);
+            rb_define_method(klass, "transpose", RUBY_METHOD_FUNC(rosetta_function_2658), -1);
+            rb_define_method(klass, "topological_sort", RUBY_METHOD_FUNC(rosetta_function_2659), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_266_initialize), -1);
         }
         {
-            VALUE klass = rosetta_rb::Info<datamunge::dstruct::WeightedGraph<std::string, double>>::value.klass;
-            rb_define_method(klass, "directed", RUBY_METHOD_FUNC(rosetta_function_2667), -1);
-            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_2668), -1);
-            rb_define_method(klass, "vertex_count", RUBY_METHOD_FUNC(rosetta_function_2669), -1);
-            rb_define_method(klass, "edge_count", RUBY_METHOD_FUNC(rosetta_function_2670), -1);
-            rb_define_method(klass, "clear", RUBY_METHOD_FUNC(rosetta_function_2671), -1);
-            rb_define_method(klass, "add_vertex", RUBY_METHOD_FUNC(rosetta_function_2672), -1);
-            rb_define_method(klass, "remove_vertex", RUBY_METHOD_FUNC(rosetta_function_2673), -1);
-            rb_define_method(klass, "has_vertex", RUBY_METHOD_FUNC(rosetta_function_2674), -1);
-            rb_define_method(klass, "add_edge", RUBY_METHOD_FUNC(rosetta_function_2675), -1);
-            rb_define_method(klass, "remove_edge", RUBY_METHOD_FUNC(rosetta_function_2676), -1);
-            rb_define_method(klass, "has_edge", RUBY_METHOD_FUNC(rosetta_function_2677), -1);
-            rb_define_method(klass, "edge_weight", RUBY_METHOD_FUNC(rosetta_function_2678), -1);
-            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_function_2679), -1);
-            rb_define_method(klass, "neighbors", RUBY_METHOD_FUNC(rosetta_function_2680), -1);
-            rb_define_method(klass, "dijkstra_distances", RUBY_METHOD_FUNC(rosetta_function_2681), -1);
-            rb_define_method(klass, "bellman_ford_distances", RUBY_METHOD_FUNC(rosetta_function_2682), -1);
-            rb_define_method(klass, "bellman_ford_has_negative_cycle", RUBY_METHOD_FUNC(rosetta_function_2683), -1);
-            rb_define_method(klass, "minimum_spanning_tree", RUBY_METHOD_FUNC(rosetta_function_2684), -1);
-            rb_define_method(klass, "connected_components", RUBY_METHOD_FUNC(rosetta_function_2685), -1);
-            rb_define_method(klass, "strongly_connected_components", RUBY_METHOD_FUNC(rosetta_function_2686), -1);
-            rb_define_method(klass, "has_cycle\?", RUBY_METHOD_FUNC(rosetta_function_2687), -1);
+            VALUE klass = rosetta_rb::Info<datamunge::dstruct::UndirectedGraph<std::string>>::value.klass;
+            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_2660), -1);
+            rb_define_method(klass, "vertex_count", RUBY_METHOD_FUNC(rosetta_function_2661), -1);
+            rb_define_method(klass, "edge_count", RUBY_METHOD_FUNC(rosetta_function_2662), -1);
+            rb_define_method(klass, "clear", RUBY_METHOD_FUNC(rosetta_function_2663), -1);
+            rb_define_method(klass, "add_vertex", RUBY_METHOD_FUNC(rosetta_function_2664), -1);
+            rb_define_method(klass, "remove_vertex", RUBY_METHOD_FUNC(rosetta_function_2665), -1);
+            rb_define_method(klass, "has_vertex", RUBY_METHOD_FUNC(rosetta_function_2666), -1);
+            rb_define_method(klass, "add_edge", RUBY_METHOD_FUNC(rosetta_function_2667), -1);
+            rb_define_method(klass, "remove_edge", RUBY_METHOD_FUNC(rosetta_function_2668), -1);
+            rb_define_method(klass, "has_edge", RUBY_METHOD_FUNC(rosetta_function_2669), -1);
+            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_function_2670), -1);
+            rb_define_method(klass, "neighbors", RUBY_METHOD_FUNC(rosetta_function_2671), -1);
+            rb_define_method(klass, "degree", RUBY_METHOD_FUNC(rosetta_function_2672), -1);
+            rb_define_method(klass, "bfs", RUBY_METHOD_FUNC(rosetta_function_2673), -1);
+            rb_define_method(klass, "dfs", RUBY_METHOD_FUNC(rosetta_function_2674), -1);
+            rb_define_method(klass, "contains_path", RUBY_METHOD_FUNC(rosetta_function_2675), -1);
+            rb_define_method(klass, "connected_components", RUBY_METHOD_FUNC(rosetta_function_2676), -1);
+            rb_define_method(klass, "has_cycle\?", RUBY_METHOD_FUNC(rosetta_function_2677), -1);
             rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_267_initialize), -1);
+        }
+        {
+            VALUE klass = rosetta_rb::Info<datamunge::dstruct::WeightedGraph<std::string, double>>::value.klass;
+            rb_define_method(klass, "directed", RUBY_METHOD_FUNC(rosetta_function_2678), -1);
+            rb_define_method(klass, "empty\?", RUBY_METHOD_FUNC(rosetta_function_2679), -1);
+            rb_define_method(klass, "vertex_count", RUBY_METHOD_FUNC(rosetta_function_2680), -1);
+            rb_define_method(klass, "edge_count", RUBY_METHOD_FUNC(rosetta_function_2681), -1);
+            rb_define_method(klass, "clear", RUBY_METHOD_FUNC(rosetta_function_2682), -1);
+            rb_define_method(klass, "add_vertex", RUBY_METHOD_FUNC(rosetta_function_2683), -1);
+            rb_define_method(klass, "remove_vertex", RUBY_METHOD_FUNC(rosetta_function_2684), -1);
+            rb_define_method(klass, "has_vertex", RUBY_METHOD_FUNC(rosetta_function_2685), -1);
+            rb_define_method(klass, "add_edge", RUBY_METHOD_FUNC(rosetta_function_2686), -1);
+            rb_define_method(klass, "remove_edge", RUBY_METHOD_FUNC(rosetta_function_2687), -1);
+            rb_define_method(klass, "has_edge", RUBY_METHOD_FUNC(rosetta_function_2688), -1);
+            rb_define_method(klass, "edge_weight", RUBY_METHOD_FUNC(rosetta_function_2689), -1);
+            rb_define_method(klass, "vertices", RUBY_METHOD_FUNC(rosetta_function_2690), -1);
+            rb_define_method(klass, "neighbors", RUBY_METHOD_FUNC(rosetta_function_2691), -1);
+            rb_define_method(klass, "dijkstra_distances", RUBY_METHOD_FUNC(rosetta_function_2692), -1);
+            rb_define_method(klass, "bellman_ford_distances", RUBY_METHOD_FUNC(rosetta_function_2693), -1);
+            rb_define_method(klass, "bellman_ford_has_negative_cycle", RUBY_METHOD_FUNC(rosetta_function_2694), -1);
+            rb_define_method(klass, "minimum_spanning_tree", RUBY_METHOD_FUNC(rosetta_function_2695), -1);
+            rb_define_method(klass, "connected_components", RUBY_METHOD_FUNC(rosetta_function_2696), -1);
+            rb_define_method(klass, "strongly_connected_components", RUBY_METHOD_FUNC(rosetta_function_2697), -1);
+            rb_define_method(klass, "has_cycle\?", RUBY_METHOD_FUNC(rosetta_function_2698), -1);
+            rb_define_method(klass, "initialize", RUBY_METHOD_FUNC(rosetta_class_268_initialize), -1);
         }
         {
             VALUE enum_module = rb_define_module_under(module, "MonomialOrder");
@@ -11279,254 +11311,254 @@ static VALUE rosetta_init(VALUE) {
             VALUE enum_module = rb_define_module_under(module, "TrendType");
             rosetta_rb::define_enum<datamunge::stats::TrendType>(enum_module, false, {{"None", "NONE", 0LL}, {"Additive", "ADDITIVE", 1LL}, {"AdditiveDamped", "ADDITIVE_DAMPED", 2LL}});
         }
-        rb_define_module_function(module, "poly_quotient", RUBY_METHOD_FUNC(rosetta_function_811), -1);
-        rb_define_module_function(module, "poly_remainder", RUBY_METHOD_FUNC(rosetta_function_812), -1);
-        rb_define_module_function(module, "simpson_estimate", RUBY_METHOD_FUNC(rosetta_function_813), -1);
-        rb_define_module_function(module, "adaptive_simpson_recurse", RUBY_METHOD_FUNC(rosetta_function_814), -1);
-        rb_define_module_function(module, "definite_integral", RUBY_METHOD_FUNC(rosetta_function_815), -1);
-        rb_define_module_function(module, "taylor_series", RUBY_METHOD_FUNC(rosetta_function_816), -1);
-        rb_define_module_function(module, "descartes_sign_changes", RUBY_METHOD_FUNC(rosetta_function_817), -1);
-        rb_define_module_function(module, "descartes_negative_root_bound", RUBY_METHOD_FUNC(rosetta_function_818), -1);
-        rb_define_module_function(module, "monic", RUBY_METHOD_FUNC(rosetta_function_819), -1);
-        rb_define_module_function(module, "is_negligible_remainder", RUBY_METHOD_FUNC(rosetta_function_820), -1);
-        rb_define_module_function(module, "poly_gcd", RUBY_METHOD_FUNC(rosetta_function_821), -1);
-        rb_define_module_function(module, "poly_extended_gcd", RUBY_METHOD_FUNC(rosetta_function_822), -1);
-        rb_define_module_function(module, "poly_gcd_pseudo_remainder_sequence", RUBY_METHOD_FUNC(rosetta_function_823), -1);
-        rb_define_module_function(module, "sturm_sequence", RUBY_METHOD_FUNC(rosetta_function_824), -1);
-        rb_define_module_function(module, "sturm_sign_changes", RUBY_METHOD_FUNC(rosetta_function_825), -1);
-        rb_define_module_function(module, "cauchy_root_bound", RUBY_METHOD_FUNC(rosetta_function_826), -1);
-        rb_define_module_function(module, "sturm_root_count", RUBY_METHOD_FUNC(rosetta_function_827), -1);
-        rb_define_module_function(module, "isolate_real_roots", RUBY_METHOD_FUNC(rosetta_function_828), -1);
-        rb_define_module_function(module, "refine_root", RUBY_METHOD_FUNC(rosetta_function_829), -1);
-        rb_define_module_function(module, "real_roots", RUBY_METHOD_FUNC(rosetta_function_830), -1);
-        rb_define_module_function(module, "c_add", RUBY_METHOD_FUNC(rosetta_function_831), -1);
-        rb_define_module_function(module, "c_sub", RUBY_METHOD_FUNC(rosetta_function_832), -1);
-        rb_define_module_function(module, "c_mul", RUBY_METHOD_FUNC(rosetta_function_833), -1);
-        rb_define_module_function(module, "c_div", RUBY_METHOD_FUNC(rosetta_function_834), -1);
-        rb_define_module_function(module, "c_abs", RUBY_METHOD_FUNC(rosetta_function_835), -1);
-        rb_define_module_function(module, "c_eval", RUBY_METHOD_FUNC(rosetta_function_836), -1);
-        rb_define_module_function(module, "complex_roots", RUBY_METHOD_FUNC(rosetta_function_837), -1);
-        rb_define_module_function(module, "rational_roots", RUBY_METHOD_FUNC(rosetta_function_838), -1);
-        rb_define_module_function(module, "square_free_factorization", RUBY_METHOD_FUNC(rosetta_function_839), -1);
-        rb_define_module_function(module, "factor_over_reals", RUBY_METHOD_FUNC(rosetta_function_840), -1);
-        rb_define_module_function(module, "total_degree", RUBY_METHOD_FUNC(rosetta_function_841), -1);
-        rb_define_module_function(module, "compare_monomials", RUBY_METHOD_FUNC(rosetta_function_842), -1);
-        rb_define_module_function(module, "lcm_exponent", RUBY_METHOD_FUNC(rosetta_function_843), -1);
-        rb_define_module_function(module, "monomial_divides", RUBY_METHOD_FUNC(rosetta_function_844), -1);
-        rb_define_module_function(module, "s_polynomial", RUBY_METHOD_FUNC(rosetta_function_845), -1);
-        rb_define_module_function(module, "reduce", RUBY_METHOD_FUNC(rosetta_function_846), -1);
-        rb_define_module_function(module, "multivariate_reduce", RUBY_METHOD_FUNC(rosetta_function_847), -1);
-        rb_define_module_function(module, "groebner_basis", RUBY_METHOD_FUNC(rosetta_function_848), -1);
-        rb_define_module_function(module, "lagrange_interpolate", RUBY_METHOD_FUNC(rosetta_function_849), -1);
-        rb_define_module_function(module, "newton_interpolate", RUBY_METHOD_FUNC(rosetta_function_850), -1);
-        rb_define_module_function(module, "to_integer", RUBY_METHOD_FUNC(rosetta_function_851), -1);
-        rb_define_module_function(module, "mod_pow", RUBY_METHOD_FUNC(rosetta_function_852), -1);
-        rb_define_module_function(module, "mod_inverse", RUBY_METHOD_FUNC(rosetta_function_853), -1);
-        rb_define_module_function(module, "crt", RUBY_METHOD_FUNC(rosetta_function_854), -1);
-        rb_define_module_function(module, "gf_mul", RUBY_METHOD_FUNC(rosetta_function_855), -1);
-        rb_define_module_function(module, "gf_derivative", RUBY_METHOD_FUNC(rosetta_function_856), -1);
-        rb_define_module_function(module, "gf_square_free", RUBY_METHOD_FUNC(rosetta_function_857), -1);
-        rb_define_module_function(module, "berlekamp_null_space", RUBY_METHOD_FUNC(rosetta_function_858), -1);
-        rb_define_module_function(module, "berlekamp_factor_mod", RUBY_METHOD_FUNC(rosetta_function_859), -1);
-        rb_define_module_function(module, "berlekamp_factor_count", RUBY_METHOD_FUNC(rosetta_function_860), -1);
-        rb_define_module_function(module, "factor_gf_p", RUBY_METHOD_FUNC(rosetta_function_861), -1);
-        rb_define_module_function(module, "count_monic_irreducibles", RUBY_METHOD_FUNC(rosetta_function_862), -1);
-        rb_define_module_function(module, "expected_distinct_irreducible_factors", RUBY_METHOD_FUNC(rosetta_function_863), -1);
-        rb_define_module_function(module, "sylvester_matrix", RUBY_METHOD_FUNC(rosetta_function_864), -1);
-        rb_define_module_function(module, "determinant", RUBY_METHOD_FUNC(rosetta_function_865), -1);
-        rb_define_module_function(module, "resultant", RUBY_METHOD_FUNC(rosetta_function_866), -1);
-        rb_define_module_function(module, "discriminant", RUBY_METHOD_FUNC(rosetta_function_867), -1);
-        rb_define_module_function(module, "leapfrog_gaussian_acceptance", RUBY_METHOD_FUNC(rosetta_function_868), -1);
-        rb_define_module_function(module, "gaussian_importance_efficiency", RUBY_METHOD_FUNC(rosetta_function_869), -1);
-        rb_define_module_function(module, "rgb_to_gray", RUBY_METHOD_FUNC(rosetta_function_870), -1);
-        rb_define_module_function(module, "rgb_to_hsv", RUBY_METHOD_FUNC(rosetta_function_871), -1);
-        rb_define_module_function(module, "hsv_to_rgb", RUBY_METHOD_FUNC(rosetta_function_872), -1);
-        rb_define_module_function(module, "to_grayscale", RUBY_METHOD_FUNC(rosetta_function_873), -1);
-        rb_define_module_function(module, "to_rgb", RUBY_METHOD_FUNC(rosetta_function_874), -1);
-        rb_define_module_function(module, "to_rgba", RUBY_METHOD_FUNC(rosetta_function_875), -1);
-        rb_define_module_function(module, "split_channels", RUBY_METHOD_FUNC(rosetta_function_876), -1);
-        rb_define_module_function(module, "merge_channels", RUBY_METHOD_FUNC(rosetta_function_877), -1);
-        rb_define_module_function(module, "dog_blobs", RUBY_METHOD_FUNC(rosetta_function_878), -1);
-        rb_define_module_function(module, "structure_tensor", RUBY_METHOD_FUNC(rosetta_function_879), -1);
-        rb_define_module_function(module, "extract_local_maxima", RUBY_METHOD_FUNC(rosetta_function_880), -1);
-        rb_define_module_function(module, "harris_corners", RUBY_METHOD_FUNC(rosetta_function_881), -1);
-        rb_define_module_function(module, "shi_tomasi_corners", RUBY_METHOD_FUNC(rosetta_function_882), -1);
-        rb_define_module_function(module, "fast_corners", RUBY_METHOD_FUNC(rosetta_function_883), -1);
-        rb_define_module_function(module, "line_endpoints", RUBY_METHOD_FUNC(rosetta_function_884), -1);
-        rb_define_module_function(module, "hough_lines", RUBY_METHOD_FUNC(rosetta_function_885), -1);
-        rb_define_module_function(module, "hough_circles", RUBY_METHOD_FUNC(rosetta_function_886), -1);
-        rb_define_module_function(module, "in_structuring_element", RUBY_METHOD_FUNC(rosetta_function_887), -1);
-        rb_define_module_function(module, "is_foreground", RUBY_METHOD_FUNC(rosetta_function_888), -1);
-        rb_define_module_function(module, "erode", RUBY_METHOD_FUNC(rosetta_function_889), -1);
-        rb_define_module_function(module, "dilate", RUBY_METHOD_FUNC(rosetta_function_890), -1);
-        rb_define_module_function(module, "morphological_open", RUBY_METHOD_FUNC(rosetta_function_891), -1);
-        rb_define_module_function(module, "morphological_close", RUBY_METHOD_FUNC(rosetta_function_892), -1);
-        rb_define_module_function(module, "lucas_kanade_optical_flow", RUBY_METHOD_FUNC(rosetta_function_893), -1);
-        rb_define_module_function(module, "box_kernel", RUBY_METHOD_FUNC(rosetta_function_894), -1);
-        rb_define_module_function(module, "gaussian_kernel", RUBY_METHOD_FUNC(rosetta_function_895), -1);
-        rb_define_module_function(module, "convolve", RUBY_METHOD_FUNC(rosetta_function_896), -1);
-        rb_define_module_function(module, "box_blur", RUBY_METHOD_FUNC(rosetta_function_897), -1);
-        rb_define_module_function(module, "gaussian_blur", RUBY_METHOD_FUNC(rosetta_function_898), -1);
-        rb_define_module_function(module, "sharpen", RUBY_METHOD_FUNC(rosetta_function_899), -1);
-        rb_define_module_function(module, "sobel_edges", RUBY_METHOD_FUNC(rosetta_function_900), -1);
-        rb_define_module_function(module, "adjust_brightness", RUBY_METHOD_FUNC(rosetta_function_901), -1);
-        rb_define_module_function(module, "adjust_contrast", RUBY_METHOD_FUNC(rosetta_function_902), -1);
-        rb_define_module_function(module, "threshold", RUBY_METHOD_FUNC(rosetta_function_903), -1);
-        rb_define_module_function(module, "lerp_byte", RUBY_METHOD_FUNC(rosetta_function_904), -1);
-        rb_define_module_function(module, "bilinear_sample", RUBY_METHOD_FUNC(rosetta_function_905), -1);
-        rb_define_module_function(module, "resize", RUBY_METHOD_FUNC(rosetta_function_906), -1);
-        rb_define_module_function(module, "crop", RUBY_METHOD_FUNC(rosetta_function_907), -1);
-        rb_define_module_function(module, "flip_horizontal", RUBY_METHOD_FUNC(rosetta_function_908), -1);
-        rb_define_module_function(module, "flip_vertical", RUBY_METHOD_FUNC(rosetta_function_909), -1);
-        rb_define_module_function(module, "rotate90", RUBY_METHOD_FUNC(rosetta_function_910), -1);
-        rb_define_module_function(module, "rotate", RUBY_METHOD_FUNC(rosetta_function_911), -1);
-        rb_define_module_function(module, "gaussian_pyramid", RUBY_METHOD_FUNC(rosetta_function_912), -1);
-        rb_define_module_function(module, "signed_difference_image", RUBY_METHOD_FUNC(rosetta_function_913), -1);
-        rb_define_module_function(module, "laplacian_pyramid", RUBY_METHOD_FUNC(rosetta_function_914), -1);
-        rb_define_module_function(module, "connected_components", RUBY_METHOD_FUNC(rosetta_function_915), -1);
-        rb_define_module_function(module, "otsu_threshold", RUBY_METHOD_FUNC(rosetta_function_916), -1);
-        rb_define_module_function(module, "kmeans_segment", RUBY_METHOD_FUNC(rosetta_function_917), -1);
-        rb_define_module_function(module, "data_home", RUBY_METHOD_FUNC(rosetta_function_918), -1);
-        rb_define_module_function(module, "downloadable", RUBY_METHOD_FUNC(rosetta_function_919), -1);
-        rb_define_module_function(module, "fetch", RUBY_METHOD_FUNC(rosetta_function_920), -1);
-        rb_define_module_function(module, "download_file", RUBY_METHOD_FUNC(rosetta_function_921), -1);
-        rb_define_module_function(module, "make_uniform_mesh1d", RUBY_METHOD_FUNC(rosetta_function_922), -1);
-        rb_define_module_function(module, "squared_distance", RUBY_METHOD_FUNC(rosetta_function_923), -1);
-        rb_define_module_function(module, "distance", RUBY_METHOD_FUNC(rosetta_function_924), -1);
-        rb_define_module_function(module, "cross", RUBY_METHOD_FUNC(rosetta_function_925), -1);
-        rb_define_module_function(module, "delaunay_triangulation", RUBY_METHOD_FUNC(rosetta_function_926), -1);
-        rb_define_module_function(module, "delaunay_trace", RUBY_METHOD_FUNC(rosetta_function_927), -1);
-        rb_define_module_function(module, "delaunay_analyze", RUBY_METHOD_FUNC(rosetta_function_928), -1);
-        rb_define_module_function(module, "delaunay_uniform_cloud", RUBY_METHOD_FUNC(rosetta_function_929), -1);
-        rb_define_module_function(module, "make_rectangular_mesh2d", RUBY_METHOD_FUNC(rosetta_function_930), -1);
-        rb_define_module_function(module, "make_mesh2d_from_points", RUBY_METHOD_FUNC(rosetta_function_931), -1);
-        rb_define_module_function(module, "boundary_nodes", RUBY_METHOD_FUNC(rosetta_function_932), -1);
-        rb_define_module_function(module, "bounding_box", RUBY_METHOD_FUNC(rosetta_function_933), -1);
-        rb_define_module_function(module, "closest_pair", RUBY_METHOD_FUNC(rosetta_function_934), -1);
-        rb_define_module_function(module, "convex_hull", RUBY_METHOD_FUNC(rosetta_function_935), -1);
-        rb_define_module_function(module, "convex_hull_analyze", RUBY_METHOD_FUNC(rosetta_function_936), -1);
-        rb_define_module_function(module, "convex_hull_trace", RUBY_METHOD_FUNC(rosetta_function_937), -1);
-        rb_define_module_function(module, "sample_gaussian_points", RUBY_METHOD_FUNC(rosetta_function_938), -1);
-        rb_define_module_function(module, "terrain_colors", RUBY_METHOD_FUNC(rosetta_function_939), -1);
-        rb_define_module_function(module, "diverging_colors", RUBY_METHOD_FUNC(rosetta_function_940), -1);
-        rb_define_module_function(module, "viridis_colors", RUBY_METHOD_FUNC(rosetta_function_941), -1);
-        rb_define_module_function(module, "value_colors", RUBY_METHOD_FUNC(rosetta_function_942), -1);
-        rb_define_module_function(module, "dtw_trace_entries", RUBY_METHOD_FUNC(rosetta_function_943), -1);
-        rb_define_module_function(module, "dynamic_time_warping_work", RUBY_METHOD_FUNC(rosetta_function_944), -1);
-        rb_define_module_function(module, "dynamic_time_warping", RUBY_METHOD_FUNC(rosetta_function_945), -1);
-        rb_define_module_function(module, "dynamic_time_warping_trace", RUBY_METHOD_FUNC(rosetta_function_946), -1);
-        rb_define_module_function(module, "dtw_path_cost", RUBY_METHOD_FUNC(rosetta_function_947), -1);
-        rb_define_module_function(module, "plot_dtw_alignment", RUBY_METHOD_FUNC(rosetta_function_948), -1);
-        rb_define_module_function(module, "discrete_frechet_distance", RUBY_METHOD_FUNC(rosetta_function_949), -1);
-        rb_define_module_function(module, "circle_from_one_point", RUBY_METHOD_FUNC(rosetta_function_950), -1);
-        rb_define_module_function(module, "circle_from_two_points", RUBY_METHOD_FUNC(rosetta_function_951), -1);
-        rb_define_module_function(module, "circle_from_three_points", RUBY_METHOD_FUNC(rosetta_function_952), -1);
-        rb_define_module_function(module, "circle_contains", RUBY_METHOD_FUNC(rosetta_function_953), -1);
-        rb_define_module_function(module, "min_enclosing_circle", RUBY_METHOD_FUNC(rosetta_function_954), -1);
-        rb_define_module_function(module, "point_in_polygon", RUBY_METHOD_FUNC(rosetta_function_955), -1);
-        rb_define_module_function(module, "signed_polygon_area", RUBY_METHOD_FUNC(rosetta_function_956), -1);
-        rb_define_module_function(module, "polygon_area", RUBY_METHOD_FUNC(rosetta_function_957), -1);
-        rb_define_module_function(module, "polygon_centroid", RUBY_METHOD_FUNC(rosetta_function_958), -1);
-        rb_define_module_function(module, "is_convex_polygon", RUBY_METHOD_FUNC(rosetta_function_959), -1);
-        rb_define_module_function(module, "orientation", RUBY_METHOD_FUNC(rosetta_function_960), -1);
-        rb_define_module_function(module, "on_segment", RUBY_METHOD_FUNC(rosetta_function_961), -1);
-        rb_define_module_function(module, "segments_intersect", RUBY_METHOD_FUNC(rosetta_function_962), -1);
-        rb_define_module_function(module, "line_intersection_point", RUBY_METHOD_FUNC(rosetta_function_963), -1);
-        rb_define_module_function(module, "segment_intersection_point", RUBY_METHOD_FUNC(rosetta_function_964), -1);
-        rb_define_module_function(module, "inside_clip_edge", RUBY_METHOD_FUNC(rosetta_function_965), -1);
-        rb_define_module_function(module, "clip_polygon", RUBY_METHOD_FUNC(rosetta_function_966), -1);
-        rb_define_module_function(module, "point_in_triangle", RUBY_METHOD_FUNC(rosetta_function_967), -1);
-        rb_define_module_function(module, "triangulate_polygon", RUBY_METHOD_FUNC(rosetta_function_968), -1);
-        rb_define_module_function(module, "polygon_diameter", RUBY_METHOD_FUNC(rosetta_function_969), -1);
-        rb_define_module_function(module, "minimum_bounding_rectangle", RUBY_METHOD_FUNC(rosetta_function_970), -1);
-        rb_define_module_function(module, "point_to_line_distance", RUBY_METHOD_FUNC(rosetta_function_971), -1);
-        rb_define_module_function(module, "simplify_polyline", RUBY_METHOD_FUNC(rosetta_function_972), -1);
-        rb_define_module_function(module, "circumcenter", RUBY_METHOD_FUNC(rosetta_function_973), -1);
-        rb_define_module_function(module, "voronoi_diagram", RUBY_METHOD_FUNC(rosetta_function_974), -1);
-        rb_define_module_function(module, "read_bmp", RUBY_METHOD_FUNC(rosetta_function_975), -1);
-        rb_define_module_function(module, "write_bmp", RUBY_METHOD_FUNC(rosetta_function_976), -1);
-        rb_define_module_function(module, "set_pixel_clipped", RUBY_METHOD_FUNC(rosetta_function_977), -1);
-        rb_define_module_function(module, "stamp", RUBY_METHOD_FUNC(rosetta_function_978), -1);
-        rb_define_module_function(module, "draw_line", RUBY_METHOD_FUNC(rosetta_function_979), -1);
-        rb_define_module_function(module, "draw_rectangle", RUBY_METHOD_FUNC(rosetta_function_980), -1);
-        rb_define_module_function(module, "draw_circle", RUBY_METHOD_FUNC(rosetta_function_981), -1);
-        rb_define_module_function(module, "draw_polygon", RUBY_METHOD_FUNC(rosetta_function_982), -1);
-        rb_define_module_function(module, "read_ppm", RUBY_METHOD_FUNC(rosetta_function_983), -1);
-        rb_define_module_function(module, "write_ppm", RUBY_METHOD_FUNC(rosetta_function_984), -1);
-        rb_define_module_function(module, "read_pgm", RUBY_METHOD_FUNC(rosetta_function_985), -1);
-        rb_define_module_function(module, "write_pgm", RUBY_METHOD_FUNC(rosetta_function_986), -1);
-        rb_define_module_function(module, "read_pbm", RUBY_METHOD_FUNC(rosetta_function_987), -1);
-        rb_define_module_function(module, "write_pbm", RUBY_METHOD_FUNC(rosetta_function_988), -1);
-        rb_define_module_function(module, "read_png", RUBY_METHOD_FUNC(rosetta_function_989), -1);
-        rb_define_module_function(module, "write_png", RUBY_METHOD_FUNC(rosetta_function_990), -1);
-        rb_define_module_function(module, "expected_improvement", RUBY_METHOD_FUNC(rosetta_function_991), -1);
-        rb_define_module_function(module, "probability_of_improvement", RUBY_METHOD_FUNC(rosetta_function_992), -1);
-        rb_define_module_function(module, "one_way_anova", RUBY_METHOD_FUNC(rosetta_function_993), -1);
-        rb_define_module_function(module, "kruskal_wallis_test", RUBY_METHOD_FUNC(rosetta_function_994), -1);
-        rb_define_module_function(module, "chi_squared_goodness_of_fit", RUBY_METHOD_FUNC(rosetta_function_995), -1);
-        rb_define_module_function(module, "chi_squared_test_independence", RUBY_METHOD_FUNC(rosetta_function_996), -1);
-        rb_define_module_function(module, "pearson_correlation_test", RUBY_METHOD_FUNC(rosetta_function_997), -1);
-        rb_define_module_function(module, "spearman_correlation_test", RUBY_METHOD_FUNC(rosetta_function_998), -1);
-        rb_define_module_function(module, "kendall_tau", RUBY_METHOD_FUNC(rosetta_function_999), -1);
-        rb_define_module_function(module, "fisher_exact_test_2x2", RUBY_METHOD_FUNC(rosetta_function_1000), -1);
-        rb_define_module_function(module, "ks_test_one_sample_normal", RUBY_METHOD_FUNC(rosetta_function_1001), -1);
-        rb_define_module_function(module, "ks_test_one_sample_uniform", RUBY_METHOD_FUNC(rosetta_function_1002), -1);
-        rb_define_module_function(module, "ks_test_two_sample", RUBY_METHOD_FUNC(rosetta_function_1003), -1);
-        rb_define_module_function(module, "shapiro_francia_test", RUBY_METHOD_FUNC(rosetta_function_1004), -1);
-        rb_define_module_function(module, "p_adjust", RUBY_METHOD_FUNC(rosetta_function_1005), -1);
-        rb_define_module_function(module, "westfall_young_adjust", RUBY_METHOD_FUNC(rosetta_function_1006), -1);
-        rb_define_module_function(module, "romano_wolf_adjust", RUBY_METHOD_FUNC(rosetta_function_1007), -1);
-        rb_define_module_function(module, "proportion_test_one_sample", RUBY_METHOD_FUNC(rosetta_function_1008), -1);
-        rb_define_module_function(module, "proportion_test_two_sample", RUBY_METHOD_FUNC(rosetta_function_1009), -1);
-        rb_define_module_function(module, "binomial_test", RUBY_METHOD_FUNC(rosetta_function_1010), -1);
-        rb_define_module_function(module, "t_test_one_sample", RUBY_METHOD_FUNC(rosetta_function_1011), -1);
-        rb_define_module_function(module, "t_test_two_sample", RUBY_METHOD_FUNC(rosetta_function_1012), -1);
-        rb_define_module_function(module, "t_test_paired", RUBY_METHOD_FUNC(rosetta_function_1013), -1);
-        rb_define_module_function(module, "f_test_variance", RUBY_METHOD_FUNC(rosetta_function_1014), -1);
-        rb_define_module_function(module, "wilcoxon_signed_rank_test", RUBY_METHOD_FUNC(rosetta_function_1015), -1);
-        rb_define_module_function(module, "wilcoxon_rank_sum_test", RUBY_METHOD_FUNC(rosetta_function_1016), -1);
-        rb_define_module_function(module, "bs", RUBY_METHOD_FUNC(rosetta_function_1017), -1);
-        rb_define_module_function(module, "mkdir", RUBY_METHOD_FUNC(rosetta_function_1018), -1);
-        rb_define_module_function(module, "hello", RUBY_METHOD_FUNC(rosetta_function_1019), -1);
-        rb_define_module_function(module, "call_with_callback", RUBY_METHOD_FUNC(rosetta_function_1020), -1);
-        rb_define_module_function(module, "map_dvector_with_callback", RUBY_METHOD_FUNC(rosetta_function_1021), -1);
-        rb_define_module_function(module, "make_dvector", RUBY_METHOD_FUNC(rosetta_function_1022), -1);
-        rb_define_module_function(module, "sum_dvector", RUBY_METHOD_FUNC(rosetta_function_1023), -1);
-        rb_define_module_function(module, "make_dpair", RUBY_METHOD_FUNC(rosetta_function_1024), -1);
-        rb_define_module_function(module, "sum_dpair", RUBY_METHOD_FUNC(rosetta_function_1025), -1);
-        rb_define_module_function(module, "refine_basis", RUBY_METHOD_FUNC(rosetta_function_1044), -1);
-        rb_define_module_function(module, "dyadic_refine", RUBY_METHOD_FUNC(rosetta_function_1045), -1);
-        rb_define_module_function(module, "fit_tensor_bspline", RUBY_METHOD_FUNC(rosetta_function_1046), -1);
-        rb_define_module_function(module, "fit_tensor_pspline", RUBY_METHOD_FUNC(rosetta_function_1047), -1);
-        rb_define_module_function(module, "nn_gemm_backend", RUBY_METHOD_FUNC(rosetta_function_1048), -1);
-        rb_define_module_function(module, "nn_get_num_threads", RUBY_METHOD_FUNC(rosetta_function_1049), -1);
-        rb_define_module_function(module, "nn_set_num_threads", RUBY_METHOD_FUNC(rosetta_function_1050), -1);
-        rb_define_module_function(module, "set_seed", RUBY_METHOD_FUNC(rosetta_function_1051), -1);
-        rb_define_module_function(module, "unif", RUBY_METHOD_FUNC(rosetta_function_1052), -1);
-        rb_define_module_function(module, "runif", RUBY_METHOD_FUNC(rosetta_function_1053), -1);
-        rb_define_module_function(module, "rnorm", RUBY_METHOD_FUNC(rosetta_function_1054), -1);
-        rb_define_module_function(module, "seql", RUBY_METHOD_FUNC(rosetta_function_1055), -1);
+        rb_define_module_function(module, "poly_quotient", RUBY_METHOD_FUNC(rosetta_function_812), -1);
+        rb_define_module_function(module, "poly_remainder", RUBY_METHOD_FUNC(rosetta_function_813), -1);
+        rb_define_module_function(module, "simpson_estimate", RUBY_METHOD_FUNC(rosetta_function_814), -1);
+        rb_define_module_function(module, "adaptive_simpson_recurse", RUBY_METHOD_FUNC(rosetta_function_815), -1);
+        rb_define_module_function(module, "definite_integral", RUBY_METHOD_FUNC(rosetta_function_816), -1);
+        rb_define_module_function(module, "taylor_series", RUBY_METHOD_FUNC(rosetta_function_817), -1);
+        rb_define_module_function(module, "descartes_sign_changes", RUBY_METHOD_FUNC(rosetta_function_818), -1);
+        rb_define_module_function(module, "descartes_negative_root_bound", RUBY_METHOD_FUNC(rosetta_function_819), -1);
+        rb_define_module_function(module, "monic", RUBY_METHOD_FUNC(rosetta_function_820), -1);
+        rb_define_module_function(module, "is_negligible_remainder", RUBY_METHOD_FUNC(rosetta_function_821), -1);
+        rb_define_module_function(module, "poly_gcd", RUBY_METHOD_FUNC(rosetta_function_822), -1);
+        rb_define_module_function(module, "poly_extended_gcd", RUBY_METHOD_FUNC(rosetta_function_823), -1);
+        rb_define_module_function(module, "poly_gcd_pseudo_remainder_sequence", RUBY_METHOD_FUNC(rosetta_function_824), -1);
+        rb_define_module_function(module, "sturm_sequence", RUBY_METHOD_FUNC(rosetta_function_825), -1);
+        rb_define_module_function(module, "sturm_sign_changes", RUBY_METHOD_FUNC(rosetta_function_826), -1);
+        rb_define_module_function(module, "cauchy_root_bound", RUBY_METHOD_FUNC(rosetta_function_827), -1);
+        rb_define_module_function(module, "sturm_root_count", RUBY_METHOD_FUNC(rosetta_function_828), -1);
+        rb_define_module_function(module, "isolate_real_roots", RUBY_METHOD_FUNC(rosetta_function_829), -1);
+        rb_define_module_function(module, "refine_root", RUBY_METHOD_FUNC(rosetta_function_830), -1);
+        rb_define_module_function(module, "real_roots", RUBY_METHOD_FUNC(rosetta_function_831), -1);
+        rb_define_module_function(module, "c_add", RUBY_METHOD_FUNC(rosetta_function_832), -1);
+        rb_define_module_function(module, "c_sub", RUBY_METHOD_FUNC(rosetta_function_833), -1);
+        rb_define_module_function(module, "c_mul", RUBY_METHOD_FUNC(rosetta_function_834), -1);
+        rb_define_module_function(module, "c_div", RUBY_METHOD_FUNC(rosetta_function_835), -1);
+        rb_define_module_function(module, "c_abs", RUBY_METHOD_FUNC(rosetta_function_836), -1);
+        rb_define_module_function(module, "c_eval", RUBY_METHOD_FUNC(rosetta_function_837), -1);
+        rb_define_module_function(module, "complex_roots", RUBY_METHOD_FUNC(rosetta_function_838), -1);
+        rb_define_module_function(module, "rational_roots", RUBY_METHOD_FUNC(rosetta_function_839), -1);
+        rb_define_module_function(module, "square_free_factorization", RUBY_METHOD_FUNC(rosetta_function_840), -1);
+        rb_define_module_function(module, "factor_over_reals", RUBY_METHOD_FUNC(rosetta_function_841), -1);
+        rb_define_module_function(module, "total_degree", RUBY_METHOD_FUNC(rosetta_function_842), -1);
+        rb_define_module_function(module, "compare_monomials", RUBY_METHOD_FUNC(rosetta_function_843), -1);
+        rb_define_module_function(module, "lcm_exponent", RUBY_METHOD_FUNC(rosetta_function_844), -1);
+        rb_define_module_function(module, "monomial_divides", RUBY_METHOD_FUNC(rosetta_function_845), -1);
+        rb_define_module_function(module, "s_polynomial", RUBY_METHOD_FUNC(rosetta_function_846), -1);
+        rb_define_module_function(module, "reduce", RUBY_METHOD_FUNC(rosetta_function_847), -1);
+        rb_define_module_function(module, "multivariate_reduce", RUBY_METHOD_FUNC(rosetta_function_848), -1);
+        rb_define_module_function(module, "groebner_basis", RUBY_METHOD_FUNC(rosetta_function_849), -1);
+        rb_define_module_function(module, "lagrange_interpolate", RUBY_METHOD_FUNC(rosetta_function_850), -1);
+        rb_define_module_function(module, "newton_interpolate", RUBY_METHOD_FUNC(rosetta_function_851), -1);
+        rb_define_module_function(module, "to_integer", RUBY_METHOD_FUNC(rosetta_function_852), -1);
+        rb_define_module_function(module, "mod_pow", RUBY_METHOD_FUNC(rosetta_function_853), -1);
+        rb_define_module_function(module, "mod_inverse", RUBY_METHOD_FUNC(rosetta_function_854), -1);
+        rb_define_module_function(module, "crt", RUBY_METHOD_FUNC(rosetta_function_855), -1);
+        rb_define_module_function(module, "gf_mul", RUBY_METHOD_FUNC(rosetta_function_856), -1);
+        rb_define_module_function(module, "gf_derivative", RUBY_METHOD_FUNC(rosetta_function_857), -1);
+        rb_define_module_function(module, "gf_square_free", RUBY_METHOD_FUNC(rosetta_function_858), -1);
+        rb_define_module_function(module, "berlekamp_null_space", RUBY_METHOD_FUNC(rosetta_function_859), -1);
+        rb_define_module_function(module, "berlekamp_factor_mod", RUBY_METHOD_FUNC(rosetta_function_860), -1);
+        rb_define_module_function(module, "berlekamp_factor_count", RUBY_METHOD_FUNC(rosetta_function_861), -1);
+        rb_define_module_function(module, "factor_gf_p", RUBY_METHOD_FUNC(rosetta_function_862), -1);
+        rb_define_module_function(module, "count_monic_irreducibles", RUBY_METHOD_FUNC(rosetta_function_863), -1);
+        rb_define_module_function(module, "expected_distinct_irreducible_factors", RUBY_METHOD_FUNC(rosetta_function_864), -1);
+        rb_define_module_function(module, "sylvester_matrix", RUBY_METHOD_FUNC(rosetta_function_865), -1);
+        rb_define_module_function(module, "determinant", RUBY_METHOD_FUNC(rosetta_function_866), -1);
+        rb_define_module_function(module, "resultant", RUBY_METHOD_FUNC(rosetta_function_867), -1);
+        rb_define_module_function(module, "discriminant", RUBY_METHOD_FUNC(rosetta_function_868), -1);
+        rb_define_module_function(module, "leapfrog_gaussian_acceptance", RUBY_METHOD_FUNC(rosetta_function_869), -1);
+        rb_define_module_function(module, "gaussian_importance_efficiency", RUBY_METHOD_FUNC(rosetta_function_870), -1);
+        rb_define_module_function(module, "rgb_to_gray", RUBY_METHOD_FUNC(rosetta_function_871), -1);
+        rb_define_module_function(module, "rgb_to_hsv", RUBY_METHOD_FUNC(rosetta_function_872), -1);
+        rb_define_module_function(module, "hsv_to_rgb", RUBY_METHOD_FUNC(rosetta_function_873), -1);
+        rb_define_module_function(module, "to_grayscale", RUBY_METHOD_FUNC(rosetta_function_874), -1);
+        rb_define_module_function(module, "to_rgb", RUBY_METHOD_FUNC(rosetta_function_875), -1);
+        rb_define_module_function(module, "to_rgba", RUBY_METHOD_FUNC(rosetta_function_876), -1);
+        rb_define_module_function(module, "split_channels", RUBY_METHOD_FUNC(rosetta_function_877), -1);
+        rb_define_module_function(module, "merge_channels", RUBY_METHOD_FUNC(rosetta_function_878), -1);
+        rb_define_module_function(module, "dog_blobs", RUBY_METHOD_FUNC(rosetta_function_879), -1);
+        rb_define_module_function(module, "structure_tensor", RUBY_METHOD_FUNC(rosetta_function_880), -1);
+        rb_define_module_function(module, "extract_local_maxima", RUBY_METHOD_FUNC(rosetta_function_881), -1);
+        rb_define_module_function(module, "harris_corners", RUBY_METHOD_FUNC(rosetta_function_882), -1);
+        rb_define_module_function(module, "shi_tomasi_corners", RUBY_METHOD_FUNC(rosetta_function_883), -1);
+        rb_define_module_function(module, "fast_corners", RUBY_METHOD_FUNC(rosetta_function_884), -1);
+        rb_define_module_function(module, "line_endpoints", RUBY_METHOD_FUNC(rosetta_function_885), -1);
+        rb_define_module_function(module, "hough_lines", RUBY_METHOD_FUNC(rosetta_function_886), -1);
+        rb_define_module_function(module, "hough_circles", RUBY_METHOD_FUNC(rosetta_function_887), -1);
+        rb_define_module_function(module, "in_structuring_element", RUBY_METHOD_FUNC(rosetta_function_888), -1);
+        rb_define_module_function(module, "is_foreground", RUBY_METHOD_FUNC(rosetta_function_889), -1);
+        rb_define_module_function(module, "erode", RUBY_METHOD_FUNC(rosetta_function_890), -1);
+        rb_define_module_function(module, "dilate", RUBY_METHOD_FUNC(rosetta_function_891), -1);
+        rb_define_module_function(module, "morphological_open", RUBY_METHOD_FUNC(rosetta_function_892), -1);
+        rb_define_module_function(module, "morphological_close", RUBY_METHOD_FUNC(rosetta_function_893), -1);
+        rb_define_module_function(module, "lucas_kanade_optical_flow", RUBY_METHOD_FUNC(rosetta_function_894), -1);
+        rb_define_module_function(module, "box_kernel", RUBY_METHOD_FUNC(rosetta_function_895), -1);
+        rb_define_module_function(module, "gaussian_kernel", RUBY_METHOD_FUNC(rosetta_function_896), -1);
+        rb_define_module_function(module, "convolve", RUBY_METHOD_FUNC(rosetta_function_897), -1);
+        rb_define_module_function(module, "box_blur", RUBY_METHOD_FUNC(rosetta_function_898), -1);
+        rb_define_module_function(module, "gaussian_blur", RUBY_METHOD_FUNC(rosetta_function_899), -1);
+        rb_define_module_function(module, "sharpen", RUBY_METHOD_FUNC(rosetta_function_900), -1);
+        rb_define_module_function(module, "sobel_edges", RUBY_METHOD_FUNC(rosetta_function_901), -1);
+        rb_define_module_function(module, "adjust_brightness", RUBY_METHOD_FUNC(rosetta_function_902), -1);
+        rb_define_module_function(module, "adjust_contrast", RUBY_METHOD_FUNC(rosetta_function_903), -1);
+        rb_define_module_function(module, "threshold", RUBY_METHOD_FUNC(rosetta_function_904), -1);
+        rb_define_module_function(module, "lerp_byte", RUBY_METHOD_FUNC(rosetta_function_905), -1);
+        rb_define_module_function(module, "bilinear_sample", RUBY_METHOD_FUNC(rosetta_function_906), -1);
+        rb_define_module_function(module, "resize", RUBY_METHOD_FUNC(rosetta_function_907), -1);
+        rb_define_module_function(module, "crop", RUBY_METHOD_FUNC(rosetta_function_908), -1);
+        rb_define_module_function(module, "flip_horizontal", RUBY_METHOD_FUNC(rosetta_function_909), -1);
+        rb_define_module_function(module, "flip_vertical", RUBY_METHOD_FUNC(rosetta_function_910), -1);
+        rb_define_module_function(module, "rotate90", RUBY_METHOD_FUNC(rosetta_function_911), -1);
+        rb_define_module_function(module, "rotate", RUBY_METHOD_FUNC(rosetta_function_912), -1);
+        rb_define_module_function(module, "gaussian_pyramid", RUBY_METHOD_FUNC(rosetta_function_913), -1);
+        rb_define_module_function(module, "signed_difference_image", RUBY_METHOD_FUNC(rosetta_function_914), -1);
+        rb_define_module_function(module, "laplacian_pyramid", RUBY_METHOD_FUNC(rosetta_function_915), -1);
+        rb_define_module_function(module, "connected_components", RUBY_METHOD_FUNC(rosetta_function_916), -1);
+        rb_define_module_function(module, "otsu_threshold", RUBY_METHOD_FUNC(rosetta_function_917), -1);
+        rb_define_module_function(module, "kmeans_segment", RUBY_METHOD_FUNC(rosetta_function_918), -1);
+        rb_define_module_function(module, "data_home", RUBY_METHOD_FUNC(rosetta_function_919), -1);
+        rb_define_module_function(module, "downloadable", RUBY_METHOD_FUNC(rosetta_function_920), -1);
+        rb_define_module_function(module, "fetch", RUBY_METHOD_FUNC(rosetta_function_921), -1);
+        rb_define_module_function(module, "download_file", RUBY_METHOD_FUNC(rosetta_function_922), -1);
+        rb_define_module_function(module, "make_uniform_mesh1d", RUBY_METHOD_FUNC(rosetta_function_923), -1);
+        rb_define_module_function(module, "squared_distance", RUBY_METHOD_FUNC(rosetta_function_924), -1);
+        rb_define_module_function(module, "distance", RUBY_METHOD_FUNC(rosetta_function_925), -1);
+        rb_define_module_function(module, "cross", RUBY_METHOD_FUNC(rosetta_function_926), -1);
+        rb_define_module_function(module, "delaunay_triangulation", RUBY_METHOD_FUNC(rosetta_function_927), -1);
+        rb_define_module_function(module, "delaunay_trace", RUBY_METHOD_FUNC(rosetta_function_928), -1);
+        rb_define_module_function(module, "delaunay_analyze", RUBY_METHOD_FUNC(rosetta_function_929), -1);
+        rb_define_module_function(module, "delaunay_uniform_cloud", RUBY_METHOD_FUNC(rosetta_function_930), -1);
+        rb_define_module_function(module, "make_rectangular_mesh2d", RUBY_METHOD_FUNC(rosetta_function_931), -1);
+        rb_define_module_function(module, "make_mesh2d_from_points", RUBY_METHOD_FUNC(rosetta_function_932), -1);
+        rb_define_module_function(module, "boundary_nodes", RUBY_METHOD_FUNC(rosetta_function_933), -1);
+        rb_define_module_function(module, "bounding_box", RUBY_METHOD_FUNC(rosetta_function_934), -1);
+        rb_define_module_function(module, "closest_pair", RUBY_METHOD_FUNC(rosetta_function_935), -1);
+        rb_define_module_function(module, "convex_hull", RUBY_METHOD_FUNC(rosetta_function_936), -1);
+        rb_define_module_function(module, "convex_hull_analyze", RUBY_METHOD_FUNC(rosetta_function_937), -1);
+        rb_define_module_function(module, "convex_hull_trace", RUBY_METHOD_FUNC(rosetta_function_938), -1);
+        rb_define_module_function(module, "sample_gaussian_points", RUBY_METHOD_FUNC(rosetta_function_939), -1);
+        rb_define_module_function(module, "terrain_colors", RUBY_METHOD_FUNC(rosetta_function_940), -1);
+        rb_define_module_function(module, "diverging_colors", RUBY_METHOD_FUNC(rosetta_function_941), -1);
+        rb_define_module_function(module, "viridis_colors", RUBY_METHOD_FUNC(rosetta_function_942), -1);
+        rb_define_module_function(module, "value_colors", RUBY_METHOD_FUNC(rosetta_function_943), -1);
+        rb_define_module_function(module, "dtw_trace_entries", RUBY_METHOD_FUNC(rosetta_function_944), -1);
+        rb_define_module_function(module, "dynamic_time_warping_work", RUBY_METHOD_FUNC(rosetta_function_945), -1);
+        rb_define_module_function(module, "dynamic_time_warping", RUBY_METHOD_FUNC(rosetta_function_946), -1);
+        rb_define_module_function(module, "dynamic_time_warping_trace", RUBY_METHOD_FUNC(rosetta_function_947), -1);
+        rb_define_module_function(module, "dtw_path_cost", RUBY_METHOD_FUNC(rosetta_function_948), -1);
+        rb_define_module_function(module, "plot_dtw_alignment", RUBY_METHOD_FUNC(rosetta_function_949), -1);
+        rb_define_module_function(module, "discrete_frechet_distance", RUBY_METHOD_FUNC(rosetta_function_950), -1);
+        rb_define_module_function(module, "circle_from_one_point", RUBY_METHOD_FUNC(rosetta_function_951), -1);
+        rb_define_module_function(module, "circle_from_two_points", RUBY_METHOD_FUNC(rosetta_function_952), -1);
+        rb_define_module_function(module, "circle_from_three_points", RUBY_METHOD_FUNC(rosetta_function_953), -1);
+        rb_define_module_function(module, "circle_contains", RUBY_METHOD_FUNC(rosetta_function_954), -1);
+        rb_define_module_function(module, "min_enclosing_circle", RUBY_METHOD_FUNC(rosetta_function_955), -1);
+        rb_define_module_function(module, "point_in_polygon", RUBY_METHOD_FUNC(rosetta_function_956), -1);
+        rb_define_module_function(module, "signed_polygon_area", RUBY_METHOD_FUNC(rosetta_function_957), -1);
+        rb_define_module_function(module, "polygon_area", RUBY_METHOD_FUNC(rosetta_function_958), -1);
+        rb_define_module_function(module, "polygon_centroid", RUBY_METHOD_FUNC(rosetta_function_959), -1);
+        rb_define_module_function(module, "is_convex_polygon", RUBY_METHOD_FUNC(rosetta_function_960), -1);
+        rb_define_module_function(module, "orientation", RUBY_METHOD_FUNC(rosetta_function_961), -1);
+        rb_define_module_function(module, "on_segment", RUBY_METHOD_FUNC(rosetta_function_962), -1);
+        rb_define_module_function(module, "segments_intersect", RUBY_METHOD_FUNC(rosetta_function_963), -1);
+        rb_define_module_function(module, "line_intersection_point", RUBY_METHOD_FUNC(rosetta_function_964), -1);
+        rb_define_module_function(module, "segment_intersection_point", RUBY_METHOD_FUNC(rosetta_function_965), -1);
+        rb_define_module_function(module, "inside_clip_edge", RUBY_METHOD_FUNC(rosetta_function_966), -1);
+        rb_define_module_function(module, "clip_polygon", RUBY_METHOD_FUNC(rosetta_function_967), -1);
+        rb_define_module_function(module, "point_in_triangle", RUBY_METHOD_FUNC(rosetta_function_968), -1);
+        rb_define_module_function(module, "triangulate_polygon", RUBY_METHOD_FUNC(rosetta_function_969), -1);
+        rb_define_module_function(module, "polygon_diameter", RUBY_METHOD_FUNC(rosetta_function_970), -1);
+        rb_define_module_function(module, "minimum_bounding_rectangle", RUBY_METHOD_FUNC(rosetta_function_971), -1);
+        rb_define_module_function(module, "point_to_line_distance", RUBY_METHOD_FUNC(rosetta_function_972), -1);
+        rb_define_module_function(module, "simplify_polyline", RUBY_METHOD_FUNC(rosetta_function_973), -1);
+        rb_define_module_function(module, "circumcenter", RUBY_METHOD_FUNC(rosetta_function_974), -1);
+        rb_define_module_function(module, "voronoi_diagram", RUBY_METHOD_FUNC(rosetta_function_975), -1);
+        rb_define_module_function(module, "read_bmp", RUBY_METHOD_FUNC(rosetta_function_976), -1);
+        rb_define_module_function(module, "write_bmp", RUBY_METHOD_FUNC(rosetta_function_977), -1);
+        rb_define_module_function(module, "set_pixel_clipped", RUBY_METHOD_FUNC(rosetta_function_978), -1);
+        rb_define_module_function(module, "stamp", RUBY_METHOD_FUNC(rosetta_function_979), -1);
+        rb_define_module_function(module, "draw_line", RUBY_METHOD_FUNC(rosetta_function_980), -1);
+        rb_define_module_function(module, "draw_rectangle", RUBY_METHOD_FUNC(rosetta_function_981), -1);
+        rb_define_module_function(module, "draw_circle", RUBY_METHOD_FUNC(rosetta_function_982), -1);
+        rb_define_module_function(module, "draw_polygon", RUBY_METHOD_FUNC(rosetta_function_983), -1);
+        rb_define_module_function(module, "read_ppm", RUBY_METHOD_FUNC(rosetta_function_984), -1);
+        rb_define_module_function(module, "write_ppm", RUBY_METHOD_FUNC(rosetta_function_985), -1);
+        rb_define_module_function(module, "read_pgm", RUBY_METHOD_FUNC(rosetta_function_986), -1);
+        rb_define_module_function(module, "write_pgm", RUBY_METHOD_FUNC(rosetta_function_987), -1);
+        rb_define_module_function(module, "read_pbm", RUBY_METHOD_FUNC(rosetta_function_988), -1);
+        rb_define_module_function(module, "write_pbm", RUBY_METHOD_FUNC(rosetta_function_989), -1);
+        rb_define_module_function(module, "read_png", RUBY_METHOD_FUNC(rosetta_function_990), -1);
+        rb_define_module_function(module, "write_png", RUBY_METHOD_FUNC(rosetta_function_991), -1);
+        rb_define_module_function(module, "expected_improvement", RUBY_METHOD_FUNC(rosetta_function_992), -1);
+        rb_define_module_function(module, "probability_of_improvement", RUBY_METHOD_FUNC(rosetta_function_993), -1);
+        rb_define_module_function(module, "one_way_anova", RUBY_METHOD_FUNC(rosetta_function_994), -1);
+        rb_define_module_function(module, "kruskal_wallis_test", RUBY_METHOD_FUNC(rosetta_function_995), -1);
+        rb_define_module_function(module, "chi_squared_goodness_of_fit", RUBY_METHOD_FUNC(rosetta_function_996), -1);
+        rb_define_module_function(module, "chi_squared_test_independence", RUBY_METHOD_FUNC(rosetta_function_997), -1);
+        rb_define_module_function(module, "pearson_correlation_test", RUBY_METHOD_FUNC(rosetta_function_998), -1);
+        rb_define_module_function(module, "spearman_correlation_test", RUBY_METHOD_FUNC(rosetta_function_999), -1);
+        rb_define_module_function(module, "kendall_tau", RUBY_METHOD_FUNC(rosetta_function_1000), -1);
+        rb_define_module_function(module, "fisher_exact_test_2x2", RUBY_METHOD_FUNC(rosetta_function_1001), -1);
+        rb_define_module_function(module, "ks_test_one_sample_normal", RUBY_METHOD_FUNC(rosetta_function_1002), -1);
+        rb_define_module_function(module, "ks_test_one_sample_uniform", RUBY_METHOD_FUNC(rosetta_function_1003), -1);
+        rb_define_module_function(module, "ks_test_two_sample", RUBY_METHOD_FUNC(rosetta_function_1004), -1);
+        rb_define_module_function(module, "shapiro_francia_test", RUBY_METHOD_FUNC(rosetta_function_1005), -1);
+        rb_define_module_function(module, "p_adjust", RUBY_METHOD_FUNC(rosetta_function_1006), -1);
+        rb_define_module_function(module, "westfall_young_adjust", RUBY_METHOD_FUNC(rosetta_function_1007), -1);
+        rb_define_module_function(module, "romano_wolf_adjust", RUBY_METHOD_FUNC(rosetta_function_1008), -1);
+        rb_define_module_function(module, "proportion_test_one_sample", RUBY_METHOD_FUNC(rosetta_function_1009), -1);
+        rb_define_module_function(module, "proportion_test_two_sample", RUBY_METHOD_FUNC(rosetta_function_1010), -1);
+        rb_define_module_function(module, "binomial_test", RUBY_METHOD_FUNC(rosetta_function_1011), -1);
+        rb_define_module_function(module, "t_test_one_sample", RUBY_METHOD_FUNC(rosetta_function_1012), -1);
+        rb_define_module_function(module, "t_test_two_sample", RUBY_METHOD_FUNC(rosetta_function_1013), -1);
+        rb_define_module_function(module, "t_test_paired", RUBY_METHOD_FUNC(rosetta_function_1014), -1);
+        rb_define_module_function(module, "f_test_variance", RUBY_METHOD_FUNC(rosetta_function_1015), -1);
+        rb_define_module_function(module, "wilcoxon_signed_rank_test", RUBY_METHOD_FUNC(rosetta_function_1016), -1);
+        rb_define_module_function(module, "wilcoxon_rank_sum_test", RUBY_METHOD_FUNC(rosetta_function_1017), -1);
+        rb_define_module_function(module, "bs", RUBY_METHOD_FUNC(rosetta_function_1018), -1);
+        rb_define_module_function(module, "mkdir", RUBY_METHOD_FUNC(rosetta_function_1019), -1);
+        rb_define_module_function(module, "hello", RUBY_METHOD_FUNC(rosetta_function_1020), -1);
+        rb_define_module_function(module, "call_with_callback", RUBY_METHOD_FUNC(rosetta_function_1021), -1);
+        rb_define_module_function(module, "map_dvector_with_callback", RUBY_METHOD_FUNC(rosetta_function_1022), -1);
+        rb_define_module_function(module, "make_dvector", RUBY_METHOD_FUNC(rosetta_function_1023), -1);
+        rb_define_module_function(module, "sum_dvector", RUBY_METHOD_FUNC(rosetta_function_1024), -1);
+        rb_define_module_function(module, "make_dpair", RUBY_METHOD_FUNC(rosetta_function_1025), -1);
+        rb_define_module_function(module, "sum_dpair", RUBY_METHOD_FUNC(rosetta_function_1026), -1);
+        rb_define_module_function(module, "refine_basis", RUBY_METHOD_FUNC(rosetta_function_1045), -1);
+        rb_define_module_function(module, "dyadic_refine", RUBY_METHOD_FUNC(rosetta_function_1046), -1);
+        rb_define_module_function(module, "fit_tensor_bspline", RUBY_METHOD_FUNC(rosetta_function_1047), -1);
+        rb_define_module_function(module, "fit_tensor_pspline", RUBY_METHOD_FUNC(rosetta_function_1048), -1);
+        rb_define_module_function(module, "nn_gemm_backend", RUBY_METHOD_FUNC(rosetta_function_1049), -1);
+        rb_define_module_function(module, "nn_get_num_threads", RUBY_METHOD_FUNC(rosetta_function_1050), -1);
+        rb_define_module_function(module, "nn_set_num_threads", RUBY_METHOD_FUNC(rosetta_function_1051), -1);
+        rb_define_module_function(module, "set_seed", RUBY_METHOD_FUNC(rosetta_function_1052), -1);
+        rb_define_module_function(module, "unif", RUBY_METHOD_FUNC(rosetta_function_1053), -1);
+        rb_define_module_function(module, "runif", RUBY_METHOD_FUNC(rosetta_function_1054), -1);
+        rb_define_module_function(module, "rnorm", RUBY_METHOD_FUNC(rosetta_function_1055), -1);
+        rb_define_module_function(module, "seql", RUBY_METHOD_FUNC(rosetta_function_1056), -1);
         {
             VALUE submodule = module;
             submodule = rb_define_module_under(submodule, "Data");
-            rb_define_module_function(submodule, "iris", RUBY_METHOD_FUNC(rosetta_function_1026), -1);
-            rb_define_module_function(submodule, "penguins", RUBY_METHOD_FUNC(rosetta_function_1027), -1);
-            rb_define_module_function(submodule, "tooth_growth", RUBY_METHOD_FUNC(rosetta_function_1028), -1);
-            rb_define_module_function(submodule, "wine", RUBY_METHOD_FUNC(rosetta_function_1029), -1);
-            rb_define_module_function(submodule, "titanic", RUBY_METHOD_FUNC(rosetta_function_1030), -1);
-            rb_define_module_function(submodule, "eight_schools", RUBY_METHOD_FUNC(rosetta_function_1031), -1);
-            rb_define_module_function(submodule, "air_passengers", RUBY_METHOD_FUNC(rosetta_function_1032), -1);
-            rb_define_module_function(submodule, "volcano", RUBY_METHOD_FUNC(rosetta_function_1033), -1);
-            rb_define_module_function(submodule, "faithful", RUBY_METHOD_FUNC(rosetta_function_1034), -1);
-            rb_define_module_function(submodule, "mtcars", RUBY_METHOD_FUNC(rosetta_function_1035), -1);
-            rb_define_module_function(submodule, "airquality", RUBY_METHOD_FUNC(rosetta_function_1036), -1);
-            rb_define_module_function(submodule, "breast_cancer", RUBY_METHOD_FUNC(rosetta_function_1037), -1);
-            rb_define_module_function(submodule, "diabetes", RUBY_METHOD_FUNC(rosetta_function_1038), -1);
-            rb_define_module_function(submodule, "digits", RUBY_METHOD_FUNC(rosetta_function_1039), -1);
-            rb_define_module_function(submodule, "diamonds", RUBY_METHOD_FUNC(rosetta_function_1040), -1);
-            rb_define_module_function(submodule, "california_housing", RUBY_METHOD_FUNC(rosetta_function_1041), -1);
-            rb_define_module_function(submodule, "load_", RUBY_METHOD_FUNC(rosetta_function_1042), -1);
-            rb_define_module_function(submodule, "catalog", RUBY_METHOD_FUNC(rosetta_function_1043), -1);
+            rb_define_module_function(submodule, "iris", RUBY_METHOD_FUNC(rosetta_function_1027), -1);
+            rb_define_module_function(submodule, "penguins", RUBY_METHOD_FUNC(rosetta_function_1028), -1);
+            rb_define_module_function(submodule, "tooth_growth", RUBY_METHOD_FUNC(rosetta_function_1029), -1);
+            rb_define_module_function(submodule, "wine", RUBY_METHOD_FUNC(rosetta_function_1030), -1);
+            rb_define_module_function(submodule, "titanic", RUBY_METHOD_FUNC(rosetta_function_1031), -1);
+            rb_define_module_function(submodule, "eight_schools", RUBY_METHOD_FUNC(rosetta_function_1032), -1);
+            rb_define_module_function(submodule, "air_passengers", RUBY_METHOD_FUNC(rosetta_function_1033), -1);
+            rb_define_module_function(submodule, "volcano", RUBY_METHOD_FUNC(rosetta_function_1034), -1);
+            rb_define_module_function(submodule, "faithful", RUBY_METHOD_FUNC(rosetta_function_1035), -1);
+            rb_define_module_function(submodule, "mtcars", RUBY_METHOD_FUNC(rosetta_function_1036), -1);
+            rb_define_module_function(submodule, "airquality", RUBY_METHOD_FUNC(rosetta_function_1037), -1);
+            rb_define_module_function(submodule, "breast_cancer", RUBY_METHOD_FUNC(rosetta_function_1038), -1);
+            rb_define_module_function(submodule, "diabetes", RUBY_METHOD_FUNC(rosetta_function_1039), -1);
+            rb_define_module_function(submodule, "digits", RUBY_METHOD_FUNC(rosetta_function_1040), -1);
+            rb_define_module_function(submodule, "diamonds", RUBY_METHOD_FUNC(rosetta_function_1041), -1);
+            rb_define_module_function(submodule, "california_housing", RUBY_METHOD_FUNC(rosetta_function_1042), -1);
+            rb_define_module_function(submodule, "load_", RUBY_METHOD_FUNC(rosetta_function_1043), -1);
+            rb_define_module_function(submodule, "catalog", RUBY_METHOD_FUNC(rosetta_function_1044), -1);
         }
         rb_define_const(module, "RGBA", rb_const_get(module, rb_intern("RGB")));
         rb_define_const(module, "BSR", rb_const_get(module, rb_intern("BSplineRegression")));

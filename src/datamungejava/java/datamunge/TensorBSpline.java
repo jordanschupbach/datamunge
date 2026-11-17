@@ -61,7 +61,7 @@ public class TensorBSpline extends NativeObject {
     @SuppressWarnings("this-escape")
     public TensorBSpline(BSplineBasis basis, double[] coefficients) {
         super(RAW);
-        Rosetta.construct(this, TensorBSpline.class, false, 2990, basis, coefficients);
+        Rosetta.construct(this, TensorBSpline.class, false, 3001, basis, coefficients);
     }
 
     /**
@@ -84,7 +84,7 @@ public class TensorBSpline extends NativeObject {
     @SuppressWarnings("this-escape")
     public TensorBSpline(List<? extends BSplineBasis> bases, double[] coefficients) {
         super(RAW);
-        Rosetta.construct(this, TensorBSpline.class, false, 2990, bases, coefficients);
+        Rosetta.construct(this, TensorBSpline.class, false, 3001, bases, coefficients);
     }
 
     /**
@@ -95,7 +95,7 @@ public class TensorBSpline extends NativeObject {
      * @return bases().size().
      */
     public long dimensions() {
-        return Rosetta.asLong(Rosetta.call(2977, this));
+        return Rosetta.asLong(Rosetta.call(2988, this));
     }
 
     /**
@@ -106,7 +106,7 @@ public class TensorBSpline extends NativeObject {
      * @return Reference valid for the lifetime of this object.
      */
     public List<BSplineBasis> bases() {
-        return Rosetta.asList(Rosetta.call(2978, this), rosettaV0 -> Rosetta.asObject(rosettaV0, BSplineBasis.class));
+        return Rosetta.asList(Rosetta.call(2989, this), rosettaV0 -> Rosetta.asObject(rosettaV0, BSplineBasis.class));
     }
 
     /**
@@ -117,7 +117,7 @@ public class TensorBSpline extends NativeObject {
      * @return d sizes in axis order.
      */
     public int[] shape() {
-        return Rosetta.asInts(Rosetta.call(2979, this));
+        return Rosetta.asInts(Rosetta.call(2990, this));
     }
 
     /**
@@ -128,7 +128,7 @@ public class TensorBSpline extends NativeObject {
      * @return Coefficient count.
      */
     public long coefficientCount() {
-        return Rosetta.asLong(Rosetta.call(2980, this));
+        return Rosetta.asLong(Rosetta.call(2991, this));
     }
 
     /**
@@ -139,7 +139,7 @@ public class TensorBSpline extends NativeObject {
      * @return Reference valid until the next mutation of this object.
      */
     public double[] coefficients() {
-        return Rosetta.asDoubles(Rosetta.call(2981, this));
+        return Rosetta.asDoubles(Rosetta.call(2992, this));
     }
 
     /**
@@ -150,7 +150,7 @@ public class TensorBSpline extends NativeObject {
      * @return d coordinates.
      */
     public double[] domainMin() {
-        return Rosetta.asDoubles(Rosetta.call(2982, this));
+        return Rosetta.asDoubles(Rosetta.call(2993, this));
     }
 
     /**
@@ -161,7 +161,7 @@ public class TensorBSpline extends NativeObject {
      * @return d coordinates.
      */
     public double[] domainMax() {
-        return Rosetta.asDoubles(Rosetta.call(2983, this));
+        return Rosetta.asDoubles(Rosetta.call(2994, this));
     }
 
     /**
@@ -183,7 +183,7 @@ public class TensorBSpline extends NativeObject {
      * @throws NativeError.OutOfRange If a component is out of range. (C++ {@code std::out_of_range})
      */
     public double coefficient(int[] index) {
-        return Rosetta.asDouble(Rosetta.call(2984, this, index));
+        return Rosetta.asDouble(Rosetta.call(2995, this, index));
     }
 
     /**
@@ -205,7 +205,7 @@ public class TensorBSpline extends NativeObject {
      * @throws NativeError.OutOfRange If a component is out of range. (C++ {@code std::out_of_range})
      */
     public void setCoefficient(int[] index, double value) {
-        Rosetta.call(2985, this, index, value);
+        Rosetta.call(2996, this, index, value);
     }
 
     /**
@@ -225,7 +225,7 @@ public class TensorBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument If dimensions() != 1 or {@code x} is not finite. (C++ {@code std::invalid_argument})
      */
     public double evaluate(double x) {
-        return Rosetta.asDouble(Rosetta.call(2986, this, x));
+        return Rosetta.asDouble(Rosetta.call(2997, this, x));
     }
 
     /**
@@ -246,7 +246,7 @@ public class TensorBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument If point.size() != dimensions() or a coordinate is not finite. (C++ {@code std::invalid_argument})
      */
     public double evaluate(double[] point) {
-        return Rosetta.asDouble(Rosetta.call(2986, this, point));
+        return Rosetta.asDouble(Rosetta.call(2997, this, point));
     }
 
     /**
@@ -266,7 +266,7 @@ public class TensorBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument As for evaluate(const std::vector&lt;double&gt;&amp;). (C++ {@code std::invalid_argument})
      */
     public double[] evaluatePoints(List<double[]> points) {
-        return Rosetta.asDoubles(Rosetta.call(2987, this, points));
+        return Rosetta.asDoubles(Rosetta.call(2998, this, points));
     }
 
     /**
@@ -287,7 +287,7 @@ public class TensorBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument If axes.size() != dimensions() or an axis is empty. (C++ {@code std::invalid_argument})
      */
     public double[] evaluateGrid(List<double[]> axes) {
-        return Rosetta.asDoubles(Rosetta.call(2988, this, axes));
+        return Rosetta.asDoubles(Rosetta.call(2999, this, axes));
     }
 
     /**
@@ -309,6 +309,6 @@ public class TensorBSpline extends NativeObject {
      * @see "dyadic_refine(const BSplineBasis&amp;)"
      */
     public TensorBSpline dyadicRefine() {
-        return Rosetta.asObject(Rosetta.call(2989, this), TensorBSpline.class);
+        return Rosetta.asObject(Rosetta.call(3000, this), TensorBSpline.class);
     }
 }

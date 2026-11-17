@@ -1,9 +1,9 @@
 #pragma once
 /// @file realtime_scheduling.hpp
 /// @brief Checked synchronous periodic EDF/RMS scheduling, actual job evidence and native timelines.
-#include <datamunge/plot/plot.hpp>
 #include <cstddef>
 #include <cstdint>
+#include <datamunge/plot/plot.hpp>
 #include <vector>
 namespace datamunge::algorithms {
 
@@ -21,9 +21,9 @@ namespace datamunge::algorithms {
 /// - C. L. Liu and J. W. Layland (1973), Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment, JACM 20(1), 46–61. doi:10.1145/321738.321743.
 /// @see edf_simulate(), rt_trace()
 struct RTTask {
-    std::size_t id; ///< Opaque task id; distinct from input row index.
-    int period; ///< Positive integer release period and relative deadline.
-    int wcet; ///< Nonnegative worst-case work per job, in processor units.
+  std::size_t id;     ///< Opaque task id; distinct from input row index.
+  int         period; ///< Positive integer release period and relative deadline.
+  int         wcet;   ///< Nonnegative worst-case work per job, in processor units.
 };
 
 /// @brief An owned-label interval in a merged task execution timeline.
@@ -36,9 +36,9 @@ struct RTTask {
 /// @endcode
 /// @see RTScheduleResult
 struct RTSlice {
-    std::size_t id; ///< Task id, or SIZE_MAX for idle.
-    int start; ///< Inclusive integer start.
-    int end; ///< Exclusive integer end.
+  std::size_t id;    ///< Task id, or SIZE_MAX for idle.
+  int         start; ///< Inclusive integer start.
+  int         end;   ///< Exclusive integer end.
 };
 
 /// @brief Merged task timeline and deadline verdict for a finite simulation.
@@ -52,8 +52,8 @@ struct RTSlice {
 /// @endcode
 /// @see edf_simulate(), rt_trace()
 struct RTScheduleResult {
-    std::vector<RTSlice> timeline; ///< Merged execution and idle intervals.
-    bool deadline_missed; ///< Any unfinished job at its deadline <=H.
+  std::vector<RTSlice> timeline;        ///< Merged execution and idle intervals.
+  bool                 deadline_missed; ///< Any unfinished job at its deadline <=H.
 };
 
 /// @brief Dynamic deadline or fixed period priority, with stable input-order ties.
@@ -68,8 +68,8 @@ struct RTScheduleResult {
 /// - Liu and Layland (1973), doi:10.1145/321738.321743.
 /// @see rt_simulate_work()
 enum class RTPolicy {
-    earliest_deadline, ///< Pick the unfinished job with the earliest absolute deadline.
-    rate_monotonic ///< Pick the unfinished job from the shortest-period task.
+  earliest_deadline, ///< Pick the unfinished job with the earliest absolute deadline.
+  rate_monotonic     ///< Pick the unfinished job from the shortest-period task.
 };
 
 /// @brief Checked logical counters for the actual unit-granularity simulator.
@@ -83,15 +83,15 @@ enum class RTPolicy {
 /// @endcode
 /// @see RTSimulation, RTTrace
 struct RTWork {
-    std::size_t ticks=0; ///< Number of simulated units, exactly H.
-    std::size_t release_checks=0; ///< Task release tests, exactly N*H.
-    std::size_t jobs_released=0; ///< All releases before H, including zero-work jobs.
-    std::size_t jobs_completed=0; ///< Jobs completed by boundary H, including zero-work jobs.
-    std::size_t busy_ticks=0; ///< Units executing a job.
-    std::size_t idle_ticks=0; ///< Units with no ready job.
-    std::size_t deadline_misses=0; ///< Distinct jobs unfinished at their deadline <=H.
-    std::size_t peak_ready=0; ///< Maximum unfinished ready jobs after releases, before selection.
-    std::size_t preemptions=0; ///< Actual changes away from an unfinished selected job.
+  std::size_t ticks           = 0; ///< Number of simulated units, exactly H.
+  std::size_t release_checks  = 0; ///< Task release tests, exactly N*H.
+  std::size_t jobs_released   = 0; ///< All releases before H, including zero-work jobs.
+  std::size_t jobs_completed  = 0; ///< Jobs completed by boundary H, including zero-work jobs.
+  std::size_t busy_ticks      = 0; ///< Units executing a job.
+  std::size_t idle_ticks      = 0; ///< Units with no ready job.
+  std::size_t deadline_misses = 0; ///< Distinct jobs unfinished at their deadline <=H.
+  std::size_t peak_ready  = 0; ///< Maximum unfinished ready jobs after releases, before selection.
+  std::size_t preemptions = 0; ///< Actual changes away from an unfinished selected job.
 };
 
 /// @brief Finite scheduling outcome and work, with no retained job/tick history.
@@ -104,8 +104,8 @@ struct RTWork {
 /// @endcode
 /// @see rt_simulate_work(), rt_trace()
 struct RTSimulation {
-    RTScheduleResult schedule; ///< Merged timeline and verdict.
-    RTWork work; ///< Checked work from the same run.
+  RTScheduleResult schedule; ///< Merged timeline and verdict.
+  RTWork           work;     ///< Checked work from the same run.
 };
 
 /// @brief Actual per-job release, execution, completion and deadline evidence.
@@ -119,12 +119,12 @@ struct RTSimulation {
 /// @endcode
 /// @see RTTrace, rt_trace()
 struct RTJob {
-    std::size_t task_index=0; ///< Index in the owned task vector, not its external id.
-    int release=0; ///< Inclusive release time before H.
-    std::int64_t deadline=0; ///< Absolute implicit deadline, possibly greater than H.
-    int executed=0; ///< Actual executed units by H, between zero and wcet.
-    int completion=-1; ///< Completion boundary, or -1 if unfinished.
-    bool missed=false; ///< Unfinished at this job's deadline <=H, even if completed later.
+  std::size_t  task_index = 0;  ///< Index in the owned task vector, not its external id.
+  int          release    = 0;  ///< Inclusive release time before H.
+  std::int64_t deadline   = 0;  ///< Absolute implicit deadline, possibly greater than H.
+  int          executed   = 0;  ///< Actual executed units by H, between zero and wcet.
+  int          completion = -1; ///< Completion boundary, or -1 if unfinished.
+  bool         missed = false;  ///< Unfinished at this job's deadline <=H, even if completed later.
 };
 
 /// @brief Owned actual release records and per-unit job selections, without replay.
@@ -139,14 +139,14 @@ struct RTJob {
 /// @endcode
 /// @see rt_trace(), rt_trace_entries()
 struct RTTrace {
-    std::vector<RTTask> tasks; ///< Exact owned input in tie-breaking order.
-    int horizon=0; ///< Simulated [0,H), with deadline checks through H.
-    RTPolicy policy=RTPolicy::earliest_deadline; ///< Selection policy.
-    std::vector<RTJob> jobs; ///< Actual released jobs, including zero-work jobs.
-    std::vector<std::size_t> tick_jobs; ///< Actual selected job index each unit; SIZE_MAX means idle.
-    RTScheduleResult schedule; ///< Merged task result of this same run.
-    RTWork work; ///< Checked logical work counters.
-    std::size_t captured_entries=0; ///< Exact N+H+J retained entries.
+  std::vector<RTTask>      tasks;       ///< Exact owned input in tie-breaking order.
+  int                      horizon = 0; ///< Simulated [0,H), with deadline checks through H.
+  RTPolicy                 policy  = RTPolicy::earliest_deadline; ///< Selection policy.
+  std::vector<RTJob>       jobs;      ///< Actual released jobs, including zero-work jobs.
+  std::vector<std::size_t> tick_jobs; ///< Actual selected job index each unit; SIZE_MAX means idle.
+  RTScheduleResult         schedule;  ///< Merged task result of this same run.
+  RTWork                   work;      ///< Checked logical work counters.
+  std::size_t              captured_entries = 0; ///< Exact N+H+J retained entries.
 };
 
 /// @brief Sum periodic processor demand C/T as a floating-point display value.
@@ -257,7 +257,7 @@ std::vector<std::size_t> rate_monotonic_priorities(const std::vector<RTTask>& ta
 /// std::print("{}\n",dm::algorithms::rt_trace_entries({{7,2,1}},2)); // 4
 /// @endcode
 /// @see rt_trace()
-std::size_t rt_trace_entries(const std::vector<RTTask>& tasks,int horizon);
+std::size_t rt_trace_entries(const std::vector<RTTask>& tasks, int horizon);
 
 /// @brief Simulate periodic EDF or RMS without retaining optional history.
 ///
@@ -284,7 +284,7 @@ std::size_t rt_trace_entries(const std::vector<RTTask>& tasks,int horizon);
 /// @par References
 /// - Liu and Layland (1973), Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment, doi:10.1145/321738.321743.
 /// @see rt_trace(), edf_simulate()
-RTSimulation rt_simulate_work(const std::vector<RTTask>& tasks,int horizon,RTPolicy policy);
+RTSimulation rt_simulate_work(const std::vector<RTTask>& tasks, int horizon, RTPolicy policy);
 
 /// @brief Capture actual released jobs and selected job ids for every simulated unit.
 ///
@@ -310,8 +310,11 @@ RTSimulation rt_simulate_work(const std::vector<RTTask>& tasks,int horizon,RTPol
 /// @par References
 /// - Liu and Layland (1973), Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment, doi:10.1145/321738.321743.
 /// @see RTTrace, rt_trace_entries(), rt_simulate_work()
-RTTrace rt_trace(const std::vector<RTTask>& tasks,int horizon,RTPolicy policy=RTPolicy::earliest_deadline,
-                 std::size_t max_entries=1000000);
+RTTrace rt_trace(
+    const std::vector<RTTask>& tasks,
+    int                        horizon,
+    RTPolicy                   policy      = RTPolicy::earliest_deadline,
+    std::size_t                max_entries = 1000000);
 
 /// @brief Return the ordinary EDF merged timeline and deadline verdict.
 ///
@@ -333,8 +336,8 @@ RTTrace rt_trace(const std::vector<RTTask>& tasks,int horizon,RTPolicy policy=RT
 /// @par References
 /// - Liu and Layland (1973), Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment, doi:10.1145/321738.321743.
 /// @see rt_simulate_work(), rt_trace()
-inline RTScheduleResult edf_simulate(const std::vector<RTTask>& tasks,int horizon) {
-    return rt_simulate_work(tasks,horizon,RTPolicy::earliest_deadline).schedule;
+inline RTScheduleResult edf_simulate(const std::vector<RTTask>& tasks, int horizon) {
+  return rt_simulate_work(tasks, horizon, RTPolicy::earliest_deadline).schedule;
 }
 
 /// @brief Return the ordinary RMS merged timeline and deadline verdict.
@@ -357,8 +360,8 @@ inline RTScheduleResult edf_simulate(const std::vector<RTTask>& tasks,int horizo
 /// @par References
 /// - Liu and Layland (1973), Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment, doi:10.1145/321738.321743.
 /// @see rt_simulate_work(), rt_trace()
-inline RTScheduleResult rate_monotonic_simulate(const std::vector<RTTask>& tasks,int horizon) {
-    return rt_simulate_work(tasks,horizon,RTPolicy::rate_monotonic).schedule;
+inline RTScheduleResult rate_monotonic_simulate(const std::vector<RTTask>& tasks, int horizon) {
+  return rt_simulate_work(tasks, horizon, RTPolicy::rate_monotonic).schedule;
 }
 
 /// @brief Draw a validated merged task timeline using native RPlot polygons.
@@ -382,6 +385,8 @@ inline RTScheduleResult rate_monotonic_simulate(const std::vector<RTTask>& tasks
 /// std::print("{}\n",p.has_x_limits()); // true
 /// @endcode
 /// @see edf_simulate(), rt_trace()
-graphics::RPlot plot_rt_schedule(const std::vector<RTTask>& tasks,const RTScheduleResult& schedule);
+graphics::RPlot plot_rt_schedule(
+    const std::vector<RTTask>& tasks,
+    const RTScheduleResult&    schedule);
 
 } // namespace datamunge::algorithms

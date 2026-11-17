@@ -20,6 +20,7 @@
 ///
 /// Both operate on categorical (integer-coded) attributes and labels.
 
+#include <datamunge/algorithms/one_r.hpp>
 #include <cstddef>
 #include <limits>
 #include <map>
@@ -98,64 +99,6 @@ inline ZeroRModel zero_r_train(const std::vector<int>& labels) {
 inline int zero_r_predict(const ZeroRModel& m, const std::vector<int>& features = {}) {
     (void)features;
     return m.prediction;
-}
-
-/// A trained OneR classifier: one attribute and a value->class table.
-struct OneRModel {
-    std::size_t             feature = 0;      ///< The chosen attribute index.
-    std::map<int, int>      value_to_class;   ///< Attribute value -> predicted class.
-    int                     default_class = 0;///< Fallback for unseen values.
-    std::size_t             errors  = 0;      ///< Training misclassifications of the chosen rule.
-    std::size_t             total   = 0;
-    double                  accuracy() const { return total ? 1.0 - static_cast<double>(errors) / total : 0.0; }
-};
-
-/// \brief Train OneR: pick the single attribute whose best per-value rule has the fewest errors.
-///
-/// \param features  Categorical design matrix (integer-coded), row-major.
-/// \param labels    Integer class labels.
-inline OneRModel one_r_train(const std::vector<std::vector<int>>& features, const std::vector<int>& labels) {
-    OneRModel   best;
-    best.errors = std::numeric_limits<std::size_t>::max();
-    best.total  = labels.size();
-    if (features.empty()) return best;
-    const std::size_t dim = features.front().size();
-
-    // Overall majority class as the default.
-    const ZeroRModel zr = zero_r_train(labels);
-
-    for (std::size_t f = 0; f < dim; ++f) {
-        // For each value of attribute f, the majority class among rows with that value.
-        std::map<int, std::map<int, std::size_t>> value_class_counts;
-        for (std::size_t i = 0; i < features.size(); ++i)
-            ++value_class_counts[features[i][f]][labels[i]];
-
-        std::map<int, int> rule;
-        std::size_t        errors = 0;
-        for (const auto& [val, cc] : value_class_counts) {
-            int         maj = 0;
-            std::size_t mc  = 0, tot = 0;
-            for (const auto& [cls, c] : cc) {
-                tot += c;
-                if (c > mc) { mc = c; maj = cls; }
-            }
-            rule[val] = maj;
-            errors += tot - mc;  // rows of this value not matching the majority class
-        }
-        if (errors < best.errors) {
-            best.errors        = errors;
-            best.feature       = f;
-            best.value_to_class = rule;
-            best.default_class = zr.prediction;
-        }
-    }
-    return best;
-}
-
-/// OneR prediction for a categorical feature vector.
-inline int one_r_predict(const OneRModel& m, const std::vector<int>& x) {
-    const auto it = m.value_to_class.find(x[m.feature]);
-    return it != m.value_to_class.end() ? it->second : m.default_class;
 }
 
 }  // namespace datamunge::algorithms

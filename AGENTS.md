@@ -28,7 +28,7 @@ Read the applicable skill when working on its scope:
 Keep symbol documentation current with code changes. The checkable backlog and
 documentation standard live in [docs/documentation-plan.md](docs/documentation-plan.md).
 
-For literate report conversions, follow [docs/mepml/conversion-plan.md](docs/mepml/conversion-plan.md).
+Keep literate reports under `docs/mepml/<subject>/<topic>/`.
 Use a native C++ datamunge concept diagram near the introduction when it helps
 explain the topic (`dm::graphics::Diagram` for method diagrams, the plotting API
 for numerical results). Implement missing reusable graphics features in the core

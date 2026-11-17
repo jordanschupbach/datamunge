@@ -1,0 +1,1205 @@
+//? Title: T5 Text
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Shared token table -> relative-bias encoder/decoder -> span restoration then sentiment. The complete native C++ experiment preserves model equations, source seeds, update budgets and explicit fitting/generation loops. Missing data recipes are reconstructed and labelled; original TensorFlow recordings are checked only when genuinely present.
+)
+\toc
+
+> Provenance and scope
+
+The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
+
+> Follow the computation
+
+Shared token table -> relative-bias encoder/decoder -> span restoration then sentiment.
+
+```{cpp, results="markdown", file="figures/t5_text_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("data",{-18,0},"Versioned native inputs",s).node("model",{0,0},"Shared token table -> relative-bias encoder/decoder -> span restoration then sentiment",s).node("audit",{18,0},"Explicit training and deployment checks",s).edge("data","model").edge("model","audit").save_svg("build/t5_text_method.svg");}
+```
+// result_begin: markdown
+\image(figures/t5_text_method.svg)
+// result_end
+
+> A calculation before fitting
+
+Two visible keys with equal dot-product scores get attention weights1/2,1/2. Values2 and6 therefore mix to4. Sparse, projected, relative or routed attention changes which keys/features participate; it does not turn attention weights into independent observations.
+
+```{cpp, results="markdown", file="figures/t5_text_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+int main(){namespace n=dm::nn;double computed=n::scaled_dot_product_attention(n::zeros({1,1,1,1}),n::zeros({1,1,2,1}),n::tensor({2.,6.},{1,1,2,1})).output.item(),analytic=4.;if(std::abs(computed-analytic)>2e-6)throw std::runtime_error("hand calculation differs from native primitives");std::print("| native calculation | analytic reference |\n|---:|---:|\n| {:.9f} | {:.9f} |\n",computed,analytic);dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,analytic},"worked reference",{37,99,235}).ylim(0,std::max(.5,std::max(computed,analytic)*1.2)).x_label("0 = native calculation;1 = analytic reference").y_label("Toy objective or diagnostic value").title("t5 text hand calculation").size(1000,550).save_svg("build/t5_text_worked.svg");}
+```
+// result_begin: markdown
+| native calculation | analytic reference |
+|---:|---:|
+| 4.000000000 | 4.000000000 |
+\image(figures/t5_text_worked.svg)
+// result_end
+
+> Prepare reproducible inputs
+
+Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
+```
+// result_begin: markdown
+Versioned recipe root: /home/jordan/.cache/datamunge/datasets/nn-completion-assets
+// result_end
+
+> Inspect the native graph
+
+The preview traces the actual canonical component with independent parameters; it does not alter training. Composite grouping keeps full unrolls readable.
+
+```{cpp, results="markdown", file="figures/t5_text_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;n::ParameterStore p(7);n::Module model([&](const n::Tensor&trace_input){auto x=trace_input,l=n::full({1},48,n::DType::Int32);auto y=m::t5::Forward(p,x,x,l,l);return n::model_stage("t5 text native component",trace_input,y.logits);},"t5 text native component graph");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;model.plot(n::zeros({1,48,72}),options).save_svg("build/t5_text_network.svg");}
+```
+// result_begin: markdown
+\image(figures/t5_text_network.svg)
+// result_end
+
+> Complete editable experiment
+
+Historical comments in the preserved source describe the original experiment; the versioned reconstruction manifest above describes the active inputs. Objectives, optimizer ownership, update schedules, sampling and search remain here. Source finite-difference, padding, causal/label-independence, checkpoint and immutability controls remain active. Weak held-out outcomes are retained.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace recovered_checkpoints {
+inline std::filesystem::path Model(const std::string&name){auto p=std::filesystem::path(dm::datasets::data_home())/"nn-completion-checkpoints/models"/name;std::filesystem::create_directories(p);return p;}
+}
+// T5 span-denoising pretraining and sentiment expressed with the same text
+// decoder.
+//
+// CMD: just run-nn t5_text
+// Eager port preserving relative RMS attention, tied text head and all controls.
+// Editable workflow support: t5_text.hpp
+// Editable workflow support: bert_mlm.hpp
+// Editable workflow support: attention.hpp
+// Attention helpers for the 5.x example ports (port of the parts of tflow's
+// common/nn/attention.h that datamunge/nn/attention.hpp does not already
+// provide), plus the small harness the 5.1 attention-fundamentals examples
+// share: tflow's random input streams, float32 central differences and the
+// comparison against the .npz fixtures the TF examples write.
+//
+// tflow -> datamunge:
+//   nn::ScaledDotProductAttention(s, q, k, v, d, mask, allowed)
+//       -> nn::scaled_dot_product_attention(q, k, v, mask) (scale 1/sqrt(q.size(-1)),
+//          weights returned; `mask` is either an additive float bias or a bool keep mask)
+//   nn::MultiHeadAttention(s, p, name, xq, xkv, d_model, heads, mask, allowed)
+//       -> nn::multi_head_attention(store, name, xq, xkv, heads, options)
+//   nn::AttentionAllowed(s, key_lengths, query_lengths, queries, keys, causal, offset)
+//       -> attn::AttentionAllowed below (the library's causal_keep_mask is aligned
+//          bottom-right instead of taking an explicit query offset, and its
+//          padding_keep_mask masks keys only).
+
+#include <datamunge/nn/attention.hpp>
+#include <datamunge/nn/io.hpp>
+#include <datamunge/nn/nn.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <filesystem>
+#include <functional>
+#include <random>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+namespace attn {
+
+namespace nn = datamunge::nn;
+
+/// tflow's AttentionAllowed: bool [N, queries, keys], true where query t is
+/// valid (t < query_lengths[n]), key j is valid (j < key_lengths[n]) and, when
+/// `causal`, j <= t + query_offset (queries sit after `query_offset` cached
+/// keys during incremental decoding). Lengths are integer tensors [N]. Add a
+/// head axis (expand_dims(.., 1)) for [N, heads, Tq, Tk] scores.
+inline nn::Tensor AttentionAllowed(const nn::Tensor& key_lengths, const nn::Tensor& query_lengths, std::int64_t queries,
+                                   std::int64_t keys, bool causal = false, std::int64_t query_offset = 0) {
+  if (queries < 1 || keys < 1 || query_offset < 0)
+    throw std::invalid_argument("positive attention lengths and nonnegative query offset required");
+  if (key_lengths.dim() != 1 || query_lengths.dim() != 1 || key_lengths.size(0) != query_lengths.size(0))
+    throw std::invalid_argument("AttentionAllowed: key and query lengths must be vectors of the batch size");
+  const std::int64_t batch = key_lengths.size(0);
+  nn::Tensor         out   = nn::zeros({batch, queries, keys}, nn::DType::Bool);
+  bool*              p     = out.data_ptr<bool>();
+  for (std::int64_t b = 0; b < batch; ++b) {
+    const double kl = key_lengths.at({b}), ql = query_lengths.at({b});
+    for (std::int64_t t = 0; t < queries; ++t)
+      for (std::int64_t j = 0; j < keys; ++j)
+        p[(b * queries + t) * keys + j] = t < ql && j < kl && (!causal || j <= t + query_offset);
+  }
+  return out;
+}
+
+/// tflow's ScaledDotProductAttention(q, k, v, d, mask): scores scaled by
+/// 1/sqrt(d), plain (weight-materialising) path, weights returned. `mask` is an
+/// additive float bias or a bool keep mask (tflow's `allowed`); rows with no
+/// allowed key give zero weights and output.
+inline nn::Attended ScaledDotProductAttention(const nn::Tensor& q, const nn::Tensor& k, const nn::Tensor& v,
+                                              std::int64_t d, const nn::Tensor& mask = nn::Tensor()) {
+  if (d < 1) throw std::invalid_argument("attention key width must be positive");
+  nn::AttentionOptions o;
+  o.mask         = mask;
+  o.scale        = 1.0 / std::sqrt(static_cast<double>(d));
+  o.need_weights = true;
+  o.impl         = nn::AttentionImpl::Plain;
+  return nn::scaled_dot_product_attention(q, k, v, o);
+}
+
+/// tflow's MultiHeadAttention(p, name, x_q, x_kv, d_model, heads, mask,
+/// allowed): bias-free projections "<name>/Wq|Wk|Wv|Wo" [d_model, d_model]
+/// (U(+-sqrt(3/d_model))), weights [N, heads, Tq, Tk] returned. `mask`: keep or
+/// additive, broadcastable to [N, heads, Tq, Tk]. d_model is explicit, as in tflow,
+/// and checked against the input width.
+inline nn::Attended MultiHeadAttention(nn::ParameterStore& store, const std::string& name, const nn::Tensor& x_q,
+                                       const nn::Tensor& x_kv, std::int64_t d_model, std::int64_t heads,
+                                       const nn::Tensor& mask = nn::Tensor()) {
+  if (d_model < 1 || heads < 1 || d_model % heads != 0)
+    throw std::invalid_argument("positive model/head counts and divisible head width required");
+  if (x_q.dim() != 3 || x_q.size(2) != d_model || x_kv.dim() != 3 || x_kv.size(2) != d_model)
+    throw std::invalid_argument("multi-head inputs must be [N, T, d_model]");
+  nn::MultiHeadOptions o;
+  o.mask         = mask;
+  o.need_weights = true;
+  o.impl         = nn::AttentionImpl::Plain;
+  return nn::multi_head_attention(store, name, x_q, x_kv, heads, o);
+}
+
+/// Initializer that returns a fixed array (replays weights saved by TF).
+inline nn::Initializer FixedInit(const nn::Tensor& value) {
+  return [value](const nn::Shape& shape, nn::DType, nn::Generator&) {
+    if (shape != value.shape()) throw std::invalid_argument("saved weight has the wrong shape");
+    return value.clone();
+  };
+}
+
+/// Integer vector tensor.
+inline nn::Tensor Ints(const std::vector<int>& values) {
+  return nn::from_vector(values, {static_cast<std::int64_t>(values.size())});
+}
+
+/// tflow's `random` lambdas: float32 tensors filled with scale * N(0, 1) drawn
+/// from one std::mt19937 and ONE std::normal_distribution<float> (it caches
+/// the second value of each pair, so a fresh distribution per tensor would
+/// diverge after an odd-sized tensor). With the same seed and the same
+/// standard library (both builds use libc++ here) the values equal TF's.
+struct TfRandom {
+  explicit TfRandom(unsigned seed) : rng(seed) {}
+  nn::Tensor operator()(const nn::Shape& shape, float scale = 1.f) {
+    nn::Tensor t = nn::empty(shape);
+    float*     p = t.data_ptr<float>();
+    for (std::int64_t i = 0; i < t.numel(); ++i) p[i] = scale * normal(rng);
+    return t;
+  }
+  std::mt19937                    rng;
+  std::normal_distribution<float> normal{0, 1};
+};
+
+/// Max |a - b| (inf on a shape mismatch).
+inline double MaxAbsDiff(const nn::Tensor& a, const nn::Tensor& b) {
+  if (a.shape() != b.shape()) return INFINITY;
+  const auto x = nn::cast(a, nn::DType::Float64).to_vector<double>();
+  const auto y = nn::cast(b, nn::DType::Float64).to_vector<double>();
+  double     m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// tflow's native finite-difference probe: for `samples` coordinates spread
+/// evenly over `value` (i * (numel - 1) / (samples - 1)), compares the float32
+/// central difference (f(x + h) - f(x - h)) / 2h, h = 0.002, with the analytic
+/// gradient. `value` is modified in place and restored. Returns the max error.
+inline double CentralDifferenceError(nn::Tensor& value, const nn::Tensor& gradient, int samples,
+                                     const std::function<float()>& objective, int* count = nullptr) {
+  float*     p = value.data_ptr<float>();
+  const auto g = gradient.to_vector<float>();
+  double     error = 0;
+  for (int i = 0; i < samples; ++i) {
+    const std::int64_t c   = samples == 1 ? 0 : i * (value.numel() - 1) / (samples - 1);
+    const float        old = p[c];
+    p[c]                   = old + .002f;
+    const float plus       = objective();
+    p[c]                   = old - .002f;
+    const float minus      = objective();
+    p[c]                   = old;
+    error                  = std::max(error, std::abs((plus - minus) / .004 - g[c]));
+    if (count) ++*count;
+  }
+  return error;
+}
+
+/// Reads one array of an .npz archive (throws when missing).
+inline nn::Tensor Named(const nn::NamedTensors& arrays, const std::string& name) {
+  for (const auto& [key, value] : arrays)
+    if (key == name) return value;
+  throw std::runtime_error("npz has no array '" + name + "'");
+}
+
+inline bool Has(const nn::NamedTensors& arrays, const std::string& name) {
+  for (const auto& [key, value] : arrays)
+    if (key == name) return true;
+  return false;
+}
+
+/// Default location of the TF example's fixtures: tflow's output/models/<name>.
+inline std::filesystem::path DefaultTfDir(const std::string& name) {
+  const char* home = std::getenv("HOME");
+  return std::filesystem::path(home ? home : ".") / "projects" / "tflow_examples" / "output" / "models" / name;
+}
+
+/// Compares every array of `ours` that TF also saved (same key) with TF's
+/// .npz `tf_file`. Returns the largest difference over the arrays whose names
+/// pass `include` (all by default), or -1 when the file is missing. Prints one
+/// line per compared array when `verbose`.
+inline double CompareWithTf(const std::filesystem::path& tf_file, const nn::NamedTensors& ours, bool verbose = false,
+                            const std::function<bool(const std::string&)>& include = {}) {
+  if (!std::filesystem::exists(tf_file)) return -1;
+  const auto ref   = nn::load_npz(tf_file.string());
+  double     worst = 0;
+  for (const auto& [name, value] : ours) {
+    if (!Has(ref, name) || (include && !include(name))) continue;
+    const double d = MaxAbsDiff(value, Named(ref, name));
+    if (verbose) std::printf("    %-22s max |ours - TF| = %.2e\n", name.c_str(), d);
+    worst = std::max(worst, d);
+  }
+  return worst;
+}
+
+/// Compares `ours` with TF's fixture `file` under `tf_dir`. When the arrays
+/// listed in `inputs` are bit-identical to TF's (same random streams), every
+/// other shared array except the finite-difference metadata ("metadata",
+/// "native_fd") must agree within `tolerance` (a failed check throws). Returns
+/// the max difference, or -1 when the fixture is missing or the inputs differ.
+inline double CheckAgainstTf(const std::filesystem::path& tf_dir, const std::string& file, const nn::NamedTensors& ours,
+                             const std::vector<std::string>& inputs, double tolerance, bool verbose = false) {
+  const auto path = tf_dir / file;
+  if (!std::filesystem::exists(path)) {
+    std::printf("  (TF fixture %s not found: TF comparison skipped)\n", path.string().c_str());
+    return -1;
+  }
+  auto is_input = [&](const std::string& n) { return std::find(inputs.begin(), inputs.end(), n) != inputs.end(); };
+  const double din = CompareWithTf(path, ours, false, is_input);
+  if (din != 0) {
+    std::printf("  (inputs differ from TF's %s by %.2e: different random stream, outputs not compared)\n",
+                file.c_str(), din);
+    return -1;
+  }
+  const double d = CompareWithTf(path, ours, verbose, [&](const std::string& n) {
+    return !is_input(n) && n != "metadata" && n != "native_fd";
+  });
+  std::printf("  vs TF %s (identical inputs): max |ours - TF| = %.2e over all outputs and gradients\n", file.c_str(), d);
+  if (!(d <= tolerance))
+    throw std::runtime_error(file + ": outputs differ from TF's by " + std::to_string(d) + " > " +
+                             std::to_string(tolerance));
+  return d;
+}
+
+/// key=value options shared by the 5.1 examples: out=DIR (default
+/// output/nn/<name>), tf=DIR (TF fixtures, default tflow's output/models/<name>),
+/// init=auto|tf|nn for examples with learned weights (auto: TF's saved
+/// weights when present), verbose=0|1 (per-array TF comparison).
+struct Options {
+  std::filesystem::path out, tf;
+  std::string           init{"auto"};
+  bool                  verbose{false};
+};
+
+inline Options ParseOptions(int argc, char** argv, const std::string& name,
+                            const std::filesystem::path& out_default) {
+  Options o;
+  o.out = out_default;
+  o.tf  = DefaultTfDir(name);
+  for (int i = 1; i < argc; ++i) {
+    const std::string a = argv[i];
+    const auto        e = a.find('=');
+    if (e == std::string::npos) throw std::invalid_argument("expected key=value option, got " + a);
+    const std::string key = a.substr(0, e), value = a.substr(e + 1);
+    if (key == "out") o.out = value;
+    else if (key == "tf") o.tf = value;
+    else if (key == "init") o.init = value;
+    else if (key == "verbose") o.verbose = value != "0";
+    else throw std::invalid_argument("unknown option " + key + " (out=, tf=, init=, verbose=)");
+  }
+  if (o.init != "auto" && o.init != "tf" && o.init != "nn") throw std::invalid_argument("init must be auto, tf or nn");
+  std::filesystem::create_directories(o.out);
+  return o;
+}
+
+}  // namespace attn
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+namespace bert {using namespace dm::nn::models::bert;
+
+inline Batch Rows(const Batch& b, const std::vector<std::int64_t>& rows) {
+  Batch out;
+  for (const auto& [k, v] : b) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+class BertMlmModel {
+ public:
+  nn::ParameterStore             store{46403};
+  std::unique_ptr<nn::Optimizer> optimizer;
+
+  explicit BertMlmModel(bool training = true) {
+    {
+      nn::NoGradGuard guard;
+      const Batch     b{{"input", nn::zeros({1, 32}, nn::DType::Int32)},
+                        {"segments", nn::zeros({1, 32}, nn::DType::Int32)},
+                        {"lengths", nn::full({1}, 32, nn::DType::Int32)}};
+      BertMlm(store, Encoded(b), b.at("segments"), b.at("lengths"));
+    }
+    if (training) Train();
+  }
+  void Train() {
+    nn::OptimizerConfig c;
+    c.kind    = nn::OptimizerKind::Adam;
+    optimizer = std::make_unique<nn::Optimizer>(store, .003, c);
+  }
+
+  static Tensor Encoded(const Batch& b) { return nn::one_hot(b.at("input"), 70); }
+
+  Tensor Loss(const MlmPath& p, const Batch& b) const {
+    const Tensor ce       = nn::neg(nn::sum(nn::mul(nn::log_softmax(p.logits, -1), nn::one_hot(b.at("target"), 70)), {2}));
+    const Tensor selected = b.at("selected");
+    return nn::div(nn::sum(nn::mul(ce, selected)), nn::maximum(nn::sum(selected), nn::scalar_like(1.0, selected)));
+  }
+
+  /// Forward fields, loss and d loss / d one-hot input.
+  Batch Evaluate(const Batch& b) {
+    Tensor encoded = Encoded(b);
+    encoded.requires_grad_(true);
+    const auto   p    = BertMlm(store, encoded, b.at("segments"), b.at("lengths"));
+    const Tensor loss = Loss(p, b);
+    const Tensor g    = nn::grad(loss, {encoded})[0];
+    return {{"logits", p.logits.detach()},   {"hidden", p.hidden.detach()},
+            {"attention", p.attention.detach()}, {"embedded", p.embedded.detach()},
+            {"transformed", p.transformed.detach()}, {"loss", loss.detach()},
+            {"input_gradient", g.detach()}};
+  }
+
+  float LossValue(const Batch& b) {
+    nn::NoGradGuard guard;
+    return Loss(BertMlm(store, Encoded(b), b.at("segments"), b.at("lengths")), b).item<float>();
+  }
+
+  /// Input-only mask predictions (no target/selected needed).
+  Tensor Predict(const Batch& b) {
+    nn::NoGradGuard guard;
+    return BertMlm(store, Encoded(b), b.at("segments"), b.at("lengths")).logits;
+  }
+
+  std::vector<Tensor> RawGradients(const Batch& b) {
+    const auto      p = BertMlm(store, Encoded(b), b.at("segments"), b.at("lengths"));
+    nn::GradOptions go;
+    go.allow_unused = true;
+    auto       g    = nn::grad(Loss(p, b), store.parameters(), go);
+    const auto ps   = store.parameters();
+    for (std::size_t i = 0; i < g.size(); ++i) g[i] = g[i].defined() ? g[i].detach() : nn::zeros_like(ps[i]);
+    return g;
+  }
+
+  /// Parameters (or, with `b`, their loss gradients on that batch), by name.
+  nn::NamedTensors Arrays(const Batch* b = nullptr) {
+    nn::NamedTensors out;
+    if (b) {
+      const auto g = RawGradients(*b);
+      for (std::size_t i = 0; i < g.size(); ++i) out.emplace_back(store.names()[i], g[i]);
+    } else {
+      for (const auto& name : store.names()) out.emplace_back(name, store.at(name).detach().clone());
+    }
+    return out;
+  }
+
+  void Update(const Batch& b) { optimizer->step(RawGradients(b)); }
+};
+
+}  // namespace bert
+
+// Editable workflow support: positional.hpp
+// Positional encodings with tflow's exact API and argument checks (port of
+// tflow's common/nn/positional.h). The math lives in
+// datamunge/nn/attention.hpp; this header adds what the library does not:
+//   - tflow's argument guards (the library's sinusoidal_encoding accepts odd or
+//     zero widths, apply_rotary negative offsets, alibi_slopes zero heads, and
+//     relative_position_buckets any bucket count);
+//   - AlibiSlopes in the ALiBi authors' ordering for head counts that are not
+//     powers of two (the library's nn::alibi_slopes uses 2^(-8h/H) for every H,
+//     which agrees only for powers of two);
+//   - T5 relative-position bias from a caller-owned table with an explicit
+//     query offset (the library's relative_position_bias owns a zero-initialised
+//     table and aligns queries bottom-right).
+
+#include <datamunge/nn/attention.hpp>
+#include <datamunge/nn/nn.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+namespace positional {
+
+namespace nn = datamunge::nn;
+
+/// The sinusoidal table [T, d] (d even): PE[t, 2i] = sin(t / base^(2i/d)), PE[t, 2i+1] = cos(...).
+inline nn::Tensor SinusoidalTable(std::int64_t T, std::int64_t d, double base = 10000.0,
+                                  nn::DType dtype = nn::DType::Float32) {
+  if (T < 1 || d < 2 || d % 2 || !std::isfinite(base) || base <= 0)
+    throw std::invalid_argument("sinusoidal length/width/base must be positive, width even");
+  return nn::sinusoidal_encoding(T, d, base, dtype);
+}
+
+/// Rotary embedding of x [..., T, d] (interleaved pairs), positions offset..offset+T-1.
+inline nn::Tensor ApplyRotary(const nn::Tensor& x, std::int64_t offset = 0, double base = 10000.0) {
+  const std::int64_t d = x.dim() >= 2 ? x.size(-1) : 0;
+  if (x.dim() < 2 || x.size(-2) < 1 || d < 2 || d % 2 || offset < 0 || !std::isfinite(base) || base <= 0)
+    throw std::invalid_argument("rotary length/width/base must be positive, width even, offset nonnegative");
+  return nn::apply_rotary(x, offset, base);
+}
+
+/// ALiBi slopes in the authors' ordering, including non-power-of-two head counts.
+/// https://github.com/ofirpress/attention_with_linear_biases
+inline std::vector<float> AlibiSlopes(int heads) {
+  if (heads < 1) throw std::invalid_argument("ALiBi needs positive heads");
+  int power = 1;
+  while (power <= heads / 2) power *= 2;
+  std::vector<float> slopes;
+  for (int h = 1; h <= power; ++h) slopes.push_back(std::pow(2.f, -8.f * h / power));
+  for (int h = 1; static_cast<int>(slopes.size()) < heads; h += 2) slopes.push_back(std::pow(2.f, -4.f * h / power));
+  return slopes;
+}
+
+/// Additive bias [heads, T, T]: -slope_h |m - n|, and -1e9 for n > m when `causal`.
+inline nn::Tensor AlibiBias(int heads, std::int64_t T, bool causal = true) {
+  if (T < 1) throw std::invalid_argument("ALiBi needs positive length");
+  const auto         slopes = AlibiSlopes(heads);
+  std::vector<float> b(static_cast<std::size_t>(heads * T * T));
+  for (int h = 0; h < heads; ++h)
+    for (std::int64_t m = 0; m < T; ++m)
+      for (std::int64_t n = 0; n < T; ++n)
+        b[static_cast<std::size_t>((h * T + m) * T + n)] =
+            causal && n > m ? -1e9f : -slopes[h] * static_cast<float>(std::abs(m - n)) + 0.f;  // + 0 avoids -0
+  return nn::from_vector(b, {heads, T, T});
+}
+
+/// T5 relative-position bucket of `relative` = key minus query: exact for
+/// distances below half the bins, logarithmic up to max_distance, separate
+/// bins for each sign when bidirectional (future keys clamp to 0 otherwise).
+inline int RelativePositionBucket(std::int64_t relative, bool bidirectional = true, int buckets = 32,
+                                  int max_distance = 128) {
+  if (buckets < 4 || (bidirectional && buckets % 2))
+    throw std::invalid_argument("relative buckets require >=4 and even bidirectional count");
+  const int bins  = bidirectional ? buckets / 2 : buckets;
+  const int exact = bins / 2;
+  if (max_distance <= exact) throw std::invalid_argument("relative maximum distance must exceed exact range");
+  std::int64_t distance = -relative;
+  const int    side     = bidirectional && distance < 0 ? bins : 0;
+  distance              = bidirectional ? std::abs(distance) : std::max<std::int64_t>(distance, 0);
+  const int bucket =
+      distance < exact ? static_cast<int>(distance)
+                       : std::min(bins - 1, exact + static_cast<int>(std::log(static_cast<double>(distance) / exact) /
+                                                                     std::log(static_cast<double>(max_distance) / exact) *
+                                                                     (bins - exact)));
+  return side + bucket;
+}
+
+/// Bucket indices [queries, keys] (int64) for queries at positions offset..offset+queries-1.
+inline nn::Tensor RelativePositionBuckets(std::int64_t queries, std::int64_t keys, bool bidirectional = true,
+                                          int buckets = 32, int max_distance = 128, std::int64_t query_offset = 0) {
+  if (queries < 1 || keys < 1 || query_offset < 0)
+    throw std::invalid_argument("relative bias needs positive lengths and nonnegative offset");
+  std::vector<std::int64_t> idx(static_cast<std::size_t>(queries * keys));
+  for (std::int64_t q = 0; q < queries; ++q)
+    for (std::int64_t k = 0; k < keys; ++k)
+      idx[static_cast<std::size_t>(q * keys + k)] =
+          RelativePositionBucket(k - q - query_offset, bidirectional, buckets, max_distance);
+  return nn::from_vector(idx, {queries, keys});
+}
+
+/// table [buckets, heads] -> bias [heads, queries, keys], differentiable in the table.
+inline nn::Tensor RelativePositionBias(const nn::Tensor& table, std::int64_t queries, std::int64_t keys,
+                                       bool bidirectional = true, int buckets = 32, int max_distance = 128,
+                                       std::int64_t query_offset = 0) {
+  const nn::Tensor idx = RelativePositionBuckets(queries, keys, bidirectional, buckets, max_distance, query_offset);
+  return nn::transpose(nn::gather(table, idx, 0), {2, 0, 1});
+}
+
+}  // namespace positional
+
+// Editable workflow support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}
+
+namespace dataset_assets {
+inline dm::nn::ImageDataset LoadCifar10(const std::string&directory,const std::string&split){dm::datasets::fetch("cifar10",std::filesystem::path(directory).parent_path().string());return dm::nn::load_cifar10(directory,split);}
+}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { if(name=="cifar10"||name=="character_rnn")return DataRoot()/name;return std::filesystem::path(dm::datasets::prepare_example_data("nn-completion-assets"))/name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/nn-completion");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace t5 {using namespace dm::nn::models::t5;
+
+class Model {
+ public:
+  nn::ParameterStore             parameters{46803};
+  std::unique_ptr<nn::Optimizer> optimizer;
+  explicit Model(bool training = true) {
+    {
+      nn::NoGradGuard guard;
+      Forward(
+          parameters,
+          nn::zeros({1, 48, 72}),
+          nn::zeros({1, 48, 72}),
+          nn::full({1}, 48, nn::DType::Int32),
+          nn::full({1}, 48, nn::DType::Int32));
+    }
+    if (training) {
+      nn::OptimizerConfig opt;
+      opt.kind  = nn::OptimizerKind::Adam;
+      optimizer = std::make_unique<nn::Optimizer>(parameters, .003, opt);
+    }
+  }
+  static Tensor Loss(const Tensor& logits, const A& b) {
+    auto mask = nn::squeeze(bert::LengthMask(b.at("output_lengths"), 48), {2});
+    auto ce   = -nn::sum(nn::log_softmax(logits, -1) * nn::one_hot(b.at("target"), 72), {2});
+    return nn::sum(ce * mask) / nn::maximum(nn::sum(mask), nn::scalar(1));
+  }
+  A Run(const A& b, bool gradients = false, const A& overrides = {}) {
+    A saved;
+    for (const auto& [k, v] : overrides) {
+      saved[k] = parameters.at(k).detach().clone();
+      parameters.set(k, v);
+    }
+    struct Restore {
+      nn::ParameterStore& p;
+      A&                  saved;
+      ~Restore() {
+        for (const auto& [k, v] : saved)
+          p.set(k, v);
+      }
+    } restore{parameters, saved};
+    auto source  = nn::one_hot(b.at("input"), 72).requires_grad_(),
+         teacher = nn::one_hot(b.at("teacher"), 72).requires_grad_();
+    auto path = Forward(parameters, source, teacher, b.at("input_lengths"), b.at("output_lengths"));
+    auto loss = Loss(path.logits, b);
+    std::vector<Tensor> inputs{source, teacher, path.memory};
+    if (gradients) {
+      auto p = parameters.parameters();
+      inputs.insert(inputs.end(), p.begin(), p.end());
+    }
+    nn::GradOptions retained;
+    retained.retain_graph = true;
+    auto g                = nn::grad(loss, inputs, retained);
+    auto prefix =
+        nn::grad(nn::sum(nn::slice(path.logits, {0, 0, 0}, {source.size(0), 2, 7})), {teacher})[0];
+    A out{
+        {"loss", loss},
+        {"logits", path.logits},
+        {"memory", path.memory},
+        {"hidden", path.hidden},
+        {"encoder_attention", path.encoder_attention},
+        {"decoder_attention", path.decoder_attention},
+        {"cross_attention", path.cross_attention},
+        {"prefix_gradient", prefix},
+        {"partial0", g[0]},
+        {"partial1", g[1]},
+        {"partial2", g[2]}};
+    if (gradients)
+      for (size_t i = 0; i < parameters.size(); ++i)
+        out[parameters.names()[i]] = g[i + 3];
+    for (auto& [k, v] : out)
+      v = v.detach().clone();
+    return out;
+  }
+  void Update(const A& b) {
+    auto path = Forward(
+        parameters,
+        nn::one_hot(b.at("input"), 72),
+        nn::one_hot(b.at("teacher"), 72),
+        b.at("input_lengths"),
+        b.at("output_lengths"));
+    optimizer->minimize(Loss(path.logits, b));
+  }
+  A      Arrays() const { return replay::Arrays(parameters); }
+  Tensor Greedy(const A& b, Tensor* trace = nullptr) {
+    nn::NoGradGuard    guard;
+    int                n = b.at("input").size(0);
+    std::vector<int>   tokens(n * 48), generated(n * 48);
+    std::vector<bool>  done(n);
+    std::vector<float> attention(n * 2 * 48 * 48);
+    auto               source = nn::one_hot(b.at("input"), 72);
+    for (int t = 0; t < 48; ++t) {
+      auto path = Forward(
+          parameters,
+          source,
+          nn::one_hot(nn::from_vector(tokens, {n, 48}), 72),
+          b.at("input_lengths"),
+          nn::full({n}, t + 1, nn::DType::Int32));
+      auto z = path.logits.to_vector<float>(), a = path.cross_attention.to_vector<float>();
+      for (int row = 0; row < n; ++row) {
+        if (done[row])
+          continue;
+        int best = 0;
+        for (int c = 1; c < 72; ++c)
+          if (z[(row * 48 + t) * 72 + c] > z[(row * 48 + t) * 72 + best])
+            best = c;
+        generated[row * 48 + t] = best;
+        if (t < 47)
+          tokens[row * 48 + t + 1] = best;
+        if (trace)
+          for (int h = 0; h < 2; ++h)
+            for (int k = 0; k < 48; ++k)
+              attention[((row * 2 + h) * 48 + t) * 48 + k] = a[((row * 2 + h) * 48 + t) * 48 + k];
+        done[row] = best == 1;
+      }
+    }
+    if (trace)
+      *trace = nn::from_vector(attention, {n, 2, 48, 48});
+    return nn::from_vector(generated, {n, 48});
+  }
+};
+} // namespace t5
+
+#include <fstream>
+namespace nn = datamunge::nn;
+namespace {
+using A     = t5::A;
+using Model = t5::Model;
+void Save(const std::filesystem::path& file, const A& a) {
+  nn::save_npz(file.string(), replay::ToNamed(a));
+}
+void Run(const std::string& name, int epochs) {
+  auto root = paths::OutputDir("models/t5_text/" + name), tf = replay::TfModels("t5_text") / name;
+  replay::CopyAssets(
+      paths::Dataset("t5_text/" + name), root, {"data.npz", "manifest.json", "vocabulary.json"});
+  auto           data = replay::ToMap(nn::load_npz((root / "data.npz").string()));
+  std::vector<A> pools;
+  for (auto split : {"fit", "validation", "test"}) {
+    A b;
+    for (auto key : {"input", "target", "teacher", "input_lengths", "output_lengths", "source_ids"})
+      b[key] = data.at(std::string(split) + "_" + key);
+    pools.push_back(b);
+  }
+  Model model;
+  int   expected = 2040;
+  check::Require(
+      model.parameters.count() == expected && model.parameters.size() == 26,
+      "shared table,bias-free attention/FF,seven RMS scales,two32x2relative tables");
+  Save(root / "random_arrays.npz", model.Arrays());
+  if (name == "sentiment") {
+    auto source = paths::OutputDir("models/t5_text/denoise");
+    model.parameters.load((source / "final.npz").string());
+    auto weights = replay::ToMap(nn::load_npz((source / "model_arrays.npz").string()));
+    check::Require(
+        replay::SameBits(weights, model.Arrays()), "all pretrained T5 tensors transferred exactly");
+  }
+  bool parity = std::filesystem::exists(tf / "initial_arrays.npz");
+  if (parity)
+    replay::LoadInto(model.parameters, tf / "initial_arrays.npz");
+  auto compare = [&](const A& out, const std::string& file) {
+    if (parity && std::filesystem::exists(tf / file)) {
+      double error = replay::MaxDiff(out, tf / file);
+      std::cout << name << " TF " << file << " difference=" << error << std::endl;
+      check::Near(error, 0, 2e-4, "T5 TF " + file);
+    }
+  };
+  Save(root / "initial_arrays.npz", model.Arrays());
+  auto firstout = model.Run(pools[2]);
+  Save(root / "initial_outputs.npz", firstout);
+  compare(firstout, "initial_outputs.npz");
+  nn::BatchOrder order(pools[0].at("input").size(0), 8, 46807);
+  std::ofstream  history(root / "history.tsv"), batches(root / "batches.tsv");
+  history << "epoch\tvalidation_loss\n";
+  batches << "epoch\tstep\trow\n";
+  int steps = 0;
+  A   first;
+  for (int e = 1; e <= epochs; ++e) {
+    order.begin_epoch();
+    for (;;) {
+      auto rows = order.next();
+      if (rows.empty())
+        break;
+      auto b = bert::Rows(pools[0], rows);
+      if (!steps) {
+        first = b;
+        Save(root / "first_batch.npz", b);
+        Save(root / "first_forward.npz", model.Run(b));
+        auto out = model.Run(b, true);
+        A    g;
+        for (auto k : model.parameters.names())
+          g[k] = out.at(k);
+        Save(root / "initial_gradients.npz", g);
+        compare(g, "initial_gradients.npz");
+      }
+      model.Update(b);
+      if (!steps)
+        Save(root / "first_after.npz", model.Arrays());
+      for (auto r : rows)
+        batches << e << '\t' << steps << '\t' << r << '\n';
+      ++steps;
+    }
+    auto v = model.Run(pools[1]);
+    history << e;
+    for (auto k : {"loss"})
+      history << '\t' << v.at(k).item();
+    history << '\n';
+    std::cout << name << " epoch=" << e << " validationTokenCE=" << v.at("loss").item()
+              << " total=" << v.at("loss").item() << std::endl;
+  }
+  auto g = model.Run(first, true);
+  A    gradients;
+  for (auto key : model.parameters.names())
+    gradients[key] = g.at(key);
+  Save(root / "final_gradients.npz", gradients);
+  compare(gradients, "final_gradients.npz");
+  model.parameters.save((root / "final.npz").string());
+  Model deployed(false);
+  deployed.parameters.load((root / "final.npz").string());
+  auto final = deployed.Arrays();
+  check::Require(replay::SameBits(model.Arrays(), final), "compact bitexact restore");
+  auto out = deployed.Run(pools[2]);
+  Save(root / "model_arrays.npz", final);
+  Save(root / "outputs.npz", out);
+  compare(out, "outputs.npz");
+  nn::Tensor trace;
+  auto       greedy = deployed.Greedy(pools[2], &trace);
+  check::Near(
+      replay::MaxAbsDiff(
+          nn::cast(greedy, nn::DType::Float32),
+          nn::cast(deployed.Greedy(pools[2]), nn::DType::Float32)),
+      0,
+      0,
+      "deterministic text generation");
+  Save(root / "decoded.npz", {{"greedy", greedy}, {"cross_attention", trace}});
+  auto b = bert::Rows(pools[2], {0, 1}), base = deployed.Run(b), corrupt = bert::Rows(b, {0, 1});
+  corrupt["target"]         = nn::full({2, 48}, 17, nn::DType::Int32);
+  corrupt["teacher"]        = nn::full({2, 48}, 17, nn::DType::Int32);
+  corrupt["output_lengths"] = nn::zeros({2}, nn::DType::Int32);
+  check::Require(
+      replay::SameBits({{"greedy", deployed.Greedy(b)}}, {{"greedy", deployed.Greedy(corrupt)}}),
+      "generation excludes gold tokens/target lengths");
+  auto padded = bert::Rows(b, {0, 1});
+  for (auto key : {"input", "teacher"}) {
+    auto x       = padded.at(key).to_vector<int>(),
+         lengths = padded.at(std::string(key) == "input" ? "input_lengths" : "output_lengths")
+                       .to_vector<int>();
+    for (int n = 0; n < 2; ++n)
+      for (int t = lengths[n]; t < 48; ++t)
+        x[n * 48 + t] = 17;
+    padded[key] = nn::from_vector(x, {2, 48});
+  }
+  auto po = deployed.Run(padded);
+  for (const auto& [k, v] : base)
+    check::Near(replay::MaxAbsDiff(v, po.at(k)), 0, 0, "all T5 paths/partials padding invariant");
+  Save(root / "padding_inputs.npz", padded);
+  Save(root / "padding_outputs.npz", po);
+  auto future   = bert::Rows(b, {0, 1});
+  auto teachers = future.at("teacher").to_vector<int>();
+  for (int n = 0; n < 2; ++n)
+    for (int t = 2; t < 48; ++t)
+      teachers[n * 48 + t] = 17;
+  future["teacher"] = nn::from_vector(teachers, {2, 48});
+  auto   fo         = deployed.Run(future);
+  double later      = 0;
+  auto   x = base.at("logits").to_vector<float>(), y = fo.at("logits").to_vector<float>(),
+       pg = base.at("prefix_gradient").to_vector<float>();
+  for (int n = 0; n < 2; ++n)
+    for (int t = 0; t < 48; ++t)
+      for (int c = 0; c < 72; ++c) {
+        int i = (n * 48 + t) * 72 + c;
+        if (t < 2)
+          check::Near(x[i], y[i], 0, "future token cannot affect earlier logits");
+        else {
+          later = std::max(later, double(std::abs(x[i] - y[i])));
+          check::Near(pg[i], 0, 0, "prefix derivative into future teacher0");
+        }
+      }
+  check::Require(later > 1e-5, "future perturbation affects later logits");
+  Save(root / "future_inputs.npz", future);
+  Save(root / "future_outputs.npz", fo);
+  auto empty             = bert::Rows(b, {0, 1});
+  empty["input_lengths"] = nn::zeros({2}, nn::DType::Int32);
+  auto eo                = deployed.Run(empty);
+  for (auto key : {"memory", "encoder_attention", "cross_attention", "partial0", "partial2"})
+    check::Near(nn::max(nn::abs(eo.at(key))).item(), 0, 0, "empty source paths/gradients0");
+  Save(root / "empty_inputs.npz", empty);
+  Save(root / "empty_outputs.npz", eo);
+  double fd       = 0;
+  int    fd_count = 0;
+  for (auto key : model.parameters.names()) {
+    auto value = final.at(key);
+    auto x     = value.to_vector<float>();
+    for (int i : {0, int(x.size() / 2), int(x.size() - 1)}) {
+      float old = x[i];
+      x[i]      = old + .001f;
+      auto plus =
+          model.Run(first, false, {{key, nn::from_vector(x, value.shape())}}).at("loss").item();
+      x[i] = old - .001f;
+      auto minus =
+          model.Run(first, false, {{key, nn::from_vector(x, value.shape())}}).at("loss").item();
+      x[i] = old;
+      fd   = std::max(fd, std::abs((plus - minus) / .002 - g.at(key).to_vector<float>()[i]));
+      ++fd_count;
+    }
+  }
+  check::Require(fd < .004, "shared/tied/triple-loss native central differences");
+  check::Require(replay::SameBits(final, deployed.Arrays()), "compact inference immutable");
+  int  total = 0, correct = 0, exact = 0;
+  auto z         = out.at("logits").to_vector<float>();
+  auto generated = greedy.to_vector<int>(), target = pools[2].at("target").to_vector<int>(),
+       lengths = pools[2].at("output_lengths").to_vector<int>();
+  for (int n = 0; n < int(lengths.size()); ++n) {
+    bool match = true;
+    for (int t = 0; t < 48; ++t) {
+      match &= generated[n * 48 + t] == target[n * 48 + t];
+      if (t < lengths[n]) {
+        int best = 0;
+        for (int c = 1; c < 72; ++c)
+          if (z[(n * 48 + t) * 72 + c] > z[(n * 48 + t) * 72 + best])
+            best = c;
+        correct += best == target[n * 48 + t];
+        ++total;
+      }
+    }
+    exact += match;
+  }
+  std::ofstream meta(root / "metrics.json");
+  meta.precision(17);
+  meta << "{\"parameters\":2040,\"variables\":26,\"epochs\":" << epochs << ",\"updates\":" << steps
+       << ",\"test_token_ce\":" << out.at("loss").item()
+       << ",\"teacher_token_accuracy\":" << double(correct) / total
+       << ",\"greedy_exact_accuracy\":" << double(exact) / lengths.size()
+       << ",\"native_fd_count\":" << fd_count << ",\"native_fd_error\":" << fd
+       << ",\"nonvacuous_later_logit_effect\":" << later << "}\n";
+  std::cout << name << " testCE=" << out.at("loss").item()
+            << " teacherAccuracy=" << double(correct) / total << " greedyExact=" << exact << '/'
+            << lengths.size() << "; " << fd_count << "nativeFD max=" << fd
+            << "; relativeRMS/tiedTextHead/causal/padding/labelFree/restore/immutable PASS\n";
+}
+} // namespace
+int main(int argc, char** argv) {
+  try {
+    nn::set_num_threads(2);
+    int epochs = 3;
+    for (int i = 1; i < argc; ++i) {
+      std::string a = argv[i];
+      check::Require(a.rfind("epochs=", 0) == 0, "epochs=N");
+      epochs = std::stoi(a.substr(7));
+    }
+    check::Require(epochs > 0 && epochs <= 100, "positive bounded epochs");
+    for (auto task : {"denoise", "sentiment"})
+      Run(task, epochs);
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin:
+// denoise epoch=1 validationTokenCE=4.22694 total=4.22694
+// denoise epoch=2 validationTokenCE=4.09466 total=4.09466
+// denoise epoch=3 validationTokenCE=4.00355 total=4.00355
+// denoise testCE=3.98767 teacherAccuracy=0.125 greedyExact=0/16; 78nativeFD max=8.12289e-05; relativeRMS/tiedTextHead/causal/padding/labelFree/restore/immutable PASS
+// sentiment epoch=1 validationTokenCE=3.91663 total=3.91663
+// sentiment epoch=2 validationTokenCE=3.79599 total=3.79599
+// sentiment epoch=3 validationTokenCE=3.67174 total=3.67174
+// sentiment testCE=3.67182 teacherAccuracy=0.180556 greedyExact=0/16; 78nativeFD max=0.000267328; relativeRMS/tiedTextHead/causal/padding/labelFree/restore/immutable PASS
+// result_end
+
+> Inspect the actual saved results
+
+The figures below read actual saved outputs from this run. Native graph previews appear above the complete program. Reconstructed-task results retain the source budgets and are not reported as original benchmark scores.
+
+> Actual validation history
+
+Each panel reads the first recorded objective from a saved `history.tsv`. Different tasks and loss definitions have different units; compare curves within a panel. These are reconstructed-data outcomes with the original update budgets.
+
+```{cpp, results="markdown", file="figures/t5_text_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace fs=std::filesystem;std::vector<fs::path> files;for(const auto&entry:fs::recursive_directory_iterator("build/nn-completion/models/t5_text"))if(entry.path().filename()=="history.tsv")files.push_back(entry.path());std::sort(files.begin(),files.end());if(files.empty())throw std::runtime_error("actual validation histories missing");auto layout=dm::graphics::RLayout::create((files.size()+1)/2,std::min(size_t(2),files.size()));for(const auto&file:files){std::ifstream in(file);std::string header,line;std::getline(in,header);std::vector<double>x,y;while(std::getline(in,line)){std::istringstream row(line);double step,value;if(row>>step>>value){x.push_back(step);y.push_back(value);}}if(x.empty())continue;auto plot=dm::graphics::RPlot::create();plot.lines(x,y,"saved validation objective",{37,99,235}).points(x,y,"saved rows",{37,99,235},4).x_label("Epoch or source step").y_label("Source objective; panels may use different units").title(file.parent_path().filename().string());layout.add(plot);}layout.size(1200,std::max(size_t(700),400*((files.size()+1)/2))).fit_panels().save_svg("build/t5_text_history.svg");}
+```
+// result_begin: markdown
+\image(figures/t5_text_history.svg)
+// result_end
+
+
+> Actual saved attention layout
+
+This reads `denoise/outputs.npz`, field `cross_attention`, from the real held-out run. It shows the first leading-index slice and at most64 rows/columns. For sparse, hashed or projected attention, candidate slots are the source layout, not a dense physical-token axis. The complete program retains the index/projection mappings. Attention is not a saliency or causal explanation.
+
+```{cpp, results="markdown", file="figures/t5_text_attention.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto load=[](const std::string&path){auto a=dm::nn::load_npz(path);return std::map<std::string,dm::nn::Tensor>(a.begin(),a.end());};auto a=load("build/nn-completion/models/t5_text/denoise/outputs.npz");auto tensor=a.at("cross_attention");int rows=tensor.size(tensor.dim()-2),columns=tensor.size(tensor.dim()-1),r=std::min(rows,64),c=std::min(columns,64);auto values=tensor.to_vector<double>();std::vector<double>x(c),y(r);std::iota(x.begin(),x.end(),0.);std::iota(y.begin(),y.end(),0.);std::vector<std::vector<double>>z(c,std::vector<double>(r));for(int i=0;i<r;++i)for(int j=0;j<c;++j)z[j][i]=values[i*columns+j];std::print("Native saved cross_attention last axes: {} by {}; showing first sample/head/chunk and up to64 positions. Colour range: zero to the maximum in these rows, {}.\n",rows,columns,*std::max_element(values.begin(),values.begin()+r*columns));dm::graphics::RPlot::create().image(x,y,z,dm::graphics::terrain_colors(256),0,*std::max_element(values.begin(),values.begin()+r*columns)).title("t5 text actual cross_attention").x_label("Source key/candidate/compressed slot index").y_label("Source query/layout row index").size(1000,750).save_svg("build/t5_text_attention.svg");}
+```
+// result_begin: markdown
+Native saved cross_attention last axes: 48 by 48; showing first sample/head/chunk and up to64 positions. Colour range: zero to the maximum in these rows, 0.03340435028076172.
+\image(figures/t5_text_attention.svg)
+// result_end

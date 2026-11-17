@@ -1851,6 +1851,7 @@ template<> struct Bound<datamunge::Dual> : std::true_type {};
 template<> struct Bound<datamunge::HyperDual> : std::true_type {};
 template<> struct Bound<datamunge::Var> : std::true_type {};
 template<> struct Bound<datamunge::Tape> : std::true_type {};
+template<> struct Bound<datamunge::MLPClassifierSearch> : std::true_type {};
 template<> struct Bound<datamunge::cad::Solid> : std::true_type {};
 template<> struct Bound<datamunge::cad::View> : std::true_type {};
 template<> struct Bound<datamunge::fda::SplineSolveOptions> : std::true_type {};
@@ -2106,55 +2107,7 @@ struct rosetta_class_181_director final : datamunge::optim::RBFGaussianProcessSu
 };
 }
 namespace ROSETTA_TCL_MODULE {
-Tcl_Obj* rosetta_function_812(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 2 && n <= 2 && call.match()) {
-            if (n == 2) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::poly_remainder(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    poly_remainder a:Polynomial b:Polynomial -> Polynomial\n");
-}
-Tcl_Obj* rosetta_function_817(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 1 && n <= 1 && call.match()) {
-            if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::descartes_sign_changes(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    descartes_sign_changes p:Polynomial -> int\n");
-}
-Tcl_Obj* rosetta_function_820(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 2 && n <= 3 && call.match()) {
-            if (n == 2) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::is_negligible_remainder(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-            if (n == 3) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p1(a[1]);
-                rosetta_tcl::Param<double> p2(a[2]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::is_negligible_remainder(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    is_negligible_remainder r:Polynomial scale_reference:Polynomial \?relative_tolerance:double\? -> bool\n");
-}
-Tcl_Obj* rosetta_function_822(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_823(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
@@ -2168,230 +2121,264 @@ Tcl_Obj* rosetta_function_822(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    poly_extended_gcd a:Polynomial b:Polynomial -> PolyExtendedGcdResult\n");
 }
-Tcl_Obj* rosetta_function_827(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_833(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 2 && n <= 2 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<datamunge::algebra::detail::Cplx> p0(a[0]);
+                rosetta_tcl::Param<datamunge::algebra::detail::Cplx> p1(a[1]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::c_sub(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    c_sub a:Cplx b:Cplx -> Cplx\n");
+}
+Tcl_Obj* rosetta_function_842(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<const std::vector<int> &> p0(a[0]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::total_degree(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    total_degree exponents:list of int -> int\n");
+}
+Tcl_Obj* rosetta_function_853(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 3 && n <= 3 && call.match()) {
             if (n == 3) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                rosetta_tcl::Param<double> p1(a[1]);
-                rosetta_tcl::Param<double> p2(a[2]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::sturm_root_count(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    sturm_root_count p:Polynomial a:double b:double -> int\n");
-}
-Tcl_Obj* rosetta_function_858(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 2 && n <= 2 && call.match()) {
-            if (n == 2) {
-                rosetta_tcl::Param<const std::vector<long long> &> p0(a[0]);
-                rosetta_tcl::Param<long long> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::berlekamp_null_space(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    berlekamp_null_space f:list of int p:int -> list of list of int\n");
-}
-Tcl_Obj* rosetta_function_884(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 5 && n <= 5 && call.match()) {
-            if (n == 5) {
-                rosetta_tcl::Param<const datamunge::cv::HoughLine &> p0(a[0]);
-                rosetta_tcl::Param<int> p1(a[1]);
-                rosetta_tcl::Param<int> p2(a[2]);
-                rosetta_tcl::Param<std::pair<int, int> &> p3(a[3]);
-                rosetta_tcl::Param<std::pair<int, int> &> p4(a[4]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::cv::line_endpoints(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                p3.writeback(a[3]);
-                p4.writeback(a[4]);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    line_endpoints line:HoughLine image_width:int image_height:int p1:varName of list {int int} p2:varName of list {int int} -> bool\n");
-}
-Tcl_Obj* rosetta_function_901(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 2 && n <= 2 && call.match()) {
-            if (n == 2) {
-                rosetta_tcl::Param<const datamunge::image::Image &> p0(a[0]);
-                rosetta_tcl::Param<int> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::image::adjust_brightness(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    adjust_brightness src:Image delta:int -> Image\n");
-}
-Tcl_Obj* rosetta_function_902(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 2 && n <= 2 && call.match()) {
-            if (n == 2) {
-                rosetta_tcl::Param<const datamunge::image::Image &> p0(a[0]);
-                rosetta_tcl::Param<double> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::image::adjust_contrast(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    adjust_contrast src:Image factor:double -> Image\n");
-}
-Tcl_Obj* rosetta_function_919(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::datasets::downloadable(); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    downloadable -> list of string\n");
-}
-Tcl_Obj* rosetta_function_930(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 6 && n <= 6 && call.match()) {
-            if (n == 6) {
                 rosetta_tcl::Param<double> p0(a[0]);
                 rosetta_tcl::Param<double> p1(a[1]);
                 rosetta_tcl::Param<double> p2(a[2]);
-                rosetta_tcl::Param<double> p3(a[3]);
-                rosetta_tcl::Param<unsigned long> p4(a[4]);
-                rosetta_tcl::Param<unsigned long> p5(a[5]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::fem::make_rectangular_mesh2d(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::mod_pow(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    make_rectangular_mesh2d x0:double y0:double x1:double y1:double nx:unsigned int ny:unsigned int -> Mesh2D\n");
+    rosetta_tcl::no_overload(call, "    mod_pow base:double exponent:double modulus:double -> double\n");
 }
-Tcl_Obj* rosetta_function_981(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_860(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
-        if (n >= 5 && n <= 6 && call.match()) {
-            if (n == 5) {
-                rosetta_tcl::Param<datamunge::image::Image &> p0(a[0]);
-                rosetta_tcl::Param<int> p1(a[1]);
-                rosetta_tcl::Param<int> p2(a[2]);
-                rosetta_tcl::Param<int> p3(a[3]);
-                rosetta_tcl::Param<const datamunge::image::Pixel &> p4(a[4]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::image::draw_circle(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-            if (n == 6) {
-                rosetta_tcl::Param<datamunge::image::Image &> p0(a[0]);
-                rosetta_tcl::Param<int> p1(a[1]);
-                rosetta_tcl::Param<int> p2(a[2]);
-                rosetta_tcl::Param<int> p3(a[3]);
-                rosetta_tcl::Param<const datamunge::image::Pixel &> p4(a[4]);
-                rosetta_tcl::Param<bool> p5(a[5]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::image::draw_circle(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_tcl::Return::automatic);
+        if (n >= 2 && n <= 2 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
+                rosetta_tcl::Param<double> p1(a[1]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::algebra::berlekamp_factor_mod(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    draw_circle img:Image cx:int cy:int radius:int color:Pixel \?filled:bool\?\n");
+    rosetta_tcl::no_overload(call, "    berlekamp_factor_mod poly:list of double prime:double -> list of list of double\n");
 }
-Tcl_Obj* rosetta_function_1001(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_888(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 4 && n <= 4 && call.match()) {
+            if (n == 4) {
+                rosetta_tcl::Param<datamunge::cv::StructuringElement> p0(a[0]);
+                rosetta_tcl::Param<int> p1(a[1]);
+                rosetta_tcl::Param<int> p2(a[2]);
+                rosetta_tcl::Param<int> p3(a[3]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::cv::detail::in_structuring_element(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    in_structuring_element se:StructuringElement dx:int dy:int radius:int -> bool\n");
+}
+Tcl_Obj* rosetta_function_915(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 2 && n <= 3 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<const datamunge::image::Image &> p0(a[0]);
+                rosetta_tcl::Param<int> p1(a[1]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::cv::laplacian_pyramid(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+            if (n == 3) {
+                rosetta_tcl::Param<const datamunge::image::Image &> p0(a[0]);
+                rosetta_tcl::Param<int> p1(a[1]);
+                rosetta_tcl::Param<double> p2(a[2]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::cv::laplacian_pyramid(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    laplacian_pyramid img:Image levels:int \?sigma:double\? -> list of Image\n");
+}
+Tcl_Obj* rosetta_function_940(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<unsigned long> p0(a[0]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::graphics::terrain_colors(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    terrain_colors n:unsigned int -> list of RGB\n");
+}
+Tcl_Obj* rosetta_function_943(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 4 && call.match()) {
             if (n == 1) {
                 rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
             if (n == 2) {
                 rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
-                rosetta_tcl::Param<double> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                rosetta_tcl::Param<std::vector<datamunge::graphics::RGB>> p1(a[1]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
             if (n == 3) {
                 rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
-                rosetta_tcl::Param<double> p1(a[1]);
+                rosetta_tcl::Param<std::vector<datamunge::graphics::RGB>> p1(a[1]);
                 rosetta_tcl::Param<double> p2(a[2]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
             if (n == 4) {
                 rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
-                rosetta_tcl::Param<double> p1(a[1]);
+                rosetta_tcl::Param<std::vector<datamunge::graphics::RGB>> p1(a[1]);
                 rosetta_tcl::Param<double> p2(a[2]);
-                rosetta_tcl::Param<datamunge::stats::Alternative> p3(a[3]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                rosetta_tcl::Param<double> p3(a[3]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ks_test_one_sample_normal x:list of double \?mean:double\? \?sd:double\? \?alternative:Alternative\? -> HypothesisTestResult\n");
+    rosetta_tcl::no_overload(call, "    value_colors values:list of double \?palette:list of RGB\? \?z_min:double\? \?z_max:double\? -> list of RGB\n");
 }
-Tcl_Obj* rosetta_function_1023(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_953(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 3 && n <= 3 && call.match()) {
+            if (n == 3) {
+                rosetta_tcl::Param<const datamunge::geometry::Point2D &> p0(a[0]);
+                rosetta_tcl::Param<const datamunge::geometry::Point2D &> p1(a[1]);
+                rosetta_tcl::Param<const datamunge::geometry::Point2D &> p2(a[2]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::geometry::detail::circle_from_three_points(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    circle_from_three_points a:Point2D b:Point2D c:Point2D -> Circle\n");
+}
+Tcl_Obj* rosetta_function_959(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
-                rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::sum_dvector(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                rosetta_tcl::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::geometry::polygon_centroid(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    sum_dvector values:list of double -> double\n");
+    rosetta_tcl::no_overload(call, "    polygon_centroid vertices:list of Point2D -> Point2D\n");
+}
+Tcl_Obj* rosetta_function_969(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::geometry::triangulate_polygon(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    triangulate_polygon polygon:list of Point2D -> list of Triangle\n");
+}
+Tcl_Obj* rosetta_function_989(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 2 && n <= 3 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<const datamunge::image::Image &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::image::write_pbm(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+            if (n == 3) {
+                rosetta_tcl::Param<const datamunge::image::Image &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<unsigned char> p2(a[2]);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::image::write_pbm(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    write_pbm img:Image path:string \?threshold:unsigned int\?\n");
+}
+Tcl_Obj* rosetta_function_1036(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::data::mtcars(); }, nullptr, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    mtcars -> DataFrame or {}\n");
 }
 Tcl_Obj* rosetta_function_1042(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
-        if (n >= 1 && n <= 1 && call.match()) {
-            if (n == 1) {
-                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::data::load(p0.get()); }, nullptr, rosetta_tcl::Return::automatic);
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::data::california_housing(); }, nullptr, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    load name:string -> DataFrame or {}\n");
+    rosetta_tcl::no_overload(call, "    california_housing -> DataFrame or {}\n");
 }
-Tcl_Obj* rosetta_function_1043(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1096(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::data::catalog(); }, nullptr, rosetta_tcl::Return::automatic);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->num_variables(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    catalog -> DataFrame or {}\n");
+    rosetta_tcl::no_overload(call, "    num_variables -> int\n");
 }
-Tcl_Obj* rosetta_function_1074(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1097(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->degree(); }, call.self, rosetta_tcl::Return::automatic);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->num_terms(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    degree -> int\n");
+    rosetta_tcl::no_overload(call, "    num_terms -> int\n");
 }
-Tcl_Obj* rosetta_function_1075(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1098(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->is_zero(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
@@ -2399,26 +2386,25 @@ Tcl_Obj* rosetta_function_1075(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    is_zero -> bool\n");
 }
-Tcl_Obj* rosetta_function_1076(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 1 && n <= 1 && call.match()) {
-            if (n == 1) {
-                rosetta_tcl::Param<int> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->coefficient(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    coefficient i:int -> double\n");
-}
-Tcl_Obj* rosetta_function_1077(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1099(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->exponents(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    exponents -> list of list of int\n");
+}
+Tcl_Obj* rosetta_function_1100(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->coefficients(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
@@ -2426,121 +2412,110 @@ Tcl_Obj* rosetta_function_1077(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    coefficients -> list of double\n");
 }
-Tcl_Obj* rosetta_function_1078(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1101(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
-                rosetta_tcl::Param<double> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->evaluate(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    evaluate x:double -> double\n");
+    rosetta_tcl::no_overload(call, "    evaluate point:list of double -> double\n");
 }
-Tcl_Obj* rosetta_function_1079(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->derivative(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    derivative -> Polynomial\n");
-}
-Tcl_Obj* rosetta_function_1080(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->antiderivative(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    antiderivative -> Polynomial\n");
-}
-Tcl_Obj* rosetta_function_1081(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1102(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                rosetta_tcl::Param<const datamunge::algebra::MultivariatePolynomial &> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->add(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    add other:Polynomial -> Polynomial\n");
+    rosetta_tcl::no_overload(call, "    add other:MultivariatePolynomial -> MultivariatePolynomial\n");
 }
-Tcl_Obj* rosetta_function_1082(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1103(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                rosetta_tcl::Param<const datamunge::algebra::MultivariatePolynomial &> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->subtract(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    subtract other:Polynomial -> Polynomial\n");
+    rosetta_tcl::no_overload(call, "    subtract other:MultivariatePolynomial -> MultivariatePolynomial\n");
 }
-Tcl_Obj* rosetta_function_1083(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1104(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                rosetta_tcl::Param<const datamunge::algebra::MultivariatePolynomial &> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->multiply(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    multiply other:Polynomial -> Polynomial\n");
+    rosetta_tcl::no_overload(call, "    multiply other:MultivariatePolynomial -> MultivariatePolynomial\n");
 }
-Tcl_Obj* rosetta_function_1084(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1105(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
                 rosetta_tcl::Param<double> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->scale(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    scale factor:double -> Polynomial\n");
+    rosetta_tcl::no_overload(call, "    scale factor:double -> MultivariatePolynomial\n");
 }
-Tcl_Obj* rosetta_function_1085(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1106(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->negate(); }, call.self, rosetta_tcl::Return::automatic);
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<datamunge::algebra::MonomialOrder> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->leading_exponent(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    negate -> Polynomial\n");
+    rosetta_tcl::no_overload(call, "    leading_exponent order:MonomialOrder -> list of int\n");
 }
-Tcl_Obj* rosetta_function_1086(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1107(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<datamunge::algebra::MonomialOrder> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->leading_coefficient(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    leading_coefficient order:MonomialOrder -> double\n");
+}
+Tcl_Obj* rosetta_function_1108(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
+                auto* native = rosetta_tcl::native<datamunge::algebra::MultivariatePolynomial>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->to_string(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
@@ -2548,189 +2523,52 @@ Tcl_Obj* rosetta_function_1086(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    to_string -> string\n");
 }
-Tcl_Obj* rosetta_function_1087(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 1 && n <= 1 && call.match()
-            && (n <= 0 || rosetta_tcl::Param<const datamunge::algebra::Polynomial &>::check(a[0], level))) {
-            if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->operator==(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    if (call.arity_matched) return Tcl_NewBooleanObj(0);
-    rosetta_tcl::no_overload(call, "    eq other:Polynomial -> bool\n");
-}
-Tcl_Obj* rosetta_function_1088(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 1 && n <= 1 && call.match()) {
-            if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Polynomial>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->operator!=(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    ne other:Polynomial -> bool\n");
-}
-Tcl_Obj* rosetta_function_1089(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    Tcl_Obj* self_word = call.object ? Tcl_GetObjectName(rosetta_tcl::interp(), call.object) : rosetta_tcl::empty();
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 2 && call.match()) {
-            if (n == 0) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> self_param(self_word);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::tcl_bindings::polynomial_to_tex(self_param.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-            if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> self_param(self_word);
-                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::tcl_bindings::polynomial_to_tex(self_param.get(), p0.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-            if (n == 2) {
-                rosetta_tcl::Param<const datamunge::algebra::Polynomial &> self_param(self_word);
-                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
-                rosetta_tcl::Param<int> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::tcl_bindings::polynomial_to_tex(self_param.get(), p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    to_tex \?variable:string\? \?precision:int\? -> string\n");
-}
-Tcl_Obj* rosetta_class_1_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_9_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 0; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::algebra::Polynomial> created;
+                std::unique_ptr<datamunge::algebra::MultivariatePolynomial> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::algebra::Polynomial());
-                rosetta_tcl::adopt<datamunge::algebra::Polynomial>(call, created.get(), director_part);
+                created.reset(new datamunge::algebra::MultivariatePolynomial());
+                rosetta_tcl::adopt<datamunge::algebra::MultivariatePolynomial>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
         if (n >= 1 && n <= 1 && call.match()
-            && (n <= 0 || rosetta_tcl::Param<double>::check(a[0], level))) {
+            && (n <= 0 || rosetta_tcl::Param<int>::check(a[0], level))) {
             if (n == 1) {
-                rosetta_tcl::Param<double> p0(a[0]);
-                std::unique_ptr<datamunge::algebra::Polynomial> created;
+                rosetta_tcl::Param<int> p0(a[0]);
+                std::unique_ptr<datamunge::algebra::MultivariatePolynomial> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::algebra::Polynomial(p0.get()));
-                rosetta_tcl::adopt<datamunge::algebra::Polynomial>(call, created.get(), director_part);
+                created.reset(new datamunge::algebra::MultivariatePolynomial(p0.get()));
+                rosetta_tcl::adopt<datamunge::algebra::MultivariatePolynomial>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
-        if (n >= 1 && n <= 1 && call.match()
-            && (n <= 0 || rosetta_tcl::Param<std::vector<double>>::check(a[0], level))) {
-            if (n == 1) {
-                rosetta_tcl::Param<std::vector<double>> p0(a[0]);
-                std::unique_ptr<datamunge::algebra::Polynomial> created;
+        if (n >= 3 && n <= 3 && call.match()
+            && (n <= 0 || rosetta_tcl::Param<int>::check(a[0], level))
+            && (n <= 1 || rosetta_tcl::Param<const std::vector<std::vector<int>> &>::check(a[1], level))
+            && (n <= 2 || rosetta_tcl::Param<const std::vector<double> &>::check(a[2], level))) {
+            if (n == 3) {
+                rosetta_tcl::Param<int> p0(a[0]);
+                rosetta_tcl::Param<const std::vector<std::vector<int>> &> p1(a[1]);
+                rosetta_tcl::Param<const std::vector<double> &> p2(a[2]);
+                std::unique_ptr<datamunge::algebra::MultivariatePolynomial> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::algebra::Polynomial(p0.get()));
-                rosetta_tcl::adopt<datamunge::algebra::Polynomial>(call, created.get(), director_part);
-                created.release();
-                return nullptr;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    ::datamunge::Polynomial new\n    ::datamunge::Polynomial new constant:double\n    ::datamunge::Polynomial new coeffs:list of double\n");
-}
-Tcl_Obj* rosetta_function_1090(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::algebra::Complex>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->modulus(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    modulus -> double\n");
-}
-Tcl_Obj* rosetta_function_1091(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 1 && n <= 1 && call.match()
-            && (n <= 0 || rosetta_tcl::Param<const datamunge::algebra::Complex &>::check(a[0], level))) {
-            if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Complex &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Complex>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->operator==(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    if (call.arity_matched) return Tcl_NewBooleanObj(0);
-    rosetta_tcl::no_overload(call, "    eq other:Complex -> bool\n");
-}
-Tcl_Obj* rosetta_function_1092(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 1 && n <= 1 && call.match()) {
-            if (n == 1) {
-                rosetta_tcl::Param<const datamunge::algebra::Complex &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::algebra::Complex>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->operator!=(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    ne other:Complex -> bool\n");
-}
-Tcl_Obj* rosetta_field_273_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::algebra::Complex>(self);
-    return rosetta_tcl::result<decltype((native->re))>(native->re, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_273_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::algebra::Complex&>().re)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::algebra::Complex>(self);
-    rosetta_tcl::assign_field(native->re, converted.get());
-}
-Tcl_Obj* rosetta_field_273_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "re", rosetta_field_273_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::algebra::Complex&>().re)>>> ? &rosetta_field_273_set : nullptr));
-}
-Tcl_Obj* rosetta_field_274_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::algebra::Complex>(self);
-    return rosetta_tcl::result<decltype((native->im))>(native->im, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_274_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::algebra::Complex&>().im)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::algebra::Complex>(self);
-    rosetta_tcl::assign_field(native->im, converted.get());
-}
-Tcl_Obj* rosetta_field_274_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "im", rosetta_field_274_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::algebra::Complex&>().im)>>> ? &rosetta_field_274_set : nullptr));
-}
-Tcl_Obj* rosetta_class_4_construct(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    rosetta_tcl::check_unconstructed(call);
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                std::unique_ptr<datamunge::algebra::Complex> created;
-                rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::algebra::Complex());
-                rosetta_tcl::adopt<datamunge::algebra::Complex>(call, created.get(), director_part);
+                created.reset(new datamunge::algebra::MultivariatePolynomial(p0.get(), p1.get(), p2.get()));
+                rosetta_tcl::adopt<datamunge::algebra::MultivariatePolynomial>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::Complex new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::MultivariatePolynomial new\n    ::datamunge::MultivariatePolynomial new num_variables:int\n    ::datamunge::MultivariatePolynomial new num_variables:int exponents:list of list of int coefficients:list of double\n");
 }
-Tcl_Obj* rosetta_function_1108(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1109(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -2743,7 +2581,7 @@ Tcl_Obj* rosetta_function_1108(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    numerator -> Polynomial\n");
 }
-Tcl_Obj* rosetta_function_1109(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1110(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -2756,7 +2594,7 @@ Tcl_Obj* rosetta_function_1109(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    denominator -> Polynomial\n");
 }
-Tcl_Obj* rosetta_function_1110(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1111(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -2770,7 +2608,7 @@ Tcl_Obj* rosetta_function_1110(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    evaluate x:double -> double\n");
 }
-Tcl_Obj* rosetta_function_1111(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1112(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -2784,7 +2622,7 @@ Tcl_Obj* rosetta_function_1111(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    add other:RationalFunction -> RationalFunction\n");
 }
-Tcl_Obj* rosetta_function_1112(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1113(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -2798,7 +2636,7 @@ Tcl_Obj* rosetta_function_1112(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    subtract other:RationalFunction -> RationalFunction\n");
 }
-Tcl_Obj* rosetta_function_1113(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1114(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -2812,7 +2650,7 @@ Tcl_Obj* rosetta_function_1113(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    multiply other:RationalFunction -> RationalFunction\n");
 }
-Tcl_Obj* rosetta_function_1114(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1115(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -2826,7 +2664,7 @@ Tcl_Obj* rosetta_function_1114(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    divide other:RationalFunction -> RationalFunction\n");
 }
-Tcl_Obj* rosetta_function_1115(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1116(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -2839,7 +2677,7 @@ Tcl_Obj* rosetta_function_1115(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    to_string -> string\n");
 }
-Tcl_Obj* rosetta_function_1116(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1117(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     Tcl_Obj* self_word = call.object ? Tcl_GetObjectName(rosetta_tcl::interp(), call.object) : rosetta_tcl::empty();
     for (int level = 2; level < 3; ++level) {
@@ -2897,280 +2735,436 @@ Tcl_Obj* rosetta_class_11_construct(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    ::datamunge::RationalFunction new\n    ::datamunge::RationalFunction new numerator:Polynomial denominator:Polynomial\n");
 }
-Tcl_Obj* rosetta_field_392_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->points))>(native->points, self, rosetta_tcl::Return::automatic);
+Tcl_Obj* rosetta_field_351_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::cv::detail::StructureTensorField>(self);
+    return rosetta_tcl::result<decltype((native->sxx))>(native->sxx, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_392_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().points)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->points, converted.get());
+void rosetta_field_351_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxx)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::cv::detail::StructureTensorField>(self);
+    rosetta_tcl::assign_field(native->sxx, converted.get());
 }
-Tcl_Obj* rosetta_field_392_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "points", rosetta_field_392_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().points)>>> ? &rosetta_field_392_set : nullptr));
+Tcl_Obj* rosetta_field_351_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "sxx", rosetta_field_351_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxx)>>> ? &rosetta_field_351_set : nullptr));
 }
-Tcl_Obj* rosetta_field_393_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->representatives))>(native->representatives, self, rosetta_tcl::Return::automatic);
+Tcl_Obj* rosetta_field_352_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::cv::detail::StructureTensorField>(self);
+    return rosetta_tcl::result<decltype((native->syy))>(native->syy, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_393_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().representatives)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->representatives, converted.get());
+void rosetta_field_352_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().syy)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::cv::detail::StructureTensorField>(self);
+    rosetta_tcl::assign_field(native->syy, converted.get());
 }
-Tcl_Obj* rosetta_field_393_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "representatives", rosetta_field_393_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().representatives)>>> ? &rosetta_field_393_set : nullptr));
+Tcl_Obj* rosetta_field_352_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "syy", rosetta_field_352_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().syy)>>> ? &rosetta_field_352_set : nullptr));
 }
-Tcl_Obj* rosetta_field_394_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->representative_for_input))>(native->representative_for_input, self, rosetta_tcl::Return::automatic);
+Tcl_Obj* rosetta_field_353_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::cv::detail::StructureTensorField>(self);
+    return rosetta_tcl::result<decltype((native->sxy))>(native->sxy, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_394_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().representative_for_input)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->representative_for_input, converted.get());
+void rosetta_field_353_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxy)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::cv::detail::StructureTensorField>(self);
+    rosetta_tcl::assign_field(native->sxy, converted.get());
 }
-Tcl_Obj* rosetta_field_394_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "representative_for_input", rosetta_field_394_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().representative_for_input)>>> ? &rosetta_field_394_set : nullptr));
+Tcl_Obj* rosetta_field_353_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "sxy", rosetta_field_353_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxy)>>> ? &rosetta_field_353_set : nullptr));
 }
-Tcl_Obj* rosetta_field_395_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->has_seed))>(native->has_seed, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_395_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().has_seed)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->has_seed, converted.get());
-}
-Tcl_Obj* rosetta_field_395_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "has_seed", rosetta_field_395_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().has_seed)>>> ? &rosetta_field_395_set : nullptr));
-}
-Tcl_Obj* rosetta_field_396_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->seed))>(native->seed, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_396_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().seed)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->seed, converted.get());
-}
-Tcl_Obj* rosetta_field_396_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "seed", rosetta_field_396_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().seed)>>> ? &rosetta_field_396_set : nullptr));
-}
-Tcl_Obj* rosetta_field_397_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->triangles))>(native->triangles, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_397_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().triangles)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->triangles, converted.get());
-}
-Tcl_Obj* rosetta_field_397_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "triangles", rosetta_field_397_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().triangles)>>> ? &rosetta_field_397_set : nullptr));
-}
-Tcl_Obj* rosetta_field_398_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->steps))>(native->steps, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_398_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().steps)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->steps, converted.get());
-}
-Tcl_Obj* rosetta_field_398_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "steps", rosetta_field_398_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().steps)>>> ? &rosetta_field_398_set : nullptr));
-}
-Tcl_Obj* rosetta_field_399_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    return rosetta_tcl::result<decltype((native->work))>(native->work, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_399_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().work)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DelaunayTrace>(self);
-    rosetta_tcl::assign_field(native->work, converted.get());
-}
-Tcl_Obj* rosetta_field_399_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "work", rosetta_field_399_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DelaunayTrace&>().work)>>> ? &rosetta_field_399_set : nullptr));
-}
-Tcl_Obj* rosetta_class_61_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_43_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::geometry::DelaunayTrace> created;
+                std::unique_ptr<datamunge::cv::detail::StructureTensorField> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::geometry::DelaunayTrace());
-                rosetta_tcl::adopt<datamunge::geometry::DelaunayTrace>(call, created.get(), director_part);
+                created.reset(new datamunge::cv::detail::StructureTensorField());
+                rosetta_tcl::adopt<datamunge::cv::detail::StructureTensorField>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::DelaunayTrace new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::StructureTensorField new\n");
 }
-Tcl_Obj* rosetta_function_1220(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1199(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
-        if (n >= 5 && n <= 5 && call.match()) {
-            if (n == 5) {
-                rosetta_tcl::Param<const datamunge::fem::Mesh2D &> p0(a[0]);
+        if (n >= 2 && n <= 2 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<double> p0(a[0]);
                 rosetta_tcl::Param<double> p1(a[1]);
-                rosetta_tcl::Param<datamunge::fem::ScalarField2D &> p2(a[2]);
-                rosetta_tcl::Param<const std::vector<int> &> p3(a[3]);
-                rosetta_tcl::Param<const std::vector<double> &> p4(a[4]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::fem::FEM2D::solve(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                auto* native = rosetta_tcl::native<datamunge::fem::ScalarField2D>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { if (rosetta_tcl::is_director(call.self)) rosetta_tcl::pure_virtual("datamunge::fem::ScalarField2D::evaluate"); return native->evaluate(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    solve mesh:Mesh2D k:double f:ScalarField2D dirichlet_nodes:list of int dirichlet_values:list of double -> FEM2DResult\n");
+    rosetta_tcl::no_overload(call, "    evaluate x:double y:double -> double\n");
 }
-Tcl_Obj* rosetta_function_1221(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 6 && n <= 6 && call.match()) {
-            if (n == 6) {
-                rosetta_tcl::Param<const datamunge::fem::Mesh2D &> p0(a[0]);
-                rosetta_tcl::Param<double> p1(a[1]);
-                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
-                rosetta_tcl::Param<const std::vector<double> &> p3(a[3]);
-                rosetta_tcl::Param<const std::vector<int> &> p4(a[4]);
-                rosetta_tcl::Param<const std::vector<double> &> p5(a[5]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::fem::FEM2D::solve_builtin(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    solve_builtin mesh:Mesh2D k:double source:string source_params:list of double dirichlet_nodes:list of int dirichlet_values:list of double -> FEM2DResult\n");
-}
-Tcl_Obj* rosetta_class_65_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_52_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
+    const bool director = rosetta_tcl::constructing_subclass<datamunge::fem::ScalarField2D>(call);
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::fem::FEM2D> created;
+                std::unique_ptr<datamunge::fem::ScalarField2D> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::fem::FEM2D());
-                rosetta_tcl::adopt<datamunge::fem::FEM2D>(call, created.get(), director_part);
+                if (director) { auto* made = new rosetta_class_52_director(0); director_part = made; created.reset(made); }
+                else rosetta_tcl::fail("::datamunge::ScalarField2D is abstract: subclass it in Tcl and implement its pure virtual methods");
+                rosetta_tcl::adopt<datamunge::fem::ScalarField2D>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::FEM2D new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::ScalarField2D new\n");
 }
-Tcl_Obj* rosetta_function_1244(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1246(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::filter::EnsembleKalmanFilter>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->predict(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    predict\n");
+}
+Tcl_Obj* rosetta_function_1247(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
                 rosetta_tcl::Param<const std::vector<double> &> p0(a[0]);
-                auto* native = rosetta_tcl::native<datamunge::filter::VectorFunction>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { if (rosetta_tcl::is_director(call.self)) rosetta_tcl::pure_virtual("datamunge::filter::VectorFunction::evaluate"); return native->evaluate(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                auto* native = rosetta_tcl::native<datamunge::filter::EnsembleKalmanFilter>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->update(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    evaluate x:list of double -> list of double\n");
+    rosetta_tcl::no_overload(call, "    update z:list of double\n");
 }
-Tcl_Obj* rosetta_class_73_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1248(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    rosetta_tcl::check_unconstructed(call);
-    const bool director = rosetta_tcl::constructing_subclass<datamunge::filter::VectorFunction>(call);
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::filter::VectorFunction> created;
+                auto* native = rosetta_tcl::native<datamunge::filter::EnsembleKalmanFilter>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->state(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    state -> list of double\n");
+}
+Tcl_Obj* rosetta_function_1249(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::filter::EnsembleKalmanFilter>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->covariance(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    covariance -> list of list of double\n");
+}
+Tcl_Obj* rosetta_function_1250(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<const std::vector<std::vector<double>> &> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::filter::EnsembleKalmanFilter>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->filter(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    filter measurements:list of list of double -> list of KalmanState\n");
+}
+Tcl_Obj* rosetta_class_74_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 6 && n <= 8 && call.match()) {
+            if (n == 6) {
+                rosetta_tcl::Param<datamunge::filter::VectorFunction &> p0(a[0]);
+                rosetta_tcl::Param<datamunge::filter::VectorFunction &> p1(a[1]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p2(a[2]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p3(a[3]);
+                rosetta_tcl::Param<std::vector<double>> p4(a[4]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p5(a[5]);
+                std::unique_ptr<datamunge::filter::EnsembleKalmanFilter> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                if (director) { auto* made = new rosetta_class_73_director(0); director_part = made; created.reset(made); }
-                else rosetta_tcl::fail("::datamunge::VectorFunction is abstract: subclass it in Tcl and implement its pure virtual methods");
-                rosetta_tcl::adopt<datamunge::filter::VectorFunction>(call, created.get(), director_part);
+                created.reset(new datamunge::filter::EnsembleKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()));
+                rosetta_tcl::adopt<datamunge::filter::EnsembleKalmanFilter>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 7) {
+                rosetta_tcl::Param<datamunge::filter::VectorFunction &> p0(a[0]);
+                rosetta_tcl::Param<datamunge::filter::VectorFunction &> p1(a[1]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p2(a[2]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p3(a[3]);
+                rosetta_tcl::Param<std::vector<double>> p4(a[4]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p5(a[5]);
+                rosetta_tcl::Param<int> p6(a[6]);
+                std::unique_ptr<datamunge::filter::EnsembleKalmanFilter> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::filter::EnsembleKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get()));
+                rosetta_tcl::adopt<datamunge::filter::EnsembleKalmanFilter>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 8) {
+                rosetta_tcl::Param<datamunge::filter::VectorFunction &> p0(a[0]);
+                rosetta_tcl::Param<datamunge::filter::VectorFunction &> p1(a[1]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p2(a[2]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p3(a[3]);
+                rosetta_tcl::Param<std::vector<double>> p4(a[4]);
+                rosetta_tcl::Param<std::vector<std::vector<double>>> p5(a[5]);
+                rosetta_tcl::Param<int> p6(a[6]);
+                rosetta_tcl::Param<unsigned int> p7(a[7]);
+                std::unique_ptr<datamunge::filter::EnsembleKalmanFilter> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::filter::EnsembleKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get()));
+                rosetta_tcl::adopt<datamunge::filter::EnsembleKalmanFilter>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::VectorFunction new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::EnsembleKalmanFilter new f:VectorFunction h:VectorFunction Q:list of list of double R:list of list of double x0:list of double P0:list of list of double \?ensemble_size:int\? \?seed:unsigned int\?\n");
 }
-Tcl_Obj* rosetta_field_471_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DTWResult>(self);
+Tcl_Obj* rosetta_field_420_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ClosestPairResult>(self);
+    return rosetta_tcl::result<decltype((native->a))>(native->a, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_420_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().a)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ClosestPairResult>(self);
+    rosetta_tcl::assign_field(native->a, converted.get());
+}
+Tcl_Obj* rosetta_field_420_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "a", rosetta_field_420_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().a)>>> ? &rosetta_field_420_set : nullptr));
+}
+Tcl_Obj* rosetta_field_421_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ClosestPairResult>(self);
+    return rosetta_tcl::result<decltype((native->b))>(native->b, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_421_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().b)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ClosestPairResult>(self);
+    rosetta_tcl::assign_field(native->b, converted.get());
+}
+Tcl_Obj* rosetta_field_421_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "b", rosetta_field_421_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().b)>>> ? &rosetta_field_421_set : nullptr));
+}
+Tcl_Obj* rosetta_field_422_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ClosestPairResult>(self);
     return rosetta_tcl::result<decltype((native->distance))>(native->distance, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_471_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWResult&>().distance)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DTWResult>(self);
+void rosetta_field_422_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().distance)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ClosestPairResult>(self);
     rosetta_tcl::assign_field(native->distance, converted.get());
 }
-Tcl_Obj* rosetta_field_471_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "distance", rosetta_field_471_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWResult&>().distance)>>> ? &rosetta_field_471_set : nullptr));
+Tcl_Obj* rosetta_field_422_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "distance", rosetta_field_422_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ClosestPairResult&>().distance)>>> ? &rosetta_field_422_set : nullptr));
 }
-Tcl_Obj* rosetta_field_472_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DTWResult>(self);
-    return rosetta_tcl::result<decltype((native->path_a))>(native->path_a, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_472_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWResult&>().path_a)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DTWResult>(self);
-    rosetta_tcl::assign_field(native->path_a, converted.get());
-}
-Tcl_Obj* rosetta_field_472_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "path_a", rosetta_field_472_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWResult&>().path_a)>>> ? &rosetta_field_472_set : nullptr));
-}
-Tcl_Obj* rosetta_field_473_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::geometry::DTWResult>(self);
-    return rosetta_tcl::result<decltype((native->path_b))>(native->path_b, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_473_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWResult&>().path_b)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::geometry::DTWResult>(self);
-    rosetta_tcl::assign_field(native->path_b, converted.get());
-}
-Tcl_Obj* rosetta_field_473_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "path_b", rosetta_field_473_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWResult&>().path_b)>>> ? &rosetta_field_473_set : nullptr));
-}
-Tcl_Obj* rosetta_class_95_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_80_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::geometry::DTWResult> created;
+                std::unique_ptr<datamunge::geometry::ClosestPairResult> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::geometry::DTWResult());
-                rosetta_tcl::adopt<datamunge::geometry::DTWResult>(call, created.get(), director_part);
+                created.reset(new datamunge::geometry::ClosestPairResult());
+                rosetta_tcl::adopt<datamunge::geometry::ClosestPairResult>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::DTWResult new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::ClosestPairResult new\n");
 }
-Tcl_Obj* rosetta_field_477_get(rosetta_tcl::Instance* self) {
+Tcl_Obj* rosetta_field_427_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->input_points))>(native->input_points, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_427_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().input_points)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->input_points, converted.get());
+}
+Tcl_Obj* rosetta_field_427_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "input_points", rosetta_field_427_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().input_points)>>> ? &rosetta_field_427_set : nullptr));
+}
+Tcl_Obj* rosetta_field_428_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->distinct_points))>(native->distinct_points, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_428_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().distinct_points)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->distinct_points, converted.get());
+}
+Tcl_Obj* rosetta_field_428_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "distinct_points", rosetta_field_428_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().distinct_points)>>> ? &rosetta_field_428_set : nullptr));
+}
+Tcl_Obj* rosetta_field_429_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->sort_comparisons))>(native->sort_comparisons, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_429_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().sort_comparisons)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->sort_comparisons, converted.get());
+}
+Tcl_Obj* rosetta_field_429_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "sort_comparisons", rosetta_field_429_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().sort_comparisons)>>> ? &rosetta_field_429_set : nullptr));
+}
+Tcl_Obj* rosetta_field_430_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->duplicate_comparisons))>(native->duplicate_comparisons, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_430_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().duplicate_comparisons)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->duplicate_comparisons, converted.get());
+}
+Tcl_Obj* rosetta_field_430_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "duplicate_comparisons", rosetta_field_430_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().duplicate_comparisons)>>> ? &rosetta_field_430_set : nullptr));
+}
+Tcl_Obj* rosetta_field_431_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->orientation_tests))>(native->orientation_tests, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_431_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().orientation_tests)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->orientation_tests, converted.get());
+}
+Tcl_Obj* rosetta_field_431_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "orientation_tests", rosetta_field_431_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().orientation_tests)>>> ? &rosetta_field_431_set : nullptr));
+}
+Tcl_Obj* rosetta_field_432_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->pushes))>(native->pushes, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_432_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().pushes)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->pushes, converted.get());
+}
+Tcl_Obj* rosetta_field_432_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "pushes", rosetta_field_432_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().pushes)>>> ? &rosetta_field_432_set : nullptr));
+}
+Tcl_Obj* rosetta_field_433_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->pops))>(native->pops, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_433_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().pops)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->pops, converted.get());
+}
+Tcl_Obj* rosetta_field_433_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "pops", rosetta_field_433_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().pops)>>> ? &rosetta_field_433_set : nullptr));
+}
+Tcl_Obj* rosetta_field_434_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    return rosetta_tcl::result<decltype((native->max_stack))>(native->max_stack, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_434_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().max_stack)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::geometry::ConvexHullWork>(self);
+    rosetta_tcl::assign_field(native->max_stack, converted.get());
+}
+Tcl_Obj* rosetta_field_434_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "max_stack", rosetta_field_434_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::ConvexHullWork&>().max_stack)>>> ? &rosetta_field_434_set : nullptr));
+}
+Tcl_Obj* rosetta_class_83_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                std::unique_ptr<datamunge::geometry::ConvexHullWork> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::geometry::ConvexHullWork());
+                rosetta_tcl::adopt<datamunge::geometry::ConvexHullWork>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    ::datamunge::ConvexHullWork new\n");
+}
+Tcl_Obj* rosetta_function_1271(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<double> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::Callback>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { if (rosetta_tcl::is_director(call.self)) return native->datamunge::Callback::call(p0.get()); return native->call(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    call x:double -> double\n");
+}
+Tcl_Obj* rosetta_class_87_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    const bool director = rosetta_tcl::constructing_subclass<datamunge::Callback>(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                std::unique_ptr<datamunge::Callback> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                if (director) { auto* made = new rosetta_class_87_director(0); director_part = made; created.reset(made); }
+                else created.reset(new datamunge::Callback());
+                rosetta_tcl::adopt<datamunge::Callback>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    ::datamunge::Callback new\n");
+}
+Tcl_Obj* rosetta_field_478_get(rosetta_tcl::Instance* self) {
     auto* native = rosetta_tcl::native<datamunge::geometry::DTWComputation>(self);
     return rosetta_tcl::result<decltype((native->result))>(native->result, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_477_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+void rosetta_field_478_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
     rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().result)>>&> converted(value);
     auto* native = rosetta_tcl::native<datamunge::geometry::DTWComputation>(self);
     rosetta_tcl::assign_field(native->result, converted.get());
 }
-Tcl_Obj* rosetta_field_477_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "result", rosetta_field_477_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().result)>>> ? &rosetta_field_477_set : nullptr));
+Tcl_Obj* rosetta_field_478_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "result", rosetta_field_478_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().result)>>> ? &rosetta_field_478_set : nullptr));
 }
-Tcl_Obj* rosetta_field_478_get(rosetta_tcl::Instance* self) {
+Tcl_Obj* rosetta_field_479_get(rosetta_tcl::Instance* self) {
     auto* native = rosetta_tcl::native<datamunge::geometry::DTWComputation>(self);
     return rosetta_tcl::result<decltype((native->work))>(native->work, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_478_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+void rosetta_field_479_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
     rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().work)>>&> converted(value);
     auto* native = rosetta_tcl::native<datamunge::geometry::DTWComputation>(self);
     rosetta_tcl::assign_field(native->work, converted.get());
 }
-Tcl_Obj* rosetta_field_478_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "work", rosetta_field_478_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().work)>>> ? &rosetta_field_478_set : nullptr));
+Tcl_Obj* rosetta_field_479_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "work", rosetta_field_479_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::geometry::DTWComputation&>().work)>>> ? &rosetta_field_479_set : nullptr));
 }
 Tcl_Obj* rosetta_class_97_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
@@ -3189,256 +3183,282 @@ Tcl_Obj* rosetta_class_97_construct(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    ::datamunge::DTWComputation new\n");
 }
-Tcl_Obj* rosetta_function_1421(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 4 && n <= 4 && call.match()) {
-            if (n == 4) {
-                rosetta_tcl::Param<datamunge::ode::RHS &> p0(a[0]);
-                rosetta_tcl::Param<const std::vector<double> &> p1(a[1]);
-                rosetta_tcl::Param<double> p2(a[2]);
-                rosetta_tcl::Param<double> p3(a[3]);
-                auto* native = rosetta_tcl::native<datamunge::ode::ODESolver>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->solve(p0.get(), p1.get(), p2.get(), p3.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    solve rhs:RHS y0:list of double t_start:double t_end:double -> ODESolution\n");
-}
-Tcl_Obj* rosetta_function_1422(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 5 && n <= 5 && call.match()) {
-            if (n == 5) {
-                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
-                rosetta_tcl::Param<const std::vector<double> &> p1(a[1]);
-                rosetta_tcl::Param<const std::vector<double> &> p2(a[2]);
-                rosetta_tcl::Param<double> p3(a[3]);
-                rosetta_tcl::Param<double> p4(a[4]);
-                auto* native = rosetta_tcl::native<datamunge::ode::ODESolver>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->solve_builtin(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    solve_builtin system:string params:list of double y0:list of double t_start:double t_end:double -> ODESolution\n");
-}
-Tcl_Obj* rosetta_function_1423(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1403(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::ode::ODESolver>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_tcl::Return::automatic);
+                auto* native = rosetta_tcl::native<datamunge::geometry::KDTree2D>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->empty(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    options -> ODEOptions\n");
+    rosetta_tcl::no_overload(call, "    empty -> bool\n");
 }
-Tcl_Obj* rosetta_class_108_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1404(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    rosetta_tcl::check_unconstructed(call);
     for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 1 && call.match()) {
+        if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::ode::ODESolver> created;
-                rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::ode::ODESolver());
-                rosetta_tcl::adopt<datamunge::ode::ODESolver>(call, created.get(), director_part);
-                created.release();
-                return nullptr;
-            }
-            if (n == 1) {
-                rosetta_tcl::Param<datamunge::ode::ODEOptions> p0(a[0]);
-                std::unique_ptr<datamunge::ode::ODESolver> created;
-                rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::ode::ODESolver(p0.get()));
-                rosetta_tcl::adopt<datamunge::ode::ODESolver>(call, created.get(), director_part);
-                created.release();
-                return nullptr;
+                auto* native = rosetta_tcl::native<datamunge::geometry::KDTree2D>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->size(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::ODESolver new \?options:ODEOptions\?\n");
+    rosetta_tcl::no_overload(call, "    size -> unsigned int\n");
 }
-Tcl_Obj* rosetta_function_1426(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1405(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<const datamunge::geometry::Point2D &> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::geometry::KDTree2D>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->nearest(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    nearest query:Point2D -> Point2D\n");
+}
+Tcl_Obj* rosetta_function_1406(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
             if (n == 2) {
-                rosetta_tcl::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
-                rosetta_tcl::Param<std::vector<double> &> p1(a[1]);
-                auto* native = rosetta_tcl::native<datamunge::optim::Adam>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
-                p1.writeback(a[1]);
+                rosetta_tcl::Param<const datamunge::geometry::Point2D &> p0(a[0]);
+                rosetta_tcl::Param<unsigned long> p1(a[1]);
+                auto* native = rosetta_tcl::native<datamunge::geometry::KDTree2D>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->k_nearest(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    optimize function:DifferentiableFunction coordinates:varName of list of double -> double\n");
+    rosetta_tcl::no_overload(call, "    k_nearest query:Point2D k:unsigned int -> list of Point2D\n");
 }
-Tcl_Obj* rosetta_function_1427(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::optim::Adam>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    options -> AdamOptions\n");
-}
-Tcl_Obj* rosetta_class_112_construct(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    rosetta_tcl::check_unconstructed(call);
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 1 && call.match()) {
-            if (n == 0) {
-                std::unique_ptr<datamunge::optim::Adam> created;
-                rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::Adam());
-                rosetta_tcl::adopt<datamunge::optim::Adam>(call, created.get(), director_part);
-                created.release();
-                return nullptr;
-            }
-            if (n == 1) {
-                rosetta_tcl::Param<datamunge::optim::AdamOptions> p0(a[0]);
-                std::unique_ptr<datamunge::optim::Adam> created;
-                rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::Adam(p0.get()));
-                rosetta_tcl::adopt<datamunge::optim::Adam>(call, created.get(), director_part);
-                created.release();
-                return nullptr;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    ::datamunge::Adam new \?options:AdamOptions\?\n");
-}
-Tcl_Obj* rosetta_function_1432(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1407(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
             if (n == 2) {
-                rosetta_tcl::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
-                rosetta_tcl::Param<std::vector<double> &> p1(a[1]);
-                auto* native = rosetta_tcl::native<datamunge::optim::AMSGrad>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
-                p1.writeback(a[1]);
+                rosetta_tcl::Param<const datamunge::geometry::Point2D &> p0(a[0]);
+                rosetta_tcl::Param<double> p1(a[1]);
+                auto* native = rosetta_tcl::native<datamunge::geometry::KDTree2D>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->points_in_radius(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    optimize function:DifferentiableFunction coordinates:varName of list of double -> double\n");
+    rosetta_tcl::no_overload(call, "    points_in_radius query:Point2D radius:double -> list of Point2D\n");
 }
-Tcl_Obj* rosetta_function_1433(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::optim::AMSGrad>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    options -> AMSGradOptions\n");
-}
-Tcl_Obj* rosetta_class_118_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_99_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 1 && call.match()) {
-            if (n == 0) {
-                std::unique_ptr<datamunge::optim::AMSGrad> created;
-                rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::AMSGrad());
-                rosetta_tcl::adopt<datamunge::optim::AMSGrad>(call, created.get(), director_part);
-                created.release();
-                return nullptr;
-            }
+        if (n >= 1 && n <= 1 && call.match()) {
             if (n == 1) {
-                rosetta_tcl::Param<datamunge::optim::AMSGradOptions> p0(a[0]);
-                std::unique_ptr<datamunge::optim::AMSGrad> created;
+                rosetta_tcl::Param<std::vector<datamunge::geometry::Point2D>> p0(a[0]);
+                std::unique_ptr<datamunge::geometry::KDTree2D> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::AMSGrad(p0.get()));
-                rosetta_tcl::adopt<datamunge::optim::AMSGrad>(call, created.get(), director_part);
+                created.reset(new datamunge::geometry::KDTree2D(p0.get()));
+                rosetta_tcl::adopt<datamunge::geometry::KDTree2D>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::AMSGrad new \?options:AMSGradOptions\?\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::KDTree2D new points:list of Point2D\n");
 }
-Tcl_Obj* rosetta_field_633_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+Tcl_Obj* rosetta_field_559_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
     return rosetta_tcl::result<decltype((native->population_size))>(native->population_size, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_633_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().population_size)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+void rosetta_field_559_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().population_size)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
     rosetta_tcl::assign_field(native->population_size, converted.get());
 }
-Tcl_Obj* rosetta_field_633_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "population_size", rosetta_field_633_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().population_size)>>> ? &rosetta_field_633_set : nullptr));
+Tcl_Obj* rosetta_field_559_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "population_size", rosetta_field_559_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().population_size)>>> ? &rosetta_field_559_set : nullptr));
 }
-Tcl_Obj* rosetta_field_634_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
-    return rosetta_tcl::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_tcl::Return::automatic);
+Tcl_Obj* rosetta_field_560_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
+    return rosetta_tcl::result<decltype((native->initial_step_size))>(native->initial_step_size, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_634_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().max_iterations)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
-    rosetta_tcl::assign_field(native->max_iterations, converted.get());
+void rosetta_field_560_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().initial_step_size)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
+    rosetta_tcl::assign_field(native->initial_step_size, converted.get());
 }
-Tcl_Obj* rosetta_field_634_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "max_iterations", rosetta_field_634_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().max_iterations)>>> ? &rosetta_field_634_set : nullptr));
+Tcl_Obj* rosetta_field_560_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "initial_step_size", rosetta_field_560_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().initial_step_size)>>> ? &rosetta_field_560_set : nullptr));
 }
-Tcl_Obj* rosetta_field_635_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+Tcl_Obj* rosetta_field_561_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
+    return rosetta_tcl::result<decltype((native->max_generations))>(native->max_generations, self, rosetta_tcl::Return::automatic);
+}
+void rosetta_field_561_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().max_generations)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
+    rosetta_tcl::assign_field(native->max_generations, converted.get());
+}
+Tcl_Obj* rosetta_field_561_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "max_generations", rosetta_field_561_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().max_generations)>>> ? &rosetta_field_561_set : nullptr));
+}
+Tcl_Obj* rosetta_field_562_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
     return rosetta_tcl::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_635_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().tolerance)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+void rosetta_field_562_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().tolerance)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
     rosetta_tcl::assign_field(native->tolerance, converted.get());
 }
-Tcl_Obj* rosetta_field_635_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "tolerance", rosetta_field_635_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().tolerance)>>> ? &rosetta_field_635_set : nullptr));
+Tcl_Obj* rosetta_field_562_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "tolerance", rosetta_field_562_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().tolerance)>>> ? &rosetta_field_562_set : nullptr));
 }
-Tcl_Obj* rosetta_field_636_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+Tcl_Obj* rosetta_field_563_get(rosetta_tcl::Instance* self) {
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
     return rosetta_tcl::result<decltype((native->seed))>(native->seed, self, rosetta_tcl::Return::automatic);
 }
-void rosetta_field_636_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().seed)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+void rosetta_field_563_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
+    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().seed)>>&> converted(value);
+    auto* native = rosetta_tcl::native<datamunge::optim::CMAESOptions>(self);
     rosetta_tcl::assign_field(native->seed, converted.get());
 }
-Tcl_Obj* rosetta_field_636_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "seed", rosetta_field_636_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GreyWolfOptimizerOptions&>().seed)>>> ? &rosetta_field_636_set : nullptr));
+Tcl_Obj* rosetta_field_563_method(rosetta_tcl::Call& call) {
+    return rosetta_tcl::field_access(call, "seed", rosetta_field_563_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().seed)>>> ? &rosetta_field_563_set : nullptr));
 }
-Tcl_Obj* rosetta_class_151_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_129_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::optim::GreyWolfOptimizerOptions> created;
+                std::unique_ptr<datamunge::optim::CMAESOptions> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::GreyWolfOptimizerOptions());
-                rosetta_tcl::adopt<datamunge::optim::GreyWolfOptimizerOptions>(call, created.get(), director_part);
+                created.reset(new datamunge::optim::CMAESOptions());
+                rosetta_tcl::adopt<datamunge::optim::CMAESOptions>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::GreyWolfOptimizerOptions new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::CMAESOptions new\n");
 }
-Tcl_Obj* rosetta_function_1469(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1480(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 2 && n <= 2 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
+                rosetta_tcl::Param<std::vector<double> &> p1(a[1]);
+                auto* native = rosetta_tcl::native<datamunge::optim::NesterovAcceleratedGradient>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
+                p1.writeback(a[1]);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    optimize function:DifferentiableFunction coordinates:varName of list of double -> double\n");
+}
+Tcl_Obj* rosetta_function_1481(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::optim::NesterovAcceleratedGradient>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    options -> NesterovAcceleratedGradientOptions\n");
+}
+Tcl_Obj* rosetta_class_164_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 1 && call.match()) {
+            if (n == 0) {
+                std::unique_ptr<datamunge::optim::NesterovAcceleratedGradient> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::optim::NesterovAcceleratedGradient());
+                rosetta_tcl::adopt<datamunge::optim::NesterovAcceleratedGradient>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 1) {
+                rosetta_tcl::Param<datamunge::optim::NesterovAcceleratedGradientOptions> p0(a[0]);
+                std::unique_ptr<datamunge::optim::NesterovAcceleratedGradient> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::optim::NesterovAcceleratedGradient(p0.get()));
+                rosetta_tcl::adopt<datamunge::optim::NesterovAcceleratedGradient>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    ::datamunge::NesterovAcceleratedGradient new \?options:NesterovAcceleratedGradientOptions\?\n");
+}
+Tcl_Obj* rosetta_function_1484(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 2 && n <= 2 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<datamunge::optim::HessianFunction &> p0(a[0]);
+                rosetta_tcl::Param<std::vector<double> &> p1(a[1]);
+                auto* native = rosetta_tcl::native<datamunge::optim::Newton>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
+                p1.writeback(a[1]);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    optimize function:HessianFunction coordinates:varName of list of double -> double\n");
+}
+Tcl_Obj* rosetta_function_1485(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::optim::Newton>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    options -> NewtonOptions\n");
+}
+Tcl_Obj* rosetta_class_168_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 1 && call.match()) {
+            if (n == 0) {
+                std::unique_ptr<datamunge::optim::Newton> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::optim::Newton());
+                rosetta_tcl::adopt<datamunge::optim::Newton>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 1) {
+                rosetta_tcl::Param<datamunge::optim::NewtonOptions> p0(a[0]);
+                std::unique_ptr<datamunge::optim::Newton> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::optim::Newton(p0.get()));
+                rosetta_tcl::adopt<datamunge::optim::Newton>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    ::datamunge::Newton new \?options:NewtonOptions\?\n");
+}
+Tcl_Obj* rosetta_function_1488(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 4 && n <= 4 && call.match()) {
@@ -3447,7 +3467,7 @@ Tcl_Obj* rosetta_function_1469(rosetta_tcl::Call& call) {
                 rosetta_tcl::Param<std::vector<double> &> p1(a[1]);
                 rosetta_tcl::Param<const std::vector<double> &> p2(a[2]);
                 rosetta_tcl::Param<const std::vector<double> &> p3(a[3]);
-                auto* native = rosetta_tcl::native<datamunge::optim::HarmonySearch>(call.self);
+                auto* native = rosetta_tcl::native<datamunge::optim::PSO>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get(), p2.get(), p3.get()); }, call.self, rosetta_tcl::Return::automatic);
                 p1.writeback(a[1]);
                 return result;
@@ -3456,408 +3476,483 @@ Tcl_Obj* rosetta_function_1469(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    optimize function:ArbitraryFunction coordinates:varName of list of double lower_bound:list of double upper_bound:list of double -> double\n");
 }
-Tcl_Obj* rosetta_function_1470(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1489(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::optim::HarmonySearch>(call.self);
+                auto* native = rosetta_tcl::native<datamunge::optim::PSO>(call.self);
                 Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    options -> HarmonySearchOptions\n");
+    rosetta_tcl::no_overload(call, "    options -> PSOOptions\n");
 }
-Tcl_Obj* rosetta_class_154_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_172_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 1 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::optim::HarmonySearch> created;
+                std::unique_ptr<datamunge::optim::PSO> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::HarmonySearch());
-                rosetta_tcl::adopt<datamunge::optim::HarmonySearch>(call, created.get(), director_part);
+                created.reset(new datamunge::optim::PSO());
+                rosetta_tcl::adopt<datamunge::optim::PSO>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
             if (n == 1) {
-                rosetta_tcl::Param<datamunge::optim::HarmonySearchOptions> p0(a[0]);
-                std::unique_ptr<datamunge::optim::HarmonySearch> created;
+                rosetta_tcl::Param<datamunge::optim::PSOOptions> p0(a[0]);
+                std::unique_ptr<datamunge::optim::PSO> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::HarmonySearch(p0.get()));
-                rosetta_tcl::adopt<datamunge::optim::HarmonySearch>(call, created.get(), director_part);
+                created.reset(new datamunge::optim::PSO(p0.get()));
+                rosetta_tcl::adopt<datamunge::optim::PSO>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::HarmonySearch new \?options:HarmonySearchOptions\?\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::PSO new \?options:PSOOptions\?\n");
 }
-Tcl_Obj* rosetta_field_658_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    return rosetta_tcl::result<decltype((native->initial_simplex_scale))>(native->initial_simplex_scale, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_658_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().initial_simplex_scale)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    rosetta_tcl::assign_field(native->initial_simplex_scale, converted.get());
-}
-Tcl_Obj* rosetta_field_658_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "initial_simplex_scale", rosetta_field_658_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().initial_simplex_scale)>>> ? &rosetta_field_658_set : nullptr));
-}
-Tcl_Obj* rosetta_field_659_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    return rosetta_tcl::result<decltype((native->reflection))>(native->reflection, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_659_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().reflection)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    rosetta_tcl::assign_field(native->reflection, converted.get());
-}
-Tcl_Obj* rosetta_field_659_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "reflection", rosetta_field_659_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().reflection)>>> ? &rosetta_field_659_set : nullptr));
-}
-Tcl_Obj* rosetta_field_660_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    return rosetta_tcl::result<decltype((native->expansion))>(native->expansion, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_660_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().expansion)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    rosetta_tcl::assign_field(native->expansion, converted.get());
-}
-Tcl_Obj* rosetta_field_660_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "expansion", rosetta_field_660_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().expansion)>>> ? &rosetta_field_660_set : nullptr));
-}
-Tcl_Obj* rosetta_field_661_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    return rosetta_tcl::result<decltype((native->contraction))>(native->contraction, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_661_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().contraction)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    rosetta_tcl::assign_field(native->contraction, converted.get());
-}
-Tcl_Obj* rosetta_field_661_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "contraction", rosetta_field_661_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().contraction)>>> ? &rosetta_field_661_set : nullptr));
-}
-Tcl_Obj* rosetta_field_662_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    return rosetta_tcl::result<decltype((native->shrink))>(native->shrink, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_662_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().shrink)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    rosetta_tcl::assign_field(native->shrink, converted.get());
-}
-Tcl_Obj* rosetta_field_662_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "shrink", rosetta_field_662_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().shrink)>>> ? &rosetta_field_662_set : nullptr));
-}
-Tcl_Obj* rosetta_field_663_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    return rosetta_tcl::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_663_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().max_iterations)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    rosetta_tcl::assign_field(native->max_iterations, converted.get());
-}
-Tcl_Obj* rosetta_field_663_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "max_iterations", rosetta_field_663_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().max_iterations)>>> ? &rosetta_field_663_set : nullptr));
-}
-Tcl_Obj* rosetta_field_664_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    return rosetta_tcl::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_664_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().tolerance)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::optim::NelderMeadOptions>(self);
-    rosetta_tcl::assign_field(native->tolerance, converted.get());
-}
-Tcl_Obj* rosetta_field_664_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "tolerance", rosetta_field_664_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NelderMeadOptions&>().tolerance)>>> ? &rosetta_field_664_set : nullptr));
-}
-Tcl_Obj* rosetta_class_161_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1494(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 2 && n <= 2 && call.match()) {
+            if (n == 2) {
+                rosetta_tcl::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
+                rosetta_tcl::Param<std::vector<double> &> p1(a[1]);
+                auto* native = rosetta_tcl::native<datamunge::optim::RMSProp>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, call.self, rosetta_tcl::Return::automatic);
+                p1.writeback(a[1]);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    optimize function:DifferentiableFunction coordinates:varName of list of double -> double\n");
+}
+Tcl_Obj* rosetta_function_1495(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
             if (n == 0) {
-                std::unique_ptr<datamunge::optim::NelderMeadOptions> created;
+                auto* native = rosetta_tcl::native<datamunge::optim::RMSProp>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    options -> RMSPropOptions\n");
+}
+Tcl_Obj* rosetta_class_178_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 1 && call.match()) {
+            if (n == 0) {
+                std::unique_ptr<datamunge::optim::RMSProp> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::optim::NelderMeadOptions());
-                rosetta_tcl::adopt<datamunge::optim::NelderMeadOptions>(call, created.get(), director_part);
+                created.reset(new datamunge::optim::RMSProp());
+                rosetta_tcl::adopt<datamunge::optim::RMSProp>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 1) {
+                rosetta_tcl::Param<datamunge::optim::RMSPropOptions> p0(a[0]);
+                std::unique_ptr<datamunge::optim::RMSProp> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::optim::RMSProp(p0.get()));
+                rosetta_tcl::adopt<datamunge::optim::RMSProp>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::NelderMeadOptions new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::RMSProp new \?options:RMSPropOptions\?\n");
 }
-Tcl_Obj* rosetta_function_1521(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_1641(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
-        if (n >= 2 && n <= 4 && call.match()) {
-            if (n == 2) {
-                rosetta_tcl::Param<unsigned long> p0(a[0]);
-                rosetta_tcl::Param<unsigned long> p1(a[1]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get()); }, nullptr, rosetta_tcl::Return::automatic);
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::CsvReader>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->has_next(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    has_next -> bool\n");
+}
+Tcl_Obj* rosetta_function_1642(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::CsvReader>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->next(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    next -> DataFrame or {}\n");
+}
+Tcl_Obj* rosetta_function_1643(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::CsvReader>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->reset(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    reset\n");
+}
+Tcl_Obj* rosetta_function_1644(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::CsvReader>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->batch_size(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    batch_size -> int\n");
+}
+Tcl_Obj* rosetta_function_1645(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<int> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::CsvReader>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->set_batch_size(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    set_batch_size rows:int\n");
+}
+Tcl_Obj* rosetta_function_1646(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::CsvReader>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->column_names(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    column_names -> list of string\n");
+}
+Tcl_Obj* rosetta_function_1647(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::CsvReader>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->rows_read(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    rows_read -> double\n");
+}
+Tcl_Obj* rosetta_class_207_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 3 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                std::unique_ptr<datamunge::CsvReader> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::CsvReader(p0.get()));
+                rosetta_tcl::adopt<datamunge::CsvReader>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 2) {
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                rosetta_tcl::Param<int> p1(a[1]);
+                std::unique_ptr<datamunge::CsvReader> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::CsvReader(p0.get(), p1.get()));
+                rosetta_tcl::adopt<datamunge::CsvReader>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
             }
             if (n == 3) {
-                rosetta_tcl::Param<unsigned long> p0(a[0]);
-                rosetta_tcl::Param<unsigned long> p1(a[1]);
-                rosetta_tcl::Param<double> p2(a[2]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_tcl::Return::automatic);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                rosetta_tcl::Param<int> p1(a[1]);
+                rosetta_tcl::Param<char> p2(a[2]);
+                std::unique_ptr<datamunge::CsvReader> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::CsvReader(p0.get(), p1.get(), p2.get()));
+                rosetta_tcl::adopt<datamunge::CsvReader>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    ::datamunge::CsvReader new path:string \?batch_size:int\? \?delimiter:char\?\n");
+}
+Tcl_Obj* rosetta_function_2426(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->best_hidden_nodes(); }, call.self, rosetta_tcl::Return::automatic);
                 return result;
             }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    best_hidden_nodes -> unsigned int\n");
+}
+Tcl_Obj* rosetta_function_2427(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->validation_log_loss(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    validation_log_loss -> double\n");
+}
+Tcl_Obj* rosetta_function_2428(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->test_accuracy(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    test_accuracy -> double\n");
+}
+Tcl_Obj* rosetta_function_2429(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->training_rows(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    training_rows -> unsigned int\n");
+}
+Tcl_Obj* rosetta_function_2430(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->validation_rows(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    validation_rows -> unsigned int\n");
+}
+Tcl_Obj* rosetta_function_2431(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->test_rows(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    test_rows -> unsigned int\n");
+}
+Tcl_Obj* rosetta_function_2432(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->summary(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    summary -> string\n");
+}
+Tcl_Obj* rosetta_function_2433(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 0 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->trials(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    trials -> DataFrame or {}\n");
+}
+Tcl_Obj* rosetta_function_2434(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 1 && n <= 1 && call.match()) {
+            if (n == 1) {
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->predict(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    predict newdata:DataFrame -> list of string\n");
+}
+Tcl_Obj* rosetta_function_2435(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 0 && n <= 1 && call.match()) {
+            if (n == 0) {
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->plot_decision_regions(); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+            if (n == 1) {
+                rosetta_tcl::Param<unsigned long> p0(a[0]);
+                auto* native = rosetta_tcl::native<datamunge::MLPClassifierSearch>(call.self);
+                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->plot_decision_regions(p0.get()); }, call.self, rosetta_tcl::Return::automatic);
+                return result;
+            }
+        }
+    }
+    rosetta_tcl::no_overload(call, "    plot_decision_regions \?grid_resolution:unsigned int\? -> RPlot\n");
+}
+Tcl_Obj* rosetta_class_252_construct(rosetta_tcl::Call& call) {
+    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
+    rosetta_tcl::check_unconstructed(call);
+    for (int level = 2; level < 3; ++level) {
+        if (n >= 4 && n <= 10 && call.match()) {
             if (n == 4) {
-                rosetta_tcl::Param<unsigned long> p0(a[0]);
-                rosetta_tcl::Param<unsigned long> p1(a[1]);
-                rosetta_tcl::Param<double> p2(a[2]);
-                rosetta_tcl::Param<double> p3(a[3]);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    open_uniform degree:unsigned int basis_size:unsigned int \?min_x:double\? \?max_x:double\? -> BSplineBasis\n");
-}
-Tcl_Obj* rosetta_function_1522(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::fda::BSplineBasis>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->degree(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    degree -> unsigned int\n");
-}
-Tcl_Obj* rosetta_function_1523(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::fda::BSplineBasis>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->basis_size(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    basis_size -> unsigned int\n");
-}
-Tcl_Obj* rosetta_function_1524(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::fda::BSplineBasis>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->knots(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    knots -> list of double\n");
-}
-Tcl_Obj* rosetta_function_1525(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                auto* native = rosetta_tcl::native<datamunge::fda::BSplineBasis>(call.self);
-                Tcl_Obj* result = rosetta_tcl::call([&]() -> decltype(auto) { return native->domain(); }, call.self, rosetta_tcl::Return::automatic);
-                return result;
-            }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    domain -> list {double double}\n");
-}
-Tcl_Obj* rosetta_class_196_construct(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    rosetta_tcl::check_unconstructed(call);
-    for (int level = 0; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                std::unique_ptr<datamunge::fda::BSplineBasis> created;
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p3(a[3]);
+                std::unique_ptr<datamunge::MLPClassifierSearch> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::fda::BSplineBasis());
-                rosetta_tcl::adopt<datamunge::fda::BSplineBasis>(call, created.get(), director_part);
+                created.reset(new datamunge::MLPClassifierSearch(p0.get(), p1.get(), p2.get(), p3.get()));
+                rosetta_tcl::adopt<datamunge::MLPClassifierSearch>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
-        }
-        if (n >= 2 && n <= 2 && call.match()
-            && (n <= 0 || rosetta_tcl::Param<unsigned long>::check(a[0], level))
-            && (n <= 1 || rosetta_tcl::Param<std::vector<double>>::check(a[1], level))) {
-            if (n == 2) {
-                rosetta_tcl::Param<unsigned long> p0(a[0]);
-                rosetta_tcl::Param<std::vector<double>> p1(a[1]);
-                std::unique_ptr<datamunge::fda::BSplineBasis> created;
+            if (n == 5) {
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p3(a[3]);
+                rosetta_tcl::Param<unsigned long> p4(a[4]);
+                std::unique_ptr<datamunge::MLPClassifierSearch> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::fda::BSplineBasis(p0.get(), p1.get()));
-                rosetta_tcl::adopt<datamunge::fda::BSplineBasis>(call, created.get(), director_part);
+                created.reset(new datamunge::MLPClassifierSearch(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()));
+                rosetta_tcl::adopt<datamunge::MLPClassifierSearch>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
-        }
-    }
-    rosetta_tcl::no_overload(call, "    ::datamunge::BSplineBasis new\n    ::datamunge::BSplineBasis new degree:unsigned int knots:list of double\n");
-}
-Tcl_Obj* rosetta_field_758_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->statistic))>(native->statistic, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_758_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().statistic)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->statistic, converted.get());
-}
-Tcl_Obj* rosetta_field_758_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "statistic", rosetta_field_758_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().statistic)>>> ? &rosetta_field_758_set : nullptr));
-}
-Tcl_Obj* rosetta_field_759_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->parameter1))>(native->parameter1, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_759_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().parameter1)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->parameter1, converted.get());
-}
-Tcl_Obj* rosetta_field_759_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "parameter1", rosetta_field_759_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().parameter1)>>> ? &rosetta_field_759_set : nullptr));
-}
-Tcl_Obj* rosetta_field_760_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->parameter2))>(native->parameter2, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_760_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().parameter2)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->parameter2, converted.get());
-}
-Tcl_Obj* rosetta_field_760_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "parameter2", rosetta_field_760_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().parameter2)>>> ? &rosetta_field_760_set : nullptr));
-}
-Tcl_Obj* rosetta_field_761_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->p_value))>(native->p_value, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_761_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().p_value)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->p_value, converted.get());
-}
-Tcl_Obj* rosetta_field_761_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "p_value", rosetta_field_761_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().p_value)>>> ? &rosetta_field_761_set : nullptr));
-}
-Tcl_Obj* rosetta_field_762_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->estimate1))>(native->estimate1, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_762_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().estimate1)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->estimate1, converted.get());
-}
-Tcl_Obj* rosetta_field_762_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "estimate1", rosetta_field_762_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().estimate1)>>> ? &rosetta_field_762_set : nullptr));
-}
-Tcl_Obj* rosetta_field_763_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->estimate2))>(native->estimate2, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_763_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().estimate2)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->estimate2, converted.get());
-}
-Tcl_Obj* rosetta_field_763_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "estimate2", rosetta_field_763_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().estimate2)>>> ? &rosetta_field_763_set : nullptr));
-}
-Tcl_Obj* rosetta_field_764_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->conf_int_lower))>(native->conf_int_lower, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_764_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().conf_int_lower)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->conf_int_lower, converted.get());
-}
-Tcl_Obj* rosetta_field_764_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "conf_int_lower", rosetta_field_764_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().conf_int_lower)>>> ? &rosetta_field_764_set : nullptr));
-}
-Tcl_Obj* rosetta_field_765_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->conf_int_upper))>(native->conf_int_upper, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_765_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().conf_int_upper)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->conf_int_upper, converted.get());
-}
-Tcl_Obj* rosetta_field_765_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "conf_int_upper", rosetta_field_765_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().conf_int_upper)>>> ? &rosetta_field_765_set : nullptr));
-}
-Tcl_Obj* rosetta_field_766_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->has_conf_int))>(native->has_conf_int, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_766_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().has_conf_int)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->has_conf_int, converted.get());
-}
-Tcl_Obj* rosetta_field_766_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "has_conf_int", rosetta_field_766_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().has_conf_int)>>> ? &rosetta_field_766_set : nullptr));
-}
-Tcl_Obj* rosetta_field_767_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->alternative))>(native->alternative, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_767_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().alternative)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->alternative, converted.get());
-}
-Tcl_Obj* rosetta_field_767_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "alternative", rosetta_field_767_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().alternative)>>> ? &rosetta_field_767_set : nullptr));
-}
-Tcl_Obj* rosetta_field_768_get(rosetta_tcl::Instance* self) {
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    return rosetta_tcl::result<decltype((native->method))>(native->method, self, rosetta_tcl::Return::automatic);
-}
-void rosetta_field_768_set(rosetta_tcl::Instance* self, Tcl_Obj* value) {
-    rosetta_tcl::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().method)>>&> converted(value);
-    auto* native = rosetta_tcl::native<datamunge::stats::HypothesisTestResult>(self);
-    rosetta_tcl::assign_field(native->method, converted.get());
-}
-Tcl_Obj* rosetta_field_768_method(rosetta_tcl::Call& call) {
-    return rosetta_tcl::field_access(call, "method", rosetta_field_768_get, (std::is_copy_assignable_v<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::stats::HypothesisTestResult&>().method)>>> ? &rosetta_field_768_set : nullptr));
-}
-Tcl_Obj* rosetta_class_197_construct(rosetta_tcl::Call& call) {
-    const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
-    rosetta_tcl::check_unconstructed(call);
-    for (int level = 2; level < 3; ++level) {
-        if (n >= 0 && n <= 0 && call.match()) {
-            if (n == 0) {
-                std::unique_ptr<datamunge::stats::HypothesisTestResult> created;
+            if (n == 6) {
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p3(a[3]);
+                rosetta_tcl::Param<unsigned long> p4(a[4]);
+                rosetta_tcl::Param<unsigned long> p5(a[5]);
+                std::unique_ptr<datamunge::MLPClassifierSearch> created;
                 rosetta_tcl::Director* director_part = nullptr;
-                created.reset(new datamunge::stats::HypothesisTestResult());
-                rosetta_tcl::adopt<datamunge::stats::HypothesisTestResult>(call, created.get(), director_part);
+                created.reset(new datamunge::MLPClassifierSearch(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()));
+                rosetta_tcl::adopt<datamunge::MLPClassifierSearch>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 7) {
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p3(a[3]);
+                rosetta_tcl::Param<unsigned long> p4(a[4]);
+                rosetta_tcl::Param<unsigned long> p5(a[5]);
+                rosetta_tcl::Param<unsigned long> p6(a[6]);
+                std::unique_ptr<datamunge::MLPClassifierSearch> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::MLPClassifierSearch(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get()));
+                rosetta_tcl::adopt<datamunge::MLPClassifierSearch>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 8) {
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p3(a[3]);
+                rosetta_tcl::Param<unsigned long> p4(a[4]);
+                rosetta_tcl::Param<unsigned long> p5(a[5]);
+                rosetta_tcl::Param<unsigned long> p6(a[6]);
+                rosetta_tcl::Param<unsigned long> p7(a[7]);
+                std::unique_ptr<datamunge::MLPClassifierSearch> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::MLPClassifierSearch(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get()));
+                rosetta_tcl::adopt<datamunge::MLPClassifierSearch>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 9) {
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p3(a[3]);
+                rosetta_tcl::Param<unsigned long> p4(a[4]);
+                rosetta_tcl::Param<unsigned long> p5(a[5]);
+                rosetta_tcl::Param<unsigned long> p6(a[6]);
+                rosetta_tcl::Param<unsigned long> p7(a[7]);
+                rosetta_tcl::Param<unsigned long> p8(a[8]);
+                std::unique_ptr<datamunge::MLPClassifierSearch> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::MLPClassifierSearch(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get(), p8.get()));
+                rosetta_tcl::adopt<datamunge::MLPClassifierSearch>(call, created.get(), director_part);
+                created.release();
+                return nullptr;
+            }
+            if (n == 10) {
+                rosetta_tcl::Param<const datamunge::DataFrame &> p0(a[0]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
+                rosetta_tcl::Param<const std::__cxx11::basic_string<char> &> p3(a[3]);
+                rosetta_tcl::Param<unsigned long> p4(a[4]);
+                rosetta_tcl::Param<unsigned long> p5(a[5]);
+                rosetta_tcl::Param<unsigned long> p6(a[6]);
+                rosetta_tcl::Param<unsigned long> p7(a[7]);
+                rosetta_tcl::Param<unsigned long> p8(a[8]);
+                rosetta_tcl::Param<unsigned long> p9(a[9]);
+                std::unique_ptr<datamunge::MLPClassifierSearch> created;
+                rosetta_tcl::Director* director_part = nullptr;
+                created.reset(new datamunge::MLPClassifierSearch(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get(), p8.get(), p9.get()));
+                rosetta_tcl::adopt<datamunge::MLPClassifierSearch>(call, created.get(), director_part);
                 created.release();
                 return nullptr;
             }
         }
     }
-    rosetta_tcl::no_overload(call, "    ::datamunge::HypothesisTestResult new\n");
+    rosetta_tcl::no_overload(call, "    ::datamunge::MLPClassifierSearch new data:DataFrame response:string x_feature:string y_feature:string \?min_hidden:unsigned int\? \?max_hidden:unsigned int\? \?initial_samples:unsigned int\? \?iterations:unsigned int\? \?epochs:unsigned int\? \?seed:unsigned int\?\n");
 }
-Tcl_Obj* rosetta_function_2544(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2555(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 2 && call.match()) {
@@ -3876,7 +3971,7 @@ Tcl_Obj* rosetta_function_2544(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    zeros shape:list of int \?dtype:string\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2545(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2556(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 2 && call.match()) {
@@ -3895,7 +3990,7 @@ Tcl_Obj* rosetta_function_2545(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    ones shape:list of int \?dtype:string\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2546(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2557(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 3 && call.match()) {
@@ -3916,7 +4011,7 @@ Tcl_Obj* rosetta_function_2546(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    full shape:list of int value:double \?dtype:string\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2547(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2558(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 4 && call.match()) {
@@ -3945,7 +4040,7 @@ Tcl_Obj* rosetta_function_2547(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    arange start:double stop:double \?step:double\? \?dtype:string\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2548(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2559(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 5 && call.match()) {
@@ -3983,7 +4078,7 @@ Tcl_Obj* rosetta_function_2548(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    randn shape:list of int seed:unsigned int \?mean:double\? \?std:double\? \?dtype:string\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2549(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2560(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 5 && call.match()) {
@@ -4021,7 +4116,7 @@ Tcl_Obj* rosetta_function_2549(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    uniform shape:list of int seed:unsigned int \?low:double\? \?high:double\? \?dtype:string\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2550(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2561(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4034,7 +4129,7 @@ Tcl_Obj* rosetta_function_2550(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    load_npy path:string -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2551(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2562(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4048,7 +4143,7 @@ Tcl_Obj* rosetta_function_2551(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    save_npy path:string\n");
 }
-Tcl_Obj* rosetta_function_2552(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2563(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4061,7 +4156,7 @@ Tcl_Obj* rosetta_function_2552(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    defined -> bool\n");
 }
-Tcl_Obj* rosetta_function_2553(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2564(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4074,7 +4169,7 @@ Tcl_Obj* rosetta_function_2553(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    values -> list of double\n");
 }
-Tcl_Obj* rosetta_function_2554(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2565(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4087,7 +4182,7 @@ Tcl_Obj* rosetta_function_2554(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    shape -> list of int\n");
 }
-Tcl_Obj* rosetta_function_2555(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2566(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4100,7 +4195,7 @@ Tcl_Obj* rosetta_function_2555(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    dtype -> string\n");
 }
-Tcl_Obj* rosetta_function_2556(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2567(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4113,7 +4208,7 @@ Tcl_Obj* rosetta_function_2556(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    ndim -> int\n");
 }
-Tcl_Obj* rosetta_function_2557(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2568(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4126,7 +4221,7 @@ Tcl_Obj* rosetta_function_2557(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    numel -> int\n");
 }
-Tcl_Obj* rosetta_function_2558(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2569(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4139,7 +4234,7 @@ Tcl_Obj* rosetta_function_2558(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    item -> double\n");
 }
-Tcl_Obj* rosetta_function_2559(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2570(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4153,7 +4248,7 @@ Tcl_Obj* rosetta_function_2559(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    at index:list of int -> double\n");
 }
-Tcl_Obj* rosetta_function_2560(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2571(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4166,7 +4261,7 @@ Tcl_Obj* rosetta_function_2560(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    str -> string\n");
 }
-Tcl_Obj* rosetta_function_2561(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2572(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4180,7 +4275,7 @@ Tcl_Obj* rosetta_function_2561(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    astype dtype:string -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2562(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2573(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4194,7 +4289,7 @@ Tcl_Obj* rosetta_function_2562(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    reshape shape:list of int -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2563(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2574(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 1 && call.match()) {
@@ -4213,7 +4308,7 @@ Tcl_Obj* rosetta_function_2563(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    transpose \?perm:list of int\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2564(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2575(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 3 && n <= 3 && call.match()) {
@@ -4229,7 +4324,7 @@ Tcl_Obj* rosetta_function_2564(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    slice axis:int start:int stop:int -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2565(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2576(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
@@ -4244,7 +4339,7 @@ Tcl_Obj* rosetta_function_2565(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    concat other:NnTensor axis:int -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2566(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2577(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4258,7 +4353,7 @@ Tcl_Obj* rosetta_function_2566(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    add other:NnTensor -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2567(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2578(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4272,7 +4367,7 @@ Tcl_Obj* rosetta_function_2567(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    sub other:NnTensor -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2568(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2579(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4286,7 +4381,7 @@ Tcl_Obj* rosetta_function_2568(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    mul other:NnTensor -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2569(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2580(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4300,7 +4395,7 @@ Tcl_Obj* rosetta_function_2569(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    div other:NnTensor -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2570(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2581(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4314,7 +4409,7 @@ Tcl_Obj* rosetta_function_2570(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    add_scalar value:double -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2571(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2582(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4328,7 +4423,7 @@ Tcl_Obj* rosetta_function_2571(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    mul_scalar value:double -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2572(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2583(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4342,7 +4437,7 @@ Tcl_Obj* rosetta_function_2572(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    pow exponent:double -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2573(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2584(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4355,7 +4450,7 @@ Tcl_Obj* rosetta_function_2573(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    neg -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2574(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2585(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 3 && call.match()) {
@@ -4384,7 +4479,7 @@ Tcl_Obj* rosetta_function_2574(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    matmul other:NnTensor \?transpose_a:bool\? \?transpose_b:bool\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2575(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2586(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4397,7 +4492,7 @@ Tcl_Obj* rosetta_function_2575(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    exp -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2576(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2587(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4410,7 +4505,7 @@ Tcl_Obj* rosetta_function_2576(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    log -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2577(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2588(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4423,7 +4518,7 @@ Tcl_Obj* rosetta_function_2577(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    sqrt -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2578(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2589(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4436,7 +4531,7 @@ Tcl_Obj* rosetta_function_2578(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    abs -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2579(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2590(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4449,7 +4544,7 @@ Tcl_Obj* rosetta_function_2579(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    square -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2580(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2591(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4462,7 +4557,7 @@ Tcl_Obj* rosetta_function_2580(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    tanh -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2581(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2592(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4475,7 +4570,7 @@ Tcl_Obj* rosetta_function_2581(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    sigmoid -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2582(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2593(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4488,7 +4583,7 @@ Tcl_Obj* rosetta_function_2582(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    relu -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2583(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2594(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4502,7 +4597,7 @@ Tcl_Obj* rosetta_function_2583(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    activate activation:string -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2584(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2595(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 1 && call.match()) {
@@ -4521,7 +4616,7 @@ Tcl_Obj* rosetta_function_2584(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    softmax \?axis:int\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2585(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2596(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 1 && call.match()) {
@@ -4540,7 +4635,7 @@ Tcl_Obj* rosetta_function_2585(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    log_softmax \?axis:int\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2586(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2597(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 2 && call.match()) {
@@ -4566,7 +4661,7 @@ Tcl_Obj* rosetta_function_2586(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    sum \?axes:list of int\? \?keepdims:bool\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2587(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2598(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 2 && call.match()) {
@@ -4592,7 +4687,7 @@ Tcl_Obj* rosetta_function_2587(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    mean \?axes:list of int\? \?keepdims:bool\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2588(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2599(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 2 && call.match()) {
@@ -4618,7 +4713,7 @@ Tcl_Obj* rosetta_function_2588(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    max \?axes:list of int\? \?keepdims:bool\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2589(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2600(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 2 && call.match()) {
@@ -4644,7 +4739,7 @@ Tcl_Obj* rosetta_function_2589(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    min \?axes:list of int\? \?keepdims:bool\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2590(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2601(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 1 && call.match()) {
@@ -4663,7 +4758,7 @@ Tcl_Obj* rosetta_function_2590(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    argmax \?axis:int\? -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2591(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2602(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 1 && call.match()) {
@@ -4682,7 +4777,7 @@ Tcl_Obj* rosetta_function_2591(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    set_requires_grad \?requires_grad:bool\?\n");
 }
-Tcl_Obj* rosetta_function_2592(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2603(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4695,7 +4790,7 @@ Tcl_Obj* rosetta_function_2592(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    requires_grad -> bool\n");
 }
-Tcl_Obj* rosetta_function_2593(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2604(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4708,7 +4803,7 @@ Tcl_Obj* rosetta_function_2593(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    backward\n");
 }
-Tcl_Obj* rosetta_function_2594(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2605(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4721,7 +4816,7 @@ Tcl_Obj* rosetta_function_2594(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    grad -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2595(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2606(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4734,7 +4829,7 @@ Tcl_Obj* rosetta_function_2595(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    zero_grad\n");
 }
-Tcl_Obj* rosetta_function_2596(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2607(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4747,7 +4842,7 @@ Tcl_Obj* rosetta_function_2596(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    detach -> NnTensor\n");
 }
-Tcl_Obj* rosetta_function_2597(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2608(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     Tcl_Obj* self_word = call.object ? Tcl_GetObjectName(rosetta_tcl::interp(), call.object) : rosetta_tcl::empty();
     for (int level = 2; level < 3; ++level) {
@@ -4761,7 +4856,7 @@ Tcl_Obj* rosetta_function_2597(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    to_string -> string\n");
 }
-Tcl_Obj* rosetta_class_261_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_262_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 0; level < 3; ++level) {
@@ -4804,7 +4899,7 @@ Tcl_Obj* rosetta_class_261_construct(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    ::datamunge::NnTensor new\n    ::datamunge::NnTensor new values:list of double shape:list of int \?dtype:string\?\n");
 }
-Tcl_Obj* rosetta_function_2632(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2643(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4817,7 +4912,7 @@ Tcl_Obj* rosetta_function_2632(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    empty -> bool\n");
 }
-Tcl_Obj* rosetta_function_2633(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2644(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4830,7 +4925,7 @@ Tcl_Obj* rosetta_function_2633(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    vertex_count -> unsigned int\n");
 }
-Tcl_Obj* rosetta_function_2634(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2645(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4843,7 +4938,7 @@ Tcl_Obj* rosetta_function_2634(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    edge_count -> unsigned int\n");
 }
-Tcl_Obj* rosetta_function_2635(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2646(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4856,7 +4951,7 @@ Tcl_Obj* rosetta_function_2635(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    clear\n");
 }
-Tcl_Obj* rosetta_function_2636(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2647(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 0; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()
@@ -4880,7 +4975,7 @@ Tcl_Obj* rosetta_function_2636(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    add_vertex vertex:string -> bool\n    add_vertex vertex:string -> bool\n");
 }
-Tcl_Obj* rosetta_function_2637(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2648(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4894,7 +4989,7 @@ Tcl_Obj* rosetta_function_2637(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    remove_vertex vertex:string -> bool\n");
 }
-Tcl_Obj* rosetta_function_2638(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2649(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4908,7 +5003,7 @@ Tcl_Obj* rosetta_function_2638(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    has_vertex vertex:string -> bool\n");
 }
-Tcl_Obj* rosetta_function_2639(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2650(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
@@ -4923,7 +5018,7 @@ Tcl_Obj* rosetta_function_2639(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    add_edge src:string dst:string -> bool\n");
 }
-Tcl_Obj* rosetta_function_2640(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2651(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
@@ -4938,7 +5033,7 @@ Tcl_Obj* rosetta_function_2640(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    remove_edge src:string dst:string -> bool\n");
 }
-Tcl_Obj* rosetta_function_2641(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2652(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
@@ -4953,7 +5048,7 @@ Tcl_Obj* rosetta_function_2641(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    has_edge src:string dst:string -> bool\n");
 }
-Tcl_Obj* rosetta_function_2642(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2653(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -4966,7 +5061,7 @@ Tcl_Obj* rosetta_function_2642(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    vertices -> list of string\n");
 }
-Tcl_Obj* rosetta_function_2643(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2654(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4980,7 +5075,7 @@ Tcl_Obj* rosetta_function_2643(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    outgoing_neighbors vertex:string -> list of string\n");
 }
-Tcl_Obj* rosetta_function_2644(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2655(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -4994,7 +5089,7 @@ Tcl_Obj* rosetta_function_2644(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    incoming_neighbors vertex:string -> list of string\n");
 }
-Tcl_Obj* rosetta_function_2645(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2656(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -5008,7 +5103,7 @@ Tcl_Obj* rosetta_function_2645(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    out_degree vertex:string -> unsigned int\n");
 }
-Tcl_Obj* rosetta_function_2646(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2657(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -5022,7 +5117,7 @@ Tcl_Obj* rosetta_function_2646(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    in_degree vertex:string -> unsigned int\n");
 }
-Tcl_Obj* rosetta_function_2647(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2658(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -5036,7 +5131,7 @@ Tcl_Obj* rosetta_function_2647(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    bfs start:string -> list of string\n");
 }
-Tcl_Obj* rosetta_function_2648(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2659(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 1 && n <= 1 && call.match()) {
@@ -5050,7 +5145,7 @@ Tcl_Obj* rosetta_function_2648(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    dfs start:string -> list of string\n");
 }
-Tcl_Obj* rosetta_function_2649(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2660(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 2 && n <= 2 && call.match()) {
@@ -5065,7 +5160,7 @@ Tcl_Obj* rosetta_function_2649(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    contains_path src:string dst:string -> bool\n");
 }
-Tcl_Obj* rosetta_function_2650(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2661(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -5078,7 +5173,7 @@ Tcl_Obj* rosetta_function_2650(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    transpose -> DirectedGraph\n");
 }
-Tcl_Obj* rosetta_function_2651(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_function_2662(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     for (int level = 2; level < 3; ++level) {
         if (n >= 0 && n <= 0 && call.match()) {
@@ -5091,7 +5186,7 @@ Tcl_Obj* rosetta_function_2651(rosetta_tcl::Call& call) {
     }
     rosetta_tcl::no_overload(call, "    topological_sort -> list of string\n");
 }
-Tcl_Obj* rosetta_class_265_construct(rosetta_tcl::Call& call) {
+Tcl_Obj* rosetta_class_266_construct(rosetta_tcl::Call& call) {
     const rosetta_tcl::Size n = call.n; Tcl_Obj* const* a = call.a; (void)n; (void)a;
     rosetta_tcl::check_unconstructed(call);
     for (int level = 0; level < 3; ++level) {

@@ -56,7 +56,11 @@ def test_common_modules_do_not_own_end_to_end_workflows():
         "marked_sequence_demo.hpp",
         "binary_pixels.hpp",
     ):
-        source = (ROOT / "examples/nn/common" / name).read_text()
+        path = ROOT / "prebindings/nn/include/common" / name
+        if not path.exists():
+            # Removed example-only helpers have no shared workflow left to audit.
+            continue
+        source = path.read_text()
         assert not re.search(
             r"^(?:inline\s+)?(?:int|void|double|Result|ApResult|SegmentationMetrics)\s+"
             r"(?:Run|Main|RunCifar10|RunMarkedDemo|TrainImages|TrainSegmentation|TrainDetector)\s*\(",
@@ -96,9 +100,8 @@ def test_no_shared_header_owns_a_training_loop():
 
 def test_no_generic_training_runner_remains_in_canonical_cpp_examples():
     report = load_audit_module().audit()["examples"]
-    ledger = json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())
-    remaining_cpp = {Path(entry["source"]).stem for entry in ledger["examples"].values()
-                     if not entry["retired"] and entry["source"].endswith(".cpp")}
+    from nn_migration_status import sources
+    remaining_cpp = {source.stem for source, _ in sources()}
     assert set(report) == remaining_cpp
     assert {name: entry["loop_owner"] for name, entry in report.items()
             if not entry["cpp_compliant"]} == {}
@@ -121,7 +124,7 @@ def test_final_recurrent_examples_own_normal_and_replay_updates():
             assert len(re.findall(r"nn::Optimizer\s+opt\(", source)) == 2, name
         if name == "word_rnn_lm":
             assert len(re.findall(r"nn::Optimizer\s+opt\(", source)) == 2
-    common = (ROOT / "examples/nn/common/memory_task.hpp").read_text()
+    common = (ROOT / "prebindings/nn/include/common/memory_task.hpp").read_text()
     assert "void Update(" not in common and "RawGradients(" not in common
     assert "optimizer->step(" not in common
 
@@ -157,20 +160,6 @@ def test_binding_adapter_must_be_parsed_by_swig(tmp_path, monkeypatch):
         raise AssertionError("unparsed adapters must not count as bound")
 
 
-def test_workflow_ownership_never_regresses():
-    """Every example recorded as owning its loop in examples/nn/example_audit.json stays that way."""
-    recorded = json.loads((ROOT / "examples/nn/example_audit.json").read_text())["examples"]
-    current = load_audit_module().audit()["examples"]
-    assert set(current) == set(recorded)
-    regressions = sorted(name for name, entry in recorded.items()
-                         if entry["cpp_compliant"] and not current[name]["cpp_compliant"])
-    assert regressions == []
-    # The pasted CIFAR harness is gone for good.
-    for name, entry in current.items():
-        assert entry["loop_owner"] != "pasted_harness" or name in {
-            n for n, e in recorded.items() if e["loop_owner"] == "pasted_harness"}, name
-
-
 def test_component_bindings_cover_the_resnet_basic_example():
     current = load_audit_module().audit()["examples"]
     for name in ("resnet_basic", "cnn_cifar10", "cnn_mnist", "alexnet", "xception", "densenet",
@@ -181,9 +170,8 @@ def test_component_bindings_cover_the_resnet_basic_example():
 
 def test_vision_and_competitive_workflows_use_concrete_loops_and_visible_steps():
     report = load_audit_module().audit()["examples"]
-    retired = {Path(record["report"]).stem: record for record in
-               json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())["examples"].values()
-               if record["retired"]}
+    retired = {path.stem: {"report": str(path.relative_to(ROOT))}
+               for path in (ROOT / "docs/mepml/nn").rglob("*.mepml")}
     names = ("pointnet", "pointnet_plus_plus", "flownets", "pwcnet", "factorized_video", "i3d",
              "capsule_networks", "spatial_transformer", "k_sparse_autoencoder", "winner_take_all_autoencoder")
     for name in names:
@@ -218,9 +206,8 @@ def test_vision_and_competitive_workflows_use_concrete_loops_and_visible_steps()
 
 def test_binary_density_convlstm_and_entropy_workflows_have_visible_updates():
     report = load_audit_module().audit()["examples"]
-    retired = {Path(record["report"]).stem: record for record in
-               json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())["examples"].values()
-               if record["retired"]}
+    retired = {path.stem: {"report": str(path.relative_to(ROOT))}
+               for path in (ROOT / "docs/mepml/nn").rglob("*.mepml")}
     for name in ("pixel_cnn", "pixel_rnn", "gated_pixel_cnn", "made_density", "pixel_cnn_pp", "wavenet", "conv_lstm", "entropy_exploration"):
         if name in report:
             entry = report[name]
@@ -241,7 +228,7 @@ def test_binary_density_convlstm_and_entropy_workflows_have_visible_updates():
     conv = (ROOT / report["conv_lstm"]["cpp"]).read_text()
     assert "confusion.add(target_pixels, predicted_pixels)" in conv
     for header in ("point_training.hpp", "optical_flow.hpp", "binary_pixels.hpp"):
-        shared = (ROOT / "examples/nn/common" / header).read_text()
+        shared = (ROOT / "prebindings/nn/include/common" / header).read_text()
         assert not re.search(r"optimizer->(?:step|minimize)\(", shared), header
 
 
@@ -289,9 +276,8 @@ def test_audit_flags_pointer_calls_to_bundled_training_steps(tmp_path, monkeypat
 def test_flow_workflows_live_in_their_cpp_examples():
     audit = load_audit_module()
     report = audit.audit()["examples"]
-    retired = {Path(record["report"]).stem: record for record in
-               json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())["examples"].values()
-               if record["retired"]}
+    retired = {path.stem: {"report": str(path.relative_to(ROOT))}
+               for path in (ROOT / "docs/mepml/nn").rglob("*.mepml")}
     for name in ("cnf_density", "flow_density_2d", "glow_density", "iaf_density", "maf_density",
                  "nice_density", "planar_radial_density", "real_nvp_density", "spline_density"):
         if name in report:

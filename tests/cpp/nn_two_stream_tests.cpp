@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_two_stream_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/two_stream.cpp"
-#undef main
+#include "../fixtures/nn_two_stream_checks.hpp"
 TEST(TwoStream, AllFlowCenterClipStackValuesAndAdjoints) {
   FlowStackChecks();
 }
@@ -86,7 +84,7 @@ TEST(TwoStream, InvalidFlowGeometryAndTrainingDropout) {
 #include <datamunge/image/read_image.hpp>
 TEST(TwoStream, EveryOriginalResizedFramePixelAndMiddleFrameIdentity) {
   namespace n = dm::nn;
-  const auto root = std::filesystem::path("build/cnn-datasets/two_stream");
+  const auto root = std::filesystem::path((std::filesystem::path(dm::datasets::data_home()) / "two_stream"));
   std::map<std::string, n::Tensor> audit;
   for (const auto &[key, value] : n::load_npz((root / "flow_audit.npz").string()))
     audit.emplace(key, value);
@@ -126,7 +124,7 @@ TEST(TwoStream, EveryOriginalResizedFramePixelAndMiddleFrameIdentity) {
 TEST(TwoStream, EveryOriginalHostModalityDescriptorAndMemoryNeighbor) {
   namespace n = dm::nn;
   namespace m = n::models;
-  const auto pools = m::LoadTwoStream("build/cnn-datasets/two_stream");
+  const auto pools = m::LoadTwoStream((std::filesystem::path(dm::datasets::data_home()) / "two_stream"));
   for (bool motion : {false, true}) {
     for (const auto &d : pools)
       EXPECT_EQ(m::TwoStreamGridFeatures(d, motion).to_vector<float>(),

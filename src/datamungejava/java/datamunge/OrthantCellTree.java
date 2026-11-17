@@ -32,7 +32,7 @@ public class OrthantCellTree extends NativeObject {
     @SuppressWarnings("this-escape")
     public OrthantCellTree(double[] lo, double[] hi) {
         super(RAW);
-        Rosetta.construct(this, OrthantCellTree.class, false, 3011, lo, hi);
+        Rosetta.construct(this, OrthantCellTree.class, false, 3022, lo, hi);
     }
 
     /**
@@ -43,7 +43,7 @@ public class OrthantCellTree extends NativeObject {
      * @return d.
      */
     public long dimensions() {
-        return Rosetta.asLong(Rosetta.call(2991, this));
+        return Rosetta.asLong(Rosetta.call(3002, this));
     }
 
     /**
@@ -54,7 +54,7 @@ public class OrthantCellTree extends NativeObject {
      * @return 2^d.
      */
     public int arity() {
-        return Rosetta.asInt(Rosetta.call(2992, this));
+        return Rosetta.asInt(Rosetta.call(3003, this));
     }
 
     /**
@@ -65,7 +65,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Cell count.
      */
     public int size() {
-        return Rosetta.asInt(Rosetta.call(2993, this));
+        return Rosetta.asInt(Rosetta.call(3004, this));
     }
 
     /**
@@ -76,7 +76,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Maximum depth (root is 0).
      */
     public int maxDepth() {
-        return Rosetta.asInt(Rosetta.call(2994, this));
+        return Rosetta.asInt(Rosetta.call(3005, this));
     }
 
     /**
@@ -87,7 +87,7 @@ public class OrthantCellTree extends NativeObject {
      * @param cell Cell id.
      */
     public void check(int cell) {
-        Rosetta.call(2995, this, cell);
+        Rosetta.call(3006, this, cell);
     }
 
     /**
@@ -98,7 +98,7 @@ public class OrthantCellTree extends NativeObject {
      * @param slot Child slot.
      */
     public void checkSlot(int slot) {
-        Rosetta.call(2996, this, slot);
+        Rosetta.call(3007, this, slot);
     }
 
     /**
@@ -110,7 +110,7 @@ public class OrthantCellTree extends NativeObject {
      * @return d coordinates.
      */
     public double[] lo(int cell) {
-        return Rosetta.asDoubles(Rosetta.call(2997, this, cell));
+        return Rosetta.asDoubles(Rosetta.call(3008, this, cell));
     }
 
     /**
@@ -122,7 +122,7 @@ public class OrthantCellTree extends NativeObject {
      * @return d coordinates.
      */
     public double[] hi(int cell) {
-        return Rosetta.asDoubles(Rosetta.call(2998, this, cell));
+        return Rosetta.asDoubles(Rosetta.call(3009, this, cell));
     }
 
     /**
@@ -134,7 +134,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Depth (root 0).
      */
     public int depth(int cell) {
-        return Rosetta.asInt(Rosetta.call(2999, this, cell));
+        return Rosetta.asInt(Rosetta.call(3010, this, cell));
     }
 
     /**
@@ -146,7 +146,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Parent id, or -1 for the root.
      */
     public int parent(int cell) {
-        return Rosetta.asInt(Rosetta.call(3000, this, cell));
+        return Rosetta.asInt(Rosetta.call(3011, this, cell));
     }
 
     /**
@@ -159,7 +159,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Id or -1 if absent.
      */
     public int child(int cell, int slot) {
-        return Rosetta.asInt(Rosetta.call(3001, this, cell, slot));
+        return Rosetta.asInt(Rosetta.call(3012, this, cell, slot));
     }
 
     /**
@@ -171,7 +171,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Leaf flag.
      */
     public boolean isLeaf(int cell) {
-        return Rosetta.asBoolean(Rosetta.call(3002, this, cell));
+        return Rosetta.asBoolean(Rosetta.call(3013, this, cell));
     }
 
     /**
@@ -184,7 +184,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Child id.
      */
     public int ensureChild(int cell, int slot) {
-        return Rosetta.asInt(Rosetta.call(3003, this, cell, slot));
+        return Rosetta.asInt(Rosetta.call(3014, this, cell, slot));
     }
 
     /**
@@ -197,7 +197,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Pair (lo, hi) of the child box.
      */
     public Pair<double[], double[]> childBox(int cell, int slot) {
-        return Rosetta.tuple(Rosetta.call(3004, this, cell, slot), 2, rosettaT0 -> new Pair<double[], double[]>(Rosetta.asDoubles(rosettaT0.get(0)), Rosetta.asDoubles(rosettaT0.get(1))));
+        return Rosetta.tuple(Rosetta.call(3015, this, cell, slot), 2, rosettaT0 -> new Pair<double[], double[]>(Rosetta.asDoubles(rosettaT0.get(0)), Rosetta.asDoubles(rosettaT0.get(1))));
     }
 
     /**
@@ -210,7 +210,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Child slot.
      */
     public int slotFor(int cell, double[] point) {
-        return Rosetta.asInt(Rosetta.call(3005, this, cell, point));
+        return Rosetta.asInt(Rosetta.call(3016, this, cell, point));
     }
 
     /**
@@ -223,7 +223,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Containment flag.
      */
     public boolean contains(int cell, double[] point) {
-        return Rosetta.asBoolean(Rosetta.call(3006, this, cell, point));
+        return Rosetta.asBoolean(Rosetta.call(3017, this, cell, point));
     }
 
     /**
@@ -235,7 +235,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Cell id, or -1 outside the root box.
      */
     public int locate(double[] point) {
-        return Rosetta.asInt(Rosetta.call(3007, this, point));
+        return Rosetta.asInt(Rosetta.call(3018, this, point));
     }
 
     /**
@@ -247,7 +247,7 @@ public class OrthantCellTree extends NativeObject {
      * @return Ids in creation order.
      */
     public int[] cellsAtDepth(int depth) {
-        return Rosetta.asInts(Rosetta.call(3008, this, depth));
+        return Rosetta.asInts(Rosetta.call(3019, this, depth));
     }
 
     /**
@@ -262,7 +262,7 @@ public class OrthantCellTree extends NativeObject {
      * @return True when the interiors overlap.
      */
     public static boolean overlaps(double[] lo, double[] hi, double[] blo, double[] bhi) {
-        return Rosetta.asBoolean(Rosetta.call(3009, lo, hi, blo, bhi));
+        return Rosetta.asBoolean(Rosetta.call(3020, lo, hi, blo, bhi));
     }
 
     /**
@@ -277,6 +277,6 @@ public class OrthantCellTree extends NativeObject {
      * @return Coverage flag.
      */
     public boolean coveredToDepth(int targetDepth, double[] blo, double[] bhi) {
-        return Rosetta.asBoolean(Rosetta.call(3010, this, targetDepth, blo, bhi));
+        return Rosetta.asBoolean(Rosetta.call(3021, this, targetDepth, blo, bhi));
     }
 }

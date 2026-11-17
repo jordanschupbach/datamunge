@@ -15,41 +15,19 @@
 /// group's candidate by binary search on its hull. When the wrap does not close, it squares
 /// \f$m\f$ and starts again. `chans_algorithm_trace` records every round.
 ///
-/// Orientation tests are exact for integer coordinates up to about \f$2^{26}\f$; with general
-/// floating-point input near-collinear triples can be misclassified.
+/// Graham scan, Jarvis march and Quickhull use exact signs for all finite represented binary64 coordinates.
+/// Other routines in this file retain rounded cross()/distance arithmetic and
+/// can misclassify near-collinear or extreme-range floating-point inputs.
 
 #include <datamunge/geometry/point2d.hpp>
+#include <datamunge/geometry/graham_scan.hpp>
+#include <datamunge/geometry/jarvis_march.hpp>
+#include <datamunge/geometry/quickhull.hpp>
 
 #include <cstdint>
 #include <vector>
 
 namespace datamunge::geometry {
-
-/// @brief Graham scan: sort by polar angle around the lowest point, then sweep keeping only
-///        left turns. \f$O(n\log n)\f$.
-/// @param points Input points (duplicates allowed).
-/// @return The strict convex hull, counterclockwise.
-std::vector<Point2D> graham_scan(std::vector<Point2D> points);
-
-/// @brief Graham scan that also counts the orientation tests (calls of `cross`) it makes,
-///        in the angular sort and in the sweep.
-/// @param points Input points (duplicates allowed).
-/// @param orientation_tests Incremented by the number of orientation tests.
-/// @return The strict convex hull, counterclockwise.
-std::vector<Point2D> graham_scan(std::vector<Point2D> points, long long& orientation_tests);
-
-/// @brief Gift wrapping (Jarvis march): from the leftmost point, repeatedly pick the most
-///        clockwise next point. \f$O(nh)\f$ for \f$h\f$ hull vertices.
-/// @param points Input points (duplicates allowed).
-/// @return The strict convex hull, counterclockwise.
-std::vector<Point2D> jarvis_march(std::vector<Point2D> points);
-
-/// @brief Jarvis march that also counts its orientation tests (\f$n-2\f$ per hull vertex
-///        for \f$n\f$ distinct points).
-/// @param points Input points (duplicates allowed).
-/// @param orientation_tests Incremented by the number of orientation tests.
-/// @return The strict convex hull, counterclockwise.
-std::vector<Point2D> jarvis_march(std::vector<Point2D> points, long long& orientation_tests);
 
 /// @brief Result of a tangent search from an outside point to a convex polygon.
 struct TangentSearch {
@@ -117,12 +95,6 @@ ChanResult chans_algorithm_trace(const std::vector<Point2D>& points, const ChanO
 /// @param points Input points (duplicates allowed).
 /// @return The strict convex hull, counterclockwise.
 std::vector<Point2D> chans_algorithm(std::vector<Point2D> points);
-
-/// @brief Quickhull: split by the line through the two extreme-x points, then recursively take
-///        the farthest point on each side. \f$O(n\log n)\f$ on average, \f$O(n^2)\f$ worst.
-/// @param points Input points (duplicates allowed).
-/// @return The strict convex hull, counterclockwise.
-std::vector<Point2D> quickhull(std::vector<Point2D> points);
 
 /// @brief Convex layers ("onion peeling"): layer 0 is the hull's vertices, layer 1 the hull
 ///        of the rest, and so on.

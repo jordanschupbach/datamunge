@@ -1,165 +1,327 @@
-#include <datamunge/algorithms/todd_coxeter.hpp>
-
+/// @file todd_coxeter.cpp
+/// @brief Actual checked HLT scans and iterative inverse-aware congruence closure.
 #include <algorithm>
+#include <datamunge/algorithms/todd_coxeter.hpp>
+#include <limits>
+#include <stdexcept>
 #include <utility>
-#include <vector>
-
 namespace datamunge::algorithms {
-
+/// @brief Private invocation-owned coset enumeration state.
 namespace {
-
-// Coset enumeration state using the HLT (scan-and-fill) strategy with a
-// union-find for coincidences.
-struct Enumerator {
-    int                           ncols;   // 2 * ngen (a symbol per generator and inverse)
-    long long                     maxc;
-    bool                          overflow{false};
-    std::vector<std::vector<int>> table;   // table[c][sym] = coset or -1
-    std::vector<int>              parent;  // union-find for coincidences
-    std::vector<char>            alive;
-    std::vector<std::vector<int>> relators_sym;
-    std::vector<std::vector<int>> subgroup_sym;
-
-    static int inv(int sym) { return sym ^ 1; }
-
-    int rep(int c) {
-        while (parent[c] != c) { parent[c] = parent[parent[c]]; c = parent[c]; }
-        return c;
-    }
-
-    int new_coset() {
-        const int c = static_cast<int>(table.size());
-        table.emplace_back(ncols, -1);
-        parent.push_back(c);
-        alive.push_back(1);
-        return c;
-    }
-
-    // Set table[a][x] = b and the inverse link.
-    void set_edge(int a, int x, int b) {
-        table[a][x]      = b;
-        table[b][inv(x)] = a;
-    }
-
-    // Merge cosets b into a (a < b), cascading further coincidences.
-    void coincidence(int a, int b, std::vector<std::pair<int, int>>& queue) {
-        a = rep(a);
-        b = rep(b);
-        if (a == b) return;
-        if (a > b) std::swap(a, b);
-        parent[b] = a;
-        alive[b]  = 0;
-        for (int x = 0; x < ncols; ++x) {
-            const int tb = table[b][x];
-            if (tb < 0) continue;
-            const int tbr = rep(tb);
-            // remove back-link from tb to b (will be re-added to a)
-            const int ta = table[a][x] < 0 ? -1 : rep(table[a][x]);
-            if (ta < 0) {
-                set_edge(a, x, tbr);
-            } else if (ta != tbr) {
-                queue.emplace_back(ta, tbr);
-            }
-            // ensure inverse consistency for tbr
-            if (table[tbr][inv(x)] < 0 || rep(table[tbr][inv(x)]) == b) table[tbr][inv(x)] = a;
-        }
-    }
-
-    void process_coincidence(int a, int b) {
-        std::vector<std::pair<int, int>> queue{{a, b}};
-        while (!queue.empty()) {
-            auto [x, y] = queue.back();
-            queue.pop_back();
-            coincidence(x, y, queue);
-        }
-    }
-
-    // Scan `word` cyclically starting/ending at coset `c`, filling forward and
-    // backward, defining new cosets to make progress. Registers coincidences.
-    void scan(int start, const std::vector<int>& word) {
-        if (word.empty()) return;
-        int f = rep(start);
-        int b = rep(start);
-        int i = 0;
-        int j = static_cast<int>(word.size()) - 1;
-        while (true) {
-            // forward as far as defined
-            while (i <= j && table[f][word[i]] >= 0) { f = rep(table[f][word[i]]); ++i; }
-            if (i > j) { // whole word scanned forward; must return to start
-                if (f != rep(start)) process_coincidence(f, rep(start));
-                return;
-            }
-            // backward as far as defined
-            while (j >= i && table[b][inv(word[j])] >= 0) { b = rep(table[b][inv(word[j])]); --j; }
-            if (j < i) { // forward and backward met: coincidence
-                process_coincidence(f, b);
-                return;
-            }
-            if (i == j) { // exactly one gap: deduce the edge
-                set_edge(f, word[i], b);
-                return;
-            }
-            // gap wider than one: define a new coset and continue
-            if (static_cast<long long>(table.size()) >= maxc) { overflow = true; return; }
-            const int nc = new_coset();
-            set_edge(f, word[i], nc);
-        }
-    }
+/// @brief Internal non-error resource stop, converted to explicit unresolved output.
+struct Limit {
+  const char* reason; ///< Static actual resource-stop description.
 };
+/// @brief Actual table/union producer, without recursion or borrowed output storage.
+struct Enumerator {
+  int                columns{};  ///< Actual2*ngen symbol columns.
+  const ToddOptions& o;          ///< Borrowed controls for this call.
+  ToddRun&           r;          ///< Actual output/counter accumulator.
+  bool               capture{};  ///< Retain actual event records.
+  std::vector<int>   parent;     ///< Actual coincidence forest, lower root chosen.
+  std::size_t        alive{};    ///< Actual current representative count.
+  std::size_t        revision{}; ///< Actual changed links/definitions/merges.
+  std::size_t        retained{}; ///< Actual retained record/word-symbol units.
 
-// Convert a signed word (+（i+1)/-(i+1)) to internal symbols (2i / 2i+1).
-std::vector<int> to_symbols(const std::vector<int>& word) {
-    std::vector<int> s;
-    s.reserve(word.size());
-    for (int t : word) {
-        const int g = (t > 0 ? t : -t) - 1;
-        s.push_back(t > 0 ? 2 * g : 2 * g + 1);
+  /// @brief Count one actual selected kernel event before policy exhaustion.
+  void tick() {
+    if (r.operations == std::numeric_limits<std::size_t>::max())
+      throw std::length_error("Todd counter capacity");
+    if (o.max_operations && r.operations >= o.max_operations)
+      throw Limit{"operation limit"};
+    ++r.operations;
+  }
+  /// @brief Capture an actual producer event after its mutation.
+  void record(
+      const char*             action,
+      int                     a,
+      int                     b      = -1,
+      int                     symbol = -1,
+      const std::vector<int>& word   = {}) {
+    if (!capture)
+      return;
+    auto cap = std::numeric_limits<std::size_t>::max();
+    if (word.size() == cap || retained > cap - word.size() - 1 ||
+        (o.max_history_values &&
+         (retained > o.max_history_values || word.size() + 1 > o.max_history_values - retained)))
+      throw std::length_error("Todd history");
+    retained += word.size() + 1;
+    r.steps.push_back({action, a, b, symbol, r.table.size(), alive, word});
+  }
+  /// @brief Follow actual coincidence parents and compress by halving.
+  int rep(int a) {
+    tick();
+    while (parent[a] != a) {
+      tick();
+      parent[a] = parent[parent[a]];
+      a         = parent[a];
     }
-    return s;
-}
-
-} // namespace
-
-long long todd_coxeter_index(int ngen, const std::vector<std::vector<int>>& relators,
-                             const std::vector<std::vector<int>>& subgroup_gens, long long max_cosets) {
-    Enumerator e;
-    e.ncols = 2 * ngen;
-    e.maxc  = max_cosets;
-    for (const auto& r : relators) e.relators_sym.push_back(to_symbols(r));
-    for (const auto& s : subgroup_gens) e.subgroup_sym.push_back(to_symbols(s));
-
-    e.new_coset(); // coset 0 = the subgroup H
-
-    // Subgroup generators fix coset 0.
-    for (const auto& w : e.subgroup_sym) e.scan(0, w);
-    if (e.overflow) return -1;
-
-    // Main HLT loop: for each live coset in order, scan every relator, then fill
-    // any still-undefined generator image by defining a new coset.
-    int c = 0;
-    while (c < static_cast<int>(e.table.size())) {
-        if (e.rep(c) != c) { ++c; continue; } // dead / merged
-        for (const auto& r : e.relators_sym) e.scan(c, r);
-        if (e.overflow) return -1;
-        if (e.rep(c) != c) { ++c; continue; }
-        for (int x = 0; x < e.ncols; ++x) {
-            if (e.rep(c) != c) break;
-            if (e.table[c][x] < 0) {
-                if (static_cast<long long>(e.table.size()) >= max_cosets) return -1;
-                const int nc = e.new_coset();
-                e.set_edge(c, x, nc);
-                for (const auto& r : e.relators_sym) e.scan(c, r);
-                if (e.overflow) return -1;
-            }
+    return a;
+  }
+  /// @brief Resolve an actual representative without consuming capped algorithm work during output finalization.
+  int final_rep(int a) const {
+    while (parent[a] != a)
+      a = parent[a];
+    return a;
+  }
+  /// @brief Define one actual coset row under total-definition and table-cell policies.
+  int define() {
+    tick();
+    auto n = r.table.size();
+    if (n >= o.max_cosets)
+      throw Limit{"coset limit"};
+    if (n >= std::size_t(std::numeric_limits<int>::max()))
+      throw std::length_error("Todd int rows");
+    auto cap = std::numeric_limits<std::size_t>::max();
+    if (columns && n + 1 > cap / std::size_t(columns))
+      throw std::length_error("Todd table capacity");
+    if (o.max_table_cells && (n + 1) * std::size_t(columns) > o.max_table_cells)
+      throw Limit{"table limit"};
+    r.table.emplace_back(columns, -1);
+    parent.push_back(int(n));
+    ++alive;
+    ++revision;
+    ++r.definitions;
+    record("define", int(n));
+    return int(n);
+  }
+  /// @brief Merge actual roots and cascade functional congruences across both directions.
+  void merge(int a, int b) {
+    std::vector<std::pair<int, int>> queue{{a, b}};
+    while (!queue.empty()) {
+      tick();
+      auto [x, y] = queue.back();
+      queue.pop_back();
+      x = rep(x);
+      y = rep(y);
+      if (x == y)
+        continue;
+      if (x > y)
+        std::swap(x, y);
+      parent[y] = x;
+      --alive;
+      ++revision;
+      ++r.coincidences;
+      record("merge", x, y);
+      for (int symbol = 0; symbol < columns; ++symbol) {
+        tick();
+        int from = r.table[y][symbol], to = r.table[x][symbol];
+        if (from < 0)
+          continue;
+        if (to < 0) {
+          r.table[x][symbol] = rep(from);
+          ++revision;
+          record("link", x, r.table[x][symbol], symbol);
+        } else {
+          auto u = rep(to), v = rep(from);
+          if (u != v)
+            queue.emplace_back(u, v);
         }
-        ++c;
+      }
     }
-
-    // Count live cosets.
-    long long live = 0;
-    for (int i = 0; i < static_cast<int>(e.table.size()); ++i)
-        if (e.rep(i) == i) ++live;
-    return live;
+  }
+  /// @brief Define/deduce an actual two-way generator link, merging existing conflicting images first.
+  void link(int a, int symbol, int b) {
+    tick();
+    a = rep(a);
+    b = rep(b);
+    if (r.table[a][symbol] >= 0)
+      merge(r.table[a][symbol], b);
+    a = rep(a);
+    b = rep(b);
+    if (r.table[b][symbol ^ 1] >= 0)
+      merge(r.table[b][symbol ^ 1], a);
+    a = rep(a);
+    b = rep(b);
+    if (r.table[a][symbol] != b || r.table[b][symbol ^ 1] != a) {
+      r.table[a][symbol]     = b;
+      r.table[b][symbol ^ 1] = a;
+      ++revision;
+      record("link", a, b, symbol);
+    }
+  }
+  /// @brief Read an actual normalized row image, preserving undefined gaps.
+  int image(int a, int symbol) {
+    a     = rep(a);
+    int v = r.table[a][symbol];
+    return v < 0 ? -1 : rep(v);
+  }
+  /// @brief Execute an actual HLT relator/subgroup scan with gap deduction/definition.
+  void scan(int start, const std::vector<int>& word, const char* kind) {
+    tick();
+    ++r.word_scans;
+    start = rep(start);
+    record(kind, start, -1, -1, word);
+    if (word.empty())
+      return;
+    int         f = start, b = start;
+    std::size_t i = 0, j = word.size();
+    while (true) {
+      tick();
+      while (i < j) {
+        auto next = image(f, word[i]);
+        if (next < 0)
+          break;
+        f = next;
+        ++i;
+        ++r.symbol_visits;
+      }
+      if (i == j) {
+        merge(f, rep(start));
+        return;
+      }
+      while (j > i) {
+        auto next = image(b, word[j - 1] ^ 1);
+        if (next < 0)
+          break;
+        b = next;
+        --j;
+        ++r.symbol_visits;
+      }
+      if (i == j) {
+        merge(f, b);
+        return;
+      }
+      if (j - i == 1) {
+        link(f, word[i], b);
+        return;
+      }
+      auto fresh = define();
+      link(f, word[i], fresh);
+      f = rep(f);
+      b = rep(b);
+    }
+  }
+  /// @brief Own normalized raw links and the complete compact action on final representatives.
+  void finalize() {
+    r.representatives.resize(parent.size());
+    std::vector<int> compact(parent.size(), -1);
+    for (std::size_t i = 0; i < parent.size(); ++i) {
+      r.representatives[i] = final_rep(int(i));
+      if (r.representatives[i] == int(i)) {
+        compact[i] = int(r.live.size());
+        r.live.push_back(int(i));
+      }
+    }
+    for (auto& row : r.table)
+      for (auto& v : row)
+        if (v >= 0)
+          v = final_rep(v);
+    if (r.closed) {
+      r.index = static_cast<long long>(r.live.size());
+      for (auto id : r.live) {
+        std::vector<int> row;
+        for (int v : r.table[id]) {
+          if (v < 0)
+            throw std::logic_error("Todd closed row has gap");
+          row.push_back(compact[v]);
+        }
+        r.compact_table.push_back(std::move(row));
+      }
+    }
+  }
+};
+/// @brief Validate all signed words before allocating coset state and convert them to internal symbols.
+std::vector<std::vector<int>> symbols(
+    const std::vector<std::vector<int>>& words,
+    int                                  ngen,
+    std::size_t&                         total,
+    const ToddOptions&                   o) {
+  std::vector<std::vector<int>> out;
+  for (const auto& word : words) {
+    if (word.size() > std::numeric_limits<std::size_t>::max() - total)
+      throw std::length_error("Todd words capacity");
+    total += word.size();
+    if (o.max_word_symbols && total > o.max_word_symbols)
+      throw std::length_error("Todd complete words");
+    std::vector<int> converted;
+    for (int v : word) {
+      long long magnitude = v < 0 ? -static_cast<long long>(v) : v;
+      if (!magnitude || magnitude > ngen)
+        throw std::invalid_argument("Todd signed generator");
+      converted.push_back(2 * int(magnitude - 1) + (v < 0));
+    }
+    out.push_back(std::move(converted));
+  }
+  return out;
 }
-
+/// @brief Validate complete presentation then run actual scan/fill passes until stable or capped.
+ToddRun execute(
+    int                                  ngen,
+    const std::vector<std::vector<int>>& relators,
+    const std::vector<std::vector<int>>& subgroup,
+    const ToddOptions&                   o,
+    bool                                 capture) {
+  if (ngen < 0 || ngen > std::numeric_limits<int>::max() / 2 || !o.max_cosets)
+    throw std::invalid_argument("Todd generator/coset controls");
+  if (o.max_cosets > std::size_t(std::numeric_limits<int>::max()))
+    throw std::length_error("Todd int coset capacity");
+  std::size_t total = 0;
+  auto        rel = symbols(relators, ngen, total, o), sub = symbols(subgroup, ngen, total, o);
+  ToddRun     r;
+  Enumerator  e{2 * ngen, o, r, capture};
+  try {
+    e.define();
+    for (;;) {
+      auto before = e.revision;
+      for (const auto& w : sub)
+        e.scan(0, w, "subgroup");
+      for (std::size_t c = 0; c < r.table.size(); ++c) {
+        if (e.rep(int(c)) != int(c))
+          continue;
+        for (const auto& w : rel)
+          e.scan(int(c), w, "relator");
+        if (e.rep(int(c)) != int(c))
+          continue;
+        for (int x = 0; x < e.columns; ++x) {
+          if (e.rep(int(c)) != int(c))
+            break;
+          if (e.image(int(c), x) < 0) {
+            auto fresh = e.define();
+            e.link(int(c), x, fresh);
+            for (const auto& w : rel)
+              e.scan(int(c), w, "relator");
+          }
+        }
+      }
+      if (e.revision == before) {
+        r.closed = true;
+        r.stop   = "complete";
+        break;
+      }
+    }
+  } catch (const Limit& limit) {
+    r.stop = limit.reason;
+  }
+  e.finalize();
+  return r;
+}
+} // namespace
+ToddRun todd_coxeter_run(
+    int                                  ngen,
+    const std::vector<std::vector<int>>& relators,
+    const std::vector<std::vector<int>>& subgroup_gens,
+    const ToddOptions&                   options) {
+  return execute(ngen, relators, subgroup_gens, options, false);
+}
+ToddRun todd_coxeter_trace(
+    int                                  ngen,
+    const std::vector<std::vector<int>>& relators,
+    const std::vector<std::vector<int>>& subgroup_gens,
+    const ToddOptions&                   options) {
+  return execute(ngen, relators, subgroup_gens, options, true);
+}
+long long todd_coxeter_index(
+    int                                  ngen,
+    const std::vector<std::vector<int>>& relators,
+    const std::vector<std::vector<int>>& subgroup_gens,
+    long long                            max_cosets) {
+  if (max_cosets <= 0)
+    throw std::invalid_argument("Todd positive coset cap");
+  if (max_cosets > std::numeric_limits<int>::max())
+    throw std::length_error("Todd int coset cap");
+  ToddOptions o;
+  o.max_cosets = static_cast<std::size_t>(max_cosets);
+  return todd_coxeter_run(ngen, relators, subgroup_gens, o).index;
+}
 } // namespace datamunge::algorithms

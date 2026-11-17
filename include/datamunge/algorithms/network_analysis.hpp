@@ -1,47 +1,25 @@
+#include <datamunge/algorithms/trust_rank.hpp>
 #pragma once
 
 /// @file network_analysis.hpp
 /// @brief Link analysis on directed graphs (PageRank, TrustRank, HITS) and Girvan–Newman communities.
 
 #include <cstddef>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/algorithms/hits.hpp>
+#include <datamunge/algorithms/page_rank.hpp>
+#include <datamunge/linalg/csr.hpp>
 #include <utility>
 #include <vector>
 
-#include <datamunge/linalg/csr.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-
 namespace datamunge::algorithms {
-
-/// @brief Hub and authority scores from hits().
-struct HITSResult {
-  std::vector<double> hubs;          ///< Hub scores, unit Euclidean norm.
-  std::vector<double> authorities;   ///< Authority scores, unit Euclidean norm.
-  std::size_t         iterations{0}; ///< Power iterations performed.
-};
-
-/// @brief PageRank by power iteration.
-///
-/// Iterates \f$x\leftarrow\frac{1-\alpha}{n}\mathbf 1+\alpha P^\top x\f$, where P moves to a uniformly
-/// chosen out-neighbour; the mass of vertices without out-edges is spread uniformly.
-///
-/// @param vertex_count Number of vertices n.
-/// @param directed_edges Edges u -> v.
-/// @param damping \f$\alpha\in[0,1)\f$.
-/// @param tolerance Stop when the L1 change between iterates is below this.
-/// @param max_iterations Iteration cap.
-/// @return Scores that sum to one.
-/// @throws std::invalid_argument for an out-of-range vertex, bad damping or tolerance.
-/// @see page_rank_system()
-std::vector<double> page_rank(
-    std::size_t vertex_count,
-    const std::vector<std::pair<std::size_t, std::size_t>>& directed_edges,
-    double damping = 0.85, double tolerance = 1e-12, std::size_t max_iterations = 1000);
 
 /// @brief The PageRank linear system \f$(I-\alpha P^\top)x=\frac{1-\alpha}{n}\mathbf 1\f$ in sparse form.
 struct PageRankSystem {
-    linalg::SparseCSR<double> matrix;     ///< \f$A=I-\alpha P^\top\f$, with \f$P_{uv}=1/\deg^+(u)\f$ for each edge u -> v.
-    linalg::SparseCSR<double> transpose;  ///< \f$A^\top=I-\alpha P\f$.
-    std::vector<double>       rhs;        ///< \f$b=\frac{1-\alpha}{n}\mathbf 1\f$.
+  linalg::SparseCSR<double>
+      matrix; ///< \f$A=I-\alpha P^\top\f$, with \f$P_{uv}=1/\deg^+(u)\f$ for each edge u -> v.
+  linalg::SparseCSR<double> transpose; ///< \f$A^\top=I-\alpha P\f$.
+  std::vector<double>       rhs;       ///< \f$b=\frac{1-\alpha}{n}\mathbf 1\f$.
 };
 
 /// @brief Builds the PageRank system whose solution is the page_rank() vector.
@@ -62,9 +40,10 @@ struct PageRankSystem {
 /// const auto x = dm::linalg::gmres(sys.matrix, sys.rhs).x;   // equals page_rank(n, edges, 0.85)
 /// @endcode
 /// @see page_rank()
-PageRankSystem page_rank_system(std::size_t vertex_count,
-                                const std::vector<std::pair<std::size_t, std::size_t>>& directed_edges,
-                                double damping = 0.85);
+PageRankSystem page_rank_system(
+    std::size_t                                             vertex_count,
+    const std::vector<std::pair<std::size_t, std::size_t>>& directed_edges,
+    double                                                  damping = 0.85);
 
 /// @brief TrustRank: PageRank whose random jumps (and dangling mass) go only to trusted seeds.
 ///
@@ -77,23 +56,11 @@ PageRankSystem page_rank_system(std::size_t vertex_count,
 /// @return Trust scores that sum to one.
 /// @throws std::invalid_argument for no seeds, an out-of-range vertex or seed, or bad parameters.
 std::vector<double> trust_rank(
-    std::size_t vertex_count,
+    std::size_t                                             vertex_count,
     const std::vector<std::pair<std::size_t, std::size_t>>& directed_edges,
-    const std::vector<std::size_t>& trusted_seeds,
-    double damping = 0.85, double tolerance = 1e-12, std::size_t max_iterations = 1000);
-
-/// @brief Kleinberg's HITS hub and authority scores by alternating power iteration.
-///
-/// @param vertex_count Number of vertices n.
-/// @param directed_edges Edges u -> v (u is a hub pointing at authority v).
-/// @param tolerance Stop when no score changes by more than this.
-/// @param max_iterations Iteration cap.
-/// @return Normalised hub and authority scores and the iteration count.
-/// @throws std::invalid_argument for an out-of-range vertex or a non-positive tolerance.
-HITSResult hits(
-    std::size_t vertex_count,
-    const std::vector<std::pair<std::size_t, std::size_t>>& directed_edges,
-    double tolerance = 1e-12, std::size_t max_iterations = 1000);
-
+    const std::vector<std::size_t>&                         trusted_seeds,
+    double                                                  damping        = 0.85,
+    double                                                  tolerance      = 1e-12,
+    std::size_t                                             max_iterations = 1000);
 
 } // namespace datamunge::algorithms

@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_tcn_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/tcn.cpp"
-#undef main
+#include "../fixtures/nn_tcn_checks.hpp"
 TEST(Tcn, IndependentWeightNormEveryCoordinateFiniteDifference) {
   HostChecks();
 }
@@ -38,7 +36,7 @@ TEST(Tcn, EveryRealPrefixGradientAndFutureIsolationWithSavedNormalization) {
   namespace n = dm::nn;
   namespace m = n::models;
   n::set_num_threads(2);
-  const auto data = m::LoadSeries("build/cnn-datasets/time_series");
+  const auto data = m::LoadSeries((std::filesystem::path(dm::datasets::data_home()) / "time_series"));
   n::ParameterStore p(461), state(463);
   const m::TcnConfig c{8, 6, 3, data.config.mean, data.config.standard_deviation};
   const auto raw = n::slice_axis(data.pools[2].signals, 0, 0, 2).requires_grad_();

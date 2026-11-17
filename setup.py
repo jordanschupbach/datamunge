@@ -236,11 +236,11 @@ extensions.append(Extension(
     "pydatamunge._nn_native",
     # Rosetta's generated extension, split into parts (scripts/prebuild_nn_api.py).
     sources=sorted(p.as_posix() for p in Path("src").glob("nn_python_wrap*.cpp")),
-    # examples/nn: header-only example components bound by src/pydatamunge/rosetta/nn_bindings.hpp.
-    include_dirs=["include", "examples/nn", "examples/bindings"], language="c++", define_macros=macros,
+    # Compatibility adapters belong to the NN bindings, alongside the canonical core headers.
+    include_dirs=["include", "prebindings/nn/include", "examples/bindings"], language="c++", define_macros=macros,
     extra_compile_args=list(compile_args), extra_link_args=list(link_args),
     depends=extensions[0].depends
-    + sorted(p.as_posix() for p in Path("examples/nn/common").rglob("*.hpp")),
+    + sorted(p.as_posix() for p in Path("prebindings/nn/include/common").rglob("*.hpp")),
 ))
 
 # Example support is opt-in: ordinary wheels keep the small core-only surface.
@@ -254,7 +254,7 @@ if os.environ.get("DATAMUNGE_BUILD_NN_EXAMPLES") == "1":
             include_dirs=[
                 "include",
                 "examples/bindings",
-                "examples/nn",
+                "prebindings/nn/include",
                 "examples/cpp/source/nn",
             ],
             language="c++",
@@ -262,7 +262,7 @@ if os.environ.get("DATAMUNGE_BUILD_NN_EXAMPLES") == "1":
             extra_compile_args=list(compile_args),
             extra_link_args=list(link_args),
             depends=extensions[0].depends
-            + sorted(p.as_posix() for p in Path("examples/nn/common").rglob("*.hpp"))
+            + sorted(p.as_posix() for p in Path("prebindings/nn/include/common").rglob("*.hpp"))
             + ["examples/bindings/nn_examples.hpp"],
         )
     )

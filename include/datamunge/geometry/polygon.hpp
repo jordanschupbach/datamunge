@@ -1,4 +1,6 @@
 #pragma once
+#include <datamunge/geometry/shoelace.hpp>
+#include <datamunge/geometry/point_in_polygon.hpp>
 
 #include <datamunge/geometry/point2d.hpp>
 
@@ -8,39 +10,6 @@
 #include <vector>
 
 namespace datamunge::geometry {
-
-/// @brief True if @p point lies strictly inside the simple polygon @p vertices (given in
-///        either winding order), via the standard even-odd ray-casting rule (Franklin's
-///        PNPOLY). Behavior for a point exactly on an edge is unspecified (as it is for every
-///        ray-casting implementation) -- it may be reported as inside or outside depending on
-///        which edge and floating-point rounding.
-[[nodiscard]] inline bool point_in_polygon(const Point2D& point, const std::vector<Point2D>& vertices) {
-    bool inside = false;
-    const std::size_t n = vertices.size();
-    for (std::size_t i = 0, j = n - 1; i < n; j = i++) {
-        const Point2D& pi = vertices[i];
-        const Point2D& pj = vertices[j];
-        const bool straddles = (pi.y > point.y) != (pj.y > point.y);
-        if (straddles && point.x < (pj.x - pi.x) * (point.y - pi.y) / (pj.y - pi.y) + pi.x) {
-            inside = !inside;
-        }
-    }
-    return inside;
-}
-
-/// @brief The polygon's signed area via the shoelace formula: positive for
-///        counterclockwise-ordered vertices, negative for clockwise.
-[[nodiscard]] inline double signed_polygon_area(const std::vector<Point2D>& vertices) {
-    double sum = 0.0;
-    const std::size_t n = vertices.size();
-    for (std::size_t i = 0, j = n - 1; i < n; j = i++) {
-        sum += vertices[j].x * vertices[i].y - vertices[i].x * vertices[j].y;
-    }
-    return 0.5 * sum;
-}
-
-/// @brief The polygon's (unsigned) area, regardless of vertex winding order.
-[[nodiscard]] inline double polygon_area(const std::vector<Point2D>& vertices) { return std::abs(signed_polygon_area(vertices)); }
 
 /// @brief The centroid (center of mass, assuming uniform density) of the polygon's ENCLOSED
 ///        AREA -- not the average of its vertex coordinates, which is a different point for

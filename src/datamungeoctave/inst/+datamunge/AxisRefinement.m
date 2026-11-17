@@ -23,19 +23,19 @@ classdef AxisRefinement < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3016, false, varargin{:});
+      __datamunge__(-2, obj, 3027, false, varargin{:});
     end
     function v = get.rows (obj)
-      v = __datamunge__(3012, obj);
+      v = __datamunge__(3023, obj);
     end
     function set.rows (obj, v)
-      __datamunge__(3013, obj, v);
+      __datamunge__(3024, obj, v);
     end
     function v = get.cols (obj)
-      v = __datamunge__(3014, obj);
+      v = __datamunge__(3025, obj);
     end
     function set.cols (obj, v)
-      __datamunge__(3015, obj, v);
+      __datamunge__(3026, obj, v);
     end
   end
 end

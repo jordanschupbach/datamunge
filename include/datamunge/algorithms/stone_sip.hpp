@@ -1,102 +1,201 @@
 #pragma once
-
-// Stone's Strongly Implicit Procedure (SIP, 1968): an iterative solver for the
-// sparse linear systems that arise from 5-point finite-difference stencils on a
-// structured 2-D grid. Plain iterative methods (Jacobi, Gauss-Seidel) converge
-// slowly because they couple only immediate neighbors. SIP instead builds an
-// *incomplete* LU factorization M = LU whose triangular factors have the same
-// sparsity as the original operator plus a small amount of controlled fill; the
-// fill terms are partially cancelled with a parameter alpha so that M closely
-// approximates A. Each iteration then solves M dx = r (a cheap forward/back
-// sweep) and updates x, driving the residual down far faster than point methods.
-//
-// The operator is given by five coefficient arrays over the Nx-by-Ny grid
-// (node p = j*Nx + i): Ap (center), Aw/Ae (west/east), As/An (south/north), with
-// the coefficient set to 0 where a neighbor is outside the grid.
-
-#include <cmath>
+/// @file stone_sip.hpp
+/// @brief Checked actual Stone SIP factors, correction sweeps and final residuals.
 #include <cstddef>
+#include <cstdint>
 #include <vector>
-
 namespace datamunge::algorithms {
-
+/// @brief Own the StoneResult contract for one independent native call.
+/// Field descriptions specify actual producer values or policy units. Defaults are in-class initializers. Containers own their values; no borrowed storage or shared mutable state. Creating the record alone performs no algorithm execution.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneResult r{};
+/// (void)r;
+/// @endcode
+/// @see stone_sip_run()
 struct StoneResult {
-    std::vector<double> x;
-    int                 iterations{0};
-    double              residual{0}; // final L2 norm of b - A x
+  std::vector<double> x; ///< Actual final iterate.
+  int    iterations{0};  ///< Actual completed correction updates, not the last pre-update index.
+  double residual{};     ///< Actual recomputed ||b-A*x|| at this returned iterate.
 };
-
-inline StoneResult stone_sip(int Nx, int Ny, const std::vector<double>& Ap,
-                             const std::vector<double>& Aw, const std::vector<double>& Ae,
-                             const std::vector<double>& As, const std::vector<double>& An,
-                             const std::vector<double>& b, double alpha = 0.92,
-                             int max_iter = 2000, double tol = 1e-10) {
-    const int           M = Nx * Ny;
-    std::vector<double> Lw(M, 0), Ls(M, 0), Lp(M, 0), Ue(M, 0), Un(M, 0);
-
-    auto idx = [Nx](int i, int j) { return j * Nx + i; };
-
-    // Incomplete LU factorization (the SIP recurrence).
-    for (int j = 0; j < Ny; ++j)
-        for (int i = 0; i < Nx; ++i) {
-            const int p  = idx(i, j);
-            const int w  = i > 0 ? idx(i - 1, j) : -1;
-            const int s  = j > 0 ? idx(i, j - 1) : -1;
-            const double UnW = w >= 0 ? Un[w] : 0.0, UeW = w >= 0 ? Ue[w] : 0.0;
-            const double UeS = s >= 0 ? Ue[s] : 0.0, UnS = s >= 0 ? Un[s] : 0.0;
-
-            Lw[p] = w >= 0 ? Aw[p] / (1.0 + alpha * UnW) : 0.0;
-            Ls[p] = s >= 0 ? As[p] / (1.0 + alpha * UeS) : 0.0;
-            const double p1 = alpha * Lw[p] * UnW;
-            const double p2 = alpha * Ls[p] * UeS;
-            Lp[p] = Ap[p] + p1 + p2 - Lw[p] * UeW - Ls[p] * UnS;
-            Ue[p] = (Ae[p] - p1) / Lp[p];
-            Un[p] = (An[p] - p2) / Lp[p];
-        }
-
-    std::vector<double> x(M, 0.0), r(M, 0.0), rho(M, 0.0), delta(M, 0.0);
-    StoneResult         out;
-    for (int iter = 0; iter < max_iter; ++iter) {
-        // Residual r = b - A x.
-        double norm = 0.0;
-        for (int j = 0; j < Ny; ++j)
-            for (int i = 0; i < Nx; ++i) {
-                const int p  = idx(i, j);
-                double    ax = Ap[p] * x[p];
-                if (i > 0)      ax += Aw[p] * x[idx(i - 1, j)];
-                if (i < Nx - 1) ax += Ae[p] * x[idx(i + 1, j)];
-                if (j > 0)      ax += As[p] * x[idx(i, j - 1)];
-                if (j < Ny - 1) ax += An[p] * x[idx(i, j + 1)];
-                r[p] = b[p] - ax;
-                norm += r[p] * r[p];
-            }
-        norm = std::sqrt(norm);
-        out.residual   = norm;
-        out.iterations = iter;
-        if (norm < tol) break;
-
-        // Forward solve L rho = r.
-        for (int j = 0; j < Ny; ++j)
-            for (int i = 0; i < Nx; ++i) {
-                const int p = idx(i, j);
-                double    v = r[p];
-                if (i > 0) v -= Lw[p] * rho[idx(i - 1, j)];
-                if (j > 0) v -= Ls[p] * rho[idx(i, j - 1)];
-                rho[p] = v / Lp[p];
-            }
-        // Back solve U delta = rho.
-        for (int j = Ny - 1; j >= 0; --j)
-            for (int i = Nx - 1; i >= 0; --i) {
-                const int p = idx(i, j);
-                double    v = rho[p];
-                if (i < Nx - 1) v -= Ue[p] * delta[idx(i + 1, j)];
-                if (j < Ny - 1) v -= Un[p] * delta[idx(i, j + 1)];
-                delta[p] = v;
-            }
-        for (int p = 0; p < M; ++p) x[p] += delta[p];
-    }
-    out.x = std::move(x);
-    return out;
-}
-
+/// @brief Own the StoneOptions contract for one independent native call.
+/// Field descriptions specify actual producer values or policy units. Defaults are in-class initializers. Containers own their values; no borrowed storage or shared mutable state. Creating the record alone performs no algorithm execution.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneOptions r{};
+/// (void)r;
+/// @endcode
+/// @see stone_sip_run()
+struct StoneOptions {
+  double alpha{.92}; ///< Finite SIP fill-cancellation factor in[0,1).
+  int    max_iterations{
+      2000}; ///< Nonnegative correction cap; zero still checks initial residual and factorization.
+  double tolerance{1e-10}; ///< Finite nonnegative inclusive absolute Euclidean residual threshold.
+  std::size_t max_cells{1000000}; ///< Complete rectangular grid cell count; zero disables.
+  std::size_t max_grid_visits{
+      200000000}; ///< Actual factor cells, residual products, triangular cells and correction assignments; zero disables.
+  std::size_t max_history_values{
+      1000000}; ///< Actual factor records/scalars and iterate records/copied coordinates; zero disables.
+};
+/// @brief Own the StoneFactorStep contract for one independent native call.
+/// Field descriptions specify actual producer values or policy units. Defaults are in-class initializers. Containers own their values; no borrowed storage or shared mutable state. Creating the record alone performs no algorithm execution.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneFactorStep r{};
+/// (void)r;
+/// @endcode
+/// @see stone_sip_run()
+struct StoneFactorStep {
+  std::size_t index{};             ///< Actual row-major grid cell factored.
+  double      west_denominator{};  ///< Actual1+alpha*Un[west], or1 at west boundary.
+  double      south_denominator{}; ///< Actual1+alpha*Ue[south], or1 at south boundary.
+  double      first_fill{};        ///< Actual alpha*Lw*Un[west].
+  double      second_fill{};       ///< Actual alpha*Ls*Ue[south].
+};
+/// @brief Own the StoneIteration contract for one independent native call.
+/// Field descriptions specify actual producer values or policy units. Defaults are in-class initializers. Containers own their values; no borrowed storage or shared mutable state. Creating the record alone performs no algorithm execution.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneIteration r{};
+/// (void)r;
+/// @endcode
+/// @see stone_sip_run()
+struct StoneIteration {
+  int                 iteration{}; ///< Actual completed correction count; initial state is0.
+  double              residual{};  ///< Actual recomputed ||b-A*x|| for this iterate.
+  std::vector<double> x; ///< Actual complete owned iterate after the indicated corrections.
+};
+/// @brief Own the StoneRun contract for one independent native call.
+/// Field descriptions specify actual producer values or policy units. Defaults are in-class initializers. Containers own their values; no borrowed storage or shared mutable state. Creating the record alone performs no algorithm execution.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneRun r{};
+/// (void)r;
+/// @endcode
+/// @see stone_sip_run()
+struct StoneRun {
+  StoneResult result;      ///< Actual final iterate, completed corrections and matching residual.
+  bool        converged{}; ///< Actual final residual<=tolerance.
+  double      initial_residual{};         ///< Actual residual of the zero initial iterate.
+  std::vector<double> Lw;                 ///< Actual complete west factor coefficients.
+  std::vector<double> Ls;                 ///< Actual complete south factor coefficients.
+  std::vector<double> Lp;                 ///< Actual complete nonzero lower diagonal.
+  std::vector<double> Ue;                 ///< Actual complete normalized east upper coefficients.
+  std::vector<double> Un;                 ///< Actual complete normalized north upper coefficients.
+  std::size_t         factorized_cells{}; ///< Actual grid cells processed by factorization.
+  std::size_t
+      residual_products{}; ///< Actual stencil coefficient-times-iterate products in all residual checks.
+  std::size_t triangular_cells{};       ///< Actual forward/back substitution cell visits.
+  std::size_t correction_assignments{}; ///< Actual iterate coordinate additions.
+  std::vector<StoneFactorStep> factors; ///< Optional actual factor intermediate values.
+  std::vector<StoneIteration>
+      history; ///< Optional actual initial and post-correction iterates/residuals.
+};
+/// @brief Own the StoneGrid contract for one independent native call.
+/// Field descriptions specify actual producer values or policy units. Defaults are in-class initializers. Containers own their values; no borrowed storage or shared mutable state. Creating the record alone performs no algorithm execution.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneGrid r{};
+/// (void)r;
+/// @endcode
+/// @see stone_sip_run()
+struct StoneGrid {
+  int                 nx{}; ///< Complete horizontal grid order.
+  int                 ny{}; ///< Complete vertical grid order.
+  std::vector<double> Ap;   ///< Row-major center coefficients.
+  std::vector<double> Aw;   ///< West coefficients, zero at west boundary.
+  std::vector<double> Ae;   ///< East coefficients, zero at east boundary.
+  std::vector<double> As;   ///< South coefficients, zero at first grid row.
+  std::vector<double> An;   ///< North coefficients, zero at final grid row.
+  std::vector<double> b;    ///< Actual assembled right-hand side.
+  std::vector<double>
+      known; ///< Supplied controlled manufactured solution; empty for general caller grids.
+};
+/// @brief Factor and solve an actual five-point grid with Stone SIP.
+/// Row-major p=j*nx+i; all six coefficient/RHS vectors exactly nx*ny, finite. Dimensions nonnegative; any zero dimension requires empty vectors and produces a converged empty result. Coefficients beyond each boundary must be zero. Builds the actual SIP incomplete triangular factors in grid order, checking denominator and pivot breakdown; then solves L*rho=r, U*delta=rho and adds delta. Residual is independently recomputed at the zero initial iterate and after every complete correction, so returned x, iteration count and residual refer to the same state. Positive definiteness/convergence are not assumed verified, and residual need not decrease monotonically for arbitrary inputs. Absolute inclusive stopping; cap returns converged=false if unresolved. O(grid cells) work per correction, linear working/result factor storage, optional copied histories O(corrections*cells). Outputs own values, no shared state.
+/// @param grid Complete borrowed finite five-point operator and RHS; known field ignored by solver.
+/// @param options Fill factor, correction cap/tolerance and complete/actual work/capture policies.
+/// @return Owned actual factors, final matching residual, convergence flag, work and optional producing histories.
+/// @throws std::invalid_argument Malformed dimensions/shapes/boundaries, nonfinite values or invalid controls.
+/// @throws std::domain_error Actual zero incomplete-factor denominator or pivot.
+/// @throws std::overflow_error Actual factor, substitution, update or residual not representable.
+/// @throws std::length_error Complete geometry, actual work/history or counter/container capacity exceeded.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneGrid g{1,1,{2},{0},{0},{0},{0},{4},{}};
+/// auto r=dm::algorithms::stone_sip_run(g);
+/// std::print("{} {}\n",r.result.x[0],r.converged); // 2 true
+/// @endcode
+/// @par References
+/// - H. L. Stone, Iterative Solution of Implicit Approximations of Multidimensional Partial Differential Equations, SIAM J. Numer. Anal.5(3),1968, DOI10.1137/0705044.
+/// @see stone_sip()
+StoneRun stone_sip_run(const StoneGrid& grid, const StoneOptions& options = {});
+/// @brief Factor and solve an actual five-point grid with Stone SIP retaining actual factors/iterates.
+/// Row-major p=j*nx+i; all six coefficient/RHS vectors exactly nx*ny, finite. Dimensions nonnegative; any zero dimension requires empty vectors and produces a converged empty result. Coefficients beyond each boundary must be zero. Builds the actual SIP incomplete triangular factors in grid order, checking denominator and pivot breakdown; then solves L*rho=r, U*delta=rho and adds delta. Residual is independently recomputed at the zero initial iterate and after every complete correction, so returned x, iteration count and residual refer to the same state. Positive definiteness/convergence are not assumed verified, and residual need not decrease monotonically for arbitrary inputs. Absolute inclusive stopping; cap returns converged=false if unresolved. O(grid cells) work per correction, linear working/result factor storage, optional copied histories O(corrections*cells). Outputs own values, no shared state.
+/// @param grid Complete borrowed finite five-point operator and RHS; known field ignored by solver.
+/// @param options Fill factor, correction cap/tolerance and complete/actual work/capture policies.
+/// @return Owned actual factors, final matching residual, convergence flag, work and optional producing histories.
+/// @throws std::invalid_argument Malformed dimensions/shapes/boundaries, nonfinite values or invalid controls.
+/// @throws std::domain_error Actual zero incomplete-factor denominator or pivot.
+/// @throws std::overflow_error Actual factor, substitution, update or residual not representable.
+/// @throws std::length_error Complete geometry, actual work/history or counter/container capacity exceeded.
+/// @par Example
+/// @code
+/// dm::algorithms::StoneGrid g{1,1,{2},{0},{0},{0},{0},{4},{}};
+/// auto r=dm::algorithms::stone_sip_trace(g);
+/// std::print("{} {}\n",r.result.x[0],r.converged); // 2 true
+/// @endcode
+/// @par References
+/// - H. L. Stone, Iterative Solution of Implicit Approximations of Multidimensional Partial Differential Equations, SIAM J. Numer. Anal.5(3),1968, DOI10.1137/0705044.
+/// @see stone_sip()
+StoneRun stone_sip_trace(const StoneGrid& grid, const StoneOptions& options = {});
+/// @brief Return the preserved checked Stone SIP result signature.
+/// Same actual producing factors/corrections. Returned residual is now recomputed at returned x, and iterations counts completed corrections, fixing the historical pre-update residual/index shortcut. Default policies apply.
+/// @param Nx Nonnegative horizontal dimension.
+/// @param Ny Nonnegative vertical dimension.
+/// @param Ap Complete finite center coefficients.
+/// @param Aw Complete finite west coefficients, zero at west boundary.
+/// @param Ae Complete finite east coefficients, zero at east boundary.
+/// @param As Complete finite south coefficients, zero at first row.
+/// @param An Complete finite north coefficients, zero at final row.
+/// @param b Complete finite RHS.
+/// @param alpha Finite fill factor in[0,1), default.92.
+/// @param max_iter Nonnegative correction cap, default2000.
+/// @param tol Finite nonnegative absolute residual tolerance, default1e-10.
+/// @return Owned actual final iterate, completed corrections and matching residual.
+/// @throws std::invalid_argument Malformed inputs/controls.
+/// @throws std::domain_error Preconditioner breakdown.
+/// @throws std::overflow_error Actual arithmetic not representable.
+/// @throws std::length_error Default geometry/work/capacity exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::stone_sip(1,1,{2},{0},{0},{0},{0},{4}).x[0]); // 2
+/// @endcode
+/// @see stone_sip_run()
+StoneResult stone_sip(
+    int                        Nx,
+    int                        Ny,
+    const std::vector<double>& Ap,
+    const std::vector<double>& Aw,
+    const std::vector<double>& Ae,
+    const std::vector<double>& As,
+    const std::vector<double>& An,
+    const std::vector<double>& b,
+    double                     alpha    = .92,
+    int                        max_iter = 2000,
+    double                     tol      = 1e-10);
+/// @brief Generate the original manufactured five-point Poisson fixture.
+/// Center4 and valid neighbor-1, with zero missing neighbors. Draw known solution from local mt19937 seed1 by default and uniform_real_distribution[-1,1], then assemble b=A*known in original center,west,east,south,north double arithmetic order. No solve is hidden. Default30x30 preserves original900-point experiment; generated distribution mapping follows standard library implementation.
+/// @param nx Positive horizontal order, default30.
+/// @param ny Positive vertical order, default30.
+/// @param seed Complete local mt19937 seed, default1.
+/// @return Owned actual operator, RHS and known solution.
+/// @throws std::invalid_argument Nonpositive fixture dimension.
+/// @throws std::length_error Complete fixture exceeds one million cells.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::stone_poisson_example(2,3).b.size()); // 6
+/// @endcode
+/// @see stone_sip_run()
+StoneGrid stone_poisson_example(int nx = 30, int ny = 30, std::uint32_t seed = 1);
 } // namespace datamunge::algorithms

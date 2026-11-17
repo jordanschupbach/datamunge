@@ -1,89 +1,108 @@
 #pragma once
-
-/// \file simon.hpp
-/// \brief Simon's algorithm: find a hidden XOR period with exponential speedup.
-///
-/// Simon's problem gives a 2-to-1 black box \f$f\f$ with a hidden period \f$s\neq 0\f$ such
-/// that \f$f(x)=f(y)\iff y=x\oplus s\f$, and asks for \f$s\f$. Classically this needs
-/// \f$\Theta(2^{n/2})\f$ queries; Simon's quantum algorithm needs only \f$O(n)\f$. Each run
-/// entangles an input register with \f$f\f$, and after Hadamards the input register is
-/// measured to yield a random string \f$y\f$ *orthogonal* to \f$s\f$ (\f$y\cdot s=0\f$).
-/// Collecting \f$n-1\f$ independent such \f$y\f$ and solving the linear system over
-/// \f$\mathrm{GF}(2)\f$ recovers \f$s\f$. This module simulates the circuit exactly and does
-/// the GF(2) solve.
-
-#include <datamunge/algorithms/quantum_sim.hpp>
-
-#include <algorithm>
+/// @file simon.hpp
+/// @brief Exact statevector Simon support enumeration and actual binary elimination.
 #include <cstddef>
 #include <vector>
-
+/// @brief Canonical checked native producers and owned algorithm values.
 namespace datamunge::algorithms {
-
-/// Result of Simon's algorithm.
+/// @brief SimonResult stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimonResult value{};
+/// std::print("{}\n",value.recovered_period); // 0
+/// @endcode
 struct SimonResult {
-    std::size_t              recovered_period;  ///< The hidden string s, recovered.
-    std::vector<std::size_t> observed_y;        ///< The measured y (all satisfy y . s = 0).
+  std::size_t
+      recovered_period{}; ///< Nullspace direction recovered from enumerated nonzero support rows.
+  std::vector<std::size_t>
+      observed_y; ///< Historical name: all nonzero support strings, not sampled observations.
 };
-
-namespace detail {
-/// Find a nonzero \c s over GF(2) orthogonal to every row (i.e. solving `rows * s = 0`).
-inline std::size_t gf2_orthogonal_vector(std::vector<std::size_t> mat, int n) {
-    std::vector<int> where(n, -1);  // pivot row for each column, or -1 if free
-    int r = 0;
-    for (int col = 0; col < n && r < static_cast<int>(mat.size()); ++col) {
-        int sel = -1;
-        for (int i = r; i < static_cast<int>(mat.size()); ++i)
-            if ((mat[i] >> col) & 1) { sel = i; break; }
-        if (sel < 0) continue;
-        std::swap(mat[r], mat[sel]);
-        for (int i = 0; i < static_cast<int>(mat.size()); ++i)
-            if (i != r && ((mat[i] >> col) & 1)) mat[i] ^= mat[r];
-        where[col] = r;
-        ++r;
-    }
-    // A free column gives the nullspace direction (period).
-    for (int f = 0; f < n; ++f)
-        if (where[f] == -1) {
-            std::size_t s = std::size_t{1} << f;             // free variable = 1
-            for (int c = 0; c < n; ++c)
-                if (where[c] != -1 && ((mat[where[c]] >> f) & 1)) s |= std::size_t{1} << c;
-            return s;
-        }
-    return 0;
-}
-}  // namespace detail
-
-/// \brief Simulate Simon's algorithm for a function with the given hidden \c period on \c n bits.
-///
-/// Uses the canonical 2-to-1 function \f$f(x)=\min(x, x\oplus s)\f$. Returns the recovered
-/// period and the set of orthogonal strings \f$y\f$ the measurement can yield.
-inline SimonResult simon(int n, std::size_t period) {
-    const int         total = 2 * n;                 // n input + n output qubits
-    const std::size_t Nin   = std::size_t{1} << n;
-    QuantumState      s     = qstate_zero(total);
-
-    for (int q = 0; q < n; ++q) h_gate(s, q);         // superpose all inputs, output |0>
-
-    // Oracle |x>|0> -> |x>|f(x)>, with f(x) = min(x, x^period) in the output register (high bits).
-    QuantumState out(s.size(), Complex{0, 0});
-    for (std::size_t x = 0; x < Nin; ++x) {
-        std::size_t fx  = std::min(x, x ^ period);
-        out[x | (fx << n)] = s[x];
-    }
-    s = out;
-
-    for (int q = 0; q < n; ++q) h_gate(s, q);         // Hadamard the input register
-
-    // Input-register marginal: the y with nonzero probability are exactly those with y . s = 0.
-    std::vector<double> py(Nin, 0.0);
-    for (std::size_t i = 0; i < s.size(); ++i) py[i & (Nin - 1)] += std::norm(s[i]);
-
-    std::vector<std::size_t> ys;
-    for (std::size_t y = 1; y < Nin; ++y)             // skip the trivial y = 0
-        if (py[y] > 1e-9) ys.push_back(y);
-
-    return {detail::gf2_orthogonal_vector(ys, n), ys};
-}
-
-}  // namespace datamunge::algorithms
+/// @brief SimonOptions stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimonOptions value{};
+/// std::print("{}\n",value.max_amplitudes); // 1048576
+/// @endcode
+struct SimonOptions {
+  std::size_t max_amplitudes{
+      1048576}; ///< Complete 2^(2n) complex amplitude count; zero disables policy.
+  std::size_t max_history_values{
+      1000000}; ///< Captured reduction records and all copied rows; zero disables.
+};
+/// @brief SimonReduction stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimonReduction value{};
+/// std::print("{}\n",value.column); // 0
+/// @endcode
+struct SimonReduction {
+  int         column{};    ///< Actual pivot column in low-to-high bit order.
+  std::size_t pivot_row{}; ///< Actual destination pivot row.
+  std::vector<std::size_t>
+      rows; ///< Actual complete binary row matrix after this elimination pivot.
+};
+/// @brief SimonRun stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SimonRun value{};
+/// std::print("{}\n",value.rank); // 0
+/// @endcode
+struct SimonRun {
+  SimonResult         result;           ///< Preserved support-based recovery result.
+  std::vector<double> probabilities;    ///< Actual complete input marginal including y=0.
+  std::size_t         amplitudes{};     ///< Actual full two-register amplitude count.
+  std::size_t         hadamard_calls{}; ///< Actual native one-qubit Hadamard calls, 2n.
+  std::size_t
+      oracle_writes{}; ///< Actual nonzero-input oracle writes in this specialized known-zero-output simulation.
+  std::size_t                 row_xors{}; ///< Actual binary elimination row XORs.
+  int                         rank{};     ///< Actual rank of enumerated nonzero support rows.
+  std::vector<SimonReduction> reduction;  ///< Optional actual elimination states.
+};
+/// @brief Simulate Simon probability support.
+/// n>=1, nonzero period<2^n; canonical promised oracle f(x)=min(x,x XOR period). Uses the actual native two-register statevector: n Hadamards, specialized oracle on the known output-zero state, n Hadamards, full marginal, then elimination of every nonzero-probability nonzero y. This is exhaustive classical support enumeration, not random quantum measurements or an O(n)-query simulator. y=0 has positive probability and is retained in probabilities but omitted from historical observed_y. Threshold1e-9 is safe for allowed n<=15, enforced intrinsically along with shift capacity; default amplitude policy limits n<=10. State work O(n*4^n), storage O(4^n); elimination over O(2^n) support rows adds O(n^2*2^n) binary work. No global state or randomness; owned outputs.
+/// @param n Input bit width1..15 subject to shift/amplitude limits.
+/// @param period Nonzero promised hidden XOR period.
+/// @param options Complete amplitude and optional history policies; zero disables policies.
+/// @return Actual complete marginal, support recovery, gate/write counts, rank and optional reduction.
+/// @throws std::invalid_argument Invalid width/zero or out-of-range period.
+/// @throws std::length_error Amplitude/history/shift/counter capacity exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::simon_run(2,3);
+/// std::print("{} {}\n",r.result.recovered_period,r.rank); // 3 1
+/// @endcode
+/// @par References
+/// - D. R. Simon, On the Power of Quantum Computation, SIAM J. Comput.26(5), 1997, DOI 10.1137/S0097539796298637; conference1994.
+/// @see simon()
+SimonRun simon_run(int n, std::size_t period, const SimonOptions& options = {});
+/// @brief Simulate Simon probability support with actual binary elimination states.
+/// n>=1, nonzero period<2^n; canonical promised oracle f(x)=min(x,x XOR period). Uses the actual native two-register statevector: n Hadamards, specialized oracle on the known output-zero state, n Hadamards, full marginal, then elimination of every nonzero-probability nonzero y. This is exhaustive classical support enumeration, not random quantum measurements or an O(n)-query simulator. y=0 has positive probability and is retained in probabilities but omitted from historical observed_y. Threshold1e-9 is safe for allowed n<=15, enforced intrinsically along with shift capacity; default amplitude policy limits n<=10. State work O(n*4^n), storage O(4^n); elimination over O(2^n) support rows adds O(n^2*2^n) binary work. No global state or randomness; owned outputs.
+/// @param n Input bit width1..15 subject to shift/amplitude limits.
+/// @param period Nonzero promised hidden XOR period.
+/// @param options Complete amplitude and optional history policies; zero disables policies.
+/// @return Actual complete marginal, support recovery, gate/write counts, rank and optional reduction.
+/// @throws std::invalid_argument Invalid width/zero or out-of-range period.
+/// @throws std::length_error Amplitude/history/shift/counter capacity exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::simon_trace(2,3);
+/// std::print("{} {}\n",r.result.recovered_period,r.rank); // 3 1
+/// @endcode
+/// @par References
+/// - D. R. Simon, On the Power of Quantum Computation, SIAM J. Comput.26(5), 1997, DOI 10.1137/S0097539796298637; conference1994.
+/// @see simon()
+SimonRun simon_trace(int n, std::size_t period, const SimonOptions& options = {});
+/// @brief Return the preserved support-based Simon result.
+/// Historical observed_y denotes enumerated nonzero support, not random observations. Uses checked statevector producer and default policies.
+/// @param n Input bits,1..10 under default amplitude bound.
+/// @param period Nonzero period below2^n.
+/// @return Owned period and all nonzero support strings.
+/// @throws std::invalid_argument Invalid promised oracle parameters.
+/// @throws std::length_error Default amplitude bound/capacity exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::simon(4,11).recovered_period); // 11
+/// @endcode
+/// @see simon_run()
+SimonResult simon(int n, std::size_t period);
+} // namespace datamunge::algorithms

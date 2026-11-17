@@ -103,17 +103,7 @@ inline ObjectGraphWork validate_object_graph(const ObjectGraph& graph,bool check
 /// std::print("{} {} {}\n",int(live[0]),int(live[1]),int(live[2])); // 1 1 0
 /// @endcode
 /// @see validate_object_graph(), cheney_copy()
-inline std::vector<char> reachable_from_roots(const ObjectGraph& graph) {
-  (void)validate_object_graph(graph);
-  std::vector<char> marked(static_cast<std::size_t>(graph.num_objects),0);
-  std::vector<int> stack;
-  for(const int root:graph.roots)if(!marked[root]){marked[root]=1;stack.push_back(root);}
-  while(!stack.empty()) {
-    const int old=stack.back();stack.pop_back();
-    for(const int child:graph.refs[old])if(!marked[child]){marked[child]=1;stack.push_back(child);}
-  }
-  return marked;
-}
+std::vector<char> reachable_from_roots(const ObjectGraph& graph);
 /// @brief Read one object's positive size, defaulting to one after the supplied prefix.
 /// Validates the nonnegative count, requested id and selected supplied size only;
 /// it does not inspect unrelated rows, ids or size entries. No allocation or

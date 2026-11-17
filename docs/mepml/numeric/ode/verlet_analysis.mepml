@@ -1,0 +1,270 @@
+//? Title: Velocity Verlet: actual drift/kick operands and energy
+//? Subtitle: Actual native state and retained original experiments
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Newtonian position/velocity trajectories need time integration that respects
+conservative dynamics over many steps. Velocity Verlet combines a position drift
+with an average-acceleration velocity kick.
+)
+
+\toc
+
+> The method
+
+Use x_next=x+h*v+h²*a(x)/2 and v_next=v+h*(a(x)+a(x_next))/2. Taylor expansion
+gives local O(h³) error and global second order for smooth acceleration. For the
+unit harmonic oscillator and |h|<2, the update preserves the modified quadratic
+v²+(1−h²/4)x². The physical energy(v²+x²)/2 oscillates within a step-dependent
+band; it is not exactly conserved. Symplecticity requires the appropriate
+conservative position-only force, not every arbitrary callback.
+
+> Simple worked example
+
+```{cpp, results="markdown", file="figures/verlet_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/velocity_verlet.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    auto r = a::velocity_verlet_work([](const std::vector<double> & x) {
+        return std::vector<double>{-x[0]};
+    }, {1}, {0}, 0, .1, 1, 1);
+    auto q = r.steps[0];
+    std::print("| old x | old v | old a | new a | actual x | actual v | calls " "|\n|---|---|---|---|---|---|---:|\n|`{}`|`{}`|`{}`|`{}`|`{}`|`{}`|{}|\n",
+               q.before_x, q.before_v, q.old_acceleration, q.new_acceleration,
+               q.after_x, q.after_v, r.acceleration_calls);
+    g::Diagram concept_diagram(48, 1100);
+    concept_diagram.node("n0", {0, 0}, "Oscillator x1,v0,h.1");
+    concept_diagram.node("n1", {5, 0},
+                         std::format("Actual drift x{}", q.after_x));
+    concept_diagram.node("n2", {10, 0},
+                         std::format("Actual kick v{}", q.after_v));
+    concept_diagram.edge("n0", "n1").edge("n1", "n2");
+    concept_diagram.save_svg("build/verlet_tiny.svg");
+}
+```
+// result_begin: markdown
+| old x | old v | old a | new a | actual x | actual v | calls |
+|---|---|---|---|---|---|---:|
+|`[1]`|`[0]`|`[-1]`|`[-0.995]`|`[0.995]`|`[-0.09975]`|2|
+\image(figures/verlet_tiny.svg)
+// result_end
+\caption(Actual native producing values from the complete small worked example.)
+\alttext(Actual native producing values from the complete small worked example.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/verlet_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/velocity_verlet.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    auto accel = [](const std::vector<double> & x) {
+        return std::vector<double>{-x[0]};
+    };
+    auto vv = a::velocity_verlet(accel, {1}, {0}, 0, 50, 2000);
+    auto fe = a::euler_method([](double, const std::vector<double> & z) {
+        return std::vector<double>{z[1], -z[0]};
+    }, {1, 0}, 0, 50, 2000);
+    std::vector<double> energy, euler;
+    for (std::size_t i = 0; i < vv.t.size(); ++i) {
+        energy.push_back(.5 * (vv.x[i][0] * vv.x[i][0] + vv.v[i][0] * vv.v[i][0]));
+        euler.push_back(.5 * (fe.y[i][0] * fe.y[i][0] + fe.y[i][1] * fe.y[i][1]));
+    }
+    std::print("| actual Verlet min energy | max energy | Euler final energy | actual x50 | exact cos50 " "|\n|---:|---:|---:|---:|---:|\n|{}|{}|{}|{}|{}|\n",
+               *std::min_element(energy.begin(), energy.end()),
+               *std::max_element(energy.begin(), energy.end()), euler.back(),
+               vv.x.back()[0], std::cos(50.));
+    auto p = g::RPlot::create();
+    p.line(vv.t, energy, "actual Verlet", {37, 99, 235});
+    p.line(fe.t, euler, "actual forward Euler", {220, 38, 38});
+    p.title("Original oscillator:2000 steps over [0,50]").x_label("time").y_label("physical energy");
+    p.save_svg("build/verlet_original.svg");
+}
+```
+// result_begin: markdown
+| actual Verlet min energy | max energy | Euler final energy | actual x50 | exact cos50 |
+|---:|---:|---:|---:|---:|
+|0.4999218752841725|0.5|1.7444901880516261|0.9653068682162533|0.9649660284921133|
+\image(figures/verlet_original.svg)
+// result_end
+\caption(Actual canonical outputs; analytic reference values are identified explicitly.)
+\alttext(Actual canonical outputs; analytic reference values are identified explicitly.)
+
+> Checking the theory and controls
+
+```{cpp, results="markdown", file="figures/verlet_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/velocity_verlet.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y;
+    std::print("| h | actual x after10 steps | actual energy |\n|---:|---:|---:|\n");
+    for (double h : {.1, .5, 1., 1.9, 2., 2.1}) {
+        auto r = a::velocity_verlet([](const std::vector<double> & x) {
+            return std::vector<double>{-x[0]};
+        }, {1}, {0}, 0, 10 * h, 10);
+        double energy =
+            .5 * (std::pow(r.x.back()[0], 2) + std::pow(r.v.back()[0], 2));
+        std::print("|{}|{}|{}|\n", h, r.x.back()[0], energy);
+        x.push_back(h);
+        y.push_back(energy);
+    }
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Oscillator step-size stability has a boundary at |h|2").x_label(
+        "step h").y_label("actual final physical energy");
+    p.save_svg("build/verlet_controls.svg");
+}
+```
+// result_begin: markdown
+| h | actual x after10 steps | actual energy |
+|---:|---:|---:|
+|0.1|0.5399512509335084|0.49911443419173074|
+|0.5|0.33463335037231445|0.47224935872441876|
+|1|-0.5|0.40625|
+|1.9|0.9976873087544251|0.4979152096799033|
+|2|1|0.5|
+|2.1|271.87742835695025|40746.880247556226|
+\image(figures/verlet_controls.svg)
+// result_end
+\caption(Actual canonical outputs; analytic reference values are identified explicitly.)
+\alttext(Actual canonical outputs; analytic reference values are identified explicitly.)
+
+> Sensitivity and selected work
+
+```{cpp, results="markdown", file="figures/verlet_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/velocity_verlet.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y;
+    std::print("| steps to t1 | actual final absolute x error | acceleration calls |\n|---:|---:|---:|\n");
+    for (int n : {4, 8, 16, 32, 64, 128, 256}) {
+        auto r = a::velocity_verlet_work([](const std::vector<double> & x) {
+            return std::vector<double>{-x[0]};
+        }, {1}, {0}, 0, 1, n);
+        double error = std::abs(r.solution.x.back()[0] - std::cos(1.));
+        std::print("|{}|{}|{}|\n", n, error, r.acceleration_calls);
+        x.push_back(std::log2(n));
+        y.push_back(std::log2(error));
+    }
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Actual final-position error: slope near -2 in log2 coordinates").x_label("log2 steps").y_label("log2 actual absolute error");
+    p.save_svg("build/verlet_work.svg");
+}
+```
+// result_begin: markdown
+| steps to t1 | actual final absolute x error | acceleration calls |
+|---:|---:|---:|
+|4|0.002208738973608515|5|
+|8|0.0005489127745046396|9|
+|16|0.00013702555205541422|17|
+|32|3.424375161442672e-05|33|
+|64|8.56014857619769e-06|65|
+|128|2.1399878183947507e-06|129|
+|256|5.349938714260816e-07|257|
+\image(figures/verlet_work.svg)
+// result_end
+\caption(Actual canonical outputs; analytic reference values are identified explicitly.)
+\alttext(Actual canonical outputs; analytic reference values are identified explicitly.)
+
+> Interpretation and limits
+
+Initial state, callback shape/results and arithmetic are checked before indexed
+use. Zero interval copies state without callback calls; backward integration is
+supported. A nonzero interval whose represented step underflows to zero throws.
+Output and capture budgets count scalar values. Arbitrary callback exceptions
+propagate.
+
+The complete editable C++ programs save figures locally; results contain
+ordinary computed Markdown. Selected counters describe actual producer
+operations, excluding validation when stated.
+
+> References
+
+The recurrence and proof above derive the implemented behavior.
+
+Verified in the shared ten-document batch: 84 scoped native cases;20 directly
+instrumented ASan/UBSan cases;45 executable public examples;127/127 definitions
+across12 full scopes;10 hovers;2400 independent records/9344 checks;9 frozen
+valid-input families plus the unchanged shared merge producer;11
+checkout/installed standalone headers and linked ten-family consumer;40 executed
+programs and40 inspected figures with both exports. Receipts:
+`build/mepml-conversion/batch-414-423/`.

@@ -1466,6 +1466,13 @@ void inception_metric(const fs::path& root) {
 /// @return Relative output paths, including the provenance manifest.
 std::vector<std::string> outputs(const std::string& name) {
   static const std::map<std::string, std::vector<std::string>> files = {
+      {"nn-completion-assets", {"manifest.json","vision_transformer/data.npz","lstm_forecast/data.npz","seq2seq/reversal/data.npz","seq2seq/addition/data.npz","pointer_network/sorting/data.npz","pointer_network/convex_hull/data.npz","pointer_generator/copy/data.npz","translation/data.npz","bert_mlm/data.npz","roberta_tweaks/data.npz","switch_transformer/data.npz","transformer_xl/data.npz","xlnet/data.npz","ctc_handwriting/data.npz","midi_lstm/data.npz","handwriting/data.npz","bert_finetune/classification/data.npz","bert_finetune/ner/data.npz","bert_finetune/qa/data.npz","lora_adapters/data.npz","instruction_tuning/data.npz","sentence_embeddings/data.npz","t5_text/denoise/data.npz","t5_text/sentiment/data.npz","pretrained_bert_serve/pretrained_arrays.npz","pretrained_bert_serve/vocab.txt","pretrained_bert_serve/source_manifest.json"}},
+      {"character_rnn",{"character_rnn.npz","vocabulary.txt","manifest.json"}},
+      {"ptb_word",{"ptb_word.npz","vocabulary.txt","manifest.json"}},
+      {"bilstm_tagging",{"bilstm_tagging.npz","vocabulary.txt","manifest.json"}},
+      {"imdb_lstm",{"imdb_lstm.npz","vocabulary.txt","manifest.json"}},
+      {"image_gpt",{"image_gpt.npz","manifest.json"}},
+      {"autorec", {"ratings.npz", "u.data", "manifest.json"}},
       {"memory", {"ntm/data.npz", "ntm/manifest.json", "memnet/data.npz", "memnet/manifest.json"}},
       {"mnist-assets", {"saliency/saliency_data.npz", "saliency/manifest.json"}},
       {"beta-vae-assets", {"beta_vae/factors.npz", "beta_vae/manifest.json"}},
@@ -1550,7 +1557,7 @@ std::string prepare_example_data(const std::string& name, const std::string& dir
   const std::lock_guard       guard(mutex);
   fs::create_directories(root);
   CacheLock  lock(root);
-  const auto marker   = root / (".native-" + name + (name == "mesh" ? "-v2.json" : "-v1.json"));
+  const auto marker   = root / (".native-" + name + ((name == "mesh" || name=="nn-completion-assets") ? "-v2.json" : "-v1.json"));
   bool       complete = fs::is_regular_file(marker);
   if (complete) {
     const auto stamp = json(marker);
@@ -1569,8 +1576,12 @@ std::string prepare_example_data(const std::string& name, const std::string& dir
             "cached original Inception GraphDef fingerprint mismatch");
   if (complete)
     return root.string();
-  if (name == "memory" || name == "mnist-assets" || name == "beta-vae-assets" || name == "sequence-vae-assets")
+  if (name == "autorec" || name == "memory" || name == "mnist-assets" || name == "beta-vae-assets" || name == "sequence-vae-assets")
     prepare_basic(name, root);
+  else if (name=="nn-completion-assets")
+    prepare_reconstructed_assets(root);
+  else if (name=="character_rnn"||name=="ptb_word"||name=="bilstm_tagging"||name=="imdb_lstm"||name=="image_gpt")
+    prepare_language_assets(name,root);
   else if (name == "audio")
     audio(root);
   else if (name == "depth")

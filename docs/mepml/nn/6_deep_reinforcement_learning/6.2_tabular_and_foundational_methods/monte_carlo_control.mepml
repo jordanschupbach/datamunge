@@ -1,0 +1,747 @@
+//? Title: Monte Carlo Control: First Visits, Returns and Sample Averages
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The original first/every-visit comparisons retain all episodes, decaying epsilon, evaluation and best-of-three seeded playback. First visits are identified by a forward scan before the backward return calculation.
+)
+\toc
+
+> Follow the computation
+
+```{cpp, results="markdown", file="figures/monte_carlo_control_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle s;s.width=13;s.height=5;s.font_size=23;d.node("input",{-17,0},"Complete sampled episode",s);d.node("math",{0,0},"Backward discounted return",s);d.node("output",{17,0},"Caller native Q-table update",s);d.edge("input","math").edge("math","output").save_svg("build/monte_carlo_control_method.svg");}
+```
+// result_begin: markdown
+\image(figures/monte_carlo_control_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+An episode with rewards1 then2 and discount.9 gives returns2.8 and2. If a state-action pair repeats, first-visit control updates only its first occurrence; the episode loop below shows this marking.
+
+```{cpp, results="markdown", file="figures/monte_carlo_control_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("build");std::vector<double>values{1+.9*2,2};if(std::abs(values[0]-2.8)>1e-12)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/monte_carlo_control_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("monte carlo control worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/monte_carlo_control_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 2.800000000 |
+| 1 | 2.000000000 |
+\image(figures/monte_carlo_control_worked.svg)
+// result_end
+
+> Complete preserved experiment
+
+The original first/every-visit comparisons retain all episodes, decaying epsilon, evaluation and best-of-three seeded playback. First visits are identified by a forward scan before the backward return calculation. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;
+template<class T> void Save(const std::string& name,const std::vector<T>& values){arrays.push_back({name,dm::nn::from_vector(values)});}
+inline void Table(const std::string& name,const dm::rl::foundations::QTable&q){arrays.push_back({name,q.tensor()});}
+struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/monte_carlo_control_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn monte_carlo_control
+// Monte Carlo control.
+//
+// Port of tflow's monte_carlo_control (TF-free apart from the Q-table, so the
+// numbers match tflow exactly). Learn Q(s, a) from complete episodes: every
+// state-action pair visited gets the discounted return that followed it. No
+// model, no bootstrapping. Exploration comes from an epsilon-soft policy
+// whose epsilon decays, in place of the "exploring starts" assumption. Q lives
+// in the canonical native Float32 tensor-backed Q-table with deep-copy snapshots. The vsim videos of the greedy policy are
+// omitted: the best of the same 3 seeded episodes is played and reported
+// instead. The port adds checks on the learned policies (exit 1 on failure).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/grid_world.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::GridBase;
+using datamunge::rl::environments::GridWorld;
+using datamunge::rl::environments::CliffWalking;
+}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/play_best.hpp
+// datamunge::nn port helper standing in for tflow's vsim_studio.h RecordBest.
+//
+// RecordBest plays `candidates` seeded episodes (seeds seed .. seed+candidates-1) without
+// filming, then films the one with the highest return. PlayBestOfSeeds runs the same candidate
+// episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
+// (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
+
+#include <cstdint>
+#include <cstdio>
+#include <limits>
+#include <string>
+#include <utility>
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+namespace rl {
+
+template <typename Env, typename PolicyFn>
+Playback PlayBestOfSeeds(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, int candidates = 5) {
+  uint64_t best_seed = seed;
+  float    best = -std::numeric_limits<float>::infinity();
+  for (int c = 0; c < candidates; ++c) {
+    float ret = 0;
+    Obs   obs = env.reset(seed + c);
+    while (true) {
+      const StepResult r = env.step(Decide(policy, obs).action);
+      ret += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    if (ret > best) best = ret, best_seed = seed + c;
+  }
+  std::printf("  best of %d episodes (return %.1f):\n", candidates, best);
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, best_seed);
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/tabular.hpp
+#include <datamunge/rl/tabular.hpp>
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+using dm::rl::foundations::QTable;using dm::rl::foundations::PolicyGrid;using dm::rl::foundations::ValueGrid;
+inline float Mean(const std::vector<float>&v,size_t from,size_t to){if(to>v.size())to=v.size();if(from>=to)return 0.f;return std::accumulate(v.begin()+from,v.begin()+to,0.f)/(to-from);}
+}
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/tabular.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats GreedyEval(TabularEnv& env, const QTable& q, int episodes, uint64_t seed) {
+  return RunEpisodes(env, episodes, seed,
+                     [&](const Obs& o) { return Action(q.Greedy(static_cast<int>(o[0]))); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+struct Options {
+  int   episodes = 3000;
+  float gamma = 0.95f;
+  bool  first_visit = true;
+  float eps_final = 0.05f;
+};
+
+struct Outcome {
+  float first_block, last_block;  // mean online return of the first / last 500 episodes
+  float greedy_mean;              // greedy policy, 500 evaluation episodes
+};
+
+Outcome Train(rl::GridBase& env, const Options& opt, uint64_t seed) {
+  std::printf("\n==== %s: %s-visit MC control, %d episodes, gamma %.2f\n", env.name().c_str(),
+              opt.first_visit ? "first" : "every", opt.episodes, opt.gamma);
+  const int          S = env.num_states(), A = env.action_space().n;
+  rl::QTable         Q(S, A);
+  std::vector<int>   visits(S * A, 0);  // for sample-average step sizes
+  std::mt19937_64    rng(seed);
+  std::vector<float> returns;
+
+  struct Step {
+    int   s, a;
+    float r;
+  };
+  std::vector<Step> episode;
+  Outcome           out{};
+
+  for (int ep = 0; ep < opt.episodes; ++ep) {
+    // epsilon decays from 1 toward eps_final so the policy becomes greedy in the limit.
+    const float eps = std::max(opt.eps_final, 1.f / (1.f + ep / 100.f));
+    episode.clear();
+    rl::Obs obs = env.reset(seed * 7919 + ep);
+    float   ret = 0;
+    while (true) {
+      const int      s = static_cast<int>(obs[0]);
+      const int      a = Q.EpsilonGreedy(s, eps, rng);
+      rl::StepResult r = env.step(a);
+      episode.push_back({s, a, r.reward});
+      ret += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    returns.push_back(ret);
+
+    // Mark first visits by scanning forward.
+    std::vector<bool> is_first(episode.size(), true);
+    if (opt.first_visit) {
+      std::vector<bool> marked(S * A, false);
+      for (size_t t = 0; t < episode.size(); ++t) {
+        const int key = episode[t].s * A + episode[t].a;
+        is_first[t] = !marked[key];
+        marked[key] = true;
+      }
+    }
+    // Backward pass: G accumulates the discounted return from each step on.
+    float G = 0;
+    for (int t = static_cast<int>(episode.size()) - 1; t >= 0; --t) {
+      G = episode[t].r + opt.gamma * G;
+      if (!is_first[t]) continue;
+      const int key = episode[t].s * A + episode[t].a;
+      visits[key]++;
+      Q(episode[t].s, episode[t].a) += (G - Q(episode[t].s, episode[t].a)) / visits[key];
+    }
+
+    if ((ep + 1) % 500 == 0) {
+      const float block = rl::Mean(returns, ep - 499, ep + 1);
+      std::printf("  episodes %4d-%4d  eps %.2f  mean online return %8.2f\n", ep - 498, ep + 1, eps, block);
+      if (ep + 1 == 500) out.first_block = block;
+      out.last_block = block;
+    }
+  }
+
+  std::cout << "  greedy policy:\n" << rl::PolicyGrid(env, Q);
+  std::vector<float> V(S);
+  for (int s = 0; s < S; ++s) V[s] = Q.Max(s);
+  std::cout << "  max_a Q(s, a):\n" << rl::ValueGrid(env, V);
+  const rl::EpisodeStats stats = rl::GreedyEval(env, Q, 500, 99);
+  rl::PrintStats("greedy policy, 500 episodes", stats);
+  out.greedy_mean = stats.mean_return();
+  rl::PlayBestOfSeeds(
+      env, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); },
+      "monte_carlo_control_greedy", 4242, 3);
+  static int index=0;auto tag=std::to_string(index++);report_capture::Save("return_"+tag,returns);report_capture::Table("q_"+tag,Q);
+  return out;
+}
+
+}  // namespace
+
+int main() {
+  try {
+    Options      opt;
+    rl::GridWorld grid(/*slip_prob=*/0.2f);
+    const Outcome first = Train(grid, opt, 1);
+    opt.first_visit = false;
+    const Outcome every = Train(grid, opt, 1);
+
+    // The cliff: MC's long, noisy returns make this slower than TD methods
+    // (compare with sarsa and q_learning).
+    rl::CliffWalking cliff(/*max_steps=*/200);
+    opt.first_visit = true;
+    opt.gamma = 1.f;
+    opt.episodes = 5000;
+    const Outcome cl = Train(cliff, opt, 2);
+
+    // Checks. The shortest GridWorld path is 9 steps (return -9); with 20% slip
+    // a good greedy policy averages about -12.
+    for (const Outcome* o : {&first, &every}) {
+      check::Require(o->greedy_mean > -14.f, "GridWorld greedy policy should average better than -14");
+      check::Require(o->last_block > o->first_block + 5.f, "GridWorld online return should improve with training");
+    }
+    // On the cliff MC settles for a safe path (the optimum along the edge is -13).
+    check::Require(cl.greedy_mean >= -25.f && cl.greedy_mean <= -13.f,
+                   "CliffWalking greedy policy should reach the goal in 13-25 steps");
+    check::Require(cl.last_block > cl.first_block + 100.f, "CliffWalking online return should improve with training");
+    std::cout << "\nchecks passed (vsim videos omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+//
+// ==== GridWorld: first-visit MC control, 3000 episodes, gamma 0.95
+//   episodes    1- 500  eps 0.17  mean online return   -23.90
+//   episodes  501-1000  eps 0.09  mean online return   -13.93
+//   episodes 1001-1500  eps 0.06  mean online return   -12.74
+//   episodes 1501-2000  eps 0.05  mean online return   -12.70
+//   episodes 2001-2500  eps 0.05  mean online return   -12.68
+//   episodes 2501-3000  eps 0.05  mean online return   -12.53
+//   greedy policy:
+// v < v # > v 
+// > v v # v > 
+// v > v # v v 
+// v v v # > v 
+// > > > > > G 
+//   max_a Q(s, a):
+//   -9.90 -10.85 -12.52      # -17.15 -12.06
+//   -9.11  -8.34  -8.27      #  -8.57 -11.55
+//   -8.73  -7.46  -6.55      #  -4.49  -3.91
+//   -7.87  -6.68  -5.40      #  -2.80  -1.46
+//   -7.08  -5.58  -4.12  -2.70  -1.39   0.00
+//   greedy policy, 500 episodes      return mean   -12.20  min   -23.00  max    -9.00   length mean   12.2
+//   best of 3 episodes (return -9.0):
+//   played monte_carlo_control_greedy (video omitted): 9 steps, return -9.0
+//
+// ==== GridWorld: every-visit MC control, 3000 episodes, gamma 0.95
+//   episodes    1- 500  eps 0.17  mean online return   -22.87
+//   episodes  501-1000  eps 0.09  mean online return   -13.62
+//   episodes 1001-1500  eps 0.06  mean online return   -12.50
+//   episodes 1501-2000  eps 0.05  mean online return   -12.65
+//   episodes 2001-2500  eps 0.05  mean online return   -12.74
+//   episodes 2501-3000  eps 0.05  mean online return   -12.42
+//   greedy policy:
+// v ^ v # > v 
+// v v v # ^ v 
+// v v v # > v 
+// > v v # > v 
+// > > > > > G 
+//   max_a Q(s, a):
+//   -9.85 -11.43 -10.74      #  -8.27  -8.65
+//   -8.93  -9.44  -9.20      #  -8.44  -6.13
+//   -8.19  -7.91  -8.11      #  -4.93  -3.35
+//   -7.43  -6.51  -6.02      #  -2.99  -1.44
+//   -7.52  -5.55  -4.30  -2.86  -1.45   0.00
+//   greedy policy, 500 episodes      return mean   -11.91  min   -32.00  max    -9.00   length mean   11.9
+//   best of 3 episodes (return -9.0):
+//   played monte_carlo_control_greedy (video omitted): 9 steps, return -9.0
+//
+// ==== CliffWalking: first-visit MC control, 5000 episodes, gamma 1.00
+//   episodes    1- 500  eps 0.17  mean online return  -329.30
+//   episodes  501-1000  eps 0.09  mean online return   -38.36
+//   episodes 1001-1500  eps 0.06  mean online return   -24.71
+//   episodes 1501-2000  eps 0.05  mean online return   -23.99
+//   episodes 2001-2500  eps 0.05  mean online return   -25.22
+//   episodes 2501-3000  eps 0.05  mean online return   -24.45
+//   episodes 3001-3500  eps 0.05  mean online return   -23.16
+//   episodes 3501-4000  eps 0.05  mean online return   -23.31
+//   episodes 4001-4500  eps 0.05  mean online return   -23.64
+//   episodes 4501-5000  eps 0.05  mean online return   -25.40
+//   greedy policy:
+// < > > v < > > > v < v < 
+// > ^ ^ > > ^ ^ < > > > v 
+// ^ < > < ^ > ^ < > ^ > v 
+// ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
+//   max_a Q(s, a):
+// -232.80 -35.69 -33.32 -27.83 -99.74 -14.11 -11.93  -9.77  -7.72 -22.68  -6.24  -7.76
+//  -43.48 -40.62-143.24 -23.51 -20.07 -15.32 -40.52 -48.35  -6.03  -4.58  -3.40  -2.19
+//  -48.71-245.67-249.56-222.30-109.50 -93.94 -63.25-107.48 -15.57  -6.32  -4.27  -1.00
+//  -52.70   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00
+//   greedy policy, 500 episodes      return mean   -19.00  min   -19.00  max   -19.00   length mean   19.0
+//   best of 3 episodes (return -19.0):
+//   played monte_carlo_control_greedy (video omitted): 19 steps, return -19.0
+//
+// checks passed (vsim videos omitted)
+// result_end
+
+> Inspect the actual experiment results
+
+These are50-episode averages of the complete original return histories. Different methods retain their own run lengths and decaying exploration schedule; the greedy evaluation table above measures a separate policy.
+
+```{cpp, results="markdown", file="figures/monte_carlo_control_results.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/monte_carlo_control_source.npz");auto get=[&](const std::string& name){auto it=std::find_if(archive.begin(),archive.end(),[&](const auto& p){return p.first==name;});if(it==archive.end())throw std::runtime_error("missing source series "+name);return it->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();{auto values=get("return_0");std::vector<double>x;std::vector<double>binned;for(size_t start=0;start<values.size();start+=50){size_t end=std::min(values.size(),start+50);binned.push_back(std::accumulate(values.begin()+start,values.begin()+end,0.)/(end-start));x.push_back(end);}values=binned;plot.lines(x,values,"first-visit grid",{37,99,235});}{auto values=get("return_1");std::vector<double>x;std::vector<double>binned;for(size_t start=0;start<values.size();start+=50){size_t end=std::min(values.size(),start+50);binned.push_back(std::accumulate(values.begin()+start,values.begin()+end,0.)/(end-start));x.push_back(end);}values=binned;plot.lines(x,values,"every-visit grid",{234,88,12});}{auto values=get("return_2");std::vector<double>x;std::vector<double>binned;for(size_t start=0;start<values.size();start+=50){size_t end=std::min(values.size(),start+50);binned.push_back(std::accumulate(values.begin()+start,values.begin()+end,0.)/(end-start));x.push_back(end);}values=binned;plot.lines(x,values,"first-visit cliff",{22,163,74});}plot.title("monte carlo control source results").x_label("Training episode (50-episode bins)").y_label("Mean online task return").size(1150,650).save_svg("build/monte_carlo_control_results.svg");}
+```
+// result_begin: markdown
+\image(figures/monte_carlo_control_results.svg)
+// result_end
+
+> Interpretation and provenance
+
+Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.

@@ -1,0 +1,307 @@
+//? Title: Patience sort: actual piles and heap sources
+//? Subtitle: Canonical C++ producers, original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Each incoming value goes to the leftmost pile whose top is greater than or equal
+to it. Binary search locates that pile. A min-heap then merges pile tops,
+breaking equal-value heap ties by pile index. Pile count equals the strictly
+increasing LIS length, including when values repeat; it does not equal the
+nondecreasing subsequence length. Sorting is O(n log n); retaining every top
+snapshot can require quadratic history. No external dataset is appropriate for
+the mechanism.
+)
+
+\toc
+
+> Mechanism and scope
+
+Each incoming value goes to the leftmost pile whose top is greater than or equal
+to it. Binary search locates that pile. A min-heap then merges pile tops,
+breaking equal-value heap ties by pile index. Pile count equals the strictly
+increasing LIS length, including when values repeat; it does not equal the
+nondecreasing subsequence length. Sorting is O(n log n); retaining every top
+snapshot can require quadratic history. No external dataset is appropriate for
+the mechanism.
+
+$$ L_i=1+\max_{j<i,\ a_j<a_i} L_j,\qquad \operatorname{LIS}(a)=\max_i L_i. $$
+
+The maximum over an empty predecessor set is zero; empty input has LIS length
+zero. This independent quadratic recurrence is used in tests, not to populate
+the captured pile history.
+
+> A tiny actual producing history
+
+The table and native diagram use the same producing run. Captured records own
+their values; the report does not reconstruct the algorithm.
+
+```{cpp, results="markdown", file="figures/patience_sort_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/patience_sort.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+    auto t = dm::algorithms::patience_sort_trace({3, 1, 2, 2});
+    std::print("| incoming | actual pile | top comparisons | actual tops |\n| ---: | ---: | ---: | --- |\n");
+    for (auto &r : t.deals)
+        std::print("| {} | {} | {} | `{}` |\n", r.value, r.pile, r.comparisons,
+                   r.tops);
+    dm::graphics::Diagram d;
+    d.node("n0", {0, 0}, std::format("Actual completed piles\n{}", t.piles));
+    d.node("n1", {8, 0},
+           std::format("Actual heap source ids\n{}", t.extracted_piles));
+    d.node("n2", {16, 0}, std::format("Actual sorted values\n{}", t.sorted));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/patience_sort_tiny.svg");
+}
+```
+// result_begin: markdown
+| incoming | actual pile | top comparisons | actual tops |
+| ---: | ---: | ---: | --- |
+| 3 | 0 | 0 | `[3]` |
+| 1 | 0 | 1 | `[1]` |
+| 2 | 1 | 1 | `[1, 2]` |
+| 2 | 1 | 2 | `[1, 2]` |
+\image(figures/patience_sort_tiny.svg)
+// result_end
+\caption(Actual tiny producing operands, decisions and final state.)
+\alttext(Actual tiny producing operands, decisions and final state.)
+
+> The original fixture, retained
+
+This complete program retains the original inputs, seed and substantive
+experiment. Any added display prefix is explicitly separate from the original
+random call schedule.
+
+```{cpp, results="markdown", file="figures/patience_sort_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/patience_sort.hpp>
+#include <filesystem>
+#include <datamunge/algorithms/sorting_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::graphics;
+
+int main() {
+    std::ostringstream original_output;
+    auto *original_cout = std::cout.rdbuf(original_output.rdbuf());
+
+    std::filesystem::create_directories("build");
+    std::vector<int> a = {7, 2, 8, 1, 3, 9, 4, 6, 5, 0};
+    auto s = a;
+    patience_sort(s);
+    std::cout << "=== patience sort ===\n";
+    std::cout << "input:  ";
+    for (int x : a)
+        std::cout << x << " ";
+    std::cout << "\n";
+    std::cout << "sorted: ";
+    for (int x : s)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+    auto trace = patience_sort_trace(a);
+    std::vector<int> sizes;
+    for (const auto &pile : trace.piles)
+        sizes.push_back(static_cast<int>(pile.size()));
+    std::cout << "piles: " << sizes.size() <<
+        " (= longest increasing subsequence length)\n";
+    std::vector<double> heights;
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < sizes.size(); ++i) {
+        std::cout << "  pile " << i << ": " << sizes[i] << " cards\n";
+        heights.push_back(sizes[i]);
+        labels.push_back("P" + std::to_string(i));
+    }
+
+    auto plot = RPlot::barplot(heights, labels, "size", RGB{124, 58, 237});
+    plot.title("Patience sort piles (their count = longest increasing subsequence)").x_label("pile").y_label("cards").background({250, 250, 252});
+    plot.save_svg("build/patience_sort_original.svg");
+    std::cout << "\nwrote patience_sort.svg\n";
+    std::cout.rdbuf(original_cout);
+    std::print("| Original computed output |\n| --- |\n");
+    std::istringstream lines(original_output.str());
+    std::string line;
+    while (std::getline(lines, line)) {
+        while (!line.empty() && line.back() == ' ') line.pop_back();
+        if (!line.empty()) std::print("| `{}` |\n", line);
+    }
+
+    return 0;
+}
+```
+// result_begin: markdown
+| Original computed output |
+| --- |
+| `=== patience sort ===` |
+| `input:  7 2 8 1 3 9 4 6 5 0` |
+| `sorted: 0 1 2 3 4 5 6 7 8 9` |
+| `piles: 4 (= longest increasing subsequence length)` |
+| `  pile 0: 4 cards` |
+| `  pile 1: 2 cards` |
+| `  pile 2: 2 cards` |
+| `  pile 3: 2 cards` |
+| `wrote patience_sort.svg` |
+\image(figures/patience_sort_original.svg)
+// result_end
+\caption(Original fixture output and native numerical figure.)
+\alttext(Original fixture output and native numerical figure.)
+
+> Controls and boundary cases
+
+```{cpp, results="markdown", file="figures/patience_sort_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/patience_sort.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+    std::vector<std::vector<int>> cases{{}, {2, 2, 2}, {1, 2, 3}, {3, 2, 1},
+                                        {1, 2, 1, 2}};
+    std::vector<double> v;
+    std::vector<std::string> labels{"empty", "equal", "increasing",
+                                    "decreasing", "repeated"};
+    std::print("| case | actual piles | sorted |\n| --- | ---: | --- |\n");
+    for (std::size_t i = 0; i < cases.size(); ++i) {
+        auto t = dm::algorithms::patience_sort_trace(cases[i]);
+        v.push_back(t.piles.size());
+        std::print("| {} | {} | `{}` |\n", labels[i], t.piles.size(), t.sorted);
+    }
+    auto p = dm::graphics::RPlot::barplot(v, labels, "strict LIS / pile count");
+    p.title("Patience controls distinguish strict and nondecreasing subsequences").y_label("actual pile count");
+    p.save_svg("build/patience_sort_controls.svg");
+}
+```
+// result_begin: markdown
+| case | actual piles | sorted |
+| --- | ---: | --- |
+| empty | 0 | `[]` |
+| equal | 1 | `[2, 2, 2]` |
+| increasing | 3 | `[1, 2, 3]` |
+| decreasing | 1 | `[1, 2, 3]` |
+| repeated | 2 | `[1, 1, 2, 2]` |
+\image(figures/patience_sort_controls.svg)
+// result_end
+\caption(Explicit controlled inputs and their actual native outcomes.)
+\alttext(Explicit controlled inputs and their actual native outcomes.)
+
+> Producing work and finite observations
+
+```{cpp, results="markdown", file="figures/patience_sort_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/patience_sort.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y, z;
+    std::print("| n | increasing-input pile count | actual top comparisons |\n| ---: | ---: | ---: |\n");
+    for (int n : {4, 8, 16, 32, 64}) {
+        std::vector<int> a(n);
+        std::iota(a.begin(), a.end(), 0);
+        auto t = dm::algorithms::patience_sort_trace(a);
+        std::size_t c = 0;
+        for (auto &r : t.deals)
+            c += r.comparisons;
+        x.push_back(n);
+        y.push_back(c);
+        z.push_back(t.piles.size());
+        std::print("| {} | {} | {} |\n", n, t.piles.size(), c);
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.lines(x, y, "actual top comparisons", {37, 99, 235}).points(x, y,
+                                                                  {37, 99, 235},
+                                                                  4).lines(
+        x, z, "actual piles", {220, 38, 38}).title("Increasing patience inputs: binary-search work and completed piles").x_label("input size").y_label("actual count");
+    p.save_svg("build/patience_sort_work.svg");
+}
+```
+// result_begin: markdown
+| n | increasing-input pile count | actual top comparisons |
+| ---: | ---: | ---: |
+| 4 | 4 | 4 |
+| 8 | 8 | 13 |
+| 16 | 16 | 38 |
+| 32 | 32 | 103 |
+| 64 | 64 | 264 |
+\image(figures/patience_sort_work.svg)
+// result_end
+\caption(Actual producing counts or states; no timing or statistical-quality inference.)
+\alttext(Actual producing counts or states; no timing or statistical-quality inference.)
+
+> API and interpretation
+
+All four blocks are complete editable C++ programs. Numerical tables retain raw
+native values; figures display only those returned records. Trace limits count
+documented logical records or scalar entries, not peak bytes or wall-clock work.
+Validation is complete before unchecked indexing; captured histories are
+educational owned storage. A returned result is interpreted under the
+algorithm-specific scope above, without a universal optimality, convergence or
+statistical-quality claim.
+
+[Aldous and Diaconis|https://doi.org/10.1090/S0273-0979-99-00796-X] connect
+patience sorting with strictly increasing subsequences. The native heap
+extraction is an additional sorting phase.
+
+> Verification
+
+This ten-report batch passes 89 CTest cases, 20 ASan/UBSan cases with all ten
+producing families directly instrumented, 62 compiled and executed public
+examples, 200/200 scoped file definitions plus 15/15 exact PCG class
+definitions, and ten representative clangd hovers. Independent Python
+hashlib/HMAC and arbitrary-integer PCG checks verify 75189 records with 123243
+checks. Native independent per-pixel visibility, exhaustive prefix reversals,
+quadratic LIS, integer perceptron updates, sampled-label tail counts and
+exhaustive Boolean-cover checks supplement frozen valid-input comparisons for
+all ten producers. Ten checkout and ten byte-identical installed development
+headers compile independently; an installed-header native consumer links and
+runs. All 40 complete programs execute; all 40 native figures have been visually
+reviewed. HTML/Markdown exports preserve computed result rows and identical
+image bytes. These are scoped native checks. Receipts:
+`build/mepml-conversion/batch-274-283/`.

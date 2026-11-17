@@ -1,5 +1,6 @@
 #pragma once
 #include <datamunge/algorithms/informed_search.hpp>
+#include <datamunge/algorithms/nearest_neighbor_tsp.hpp>
 #include <datamunge/algorithms/christofides.hpp>
 #include <datamunge/algorithms/clarke_wright.hpp>
 #include <cstddef>
@@ -7,7 +8,6 @@
 #include <utility>
 #include <vector>
 namespace datamunge::algorithms {
-TourResult nearest_neighbor_tsp(const std::vector<std::vector<double>>& distance,std::size_t start=0);
 /// @brief Attempt a deterministic Warnsdorff knight tour, returning only complete paths.
 ///
 /// Chooses the unvisited legal neighbour with smallest onward degree, breaking

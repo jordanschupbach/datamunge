@@ -1,8 +1,6 @@
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main cnn_dncnn_original_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/dncnn.cpp"
-#undef main
+#include "../fixtures/nn_dncnn_checks.hpp"
 TEST(DnTensor, CorruptionMomentsResidualPairingAndMetrics) {
   dm::nn::set_num_threads(2);
   EXPECT_NO_THROW(NoiseAndMetricChecks());

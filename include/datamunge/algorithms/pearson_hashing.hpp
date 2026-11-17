@@ -1,66 +1,88 @@
 #pragma once
-
-/// \file pearson_hashing.hpp
-/// \brief Pearson hashing: an 8-bit hash built from a single 256-byte permutation
-///        table (Pearson 1990).
-///
-/// Pearson hashing produces an 8-bit hash of a byte string using nothing but a fixed
-/// *permutation of the 256 byte values* and one table lookup per input byte:
-/// \f[
-///   h \leftarrow T\big[\,h \oplus b\,\big],
-/// \f]
-/// starting from \f$h=0\f$. Because \f$T\f$ is a permutation, the hash is
-/// well-distributed and, crucially, has the property that changing any input byte
-/// changes the output (no trivial collisions from the mixing step). It was designed for
-/// 8-bit machines -- no multiplies, no wide arithmetic -- and extends to wider hashes by
-/// running it several times with different initial offsets. This implementation ships
-/// the widely used reference permutation table and also supports a caller-supplied one.
-
+/// @file pearson_hashing.hpp
+/// @brief Checked permutation-table byte hashing; an educational noncryptographic hash.
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <string>
-
+#include <vector>
 namespace datamunge::algorithms {
-
-/// The standard 256-entry Pearson permutation table (from Pearson's 1990 paper).
-inline const std::array<std::uint8_t, 256>& pearson_default_table() {
-    static const std::array<std::uint8_t, 256> T = {
-        98,  6,   85,  150, 36,  23,  112, 164, 135, 207, 169, 5,   26,  64,  165, 219, 61,  20,  68,  89,  130,
-        63,  52,  102, 24,  229, 132, 245, 80,  216, 195, 115, 90,  168, 156, 203, 177, 120, 2,   190, 188, 7,
-        100, 185, 174, 243, 162, 10,  237, 18,  253, 225, 8,   208, 172, 244, 255, 126, 101, 79,  145, 235, 228,
-        121, 123, 251, 67,  250, 161, 0,   107, 97,  241, 111, 181, 82,  249, 33,  69,  55,  59,  153, 29,  9,
-        213, 167, 84,  93,  30,  46,  94,  75,  151, 114, 73,  222, 197, 96,  210, 45,  16,  227, 248, 202, 51,
-        152, 252, 125, 81,  206, 215, 186, 39,  158, 178, 187, 131, 136, 1,   49,  50,  17,  141, 91,  47,  129,
-        60,  99,  154, 35,  86,  171, 105, 34,  38,  200, 147, 58,  77,  118, 173, 246, 76,  254, 133, 232, 196,
-        144, 198, 124, 53,  4,   108, 74,  223, 234, 134, 230, 157, 139, 189, 205, 199, 128, 176, 19,  211, 236,
-        127, 192, 231, 70,  233, 88,  146, 44,  183, 201, 22,  83,  13,  214, 116, 109, 159, 32,  95,  226, 140,
-        220, 57,  12,  221, 31,  209, 182, 143, 92,  149, 184, 148, 62,  113, 65,  37,  27,  106, 166, 3,   14,
-        204, 72,  21,  41,  56,  66,  28,  193, 40,  217, 25,  54,  179, 117, 238, 87,  240, 155, 180, 170, 242,
-        212, 191, 163, 78,  218, 137, 194, 175, 110, 43,  119, 224, 71,  122, 142, 42,  160, 104, 48,  247, 103,
-        15,  11,  138, 239};
-    return T;
-}
-
-/// \brief 8-bit Pearson hash of a byte string using the given (default: standard) table.
-inline std::uint8_t pearson_hash(const std::string& data,
-                                 const std::array<std::uint8_t, 256>& table = pearson_default_table()) {
-    std::uint8_t h = 0;
-    for (unsigned char byte : data) h = table[h ^ byte];
-    return h;
-}
-
-/// \brief Wider Pearson hash: \p width bytes by re-running with a perturbed first byte.
-inline std::uint64_t pearson_hash_wide(const std::string& data, int width,
-                                       const std::array<std::uint8_t, 256>& table = pearson_default_table()) {
-    std::uint64_t result = 0;
-    for (int j = 0; j < width; ++j) {
-        std::uint8_t h = data.empty() ? 0 : table[(static_cast<unsigned char>(data[0]) + j) % 256];
-        for (std::size_t i = (data.empty() ? 0 : 1); i < data.size(); ++i)
-            h = table[h ^ static_cast<unsigned char>(data[i])];
-        result = (result << 8) | h;
-    }
-    return result;
-}
-
-}  // namespace datamunge::algorithms
+/// @brief Return the native fixed permutation, in preserved historical byte order.
+/// @return Process-lifetime immutable 256-byte table; concurrent reads are safe.
+/// @par Example
+/// @code
+/// std::print("{}\n",int(dm::algorithms::pearson_default_table()[0])); // 98
+/// @endcode
+const std::array<std::uint8_t, 256>& pearson_default_table();
+/// @brief One actual byte lookup in an eight-bit hash.
+/// @par Example
+/// @code
+/// std::print("{}\n",int(dm::algorithms::pearson_hash_trace("a").steps[0].byte)); // 97
+/// @endcode
+struct PearsonStep {
+  std::size_t  index;       ///< Zero-based input byte position.
+  std::uint8_t byte;        ///< Unsigned byte, including zeros and high bytes.
+  std::uint8_t before;      ///< Accumulator before lookup.
+  std::uint8_t table_index; ///< Actual before XOR byte index.
+  std::uint8_t after;       ///< Actual table lookup result.
+};
+/// @brief Owned actual hash byte and optional lookup history.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pearson_hash_trace("a").steps.size()); // 1
+/// @endcode
+struct PearsonTrace {
+  std::uint8_t             hash{0}; ///< Final accumulator, zero for empty input.
+  std::vector<PearsonStep> steps;   ///< Actual producing lookups, not replay.
+};
+/// @brief Hash complete bytes from accumulator zero with a validated permutation.
+/// A single fixed-position byte substitution in an equal-length message changes
+/// the output: each subsequent fixed-byte step is bijective. Multiple changes
+/// can collide; only 256 outputs exist. This is not a cryptographic hash.
+/// O(256+n) time, O(256) validation state; borrowed inputs are unchanged.
+/// @param data Complete binary string, possibly empty.
+/// @param table Permutation of all byte values; default native fixed table.
+/// @return Final eight-bit accumulator, zero for empty data.
+/// @throws std::invalid_argument If table contains duplicate values.
+/// @par Example
+/// @code
+/// std::print("{}\n",int(dm::algorithms::pearson_hash(""))); // 0
+/// @endcode
+/// @par References
+/// - P. K. Pearson (1990), Fast Hashing of Variable-Length Text Strings,
+///   Communications of the ACM 33, 677-680, doi:10.1145/78973.78978.
+std::uint8_t pearson_hash(
+    const std::string&                   data,
+    const std::array<std::uint8_t, 256>& table = pearson_default_table());
+/// @brief Retain each actual byte lookup of pearson_hash's producing loop.
+/// @param data Complete binary string, unchanged.
+/// @param table Complete byte permutation.
+/// @param max_steps Retained lookup cap, default one million; zero disables policy.
+/// @return Owned final hash and n actual lookup records; O(n) extra history.
+/// @throws std::invalid_argument If table is not a permutation.
+/// @throws std::length_error If retained lookup policy is exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pearson_hash_trace("hash").steps.size()); // 4
+/// @endcode
+PearsonTrace pearson_hash_trace(
+    const std::string&                   data,
+    const std::array<std::uint8_t, 256>& table     = pearson_default_table(),
+    std::size_t                          max_steps = 1000000);
+/// @brief Concatenate width offset-first-byte Pearson lanes in big-endian order.
+/// Empty data yields zero in every lane. Lane zero agrees with pearson_hash()
+/// for nonempty data. This is a native extension, not a 64-bit security claim.
+/// @param data Complete binary string, unchanged.
+/// @param width Number of bytes in [1,8].
+/// @param table Complete byte permutation.
+/// @return Owned width-byte value in the low bits of uint64; O(width*n+256) time.
+/// @throws std::invalid_argument If width or table is invalid.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::pearson_hash_wide("",8)); // 0
+/// @endcode
+std::uint64_t pearson_hash_wide(
+    const std::string&                   data,
+    int                                  width,
+    const std::array<std::uint8_t, 256>& table = pearson_default_table());
+} // namespace datamunge::algorithms

@@ -248,7 +248,7 @@ message(STATUS "c_sources: ${c_sources}")
 message(STATUS "cpp_sources: ${cpp_sources}")
 add_executable(run_tests ${c_sources} ${cpp_sources})
 target_link_libraries(run_tests datamunge::datamunge GTest::gtest_main)
-target_include_directories(run_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../examples/nn)
+target_include_directories(run_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../prebindings/nn/include)
 set_target_properties(run_tests PROPERTIES CXX_STANDARD 17)
 
 include(GoogleTest)
@@ -261,7 +261,7 @@ add_executable(run_simulation_tests
   cpp/sim_batch_tests.cpp cpp/sim_tasks_tests.cpp cpp/game_simulation_tests.cpp cpp/game_io_tests.cpp
   cpp/game_courier_tests.cpp cpp/game_render_tests.cpp cpp/sim_rl_adapter_tests.cpp)
 target_link_libraries(run_simulation_tests datamunge::datamunge GTest::gtest_main)
-target_include_directories(run_simulation_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../examples/nn)
+target_include_directories(run_simulation_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../prebindings/nn/include)
 set_target_properties(run_simulation_tests PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_simulation_tests TEST_PREFIX "simulation.")
 add_executable(check_simulation_allocations simulation_allocations.cpp)
@@ -608,7 +608,7 @@ if(Python3_Interpreter_FOUND)
     ${CMAKE_CURRENT_SOURCE_DIR}/oracles/natural_spline_fraction.py $<TARGET_FILE:check_natural_spline_fraction_oracle>)
 endif()
 
-add_executable(run_cuthill_mckee_tests cpp/algorithms_cuthill_mckee_trace_tests.cpp cpp/algorithms_sparse_linalg_tests.cpp cpp/format/algorithms_format_tests.cpp)
+add_executable(run_cuthill_mckee_tests cpp/algorithms_cuthill_mckee_trace_tests.cpp cpp/algorithms_minimum_degree_trace_tests.cpp cpp/algorithms_sparse_linalg_tests.cpp cpp/format/algorithms_format_tests.cpp)
 target_link_libraries(run_cuthill_mckee_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_cuthill_mckee_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_cuthill_mckee_tests TEST_PREFIX "cuthill-mckee.")
@@ -680,7 +680,7 @@ target_link_libraries(run_difference_map_tests datamunge::datamunge GTest::gtest
 set_target_properties(run_difference_map_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_difference_map_tests TEST_PREFIX "difference-map.")
 
-add_executable(run_diffie_hellman_tests cpp/algorithms_diffie_hellman_trace_tests.cpp cpp/crypto_batch23_tests.cpp cpp/algorithms_modular_exponentiation_tests.cpp cpp/algorithms_miller_rabin_tests.cpp cpp/algorithms_addition_chain_tests.cpp)
+add_executable(run_diffie_hellman_tests cpp/algorithms_diffie_hellman_trace_tests.cpp cpp/crypto_batch23_tests.cpp cpp/algorithms_modular_exponentiation_tests.cpp cpp/algorithms_miller_rabin_tests.cpp cpp/algorithms_montgomery_trace_tests.cpp cpp/algorithms_addition_chain_tests.cpp)
 target_link_libraries(run_diffie_hellman_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_diffie_hellman_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_diffie_hellman_tests TEST_PREFIX "diffie-hellman.")
@@ -772,7 +772,7 @@ target_link_libraries(run_gamma_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_gamma_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_gamma_tests TEST_PREFIX "gamma.")
 
-add_executable(run_ellipsoid_tests cpp/algorithms_ellipsoid_trace_tests.cpp cpp/algorithms_csp_convex_tests.cpp cpp/format/algorithms_format_tests.cpp)
+add_executable(run_ellipsoid_tests cpp/algorithms_ellipsoid_trace_tests.cpp cpp/algorithms_min_conflicts_trace_tests.cpp cpp/algorithms_csp_convex_tests.cpp cpp/format/algorithms_format_tests.cpp)
 target_link_libraries(run_ellipsoid_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_ellipsoid_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_ellipsoid_tests TEST_PREFIX "ellipsoid.")
@@ -1080,3 +1080,915 @@ add_executable(run_nn_diffusion_tests cpp/nn_diffusion_tests.cpp)
 target_link_libraries(run_nn_diffusion_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_nn_diffusion_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_nn_diffusion_tests TEST_PREFIX "nn-diffusion.")
+
+add_executable(run_mlp_classifier_search_tests cpp/mlp_classifier_search_tests.cpp cpp/stats_mlp_classifier_tests.cpp)
+target_link_libraries(run_mlp_classifier_search_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mlp_classifier_search_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mlp_classifier_search_tests TEST_PREFIX "mlp-search.")
+
+add_executable(run_fnv_tests cpp/algorithms_fnv_tests.cpp)
+target_link_libraries(run_fnv_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_fnv_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_fnv_tests TEST_PREFIX "fnv.")
+
+add_executable(run_goldschmidt_tests cpp/algorithms_goldschmidt_tests.cpp)
+target_link_libraries(run_goldschmidt_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_goldschmidt_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_goldschmidt_tests TEST_PREFIX "goldschmidt.")
+
+add_executable(run_golomb_tests cpp/algorithms_golomb_tests.cpp)
+target_link_libraries(run_golomb_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_golomb_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_golomb_tests TEST_PREFIX "golomb.")
+
+add_executable(run_graham_trace_tests cpp/geometry_graham_trace_tests.cpp)
+target_link_libraries(run_graham_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_graham_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_graham_trace_tests TEST_PREFIX "graham.")
+
+add_executable(run_gram_schmidt_trace_tests cpp/algorithms_gram_schmidt_trace_tests.cpp)
+target_link_libraries(run_gram_schmidt_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_gram_schmidt_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_gram_schmidt_trace_tests TEST_PREFIX "gram_schmidt.")
+
+add_executable(run_graph_coloring_trace_tests cpp/algorithms_graph_coloring_trace_tests.cpp)
+target_link_libraries(run_graph_coloring_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_graph_coloring_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_graph_coloring_trace_tests TEST_PREFIX "graph_coloring.")
+
+add_executable(run_grasp_trace_tests cpp/algorithms_grasp_trace_tests.cpp)
+target_link_libraries(run_grasp_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_grasp_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_grasp_trace_tests TEST_PREFIX "grasp.")
+
+add_executable(run_grover_trace_tests cpp/algorithms_grover_trace_tests.cpp)
+target_link_libraries(run_grover_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_grover_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_grover_trace_tests TEST_PREFIX "grover.")
+
+add_executable(run_halley_trace_tests cpp/algorithms_halley_trace_tests.cpp)
+target_link_libraries(run_halley_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_halley_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_halley_trace_tests TEST_PREFIX "halley.")
+
+add_executable(run_hamming_code_trace_tests cpp/algorithms_hamming_code_trace_tests.cpp)
+target_link_libraries(run_hamming_code_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hamming_code_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hamming_code_trace_tests TEST_PREFIX "hamming_code.")
+
+add_executable(run_heap_trace_tests cpp/algorithms_heap_trace_tests.cpp)
+target_link_libraries(run_heap_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_heap_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_heap_trace_tests TEST_PREFIX "heap_permutations.")
+
+add_executable(run_heapsort_trace_tests cpp/algorithms_heapsort_trace_tests.cpp)
+target_link_libraries(run_heapsort_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_heapsort_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_heapsort_trace_tests TEST_PREFIX "heapsort_trace.")
+
+add_executable(run_hermite_tests cpp/algorithms_hermite_tests.cpp)
+target_link_libraries(run_hermite_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hermite_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hermite_tests TEST_PREFIX "hermite.")
+
+add_executable(run_hirschberg_tests cpp/algorithms_hirschberg_tests.cpp)
+target_link_libraries(run_hirschberg_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hirschberg_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hirschberg_tests TEST_PREFIX "hirschberg.")
+
+add_executable(run_equalization_tests cpp/algorithms_equalization_tests.cpp)
+target_link_libraries(run_equalization_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_equalization_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_equalization_tests TEST_PREFIX "equalization.")
+
+add_executable(run_hits_trace_tests cpp/algorithms_hits_trace_tests.cpp)
+target_link_libraries(run_hits_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hits_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hits_trace_tests TEST_PREFIX "hits_trace.")
+
+add_executable(run_hmac_trace_tests cpp/algorithms_hmac_trace_tests.cpp)
+target_link_libraries(run_hmac_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hmac_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hmac_trace_tests TEST_PREFIX "hmac_trace.")
+
+add_executable(run_hopcroft_trace_tests cpp/algorithms_hopcroft_trace_tests.cpp)
+target_link_libraries(run_hopcroft_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hopcroft_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hopcroft_trace_tests TEST_PREFIX "hopcroft_trace.")
+
+add_executable(run_hopcroft_karp_trace_tests cpp/algorithms_hopcroft_karp_trace_tests.cpp cpp/algorithms_hopcroft_karp_tests.cpp)
+target_link_libraries(run_hopcroft_karp_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hopcroft_karp_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hopcroft_karp_trace_tests TEST_PREFIX "hopcroft_karp_trace.")
+
+add_executable(run_hopfield_trace_tests cpp/algorithms_hopfield_trace_tests.cpp cpp/algorithms_neural_batch_tests.cpp)
+target_link_libraries(run_hopfield_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hopfield_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hopfield_trace_tests TEST_PREFIX "hopfield_trace.")
+
+add_executable(run_huffman_trace_tests cpp/algorithms_huffman_trace_tests.cpp)
+target_link_libraries(run_huffman_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_huffman_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_huffman_trace_tests TEST_PREFIX "huffman_trace.")
+
+add_executable(run_hungarian_trace_tests cpp/algorithms_hungarian_trace_tests.cpp cpp/algorithms_hungarian_tests.cpp)
+target_link_libraries(run_hungarian_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_hungarian_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_hungarian_trace_tests TEST_PREFIX "hungarian_trace.")
+
+add_executable(run_icp_trace_tests cpp/geometry_icp_trace_tests.cpp cpp/numerical_batch41_tests.cpp)
+target_link_libraries(run_icp_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_icp_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_icp_trace_tests TEST_PREFIX "icp_trace.")
+
+add_executable(run_iterative_deepening_tests cpp/algorithms_iterative_deepening_tests.cpp cpp/algorithms_search_more_tests.cpp)
+target_link_libraries(run_iterative_deepening_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_iterative_deepening_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_iterative_deepening_tests TEST_PREFIX "iterative_deepening.")
+
+add_executable(run_index_calculus_trace_tests cpp/algorithms_index_calculus_trace_tests.cpp cpp/algorithms_index_calculus_tests.cpp)
+target_link_libraries(run_index_calculus_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_index_calculus_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_index_calculus_trace_tests TEST_PREFIX "index_calculus_trace.")
+
+add_executable(run_insertion_sort_trace_tests cpp/algorithms_insertion_sort_trace_tests.cpp cpp/algorithms_comparison_sorts_tests.cpp)
+target_link_libraries(run_insertion_sort_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_insertion_sort_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_insertion_sort_trace_tests TEST_PREFIX "insertion_sort_trace.")
+
+add_executable(run_interpolation_search_trace_tests cpp/algorithms_interpolation_search_trace_tests.cpp cpp/algorithms_sorted_search_tests.cpp)
+target_link_libraries(run_interpolation_search_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_interpolation_search_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_interpolation_search_trace_tests TEST_PREFIX "interpolation_search_trace.")
+
+add_executable(run_inverse_iteration_trace_tests cpp/algorithms_inverse_iteration_trace_tests.cpp cpp/eigen_batch47_tests.cpp)
+target_link_libraries(run_inverse_iteration_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_inverse_iteration_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_inverse_iteration_trace_tests TEST_PREFIX "inverse_iteration_trace." TEST_FILTER "InverseIteration*")
+
+add_executable(run_itp_trace_tests cpp/algorithms_itp_trace_tests.cpp cpp/algorithms_extra_root_finding_tests.cpp)
+target_link_libraries(run_itp_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_itp_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_itp_trace_tests TEST_PREFIX "itp_trace.")
+
+add_executable(run_jackknife_trace_tests cpp/stats_jackknife_trace_tests.cpp cpp/stats_resampling_tests.cpp)
+target_link_libraries(run_jackknife_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_jackknife_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_jackknife_trace_tests TEST_PREFIX "jackknife_trace.")
+
+add_executable(run_jaro_winkler_trace_tests cpp/algorithms_jaro_winkler_trace_tests.cpp cpp/algorithms_string_metrics_tests.cpp)
+target_link_libraries(run_jaro_winkler_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_jaro_winkler_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_jaro_winkler_trace_tests TEST_PREFIX "jaro_winkler_trace.")
+
+add_executable(run_jarvis_trace_tests cpp/geometry_jarvis_trace_tests.cpp cpp/geometry_hull_algorithms_tests.cpp)
+target_link_libraries(run_jarvis_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_jarvis_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_jarvis_trace_tests TEST_PREFIX "jarvis_trace.")
+
+add_executable(run_johnson_trace_tests cpp/algorithms_johnson_trace_tests.cpp cpp/algorithms_routing_batch_tests.cpp)
+target_link_libraries(run_johnson_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_johnson_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_johnson_trace_tests TEST_PREFIX "johnson_trace.")
+
+add_executable(run_jump_walk_trace_tests cpp/geometry_jump_walk_trace_tests.cpp cpp/geometry_batch38_tests.cpp cpp/format/geometry_format_tests.cpp)
+target_link_libraries(run_jump_walk_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_jump_walk_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_jump_walk_trace_tests TEST_PREFIX "jump_walk_trace.")
+
+add_executable(run_jump_point_search_tests cpp/algorithms_jump_point_search_tests.cpp cpp/algorithms_search_more_tests.cpp)
+target_link_libraries(run_jump_point_search_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_jump_point_search_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_jump_point_search_tests TEST_PREFIX "jump_point_search.")
+
+add_executable(run_jump_search_trace_tests cpp/algorithms_jump_search_trace_tests.cpp)
+target_link_libraries(run_jump_search_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_jump_search_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_jump_search_trace_tests TEST_PREFIX "jump_search_trace.")
+
+add_executable(run_kabsch_analysis_tests cpp/algorithms_kabsch_analysis_tests.cpp cpp/algorithms_calendar_geo_batch_tests.cpp)
+target_link_libraries(run_kabsch_analysis_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kabsch_analysis_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kabsch_analysis_tests TEST_PREFIX "kabsch_analysis.")
+
+add_executable(run_kadane_trace_tests cpp/algorithms_kadane_trace_tests.cpp cpp/algorithms_substrings_tests.cpp)
+target_link_libraries(run_kadane_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kadane_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kadane_trace_tests TEST_PREFIX "kadane_trace.")
+
+add_executable(run_kahan_trace_tests cpp/algorithms_kahan_trace_tests.cpp cpp/algorithms_elementary_tests.cpp)
+target_link_libraries(run_kahan_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kahan_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kahan_trace_tests TEST_PREFIX "kahan_trace.")
+
+add_executable(run_karn_event_tests cpp/algorithms_karn_event_tests.cpp cpp/algorithms_networking_batch_tests.cpp)
+target_link_libraries(run_karn_event_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_karn_event_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_karn_event_tests TEST_PREFIX "karn_event.")
+
+add_executable(run_karger_trace_tests cpp/algorithms_karger_trace_tests.cpp cpp/algorithms_advanced_graph_tests.cpp)
+target_link_libraries(run_karger_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_karger_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_karger_trace_tests TEST_PREFIX "karger_trace.")
+
+add_executable(run_karatsuba_trace_tests cpp/algorithms_karatsuba_trace_tests.cpp cpp/algorithms_number_theory_tests.cpp)
+target_link_libraries(run_karatsuba_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_karatsuba_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_karatsuba_trace_tests TEST_PREFIX "karatsuba_trace.")
+
+add_executable(run_kdtree_trace_tests cpp/geometry_kdtree_trace_tests.cpp cpp/geometry_kdtree_tests.cpp cpp/format/geometry_format_tests.cpp)
+target_link_libraries(run_kdtree_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kdtree_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kdtree_trace_tests TEST_PREFIX "kdtree_trace.")
+
+add_executable(run_kalman_analysis_tests cpp/filter_kalman_analysis_tests.cpp cpp/filter_kalman_tests.cpp cpp/filter_ekf_ukf_tests.cpp cpp/filter_information_enkf_particle_tests.cpp cpp/filter_alpha_beta_tests.cpp cpp/format/filter_format_tests.cpp)
+target_link_libraries(run_kalman_analysis_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kalman_analysis_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kalman_analysis_tests TEST_PREFIX "kalman_analysis.")
+
+add_executable(run_k_medoids_trace_tests cpp/algorithms_k_medoids_trace_tests.cpp cpp/algorithms_clustering_batch_tests.cpp)
+target_link_libraries(run_k_medoids_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_k_medoids_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_k_medoids_trace_tests TEST_PREFIX "k_medoids_trace.")
+
+add_executable(run_kmp_trace_tests cpp/algorithms_kmp_trace_tests.cpp cpp/algorithms_kmp_tests.cpp)
+target_link_libraries(run_kmp_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kmp_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kmp_trace_tests TEST_PREFIX "kmp_trace.")
+
+add_executable(run_kb_trace_tests cpp/algorithms_kb_trace_tests.cpp cpp/algorithms_knuth_bendix_tests.cpp)
+target_link_libraries(run_kb_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kb_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kb_trace_tests TEST_PREFIX "kb_trace.")
+
+add_executable(run_kosaraju_trace_tests cpp/algorithms_kosaraju_trace_tests.cpp cpp/algorithms_graph_connectivity_tests.cpp)
+target_link_libraries(run_kosaraju_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kosaraju_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kosaraju_trace_tests TEST_PREFIX "kosaraju_trace.")
+
+add_executable(run_kruskal_report_tests cpp/algorithms_kruskal_report_tests.cpp cpp/algorithms_kruskal_tests.cpp cpp/algorithms_euclidean_mst_trace_tests.cpp)
+target_link_libraries(run_kruskal_report_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_kruskal_report_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_kruskal_report_tests TEST_PREFIX "kruskal_report.")
+
+add_executable(run_merge_trace_tests cpp/algorithms_merge_trace_tests.cpp)
+target_link_libraries(run_merge_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_merge_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_merge_trace_tests TEST_PREFIX "merge_trace.")
+
+add_executable(run_lfg_analysis_tests cpp/random_lagged_fibonacci_analysis_tests.cpp cpp/datamunge_random_tests.cpp)
+target_link_libraries(run_lfg_analysis_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lfg_analysis_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lfg_analysis_tests TEST_PREFIX "lfg_analysis.")
+
+add_executable(run_lagrange_trace_tests cpp/algorithms_lagrange_trace_tests.cpp cpp/algorithms_interpolation_tests.cpp cpp/algorithms_interpolation_extra_tests.cpp)
+target_link_libraries(run_lagrange_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lagrange_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lagrange_trace_tests TEST_PREFIX "lagrange_trace.")
+
+add_executable(run_lamport_event_tests cpp/algorithms_lamport_event_tests.cpp cpp/algorithms_distributed_batch_tests.cpp cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_lamport_event_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lamport_event_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lamport_event_tests TEST_PREFIX "lamport_event.")
+
+add_executable(run_lanczos_analysis_tests cpp/algorithms_lanczos_analysis_tests.cpp cpp/krylov_batch48_tests.cpp cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_lanczos_analysis_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lanczos_analysis_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lanczos_analysis_tests TEST_PREFIX "lanczos_analysis.")
+
+add_executable(run_lanczos_resampling_trace_tests cpp/algorithms_lanczos_resampling_trace_tests.cpp cpp/interpolation_batch39_tests.cpp)
+target_link_libraries(run_lanczos_resampling_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lanczos_resampling_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lanczos_resampling_trace_tests TEST_PREFIX "lanczos_resampling_trace.")
+
+add_executable(run_laplacian_trace_tests cpp/geometry_laplacian_trace_tests.cpp cpp/geometry_batch38_tests.cpp)
+target_link_libraries(run_laplacian_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_laplacian_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_laplacian_trace_tests TEST_PREFIX "laplacian_trace.")
+
+add_executable(run_lax_wendroff_trace_tests cpp/algorithms_lax_wendroff_trace_tests.cpp)
+target_link_libraries(run_lax_wendroff_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lax_wendroff_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lax_wendroff_trace_tests TEST_PREFIX "lax_wendroff_trace.")
+
+add_executable(run_lcs_trace_tests cpp/algorithms_lcs_trace_tests.cpp)
+target_link_libraries(run_lcs_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lcs_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lcs_trace_tests TEST_PREFIX "lcs_trace.")
+
+add_executable(run_lda_report_tests cpp/stats_lda_report_tests.cpp cpp/stats_lda_tests.cpp)
+target_link_libraries(run_lda_report_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lda_report_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lda_report_tests TEST_PREFIX "lda_report.")
+
+add_executable(run_leaky_bucket_trace_tests cpp/algorithms_leaky_bucket_trace_tests.cpp)
+target_link_libraries(run_leaky_bucket_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_leaky_bucket_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_leaky_bucket_trace_tests TEST_PREFIX "leaky_bucket_trace.")
+
+add_executable(run_lenstra_ecm_trace_tests cpp/algorithms_lenstra_ecm_trace_tests.cpp)
+target_link_libraries(run_lenstra_ecm_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lenstra_ecm_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lenstra_ecm_trace_tests TEST_PREFIX "lenstra_ecm_trace.")
+
+add_executable(run_levenshtein_trace_tests cpp/algorithms_levenshtein_trace_tests.cpp)
+target_link_libraries(run_levenshtein_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_levenshtein_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_levenshtein_trace_tests TEST_PREFIX "levenshtein_trace.")
+
+add_executable(run_levenshtein_coding_trace_tests cpp/algorithms_levenshtein_coding_trace_tests.cpp cpp/algorithms_coding2_batch_tests.cpp)
+target_link_libraries(run_levenshtein_coding_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_levenshtein_coding_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_levenshtein_coding_trace_tests TEST_PREFIX "levenshtein_coding_trace.")
+
+add_executable(run_levinson_trace_tests cpp/algorithms_levinson_trace_tests.cpp)
+target_link_libraries(run_levinson_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_levinson_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_levinson_trace_tests TEST_PREFIX "levinson_trace.")
+
+add_executable(run_lex_bfs_trace_tests cpp/algorithms_lex_bfs_trace_tests.cpp cpp/algorithms_search_order_tests.cpp)
+target_link_libraries(run_lex_bfs_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lex_bfs_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lex_bfs_trace_tests TEST_PREFIX "lex_bfs_trace.")
+
+add_executable(run_library_sort_trace_tests cpp/algorithms_library_sort_trace_tests.cpp cpp/misc_batch46_tests.cpp)
+target_link_libraries(run_library_sort_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_library_sort_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_library_sort_trace_tests TEST_PREFIX "library_sort_trace.")
+
+add_executable(run_lbg_trace_tests cpp/algorithms_lbg_trace_tests.cpp)
+target_link_libraries(run_lbg_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lbg_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lbg_trace_tests TEST_PREFIX "lbg_trace.")
+
+add_executable(run_lcg_analysis_tests cpp/random_linear_congruential_analysis_tests.cpp cpp/datamunge_random_tests.cpp)
+target_link_libraries(run_lcg_analysis_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lcg_analysis_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lcg_analysis_tests TEST_PREFIX "lcg_analysis.")
+
+add_executable(run_linear_interpolation_trace_tests cpp/algorithms_linear_interpolation_trace_tests.cpp cpp/algorithms_monotone_cubic_trace_tests.cpp cpp/algorithms_interpolation_extra_tests.cpp)
+target_link_libraries(run_linear_interpolation_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_linear_interpolation_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_linear_interpolation_trace_tests TEST_PREFIX "linear_interpolation_trace.")
+
+add_executable(run_lis_trace_tests cpp/algorithms_lis_trace_tests.cpp cpp/algorithms_subsequences_tests.cpp)
+target_link_libraries(run_lis_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lis_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lis_trace_tests TEST_PREFIX "lis_trace.")
+
+add_executable(run_ll1_trace_tests cpp/algorithms_ll1_trace_tests.cpp cpp/parsing_batch25_tests.cpp cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_ll1_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_ll1_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_ll1_trace_tests TEST_PREFIX "ll1_trace.")
+
+add_executable(run_lll_trace_tests cpp/algorithms_lll_trace_tests.cpp)
+target_link_libraries(run_lll_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lll_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lll_trace_tests TEST_PREFIX "lll_trace.")
+
+add_executable(run_logitboost_trace_tests cpp/algorithms_logitboost_trace_tests.cpp)
+target_link_libraries(run_logitboost_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_logitboost_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_logitboost_trace_tests TEST_PREFIX "logitboost_trace.")
+
+add_executable(run_long_division_trace_tests cpp/algorithms_long_division_trace_tests.cpp)
+target_link_libraries(run_long_division_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_long_division_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_long_division_trace_tests TEST_PREFIX "long_division_trace.")
+
+add_executable(run_lcsubstring_trace_tests cpp/algorithms_lcsubstring_trace_tests.cpp cpp/algorithms_substrings_tests.cpp)
+target_link_libraries(run_lcsubstring_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lcsubstring_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lcsubstring_trace_tests TEST_PREFIX "lcsubstring_trace.")
+
+add_executable(run_lsh_trace_tests cpp/algorithms_lsh_trace_tests.cpp cpp/algorithms_sampling_batch_tests.cpp)
+target_link_libraries(run_lsh_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lsh_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lsh_trace_tests TEST_PREFIX "lsh_trace.")
+
+add_executable(run_lucas_primality_trace_tests cpp/algorithms_lucas_primality_trace_tests.cpp cpp/algorithms_primality_tests.cpp)
+target_link_libraries(run_lucas_primality_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lucas_primality_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lucas_primality_trace_tests TEST_PREFIX "lucas_primality_trace.")
+
+add_executable(run_luhn_trace_tests cpp/algorithms_luhn_trace_tests.cpp cpp/algorithms_error_detection_batch_tests.cpp)
+target_link_libraries(run_luhn_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_luhn_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_luhn_trace_tests TEST_PREFIX "luhn_trace.")
+
+add_executable(run_lz77_trace_tests cpp/algorithms_lz77_trace_tests.cpp)
+target_link_libraries(run_lz77_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lz77_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lz77_trace_tests TEST_PREFIX "lz77_trace.")
+
+add_executable(run_lzw_trace_tests cpp/algorithms_lzw_trace_tests.cpp cpp/algorithms_compression2_batch_tests.cpp)
+target_link_libraries(run_lzw_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_lzw_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_lzw_trace_tests TEST_PREFIX "lzw_trace.")
+
+add_executable(run_manacher_trace_tests cpp/algorithms_manacher_trace_tests.cpp cpp/algorithms_manacher_tests.cpp)
+target_link_libraries(run_manacher_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_manacher_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_manacher_trace_tests TEST_PREFIX "manacher_trace.")
+
+add_executable(run_marching_squares_trace_tests cpp/algorithms_marching_squares_trace_tests.cpp cpp/graphics_batch26_tests.cpp)
+target_link_libraries(run_marching_squares_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_marching_squares_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_marching_squares_trace_tests TEST_PREFIX "marching_squares_trace.")
+
+add_executable(run_mark_compact_trace_tests cpp/algorithms_object_liveness_trace_tests.cpp cpp/algorithms_mark_compact_trace_tests.cpp cpp/algorithms_memory_batch_tests.cpp cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_mark_compact_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mark_compact_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mark_compact_trace_tests TEST_PREFIX "mark_compact_trace.")
+
+add_executable(run_mark_sweep_trace_tests cpp/algorithms_mark_sweep_trace_tests.cpp)
+target_link_libraries(run_mark_sweep_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mark_sweep_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mark_sweep_trace_tests TEST_PREFIX "mark_sweep_trace.")
+
+# Batch224–233: prepare all ten canonical APIs/reports before shared compilation.
+add_executable(run_matrix_chain_trace_tests cpp/algorithms_matrix_chain_trace_tests.cpp cpp/algorithms_combinatorial_search_tests.cpp)
+target_link_libraries(run_matrix_chain_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_matrix_chain_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_matrix_chain_trace_tests TEST_PREFIX "matrix_chain_trace.")
+
+add_executable(run_midpoint_circle_trace_tests cpp/algorithms_midpoint_circle_trace_tests.cpp cpp/algorithms_graphics_batch_tests.cpp)
+target_link_libraries(run_midpoint_circle_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_midpoint_circle_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_midpoint_circle_trace_tests TEST_PREFIX "midpoint_circle_trace.")
+
+add_executable(run_median_filter_trace_tests cpp/algorithms_median_filter_trace_tests.cpp cpp/algorithms_image_batch_tests.cpp)
+target_link_libraries(run_median_filter_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_median_filter_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_median_filter_trace_tests TEST_PREFIX "median_filter_trace.")
+
+add_executable(run_merge_sort_trace_tests cpp/algorithms_merge_sort_trace_tests.cpp)
+target_link_libraries(run_merge_sort_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_merge_sort_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_merge_sort_trace_tests TEST_PREFIX "merge_sort_trace.")
+
+add_executable(run_fitch_trace_tests cpp/algorithms_fitch_trace_tests.cpp)
+target_link_libraries(run_fitch_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_fitch_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_fitch_trace_tests TEST_PREFIX "fitch_trace.")
+
+add_executable(run_md5_trace_tests cpp/algorithms_md5_trace_tests.cpp)
+target_link_libraries(run_md5_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_md5_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_md5_trace_tests TEST_PREFIX "md5_trace.")
+
+add_executable(run_match_rating_trace_tests cpp/algorithms_match_rating_trace_tests.cpp)
+target_link_libraries(run_match_rating_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_match_rating_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_match_rating_trace_tests TEST_PREFIX "match_rating_trace.")
+
+add_executable(run_metaphone_trace_tests cpp/algorithms_metaphone_trace_tests.cpp cpp/algorithms_phonetic_tests.cpp)
+target_link_libraries(run_metaphone_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_metaphone_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_metaphone_trace_tests TEST_PREFIX "metaphone_trace.")
+
+add_executable(run_max_clique_trace_tests cpp/algorithms_max_clique_trace_tests.cpp cpp/algorithms_graph_hard_tests.cpp)
+target_link_libraries(run_max_clique_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_max_clique_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_max_clique_trace_tests TEST_PREFIX "max_clique_trace.")
+
+add_executable(run_memetic_trace_tests cpp/algorithms_memetic_trace_tests.cpp cpp/heuristic_batch50_tests.cpp cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_memetic_trace_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_memetic_trace_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_memetic_trace_tests TEST_PREFIX "memetic_trace.")
+
+add_executable(run_mepml_batch234_tests
+  cpp/algorithms_miller_rabin_tests.cpp
+  cpp/algorithms_modular_exponentiation_tests.cpp
+  cpp/algorithms_montgomery_trace_tests.cpp
+  cpp/algorithms_minimum_degree_trace_tests.cpp
+  cpp/algorithms_min_conflicts_trace_tests.cpp
+  cpp/algorithms_monotone_cubic_trace_tests.cpp
+  cpp/geometry_bounding_rectangle_trace_tests.cpp
+  cpp/geometry_enclosing_circle_trace_tests.cpp
+  cpp/geometry_min_enclosing_circle_tests.cpp
+  cpp/geometry_rotating_calipers_tests.cpp
+  cpp/algorithms_miser_trace_tests.cpp
+  cpp/numerical_batch42_tests.cpp
+  cpp/optim_moead_trace_tests.cpp
+  cpp/optim_multi_objective_tests.cpp)
+target_link_libraries(run_mepml_batch234_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch234_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch234_tests TEST_PREFIX "mepml_batch234.")
+target_sources(run_mepml_batch234_tests PRIVATE
+  cpp/algorithms_sparse_linalg_tests.cpp
+  cpp/algorithms_csp_convex_tests.cpp
+  cpp/algorithms_arithmetic_extra_tests.cpp
+  cpp/algorithms_interpolation_extra_tests.cpp
+  cpp/format/algorithms_format_tests.cpp
+  cpp/format/geometry_format_tests.cpp
+  cpp/format/optim_format_tests.cpp)
+
+add_executable(run_mepml_batch244_tests
+ cpp/algorithms_moore_trace_tests.cpp
+ cpp/algorithms_mtf_trace_tests.cpp
+ cpp/algorithms_muller_trace_tests.cpp
+ cpp/algorithms_nagle_trace_tests.cpp
+ cpp/algorithms_nearest_neighbor_trace_tests.cpp
+ cpp/algorithms_nearest_tsp_trace_tests.cpp
+ cpp/algorithms_needleman_wunsch_trace_tests.cpp
+ cpp/algorithms_nested_sampling_trace_tests.cpp
+ cpp/algorithms_nesting_trace_tests.cpp
+ cpp/nn_tabular_classification_tests.cpp
+ cpp/algorithms_logic_automata_batch_tests.cpp
+ cpp/algorithms_compression2_batch_tests.cpp
+ cpp/algorithms_extra_root_finding_tests.cpp
+ cpp/algorithms_networking_batch_tests.cpp
+ cpp/algorithms_tour_search_tests.cpp
+ cpp/algorithms_sequence_alignment_tests.cpp
+ cpp/algorithms_boosting_bayes_batch_tests.cpp
+ cpp/krylov_batch48_tests.cpp
+ cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_mepml_batch244_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch244_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch244_tests TEST_PREFIX "mepml_batch244.")
+
+add_executable(run_mepml_batch254_tests
+ cpp/algorithms_neville_trace_tests.cpp
+ cpp/algorithms_newell_trace_tests.cpp
+ cpp/algorithms_newton_division_trace_tests.cpp
+ cpp/algorithms_newton_raphson_trace_tests.cpp
+ cpp/algorithms_division_trace_tests.cpp
+ cpp/algorithms_nonblocking_switch_trace_tests.cpp
+ cpp/optim_nsga2_trace_tests.cpp
+ cpp/algorithms_nth_root_trace_tests.cpp
+ cpp/algorithms_nysiis_trace_tests.cpp
+ cpp/algorithms_division_tests.cpp
+ cpp/algorithms_phonetic_tests.cpp
+ cpp/optim_multi_objective_tests.cpp
+ cpp/algorithms_extra_root_finding_tests.cpp
+ cpp/algorithms_interpolation_extra_tests.cpp
+ cpp/algorithms_networking_batch_tests.cpp
+ cpp/format/algorithms_format_tests.cpp
+ cpp/format/optim_format_tests.cpp)
+target_link_libraries(run_mepml_batch254_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch254_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch254_tests TEST_PREFIX "mepml_batch254.")
+
+add_executable(run_mepml_batch264_tests
+ cpp/algorithms_odd_even_sort_trace_tests.cpp
+ cpp/algorithms_odds_trace_tests.cpp
+ cpp/ode_trace_tests.cpp
+ cpp/algorithms_one_r_trace_tests.cpp
+ cpp/algorithms_online_variance_trace_tests.cpp
+ cpp/algorithms_optics_trace_tests.cpp
+ cpp/algorithms_ordered_dither_trace_tests.cpp
+ cpp/algorithms_package_merge_trace_tests.cpp
+ cpp/algorithms_packrat_trace_tests.cpp
+ cpp/algorithms_page_rank_trace_tests.cpp
+ cpp/ode_solver_tests.cpp
+ cpp/algorithms_clustering_batch_tests.cpp
+ cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_mepml_batch264_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch264_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch264_tests TEST_PREFIX "mepml_batch264.")
+
+add_executable(run_mepml_batch274_tests
+ cpp/mepml_batch274_tests.cpp
+ cpp/algorithms_exchange_sorts_tests.cpp
+ cpp/algorithms_sorting_extra_tests.cpp
+ cpp/algorithms_online_linear_classifiers_tests.cpp
+ cpp/algorithms_recurrent_pcnn_batch_tests.cpp
+ cpp/algorithms_parsing_hashing_batch_tests.cpp
+ cpp/crypto_batch24_tests.cpp
+ cpp/graphics_batch26_tests.cpp
+ cpp/datamunge_random_tests.cpp)
+target_link_libraries(run_mepml_batch274_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch274_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch274_tests TEST_PREFIX "mepml_batch274.")
+
+add_executable(run_mepml_batch284_tests
+ cpp/mepml_batch284_tests.cpp
+ cpp/algorithms_quantum_batch_tests.cpp
+ cpp/algorithms_distribution_sorts_tests.cpp
+ cpp/algorithms_factorization_tests.cpp
+ cpp/algorithms_pollard_rho_tests.cpp
+ cpp/algorithms_number_theory_more_tests.cpp
+ cpp/algorithms_algebra_batch_tests.cpp
+ cpp/geometry_polygon_triangulation_tests.cpp
+ cpp/geometry_polygon_and_segment_tests.cpp
+ cpp/bspline_regression_tests.cpp
+ cpp/format/algorithms_format_tests.cpp)
+target_link_libraries(run_mepml_batch284_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch284_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch284_tests TEST_PREFIX "mepml_batch284.")
+
+add_executable(run_mepml_batch294_tests
+ cpp/mepml_batch294_tests.cpp
+ cpp/algorithms_polynomial_gf_tests.cpp
+ cpp/algorithms_sorting_dist_tests.cpp
+ cpp/algorithms_linear_algebra_tests.cpp
+ cpp/parsing_batch25_tests.cpp
+ cpp/algorithms_prim_tests.cpp
+ cpp/algorithms_prufer_tests.cpp
+ cpp/algorithms_advanced_graph_tests.cpp
+ cpp/algorithms_dinic_trace_tests.cpp
+ cpp/algorithms_quantum_batch_tests.cpp
+ cpp/algorithms_tabular_rl_tests.cpp
+ cpp/mepml_batch284_tests.cpp)
+target_link_libraries(run_mepml_batch294_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch294_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch294_tests TEST_PREFIX "mepml_batch294.")
+
+add_executable(run_mepml_batch304_tests cpp/mepml_batch304_tests.cpp)
+target_link_libraries(run_mepml_batch304_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch304_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch304_tests TEST_PREFIX "mepml_batch304.")
+
+add_executable(run_mepml_batch304_regression_tests
+ cpp/algorithms_graphics_batch_tests.cpp
+ cpp/algorithms_rabin_karp_tests.cpp
+ cpp/algorithms_quicksort_tests.cpp
+ cpp/algorithms_quickselect_tests.cpp
+ cpp/algorithms_quadratic_sieve_tests.cpp
+ cpp/eigen_batch47_tests.cpp
+ cpp/geometry_batch2_tests.cpp
+ cpp/algorithms_radix_sort_tests.cpp
+ cpp/algorithms_logic_automata_batch_tests.cpp
+ cpp/krylov_batch48_tests.cpp
+ cpp/datamunge_random_tests.cpp)
+target_link_libraries(run_mepml_batch304_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch304_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch304_regression_tests TEST_PREFIX "mepml_batch304_regression.")
+
+add_executable(run_mepml_batch314_tests cpp/mepml_batch314_tests.cpp cpp/eigen_batch47_tests.cpp)
+target_link_libraries(run_mepml_batch314_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch314_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch314_tests TEST_PREFIX "mepml_batch314.")
+
+add_executable(run_mepml_batch314_regression_tests
+ cpp/algorithms_division_trace_tests.cpp
+ cpp/algorithms_division_tests.cpp
+ cpp/algorithms_scheduling_batch_tests.cpp
+ cpp/algorithms_coding2_batch_tests.cpp
+ cpp/algorithms_edf_trace_tests.cpp
+ cpp/algorithms_estimation_batch_tests.cpp
+ cpp/algorithms_neural_batch_tests.cpp
+ cpp/algorithms_memory_batch_tests.cpp
+ cpp/crypto_batch24_tests.cpp
+ cpp/heuristic_batch50_tests.cpp
+ cpp/parsing_batch25_tests.cpp)
+target_link_libraries(run_mepml_batch314_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch314_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch314_regression_tests TEST_PREFIX "mepml_batch314_regression.")
+
+add_executable(run_mepml_batch324_tests cpp/mepml_batch324_tests.cpp)
+target_link_libraries(run_mepml_batch324_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch324_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch324_tests TEST_PREFIX "mepml_batch324.")
+
+add_executable(run_mepml_batch324_regression_tests
+ cpp/algorithms_golomb_tests.cpp
+ cpp/algorithms_compression_graphics_batch_tests.cpp
+ cpp/algorithms_ode_tests.cpp
+ cpp/algorithms_bwt_trace_tests.cpp
+ cpp/algorithms_scheduling_batch_tests.cpp
+ cpp/algorithms_coding_batch_tests.cpp
+ cpp/algorithms_routing_batch_tests.cpp
+ cpp/algorithms_root_finding_tests.cpp
+ cpp/arithmetic_batch40_tests.cpp
+ cpp/algorithms_subsequences_tests.cpp
+ cpp/geometry_rotating_calipers_tests.cpp
+ cpp/format/algorithms_format_tests.cpp
+ cpp/selection_batch49_tests.cpp)
+target_link_libraries(run_mepml_batch324_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch324_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch324_regression_tests TEST_PREFIX "mepml_batch324_regression.")
+
+add_executable(run_mepml_batch334_tests cpp/mepml_batch334_tests.cpp)
+target_link_libraries(run_mepml_batch334_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch334_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch334_tests TEST_PREFIX "mepml_batch334.")
+
+add_executable(run_mepml_batch334_regression_tests
+ cpp/algorithms_advanced_ml_batch_tests.cpp
+ cpp/algorithms_tabular_rl_tests.cpp
+ cpp/crypto_batch24_tests.cpp
+ cpp/graphics_batch26_tests.cpp
+ cpp/algorithms_distribution_sorts_tests.cpp
+ cpp/algorithms_extra_root_finding_tests.cpp
+ cpp/algorithms_root_finding_tests.cpp
+ cpp/algorithms_permutations_tests.cpp
+ cpp/algorithms_schreier_sims_tests.cpp
+ cpp/algorithms_multiplication_tests.cpp
+ cpp/algorithms_subsequences_tests.cpp)
+target_link_libraries(run_mepml_batch334_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch334_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch334_regression_tests TEST_PREFIX "mepml_batch334_regression.")
+
+add_executable(run_mepml_batch344_tests cpp/mepml_batch344_tests.cpp)
+target_link_libraries(run_mepml_batch344_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch344_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch344_tests TEST_PREFIX "mepml_batch344.")
+
+add_executable(run_mepml_batch344_regression_tests
+ cpp/algorithms_compression2_batch_tests.cpp
+ cpp/algorithms_coding2_batch_tests.cpp
+ cpp/datamunge_random_tests.cpp
+ cpp/crypto_batch23_tests.cpp
+ cpp/crypto_batch24_tests.cpp
+ cpp/algorithms_neural_batch_tests.cpp
+ cpp/geometry_batch1_utility_tests.cpp
+ cpp/geometry_polygon_and_segment_tests.cpp
+ cpp/algorithms_hmac_trace_tests.cpp
+ cpp/format/algorithms_format_tests.cpp
+ cpp/format/random_format_tests.cpp)
+target_link_libraries(run_mepml_batch344_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch344_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch344_regression_tests TEST_PREFIX "mepml_batch344_regression.")
+
+add_executable(run_mepml_batch354_tests cpp/mepml_batch354_tests.cpp)
+target_link_libraries(run_mepml_batch354_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch354_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch354_tests TEST_PREFIX "mepml_batch354.")
+add_executable(run_mepml_batch354_regression_tests
+ cpp/algorithms_bioinformatics_batch_tests.cpp
+ cpp/geometry_polygon_and_segment_tests.cpp
+ cpp/algorithms_number_theory_tests.cpp)
+target_link_libraries(run_mepml_batch354_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch354_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch354_regression_tests TEST_PREFIX "mepml_batch354_regression.")
+
+add_executable(run_mepml_batch364_tests cpp/mepml_batch364_tests.cpp)
+target_link_libraries(run_mepml_batch364_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch364_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch364_tests TEST_PREFIX "mepml_batch364.")
+add_executable(run_mepml_batch364_regression_tests
+ cpp/algorithms_elementary_more_tests.cpp cpp/algorithms_phonetic_tests.cpp
+ cpp/algorithms_sequence_alignment_tests.cpp cpp/algorithms_linear_solvers_tests.cpp
+ cpp/parsing_batch25_tests.cpp cpp/optim_multi_objective_tests.cpp)
+target_link_libraries(run_mepml_batch364_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch364_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch364_regression_tests TEST_PREFIX "mepml_batch364_regression.")
+
+add_executable(run_mepml_batch374_tests cpp/mepml_batch374_tests.cpp)
+target_link_libraries(run_mepml_batch374_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch374_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch374_tests TEST_PREFIX "mepml_batch374.")
+add_executable(run_mepml_batch374_regression_tests
+ cpp/algorithms_division_tests.cpp cpp/algorithms_game_search_tests.cpp
+ cpp/algorithms_permutations_tests.cpp cpp/algorithms_linear_algebra_tests.cpp
+ cpp/algorithms_graph_hard_tests.cpp cpp/algorithms_sorting_hybrid_tests.cpp
+ cpp/algorithms_sorting_extra_tests.cpp)
+target_link_libraries(run_mepml_batch374_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch374_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch374_regression_tests TEST_PREFIX "mepml_batch374_regression.")
+
+add_executable(run_mepml_batch384_tests cpp/mepml_batch384_tests.cpp)
+target_link_libraries(run_mepml_batch384_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch384_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch384_tests TEST_PREFIX "mepml_batch384.")
+add_executable(run_mepml_batch384_regression_tests
+ cpp/algorithms_combinatorial_extra_tests.cpp cpp/algorithms_graphics_batch_tests.cpp
+ cpp/algorithms_graph_connectivity_tests.cpp cpp/crypto_batch24_tests.cpp
+ cpp/algorithms_merge_ternary_bitap_tests.cpp cpp/algorithms_primality_tests.cpp
+ cpp/algorithms_tarjan_lca_tests.cpp cpp/algorithms_tabular_rl_tests.cpp
+ cpp/algorithms_sparse_linalg_tests.cpp)
+target_link_libraries(run_mepml_batch384_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch384_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch384_regression_tests TEST_PREFIX "mepml_batch384_regression.")
+
+add_executable(run_mepml_batch394_tests cpp/mepml_batch394_tests.cpp)
+target_link_libraries(run_mepml_batch394_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch394_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch394_tests TEST_PREFIX "mepml_batch394.")
+add_executable(run_mepml_batch394_regression_tests
+ cpp/algorithms_linear_solvers_tests.cpp cpp/algorithms_sorting_hybrid_tests.cpp
+ cpp/algorithms_todd_coxeter_tests.cpp cpp/algorithms_number_theory_tests.cpp
+ cpp/algorithms_multiplication_tests.cpp cpp/algorithms_topological_sort_tests.cpp
+ cpp/selection_batch49_tests.cpp cpp/algorithms_routing_batch_tests.cpp
+ cpp/algorithms_pde_solvers_tests.cpp)
+target_link_libraries(run_mepml_batch394_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch394_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch394_regression_tests TEST_PREFIX "mepml_batch394_regression.")
+
+add_executable(run_mepml_batch404_tests cpp/mepml_batch404_tests.cpp)
+target_link_libraries(run_mepml_batch404_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch404_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch404_tests TEST_PREFIX "mepml_batch404." PROPERTIES TIMEOUT 10)
+add_executable(run_mepml_batch404_regression_tests
+ cpp/algorithms_distribution_sorts_tests.cpp cpp/algorithms_factorization_tests.cpp
+ cpp/algorithms_substrings_tests.cpp cpp/stats_tsne_tests.cpp cpp/stats_umap_tests.cpp cpp/algorithms_advanced_graph_tests.cpp cpp/algorithms_coding2_batch_tests.cpp cpp/numerical_batch41_tests.cpp cpp/algorithms_search_techniques_tests.cpp cpp/algorithms_networking_batch_tests.cpp)
+target_link_libraries(run_mepml_batch404_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch404_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch404_regression_tests TEST_PREFIX "mepml_batch404_regression.")
+
+add_executable(run_mepml_batch414_tests cpp/mepml_batch414_tests.cpp)
+target_link_libraries(run_mepml_batch414_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch414_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch414_tests TEST_PREFIX "mepml_batch414.")
+add_executable(run_mepml_batch414_regression_tests
+ cpp/algorithms_merge_ternary_bitap_tests.cpp cpp/algorithms_coding2_batch_tests.cpp
+  
+  cpp/algorithms_bioinformatics_batch_tests.cpp
+  cpp/algorithms_ode_tests.cpp cpp/algorithms_calendar_geo_batch_tests.cpp cpp/algorithms_distributed_batch_tests.cpp cpp/algorithms_error_detection_batch_tests.cpp cpp/algorithms_search_order_tests.cpp cpp/algorithms_search_techniques_tests.cpp)
+target_link_libraries(run_mepml_batch414_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch414_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch414_regression_tests TEST_PREFIX "mepml_batch414_regression.")
+
+add_executable(run_mepml_batch424_tests cpp/mepml_batch424_tests.cpp)
+target_link_libraries(run_mepml_batch424_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch424_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch424_tests TEST_PREFIX "mepml_batch424.")
+add_executable(run_mepml_batch424_regression_tests cpp/algorithms_hmm_tests.cpp
+ cpp/algorithms_forward_backward_analysis_tests.cpp cpp/numerical_batch43_tests.cpp
+ cpp/stats_resampling_tests.cpp cpp/geometry_delaunay_tests.cpp)
+target_link_libraries(run_mepml_batch424_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_mepml_batch424_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_mepml_batch424_regression_tests TEST_PREFIX "mepml_batch424_regression.")
+
+add_executable(run_nn_diffusion_components_tests cpp/nn_diffusion_components_tests.cpp)
+target_link_libraries(run_nn_diffusion_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_diffusion_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_diffusion_components_tests TEST_PREFIX "nn-diffusion-components.")
+
+add_executable(run_nn_recurrent_components_tests cpp/nn_recurrent_components_tests.cpp)
+target_link_libraries(run_nn_recurrent_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_recurrent_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_recurrent_components_tests TEST_PREFIX "nn-recurrent-components.")
+
+add_executable(run_nn_recurrent_extensions_tests cpp/nn_recurrent_extensions_tests.cpp)
+target_link_libraries(run_nn_recurrent_extensions_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_recurrent_extensions_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_recurrent_extensions_tests TEST_PREFIX "nn-recurrent-extensions.")
+
+add_executable(run_nn_autorec_tests cpp/nn_autorec_tests.cpp)
+target_link_libraries(run_nn_autorec_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_autorec_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_autorec_tests TEST_PREFIX "nn-autorec.")
+
+add_executable(run_nn_energy_components_tests cpp/nn_energy_components_tests.cpp)
+target_link_libraries(run_nn_energy_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_energy_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_energy_components_tests TEST_PREFIX "nn-energy-components.")
+
+add_executable(run_nn_dnc_components_tests cpp/nn_dnc_components_tests.cpp)
+target_link_libraries(run_nn_dnc_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_dnc_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_dnc_components_tests TEST_PREFIX "nn-dnc-components.")
+
+add_executable(run_nn_attention_components_tests cpp/nn_attention_components_tests.cpp)
+target_link_libraries(run_nn_attention_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_attention_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_attention_components_tests TEST_PREFIX "nn-attention-components.")
+
+add_executable(run_rl_environment_components_tests cpp/rl_environment_components_tests.cpp)
+target_link_libraries(run_rl_environment_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_rl_environment_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_rl_environment_components_tests TEST_PREFIX "rl-environment-components.")
+
+add_executable(run_rl_foundation_components_tests cpp/rl_foundation_components_tests.cpp)
+target_link_libraries(run_rl_foundation_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_rl_foundation_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_rl_foundation_components_tests TEST_PREFIX "rl-foundation-components.")
+
+add_executable(run_nn_deep_q_components_tests cpp/nn_deep_q_components_tests.cpp)
+target_link_libraries(run_nn_deep_q_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_deep_q_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_deep_q_components_tests TEST_PREFIX "nn-deep-q-components.")
+
+add_executable(run_nn_policy_gradient_components_tests cpp/nn_policy_gradient_components_tests.cpp)
+target_link_libraries(run_nn_policy_gradient_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_policy_gradient_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_policy_gradient_components_tests TEST_PREFIX "nn-policy-gradient-components.")
+
+add_executable(run_nn_continuous_off_policy_components_tests cpp/nn_continuous_off_policy_components_tests.cpp)
+target_link_libraries(run_nn_continuous_off_policy_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_continuous_off_policy_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_continuous_off_policy_components_tests TEST_PREFIX "nn-continuous-off-policy-components.")
+
+add_executable(run_nn_planning_components_tests cpp/nn_planning_components_tests.cpp)
+target_link_libraries(run_nn_planning_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_planning_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_planning_components_tests TEST_PREFIX "nn-planning-components.")
+
+add_executable(run_nn_pixel_environment_components_tests cpp/nn_pixel_environment_components_tests.cpp)
+target_link_libraries(run_nn_pixel_environment_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_pixel_environment_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_pixel_environment_components_tests TEST_PREFIX "nn-pixel-environment-components.")
+
+add_executable(run_nn_recovered_language_tests cpp/nn_recovered_language_tests.cpp)
+target_link_libraries(run_nn_recovered_language_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_recovered_language_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_recovered_language_tests TEST_PREFIX "nn-recovered-language.")
+
+add_executable(run_nn_completion_components_tests cpp/nn_completion_components_tests.cpp)
+target_link_libraries(run_nn_completion_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_completion_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_completion_components_tests TEST_PREFIX "nn-completion.")
+
+add_executable(run_nn_classical_components_tests cpp/nn_classical_components_tests.cpp)
+target_link_libraries(run_nn_classical_components_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_classical_components_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_classical_components_tests TEST_PREFIX "nn-classical-components.")
+
+add_executable(run_nn_binding_compatibility_tests cpp/nn_binding_compatibility_tests.cpp)
+target_link_libraries(run_nn_binding_compatibility_tests datamunge::datamunge GTest::gtest_main)
+target_include_directories(run_nn_binding_compatibility_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../prebindings/nn/include)
+set_target_properties(run_nn_binding_compatibility_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_binding_compatibility_tests TEST_PREFIX "nn-binding-compatibility.")

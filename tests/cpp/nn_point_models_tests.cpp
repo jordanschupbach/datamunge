@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_point_models_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_models_checks.cpp"
-#undef main
+#include "../fixtures/nn_point_models_checks.hpp"
 TEST(PointModels, Every9TransformPenaltyHostDerivativeAndOrthogonalZero) {
   PenaltyChecks();
 }
@@ -13,7 +11,7 @@ TEST(PointModels, BothFullAndCompactEveryEndpointInventoryAndConnectedGradient) 
 }
 TEST(PointModels, BothFullCanonicalGraphsAllFiniteGradientsOnGenuineMesh) {
   nn::set_num_threads(2);
-  const auto arrays = LoadClouds("build/cnn-datasets/modelnet");
+  const auto arrays = LoadClouds((std::filesystem::path(dm::datasets::data_home()) / "modelnet"));
   FullRuntime(arrays);
   RealForward(arrays);
 }
@@ -74,9 +72,9 @@ TEST(PointModels, IndependentAll18SharedDensePopulationBnInputDerivatives) {
 }
 TEST(PointModels, EverySourceMetadataAndRetained256SamplesAlign) {
   namespace m = dm::nn::models;
-  const auto pools = m::LoadPoints("build/cnn-datasets/modelnet");
+  const auto pools = m::LoadPoints((std::filesystem::path(dm::datasets::data_home()) / "modelnet"));
   std::map<std::string, nn::Tensor> a;
-  for (const auto &[key, value] : nn::load_npz("build/cnn-datasets/modelnet/point_clouds.npz"))
+  for (const auto &[key, value] : nn::load_npz((std::filesystem::path(dm::datasets::data_home()) / "modelnet/point_clouds.npz").string()))
     a[key] = value;
   for (int i = 0; i < 3; ++i) {
     const std::string name = i == 0 ? "fit" : i == 1 ? "validation" : "test";
@@ -91,7 +89,7 @@ TEST(PointModels, EverySourceMetadataAndRetained256SamplesAlign) {
 }
 TEST(PointModels, AllMovingStateModesAndInvalidPointContracts) {
   namespace m = dm::nn::models;
-  const auto data = m::LoadPoints("build/cnn-datasets/modelnet");
+  const auto data = m::LoadPoints((std::filesystem::path(dm::datasets::data_home()) / "modelnet"));
   for (bool plus : {false, true}) {
     nn::ParameterStore p(971), s(977);
     nn::Generator gen(971);

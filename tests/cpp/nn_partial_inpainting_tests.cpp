@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_partial_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/partial_inpainting.cpp"
-#undef main
+#include "../fixtures/nn_partial_inpainting_checks.hpp"
 namespace mask_oracle {
 namespace nn = dm::nn;
 using dm::nn::models::ContextPairs;
@@ -87,7 +85,7 @@ TEST(PartialInpainting, FullCompactGraphAndMaskGeometry) {
   ModelChecks();
 }
 TEST(PartialInpainting, GenuineKerasPoolsLossesEveryImageAdjoint) {
-  const std::filesystem::path root = "build/cnn-datasets/style_transfer";
+  const auto root=std::filesystem::path(dm::datasets::data_home())/"style_transfer";
   if (!std::filesystem::exists(root / "partial_reference.npz"))
     GTEST_SKIP() << "prepare genuine Keras fixtures";
   dm::nn::set_num_threads(2);

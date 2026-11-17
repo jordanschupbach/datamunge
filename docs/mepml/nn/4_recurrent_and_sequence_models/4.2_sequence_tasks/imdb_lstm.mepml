@@ -1,0 +1,779 @@
+//? Title: IMDB LSTM: Fit-Only Vocabulary, Masked States and Held-Out Sentiment
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The exact upstream preparation protocol and the complete editable native C++ experiment preserve original source rows, seeds, fitting budgets and validation. Canonical components expose mathematical graphs; every objective, optimizer step, fitting/generation loop and deployment comparison remains visible.
+)
+\toc
+
+> Follow the actual data and model
+
+Verified Keras token lists -> fit-only vocabulary256 -> LSTM8 -> logits2.
+
+```{cpp, results="markdown", file="figures/imdb_lstm_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("source",{-18,0},"Pinned original input protocol",s).node("graph",{0,0},"Verified Keras token lists -> fit-only vocabulary256 -> LSTM8 -> logits2",s).node("report",{18,0},"Explicit objectives / updates / generation",s).edge("source","graph").edge("graph","report").save_svg("build/imdb_lstm_method.svg");}
+```
+// result_begin: markdown
+\image(figures/imdb_lstm_method.svg)
+// result_end
+
+> Prepare the original inputs through datamunge
+
+The native adapter follows the recovered upstream preparation script, including source checksums, source row identities, fitting-only vocabulary/palette selection and held-out boundaries. Runtime preparation calls no Python or another checkout. Native byte-valued image arrays are stored as Int32 with identical numeric values. Optional external TensorFlow recordings are separate; their absence does not establish external parity.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto path=dm::datasets::prepare_example_data("imdb_lstm");std::print("Prepared original imdb_lstm protocol at {}\n",path);}
+```
+// result_begin: markdown
+Prepared original imdb_lstm protocol at /home/jordan/.cache/datamunge/datasets/imdb_lstm
+// result_end
+
+> A hand-checkable likelihood reference
+
+A uniform categorical distribution over2 classes gives negative log-likelihood log(2). For language/image models this is nats per predicted token; for a sequence tagger it is a single independent-token reference, not its CRF sequence likelihood.
+
+```{cpp, results="markdown", file="figures/imdb_lstm_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto logp=dm::nn::log_softmax(dm::nn::zeros({1,2}),1);double computed=-logp.to_vector<double>()[0];std::print("| classes | native uniform NLL | analytic NLL |\n|---:|---:|---:|\n| 2 | {:.9f} | {:.9f} |\n",computed,std::log(2.));dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,std::log(2.)},"uniform NLL",{37,99,235}).ylim(0,std::log(2.)*1.2).title("imdb lstm uniform reference").size(1000,550).save_svg("build/imdb_lstm_worked.svg");}
+```
+// result_begin: markdown
+| classes | native uniform NLL | analytic NLL |
+|---:|---:|---:|
+| 2 | 0.693147182 | 0.693147181 |
+\image(figures/imdb_lstm_worked.svg)
+// result_end
+
+> Inspect the native graph
+
+The preview groups actual native graph endpoints into named stages, using independent source-sized parameters. The grouped recurrent or attention block retains the full source context. Cache/filter/generation loops and CRF decoding remain explicit in the program below.
+
+```{cpp, results="markdown", file="figures/imdb_lstm_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_directories("build");n::ParameterStore p(0);n::Module network([&](const n::Tensor&x){auto y=m::imdb::ImdbLstm(p,x,n::from_vector(std::vector<int>{48}),n::zeros({1,8}),n::zeros({1,8}));n::model_stage("Embedding and masked 48-step LSTM",x,y.final_state);return n::model_stage("Sentiment head",y.final_state,y.logits);},"imdb lstm source graph");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;network.plot(n::zeros({1,48,256}),options).save_svg("build/imdb_lstm_network.svg");}
+```
+// result_begin: markdown
+\image(figures/imdb_lstm_network.svg)
+// result_end
+
+> Complete preserved source experiment
+
+Original epoch/batch budgets, random streams, source guard tests and weak outcomes are preserved. All fitting and generation code is editable. This program uses native C++ data preparation and mathematical components; it does not execute the upstream Python preparers. Saved arrays and source stdout will be compared against a frozen copy of the pre-conversion program on the exact same prepared inputs. No external-framework equivalence is inferred when recordings are absent.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn imdb_lstm
+// Real IMDB sentiment classification with an embedded length-masked LSTM; three cheap epochs.
+//
+// Port of tflow's imdb_lstm. Data: tflow's output/datasets/imdb_lstm
+// (imdb_lstm.npz: pinned Keras IMDB reviews, 64 fit / 32 validation / 32 test,
+// balanced labels, first 48 tokens re-indexed into a fit-only 256-word
+// vocabulary with PAD 0 / UNK 1; vocabulary.txt).
+// A learned 8-D embedding, an 8-unit LSTM (forget bias 1) whose states are
+// frozen past each review's length, and an 8 -> 2 head; 2610 parameters,
+// Adam .01, batch 16, three epochs (12 updates) on the softmax cross-entropy.
+// When tflow's recorded run (output/models/imdb_lstm) is present, the port
+// replays it from TF's initial weights (initial outputs incl. every BPTT
+// partial, first-batch forward and gradients, history, final weights).
+// The own-initialisation run then audits restore, label-free prediction,
+// padding/zero-length/short-length invariance, causality of the forward
+// states, invalid-id rejection, the frozen PAD embedding row and
+// immutability, and compares with a fit-only naive Bayes baseline.
+// Options: epochs=3 data=PATH out=PATH tf=PATH.
+// Output: output/nn/models/imdb_lstm/.
+
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: imdb_lstm.hpp
+namespace imdb {using namespace dm::nn::models::imdb;}
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { return DataRoot() / name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/recovered-language");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+// Editable workflow support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using replay::Map;
+using namespace imdb;
+
+namespace {
+
+const std::vector<std::string> kPredictFields{"logits", "probability", "states", "final_state", "cell_states", "final_cell", "gates"};
+
+struct Model {
+  nn::ParameterStore p;
+  explicit Model(std::uint64_t seed) : p(seed) {
+    nn::NoGradGuard guard;
+    const auto      z = nn::zeros({1, kUnits});
+    ImdbLstm(p, nn::zeros({1, kSteps, kVocab}), nn::ones({1}, nn::DType::Int32), z, z);
+    check::Require(p.count() == 2610 && p.size() == 6, "2610WordEmbeddingLstmHeadParameters");
+  }
+  static Tensor Encode(const Map& x) {
+    for (int v : x.at("input").to_vector<int>()) check::Require(v >= 0 && v < kVocab, "validLocalWordID");
+    return nn::one_hot(x.at("input"), kVocab);
+  }
+  static Tensor Zero(std::int64_t n) { return nn::zeros({n, kUnits}); }
+  static Map Fields(const Path& path) {
+    return {{"logits", path.logits.detach()},           {"probability", nn::softmax(path.logits, -1).detach()},
+            {"states", path.states.detach()},           {"final_state", path.final_state.detach()},
+            {"cell_states", path.cell_states.detach()}, {"final_cell", path.final_cell.detach()},
+            {"gates", path.gates.detach()}};
+  }
+  static Tensor Loss(const Tensor& logits, const Tensor& labels) {
+    return nn::neg(nn::mean(nn::sum(nn::mul(nn::one_hot(labels, 2), nn::log_softmax(logits, -1)), {1})));
+  }
+  /// Words and lengths only (no labels).
+  Map Predict(const Map& x) {
+    nn::NoGradGuard guard;
+    const auto      n = x.at("input").shape()[0];
+    return Fields(ImdbLstm(p, Encode(x), x.at("lengths"), Zero(n), Zero(n)));
+  }
+  Map Evaluate(const Map& x) {
+    const auto n   = x.at("input").shape()[0];
+    Tensor     enc = Encode(x), h0 = Zero(n), c0 = Zero(n);
+    for (Tensor* t : {&enc, &h0, &c0}) t->requires_grad_(true);
+    const Path   path   = ImdbLstm(p, enc, x.at("lengths"), h0, c0);
+    const Tensor chosen = nn::sum(nn::mul(path.logits, nn::one_hot(x.at("labels"), 2)));
+    nn::GradOptions o;
+    o.allow_unused = true;
+    const auto g   = nn::grad(std::vector<Tensor>{chosen}, {enc, h0, path.embeddings, c0}, {}, o);
+    auto       def = [](const Tensor& t, const Tensor& like) { return t.defined() ? t : nn::zeros_like(like).detach(); };
+    Map        out = Fields(path);
+    out["loss"]                   = Loss(path.logits, x.at("labels")).detach();
+    out["encoded_input_gradient"] = def(g[0], enc);
+    out["initial_gradient"]       = def(g[1], h0);
+    out["embedding_gradient"]     = def(g[2], path.embeddings);
+    out["initial_cell_gradient"]  = def(g[3], c0);
+    return out;
+  }
+  std::vector<Tensor> Gradients(const Map& x) {
+    const auto n = x.at("input").shape()[0];
+    return nn::grad(Loss(ImdbLstm(p, Encode(x), x.at("lengths"), Zero(n), Zero(n)).logits, x.at("labels")), p.parameters());
+  }
+};
+
+double Accuracy(const Tensor& logits, const Tensor& labels) {
+  const auto l = logits.to_vector<float>();
+  const auto y = labels.to_vector<int>();
+  int        correct = 0;
+  for (std::size_t b = 0; b < y.size(); ++b) correct += (l[2 * b + 1] > l[2 * b]) == (y[b] == 1);
+  return double(correct) / y.size();
+}
+
+/// Trains; returns {validation CE, accuracy} per epoch.
+std::vector<std::pair<double, double>> Train(Model& m, const Map& fit, const Map& validation, int epochs,
+                                             std::ofstream* batches, const std::filesystem::path* root) {
+  nn::Optimizer  opt(m.p, .01, replay::Adam());
+  nn::BatchOrder order(64, 16, 43019);
+  std::vector<std::pair<double, double>> history;
+  int            updates = 0;
+  for (int e = 1; e <= epochs; ++e) {
+    order.begin_epoch();
+    for (;;) {
+      const auto rows = order.next();
+      if (rows.empty()) break;
+      const auto b = replay::Rows(fit, rows);
+      if (!updates && root) {
+        nn::save_npz((*root / "first_batch.npz").string(), replay::ToNamed(b));
+        nn::save_npz((*root / "first_forward.npz").string(), replay::ToNamed(m.Evaluate(b)));
+        nn::save_npz((*root / "initial_gradients.npz").string(), replay::ToNamed(replay::Named(m.p, m.Gradients(b))));
+      }
+      opt.step(m.Gradients(b));
+      if (!updates && root) m.p.save((*root / "first_after.npz").string());
+      if (batches)
+        for (auto r : rows) *batches << e << '\t' << updates << '\t' << r << '\n';
+      ++updates;
+    }
+    const auto val = m.Evaluate(validation);
+    history.emplace_back(val.at("loss").item<double>(), Accuracy(val.at("logits"), validation.at("labels")));
+    if (root) {
+      m.p.save((*root / ("epoch" + std::to_string(e) + "_arrays.npz")).string());
+      nn::save_npz((*root / ("epoch" + std::to_string(e) + "_validation.npz")).string(), replay::ToNamed(val));
+    }
+  }
+  return history;
+}
+
+void TfParity(const std::filesystem::path& tf, const Map& fit, const Map& validation, const Map& test, int epochs) {
+  if (!std::filesystem::exists(tf / "initial_arrays.npz")) {
+    std::cout << " (tflow run not found at " << tf << "; TF parity skipped)\n";
+    return;
+  }
+  Model m(0);
+  replay::LoadInto(m.p, tf / "initial_arrays.npz");
+  const double out = replay::MaxDiff(m.Evaluate(test), tf / "initial_outputs.npz");
+  auto         fb  = replay::ToMap(nn::load_npz((tf / "first_batch.npz").string()));
+  const double fwd = replay::MaxDiff(m.Evaluate(fb), tf / "first_forward.npz");
+  const double gd  = replay::MaxDiff(replay::Named(m.p, m.Gradients(fb)), tf / "initial_gradients.npz");
+  check::Near(std::max(out, fwd), 0, 2e-6, "initial outputs, every BPTT partial and first-batch forward match TF");
+  check::Near(gd, 0, 2e-6, "first-batch parameter gradients match TF");
+  const auto hist = Train(m, fit, validation, epochs, nullptr, nullptr);
+  const auto tfh = replay::History(tf / "history.tsv", 1), tfa = replay::History(tf / "history.tsv", 2);
+  double     worst = 0;
+  for (std::size_t e = 0; e < hist.size() && e < tfh.size(); ++e) {
+    std::cout << "  replay epoch" << e + 1 << " validationCE=" << hist[e].first << " accuracy=" << hist[e].second
+              << " (TF " << tfh[e] << ", " << tfa[e] << ")\n";
+    worst = std::max(worst, std::abs(hist[e].first - tfh[e]));
+  }
+  std::cout << " TF parity from TF's initial weights: initial outputs/partials max diff=" << out
+            << ", first-batch forward max diff=" << fwd << ", gradients max diff=" << gd;
+  if (epochs == 3) {
+    const double w = replay::MaxDiff(replay::Arrays(m.p), tf / "model_arrays.npz");
+    std::cout << ", final weights max diff=" << w;
+    check::Near(worst, 0, 1e-4, "validation history tracks TF's recorded run");
+    check::Near(w, 0, 1e-4, "final weights track TF's after 12 Adam updates");
+  }
+  std::cout << "\n";
+}
+
+void SetIds(Map& x, const std::vector<std::int32_t>& ids) { x.at("input") = nn::from_vector(ids, x.at("input").shape()); }
+
+}  // namespace
+
+int main(int argc, char** argv) {
+  try {
+    const auto            start = std::chrono::steady_clock::now();
+    int                   epochs = 3;
+    std::filesystem::path data = paths::Dataset("imdb_lstm"), root = paths::OutputRoot() / "models/imdb_lstm",
+                          tf = replay::TfModels("imdb_lstm");
+    for (int i = 1; i < argc; ++i) {
+      const std::string a = argv[i];
+      if (a.rfind("epochs=", 0) == 0) epochs = std::stoi(a.substr(7));
+      else if (a.rfind("data=", 0) == 0) data = a.substr(5);
+      else if (a.rfind("out=", 0) == 0) root = a.substr(4);
+      else if (a.rfind("tf=", 0) == 0) tf = a.substr(3);
+      else throw std::invalid_argument("epochs=N data=PATH out=PATH tf=PATH");
+    }
+    check::Require(epochs > 0 && epochs <= 100, "threeCheapDefaultEpochs");
+    std::filesystem::create_directories(root);
+    const auto arrays = nn::load_npz((data / "imdb_lstm.npz").string());
+    std::filesystem::copy_file(data / "imdb_lstm.npz", root / "data.npz", std::filesystem::copy_options::overwrite_existing);
+    replay::CopyAssets(data, root, {"vocabulary.txt", "manifest.json"});
+    std::vector<std::string> vocabulary;
+    {
+      std::ifstream vf(data / "vocabulary.txt");
+      std::string   word;
+      while (std::getline(vf, word)) vocabulary.push_back(word);
+    }
+    check::Require(vocabulary.size() == 256 && vocabulary[0] == "<pad>" && vocabulary[1] == "<unk>", "fitOnly256WordVocabulary");
+    const std::vector<std::string> keys{"input", "lengths", "labels", "source_ids"};
+    const Map fit = replay::Split(arrays, "fit", keys), validation = replay::Split(arrays, "validation", keys),
+              test = replay::Split(arrays, "test", keys);
+    TfParity(tf, fit, validation, test, epochs);
+
+    Model m(43003);
+    m.p.save((root / "initial_arrays.npz").string());
+    nn::save_npz((root / "initial_outputs.npz").string(), replay::ToNamed(m.Evaluate(test)));
+    std::ofstream history(root / "history.tsv"), batches(root / "batches.tsv");
+    history.precision(17);
+    history << "epoch\tvalidation_ce\tvalidation_accuracy\n";
+    batches << "epoch\tstep\trow\n";
+    const auto hist = Train(m, fit, validation, epochs, &batches, &root);
+    for (std::size_t e = 0; e < hist.size(); ++e) {
+      history << e + 1 << '\t' << hist[e].first << '\t' << hist[e].second << '\n';
+      std::cout << "epoch" << e + 1 << " validationCE=" << hist[e].first << " accuracy=" << hist[e].second << std::endl;
+    }
+    const Map first = replay::ToMap(nn::load_npz((root / "first_batch.npz").string()));
+    nn::save_npz((root / "final_gradients.npz").string(), replay::ToNamed(replay::Named(m.p, m.Gradients(first))));
+    m.p.save((root / "final.npz").string());
+    Model deployed(0);
+    deployed.p.load((root / "final.npz").string());
+    check::Require(replay::SameBits(replay::Arrays(m.p), replay::Arrays(deployed.p)), "allWordLstmWeightsRestoreBitexact");
+    const Map before = replay::Arrays(deployed.p);
+    const Map out = deployed.Evaluate(test), pred = deployed.Predict(test), repeat = deployed.Predict(test);
+    for (const auto& [k, v] : pred) {
+      check::Require(replay::SameBits(v, out.at(k)), "labelsNeverFedToSentimentPrediction");
+      check::Require(replay::SameBits(v, repeat.at(k)), "sentimentPredictionRepeatBitexact");
+    }
+    nn::save_npz((root / "outputs.npz").string(), replay::ToNamed(out));
+    nn::save_npz((root / "model_arrays.npz").string(), replay::ToNamed(before));
+    {
+      const auto single = deployed.Predict(replay::Rows(test, {0})).at("logits").to_vector<float>();
+      const auto batch  = out.at("logits").to_vector<float>();
+      for (int c = 0; c < 2; ++c) check::Near(single[c], batch[c], 2e-6, "singleAndBatchSentimentParity");
+    }
+    std::vector<std::int64_t> all(32);
+    std::iota(all.begin(), all.end(), 0);
+    Map        padded = replay::Rows(test, all), reversed = padded, last = padded;
+    const auto ids = test.at("input").to_vector<std::int32_t>();
+    const auto lengths = test.at("lengths").to_vector<int>();
+    const auto enc_g = out.at("encoded_input_gradient").to_vector<float>();
+    const auto states = out.at("states").to_vector<float>(), cells = out.at("cell_states").to_vector<float>();
+    {
+      auto pi = ids, ri = ids, li = ids;
+      for (int b = 0; b < 32; ++b) {
+        const int length = lengths[b];
+        for (int t = 0; t < kSteps; ++t) {
+          if (t >= length) {
+            pi[b * kSteps + t] = 2 + (b + t) % 254;
+            for (int c = 0; c < kVocab; ++c)
+              check::Require(enc_g[(b * kSteps + t) * kVocab + c] == 0, "allPaddedEncodedWordPartialsExactlyZero");
+            for (int c = 0; c < kUnits; ++c) {
+              check::Require(states[(b * 49 + t + 1) * kUnits + c] == states[(b * 49 + t) * kUnits + c], "hiddenStateRetainedOnPaddedWords");
+              check::Require(cells[(b * 49 + t + 1) * kUnits + c] == cells[(b * 49 + t) * kUnits + c], "cellStateRetainedOnPaddedWords");
+            }
+          } else {
+            ri[b * kSteps + t] = ids[b * kSteps + length - 1 - t];
+          }
+        }
+        if (length) li[b * kSteps + length - 1] = 1;
+      }
+      SetIds(padded, pi);
+      SetIds(reversed, ri);
+      SetIds(last, li);
+    }
+    const Map padout = deployed.Evaluate(padded), reverseout = deployed.Evaluate(reversed), lastout = deployed.Evaluate(last);
+    check::Require(replay::SameBits(out, padout), "allSentimentOutputsAndPartialsIgnorePaddingIDs");
+    {
+      const auto ls = lastout.at("states").to_vector<float>();
+      for (int b = 0; b < 32; ++b)
+        for (int t = 0; t < lengths[b]; ++t)
+          for (int c = 0; c < kUnits; ++c)
+            check::Require(ls[(b * 49 + t) * kUnits + c] == states[(b * 49 + t) * kUnits + c], "changingLastWordCannotAffectEarlierStates");
+    }
+    for (const auto& [name, x] : std::vector<std::pair<std::string, Map*>>{{"padding", &padded}, {"reverse", &reversed}, {"last_word", &last}})
+      nn::save_npz((root / (name + "_inputs.npz")).string(), replay::ToNamed(*x));
+    nn::save_npz((root / "padding_outputs.npz").string(), replay::ToNamed(padout));
+    nn::save_npz((root / "reverse_outputs.npz").string(), replay::ToNamed(reverseout));
+    nn::save_npz((root / "last_word_outputs.npz").string(), replay::ToNamed(lastout));
+    Map empty = replay::Rows(test, {0, 1});
+    empty.at("lengths") = nn::zeros({2}, nn::DType::Int32);
+    const Map emptyout = deployed.Evaluate(empty);
+    for (auto key : {"states", "cell_states", "encoded_input_gradient", "embedding_gradient", "initial_cell_gradient"})
+      for (float v : emptyout.at(key).to_vector<float>()) check::Require(v == 0, "zeroLengthReviewStateAndInputPartials");
+    nn::save_npz((root / "zero_length_inputs.npz").string(), replay::ToNamed(empty));
+    nn::save_npz((root / "zero_length_outputs.npz").string(), replay::ToNamed(emptyout));
+    Map       shortened = replay::Rows(test, {0, 1, 2, 3}), short_padding = shortened;
+    const int fixture_lengths[4] = {1, 7, 19, 31};
+    {
+      auto sp = shortened.at("input").to_vector<std::int32_t>();
+      for (int b = 0; b < 4; ++b)
+        for (int t = fixture_lengths[b]; t < kSteps; ++t) sp[b * kSteps + t] = 2 + (b + t) % 254;
+      const Tensor fl = nn::from_vector(std::vector<std::int32_t>(fixture_lengths, fixture_lengths + 4));
+      shortened.at("lengths") = fl;
+      short_padding.at("lengths") = fl;
+      SetIds(short_padding, sp);
+    }
+    const Map shortout = deployed.Evaluate(shortened), shortpadout = deployed.Evaluate(short_padding);
+    check::Require(replay::SameBits(shortout, shortpadout), "nonVacuousShortReviewPaddingOutputAndGradientInvariance");
+    {
+      const auto g = shortout.at("encoded_input_gradient").to_vector<float>();
+      const auto s = shortout.at("states").to_vector<float>(), c = shortout.at("cell_states").to_vector<float>();
+      for (int b = 0; b < 4; ++b)
+        for (int t = fixture_lengths[b]; t < kSteps; ++t) {
+          for (int k = 0; k < kVocab; ++k) check::Require(g[(b * kSteps + t) * kVocab + k] == 0, "shortFixtureAllPaddingPartialsZero");
+          for (int k = 0; k < kUnits; ++k)
+            check::Require(s[(b * 49 + t + 1) * kUnits + k] == s[(b * 49 + t) * kUnits + k] &&
+                               c[(b * 49 + t + 1) * kUnits + k] == c[(b * 49 + t) * kUnits + k],
+                           "shortFixtureBothStatePathsRetained");
+        }
+    }
+    nn::save_npz((root / "shortened_inputs.npz").string(), replay::ToNamed(shortened));
+    nn::save_npz((root / "short_padding_inputs.npz").string(), replay::ToNamed(short_padding));
+    nn::save_npz((root / "shortened_outputs.npz").string(), replay::ToNamed(shortout));
+    nn::save_npz((root / "short_padding_outputs.npz").string(), replay::ToNamed(shortpadout));
+    {
+      Map  invalid = replay::Rows(test, {0});
+      auto iv      = invalid.at("input").to_vector<std::int32_t>();
+      iv[0]        = 256;
+      SetIds(invalid, iv);
+      check::Throws([&] { deployed.Predict(invalid); }, "invalidLocalWordIDRejected");
+    }
+    {
+      const auto ia = nn::select(replay::Get(nn::load_npz((root / "initial_arrays.npz").string()), "embedding/W"), 0, 0);
+      check::Require(replay::SameBits(ia, nn::select(deployed.p.at("embedding/W"), 0, 0)), "maskedPADembeddingRowNeverUpdated");
+    }
+    // fit-only multinomial naive Bayes over the valid words (PAD excluded)
+    std::vector<double> nb(2 * kVocab, 1.0);
+    {
+      const auto fi = fit.at("input").to_vector<int>(), fl = fit.at("lengths").to_vector<int>(), fy = fit.at("labels").to_vector<int>();
+      for (int b = 0; b < 64; ++b)
+        for (int t = 0; t < fl[b]; ++t) nb[fy[b] * kVocab + fi[b * kSteps + t]] += 1;
+      for (int c = 0; c < 2; ++c) {
+        nb[c * kVocab] = 0;
+        const double sum = std::accumulate(nb.begin() + c * kVocab + 1, nb.begin() + (c + 1) * kVocab, 0.0);
+        for (int v = 1; v < kVocab; ++v) nb[c * kVocab + v] /= sum;
+      }
+    }
+    nn::save_npz((root / "baseline.npz").string(), {{"class_word_probability", nn::from_vector(nb, {2, kVocab})}});
+    std::ofstream predictions(root / "predictions.tsv");
+    predictions << "source_id\tlength\tlabel\tpredicted\tnaive_bayes\n";
+    int        nb_correct = 0;
+    const auto logits = out.at("logits").to_vector<float>();
+    const auto labels = test.at("labels").to_vector<int>(), sources = test.at("source_ids").to_vector<int>();
+    for (int b = 0; b < 32; ++b) {
+      double score[2] = {0, 0};
+      for (int t = 0; t < lengths[b]; ++t)
+        for (int c = 0; c < 2; ++c) score[c] += std::log(nb[c * kVocab + ids[b * kSteps + t]]);
+      const int prediction = score[1] > score[0];
+      nb_correct += prediction == labels[b];
+      predictions << sources[b] << '\t' << lengths[b] << '\t' << labels[b] << '\t' << (logits[2 * b + 1] > logits[2 * b]) << '\t'
+                  << prediction << '\n';
+    }
+    {  // embedding-gradient norms of the first 16 test reviews, one global scale, white = zero
+      const auto          eg = out.at("embedding_gradient").to_vector<float>();
+      std::vector<double> norm(16 * kSteps);
+      double              peak = 1e-12;
+      for (int b = 0; b < 16; ++b)
+        for (int t = 0; t < kSteps; ++t) {
+          double s = 0;
+          for (int c = 0; c < 8; ++c) s += std::pow(double(eg[(b * kSteps + t) * 8 + c]), 2);
+          norm[b * kSteps + t] = std::sqrt(s);
+          peak                 = std::max(peak, norm[b * kSteps + t]);
+        }
+      std::vector<float> image(16 * 12 * kSteps * 10 * 3, 220.f);
+      for (int b = 0; b < 16; ++b)
+        for (int t = 0; t < kSteps; ++t) {
+          const float shade = std::floor(255 * (1 - norm[b * kSteps + t] / peak) + .5);
+          for (int yy = 0; yy < 11; ++yy)
+            for (int xx = 0; xx < 9; ++xx)
+              for (int ch = 0; ch < 3; ++ch) image[((b * 12 + yy) * kSteps * 10 + t * 10 + xx) * 3 + ch] = shade;
+        }
+      nn::save_png(nn::from_vector(image, {16 * 12, kSteps * 10, 3}), (root / "embedding_gradients.png").string(), 0, 255);
+    }
+    const double test_ce = out.at("loss").item<double>(), test_acc = Accuracy(out.at("logits"), test.at("labels"));
+    std::ofstream metrics(root / "metrics.json");
+    metrics.precision(17);
+    metrics << "{\"parameters\":2610,\"parameter_tensors\":6,\"epochs\":" << epochs << ",\"optimizer_updates\":" << epochs * 4
+            << ",\"test_ce\":" << test_ce << ",\"test_accuracy\":" << test_acc
+            << ",\"reversed_prefix_accuracy\":" << Accuracy(reverseout.at("logits"), test.at("labels"))
+            << ",\"last_word_unknown_accuracy\":" << Accuracy(lastout.at("logits"), test.at("labels"))
+            << ",\"fit_naive_bayes_accuracy\":" << nb_correct / 32. << ",\"majority_accuracy\":0.5}\n";
+    std::ofstream html(root / "index.html");
+    html << "<!doctype html><meta charset='utf-8'><title>IMDB LSTM</title><style>body{font:16px system-ui;margin:30px;"
+            "max-width:1100px}img{max-width:100%;image-rendering:pixelated}</style><h1>IMDB sentiment with a small LSTM</h1>"
+            "<p>64 fit / 32 validation / 32 test pinned Keras IMDB reviews, first 48 tokens, fit-only 256-word vocabulary. "
+            "Learned 8-D embedding, 8-unit length-masked LSTM, 8->2 head (2610 parameters), three epochs of Adam .01. "
+            "No full-review benchmark or sentiment-quality claim.</p><h2>Embedding-gradient norms</h2><p>First 16 test "
+            "reviews x 48 word positions; darker = larger true-target-logit gradient norm (one global scale, white zero).</p>"
+            "<img src='embedding_gradients.png'><p>See metrics.json and predictions.tsv.</p>";
+    check::Require(replay::SameBits(before, replay::Arrays(deployed.p)), "allSentimentInferenceControlsLeaveWeightsImmutable");
+    check::Require(bool(metrics) && bool(html) && bool(history) && bool(batches) && bool(predictions), "completeImdbLstmRecords");
+    std::cout << "testCE=" << test_ce << " accuracy=" << test_acc << " fitNaiveBayes=" << nb_correct / 32.
+              << " (TF recorded testCE=0.690584 accuracy=0.625 NB=0.5625)"
+              << ";LSTMprefix/BPTT/padding/causality/restore/labelFree/immutable PASS\nArtifacts:" << (root / "index.html").string()
+              << "\nwall " << std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count() << " s\n";
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin:
+//  (tflow run not found at "/home/jordan/.cache/datamunge/models/imdb_lstm"; TF parity skipped)
+// epoch1 validationCE=0.693233 accuracy=0.5
+// epoch2 validationCE=0.692818 accuracy=0.59375
+// epoch3 validationCE=0.692103 accuracy=0.5
+// testCE=0.691814 accuracy=0.59375 fitNaiveBayes=0.5625 (TF recorded testCE=0.690584 accuracy=0.625 NB=0.5625);LSTMprefix/BPTT/padding/causality/restore/labelFree/immutable PASS
+// Artifacts:/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/recovered-language/models/imdb_lstm/index.html
+// wall 0.173818 s
+// result_end
+
+> Actual source diagnostics
+
+These figures read saved outputs of the complete run above. Validation loss, task accuracy and likelihood are different quantities. Few epochs and a compact subset do not establish benchmark convergence; keep the original held-out results and baseline comparisons in view.
+
+```{cpp, results="markdown", file="figures/imdb_lstm_validation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::ifstream in("build/recovered-language/models/imdb_lstm/history.tsv");if(!in)throw std::runtime_error("original history missing");std::string line;std::getline(in,line);std::vector<double>x,y;while(std::getline(in,line)){std::istringstream row(line);double epoch,loss;if(row>>epoch>>loss){x.push_back(epoch);y.push_back(loss);}}if(x.empty())throw std::runtime_error("source validation rows missing");dm::graphics::RPlot::create().lines(x,y,"source validation loss",{37,99,235}).points(x,y,"recorded epochs",{37,99,235},5).title("imdb lstm original validation history").x_label("Epoch").y_label("Source validation objective").size(1100,600).save_svg("build/imdb_lstm_validation.svg");}
+```
+// result_begin: markdown
+\image(figures/imdb_lstm_validation.svg)
+// result_end
+
+> Inspect the source rendering: embedding_gradients.png
+
+This is the original native rendering of saved source predictions, gradients or generated samples, with its original scaling.
+
+```{cpp, results="markdown", file="figures/imdb_lstm_embedding_gradients.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::copy_file("build/recovered-language/models/imdb_lstm/embedding_gradients.png","build/imdb_lstm_embedding_gradients.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/imdb_lstm_embedding_gradients.png)
+// result_end
+
+> Scope and provenance
+
+Source partitions, fitting-only transformations, explicit update/generation loops and independent deployment guards are retained. Native preparation manifests record the recovered source hashes and protocol. The small models and samples are teaching experiments; no full-paper reproduction, benchmark ranking or unrecorded external parity is claimed.
+
+> Held-out sentiment confusion matrix
+
+Counts come from the original deployed predictions ledger, with rows as truth and columns as predictions. Sequence ledgers exclude padding; token accuracy and entity-span F1 answer different questions. Class IDs retain the original preparation ontology recorded in the manifest.
+
+```{cpp, results="markdown", file="figures/imdb_lstm_sentiment_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::ifstream in("build/recovered-language/models/imdb_lstm/predictions.tsv");if(!in)throw std::runtime_error("actual held-out predictions missing");std::string header;std::getline(in,header);dm::nn::ConfusionMatrix matrix(2);size_t count=0;int id,length,truth,prediction,baseline;while(in>>id>>length>>truth>>prediction>>baseline){matrix.add(truth,prediction);++count;}if(!count)throw std::runtime_error("empty held-out predictions");std::print("Counted {} held-out sentiment decisions; padded positions excluded by the source ledger.\n",count);dm::nn::ConfusionMatrixPlotOptions options;options.title="imdb lstm actual held-out sentiment";matrix.save_svg("build/imdb_lstm_sentiment_confusion.svg",options);}
+```
+// result_begin: markdown
+Counted 32 held-out sentiment decisions; padded positions excluded by the source ledger.
+\image(figures/imdb_lstm_sentiment_confusion.svg)
+// result_end

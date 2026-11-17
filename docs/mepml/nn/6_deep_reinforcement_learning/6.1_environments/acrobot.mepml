@@ -1,0 +1,514 @@
+//? Title: Acrobot: Coupled Links and Runge-Kutta Integration
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native C++ simulations expose explicit actions, seeded state transitions and owning observations. The complete editable source protocol retains its policy comparisons and checks. There is no hidden learning loop or external simulator process.
+)
+\toc
+
+> Follow one actual transition
+
+```{cpp, results="markdown", file="figures/acrobot_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle style;style.width=13;style.height=5;style.font_size=24;d.node("input",{-17,0},"Two coupled link angles",style);d.node("step",{0,0},"Elbow torque / RK4 update",style);d.node("result",{17,0},"Tip-height goal check",style);d.edge("input","step").edge("step","result").save_svg("build/acrobot_method.svg");}
+```
+// result_begin: markdown
+\image(figures/acrobot_method.svg)
+// result_end
+
+> Read the tip height from two angles
+
+The two unit links give tip height minuscos(theta1) minuscos(theta1+theta2). Height greater than1 is the swing-up goal. The derivative and RK4 implementation in the native class advance the coupled angles and velocities.
+
+```{cpp, results="markdown", file="figures/acrobot_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;std::filesystem::create_directories("build");e::Acrobot env;env.reset(1);double expected=-std::cos(env.theta1())-std::cos(env.theta1()+env.theta2());std::vector<double>values{expected,env.tip_height()};if(std::abs(values[0]-values[1])>2e-7)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/acrobot_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);const double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1e-9,high-low);dm::graphics::RPlot::create().ylim(low-.05*span,high+.05*span).bars(x,values,"computed values",{37,99,235}).title("Read the tip height from two angles").x_label("Coordinate in displayed calculation").size(1000,550).save_svg("build/acrobot_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | -1.986689448 |
+| 1 | -1.986689448 |
+\image(figures/acrobot_worked.svg)
+// result_end
+
+> Complete source experiment
+
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn acrobot
+// Acrobot: a two-link underactuated swing-up.
+//
+// Port of tflow's acrobot. Gymnasium's Acrobot-v1, including its RK4
+// integrator. Only the elbow is actuated, with torque -1, 0 or +1; the goal is
+// to swing the tip above a height of one link length. Reward is -1 per step,
+// so shorter is better. The environment is common/rl/classic_control.hpp
+// (copied from tflow, TF-free). The vsim video of the pump controller is
+// omitted; the port adds checks that the pump reaches the goal in every
+// episode and random actions in none.
+
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/classic_control.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::kPi;
+using datamunge::rl::environments::Clamp;
+using datamunge::rl::environments::WrapAngle;
+using datamunge::rl::environments::CartPole;
+using datamunge::rl::environments::MountainCar;
+using datamunge::rl::environments::MountainCarContinuous;
+using datamunge::rl::environments::Pendulum;
+using datamunge::rl::environments::Acrobot;
+}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+inline int ArgMax(const std::vector<float>& v) {
+  return static_cast<int>(std::max_element(v.begin(), v.end()) - v.begin());
+}
+
+// Argmax with ties broken uniformly at random.
+inline int ArgMaxRandomTie(const float* q, int n, std::mt19937_64& rng) {
+  float best = q[0];
+  for (int i = 1; i < n; ++i) best = std::max(best, q[i]);
+  std::vector<int> ties;
+  for (int i = 0; i < n; ++i)
+    if (q[i] == best) ties.push_back(i);
+  return ties[rng() % ties.size()];
+}
+
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunRandom(Env& env, int episodes, uint64_t seed) {
+  std::mt19937_64 rng(seed);
+  const ActionSpace space = env.action_space();
+  return RunEpisodes(env, episodes, seed, [&](const Obs&) { return space.Sample(rng); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+// Pump energy with the elbow torque opposing the first link's swing: the
+// reaction on the first link then pushes along its motion, so each swing
+// gains amplitude. Crude, but it reaches the goal in about 80 steps where
+// random actions never do.
+rl::Decision Pump(const rl::Obs& o) {
+  const float dtheta1 = o[4];
+  return rl::Note(rl::Action(dtheta1 > 0 ? 0 : (dtheta1 < 0 ? 2 : 1)), "theta1_dot " + rl::HudSigned(dtheta1) + ": torque against it");
+}
+
+}  // namespace
+
+int main() {
+  try {
+    rl::Acrobot env;
+    std::cout << "== " << env.name()
+              << ": obs [cos t1, sin t1, cos t2, sin t2, t1_dot, t2_dot], Discrete(3) torque -1/0/+1, "
+                 "-1 per step, goal: tip height > 1, max_steps="
+              << env.max_steps() << "\n";
+    const rl::EpisodeStats random = rl::RunRandom(env, 30, 0);
+    rl::PrintStats("random, 30 episodes", random);
+    const rl::EpisodeStats pump = rl::RunEpisodes(env, 30, 0, Pump);
+    rl::PrintStats("pump (torque against t1_dot)", pump);
+
+    std::cout << "\n-- Tip height over one episode under the pump controller\n";
+    rl::Obs obs = env.reset(1);
+    bool goal = false;
+    for (int t = 1; t <= env.max_steps(); ++t) {
+      rl::StepResult r = env.step(Pump(obs));
+      obs = r.obs;
+      if (t % 20 == 0 || r.done()) {
+        std::printf("  t=%-3d height=%+.2f  t1=%+.2f t2=%+.2f%s\n", t, env.tip_height(),
+                    std::atan2(obs[1], obs[0]), std::atan2(obs[3], obs[2]),
+                    r.terminated ? "  GOAL" : "");
+      }
+      if (r.terminated) goal = env.tip_height() > 1.f;
+      if (r.done()) break;
+    }
+
+    check::Require(pump.min_return() > -static_cast<float>(env.max_steps()) && pump.mean_length() < 150.f,
+                   "the pump controller should reach the goal quickly in every episode");
+    check::Require(pump.mean_length() < random.mean_length(), "the pump should beat random actions");
+    check::Require(goal, "the traced pump episode should end at the goal with the tip above 1");
+    std::cout << "\nchecks passed (vsim video omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == Acrobot: obs [cos t1, sin t1, cos t2, sin t2, t1_dot, t2_dot], Discrete(3) torque -1/0/+1, -1 per step, goal: tip height > 1, max_steps=500
+//   random, 30 episodes              return mean  -500.00  min  -500.00  max  -500.00   length mean  500.0
+//   pump (torque against t1_dot)     return mean   -80.13  min  -102.00  max   -70.00   length mean   81.1
+//
+// -- Tip height over one episode under the pump controller
+//   t=20  height=-1.94  t1=+0.29 t2=-0.12
+//   t=40  height=-1.69  t1=-0.81 t2=+0.81
+//   t=60  height=-1.31  t1=+0.18 t2=+1.06
+//   t=76  height=+1.37  t1=-2.37 t2=-1.63  GOAL
+//
+// checks passed (vsim video omitted)
+// result_end
+
+> A fixed-action diagnostic trajectory
+
+This additional trace starts from seed1 and repeatedly applies the displayed constant action until the first done flag or200 steps. It shows state evolution and rewards; it is not a learned-policy result. The complete original policy comparison above remains the experiment.
+
+```{cpp, results="markdown", file="figures/acrobot_trajectory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;e::Acrobot env;auto observation=env.reset(1);std::vector<double>step{0},coordinate{observation[0]},returns{0};for(int t=1;t<=200;++t){auto result=env.step(e::Action(1));step.push_back(t);coordinate.push_back(result.obs[0]);returns.push_back(returns.back()+result.reward);if(result.done())break;}dm::nn::save_npz("build/acrobot_trajectory.npz",{{"step",dm::nn::from_vector(step)},{"first_coordinate",dm::nn::from_vector(coordinate)},{"return",dm::nn::from_vector(returns)}});dm::graphics::RPlot::create().lines(step,coordinate,"first observation coordinate",{37,99,235}).x_label("Environment step").y_label("Source observation coordinate0").title("Acrobot fixed-action state trace").size(1000,550).save_svg("build/acrobot_trajectory.svg");std::print("{} transitions; cumulative reward {:.6f}.\n",step.size()-1,returns.back());}
+```
+// result_begin: markdown
+200 transitions; cumulative reward -200.000000.
+\image(figures/acrobot_trajectory.svg)
+// result_end
+
+> Interpretation
+
+The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.

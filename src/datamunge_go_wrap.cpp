@@ -1646,6 +1646,7 @@ template<> struct Bound<datamunge::Dual> : std::true_type {};
 template<> struct Bound<datamunge::HyperDual> : std::true_type {};
 template<> struct Bound<datamunge::Var> : std::true_type {};
 template<> struct Bound<datamunge::Tape> : std::true_type {};
+template<> struct Bound<datamunge::MLPClassifierSearch> : std::true_type {};
 template<> struct Bound<datamunge::cad::Solid> : std::true_type {};
 template<> struct Bound<datamunge::cad::View> : std::true_type {};
 template<> struct Bound<datamunge::fda::SplineSolveOptions> : std::true_type {};
@@ -4904,6 +4905,17 @@ void rosetta_go_3230(rosetta_lisp::Call&);
 void rosetta_go_3231(rosetta_lisp::Call&);
 void rosetta_go_3232(rosetta_lisp::Call&);
 void rosetta_go_3233(rosetta_lisp::Call&);
+void rosetta_go_3234(rosetta_lisp::Call&);
+void rosetta_go_3235(rosetta_lisp::Call&);
+void rosetta_go_3236(rosetta_lisp::Call&);
+void rosetta_go_3237(rosetta_lisp::Call&);
+void rosetta_go_3238(rosetta_lisp::Call&);
+void rosetta_go_3239(rosetta_lisp::Call&);
+void rosetta_go_3240(rosetta_lisp::Call&);
+void rosetta_go_3241(rosetta_lisp::Call&);
+void rosetta_go_3242(rosetta_lisp::Call&);
+void rosetta_go_3243(rosetta_lisp::Call&);
+void rosetta_go_3244(rosetta_lisp::Call&);
 const rosetta_lisp::Function table[] = {rosetta_lisp::call_native,
     rosetta_go_1,
     rosetta_go_2,
@@ -8137,7 +8149,18 @@ const rosetta_lisp::Function table[] = {rosetta_lisp::call_native,
     rosetta_go_3230,
     rosetta_go_3231,
     rosetta_go_3232,
-    rosetta_go_3233};
+    rosetta_go_3233,
+    rosetta_go_3234,
+    rosetta_go_3235,
+    rosetta_go_3236,
+    rosetta_go_3237,
+    rosetta_go_3238,
+    rosetta_go_3239,
+    rosetta_go_3240,
+    rosetta_go_3241,
+    rosetta_go_3242,
+    rosetta_go_3243,
+    rosetta_go_3244};
 } // namespace ROSETTA_LISP_MODULE
 #if defined(_WIN32)
 #define ROSETTA_CABI_EXPORT extern "C" __declspec(dllexport)
@@ -8417,22 +8440,23 @@ ROSETTA_CABI_EXPORT int rosetta_datamunge_init(int version, ROSETTA_LISP_MODULE:
         rosetta_lisp::register_type<datamunge::HyperDual>("HyperDual", 249);
         rosetta_lisp::register_type<datamunge::Var>("Var", 250);
         rosetta_lisp::register_type<datamunge::Tape>("Tape", 251);
-        rosetta_lisp::register_type<datamunge::cad::Solid>("CadSolid", 252);
-        rosetta_lisp::register_type<datamunge::cad::View>("CadScene", 253);
-        rosetta_lisp::register_type<datamunge::fda::SplineSolveOptions>("SplineSolveOptions", 254);
-        rosetta_lisp::register_type<datamunge::fda::BSplineRefinement>("BSplineRefinement", 255);
-        rosetta_lisp::register_type<datamunge::fda::TensorBSpline>("TensorBSpline", 256);
-        rosetta_lisp::register_type<datamunge::fda::detail::OrthantCellTree>("OrthantCellTree", 257);
-        rosetta_lisp::register_type<datamunge::fda::detail::AxisRefinement>("AxisRefinement", 258);
-        rosetta_lisp::register_type<datamunge::fda::HierarchicalBSpline>("HierarchicalBSpline", 259);
-        rosetta_lisp::register_type<datamunge::fda::TruncatedHierarchicalBSpline>("TruncatedHierarchicalBSpline", 260);
-        rosetta_lisp::register_type<datamunge::nn::NnTensor>("NnTensor", 261);
-        rosetta_lisp::register_type<datamunge::nn::NnModel>("NnModel", 262);
-        rosetta_lisp::register_type<datamunge::sim::TaskOutput>("TaskOutput", 263);
-        rosetta_lisp::register_type<datamunge::sim::TaskBatch>("TaskBatch", 264);
-        rosetta_lisp::register_type<datamunge::dstruct::DirectedGraph<std::string>>("DirectedGraph", 265);
-        rosetta_lisp::register_type<datamunge::dstruct::UndirectedGraph<std::string>>("UndirectedGraph", 266);
-        rosetta_lisp::register_type<datamunge::dstruct::WeightedGraph<std::string, double>>("WeightedGraph", 267);
+        rosetta_lisp::register_type<datamunge::MLPClassifierSearch>("MLPClassifierSearch", 252);
+        rosetta_lisp::register_type<datamunge::cad::Solid>("CadSolid", 253);
+        rosetta_lisp::register_type<datamunge::cad::View>("CadScene", 254);
+        rosetta_lisp::register_type<datamunge::fda::SplineSolveOptions>("SplineSolveOptions", 255);
+        rosetta_lisp::register_type<datamunge::fda::BSplineRefinement>("BSplineRefinement", 256);
+        rosetta_lisp::register_type<datamunge::fda::TensorBSpline>("TensorBSpline", 257);
+        rosetta_lisp::register_type<datamunge::fda::detail::OrthantCellTree>("OrthantCellTree", 258);
+        rosetta_lisp::register_type<datamunge::fda::detail::AxisRefinement>("AxisRefinement", 259);
+        rosetta_lisp::register_type<datamunge::fda::HierarchicalBSpline>("HierarchicalBSpline", 260);
+        rosetta_lisp::register_type<datamunge::fda::TruncatedHierarchicalBSpline>("TruncatedHierarchicalBSpline", 261);
+        rosetta_lisp::register_type<datamunge::nn::NnTensor>("NnTensor", 262);
+        rosetta_lisp::register_type<datamunge::nn::NnModel>("NnModel", 263);
+        rosetta_lisp::register_type<datamunge::sim::TaskOutput>("TaskOutput", 264);
+        rosetta_lisp::register_type<datamunge::sim::TaskBatch>("TaskBatch", 265);
+        rosetta_lisp::register_type<datamunge::dstruct::DirectedGraph<std::string>>("DirectedGraph", 266);
+        rosetta_lisp::register_type<datamunge::dstruct::UndirectedGraph<std::string>>("UndirectedGraph", 267);
+        rosetta_lisp::register_type<datamunge::dstruct::WeightedGraph<std::string, double>>("WeightedGraph", 268);
         rosetta_lisp::EnumTable<datamunge::algebra::MonomialOrder>::entries = {{"Lex", 0LL}, {"Grlex", 1LL}, {"Grevlex", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::cv::StructuringElement>::entries = {{"Square", 0LL}, {"Cross", 1LL}, };
         rosetta_lisp::EnumTable<datamunge::fda::SplineSolver>::entries = {{"Automatic", 0LL}, {"Cholesky", 1LL}, {"ConjugateGradient", 2LL}, };

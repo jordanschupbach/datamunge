@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[2]
-REPORTS = ROOT / "docs/mepml/examples"
+REPORTS = ROOT / "docs/mepml"
 BLOCK = re.compile(r'^```\{([^\n]+)\}\n(.*?)^```', re.M | re.S)
 
 

@@ -2,9 +2,7 @@
 #include <datamunge/image/read_image.hpp>
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_c3d_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.cpp"
-#undef main
+#include "../fixtures/nn_c3d_checks.hpp"
 #include "../fixtures/nn_video_reference.hpp"
 TEST(C3d, Every164SignedKernelBiasInputHostDerivative) {
   ConvChecks();
@@ -18,7 +16,7 @@ TEST(C3d, ActualFullSports1MAndCompactEveryEndpointAnd22Gradients) {
 }
 TEST(C3d, EveryDecodedSourceFramePixelAndAnnotationIdentity) {
   namespace m = dm::nn::models;
-  const auto root = std::filesystem::path("build/cnn-datasets/action_video");
+  const auto root = std::filesystem::path((std::filesystem::path(dm::datasets::data_home()) / "action_video"));
   const auto pools = m::LoadVideo(root);
   std::ifstream rows(root / "clip_rows.tsv");
   std::string split, path;
@@ -62,7 +60,7 @@ TEST(C3d, EveryDecodedSourceFramePixelAndAnnotationIdentity) {
 }
 TEST(C3d, EveryStaticMotionReferenceFeatureNeighborScoreAndMetric) {
   namespace m = dm::nn::models;
-  const auto pools = m::LoadVideo("build/cnn-datasets/action_video");
+  const auto pools = m::LoadVideo((std::filesystem::path(dm::datasets::data_home()) / "action_video"));
   for (bool motion : {false, true}) {
     const auto tensor = m::VideoFeatures(pools[0], motion).to_vector<double>();
     const auto host = video_reference::VideoFeatures(pools[0], motion);

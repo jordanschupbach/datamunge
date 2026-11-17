@@ -23,6 +23,7 @@ def main():
     shutil.copytree(ROOT / 'prebindings/nn/r', stage, dirs_exist_ok=True, copy_function=copy_changed)
     ignore = shutil.ignore_patterns('*.o', '*.so', '*.dll', '*.dylib')
     for source, destination in [(ROOT / 'include', stage / 'inst/include'),
+                                 (ROOT / 'prebindings/nn/include/common', stage / 'inst/include/common'),
                                  (ROOT / 'src/datamunge', stage / 'src/datamunge')]:
         shutil.copytree(source, destination, dirs_exist_ok=True, copy_function=copy_changed, ignore=ignore)
     copy_changed(wrapper, stage / 'src/nn_r_wrap.cpp')
@@ -32,7 +33,7 @@ def main():
         for source in GENERATED.glob('*.cpp'):
             if source.name != 'nn_examples_wrap.cpp':
                 copy_changed(source, stage / 'src' / source.name)
-        for folder, target in [(ROOT / 'examples/nn/common', stage / 'inst/examples/common'),
+        for folder, target in [(ROOT / 'prebindings/nn/include/common', stage / 'inst/examples/common'),
                                (ROOT / 'examples/bindings/r/R', stage / 'R'),
                                (ROOT / 'examples/bindings/r/man', stage / 'man')]:
             shutil.copytree(folder, target, dirs_exist_ok=True, copy_function=copy_changed,

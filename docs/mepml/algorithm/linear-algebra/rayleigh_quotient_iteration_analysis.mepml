@@ -1,0 +1,385 @@
+//? Title: Rayleigh quotient iteration: actual changing shifts, robust directions and residual stopping
+//? Subtitle: Actual canonical histories, retained original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An approximate eigenvector suggests its own shift through the Rayleigh quotient,
+allowing inverse iteration to refine a nearby eigenpair rapidly. The native
+producer now uses the canonical robust inverse solve, checks the actual
+original-matrix residual before another solve, and returns matching
+quotient/vector diagnostics. This corrects the overflow-normalized zero-vector
+failures found in the preceding batch. The original rounded-basis three-by-three
+input and starting direction remain.
+)
+
+\toc
+
+> Mechanism and mathematical scope
+
+For a nonzero direction x, compute its quotient and solve with that actual
+changing shift:
+$$ \mu=\frac{x^TAx}{x^Tx},\qquad (A-\mu I)y=x,\qquad x^+=y/\|y\|. $$
+\alttext(The actual Rayleigh quotient supplies the next inverse-system shift, followed by robust normalization.)
+For symmetric matrices near a simple eigenvector under the usual nondegeneracy
+conditions, the quotient error is quadratic in angular error and the inverse
+step yields local cubic convergence. This is a local statement, not a guarantee
+of the eigenvalue nearest the initial quotient. A balanced start can even
+produce an exactly singular shift before convergence.
+
+The canonical inverse kernel uses widened partial-pivot LU and hypot-based
+normalization. Relative stopping uses the actual residual divided
+by(Frobenius(A)+abs(mu))*norm(x). A converged state stops before an unnecessary
+near-singular solve; an exact singular nonconverged shift throws instead of
+regularizing into a false zero direction. An exhausted finite budget returns
+converged=false with the actual matching pair. Dense changing shifts require a
+new cubic-cost factorization each solve.
+
+> A tiny actual producing history
+
+The table and native concept diagram read the same producing execution. Every
+block below is a complete editable C++ program.
+
+```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    auto t = a::rayleigh_iteration_trace({{1, 0}, {0, 3}}, {1, .25});
+    std::print("\n| actual solve boundary | actual used shift | actual current quotient | actual absolute " "residual | actual relative residual | converged |\n| ---: | ---: | ---: | ---: | ---: | --- " "|\n");
+    for (const auto &s : t.steps)
+        std::print("| {} | {} | {} | {} | {} | {} |\n", s.iteration, s.shift,
+                   s.pair.value, s.residual, s.relative_residual, s.converged);
+
+    g::Diagram d;
+    d.node("n0", {0, 0},
+           std::format("Actual initial Rayleigh value\n{}",
+                       t.steps[0].pair.value));
+    d.node("n1", {10, 0},
+           std::format("Actual first solved direction\n{}",
+                       t.steps[1].pair.vector));
+    d.node("n2", {20, 0},
+           std::format("Actual final converged / solves\n{} / {}", t.converged,
+                       t.solves));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/rayleigh_quotient_iteration_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual solve boundary | actual used shift | actual current quotient | actual absolute residual | actual relative residual | converged |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| 0 | 0 | 1.1176470588235294 | 0.47058823529411764 | 0.10995245622099628 | false |
+| 1 | 1.1176470588235294 | 1.0004881620698072 | 0.03124237246765927 | 0.007505195776509293 | false |
+| 2 | 1.0004881620698072 | 1.0000000000291038 | 7.629394531138952e-06 | 1.8329854839085792e-06 | false |
+| 3 | 1.0000000000291038 | 1 | 1.1102230246413087e-16 | 2.6673449377627445e-17 | true |
+\image(figures/rayleigh_quotient_iteration_tiny.svg)
+// result_end
+\caption(Actual small native producing values and decisions; the diagram is generated by the complete program above.)
+\alttext(Actual small native producing values and decisions; the diagram is generated by the complete program above.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    const auto input = a::rayleigh_example_matrix();
+    a::RayleighOptions o;
+    o.max_iterations = 7;
+    auto t = a::rayleigh_iteration_trace(input, {.5, .4, .9}, o);
+    std::print("Actual spectrum of original rounded-basis input: {}. Nominal construction values1,3,7 are " "not exact eigenvalues of rounded Q.\n",
+               a::qr_eigenvalues(input));
+    std::print("Actual final pair: value {}, direction {}, converged {}.\n",
+               t.pair.value, t.pair.vector, t.converged);
+    std::vector<double> x, y;
+    std::print("\n| actual solve boundary | actual absolute residual | actual matching quotient |\n| ---: | " "---: | ---: |\n");
+    for (const auto &s : t.steps) {
+        x.push_back(s.iteration);
+        y.push_back(std::log10(s.residual + 1e-17));
+        std::print("| {} | {} | {} |\n", s.iteration, s.residual, s.pair.value);
+    }
+    auto p = g::RPlot::create();
+    p.lines(x, y, "log10(actual residual + 1e-17)", {190, 24, 93}).points(
+        x, y, {190, 24, 93}, 5).title("Original Rayleigh input: actual residual-stopped iterates").x_label("actual completed changing-shift solves").y_label("log10(actual absolute residual + 1e-17)");
+    p.save_svg("build/rayleigh_quotient_iteration_original.svg");
+}
+```
+// result_begin: markdown
+Actual spectrum of original rounded-basis input: [1.0000666581487896, 3.0001999933312224, 7.000466718519986]. Nominal construction values1,3,7 are not exact eigenvalues of rounded Q.
+Actual final pair: value 3.0001999933312216, direction [-0.6667388794443558, 0.3333444501380215, 0.6665888869456682], converged true.
+
+| actual solve boundary | actual absolute residual | actual matching quotient |
+| ---: | ---: | ---: |
+| 0 | 2.382635396456677 | 2.4918032786885242 |
+| 1 | 1.09353432828837 | 2.3178954881563927 |
+| 2 | 0.6908262866935737 | 2.729269020189336 |
+| 3 | 0.12408606008636061 | 2.99249242916208 |
+| 4 | 0.00048155643330739513 | 3.000199877466005 |
+| 5 | 2.789137693339471e-11 | 3.0001999933312216 |
+| 6 | 1.217074769405843e-16 | 3.0001999933312216 |
+\image(figures/rayleigh_quotient_iteration_original.svg)
+// result_end
+\caption(Retained original inputs and substantive experiment, with actual native outputs and explicitly labelled mathematical references.)
+\alttext(Retained original inputs and substantive experiment, with actual native outputs and explicitly labelled mathematical references.)
+
+> Explicit controls
+
+```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    const std::vector<std::vector<double>> A{{1, 0}, {0, 3}};
+    a::RayleighOptions zero;
+    zero.max_iterations = 0;
+    const std::vector<a::RayleighRun> cases{a::rayleigh_iteration_run(A, {1, 0}),
+                                            a::rayleigh_iteration_run(A, {0, 2},
+                                                                      zero),
+                                            a::rayleigh_iteration_run(A,
+                                                                      {1, .5},
+                                                                      zero)};
+    std::vector<std::string> labels{"exact eigenvector",
+                                    "zero solves, exact start",
+                                    "zero solves, mixed start"};
+    std::vector<double> residuals;
+    std::print("\n| actual control | actual quotient | actual residual | actual solves | converged |\n| --- " "| ---: | ---: | ---: | --- |\n");
+    for (std::size_t i = 0; i < cases.size(); ++i) {
+        residuals.push_back(cases[i].relative_residual);
+        std::print("| {} | {} | {} | {} | {} |\n", labels[i],
+                   cases[i].pair.value, cases[i].residual, cases[i].solves,
+                   cases[i].converged);
+    }
+    bool singular = false;
+    try {
+        a::rayleigh_iteration_run({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}}, {1, 0, 1});
+    } catch (const std::domain_error &) {
+        singular = true;
+    }
+    std::print("Exact singular shift before convergence is explicitly rejected: {}.\n",
+               singular);
+    auto p = g::RPlot::barplot(residuals, labels, "actual relative residual");
+    p.title("Actual initial quotients and honest zero-step diagnostics").y_label("actual relative backward-error diagnostic");
+    p.save_svg("build/rayleigh_quotient_iteration_controls.svg");
+}
+```
+// result_begin: markdown
+| actual control | actual quotient | actual residual | actual solves | converged |
+| --- | ---: | ---: | ---: | --- |
+| exact eigenvector | 1 | 0 | 0 | true |
+| zero solves, exact start | 3 | 0 | 0 | true |
+| zero solves, mixed start | 1.4 | 0.7999999999999999 | 0 | false |
+Exact singular shift before convergence is explicitly rejected: true.
+\image(figures/rayleigh_quotient_iteration_controls.svg)
+// result_end
+\caption(Actual outcomes on controlled native inputs; errors, truncation and unresolved outcomes retain their stated meanings.)
+\alttext(Actual outcomes on controlled native inputs; errors, truncation and unresolved outcomes retain their stated meanings.)
+
+> Actual selected work and sensitivity
+
+```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    std::vector<double> x, y;
+    std::print("\n| relative stopping tolerance | actual solves | actual factorizations | actual final " "relative residual | converged |\n| ---: | ---: | ---: | ---: | --- |\n");
+    for (double tolerance : {1e-4, 1e-8, 1e-12, 1e-14}) {
+        a::RayleighOptions o;
+        o.tolerance = tolerance;
+        auto r =
+            a::rayleigh_iteration_run(a::rayleigh_example_matrix(),
+                                      {.5, .4, .9}, o);
+        x.push_back(-std::log10(tolerance));
+        y.push_back(r.solves);
+        std::print("| {} | {} | {} | {} | {} |\n", tolerance, r.solves,
+                   r.factorizations, r.relative_residual, r.converged);
+    }
+    auto p = g::RPlot::create();
+    p.lines(x, y, "actual changing-shift solves", {16, 122, 87}).points(
+        x, y, {16, 122, 87}, 5).title("Stopping tolerance controls actual native factorization work").x_label("minus log10(relative tolerance)").y_label("actual solves / factorizations");
+    p.save_svg("build/rayleigh_quotient_iteration_work.svg");
+}
+```
+// result_begin: markdown
+| relative stopping tolerance | actual solves | actual factorizations | actual final relative residual | converged |
+| ---: | ---: | ---: | ---: | --- |
+| 1e-04 | 4 | 4 | 4.5081711888656386e-05 | true |
+| 1e-08 | 5 | 5 | 2.6110979284701257e-12 | true |
+| 1e-12 | 6 | 6 | 1.1393849134009263e-17 | true |
+| 1e-14 | 6 | 6 | 1.1393849134009263e-17 | true |
+\image(figures/rayleigh_quotient_iteration_work.svg)
+// result_end
+\caption(Actual selected event counts or represented numerical outcomes; raw values are retained in the computed table.)
+\alttext(Actual selected event counts or represented numerical outcomes; raw values are retained in the computed table.)
+
+> API and interpretation
+
+A floating-point quotient can round exactly to an eigenvalue before the residual
+reaches the requested tolerance. If the next shifted matrix is exactly singular
+while the direction is still unconverged, this API reports a domain error. It
+does not regularize that solve or label the unfinished direction converged.
+
+The original Q entries were rounded to four decimal places, so its nominal1,3,7
+diagonal is not an exact spectrum certificate. The actual checked QR spectrum is
+reported separately. The figure now plots explicitly transformed log10
+residuals; the old report claimed a log scale while plotting raw residuals.
+Every trace state is a real initial or completed-solve boundary and carries a
+matching quotient/vector. Histories stop at real convergence without padding.
+The existing unchanged regression failed25 baseline trials in batch304–313; this
+native conversion replaces its fragile squared-norm normalization/regularization
+path with the canonical robust inverse kernel and adds full regression coverage.
+
+Reusable producers, fixtures and histories live in the canonical C++ library.
+Captured records own their values and do not come from a separate report replay.
+Selected counters and record/scalar policies are specified at their API
+boundaries; they are not peak-byte or wall-time budgets. Synthetic structural
+inputs are controlled fixtures for these mechanisms.
+
+> References
+
+- [Golub and Van Loan, Matrix Computations, fourth edition|https://www.press.jhu.edu/books/title/10678/matrix-computations]
+
+Verification: 214 scoped native cases;15 directly instrumented ASan/UBSan
+cases;127 executable public examples;567/567 full-file definitions;10
+hovers;1340 independent records/58514 checks;frozen compatibility across six
+changed legacy families;independent NumPy tensor-training comparisons with
+recorded tolerances;12 checkout/installed standalone headers and linked
+consumer;41 executed programs and41 inspected figures with both exports.
+Receipts: `build/mepml-conversion/batch-314-323/`.

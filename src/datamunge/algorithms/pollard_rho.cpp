@@ -1,125 +1,218 @@
-#include <datamunge/algorithms/pollard_rho.hpp>
-
+/// @file pollard_rho.cpp
+/// @brief Exact square-plus-c Brent producer with actual-site histories and cumulative evaluation admission.
 #include <algorithm>
+#include <datamunge/algorithms/miller_rabin.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/pollard_rho.hpp>
+#include <limits>
 #include <numeric>
 #include <stdexcept>
-
+#include <unordered_map>
+#include <utility>
 namespace datamunge::algorithms {
-
+/// @brief Shared exact polynomial and producing split/factorization machinery.
 namespace {
-
-// Modular multiply via a 128-bit intermediate: correct for any modulus up to 2^64-1, where a plain
-// 64-bit product would overflow.
-std::uint64_t mulmod(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
-    return static_cast<std::uint64_t>(static_cast<unsigned __int128>(a) * b % m);
+/// @brief Exact full-width modular square-plus-constant, including addition carry.
+std::uint64_t polynomial(std::uint64_t v, std::uint64_t c, std::uint64_t n) {
+  return static_cast<std::uint64_t>((static_cast<unsigned __int128>(mul_mod(v, v, n)) + c) % n);
 }
-
-// base^exp mod m by square-and-multiply, each product reduced through mulmod.
-std::uint64_t powmod(std::uint64_t base, std::uint64_t exp, std::uint64_t m) {
-    std::uint64_t result = 1 % m;
-    base %= m;
-    while (exp) {
-        if (exp & 1) result = mulmod(result, base, m);
-        base = mulmod(base, base, m);
-        exp >>= 1;
-    }
-    return result;
+/// @brief Increment selected work without representable counter wrap.
+void increment(std::size_t& n) {
+  if (n == std::numeric_limits<std::size_t>::max())
+    throw std::overflow_error("rho counter range");
+  ++n;
 }
+/// @brief Borrowed actual work/history for one synchronous complete producing call.
+struct Context {
+  RhoFactorOptions  options;    ///< Owned selected policies.
+  RhoFactorWork&    work;       ///< Borrowed caller-owned complete-run counters.
+  RhoFactorHistory* history;    ///< Optional caller-owned output; never retained beyond this call.
+  std::size_t       records{0}; ///< Actual retained records already admitted.
 
-// Deterministic Miller-Rabin. The twelve bases {2,3,...,37} are a proven witness set for every
-// n < 3.3 * 10^24, hence for all 64-bit n: the test is exact, never merely probabilistic.
-bool is_prime(std::uint64_t n) {
-    static constexpr std::uint64_t small_primes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
-    for (std::uint64_t p : small_primes) {
-        if (n % p == 0) return n == p; // p divides n: prime iff n is p itself
-    }
-    if (n < 2) return false;
-
-    // Write n - 1 = d * 2^s with d odd.
-    std::uint64_t d = n - 1;
-    int s = 0;
-    while ((d & 1) == 0) { d >>= 1; ++s; }
-
-    for (std::uint64_t a : small_primes) {
-        std::uint64_t x = powmod(a, d, n);
-        if (x == 1 || x == n - 1) continue; // a is not a witness
-        bool composite = true;
-        for (int r = 1; r < s; ++r) {
-            x = mulmod(x, x, n);
-            if (x == n - 1) { composite = false; break; }
+  /// @brief Admit a historical record before copying its producing values.
+  void record() {
+    if (records == std::numeric_limits<std::size_t>::max() ||
+        (options.max_trace_records && records >= options.max_trace_records))
+      throw std::length_error("rho history policy");
+    ++records;
+  }
+  /// @brief Perform one actual admitted polynomial evaluation.
+  std::uint64_t evaluate(std::uint64_t v, std::uint64_t c, std::uint64_t n, RhoFactorPhase phase) {
+    if (work.evaluations == std::numeric_limits<std::size_t>::max() ||
+        (options.max_evaluations && work.evaluations >= options.max_evaluations))
+      throw std::length_error("rho evaluation policy");
+    if (history)
+      record();
+    const auto next = polynomial(v, c, n);
+    ++work.evaluations;
+    if (history)
+      history->evaluations.push_back({n, c, v, next, phase});
+    return next;
+  }
+  /// @brief Call canonical deterministic primality and count its actual call boundary.
+  bool prime(std::uint64_t n) {
+    increment(work.primality_calls);
+    return is_probable_prime(n);
+  }
+  /// @brief Perform and optionally retain an actual normal/fallback gcd boundary.
+  std::uint64_t gcd(
+      std::uint64_t n,
+      std::uint64_t c,
+      std::uint64_t x,
+      std::uint64_t y,
+      std::uint64_t q,
+      std::uint64_t steps,
+      bool          fallback) {
+    if (history)
+      record();
+    increment(work.gcd_calls);
+    const auto d = std::gcd(q, n);
+    if (history)
+      history->gcds.push_back({n, c, x, y, q, d, steps, fallback});
+    return d;
+  }
+};
+/// @brief Original constant/batch/doubling split loop using exact full-width polynomial arithmetic.
+std::uint64_t split(std::uint64_t n, Context& ctx) {
+  if (n < 2)
+    return n;
+  if (n % 2 == 0)
+    return 2;
+  if (ctx.prime(n))
+    return n;
+  for (std::uint64_t c = 1; c < n; ++c) {
+    increment(ctx.work.attempts);
+    std::uint64_t x = 2, y = 2, ys = 2, q = 1, d = 1, r = 1;
+    do {
+      x = y;
+      for (std::uint64_t i = 0; i < r; ++i)
+        y = ctx.evaluate(y, c, n, RhoFactorPhase::Advance);
+      std::uint64_t k = 0;
+      while (k < r && d == 1) {
+        ys               = y;
+        const auto steps = std::min<std::uint64_t>(128, r - k);
+        for (std::uint64_t i = 0; i < steps; ++i) {
+          y = ctx.evaluate(y, c, n, RhoFactorPhase::Batch);
+          q = mul_mod(q, x < y ? y - x : x - y, n);
+          increment(ctx.work.batch_products);
         }
-        if (composite) return false; // a witnesses that n is composite
+        d = ctx.gcd(n, c, x, y, q, steps, false);
+        k += steps;
+      }
+      increment(ctx.work.radius_doublings);
+      if (r > std::numeric_limits<std::uint64_t>::max() / 2) {
+        if (d == 1)
+          throw std::overflow_error("rho radius cannot advance");
+        r = 0;
+      } else
+        r *= 2;
+    } while (d == 1);
+    if (d == n) {
+      do {
+        ys = ctx.evaluate(ys, c, n, RhoFactorPhase::Fallback);
+        d  = ctx.gcd(n, c, x, ys, x < ys ? ys - x : x - ys, 1, true);
+      } while (d == 1);
     }
-    return true;
+    if (d > 1 && d < n)
+      return d;
+  }
+  throw std::runtime_error("rho exhausted native constants");
 }
-
-// Recursively split m into primes, appending them (unsorted) to out.
-void factor_recursive(std::uint64_t m, std::vector<std::uint64_t>& out) {
-    if (m == 1) return;
-    if (is_prime(m)) { out.push_back(m); return; }
-    const std::uint64_t d = pollard_rho_factor(m);
-    factor_recursive(d, out);
-    factor_recursive(m / d, out);
+/// @brief Recursively split actual odd subproblems under one cumulative context.
+void recursive(std::uint64_t n, std::vector<std::uint64_t>& out, Context& ctx) {
+  if (n == 1)
+    return;
+  if (ctx.prime(n)) {
+    out.push_back(n);
+    return;
+  }
+  const auto d = split(n, ctx);
+  if (d <= 1 || d >= n || n % d)
+    throw std::runtime_error("rho proper-split invariant");
+  if (ctx.history) {
+    ctx.record();
+    ctx.history->splits.push_back({n, d});
+  }
+  recursive(d, out, ctx);
+  recursive(n / d, out, ctx);
 }
-
+/// @brief Complete native twos-first factorization with optional actual producing histories.
+FactorizationTrace complete(std::uint64_t n, RhoFactorOptions options, bool capture) {
+  if (n == 0)
+    throw std::invalid_argument("factorize: zero has no prime factorization");
+  FactorizationTrace t;
+  Context            ctx{options, t.work, capture ? &t.history : nullptr};
+  while (n % 2 == 0) {
+    t.factors.push_back(2);
+    n /= 2;
+    increment(t.work.peeled_twos);
+  }
+  recursive(n, t.factors, ctx);
+  std::sort(t.factors.begin(), t.factors.end());
+  return t;
+}
 } // namespace
-
 std::uint64_t pollard_rho_factor(std::uint64_t n) {
-    if (n < 2) return n;       // 0 or 1: nothing to split
-    if (n % 2 == 0) return 2;  // even: 2 is a factor
-    if (is_prime(n)) return n; // prime: no nontrivial factor (documented behavior)
-
-    // Try deterministic constants c = 1, 2, 3, ... in g(x) = (x^2 + c) mod n until one exposes a
-    // nontrivial gcd. Brent's variant keeps a saved value x, advances y in rounds whose length
-    // doubles, and multiplies the differences |x - y| into a running product q so a single
-    // gcd(q, n) certifies a whole block of steps at once.
-    for (std::uint64_t c = 1; c < n; ++c) {
-        const auto g = [n, c](std::uint64_t v) { return (mulmod(v, v, n) + c) % n; };
-
-        std::uint64_t x = 2, y = 2, ys = 2, q = 1, d = 1, r = 1;
-        constexpr std::uint64_t batch = 128;
-
-        do {
-            x = y;
-            for (std::uint64_t i = 0; i < r; ++i) y = g(y);
-            std::uint64_t k = 0;
-            while (k < r && d == 1) {
-                ys = y;
-                const std::uint64_t steps = std::min(batch, r - k);
-                for (std::uint64_t i = 0; i < steps; ++i) {
-                    y = g(y);
-                    q = mulmod(q, x < y ? y - x : x - y, n);
-                }
-                d = std::gcd(q, n);
-                k += steps;
-            }
-            r *= 2;
-        } while (d == 1);
-
-        if (d == n) {
-            // The batch folded several collisions together, collapsing the gcd all the way to n.
-            // Replay the last block one step at a time to isolate a single-factor gcd.
-            do {
-                ys = g(ys);
-                d = std::gcd(x < ys ? ys - x : x - ys, n);
-            } while (d == 1);
-        }
-
-        if (d != 1 && d != n) return d; // nontrivial factor found
-        // otherwise this c produced only trivial gcds; move on to the next constant
-    }
-    return n; // unreachable for composite n
+  RhoFactorWork work;
+  Context       ctx{{}, work, nullptr};
+  return split(n, ctx);
 }
-
+RhoFactorRun pollard_rho_factor_run(std::uint64_t n, RhoFactorOptions options) {
+  RhoFactorRun r;
+  Context      ctx{options, r.work, nullptr};
+  r.factor = split(n, ctx);
+  return r;
+}
+RhoFactorTrace pollard_rho_factor_trace(std::uint64_t n, RhoFactorOptions options) {
+  RhoFactorTrace t;
+  Context        ctx{options, t.work, &t.history};
+  t.factor = split(n, ctx);
+  return t;
+}
 std::vector<std::uint64_t> factorize(std::uint64_t n) {
-    if (n == 0) throw std::invalid_argument("factorize: 0 has no prime factorization");
-
-    std::vector<std::uint64_t> factors;
-    // Peel powers of two directly (keeps the rho search on odd numbers), then recurse.
-    while (n % 2 == 0) { factors.push_back(2); n /= 2; }
-    factor_recursive(n, factors);
-    std::sort(factors.begin(), factors.end());
-    return factors;
+  return complete(n, {}, false).factors;
 }
-
+FactorizationRun factorize_run(std::uint64_t n, RhoFactorOptions options) {
+  auto t = complete(n, options, false);
+  return {std::move(t.factors), t.work};
+}
+FactorizationTrace factorize_trace(std::uint64_t n, RhoFactorOptions options) {
+  return complete(n, options, true);
+}
+RhoPolynomialWalk rho_polynomial_walk(
+    std::uint64_t n,
+    std::uint64_t c,
+    std::uint64_t start,
+    std::size_t   count,
+    std::uint64_t projection,
+    std::size_t   cap) {
+  if (n < 2)
+    throw std::invalid_argument("rho orbit modulus >=2 required");
+  if (projection == 0)
+    projection = n;
+  if (projection < 2 || n % projection)
+    throw std::invalid_argument("rho orbit projection must divide modulus");
+  if (count > std::numeric_limits<std::size_t>::max() / 2 || (cap && 2 * count > cap))
+    throw std::length_error("rho orbit history policy");
+  RhoPolynomialWalk                              t;
+  std::unordered_map<std::uint64_t, std::size_t> seen;
+  std::uint64_t                                  x = start % n;
+  c %= n;
+  for (std::size_t i = 0; i < count; ++i) {
+    t.states.push_back(x);
+    const auto residue = x % projection;
+    t.projected.push_back(residue);
+    if (!t.repeated) {
+      const auto [it, inserted] = seen.emplace(residue, i);
+      if (!inserted) {
+        t.repeated   = true;
+        t.cycle_head = it->second;
+        t.period     = i - it->second;
+      }
+    }
+    if (i + 1 < count)
+      x = polynomial(x, c, n);
+  }
+  return t;
+}
 } // namespace datamunge::algorithms

@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_series_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/time_series_cnn.cpp"
-#undef main
+#include "../fixtures/nn_time_series_cnn_checks.hpp"
 TEST(TemporalFcn, IndependentEvenKernelBnGapEveryCoordinateFiniteDifference) {
   HostChecks();
 }
@@ -16,11 +14,11 @@ TEST(TemporalFcn, FullAllStagesAndEveryLearnedGradient) {
 }
 TEST(TemporalFcn, EveryOriginalSignalAndFitOnlyNormalization) {
   namespace m = dm::nn::models;
-  const auto d = m::LoadSeries("build/cnn-datasets/time_series");
+  const auto d = m::LoadSeries((std::filesystem::path(dm::datasets::data_home()) / "time_series"));
   std::map<std::string, m::SeriesData> parts = {
       {"fit", d.pools[0]}, {"validation", d.pools[1]}, {"test", d.pools[2]}};
   std::map<std::string, int> offsets;
-  std::ifstream file("build/cnn-datasets/time_series/raw_signals.tsv");
+  std::ifstream file((std::filesystem::path(dm::datasets::data_home()) / "time_series/raw_signals.tsv"));
   std::string line;
   int records = 0;
   double sum = 0, squares = 0;
@@ -56,7 +54,7 @@ TEST(TemporalFcn, EveryOriginalSignalAndFitOnlyNormalization) {
 TEST(TemporalFcn, CalibratedPopulationMomentsFrozenStateAndBatchAgreement) {
   namespace m = dm::nn::models;
   nn::set_num_threads(2);
-  const auto fit = m::LoadSeries("build/cnn-datasets/time_series").pools[0];
+  const auto fit = m::LoadSeries((std::filesystem::path(dm::datasets::data_home()) / "time_series")).pools[0];
   nn::ParameterStore p(419), state(421);
   const m::SeriesConfig c{4, 0, 1};
   {
@@ -105,7 +103,7 @@ TEST(TemporalFcn, CalibratedPopulationMomentsFrozenStateAndBatchAgreement) {
 }
 TEST(TemporalFcn, ExplicitSgdCentroidsAndEveryTensorClassificationDiagnostic) {
   namespace m = dm::nn::models;
-  const auto data = m::LoadSeries("build/cnn-datasets/time_series");
+  const auto data = m::LoadSeries((std::filesystem::path(dm::datasets::data_home()) / "time_series"));
   const auto fit = data.pools[0], test = data.pools[2];
   const auto weights = nn::one_hot(fit.labels, 2, 1., 0., nn::DType::Float64)
                            .reshape({fit.size(), 2, 1, 1}),

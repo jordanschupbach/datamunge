@@ -25,7 +25,7 @@ public class AxisRefinement extends NativeObject {
     @SuppressWarnings("this-escape")
     public AxisRefinement() {
         super(RAW);
-        Rosetta.construct(this, AxisRefinement.class, false, 3016);
+        Rosetta.construct(this, AxisRefinement.class, false, 3027);
     }
 
     /**
@@ -34,7 +34,7 @@ public class AxisRefinement extends NativeObject {
      * @return the value of the C++ field {@code rows}
      */
     public List<List<Pair<Integer, Double>>> getRows() {
-        return Rosetta.asList(Rosetta.call(3012, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.tuple(rosettaV1, 2, rosettaT2 -> new Pair<Integer, Double>(Rosetta.asInt(rosettaT2.get(0)), Rosetta.asDouble(rosettaT2.get(1))))));
+        return Rosetta.asList(Rosetta.call(3023, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.tuple(rosettaV1, 2, rosettaT2 -> new Pair<Integer, Double>(Rosetta.asInt(rosettaT2.get(0)), Rosetta.asDouble(rosettaT2.get(1))))));
     }
 
     /**
@@ -43,7 +43,7 @@ public class AxisRefinement extends NativeObject {
      * @param value the new value
      */
     public void setRows(List<List<Pair<Integer, Double>>> value) {
-        Rosetta.call(3013, this, value);
+        Rosetta.call(3024, this, value);
     }
 
     /**
@@ -52,7 +52,7 @@ public class AxisRefinement extends NativeObject {
      * @return the value of the C++ field {@code cols}
      */
     public List<List<Pair<Integer, Double>>> getCols() {
-        return Rosetta.asList(Rosetta.call(3014, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.tuple(rosettaV1, 2, rosettaT2 -> new Pair<Integer, Double>(Rosetta.asInt(rosettaT2.get(0)), Rosetta.asDouble(rosettaT2.get(1))))));
+        return Rosetta.asList(Rosetta.call(3025, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.tuple(rosettaV1, 2, rosettaT2 -> new Pair<Integer, Double>(Rosetta.asInt(rosettaT2.get(0)), Rosetta.asDouble(rosettaT2.get(1))))));
     }
 
     /**
@@ -61,6 +61,6 @@ public class AxisRefinement extends NativeObject {
      * @param value the new value
      */
     public void setCols(List<List<Pair<Integer, Double>>> value) {
-        Rosetta.call(3015, this, value);
+        Rosetta.call(3026, this, value);
     }
 }

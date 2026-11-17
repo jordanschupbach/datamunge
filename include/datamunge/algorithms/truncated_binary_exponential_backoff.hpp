@@ -1,38 +1,76 @@
 #pragma once
-
-/// \file truncated_binary_exponential_backoff.hpp
-/// \brief Truncated binary exponential backoff (Ethernet CSMA/CD collision resolution).
-///
-/// Classic Ethernet resolves collisions with *truncated binary exponential backoff*. After the
-/// \f$c\f$-th consecutive collision on a frame, a station waits a random number of slot times
-/// drawn uniformly from \f$\{0,1,\dots,2^{\min(c,10)}-1\}\f$ before retransmitting -- the
-/// *contention window* doubles per collision, so heavier contention spreads stations over a
-/// wider interval. The window is *truncated* at \f$c=10\f$ (window \f$2^{10}=1024\f$), and after
-/// 16 collisions the frame is abandoned. This module gives the contention window and slot bounds.
-
-#include <cstdint>
-
+/// @file truncated_binary_exponential_backoff.hpp
+/// @brief Checked truncated binary exponential backoff operations and producer diagnostics.
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
 namespace datamunge::algorithms {
-
-/// \brief Contention window after \c collisions collisions: \f$2^{\min(c,10)}\f$ slot times.
+/// @brief Return the capped binary contention window.
+/// Pure bounded arithmetic; no RNG, clock, frame state or synchronization. A uniform real u implies uniform slots; finite PRNG mapping may be biased.
+/// @param collisions Nonnegative collision count.
+/// @return 2^min(collisions,10).
+/// @throws std::invalid_argument Negative collisions or invalid fraction where supplied.
+/// @par Example
+/// @code
+/// auto w=dm::algorithms::contention_window(3); //8
+/// @endcode
+/// @par References
+/// - Actual canonical producer; report derives the recurrence.
+/// @see Related legacy convenience overloads in this header.
 inline int contention_window(int collisions) {
-    int exp = collisions < 10 ? collisions : 10;   // truncation at 10
-    return 1 << exp;
+  if (collisions < 0)
+    throw std::invalid_argument("negative collisions");
+  return 1 << std::min(collisions, 10);
 }
-
-/// \brief Largest random slot count a station may wait after \c collisions collisions
-///        (uniform in [0, window-1]).
-inline int max_backoff_slots(int collisions) { return contention_window(collisions) - 1; }
-
-/// \brief Whether the frame should be abandoned (Ethernet gives up after 16 collisions).
-inline bool backoff_give_up(int collisions) { return collisions >= 16; }
-
-/// \brief A chosen backoff slot given a uniform value \c u in [0,1) (for reproducibility):
-///        floor(u * window).
+/// @brief Return the largest candidate slot.
+/// Pure bounded arithmetic; no RNG, clock, frame state or synchronization. A uniform real u implies uniform slots; finite PRNG mapping may be biased.
+/// @param collisions Nonnegative collision count.
+/// @return Window minus1.
+/// @throws std::invalid_argument Negative collisions or invalid fraction where supplied.
+/// @par Example
+/// @code
+/// auto w=dm::algorithms::max_backoff_slots(3); //7
+/// @endcode
+/// @par References
+/// - Actual canonical producer; report derives the recurrence.
+/// @see Related legacy convenience overloads in this header.
+inline int max_backoff_slots(int collisions) {
+  return contention_window(collisions) - 1;
+}
+/// @brief Test the16-collision abandonment policy.
+/// Pure bounded arithmetic; no RNG, clock, frame state or synchronization. A uniform real u implies uniform slots; finite PRNG mapping may be biased.
+/// @param collisions Nonnegative collision count.
+/// @return True at16 or later.
+/// @throws std::invalid_argument Negative collisions or invalid fraction where supplied.
+/// @par Example
+/// @code
+/// bool stop=dm::algorithms::backoff_give_up(16);
+/// @endcode
+/// @par References
+/// - Actual canonical producer; report derives the recurrence.
+/// @see Related legacy convenience overloads in this header.
+inline bool backoff_give_up(int collisions) {
+  (void)contention_window(collisions);
+  return collisions >= 16;
+}
+/// @brief Map a caller random fraction to a candidate slot.
+/// Pure bounded arithmetic; no RNG, clock, frame state or synchronization. A uniform real u implies uniform slots; finite PRNG mapping may be biased.
+/// @param collisions Nonnegative collision count.
+/// @param u Finite caller-supplied fraction in [0,1).
+/// @return floor(u*window); no retry is authorized at or after16.
+/// @throws std::invalid_argument Negative collisions or invalid fraction where supplied.
+/// @par Example
+/// @code
+/// auto slot=dm::algorithms::backoff_slot(3,0.5); //4
+/// @endcode
+/// @par References
+/// - Actual canonical producer; report derives the recurrence.
+/// @see Related legacy convenience overloads in this header.
 inline int backoff_slot(int collisions, double u) {
-    int w = contention_window(collisions);
-    int s = static_cast<int>(u * w);
-    return s < w ? s : w - 1;
+  int w = contention_window(collisions);
+  if (!std::isfinite(u) || u < 0 || u >= 1)
+    throw std::invalid_argument("u outside [0,1)");
+  return static_cast<int>(u * w);
 }
 
-}  // namespace datamunge::algorithms
+} // namespace datamunge::algorithms

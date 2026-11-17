@@ -14,7 +14,7 @@ from pathlib import Path
 def main() -> None:
     """Compare full-test inference, proper scores, Grad-CAM and integrated gradients."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--artifacts", type=Path, default=Path("docs/mepml/examples/datasets/cifar10/artifacts"))
+    parser.add_argument("--artifacts", type=Path, default=Path("docs/mepml/datasets/cifar10/artifacts"))
     parser.add_argument("--data", type=Path)
     parser.add_argument("--output", type=Path, default=Path("build/cifar10-report/oracle.json"))
     args = parser.parse_args()

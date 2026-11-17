@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-STATUS = ROOT / "examples/nn/language_status.json"
+STATUS = ROOT / "prebindings/nn/language_status.json"
 
 
 def sources():
@@ -39,7 +39,7 @@ def refresh(write_catalog=True):
     ]
     # A port can change behavior without changing its .cpp or language script:
     # model components and language helpers are part of the implementation too.
-    dependencies += sorted((ROOT / "examples/nn/common").rglob("*.hpp"))
+    dependencies += sorted((ROOT / "prebindings/nn/include/common").rglob("*.hpp"))
     dependencies += sorted((ROOT / "examples/python/nn/common").rglob("*.py"))
     dependencies += sorted((ROOT / "examples/r/nn/common").rglob("*.R"))
     for dependency in dependencies:

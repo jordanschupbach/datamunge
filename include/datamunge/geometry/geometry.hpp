@@ -7,14 +7,14 @@
 // distance).
 
 #include <datamunge/geometry/best_bin_first.hpp>
-#include <datamunge/geometry/proximity_graph_search.hpp>
 #include <datamunge/geometry/bounding_box.hpp>
+#include <datamunge/geometry/clipped_voronoi.hpp>
 #include <datamunge/geometry/closest_pair.hpp>
 #include <datamunge/geometry/cone_algorithm.hpp>
 #include <datamunge/geometry/convex_hull.hpp>
+#include <datamunge/geometry/de_boor.hpp>
 #include <datamunge/geometry/delaunay.hpp>
 #include <datamunge/geometry/distance_transform.hpp>
-#include <datamunge/geometry/de_boor.hpp>
 #include <datamunge/geometry/dtw.hpp>
 #include <datamunge/geometry/frechet.hpp>
 #include <datamunge/geometry/geometric_hashing.hpp>
@@ -28,6 +28,7 @@
 #include <datamunge/geometry/polygon.hpp>
 #include <datamunge/geometry/polygon_clip.hpp>
 #include <datamunge/geometry/polygon_triangulation.hpp>
+#include <datamunge/geometry/proximity_graph_search.hpp>
 #include <datamunge/geometry/rotating_calipers.hpp>
 #include <datamunge/geometry/segment_intersection.hpp>
 #include <datamunge/geometry/shamos_hoey.hpp>

@@ -1,0 +1,301 @@
+//? Title: Brent rho: actual gcd batches and a separately labelled forward orbit
+//? Subtitle: Actual canonical histories, retained original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Study the actual native producer from a tiny, inspectable example through the
+retained original experiment and explicit boundary/work controls. Complete
+editable C++ programs own every rendered native figure.
+)
+
+\toc
+
+> Mechanism and scope
+
+The actual Brent splitter advances one cursor in doubling ranges, multiplies
+absolute differences into batches, and tests gcds of the accumulated product. A
+full gcd collapse revisits the saved block one step at a time. Modular squaring
+and addition both preserve the entire uint64 range, and a selected evaluation
+cap bounds a complete factorization. The original projected forward orbit
+illustrates a hidden cycle but is a separately labelled native fixture, not
+Brent’s actual cursor path. The original8051,12,600851475143 and prime1000000007
+cases remain.
+
+$$ f_c(x)=(x^2+c)\bmod n,\qquad q\leftarrow q|x-y|\bmod n,\qquad d=\gcd(q,n). $$
+
+> A tiny actual producing history
+
+The table reads actual producing records. The native diagram names actual
+captured values from that same run.
+
+```{cpp, results="markdown", file="figures/pollard_rho_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_rho.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    auto t = dm::algorithms::pollard_rho_factor_trace(8051);
+    std::print("\n| actual modulus | c | saved x | current y | actual product/difference | actual gcd | batch " "length | fallback |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |\n");
+    for (std::size_t i =
+         0; i < std::min<std::size_t>(6, t.history.gcds.size()); ++i) {
+        auto &r = t.history.gcds[i];
+        std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n", r.modulus,
+                   r.constant, r.x, r.y, r.product, r.divisor, r.steps,
+                   r.fallback);
+    }
+
+    dm::graphics::Diagram d;
+    d.node("n0", {0, 0},
+           std::format("Actual first polynomial call\n{} to{}",
+                       t.history.evaluations[0].before,
+                       t.history.evaluations[0].after));
+    d.node("n1", {9, 0},
+           std::format("Actual first batch gcd\nproduct{}, gcd{}",
+                       t.history.gcds[0].product, t.history.gcds[0].divisor));
+    d.node("n2", {18, 0},
+           std::format("Actual returned proper factor\n{}", t.factor));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/pollard_rho_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual modulus | c | saved x | current y | actual product/difference | actual gcd | batch length | fallback |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 8051 | 1 | 2 | 26 | 24 | 1 | 1 | false |
+| 8051 | 1 | 26 | 871 | 6305 | 97 | 2 | false |
+\image(figures/pollard_rho_tiny.svg)
+// result_end
+\caption(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+\alttext(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/pollard_rho_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_rho.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    std::print("\n| original input | actual prime factors |\n| ---: | --- |\n");
+    for (std::uint64_t n : {8051ULL, 12ULL, 600851475143ULL, 1000000007ULL})
+        std::print("| {} | `{}` |\n", n, dm::algorithms::factorize(n));
+    const auto divisor = dm::algorithms::pollard_rho_factor(8051);
+    std::print("Original8051 split, normalized actual pair: {} and {}.\n",
+               std::min(divisor, 8051 / divisor),
+               std::max(divisor, 8051 / divisor));
+    auto walk = dm::algorithms::rho_polynomial_walk(8051, 1, 2, 16, 83);
+    std::vector<double> x, y, tx, ty, cx, cy;
+    std::print("Separate original forward-orbit fixture modulo hidden83: first-repeat head{}, period{}. " "This is not Brent cursor visitation.\n",
+               walk.cycle_head, walk.period);
+    std::print("\n| forward visit | actual x mod8051 | actual x mod83 |\n| ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < walk.states.size(); ++i) {
+        x.push_back(i);
+        y.push_back(walk.projected[i]);
+        (i < walk.cycle_head ? tx : cx).push_back(i);
+        (i < walk.cycle_head ? ty : cy).push_back(walk.projected[i]);
+        std::print("| {} | {} | {} |\n", i, walk.states[i], walk.projected[i]);
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.lines(x, y, "actual forward prefix", {156, 163, 175}, 1);
+    if (!tx.empty())
+        p.points(tx, ty, "actual transient", {37, 99, 235}, 5);
+    if (!cx.empty())
+        p.points(cx, cy, std::format("actual cycle, period{}", walk.period),
+                 {220, 38, 38}, 5);
+    p.title("Separate original polynomial orbit: actual projection modulo83").x_label("forward-orbit visit index").y_label("actual residue mod83");
+    p.save_svg("build/pollard_rho_original.svg");
+}
+```
+// result_begin: markdown
+| original input | actual prime factors |
+| ---: | --- |
+| 8051 | `[83, 97]` |
+| 12 | `[2, 2, 3]` |
+| 600851475143 | `[71, 839, 1471, 6857]` |
+| 1000000007 | `[1000000007]` |
+Original8051 split, normalized actual pair: 83 and 97.
+Separate original forward-orbit fixture modulo hidden83: first-repeat head4, period5. This is not Brent cursor visitation.
+
+| forward visit | actual x mod8051 | actual x mod83 |
+| ---: | ---: | ---: |
+| 0 | 2 | 2 |
+| 1 | 5 | 5 |
+| 2 | 26 | 26 |
+| 3 | 677 | 13 |
+| 4 | 7474 | 4 |
+| 5 | 2839 | 17 |
+| 6 | 871 | 41 |
+| 7 | 1848 | 22 |
+| 8 | 1481 | 70 |
+| 9 | 3490 | 4 |
+| 10 | 6989 | 17 |
+| 11 | 705 | 41 |
+| 12 | 5915 | 22 |
+| 13 | 5631 | 70 |
+| 14 | 3324 | 4 |
+| 15 | 3005 | 17 |
+\image(figures/pollard_rho_original.svg)
+// result_end
+\caption(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+\alttext(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+
+> Explicit controls
+
+```{cpp, results="markdown", file="figures/pollard_rho_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_rho.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    std::vector<double> v;
+    std::vector<std::string> labels;
+    std::print("\n| input | actual splitter return | proper factor | actual polynomial evaluations |\n| ---: " "| ---: | --- | ---: |\n");
+    for (std::uint64_t n : {0ULL, 1ULL, 2ULL, 17ULL, 8051ULL}) {
+        auto t = dm::algorithms::pollard_rho_factor_trace(n);
+        const bool proper = t.factor > 1 && t.factor < n && n % t.factor == 0;
+        labels.push_back(std::to_string(n));
+        v.push_back(t.work.evaluations);
+        std::print("| {} | {} | {} | {} |\n", n, t.factor, proper,
+                   t.work.evaluations);
+    }
+    auto p =
+        dm::graphics::RPlot::barplot(v, labels, "actual polynomial evaluations");
+    p.title("Brent splitter controls: small, even and prime inputs bypass the walk").x_label("native input").y_label("actual polynomial calls");
+    p.save_svg("build/pollard_rho_controls.svg");
+}
+```
+// result_begin: markdown
+| input | actual splitter return | proper factor | actual polynomial evaluations |
+| ---: | ---: | --- | ---: |
+| 0 | 0 | false | 0 |
+| 1 | 1 | false | 0 |
+| 2 | 2 | false | 0 |
+| 17 | 17 | false | 0 |
+| 8051 | 97 | true | 6 |
+\image(figures/pollard_rho_controls.svg)
+// result_end
+\caption(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+\alttext(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+
+> Full-width polynomial addition controls
+
+```{cpp, results="markdown", file="figures/pollard_rho_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_rho.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const auto top = std::numeric_limits<std::uint64_t>::max();
+    std::vector<double> v;
+    std::vector<std::string> labels;
+    std::print("\n| modulus | actual starting residue | c | actual next residue |\n| ---: | ---: | ---: | " "---: |\n");
+    for (std::uint64_t n : std::vector<std::uint64_t>{8051, top, top - 58}) {
+        auto t = dm::algorithms::rho_polynomial_walk(n, n - 1, n - 100, 2);
+        labels.push_back(n == 8051 ? "8051" : n == top ? "UINT64_MAX"
+                         : "UINT64_MAX-58");
+        v.push_back(t.states[1]);
+        std::print("| {} | {} | {} | {} |\n", n, t.states[0], n - 1, t.states[1]);
+    }
+    auto p =
+        dm::graphics::RPlot::barplot(v, labels, "actual exact next residue");
+    p.title("The same native polynomial keeps addition carry at the full uint64 range").x_label("explicit modulus fixture").y_label("actual next residue");
+    p.save_svg("build/pollard_rho_work.svg");
+}
+```
+// result_begin: markdown
+| modulus | actual starting residue | c | actual next residue |
+| ---: | ---: | ---: | ---: |
+| 8051 | 7951 | 8050 | 1948 |
+| 18446744073709551615 | 18446744073709551515 | 18446744073709551614 | 9999 |
+| 18446744073709551557 | 18446744073709551457 | 18446744073709551556 | 9999 |
+\image(figures/pollard_rho_work.svg)
+// result_end
+\caption(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+\alttext(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+
+> API and interpretation
+
+Every block is a complete editable C++ program. Reusable searches, walks,
+geometry decisions, fixture histories and algorithm work live in the canonical
+library. Captured records own their values and are not reconstructed by a second
+algorithm in the report. Explicit policies count the documented selected calls,
+records or scalar entries; they are not peak-byte or wall-clock budgets.
+Original reference curves are labelled as references, and finite returned
+results are not promoted into universal convergence, recovery, scaling or speed
+guarantees.
+
+Python arbitrary-precision square-plus-c and gcd checks cover producing records
+and carry-sensitive full-word controls. Trial division independently validates
+returned prime factors and products, including UINT64_MAX. Frozen comparisons
+preserve 1999 small-input multisets and split decisions. The shared batch
+passes83 native regression tests,18 directly instrumented sanitizer tests,84
+compiled and executed public examples,391/391 scoped documentation definitions,
+standalone and installed header checks, a linked installed consumer and ten
+representative symbol hovers. All four complete programs execute and their
+computed results and local figures survive HTML and Markdown export. Build
+receipts: `build/mepml-conversion/batch-284-293/`.

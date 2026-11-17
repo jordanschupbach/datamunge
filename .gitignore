@@ -56,8 +56,8 @@ tmp/
 # figures mep copies into place for mepml blocks with file= (scripts/org_to_mepml.py)
 examples/mepml/figures/
 # what the docs' mepml report programs write before mep copies it to file= (figures/ images are ignored too)
-docs/mepml/examples/build/
-docs/mepml/examples/**/build/
+docs/mepml/build/
+docs/mepml/**/build/
 plans/
 /output/
 
@@ -70,18 +70,18 @@ plans/
 
 
 # Small run records the robot-fruit reports link to (CSV/JSON/TXT) stay versioned.
-!docs/mepml/examples/figures/fruit_sorting_rl_*
-!docs/mepml/examples/figures/fruit_vision_*
-!docs/mepml/examples/figures/fruit_stream_*
+!docs/mepml/figures/fruit_sorting_rl_*
+!docs/mepml/figures/fruit_vision_*
+!docs/mepml/figures/fruit_stream_*
 
 # Report images are build output: running the reports (`just docs`) renders them
 # again, so they are never committed (SVG is ignored below).
-docs/mepml/examples/**/figures/*.png
-docs/mepml/examples/**/figures/*.jpg
-docs/mepml/examples/**/figures/*.gif
-docs/examples/mepml/**/figures/*.png
-docs/examples/mepml/**/figures/*.jpg
-docs/examples/mepml/**/figures/*.gif
+docs/mepml/**/figures/*.png
+docs/mepml/**/figures/*.jpg
+docs/mepml/**/figures/*.gif
+docs/mepml/**/figures/*.png
+docs/mepml/**/figures/*.jpg
+docs/mepml/**/figures/*.gif
 
 # Compiled binding/test binaries (Ruby/Perl bundles, Perl blib, D and root test executables).
 *.bundle

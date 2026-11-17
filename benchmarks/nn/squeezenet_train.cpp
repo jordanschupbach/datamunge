@@ -1,7 +1,7 @@
 // SqueezeNet CIFAR-10 training-throughput benchmark.
 //
 // Reproduces the training loop of the SqueezeNet report
-// (docs/mepml/examples/nn/.../squeezenet.mepml): CIFAR-10 batch 1, 8000 fit rows,
+// (docs/mepml/nn/.../squeezenet.mepml): CIFAR-10 batch 1, 8000 fit rows,
 // batch 32, per-image pad/crop/flip augmentation, Adam with warmup + cosine
 // schedule, dropout, kernel L2 term. The headline metric is epochs per minute:
 // how many full passes over the 8000 rows fit into a fixed time budget.

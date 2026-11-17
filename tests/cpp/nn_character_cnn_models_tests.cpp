@@ -1,9 +1,8 @@
 
 #include <dm/dm.hpp>
+#include "../../examples/nn/common/sentence_assets.hpp"
 #include <gtest/gtest.h>
-#define main original_character_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/character_cnn.cpp"
-#undef main
+#include "../fixtures/nn_character_cnn_checks.hpp"
 #include "../fixtures/nn_character_reference.hpp"
 TEST(CharacterCnn, OriginalRawEncodingUnknownZeroAndMinimumGeometry) {
   EncodingChecks();
@@ -17,10 +16,10 @@ TEST(CharacterCnn, FullEveryStageAndAll18LearnedGradients) {
 }
 TEST(CharacterCnn, EveryRawSourceByteAndExactWordSourceAlignment) {
   namespace m = dm::nn::models;
-  const auto chars = m::LoadCharacters("build/cnn-datasets/character");
-  const auto words = m::LoadSentences("build/cnn-datasets/sentence");
+  const auto chars = m::LoadCharacters((std::filesystem::path(dm::datasets::data_home()) / "character"));
+  const auto words = m::LoadSentences((std::filesystem::path(dm::datasets::data_home()) / "sentence"));
   const auto archive =
-      dataset_assets::detail::Gunzip("build/cnn-datasets/sentence/rt-polaritydata.tar.gz");
+      dataset_assets::detail::Gunzip((std::filesystem::path(dm::datasets::data_home()) / "sentence/rt-polaritydata.tar.gz"));
   std::vector<std::string> raw;
   for (const std::string kind : {"neg", "pos"}) {
     std::istringstream source(
@@ -69,7 +68,7 @@ TEST(CharacterCnn, EveryRawSourceByteAndExactWordSourceAlignment) {
 }
 TEST(CharacterCnn, EveryRealCharacterCountNbAndExplicitSgdReference) {
   namespace m = dm::nn::models;
-  const auto d = m::LoadCharacters("build/cnn-datasets/character");
+  const auto d = m::LoadCharacters((std::filesystem::path(dm::datasets::data_home()) / "character"));
   const auto &fit = d.pools[0];
   const auto &test = d.pools[2];
   const auto x = m::CharacterCounts(fit), y = m::CharacterCounts(test),
@@ -105,7 +104,7 @@ TEST(CharacterCnn, EveryRealCharacterCountNbAndExplicitSgdReference) {
 TEST(CharacterCnn, UnknownHolesPaddingControlsAndInvalidDropout) {
   namespace m = dm::nn::models;
   nn::set_num_threads(2);
-  const auto data = m::LoadCharacters("build/cnn-datasets/character");
+  const auto data = m::LoadCharacters((std::filesystem::path(dm::datasets::data_home()) / "character"));
   const auto d = m::SentenceRows(data.pools[2], {0, 1});
   nn::ParameterStore p(2);
   const auto out = m::CharacterCnn(p, d.tokens, d.lengths, data.config);

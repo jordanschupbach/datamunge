@@ -1,9 +1,10 @@
-// SWIG bindings for the shared NN example components (examples/nn/common/*.hpp).
+// SWIG bindings for the shared NN example components (prebindings/nn/include/common/*.hpp).
 //
 // The example .cpp files own their experiment loops; these headers provide the
 // model forward functions, data readers, metrics and checks those loops call.
 // Binding them lets the R and Python examples run the same main loop over the
-// same C++. Everything here is header-only, so no library change is needed.
+// same C++. Adapters in prebindings/nn/include/common preserve legacy names
+// around canonical datamunge APIs; report workflows live in docs/mepml/nn.
 //
 // Every C++ namespace is exported with a "<namespace>__" prefix (SWIG flattens
 // namespaces); pydatamunge.nn_components and datamungerNN::nn_components regroup

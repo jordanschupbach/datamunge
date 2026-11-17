@@ -1157,6 +1157,7 @@ public final class Rosetta {
         c.add(datamunge.HyperDual::new);
         c.add(datamunge.Var::new);
         c.add(datamunge.Tape::new);
+        c.add(datamunge.MLPClassifierSearch::new);
         c.add(datamunge.CadSolid::new);
         c.add(datamunge.CadScene::new);
         c.add(datamunge.SplineSolveOptions::new);

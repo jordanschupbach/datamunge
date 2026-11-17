@@ -9,7 +9,7 @@ recursive-include src/pydatamunge *.py *.i
 include scripts/prebuild_nn_examples.py
 recursive-include examples/bindings *.hpp *.i
 recursive-include examples/cpp/source/nn *.cpp
-recursive-include examples/nn/common *.hpp
+recursive-include prebindings/nn/include/common *.hpp
 prune build
 
 include scripts/prebuild_nn_api.py src/nn_python_wrap*.cpp
@@ -25,6 +25,5 @@ recursive-include examples/r/nn *.R
 recursive-include examples/bindings/r *.R
 
 include scripts/nn_migration_status.py
-recursive-include examples/nn *.cpp
 recursive-include examples/simulation *.cpp
-include examples/nn/language_status.json
+include prebindings/nn/language_status.json

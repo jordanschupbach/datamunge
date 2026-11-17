@@ -13,7 +13,7 @@ int main(int argc, char** argv) try {
   if (repeats < 1 || repeats > 5)
     throw std::invalid_argument("Repetitions must be 1..5; use short bounded comparisons");
   fs::create_directories(output);
-  auto data   = root / "docs/mepml/examples/build/fruit_stream_realistic";
+  auto data   = root / "docs/mepml/build/fruit_stream_realistic";
   auto frames = replay(data);
   auto info   = dm::compute::probe({dm::compute::Backend::CUDA, 0});
   if (!info.available)

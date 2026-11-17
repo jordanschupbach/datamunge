@@ -95,7 +95,7 @@ rosetta_ref <- function(value = NULL) {
 #' Count logical elements, one for a scalar and zero if any dimension is zero.
 #' @usage
 #' shape_numel(shape)
-#' @param shape `vector<integer>`. Nonnegative axis lengths, empty for a scalar.
+#' @param shape `integer vector`. Nonnegative axis lengths, empty for a scalar.
 #' @return `integer`: Checked product; all dimensions are validated even for empty tensors.
 #' @section Examples (C++):
 #' ```cpp
@@ -113,7 +113,7 @@ rosetta_ref <- function(value = NULL) {
 #' "\[2, 3\]" style rendering of a shape.
 #' @usage
 #' shape_str(shape)
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @return `character`
 #' @md
 #'
@@ -121,8 +121,8 @@ rosetta_ref <- function(value = NULL) {
 #' Compute row-major strides in elements, treating zero dimensions as one for strides.
 #' @usage
 #' contiguous_strides(shape)
-#' @param shape `vector<integer>`. Nonnegative axis lengths, empty for a scalar.
-#' @return `vector<integer>`: Independent strides with the same rank as shape.
+#' @param shape `integer vector`. Nonnegative axis lengths, empty for a scalar.
+#' @return `integer vector`: Independent strides with the same rank as shape.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto strides=dm::nn::contiguous_strides({2,3});
@@ -140,7 +140,7 @@ rosetta_ref <- function(value = NULL) {
 #' Allocate uninitialized packed storage in the shared default CPU context.
 #' @usage
 #' empty(shape, dtype = "Float32")
-#' @param shape `vector<integer>`. Nonnegative dimensions, empty for a scalar.
+#' @param shape `integer vector`. Nonnegative dimensions, empty for a scalar.
 #' @param dtype `character (DType)`. Valid element representation; Float32 by default.
 #' @return `Tensor`: Independent CPU tensor with no gradient history.
 #' @section Errors:
@@ -156,7 +156,7 @@ rosetta_ref <- function(value = NULL) {
 #' Allocate a zero-filled packed tensor in the shared default CPU context.
 #' @usage
 #' zeros(shape, dtype = "Float32")
-#' @param shape `vector<integer>`. Nonnegative dimensions, empty for a scalar.
+#' @param shape `integer vector`. Nonnegative dimensions, empty for a scalar.
 #' @param dtype `character (DType)`. Valid element representation; Float32 by default.
 #' @return `Tensor`: Independent zero-filled CPU tensor.
 #' @section Errors:
@@ -171,7 +171,7 @@ rosetta_ref <- function(value = NULL) {
 #' Allocates a packed tensor filled with ones converted to `dtype`.
 #' @usage
 #' ones(shape, dtype = "Float32")
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param dtype `character (DType)`
 #' @return `Tensor`
 #' @md
@@ -180,7 +180,7 @@ rosetta_ref <- function(value = NULL) {
 #' Allocate a scalar fill in the shared default CPU context.
 #' @usage
 #' full(shape, value, dtype = "Float32")
-#' @param shape `vector<integer>`. Nonnegative dimensions, empty for a scalar.
+#' @param shape `integer vector`. Nonnegative dimensions, empty for a scalar.
 #' @param value `numeric`. Scalar converted to dtype; Int32/Int64 require a finite in-range value.
 #' @param dtype `character (DType)`. Valid representation; Float32 by default.
 #' @return `Tensor`: Independent packed CPU tensor.
@@ -295,8 +295,8 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `datamunge::nn::from_vector<float>`
 #' @usage
 #' from_vector(values, shape = <default>)
-#' @param values `vector<numeric>`
-#' @param shape `vector<integer>`
+#' @param values `numeric vector`
+#' @param shape `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -304,8 +304,8 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `datamunge::nn::from_vector<double>`
 #' @usage
 #' from_vector_double(values, shape = <default>)
-#' @param values `vector<numeric>`
-#' @param shape `vector<integer>`
+#' @param values `numeric vector`
+#' @param shape `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -313,8 +313,8 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `datamunge::nn::from_vector<std::int64_t>`
 #' @usage
 #' from_vector_int64(values, shape = <default>)
-#' @param values `vector<integer>`
-#' @param shape `vector<integer>`
+#' @param values `integer vector`
+#' @param shape `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -352,7 +352,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' encode_npy(tensor)
 #' @param tensor `Tensor`. Defined CPU tensor with a supported built-in dtype.
-#' @return `vector<integer>`: Independent complete NPY document, without writing a file.
+#' @return `integer vector`: Independent complete NPY document, without writing a file.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto x=dm::nn::from_vector(std::vector<std::int64_t>{9007199254740993LL});
@@ -374,7 +374,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `datamunge::nn::decode_npy`
 #' @usage
 #' decode_npy(bytes)
-#' @param bytes `vector<integer>`
+#' @param bytes `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -383,7 +383,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' save_npz(path, arrays)
 #' @param path `character`
-#' @param arrays `vector<list(character, Tensor)>`
+#' @param arrays `list of list(character, Tensor)`
 #' @md
 #'
 `save_npz` <- function(...) invisible(.Call(`.rs_28`, NULL, list(...)))
@@ -391,23 +391,23 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' load_npz(path)
 #' @param path `character`
-#' @return `vector<list(character, Tensor)>`
+#' @return `list of list(character, Tensor)`
 #' @md
 #'
 `load_npz` <- function(...) .Call(`.rs_29`, NULL, list(...))
 #' In-memory forms of the .npz encoding: encode_npz returns the bytes save_npz writes; decode_npz reads an archive already in memory (same rules as load_npz, errors without a file name).
 #' @usage
 #' encode_npz(arrays)
-#' @param arrays `vector<list(character, Tensor)>`
-#' @return `vector<integer>`
+#' @param arrays `list of list(character, Tensor)`
+#' @return `integer vector`
 #' @md
 #'
 `encode_npz` <- function(...) .Call(`.rs_30`, NULL, list(...))
 #' C++ function `datamunge::nn::decode_npz`
 #' @usage
 #' decode_npz(bytes)
-#' @param bytes `vector<integer>`
-#' @return `vector<list(character, Tensor)>`
+#' @param bytes `integer vector`
+#' @return `list of list(character, Tensor)`
 #' @md
 #'
 `decode_npz` <- function(...) .Call(`.rs_31`, NULL, list(...))
@@ -471,9 +471,9 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' conv2d_bias_relu_concat(x, filters, biases, options)
 #' @param x `Tensor`
-#' @param filters `vector<Tensor>`
-#' @param biases `vector<Tensor>`
-#' @param options `vector<Conv2DOptions>`
+#' @param filters `list of Tensor`
+#' @param biases `list of Tensor`
+#' @param options `list of Conv2DOptions`
 #' @return `Tensor`
 #' @md
 #'
@@ -481,7 +481,7 @@ rosetta_ref <- function(value = NULL) {
 #' Gradient of conv2d with respect to its input (TF Conv2DBackpropInput): grad \[N, H', W', O\] -> \[N, H, W, C\] for `input_shape` \[N, H, W, C\].
 #' @usage
 #' conv2d_backprop_input(input_shape, filter, grad, options = Conv2DOptions$new())
-#' @param input_shape `vector<integer>`
+#' @param input_shape `integer vector`
 #' @param filter `Tensor`
 #' @param grad `Tensor`
 #' @param options `Conv2DOptions`
@@ -493,7 +493,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' conv2d_backprop_filter(x, filter_shape, grad, options = Conv2DOptions$new())
 #' @param x `Tensor`
-#' @param filter_shape `vector<integer>`
+#' @param filter_shape `integer vector`
 #' @param grad `Tensor`
 #' @param options `Conv2DOptions`
 #' @return `Tensor`
@@ -513,7 +513,7 @@ rosetta_ref <- function(value = NULL) {
 #' conv2d_transpose(store, name, x, filters, kernel, options = ConvLayerOptions$new())
 #' @param x `Tensor`
 #' @param filter `Tensor`
-#' @param output_shape `vector<integer>`
+#' @param output_shape `integer vector`
 #' @param options `Conv2DOptions` or `ConvLayerOptions`
 #' @param store `ParameterStore`
 #' @param name `character`
@@ -611,7 +611,7 @@ rosetta_ref <- function(value = NULL) {
 #' Gradient of conv3d with respect to its input (TF Conv3DBackpropInputV2): grad \[N, D', H', W', O\] -> `input_shape` \[N, D, H, W, C\].
 #' @usage
 #' conv3d_backprop_input(input_shape, filter, grad, options = Conv3DOptions$new())
-#' @param input_shape `vector<integer>`
+#' @param input_shape `integer vector`
 #' @param filter `Tensor`
 #' @param grad `Tensor`
 #' @param options `Conv3DOptions`
@@ -623,7 +623,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' conv3d_backprop_filter(x, filter_shape, grad, options = Conv3DOptions$new())
 #' @param x `Tensor`
-#' @param filter_shape `vector<integer>`
+#' @param filter_shape `integer vector`
 #' @param grad `Tensor`
 #' @param options `Conv3DOptions`
 #' @return `Tensor`
@@ -641,7 +641,7 @@ rosetta_ref <- function(value = NULL) {
 #' conv3d_transpose(store, name, x, filters, kernel, options = ConvLayerOptions$new())
 #' @param x `Tensor`
 #' @param filter `Tensor`
-#' @param output_shape `vector<integer>`
+#' @param output_shape `integer vector`
 #' @param options `Conv3DOptions` or `ConvLayerOptions`
 #' @param store `ParameterStore`
 #' @param name `character`
@@ -660,8 +660,8 @@ rosetta_ref <- function(value = NULL) {
 #' max_pool2d(x, window, strides, padding = "Valid")
 #' max_pool2d(x, window, stride, padding = "Valid")
 #' @param x `Tensor`
-#' @param window `vector<integer>` or `integer`
-#' @param strides `vector<integer>`
+#' @param window `integer vector` or `integer`
+#' @param strides `integer vector`
 #' @param padding `character (Padding)`
 #' @param stride `integer`
 #' @return `Tensor`
@@ -675,8 +675,8 @@ rosetta_ref <- function(value = NULL) {
 #' max_pool2d_with_argmax(x, window, strides, padding = "Valid", include_batch_in_index = FALSE)
 #' max_pool2d_with_argmax(x, window, stride, padding = "Valid", include_batch_in_index = FALSE)
 #' @param x `Tensor`
-#' @param window `vector<integer>` or `integer`
-#' @param strides `vector<integer>`
+#' @param window `integer vector` or `integer`
+#' @param strides `integer vector`
 #' @param padding `character (Padding)`
 #' @param include_batch_in_index `logical`
 #' @param stride `integer`
@@ -691,7 +691,7 @@ rosetta_ref <- function(value = NULL) {
 #' max_unpool2d(values, argmax, output_shape, include_batch_in_index = FALSE)
 #' @param values `Tensor`
 #' @param argmax `Tensor`
-#' @param output_shape `vector<integer>`
+#' @param output_shape `integer vector`
 #' @param include_batch_in_index `logical`
 #' @return `Tensor`
 #' @md
@@ -718,8 +718,8 @@ rosetta_ref <- function(value = NULL) {
 #' avg_pool2d(x, window, strides, padding = "Valid")
 #' avg_pool2d(x, window, stride, padding = "Valid")
 #' @param x `Tensor`
-#' @param window `vector<integer>` or `integer`
-#' @param strides `vector<integer>`
+#' @param window `integer vector` or `integer`
+#' @param strides `integer vector`
 #' @param padding `character (Padding)`
 #' @param stride `integer`
 #' @return `Tensor`
@@ -775,8 +775,8 @@ rosetta_ref <- function(value = NULL) {
 #' max_pool3d(x, window, strides, padding = "Valid")
 #' max_pool3d(x, window, stride, padding = "Valid")
 #' @param x `Tensor`
-#' @param window `vector<integer>` or `integer`
-#' @param strides `vector<integer>`
+#' @param window `integer vector` or `integer`
+#' @param strides `integer vector`
 #' @param padding `character (Padding)`
 #' @param stride `integer`
 #' @return `Tensor`
@@ -792,8 +792,8 @@ rosetta_ref <- function(value = NULL) {
 #' avg_pool3d(x, window, strides, padding = "Valid")
 #' avg_pool3d(x, window, stride, padding = "Valid")
 #' @param x `Tensor`
-#' @param window `vector<integer>` or `integer`
-#' @param strides `vector<integer>`
+#' @param window `integer vector` or `integer`
+#' @param strides `integer vector`
 #' @param padding `character (Padding)`
 #' @param stride `integer`
 #' @return `Tensor`
@@ -864,7 +864,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' uniform(shape, low, high, gen, dtype = "Float32")
 #' uniform(shape, low = 0.0, high = 1.0, dtype = "Float32")
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param low `numeric`
 #' @param high `numeric`
 #' @param gen `Generator`
@@ -884,7 +884,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' normal(shape, mean, stddev, gen, dtype = "Float32")
 #' normal(shape, mean = 0.0, stddev = 1.0, dtype = "Float32")
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param mean `numeric`
 #' @param stddev `numeric`
 #' @param gen `Generator`
@@ -900,7 +900,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' truncated_normal(shape, mean, stddev, gen, dtype = "Float32")
 #' truncated_normal(shape, mean = 0.0, stddev = 1.0, dtype = "Float32")
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param mean `numeric`
 #' @param stddev `numeric`
 #' @param gen `Generator`
@@ -916,7 +916,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' randint(shape, low, high, gen)
 #' randint(shape, low, high)
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param low `integer`
 #' @param high `integer`
 #' @param gen `Generator`
@@ -945,7 +945,7 @@ rosetta_ref <- function(value = NULL) {
 #' bernoulli(shape, p, dtype = "Float32")
 #' @param p `Tensor` or `numeric`
 #' @param gen `Generator`
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param dtype `character (DType)`
 #' @return `Tensor`
 #' @note Precondition: Each probability is in \[0, 1\]; probabilities are not validated.
@@ -1024,7 +1024,7 @@ rosetta_ref <- function(value = NULL) {
 #' The convention is positional, as in Keras: fan_in always uses shape\[-2\] and fan_out shape\[-1\]. For a transposed-convolution kernel \[kh, kw, out, in\] (conv2d_transpose's layout) that makes fan_in = kh kw out_channels and fan_out = kh kw in_channels, so he_* / glorot_* / lecun_* scale such kernels by the output channels, exactly as Keras Conv2DTranspose does.
 #' @usage
 #' fans(shape)
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @return `list(numeric, numeric)`
 #' @md
 #'
@@ -1174,7 +1174,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param store `ParameterStore`
 #' @param name `character`
 #' @param x `Tensor`
-#' @param hidden `vector<integer>`
+#' @param hidden `integer vector`
 #' @param activation `character (Activation)`
 #' @return `Tensor`
 #' @md
@@ -1243,10 +1243,10 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' conv2d_concat(store, names, x, filters, kernels, options = ConvLayerOptions$new())
 #' @param store `ParameterStore`
-#' @param names `vector<character>`
+#' @param names `character vector`
 #' @param x `Tensor`
-#' @param filters `vector<integer>`
-#' @param kernels `vector<integer>`
+#' @param filters `integer vector`
+#' @param kernels `integer vector`
 #' @param options `ConvLayerOptions`
 #' @return `Tensor`
 #' @md
@@ -1358,14 +1358,14 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' time_steps(x)
 #' @param x `Tensor`
-#' @return `vector<Tensor>`
+#' @return `list of Tensor`
 #' @md
 #'
 `time_steps` <- function(...) .Call(`.rs_106`, NULL, list(...))
 #' Stacks T tensors \[B, ...\] into \[B, T, ...\].
 #' @usage
 #' stack_time(steps)
-#' @param steps `vector<Tensor>`
+#' @param steps `list of Tensor`
 #' @return `Tensor`
 #' @md
 #'
@@ -1460,8 +1460,8 @@ rosetta_ref <- function(value = NULL) {
 #' True when AttentionImpl::Auto would take the fused kernel for these shapes and options.
 #' @usage
 #' attention_would_fuse(q_shape, k_shape, options)
-#' @param q_shape `vector<integer>`
-#' @param k_shape `vector<integer>`
+#' @param q_shape `integer vector`
+#' @param k_shape `integer vector`
 #' @param options `AttentionOptions`
 #' @return `logical`
 #' @md
@@ -1582,7 +1582,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' alibi_slopes(heads)
 #' @param heads `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `alibi_slopes` <- function(...) .Call(`.rs_124`, NULL, list(...))
@@ -1754,7 +1754,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' complex_sum(a, axes = c(), keepdims = FALSE)
 #' @param a `ComplexTensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `ComplexTensor`
 #' @md
@@ -1776,7 +1776,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' complex_reshape(a, shape)
 #' @param a `ComplexTensor`
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @return `ComplexTensor`
 #' @md
 #'
@@ -1888,7 +1888,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' rfft2d(x, fft_length = <default>)
 #' @param x `Tensor`
-#' @param fft_length `vector<integer>`
+#' @param fft_length `integer vector`
 #' @return `ComplexTensor`
 #' @md
 #'
@@ -1899,7 +1899,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' irfft2d(x, fft_length = <default>)
 #' @param x `ComplexTensor`
-#' @param fft_length `vector<integer>`
+#' @param fft_length `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -2174,7 +2174,7 @@ rosetta_ref <- function(value = NULL) {
 #' `desired_channels` > 0 keeps the first channels or repeats a mono channel; `desired_samples` > 0 crops or zero-pads the frames. Throws std::runtime_error on malformed input.
 #' @usage
 #' decode_wav(bytes, desired_channels = -1, desired_samples = -1)
-#' @param bytes `vector<integer>`
+#' @param bytes `integer vector`
 #' @param desired_channels `integer`
 #' @param desired_samples `integer`
 #' @return `Wav`
@@ -2197,7 +2197,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param samples `Tensor`
 #' @param sample_rate `integer`
 #' @param format `character (WavFormat)`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `encode_wav` <- function(...) .Call(`.rs_184`, NULL, list(...))
@@ -2254,7 +2254,7 @@ rosetta_ref <- function(value = NULL) {
 #' augment_mixup(images, labels, permutation, weight)
 #' @param images `Tensor`
 #' @param labels `Tensor`
-#' @param permutation `vector<integer>`
+#' @param permutation `integer vector`
 #' @param weight `numeric`
 #' @return `MixedBatch`
 #' @md
@@ -2267,7 +2267,7 @@ rosetta_ref <- function(value = NULL) {
 #' augment_cutmix(images, labels, permutation, rect)
 #' @param images `Tensor`
 #' @param labels `Tensor`
-#' @param permutation `vector<integer>`
+#' @param permutation `integer vector`
 #' @param rect `Rect`
 #' @return `MixedBatch`
 #' @md
@@ -2479,7 +2479,7 @@ rosetta_ref <- function(value = NULL) {
 #' True when grad mode is on and any defined input requires grad.
 #' @usage
 #' any_requires_grad(inputs)
-#' @param inputs `vector<Tensor>`
+#' @param inputs `list of Tensor`
 #' @return `logical`
 #' @md
 #'
@@ -2490,14 +2490,14 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Single-output form.
 #' @usage
-#' grad(outputs, inputs, grad_outputs = c(), options = GradOptions$new())
+#' grad(outputs, inputs, grad_outputs = list(), options = GradOptions$new())
 #' grad(output, inputs, options = GradOptions$new())
-#' @param outputs `vector<Tensor>`
-#' @param inputs `vector<Tensor>`
-#' @param grad_outputs `vector<Tensor>`
+#' @param outputs `list of Tensor`
+#' @param inputs `list of Tensor`
+#' @param grad_outputs `list of Tensor`
 #' @param options `GradOptions`
 #' @param output `Tensor`
-#' @return `vector<Tensor>`
+#' @return `list of Tensor`
 #' @section Errors:
 #' Signals an R error (from the C++ exception):
 #'
@@ -2508,9 +2508,9 @@ rosetta_ref <- function(value = NULL) {
 `grad` <- function(...) .Call(`.rs_213`, NULL, list(...))
 #' Accumulates gradients of the outputs into every reachable leaf's `grad()`.
 #' @usage
-#' backward(outputs, grad_outputs = c(), retain_graph = FALSE, create_graph = FALSE)
-#' @param outputs `vector<Tensor>`
-#' @param grad_outputs `vector<Tensor>`
+#' backward(outputs, grad_outputs = list(), retain_graph = FALSE, create_graph = FALSE)
+#' @param outputs `list of Tensor`
+#' @param grad_outputs `list of Tensor`
 #' @param retain_graph `logical`
 #' @param create_graph `logical`
 #' @md
@@ -3094,7 +3094,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sum(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3104,7 +3104,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' mean(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3116,7 +3116,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' max(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3126,7 +3126,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' min(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3136,7 +3136,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' prod(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3146,7 +3146,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' variance(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3156,7 +3156,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' std_dev(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3166,7 +3166,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' logsumexp(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3196,7 +3196,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' any(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3206,7 +3206,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' all(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3216,7 +3216,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' count_nonzero(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3255,7 +3255,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' norm(x, axes = c(), keepdims = FALSE)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @param keepdims `logical`
 #' @return `Tensor`
 #' @md
@@ -3267,7 +3267,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' reshape(x, shape)
 #' @param x `Tensor`
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3293,7 +3293,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' squeeze(x, axes = c())
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3302,7 +3302,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' transpose(x, perm = c())
 #' @param x `Tensor`
-#' @param perm `vector<integer>`
+#' @param perm `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3321,8 +3321,8 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' slice(x, begin, size)
 #' @param x `Tensor`
-#' @param begin `vector<integer>`
-#' @param size `vector<integer>`
+#' @param begin `integer vector`
+#' @param size `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3345,9 +3345,9 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' strided_slice(x, begin, end, strides = c())
 #' @param x `Tensor`
-#' @param begin `vector<integer>`
-#' @param end `vector<integer>`
-#' @param strides `vector<integer>`
+#' @param begin `integer vector`
+#' @param end `integer vector`
+#' @param strides `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3365,7 +3365,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `datamunge::nn::concat`
 #' @usage
 #' concat(tensors, axis)
-#' @param tensors `vector<Tensor>`
+#' @param tensors `list of Tensor`
 #' @param axis `integer`
 #' @return `Tensor`
 #' @md
@@ -3378,17 +3378,17 @@ rosetta_ref <- function(value = NULL) {
 #' split(x, sizes, axis)
 #' split(x, count, axis)
 #' @param x `Tensor`
-#' @param sizes `vector<integer>`
+#' @param sizes `integer vector`
 #' @param axis `integer`
 #' @param count `integer`
-#' @return `vector<Tensor>`
+#' @return `list of Tensor`
 #' @md
 #'
 `split` <- function(...) .Call(`.rs_310`, NULL, list(...))
 #' C++ function `datamunge::nn::stack`
 #' @usage
 #' stack(tensors, axis = 0)
-#' @param tensors `vector<Tensor>`
+#' @param tensors `list of Tensor`
 #' @param axis `integer`
 #' @return `Tensor`
 #' @md
@@ -3399,7 +3399,7 @@ rosetta_ref <- function(value = NULL) {
 #' unstack(x, axis = 0)
 #' @param x `Tensor`
 #' @param axis `integer`
-#' @return `vector<Tensor>`
+#' @return `list of Tensor`
 #' @md
 #'
 `unstack` <- function(...) .Call(`.rs_312`, NULL, list(...))
@@ -3407,7 +3407,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' tile(x, multiples)
 #' @param x `Tensor`
-#' @param multiples `vector<integer>`
+#' @param multiples `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3428,7 +3428,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' broadcast_to(x, shape)
 #' @param x `Tensor`
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3436,9 +3436,9 @@ rosetta_ref <- function(value = NULL) {
 #' The shape two shapes broadcast to (throws if incompatible).
 #' @usage
 #' broadcast_shapes(a, b)
-#' @param a `vector<integer>`
-#' @param b `vector<integer>`
-#' @return `vector<integer>`
+#' @param a `integer vector`
+#' @param b `integer vector`
+#' @return `integer vector`
 #' @md
 #'
 `broadcast_shapes` <- function(...) .Call(`.rs_316`, NULL, list(...))
@@ -3446,7 +3446,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sum_to(x, shape)
 #' @param x `Tensor`
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3455,7 +3455,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' pad(x, paddings, mode = "Constant", value = 0.0)
 #' @param x `Tensor`
-#' @param paddings `vector<list(integer, integer)>`
+#' @param paddings `list of list(integer, integer)`
 #' @param mode `character (PadMode)`
 #' @param value `numeric`
 #' @return `Tensor`
@@ -3466,7 +3466,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' reverse(x, axes)
 #' @param x `Tensor`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3554,7 +3554,7 @@ rosetta_ref <- function(value = NULL) {
 #' scatter_nd(indices, updates, shape)
 #' @param indices `Tensor`
 #' @param updates `Tensor`
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -3820,7 +3820,7 @@ rosetta_ref <- function(value = NULL) {
 #' and representable element/byte counts are checked before allocation.
 #' @usage
 #' MidpointUniformNoise(shape, seed)
-#' @param shape `vector<integer>`. Nonnegative output dimensions; empty selects a scalar.
+#' @param shape `integer vector`. Nonnegative output dimensions; empty selects a scalar.
 #' @param seed `integer`. Full unsigned32 local MT19937 seed, with no default.
 #' @return `Tensor`: Contiguous detached Float64 tensor of exactly shape.
 #' @section Examples (C++):
@@ -3855,7 +3855,7 @@ rosetta_ref <- function(value = NULL) {
 #' Transcendental rounding can vary between platforms/libm implementations.
 #' @usage
 #' GaussianNoise(shape, samples, seed)
-#' @param shape `vector<integer>`. Shape of each bank entry; every dimension must be nonnegative.
+#' @param shape `integer vector`. Shape of each bank entry; every dimension must be nonnegative.
 #' @param samples `integer`. Nonnegative leading bank count.
 #' @param seed `integer`. Raw 32-bit Mersenne Twister seed, with no default.
 #' @return `Tensor`: Contiguous detached Float64 tensor \[samples,shape...\].
@@ -5406,7 +5406,7 @@ rosetta_ref <- function(value = NULL) {
 #' QuantizeCodec(code, q)
 #' @param code `Tensor`. Finite signed Float32 CPU matrix\[N,D\], N,D>0.
 #' @param q `CodecQuantizer`. Finite ordered D-coordinate ranges; need not come from this query.
-#' @return `vector<integer>`: Owning row-major bytes, exactly N*D entries in\[0,255\].
+#' @return `integer vector`: Owning row-major bytes, exactly N*D entries in\[0,255\].
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -5431,7 +5431,7 @@ rosetta_ref <- function(value = NULL) {
 #' through path is created. Work/storage O(N*D); inputs unchanged.
 #' @usage
 #' DequantizeCodec(symbols, q)
-#' @param symbols `vector<integer>`. Nonempty row-major byte values, with length divisible by D.
+#' @param symbols `integer vector`. Nonempty row-major byte values, with length divisible by D.
 #' @param q `CodecQuantizer`. Finite ordered ranges with positive width D.
 #' @return `Tensor`: Owning detached Float32\[N,D\] reconstruction of quantized coordinates.
 #' @section Examples (C++):
@@ -5455,7 +5455,7 @@ rosetta_ref <- function(value = NULL) {
 #' work/storage. Width defaults to32 for the original teaching architecture.
 #' @usage
 #' SymbolTensor(symbols, width = 32)
-#' @param symbols `vector<integer>`. Nonempty complete row-major byte rows.
+#' @param symbols `integer vector`. Nonempty complete row-major byte rows.
 #' @param width `integer`. Positive row width D, default32, dividing the byte count exactly.
 #' @return `Tensor`: Owning detached Int32\[N,D\] values in\[0,255\].
 #' @section Examples (C++):
@@ -5514,7 +5514,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' PackCodec(p)
 #' @param p `CodecPacket`. Complete valid packet with nonnegative Int32 identities.
-#' @return `vector<integer>`: Owning complete TFLCODE1 byte sequence, compatible with the original example.
+#' @return `integer vector`: Owning complete TFLCODE1 byte sequence, compatible with the original example.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -5545,7 +5545,7 @@ rosetta_ref <- function(value = NULL) {
 #' cannot detect all bit corruption: the teaching format has no checksum.
 #' @usage
 #' UnpackCodec(bytes)
-#' @param bytes `vector<integer>`. Complete binary TFLCODE1 sequence, unchanged.
+#' @param bytes `integer vector`. Complete binary TFLCODE1 sequence, unchanged.
 #' @return `CodecPacket`: Independent packet, preserving all finite Float32 bits and identities.
 #' @section Examples (C++):
 #' ```cpp
@@ -5618,8 +5618,8 @@ rosetta_ref <- function(value = NULL) {
 #' Area under the ROC curve for binary labels (ties count half).
 #' @usage
 #' roc_auc(truth, scores)
-#' @param truth `vector<integer>`
-#' @param scores `vector<numeric>`
+#' @param truth `integer vector`
+#' @param scores `numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -5627,8 +5627,8 @@ rosetta_ref <- function(value = NULL) {
 #' Area under the precision-recall curve (step interpolation, ties grouped).
 #' @usage
 #' average_precision(truth, scores)
-#' @param truth `vector<integer>`
-#' @param scores `vector<numeric>`
+#' @param truth `integer vector`
+#' @param scores `numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -8108,7 +8108,7 @@ rosetta_ref <- function(value = NULL) {
 #' ProgressiveActiveGroups(stage, generator = TRUE)
 #' @param stage `integer`. Stage integer0,1 or2, rejecting all other values.
 #' @param generator `logical`. Select G indices when true(default), D indices when false.
-#' @return `vector<integer>`: Owning group-index vector in source application order.
+#' @return `integer vector`: Owning group-index vector in source application order.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -8443,7 +8443,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' take_rows(x, indices)
 #' @param x `Tensor`
-#' @param indices `vector<integer>`
+#' @param indices `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -9134,8 +9134,8 @@ rosetta_ref <- function(value = NULL) {
 #' SigmoidAutoencoder(parameters, image, widths)
 #' @param parameters `ParameterStore`. Mutable matching Float32/64 store, using fixed layer* prefixes.
 #' @param image `Tensor`. Finite nonempty \[B,widths.front()\] rows, including cached representations.
-#' @param widths `vector<integer>`. Complete odd mirrored integer geometry, e.g. \{784,64,16,64,784\}.
-#' @return `vector<Tensor>`: Owning layer outputs in forward order, excluding the input and any loss.
+#' @param widths `integer vector`. Complete odd mirrored integer geometry, e.g. \{784,64,16,64,784\}.
+#' @return `list of Tensor`: Owning layer outputs in forward order, excluding the input and any loss.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -9176,7 +9176,7 @@ rosetta_ref <- function(value = NULL) {
 #' SigmoidAutoencoderDecode(parameters, code, widths)
 #' @param parameters `ParameterStore`. Mutable matching Float32/64 store, with original layer* names.
 #' @param code `Tensor`. Finite nonempty \[B,widths\[widths.size()/2\]\] code.
-#' @param widths `vector<integer>`. Complete odd mirrored geometry, including the unused encoder widths.
+#' @param widths `integer vector`. Complete odd mirrored geometry, including the unused encoder widths.
 #' @return `Tensor`: Owning differentiable \[B,widths.back()\] raw sigmoid reconstruction.
 #' @section Examples (C++):
 #' ```cpp
@@ -9304,7 +9304,7 @@ rosetta_ref <- function(value = NULL) {
 #' thread independent. Work/storage O(294*784); allocation/backend errors propagate.
 #' @usage
 #' KnownFactorLattice()
-#' @return `vector<list(character, Tensor)>`: Named image, factor-index and source-ID arrays for all three splits.
+#' @return `list of list(character, Tensor)`: Named image, factor-index and source-ID arrays for all three splits.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -9388,7 +9388,7 @@ rosetta_ref <- function(value = NULL) {
 #' encode_boxes(anchors, boxes, variances = kDefaultBoxVariances)
 #' @param anchors `Tensor`
 #' @param boxes `Tensor`
-#' @param variances `vector<numeric>`
+#' @param variances `numeric vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -9400,7 +9400,7 @@ rosetta_ref <- function(value = NULL) {
 #' decode_boxes(anchors, deltas, variances = kDefaultBoxVariances, max_log_scale = 4.0)
 #' @param anchors `Tensor`
 #' @param deltas `Tensor`
-#' @param variances `vector<numeric>`
+#' @param variances `numeric vector`
 #' @param max_log_scale `numeric`
 #' @return `Tensor`
 #' @md
@@ -9414,8 +9414,8 @@ rosetta_ref <- function(value = NULL) {
 #' @param rows `integer`
 #' @param cols `integer`
 #' @param stride `numeric`
-#' @param sizes `vector<numeric>`
-#' @param ratios `vector<numeric>`
+#' @param sizes `numeric vector`
+#' @param ratios `numeric vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -9432,11 +9432,11 @@ rosetta_ref <- function(value = NULL) {
 #' @param positive `numeric`
 #' @param negative `numeric`
 #' @param force_best `logical`
-#' @param anchors `vector<vector<numeric>>`
-#' @param targets `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
+#' @param targets `list of numeric vector`
 #' @return `Tensor`
 #'
-#' Or `vector<integer>`
+#' Or `integer vector`
 #' @md
 #'
 `match_boxes` <- function(...) .Call(`.rs_523`, NULL, list(...))
@@ -9486,7 +9486,7 @@ rosetta_ref <- function(value = NULL) {
 #' sqrt(sum of squared entries over all tensors); undefined tensors are skipped.
 #' @usage
 #' global_norm(tensors)
-#' @param tensors `vector<Tensor>`
+#' @param tensors `list of Tensor`
 #' @return `numeric`
 #' @md
 #'
@@ -9494,10 +9494,10 @@ rosetta_ref <- function(value = NULL) {
 #' Clamps every entry to \[low, high\].
 #' @usage
 #' clip_by_value(gradients, low, high)
-#' @param gradients `vector<Tensor>`
+#' @param gradients `list of Tensor`
 #' @param low `numeric`
 #' @param high `numeric`
-#' @return `vector<Tensor>`
+#' @return `list of Tensor`
 #' @md
 #'
 `clip_by_value` <- function(...) .Call(`.rs_528`, NULL, list(...))
@@ -9517,7 +9517,7 @@ rosetta_ref <- function(value = NULL) {
 #' max_norm_constraint(w, max_norm, axes = <default>)
 #' @param w `Tensor`
 #' @param max_norm `numeric`
-#' @param axes `vector<integer>`
+#' @param axes `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -9527,9 +9527,9 @@ rosetta_ref <- function(value = NULL) {
 #' Returns the clipped tensors and the norm before clipping.
 #' @usage
 #' clip_by_global_norm(gradients, max_norm)
-#' @param gradients `vector<Tensor>`
+#' @param gradients `list of Tensor`
 #' @param max_norm `numeric`
-#' @return `list(vector<Tensor>, numeric)`
+#' @return `list(list of Tensor, numeric)`
 #' @md
 #'
 `clip_by_global_norm` <- function(...) .Call(`.rs_531`, NULL, list(...))
@@ -9581,7 +9581,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' scan_image_folder(root, class_names = c())
 #' @param root `character`
-#' @param class_names `vector<character>`
+#' @param class_names `character vector`
 #' @return `ImageFolder`
 #' @md
 #'
@@ -9603,8 +9603,8 @@ rosetta_ref <- function(value = NULL) {
 #' A corrupt file throws rather than being skipped, so labels never misalign.
 #' @usage
 #' load_image_batch(images, rows, height, width)
-#' @param images `vector<ImageFile>`
-#' @param rows `vector<integer>`
+#' @param images `list of ImageFile`
+#' @param rows `integer vector`
 #' @param height `integer`
 #' @param width `integer`
 #' @return `ImageDataset`
@@ -9619,7 +9619,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param root `character`
 #' @param height `integer`
 #' @param width `integer`
-#' @param class_names `vector<character>`
+#' @param class_names `character vector`
 #' @param folder `ImageFolder or NULL`
 #' @return `ImageDataset`
 #' @md
@@ -9635,7 +9635,7 @@ rosetta_ref <- function(value = NULL) {
 #' einsum(equation, a)
 #' einsum(equation, a, b)
 #' @param equation `character`
-#' @param operands `vector<Tensor>`
+#' @param operands `list of Tensor`
 #' @param a `Tensor`
 #' @param b `Tensor`
 #' @return `Tensor`
@@ -9953,10 +9953,10 @@ rosetta_ref <- function(value = NULL) {
 #' Collapses a frame-level path: merge repeated classes (when `merge_repeated`), then drop blanks (TF's order: "a-a" keeps both a's).
 #' @usage
 #' ctc_collapse(path, blank, merge_repeated = TRUE)
-#' @param path `vector<integer>`
+#' @param path `integer vector`
 #' @param blank `integer`
 #' @param merge_repeated `logical`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `ctc_collapse` <- function(...) .Call(`.rs_568`, NULL, list(...))
@@ -10074,7 +10074,7 @@ rosetta_ref <- function(value = NULL) {
 #' Lifetime is the process lifetime; no allocation after first initialisation.
 #' @usage
 #' LeNetC3Connections()
-#' @return `vector<vector<integer>>`: Static immutable lists for 16 output maps, totalling 60 input connections.
+#' @return `list of integer vector`: Static immutable lists for 16 output maps, totalling 60 input connections.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n=dm::nn; namespace m=n::models;
@@ -12126,7 +12126,7 @@ rosetta_ref <- function(value = NULL) {
 #' SurvivalProbabilities(blocks, last)
 #' @param blocks `integer`. Positive number L of residual blocks, excluding the stem/head.
 #' @param last `numeric`. Final survival probability in \[0,1\], default chosen by caller.
-#' @return `vector<numeric>`: Float vector of length blocks, indexed l-1 for l=1..L.
+#' @return `numeric vector`: Float vector of length blocks, indexed l-1 for l=1..L.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto p = dm::nn::models::SurvivalProbabilities(54, .5f);
@@ -12452,7 +12452,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' RevNetUnits(cfg)
 #' @param cfg `RevNetConfig`. Configuration validated by Widths().
-#' @return `vector<RevNetUnit>`: Independent metadata vector, with undefined input/output tensor pairs.
+#' @return `list of RevNetUnit`: Independent metadata vector, with undefined input/output tensor pairs.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto units = dm::nn::models::RevNetUnits(dm::nn::models::RevNetConfig::Cifar(38));
@@ -12765,7 +12765,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' MobileNetV3Blocks(large)
 #' @param large `logical`. True selects Large, false Small.
-#' @return `vector<MobileNetV3Block>`: Value vector with 15 Large or 11 Small block specifications.
+#' @return `list of MobileNetV3Block`: Value vector with 15 Large or 11 Small block specifications.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto blocks = dm::nn::models::MobileNetV3Blocks(false); // 11 blocks
@@ -12917,7 +12917,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ReshapeChannels(x, channels)
 #' @param x `Tensor`. Nonempty tensor with rank at least four, any supported dtype.
-#' @param channels `vector<integer>`. Nonempty positive trailing dimensions with matching total element count.
+#' @param channels `integer vector`. Nonempty positive trailing dimensions with matching total element count.
 #' @return `Tensor`: Reshaped tensor retaining storage/autograd semantics of the core reshape.
 #' @section Examples (C++):
 #' ```cpp
@@ -13254,7 +13254,7 @@ rosetta_ref <- function(value = NULL) {
 #' allocate or fit learned tensors; O(16) copy work/storage.
 #' @usage
 #' GhostNetBlocks()
-#' @return `vector<GhostBlock>`: Value vector in execution order, before width scaling.
+#' @return `list of GhostBlock`: Value vector in execution order, before width scaling.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto blocks = dm::nn::models::GhostNetBlocks(); // 16 blocks
@@ -13878,7 +13878,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' MnasNetBlocks(variant)
 #' @param variant `character`. a1 or b1, case-sensitive.
-#' @return `vector<BlockArgs>`: Owned vector: A1 sixteen repeats with selective SE; B1 seventeen without SE.
+#' @return `list of BlockArgs`: Owned vector: A1 sixteen repeats with selective SE; B1 seventeen without SE.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto blocks = dm::nn::models::MnasNetBlocks("a1");
@@ -13962,7 +13962,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' EfficientNetBlocks(variant)
 #' @param variant `integer`. Integer B index in \[0,7\].
-#' @return `vector<BlockArgs>`: Owned block vector with rounded input/output widths and ceil-scaled repeats.
+#' @return `list of BlockArgs`: Owned block vector with rounded input/output widths and ceil-scaled repeats.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto b0 = dm::nn::models::EfficientNetBlocks(0);
@@ -14048,7 +14048,7 @@ rosetta_ref <- function(value = NULL) {
 #' EfficientNetV2Blocks(v)
 #' @param v `EfficientNetV2Variant`. Nonempty valid block strings; finite positive width/depth, positive side, dropout in
 #'   \[0,1).
-#' @return `vector<BlockArgs>`: Owned stages with rounded widths and ceil-scaled positive repeats.
+#' @return `list of BlockArgs`: Owned stages with rounded widths and ceil-scaled positive repeats.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto blocks =
@@ -14732,7 +14732,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' DeployRepVGG(deployed, blocks, p, state)
 #' @param deployed `ParameterStore`. Mutable independent learned store matching p dtype; creates/replaces named leaves.
-#' @param blocks `vector<RepVGGBlockSpec>`. Initialized training-form specs, normally RepVGGOutputs.blocks.
+#' @param blocks `list of RepVGGBlockSpec`. Initialized training-form specs, normally RepVGGOutputs.blocks.
 #' @param p `ParameterStore`. Borrowed source learned store; not modified.
 #' @param state `ParameterStore`. Borrowed fixed inference BN moments matching p dtype.
 #' @section Examples (C++):
@@ -15298,7 +15298,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' BuildRpn(p, levels, hidden = 128)
 #' @param p `ParameterStore`. Mutable Float32/64 learned store; lazily creates rpn/conv, rpn/objectness and rpn/deltas leaves.
-#' @param levels `vector<RpnLevel>`. Nonempty square feature levels with shared batch, channels, anchors per cell and store dtype.
+#' @param levels `list of RpnLevel`. Nonempty square feature levels with shared batch, channels, anchors per cell and store dtype.
 #' @param hidden `integer`. Positive shared convolution output width, default 128.
 #' @return `Rpn`: Objectness logits/probabilities, box deltas and total anchor count with gradients.
 #' @section Examples (C++):
@@ -15391,9 +15391,9 @@ rosetta_ref <- function(value = NULL) {
 #' O(D*G) matching and O(D²+D*S) envelope/sampling for S=11 or101.
 #' @usage
 #' EvaluateDetectionClass(predictions, truth, images, label, threshold, coco, inclusive_voc = FALSE)
-#' @param predictions `vector<DetectionEvaluationPrediction>`. Finite scored boxes; only selected image IDs and label contribute.
-#' @param truth `vector<DetectionEvaluationTruth>`. Finite annotated boxes; difficult is ignored for VOC, crowd for COCO.
-#' @param images `vector<integer>`. Unique nonnegative selected image IDs; input order breaks cross-image score ties.
+#' @param predictions `list of DetectionEvaluationPrediction`. Finite scored boxes; only selected image IDs and label contribute.
+#' @param truth `list of DetectionEvaluationTruth`. Finite annotated boxes; difficult is ignored for VOC, crowd for COCO.
+#' @param images `integer vector`. Unique nonnegative selected image IDs; input order breaks cross-image score ties.
 #' @param label `integer`. Nonnegative category identifier.
 #' @param threshold `numeric`. Finite IoU cutoff in (0,1\]; strict greater for VOC and greater-or-equal for COCO.
 #' @param coco `logical`. True for COCO 101-point/crowd/max100 rules; false for VOC 11-point/difficult rules.
@@ -15423,9 +15423,9 @@ rosetta_ref <- function(value = NULL) {
 #' the complete official evaluation suite. No parameter mutation or fitting.
 #' @usage
 #' EvaluateDetectionDataset(predictions, truth, images, coco, inclusive_voc = FALSE)
-#' @param predictions `vector<DetectionEvaluationPrediction>`. Scored boxes; no model inference or score filtering is performed.
-#' @param truth `vector<DetectionEvaluationTruth>`. Annotated boxes, including difficult and crowd flags.
-#' @param images `vector<integer>`. Unique selected nonnegative image IDs, in tie-breaking order.
+#' @param predictions `list of DetectionEvaluationPrediction`. Scored boxes; no model inference or score filtering is performed.
+#' @param truth `list of DetectionEvaluationTruth`. Annotated boxes, including difficult and crowd flags.
+#' @param images `integer vector`. Unique selected nonnegative image IDs, in tie-breaking order.
 #' @param coco `logical`. True for all-area COCO-style box AP; false for VOC integral/11-point AP.
 #' @param inclusive_voc `logical`. Forward the synthetic-scene inclusive VOC cutoff option; false by default.
 #' @return `DetectionDatasetEvaluation`: Float64 tensor means and per-category AP50; empty eligible categories give zero means.
@@ -15541,7 +15541,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ComponentDetectionProposals(image, thresholds = <default>, gap = 3)
 #' @param image `Tensor`. Float32/64 \[H,W,1\] image, positive H/W, finite pixels in \[0,1\].
-#' @param thresholds `vector<integer>`. Byte cutoffs in \[0,255\], default16/32/64/96/128/160/200; strict foreground comparison.
+#' @param thresholds `integer vector`. Byte cutoffs in \[0,255\], default16/32/64/96/128/160/200; strict foreground comparison.
 #' @param gap `integer`. Nonnegative maximum vertical/horizontal edge gap for component-pair unions, default3.
 #' @return `Tensor`: Detached \[P,4\] pixel boxes in image dtype, with exact duplicates removed in first-occurrence order.
 #' @section Examples (C++):
@@ -15569,8 +15569,8 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' DrawDetectionBoxes(images, boxes, colour = <default>)
 #' @param images `Tensor`. Float32/64 \[N,H,W,1\] pixels; values are displayed unchanged, typically \[0,1\].
-#' @param boxes `vector<Tensor>`. N tensors \[Ki,4\] of finite ordered pixel boxes; no labels or scores are drawn.
-#' @param colour `vector<numeric>`. Three finite RGB values in \[0,1\], default red.
+#' @param boxes `list of Tensor`. N tensors \[Ki,4\] of finite ordered pixel boxes; no labels or scores are drawn.
+#' @param colour `numeric vector`. Three finite RGB values in \[0,1\], default red.
 #' @return `Tensor`: \[N,H,W,3\] tensor, grayscale expanded to RGB with colored one-pixel centre-aligned outlines.
 #' @section Examples (C++):
 #' ```cpp
@@ -15598,7 +15598,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' MakeDetectionPatches(scenes, rows, seed = 3)
 #' @param scenes `TensorDetectionScenes`. Valid normalized tensor scene images and aligned floating boxes/Int64 digit labels.
-#' @param rows `vector<integer>`. Unique or repeated valid scene indices; only these scenes supply patches.
+#' @param rows `integer vector`. Unique or repeated valid scene indices; only these scenes supply patches.
 #' @param seed `integer`. Seed for tensor uniform jitter/window draws, default3.
 #' @return `ImageDataset`: ImageDataset with detached \[P,28,28,1\] crops in \[0,1\] and Int64 digit/background labels; background is10.
 #' @section Examples (C++):
@@ -15627,7 +15627,7 @@ rosetta_ref <- function(value = NULL) {
 #' SlidingDetectionWindows(height, width, sides = <default>, stride = 4)
 #' @param height `integer`. Positive image height.
 #' @param width `integer`. Positive image width.
-#' @param sides `vector<integer>`. Nonempty positive square sides, each fitting both image dimensions; default16/22/28/34.
+#' @param sides `integer vector`. Nonempty positive square sides, each fitting both image dimensions; default16/22/28/34.
 #' @param stride `integer`. Positive integer pixel displacement, default4.
 #' @return `Tensor`: Float32 \[A,4\] half-open boxes in side, row, column order, beginning at pixel edge zero.
 #' @section Examples (C++):
@@ -15684,7 +15684,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' DetectionEvaluationRecords(detections)
 #' @param detections `TensorDetections`. Consistent tensor detections; finite Float32-representable scores/coordinates and IDs fitting signed int.
-#' @return `vector<DetectionEvaluationPrediction>`: Owning records, preserving order; Float64 coordinates/scores round to Float32 on conversion.
+#' @return `list of DetectionEvaluationPrediction`: Owning records, preserving order; Float64 coordinates/scores round to Float32 on conversion.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -15908,7 +15908,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' MakeRcnnTrainingSamples(scenes, rows)
 #' @param scenes `TensorDetectionScenes`. Valid normalized tensor scenes with finite positive-area boxes and Int64 digit labels.
-#' @param rows `vector<integer>`. Selected valid source-scene indices; only these scenes contribute.
+#' @param rows `integer vector`. Selected valid source-scene indices; only these scenes contribute.
 #' @return `RcnnTrainingSamples`: Detached warped patches, labels, encoded regression targets/masks, pixel boxes and source indices.
 #' @section Examples (C++):
 #' ```cpp
@@ -15942,8 +15942,8 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' SampleDetectionRois(scenes, rows, candidates, rng, per_image = 64, background = 10, stride = 4, feature_height = 16, feature_width = 16)
 #' @param scenes `TensorDetectionScenes`. Valid floating grayscale scene data with positive-area boxes and digit labels.
-#' @param rows `vector<integer>`. Source scene IDs whose feature maps form the same-order minibatch.
-#' @param candidates `vector<Tensor>`. One floating \[Pi,4\] positive-area candidate tensor per selected scene, in image dtype.
+#' @param rows `integer vector`. Source scene IDs whose feature maps form the same-order minibatch.
+#' @param candidates `list of Tensor`. One floating \[Pi,4\] positive-area candidate tensor per selected scene, in image dtype.
 #' @param rng `Generator`. Mutable tensor generator for random boxes and within-category shuffles; advances.
 #' @param per_image `integer`. Positive requested maximum regions per image, default64.
 #' @param background `integer`. Positive final class index, larger than all truth labels, default10.
@@ -15978,7 +15978,7 @@ rosetta_ref <- function(value = NULL) {
 #' random state; work O(sum(Ki)). Coordinate transformations use tensor ops.
 #' @usage
 #' PackDetectionRois(candidates, stride = 4, feature_height = 16, feature_width = 16)
-#' @param candidates `vector<Tensor>`. Nonempty vector of floating \[Ki,4\] finite ordered boxes, one per feature minibatch row, all same dtype.
+#' @param candidates `list of Tensor`. Nonempty vector of floating \[Ki,4\] finite ordered boxes, one per feature minibatch row, all same dtype.
 #' @param stride `integer`. Positive integer feature stride, default4.
 #' @param feature_height `integer`. Feature grid height at least2, default16.
 #' @param feature_width `integer`. Feature grid width at least2, default16.
@@ -16047,7 +16047,7 @@ rosetta_ref <- function(value = NULL) {
 #' MakeDetectionRpnTargets(anchors, scenes, rows, rng, per_image = 128)
 #' @param anchors `Tensor`. Float32/64 \[A,4\] finite positive-area boxes, A positive, same dtype as scene images.
 #' @param scenes `TensorDetectionScenes`. Valid floating tensor scenes with positive-area annotated boxes.
-#' @param rows `vector<integer>`. Selected source-scene IDs in RPN feature-minibatch order.
+#' @param rows `integer vector`. Selected source-scene IDs in RPN feature-minibatch order.
 #' @param rng `Generator`. Mutable tensor generator for positive/negative index shuffles.
 #' @param per_image `integer`. Positive maximum classification anchors per image, default128.
 #' @return `DetectionRpnTargets`: Detached labels/weights/targets/positive masks with leading axes \[rows.size(),A\].
@@ -16120,7 +16120,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param width `integer`. Positive source-image width.
 #' @param before `integer`. Nonnegative top-score budget per image, default300.
 #' @param after `integer`. Nonnegative final proposal cap per image, default100.
-#' @return `vector<Tensor>`: N detached \[Pi,4\] tensors in RPN batch order.
+#' @return `list of Tensor`: N detached \[Pi,4\] tensors in RPN batch order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -16151,7 +16151,7 @@ rosetta_ref <- function(value = NULL) {
 #' FeaturePyramid(p, name, inputs, width = 256, extra_level = TRUE)
 #' @param p `ParameterStore`. Mutable Float32/64 learned store; lazily creates named lateral/smoothing weights and biases.
 #' @param name `character`. Parameter prefix; level i uses /level*+2>/\{lateral,smooth\}/\{W,b\}.
-#' @param inputs `vector<Tensor>`. Nonempty NHWC feature list in increasing stride order, same positive batch/dtype; H/W nonincreasing and channels positive.
+#' @param inputs `list of Tensor`. Nonempty NHWC feature list in increasing stride order, same positive batch/dtype; H/W nonincreasing and channels positive.
 #' @param width `integer`. Positive output channel count, default256.
 #' @param extra_level `logical`. Append a1x1 stride-two VALID max pool of the last smoothed map when true (default).
 #' @return `FeaturePyramidOutputs`: Unsmoothed inner maps and smoothed levels preserving each input H/W, plus an optional coarser output.
@@ -16207,7 +16207,7 @@ rosetta_ref <- function(value = NULL) {
 #' masking of unused crops.
 #' @usage
 #' PyramidDetectionRoiPool(levels, boxes, indices, canonical = 224.0)
-#' @param levels `vector<DetectionPyramidLevel>`. Exactly four floating feature/stride levels in P2–P5 order, increasing positive strides, same N/C/dtype; each H/W at least2.
+#' @param levels `list of DetectionPyramidLevel`. Exactly four floating feature/stride levels in P2–P5 order, increasing positive strides, same N/C/dtype; each H/W at least2.
 #' @param boxes `Tensor`. Float32/64 \[K,4\] finite ordered pixel boxes; normalized sampling can extend outside features.
 #' @param indices `Tensor`. Int32/64 \[K\] valid feature minibatch row indices.
 #' @param canonical `numeric`. Finite positive side assigned to level4, default224.
@@ -16287,10 +16287,10 @@ rosetta_ref <- function(value = NULL) {
 #' learned state, random draws or fitting. Work/storage O(number of defaults).
 #' @usage
 #' SsdDefaultBoxes(cells, sizes, steps, per_cell, dtype = "Float32")
-#' @param cells `vector<integer>`. Nonempty positive square feature-grid sides, one per level.
-#' @param sizes `vector<numeric>`. Positive finite pixel sides, one per level plus the next coarser side.
-#' @param steps `vector<numeric>`. Positive finite pixel strides, one per level.
-#' @param per_cell `vector<integer>`. Box counts per level, each4 or6.
+#' @param cells `integer vector`. Nonempty positive square feature-grid sides, one per level.
+#' @param sizes `numeric vector`. Positive finite pixel sides, one per level plus the next coarser side.
+#' @param steps `numeric vector`. Positive finite pixel strides, one per level.
+#' @param per_cell `integer vector`. Box counts per level, each4 or6.
 #' @param dtype `character (DType)`. Float32 by default, or Float64; all geometry arithmetic follows this dtype.
 #' @return `Tensor`: Detached \[sum(cells²*per_cell),4\] ordered half-open pixel boxes, without clipping.
 #' @section Examples (C++):
@@ -16413,7 +16413,7 @@ rosetta_ref <- function(value = NULL) {
 #' MakeSsdTargets(anchors, scenes, rows, background)
 #' @param anchors `Tensor`. Floating \[A,4\] finite positive-area boxes, same dtype as scene images; at least one per selected target.
 #' @param scenes `TensorDetectionScenes`. Floating grayscale scene metadata with aligned positive-area boxes and nonnegative Int64 labels below background; pixels are not read.
-#' @param rows `vector<integer>`. Selected source-scene IDs in prediction minibatch order.
+#' @param rows `integer vector`. Selected source-scene IDs in prediction minibatch order.
 #' @param background `integer`. Positive final class identifier, larger than every selected truth label.
 #' @return `TensorSsdTargets`: Detached \[N,A\] labels and \[N,A,4\] offsets in anchor dtype; empty rows yield empty leading dimension.
 #' @section Examples (C++):
@@ -16550,7 +16550,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param grayscale `logical`. Accept one channel and tile to RGB when true; otherwise require RGB.
 #' @param training `logical`. Use batch statistics when true; false uses moving state.
 #' @param update_stats `logical`. Mutate BN moving state only when training and true.
-#' @return `vector<Tensor>`: Five differentiable feature maps in P3–P7 order, all with requested width.
+#' @return `list of Tensor`: Five differentiable feature maps in P3–P7 order, all with requested width.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -16668,7 +16668,7 @@ rosetta_ref <- function(value = NULL) {
 #' All scale, cube-root and coordinate arithmetic uses tensors; no fitting.
 #' @usage
 #' RetinaAnchors(cells, first_size = 32.0, dtype = "Float32")
-#' @param cells `vector<integer>`. Exactly five positive square feature sides.
+#' @param cells `integer vector`. Exactly five positive square feature sides.
 #' @param first_size `numeric`. Finite positive base side at P3, default32; compact128 uses16.
 #' @param dtype `character (DType)`. Float32 by default or Float64 for geometry arithmetic.
 #' @return `Tensor`: Detached \[9*sum(cells²),4\] pixel boxes ordered level,row,column,scale,ratio(height/width).
@@ -16696,7 +16696,7 @@ rosetta_ref <- function(value = NULL) {
 #' MakeRetinaTargets(anchors, scenes, rows, classes)
 #' @param anchors `Tensor`. Floating \[A,4\] finite positive-area pixel anchors in scene dtype, at least one per selected truth.
 #' @param scenes `TensorDetectionScenes`. Valid floating grayscale scene metadata; pixel values are not read.
-#' @param rows `vector<integer>`. Source scene IDs in prediction order.
+#' @param rows `integer vector`. Source scene IDs in prediction order.
 #' @param classes `integer`. Positive number of foreground classes; every selected label is smaller.
 #' @return `RetinaTargets`: Detached class/positive/weight/offset tensors aligned with batch and anchor order.
 #' @section Examples (C++):
@@ -16795,7 +16795,7 @@ rosetta_ref <- function(value = NULL) {
 #' scaled only at their finite endpoints. Points use stride*(index+.5). No fit.
 #' @usage
 #' FcosPoints(cells, range_scale = 1.0, dtype = "Float32")
-#' @param cells `vector<integer>`. Five positive grid sides in P3–P7 order.
+#' @param cells `integer vector`. Five positive grid sides in P3–P7 order.
 #' @param range_scale `numeric`. Finite positive regression-range multiplier, default1; compact128 uses.25.
 #' @param dtype `character (DType)`. Float32(default) or Float64 coordinate arithmetic.
 #' @return `Tensor`: Detached \[P,5\] rows y,x,stride,minimum,maximum in level,row,column order.
@@ -16917,7 +16917,7 @@ rosetta_ref <- function(value = NULL) {
 #' MakeFcosTargets(points, scenes, rows, classes, center_radius = 1.5)
 #' @param points `Tensor`. Float32/64 \[P,5\] y,x,stride,min,max with positive stride and valid ranges; +inf max allowed.
 #' @param scenes `TensorDetectionScenes`. Valid same-dtype grayscale scene metadata; pixels are not read.
-#' @param rows `vector<integer>`. Dataset IDs in prediction batch order.
+#' @param rows `integer vector`. Dataset IDs in prediction batch order.
 #' @param classes `integer`. Positive foreground class count, above all selected labels.
 #' @param center_radius `numeric`. Finite radius multiplier, default1.5; <=0 disables centre sampling.
 #' @return `FcosTargets`: Detached tensor targets with first-truth ties and zero background rows.
@@ -17203,7 +17203,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' MakeCenterTargets(scenes, rows, classes)
 #' @param scenes `TensorDetectionScenes`. Valid Float32/64 grayscale scene metadata, H/W divisible by32; pixels are not read.
-#' @param rows `vector<integer>`. Scene IDs in prediction order.
+#' @param rows `integer vector`. Scene IDs in prediction order.
 #' @param classes `integer`. Positive foreground count above every selected label.
 #' @return `CenterTargets`: Detached Gaussian/size/offset/mask targets and discarded-object collision count.
 #' @section Examples (C++):
@@ -17261,8 +17261,8 @@ rosetta_ref <- function(value = NULL) {
 #' slightly below one due to epsilon. No parameter/state mutation or fitting.
 #' @usage
 #' FastFeatureFusion(inputs, weights, epsilon = 1.0E-4)
-#' @param inputs `vector<Tensor>`. Nonempty same-shape/dtype Float32/64 tensors.
-#' @param weights `vector<Tensor>`. Same-length vector of same-dtype floating scalars, one per edge.
+#' @param inputs `list of Tensor`. Nonempty same-shape/dtype Float32/64 tensors.
+#' @param weights `list of Tensor`. Same-length vector of same-dtype floating scalars, one per edge.
 #' @param epsilon `numeric`. Finite positive denominator addition, default1e-4.
 #' @return `Tensor`: Sum(relu(weight_i)*input_i)/(sum(relu(weights))+epsilon), with gradients to inputs/weights.
 #' @section Examples (C++):
@@ -17347,11 +17347,11 @@ rosetta_ref <- function(value = NULL) {
 #' @param p `ParameterStore`. Mutable Float32/64 learned store, includes one scalar per incoming edge.
 #' @param state `ParameterStore`. Mutable same-dtype BN state; checkpoint with p.
 #' @param name `character`. Unique compatible cell prefix; repeated cells use different prefixes.
-#' @param inputs `vector<Tensor>`. Five positive NHWC P3–P7 maps with common batch/dtype; each coarser H/W is ceil(previous/2).
+#' @param inputs `list of Tensor`. Five positive NHWC P3–P7 maps with common batch/dtype; each coarser H/W is ceil(previous/2).
 #' @param width `integer`. Positive shared output width.
 #' @param training `logical`. False(default) uses moving BN state; true uses batch statistics.
 #' @param update_stats `logical`. True(default) updates moving state only in training.
-#' @return `vector<Tensor>`: Five differentiable maps in original fine-to-coarse grids, all with requested width.
+#' @return `list of Tensor`: Five differentiable maps in original fine-to-coarse grids, all with requested width.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -17619,7 +17619,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param logits `Tensor`. Float32/64 \[N,Q,C+1\], with C=classes and no-object last.
 #' @param predictions `Tensor`. Same-dtype \[N,Q,4\] finite normalized cy,cx,h,w with positive extents.
 #' @param scenes `TensorDetectionScenes`. Valid same-dtype grayscale scene metadata; pixels are not read.
-#' @param rows `vector<integer>`. Dataset IDs in prediction order, N entries.
+#' @param rows `integer vector`. Dataset IDs in prediction order, N entries.
 #' @param classes `integer`. Positive foreground count above every selected label.
 #' @return `DetrTargets`: Detached aligned one-hot/no-object labels, normalized matched boxes and positive mask.
 #' @section Examples (C++):
@@ -17649,7 +17649,7 @@ rosetta_ref <- function(value = NULL) {
 #' DetrLoss(net, scenes, rows, classes)
 #' @param net `DetrOutputs`. Nonempty same-length vectors of decoder logits and normalized boxes.
 #' @param scenes `TensorDetectionScenes`. Valid same-dtype scene metadata.
-#' @param rows `vector<integer>`. Dataset IDs matching network batch order.
+#' @param rows `integer vector`. Dataset IDs matching network batch order.
 #' @param classes `integer`. Positive foreground count, excluding final no-object channel.
 #' @return `Tensor`: Differentiable scalar sum of all per-layer set losses.
 #' @section Examples (C++):
@@ -17708,7 +17708,7 @@ rosetta_ref <- function(value = NULL) {
 #' Returned reference remains valid for program lifetime and is read-only.
 #' @usage
 #' YoloV1Layers()
-#' @return `vector<list(integer, integer)>`: Const reference to24 ordered width/kernel pairs.
+#' @return `list of list(integer, integer)`: Const reference to24 ordered width/kernel pairs.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto &layers = dm::nn::models::YoloV1Layers();
@@ -17801,7 +17801,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' MakeYoloV1Targets(scenes, rows, classes, grid = 7)
 #' @param scenes `TensorDetectionScenes`. Valid same-dtype Float32/64 grayscale scenes, positive in-image truth boxes.
-#' @param rows `vector<integer>`. Dataset IDs in output batch order.
+#' @param rows `integer vector`. Dataset IDs in output batch order.
 #' @param classes `integer`. Positive class count above selected labels.
 #' @param grid `integer`. Positive square grid side, default7.
 #' @return `YoloV1Targets`: Detached object/class/root-size tensors and collision count.
@@ -17891,7 +17891,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' YoloV1PretrainingCrops(scenes, rows)
 #' @param scenes `TensorDetectionScenes`. Valid Float32/64 grayscale scenes with positive in-image boxes and digit labels0–9.
-#' @param rows `vector<integer>`. Source scene IDs allowed for this crop split; validation/test exclusion belongs to caller.
+#' @param rows `integer vector`. Source scene IDs allowed for this crop split; validation/test exclusion belongs to caller.
 #' @return `TensorDetectionScenes`: Detached tensor scenes, one56x56 image and fixed\[14,14,42,42\] box per selected object, with attached label.
 #' @section Examples (C++):
 #' ```cpp
@@ -18194,7 +18194,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param raw `Tensor`. Floating \[N,G,G,A,5+C\] predictions, detached internally.
 #' @param priors `Tensor`. Same-dtype finite positive \[A,2\] grid-unit dimensions.
 #' @param scenes `TensorDetectionScenes`. Valid same-dtype grayscale scene metadata, in-image truth boxes; pixels are not read.
-#' @param rows `vector<integer>`. Source IDs matching raw prediction batch order.
+#' @param rows `integer vector`. Source IDs matching raw prediction batch order.
 #' @param coarse `logical`. False(default) uses truth classes; true maps digit labels to parity ancestor0/1.
 #' @return `YoloV2Targets`: Detached geometry/masks/confidence/labels with largest-area/first-tie collision handling.
 #' @section Examples (C++):
@@ -18377,7 +18377,7 @@ rosetta_ref <- function(value = NULL) {
 #' optimizer or state updates occur here.
 #' @usage
 #' YoloV3Loss(raw, t, classes)
-#' @param raw `vector<Tensor>`. Three Float32/64 \[N,G,G,3,5+C\] raw tensors; loss fixtures may use equal grids.
+#' @param raw `list of Tensor`. Three Float32/64 \[N,G,G,3,5+C\] raw tensors; loss fixtures may use equal grids.
 #' @param t `YoloV3Targets`. Same-dtype matching geometry/classes/positive/objectness/geometry-weight fields; areas is diagnostic only.
 #' @param classes `integer`. Positive C consistent with every raw class axis.
 #' @return `Tensor`: Scalar sum of all head terms divided by max(total batch positives over heads,1).
@@ -18412,10 +18412,10 @@ rosetta_ref <- function(value = NULL) {
 #' coarse, middle three to middle, smallest three to fine. No fitting or RNG.
 #' @usage
 #' MakeYoloV3Targets(raw, priors, scenes, rows)
-#' @param raw `vector<Tensor>`. Three same-dtype \[N,G,G,3,5+C\] detached predictions; grids double coarse to fine.
+#' @param raw `list of Tensor`. Three same-dtype \[N,G,G,3,5+C\] detached predictions; grids double coarse to fine.
 #' @param priors `Tensor`. Same-dtype \[9,2\] positive input-pixel height,width priors, ordered increasing area.
 #' @param scenes `TensorDetectionScenes`. Valid same-dtype grayscale scene metadata with in-image positive boxes and Int64 labels<C.
-#' @param rows `vector<integer>`. Dataset IDs matching prediction batch order.
+#' @param rows `integer vector`. Dataset IDs matching prediction batch order.
 #' @return `YoloV3Targets`: Detached three-scale targets, ignore masks, relative-area geometry weights and collision count.
 #' @section Examples (C++):
 #' ```cpp
@@ -18473,7 +18473,7 @@ rosetta_ref <- function(value = NULL) {
 #' class suppression. No fitting, random draws or parameter/state mutation.
 #' @usage
 #' DecodeYoloV3Detections(raw, priors, images, height, width, suppress = TRUE)
-#' @param raw `vector<Tensor>`. Three coarse-to-fine raw heads.
+#' @param raw `list of Tensor`. Three coarse-to-fine raw heads.
 #' @param priors `Tensor`. Positive same-dtype \[9,2\] input-pixel dimensions, sorted by area.
 #' @param images `Tensor`. Int64 \[N\] dataset IDs.
 #' @param height `integer`. Positive clipping height.
@@ -18677,7 +18677,7 @@ rosetta_ref <- function(value = NULL) {
 #' still learn objectness. No optimizer or model mutation.
 #' @usage
 #' YoloV5Loss(raw, t, classes, priors)
-#' @param raw `vector<Tensor>`. Three same-dtype \[N,G,G,3,5+C\] heads; equal grids allowed for fixtures.
+#' @param raw `list of Tensor`. Three same-dtype \[N,G,G,3,5+C\] heads; equal grids allowed for fixtures.
 #' @param t `YoloV5Targets`. Matching same-dtype geometry/classes/positive fields; quality diagnostic only.
 #' @param classes `integer`. Positive foreground C.
 #' @param priors `Tensor`. Same-dtype positive \[9,2\] pixel dimensions.
@@ -18713,10 +18713,10 @@ rosetta_ref <- function(value = NULL) {
 #' truth on ties. Current input pixels=coarse_grid*32. No fitting or random draws.
 #' @usage
 #' MakeYoloV5Targets(raw, priors, scenes, rows)
-#' @param raw `vector<Tensor>`. Three same-dtype \[N,G,G,3,5+C\] heads with grids doubling coarse to fine.
+#' @param raw `list of Tensor`. Three same-dtype \[N,G,G,3,5+C\] heads with grids doubling coarse to fine.
 #' @param priors `Tensor`. Same-dtype positive finite \[9,2\] input-pixel height,width priors.
 #' @param scenes `TensorDetectionScenes`. Valid same-dtype grayscale scene metadata with in-canvas positive boxes and Int64 labels<C.
-#' @param rows `vector<integer>`. Dataset IDs matching batch order.
+#' @param rows `integer vector`. Dataset IDs matching batch order.
 #' @return `YoloV5Targets`: Detached target levels and discarded/replaced candidate collision count.
 #' @section Examples (C++):
 #' ```cpp
@@ -18776,7 +18776,7 @@ rosetta_ref <- function(value = NULL) {
 #' No optimizer, random draws or parameter/state mutation.
 #' @usage
 #' DecodeYoloV5Detections(raw, priors, images, height, width, suppress = TRUE)
-#' @param raw `vector<Tensor>`. Three coarse-to-fine floating heads with doubling grids.
+#' @param raw `list of Tensor`. Three coarse-to-fine floating heads with doubling grids.
 #' @param priors `Tensor`. Same-dtype \[9,2\] positive pixel priors.
 #' @param images `Tensor`. Int64\[N\] dataset IDs.
 #' @param height `integer`. Positive original height.
@@ -20126,10 +20126,10 @@ rosetta_ref <- function(value = NULL) {
 #' @param p `ParameterStore`. Same-dtype learned projection/downsampling store.
 #' @param state `ParameterStore`. Same-dtype BN moving state,controlled by norm.
 #' @param name `character`. Unique exchange prefix.
-#' @param inputs `vector<Tensor>`. Nonempty ordered high-to-low resolution positive NHWC feature tensors,common N/dtype.
-#' @param widths `vector<integer>`. Positive channels for each branch,matching inputs.
+#' @param inputs `list of Tensor`. Nonempty ordered high-to-low resolution positive NHWC feature tensors,common N/dtype.
+#' @param widths `integer vector`. Positive channels for each branch,matching inputs.
 #' @param norm `ResNetNormConfig`. Borrowed ResNet normalization/training/update settings.
-#' @return `vector<Tensor>`: One fused tensor per input resolution/channel shape.
+#' @return `list of Tensor`: One fused tensor per input resolution/channel shape.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -20469,7 +20469,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' PositiveInstanceMaskTargets(scenes, rows, batch, side = 28)
 #' @param scenes `TensorInstanceScenes`. Valid tensor instance scenes with aligned boxes,classes and Bool supports.
-#' @param rows `vector<integer>`. Source scene IDs in feature-minibatch order.
+#' @param rows `integer vector`. Source scene IDs in feature-minibatch order.
 #' @param batch `TensorRoiBatch`. Consistent sampled regions,positive mask nonzero;indices refer to rows.
 #' @param side `integer`. Positive mask target side,default28.
 #' @return `TensorInstanceMaskTargets`: Detached selected boxes/indices/labels plus same-image-dtype\[K,side,side\] supports.
@@ -20533,7 +20533,7 @@ rosetta_ref <- function(value = NULL) {
 #' DetectCompactMaskRcnn(p, scenes, rows)
 #' @param p `ParameterStore`. Learned store for all compact branches;no fitting or mutation of existing leaves.
 #' @param scenes `TensorDetectionScenes`. Valid64x64 floating grayscale scenes in\[0,1\].
-#' @param rows `vector<integer>`. Nonempty selected scene IDs,each unique and valid.
+#' @param rows `integer vector`. Nonempty selected scene IDs,each unique and valid.
 #' @return `TensorMaskDetections`: Detached dataset-ID box detections with Bool\[D,64,64\] pasted masks.
 #' @section Examples (C++):
 #' ```cpp
@@ -20560,7 +20560,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' YolactCells(size)
 #' @param size `integer`. Positive square image side.
-#' @return `vector<integer>`: Five integers for strides8 through128.
+#' @return `integer vector`: Five integers for strides8 through128.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto cells = dm::nn::models::YolactCells(550);
@@ -20781,7 +20781,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param net `YolactOutputs`. Model outputs supplying anchor/prototype/semantic geometry.
 #' @param anchors `Tensor`. Floating\[A,4\] positive prior boxes matching scene/model dtype.
 #' @param scenes `TensorInstanceScenes`. Valid instance scenes with aligned Bool supports and foreground labels.
-#' @param rows `vector<integer>`. Nonempty scene IDs in feature-minibatch order.
+#' @param rows `integer vector`. Nonempty scene IDs in feature-minibatch order.
 #' @param classes `integer`. Positive foreground class count matching net logits/semantic channels.
 #' @param rng `Generator`. Mutable tensor shuffle generator;draws differ from the old std::mt19937 shuffle.
 #' @return `TensorYolactTargets`: Detached targets with at most32 randomly selected positive masks per image.
@@ -20862,7 +20862,7 @@ rosetta_ref <- function(value = NULL) {
 #' DecodeTensorYolact(net, anchors, rows, height, width)
 #' @param net `YolactOutputs`. Consistent finite YOLACT probability/delta/coefficient/prototype outputs for rows.
 #' @param anchors `Tensor`. Same-dtype\[A,4\] prior boxes in network anchor order.
-#' @param rows `vector<integer>`. Nonnegative unique original dataset image IDs in feature-batch order.
+#' @param rows `integer vector`. Nonnegative unique original dataset image IDs in feature-batch order.
 #' @param height `integer`. Positive source scene height.
 #' @param width `integer`. Positive source scene width.
 #' @return `TensorMaskDetections`: Detached box detections and Bool\[D,height,width\] pasted selected masks.
@@ -20964,7 +20964,7 @@ rosetta_ref <- function(value = NULL) {
 #' zero-sized output connected to every input level. No hidden fitting.
 #' @usage
 #' PanopticRoiAlign(features, boxes, indices, image_size, bins, canonical = 224.0)
-#' @param features `vector<Tensor>`. At least four common-batch/channel floating P2..P5 NHWC maps.
+#' @param features `list of Tensor`. At least four common-batch/channel floating P2..P5 NHWC maps.
 #' @param boxes `Tensor`. Same-dtype\[K,4\] positive finite pixel boxes.
 #' @param indices `Tensor`. Int64\[K\] valid feature-batch positions.
 #' @param image_size `integer`. Positive image side at least64,divisible by32.
@@ -21064,7 +21064,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param features `PanopticFeatures`. Compact64px gray-derived FPN32/three semantic-logit outputs.
 #' @param rpn `Rpn`. Same-forward hidden32 RPN over1023 anchors.
 #' @param anchors `Tensor`. Same-dtype\[1023,4\] source priors for P2..P6.
-#' @param rows `vector<integer>`. Unique nonnegative original scene IDs in feature-batch order.
+#' @param rows `integer vector`. Unique nonnegative original scene IDs in feature-batch order.
 #' @return `TensorMaskDetections`: Detached scored dataset-ID boxes and Bool\[D,64,64\] instance masks.
 #' @section Examples (C++):
 #' ```cpp
@@ -21130,7 +21130,7 @@ rosetta_ref <- function(value = NULL) {
 #' MergeTensorPanoptic(semantic, instances, semantic_categories, score = 0.5, overlap = 0.5, stuff_area = 32)
 #' @param semantic `Tensor`. Int64\[H,W\] valid semantic class IDs.
 #' @param instances `TensorMaskDetections`. Same-image scored Bool\[D,H,W\] supports with floating scores and Int64 category labels;box coordinates/image IDs unused.
-#' @param semantic_categories `vector<integer>`. Metadata mapping semantic class to panoptic stuff category;negative means no stuff claim.
+#' @param semantic_categories `integer vector`. Metadata mapping semantic class to panoptic stuff category;negative means no stuff claim.
 #' @param score `numeric`. Finite inclusive instance cutoff in\[0,1\],default.5.
 #' @param overlap `numeric`. Finite maximum already-claimed fraction in\[0,1\],default.5;equality accepted.
 #' @param stuff_area `integer`. Positive minimum unclaimed pixels for a stuff category,default32.
@@ -21268,7 +21268,7 @@ rosetta_ref <- function(value = NULL) {
 #' No fitting or RNG.
 #' @usage
 #' FaceNetWidths()
-#' @return `vector<integer>`: Immutable process-lifetime array reference,no mutation.
+#' @return `integer vector`: Immutable process-lifetime array reference,no mutation.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto &a = dm::nn::models::FaceNetWidths();
@@ -21283,7 +21283,7 @@ rosetta_ref <- function(value = NULL) {
 #' No fitting or RNG.
 #' @usage
 #' FaceNetKernels()
-#' @return `vector<integer>`: Immutable process-lifetime array reference,no mutation.
+#' @return `integer vector`: Immutable process-lifetime array reference,no mutation.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto &a = dm::nn::models::FaceNetKernels();
@@ -21360,7 +21360,7 @@ rosetta_ref <- function(value = NULL) {
 #' MultilabelRows(input, rows)
 #' MultilabelRows(data, rows)
 #' @param input `Tensor`. Tensor with a leading batch axis.
-#' @param rows `vector<integer>`. Valid requested batch-row metadata,duplicates/empty allowed.
+#' @param rows `integer vector`. Valid requested batch-row metadata,duplicates/empty allowed.
 #' @param data `MultilabelData`. Aligned observed-image,presence-bit and source-ID tensors.
 #' @return `Tensor`: Same-type tensor with selected leading rows and retained input gradients.
 #'
@@ -21492,8 +21492,8 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ReadMultilabelImages(image_directory, ids, categories)
 #' @param image_directory `character`. Directory with12-digit original image-ID filenames plus .jpg.
-#' @param ids `vector<integer>`. Nonempty nonnegative Int32 original image IDs,in requested output order.
-#' @param categories `vector<vector<integer>>`. Same-length lists of contiguous COCO128 class IDs0..79;duplicates/empty allowed.
+#' @param ids `integer vector`. Nonempty nonnegative Int32 original image IDs,in requested output order.
+#' @param categories `list of integer vector`. Same-length lists of contiguous COCO128 class IDs0..79;duplicates/empty allowed.
 #' @return `MultilabelData`: Float32\[N,64,64,3\] RGB,Float32\[N,80\] OR-presence labels,Int32\[N\] IDs.
 #' @section Examples (C++):
 #' ```cpp
@@ -21640,7 +21640,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' SeriesRows(d, rows)
 #' @param d `SeriesData`. Generic aligned temporal observation container.
-#' @param rows `vector<integer>`. Bounded leading-row metadata.
+#' @param rows `integer vector`. Bounded leading-row metadata.
 #' @return `SeriesData`: Requested tensor rows in supplied order,retaining dtype and graph.
 #' @section Examples (C++):
 #' ```cpp
@@ -21923,7 +21923,7 @@ rosetta_ref <- function(value = NULL) {
 #' Compatibility ingress only;all comparisons and reductions delegate to tensors.
 #' @usage
 #' SensorAuc0(score, labels)
-#' @param score `vector<numeric>`. Finite numeric ingress vector,one ranking score per source row.
+#' @param score `numeric vector`. Finite numeric ingress vector,one ranking score per source row.
 #' @param labels `Tensor`. Aligned integer original class identities,zero positive.
 #' @return `numeric`: Double pairwise class0 AUROC with ties half credited.
 #' @section Examples (C++):
@@ -22122,7 +22122,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' SentenceRows(d, rows)
 #' @param d `SentenceData`. Aligned generic integer-sequence observations.
-#' @param rows `vector<integer>`. Bounded Int64 leading-row metadata,requested order preserved.
+#' @param rows `integer vector`. Bounded Int64 leading-row metadata,requested order preserved.
 #' @return `SentenceData`: Tensor-gathered sequences and aligned metadata,retaining dtype and graph.
 #' @section Examples (C++):
 #' ```cpp
@@ -22239,7 +22239,7 @@ rosetta_ref <- function(value = NULL) {
 #' CharacterEncode(text, time)
 #' @param text `character`. Raw byte string;MR source uses Latin1/ASCII,not Unicode grapheme processing.
 #' @param time `integer`. Positive number of output metadata positions.
-#' @return `vector<integer>`: Length-time integer vector,known alphabet IDs0..68 and unknown/right PAD=-1.
+#' @return `integer vector`: Length-time integer vector,known alphabet IDs0..68 and unknown/right PAD=-1.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -22486,7 +22486,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' WaveRows(d, rows)
 #' @param d `WaveData`. Audio-window container.
-#' @param rows `vector<integer>`. Nonempty bounded host row indices.
+#' @param rows `integer vector`. Nonempty bounded host row indices.
 #' @return `WaveData`: New owning/gathered tensor handles for all five fields.
 #' @section Examples (C++):
 #' ```cpp
@@ -22610,7 +22610,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' SaliencyRows(d, rows)
 #' @param d `SaliencyData`. Source image/label/ID handles.
-#' @param rows `vector<integer>`. Host row-index metadata,duplicates/order preserved.
+#' @param rows `integer vector`. Host row-index metadata,duplicates/order preserved.
 #' @return `SaliencyData`: New gathered image/label/ID handles;source unchanged.
 #' @section Examples (C++):
 #' ```cpp
@@ -22638,7 +22638,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' LoadSaliency(root)
 #' @param root `character`. Directory containing saliency_data.npz,no automatic download.
-#' @return `vector<SaliencyData>`: 1000fitting/200validation/200test aligned digit records.
+#' @return `list of SaliencyData`: 1000fitting/200validation/200test aligned digit records.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -22875,7 +22875,7 @@ rosetta_ref <- function(value = NULL) {
 #' No global RNG or learned state is consumed.
 #' @usage
 #' SmoothGradNoise(input_shape, samples, seed)
-#' @param input_shape `vector<integer>`. Nonempty input shape of rank>=2,including positive batch axis.
+#' @param input_shape `integer vector`. Nonempty input shape of rank>=2,including positive batch axis.
 #' @param samples `integer`. Positive number of noisy replicas.
 #' @param seed `integer`. Seed for source-compatible mt19937raw draws.
 #' @return `Tensor`: Float64\[samples,input_shape...\]standard-normal bank.
@@ -23957,7 +23957,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param test_factors_t `Tensor`. Finite numeric heldout targets \[Nt,K\], same target dtype.
 #' @param fit_log_variance_t `Tensor`. Finite matching-shape/dtype fitting log variances \[Nf,L\].
 #' @param ridge `numeric`. Finite positive diagonal penalty, default0.001.
-#' @return `vector<list(character, Tensor)>`: Owning NamedTensors with13 detached arrays in the documented order.
+#' @return `list of list(character, Tensor)`: Owning NamedTensors with13 detached arrays in the documented order.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -25590,7 +25590,7 @@ rosetta_ref <- function(value = NULL) {
 #' CollapseStatistics(mu, log_variance, samples, active_threshold = 0.01)
 #' @param mu `Tensor`. Finite posterior means\[N,D\], N>1,D>0.
 #' @param log_variance `Tensor`. Finite same-shape/dtype posterior log variances.
-#' @param samples `vector<Tensor>`. Nonempty collection of finite aligned draws\[N,D\], same dtype.
+#' @param samples `list of Tensor`. Nonempty collection of finite aligned draws\[N,D\], same dtype.
 #' @param active_threshold `numeric`. Finite nonnegative variance threshold, default.01.
 #' @return `CollapseSummary`: Owning per-unit and aggregate analytic/sampled diagnostics in nats.
 #' @section Examples (C++):
@@ -25622,7 +25622,7 @@ rosetta_ref <- function(value = NULL) {
 #' mutable state; O(19) work/storage.
 #' @usage
 #' SequenceVocabulary()
-#' @return `vector<character>`: Owning vocabulary in exact token-ID order.
+#' @return `character vector`: Owning vocabulary in exact token-ID order.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -25652,7 +25652,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' LoadSequenceVaeData(root)
 #' @param root `character`. Directory containing sentences.npz and vocabulary.txt.
-#' @return `vector<SequenceVaeData>`: Owning three pools ordered fitting, validation, test, preserving each row order.
+#' @return `list of SequenceVaeData`: Owning three pools ordered fitting, validation, test, preserving each row order.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -25734,8 +25734,8 @@ rosetta_ref <- function(value = NULL) {
 #' hidden fitting or RNG. Validation work O(432*7), plus fifteen output handles.
 #' @usage
 #' SequenceDataArrays(pools)
-#' @param pools `vector<SequenceVaeData>`. Exactly three valid fitting/validation/test pools, strides accepted.
-#' @return `vector<list(character, Tensor)>`: Owning named tensor handles preserving source row order and values.
+#' @param pools `list of SequenceVaeData`. Exactly three valid fitting/validation/test pools, strides accepted.
+#' @return `list of list(character, Tensor)`: Owning named tensor handles preserving source row order and values.
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -29179,11 +29179,15 @@ rosetta_ref <- function(value = NULL) {
 `DdpmReverse` <- function(...) .Call(`.rs_1160`, NULL, list(...))
 #' Prepare original-source datasets or explicit local teaching fixtures through the native library.
 #'
-#' Accepted names: audio, depth, flowers, medical, mesh, multilabel, ocr,
+#' Accepted names: autorec, audio, depth, flowers, medical, mesh, multilabel, ocr,
 #' optical_flow, pose, signals, style, text, two_stream, video, voxel,
-#' memory, mnist-assets, beta-vae-assets, sequence-vae-assets and inception-metric.
+#' memory, mnist-assets, beta-vae-assets, sequence-vae-assets, inception-metric, character_rnn, ptb_word, bilstm_tagging,
+#' imdb_lstm and image_gpt.
 #' Uses the original pinned sources and deterministic record selections of the
 #' executable reports. Produces NPZ arrays plus provenance JSON/TSV files.
+#' AutoRec uses checksummed MovieLens100K, users/items1..256 and199 warm users;
+#' native seed4601 partitions observed ratings8079/898/898. Its manifest explicitly
+#' distinguishes this canonical partition from unavailable external preparation archives.
 #' Existing completed native preparations are reused; missing outputs are rebuilt.
 #' Archive downloads honor the same offline/mirror controls as fetch_file().
 #' Video uses ffmpeg on PATH for codec decoding only; curl is needed for downloads.
@@ -29204,6 +29208,21 @@ rosetta_ref <- function(value = NULL) {
 #' caller provenance. Reports must validate supplied arrays before using them.
 #' Independent framework reference fixtures are test artifacts,
 #' not downloaded or regenerated by this data API.
+#' nn-completion-assets creates versioned, explicitly reconstructed teaching recipes in
+#' family subdirectories. It preserves documented model shapes/budgets but does not
+#' claim missing original partitions or TF recordings. Sources include authenticated
+#' CIFAR/MNIST, original character/CoNLL/MR pools, pinned sunspots, UCI PenDigits and
+#' PyTorch tutorial English/French sentences. It also converts real authenticated
+#' Google Small BERT Float32 SafeTensors to native44-array NPZ, without Python.
+#' Training/checkpoint generation remains caller-owned editable report code.
+#'
+#' Recovered text/pixel adapters preserve the original tflow_examples preparation recipes:
+#' tinyShakespeare90/5/5 partitions and65-character fit alphabet; canonical PTB files
+#' with full training vocabulary; complete short CoNLL sentences with training-only
+#' POS ontology and fit-only words; balanced original Keras IMDB prefixes; and fit-only
+#' CIFAR K16 palette fitting. Inputs are hash-verified; legacy IMDB object arrays use
+#' a bounded integer-list decoder without executing Python/pickle callables.
+#' Native NPZ byte-valued arrays use Int32 tensors without changing their numeric values.
 #' @usage
 #' prepare_example_data(name, directory = "")
 #' @param name `character`. Dataset adapter name from the list above.
@@ -29377,7 +29396,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' image_training__ImageBatch(dataset, rows, augmentation = NULL)
 #' @param dataset `ImageDataset`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param augmentation `Generator or NULL`
 #' @return `list(Tensor, Tensor)`
 #' @md
@@ -29448,7 +29467,7 @@ rosetta_ref <- function(value = NULL) {
 #' scale * sin(i * frequency) for i = 0..numel-1 (row-major), as tflow fills its fixtures.
 #' @usage
 #' architecture__SinePixels(shape, scale, frequency)
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param scale `numeric`
 #' @param frequency `numeric`
 #' @return `Tensor`
@@ -29478,7 +29497,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' architecture__RequireShape(x, expected, what)
 #' @param x `Tensor`
-#' @param expected `vector<integer>`
+#' @param expected `integer vector`
 #' @param what `character`
 #' @md
 #'
@@ -29486,7 +29505,7 @@ rosetta_ref <- function(value = NULL) {
 #' scale * sin(.37 i + phase) in float, i = 0..numel-1 (tflow's Pattern).
 #' @usage
 #' mobile_checks__Pattern(shape, scale, phase)
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param scale `numeric`
 #' @param phase `numeric`
 #' @return `Tensor`
@@ -29515,7 +29534,7 @@ rosetta_ref <- function(value = NULL) {
 #' mobile_checks__GradientNorms(p, objective)
 #' @param p `ParameterStore`
 #' @param objective `Tensor`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `mobile_checks__GradientNorms` <- function(...) .Call(`.rs_1191`, NULL, list(...))
@@ -29603,7 +29622,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param root `character`
 #' @param tf `character`
 #' @param init `character`
-#' @param records `vector<character>`
+#' @param records `character vector`
 #' @param test_key `character`
 #' @md
 #'
@@ -29984,7 +30003,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ae__Rows(d, rows)
 #' @param d `SaliencyData`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `SaliencyData`
 #' @md
 #'
@@ -29992,7 +30011,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `ae::Find`
 #' @usage
 #' ae__Find(arrays, name)
-#' @param arrays `vector<list(character, Tensor)>`
+#' @param arrays `list of list(character, Tensor)`
 #' @param name `character`
 #' @return `Tensor`
 #' @md
@@ -30038,7 +30057,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ae__Arrays(store)
 #' @param store `ParameterStore`
-#' @return `vector<list(character, Tensor)>`
+#' @return `list of list(character, Tensor)`
 #' @md
 #'
 `ae__Arrays` <- function(...) .Call(`.rs_1265`, NULL, list(...))
@@ -30046,10 +30065,10 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ae__CheckGradients(store, gradients, finite, nonzero)
 #' @param store `ParameterStore`
-#' @param gradients `vector<Tensor>`
+#' @param gradients `list of Tensor`
 #' @param finite `character`
 #' @param nonzero `character`
-#' @return `vector<list(character, Tensor)>`
+#' @return `list of list(character, Tensor)`
 #' @md
 #'
 `ae__CheckGradients` <- function(...) .Call(`.rs_1266`, NULL, list(...))
@@ -30197,7 +30216,7 @@ rosetta_ref <- function(value = NULL) {
 #' tflow's nn::GaussianNoise: Box-Muller pairs from std::mt19937(seed), as float64 \[samples, shape...\].
 #' @usage
 #' ae__GaussianNoise(shape, samples, seed)
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param samples `integer`
 #' @param seed `integer`
 #' @return `Tensor`
@@ -30293,7 +30312,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' seg__SegmentationBatch(data, rows)
 #' @param data `seg__SegmentationData`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `list(Tensor, Tensor)`
 #' @md
 #'
@@ -30308,7 +30327,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' seg__CheckSegmentationDemonstration(cfg, losses, result)
 #' @param cfg `seg__SegmentationConfig`
-#' @param losses `vector<numeric>`
+#' @param losses `numeric vector`
 #' @param result `seg__SegmentationMetrics`
 #' @md
 #'
@@ -30322,7 +30341,7 @@ rosetta_ref <- function(value = NULL) {
 #' Mean IoU over classes present in truth or prediction, from a confusion matrix (truth rows).
 #' @usage
 #' seg__ConfusionMeanIou(confusion, classes)
-#' @param confusion `vector<integer>`
+#' @param confusion `integer vector`
 #' @param classes `integer`
 #' @return `numeric`
 #' @md
@@ -30431,15 +30450,15 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `seg::SquaredDistance1D`
 #' @usage
 #' seg__SquaredDistance1D(f)
-#' @param f `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param f `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `seg__SquaredDistance1D` <- function(...) .Call(`.rs_1300`, NULL, list(...))
 #' C++ function `replay::Get`
 #' @usage
 #' replay__Get(arrays, key)
-#' @param arrays `vector<list(character, Tensor)>`
+#' @param arrays `list of list(character, Tensor)`
 #' @param key `character`
 #' @return `Tensor`
 #' @md
@@ -30465,7 +30484,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sentence__Select(x, rows)
 #' @param x `Tensor`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -30475,15 +30494,15 @@ rosetta_ref <- function(value = NULL) {
 #' sentence__Range(begin, end)
 #' @param begin `integer`
 #' @param end `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `sentence__Range` <- function(...) .Call(`.rs_1305`, NULL, list(...))
 #' Sum of squares of each gradient.
 #' @usage
 #' sentence__SquaredNorms(gradients)
-#' @param gradients `vector<Tensor>`
-#' @return `vector<numeric>`
+#' @param gradients `list of Tensor`
+#' @return `numeric vector`
 #' @md
 #'
 `sentence__SquaredNorms` <- function(...) .Call(`.rs_1306`, NULL, list(...))
@@ -30499,7 +30518,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `sentence::Npz`
 #' @usage
 #' sentence__Npz(a, key)
-#' @param a `vector<list(character, Tensor)>`
+#' @param a `list of list(character, Tensor)`
 #' @param key `character`
 #' @return `Tensor`
 #' @md
@@ -30536,9 +30555,9 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sentence__Confusion(labels_tensor, predictions, classes)
 #' @param labels_tensor `Tensor`
-#' @param predictions `vector<integer>`
+#' @param predictions `integer vector`
 #' @param classes `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `sentence__Confusion` <- function(...) .Call(`.rs_1312`, NULL, list(...))
@@ -30546,7 +30565,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sentence__PrintConfusion(name, cells, classes)
 #' @param name `character`
-#' @param cells `vector<integer>`
+#' @param cells `integer vector`
 #' @param classes `integer`
 #' @md
 #'
@@ -30555,7 +30574,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sentence__Positive(logits)
 #' @param logits `Tensor`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `sentence__Positive` <- function(...) .Call(`.rs_1314`, NULL, list(...))
@@ -30643,7 +30662,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sal__F(t)
 #' @param t `Tensor`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `sal__F` <- function(...) .Call(`.rs_1324`, NULL, list(...))
@@ -30651,15 +30670,15 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sal__I(t)
 #' @param t `Tensor`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `sal__I` <- function(...) .Call(`.rs_1325`, NULL, list(...))
 #' C++ function `sal::FromF`
 #' @usage
 #' sal__FromF(v, s)
-#' @param v `vector<numeric>`
-#' @param s `vector<integer>`
+#' @param v `numeric vector`
+#' @param s `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -30667,7 +30686,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `sal::FromI`
 #' @usage
 #' sal__FromI(v)
-#' @param v `vector<integer>`
+#' @param v `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -30684,7 +30703,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sal__Pick(d, rows)
 #' @param d `SaliencyData`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `SaliencyData`
 #' @md
 #'
@@ -30735,7 +30754,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sal__FirstPerDigit(test)
 #' @param test `SaliencyData`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `sal__FirstPerDigit` <- function(...) .Call(`.rs_1335`, NULL, list(...))
@@ -30755,14 +30774,14 @@ rosetta_ref <- function(value = NULL) {
 #' @param length `integer`
 #' @param patch `integer`
 #' @param stride `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `occlusion__OcclusionAnchors` <- function(...) .Call(`.rs_1337`, NULL, list(...))
 #' C++ function `smooth::GaussianNoise`
 #' @usage
 #' smooth__GaussianNoise(shape, samples, seed)
-#' @param shape `vector<integer>`
+#' @param shape `integer vector`
 #' @param samples `integer`
 #' @param seed `integer`
 #' @return `Tensor`
@@ -30774,30 +30793,30 @@ rosetta_ref <- function(value = NULL) {
 #' Rejects mismatched inputs, non-finite values, reversed corners and invalid thresholds or limits.
 #' @usage
 #' detector__NonMaxSuppression(boxes, scores, iou, max_out = <default>)
-#' @param boxes `vector<vector<numeric>>`
-#' @param scores `vector<numeric>`
+#' @param boxes `list of numeric vector`
+#' @param scores `numeric vector`
 #' @param iou `numeric`
 #' @param max_out `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `detector__NonMaxSuppression` <- function(...) .Call(`.rs_1339`, NULL, list(...))
 #' Per-image, per-class NMS, then the top max_per_image detections of each image.
 #' @usage
 #' detector__ClassNms(detections, iou, max_per_image = 100)
-#' @param detections `vector<detector__Detection>`
+#' @param detections `list of detector__Detection`
 #' @param iou `numeric`
 #' @param max_per_image `integer`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `detector__ClassNms` <- function(...) .Call(`.rs_1340`, NULL, list(...))
 #' C++ function `detector::EvaluateDetections`
 #' @usage
 #' detector__EvaluateDetections(detections, scenes, rows, classes)
-#' @param detections `vector<detector__Detection>`
+#' @param detections `list of detector__Detection`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @return `detector__ApResult`
 #' @md
@@ -30809,18 +30828,18 @@ rosetta_ref <- function(value = NULL) {
 #' @param rows `integer`
 #' @param cols `integer`
 #' @param stride `numeric`
-#' @param sizes `vector<numeric>`
-#' @param ratios `vector<numeric>`
-#' @return `vector<vector<numeric>>`
+#' @param sizes `numeric vector`
+#' @param ratios `numeric vector`
+#' @return `list of numeric vector`
 #' @md
 #'
 `detector__AnchorGrid` <- function(...) .Call(`.rs_1342`, NULL, list(...))
 #' Faster R-CNN deltas (dy, dx, dh, dw) / (0.1, 0.1, 0.2, 0.2) (nn::encode_box).
 #' @usage
 #' detector__EncodeBox(anchor, box)
-#' @param anchor `vector<numeric>`
-#' @param box `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param anchor `numeric vector`
+#' @param box `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__EncodeBox` <- function(...) .Call(`.rs_1343`, NULL, list(...))
@@ -30829,20 +30848,20 @@ rosetta_ref <- function(value = NULL) {
 #' Every target also claims its best anchor, if that overlaps at all.
 #' @usage
 #' detector__MatchAnchors(anchors, truth, positive, negative)
-#' @param anchors `vector<vector<numeric>>`
-#' @param truth `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
+#' @param truth `list of numeric vector`
 #' @param positive `numeric`
 #' @param negative `numeric`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `detector__MatchAnchors` <- function(...) .Call(`.rs_1344`, NULL, list(...))
 #' SSD matching: first greedily give every target a distinct anchor (highest remaining IoU pair), then assign the remaining anchors with IoU >= 0.5.
 #' @usage
 #' detector__MatchSsd(anchors, truth)
-#' @param anchors `vector<vector<numeric>>`
-#' @param truth `vector<vector<numeric>>`
-#' @return `vector<integer>`
+#' @param anchors `list of numeric vector`
+#' @param truth `list of numeric vector`
+#' @return `integer vector`
 #' @md
 #'
 `detector__MatchSsd` <- function(...) .Call(`.rs_1345`, NULL, list(...))
@@ -30866,7 +30885,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detector__CheckDetectorDemonstration(cfg, epoch_losses, result)
 #' @param cfg `detector__DetectorTrainingConfig`
-#' @param epoch_losses `vector<numeric>`
+#' @param epoch_losses `numeric vector`
 #' @param result `detector__ApResult`
 #' @md
 #'
@@ -30892,7 +30911,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `detector::BoxArea`
 #' @usage
 #' detector__BoxArea(b)
-#' @param b `vector<numeric>`
+#' @param b `numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -30900,8 +30919,8 @@ rosetta_ref <- function(value = NULL) {
 #' tflow's data::BoxIoU (zero for touching or disjoint boxes).
 #' @usage
 #' detector__BoxIoU(a, b)
-#' @param a `vector<numeric>`
-#' @param b `vector<numeric>`
+#' @param a `numeric vector`
+#' @param b `numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -30919,7 +30938,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detector__SceneImages(scenes, rows)
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -30927,9 +30946,9 @@ rosetta_ref <- function(value = NULL) {
 #' A square around a box's centre, its side the longer box side times margin.
 #' @usage
 #' detector__Square(b, margin)
-#' @param b `vector<numeric>`
+#' @param b `numeric vector`
 #' @param margin `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__Square` <- function(...) .Call(`.rs_1355`, NULL, list(...))
@@ -30938,39 +30957,39 @@ rosetta_ref <- function(value = NULL) {
 #' detector__ComponentProposals(scenes, row, thresholds, gap)
 #' @param scenes `detector__DetectionScenes`
 #' @param row `integer`
-#' @param thresholds `vector<integer>`
+#' @param thresholds `integer vector`
 #' @param gap `integer`
-#' @return `vector<vector<numeric>>`
+#' @return `list of numeric vector`
 #' @md
 #'
 `detector__ComponentProposals` <- function(...) .Call(`.rs_1356`, NULL, list(...))
 #' Box deltas with explicit variances (tflow's EncodeBox/DecodeBox variance argument).
 #' @usage
 #' detector__EncodeBoxWith(anchor, box, variance)
-#' @param anchor `vector<numeric>`
-#' @param box `vector<numeric>`
-#' @param variance `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param anchor `numeric vector`
+#' @param box `numeric vector`
+#' @param variance `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__EncodeBoxWith` <- function(...) .Call(`.rs_1357`, NULL, list(...))
 #' C++ function `detector::ClipBox`
 #' @usage
 #' detector__ClipBox(b, height, width)
-#' @param b `vector<numeric>`
+#' @param b `numeric vector`
 #' @param height `numeric`
 #' @param width `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__ClipBox` <- function(...) .Call(`.rs_1358`, NULL, list(...))
 #' CropAndResize's normalized, corner-aligned coordinates on a stride grid.
 #' @usage
 #' detector__FeatureBox(b, stride, feature_size)
-#' @param b `vector<numeric>`
+#' @param b `numeric vector`
 #' @param stride `integer`
 #' @param feature_size `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__FeatureBox` <- function(...) .Call(`.rs_1359`, NULL, list(...))
@@ -30999,7 +31018,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `detector::RoiTensor`
 #' @usage
 #' detector__RoiTensor(boxes)
-#' @param boxes `vector<vector<numeric>>`
+#' @param boxes `list of numeric vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -31007,7 +31026,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `detector::IndexTensor`
 #' @usage
 #' detector__IndexTensor(indices)
-#' @param indices `vector<integer>`
+#' @param indices `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -31026,10 +31045,10 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detector__ComputeProposals(rpn, anchors, height, width)
 #' @param rpn `Rpn`
-#' @param anchors `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
 #' @param height `integer`
 #' @param width `integer`
-#' @return `vector<vector<vector<numeric>>>`
+#' @return `list of list of numeric vector`
 #' @md
 #'
 `detector__ComputeProposals` <- function(...) .Call(`.rs_1365`, NULL, list(...))
@@ -31045,18 +31064,18 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `retinanet::RetinaAnchors`
 #' @usage
 #' retinanet__RetinaAnchors(cells, first_size = 32.0)
-#' @param cells `vector<integer>`
+#' @param cells `integer vector`
 #' @param first_size `numeric`
-#' @return `vector<vector<numeric>>`
+#' @return `list of numeric vector`
 #' @md
 #'
 `retinanet__RetinaAnchors` <- function(...) .Call(`.rs_1367`, NULL, list(...))
 #' C++ function `retinanet::MakeRetinaTargets`
 #' @usage
 #' retinanet__MakeRetinaTargets(anchors, scenes, rows, classes)
-#' @param anchors `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @return `RetinaTargets`
 #' @md
@@ -31067,18 +31086,18 @@ rosetta_ref <- function(value = NULL) {
 #' retinanet__DecodeRetina(probabilities, deltas, anchors, scenes, rows, classes)
 #' @param probabilities `Tensor`
 #' @param deltas `Tensor`
-#' @param anchors `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `retinanet__DecodeRetina` <- function(...) .Call(`.rs_1369`, NULL, list(...))
 #' C++ function `fcos::PointTensor`
 #' @usage
 #' fcos__PointTensor(points)
-#' @param points `vector<fcos__FcosPoint>`
+#' @param points `list of fcos__FcosPoint`
 #' @return `Tensor`
 #' @md
 #'
@@ -31086,16 +31105,16 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `fcos::FcosPoints`
 #' @usage
 #' fcos__FcosPoints(cells, range_scale = 1.0)
-#' @param cells `vector<integer>`
+#' @param cells `integer vector`
 #' @param range_scale `numeric`
-#' @return `vector<fcos__FcosPoint>`
+#' @return `list of fcos__FcosPoint`
 #' @md
 #'
 `fcos__FcosPoints` <- function(...) .Call(`.rs_1371`, NULL, list(...))
 #' C++ function `fcos::FcosCenterness`
 #' @usage
 #' fcos__FcosCenterness(d)
-#' @param d `vector<numeric>`
+#' @param d `numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -31103,9 +31122,9 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `fcos::MakeFcosTargets`
 #' @usage
 #' fcos__MakeFcosTargets(points, scenes, rows, classes, center_radius = 1.5)
-#' @param points `vector<fcos__FcosPoint>`
+#' @param points `list of fcos__FcosPoint`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @param center_radius `numeric`
 #' @return `FcosTargets`
@@ -31115,9 +31134,9 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `fcos::MakeFcosTargetArrays`
 #' @usage
 #' fcos__MakeFcosTargetArrays(points, scenes, rows, classes, center_radius = 1.5)
-#' @param points `vector<fcos__FcosPoint>`
+#' @param points `list of fcos__FcosPoint`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @param center_radius `numeric`
 #' @return `fcos__FcosTargetArrays`
@@ -31128,11 +31147,11 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' fcos__DecodeFcos(net, points, scenes, rows, classes)
 #' @param net `FcosOutputs`
-#' @param points `vector<fcos__FcosPoint>`
+#' @param points `list of fcos__FcosPoint`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `fcos__DecodeFcos` <- function(...) .Call(`.rs_1375`, NULL, list(...))
@@ -31142,22 +31161,22 @@ rosetta_ref <- function(value = NULL) {
 #' @param p `ParameterStore`
 #' @param state `ParameterStore`
 #' @param cfg `FcosConfig`
-#' @param points `vector<fcos__FcosPoint>`
+#' @param points `list of fcos__FcosPoint`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `fcos__DetectFcos` <- function(...) .Call(`.rs_1376`, NULL, list(...))
 #' C++ function `ssd::SsdDefaultBoxes`
 #' @usage
 #' ssd__SsdDefaultBoxes(cells, sizes, steps, per_cell)
-#' @param cells `vector<integer>`
-#' @param sizes `vector<numeric>`
-#' @param steps `vector<numeric>`
-#' @param per_cell `vector<integer>`
-#' @return `vector<vector<numeric>>`
+#' @param cells `integer vector`
+#' @param sizes `numeric vector`
+#' @param steps `numeric vector`
+#' @param per_cell `integer vector`
+#' @return `list of numeric vector`
 #' @md
 #'
 `ssd__SsdDefaultBoxes` <- function(...) .Call(`.rs_1377`, NULL, list(...))
@@ -31166,8 +31185,8 @@ rosetta_ref <- function(value = NULL) {
 #' ssd__SsdLoss(logits, deltas, labels, targets, classes)
 #' @param logits `Tensor`
 #' @param deltas `Tensor`
-#' @param labels `vector<integer>`
-#' @param targets `vector<numeric>`
+#' @param labels `integer vector`
+#' @param targets `numeric vector`
 #' @param classes `integer`
 #' @return `ssd__SsdLossOutputs`
 #' @md
@@ -31176,9 +31195,9 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `ssd::MakeSsdTargets`
 #' @usage
 #' ssd__MakeSsdTargets(anchors, scenes, rows, background)
-#' @param anchors `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param background `integer`
 #' @return `ssd__SsdTargets`
 #' @md
@@ -31219,7 +31238,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' centernet__MakeCenterTargets(scenes, rows, classes)
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @return `centernet__CenterTargets`
 #' @md
@@ -31232,8 +31251,8 @@ rosetta_ref <- function(value = NULL) {
 #' @param size `Tensor`
 #' @param offset `Tensor`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
-#' @return `vector<detector__Detection>`
+#' @param rows `integer vector`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `centernet__DecodeCenter` <- function(...) .Call(`.rs_1384`, NULL, list(...))
@@ -31244,24 +31263,24 @@ rosetta_ref <- function(value = NULL) {
 #' @param state `ParameterStore`
 #' @param cfg `CenterNetConfig`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
-#' @return `vector<detector__Detection>`
+#' @param rows `integer vector`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `centernet__DetectCenter` <- function(...) .Call(`.rs_1385`, NULL, list(...))
 #' C++ function `hungarian::HungarianAssignment`
 #' @usage
 #' hungarian__HungarianAssignment(cost)
-#' @param cost `vector<vector<numeric>>`
-#' @return `vector<integer>`
+#' @param cost `list of numeric vector`
+#' @return `integer vector`
 #' @md
 #'
 `hungarian__HungarianAssignment` <- function(...) .Call(`.rs_1386`, NULL, list(...))
 #' C++ function `detr::GeneralizedIou`
 #' @usage
 #' detr__GeneralizedIou(a, b)
-#' @param a `vector<numeric>`
-#' @param b `vector<numeric>`
+#' @param a `numeric vector`
+#' @param b `numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -31270,7 +31289,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detr__SceneMetadata(scenes, rows)
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `TensorDetectionScenes`
 #' @md
 #'
@@ -31288,11 +31307,11 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `detr::MatchDetrTargets`
 #' @usage
 #' detr__MatchDetrTargets(logits, boxes, queries, scenes, rows, classes)
-#' @param logits `vector<numeric>`
-#' @param boxes `vector<numeric>`
+#' @param logits `numeric vector`
+#' @param boxes `numeric vector`
 #' @param queries `integer`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @return `detr__DetrTargets`
 #' @md
@@ -31303,7 +31322,7 @@ rosetta_ref <- function(value = NULL) {
 #' detr__DetrLoss(net, scenes, rows, classes)
 #' @param net `DetrOutputs`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @return `Tensor`
 #' @md
@@ -31315,9 +31334,9 @@ rosetta_ref <- function(value = NULL) {
 #' @param logits `Tensor`
 #' @param boxes `Tensor`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `detr__DecodeDetr` <- function(...) .Call(`.rs_1392`, NULL, list(...))
@@ -31328,9 +31347,9 @@ rosetta_ref <- function(value = NULL) {
 #' @param state `ParameterStore`
 #' @param cfg `DetrConfig`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `detr__DetectDetr` <- function(...) .Call(`.rs_1393`, NULL, list(...))
@@ -31338,7 +31357,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detector__TensorMosaicRows(source, rows)
 #' @param source `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `TensorDetectionScenes`
 #' @md
 #'
@@ -31355,7 +31374,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detector__MosaicScenes(source, selections)
 #' @param source `detector__DetectionScenes`
-#' @param selections `vector<vector<integer>>`
+#' @param selections `list of integer vector`
 #' @return `detector__DetectionScenes`
 #' @md
 #'
@@ -31364,7 +31383,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detector__CopyDetectionRows(source, rows)
 #' @param source `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `detector__DetectionScenes`
 #' @md
 #'
@@ -31381,8 +31400,8 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detector__TransformDetectionScenes(source, rows, transforms)
 #' @param source `detector__DetectionScenes`
-#' @param rows `vector<integer>`
-#' @param transforms `vector<detector__DetectionTransform>`
+#' @param rows `integer vector`
+#' @param transforms `list of detector__DetectionTransform`
 #' @return `detector__DetectionScenes`
 #' @md
 #'
@@ -31391,7 +31410,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' wordtree__WordTreeLoss(output, labels, tree)
 #' @param output `WordTreeOutputs`
-#' @param labels `vector<integer>`
+#' @param labels `integer vector`
 #' @param tree `WordTree`
 #' @return `Tensor`
 #' @md
@@ -31401,7 +31420,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' yolo__YoloSceneMetadata(scenes, rows, pixels = FALSE)
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param pixels `logical`
 #' @return `TensorDetectionScenes`
 #' @md
@@ -31411,7 +31430,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' yolo__MakeYoloV1Targets(scenes, rows, grid = 7)
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param grid `integer`
 #' @return `yolo__YoloV1Targets`
 #' @md
@@ -31431,12 +31450,12 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::DecodeYoloV1`
 #' @usage
 #' yolo__DecodeYoloV1(values, rows, scenes, classes, grid, detections)
-#' @param values `vector<numeric>`
-#' @param rows `vector<integer>`
+#' @param values `numeric vector`
+#' @param rows `integer vector`
 #' @param scenes `detector__DetectionScenes`
 #' @param classes `integer`
 #' @param grid `integer`
-#' @param detections `vector<detector__Detection>`
+#' @param detections `list of detector__Detection`
 #' @md
 #'
 `yolo__DecodeYoloV1` <- function(...) invisible(.Call(`.rs_1404`, NULL, list(...)))
@@ -31454,7 +31473,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' yolo__YoloV1PretrainingBatch(crops, rows)
 #' @param crops `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `list(Tensor, Tensor)`
 #' @md
 #'
@@ -31487,7 +31506,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::DimensionTensor`
 #' @usage
 #' yolo__DimensionTensor(x)
-#' @param x `vector<vector<numeric>>`
+#' @param x `list of numeric vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -31495,8 +31514,8 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::DimensionIoU`
 #' @usage
 #' yolo__DimensionIoU(a, b)
-#' @param a `vector<numeric>`
-#' @param b `vector<numeric>`
+#' @param a `numeric vector`
+#' @param b `numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -31504,20 +31523,20 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::ClusterDimensions`
 #' @usage
 #' yolo__ClusterDimensions(x, count)
-#' @param x `vector<vector<numeric>>`
+#' @param x `list of numeric vector`
 #' @param count `integer`
-#' @return `vector<vector<numeric>>`
+#' @return `list of numeric vector`
 #' @md
 #'
 `yolo__ClusterDimensions` <- function(...) .Call(`.rs_1412`, NULL, list(...))
 #' C++ function `yolo::MakeYoloV2Targets`
 #' @usage
 #' yolo__MakeYoloV2Targets(raw, shape, priors, scenes, rows, coarse)
-#' @param raw `vector<numeric>`
-#' @param shape `vector<integer>`
-#' @param priors `vector<vector<numeric>>`
+#' @param raw `numeric vector`
+#' @param shape `integer vector`
+#' @param priors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param coarse `logical`
 #' @return `yolo__YoloV2Targets`
 #' @md
@@ -31538,15 +31557,15 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::DecodeYoloV2Detections`
 #' @usage
 #' yolo__DecodeYoloV2Detections(raw, shape, probabilities, classes, priors, scenes, rows, hierarchy, detections)
-#' @param raw `vector<numeric>`
-#' @param shape `vector<integer>`
-#' @param probabilities `vector<numeric>`
+#' @param raw `numeric vector`
+#' @param shape `integer vector`
+#' @param probabilities `numeric vector`
 #' @param classes `integer`
-#' @param priors `vector<vector<numeric>>`
+#' @param priors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param hierarchy `logical`
-#' @param detections `vector<detector__Detection>`
+#' @param detections `list of detector__Detection`
 #' @md
 #'
 `yolo__DecodeYoloV2Detections` <- function(...) invisible(.Call(`.rs_1415`, NULL, list(...)))
@@ -31562,7 +31581,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::YoloV3Loss`
 #' @usage
 #' yolo__YoloV3Loss(raw, t, classes)
-#' @param raw `vector<Tensor>`
+#' @param raw `list of Tensor`
 #' @param t `yolo__YoloV3Targets`
 #' @param classes `integer`
 #' @return `Tensor`
@@ -31574,10 +31593,10 @@ rosetta_ref <- function(value = NULL) {
 #' yolo__DecodeYoloV3Level(raw, level, priors, scenes, rows, detections)
 #' @param raw `Tensor`
 #' @param level `integer`
-#' @param priors `vector<vector<numeric>>`
+#' @param priors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
-#' @param detections `vector<detector__Detection>`
+#' @param rows `integer vector`
+#' @param detections `list of detector__Detection`
 #' @md
 #'
 `yolo__DecodeYoloV3Level` <- function(...) invisible(.Call(`.rs_1418`, NULL, list(...)))
@@ -31585,7 +31604,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' yolo__DecodeYoloV5Boxes(raw, priors, level)
 #' @param raw `Tensor`
-#' @param priors `vector<vector<numeric>>`
+#' @param priors `list of numeric vector`
 #' @param level `integer`
 #' @return `Tensor`
 #' @md
@@ -31594,10 +31613,10 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::YoloV5Loss`
 #' @usage
 #' yolo__YoloV5Loss(raw, t, classes, priors)
-#' @param raw `vector<Tensor>`
+#' @param raw `list of Tensor`
 #' @param t `yolo__YoloV5Targets`
 #' @param classes `integer`
-#' @param priors `vector<vector<numeric>>`
+#' @param priors `list of numeric vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -31607,10 +31626,10 @@ rosetta_ref <- function(value = NULL) {
 #' yolo__DecodeYoloV5Level(raw, level, priors, scenes, rows, out)
 #' @param raw `Tensor`
 #' @param level `integer`
-#' @param priors `vector<vector<numeric>>`
+#' @param priors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
-#' @param out `vector<detector__Detection>`
+#' @param rows `integer vector`
+#' @param out `list of detector__Detection`
 #' @md
 #'
 `yolo__DecodeYoloV5Level` <- function(...) invisible(.Call(`.rs_1421`, NULL, list(...)))
@@ -31634,8 +31653,8 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `instance::MaskIoU`
 #' @usage
 #' instance__MaskIoU(a, b)
-#' @param a `vector<integer>`
-#' @param b `vector<integer>`
+#' @param a `integer vector`
+#' @param b `integer vector`
 #' @return `numeric`
 #' @md
 #'
@@ -31651,7 +31670,7 @@ rosetta_ref <- function(value = NULL) {
 #' All-point AP of scored masks against the scenes' instance supports, averaged over classes with targets.
 #' @usage
 #' instance__MaskAveragePrecision(predictions, scenes, classes, threshold)
-#' @param predictions `vector<instance__MaskDetection>`
+#' @param predictions `list of instance__MaskDetection`
 #' @param scenes `instance__InstanceScenes`
 #' @param classes `integer`
 #' @param threshold `numeric`
@@ -31662,7 +31681,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `maskrcnn::AlignCrops`
 #' @usage
 #' maskrcnn__AlignCrops(boxes, cells, stride, bins)
-#' @param boxes `vector<vector<numeric>>`
+#' @param boxes `list of numeric vector`
 #' @param cells `integer`
 #' @param stride `integer`
 #' @param bins `integer`
@@ -31674,8 +31693,8 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' maskrcnn__RoiAlign(feature, boxes, indices, cells, stride, bins)
 #' @param feature `Tensor`
-#' @param boxes `vector<vector<numeric>>`
-#' @param indices `vector<integer>`
+#' @param boxes `list of numeric vector`
+#' @param indices `integer vector`
 #' @param cells `integer`
 #' @param stride `integer`
 #' @param bins `integer`
@@ -31698,7 +31717,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' maskrcnn__SelectedMaskLoss(logits, labels, targets, classes)
 #' @param logits `Tensor`
-#' @param labels `vector<integer>`
+#' @param labels `integer vector`
 #' @param targets `Tensor`
 #' @param classes `integer`
 #' @return `Tensor`
@@ -31720,10 +31739,10 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' maskrcnn__DecodePixelRois(out, rows, boxes, classes)
 #' @param out `DetectionRoiOutputs`
-#' @param rows `vector<integer>`
-#' @param boxes `vector<list(integer, vector<numeric>)>`
+#' @param rows `integer vector`
+#' @param boxes `list of list(integer, numeric vector)`
 #' @param classes `integer`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `maskrcnn__DecodePixelRois` <- function(...) .Call(`.rs_1432`, NULL, list(...))
@@ -31731,7 +31750,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' maskrcnn__PositiveMaskTargets(scenes, rows, batch)
 #' @param scenes `instance__InstanceScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param batch `detector__RoiBatch`
 #' @return `maskrcnn__MaskTargets`
 #' @md
@@ -31748,7 +31767,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `panoptic::TensorInstances`
 #' @usage
 #' panoptic__TensorInstances(instances, height, width)
-#' @param instances `vector<instance__MaskDetection>`
+#' @param instances `list of instance__MaskDetection`
 #' @param height `integer`
 #' @param width `integer`
 #' @return `TensorMaskDetections`
@@ -31758,9 +31777,9 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `panoptic::MergePanoptic`
 #' @usage
 #' panoptic__MergePanoptic(semantic, instances, semantic_categories, score = 0.5, overlap = 0.5, stuff_area = 32)
-#' @param semantic `vector<integer>`
-#' @param instances `vector<instance__MaskDetection>`
-#' @param semantic_categories `vector<integer>`
+#' @param semantic `integer vector`
+#' @param instances `list of instance__MaskDetection`
+#' @param semantic_categories `integer vector`
 #' @param score `numeric`
 #' @param overlap `numeric`
 #' @param stuff_area `integer`
@@ -31788,18 +31807,18 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `panoptic::PanopticLevels`
 #' @usage
 #' panoptic__PanopticLevels(boxes, canonical)
-#' @param boxes `vector<vector<numeric>>`
+#' @param boxes `list of numeric vector`
 #' @param canonical `numeric`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `panoptic__PanopticLevels` <- function(...) .Call(`.rs_1439`, NULL, list(...))
 #' C++ function `panoptic::PanopticRoiAlign`
 #' @usage
 #' panoptic__PanopticRoiAlign(features, boxes, indices, image_size, bins, canonical = 224.0)
-#' @param features `vector<Tensor>`
-#' @param boxes `vector<vector<numeric>>`
-#' @param indices `vector<integer>`
+#' @param features `list of Tensor`
+#' @param boxes `list of numeric vector`
+#' @param indices `integer vector`
 #' @param image_size `integer`
 #' @param bins `integer`
 #' @param canonical `numeric`
@@ -31821,7 +31840,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' panoptic__PanopticSemanticTargets(scenes, rows)
 #' @param scenes `panoptic__PanopticScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `Tensor`
 #' @md
 #'
@@ -31848,9 +31867,9 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolact::YolactMatching`
 #' @usage
 #' yolact__YolactMatching(anchors, truth)
-#' @param anchors `vector<vector<numeric>>`
-#' @param truth `vector<vector<numeric>>`
-#' @return `vector<integer>`
+#' @param anchors `list of numeric vector`
+#' @param truth `list of numeric vector`
+#' @return `integer vector`
 #' @md
 #'
 `yolact__YolactMatching` <- function(...) .Call(`.rs_1445`, NULL, list(...))
@@ -31860,7 +31879,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param net `YolactOutputs`
 #' @param size `integer`
 #' @param compact `logical`
-#' @return `vector<vector<numeric>>`
+#' @return `list of numeric vector`
 #' @md
 #'
 `yolact__YolactAnchors` <- function(...) .Call(`.rs_1446`, NULL, list(...))
@@ -31884,11 +31903,11 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolact::FastNms`
 #' @usage
 #' yolact__FastNms(detections, threshold = 0.5, top_k = 200, limit = 100)
-#' @param detections `vector<detector__Detection>`
+#' @param detections `list of detector__Detection`
 #' @param threshold `numeric`
 #' @param top_k `integer`
 #' @param limit `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `yolact__FastNms` <- function(...) .Call(`.rs_1449`, NULL, list(...))
@@ -31896,36 +31915,36 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' yolact__DecodeYolact(net, anchors, scenes, chunk, classes)
 #' @param net `YolactOutputs`
-#' @param anchors `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
 #' @param scenes `instance__InstanceScenes`
-#' @param chunk `vector<integer>`
+#' @param chunk `integer vector`
 #' @param classes `integer`
-#' @return `vector<instance__MaskDetection>`
+#' @return `list of instance__MaskDetection`
 #' @md
 #'
 `yolact__DecodeYolact` <- function(...) .Call(`.rs_1450`, NULL, list(...))
 #' C++ function `detection_evaluation::TensorPredictions`
 #' @usage
 #' detection_evaluation__TensorPredictions(predictions)
-#' @param predictions `vector<detector__Detection>`
-#' @return `vector<DetectionEvaluationPrediction>`
+#' @param predictions `list of detector__Detection`
+#' @return `list of DetectionEvaluationPrediction`
 #' @md
 #'
 `detection_evaluation__TensorPredictions` <- function(...) .Call(`.rs_1451`, NULL, list(...))
 #' C++ function `detection_evaluation::TensorTruth`
 #' @usage
 #' detection_evaluation__TensorTruth(truth)
-#' @param truth `vector<detection_evaluation__EvaluationTruth>`
-#' @return `vector<DetectionEvaluationTruth>`
+#' @param truth `list of detection_evaluation__EvaluationTruth`
+#' @return `list of DetectionEvaluationTruth`
 #' @md
 #'
 `detection_evaluation__TensorTruth` <- function(...) .Call(`.rs_1452`, NULL, list(...))
 #' C++ function `detection_evaluation::DatasetClassAp`
 #' @usage
 #' detection_evaluation__DatasetClassAp(predictions, truth, image_ids, label, threshold, coco)
-#' @param predictions `vector<detector__Detection>`
-#' @param truth `vector<detection_evaluation__EvaluationTruth>`
-#' @param image_ids `vector<integer>`
+#' @param predictions `list of detector__Detection`
+#' @param truth `list of detection_evaluation__EvaluationTruth`
+#' @param image_ids `integer vector`
 #' @param label `integer`
 #' @param threshold `numeric`
 #' @param coco `logical`
@@ -31936,9 +31955,9 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `detection_evaluation::EvaluateDataset`
 #' @usage
 #' detection_evaluation__EvaluateDataset(predictions, truth, images, coco)
-#' @param predictions `vector<detector__Detection>`
-#' @param truth `vector<detection_evaluation__EvaluationTruth>`
-#' @param images `vector<integer>`
+#' @param predictions `list of detector__Detection`
+#' @param truth `list of detection_evaluation__EvaluationTruth`
+#' @param images `integer vector`
 #' @param coco `logical`
 #' @return `detection_evaluation__DatasetAp`
 #' @md
@@ -31963,8 +31982,8 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `detection::DetectionMap`
 #' @usage
 #' detection__DetectionMap(truth, detections, classes, threshold = 0.5)
-#' @param truth `vector<detection__GroundTruth>`
-#' @param detections `vector<detection__Detection>`
+#' @param truth `list of detection__GroundTruth`
+#' @param detections `list of detection__Detection`
 #' @param classes `integer`
 #' @param threshold `numeric`
 #' @return `detection__DetectionMetrics`
@@ -32061,7 +32080,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ae__LoadSaliency(root)
 #' @param root `character`
-#' @return `vector<SaliencyData>`
+#' @return `list of SaliencyData`
 #' @md
 #'
 `ae__LoadSaliency` <- function(...) .Call(`.rs_1468`, NULL, list(...))
@@ -32069,7 +32088,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' ae__SaveData(file, pools)
 #' @param file `character`
-#' @param pools `vector<SaliencyData>`
+#' @param pools `list of SaliencyData`
 #' @md
 #'
 `ae__SaveData` <- function(...) invisible(.Call(`.rs_1469`, NULL, list(...)))
@@ -32087,7 +32106,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param logits `Tensor`
 #' @param labels `Tensor`
 #' @param classes `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `seg__SegmentationConfusion` <- function(...) .Call(`.rs_1471`, NULL, list(...))
@@ -32103,10 +32122,10 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `seg::SquaredDistance2DInt`
 #' @usage
 #' seg__SquaredDistance2D(seeds, height, width)
-#' @param seeds `vector<integer>`
+#' @param seeds `integer vector`
 #' @param height `integer`
 #' @param width `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `seg__SquaredDistance2D` <- function(...) .Call(`.rs_1473`, NULL, list(...))
@@ -32117,8 +32136,8 @@ rosetta_ref <- function(value = NULL) {
 #' @param name `character`
 #' @param features `Tensor`
 #' @param classes `integer`
-#' @param rates `vector<integer>`
-#' @return `vector<Tensor>`
+#' @param rates `integer vector`
+#' @return `list of Tensor`
 #' @md
 #'
 `deeplab__AtrousScorePyramid` <- function(...) .Call(`.rs_1474`, NULL, list(...))
@@ -32126,9 +32145,9 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sentence__RequireLiveGradients(p, gradients, what, may_vanish = c(), floor = 0.0)
 #' @param p `ParameterStore`
-#' @param gradients `vector<Tensor>`
+#' @param gradients `list of Tensor`
 #' @param what `character`
-#' @param may_vanish `vector<character>`
+#' @param may_vanish `character vector`
 #' @param floor `numeric`
 #' @return `integer`
 #' @md
@@ -32166,7 +32185,7 @@ rosetta_ref <- function(value = NULL) {
 #' sentence__Snapshot(p, s)
 #' @param p `ParameterStore`
 #' @param s `ParameterStore`
-#' @return `vector<list(character, Tensor)>`
+#' @return `list of list(character, Tensor)`
 #' @md
 #'
 `sentence__Snapshot` <- function(...) .Call(`.rs_1479`, NULL, list(...))
@@ -32181,8 +32200,8 @@ rosetta_ref <- function(value = NULL) {
 #' Bit-identical named tensors (same keys, same bytes).
 #' @usage
 #' replay__SameBits(a, b)
-#' @param a `Tensor` or `vector<list(character, Tensor)>`
-#' @param b `Tensor` or `vector<list(character, Tensor)>`
+#' @param a `Tensor` or `list of list(character, Tensor)`
+#' @param b `Tensor` or `list of list(character, Tensor)`
 #' @return `logical`
 #' @md
 #'
@@ -32199,9 +32218,9 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' replay__MaxDiff(a, file)
 #' replay__MaxDiff(a, b)
-#' @param a `vector<list(character, Tensor)>`
+#' @param a `list of list(character, Tensor)`
 #' @param file `character`
-#' @param b `vector<list(character, Tensor)>`
+#' @param b `list of list(character, Tensor)`
 #' @return `numeric`
 #' @md
 #'
@@ -32211,7 +32230,7 @@ rosetta_ref <- function(value = NULL) {
 #' replay__History(file, column = 1)
 #' @param file `character`
 #' @param column `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `replay__History` <- function(...) .Call(`.rs_1484`, NULL, list(...))
@@ -32220,7 +32239,7 @@ rosetta_ref <- function(value = NULL) {
 #' replay__CopyAssets(from, to, files)
 #' @param from `character`
 #' @param to `character`
-#' @param files `vector<character>`
+#' @param files `character vector`
 #' @md
 #'
 `replay__CopyAssets` <- function(...) invisible(.Call(`.rs_1485`, NULL, list(...)))
@@ -32295,7 +32314,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sal__LoadArrays(file)
 #' @param file `character`
-#' @return `vector<list(character, Tensor)>`
+#' @return `list of list(character, Tensor)`
 #' @md
 #'
 `sal__LoadArrays` <- function(...) .Call(`.rs_1494`, NULL, list(...))
@@ -32303,7 +32322,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sal__SaveArrays(file, arrays)
 #' @param file `character`
-#' @param arrays `vector<list(character, Tensor)>`
+#' @param arrays `list of list(character, Tensor)`
 #' @md
 #'
 `sal__SaveArrays` <- function(...) invisible(.Call(`.rs_1495`, NULL, list(...)))
@@ -32319,7 +32338,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sal__SignedColor(g)
 #' @param g `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `sal__SignedColor` <- function(...) .Call(`.rs_1497`, NULL, list(...))
@@ -32369,15 +32388,15 @@ rosetta_ref <- function(value = NULL) {
 #' @param xmin `numeric`
 #' @param ymax `numeric`
 #' @param xmax `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__MakeBox` <- function(...) .Call(`.rs_1502`, NULL, list(...))
 #' C++ function `detector::BoxValues`
 #' @usage
 #' detector__BoxValues(box)
-#' @param box `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param box `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__BoxValues` <- function(...) .Call(`.rs_1503`, NULL, list(...))
@@ -32388,39 +32407,39 @@ rosetta_ref <- function(value = NULL) {
 #' @param x `numeric`
 #' @param height `numeric`
 #' @param width `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__MakeBoxVariances` <- function(...) .Call(`.rs_1504`, NULL, list(...))
 #' C++ function `detector::ClassApVector`
 #' @usage
 #' detector__ClassAp(detections, scenes, rows, label, threshold, voc)
-#' @param detections `vector<detector__Detection>`
+#' @param detections `list of detector__Detection`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param label `integer`
 #' @param threshold `numeric`
 #' @param voc `logical`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__ClassAp` <- function(...) .Call(`.rs_1505`, NULL, list(...))
 #' C++ function `detector::DecodeBoxVector`
 #' @usage
 #' detector__DecodeBox(anchor, delta)
-#' @param anchor `vector<numeric>`
-#' @param delta `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param anchor `numeric vector`
+#' @param delta `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__DecodeBox` <- function(...) .Call(`.rs_1506`, NULL, list(...))
 #' C++ function `detector::DecodeBoxWithVector`
 #' @usage
 #' detector__DecodeBoxWith(anchor, delta, variance)
-#' @param anchor `vector<numeric>`
-#' @param delta `vector<numeric>`
-#' @param variance `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param anchor `numeric vector`
+#' @param delta `numeric vector`
+#' @param variance `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `detector__DecodeBoxWith` <- function(...) .Call(`.rs_1507`, NULL, list(...))
@@ -32455,7 +32474,7 @@ rosetta_ref <- function(value = NULL) {
 #' detector__CropScene(scenes, row, box, size)
 #' @param scenes `detector__DetectionScenes`
 #' @param row `integer`
-#' @param box `vector<numeric>`
+#' @param box `numeric vector`
 #' @param size `integer`
 #' @return `Tensor`
 #' @md
@@ -32467,7 +32486,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param scenes `detector__DetectionScenes`
 #' @param row `integer`
 #' @param index `integer`
-#' @param candidates `vector<vector<numeric>>`
+#' @param candidates `list of numeric vector`
 #' @param total `integer`
 #' @param background `integer`
 #' @param stride `integer`
@@ -32480,9 +32499,9 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `detector::MakeRpnTargetsEngine`
 #' @usage
 #' detector__MakeRpnTargets(anchors, scenes, rows, random, per_image = 128)
-#' @param anchors `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param random `detector__Mt19937_64`
 #' @param per_image `integer`
 #' @return `detector__RpnTargets`
@@ -32492,22 +32511,22 @@ rosetta_ref <- function(value = NULL) {
 #' RpnProposals of one image from its objectness \[A\] and deltas \[A * 4\] values.
 #' @usage
 #' detector__RpnProposals(objectness, deltas, anchors, height, width, before = 300, after = 100)
-#' @param objectness `vector<numeric>`
-#' @param deltas `vector<numeric>`
-#' @param anchors `vector<vector<numeric>>`
+#' @param objectness `numeric vector`
+#' @param deltas `numeric vector`
+#' @param anchors `list of numeric vector`
 #' @param height `integer`
 #' @param width `integer`
 #' @param before `integer`
 #' @param after `integer`
-#' @return `vector<vector<numeric>>`
+#' @return `list of numeric vector`
 #' @md
 #'
 `detector__RpnProposals` <- function(...) .Call(`.rs_1514`, NULL, list(...))
 #' C++ function `detr::DetrCornersVector`
 #' @usage
 #' detr__DetrCorners(center_size)
-#' @param center_size `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param center_size `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `detr__DetrCorners` <- function(...) .Call(`.rs_1515`, NULL, list(...))
@@ -32516,15 +32535,15 @@ rosetta_ref <- function(value = NULL) {
 #' yolo__MakeDimension(height, width)
 #' @param height `numeric`
 #' @param width `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `yolo__MakeDimension` <- function(...) .Call(`.rs_1516`, NULL, list(...))
 #' C++ function `yolo::DimensionValues`
 #' @usage
 #' yolo__DimensionValues(d)
-#' @param d `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param d `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `yolo__DimensionValues` <- function(...) .Call(`.rs_1517`, NULL, list(...))
@@ -32540,15 +32559,15 @@ rosetta_ref <- function(value = NULL) {
 #' DecodeYoloV2 of the cell values starting at `offset` in `raw` (a prediction's to_vector values).
 #' @usage
 #' yolo__DecodeYoloV2(raw, offset, row, col, cells, prior, height, width)
-#' @param raw `vector<numeric>`
+#' @param raw `numeric vector`
 #' @param offset `integer`
 #' @param row `integer`
 #' @param col `integer`
 #' @param cells `integer`
-#' @param prior `vector<numeric>`
+#' @param prior `numeric vector`
 #' @param height `integer`
 #' @param width `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `yolo__DecodeYoloV2` <- function(...) .Call(`.rs_1519`, NULL, list(...))
@@ -32558,9 +32577,9 @@ rosetta_ref <- function(value = NULL) {
 #' @param coarse `Tensor`
 #' @param middle `Tensor`
 #' @param fine `Tensor`
-#' @param priors `vector<vector<numeric>>`
+#' @param priors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `yolo__YoloV3Targets`
 #' @md
 #'
@@ -32571,9 +32590,9 @@ rosetta_ref <- function(value = NULL) {
 #' @param coarse `Tensor`
 #' @param middle `Tensor`
 #' @param fine `Tensor`
-#' @param priors `vector<vector<numeric>>`
+#' @param priors `list of numeric vector`
 #' @param scenes `detector__DetectionScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @return `yolo__YoloV5Targets`
 #' @md
 #'
@@ -32581,31 +32600,31 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `yolo::DecodeYoloV5Values`
 #' @usage
 #' yolo__DecodeYoloV5(raw, offset, row, col, cells, prior, stride, height, width)
-#' @param raw `vector<numeric>`
+#' @param raw `numeric vector`
 #' @param offset `integer`
 #' @param row `integer`
 #' @param col `integer`
 #' @param cells `integer`
-#' @param prior `vector<numeric>`
+#' @param prior `numeric vector`
 #' @param stride `integer`
 #' @param height `integer`
 #' @param width `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `yolo__DecodeYoloV5` <- function(...) .Call(`.rs_1522`, NULL, list(...))
 #' PasteMask of the `side * side * classes` probabilities starting at `offset` in `probabilities`.
 #' @usage
 #' instance__PasteMask(probabilities, offset, side, classes, label, box, height, width)
-#' @param probabilities `vector<numeric>`
+#' @param probabilities `numeric vector`
 #' @param offset `integer`
 #' @param side `integer`
 #' @param classes `integer`
 #' @param label `integer`
-#' @param box `vector<numeric>`
+#' @param box `numeric vector`
 #' @param height `integer`
 #' @param width `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `instance__PasteMask` <- function(...) .Call(`.rs_1523`, NULL, list(...))
@@ -32613,7 +32632,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' instance__ExportInstanceMasks(scenes, detections, filename)
 #' @param scenes `instance__InstanceScenes`
-#' @param detections `vector<instance__MaskDetection>`
+#' @param detections `list of instance__MaskDetection`
 #' @param filename `character`
 #' @md
 #'
@@ -32622,7 +32641,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' panoptic__PanopticAreas(map)
 #' @param map `panoptic__PanopticMap`
-#' @return `vector<vector<integer>>`
+#' @return `list of integer vector`
 #' @md
 #'
 `panoptic__PanopticAreas` <- function(...) .Call(`.rs_1525`, NULL, list(...))
@@ -32639,7 +32658,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' panoptic__PanopticQuality(stats, things, subset = -1)
 #' @param stats `panoptic__PqStatsHandle`
-#' @param things `vector<integer>`
+#' @param things `integer vector`
 #' @param subset `integer`
 #' @return `panoptic__PqResult`
 #' @md
@@ -32649,8 +32668,8 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' panoptic__PanopticPreview(data, semantic, predicted, filename)
 #' @param data `panoptic__PanopticScenes`
-#' @param semantic `vector<vector<integer>>`
-#' @param predicted `vector<panoptic__PanopticMap>`
+#' @param semantic `list of integer vector`
+#' @param predicted `list of panoptic__PanopticMap`
 #' @param filename `character`
 #' @md
 #'
@@ -32659,9 +32678,9 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' yolact__MakeYolactTargets(net, anchors, scenes, rows, classes, random)
 #' @param net `YolactOutputs`
-#' @param anchors `vector<vector<numeric>>`
+#' @param anchors `list of numeric vector`
 #' @param scenes `instance__InstanceScenes`
-#' @param rows `vector<integer>`
+#' @param rows `integer vector`
 #' @param classes `integer`
 #' @param random `yolact__Mt19937`
 #' @return `yolact__YolactTargets`
@@ -32672,7 +32691,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detection_evaluation__LoadEvaluationImages(directory)
 #' @param directory `character`
-#' @return `vector<detection_evaluation__EvaluationImage>`
+#' @return `list of detection_evaluation__EvaluationImage`
 #' @md
 #'
 `detection_evaluation__LoadEvaluationImages` <- function(...) .Call(`.rs_1530`, NULL, list(...))
@@ -32680,7 +32699,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detection_evaluation__LoadEvaluationTruth(directory)
 #' @param directory `character`
-#' @return `vector<detection_evaluation__EvaluationTruth>`
+#' @return `list of detection_evaluation__EvaluationTruth`
 #' @md
 #'
 `detection_evaluation__LoadEvaluationTruth` <- function(...) .Call(`.rs_1531`, NULL, list(...))
@@ -32688,7 +32707,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' detection_evaluation__LoadPredictionsJson(path)
 #' @param path `character`
-#' @return `vector<detector__Detection>`
+#' @return `list of detector__Detection`
 #' @md
 #'
 `detection_evaluation__LoadPredictionsJson` <- function(...) .Call(`.rs_1532`, NULL, list(...))
@@ -32704,11 +32723,11 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Returns whether the handle has an implementation, including zero-element tensors.
 #'
-#' * `$shape()` -> `vector<integer>`
+#' * `$shape()` -> `integer vector`
 #'
 #'   Borrows logical axis lengths from the shared implementation.
 #'
-#' * `$strides()` -> `vector<integer>`
+#' * `$strides()` -> `integer vector`
 #'
 #'   Borrows per-axis increments in elements, which may be zero or negative for views.
 #'
@@ -32859,7 +32878,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$item()` -> `numeric`
 #'
-#' * `$values()` -> `vector<numeric>`
+#' * `$values()` -> `numeric vector`
 #' @section Examples (C++):
 #' ```cpp
 #' const auto x=dm::nn::zeros({2,3});
@@ -32918,10 +32937,10 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `Conv2DOptions$new()`
 #' @section Fields:
-#' * `$strides` (`vector<integer>`): Stride along H and W.
-#' * `$dilations` (`vector<integer>`): Dilation along H and W.
+#' * `$strides` (`integer vector`): Stride along H and W.
+#' * `$dilations` (`integer vector`): Dilation along H and W.
 #' * `$padding` (`character (Padding)`)
-#' * `$explicit_paddings` (`vector<integer>`): Used with Padding::Explicit: top, bottom, left, right.
+#' * `$explicit_paddings` (`integer vector`): Used with Padding::Explicit: top, bottom, left, right.
 #' * `$groups` (`integer`): Grouped convolution: C_in and C_out are split into this many groups.
 #' @md
 #'
@@ -32945,10 +32964,10 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `Conv3DOptions$new()`
 #' @section Fields:
-#' * `$strides` (`vector<integer>`): Stride along D, H and W.
-#' * `$dilations` (`vector<integer>`): Dilation along D, H and W.
+#' * `$strides` (`integer vector`): Stride along D, H and W.
+#' * `$dilations` (`integer vector`): Dilation along D, H and W.
 #' * `$padding` (`character (Padding)`)
-#' * `$explicit_paddings` (`vector<integer>`): Used with Padding::Explicit: front, back, top, bottom, left, right.
+#' * `$explicit_paddings` (`integer vector`): Used with Padding::Explicit: front, back, top, bottom, left, right.
 #' * `$groups` (`integer`): Grouped convolution: C_in and C_out are split into this many groups.
 #' @md
 #'
@@ -33086,11 +33105,11 @@ rosetta_ref <- function(value = NULL) {
 #'   Adds `value` as a new parameter, or overwrites an existing one in place
 #'   (shapes must match).
 #'
-#' * `$names()` -> `vector<character>`
+#' * `$names()` -> `character vector`
 #'
 #'   Borrows parameter names in creation order; later insertion may invalidate references.
 #'
-#' * `$parameters()` -> `vector<Tensor>`
+#' * `$parameters()` -> `list of Tensor`
 #'
 #'   Returns a new vector of handles aliasing the store's learnable tensors, in creation order.
 #'
@@ -33120,7 +33139,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Deep copy with the same names, values and seed state.
 #'
-#' * `$flatten()` -> `vector<numeric>`
+#' * `$flatten()` -> `numeric vector`
 #'
 #'   All parameters concatenated in creation order (for black-box optimizers
 #'   such as CMA-ES or CEM in `datamunge::optim`).
@@ -33427,7 +33446,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$real` (`Tensor`)
 #' * `$imag` (`Tensor`)
 #' @section Methods:
-#' * `$shape()` -> `vector<integer>`
+#' * `$shape()` -> `integer vector`
 #'
 #'   Shape of either part.
 #'
@@ -33625,7 +33644,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$preserve_rng_state` (`logical`): Replay the default generator's draws (dropout, noise, ...) during the
 #'   recomputation, so it sees the same random numbers as the forward pass.
-#' * `$generators` (`vector<Generator or NULL>`): Further generators `fn` draws from (for example a ParameterStore's
+#' * `$generators` (`list of Generator or NULL`): Further generators `fn` draws from (for example a ParameterStore's
 #'   `generator()`); their states are replayed the same way.
 #' @md
 #'
@@ -34430,8 +34449,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `CodecQuantizer$new()`
 #' @section Fields:
-#' * `$minimum` (`vector<numeric>`): Owning finite fitting minima\[D\], D>0.
-#' * `$maximum` (`vector<numeric>`): Owning finite fitting maxima\[D\], maximum\[j\]>=minimum\[j\].
+#' * `$minimum` (`numeric vector`): Owning finite fitting minima\[D\], D>0.
+#' * `$maximum` (`numeric vector`): Owning finite fitting maxima\[D\], maximum\[j\]>=minimum\[j\].
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -34468,8 +34487,8 @@ rosetta_ref <- function(value = NULL) {
 #' * `$quantizer` (`CodecQuantizer`): Owning finite ordered Float32 bounds\[32\].
 #' * `$weights` (`Tensor`): Finite Float32\[32,784\] decoder handle; aliases caller storage until serialized.
 #' * `$bias` (`Tensor`): Finite Float32\[784\] decoder bias handle.
-#' * `$source_ids` (`vector<integer>`): Owning nonnegative Int32 identities\[N\], 1<=N<=10000; repeats allowed.
-#' * `$symbols` (`vector<integer>`): Owning row-major byte symbols\[N*32\].
+#' * `$source_ids` (`integer vector`): Owning nonnegative Int32 identities\[N\], 1<=N<=10000; repeats allowed.
+#' * `$symbols` (`integer vector`): Owning row-major byte symbols\[N*32\].
 #' @section Examples (C++):
 #' ```cpp
 #' #include <dm/dm.hpp>
@@ -34535,7 +34554,7 @@ rosetta_ref <- function(value = NULL) {
 #' `ConfusionMatrixPlotOptions$new()`
 #' @section Fields:
 #' * `$title` (`character`): Accessible heading, wrapped to the canvas.
-#' * `$labels` (`vector<character>`): Ordered class names; empty selects numeric indices.
+#' * `$labels` (`character vector`): Ordered class names; empty selects numeric indices.
 #' * `$normalization` (`character (ConfusionMatrixNormalization)`)
 #' * `$cell_size` (`numeric`): Cell side in pixels, 24..160.
 #' * `$font_size` (`numeric`): Annotation/axis-label font size in pixels, 6..24.
@@ -34588,7 +34607,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Adds every pair from two integer tensors of equal size.
 #'
-#' * `$cells()` -> `vector<vector<integer>>`
+#' * `$cells()` -> `list of integer vector`
 #'
 #'   Borrows the square count table, indexed by truth then prediction.
 #'
@@ -36195,7 +36214,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Starts a new epoch (reshuffling if enabled).
 #'
-#' * `$next_()` -> `vector<integer>`
+#' * `$next_()` -> `integer vector`
 #'
 #'   Next batch of row indices; empty at the end of the epoch.
 #'
@@ -36824,7 +36843,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Optimizes every parameter currently in `store`.
 #'
-#' * `parameters` (`vector<Tensor>`)
+#' * `parameters` (`list of Tensor`)
 #' * `learning_rate` (`numeric`)
 #' * `config` (`OptimizerConfig`)
 #' * `store` (`ParameterStore`)
@@ -36857,7 +36876,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Returns completed step() calls, including calls where all gradients were undefined.
 #'
-#' * `$parameters()` -> `vector<Tensor>`
+#' * `$parameters()` -> `list of Tensor`
 #'
 #'   Borrows retained parameter handles in their gradient-alignment order.
 #'
@@ -36865,7 +36884,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Borrows the validated update settings supplied at construction.
 #'
-#' * `$state()` -> `vector<list(character, Tensor)>`
+#' * `$state()` -> `list of list(character, Tensor)`
 #'
 #'   Independent copies of slot tensors named "<slot>/<index>", plus step and Nadam schedule state.
 #'   Parameter values, optimizer kind, and learning rate are not included.
@@ -36907,11 +36926,11 @@ rosetta_ref <- function(value = NULL) {
 #'   micro-batches. A nonpositive or non-finite weight throws and leaves the
 #'   accumulator unchanged.
 #'
-#' * `$sum()` -> `vector<Tensor>`
+#' * `$sum()` -> `list of Tensor`
 #'
 #'   Weighted sum of the added gradients, returned as handles aliasing internal sums.
 #'
-#' * `$mean()` -> `vector<Tensor>`
+#' * `$mean()` -> `list of Tensor`
 #'
 #'   Weighted sum divided by the total weight (the number of add() calls
 #'   when every weight is 1). Throws std::logic_error when empty.
@@ -36990,8 +37009,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ImageFolder$new()`
 #' @section Fields:
-#' * `$class_names` (`vector<character>`)
-#' * `$images` (`vector<ImageFile>`)
+#' * `$class_names` (`character vector`)
+#' * `$images` (`list of ImageFile`)
 #' @md
 #'
 `ImageFolder` <- R6::R6Class("ImageFolder", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -37023,10 +37042,10 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Parse owned model bytes and decode supported immutable numeric constants.
 #'
-#' * `bytes` (`vector<integer>`): Complete GraphDef wire bytes, nonempty and within max_bytes.
+#' * `bytes` (`integer vector`): Complete GraphDef wire bytes, nonempty and within max_bytes.
 #' * `max_bytes` (`integer`): Positive byte/decoded-constant bound, default512MiB.
 #' @section Methods:
-#' * `$node_names()` -> `vector<character>`
+#' * `$node_names()` -> `character vector`
 #'
 #'   List every model node name in serialized order, including unsupported unused nodes.
 #'   - Returns: Owned copied names; no mutable model metadata is exposed.
@@ -37043,7 +37062,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `name`: Existing numeric Const node name, optionally suffixed:0.
 #'   - Returns: Detached owning CPU constant copy with exact dtype, shape and value bits.
 #'
-#' * `$evaluate(feeds, fetches)` -> `vector<list(character, Tensor)>`
+#' * `$evaluate(feeds, fetches)` -> `list of list(character, Tensor)`
 #'
 #'   Execute only fetched numeric ancestry with explicit feed overrides and no autograd.
 #'   - `feeds`: Named feed tensors; unique node names optionally suffixed:0.
@@ -37141,7 +37160,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `CtcDecoded$new()`
 #' @section Fields:
-#' * `$sequences` (`vector<vector<integer>>`): Decoded label sequence per batch element.
+#' * `$sequences` (`list of integer vector`): Decoded label sequence per batch element.
 #' * `$dense` (`Tensor`): The same as an int64 \[B, max_len\] tensor padded with -1.
 #' * `$neg_sum_logits` (`Tensor`): \[B, 1\]: minus the sum over valid frames of the largest raw logit (what
 #'   TF's CTCGreedyDecoder returns as "log_probability", i.e. neg_sum_logits).
@@ -37375,7 +37394,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `VggOutputs$new()`
 #' @section Fields:
-#' * `$convolution` (`vector<Tensor>`): Maps after each 3x3 ReLU, in execution order.
+#' * `$convolution` (`list of Tensor`): Maps after each 3x3 ReLU, in execution order.
 #' * `$fc6` (`Tensor`): First dense ReLU output, before its dropout.
 #' * `$fc7` (`Tensor`): Second dense ReLU output, before its dropout.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] classifier outputs.
@@ -37656,7 +37675,7 @@ rosetta_ref <- function(value = NULL) {
 #' `GoogLeNetOutputs$new()`
 #' @section Fields:
 #' * `$logits` (`Tensor`): Main unnormalised \[N,classes\] scores.
-#' * `$auxiliary` (`vector<Tensor>`): Empty unless requested, then two \[N,classes\] tensors.
+#' * `$auxiliary` (`list of Tensor`): Empty unless requested, then two \[N,classes\] tensors.
 #' @section Methods:
 #' * `$inception(index)` -> `Tensor`
 #'
@@ -37883,7 +37902,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `XceptionOutputs$new()`
 #' @section Fields:
-#' * `$stages` (`vector<list(character, Tensor)>`): Sixteen named feature maps in execution order.
+#' * `$stages` (`list of list(character, Tensor)`): Sixteen named feature maps in execution order.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] scores after global averaging.
 #' @section Examples (C++):
 #' ```cpp
@@ -37971,9 +37990,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `Inception23Outputs$new()`
 #' @section Fields:
-#' * `$stages` (`vector<list(character, Tensor)>`): Ordered named NHWC maps.
+#' * `$stages` (`list of list(character, Tensor)`): Ordered named NHWC maps.
 #' * `$logits` (`Tensor`): Main unnormalised \[N,classes\] scores.
-#' * `$auxiliary` (`vector<Tensor>`): Empty unless requested; one \[N,classes\] head.
+#' * `$auxiliary` (`list of Tensor`): Empty unless requested; one \[N,classes\] head.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -38332,7 +38351,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$stem` (`Tensor`): Post-stem activation, after pooling unless small_stem.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] scores, undefined if classifier omitted.
-#' * `$blocks` (`vector<Tensor>`): Every post-add ReLU activation in execution order.
+#' * `$blocks` (`list of Tensor`): Every post-add ReLU activation in execution order.
 #' @section Methods:
 #' * `$stage(index)` -> `Tensor`
 #' @section Examples (C++):
@@ -38455,7 +38474,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Raw 3x3 stem convolution, without BN/ReLU.
 #' * `$features` (`Tensor`): Final learned BN/ReLU before global averaging.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] linear classifier scores.
-#' * `$blocks` (`vector<Tensor>`): Every sum output, with no post-add activation.
+#' * `$blocks` (`list of Tensor`): Every sum output, with no post-add activation.
 #' @section Methods:
 #' * `$stages(index)` -> `Tensor`
 #' @section Examples (C++):
@@ -38534,7 +38553,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$momentum` (`numeric`): Finite BN old-value EMA retention in \[0,1).
 #' * `$update_stats` (`logical`): Update moving moments only on training calls when true.
 #' @section Methods:
-#' * `$BlockCounts()` -> `vector<integer>`
+#' * `$BlockCounts()` -> `integer vector`
 #'
 #'   Resolve three CIFAR repetition counts or the four ImageNet block counts.
 #'   - Returns: Positive dense-layer counts, without mutating this configuration.
@@ -38588,9 +38607,9 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Initial 2k-channel map, after BN/ReLU/pool only for ImageNet layout.
 #' * `$features` (`Tensor`): Final learned BN/ReLU map before global mean.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] linear scores.
-#' * `$stages` (`vector<Tensor>`): End of each dense block.
-#' * `$transitions` (`vector<Tensor>`): Compressed, downsampled maps between blocks.
-#' * `$layers` (`vector<Tensor>`): Every growing concatenation in execution order.
+#' * `$stages` (`list of Tensor`): End of each dense block.
+#' * `$transitions` (`list of Tensor`): Compressed, downsampled maps between blocks.
+#' * `$layers` (`list of Tensor`): Every growing concatenation in execution order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -38662,7 +38681,7 @@ rosetta_ref <- function(value = NULL) {
 #' `HighwayClassifierOutputs$new()`
 #' @section Fields:
 #' * `$projection` (`Tensor`): Glorot-initialized dense ReLU projection to hidden width.
-#' * `$layers` (`vector<HighwayOutputs>`): Ordered highway0 through highway(hidden_layers-2).
+#' * `$layers` (`list of HighwayOutputs`): Ordered highway0 through highway(hidden_layers-2).
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] dense scores.
 #' @section Examples (C++):
 #' ```cpp
@@ -38867,7 +38886,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Initial convolution/BN/ReLU and optional max-pool map.
 #' * `$features` (`Tensor`): Joined final paths after BN/ReLU, before global averaging.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] linear scores.
-#' * `$blocks` (`vector<vector<DPNBlockOutputs>>`): Every unit grouped by stage.
+#' * `$blocks` (`list of list of DPNBlockOutputs`): Every unit grouped by stage.
 #' @section Methods:
 #' * `$stages(stage)` -> `DPNPaths`
 #' @section Examples (C++):
@@ -38957,8 +38976,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$stem` (`Tensor`): Post-BN/ReLU stem, including pool for ImageNet.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] scores after global average pooling.
-#' * `$stages` (`vector<Tensor>`): Three CIFAR or four ImageNet stage ends.
-#' * `$blocks` (`vector<Tensor>`): Every post-addition ReLU in execution order.
+#' * `$stages` (`list of Tensor`): Three CIFAR or four ImageNet stage ends.
+#' * `$blocks` (`list of Tensor`): Every post-addition ReLU in execution order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -39083,7 +39102,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Fixed 16-channel 3x3 stride-one stem.
 #' * `$features` (`Tensor`): Final BN/ReLU after the third stage.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] global-pool/dense scores.
-#' * `$blocks` (`vector<Tensor>`): Ordered (depth-4)/2 residual-unit sums.
+#' * `$blocks` (`list of Tensor`): Ordered (depth-4)/2 residual-unit sums.
 #' @section Methods:
 #' * `$stages(index)` -> `Tensor`
 #' @section Examples (C++):
@@ -39129,12 +39148,12 @@ rosetta_ref <- function(value = NULL) {
 #' * `$momentum` (`numeric`): BN moving-moment retention in \[0,1).
 #' * `$update_stats` (`logical`): Permit moving moments to change in training mode.
 #' @section Methods:
-#' * `$StageCounts()` -> `vector<integer>`
+#' * `$StageCounts()` -> `integer vector`
 #'
 #'   Return unit counts for the configured dataset and depth.
 #'   - Returns: Three equal CIFAR counts or four ImageNet counts; depth 200 uses 3/24/36/3.
 #'
-#' * `$UnitWidths()` -> `vector<integer>`
+#' * `$UnitWidths()` -> `integer vector`
 #'
 #'   Validate the configuration and compute released rounded additive unit widths.
 #'   - Returns: Positive inner/basic width for every unit in execution order.
@@ -39176,9 +39195,9 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Stem after BN, with ReLU/pool only for ImageNet.
 #' * `$features` (`Tensor`): Final BN/ReLU feature map.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] global-average classifier scores.
-#' * `$stages` (`vector<Tensor>`): Three CIFAR or four ImageNet signed stage sums.
-#' * `$blocks` (`vector<ResNetBlockOutputs>`): Every unit with its branch and shortcut.
-#' * `$channels` (`vector<integer>`): Expanded output channel count for every unit.
+#' * `$stages` (`list of Tensor`): Three CIFAR or four ImageNet signed stage sums.
+#' * `$blocks` (`list of ResNetBlockOutputs`): Every unit with its branch and shortcut.
+#' * `$channels` (`integer vector`): Expanded output channel count for every unit.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -39214,7 +39233,7 @@ rosetta_ref <- function(value = NULL) {
 #' `Res2ScaleOutputs$new()`
 #' @section Fields:
 #' * `$mixed` (`Tensor`): NHWC concatenation of every group, preserving input channel order.
-#' * `$groups` (`vector<Tensor>`): Processed groups followed by the final bypass (if scale>1).
+#' * `$groups` (`list of Tensor`): Processed groups followed by the final bypass (if scale>1).
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -39373,8 +39392,8 @@ rosetta_ref <- function(value = NULL) {
 #' `StochasticCifarOutputs$new()`
 #' @section Fields:
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] global-pool/dense scores.
-#' * `$stages` (`vector<Tensor>`): Three post-addition ReLU stage ends.
-#' * `$gates` (`vector<Tensor>`): Every sampled gate in execution order, or scalar ones in inference.
+#' * `$stages` (`list of Tensor`): Three post-addition ReLU stage ends.
+#' * `$gates` (`list of Tensor`): Every sampled gate in execution order, or scalar ones in inference.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -39410,15 +39429,15 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `RevNetConfig$new()`
 #' @section Fields:
-#' * `$units` (`vector<integer>`): Positive coupling-unit counts for each stage.
-#' * `$filters` (`vector<integer>`): Stem width then stage inner/basic widths.
-#' * `$strides` (`vector<integer>`): Stage-entry spatial strides, each one or two.
+#' * `$units` (`integer vector`): Positive coupling-unit counts for each stage.
+#' * `$filters` (`integer vector`): Stem width then stage inner/basic widths.
+#' * `$strides` (`integer vector`): Stage-entry spatial strides, each one or two.
 #' * `$bottleneck` (`logical`): Expand stage filter widths fourfold for bottleneck couplings.
 #' * `$imagenet` (`logical`): Use 7x7/2 stem and initial SAME max-pool.
 #' * `$classes` (`integer`): At least two output logits.
 #' * `$momentum` (`numeric`): Moving BN retention in \[0,1).
 #' @section Methods:
-#' * `$Widths()` -> `vector<integer>`
+#' * `$Widths()` -> `integer vector`
 #'
 #'   Validate the full configuration and return stem/expanded stage widths.
 #'   - Returns: Copy of filters with every post-stem entry multiplied by four for bottlenecks.
@@ -39593,7 +39612,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Post-BN/ReLU stem, including initial pool for ImageNet.
 #' * `$features` (`Tensor`): Concatenated final BN/ReLU before global pooling.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] classifier scores.
-#' * `$units` (`vector<RevNetUnit>`): Ordered metadata and ordinary-mode activation pairs.
+#' * `$units` (`list of RevNetUnit`): Ordered metadata and ordinary-mode activation pairs.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -39627,7 +39646,7 @@ rosetta_ref <- function(value = NULL) {
 #' `MobileLayer$new()`
 #' @section Fields:
 #' * `$name` (`character`): Stable learned-layer prefix or pooled SE arithmetic label.
-#' * `$shape` (`vector<integer>`): Measured output \[N,H,W,C\]; SE metadata uses \[1,1,1,1\].
+#' * `$shape` (`integer vector`): Measured output \[N,H,W,C\]; SE metadata uses \[1,1,1,1\].
 #' * `$macs_per_position` (`integer`): Kernel scalar products per output spatial position, all output channels.
 #' @section Methods:
 #' * `$Macs()` -> `integer`
@@ -39667,7 +39686,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$p` (`ParameterStore`): Borrowed floating learned leaves, lazily created/reused.
 #' * `$state` (`ParameterStore`): Borrowed same-dtype moving BN moments.
-#' * `$layers` (`vector<MobileLayer>`): Appended measured output metadata for every convolution/SE.
+#' * `$layers` (`list of MobileLayer`): Appended measured output metadata for every convolution/SE.
 #' * `$training` (`logical`): Batch moments when true; saved moments in inference.
 #' * `$momentum` (`numeric`): Moving retention in \[0,1).
 #' * `$update_stats` (`logical`): Permit moving updates in training mode.
@@ -39748,7 +39767,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$features` (`Tensor`): Last spatial map before global pooling/head dropout.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] classifier output.
-#' * `$layers` (`vector<MobileLayer>`): Ordered measured convolution and pooled-SE costs.
+#' * `$layers` (`list of MobileLayer`): Ordered measured convolution and pooled-SE costs.
 #' * `$classifier_macs` (`integer`)
 #' @section Methods:
 #' * `$Macs()` -> `integer`
@@ -40060,8 +40079,8 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Initial convolution/ReLU before its first pool.
 #' * `$features` (`Tensor`): ReLU class maps after conv10, \[N,H,W,classes\].
 #' * `$logits` (`Tensor`): Mean class-map scores \[N,classes\], nonnegative.
-#' * `$fires` (`vector<Tensor>`): Fire2..Fire9 outputs, including optional simple bypasses.
-#' * `$sizes` (`vector<integer>`): Side of each recorded Fire output before any following pool.
+#' * `$fires` (`list of Tensor`): Fire2..Fire9 outputs, including optional simple bypasses.
+#' * `$sizes` (`integer vector`): Side of each recorded Fire output before any following pool.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -40143,7 +40162,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$momentum` (`numeric`): BN moving retention in \[0,1).
 #' * `$update_stats` (`logical`): Permit moving updates during training.
 #' @section Methods:
-#' * `$Widths()` -> `vector<integer>`
+#' * `$Widths()` -> `integer vector`
 #'
 #'   Validate settings and return released stem/stage/final widths.
 #'   - Returns: Four v1 widths or five v2 widths, the last a final 1x1 output width.
@@ -40186,7 +40205,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$features` (`Tensor`): Final stage map (v1) or final 1x1/BN/ReLU map (v2).
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] bias-free dense scores.
-#' * `$stages` (`vector<Tensor>`): Three complete stage ends, 4/8/4 units.
+#' * `$stages` (`list of Tensor`): Three complete stage ends, 4/8/4 units.
 #' * `$classifier_macs` (`integer`): Final classifier input width times classes, per image.
 #' @section Methods:
 #' * `$layer_cost(index)` -> `integer`
@@ -40195,7 +40214,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Recorded convolutions: count, output shape and multiply-adds per output position of layer i.
 #'
-#' * `$layer_shape(index)` -> `vector<integer>`
+#' * `$layer_shape(index)` -> `integer vector`
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -40383,11 +40402,11 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `RegNetStages$new()`
 #' @section Fields:
-#' * `$continuous` (`vector<numeric>`): Float32 w0+wa*j for each block j.
-#' * `$quantized` (`vector<integer>`): Eight-aligned multiplicatively quantized per-block widths.
-#' * `$widths` (`vector<integer>`): Stage output widths, adjusted to group-width compatibility.
-#' * `$depths` (`vector<integer>`): Number of consecutive blocks in each stage.
-#' * `$groups` (`vector<integer>`): Effective channel width per 3x3 group (not group count).
+#' * `$continuous` (`numeric vector`): Float32 w0+wa*j for each block j.
+#' * `$quantized` (`integer vector`): Eight-aligned multiplicatively quantized per-block widths.
+#' * `$widths` (`integer vector`): Stage output widths, adjusted to group-width compatibility.
+#' * `$depths` (`integer vector`): Number of consecutive blocks in each stage.
+#' * `$groups` (`integer vector`): Effective channel width per 3x3 group (not group count).
 #' @section Examples (C++):
 #' ```cpp
 #' const auto d = dm::nn::models::RegNetDesign(dm::nn::models::RegNetModel("y400mf"));
@@ -40460,7 +40479,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$p` (`ParameterStore`): Borrowed floating learned leaves, lazily created/reused.
 #' * `$state` (`ParameterStore`): Borrowed same-dtype BN moments, masks/stages and optional run step.
-#' * `$layers` (`vector<MobileLayer>`): Appended dense-mask/group-filter arithmetic metadata.
+#' * `$layers` (`list of MobileLayer`): Appended dense-mask/group-filter arithmetic metadata.
 #' * `$training` (`logical`): Use batch moments, optional lasso and condensing updates.
 #' * `$momentum` (`numeric`): BN moving retention in \[0,1).
 #' * `$progress` (`numeric`): Finite completed-step fraction in \[0,1\].
@@ -40539,8 +40558,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `CondenseNetConfig$new()`
 #' @section Fields:
-#' * `$stages` (`vector<integer>`): Positive layer counts per dense stage.
-#' * `$growth` (`vector<integer>`): New channels per layer in each stage.
+#' * `$stages` (`integer vector`): Positive layer counts per dense stage.
+#' * `$growth` (`integer vector`): New channels per layer in each stage.
 #' * `$groups` (`integer`): Interleaved output groups for learned 1x1 filters.
 #' * `$condense` (`integer`): Final per-group retained input fraction is 1/condense, factor >=2.
 #' * `$bottleneck` (`integer`): LGC output width is this times stage growth.
@@ -40594,8 +40613,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$features` (`Tensor`): Final BN/ReLU spatial map before global mean.
 #' * `$logits` (`Tensor`): Unnormalised \[N,classes\] dense scores.
-#' * `$layers` (`vector<MobileLayer>`): Training/masked dense 1x1 and grouped 3x3 arithmetic metadata.
-#' * `$penalties` (`vector<Tensor>`): Scaled group-lasso terms; add explicitly to the objective.
+#' * `$layers` (`list of MobileLayer`): Training/masked dense 1x1 and grouped 3x3 arithmetic metadata.
+#' * `$penalties` (`list of Tensor`): Scaled group-lasso terms; add explicitly to the objective.
 #' * `$channels` (`integer`): Final feature-map width before classifier.
 #' @section Examples (C++):
 #' ```cpp
@@ -40633,7 +40652,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `CondensedConv$new()`
 #' @section Fields:
-#' * `$index` (`vector<integer>`): Group-ordered retained input IDs, possibly repeated across groups.
+#' * `$index` (`integer vector`): Group-ordered retained input IDs, possibly repeated across groups.
 #' * `$weight` (`Tensor`): \[1,1,retained_per_group,Cout\], contiguous group output columns before shuffle.
 #' @section Examples (C++):
 #' ```cpp
@@ -40913,7 +40932,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `EfficientNetV2Variant$new()`
 #' @section Fields:
-#' * `$blocks` (`vector<character>`): Nonempty ordered encoded block table.
+#' * `$blocks` (`character vector`): Nonempty ordered encoded block table.
 #' * `$width` (`numeric`): Finite positive channel multiplier.
 #' * `$depth` (`numeric`): Finite positive repeat multiplier.
 #' * `$resolution` (`integer`): Reference square training/evaluation side metadata.
@@ -41162,7 +41181,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$stem` (`Tensor`): Stem output after optional max pool.
 #' * `$features` (`Tensor`): Final block map after optional callback.
 #' * `$logits` (`Tensor`): \[N,classes\] scores before softmax.
-#' * `$blocks` (`vector<Tensor>`): Every post-add ReLU map after optional callback.
+#' * `$blocks` (`list of Tensor`): Every post-add ReLU map after optional callback.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -41199,8 +41218,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `SelectiveKernelOutputs$new()`
 #' @section Fields:
-#' * `$branches` (`vector<Tensor>`): Dilation-one then dilation-two BN/ReLU maps.
-#' * `$weights` (`vector<Tensor>`): Two nonnegative \[N,1,1,C\] weights summing to one per channel.
+#' * `$branches` (`list of Tensor`): Dilation-one then dilation-two BN/ReLU maps.
+#' * `$weights` (`list of Tensor`): Two nonnegative \[N,1,1,C\] weights summing to one per channel.
 #' * `$output` (`Tensor`): Differentiable weighted sum of the branch maps.
 #' @section Examples (C++):
 #' ```cpp
@@ -41233,8 +41252,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ConvNeXtSize$new()`
 #' @section Fields:
-#' * `$depths` (`vector<integer>`): Four positive stage repeat counts.
-#' * `$dims` (`vector<integer>`): Four positive corresponding stage channel widths.
+#' * `$depths` (`integer vector`): Four positive stage repeat counts.
+#' * `$dims` (`integer vector`): Four positive corresponding stage channel widths.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto layout = dm::nn::models::ConvNeXtLayout("atto");
@@ -41367,7 +41386,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$features` (`Tensor`): Last stage NHWC map before global pooling.
 #' * `$logits` (`Tensor`): \[N,classes\] scores after pooled LayerNorm/classifier.
-#' * `$stages` (`vector<Tensor>`): Four post-stage maps, retaining every block graph.
+#' * `$stages` (`list of Tensor`): Four post-stage maps, retaining every block graph.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -41402,8 +41421,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `RepVGGModel$new()`
 #' @section Fields:
-#' * `$blocks` (`vector<integer>`): Four positive stage repeat counts, excluding stem.
-#' * `$width` (`vector<numeric>`): Four released positive stage width multipliers.
+#' * `$blocks` (`integer vector`): Four positive stage repeat counts, excluding stem.
+#' * `$width` (`numeric vector`): Four released positive stage width multipliers.
 #' * `$groups` (`integer`): One, two or four, applied to even blocks 2..26.
 #' @section Examples (C++):
 #' ```cpp
@@ -41483,8 +41502,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$features` (`Tensor`): Last post-ReLU NHWC map.
 #' * `$logits` (`Tensor`): Global-mean classifier \[N,classes\] scores.
-#' * `$blocks` (`vector<RepVGGBlockSpec>`): Stem and every stage block in execution order.
-#' * `$outputs` (`vector<Tensor>`): Corresponding post-ReLU maps retaining gradients.
+#' * `$blocks` (`list of RepVGGBlockSpec`): Stem and every stage block in execution order.
+#' * `$outputs` (`list of Tensor`): Corresponding post-ReLU maps retaining gradients.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -41559,7 +41578,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `FusedBlock$new()`
 #' @section Fields:
-#' * `$kernels` (`vector<Tensor>`): One \[3,3,Cin/G,Cout/G\] tensor per group, source dtype.
+#' * `$kernels` (`list of Tensor`): One \[3,3,Cin/G,Cout/G\] tensor per group, source dtype.
 #' * `$bias` (`Tensor`): Full \[Cout\] bias; preserves source affine/filter gradients when enabled.
 #' @section Examples (C++):
 #' ```cpp
@@ -41871,7 +41890,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$votes` (`Tensor`): \[N,I,J,Dout\] per-input/output transformed capsule votes.
 #' * `$couplings` (`Tensor`): Final \[N,I,J\] nonnegative softmax rows, sum over J is one.
 #' * `$capsules` (`Tensor`): \[N,J,Dout\] final squashed output vectors.
-#' * `$history` (`vector<Tensor>`): One \[N,I,J\] coupling tensor per iteration, in execution order.
+#' * `$history` (`list of Tensor`): One \[N,I,J\] coupling tensor per iteration, in execution order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -42022,7 +42041,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$image` (`integer`): Nonnegative dataset image identifier.
 #' * `$label` (`integer`): Nonnegative category identifier; category IDs need not be contiguous.
-#' * `$box` (`vector<numeric>`): Finite ordered half-open \[ymin,xmin,ymax,xmax\] coordinates.
+#' * `$box` (`numeric vector`): Finite ordered half-open \[ymin,xmin,ymax,xmax\] coordinates.
 #' * `$difficult` (`logical`): Ignored in VOC mode, ordinary truth in COCO mode.
 #' * `$crowd` (`logical`)
 #' @section Examples (C++):
@@ -42060,7 +42079,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$image` (`integer`): Nonnegative dataset image identifier.
 #' * `$label` (`integer`): Nonnegative category identifier.
 #' * `$score` (`numeric`): Finite ranking score; need not be a probability.
-#' * `$box` (`vector<numeric>`): Finite ordered half-open \[ymin,xmin,ymax,xmax\] coordinates.
+#' * `$box` (`numeric vector`): Finite ordered half-open \[ymin,xmin,ymax,xmax\] coordinates.
 #' @section Examples (C++):
 #' ```cpp
 #' dm::nn::models::DetectionEvaluationPrediction p{1, 3, .9f, {0, 0, 10, 10}};
@@ -42214,8 +42233,8 @@ rosetta_ref <- function(value = NULL) {
 #' `TensorDetectionScenes$new()`
 #' @section Fields:
 #' * `$images` (`Tensor`): \[N,H,W,1\] grayscale pixels in \[0,1\], quantized to multiples of 1/255.
-#' * `$boxes` (`vector<Tensor>`): N tensors \[Ki,4\], tight half-open pixel boxes above byte threshold 32.
-#' * `$labels` (`vector<Tensor>`): N Int64 tensors \[Ki\] of digit classes 0 through9.
+#' * `$boxes` (`list of Tensor`): N tensors \[Ki,4\], tight half-open pixel boxes above byte threshold 32.
+#' * `$labels` (`list of Tensor`): N Int64 tensors \[Ki\] of digit classes 0 through9.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -42488,8 +42507,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `FeaturePyramidOutputs$new()`
 #' @section Fields:
-#' * `$inner` (`vector<Tensor>`): One projected/top-down map per input, increasing stride order.
-#' * `$levels` (`vector<Tensor>`): Independent 3x3-smoothed maps, plus optional final stride-two1x1 pool.
+#' * `$inner` (`list of Tensor`): One projected/top-down map per input, increasing stride order.
+#' * `$levels` (`list of Tensor`): Independent 3x3-smoothed maps, plus optional final stride-two1x1 pool.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -42552,7 +42571,7 @@ rosetta_ref <- function(value = NULL) {
 #' `FpnDigitDetectorFeatures$new()`
 #' @section Fields:
 #' * `$pyramid` (`FeaturePyramidOutputs`): Four inner maps and five64-channel output maps, P2..P6.
-#' * `$roi_levels` (`vector<DetectionPyramidLevel>`): P2..P5 maps with strides4/8/16/32.
+#' * `$roi_levels` (`list of DetectionPyramidLevel`): P2..P5 maps with strides4/8/16/32.
 #' * `$rpn` (`Rpn`): Shared128-hidden RPN, three anchors/cell,1023 total anchors.
 #' @section Examples (C++):
 #' ```cpp
@@ -42585,10 +42604,10 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `SsdOutputs$new()`
 #' @section Fields:
-#' * `$features` (`vector<Tensor>`): Six floating NHWC maps, fine to coarse; first map is L2-rescaled.
-#' * `$cells` (`vector<integer>`): Square sides: full38/19/10/5/3/1, compact16/8/4/2/1/1.
-#' * `$channels` (`vector<integer>`): Full512/1024/512/256/256/256 or compact64/128/128/128/128/128.
-#' * `$boxes_per_cell` (`vector<integer>`): Per-level default counts4/6/6/6/4/4.
+#' * `$features` (`list of Tensor`): Six floating NHWC maps, fine to coarse; first map is L2-rescaled.
+#' * `$cells` (`integer vector`): Square sides: full38/19/10/5/3/1, compact16/8/4/2/1/1.
+#' * `$channels` (`integer vector`): Full512/1024/512/256/256/256 or compact64/128/128/128/128/128.
+#' * `$boxes_per_cell` (`integer vector`): Per-level default counts4/6/6/6/4/4.
 #' * `$logits` (`Tensor`): Floating \[N,A,classes\] unnormalized class scores.
 #' * `$probabilities` (`Tensor`): Floating \[N,A,classes\] softmax probabilities.
 #' * `$deltas` (`Tensor`): Floating \[N,A,4\] class-agnostic normalized box offsets.
@@ -42708,8 +42727,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `RetinaNetOutputs$new()`
 #' @section Fields:
-#' * `$features` (`vector<Tensor>`): Five floating P3–P7 NHWC feature maps.
-#' * `$cells` (`vector<integer>`): Actual square grid sides, fine to coarse.
+#' * `$features` (`list of Tensor`): Five floating P3–P7 NHWC feature maps.
+#' * `$cells` (`integer vector`): Actual square grid sides, fine to coarse.
 #' * `$logits` (`Tensor`): \[N,A,C\] independent foreground logits.
 #' * `$probabilities` (`Tensor`): \[N,A,C\] independent sigmoid probabilities.
 #' * `$deltas` (`Tensor`): \[N,A,4\] class-agnostic unit-variance box offsets.
@@ -42888,8 +42907,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `FcosOutputs$new()`
 #' @section Fields:
-#' * `$features` (`vector<Tensor>`): Five P3–P7 NHWC pyramid tensors.
-#' * `$cells` (`vector<integer>`): Square grid sides for five levels.
+#' * `$features` (`list of Tensor`): Five P3–P7 NHWC pyramid tensors.
+#' * `$cells` (`integer vector`): Square grid sides for five levels.
 #' * `$logits` (`Tensor`): \[N,P,C\] foreground sigmoid logits.
 #' * `$distances` (`Tensor`): \[N,P,4\] positive l,t,r,b pixel distances.
 #' * `$centerness` (`Tensor`): \[N,P\] centerness logits from classification tower.
@@ -43272,8 +43291,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `DetrOutputs$new()`
 #' @section Fields:
-#' * `$logits` (`vector<Tensor>`): One \[N,Q,C+1\] tensor per decoder layer, no-object last.
-#' * `$boxes` (`vector<Tensor>`): One \[N,Q,4\] sigmoid cy,cx,h,w tensor per layer.
+#' * `$logits` (`list of Tensor`): One \[N,Q,C+1\] tensor per decoder layer, no-object last.
+#' * `$boxes` (`list of Tensor`): One \[N,Q,4\] sigmoid cy,cx,h,w tensor per layer.
 #' * `$memory` (`Tensor`): \[N,(S/stride)^2,D\] encoder contents.
 #' @section Examples (C++):
 #' ```cpp
@@ -43409,7 +43428,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$features` (`Tensor`): Last requested convolution/pooling NHWC map.
 #' * `$prediction` (`Tensor`): \[N,7,7,C+10\] linear outputs after full model; undefined for backbone-only calls.
-#' * `$convolutions` (`vector<Tensor>`): Activation after each requested convolution, before its subsequent pool.
+#' * `$convolutions` (`list of Tensor`): Activation after each requested convolution, before its subsequent pool.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -43525,19 +43544,19 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Validate and retain a parent-before-child WordTree hierarchy.
 #'
-#' * `parent` (`vector<integer>`): Nonempty owned vector of parent IDs; values-1 or less than their node index.
+#' * `parent` (`integer vector`): Nonempty owned vector of parent IDs; values-1 or less than their node index.
 #' @section Fields:
-#' * `$parents` (`vector<integer>`): Owned parent IDs, -1 for implicit-root children, otherwise earlier nodes.
+#' * `$parents` (`integer vector`): Owned parent IDs, -1 for implicit-root children, otherwise earlier nodes.
 #' * `$maximum_depth` (`integer`): Longest number of nodes on any node-to-root path.
-#' * `$path` (`vector<integer>`): Flattened\[nodes,maximum_depth\] topology indices, zero-padded.
-#' * `$active` (`vector<numeric>`): Flattened path0/1 metadata; padding contributes zero.
+#' * `$path` (`integer vector`): Flattened\[nodes,maximum_depth\] topology indices, zero-padded.
+#' * `$active` (`numeric vector`): Flattened path0/1 metadata; padding contributes zero.
 #' @section Methods:
 #' * `$nodes()` -> `integer`
 #'
 #'   Return the validated number of hierarchy nodes.
 #'   - Returns: Positive node count represented by the parent metadata.
 #'
-#' * `$group(parent)` -> `vector<integer>`
+#' * `$group(parent)` -> `integer vector`
 #'
 #'   Children of `parent` (-1 for the roots); empty when it has none.
 #' @section Examples (C++):
@@ -43814,9 +43833,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `YoloV3Outputs$new()`
 #' @section Fields:
-#' * `$backbone` (`vector<Tensor>`): Stride8/16/32 NHWC residual endpoints, fine to coarse.
-#' * `$routes` (`vector<Tensor>`): Five-convolution routes at strides32/16/8, coarse to fine.
-#' * `$raw` (`vector<Tensor>`): \[N,G,G,3,5+C\] dy,dx,logh,logw,objectness,class logits at strides32/16/8.
+#' * `$backbone` (`list of Tensor`): Stride8/16/32 NHWC residual endpoints, fine to coarse.
+#' * `$routes` (`list of Tensor`): Five-convolution routes at strides32/16/8, coarse to fine.
+#' * `$raw` (`list of Tensor`): \[N,G,G,3,5+C\] dy,dx,logh,logw,objectness,class logits at strides32/16/8.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -43897,7 +43916,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `YoloV3Targets$new()`
 #' @section Fields:
-#' * `$levels` (`vector<YoloV3LevelTargets>`): Coarse stride32, middle16 and fine8 targets.
+#' * `$levels` (`list of YoloV3LevelTargets`): Coarse stride32, middle16 and fine8 targets.
 #' * `$collisions` (`integer`)
 #' @section Examples (C++):
 #' ```cpp
@@ -44021,9 +44040,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `YoloV5Outputs$new()`
 #' @section Fields:
-#' * `$backbone` (`vector<Tensor>`): Fine/middle/coarse backbone maps at strides8/16/32.
-#' * `$pyramid` (`vector<Tensor>`): Coarse/middle/fine PAN maps at strides32/16/8.
-#' * `$raw` (`vector<Tensor>`): \[N,G,G,3,5+C\] logits, coarse to fine.
+#' * `$backbone` (`list of Tensor`): Fine/middle/coarse backbone maps at strides8/16/32.
+#' * `$pyramid` (`list of Tensor`): Coarse/middle/fine PAN maps at strides32/16/8.
+#' * `$raw` (`list of Tensor`): \[N,G,G,3,5+C\] logits, coarse to fine.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -44188,7 +44207,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `YoloV5Targets$new()`
 #' @section Fields:
-#' * `$levels` (`vector<YoloV5LevelTargets>`): Coarse/middle/fine tensor targets.
+#' * `$levels` (`list of YoloV5LevelTargets`): Coarse/middle/fine tensor targets.
 #' * `$collisions` (`integer`)
 #' @section Examples (C++):
 #' ```cpp
@@ -44358,8 +44377,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$logits` (`Tensor`): Final linear class logits NHWC.
 #' * `$bottleneck` (`Tensor`): Deepest convolution-pair output before decoding.
-#' * `$skips` (`vector<Tensor>`): Encoder activations before pooling,shallow to deep.
-#' * `$decoder` (`vector<Tensor>`): Decoder activations,deep to shallow.
+#' * `$skips` (`list of Tensor`): Encoder activations before pooling,shallow to deep.
+#' * `$decoder` (`list of Tensor`): Decoder activations,deep to shallow.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -44453,7 +44472,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$coarse` (`Tensor`): Coarsest score_fr class logits.
 #' * `$pool3` (`Tensor`): VGG third-stage pooled features.
 #' * `$pool4` (`Tensor`): VGG fourth-stage pooled features.
-#' * `$fused` (`vector<Tensor>`): After pool4 and optional pool3 fusion,in execution order.
+#' * `$fused` (`list of Tensor`): After pool4 and optional pool3 fusion,in execution order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -44498,7 +44517,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$values` (`Tensor`): \[N,H/2,W/2,C\] ordinary differentiable2x2 VALID max-pool output.
 #' * `$indices` (`Tensor`): Same-shape detached Int64 flattened NHWC winners,first row-major maximum on ties.
-#' * `$shape` (`vector<integer>`): Original NHWC geometry,including odd spatial dimensions.
+#' * `$shape` (`integer vector`): Original NHWC geometry,including odd spatial dimensions.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -44573,8 +44592,8 @@ rosetta_ref <- function(value = NULL) {
 #' `SegNetOutputs$new()`
 #' @section Fields:
 #' * `$logits` (`Tensor`): Linear NHWC logits,exact original H/W including odd dimensions.
-#' * `$pooling` (`vector<SegNetIndexedPool>`): Five encoder records,shallow to deep.
-#' * `$unpooled` (`vector<Tensor>`): Five sparse decoder maps,deep to shallow.
+#' * `$pooling` (`list of SegNetIndexedPool`): Five encoder records,shallow to deep.
+#' * `$unpooled` (`list of Tensor`): Five sparse decoder maps,deep to shallow.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -44656,8 +44675,8 @@ rosetta_ref <- function(value = NULL) {
 #' `NestedUnetOutputs$new()`
 #' @section Fields:
 #' * `$logits` (`Tensor`): Deepest full-resolution head,inference output.
-#' * `$heads` (`vector<Tensor>`): Full-resolution heads1..levels,all are learned.
-#' * `$nodes` (`vector<Tensor>`): First encoder nodes x\[i,0\],then nested nodes in j-outer/i-inner order.
+#' * `$heads` (`list of Tensor`): Full-resolution heads1..levels,all are learned.
+#' * `$nodes` (`list of Tensor`): First encoder nodes x\[i,0\],then nested nodes in j-outer/i-inner order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -44776,7 +44795,7 @@ rosetta_ref <- function(value = NULL) {
 #' `AttentionUnetOutputs$new()`
 #' @section Fields:
 #' * `$logits` (`Tensor`): Final linear class logits at the restored spatial size.
-#' * `$coefficients` (`vector<Tensor>`): Decoder gates,deepest to shallowest.
+#' * `$coefficients` (`list of Tensor`): Decoder gates,deepest to shallowest.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -44817,7 +44836,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$features` (`Tensor`): Deepest dense VGG/ResNet feature map.
 #' * `$coarse` (`Tensor`): Coarse class logits before corner-aligned resize.
 #' * `$logits` (`Tensor`): Linear NHWC logits at exact input H/W.
-#' * `$branches` (`vector<Tensor>`): V2 four linear atrous scores,in requested rate order;empty for v1.
+#' * `$branches` (`list of Tensor`): V2 four linear atrous scores,in requested rate order;empty for v1.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -45068,7 +45087,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$low` (`Tensor`): V3+ projected C2 map;undefined without decoder.
 #' * `$coarse` (`Tensor`): Linear classifier logits before final resize.
 #' * `$logits` (`Tensor`): NHWC logits at exact original image H/W.
-#' * `$branches` (`vector<Tensor>`): Pointwise,three atrous,image-global branches,in concatenation order.
+#' * `$branches` (`list of Tensor`): Pointwise,three atrous,image-global branches,in concatenation order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -45172,7 +45191,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$coarse` (`Tensor`): Fused class logits before final resize.
 #' * `$logits` (`Tensor`): NHWC logits at exact input H/W.
 #' * `$auxiliary` (`Tensor`): Resized C4 auxiliary logits;undefined if disabled.
-#' * `$pools` (`vector<Tensor>`): Raw adaptive means at1/2/3/6 bins,before normalization/projection.
+#' * `$pools` (`list of Tensor`): Raw adaptive means at1/2/3/6 bins,before normalization/projection.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -45277,7 +45296,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$logits` (`Tensor`): Linear class logits resized to exact original image H/W.
 #' * `$coarse` (`Tensor`): Linear class scores on highest-resolution stride4 branch grid.
-#' * `$branches` (`vector<Tensor>`): Final four maps before resizing/concatenation,high to low resolution.
+#' * `$branches` (`list of Tensor`): Final four maps before resizing/concatenation,high to low resolution.
 #' * `$fusion_modules` (`integer`): Actual executed exchange module count,sum(cfg.modules).
 #' @section Examples (C++):
 #' ```cpp
@@ -45325,7 +45344,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `TensorInstanceScenes$new()`
 #' @section Fields:
-#' * `$masks` (`vector<Tensor>`): N Bool\[Ki,H,W\] tensors,aligned with each scene's boxes/labels,empty Ki allowed.
+#' * `$masks` (`list of Tensor`): N Bool\[Ki,H,W\] tensors,aligned with each scene's boxes/labels,empty Ki allowed.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -45545,7 +45564,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$coefficients` (`Tensor`): Floating\[N,A,K\] tanh mask coefficients.
 #' * `$prototypes` (`Tensor`): Floating\[N,H,H,K\] ReLU shared prototypes,H=2*cells\[0\].
 #' * `$semantic` (`Tensor`): Floating\[N,cells\[0\],cells\[0\],C\] auxiliary sigmoid logits.
-#' * `$cells` (`vector<integer>`): Five ceil(size/stride) grid sides for strides8,16,32,64,128.
+#' * `$cells` (`integer vector`): Five ceil(size/stride) grid sides for strides8,16,32,64,128.
 #' * `$anchors` (`integer`): Sum of3*cells² over the five levels.
 #' * `$proto_side` (`integer`): Twice first prediction grid side.
 #' @section Examples (C++):
@@ -45766,7 +45785,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `PanopticFeatures$new()`
 #' @section Fields:
-#' * `$pyramid` (`vector<Tensor>`): P2 through P6 high-to-low maps,shared instance/RPN features.
+#' * `$pyramid` (`list of Tensor`): P2 through P6 high-to-low maps,shared instance/RPN features.
 #' * `$semantic` (`Tensor`): Floating\[N,size,size,semantic_classes\] linear semantic logits.
 #' @section Examples (C++):
 #' ```cpp
@@ -45977,7 +45996,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$raw` (`Tensor`): Floating\[B,128\] linear output.
 #' * `$embedding` (`Tensor`): Floating\[B,128\] squared-norm-floored unit output.
-#' * `$stages` (`vector<Tensor>`): Eleven post-ReLU conv maps and two maxout outputs.
+#' * `$stages` (`list of Tensor`): Eleven post-ReLU conv maps and two maxout outputs.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46117,7 +46136,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$logits` (`Tensor`): Floating\[N,2\] raw two-class head scores.
 #' * `$normalized` (`Tensor`): Raw signal centered/scaled by detached checkpoint normalization.
 #' * `$features` (`Tensor`): Final\[N,T,base\] BN/ReLU temporal feature sequence.
-#' * `$stages` (`vector<Tensor>`): Three SAME-length temporal BN/ReLU activations.
+#' * `$stages` (`list of Tensor`): Three SAME-length temporal BN/ReLU activations.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46193,7 +46212,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `SeriesSplits$new()`
 #' @section Fields:
-#' * `$pools` (`vector<SeriesData>`): Three ordered fitting/validation/test tensor containers.
+#' * `$pools` (`list of SeriesData`): Three ordered fitting/validation/test tensor containers.
 #' * `$config` (`SeriesConfig`): Compact width16 and fitting-only mean/std creation defaults.
 #' @section Examples (C++):
 #' ```cpp
@@ -46267,7 +46286,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$hidden` (`Tensor`): Final causal\[N,T,channels\] feature sequence.
 #' * `$sequence` (`Tensor`): Linear\[N,T,2\] logits at every observed time.
 #' * `$logits` (`Tensor`): Final-time\[N,2\] scores sharing the sequence graph.
-#' * `$blocks` (`vector<Tensor>`): Every residual block output,preserving\[N,T,channels\].
+#' * `$blocks` (`list of Tensor`): Every residual block output,preserving\[N,T,channels\].
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46339,7 +46358,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$logits` (`Tensor`): Raw unbounded\[N,classes\] head scores.
 #' * `$normalized` (`Tensor`): Raw\[N,T,channels\] centered/scaled by saved fitting channel states.
 #' * `$features` (`Tensor`): Final time-averaged\[N,4base\] residual features.
-#' * `$stages` (`vector<Tensor>`): Three residual/ReLU outputs with successive ceil(time/2).
+#' * `$stages` (`list of Tensor`): Three residual/ReLU outputs with successive ceil(time/2).
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46375,7 +46394,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `SensorSplits$new()`
 #' @section Fields:
-#' * `$pools` (`vector<SeriesData>`): Ordered fitting/validation/test original observed records.
+#' * `$pools` (`list of SeriesData`): Ordered fitting/validation/test original observed records.
 #' * `$config` (`SensorConfig`): Original channels/classes and compact residual width8.
 #' * `$mean` (`Tensor`): Float32\[C\] fitting channel population mean.
 #' * `$stddev` (`Tensor`): Positive Float32\[C\] fitting channel population standard deviation.
@@ -46421,8 +46440,8 @@ rosetta_ref <- function(value = NULL) {
 #' * `$macro_f1` (`numeric`): Equal-class mean2TP/(true support+predicted support).
 #' * `$nll` (`numeric`): Unweighted equal-record stable Double categorical NLL.
 #' * `$auc0` (`numeric`)
-#' * `$confusion` (`vector<integer>`): Row-major Int32 true-row/predicted-column discrete counts.
-#' * `$recall` (`vector<numeric>`): Double per-source-class recalls in original index order.
+#' * `$confusion` (`integer vector`): Row-major Int32 true-row/predicted-column discrete counts.
+#' * `$recall` (`numeric vector`): Double per-source-class recalls in original index order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46499,7 +46518,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$logits` (`Tensor`): Linear binary\[N,2\] class scores.
 #' * `$features` (`Tensor`): Concatenated undropped\[N,3filters\] max-over-time features.
 #' * `$embedding` (`Tensor`): Full\[V,E\] table with structural zero PAD row0 and learned rows1..V-1.
-#' * `$maps` (`vector<Tensor>`): Wide ReLU maps for kernel3,4,5,in that order.
+#' * `$maps` (`list of Tensor`): Wide ReLU maps for kernel3,4,5,in that order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46582,7 +46601,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `SentenceSplits$new()`
 #' @section Fields:
-#' * `$pools` (`vector<SentenceData>`): Ordered original fitting/validation/test observations.
+#' * `$pools` (`list of SentenceData`): Ordered original fitting/validation/test observations.
 #' * `$config` (`KimConfig`): Fitting vocabulary count,time64 and compactE32/F32 architecture.
 #' @section Examples (C++):
 #' ```cpp
@@ -46653,7 +46672,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$logits` (`Tensor`): Raw binary\[N,2\] head scores.
 #' * `$quantized` (`Tensor`): Floating\[N,time,alphabet\] observed-length-masked onehot metadata.
 #' * `$flat` (`Tensor`): Flattened final pool\[N,final_length*channels\] before dense layers.
-#' * `$stages` (`vector<Tensor>`): Six convolution and three pooling activations,in execution order.
+#' * `$stages` (`list of Tensor`): Six convolution and three pooling activations,in execution order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46689,7 +46708,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `CharacterSplits$new()`
 #' @section Fields:
-#' * `$pools` (`vector<SentenceData>`): Ordered raw-character fitting/validation/test observations.
+#' * `$pools` (`list of SentenceData`): Ordered raw-character fitting/validation/test observations.
 #' * `$config` (`CharacterConfig`): Compact256/16/64/69 shape metadata from original prepared inventory.
 #' @section Examples (C++):
 #' ```cpp
@@ -46760,7 +46779,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$logits` (`Tensor`): Raw next-code\[N,T,classes\] scores.
 #' * `$skip` (`Tensor`): Sum of all block skip outputs before post-head ReLU.
-#' * `$gates` (`vector<Tensor>`): tanh(filter)*sigmoid(gate) in execution order.
+#' * `$gates` (`list of Tensor`): tanh(filter)*sigmoid(gate) in execution order.
 #' @section Examples (C++):
 #' ```cpp
 #' namespace n = dm::nn;
@@ -46838,7 +46857,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `WaveSplits$new()`
 #' @section Fields:
-#' * `$pools` (`vector<WaveData>`): Fit/validation/test speaker-disjoint windows.
+#' * `$pools` (`list of WaveData`): Fit/validation/test speaker-disjoint windows.
 #' * `$prompts` (`Tensor`): Int32\[3,384\] real held-out128seed+256reference.
 #' * `$prompt_source_ids` (`Tensor`): Int32\[3\] original held-out clip IDs.
 #' @section Examples (C++):
@@ -48060,7 +48079,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$inverse_z0` (`Tensor`): Second inverse then first inverse recover z0 \[B,L\] up to roundoff.
 #' * `$inverse_logdet` (`Tensor`): Sum of inverse log determinants \[B\], cancelling forward up to roundoff.
 #' @section Methods:
-#' * `$Named()` -> `vector<list(character, Tensor)>`
+#' * `$Named()` -> `list of list(character, Tensor)`
 #'
 #'   Copy the eighteen endpoint handles into their stable named archive order.
 #'   - Returns: Owning NamedTensors from context through inverse_logdet, in field declaration order.
@@ -48855,8 +48874,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `CollapseSummary$new()`
 #' @section Fields:
-#' * `$unit_kl` (`vector<numeric>`): Mean analytic KL for each of D coordinates, nats.
-#' * `$mu_variance` (`vector<numeric>`): Population (divide by N) variance of each posterior mean.
+#' * `$unit_kl` (`numeric vector`): Mean analytic KL for each of D coordinates, nats.
+#' * `$mu_variance` (`numeric vector`): Population (divide by N) variance of each posterior mean.
 #' * `$analytic_kl` (`numeric`): Sum of per-unit analytic KL, averaged over cases.
 #' * `$sampled_conditional_kl` (`numeric`): Mean log q_i(z_i)-log p(z_i) over all aligned draws.
 #' * `$mixture_information` (`numeric`)
@@ -51313,15 +51332,15 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Draws a double-precision uniform value in \[low, high) from the shared engine.
 #'
-#' * `$normal32_values(count, mean = 0.0, stddev = 1.0)` -> `vector<numeric>`
+#' * `$normal32_values(count, mean = 0.0, stddev = 1.0)` -> `numeric vector`
 #'
 #'   Returns count successive normal32() draws, retaining scalar stream and cache order.
 #'
-#' * `$normal64_values(count, mean = 0.0, stddev = 1.0)` -> `vector<numeric>`
+#' * `$normal64_values(count, mean = 0.0, stddev = 1.0)` -> `numeric vector`
 #'
 #'   Returns count successive normal64() draws, retaining scalar stream and cache order.
 #'
-#' * `$shuffle(values)` -> `vector<integer>`
+#' * `$shuffle(values)` -> `integer vector`
 #'
 #'   Shuffles a by-value vector with the shared engine and returns the shuffled copy.
 #'
@@ -51379,15 +51398,15 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Draws a double-precision uniform value in \[low, high) from the shared engine.
 #'
-#' * `$normal32_values(count, mean = 0.0, stddev = 1.0)` -> `vector<numeric>`
+#' * `$normal32_values(count, mean = 0.0, stddev = 1.0)` -> `numeric vector`
 #'
 #'   Returns count successive normal32() draws, retaining scalar stream and cache order.
 #'
-#' * `$normal64_values(count, mean = 0.0, stddev = 1.0)` -> `vector<numeric>`
+#' * `$normal64_values(count, mean = 0.0, stddev = 1.0)` -> `numeric vector`
 #'
 #'   Returns count successive normal64() draws, retaining scalar stream and cache order.
 #'
-#' * `$shuffle(values)` -> `vector<integer>`
+#' * `$shuffle(values)` -> `integer vector`
 #'
 #'   Shuffles a by-value vector with the shared engine and returns the shuffled copy.
 #'
@@ -51512,27 +51531,27 @@ rosetta_ref <- function(value = NULL) {
 #' `memory_components__Model$new(kind, example)`
 #'
 #' * `kind` (`character (Kind)`)
-#' * `example` (`vector<list(character, Tensor)>`)
+#' * `example` (`list of list(character, Tensor)`)
 #' @section Methods:
 #' * `$parameters()` -> `ParameterStore`
 #'
-#' * `$Leaves(batch)` -> `vector<list(character, Tensor)>`
+#' * `$Leaves(batch)` -> `list of list(character, Tensor)`
 #'
-#' * `$Forward(leaves, batch)` -> `vector<list(character, Tensor)>`
+#' * `$Forward(leaves, batch)` -> `list of list(character, Tensor)`
 #'
 #' * `$Loss(outputs, batch)` -> `Tensor`
 #'
-#' * `$Evaluate(batch)` -> `vector<list(character, Tensor)>`
+#' * `$Evaluate(batch)` -> `list of list(character, Tensor)`
 #'
 #' * `$Predict(batch)` -> `Tensor`
 #'
-#' * `$Arrays()` -> `vector<list(character, Tensor)>`
+#' * `$Arrays()` -> `list of list(character, Tensor)`
 #'
 #' * `$Load(file)`
 #'
-#' * `$StateNames()` -> `vector<character>`
+#' * `$StateNames()` -> `character vector`
 #'
-#' * `$Step(input, previous)` -> `vector<list(character, Tensor)>`
+#' * `$Step(input, previous)` -> `list of list(character, Tensor)`
 #' @md
 #'
 `memory_components__Model` <- R6::R6Class("memory_components__Model", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -51666,8 +51685,8 @@ rosetta_ref <- function(value = NULL) {
 #' * `$height` (`integer`)
 #' * `$width` (`integer`)
 #' * `$classes` (`integer`)
-#' * `$images` (`vector<numeric>`)
-#' * `$labels` (`vector<integer>`)
+#' * `$images` (`numeric vector`)
+#' * `$labels` (`integer vector`)
 #' @md
 #'
 `seg__SegmentationData` <- R6::R6Class("seg__SegmentationData", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -51692,7 +51711,7 @@ rosetta_ref <- function(value = NULL) {
 #' `seg__SegmentationModel$new()`
 #' @section Fields:
 #' * `$logits` (`Tensor`)
-#' * `$auxiliary` (`vector<Tensor>`)
+#' * `$auxiliary` (`list of Tensor`)
 #' * `$auxiliary_weight` (`numeric`)
 #' @md
 #'
@@ -51751,7 +51770,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$mean_iou` (`numeric`)
 #' * `$pixel_accuracy` (`numeric`)
-#' * `$confusion` (`vector<integer>`)
+#' * `$confusion` (`integer vector`)
 #' @md
 #'
 `seg__SegmentationMetrics` <- R6::R6Class("seg__SegmentationMetrics", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -51773,8 +51792,8 @@ rosetta_ref <- function(value = NULL) {
 #' `segnet__IndexedPool$new()`
 #' @section Fields:
 #' * `$values` (`Tensor`)
-#' * `$indices` (`vector<integer>`)
-#' * `$shape` (`vector<integer>`)
+#' * `$indices` (`integer vector`)
+#' * `$shape` (`integer vector`)
 #' @md
 #'
 `segnet__IndexedPool` <- R6::R6Class("segnet__IndexedPool", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -51796,8 +51815,8 @@ rosetta_ref <- function(value = NULL) {
 #' `segnet__SegNetOutputs$new()`
 #' @section Fields:
 #' * `$logits` (`Tensor`)
-#' * `$pooling` (`vector<segnet__IndexedPool>`)
-#' * `$unpooled` (`vector<Tensor>`)
+#' * `$pooling` (`list of segnet__IndexedPool`)
+#' * `$unpooled` (`list of Tensor`)
 #' @md
 #'
 `segnet__SegNetOutputs` <- R6::R6Class("segnet__SegNetOutputs", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -52086,7 +52105,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Methods:
 #' * `$Logits(codes)` -> `Tensor`
 #'
-#' * `$Gradients(d)` -> `vector<Tensor>`
+#' * `$Gradients(d)` -> `list of Tensor`
 #'
 #' * `$Predict(input, `next` = FALSE)` -> `Tensor`
 #'
@@ -52167,7 +52186,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$Loss(d)` -> `Tensor`
 #'
-#' * `$ParameterGradients(d)` -> `vector<Tensor>`
+#' * `$ParameterGradients(d)` -> `list of Tensor`
 #'
 #' * `$AssignNamed(weights)`
 #'
@@ -52207,7 +52226,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$h` (`integer`)
 #' * `$w` (`integer`)
-#' * `$px` (`vector<integer>`)
+#' * `$px` (`integer vector`)
 #' @section Methods:
 #' * `$Set(y, x, c, value)`
 #'
@@ -52265,15 +52284,15 @@ rosetta_ref <- function(value = NULL) {
 #' * `$w` (`integer`)
 #' * `$c` (`integer`)
 #' * `$classes` (`integer`)
-#' * `$rectangles` (`vector<integer>`)
-#' * `$coverage` (`vector<integer>`)
-#' * `$original_logits` (`vector<numeric>`)
-#' * `$occluded_logits` (`vector<numeric>`)
-#' * `$original_score` (`vector<numeric>`)
-#' * `$occluded_score` (`vector<numeric>`)
-#' * `$occluded_inputs` (`vector<numeric>`)
-#' * `$drops` (`vector<numeric>`)
-#' * `$pixel_mean` (`vector<numeric>`)
+#' * `$rectangles` (`integer vector`)
+#' * `$coverage` (`integer vector`)
+#' * `$original_logits` (`numeric vector`)
+#' * `$occluded_logits` (`numeric vector`)
+#' * `$original_score` (`numeric vector`)
+#' * `$occluded_score` (`numeric vector`)
+#' * `$occluded_inputs` (`numeric vector`)
+#' * `$drops` (`numeric vector`)
+#' * `$pixel_mean` (`numeric vector`)
 #' @section Methods:
 #' * `$drop(p, b)` -> `numeric`
 #'
@@ -52320,9 +52339,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$height` (`integer`)
 #' * `$width` (`integer`)
-#' * `$pixels` (`vector<integer>`)
-#' * `$boxes` (`vector<vector<vector<numeric>>>`)
-#' * `$labels` (`vector<vector<integer>>`)
+#' * `$pixels` (`integer vector`)
+#' * `$boxes` (`list of list of numeric vector`)
+#' * `$labels` (`list of integer vector`)
 #' @section Methods:
 #' * `$size()` -> `integer`
 #' @md
@@ -52351,7 +52370,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$image` (`integer`)
 #' * `$label` (`integer`)
 #' * `$score` (`numeric`)
-#' * `$box` (`vector<numeric>`)
+#' * `$box` (`numeric vector`)
 #' @md
 #'
 `detector__Detection` <- R6::R6Class("detector__Detection", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -52377,7 +52396,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$ap50_voc07` (`numeric`)
 #' * `$ap75` (`numeric`)
 #' * `$coco` (`numeric`)
-#' * `$per_class50` (`vector<numeric>`)
+#' * `$per_class50` (`numeric vector`)
 #' @md
 #'
 `detector__ApResult` <- R6::R6Class("detector__ApResult", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -52439,8 +52458,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `detector__Digits$new()`
 #' @section Fields:
-#' * `$pixels` (`vector<integer>`)
-#' * `$labels` (`vector<integer>`)
+#' * `$pixels` (`integer vector`)
+#' * `$labels` (`integer vector`)
 #' @section Methods:
 #' * `$size()` -> `integer`
 #' @md
@@ -52496,12 +52515,12 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `detector__RoiBatch$new()`
 #' @section Fields:
-#' * `$rois` (`vector<vector<numeric>>`)
-#' * `$pixels` (`vector<vector<numeric>>`)
-#' * `$targets` (`vector<vector<numeric>>`)
-#' * `$indices` (`vector<integer>`)
-#' * `$labels` (`vector<integer>`)
-#' * `$mask` (`vector<numeric>`)
+#' * `$rois` (`list of numeric vector`)
+#' * `$pixels` (`list of numeric vector`)
+#' * `$targets` (`list of numeric vector`)
+#' * `$indices` (`integer vector`)
+#' * `$labels` (`integer vector`)
+#' * `$mask` (`numeric vector`)
 #' @md
 #'
 `detector__RoiBatch` <- R6::R6Class("detector__RoiBatch", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -52579,10 +52598,10 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `fcos__FcosTargetArrays$new()`
 #' @section Fields:
-#' * `$classes` (`vector<numeric>`)
-#' * `$distances` (`vector<numeric>`)
-#' * `$positive` (`vector<numeric>`)
-#' * `$centerness` (`vector<numeric>`)
+#' * `$classes` (`numeric vector`)
+#' * `$distances` (`numeric vector`)
+#' * `$positive` (`numeric vector`)
+#' * `$centerness` (`numeric vector`)
 #' @md
 #'
 `fcos__FcosTargetArrays` <- R6::R6Class("fcos__FcosTargetArrays", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -52606,7 +52625,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$loss` (`Tensor`)
 #' @section Methods:
-#' * `$selected_negatives_mask()` -> `vector<integer>`
+#' * `$selected_negatives_mask()` -> `integer vector`
 #'
 #'   Hard-negative selection mask \[N * A\] as 0/1 integers.
 #' @md
@@ -52628,8 +52647,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ssd__SsdTargets$new()`
 #' @section Fields:
-#' * `$labels` (`vector<integer>`)
-#' * `$targets` (`vector<numeric>`)
+#' * `$labels` (`integer vector`)
+#' * `$targets` (`numeric vector`)
 #' @md
 #'
 `ssd__SsdTargets` <- R6::R6Class("ssd__SsdTargets", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -52660,7 +52679,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$h` (`integer`)
 #' * `$w` (`integer`)
 #' * `$c` (`integer`)
-#' * `$v` (`vector<numeric>`)
+#' * `$v` (`numeric vector`)
 #' @section Methods:
 #' * `$tensor()` -> `Tensor`
 #' @md
@@ -52713,9 +52732,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `detr__DetrTargets$new()`
 #' @section Fields:
-#' * `$labels` (`vector<numeric>`)
-#' * `$boxes` (`vector<numeric>`)
-#' * `$positive` (`vector<numeric>`)
+#' * `$labels` (`numeric vector`)
+#' * `$boxes` (`numeric vector`)
+#' * `$positive` (`numeric vector`)
 #' * `$batch` (`integer`)
 #' * `$queries` (`integer`)
 #' * `$classes` (`integer`)
@@ -52767,9 +52786,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `yolo__YoloV1Targets$new()`
 #' @section Fields:
-#' * `$object` (`vector<numeric>`)
-#' * `$boxes` (`vector<numeric>`)
-#' * `$labels` (`vector<integer>`)
+#' * `$object` (`numeric vector`)
+#' * `$boxes` (`numeric vector`)
+#' * `$labels` (`integer vector`)
 #' * `$discarded` (`integer`)
 #' @md
 #'
@@ -52845,9 +52864,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Methods:
 #' * `$parameter(name)` -> `Tensor`
 #'
-#' * `$parameter_names()` -> `vector<character>`
+#' * `$parameter_names()` -> `character vector`
 #'
-#' * `$state_names()` -> `vector<character>`
+#' * `$state_names()` -> `character vector`
 #'
 #' * `$state_value(name)` -> `Tensor`
 #' @md
@@ -52869,11 +52888,11 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `yolo__YoloV2Targets$new()`
 #' @section Fields:
-#' * `$geometry` (`vector<numeric>`)
-#' * `$positive` (`vector<numeric>`)
-#' * `$confidence` (`vector<numeric>`)
-#' * `$weights` (`vector<numeric>`)
-#' * `$labels` (`vector<integer>`)
+#' * `$geometry` (`numeric vector`)
+#' * `$positive` (`numeric vector`)
+#' * `$confidence` (`numeric vector`)
+#' * `$weights` (`numeric vector`)
+#' * `$labels` (`integer vector`)
 #' * `$collisions` (`integer`)
 #' @md
 #'
@@ -52900,7 +52919,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$detection` (`numeric`)
 #' * `$classification` (`numeric`)
-#' * `$classification_labels` (`vector<integer>`)
+#' * `$classification_labels` (`integer vector`)
 #' @md
 #'
 `yolo__YoloV2Weights` <- R6::R6Class("yolo__YoloV2Weights", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -52921,13 +52940,13 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `yolo__YoloV3LevelTargets$new()`
 #' @section Fields:
-#' * `$geometry` (`vector<numeric>`)
-#' * `$classes` (`vector<numeric>`)
-#' * `$positive` (`vector<numeric>`)
-#' * `$objectness_weight` (`vector<numeric>`)
-#' * `$geometry_weight` (`vector<numeric>`)
-#' * `$areas` (`vector<numeric>`)
-#' * `$grid` (`vector<integer>`)
+#' * `$geometry` (`numeric vector`)
+#' * `$classes` (`numeric vector`)
+#' * `$positive` (`numeric vector`)
+#' * `$objectness_weight` (`numeric vector`)
+#' * `$geometry_weight` (`numeric vector`)
+#' * `$areas` (`numeric vector`)
+#' * `$grid` (`integer vector`)
 #' * `$class_count` (`integer`)
 #' @md
 #'
@@ -52978,10 +52997,10 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `yolo__YoloV5LevelTargets$new()`
 #' @section Fields:
-#' * `$geometry` (`vector<numeric>`)
-#' * `$classes` (`vector<numeric>`)
-#' * `$positive` (`vector<numeric>`)
-#' * `$quality` (`vector<numeric>`)
+#' * `$geometry` (`numeric vector`)
+#' * `$classes` (`numeric vector`)
+#' * `$positive` (`numeric vector`)
+#' * `$quality` (`numeric vector`)
 #' * `$class_count` (`integer`)
 #' @md
 #'
@@ -53031,7 +53050,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Number of object supports of `scene`.
 #'
-#' * `$instance_mask(scene, object)` -> `vector<integer>`
+#' * `$instance_mask(scene, object)` -> `integer vector`
 #'
 #'   H x W 0/1 support of object `object` of `scene`.
 #' @section Inherits:
@@ -53054,7 +53073,7 @@ rosetta_ref <- function(value = NULL) {
 #' `instance__MaskDetection$new()`
 #' @section Fields:
 #' * `$box` (`detector__Detection`)
-#' * `$mask` (`vector<integer>`)
+#' * `$mask` (`integer vector`)
 #' @md
 #'
 `instance__MaskDetection` <- R6::R6Class("instance__MaskDetection", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -53074,9 +53093,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `maskrcnn__MaskTargets$new()`
 #' @section Fields:
-#' * `$boxes` (`vector<vector<numeric>>`)
-#' * `$indices` (`vector<integer>`)
-#' * `$labels` (`vector<integer>`)
+#' * `$boxes` (`list of numeric vector`)
+#' * `$indices` (`integer vector`)
+#' * `$labels` (`integer vector`)
 #' * `$targets` (`Tensor`)
 #' @md
 #'
@@ -53099,13 +53118,13 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `panoptic__PanopticMap$new()`
 #' @section Fields:
-#' * `$ids` (`vector<integer>`)
+#' * `$ids` (`integer vector`)
 #' @section Methods:
 #' * `$has_segment(id)` -> `logical`
 #'
 #' * `$segment(id)` -> `PanopticSegment`
 #'
-#' * `$segment_ids()` -> `vector<integer>`
+#' * `$segment_ids()` -> `integer vector`
 #' @md
 #'
 `panoptic__PanopticMap` <- R6::R6Class("panoptic__PanopticMap", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -53178,8 +53197,8 @@ rosetta_ref <- function(value = NULL) {
 #' `panoptic__PanopticScenes$new()`
 #' @section Fields:
 #' * `$instances` (`instance__InstanceScenes`)
-#' * `$semantic` (`vector<vector<integer>>`)
-#' * `$panoptic` (`vector<panoptic__PanopticMap>`)
+#' * `$semantic` (`list of integer vector`)
+#' * `$panoptic` (`list of panoptic__PanopticMap`)
 #' @md
 #'
 `panoptic__PanopticScenes` <- R6::R6Class("panoptic__PanopticScenes", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -53205,12 +53224,12 @@ rosetta_ref <- function(value = NULL) {
 #' * `$side` (`integer`)
 #' * `$cells` (`integer`)
 #' * `$classes` (`integer`)
-#' * `$labels` (`vector<integer>`)
-#' * `$deltas` (`vector<numeric>`)
-#' * `$pairs` (`vector<list(integer, integer)>`)
-#' * `$mask_targets` (`vector<numeric>`)
-#' * `$crop` (`vector<numeric>`)
-#' * `$semantic` (`vector<numeric>`)
+#' * `$labels` (`integer vector`)
+#' * `$deltas` (`numeric vector`)
+#' * `$pairs` (`list of list(integer, integer)`)
+#' * `$mask_targets` (`numeric vector`)
+#' * `$crop` (`numeric vector`)
+#' * `$semantic` (`numeric vector`)
 #' @md
 #'
 `yolact__YolactTargets` <- R6::R6Class("yolact__YolactTargets", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -53242,7 +53261,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$loss` (`Tensor`)
 #' * `$mask_loss` (`Tensor`)
 #' @section Methods:
-#' * `$negatives_mask()` -> `vector<integer>`
+#' * `$negatives_mask()` -> `integer vector`
 #'
 #'   Mined hard negatives \[B * A\] as 0/1 integers.
 #' @md
@@ -53267,7 +53286,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$image` (`integer`)
 #' * `$label` (`integer`)
-#' * `$box` (`vector<numeric>`)
+#' * `$box` (`numeric vector`)
 #' * `$difficult` (`logical`)
 #' * `$crowd` (`logical`)
 #' @md
@@ -53324,7 +53343,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `$voc07` (`numeric`)
 #' * `$classes` (`integer`)
 #' @section Methods:
-#' * `$per_class50_labels()` -> `vector<integer>`
+#' * `$per_class50_labels()` -> `integer vector`
 #'
 #' * `$per_class50_value(label)` -> `numeric`
 #' @md
@@ -53424,7 +53443,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `detection__DetectionMetrics$new()`
 #' @section Fields:
-#' * `$ap` (`vector<numeric>`)
+#' * `$ap` (`numeric vector`)
 #' * `$map` (`numeric`)
 #' @md
 #'
@@ -53445,7 +53464,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `im2col__PatchGeometry$new(input, kernel_h, kernel_w, stride_h = 1, stride_w = 1, dilation_h = 1, dilation_w = 1, padding = "VALID")`
 #'
-#' * `input` (`vector<integer>`)
+#' * `input` (`integer vector`)
 #' * `kernel_h` (`integer`)
 #' * `kernel_w` (`integer`)
 #' * `stride_h` (`integer`)
@@ -53473,7 +53492,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$columns()` -> `integer`
 #'
-#' * `$InputShape()` -> `vector<integer>`
+#' * `$InputShape()` -> `integer vector`
 #' @md
 #'
 `im2col__PatchGeometry` <- R6::R6Class("im2col__PatchGeometry", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -53565,7 +53584,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `momentum` (`numeric`)
 #' * `progress` (`numeric`)
 #' @section Fields:
-#' * `$layers` (`vector<MobileLayer>`)
+#' * `$layers` (`list of MobileLayer`)
 #' * `$context` (`CondenseContext`)
 #' @section Methods:
 #' * `$get()` -> `CondenseContext`
@@ -53596,14 +53615,14 @@ rosetta_ref <- function(value = NULL) {
 #' * `update_stats` (`logical`)
 #' * `record_layers` (`logical`)
 #' @section Fields:
-#' * `$layers` (`vector<list(vector<integer>, integer)>`)
+#' * `$layers` (`list of list(integer vector, integer)`)
 #' * `$context` (`ShuffleContext`)
 #' @section Methods:
 #' * `$get()` -> `ShuffleContext`
 #'
 #' * `$layer_count()` -> `integer`
 #'
-#' * `$layer_shape(index)` -> `vector<integer>`
+#' * `$layer_shape(index)` -> `integer vector`
 #'
 #' * `$layer_cost(index)` -> `integer`
 #' @md
@@ -53641,7 +53660,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   std::uniform_real_distribution<float>(low, high)(engine).
 #'
-#' * `$shuffle(values)` -> `vector<integer>`
+#' * `$shuffle(values)` -> `integer vector`
 #'
 #'   std::shuffle of the values with this engine.
 #' @md
@@ -53692,7 +53711,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$stats` (`map<integer, panoptic__PqStat>`)
 #' @section Methods:
-#' * `$labels()` -> `vector<integer>`
+#' * `$labels()` -> `integer vector`
 #'
 #' * `$at(label)` -> `panoptic__PqStat`
 #'

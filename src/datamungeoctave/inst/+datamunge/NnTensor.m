@@ -80,7 +80,7 @@ classdef NnTensor < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3123, false, varargin{:});
+      __datamunge__(-2, obj, 3134, false, varargin{:});
     end
     function save_npy (obj, path)
       % save_npy  C++ datamunge::nn::NnTensor::save_npy.
@@ -91,7 +91,7 @@ classdef NnTensor < datamunge.NativeObject
       %     path  char row
       %
       %   C++: void datamunge::nn::NnTensor::save_npy(const std::string & path) const
-      __datamunge__(3076, obj, path);
+      __datamunge__(3087, obj, path);
     end
     function r = defined (obj)
       % defined  C++ datamunge::nn::NnTensor::defined.
@@ -102,7 +102,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::nn::NnTensor::defined() const
-      r = __datamunge__(3077, obj);
+      r = __datamunge__(3088, obj);
     end
     function r = values (obj)
       % values  C++ datamunge::nn::NnTensor::values.
@@ -113,7 +113,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  double vector
       %
       %   C++: std::vector<double> datamunge::nn::NnTensor::values() const
-      r = __datamunge__(3078, obj);
+      r = __datamunge__(3089, obj);
     end
     function r = shape (obj)
       % shape  C++ datamunge::nn::NnTensor::shape.
@@ -124,7 +124,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  integer vector
       %
       %   C++: std::vector<int> datamunge::nn::NnTensor::shape() const
-      r = __datamunge__(3079, obj);
+      r = __datamunge__(3090, obj);
     end
     function r = dtype (obj)
       % dtype  C++ datamunge::nn::NnTensor::dtype.
@@ -135,7 +135,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  char row
       %
       %   C++: std::string datamunge::nn::NnTensor::dtype() const
-      r = __datamunge__(3080, obj);
+      r = __datamunge__(3091, obj);
     end
     function r = ndim (obj)
       % ndim  C++ datamunge::nn::NnTensor::ndim.
@@ -146,7 +146,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  integer
       %
       %   C++: int datamunge::nn::NnTensor::ndim() const
-      r = __datamunge__(3081, obj);
+      r = __datamunge__(3092, obj);
     end
     function r = numel_ (obj)
       % numel_  C++ datamunge::nn::NnTensor::numel.
@@ -157,7 +157,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  integer
       %
       %   C++: int datamunge::nn::NnTensor::numel() const
-      r = __datamunge__(3082, obj);
+      r = __datamunge__(3093, obj);
     end
     function r = item (obj)
       % item  The value of a one-element tensor.
@@ -168,7 +168,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  double
       %
       %   C++: double datamunge::nn::NnTensor::item() const
-      r = __datamunge__(3083, obj);
+      r = __datamunge__(3094, obj);
     end
     function r = at (obj, index)
       % at  The element at a full index.
@@ -182,7 +182,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  double
       %
       %   C++: double datamunge::nn::NnTensor::at(const std::vector<int> & index) const
-      r = __datamunge__(3084, obj, index);
+      r = __datamunge__(3095, obj, index);
     end
     function r = str (obj)
       % str  A short printable description with the values.
@@ -193,7 +193,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  char row
       %
       %   C++: std::string datamunge::nn::NnTensor::str() const
-      r = __datamunge__(3085, obj);
+      r = __datamunge__(3096, obj);
     end
     function r = astype (obj, dtype)
       % astype  C++ datamunge::nn::NnTensor::astype.
@@ -207,7 +207,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::astype(const std::string & dtype) const
-      r = __datamunge__(3086, obj, dtype);
+      r = __datamunge__(3097, obj, dtype);
     end
     function r = reshape (obj, shape)
       % reshape  C++ datamunge::nn::NnTensor::reshape.
@@ -221,7 +221,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::reshape(const std::vector<int> & shape) const
-      r = __datamunge__(3087, obj, shape);
+      r = __datamunge__(3098, obj, shape);
     end
     function r = transpose_ (obj, varargin)
       % transpose_  Permutes axes; an empty `perm` reverses them.
@@ -236,7 +236,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::transpose(const std::vector<int> & perm = {}) const
-      r = __datamunge__(3088, obj, varargin{:});
+      r = __datamunge__(3099, obj, varargin{:});
     end
     function r = slice (obj, axis, start, stop)
       % slice  x[start:stop] along `axis`.
@@ -252,7 +252,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::slice(int axis, int start, int stop) const
-      r = __datamunge__(3089, obj, axis, start, stop);
+      r = __datamunge__(3100, obj, axis, start, stop);
     end
     function r = concat (obj, other, axis)
       % concat  C++ datamunge::nn::NnTensor::concat.
@@ -267,7 +267,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::concat(const NnTensor & other, int axis) const
-      r = __datamunge__(3090, obj, other, axis);
+      r = __datamunge__(3101, obj, other, axis);
     end
     function r = add (obj, other)
       % add  C++ datamunge::nn::NnTensor::add.
@@ -281,7 +281,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::add(const NnTensor & other) const
-      r = __datamunge__(3091, obj, other);
+      r = __datamunge__(3102, obj, other);
     end
     function r = sub (obj, other)
       % sub  C++ datamunge::nn::NnTensor::sub.
@@ -295,7 +295,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::sub(const NnTensor & other) const
-      r = __datamunge__(3092, obj, other);
+      r = __datamunge__(3103, obj, other);
     end
     function r = mul (obj, other)
       % mul  C++ datamunge::nn::NnTensor::mul.
@@ -309,7 +309,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::mul(const NnTensor & other) const
-      r = __datamunge__(3093, obj, other);
+      r = __datamunge__(3104, obj, other);
     end
     function r = div (obj, other)
       % div  C++ datamunge::nn::NnTensor::div.
@@ -323,7 +323,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::div(const NnTensor & other) const
-      r = __datamunge__(3094, obj, other);
+      r = __datamunge__(3105, obj, other);
     end
     function r = add_scalar (obj, value_)
       % add_scalar  C++ datamunge::nn::NnTensor::add_scalar.
@@ -337,7 +337,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::add_scalar(double value) const
-      r = __datamunge__(3095, obj, value_);
+      r = __datamunge__(3106, obj, value_);
     end
     function r = mul_scalar (obj, value_)
       % mul_scalar  C++ datamunge::nn::NnTensor::mul_scalar.
@@ -351,7 +351,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::mul_scalar(double value) const
-      r = __datamunge__(3096, obj, value_);
+      r = __datamunge__(3107, obj, value_);
     end
     function r = pow (obj, exponent)
       % pow  C++ datamunge::nn::NnTensor::pow.
@@ -365,7 +365,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::pow(double exponent) const
-      r = __datamunge__(3097, obj, exponent);
+      r = __datamunge__(3108, obj, exponent);
     end
     function r = neg (obj)
       % neg  C++ datamunge::nn::NnTensor::neg.
@@ -376,7 +376,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::neg() const
-      r = __datamunge__(3098, obj);
+      r = __datamunge__(3109, obj);
     end
     function r = matmul (obj, varargin)
       % matmul  C++ datamunge::nn::NnTensor::matmul.
@@ -394,7 +394,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::matmul(const NnTensor & other, bool transpose_a = false, bool transpose_b = false) const
-      r = __datamunge__(3099, obj, varargin{:});
+      r = __datamunge__(3110, obj, varargin{:});
     end
     function r = exp (obj)
       % exp  C++ datamunge::nn::NnTensor::exp.
@@ -405,7 +405,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::exp() const
-      r = __datamunge__(3100, obj);
+      r = __datamunge__(3111, obj);
     end
     function r = log (obj)
       % log  C++ datamunge::nn::NnTensor::log.
@@ -416,7 +416,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::log() const
-      r = __datamunge__(3101, obj);
+      r = __datamunge__(3112, obj);
     end
     function r = sqrt (obj)
       % sqrt  C++ datamunge::nn::NnTensor::sqrt.
@@ -427,7 +427,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::sqrt() const
-      r = __datamunge__(3102, obj);
+      r = __datamunge__(3113, obj);
     end
     function r = abs (obj)
       % abs  C++ datamunge::nn::NnTensor::abs.
@@ -438,7 +438,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::abs() const
-      r = __datamunge__(3103, obj);
+      r = __datamunge__(3114, obj);
     end
     function r = square (obj)
       % square  C++ datamunge::nn::NnTensor::square.
@@ -449,7 +449,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::square() const
-      r = __datamunge__(3104, obj);
+      r = __datamunge__(3115, obj);
     end
     function r = tanh (obj)
       % tanh  C++ datamunge::nn::NnTensor::tanh.
@@ -460,7 +460,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::tanh() const
-      r = __datamunge__(3105, obj);
+      r = __datamunge__(3116, obj);
     end
     function r = sigmoid (obj)
       % sigmoid  C++ datamunge::nn::NnTensor::sigmoid.
@@ -471,7 +471,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::sigmoid() const
-      r = __datamunge__(3106, obj);
+      r = __datamunge__(3117, obj);
     end
     function r = relu (obj)
       % relu  C++ datamunge::nn::NnTensor::relu.
@@ -482,7 +482,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::relu() const
-      r = __datamunge__(3107, obj);
+      r = __datamunge__(3118, obj);
     end
     function r = activate (obj, activation)
       % activate  Any activation by name: "relu", "gelu", "silu", "softplus", "elu", "leaky_relu", ...
@@ -496,7 +496,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::activate(const std::string & activation) const
-      r = __datamunge__(3108, obj, activation);
+      r = __datamunge__(3119, obj, activation);
     end
     function r = softmax (obj, varargin)
       % softmax  C++ datamunge::nn::NnTensor::softmax.
@@ -511,7 +511,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::softmax(int axis = -1) const
-      r = __datamunge__(3109, obj, varargin{:});
+      r = __datamunge__(3120, obj, varargin{:});
     end
     function r = log_softmax (obj, varargin)
       % log_softmax  C++ datamunge::nn::NnTensor::log_softmax.
@@ -526,7 +526,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::log_softmax(int axis = -1) const
-      r = __datamunge__(3110, obj, varargin{:});
+      r = __datamunge__(3121, obj, varargin{:});
     end
     function r = sum (obj, varargin)
       % sum  C++ datamunge::nn::NnTensor::sum.
@@ -543,7 +543,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::sum(const std::vector<int> & axes = {}, bool keepdims = false) const
-      r = __datamunge__(3111, obj, varargin{:});
+      r = __datamunge__(3122, obj, varargin{:});
     end
     function r = mean (obj, varargin)
       % mean  C++ datamunge::nn::NnTensor::mean.
@@ -560,7 +560,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::mean(const std::vector<int> & axes = {}, bool keepdims = false) const
-      r = __datamunge__(3112, obj, varargin{:});
+      r = __datamunge__(3123, obj, varargin{:});
     end
     function r = max (obj, varargin)
       % max  C++ datamunge::nn::NnTensor::max.
@@ -577,7 +577,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::max(const std::vector<int> & axes = {}, bool keepdims = false) const
-      r = __datamunge__(3113, obj, varargin{:});
+      r = __datamunge__(3124, obj, varargin{:});
     end
     function r = min (obj, varargin)
       % min  C++ datamunge::nn::NnTensor::min.
@@ -594,7 +594,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::min(const std::vector<int> & axes = {}, bool keepdims = false) const
-      r = __datamunge__(3114, obj, varargin{:});
+      r = __datamunge__(3125, obj, varargin{:});
     end
     function r = argmax (obj, varargin)
       % argmax  C++ datamunge::nn::NnTensor::argmax.
@@ -609,7 +609,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::argmax(int axis = -1) const
-      r = __datamunge__(3115, obj, varargin{:});
+      r = __datamunge__(3126, obj, varargin{:});
     end
     function set_requires_grad (obj, varargin)
       % set_requires_grad  Marks a float tensor as a leaf whose gradient `backward` accumulates.
@@ -621,7 +621,7 @@ classdef NnTensor < datamunge.NativeObject
       %     requires_grad  logical, default true
       %
       %   C++: void datamunge::nn::NnTensor::set_requires_grad(bool requires_grad = true)
-      __datamunge__(3116, obj, varargin{:});
+      __datamunge__(3127, obj, varargin{:});
     end
     function r = requires_grad (obj)
       % requires_grad  C++ datamunge::nn::NnTensor::requires_grad.
@@ -632,7 +632,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::nn::NnTensor::requires_grad() const
-      r = __datamunge__(3117, obj);
+      r = __datamunge__(3128, obj);
     end
     function backward (obj)
       % backward  Back-propagates from this one-element tensor into every leaf's grad().
@@ -640,7 +640,7 @@ classdef NnTensor < datamunge.NativeObject
       %   obj.backward ()
       %
       %   C++: void datamunge::nn::NnTensor::backward()
-      __datamunge__(3118, obj);
+      __datamunge__(3129, obj);
     end
     function r = grad (obj)
       % grad  The accumulated gradient (undefined if none).
@@ -651,7 +651,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::grad() const
-      r = __datamunge__(3119, obj);
+      r = __datamunge__(3130, obj);
     end
     function zero_grad (obj)
       % zero_grad  C++ datamunge::nn::NnTensor::zero_grad.
@@ -659,7 +659,7 @@ classdef NnTensor < datamunge.NativeObject
       %   obj.zero_grad ()
       %
       %   C++: void datamunge::nn::NnTensor::zero_grad()
-      __datamunge__(3120, obj);
+      __datamunge__(3131, obj);
     end
     function r = detach (obj)
       % detach  The same values without gradient history.
@@ -670,7 +670,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::detach() const
-      r = __datamunge__(3121, obj);
+      r = __datamunge__(3132, obj);
     end
     function r = to_string (obj)
       % to_string  C++ datamunge::octave_bindings::nn_tensor_repr.
@@ -681,7 +681,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  char row
       %
       %   C++: std::string datamunge::octave_bindings::nn_tensor_repr(const datamunge::nn::NnTensor & self)
-      r = __datamunge__(3122, obj);
+      r = __datamunge__(3133, obj);
     end
   end
   methods (Static)
@@ -699,7 +699,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::zeros(const std::vector<int> & shape, const std::string & dtype = "float32")
-      r = __datamunge__(3069, varargin{:});
+      r = __datamunge__(3080, varargin{:});
     end
     function r = ones (varargin)
       % ones  C++ datamunge::nn::NnTensor::ones.
@@ -715,7 +715,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::ones(const std::vector<int> & shape, const std::string & dtype = "float32")
-      r = __datamunge__(3070, varargin{:});
+      r = __datamunge__(3081, varargin{:});
     end
     function r = full (varargin)
       % full  C++ datamunge::nn::NnTensor::full.
@@ -732,7 +732,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::full(const std::vector<int> & shape, double value, const std::string & dtype = "float32")
-      r = __datamunge__(3071, varargin{:});
+      r = __datamunge__(3082, varargin{:});
     end
     function r = arange (varargin)
       % arange  start, start + step, ... below stop.
@@ -751,7 +751,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::arange(double start, double stop, double step = 1.0, const std::string & dtype = "float32")
-      r = __datamunge__(3072, varargin{:});
+      r = __datamunge__(3083, varargin{:});
     end
     function r = randn (varargin)
       % randn  Seeded N(mean, std^2) and U(low, high) samples.
@@ -772,7 +772,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::randn(const std::vector<int> & shape, unsigned int seed, double mean = 0.0, double std = 1.0, const std::string & dtype = "float32")
-      r = __datamunge__(3073, varargin{:});
+      r = __datamunge__(3084, varargin{:});
     end
     function r = uniform (varargin)
       % uniform  C++ datamunge::nn::NnTensor::uniform.
@@ -793,7 +793,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::uniform(const std::vector<int> & shape, unsigned int seed, double low = 0.0, double high = 1.0, const std::string & dtype = "float32")
-      r = __datamunge__(3074, varargin{:});
+      r = __datamunge__(3085, varargin{:});
     end
     function r = load_npy (path)
       % load_npy  NumPy .npy files.
@@ -807,7 +807,7 @@ classdef NnTensor < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnTensor::load_npy(const std::string & path)
-      r = __datamunge__(3075, path);
+      r = __datamunge__(3086, path);
     end
   end
 end

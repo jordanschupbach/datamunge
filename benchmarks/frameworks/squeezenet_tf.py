@@ -2,7 +2,7 @@
 """SqueezeNet (CIFAR-10, v1.0/v1.1) training-throughput baseline in TensorFlow/Keras.
 
 Same workload as squeezenet_torch.py / the C++ reference
-(docs/mepml/examples/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml,
+(docs/mepml/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml,
 include/datamunge/nn/squeezenet_models.hpp): NHWC float32, batch 32, 32x32x3
 inputs in [-1,1], CIFAR stem 3x3/1 SAME, Caffe ceil-mode 3x3/2 max pools
 (32 -> 16 -> 8 -> 4), Fire2..Fire9, dropout keep 0.5, conv10 1x1 + ReLU,

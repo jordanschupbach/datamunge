@@ -48,7 +48,7 @@ classdef NnModel < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3150, false, varargin{:});
+      __datamunge__(-2, obj, 3161, false, varargin{:});
     end
     function add_dense (obj, varargin)
       % add_dense  Fully connected layer; activation "none", "relu", "tanh", "sigmoid", "gelu", ...
@@ -61,7 +61,7 @@ classdef NnModel < datamunge.NativeObject
       %     activation  char row, default 'none'
       %
       %   C++: void datamunge::nn::NnModel::add_dense(int units, const std::string & activation = "none")
-      __datamunge__(3124, obj, varargin{:});
+      __datamunge__(3135, obj, varargin{:});
     end
     function add_conv2d (obj, varargin)
       % add_conv2d  2-D convolution on NHWC input; padding "same" or "valid".
@@ -79,7 +79,7 @@ classdef NnModel < datamunge.NativeObject
       %     activation  char row, default 'none'
       %
       %   C++: void datamunge::nn::NnModel::add_conv2d(int filters, int kernel, int stride = 1, const std::string & padding = "same", const std::string & activation = "none")
-      __datamunge__(3125, obj, varargin{:});
+      __datamunge__(3136, obj, varargin{:});
     end
     function add_max_pool2d (obj, varargin)
       % add_max_pool2d  C++ datamunge::nn::NnModel::add_max_pool2d.
@@ -93,7 +93,7 @@ classdef NnModel < datamunge.NativeObject
       %     padding  char row, default 'valid'
       %
       %   C++: void datamunge::nn::NnModel::add_max_pool2d(int window, int stride, const std::string & padding = "valid")
-      __datamunge__(3126, obj, varargin{:});
+      __datamunge__(3137, obj, varargin{:});
     end
     function add_avg_pool2d (obj, varargin)
       % add_avg_pool2d  C++ datamunge::nn::NnModel::add_avg_pool2d.
@@ -107,7 +107,7 @@ classdef NnModel < datamunge.NativeObject
       %     padding  char row, default 'valid'
       %
       %   C++: void datamunge::nn::NnModel::add_avg_pool2d(int window, int stride, const std::string & padding = "valid")
-      __datamunge__(3127, obj, varargin{:});
+      __datamunge__(3138, obj, varargin{:});
     end
     function add_global_avg_pool2d (obj)
       % add_global_avg_pool2d  C++ datamunge::nn::NnModel::add_global_avg_pool2d.
@@ -115,7 +115,7 @@ classdef NnModel < datamunge.NativeObject
       %   obj.add_global_avg_pool2d ()
       %
       %   C++: void datamunge::nn::NnModel::add_global_avg_pool2d()
-      __datamunge__(3128, obj);
+      __datamunge__(3139, obj);
     end
     function add_batch_norm (obj, varargin)
       % add_batch_norm  Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults).
@@ -129,7 +129,7 @@ classdef NnModel < datamunge.NativeObject
       %     eps  double, default 0.001
       %
       %   C++: void datamunge::nn::NnModel::add_batch_norm(double momentum = 0.98999999999999999, double eps = 0.001)
-      __datamunge__(3129, obj, varargin{:});
+      __datamunge__(3140, obj, varargin{:});
     end
     function add_layer_norm (obj, varargin)
       % add_layer_norm  C++ datamunge::nn::NnModel::add_layer_norm.
@@ -141,7 +141,7 @@ classdef NnModel < datamunge.NativeObject
       %     eps  double, default 1e-05
       %
       %   C++: void datamunge::nn::NnModel::add_layer_norm(double eps = 1.0000000000000001E-5)
-      __datamunge__(3130, obj, varargin{:});
+      __datamunge__(3141, obj, varargin{:});
     end
     function add_dropout (obj, rate)
       % add_dropout  Inverted dropout, active only when training.
@@ -152,7 +152,7 @@ classdef NnModel < datamunge.NativeObject
       %     rate  double
       %
       %   C++: void datamunge::nn::NnModel::add_dropout(double rate)
-      __datamunge__(3131, obj, rate);
+      __datamunge__(3142, obj, rate);
     end
     function add_activation (obj, activation)
       % add_activation  C++ datamunge::nn::NnModel::add_activation.
@@ -163,7 +163,7 @@ classdef NnModel < datamunge.NativeObject
       %     activation  char row
       %
       %   C++: void datamunge::nn::NnModel::add_activation(const std::string & activation)
-      __datamunge__(3132, obj, activation);
+      __datamunge__(3143, obj, activation);
     end
     function add_flatten (obj)
       % add_flatten  Collapses every axis but the first.
@@ -171,7 +171,7 @@ classdef NnModel < datamunge.NativeObject
       %   obj.add_flatten ()
       %
       %   C++: void datamunge::nn::NnModel::add_flatten()
-      __datamunge__(3133, obj);
+      __datamunge__(3144, obj);
     end
     function add_reshape (obj, shape)
       % add_reshape  Reshapes each example (the batch axis is kept): e.g. {28, 28, 1}.
@@ -182,7 +182,7 @@ classdef NnModel < datamunge.NativeObject
       %     shape  integer vector
       %
       %   C++: void datamunge::nn::NnModel::add_reshape(const std::vector<int> & shape)
-      __datamunge__(3134, obj, shape);
+      __datamunge__(3145, obj, shape);
     end
     function r = num_layers (obj)
       % num_layers  C++ datamunge::nn::NnModel::num_layers.
@@ -193,7 +193,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  integer
       %
       %   C++: int datamunge::nn::NnModel::num_layers() const
-      r = __datamunge__(3135, obj);
+      r = __datamunge__(3146, obj);
     end
     function r = summary (obj)
       % summary  One line per layer with its parameter shapes (after the first forward pass).
@@ -204,7 +204,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  char row
       %
       %   C++: std::string datamunge::nn::NnModel::summary() const
-      r = __datamunge__(3136, obj);
+      r = __datamunge__(3147, obj);
     end
     function r = forward (obj, varargin)
       % forward  Runs the network. `training` enables dropout and batch statistics (and updates batch-norm moving averages).
@@ -220,7 +220,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnModel::forward(const NnTensor & x, bool training = false)
-      r = __datamunge__(3137, obj, varargin{:});
+      r = __datamunge__(3148, obj, varargin{:});
     end
     function r = predict (obj, x)
       % predict  forward(x, false) without recording gradients.
@@ -234,7 +234,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnModel::predict(const NnTensor & x)
-      r = __datamunge__(3138, obj, x);
+      r = __datamunge__(3149, obj, x);
     end
     function r = loss (obj, varargin)
       % loss  Loss of the network on (x, y): "mse", "softmax_cross_entropy" (y holds integer class labels) or "sigmoid_cross_entropy" (y in [0, 1]).
@@ -253,7 +253,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  double
       %
       %   C++: double datamunge::nn::NnModel::loss(const NnTensor & x, const NnTensor & y, const std::string & loss = "mse", bool training = false)
-      r = __datamunge__(3139, obj, varargin{:});
+      r = __datamunge__(3150, obj, varargin{:});
     end
     function r = compute_gradients (obj, varargin)
       % compute_gradients  Computes the loss in training mode and stores the gradient of every parameter (read them with `gradient`). Returns the loss.
@@ -270,7 +270,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  double
       %
       %   C++: double datamunge::nn::NnModel::compute_gradients(const NnTensor & x, const NnTensor & y, const std::string & loss = "mse")
-      r = __datamunge__(3140, obj, varargin{:});
+      r = __datamunge__(3151, obj, varargin{:});
     end
     function r = gradient (obj, name)
       % gradient  C++ datamunge::nn::NnModel::gradient.
@@ -284,7 +284,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnModel::gradient(const std::string & name) const
-      r = __datamunge__(3141, obj, name);
+      r = __datamunge__(3152, obj, name);
     end
     function set_optimizer (obj, varargin)
       % set_optimizer  Optimizer for `train_step`: "sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad", ...
@@ -298,7 +298,7 @@ classdef NnModel < datamunge.NativeObject
       %     learning_rate  double, default 0.001
       %
       %   C++: void datamunge::nn::NnModel::set_optimizer(const std::string & kind = "adam", double learning_rate = 0.001)
-      __datamunge__(3142, obj, varargin{:});
+      __datamunge__(3153, obj, varargin{:});
     end
     function r = train_step (obj, varargin)
       % train_step  compute_gradients followed by one optimizer update. Returns the loss.
@@ -315,7 +315,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  double
       %
       %   C++: double datamunge::nn::NnModel::train_step(const NnTensor & x, const NnTensor & y, const std::string & loss = "mse")
-      r = __datamunge__(3143, obj, varargin{:});
+      r = __datamunge__(3154, obj, varargin{:});
     end
     function r = parameter_names (obj)
       % parameter_names  C++ datamunge::nn::NnModel::parameter_names.
@@ -326,7 +326,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::string> datamunge::nn::NnModel::parameter_names() const
-      r = __datamunge__(3144, obj);
+      r = __datamunge__(3155, obj);
     end
     function r = parameter (obj, name)
       % parameter  C++ datamunge::nn::NnModel::parameter.
@@ -340,7 +340,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  datamunge.NnTensor
       %
       %   C++: NnTensor datamunge::nn::NnModel::parameter(const std::string & name) const
-      r = __datamunge__(3145, obj, name);
+      r = __datamunge__(3156, obj, name);
     end
     function set_parameter (obj, name, value_)
       % set_parameter  C++ datamunge::nn::NnModel::set_parameter.
@@ -352,7 +352,7 @@ classdef NnModel < datamunge.NativeObject
       %     value_  datamunge.NnTensor
       %
       %   C++: void datamunge::nn::NnModel::set_parameter(const std::string & name, const NnTensor & value)
-      __datamunge__(3146, obj, name, value_);
+      __datamunge__(3157, obj, name, value_);
     end
     function r = parameter_count (obj)
       % parameter_count  C++ datamunge::nn::NnModel::parameter_count.
@@ -363,7 +363,7 @@ classdef NnModel < datamunge.NativeObject
       %     r  integer
       %
       %   C++: int datamunge::nn::NnModel::parameter_count() const
-      r = __datamunge__(3147, obj);
+      r = __datamunge__(3158, obj);
     end
     function save (obj, path)
       % save  Parameters and batch-norm statistics as one .npz archive ("state/..." for statistics).
@@ -374,7 +374,7 @@ classdef NnModel < datamunge.NativeObject
       %     path  char row
       %
       %   C++: void datamunge::nn::NnModel::save(const std::string & path) const
-      __datamunge__(3148, obj, path);
+      __datamunge__(3159, obj, path);
     end
     function load (obj, path)
       % load  Loads an archive written by save() (or any .npz with the same names).
@@ -385,7 +385,7 @@ classdef NnModel < datamunge.NativeObject
       %     path  char row
       %
       %   C++: void datamunge::nn::NnModel::load(const std::string & path)
-      __datamunge__(3149, obj, path);
+      __datamunge__(3160, obj, path);
     end
   end
 end

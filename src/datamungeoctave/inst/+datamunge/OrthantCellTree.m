@@ -51,7 +51,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3011, false, varargin{:});
+      __datamunge__(-2, obj, 3022, false, varargin{:});
     end
     function r = dimensions (obj)
       % dimensions  Number of dimensions d.
@@ -62,7 +62,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: d.
       %
       %   C++: std::size_t datamunge::fda::detail::OrthantCellTree::dimensions() const
-      r = __datamunge__(2991, obj);
+      r = __datamunge__(3002, obj);
     end
     function r = arity (obj)
       % arity  Children per cell, 2^d.
@@ -73,7 +73,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: 2^d.
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::arity() const
-      r = __datamunge__(2992, obj);
+      r = __datamunge__(3003, obj);
     end
     function r = size_ (obj)
       % size_  Number of cells created so far.
@@ -84,7 +84,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Cell count.
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::size() const
-      r = __datamunge__(2993, obj);
+      r = __datamunge__(3004, obj);
     end
     function r = max_depth (obj)
       % max_depth  Greatest depth of any cell.
@@ -95,7 +95,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Maximum depth (root is 0).
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::max_depth() const
-      r = __datamunge__(2994, obj);
+      r = __datamunge__(3005, obj);
     end
     function check (obj, cell)
       % check  Throws std::out_of_range unless `cell` is a valid id.
@@ -106,7 +106,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     cell  integer: Cell id.
       %
       %   C++: void datamunge::fda::detail::OrthantCellTree::check(int cell) const
-      __datamunge__(2995, obj, cell);
+      __datamunge__(3006, obj, cell);
     end
     function check_slot (obj, slot)
       % check_slot  Throws std::out_of_range unless 0 <= `slot` < arity().
@@ -117,7 +117,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     slot  integer: Child slot.
       %
       %   C++: void datamunge::fda::detail::OrthantCellTree::check_slot(int slot) const
-      __datamunge__(2996, obj, slot);
+      __datamunge__(3007, obj, slot);
     end
     function r = lo (obj, cell)
       % lo  Cell lower corner.
@@ -131,7 +131,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  double vector: d coordinates.
       %
       %   C++: const std::vector<double> & datamunge::fda::detail::OrthantCellTree::lo(int cell) const
-      r = __datamunge__(2997, obj, cell);
+      r = __datamunge__(3008, obj, cell);
     end
     function r = hi (obj, cell)
       % hi  Cell upper corner.
@@ -145,7 +145,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  double vector: d coordinates.
       %
       %   C++: const std::vector<double> & datamunge::fda::detail::OrthantCellTree::hi(int cell) const
-      r = __datamunge__(2998, obj, cell);
+      r = __datamunge__(3009, obj, cell);
     end
     function r = depth (obj, cell)
       % depth  Cell depth.
@@ -159,7 +159,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Depth (root 0).
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::depth(int cell) const
-      r = __datamunge__(2999, obj, cell);
+      r = __datamunge__(3010, obj, cell);
     end
     function r = parent (obj, cell)
       % parent  Parent id.
@@ -173,7 +173,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Parent id, or -1 for the root.
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::parent(int cell) const
-      r = __datamunge__(3000, obj, cell);
+      r = __datamunge__(3011, obj, cell);
     end
     function r = child (obj, cell, slot)
       % child  Child id.
@@ -188,7 +188,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Id or -1 if absent.
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::child(int cell, int slot) const
-      r = __datamunge__(3001, obj, cell, slot);
+      r = __datamunge__(3012, obj, cell, slot);
     end
     function r = is_leaf (obj, cell)
       % is_leaf  True when no child of `cell` exists.
@@ -202,7 +202,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  logical: Leaf flag.
       %
       %   C++: bool datamunge::fda::detail::OrthantCellTree::is_leaf(int cell) const
-      r = __datamunge__(3002, obj, cell);
+      r = __datamunge__(3013, obj, cell);
     end
     function r = ensure_child (obj, cell, slot)
       % ensure_child  Returns the child at `slot`, creating it if needed.
@@ -217,7 +217,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Child id.
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::ensure_child(int cell, int slot)
-      r = __datamunge__(3003, obj, cell, slot);
+      r = __datamunge__(3014, obj, cell, slot);
     end
     function r = child_box (obj, cell, slot)
       % child_box  Box of the (possibly not yet created) child at `slot`.
@@ -232,7 +232,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  cell {double vector, double vector}: Pair (lo, hi) of the child box.
       %
       %   C++: std::pair<std::vector<double>, std::vector<double>> datamunge::fda::detail::OrthantCellTree::child_box(int cell, int slot) const
-      r = __datamunge__(3004, obj, cell, slot);
+      r = __datamunge__(3015, obj, cell, slot);
     end
     function r = slot_for (obj, cell, point)
       % slot_for  Slot of `cell's` child that contains `point` (upper half on ties at the max).
@@ -247,7 +247,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Child slot.
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::slot_for(int cell, const std::vector<double> & point) const
-      r = __datamunge__(3005, obj, cell, point);
+      r = __datamunge__(3016, obj, cell, point);
     end
     function r = contains (obj, cell, point)
       % contains  Whether `point` lies in the closed box of `cell`.
@@ -262,7 +262,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  logical: Containment flag.
       %
       %   C++: bool datamunge::fda::detail::OrthantCellTree::contains(int cell, const std::vector<double> & point) const
-      r = __datamunge__(3006, obj, cell, point);
+      r = __datamunge__(3017, obj, cell, point);
     end
     function r = locate (obj, point)
       % locate  Deepest existing cell containing `point`.
@@ -276,7 +276,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer: Cell id, or -1 outside the root box.
       %
       %   C++: int datamunge::fda::detail::OrthantCellTree::locate(const std::vector<double> & point) const
-      r = __datamunge__(3007, obj, point);
+      r = __datamunge__(3018, obj, point);
     end
     function r = cells_at_depth (obj, depth)
       % cells_at_depth  Ids of every cell at `depth`.
@@ -290,7 +290,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  integer vector: Ids in creation order.
       %
       %   C++: const std::vector<int> & datamunge::fda::detail::OrthantCellTree::cells_at_depth(int depth) const
-      r = __datamunge__(3008, obj, depth);
+      r = __datamunge__(3019, obj, depth);
     end
     function r = covered_to_depth (obj, target_depth, blo, bhi)
       % covered_to_depth  Whether the part of [blo, bhi] inside the root is covered by cells of depth >= `target_depth` (i.e. the box lies in the refined domain Omega^target_depth).
@@ -306,7 +306,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  logical: Coverage flag.
       %
       %   C++: bool datamunge::fda::detail::OrthantCellTree::covered_to_depth(int target_depth, const std::vector<double> & blo, const std::vector<double> & bhi) const
-      r = __datamunge__(3010, obj, target_depth, blo, bhi);
+      r = __datamunge__(3021, obj, target_depth, blo, bhi);
     end
   end
   methods (Static)
@@ -325,7 +325,7 @@ classdef OrthantCellTree < datamunge.NativeObject
       %     r  logical: True when the interiors overlap.
       %
       %   C++: bool datamunge::fda::detail::OrthantCellTree::overlaps(const std::vector<double> & lo, const std::vector<double> & hi, const std::vector<double> & blo, const std::vector<double> & bhi)
-      r = __datamunge__(3009, lo, hi, blo, bhi);
+      r = __datamunge__(3020, lo, hi, blo, bhi);
     end
   end
 end

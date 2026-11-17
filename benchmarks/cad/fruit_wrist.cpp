@@ -12,7 +12,7 @@ int main(int argc, char** argv) try {
   if (repeats < 1 || repeats > 3)
     throw std::invalid_argument("Repetitions must be 1..3");
   fs::create_directories(output);
-  auto                  frames = replay(root / "docs/mepml/examples/build/fruit_stream_realistic");
+  auto                  frames = replay(root / "docs/mepml/build/fruit_stream_realistic");
   s::FruitStreamOptions config;
   config.visual_style = s::WorkcellVisualStyle::Realistic;
   s::FruitStreamEnvironment env(

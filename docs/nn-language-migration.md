@@ -78,12 +78,12 @@ Python/R experiment-loop ports remain unfinished.
 
 ## Inventory and validation
 
-`just nn-language-status` refreshes `examples/nn/language_status.json`. It scans
+`just nn-language-status` refreshes `prebindings/nn/language_status.json`. It scans
 both canonical source roots: sections 1 and 2 under `examples/cpp/source/nn`, and the
 remaining numbered sections under `examples/nn`. The ledger covers the remaining
 standalone C++ programs; its total decreases as verified literate reports replace
 them. The original inventory, replacement paths and retirement evidence are kept
-separately in [`mepml/nn-conversion-status.json`](mepml/nn-conversion-status.json).
+separately in [the NN reports](mepml/nn/).
 Native Python/R scripts remain runnable after their C++ counterpart is retired;
 the Python catalogue discovers those scripts independently of the live C++ list.
 
@@ -217,7 +217,7 @@ and the `auto-assets-all-native-*` sweep logs under `build/nn-language-validatio
 
 ## Current checkpoint
 
-The [NN report ledger](mepml/nn-conversion-plan.md) now records 95 retired
+The [NN report collection](mepml/nn/) now records 95 retired
 originals and 224 reports present out of 416 original sources; 192 reports still
 need conversion. The [standalone audit](nn-example-audit.md) describes the 321
 remaining C++ programs. The 414-source language checkpoint below predates the
@@ -536,7 +536,7 @@ where the loop lives (`main`, `local`, `pasted_harness`, `header`, `none`),
 whether the per-step logic is hidden in a header model method
 (`model.Run/Update/Train`), which shared headers the example uses and which of
 them are bound, plus the ledger's Python/R status. It writes
-`examples/nn/example_audit.json` and `docs/nn-example-audit.md`;
+`docs/mepml/nn-example-audit.json` and `docs/nn-example-audit.md`;
 `tests/python/test_nn_example_workflow_ownership.py` fails when a shared header
 owns a training loop or when an example recorded as compliant regresses.
 

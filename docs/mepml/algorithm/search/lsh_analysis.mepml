@@ -1,0 +1,500 @@
+//? Title: Random-hyperplane locality-sensitive hashing
+//? Subtitle: Actual signatures, candidates and the original cosine-search workload
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Random hyperplanes give nearby nonzero directions a higher probability of
+agreeing on a sign bit. Concatenating bits and searching several tables trades
+candidate count against missed neighbors. We retain the original collision
+experiment and2000-by30 near-duplicate workload, expose actual query decisions,
+and distinguish fewer cosine evaluations from the implementation’s total query
+cost.
+)
+
+\toc
+
+> A tiny actual signature and candidate search
+
+For a nonzero vector x and a sampled plane normal r, assign bit one when
+dot(r,x) is nonnegative, otherwise zero. Exact zero maps to one in this
+implementation. A table concatenates k such bits into an unsigned key. Query
+only the matching key in each table, suppress duplicate input identities, and
+choose the first strict maximum cosine among encountered candidates. It can miss
+the exact neighbor or find no candidates; it is not an exact search certificate.
+
+The tiny example uses three two-dimensional directions, two tables, two bits
+each and seed7. Its diagram/table show actual stored-plane signs, real keys and
+actual bucket visits. The trace is emitted during one producing query, rather
+than replaying signatures or recomputing candidates for the illustration.
+
+```{cpp, results="markdown", file="figures/lsh_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/lsh.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    dm::algorithms::CosineLSH index({{1, 0}, {0, 1}, {-1, 0}}, 2, 2, 7);
+    auto t = index.query_trace({1, .1});
+    std::print("| actual table | actual bit | actual deciding dot | actual bit1 | scaled fallback |\n| ---: " "| ---: | ---: | --- | --- |\n");
+    for (auto &p : t.projections)
+        std::print("| {} | {} | {} | {} | {} |\n", p.table, p.bit, p.dot,
+                   p.nonnegative, p.scaled);
+    std::print("\n| actual visiting table | actual input identity | duplicate | actual new cosine or " "duplicate placeholder0 | strict winner update |\n| ---: | ---: | --- | ---: | --- |\n");
+    for (auto &c : t.candidates)
+        std::print("| {} | {} | {} | {} | {} |\n", c.table, c.id, c.duplicate,
+                   c.similarity, c.new_best);
+    dm::graphics::Diagram d;
+    d.node("q", {0, 0}, "Actual query\n(1,0.1)").node("key", {6, 0},
+                                                      std::format(
+                                                      "Actual table0 key\n{}",
+                                                      t.buckets.front().signature)).node("result", {12, 0}, std::format("Actual winner id{}\nexamined {}", t.analysis.best, t.analysis.examined)).edge("q", "key").edge("key", "result");
+    d.save_svg("build/lsh_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual table | actual bit | actual deciding dot | actual bit1 | scaled fallback |
+| ---: | ---: | ---: | --- | --- |
+| 0 | 0 | 0.775438879170287 | true | false |
+| 0 | 1 | 0.69282780870854 | true | false |
+| 1 | 0 | -1.6960587440185018 | false | false |
+| 1 | 1 | -0.4300786012748407 | false | false |
+
+| actual visiting table | actual input identity | duplicate | actual new cosine or duplicate placeholder0 | strict winner update |
+| ---: | ---: | --- | ---: | --- |
+| 0 | 0 | false | 0.9950371902099893 | true |
+| 1 | 0 | true | 0 | false |
+\image(figures/lsh_tiny.svg)
+// result_end
+\caption(Actual seeded signature and candidate flow.)
+\alttext(The actual first table key and same-run distinct-candidate winner are linked to a real projection and visit table; no exact-neighbor guarantee is implied.)
+
+> Why the ideal collision law is angular
+
+For two nonzero directions separated by angle theta in[0,pi], only their spanned
+plane matters. Isotropic random normal orientation separates their signs on a
+fraction theta/pi of directions, so single-bit agreement has probability
+p=1−theta/pi. With k independent bits per table, all-bit agreement has
+probability p^k. With L independent tables, at least one matching table has
+ideal probability1−(1−p^k)^L. This is a collision probability for one pair under
+ideal independent planes, not the probability that a finite candidate search
+returns the exact nearest neighbor.
+
+The original experiment samples20000 independent two-dimensional Gaussian planes
+at angles0,20,...,180 degrees, using mt19937_64 seed3. The native study then
+continues the very same generator stream for the original indexed data and
+queries. The displayed agreement counts are measured, while the reference curve
+is the isotropic law. No calibration or deterministic finite-sample equality is
+claimed.
+
+```{cpp, results="markdown", file="figures/lsh_collision.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/lsh_study.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    auto s = dm::algorithms::lsh_original_study();
+    std::vector<double> x, y, z;
+    std::print("| prescribed degrees | actual agreeing planes | actual trials | actual agreement fraction | " "ideal isotropic probability |\n| ---: | ---: | ---: | ---: | ---: |\n");
+    for (auto &r : s.angles) {
+        std::print("| {} | {} | {} | {} | {} |\n", r.degrees, r.agreements,
+                   r.trials, r.empirical, r.theory);
+        x.push_back(r.degrees);
+        y.push_back(r.empirical);
+        z.push_back(r.theory);
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.line(x, z, "ideal law", {220, 38, 38}, 2).points(x, y, "actual agreement",
+                                                       {37, 99, 235}, 5).y_limits(-.05, 1.3).title("Original seeded random-plane collision experiment").x_label("prescribed angle in degrees").y_label("single-bit sign agreement fraction").save_svg("build/lsh_collision.svg");
+}
+```
+// result_begin: markdown
+| prescribed degrees | actual agreeing planes | actual trials | actual agreement fraction | ideal isotropic probability |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 20000 | 20000 | 1 | 1 |
+| 20 | 17707 | 20000 | 0.88535 | 0.8888888888888888 |
+| 40 | 15507 | 20000 | 0.77535 | 0.7777777777777778 |
+| 60 | 13310 | 20000 | 0.6655 | 0.6666666666666667 |
+| 80 | 11220 | 20000 | 0.561 | 0.5555555555555556 |
+| 100 | 9003 | 20000 | 0.45015 | 0.4444444444444444 |
+| 120 | 6648 | 20000 | 0.3324 | 0.33333333333333337 |
+| 140 | 4481 | 20000 | 0.22405 | 0.2222222222222222 |
+| 160 | 2232 | 20000 | 0.1116 | 0.11111111111111116 |
+| 180 | 0 | 20000 | 0 | 0 |
+\image(figures/lsh_collision.svg)
+// result_end
+\caption(Original20000-plane angular agreement controls.)
+\alttext(Measured agreement is compared with the ideal isotropic law, retaining actual seeded counts instead of asserting exact finite-sample equality.)
+
+> Original2000-by30 approximate-neighbor workload
+
+Continue the original seed3 stream after the collision experiment:2000 Gaussian
+points in30 dimensions, then200 queries made by adding independent
+standard-deviation0.3 noise to sampled source rows. The index uses15 tables,14
+bits each and its own seed99. The exact baseline scans every indexed row by
+cosine and keeps its first strict maximum. The approximate result comes from the
+actual collided candidates. Recall compares these actual identities, rather than
+assuming the planted source is always the exact nearest neighbor.
+
+The native helper performs both searches and returns their actual outcomes. This
+synthetic workload is designed to test angular near-duplicate retrieval; it is
+not a measured guarantee for arbitrary embeddings or a real-data benchmark.
+Candidate counts measure saved cosine evaluations, not elapsed-time speedup.
+Standard-library Gaussian/uniform distribution mappings affect exact seeded
+fixtures across toolchains.
+
+```{cpp, results="markdown", file="figures/lsh_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/lsh_study.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    auto s = dm::algorithms::lsh_original_study();
+    std::vector<double> x, y;
+    std::size_t hits = 0, examined = 0, missing = 0;
+    std::print("| actual query index | sampled source | actual exact winner | actual approximate winner or " "SIZE_MAX | actual distinct examined | actual exact cosine | actual approximate cosine or " "sentinel |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < s.queries.size(); ++i) {
+        auto &r = s.queries[i];
+        hits += r.exact == r.approximate;
+        examined += r.examined;
+        missing += r.approximate == SIZE_MAX;
+        std::print("| {} | {} | {} | {} | {} | {} | {} |\n", i, r.source,
+                   r.exact, r.approximate, r.examined, r.exact_similarity,
+                   r.approximate_similarity);
+        x.push_back(i);
+        y.push_back(r.examined);
+    }
+    std::print("\nActual indexed rows {}; dimension {}; queries {}; exact-winner recall {}; mean distinct " "examined {}; no-candidate outcomes {}.\n",
+               s.data.size(), s.data.front().size(), s.queries.size(),
+               double(hits) / s.queries.size(),
+               double(examined) / s.queries.size(), missing);
+    auto p = dm::graphics::RPlot::create();
+    p.points(x, y, "actual candidates", {37, 99, 235}, 3).title(
+        "Original near-duplicate workload: actual cosine evaluations").x_label(
+        "actual original query index").y_label("actual distinct candidates examined").save_svg("build/lsh_original.svg");
+}
+```
+// result_begin: markdown
+| actual query index | sampled source | actual exact winner | actual approximate winner or SIZE_MAX | actual distinct examined | actual exact cosine | actual approximate cosine or sentinel |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1863 | 1863 | 1863 | 9 | 0.9673320428693182 | 0.9673320428693182 |
+| 1 | 1520 | 1520 | 1520 | 6 | 0.9698884152839706 | 0.9698884152839706 |
+| 2 | 8 | 8 | 8 | 4 | 0.971020194883616 | 0.971020194883616 |
+| 3 | 1622 | 1622 | 1622 | 4 | 0.969691918828403 | 0.969691918828403 |
+| 4 | 908 | 908 | 908 | 5 | 0.9666120963058816 | 0.9666120963058816 |
+| 5 | 212 | 212 | 212 | 3 | 0.9831842338947925 | 0.9831842338947925 |
+| 6 | 1534 | 1534 | 1534 | 9 | 0.9771086403005039 | 0.9771086403005039 |
+| 7 | 433 | 433 | 433 | 4 | 0.9524677856236541 | 0.9524677856236541 |
+| 8 | 621 | 621 | 621 | 2 | 0.9524556774101691 | 0.9524556774101691 |
+| 9 | 416 | 416 | 416 | 5 | 0.9728203389175359 | 0.9728203389175359 |
+| 10 | 1093 | 1093 | 1093 | 7 | 0.935413032020365 | 0.935413032020365 |
+| 11 | 1064 | 1064 | 1064 | 3 | 0.9588576630291139 | 0.9588576630291139 |
+| 12 | 1181 | 1181 | 1181 | 7 | 0.964929525530902 | 0.964929525530902 |
+| 13 | 1512 | 1512 | 1512 | 7 | 0.9732242218355939 | 0.9732242218355939 |
+| 14 | 1230 | 1230 | 1230 | 7 | 0.9633004307425056 | 0.9633004307425056 |
+| 15 | 1857 | 1857 | 1857 | 7 | 0.9732645176817979 | 0.9732645176817979 |
+| 16 | 1794 | 1794 | 1794 | 2 | 0.9501134836586743 | 0.9501134836586743 |
+| 17 | 1765 | 1765 | 1765 | 4 | 0.9697981036837349 | 0.9697981036837349 |
+| 18 | 1003 | 1003 | 1003 | 4 | 0.9557828985080842 | 0.9557828985080842 |
+| 19 | 1428 | 1428 | 1428 | 9 | 0.9771696561800088 | 0.9771696561800088 |
+| 20 | 561 | 561 | 561 | 8 | 0.9709645363591166 | 0.9709645363591166 |
+| 21 | 36 | 36 | 36 | 10 | 0.9655050277716297 | 0.9655050277716297 |
+| 22 | 1353 | 1353 | 1353 | 10 | 0.9246825336789987 | 0.9246825336789987 |
+| 23 | 515 | 515 | 515 | 8 | 0.9768809141483691 | 0.9768809141483691 |
+| 24 | 96 | 96 | 96 | 6 | 0.9376619672469053 | 0.9376619672469053 |
+| 25 | 247 | 247 | 247 | 5 | 0.9677096867207143 | 0.9677096867207143 |
+| 26 | 445 | 445 | 445 | 6 | 0.9396366429858719 | 0.9396366429858719 |
+| 27 | 1638 | 1638 | 1638 | 14 | 0.9677885816961298 | 0.9677885816961298 |
+| 28 | 752 | 752 | 752 | 9 | 0.9635908822432585 | 0.9635908822432585 |
+| 29 | 719 | 719 | 719 | 5 | 0.9623309195966294 | 0.9623309195966294 |
+| 30 | 199 | 199 | 199 | 6 | 0.9658455822108699 | 0.9658455822108699 |
+| 31 | 661 | 661 | 661 | 7 | 0.9670828433506595 | 0.9670828433506595 |
+| 32 | 1767 | 1767 | 1767 | 3 | 0.9522443747680045 | 0.9522443747680045 |
+| 33 | 1611 | 1611 | 1611 | 3 | 0.9775395714044678 | 0.9775395714044678 |
+| 34 | 1916 | 1916 | 1916 | 4 | 0.9811947890534277 | 0.9811947890534277 |
+| 35 | 1506 | 1506 | 1506 | 6 | 0.9690288314310342 | 0.9690288314310342 |
+| 36 | 118 | 118 | 118 | 4 | 0.9711843370634448 | 0.9711843370634448 |
+| 37 | 397 | 397 | 397 | 8 | 0.9608631596151911 | 0.9608631596151911 |
+| 38 | 595 | 595 | 595 | 7 | 0.9353636385965123 | 0.9353636385965123 |
+| 39 | 234 | 234 | 234 | 4 | 0.9193640688636744 | 0.9193640688636744 |
+| 40 | 1069 | 1069 | 1069 | 3 | 0.9591396971986332 | 0.9591396971986332 |
+| 41 | 1559 | 1559 | 1559 | 3 | 0.9633845259951382 | 0.9633845259951382 |
+| 42 | 417 | 417 | 417 | 5 | 0.9585719689085859 | 0.9585719689085859 |
+| 43 | 607 | 607 | 607 | 6 | 0.9632725598250625 | 0.9632725598250625 |
+| 44 | 1624 | 1624 | 1624 | 3 | 0.9704465311384293 | 0.9704465311384293 |
+| 45 | 1243 | 1243 | 1243 | 8 | 0.9377819263525787 | 0.9377819263525787 |
+| 46 | 445 | 445 | 445 | 4 | 0.9615218306811313 | 0.9615218306811313 |
+| 47 | 919 | 919 | 919 | 5 | 0.9633547135695478 | 0.9633547135695478 |
+| 48 | 673 | 673 | 673 | 3 | 0.9364722251808283 | 0.9364722251808283 |
+| 49 | 909 | 909 | 909 | 7 | 0.9752818191250043 | 0.9752818191250043 |
+| 50 | 715 | 715 | 715 | 6 | 0.9615135356818462 | 0.9615135356818462 |
+| 51 | 1133 | 1133 | 1133 | 4 | 0.9512193702439973 | 0.9512193702439973 |
+| 52 | 1278 | 1278 | 1278 | 9 | 0.9582841105952824 | 0.9582841105952824 |
+| 53 | 1925 | 1925 | 1925 | 3 | 0.970704292174391 | 0.970704292174391 |
+| 54 | 1446 | 1446 | 1446 | 6 | 0.9575773979396173 | 0.9575773979396173 |
+| 55 | 1635 | 1635 | 1635 | 7 | 0.9611545604427889 | 0.9611545604427889 |
+| 56 | 1000 | 1000 | 1000 | 4 | 0.9676463085456661 | 0.9676463085456661 |
+| 57 | 1959 | 1959 | 1959 | 4 | 0.973960974251426 | 0.973960974251426 |
+| 58 | 1790 | 1790 | 1790 | 6 | 0.9625140968943033 | 0.9625140968943033 |
+| 59 | 1502 | 1502 | 1502 | 7 | 0.9545431574151663 | 0.9545431574151663 |
+| 60 | 512 | 512 | 512 | 7 | 0.9628045934056109 | 0.9628045934056109 |
+| 61 | 480 | 480 | 480 | 1 | 0.9745639405023343 | 0.9745639405023343 |
+| 62 | 1592 | 1592 | 1592 | 6 | 0.9643040928551903 | 0.9643040928551903 |
+| 63 | 113 | 113 | 113 | 8 | 0.9535610209416601 | 0.9535610209416601 |
+| 64 | 494 | 494 | 494 | 8 | 0.9723544816784672 | 0.9723544816784672 |
+| 65 | 515 | 515 | 515 | 8 | 0.9754661014418559 | 0.9754661014418559 |
+| 66 | 92 | 92 | 92 | 6 | 0.9598298914508417 | 0.9598298914508417 |
+| 67 | 1451 | 1451 | 1451 | 4 | 0.9636755801920671 | 0.9636755801920671 |
+| 68 | 597 | 597 | 597 | 5 | 0.9405594946215093 | 0.9405594946215093 |
+| 69 | 1742 | 1742 | 1742 | 4 | 0.9648856430551149 | 0.9648856430551149 |
+| 70 | 1692 | 1692 | 1692 | 5 | 0.969537856283626 | 0.969537856283626 |
+| 71 | 1554 | 1554 | 1554 | 9 | 0.9614007882166681 | 0.9614007882166681 |
+| 72 | 266 | 266 | 266 | 3 | 0.9650059643226676 | 0.9650059643226676 |
+| 73 | 1370 | 1370 | 1370 | 10 | 0.9552174064337573 | 0.9552174064337573 |
+| 74 | 857 | 857 | 857 | 10 | 0.9687343086094838 | 0.9687343086094838 |
+| 75 | 1445 | 1445 | 1445 | 8 | 0.942908689524329 | 0.942908689524329 |
+| 76 | 908 | 908 | 908 | 8 | 0.9533547543137624 | 0.9533547543137624 |
+| 77 | 1229 | 1229 | 1229 | 6 | 0.9656082144608229 | 0.9656082144608229 |
+| 78 | 938 | 938 | 938 | 5 | 0.9677327098746255 | 0.9677327098746255 |
+| 79 | 295 | 295 | 295 | 6 | 0.9774603022573569 | 0.9774603022573569 |
+| 80 | 1143 | 1143 | 1143 | 7 | 0.908418829108771 | 0.908418829108771 |
+| 81 | 19 | 19 | 19 | 3 | 0.9493001927773891 | 0.9493001927773891 |
+| 82 | 1847 | 1847 | 1847 | 7 | 0.9479681425930144 | 0.9479681425930144 |
+| 83 | 799 | 799 | 799 | 4 | 0.9676179150964421 | 0.9676179150964421 |
+| 84 | 1967 | 1967 | 1967 | 11 | 0.9680777976989049 | 0.9680777976989049 |
+| 85 | 1663 | 1663 | 1663 | 9 | 0.9820668924731705 | 0.9820668924731705 |
+| 86 | 1940 | 1940 | 1940 | 6 | 0.9492288827368861 | 0.9492288827368861 |
+| 87 | 255 | 255 | 255 | 5 | 0.9659479297402139 | 0.9659479297402139 |
+| 88 | 1226 | 1226 | 1226 | 6 | 0.9647223674096025 | 0.9647223674096025 |
+| 89 | 136 | 136 | 136 | 3 | 0.9359318996382694 | 0.9359318996382694 |
+| 90 | 1799 | 1799 | 1799 | 6 | 0.9652241064772417 | 0.9652241064772417 |
+| 91 | 1302 | 1302 | 1302 | 6 | 0.9700328045855204 | 0.9700328045855204 |
+| 92 | 276 | 276 | 276 | 8 | 0.9435731135684118 | 0.9435731135684118 |
+| 93 | 1729 | 1729 | 1729 | 4 | 0.9428374361655838 | 0.9428374361655838 |
+| 94 | 1632 | 1632 | 1632 | 8 | 0.972707907759408 | 0.972707907759408 |
+| 95 | 986 | 986 | 986 | 3 | 0.9657553037830486 | 0.9657553037830486 |
+| 96 | 926 | 926 | 926 | 4 | 0.9449831573921723 | 0.9449831573921723 |
+| 97 | 297 | 297 | 297 | 5 | 0.9482155955986941 | 0.9482155955986941 |
+| 98 | 1061 | 1061 | 1061 | 7 | 0.9202747751344619 | 0.9202747751344619 |
+| 99 | 436 | 436 | 436 | 5 | 0.9546189699986517 | 0.9546189699986517 |
+| 100 | 174 | 174 | 174 | 4 | 0.9623509196633484 | 0.9623509196633484 |
+| 101 | 972 | 972 | 972 | 10 | 0.934898700901298 | 0.934898700901298 |
+| 102 | 1287 | 1287 | 1287 | 7 | 0.9567033462710526 | 0.9567033462710526 |
+| 103 | 525 | 525 | 525 | 8 | 0.982564745757946 | 0.982564745757946 |
+| 104 | 585 | 585 | 585 | 9 | 0.9637160084907905 | 0.9637160084907905 |
+| 105 | 623 | 623 | 623 | 6 | 0.942510207249092 | 0.942510207249092 |
+| 106 | 640 | 640 | 640 | 6 | 0.9382451710487607 | 0.9382451710487607 |
+| 107 | 822 | 822 | 822 | 2 | 0.9572495683108639 | 0.9572495683108639 |
+| 108 | 269 | 269 | 269 | 6 | 0.9591160883923336 | 0.9591160883923336 |
+| 109 | 624 | 624 | 624 | 10 | 0.9608095558661616 | 0.9608095558661616 |
+| 110 | 935 | 935 | 935 | 5 | 0.9369064148553473 | 0.9369064148553473 |
+| 111 | 463 | 463 | 463 | 6 | 0.9583416744256896 | 0.9583416744256896 |
+| 112 | 731 | 731 | 731 | 4 | 0.9608048806556484 | 0.9608048806556484 |
+| 113 | 1409 | 1409 | 1409 | 13 | 0.9726450215963 | 0.9726450215963 |
+| 114 | 394 | 394 | 394 | 4 | 0.9421412633776288 | 0.9421412633776288 |
+| 115 | 987 | 987 | 987 | 6 | 0.952549769151202 | 0.952549769151202 |
+| 116 | 1893 | 1893 | 1893 | 5 | 0.9405846735214018 | 0.9405846735214018 |
+| 117 | 1042 | 1042 | 1042 | 1 | 0.9360948159159209 | 0.9360948159159209 |
+| 118 | 437 | 437 | 437 | 4 | 0.9564712058019746 | 0.9564712058019746 |
+| 119 | 685 | 685 | 685 | 6 | 0.9374469862746004 | 0.9374469862746004 |
+| 120 | 1955 | 1955 | 1955 | 16 | 0.9729491261027672 | 0.9729491261027672 |
+| 121 | 123 | 123 | 123 | 12 | 0.949102683969677 | 0.949102683969677 |
+| 122 | 47 | 47 | 47 | 4 | 0.9597663196810254 | 0.9597663196810254 |
+| 123 | 51 | 51 | 51 | 5 | 0.9737474713380477 | 0.9737474713380477 |
+| 124 | 1582 | 1582 | 25 | 4 | 0.9595566041473532 | 0.4510531018139528 |
+| 125 | 419 | 419 | 419 | 8 | 0.950277774960862 | 0.950277774960862 |
+| 126 | 1484 | 1484 | 1484 | 5 | 0.9570707655510808 | 0.9570707655510808 |
+| 127 | 1443 | 1443 | 1443 | 4 | 0.9657724455564214 | 0.9657724455564214 |
+| 128 | 777 | 777 | 777 | 5 | 0.9712353638086234 | 0.9712353638086234 |
+| 129 | 1901 | 1901 | 1901 | 4 | 0.9687541419385982 | 0.9687541419385982 |
+| 130 | 518 | 518 | 1287 | 6 | 0.9085855744097734 | 0.30577206904144616 |
+| 131 | 782 | 782 | 782 | 7 | 0.9618802742407565 | 0.9618802742407565 |
+| 132 | 1729 | 1729 | 1729 | 4 | 0.9675210182666032 | 0.9675210182666032 |
+| 133 | 636 | 636 | 636 | 8 | 0.9285116873164987 | 0.9285116873164987 |
+| 134 | 889 | 889 | 889 | 9 | 0.9622223074949399 | 0.9622223074949399 |
+| 135 | 1602 | 1602 | 1602 | 5 | 0.958427564866376 | 0.958427564866376 |
+| 136 | 1879 | 1879 | 1879 | 5 | 0.9152816126499215 | 0.9152816126499215 |
+| 137 | 680 | 680 | 680 | 4 | 0.9611617139656119 | 0.9611617139656119 |
+| 138 | 1652 | 1652 | 1652 | 8 | 0.9615802799622357 | 0.9615802799622357 |
+| 139 | 1989 | 1989 | 1980 | 10 | 0.9388759690659542 | 0.43731416079624985 |
+| 140 | 1703 | 1703 | 1703 | 7 | 0.9420530513897457 | 0.9420530513897457 |
+| 141 | 23 | 23 | 23 | 6 | 0.9742091664383588 | 0.9742091664383588 |
+| 142 | 1341 | 1341 | 1341 | 11 | 0.960833741909404 | 0.960833741909404 |
+| 143 | 1109 | 1109 | 1109 | 8 | 0.958007201647589 | 0.958007201647589 |
+| 144 | 736 | 736 | 736 | 2 | 0.9471999534046729 | 0.9471999534046729 |
+| 145 | 446 | 446 | 446 | 8 | 0.9554969341625478 | 0.9554969341625478 |
+| 146 | 1511 | 1511 | 1511 | 10 | 0.9309493629783598 | 0.9309493629783598 |
+| 147 | 113 | 113 | 113 | 6 | 0.9527336744411381 | 0.9527336744411381 |
+| 148 | 102 | 102 | 102 | 5 | 0.9638216578047228 | 0.9638216578047228 |
+| 149 | 807 | 807 | 807 | 9 | 0.9649132343012005 | 0.9649132343012005 |
+| 150 | 350 | 350 | 350 | 6 | 0.9563399676705816 | 0.9563399676705816 |
+| 151 | 915 | 915 | 915 | 10 | 0.9411846759391013 | 0.9411846759391013 |
+| 152 | 1245 | 1245 | 1245 | 8 | 0.9738107184544099 | 0.9738107184544099 |
+| 153 | 1572 | 1572 | 1572 | 11 | 0.957346577864411 | 0.957346577864411 |
+| 154 | 1832 | 1832 | 1832 | 9 | 0.973644693779659 | 0.973644693779659 |
+| 155 | 1520 | 1520 | 1520 | 2 | 0.9409565013040544 | 0.9409565013040544 |
+| 156 | 1648 | 1648 | 1648 | 6 | 0.9590268273011572 | 0.9590268273011572 |
+| 157 | 1005 | 1005 | 1005 | 5 | 0.9632509718579187 | 0.9632509718579187 |
+| 158 | 1062 | 1062 | 1062 | 5 | 0.9333582465954781 | 0.9333582465954781 |
+| 159 | 123 | 123 | 123 | 13 | 0.9689523010387314 | 0.9689523010387314 |
+| 160 | 1691 | 1691 | 1691 | 6 | 0.9647627575295001 | 0.9647627575295001 |
+| 161 | 915 | 915 | 915 | 4 | 0.9464203314361288 | 0.9464203314361288 |
+| 162 | 1063 | 1063 | 1063 | 7 | 0.9661454057772868 | 0.9661454057772868 |
+| 163 | 1519 | 1519 | 1519 | 6 | 0.9599532894010064 | 0.9599532894010064 |
+| 164 | 1397 | 1397 | 1397 | 4 | 0.964302760659921 | 0.964302760659921 |
+| 165 | 1347 | 1347 | 1347 | 7 | 0.9612313038569333 | 0.9612313038569333 |
+| 166 | 899 | 899 | 899 | 5 | 0.9612705187200046 | 0.9612705187200046 |
+| 167 | 1277 | 1277 | 1277 | 9 | 0.9502006306200863 | 0.9502006306200863 |
+| 168 | 580 | 580 | 580 | 6 | 0.9687898949188871 | 0.9687898949188871 |
+| 169 | 696 | 696 | 696 | 3 | 0.9602369268732378 | 0.9602369268732378 |
+| 170 | 1981 | 1981 | 1981 | 7 | 0.9519044457061165 | 0.9519044457061165 |
+| 171 | 115 | 115 | 115 | 5 | 0.9286865405417918 | 0.9286865405417918 |
+| 172 | 113 | 113 | 113 | 7 | 0.9516685149246599 | 0.9516685149246599 |
+| 173 | 1005 | 1005 | 1005 | 4 | 0.9534346360155739 | 0.9534346360155739 |
+| 174 | 470 | 470 | 470 | 4 | 0.9505930441878238 | 0.9505930441878238 |
+| 175 | 520 | 520 | 520 | 3 | 0.9549554672206966 | 0.9549554672206966 |
+| 176 | 1730 | 1730 | 1730 | 6 | 0.9492341749986101 | 0.9492341749986101 |
+| 177 | 1155 | 1155 | 1155 | 5 | 0.89513211958796 | 0.89513211958796 |
+| 178 | 1987 | 1987 | 1987 | 4 | 0.9505244426857341 | 0.9505244426857341 |
+| 179 | 1137 | 1137 | 1137 | 6 | 0.979725815127887 | 0.979725815127887 |
+| 180 | 899 | 899 | 899 | 11 | 0.9307229841164931 | 0.9307229841164931 |
+| 181 | 1357 | 1357 | 1357 | 2 | 0.9378188295513782 | 0.9378188295513782 |
+| 182 | 412 | 412 | 412 | 6 | 0.9648989904639009 | 0.9648989904639009 |
+| 183 | 40 | 40 | 40 | 11 | 0.972076280290711 | 0.972076280290711 |
+| 184 | 336 | 336 | 336 | 7 | 0.9520883669519912 | 0.9520883669519912 |
+| 185 | 1370 | 1370 | 1370 | 7 | 0.964684948235206 | 0.964684948235206 |
+| 186 | 1726 | 1726 | 1726 | 7 | 0.9603165027854775 | 0.9603165027854775 |
+| 187 | 447 | 447 | 447 | 10 | 0.9463600931689148 | 0.9463600931689148 |
+| 188 | 853 | 853 | 853 | 9 | 0.9615976520436629 | 0.9615976520436629 |
+| 189 | 435 | 435 | 435 | 8 | 0.9730124525772573 | 0.9730124525772573 |
+| 190 | 1430 | 1430 | 1430 | 5 | 0.9247997129949583 | 0.9247997129949583 |
+| 191 | 193 | 193 | 193 | 3 | 0.9516446874932444 | 0.9516446874932444 |
+| 192 | 442 | 442 | 442 | 4 | 0.9332940268747882 | 0.9332940268747882 |
+| 193 | 1622 | 1622 | 1622 | 6 | 0.9713166042984112 | 0.9713166042984112 |
+| 194 | 942 | 942 | 942 | 3 | 0.9358922711634408 | 0.9358922711634408 |
+| 195 | 152 | 152 | 152 | 9 | 0.9715096818729358 | 0.9715096818729358 |
+| 196 | 1331 | 1331 | 1331 | 8 | 0.9643926805924157 | 0.9643926805924157 |
+| 197 | 1086 | 1086 | 1086 | 11 | 0.9789374626557494 | 0.9789374626557494 |
+| 198 | 1803 | 1803 | 1803 | 4 | 0.9565962680429195 | 0.9565962680429195 |
+| 199 | 35 | 35 | 35 | 4 | 0.9647431524955976 | 0.9647431524955976 |
+
+Actual indexed rows 2000; dimension 30; queries 200; exact-winner recall 0.985; mean distinct examined 6.165; no-candidate outcomes 0.
+\image(figures/lsh_original.svg)
+// result_end
+\caption(Actual candidate counts and exact-neighbor recall on the original workload.)
+\alttext(Each point counts actual distinct cosine evaluations; a separate computed table preserves exact and approximate identities and scores for every query.)
+
+> Ownership, finite arithmetic and honest query cost
+
+The index now copies complete finite rectangular input data. Destroying or
+changing the caller’s vectors cannot invalidate it or silently mismatch old
+buckets and new coordinates. Copies of the index own their data, planes and
+buckets. Const queries share no mutable state. This intentionally fixes the
+earlier borrowed-pointer lifetime/stale-bucket hazard. Nonempty input requires
+positive dimension; query dimension must match exactly, including an empty query
+for an empty-data index. Zero vectors are supported operationally with cosine0
+and nonnegative-dot bits, but have no mathematical angle for the isotropic law.
+
+Signature widths0..64 are checked; zero bits put every row in each table’s key0
+and zero tables deliberately yield no candidates. A full64-bit key uses a safe
+unsigned shift through bit63. Complete malformed/nonfinite inputs are rejected
+before indexing, even if no tables would be searched. Finite ordinary dot/cosine
+arithmetic retains its original order. If nonfinite raw arithmetic occurs,
+positive max-magnitude scaling supplies the deciding plane sum or cosine; no
+exact-sign certificate is implied by floating arithmetic. Extreme finite and
+subnormal vectors are covered separately from ordinary seeded compatibility.
+
+A query initializes N dense visited marks before searching, so total query work
+is O(N+L*k*d+V+C*d), where V is actual bucket-member visits and C is distinct
+cosine evaluations. This is not a worst-case sublinear implementation, even when
+C is small. Index storage includes O(N*d+L*k*d+L*N) owned values/ids, excluding
+map overhead. Trace storage additionally owns query coordinates, actual
+projection records, table probes with their real members and candidate visits.
+Logical admission counts each of those records before its copy, default one
+million and zero disabling only the optional cap; it excludes fields,
+capacities, model/runtime copies, visited marks and bytes.
+
+The controls below show operational consequences directly. With zero bits, every
+row is examined once despite duplicate visits across tables. With one plane, an
+antipodal query to a single indexed direction produces no bucket candidate.
+No-candidate results use SIZE_MAX and similarity sentinel−2, not an invented
+nearest neighbor.
+
+```{cpp, results="markdown", file="figures/lsh_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/lsh.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y;
+    std::print("| prescribed index size | actual dense seen entries initialized | actual bucket member " "visits | actual distinct cosine evaluations | actual winner |\n| ---: | ---: | ---: | ---: " "| ---: |\n");
+    for (std::size_t n : {1, 2, 4, 8, 16, 32, 64}) {
+        std::vector<std::vector<double>> data(n, {1, 0});
+        dm::algorithms::CosineLSH index(data, 3, 0, 7);
+        auto a = index.query_analysis({1, 0});
+        std::print("| {} | {} | {} | {} | {} |\n", n, a.seen_entries,
+                   a.bucket_visits, a.examined, a.best);
+        x.push_back(n);
+        y.push_back(a.seen_entries);
+    }
+    dm::algorithms::CosineLSH missed({{1, 0}}, 1, 1, 7);
+    auto a = missed.query_analysis({-1, 0});
+    std::print("\nActual antipodal one-plane result absent {}; examined {}; similarity sentinel {}.\n",
+               a.best == SIZE_MAX, a.examined, a.similarity);
+    auto p = dm::graphics::RPlot::create();
+    p.line(x, y, "actual seen entries", {37, 99, 235}, 2).title(
+        "Actual linear visited-array initialization in every query").x_label(
+        "indexed row count").y_label("actual dense marks initialized").save_svg(
+        "build/lsh_work.svg");
+}
+```
+// result_begin: markdown
+| prescribed index size | actual dense seen entries initialized | actual bucket member visits | actual distinct cosine evaluations | actual winner |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 3 | 1 | 0 |
+| 2 | 2 | 6 | 2 | 0 |
+| 4 | 4 | 12 | 4 | 0 |
+| 8 | 8 | 24 | 8 | 0 |
+| 16 | 16 | 48 | 16 | 0 |
+| 32 | 32 | 96 | 32 | 0 |
+| 64 | 64 | 192 | 64 | 0 |
+
+Actual antipodal one-plane result absent true; examined 0; similarity sentinel -2.
+\image(figures/lsh_work.svg)
+// result_end
+\caption(Actual visited-array work, duplicate suppression and a no-candidate control.)
+\alttext(The linear initialized-mark count remains part of total query work; a separate actual antipodal control demonstrates that no candidate can be returned.)
+
+> Verification and references
+
+Native tests inspect every actual query projection against stored coefficients,
+every real bucket against insertion-order signatures, all candidate
+duplicate/winner decisions, exact work/capture counts, owned input and
+index-copy lifetimes, zero vectors, zero/64-bit and zero-table controls, no
+candidates, complete finite guards and extreme/subnormal cosine scaling.
+Existing seeded recall and angle-agreement tests remain. The ten-report batch
+passes 95 CTest cases, 30 directly instrumented ASan/UBSan cases, 121 compiled
+and executed public examples, 601/601 scoped documentation definitions and 11
+representative hovers. Independent integer, Fraction, graph, string and NumPy
+references verify 82,729 records, including the complete original seeded LSH
+study. Frozen comparisons preserve ordinary legacy results; malformed-input,
+sentinel-collision, ownership and explicit-budget corrections are documented
+above. Thirteen checkout headers and thirteen installed headers compile
+independently, and an installed-header native consumer links and runs. Each
+complete report program runs against the checkout library; all four native
+figures are reviewed and HTML/Markdown exports preserve computed results and
+image bytes. Batch receipts: `build/mepml-conversion/batch-214-223/`.
+
+M. S. Charikar(2002),
+[Similarity Estimation Techniques from Rounding Algorithms|https://doi.org/10.1145/509907.509965],
+Proceedings of STOC,380–388. Its angular collision construction motivates the
+index; the dense visited array, finite arithmetic, owned storage and measured
+workload behavior are specific to this implementation.

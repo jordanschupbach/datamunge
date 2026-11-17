@@ -144,10 +144,17 @@ struct MetadataRandom {
   }
 };
 /// @brief Prepare canonical memory, balanced MNIST, known-factor images or sentence grammar assets.
-/// @param name "memory", "mnist-assets", "beta-vae-assets" or "sequence-vae-assets" adapter name.
+/// @param name "autorec", "memory", "mnist-assets", "beta-vae-assets" or "sequence-vae-assets" adapter name.
 /// @param root Parent cache directory.
 void prepare_basic(const std::string& name, const fs::path& root);
 /// @brief Execute a codec process directly without shell interpolation.
 /// @param args Executable name and exact arguments.
 void run(const std::vector<std::string>& args);
+/// @brief Prepare exact recovered upstream text/palette protocols.
+/// @param name character_rnn, ptb_word, bilstm_tagging, imdb_lstm or image_gpt.
+/// @param root Dataset cache directory.
+void prepare_language_assets(const std::string& name,const fs::path& root);
+/// @brief Prepare explicitly reconstructed missing NN recipes and authenticated published BERT arrays.
+/// @param root Owned shared recipe directory.
+void prepare_reconstructed_assets(const fs::path& root);
 } // namespace datamunge::datasets::detail

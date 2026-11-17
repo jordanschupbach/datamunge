@@ -1,4 +1,6 @@
 #pragma once
+#include <datamunge/algorithms/timsort.hpp>
+#include <datamunge/algorithms/stooge_sort.hpp>
 
 /// @file sorting_hybrid.hpp
 /// @brief Timsort, bead (gravity) sort with its partition view and gravity simulation, and stooge sort.
@@ -14,136 +16,6 @@
 #include <vector>
 
 namespace datamunge::algorithms {
-
-namespace detail {
-
-/// @brief Binary insertion sort of a[lo, hi), given that a[lo, start) is already sorted.
-/// @tparam T Element type with `operator<`.
-/// @param a Values.
-/// @param lo First index.
-/// @param hi One past the last index.
-/// @param start First index not yet sorted.
-template <typename T>
-void binary_insertion_sort(std::vector<T>& a, int lo, int hi, int start) {
-    if (start == lo) ++start;
-    for (; start < hi; ++start) {
-        const T   pivot = a[start];
-        int       left  = lo, right = start;
-        while (left < right) {
-            const int mid = left + (right - left) / 2;
-            if (pivot < a[mid]) right = mid;
-            else left = mid + 1;
-        }
-        for (int i = start; i > left; --i) a[i] = a[i - 1];
-        a[left] = pivot;
-    }
-}
-
-/// @brief Length of the maximal ascending (or strictly descending, then reversed) run starting at
-///        a[lo] within a[lo, hi); the run is left ascending.
-/// @tparam T Element type with `operator<`.
-/// @param a Values.
-/// @param lo First index.
-/// @param hi One past the last index.
-/// @return Run length, at least 1.
-template <typename T>
-int count_run_and_make_ascending(std::vector<T>& a, int lo, int hi) {
-    int run = lo + 1;
-    if (run == hi) return 1;
-    if (a[run++] < a[lo]) { // strictly descending
-        while (run < hi && a[run] < a[run - 1]) ++run;
-        std::reverse(a.begin() + lo, a.begin() + run);
-    } else { // ascending
-        while (run < hi && !(a[run] < a[run - 1])) ++run;
-    }
-    return run - lo;
-}
-
-/// @brief Timsort's minimum run length for @p n elements: between 32 and 64, chosen so that
-///        n / minrun is a power of two or just below one.
-/// @param n Number of elements.
-/// @return Minimum run length (n itself when n < 64).
-inline int timsort_min_run(int n) {
-    int r = 0;
-    while (n >= 64) { r |= (n & 1); n >>= 1; }
-    return n + r;
-}
-
-/// @brief Stable merge of the adjacent ascending runs a[lo, mid) and a[mid, hi).
-/// @tparam T Element type with `operator<`.
-/// @param a Values.
-/// @param lo Start of the left run.
-/// @param mid Start of the right run.
-/// @param hi One past the end of the right run.
-/// @param tmp Scratch buffer (resized as needed).
-template <typename T>
-void timsort_merge(std::vector<T>& a, int lo, int mid, int hi, std::vector<T>& tmp) {
-    tmp.assign(a.begin() + lo, a.begin() + mid);
-    int i = 0, j = mid, k = lo;
-    const int n = mid - lo;
-    while (i < n && j < hi) {
-        if (!(a[j] < tmp[i])) a[k++] = tmp[i++]; // stable: prefer left on ties
-        else a[k++] = a[j++];
-    }
-    while (i < n) a[k++] = tmp[i++];
-    // remaining right-run elements are already in place
-}
-
-} // namespace detail
-
-/// @brief Timsort, in place, ascending and stable.
-///
-/// Detects natural runs, extends short ones to `minrun` with binary insertion sort, and merges
-/// runs while keeping the stack size invariants. Galloping mode, a constant-factor optimisation,
-/// is omitted. \f$O(n\log n)\f$ worst case and \f$O(n)\f$ on already sorted input.
-/// @tparam T Element type with `operator<`.
-/// @param a Values to sort.
-template <typename T>
-void timsort(std::vector<T>& a) {
-    const int n = static_cast<int>(a.size());
-    if (n < 2) return;
-    const int minrun = detail::timsort_min_run(n);
-
-    struct Run { int base, len; };
-    std::vector<Run> stack;
-    std::vector<T>   tmp;
-
-    auto merge_at = [&](int i) {
-        const int base = stack[i].base;
-        const int mid  = stack[i].base + stack[i].len;
-        const int hi   = stack[i + 1].base + stack[i + 1].len;
-        detail::timsort_merge(a, base, mid, hi, tmp);
-        stack[i].len += stack[i + 1].len;
-        stack.erase(stack.begin() + i + 1);
-    };
-    auto merge_collapse = [&]() {
-        while (stack.size() > 1) {
-            const int s = static_cast<int>(stack.size());
-            if (s >= 3 && stack[s - 3].len <= stack[s - 2].len + stack[s - 1].len) {
-                if (stack[s - 3].len < stack[s - 1].len) merge_at(s - 3);
-                else merge_at(s - 2);
-            } else if (stack[s - 2].len <= stack[s - 1].len) {
-                merge_at(s - 2);
-            } else {
-                break;
-            }
-        }
-    };
-
-    int lo = 0;
-    while (lo < n) {
-        int runlen = detail::count_run_and_make_ascending(a, lo, n);
-        if (runlen < minrun) {
-            const int force = std::min(minrun, n - lo);
-            detail::binary_insertion_sort(a, lo, lo + force, lo + runlen);
-            runlen = force;
-        }
-        stack.push_back({lo, runlen});
-        merge_collapse();
-        lo += runlen;
-    }
-    while (stack.size() > 1) merge_at(static_cast<int>(stack.size()) - 2);
-}
 
 /// @brief Bead ("gravity") sort of non-negative integers, in place, ascending.
 ///
@@ -192,35 +64,5 @@ struct BeadFall {
 /// @return Grids before and after, ticks and move counts.
 /// @throws std::invalid_argument if the grid would exceed 10^8 cells.
 BeadFall bead_sort_gravity(const std::vector<unsigned>& a);
-
-namespace detail {
-/// @brief Recursive step of stooge_sort() on the inclusive range a[lo..hi].
-/// @tparam T Element type with `operator<`.
-/// @param a Values.
-/// @param lo First index.
-/// @param hi Last index (inclusive).
-template <typename T>
-void stooge(std::vector<T>& a, int lo, int hi) { // inclusive bounds
-    if (a[hi] < a[lo]) std::swap(a[lo], a[hi]);
-    const int len = hi - lo + 1;
-    if (len > 2) {
-        const int t = len / 3;
-        stooge(a, lo, hi - t);
-        stooge(a, lo + t, hi);
-        stooge(a, lo, hi - t);
-    }
-}
-} // namespace detail
-
-/// @brief Stooge sort, in place, ascending: sort the first two thirds, the last two thirds, then
-///        the first two thirds again.
-///
-/// Correct but \f$O(n^{\log 3/\log 1.5})\approx O(n^{2.71})\f$; a classic example of an inefficient sort.
-/// @tparam T Element type with `operator<`.
-/// @param a Values to sort.
-template <typename T>
-void stooge_sort(std::vector<T>& a) {
-    if (a.size() > 1) detail::stooge(a, 0, static_cast<int>(a.size()) - 1);
-}
 
 } // namespace datamunge::algorithms

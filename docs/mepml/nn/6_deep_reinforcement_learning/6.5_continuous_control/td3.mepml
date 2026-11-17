@@ -1,0 +1,940 @@
+//? Title: TD3: Twin Critics, Delayed Actor Updates and Smoothed Targets
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The complete native C++ source protocol keeps its interaction, replay, objectives, optimizer steps and evaluations editable. Canonical graphs/data calculations preserve original parameter names and random streams. Default bounded runs retain deferred convergence assertions; original optional full budgets remain available.
+)
+\toc
+
+> Follow the data and model
+
+Deterministic actor -> minimum of twin critics.
+
+```{cpp, results="markdown", file="figures/td3_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("input",{-18,0},"Source observations / sampled data",s).node("graph",{0,0},"Deterministic actor -> minimum of twin critics",s).node("update",{18,0},"Explicit objective / caller update",s).edge("input","graph").edge("graph","update").save_svg("build/td3_method.svg");}
+```
+// result_begin: markdown
+\image(figures/td3_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+Next critic estimates3,5 give the conservative target minimum3 and reward1/discount.9 target3.7. Source target-noise clipping and delayed actor updates remain in the report.
+
+```{cpp, results="markdown", file="figures/td3_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::vector<double>values{std::min(3.,5.),1+.9*std::min(3.,5.)};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/td3_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("td3 worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/td3_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 3.000000000 |
+| 1 | 3.700000000 |
+\image(figures/td3_worked.svg)
+// result_end
+
+> Inspect the native model architecture
+
+This separate trace calls the same canonical source graph and uses its original hidden/input/action sizes. Twin-critic and stochastic methods show one representative critic and a mean action for readability; the full experiment retains all critics and sampled actions. The trace initializes separate stores and does not change fitting.
+
+```{cpp, results="markdown", file="figures/td3_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_directories("build");n::ParameterStore p(0),q(1);n::Module network([&](const n::Tensor& x){auto a=m::DeterministicActor(p,"pi",x,1,128);return m::QNetwork(q,"q1",x,a,128);},"td3 source model");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;network.plot(n::zeros({1,3}),options).save_svg("build/td3_network.svg");}
+```
+// result_begin: markdown
+\image(figures/td3_network.svg)
+// result_end
+
+> Complete preserved source experiment
+
+Continuous CConfig defaults retain256 steps, warmup32, minibatches8 and128-wide networks. Pg/DqnConfig defaults retain512 steps and their source dimensions; full trajectories/rollouts may overshoot the nominal budget. Set DATAMUNGE_EXAMPLES_FULL=1 in the mep process environment to select original full budgets and convergence assertions. No external-framework parity is asserted. Every policy/actor schedule, replay collection, objective, optimizer/clipping step, target synchronization, temperature/dual update and search is visible below. Instrumentation copies histories/parameters without new draws or updates.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;inline std::map<std::string,std::vector<double>> traces;
+inline void Trace(const std::string&name,double value){traces[name].push_back(value);}inline int monitor_index=0,checkpoint_index=0;
+template<class T>void Save(const std::string& name,const std::vector<T>&v){arrays.push_back({name,dm::nn::from_vector(v)});}
+struct Checkpoint{dm::nn::ParameterStore& store;~Checkpoint(){auto tag=std::to_string(checkpoint_index++);for(const auto& name:store.names())arrays.push_back({"parameters_"+tag+"_"+name,store.at(name).detach().clone()});}};
+struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/td3_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn td3
+// Twin delayed DDPG (TD3).
+//
+// Port of tflow's td3. Fujimoto et al. 2018 fix DDPG's overestimation with
+// three changes:
+//   1. twin critics, with the target using the minimum of the two,
+//   2. target policy smoothing: clipped noise is added to the target action,
+//      so the critic is regressed on a small neighbourhood instead of a point,
+//   3. delayed updates: the actor and the target networks move only every
+//      d critic updates.
+//
+// The TF graph becomes eager nn ops over four ParameterStores (the twin
+// critics "q1"/"q2" share one store, as in TF); targets are computed under
+// NoGradGuard and target updates use ParameterStore::copy_from. The loop,
+// Pendulum, replay sampling and all noise use the same std::mt19937_64 stream
+// as TF; weights use nn's generator, so returns match TF statistically. The
+// vsim video is replaced by PlayBestOfSeeds (same episode, printed).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <datamunge/nn/nn.hpp>
+#include <random>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/classic_control.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::kPi;
+using datamunge::rl::environments::Clamp;
+using datamunge::rl::environments::WrapAngle;
+using datamunge::rl::environments::CartPole;
+using datamunge::rl::environments::MountainCar;
+using datamunge::rl::environments::MountainCarContinuous;
+using datamunge::rl::environments::Pendulum;
+using datamunge::rl::environments::Acrobot;
+}
+
+// Editable workflow support: rl/continuous.hpp
+// datamunge::nn port of tflow_examples src/common/rl/continuous.h.
+// Pieces shared by the continuous-control examples: config, deterministic
+// and Gaussian actors, tanh-squashed sampling with its log-density
+// correction, state-action critics, and deterministic evaluation. Actions
+// inside the networks live in [-1, 1]; the environment's bounds are applied
+// at the boundary with ScaleAction.
+//
+// Changes from the TF version: the networks are eager functions of a
+// ParameterStore and a tensor (calling one twice with the same store and
+// name shares its weights, as nn::Params did), NormalNoise returns an
+// nn::Tensor, and the TF hardware options are accepted and ignored except
+// threads=N, which sets nn's thread count.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <datamunge/nn/nn.hpp>
+#include <functional>
+#include <random>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/dqn_common.hpp
+// datamunge::nn port of tflow_examples src/common/rl/dqn_common.h.
+// Pieces shared by the DQN-family examples: hyper-parameters, the epsilon
+// schedule, a training monitor, Q-value heads (plain / dueling), greedy
+// evaluation, the C51 distribution projection, and Adam with global-norm
+// clipping (tflow's nn::Adam).
+//
+// Changes from the TF version: the TF hardware options (device=, threads=,
+// xla=) are accepted and ignored, since nn runs eagerly on the CPU; QHead
+// builds on a ParameterStore and returns a tensor instead of adding graph
+// nodes; the noisy-network head (nn::NoisyDense) is not included, because
+// datamunge::nn has no noisy layer yet.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <datamunge/nn/nn.hpp>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+
+namespace nn = datamunge::nn;
+
+struct DqnConfig {
+  int steps = 50000;          // environment steps
+  int warmup = 1000;          // steps before training starts
+  int batch = 64;
+  int buffer = 50000;
+  float gamma = 0.98f;        // 0.99 is the usual choice; 0.98 bounds Q by 50 and makes CartPole far more stable
+  float lr = 5e-4f;
+  float clip_norm = 10.f;
+  int target_sync = 500;      // hard target update period (steps), used when tau == 1
+  float tau = 0.005f;         // target <- tau * online + (1 - tau) * target every step; tau = 1 means a hard copy every target_sync steps
+  float eps_start = 1.f, eps_end = 0.05f;
+  int eps_decay_steps = 10000;
+  int hidden = 128;
+  int train_every = 2;
+  int log_every = 5000;
+  int eval_every = 5000;
+  int eval_episodes = 5;
+  uint64_t seed = 0;
+};
+
+// TF-only options that the ports accept and ignore.
+inline bool IsHardwareOption(const std::string& key) {
+  return key == "device" || key == "threads" || key == "intra_threads" || key == "inter_threads" || key == "xla";
+}
+
+// Overrides from the command line, e.g. `just run-nn dqn steps=50000 lr=5e-4`.
+inline void ParseConfig(int argc, char** argv, DqnConfig* c) {
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    const size_t eq = arg.find('=');
+    if (eq == std::string::npos) continue;
+    const std::string key = arg.substr(0, eq);
+    const float v = std::strtof(arg.c_str() + eq + 1, nullptr);
+    if (IsHardwareOption(key)) continue;
+    if (key == "steps") c->steps = static_cast<int>(v);
+    else if (key == "warmup") c->warmup = static_cast<int>(v);
+    else if (key == "batch") c->batch = static_cast<int>(v);
+    else if (key == "buffer") c->buffer = static_cast<int>(v);
+    else if (key == "gamma") c->gamma = v;
+    else if (key == "lr") c->lr = v;
+    else if (key == "clip_norm") c->clip_norm = v;
+    else if (key == "target_sync") c->target_sync = static_cast<int>(v);
+    else if (key == "tau") c->tau = v;
+    else if (key == "eps_start") c->eps_start = v;
+    else if (key == "eps_end") c->eps_end = v;
+    else if (key == "eps_decay_steps") c->eps_decay_steps = static_cast<int>(v);
+    else if (key == "hidden") c->hidden = static_cast<int>(v);
+    else if (key == "train_every") c->train_every = static_cast<int>(v);
+    else if (key == "log_every") c->log_every = static_cast<int>(v);
+    else if (key == "eval_every") c->eval_every = static_cast<int>(v);
+    else if (key == "seed") c->seed = static_cast<uint64_t>(v);
+    else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 512);
+    c->warmup = std::min(c->warmup, 32);
+    c->batch = std::min(c->batch, 8);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    c->eps_decay_steps = std::min(c->eps_decay_steps, c->steps);
+    example_runtime::Describe();
+  }
+}
+
+inline float Epsilon(const DqnConfig& c, int step) {
+  const float frac = std::min(1.f, static_cast<float>(step) / c.eps_decay_steps);
+  return c.eps_start + frac * (c.eps_end - c.eps_start);
+}
+
+// Greedy evaluation with any action function.
+inline float Evaluate(Env& env, const std::function<int(const Obs&)>& act, int episodes, uint64_t seed) {
+  double total = 0;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    while (true) {
+      StepResult r = env.step(act(obs));
+      total += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+  }
+  report_capture::Trace("eval_call",static_cast<float>(total/episodes));
+  return static_cast<float>(total / episodes);
+}
+
+// Tracks episode returns and losses and prints one line per log period.
+class Monitor {
+ public:
+  explicit Monitor(const DqnConfig& cfg, const char* third_column = "eps") : cfg_(cfg) {
+    std::printf("  %8s %8s %12s %7s %10s %10s\n", "step", "episodes", "return(20)", third_column, "loss", "eval");
+  }
+  void EndEpisode(float ret) { returns_.push_back(ret); }
+  ~Monitor(){auto tag=std::to_string(id_);report_capture::Save("return_"+tag,returns_);report_capture::Save("step_"+tag,steps_);report_capture::Save("eval_"+tag,evaluation_);report_capture::Save("loss_"+tag,mean_losses_);}
+  void AddLoss(float loss) { losses_.push_back(loss); }
+  int episodes() const { return static_cast<int>(returns_.size()); }
+  float RecentReturn(int n = 20) const {
+    if (returns_.empty()) return 0.f;
+    const size_t from = returns_.size() > static_cast<size_t>(n) ? returns_.size() - n : 0;
+    return std::accumulate(returns_.begin() + from, returns_.end(), 0.f) / (returns_.size() - from);
+  }
+  void Log(int step, float eps, float eval_return) {
+    const float loss = losses_.empty() ? 0.f : std::accumulate(losses_.begin(), losses_.end(), 0.f) / losses_.size();
+    steps_.push_back(step);evaluation_.push_back(eval_return);mean_losses_.push_back(loss);
+    losses_.clear();
+    char eval[16];
+    if (std::isnan(eval_return)) std::snprintf(eval, sizeof eval, "%10s", "");
+    else std::snprintf(eval, sizeof eval, "%10.1f", eval_return);
+    std::printf("  %8d %8d %12.1f %7.3f %10.4f %s\n", step, episodes(), RecentReturn(), eps, loss, eval);
+    std::fflush(stdout);
+  }
+
+ private:
+  int id_=report_capture::monitor_index++;std::vector<double>steps_,evaluation_,mean_losses_;
+  DqnConfig cfg_;
+  std::vector<float> returns_, losses_;
+};
+
+using dm::nn::models::ProjectDistribution;
+
+// One observation as a [1, obs_dim] tensor.
+inline nn::Tensor Row(const Obs& o) { return nn::from_vector(o, {1, static_cast<std::int64_t>(o.size())}); }
+
+}  // namespace rl
+
+
+// Editable workflow support: rl/replay.hpp
+#include <datamunge/rl/replay.hpp>
+namespace rl {using dm::rl::replay::Experience;using dm::rl::replay::Batch;using dm::rl::replay::ReplayBuffer;using dm::rl::replay::PrioritizedReplay;using dm::rl::replay::NStepBuffer;using dm::rl::replay::SeqBatch;using dm::rl::replay::SequenceReplay;}
+
+namespace rl {
+
+struct CConfig {
+  int steps = 200000;
+  int warmup = 1000;       // random actions before training
+  int batch = 128;
+  int buffer = 100000;
+  float gamma = 0.99f;
+  float tau = 0.005f;      // Polyak factor for target networks
+  float actor_lr = 1e-3f, critic_lr = 1e-3f;
+  int hidden = 128;
+  float noise = 0.1f;      // exploration noise std (fraction of the action range)
+  int log_every = 2000;
+  int eval_every = 4000;
+  int eval_episodes = 5;
+  uint64_t seed = 0;
+};
+
+inline void ParseCConfig(int argc, char** argv, CConfig* c) {
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    const size_t eq = arg.find('=');
+    if (eq == std::string::npos) continue;
+    const std::string key = arg.substr(0, eq);
+    const float v = std::strtof(arg.c_str() + eq + 1, nullptr);
+    if (key == "threads") {
+      datamunge::nn::set_num_threads(static_cast<int>(v));
+      continue;
+    }
+    if (IsHardwareOption(key)) continue;
+    if (key == "steps") c->steps = static_cast<int>(v);
+    else if (key == "warmup") c->warmup = static_cast<int>(v);
+    else if (key == "batch") c->batch = static_cast<int>(v);
+    else if (key == "buffer") c->buffer = static_cast<int>(v);
+    else if (key == "gamma") c->gamma = v;
+    else if (key == "tau") c->tau = v;
+    else if (key == "actor_lr") c->actor_lr = v;
+    else if (key == "critic_lr") c->critic_lr = v;
+    else if (key == "lr") c->actor_lr = c->critic_lr = v;
+    else if (key == "hidden") c->hidden = static_cast<int>(v);
+    else if (key == "noise") c->noise = v;
+    else if (key == "log_every") c->log_every = static_cast<int>(v);
+    else if (key == "eval_every") c->eval_every = static_cast<int>(v);
+    else if (key == "seed") c->seed = static_cast<uint64_t>(v);
+    else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 256);
+    c->warmup = std::min(c->warmup, 32);
+    c->batch = std::min(c->batch, 8);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    example_runtime::Describe();
+  }
+}
+
+inline DqnConfig MonitorConfig(const CConfig& c) {
+  DqnConfig d;
+  d.log_every = c.log_every;
+  d.eval_every = c.eval_every;
+  d.eval_episodes = c.eval_episodes;
+  return d;
+}
+
+// [-1, 1]^dim -> the environment's box.
+using dm::rl::continuous::ScaleAction;using dm::rl::continuous::NormalNoise;
+using dm::nn::models::DeterministicActor;using dm::nn::models::Gaussian;using dm::nn::models::GaussianActor;
+using dm::nn::models::Squashed;using dm::nn::models::SquashedSample;using dm::nn::models::GaussianLogProb;using dm::nn::models::QNetwork;
+// Evaluation with a deterministic policy returning actions in [-1, 1].
+inline float EvaluateC(Env& env, const std::function<std::vector<float>(const Obs&)>& act, int episodes, uint64_t seed) {
+  const ActionSpace space = env.action_space();
+  double total = 0;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    while (true) {
+      StepResult r = env.step(ScaleAction(act(obs), space));
+      total += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+  }
+  report_capture::Trace("eval_call",static_cast<float>(total/episodes));
+  return static_cast<float>(total / episodes);
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/play_best.hpp
+// datamunge::nn port helper standing in for tflow's vsim_studio.h RecordBest.
+//
+// RecordBest plays `candidates` seeded episodes (seeds seed .. seed+candidates-1) without
+// filming, then films the one with the highest return. PlayBestOfSeeds runs the same candidate
+// episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
+// (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
+
+#include <cstdint>
+#include <cstdio>
+#include <limits>
+#include <string>
+#include <utility>
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+namespace rl {
+
+template <typename Env, typename PolicyFn>
+Playback PlayBestOfSeeds(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, int candidates = 5) {
+  uint64_t best_seed = seed;
+  float    best = -std::numeric_limits<float>::infinity();
+  for (int c = 0; c < candidates; ++c) {
+    float ret = 0;
+    Obs   obs = env.reset(seed + c);
+    while (true) {
+      const StepResult r = env.step(Decide(policy, obs).action);
+      ret += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    if (ret > best) best = ret, best_seed = seed + c;
+  }
+  std::printf("  best of %d episodes (return %.1f):\n", candidates, best);
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, best_seed);
+}
+
+}  // namespace rl
+
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+
+int main(int argc, char** argv) {
+  rl::CConfig cfg;
+  rl::ParseCConfig(argc, argv, &cfg);
+  const float target_noise = 0.2f, noise_clip = 0.5f;
+  const int policy_delay = 2;
+  rl::Pendulum env, eval_env;
+  const rl::ActionSpace space = env.action_space();
+  const int obs_dim = env.obs_size(), act_dim = space.dim;
+  std::printf("== TD3 on Pendulum: %d steps, target noise %.1f clipped at %.1f, policy delay %d\n", cfg.steps, target_noise, noise_clip, policy_delay);
+
+  nn::ParameterStore actor(cfg.seed), critic(cfg.seed + 1), actor_t(cfg.seed + 2), critic_t(cfg.seed + 3);
+
+  report_capture::Checkpoint checkpoint_actor{actor};
+
+  report_capture::Checkpoint checkpoint_critic{critic};
+
+  report_capture::Checkpoint checkpoint_actor_t{actor_t};
+
+  report_capture::Checkpoint checkpoint_critic_t{critic_t};
+
+  auto pi = [&](nn::ParameterStore& p, const Tensor& s) { return rl::DeterministicActor(p, "pi", s, act_dim, cfg.hidden); };
+  auto q = [&](nn::ParameterStore& p, const char* name, const Tensor& s, const Tensor& a) { return rl::QNetwork(p, name, s, a, cfg.hidden); };
+  {
+    nn::NoGradGuard no_grad;
+    const Tensor s0 = nn::zeros({1, obs_dim}), a0 = nn::zeros({1, act_dim});
+    for (nn::ParameterStore* p : {&actor, &actor_t}) pi(*p, s0);
+    for (nn::ParameterStore* p : {&critic, &critic_t}) q(*p, "q1", s0, a0), q(*p, "q2", s0, a0);
+  }
+  nn::Optimizer native_critic_adam(critic,cfg.critic_lr,{nn::OptimizerKind::Adam});
+auto native_critic_adam_minimize=[&](const Tensor& loss){auto gradients=nn::grad(loss,native_critic_adam.parameters());double norm;if(0.>0){auto clipped=nn::clip_by_global_norm(gradients,0.);gradients=std::move(clipped.first);norm=clipped.second;}else norm=nn::global_norm(gradients);native_critic_adam.step(gradients);return norm;};
+nn::Optimizer native_actor_adam(actor,cfg.actor_lr,{nn::OptimizerKind::Adam});
+auto native_actor_adam_minimize=[&](const Tensor& loss){auto gradients=nn::grad(loss,native_actor_adam.parameters());double norm;if(0.>0){auto clipped=nn::clip_by_global_norm(gradients,0.);gradients=std::move(clipped.first);norm=clipped.second;}else norm=nn::global_norm(gradients);native_actor_adam.step(gradients);return norm;};
+
+  actor_t.copy_from(actor, 1.0);
+  critic_t.copy_from(critic, 1.0);
+  check::Require(critic.count() == 2 * 17281, "twin critics: 2 x 17281 parameters");
+
+  rl::ReplayBuffer buffer(cfg.buffer, obs_dim);
+  rl::Monitor monitor(rl::MonitorConfig(cfg), "q1-min");
+  std::mt19937_64 rng(cfg.seed);
+  std::normal_distribution<float> normal(0.f, 1.f);
+  auto act = [&](const rl::Obs& o) {
+    nn::NoGradGuard no_grad;
+    return pi(actor, rl::Row(o)).to_vector<float>();
+  };
+  rl::Obs obs = env.reset(cfg.seed);
+  float ret = 0, gap = 0, best_eval = -1e9f;
+  for (int step = 1; step <= cfg.steps; ++step) {
+    std::vector<float> u(act_dim);
+    if (step <= cfg.warmup) {
+      for (float& x : u) x = std::uniform_real_distribution<float>(-1, 1)(rng);
+    } else {
+      u = act(obs);
+      for (float& x : u) x = std::max(-1.f, std::min(1.f, x + cfg.noise * normal(rng)));
+    }
+    rl::StepResult sr = env.step(rl::ScaleAction(u, space));
+    buffer.Add({obs, 0, sr.reward, sr.obs, sr.terminated ? 1.f : 0.f, u});
+    ret += sr.reward;
+    obs = sr.obs;
+    if (sr.done()) {
+      monitor.EndEpisode(ret);
+      ret = 0;
+      obs = env.reset();
+    }
+    if (step > cfg.warmup) {
+      const rl::Batch b = buffer.Sample(cfg.batch, rng);
+      const Tensor eps = rl::NormalNoise(cfg.batch, act_dim, rng);  // [B, act_dim] smoothing noise
+      Tensor y;
+      {  // smoothed target action and the minimum of the twin target critics
+        nn::NoGradGuard no_grad;
+        const Tensor a_next = nn::clip(pi(actor_t, b.s2) + nn::clip(eps * target_noise, -noise_clip, noise_clip), -1.0, 1.0);
+        y = b.r + (cfg.gamma * (1.0 - b.done)) * nn::minimum(q(critic_t, "q1", b.s2, a_next), q(critic_t, "q2", b.s2, a_next));
+      }
+      const Tensor q1 = q(critic, "q1", b.s, b.act_c), q2 = q(critic, "q2", b.s, b.act_c);
+      const Tensor critic_loss = nn::mean(nn::square(y - q1), {0}) + nn::mean(nn::square(y - q2), {0});
+      {  // overestimation diagnostic: Q1 on the batch vs. the twin minimum (before the update)
+        nn::NoGradGuard no_grad;
+        gap = nn::mean(q1.detach() - nn::minimum(q1.detach(), q2.detach()), {0}).item<float>();
+      }
+      native_critic_adam_minimize(critic_loss);
+      const float cl = critic_loss.item<float>();
+      check::Require(std::isfinite(cl) && gap >= 0, "finite critic loss and nonnegative q1-min gap");
+      monitor.AddLoss(cl);
+      if (step % policy_delay == 0) {
+        native_actor_adam_minimize(-nn::mean(q(critic, "q1", b.s, pi(actor, b.s)), {0}));
+        actor_t.copy_from(actor, cfg.tau);
+        critic_t.copy_from(critic, cfg.tau);
+      }
+    }
+    if (step % cfg.log_every == 0) {
+      const float ev = step % cfg.eval_every == 0 ? rl::EvaluateC(eval_env, act, cfg.eval_episodes, 1000 + step) : NAN;
+      if (!std::isnan(ev)) best_eval = std::max(best_eval, ev);
+      monitor.Log(step, gap, ev);
+    }
+  }
+  std::printf("  ('q1-min' is the mean gap between critic 1 and the twin minimum on a batch)\n");
+  const float final_eval = rl::EvaluateC(eval_env, act, 20, 777);
+  std::printf("  final deterministic evaluation over 20 episodes: %.1f\n", final_eval);
+  // On film in TF: the action and the critic's estimate of the return from here.
+  rl::PlayBestOfSeeds(eval_env, [&](const rl::Obs& o) {
+    nn::NoGradGuard no_grad;
+    const std::vector<float> u = act(o);
+    const Tensor s = rl::Row(o), a = nn::from_vector(u, {1, act_dim});
+    const float v = std::min(q(critic, "q1", s, a).item<float>(), q(critic, "q2", s, a).item<float>());
+    return rl::Explain(rl::ScaleAction(u, space), v, "min(Q1,Q2)(s,a)");
+  }, "td3_pendulum", 4242);
+  // A random policy scores about -1200 per episode, a good one above -200 (TF seed 0: final -163.6).
+  check::TrainingQuality(std::max(best_eval, final_eval) >= -400, "TD3 learned to swing up (best deterministic evaluation >= -400)");
+  return 0;
+}
+
+```
+// result_begin:
+// Quick demonstration: bounded training; convergence metrics require DATAMUNGE_EXAMPLES_FULL=1.
+// == TD3 on Pendulum: 256 steps, target noise 0.2 clipped at 0.5, policy delay 2
+//       step episodes   return(20)  q1-min       loss       eval
+//        256        1      -1472.7   0.063    12.4136    -1552.7
+//   ('q1-min' is the mean gap between critic 1 and the twin minimum on a batch)
+//   final deterministic evaluation over 20 episodes: -1578.0
+//   best of 5 episodes (return -1571.6):
+//   played td3_pendulum (video omitted): 200 steps, return -1571.6
+//   full-training quality check deferred: TD3 learned to swing up (best deterministic evaluation >= -400)
+// result_end
+
+> Actual return diagnostics
+
+These values come from the preserved source run above. Evaluation calls remain in their original order and may include different final policies, such as SAC mean versus sampled actions. One point does not establish a learning trend. The hybrid histogram retains raw source counts; task rewards and intrinsic bonuses are separate quantities.
+
+```{cpp, results="markdown", file="figures/td3_return.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/td3_source.npz");auto plot=dm::graphics::RPlot::create();for(const auto&[key,t]:archive){if(!key.starts_with("return_"))continue;auto y=t.to_vector<double>();std::vector<double>x(y.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,y,key,{37,99,235}).points(x,y,key+" points",{37,99,235},4);}plot.title("td3 actual return diagnostics").x_label("Ended training episode").y_label("Task return").size(1100,600).save_svg("build/td3_return.svg");}
+```
+// result_begin: markdown
+\image(figures/td3_return.svg)
+// result_end
+
+> Actual eval diagnostics
+
+These values come from the preserved source run above. Evaluation calls remain in their original order and may include different final policies, such as SAC mean versus sampled actions. One point does not establish a learning trend. The hybrid histogram retains raw source counts; task rewards and intrinsic bonuses are separate quantities.
+
+```{cpp, results="markdown", file="figures/td3_eval.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/td3_source.npz");auto plot=dm::graphics::RPlot::create();bool calls=std::any_of(archive.begin(),archive.end(),[](const auto& p){return p.first=="eval_call";});for(const auto&[key,t]:archive){if(calls?key!="eval_call":!key.starts_with("eval_"))continue;auto y=t.to_vector<double>();std::vector<double>x(y.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,y,key,{37,99,235}).points(x,y,key+" points",{37,99,235},5);}plot.title("td3 actual eval diagnostics").x_label("Existing source evaluation call").y_label("Task return").size(1100,600).save_svg("build/td3_eval.svg");}
+```
+// result_begin: markdown
+\image(figures/td3_eval.svg)
+// result_end
+
+> Interpretation and provenance
+
+Bounded-mode quality assertions remain explicitly deferred; finite loss/data checks and displayed source comparisons still run. No full convergence or framework-equivalence claim follows from a short run. Original seeds, actual budgets, weak outcomes and final named checkpoints are preserved. Datamunge owns reusable graphs, target algebra and replay data structures; optimizer state, actor scheduling and every experiment loop remain in this editable report.

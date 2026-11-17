@@ -76,7 +76,7 @@ def main():
                   raw_samples=rows, executable_sha256=digest(executable), library_sha256=digest(library),
                   linked_libraries=linked, compiler=subprocess.check_output([compiler, '--version'], text=True).splitlines()[0],
                   logical_cpus=os.cpu_count(), source_hashes={p: digest(ROOT/p) for p in paths},
-                  input_hashes={p: digest(ROOT/'docs/mepml/examples/build/fruit_stream_realistic'/p)
+                  input_hashes={p: digest(ROOT/'docs/mepml/build/fruit_stream_realistic'/p)
                                 for p in ['trajectory.csv', 'fruit_trajectory.csv']})
     output = args.output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)

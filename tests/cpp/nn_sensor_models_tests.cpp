@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_sensor_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/ecg_sensor_cnn.cpp"
-#undef main
+#include "../fixtures/nn_ecg_sensor_cnn_checks.hpp"
 #include "../fixtures/nn_sensor_reference.hpp"
 TEST(Sensor, IndependentAll171StridedResidualParameterDerivatives) {
   HostChecks();
@@ -20,7 +18,7 @@ TEST(Sensor, EveryOriginalSampleIdLabelAndFitOnlyChannelStatistic) {
   namespace r = sensor_reference;
   for (const std::string name : {"ECG200", "BasicMotions"}) {
     const std::filesystem::path root =
-        std::filesystem::path("build/cnn-datasets/ecg_sensor") / name;
+        std::filesystem::path((std::filesystem::path(dm::datasets::data_home()) / "ecg_sensor")) / name;
     const auto d = m::LoadSensor(root);
     const auto old = r::LoadSensor(root);
     EXPECT_EQ(d.mean.to_vector<float>(), old.mean.to_vector<float>());
@@ -57,7 +55,7 @@ TEST(Sensor, EveryRealReferenceMetricAndSourceIndexDiagnostic) {
   namespace r = sensor_reference;
   for (const std::string name : {"ECG200", "BasicMotions"}) {
     const auto d =
-        m::LoadSensor(std::filesystem::path("build/cnn-datasets/ecg_sensor") / name);
+        m::LoadSensor(std::filesystem::path((std::filesystem::path(dm::datasets::data_home()) / "ecg_sensor")) / name);
     const auto &fit = d.pools[0];
     const auto &test = d.pools[2];
     for (bool centroid : {false, true}) {
@@ -80,7 +78,7 @@ TEST(Sensor, BothExplicitSgdCentroidFieldsMatchEveryOracleDistance) {
   namespace m = dm::nn::models;
   for (const std::string name : {"ECG200", "BasicMotions"}) {
     const auto d =
-        m::LoadSensor(std::filesystem::path("build/cnn-datasets/ecg_sensor") / name);
+        m::LoadSensor(std::filesystem::path((std::filesystem::path(dm::datasets::data_home()) / "ecg_sensor")) / name);
     const auto &fit = d.pools[0];
     const auto &test = d.pools[2];
     const int k = d.config.classes;
@@ -108,7 +106,7 @@ TEST(Sensor, BothExplicitSgdCentroidFieldsMatchEveryOracleDistance) {
 TEST(Sensor, IndependentAllInputGradientsAndEveryChannelReplacement) {
   namespace m = dm::nn::models;
   nn::set_num_threads(2);
-  const auto d = m::LoadSensor("build/cnn-datasets/ecg_sensor/BasicMotions");
+  const auto d = m::LoadSensor((std::filesystem::path(dm::datasets::data_home()) / "ecg_sensor/BasicMotions"));
   nn::ParameterStore p(587), state(593);
   const auto x = nn::slice_axis(d.pools[2].signals, 0, 0, 1).requires_grad_();
   m::SensorCnn(p, state, x, d.config);

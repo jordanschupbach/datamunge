@@ -23,7 +23,7 @@ def main():
     for source, target in [
         (ROOT / "include", stage / "inst/include"),
         (ROOT / "src/datamunge", stage / "src/datamunge"),
-        (ROOT / "examples/nn/common", stage / "inst/examples/common"),
+        (ROOT / "prebindings/nn/include/common", stage / "inst/examples/common"),
         (ROOT / "examples/bindings", stage / "inst/bindings"),
     ]:
         if source.name == "bindings":

@@ -1,94 +1,127 @@
 #pragma once
-
-/// \file kabsch.hpp
-/// \brief Kabsch algorithm: optimal rigid alignment of two point sets (RMSD minimization).
-///
-/// Given two ordered sets of corresponding points, the *Kabsch algorithm* (Wolfgang Kabsch,
-/// 1976) finds the rotation and translation that overlay one onto the other with the smallest
-/// possible root-mean-square deviation -- the standard way to compare protein structures. We
-/// use Horn's quaternion formulation: after centering both sets, the optimal rotation is the
-/// eigenvector of the largest eigenvalue of a 4x4 symmetric matrix built from the
-/// cross-covariance. That eigenvector *is* the rotation quaternion, which also sidesteps the
-/// reflection ambiguity that a naive SVD solution must guard against.
-
-#include <datamunge/linalg/eigen.hpp>
-
+/// @file kabsch.hpp
+/// @brief Checked Horn-quaternion rigid alignment with actual covariance and eigensystem evidence.
 #include <array>
-#include <cmath>
 #include <cstddef>
 #include <vector>
-
 namespace datamunge::algorithms {
-
+/// @brief Owned three Cartesian double coordinates; units follow the caller's paired data.
+/// @par Example
+/// @code
+/// const dm::algorithms::Point3 p={1,2,3};std::print("{}\n",p[1]); // 2
+/// @endcode
+/// @see kabsch()
 using Point3 = std::array<double, 3>;
-
-/// Result of a Kabsch alignment mapping `source` onto `target`.
+/// @brief Owned proper-rotation/translation fit mapping source onto corresponding target points.
+/// Original field order/types retained. No scale/reflection/permutation fitting.
+/// RMSD evaluates the returned double transform on the original paired inputs.
+/// Degenerate data can admit multiple equally optimal rotations; one is returned.
+/// @par Example
+/// @code
+/// const auto r=dm::algorithms::kabsch({{0,0,0}},{{1,2,3}});
+/// std::print("{} {}\n",r.translation[0],r.rmsd); // 1 0
+/// @endcode
+/// @see kabsch_analyze()
 struct KabschResult {
-    std::array<std::array<double, 3>, 3> rotation;     ///< Optimal rotation matrix.
-    std::array<double, 3>                translation;  ///< Optimal translation.
-    double                               rmsd;         ///< Minimized RMSD after alignment.
+  std::array<std::array<double, 3>, 3> rotation; ///< Returned proper rotation, row-major.
+  Point3 translation;                            ///< Returned additive translation, target units.
+  double rmsd; ///< Root mean squared Euclidean residual per paired point, not per coordinate.
 };
-
-/// \brief Optimal rigid transform (rotation + translation) aligning `source` onto `target`.
-///
-/// The two vectors must have equal length with point i in `source` corresponding to point i
-/// in `target`. Returns the rotation \c R and translation \c t minimizing
-/// \f$\sum_i \lVert R\,s_i + t - q_i\rVert^2\f$, and the resulting RMSD.
-inline KabschResult kabsch(const std::vector<Point3>& source, const std::vector<Point3>& target) {
-    const std::size_t n = source.size();
-
-    // 1. Centroids.
-    Point3 cs{0, 0, 0}, ct{0, 0, 0};
-    for (std::size_t i = 0; i < n; ++i)
-        for (int d = 0; d < 3; ++d) { cs[d] += source[i][d]; ct[d] += target[i][d]; }
-    for (int d = 0; d < 3; ++d) { cs[d] /= n; ct[d] /= n; }
-
-    // 2. Cross-covariance H[a][b] = sum (s_i - cs)_a (q_i - ct)_b.
-    double H[3][3] = {{0}};
-    for (std::size_t i = 0; i < n; ++i)
-        for (int a = 0; a < 3; ++a)
-            for (int b = 0; b < 3; ++b)
-                H[a][b] += (source[i][a] - cs[a]) * (target[i][b] - ct[b]);
-
-    // 3. Horn's 4x4 symmetric key matrix N.
-    double Sxx = H[0][0], Sxy = H[0][1], Sxz = H[0][2];
-    double Syx = H[1][0], Syy = H[1][1], Syz = H[1][2];
-    double Szx = H[2][0], Szy = H[2][1], Szz = H[2][2];
-    linalg::DenseMatrix<double> N(4, 4, 0.0);
-    N(0, 0) = Sxx + Syy + Szz; N(0, 1) = Syz - Szy;        N(0, 2) = Szx - Sxz;        N(0, 3) = Sxy - Syx;
-    N(1, 0) = Syz - Szy;       N(1, 1) = Sxx - Syy - Szz;  N(1, 2) = Sxy + Syx;        N(1, 3) = Szx + Sxz;
-    N(2, 0) = Szx - Sxz;       N(2, 1) = Sxy + Syx;        N(2, 2) = -Sxx + Syy - Szz; N(2, 3) = Syz + Szy;
-    N(3, 0) = Sxy - Syx;       N(3, 1) = Szx + Sxz;        N(3, 2) = Syz + Szy;        N(3, 3) = -Sxx - Syy + Szz;
-
-    // 4. Largest-eigenvalue eigenvector = optimal rotation quaternion (w, x, y, z).
-    auto   eig = linalg::jacobi_eigen(N);
-    double w = eig.eigenvectors(0, 0), x = eig.eigenvectors(1, 0),
-           y = eig.eigenvectors(2, 0), z = eig.eigenvectors(3, 0);
-
-    // 5. Quaternion -> rotation matrix.
-    KabschResult r;
-    r.rotation = {{{1 - 2 * (y * y + z * z), 2 * (x * y - w * z),     2 * (x * z + w * y)},
-                   {2 * (x * y + w * z),     1 - 2 * (x * x + z * z), 2 * (y * z - w * x)},
-                   {2 * (x * z - w * y),     2 * (y * z + w * x),     1 - 2 * (x * x + y * y)}}};
-
-    // 6. Translation t = ct - R cs.
-    for (int a = 0; a < 3; ++a) {
-        double Rcs = 0;
-        for (int b = 0; b < 3; ++b) Rcs += r.rotation[a][b] * cs[b];
-        r.translation[a] = ct[a] - Rcs;
-    }
-
-    // 7. RMSD after applying the transform.
-    double sq = 0;
-    for (std::size_t i = 0; i < n; ++i)
-        for (int a = 0; a < 3; ++a) {
-            double v = r.translation[a];
-            for (int b = 0; b < 3; ++b) v += r.rotation[a][b] * source[i][b];
-            double e = v - target[i][a];
-            sq += e * e;
-        }
-    r.rmsd = std::sqrt(sq / n);
-    return r;
-}
-
-}  // namespace datamunge::algorithms
+/// @brief Owned same-execution paired fit, normalized covariance/key matrix and actual observations.
+/// Normalize each input set by its max(1,absolute coordinate), then center in long
+/// double. Covariance is the mean outer product in those normalized units. Divide
+/// it by covariance_scale to build the dimensionless Horn key matrix; scale zero
+/// uses an all-zero key. Eigenvalues are descending and quaternion is the actual
+/// normalized principal eigenvector, scalar-first. No second fit or iteration
+/// replay. Eigen residual/gap are additional diagnostics, not exact certificates
+/// of rank, uniqueness or convergence in exact arithmetic. All vectors own data.
+/// @par Example
+/// @code
+/// const auto a=dm::algorithms::kabsch_analyze({{0,0,0}},{{1,2,3}});
+/// std::print("{} {}\n",a.aligned.size(),a.result.rmsd); // 1 0
+/// @endcode
+/// @see kabsch_analyze()
+struct KabschAnalysis {
+  KabschResult               result;            ///< Actual returned transform and RMSD.
+  std::array<long double, 3> source_centroid{}; ///< Producing source centroid in original units.
+  std::array<long double, 3> target_centroid{}; ///< Producing target centroid in original units.
+  long double                source_scale{1};   ///< Source max(1,absolute input coordinate).
+  long double                target_scale{1};   ///< Target max(1,absolute input coordinate).
+  std::array<std::array<long double, 3>, 3>
+              covariance{}; ///< Actual mean centered normalized cross-covariance.
+  long double covariance_scale{
+      0}; ///< Actual largest absolute covariance entry used to normalize key construction.
+  std::array<std::array<long double, 4>, 4>
+      key_matrix{}; ///< Actual normalized Horn matrix passed to the eigensolver.
+  std::array<long double, 4> eigenvalues{}; ///< Actual descending normalized-key eigenvalues.
+  std::array<long double, 4>
+                      quaternion{};      ///< Actual normalized scalar-first principal eigenvector.
+  long double         eigen_residual{0}; ///< Additional Euclidean norm of Nq-lambda*q.
+  long double         eigen_gap{0};      ///< Additional largest-minus-second eigenvalue difference.
+  std::vector<Point3> source; ///< Owned original paired source coordinates, analysis only.
+  std::vector<Point3> target; ///< Owned original paired target coordinates, analysis only.
+  std::vector<Point3>
+      aligned; ///< Actual application of returned transform, rounded to double coordinates.
+  std::vector<long double>
+      residual_norms; ///< Actual widened Euclidean residual norms before coordinate rounding.
+};
+/// @brief Fit a proper rigid transform to nonempty finite corresponding point sets.
+/// Equal sizes are required, order defines correspondence. Uses Horn's principal
+/// quaternion formulation of Kabsch's objective. Independent positive input
+/// normalization and long-double mean covariance avoid raw square/product
+/// overflow; no additional scale is fitted. A normalized quaternion gives a
+/// proper rotation, then t=target_mean-R*source_mean. Numerical degeneracy may
+/// choose any optimum; zero covariance chooses the eigensolver's identity basis.
+/// Computes residuals using the returned double transform with widened arithmetic
+/// and stable incremental RMS norm. Floating normalization/eigensolving are not
+/// exact predicates; last bits may differ from the former raw-double kernel.
+/// O(n) work, constant-sized eigensolve and O(1) auxiliary storage apart from its
+/// fixed-size allocations. Input unchanged, result owned, no shared state.
+/// @param source Borrowed nonempty finite points.
+/// @param target Borrowed finite corresponding points of equal size.
+/// @return Owned proper rotation, translation and per-point RMSD.
+/// @throws std::invalid_argument On empty/mismatched/nonfinite inputs.
+/// @throws std::overflow_error On nonfinite intermediates or outputs outside finite double range.
+/// @throws std::runtime_error On nonfinite/zero eigensolver quaternion or failed residual tolerance.
+/// @throws std::bad_alloc On fixed-size eigensolver allocation failure.
+/// @par Example
+/// @code
+/// const auto r=dm::algorithms::kabsch({{0,0,0},{1,0,0}},{{1,2,3},{2,2,3}});
+/// std::print("{:.6f}\n",r.rmsd); // 0.000000
+/// @endcode
+/// @par References
+/// - Horn(1987), Closed-form solution of absolute orientation using unit quaternions,
+///   https://doi.org/10.1364/JOSAA.4.000629.
+/// - Kabsch(1976), A solution for the best rotation to relate two sets of vectors,
+///   https://doi.org/10.1107/S0567739476001873.
+/// @see kabsch_analyze()
+KabschResult kabsch(const std::vector<Point3>& source, const std::vector<Point3>& target);
+/// @brief Capture actual paired alignment, covariance/key matrix and principal eigensystem once.
+/// Same contracts/arithmetic/degenerate conventions as kabsch(). Complete finite
+/// validation and pair-count admission precede input/output vector copies. The
+/// ceiling counts paired records, not the multiple vectors, bytes/capacities or
+/// peak RAM; zero disables the optional cap. O(n) extra owned output, no replay.
+/// Residual norms are computed before aligned coordinates are rounded to double,
+/// so differ by rounding from norms recomputed on the captured aligned vector.
+/// @param source Borrowed nonempty finite original source points.
+/// @param target Borrowed same-sized finite original target points.
+/// @param max_pairs Complete pair ceiling, default million; zero disables optional cap.
+/// @return Owned same-execution fit and observations, no input references.
+/// @throws std::invalid_argument On empty/mismatched/nonfinite inputs.
+/// @throws std::length_error On enabled complete pair ceiling or container limits.
+/// @throws std::overflow_error On arithmetic/output representability failure.
+/// @throws std::runtime_error On invalid quaternion or excessive eigen residual.
+/// @throws std::bad_alloc On allocation failure.
+/// @par Example
+/// @code
+/// const auto a=dm::algorithms::kabsch_analyze({{0,0,0}},{{1,2,3}},1);
+/// std::print("{}\n",a.aligned[0][2]); // 3
+/// @endcode
+/// @par References
+/// - Horn(1987), https://doi.org/10.1364/JOSAA.4.000629.
+/// @see KabschAnalysis, kabsch()
+KabschAnalysis kabsch_analyze(
+    const std::vector<Point3>& source,
+    const std::vector<Point3>& target,
+    std::size_t                max_pairs = 1000000);
+} // namespace datamunge::algorithms

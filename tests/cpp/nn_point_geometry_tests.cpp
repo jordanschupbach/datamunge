@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_point_geometry_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_geometry.cpp"
-#undef main
+#include "../fixtures/nn_point_geometry_checks.hpp"
 #include "../fixtures/nn_point_geometry_reference.hpp"
 TEST(PointGeometry, OriginalAll60CoordinateDerivativesTiesBoundariesAndTranslation) {
   EXPECT_EQ(original_point_geometry_main(), 0);

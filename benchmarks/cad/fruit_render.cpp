@@ -11,7 +11,7 @@ int main(int argc, char** argv) try {
   int budget=argc==5?std::stoi(argv[4]):0;
   if(budget<0||budget>256)throw std::runtime_error("Worker budget must be 0..256");
   fs::create_directories(output);
-  auto dir = root / "docs/mepml/examples/build/fruit_stream_realistic";
+  auto dir = root / "docs/mepml/build/fruit_stream_realistic";
   dm::nn::set_num_threads(1); // Match the report; renderer threads are controlled separately.
   auto frames = replay(dir);
   auto urdf = root / "build/cad-assets/rebot/Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf";

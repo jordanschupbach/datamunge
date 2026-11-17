@@ -1,104 +1,162 @@
 #pragma once
-
-/// \file signed_reversals.hpp
-/// \brief Sorting a signed permutation by reversals (genome rearrangement distance).
-///
-/// Genomes of related species often differ by *reversals*: a chromosomal segment is excised,
-/// flipped, and reinserted, which reverses the gene order *and* the strand (sign) of each gene.
-/// The *reversal distance* between two genomes -- the minimum number of such operations to
-/// transform one into the other -- measures their evolutionary divergence. Modeling genes as a
-/// *signed permutation*, this module computes the exact reversal distance (and an optimal
-/// sequence of reversals) by breadth-first search over permutations, and counts *breakpoints*,
-/// the classic lower bound.
-
-#include <algorithm>
+/// @file signed_reversals.hpp
+/// @brief Checked exact signed-reversal BFS and actual predecessor path.
 #include <cstddef>
-#include <queue>
-#include <string>
-#include <unordered_map>
 #include <utility>
 #include <vector>
-
+/// @brief Canonical checked native producers and owned algorithm values.
 namespace datamunge::algorithms {
-
-/// Result of sorting a signed permutation by reversals.
+/// @brief SignedReversalResult stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SignedReversalResult value{};
+/// std::print("{}\n",value.distance); // 0
+/// @endcode
 struct SignedReversalResult {
-    int                                 distance;   ///< Minimum number of reversals.
-    std::vector<std::pair<int, int>>    reversals;  ///< An optimal sequence of [i,j] reversals.
+  int distance{};                             ///< Proven minimum reversal count when BFS completes.
+  std::vector<std::pair<int, int>> reversals; ///< Actual selected inclusive zero-based reversals.
 };
-
+/// @brief SignedReversalOptions stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SignedReversalOptions value{};
+/// std::print("{}\n",value.max_genes); // 8
+/// @endcode
+struct SignedReversalOptions {
+  std::size_t max_genes{
+      8}; ///< Complete gene count; zero disables policy but int indexing remains bounded.
+  std::size_t max_states{
+      1000000}; ///< Actual distinct visited states including root; zero disables.
+  std::size_t max_edges{20000000}; ///< Actual generated reversal neighbors; zero disables.
+};
+/// @brief SignedReversalState stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SignedReversalState value{};
+/// std::print("{}\n",value.breakpoints); // 0
+/// @endcode
+struct SignedReversalState {
+  std::vector<int> permutation; ///< Actual selected predecessor-chain state.
+  int breakpoints{}; ///< Actual framed nonconsecutive adjacencies; ceil(b/2) is a distance lower bound.
+  std::pair<int, int> reversal{-1, -1}; ///< Actual producing edge; {-1,-1} at root.
+};
+/// @brief SignedReversalLayer stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SignedReversalLayer value{};
+/// std::print("{}\n",value.depth); // 0
+/// @endcode
+struct SignedReversalLayer {
+  int         depth{};      ///< Actual BFS expansion depth.
+  std::size_t expanded{};   ///< Actual dequeued states at this depth.
+  std::size_t generated{};  ///< Actual tested reversal neighbors at this depth.
+  std::size_t discovered{}; ///< Actual new states at this depth, discovered at depth+1.
+};
+/// @brief SignedReversalRun stores owned actual values or explicit invocation policies; field units and defaults are described below.
+/// @par Example
+/// @code
+/// const dm::algorithms::SignedReversalRun value{};
+/// std::print("{}\n",value.states); // 0
+/// @endcode
+struct SignedReversalRun {
+  SignedReversalResult result;      ///< Proven minimum and actual selected predecessor edges.
+  std::size_t          states{};    ///< Actual visited unique states including initial and target.
+  std::size_t          generated{}; ///< Actual neighbor transformations attempted.
+  std::vector<SignedReversalState>
+      path; ///< Optional actual selected predecessor chain including root.
+  std::vector<SignedReversalLayer> layers; ///< Actual BFS expansion work per visited depth.
+};
+/// @brief Find an exact shortest signed-reversal sequence.
+/// Input must contain each absolute gene1..n exactly once. Empty permutation is identity. BFS visits reversals [i,j] in increasing i then j, storing each first predecessor; first discovered identity is optimal because every edge has unit cost. The reported path comes from those actual stored states, not a separate replay. n genes have at most 2^n*n! states; generating n(n+1)/2 O(n)-copy neighbors and ordered-map lookup per expanded state is exponential. Bounds abort with an exception, never an invented distance or optimality claim. No biological inference from synthetic toy permutations. Owned working storage, no shared state.
+/// @param start Borrowed complete valid signed permutation.
+/// @param options Complete size and actual visited-state/edge policies; zero disables policy.
+/// @return Owned exact result, actual search counts/layers and optional selected path.
+/// @throws std::invalid_argument Zero, duplicate or out-of-range absolute gene.
+/// @throws std::length_error Input, state/edge policy, int indexing or counter capacity exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::signed_reversal_run({-2,-1});
+/// std::print("{}\n",r.result.distance); // 1
+/// @endcode
+/// @par References
+/// - Hannenhalli and Pevzner, Transforming cabbage into turnip, JACM 46(1), 1999, DOI 10.1145/300515.300516. This implementation uses exhaustive BFS, not their polynomial algorithm.
+/// @see signed_breakpoints()
+SignedReversalRun signed_reversal_run(
+    const std::vector<int>&      start,
+    const SignedReversalOptions& options = {});
+/// @brief Find an exact shortest signed-reversal sequence with actual selected predecessor states.
+/// Input must contain each absolute gene1..n exactly once. Empty permutation is identity. BFS visits reversals [i,j] in increasing i then j, storing each first predecessor; first discovered identity is optimal because every edge has unit cost. The reported path comes from those actual stored states, not a separate replay. n genes have at most 2^n*n! states; generating n(n+1)/2 O(n)-copy neighbors and ordered-map lookup per expanded state is exponential. Bounds abort with an exception, never an invented distance or optimality claim. No biological inference from synthetic toy permutations. Owned working storage, no shared state.
+/// @param start Borrowed complete valid signed permutation.
+/// @param options Complete size and actual visited-state/edge policies; zero disables policy.
+/// @return Owned exact result, actual search counts/layers and optional selected path.
+/// @throws std::invalid_argument Zero, duplicate or out-of-range absolute gene.
+/// @throws std::length_error Input, state/edge policy, int indexing or counter capacity exceeded.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::signed_reversal_trace({-2,-1});
+/// std::print("{}\n",r.result.distance); // 1
+/// @endcode
+/// @par References
+/// - Hannenhalli and Pevzner, Transforming cabbage into turnip, JACM 46(1), 1999, DOI 10.1145/300515.300516. This implementation uses exhaustive BFS, not their polynomial algorithm.
+/// @see signed_breakpoints()
+SignedReversalRun signed_reversal_trace(
+    const std::vector<int>&      start,
+    const SignedReversalOptions& options = {});
+/// @brief Return exact signed-reversal distance through the preserved API.
+/// Checked BFS with default policies; throws rather than returning an unproved answer on exhaustion.
+/// @param start Valid complete signed permutation.
+/// @return Owned exact minimum and selected reversals.
+/// @throws std::invalid_argument Malformed permutation.
+/// @throws std::length_error Default search policy or capacity exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::sort_by_reversals({-2,-1}).distance); // 1
+/// @endcode
+/// @see signed_reversal_run()
+SignedReversalResult sort_by_reversals(const std::vector<int>& start);
+/// @brief Count framed directed breakpoints in a signed permutation.
+/// Frames with0 and n+1 and counts b!=a+1. A signed reversal preserves all internal directed adjacencies and changes at most two boundary adjacencies, so ceil(breakpoints/2), not the raw count, lower-bounds distance. Validates genes, supports empty input; O(n) time/storage, no shared state.
+/// @param perm Borrowed complete valid signed permutation.
+/// @return Nonnegative framed breakpoint count.
+/// @throws std::invalid_argument Invalid genes.
+/// @throws std::length_error Cannot represent framed indices in int.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::signed_breakpoints({-2,-1})); // 2
+/// @endcode
+/// @see signed_reversal_run()
+int signed_breakpoints(const std::vector<int>& perm);
+/// @brief Apply one checked inclusive signed reversal to an owned permutation.
+/// Reverses the interval and negates each gene. Validates permutation and indices before mutation; O(n) validation and owned output, no shared state.
+/// @param permutation Owned complete valid signed permutation.
+/// @param first Inclusive zero-based first index.
+/// @param last Inclusive zero-based final index, at least first.
+/// @return Owned transformed permutation.
+/// @throws std::invalid_argument Malformed permutation or interval.
+/// @throws std::length_error Int indexing capacity exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::signed_apply_reversal({-2,-1},0,1)); // [1, 2]
+/// @endcode
+/// @see signed_reversal_run()
+std::vector<int> signed_apply_reversal(std::vector<int> permutation, int first, int last);
+/// @brief Historical compatibility helper namespace.
 namespace detail {
-inline std::string encode_perm(const std::vector<int>& p) {
-    std::string s;
-    for (int x : p) { s += (x < 0 ? '-' : '+'); s += static_cast<char>('a' + (x < 0 ? -x : x)); }
-    return s;
-}
-/// Reverse p[i..j] inclusive and negate each element (a signed reversal).
+/// @brief Preserve the historical checked reversal helper.
+/// Delegates to the canonical validated transformation.
+/// @param p Owned valid signed permutation.
+/// @param i First inclusive position.
+/// @param j Last inclusive position.
+/// @return Owned transformed sequence.
+/// @throws std::invalid_argument Malformed genes/interval.
+/// @throws std::length_error Index capacity exceeded.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::detail::apply_reversal({-1},0,0)); // [1]
+/// @endcode
+/// @see signed_apply_reversal()
 inline std::vector<int> apply_reversal(std::vector<int> p, int i, int j) {
-    while (i < j) { std::swap(p[i], p[j]); p[i] = -p[i]; p[j] = -p[j]; ++i; --j; }
-    if (i == j) p[i] = -p[i];
-    return p;
+  return signed_apply_reversal(std::move(p), i, j);
 }
-}  // namespace detail
-
-/// \brief Number of *breakpoints* in a signed permutation (a lower bound on reversal distance).
-///
-/// Frame the permutation with 0 at the front and n+1 at the back; a *breakpoint* is an adjacent
-/// pair \((a,b)\) that is not "consecutive" (i.e. \(b\neq a+1\)).
-inline int signed_breakpoints(const std::vector<int>& perm) {
-    std::vector<int> framed;
-    framed.push_back(0);
-    for (int x : perm) framed.push_back(x);
-    framed.push_back(static_cast<int>(perm.size()) + 1);
-    int bp = 0;
-    for (std::size_t i = 0; i + 1 < framed.size(); ++i)
-        if (framed[i + 1] != framed[i] + 1) ++bp;
-    return bp;
-}
-
-/// \brief Exact reversal distance and an optimal reversal sequence, by BFS (for small n).
-///
-/// \param start  a signed permutation of 1..n (values +/-1..+/-n); the target is the identity
-///               (+1,+2,...,+n).
-inline SignedReversalResult sort_by_reversals(const std::vector<int>& start) {
-    const int        n = static_cast<int>(start.size());
-    std::vector<int> identity(n);
-    for (int i = 0; i < n; ++i) identity[i] = i + 1;
-
-    if (start == identity) return {0, {}};
-
-    // BFS storing, per state, its predecessor and the reversal that produced it.
-    std::unordered_map<std::string, std::pair<std::string, std::pair<int, int>>> parent;
-    std::queue<std::vector<int>>                                                 q;
-    q.push(start);
-    parent[detail::encode_perm(start)] = {"", {-1, -1}};
-
-    while (!q.empty()) {
-        std::vector<int> cur = q.front();
-        q.pop();
-        std::string curkey = detail::encode_perm(cur);
-        for (int i = 0; i < n; ++i)
-            for (int j = i; j < n; ++j) {
-                std::vector<int> nxt    = detail::apply_reversal(cur, i, j);
-                std::string      nxtkey = detail::encode_perm(nxt);
-                if (parent.count(nxtkey)) continue;
-                parent[nxtkey] = {curkey, {i, j}};
-                if (nxt == identity) {
-                    // Reconstruct the reversal sequence.
-                    SignedReversalResult r;
-                    std::string          k = nxtkey;
-                    while (parent[k].first != "") {
-                        r.reversals.push_back(parent[k].second);
-                        k = parent[k].first;
-                    }
-                    std::reverse(r.reversals.begin(), r.reversals.end());
-                    r.distance = static_cast<int>(r.reversals.size());
-                    return r;
-                }
-                q.push(std::move(nxt));
-            }
-    }
-    return {-1, {}};   // unreachable for a valid permutation
-}
-
-}  // namespace datamunge::algorithms
+} // namespace detail
+} // namespace datamunge::algorithms

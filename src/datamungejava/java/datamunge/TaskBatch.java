@@ -37,7 +37,7 @@ public class TaskBatch extends NativeObject {
      * @return Positive environment count.
      */
     public long size() {
-        return Rosetta.asLong(Rosetta.call(3164, this));
+        return Rosetta.asLong(Rosetta.call(3175, this));
     }
 
     /**
@@ -48,7 +48,7 @@ public class TaskBatch extends NativeObject {
      * @return Four for InvertedPendulum or eleven for Hopper.
      */
     public long observationSize() {
-        return Rosetta.asLong(Rosetta.call(3165, this));
+        return Rosetta.asLong(Rosetta.call(3176, this));
     }
 
     /**
@@ -59,7 +59,7 @@ public class TaskBatch extends NativeObject {
      * @return One for InvertedPendulum or three for Hopper.
      */
     public long actionSize() {
-        return Rosetta.asLong(Rosetta.call(3166, this));
+        return Rosetta.asLong(Rosetta.call(3177, this));
     }
 
     /**
@@ -70,7 +70,7 @@ public class TaskBatch extends NativeObject {
      * @return Internal reusable arrays, valid until destruction and modified by step/reset.
      */
     public TaskOutput output() {
-        return Rosetta.asObject(Rosetta.call(3167, this), TaskOutput.class);
+        return Rosetta.asObject(Rosetta.call(3178, this), TaskOutput.class);
     }
 
     /**
@@ -95,7 +95,7 @@ public class TaskBatch extends NativeObject {
      * @throws NativeException Physics failure; explicit reset is required before retrying. (C++ {@code std::exception})
      */
     public TaskOutput step(double[] actions) {
-        return Rosetta.asObject(Rosetta.call(3168, this, actions), TaskOutput.class);
+        return Rosetta.asObject(Rosetta.call(3179, this, actions), TaskOutput.class);
     }
 
     /**
@@ -119,7 +119,7 @@ public class TaskBatch extends NativeObject {
      * @throws NativeException Physics failure; explicit reset is required before retrying. (C++ {@code std::exception})
      */
     public TaskOutput step(double[] actions, byte[] mask) {
-        return Rosetta.asObject(Rosetta.call(3168, this, actions, mask), TaskOutput.class);
+        return Rosetta.asObject(Rosetta.call(3179, this, actions, mask), TaskOutput.class);
     }
 
     /**
@@ -140,7 +140,7 @@ public class TaskBatch extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid mask. (C++ {@code std::invalid_argument})
      */
     public TaskOutput reset() {
-        return Rosetta.asObject(Rosetta.call(3169, this), TaskOutput.class);
+        return Rosetta.asObject(Rosetta.call(3180, this), TaskOutput.class);
     }
 
     /**
@@ -160,7 +160,7 @@ public class TaskBatch extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid mask. (C++ {@code std::invalid_argument})
      */
     public TaskOutput reset(byte[] mask) {
-        return Rosetta.asObject(Rosetta.call(3169, this, mask), TaskOutput.class);
+        return Rosetta.asObject(Rosetta.call(3180, this, mask), TaskOutput.class);
     }
 
     /**
@@ -177,7 +177,7 @@ public class TaskBatch extends NativeObject {
      * @param seed New batch random seed.
      */
     public void seed(long seed) {
-        Rosetta.call(3170, this, seed);
+        Rosetta.call(3181, this, seed);
     }
 
     /**
@@ -193,7 +193,7 @@ public class TaskBatch extends NativeObject {
      * @return the result
      */
     public static TaskBatch create(Task task, long count) {
-        return Rosetta.asObject(Rosetta.call(3171, task, count), TaskBatch.class);
+        return Rosetta.asObject(Rosetta.call(3182, task, count), TaskBatch.class);
     }
 
     /**
@@ -210,7 +210,7 @@ public class TaskBatch extends NativeObject {
      * @return the result
      */
     public static TaskBatch create(Task task, long count, long workers) {
-        return Rosetta.asObject(Rosetta.call(3171, task, count, workers), TaskBatch.class);
+        return Rosetta.asObject(Rosetta.call(3182, task, count, workers), TaskBatch.class);
     }
 
     /**
@@ -228,7 +228,7 @@ public class TaskBatch extends NativeObject {
      * @return the result
      */
     public static TaskBatch create(Task task, long count, long workers, long seed) {
-        return Rosetta.asObject(Rosetta.call(3171, task, count, workers, seed), TaskBatch.class);
+        return Rosetta.asObject(Rosetta.call(3182, task, count, workers, seed), TaskBatch.class);
     }
 
     /**
@@ -245,6 +245,6 @@ public class TaskBatch extends NativeObject {
      * @return the result
      */
     public static TaskBatch create(Task task, long count, long workers, long seed, long timeLimit) {
-        return Rosetta.asObject(Rosetta.call(3171, task, count, workers, seed, timeLimit), TaskBatch.class);
+        return Rosetta.asObject(Rosetta.call(3182, task, count, workers, seed, timeLimit), TaskBatch.class);
     }
 }

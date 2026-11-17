@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_dream_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.11_interpretability/deepdream.cpp"
-#undef main
+#include "../fixtures/nn_deepdream_checks.hpp"
 #include "../fixtures/nn_dream_reference.hpp"
 TEST(DeepDream, AnalyticRmsPixelsFourBacktracksZeroRateStationaryAndNineHalfPixelValues) {
   Checks();

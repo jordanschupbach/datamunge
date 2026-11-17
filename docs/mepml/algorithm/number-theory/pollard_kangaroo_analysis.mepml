@@ -1,0 +1,313 @@
+//? Title: Kangaroo logarithms: actual seeded jumps and exact interval distances
+//? Subtitle: Actual canonical histories, retained original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Study the actual native producer from a tiny, inspectable example through the
+retained original experiment and explicit boundary/work controls. Complete
+editable C++ programs own every rendered native figure.
+)
+
+\toc
+
+> Mechanism and scope
+
+The native algorithm precomputes a seeded32-entry jump table, walks a complete
+tame trail from g^b, then walks the target until a trail lookup supplies a
+candidate. Collisions can include cyclic-group aliases, so every candidate is
+range-checked and verified by modular powering. Failure after finite attempts
+does not show that no logarithm exists, and a five-setting plot does not prove a
+square-root work law. Exact widened distances preserve b+distance near the
+uint64 limit. The original three secrets and five interval widths remain; no
+dataset is needed.
+
+$$ g^{b+d_T}=h g^{d_W},\qquad x=b+d_T-d_W,\qquad a\le x\le b. $$
+
+> A tiny actual producing history
+
+The table reads actual producing records. The native diagram names actual
+captured values from that same run.
+
+```{cpp, results="markdown", file="figures/pollard_kangaroo_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_kangaroo.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const auto target = dm::algorithms::mod_pow(2, 15, 1019);
+    auto t = dm::algorithms::pollard_kangaroo_trace(2, target, 1019, 12, 18);
+    std::print("\n| actual walk | before | slot | exponent jump | after | exact distance after | actual tame " "trail exponent |\n| --- | ---: | ---: | ---: | ---: | --- | --- |\n");
+    for (std::size_t i = 0; i < std::min<std::size_t>(6, t.jumps.size()); ++i) {
+        auto &r = t.jumps[i];
+        std::print("| {} | {} | {} | {} | {} | {} | {} |\n",
+                   r.wild ? "wild" : "tame", r.before, r.slot, r.step, r.after,
+                   dm::algorithms::uint128_text(r.distance_after),
+                   dm::algorithms::uint128_text(r.trail_exponent_after));
+    }
+
+    dm::graphics::Diagram d;
+    d.node("n0", {0, 0},
+           std::format("Actual seeded first jump size\n{}", t.table[0].step));
+    d.node("n1", {9, 0},
+           std::format("Actual first tame point update\n{} to{}",
+                       t.jumps[0].before, t.jumps[0].after));
+    d.node("n2", {18, 0},
+           std::format("Actual verified run outcome\nfound={}, x={}",
+                       t.run.result.found, t.run.result.x));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/pollard_kangaroo_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual walk | before | slot | exponent jump | after | exact distance after | actual tame trail exponent |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| tame | 261 | 5 | 3 | 50 | 3 | 21 |
+| tame | 50 | 18 | 1 | 100 | 4 | 22 |
+| tame | 100 | 4 | 2 | 400 | 6 | 24 |
+| tame | 400 | 16 | 3 | 143 | 9 | 27 |
+| tame | 143 | 15 | 4 | 250 | 13 | 31 |
+| tame | 250 | 26 | 3 | 981 | 16 | 34 |
+\image(figures/pollard_kangaroo_tiny.svg)
+// result_end
+\caption(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+\alttext(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/pollard_kangaroo_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_kangaroo.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const std::uint64_t prime = 1000003, base = 2;
+    std::print("\n| original exponent | lower | upper | actual found | actual returned x | actual jumps | " "verified equation |\n| ---: | ---: | ---: | --- | ---: | ---: | --- |\n");
+    for (std::uint64_t secret : {123456ULL, 654321ULL, 999001ULL}) {
+        const auto target =
+            dm::algorithms::mod_pow(base, secret, prime), lo =
+            secret > 20000 ? secret - 20000 : 0, hi = secret + 20000;
+        auto r = dm::algorithms::pollard_kangaroo(base, target, prime, lo, hi);
+        std::print("| {} | {} | {} | {} | {} | {} | {} |\n", secret, lo, hi,
+                   r.found, r.x, r.jumps,
+                   r.found &&
+                   dm::algorithms::mod_pow(base, r.x, prime) == target);
+    }
+    std::vector<double> x, y;
+    std::print("\n| original interval width | actual jumps | actual found |\n| ---: | ---: | --- |\n");
+    for (std::uint64_t width : {2500ULL, 10000ULL, 40000ULL, 160000ULL,
+                                640000ULL}) {
+        const std::uint64_t secret =
+            500000, target = dm::algorithms::mod_pow(base, secret, prime);
+        auto r =
+            dm::algorithms::pollard_kangaroo(base, target, prime,
+                                             secret - width / 2,
+                                             secret + width / 2);
+        x.push_back(std::sqrt(static_cast<double>(width)));
+        y.push_back(r.jumps);
+        std::print("| {} | {} | {} |\n", width, r.jumps, r.found);
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.lines(x, y, "actual native jumps", {5, 150, 105}).points(x, y,
+                                                               {5, 150, 105}, 5).title("Original kangaroo interval settings: actual finite-run jump counts").x_label("sqrt(requested interval width)").y_label("actual tame plus wild jumps");
+    p.save_svg("build/pollard_kangaroo_original.svg");
+}
+```
+// result_begin: markdown
+| original exponent | lower | upper | actual found | actual returned x | actual jumps | verified equation |
+| ---: | ---: | ---: | --- | ---: | ---: | --- |
+| 123456 | 103456 | 143456 | true | 123456 | 2031 | true |
+| 654321 | 634321 | 674321 | true | 654321 | 1764 | true |
+| 999001 | 979001 | 1019001 | true | 999001 | 1795 | true |
+
+| original interval width | actual jumps | actual found |
+| ---: | ---: | --- |
+| 2500 | 488 | true |
+| 10000 | 1159 | true |
+| 40000 | 1782 | true |
+| 160000 | 3533 | true |
+| 640000 | 12164 | true |
+\image(figures/pollard_kangaroo_original.svg)
+// result_end
+\caption(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+\alttext(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+
+> Explicit controls
+
+```{cpp, results="markdown", file="figures/pollard_kangaroo_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_kangaroo.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const auto target = dm::algorithms::mod_pow(2, 7, 1019);
+    std::vector<std::string> labels{"lower endpoint", "upper endpoint",
+                                    "empty interval", "zero attempts"};
+    std::vector<dm::algorithms::KangarooRun> runs;
+    runs.push_back(dm::algorithms::pollard_kangaroo_run(2, target, 1019, 7, 9));
+    runs.push_back(dm::algorithms::pollard_kangaroo_run(2, target, 1019, 5, 7));
+    runs.push_back(dm::algorithms::pollard_kangaroo_run(2, target, 1019, 9, 8));
+    dm::algorithms::KangarooOptions no;
+    no.max_attempts = 0;
+    runs.push_back(dm::algorithms::pollard_kangaroo_run(2, target, 1019, 5, 9,
+                                                        0x2545F4914F6CDD1DULL,
+                                                        no));
+    std::vector<double> v;
+    std::print("\n| case | actual verified found | actual jumps | actual attempts |\n| --- | --- | ---: | " "---: |\n");
+    for (std::size_t i = 0; i < runs.size(); ++i) {
+        auto &r = runs[i];
+        v.push_back(r.result.found);
+        std::print("| {} | {} | {} | {} |\n", labels[i], r.result.found,
+                   r.result.jumps, r.attempts);
+    }
+    auto p =
+        dm::graphics::RPlot::barplot(v, labels, "actual verified found flag");
+    p.title("Kangaroo endpoints can verify without any actual walk jumps").y_label("actual verified result (1=yes)");
+    p.save_svg("build/pollard_kangaroo_controls.svg");
+}
+```
+// result_begin: markdown
+| case | actual verified found | actual jumps | actual attempts |
+| --- | --- | ---: | ---: |
+| lower endpoint | true | 0 | 0 |
+| upper endpoint | true | 0 | 0 |
+| empty interval | false | 0 | 0 |
+| zero attempts | false | 0 | 0 |
+\image(figures/pollard_kangaroo_controls.svg)
+// result_end
+\caption(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+\alttext(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+
+> Exact exponent distances at the uint64 boundary
+
+```{cpp, results="markdown", file="figures/pollard_kangaroo_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/pollard_kangaroo.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const auto top =
+        std::numeric_limits<std::uint64_t>::max(), secret =
+        top - 10, target = dm::algorithms::mod_pow(2, secret, 1019);
+    auto t =
+        dm::algorithms::pollard_kangaroo_trace(2, target, 1019, top - 20, top);
+    std::vector<double> x, y;
+    std::print("\n| actual tame jump | exact assigned trail exponent | exact excess above UINT64_MAX |\n| " "---: | --- | --- |\n");
+    for (std::size_t i = 0; i < std::min<std::size_t>(6, t.jumps.size()); ++i) {
+        auto &r = t.jumps[i];
+        const auto excess =
+            r.trail_exponent_after - static_cast<unsigned __int128>(top);
+        x.push_back(i + 1);
+        y.push_back(static_cast<double>(excess));
+        std::print("| {} | {} | {} |\n", i + 1,
+                   dm::algorithms::uint128_text(r.trail_exponent_after),
+                   dm::algorithms::uint128_text(excess));
+    }
+    std::print("Actual final verification flag{}, candidate{}. Full values above are exact decimal; only " "small excesses are plotted.\n",
+               t.run.result.found, t.run.result.x);
+    auto p = dm::graphics::RPlot::create();
+    p.lines(x, y, "actual widened trail excess", {37, 99, 235}).points(
+        x, y, {37, 99, 235}, 4).title("Actual tame trail exponents remain exact above UINT64_MAX").x_label("actual tame jump ordinal").y_label("exact excess above UINT64_MAX (display double)");
+    p.save_svg("build/pollard_kangaroo_work.svg");
+}
+```
+// result_begin: markdown
+| actual tame jump | exact assigned trail exponent | exact excess above UINT64_MAX |
+| ---: | --- | --- |
+| 1 | 18446744073709551621 | 6 |
+| 2 | 18446744073709551624 | 9 |
+| 3 | 18446744073709551627 | 12 |
+| 4 | 18446744073709551628 | 13 |
+| 5 | 18446744073709551629 | 14 |
+| 6 | 18446744073709551635 | 20 |
+Actual final verification flagtrue, candidate18446744073709551605. Full values above are exact decimal; only small excesses are plotted.
+\image(figures/pollard_kangaroo_work.svg)
+// result_end
+\caption(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+\alttext(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+
+> API and interpretation
+
+Every block is a complete editable C++ program. Reusable searches, walks,
+geometry decisions, fixture histories and algorithm work live in the canonical
+library. Captured records own their values and are not reconstructed by a second
+algorithm in the report. Explicit policies count the documented selected calls,
+records or scalar entries; they are not peak-byte or wall-clock budgets.
+Original reference curves are labelled as references, and finite returned
+results are not promoted into universal convergence, recovery, scaling or speed
+guarantees.
+
+Independent integer powers check actual tables and jumps, exact distance/range
+decisions and returned equations, including a requested interval next to
+UINT64_MAX. Frozen comparisons preserve original ordinary-interval results and
+complete jump counts. The shared batch passes83 native regression tests,18
+directly instrumented sanitizer tests,84 compiled and executed public
+examples,391/391 scoped documentation definitions, standalone and installed
+header checks, a linked installed consumer and ten representative symbol hovers.
+All four complete programs execute and their computed results and local figures
+survive HTML and Markdown export. Build receipts:
+`build/mepml-conversion/batch-284-293/`.

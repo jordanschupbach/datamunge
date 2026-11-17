@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_slowfast_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/slowfast.cpp"
-#undef main
+#include "../fixtures/nn_slowfast_checks.hpp"
 TEST(SlowFast, EverySelectedFrameAndInputAdjoint) {
   SamplingChecks();
 }
@@ -23,7 +21,7 @@ TEST(SlowFast, EveryMovingArrayMutationPolicyAndZeroGateInventory) {
   n::set_num_threads(2);
   n::ParameterStore p(751), s(753);
   n::Generator rng(743);
-  const auto pools = m::LoadVideo("build/cnn-datasets/action_video");
+  const auto pools = m::LoadVideo((std::filesystem::path(dm::datasets::data_home()) / "action_video"));
   const auto x = n::slice_axis(pools[0].rgb, 0, 0, 2);
   const m::SlowFastConfig c{8, 3, 16};
   m::SlowFast(p, s, x, c);

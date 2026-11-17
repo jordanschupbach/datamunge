@@ -38,7 +38,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3211, false, varargin{:});
+      __datamunge__(-2, obj, 3222, false, varargin{:});
     end
     function r = empty (obj)
       % empty  C++ datamunge::dstruct::UndirectedGraph<std::string>::empty.
@@ -49,7 +49,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::empty() const
-      r = __datamunge__(3193, obj);
+      r = __datamunge__(3204, obj);
     end
     function r = vertex_count (obj)
       % vertex_count  C++ datamunge::dstruct::UndirectedGraph<std::string>::vertex_count.
@@ -60,7 +60,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  integer
       %
       %   C++: size_type datamunge::dstruct::UndirectedGraph<std::string>::vertex_count() const
-      r = __datamunge__(3194, obj);
+      r = __datamunge__(3205, obj);
     end
     function r = edge_count (obj)
       % edge_count  C++ datamunge::dstruct::UndirectedGraph<std::string>::edge_count.
@@ -71,7 +71,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  integer
       %
       %   C++: size_type datamunge::dstruct::UndirectedGraph<std::string>::edge_count() const
-      r = __datamunge__(3195, obj);
+      r = __datamunge__(3206, obj);
     end
     function clear (obj)
       % clear  C++ datamunge::dstruct::UndirectedGraph<std::string>::clear.
@@ -79,7 +79,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %   obj.clear ()
       %
       %   C++: void datamunge::dstruct::UndirectedGraph<std::string>::clear()
-      __datamunge__(3196, obj);
+      __datamunge__(3207, obj);
     end
     function r = add_vertex (obj, varargin)
       % add_vertex  C++ datamunge::dstruct::UndirectedGraph<std::string>::add_vertex.
@@ -89,7 +89,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %   Overloads are chosen at run time from the argument types (C++):
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::add_vertex(const std::basic_string<char> & vertex)
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::add_vertex(std::basic_string<char> && vertex)
-      r = __datamunge__(3197, obj, varargin{:});
+      r = __datamunge__(3208, obj, varargin{:});
     end
     function r = remove_vertex (obj, vertex)
       % remove_vertex  C++ datamunge::dstruct::UndirectedGraph<std::string>::remove_vertex.
@@ -103,7 +103,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::remove_vertex(const std::basic_string<char> & vertex)
-      r = __datamunge__(3198, obj, vertex);
+      r = __datamunge__(3209, obj, vertex);
     end
     function r = has_vertex (obj, vertex)
       % has_vertex  C++ datamunge::dstruct::UndirectedGraph<std::string>::has_vertex.
@@ -117,7 +117,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::has_vertex(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3199, obj, vertex);
+      r = __datamunge__(3210, obj, vertex);
     end
     function r = add_edge (obj, a, b)
       % add_edge  C++ datamunge::dstruct::UndirectedGraph<std::string>::add_edge.
@@ -132,7 +132,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::add_edge(const std::basic_string<char> & a, const std::basic_string<char> & b)
-      r = __datamunge__(3200, obj, a, b);
+      r = __datamunge__(3211, obj, a, b);
     end
     function r = remove_edge (obj, a, b)
       % remove_edge  C++ datamunge::dstruct::UndirectedGraph<std::string>::remove_edge.
@@ -147,7 +147,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::remove_edge(const std::basic_string<char> & a, const std::basic_string<char> & b)
-      r = __datamunge__(3201, obj, a, b);
+      r = __datamunge__(3212, obj, a, b);
     end
     function r = has_edge (obj, a, b)
       % has_edge  C++ datamunge::dstruct::UndirectedGraph<std::string>::has_edge.
@@ -162,7 +162,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::has_edge(const std::basic_string<char> & a, const std::basic_string<char> & b) const
-      r = __datamunge__(3202, obj, a, b);
+      r = __datamunge__(3213, obj, a, b);
     end
     function r = vertices (obj)
       % vertices  C++ datamunge::dstruct::UndirectedGraph<std::string>::vertices.
@@ -173,7 +173,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::UndirectedGraph<std::string>::vertices() const
-      r = __datamunge__(3203, obj);
+      r = __datamunge__(3214, obj);
     end
     function r = neighbors (obj, vertex)
       % neighbors  C++ datamunge::dstruct::UndirectedGraph<std::string>::neighbors.
@@ -187,7 +187,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::UndirectedGraph<std::string>::neighbors(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3204, obj, vertex);
+      r = __datamunge__(3215, obj, vertex);
     end
     function r = degree (obj, vertex)
       % degree  C++ datamunge::dstruct::UndirectedGraph<std::string>::degree.
@@ -201,7 +201,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  integer
       %
       %   C++: size_type datamunge::dstruct::UndirectedGraph<std::string>::degree(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3205, obj, vertex);
+      r = __datamunge__(3216, obj, vertex);
     end
     function r = bfs (obj, start)
       % bfs  C++ datamunge::dstruct::UndirectedGraph<std::string>::bfs.
@@ -215,7 +215,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::UndirectedGraph<std::string>::bfs(const std::basic_string<char> & start) const
-      r = __datamunge__(3206, obj, start);
+      r = __datamunge__(3217, obj, start);
     end
     function r = dfs (obj, start)
       % dfs  C++ datamunge::dstruct::UndirectedGraph<std::string>::dfs.
@@ -229,7 +229,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::UndirectedGraph<std::string>::dfs(const std::basic_string<char> & start) const
-      r = __datamunge__(3207, obj, start);
+      r = __datamunge__(3218, obj, start);
     end
     function r = contains_path (obj, src, dst)
       % contains_path  C++ datamunge::dstruct::UndirectedGraph<std::string>::contains_path.
@@ -244,7 +244,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::contains_path(const std::basic_string<char> & src, const std::basic_string<char> & dst) const
-      r = __datamunge__(3208, obj, src, dst);
+      r = __datamunge__(3219, obj, src, dst);
     end
     function r = connected_components (obj)
       % connected_components  The graph's connected components, each as a vector of vertices in BFS-visit order; components themselves appear in vertices() order.
@@ -255,7 +255,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  cell array of cell array of char
       %
       %   C++: std::vector<std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>> datamunge::dstruct::UndirectedGraph<std::string>::connected_components() const
-      r = __datamunge__(3209, obj);
+      r = __datamunge__(3220, obj);
     end
     function r = has_cycle (obj)
       % has_cycle  True if the graph contains a cycle (a self-loop, or two distinct paths between some pair of vertices) in any component.
@@ -266,7 +266,7 @@ classdef UndirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::UndirectedGraph<std::string>::has_cycle() const
-      r = __datamunge__(3210, obj);
+      r = __datamunge__(3221, obj);
     end
   end
 end

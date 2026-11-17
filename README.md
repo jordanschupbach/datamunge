@@ -89,7 +89,7 @@ This repo is intended to be cloned and renamed. All occurrences of the project n
 
 The [CAD and 3D modelling guide](docs/cad.md) covers `dm::cad` solids, the
 ported mep kernel, model formats and offline rendering. The
-[Seeed DevArm report](docs/mepml/examples/cad/seeed_devarm.mepml) includes C++/Python/R examples
+[Seeed DevArm report](docs/mepml/cad/seeed_devarm.mepml) includes C++/Python/R examples
 using the real Seeed DevArm CAD and visual mesh files.
 
 The native CPU game/simulation library and batched physical RL tasks are described
@@ -185,11 +185,11 @@ The NN language rewrite covers 414 canonical C++ examples across foundations,
 CNNs, autoencoders, generative models, recurrent networks, attention and RL.
 Actual implementations use the functional SWIG API (`pydatamunge.nn` /
 `datamungerNN::nn`) with models and loops written in each language. Track completed
-ports and validation in [the migration ledger](examples/nn/language_status.json)
+ports and validation in [the migration ledger](prebindings/nn/language_status.json)
 with `just nn-language-status`; compiled reference wrappers do not count as ports.
 
 Run a completed port with `just python-example NAME epochs=5` or
 `just r-example NAME epochs=5`. Both commands reject unported examples; use
-`just run-nn NAME` for the canonical C++ reference. Classification ports print a
+`just run-nn NAME` for the canonical C++ report. Classification ports print a
 confusion matrix. See [migration notes](docs/nn-language-migration.md) and the
 [Python](examples/python/nn/README.md) / [R](examples/r/nn/README.md) example docs.

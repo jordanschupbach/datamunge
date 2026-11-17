@@ -1,0 +1,596 @@
+//? Title: Pendulum: Torque, Angular State and Control Cost
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native C++ simulations expose explicit actions, seeded state transitions and owning observations. The complete editable source protocol retains its policy comparisons and checks. There is no hidden learning loop or external simulator process.
+)
+\toc
+
+> Follow one actual transition
+
+```{cpp, results="markdown", file="figures/pendulum_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle style;style.width=13;style.height=5;style.font_size=24;d.node("input",{-17,0},"Angle and angular velocity",style);d.node("step",{0,0},"Clipped torque integration",style);d.node("result",{17,0},"State and effort cost",style);d.edge("input","step").edge("step","result").save_svg("build/pendulum_method.svg");}
+```
+// result_begin: markdown
+\image(figures/pendulum_method.svg)
+// result_end
+
+> Compute cost before the dynamics update
+
+At zero torque the immediate reward is minus the squared wrapped angle minus.1 times squared angular velocity. It is evaluated from the pre-step state; the next observation describes the integrated state.
+
+```{cpp, results="markdown", file="figures/pendulum_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;std::filesystem::create_directories("build");e::Pendulum env;env.reset(1);double angle=e::WrapAngle(env.theta()),velocity=env.theta_dot();double expected=-(angle*angle+.1*velocity*velocity);auto r=env.step(e::Action(std::vector<float>{0}));std::vector<double>values{expected,r.reward,double(r.terminated),double(r.truncated)};if(std::abs(expected-r.reward)>2e-6)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/pendulum_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);const double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1e-9,high-low);dm::graphics::RPlot::create().ylim(low-.05*span,high+.05*span).bars(x,values,"computed values",{37,99,235}).title("Compute cost before the dynamics update").x_label("Coordinate in displayed calculation").size(1000,550).save_svg("build/pendulum_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | -5.344816718 |
+| 1 | -5.344816685 |
+| 2 | 0.000000000 |
+| 3 | 0.000000000 |
+\image(figures/pendulum_worked.svg)
+// result_end
+
+> Complete source experiment
+
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn pendulum
+// Pendulum: continuous-control swing-up.
+//
+// Port of tflow's pendulum. Gymnasium's Pendulum-v1: torque in [-2, 2] is
+// not enough to lift the pendulum directly, so a controller must pump energy
+// by pushing along the current rotation, then catch it at the top. Reward is
+// minus a quadratic cost, so the best possible episode return is 0 and a
+// random policy scores around -1200. The environment is
+// common/rl/classic_control.hpp (copied from tflow, TF-free). The vsim video is
+// omitted: the filmed episode is played without a video
+// (common/rl/playback.hpp) and checks are added.
+
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/classic_control.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::kPi;
+using datamunge::rl::environments::Clamp;
+using datamunge::rl::environments::WrapAngle;
+using datamunge::rl::environments::CartPole;
+using datamunge::rl::environments::MountainCar;
+using datamunge::rl::environments::MountainCarContinuous;
+using datamunge::rl::environments::Pendulum;
+using datamunge::rl::environments::Acrobot;
+}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+inline int ArgMax(const std::vector<float>& v) {
+  return static_cast<int>(std::max_element(v.begin(), v.end()) - v.begin());
+}
+
+// Argmax with ties broken uniformly at random.
+inline int ArgMaxRandomTie(const float* q, int n, std::mt19937_64& rng) {
+  float best = q[0];
+  for (int i = 1; i < n; ++i) best = std::max(best, q[i]);
+  std::vector<int> ties;
+  for (int i = 0; i < n; ++i)
+    if (q[i] == best) ties.push_back(i);
+  return ties[rng() % ties.size()];
+}
+
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunRandom(Env& env, int episodes, uint64_t seed) {
+  std::mt19937_64 rng(seed);
+  const ActionSpace space = env.action_space();
+  return RunEpisodes(env, episodes, seed, [&](const Obs&) { return space.Sample(rng); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+// Energy-based swing-up plus a PD catch near the top. With g=10, m=l=1 and
+// the rod's inertia ml^2/3, the energy relative to the top is
+//   E = theta_dot^2 / 6 + 5 (cos theta - 1)        (0 at the top, -10 at rest)
+rl::Decision SwingUp(const rl::Obs& o) {
+  const float cos_t = o[0], sin_t = o[1], thdot = o[2];
+  const float theta = std::atan2(sin_t, cos_t);
+  if (std::abs(theta) < 0.5f && std::abs(thdot) < 3.f) {
+    return rl::Note(rl::Action({rl::Clamp(-8.f * theta - 2.f * thdot, -2.f, 2.f)}), "PD regulator near the top");
+  }
+  const float energy = thdot * thdot / 6.f + 5.f * (cos_t - 1.f);
+  const float dir = thdot >= 0 ? 1.f : -1.f;
+  return rl::Note(rl::Action({energy < 0 ? 2.f * dir : -2.f * dir}), "energy " + rl::HudSigned(energy) + (energy < 0 ? ": pump along the swing" : ": brake"));
+}
+
+}  // namespace
+
+int main() {
+  try {
+    rl::Pendulum env;
+    std::cout << "== " << env.name() << ": obs [cos theta, sin theta, theta_dot], "
+              << env.action_space().ToString() << ", 200 steps, reward = -(theta^2 + 0.1 theta_dot^2 + 0.001 u^2)\n";
+    const rl::EpisodeStats random = rl::RunRandom(env, 50, 0);
+    rl::PrintStats("random, 50 episodes", random);
+    const rl::EpisodeStats ctrl = rl::RunEpisodes(env, 50, 0, SwingUp);
+    rl::PrintStats("energy swing-up + PD", ctrl);
+
+    std::cout << "\n-- One episode under the controller (theta=0 is upright)\n";
+    rl::Obs obs = env.reset(2);
+    float ret = 0;
+    for (int t = 0; t < 200; ++t) {
+      rl::StepResult r = env.step(SwingUp(obs));
+      ret += r.reward;
+      obs = r.obs;
+      if (t % 25 == 0 || t == 199) {
+        std::printf("  t=%-3d theta=%+.2f theta_dot=%+.2f reward=%+.3f\n", t,
+                    std::atan2(obs[1], obs[0]), obs[2], r.reward);
+      }
+    }
+    std::printf("  return %.1f\n", ret);
+    const float final_theta = std::atan2(obs[1], obs[0]);
+    std::cout << "\n-- The same episode replayed (tflow films it in the pendulum's 3D world; video omitted)\n";
+    const rl::Playback pb = rl::PlayEpisode(env, SwingUp, "pendulum_energy_swing_up", 2);
+
+    check::Require(random.mean_return() < -900.f, "a random policy should score far below zero (about -1200)");
+    check::Require(ctrl.mean_return() > -300.f && ctrl.max_return() > -1.f,
+                   "the swing-up controller should average above -300 and balance perfectly from some starts");
+    check::Require(std::abs(final_theta) < 0.01f, "the traced episode should end upright");
+    check::Require(pb.steps == 200 && std::abs(pb.ret - ret) < 1e-3f, "the replay should reproduce the traced episode");
+    std::cout << "\nchecks passed (vsim video omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == Pendulum: obs [cos theta, sin theta, theta_dot], Box(1) [-2.000000..2.000000], 200 steps, reward = -(theta^2 + 0.1 theta_dot^2 + 0.001 u^2)
+//   random, 50 episodes              return mean -1210.13  min -1803.40  max  -786.00   length mean  200.0
+//   energy swing-up + PD             return mean  -145.40  min  -353.33  max    -0.13   length mean  200.0
+//
+// -- One episode under the controller (theta=0 is upright)
+//   t=0   theta=+2.61 theta_dot=+1.43 reward=-6.484
+//   t=25  theta=-2.94 theta_dot=-6.96 reward=-10.674
+//   t=50  theta=+0.09 theta_dot=-0.23 reward=-0.016
+//   t=75  theta=+0.01 theta_dot=-0.01 reward=-0.000
+//   t=100 theta=+0.00 theta_dot=-0.00 reward=-0.000
+//   t=125 theta=+0.00 theta_dot=-0.00 reward=-0.000
+//   t=150 theta=+0.00 theta_dot=-0.00 reward=-0.000
+//   t=175 theta=+0.00 theta_dot=-0.00 reward=-0.000
+//   t=199 theta=+0.00 theta_dot=-0.00 reward=-0.000
+//   return -231.3
+//
+// -- The same episode replayed (tflow films it in the pendulum's 3D world; video omitted)
+//   played pendulum_energy_swing_up (video omitted): 200 steps, return -231.3
+//
+// checks passed (vsim video omitted)
+// result_end
+
+> A fixed-action diagnostic trajectory
+
+This additional trace starts from seed1 and repeatedly applies the displayed constant action until the first done flag or200 steps. It shows state evolution and rewards; it is not a learned-policy result. The complete original policy comparison above remains the experiment.
+
+```{cpp, results="markdown", file="figures/pendulum_trajectory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;e::Pendulum env;auto observation=env.reset(1);std::vector<double>step{0},coordinate{observation[0]},returns{0};for(int t=1;t<=200;++t){auto result=env.step(e::Action(std::vector<float>{0}));step.push_back(t);coordinate.push_back(result.obs[0]);returns.push_back(returns.back()+result.reward);if(result.done())break;}dm::nn::save_npz("build/pendulum_trajectory.npz",{{"step",dm::nn::from_vector(step)},{"first_coordinate",dm::nn::from_vector(coordinate)},{"return",dm::nn::from_vector(returns)}});dm::graphics::RPlot::create().lines(step,coordinate,"first observation coordinate",{37,99,235}).x_label("Environment step").y_label("Source observation coordinate0").title("Pendulum fixed-action state trace").size(1000,550).save_svg("build/pendulum_trajectory.svg");std::print("{} transitions; cumulative reward {:.6f}.\n",step.size()-1,returns.back());}
+```
+// result_begin: markdown
+200 transitions; cumulative reward -1456.866722.
+\image(figures/pendulum_trajectory.svg)
+// result_end
+
+> Interpretation
+
+The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.

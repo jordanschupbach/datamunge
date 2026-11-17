@@ -25,6 +25,7 @@ import tempfile
 import time
 from collections import defaultdict
 from pathlib import Path
+from urllib.parse import quote, unquote, urlsplit, urlunsplit
 
 BODY = re.compile(r"<body[^>]*>(.*)</body>", re.S)
 CODE = re.compile(r'<pre><code class="language-([\w+#-]+)">(.*?)</code></pre>', re.S)
@@ -99,7 +100,7 @@ def validate_cpp_toolchain(paths, env=None):
 class Report:
     def __init__(self, path, rel):
         self.path = path            # the .mepml
-        self.rel = rel              # its path within either documentation report collection
+        self.rel = rel              # its path within the combined documentation report collection
         self.url = "reports/" + os.path.splitext(rel)[0] + ".html"
         self.title = os.path.splitext(os.path.basename(rel))[0].replace("_", " ")
         self.subtitle = ""
@@ -312,9 +313,8 @@ def pch_fresh(pch, dep):
 
 
 def example_roots(root):
-    """Current report collection followed by the earlier documentation collection."""
-    return [os.path.join(root, "docs", "examples", "mepml"),
-            os.path.join(root, "docs", "mepml", "examples")]
+    """The canonical documentation report collection."""
+    return [os.path.join(root, "docs", "mepml")]
 
 
 def report_rel(path, examples_root):
@@ -324,12 +324,13 @@ def report_rel(path, examples_root):
     for root in roots:
         root = os.path.abspath(root)
         if os.path.commonpath([source, root]) == root:
-            return os.path.relpath(source, root).replace(os.sep, "/")
+            relative = os.path.relpath(source, root).replace(os.sep, "/")
+            return relative
     return os.path.relpath(source, os.path.abspath(roots[0])).replace(os.sep, "/")
 
 
 def discover_reports(root):
-    """Find both collections; reject duplicate output paths before exporting."""
+    """Find supported collections; reject duplicate output paths before exporting."""
     roots = example_roots(root)
     found = {}
     for collection in roots:
@@ -511,7 +512,57 @@ def load_status(status_path):
     return st
 
 
-def export(mep_mepml, report, out_root, highlight):
+def resolve_source_link(href, source, page_url, report_urls, root, source_url):
+    """Resolve checkout mepml links to site pages or packaged legacy text.
+
+    Preserve external URLs, fragments and query strings. Sources outside the
+    repository are left alone; callers provide the fallback for other repo files.
+    """
+    parts = urlsplit(href)
+    if parts.scheme or parts.netloc or not parts.path or parts.path.startswith('/'):
+        return href
+    if Path(unquote(parts.path)).suffix != '.mepml':
+        return href
+    target = Path(source).resolve().parent / unquote(parts.path)
+    target = target.resolve()
+    try:
+        relative = target.relative_to(Path(root).resolve())
+    except ValueError:
+        return href
+    site = report_urls.get(str(target))
+    if site is None:
+        site = source_url(relative.as_posix())
+    if not site:
+        return href
+    if urlsplit(site).scheme:
+        destination = urlsplit(site)
+        return urlunsplit(destination._replace(query=parts.query, fragment=parts.fragment))
+    path = quote(os.path.relpath(site, os.path.dirname(page_url) or '.').replace(os.sep, '/'), safe='/')
+    return urlunsplit(('', '', path, parts.query, parts.fragment))
+
+
+def package_legacy_source(root, out_root, relative):
+    """Copy a linked live legacy report verbatim for portable offline source links.
+
+    Only existing .mepml files beneath examples/mepml are eligible. No report is
+    executed and no legacy figure/dependency bundle is implied by this download.
+    """
+    root = Path(root).resolve()
+    source = (root / relative).resolve()
+    try:
+        path = source.relative_to(root / 'examples/mepml')
+    except ValueError:
+        return None
+    if source.suffix != '.mepml' or not source.is_file():
+        return None
+    site = Path('reports/sources/examples/mepml') / path
+    destination = Path(out_root) / site
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, destination)
+    return site.as_posix()
+
+
+def export(mep_mepml, report, out_root, highlight, link=None):
     """Export `report` with mep and fill in its title, summary and body.
 
     The pictures it names are copied under `out_root` beside its page;
@@ -539,6 +590,10 @@ def export(mep_mepml, report, out_root, highlight):
             text = re.sub(r"\s+([,.;:)])", r"\1", text)  # where a citation or note was
             report.summary = shorten(text, 260)
         body = TOC.sub("", body)
+        if link is not None:
+            body = re.sub(r'(<a\b[^>]*?\shref=")([^"]*)(")',
+                          lambda m: m[1] + html.escape(link(html.unescape(m[2])), quote=True) + m[3],
+                          body, flags=re.I)
 
         def code(match):
             lang, text = match.group(1), html.unescape(match.group(2))

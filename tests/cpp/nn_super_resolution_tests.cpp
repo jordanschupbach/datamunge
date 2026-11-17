@@ -1,8 +1,6 @@
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_super_resolution_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/super_resolution.cpp"
-#undef main
+#include "../fixtures/nn_super_resolution_checks.hpp"
 namespace oracle {
 namespace nn = dm::nn;
 using nn::Tensor;

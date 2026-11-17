@@ -1,0 +1,283 @@
+//? Title: Truncated backoff: windows, slots and retry limits
+//? Subtitle: Actual native state, retained fixtures and explicit limits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Repeated colliding transmissions need different retry delays. Binary exponential
+backoff widens the candidate slot window, caps its exponent, then abandons a
+frame after a fixed collision count.
+)
+
+\toc
+
+> The method
+
+For c≥0, W(c)=2^min(c,10). A caller fraction u∈[0,1) maps to slot floor(uW), so
+every slot occupies an interval of length1/W. The ideal mean is (W−1)/2 and two
+independent ideal uniform stations collide again with probability1/W. These are
+probability calculations, not network throughput measurements. At c≥16 the
+policy abandons the frame even though its descriptive window is still1024.
+
+> Simple worked example
+
+```{cpp, results="markdown", file="figures/truncated_backoff_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    int w = a::contention_window(3), slot = a::backoff_slot(3, .5);
+    std::print("| collisions | window | caller u | actual slot | abandon " "|\n|---:|---:|---:|---:|---|\n|3|{}|.5|{}|{}|\n",
+               w, slot, a::backoff_give_up(3));
+    g::Diagram concept_diagram(48, 1100);
+    concept_diagram.node("n0", {0, 0}, "3 collisions; supplied u=.5");
+    concept_diagram.node("n1", {5, 0}, std::format("Actual window {}", w));
+    concept_diagram.node("n2", {10, 0}, std::format("Actual slot {}", slot));
+    concept_diagram.edge("n0", "n1").edge("n1", "n2");
+    concept_diagram.save_svg("build/truncated_backoff_tiny.svg");
+}
+```
+// result_begin: markdown
+| collisions | window | caller u | actual slot | abandon |
+|---:|---:|---:|---:|---|
+|3|8|.5|4|false|
+\image(figures/truncated_backoff_tiny.svg)
+// result_end
+\caption(Actual native intermediate values from the small worked example.)
+\alttext(Actual native intermediate values from the small worked example.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/truncated_backoff_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y;
+    std::print("| collisions | window | largest slot | abandon |\n|---:|---:|---:|---|\n");
+    for (int c = 0; c <= 16; ++c) {
+        int w = a::contention_window(c);
+        std::print("|{}|{}|{}|{}|\n", c, w, a::max_backoff_slots(c),
+                   a::backoff_give_up(c));
+        x.push_back(c);
+        y.push_back(std::log2(w));
+    }
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Original collision0..16 policy, including abandonment").x_label(
+        "collisions").y_label("log2 actual descriptive window");
+    p.save_svg("build/truncated_backoff_original.svg");
+}
+```
+// result_begin: markdown
+| collisions | window | largest slot | abandon |
+|---:|---:|---:|---|
+|0|1|0|false|
+|1|2|1|false|
+|2|4|3|false|
+|3|8|7|false|
+|4|16|15|false|
+|5|32|31|false|
+|6|64|63|false|
+|7|128|127|false|
+|8|256|255|false|
+|9|512|511|false|
+|10|1024|1023|false|
+|11|1024|1023|false|
+|12|1024|1023|false|
+|13|1024|1023|false|
+|14|1024|1023|false|
+|15|1024|1023|false|
+|16|1024|1023|true|
+\image(figures/truncated_backoff_original.svg)
+// result_end
+\caption(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+\alttext(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+
+> Checking the theory and controls
+
+```{cpp, results="markdown", file="figures/truncated_backoff_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y;
+    std::print("| supplied fraction | actual slot at c3 |\n|---:|---:|\n");
+    for (double u : {0., .125, .5, std::nextafter(1., 0.)}) {
+        auto slot = a::backoff_slot(3, u);
+        std::print("|{}|{}|\n", u, slot);
+        x.push_back(u);
+        y.push_back(slot);
+    }
+    try {
+        a::backoff_slot(3, 1);
+    } catch (const std::invalid_argument &) {
+        std::print("\nThe excluded upper endpoint is rejected.\n");
+    }
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Caller-fraction boundaries map to valid slots").x_label(
+        "u in [0,1)").y_label("actual slot");
+    p.save_svg("build/truncated_backoff_controls.svg");
+}
+```
+// result_begin: markdown
+| supplied fraction | actual slot at c3 |
+|---:|---:|
+|0|0|
+|0.125|1|
+|0.5|4|
+|0.9999999999999999|7|
+
+The excluded upper endpoint is rejected.
+\image(figures/truncated_backoff_controls.svg)
+// result_end
+\caption(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+\alttext(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+
+> Sensitivity and selected work
+
+```{cpp, results="markdown", file="figures/truncated_backoff_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y;
+    std::print("| collisions | mean enumerated slot | ideal recollision probability |\n|---:|---:|---:|\n");
+    for (int c = 0; c <= 15; ++c) {
+        int w = a::contention_window(c);
+        double sum = 0;
+        for (int j = 0; j < w; ++j)
+            sum += a::backoff_slot(c, (j + .5) / w);
+        std::print("|{}|{}|{}|\n", c, sum / w, 1. / w);
+        x.push_back(c);
+        y.push_back(sum / w);
+    }
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Exhaustive slot-midpoint enumeration verifies the mean").x_label(
+        "collisions").y_label("actual enumerated mean slot");
+    p.save_svg("build/truncated_backoff_work.svg");
+}
+```
+// result_begin: markdown
+| collisions | mean enumerated slot | ideal recollision probability |
+|---:|---:|---:|
+|0|0|1|
+|1|0.5|0.5|
+|2|1.5|0.25|
+|3|3.5|0.125|
+|4|7.5|0.0625|
+|5|15.5|0.03125|
+|6|31.5|0.015625|
+|7|63.5|0.0078125|
+|8|127.5|0.00390625|
+|9|255.5|0.001953125|
+|10|511.5|0.0009765625|
+|11|511.5|0.0009765625|
+|12|511.5|0.0009765625|
+|13|511.5|0.0009765625|
+|14|511.5|0.0009765625|
+|15|511.5|0.0009765625|
+\image(figures/truncated_backoff_work.svg)
+// result_end
+\caption(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+\alttext(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+
+> Interpretation and limits
+
+Negative collision counts and nonfinite/out-of-range fractions throw before
+shifting or integer conversion. The caller owns randomness and frame state; the
+API does not simulate Ethernet traffic or authorize retries after abandonment.
+
+Every figure is saved locally by its complete editable program. No separate
+reconstruction supplies algorithm state. Counters describe the selected events,
+not elapsed time or peak memory.
+
+> References
+
+Binary-window and uniform-interval derivation
+
+Verified in the shared ten-document batch: 85 scoped native cases;21 directly
+instrumented ASan/UBSan cases;36 executable public examples;63/63 definitions
+across13 full scopes plus8 changed mixed-scope contracts;10 hovers;14393
+independent records/67914 checks;frozen valid-input comparisons across all ten
+families including bit-identical default Iris fits;11 checkout/installed
+standalone headers and linked ten-family consumer;40 executed programs and40
+inspected figures with both exports. Receipts:
+`build/mepml-conversion/batch-404-413/`.

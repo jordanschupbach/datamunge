@@ -1,8 +1,6 @@
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main cnn_pwc_original_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/pwcnet.cpp"
-#undef main
+#include "../fixtures/nn_pwcnet_checks.hpp"
 TEST(PwcTensor, Radius4CostEveryValueBothJacobians) {
   dm::nn::set_num_threads(2);
   EXPECT_NO_THROW(CorrelationChecks());

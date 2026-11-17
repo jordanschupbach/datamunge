@@ -1,0 +1,298 @@
+//? Title: Rho logarithms: actual invariant walks and collision congruences
+//? Subtitle: Actual canonical histories, retained original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Study the actual native producer from a tiny, inspectable example through the
+retained original experiment and explicit boundary/work controls. Complete
+editable C++ programs own every rendered native figure.
+)
+
+\toc
+
+> Mechanism and scope
+
+Each native cursor carries a group value and exponents satisfying value=g^a h^b.
+A Floyd iteration performs one tortoise update and two hare updates. With the
+exact base order, a collision gives a linear congruence. The native solver also
+accepts an annihilating multiple and then solves a stronger congruence, which
+can discard useful collisions. A nontrivial gcd may produce several candidates,
+each actually verified. The original base6 modulo104729 has order5512, while the
+supplied104728 is an annihilating multiple, so a verified exponent need not
+uniquely identify the original secret. The original six-prime first-collision
+study now uses the same native update kernel and reports completed iterations
+separately from its old zero-based index.
+
+$$ g^a h^b=g^A h^B\quad\Longrightarrow\quad (a-A)\equiv x(B-b)\pmod{\mathrm{ord}(g)}. $$
+
+> A tiny actual producing history
+
+The table reads actual producing records. The native diagram names actual
+captured values from that same run.
+
+```{cpp, results="markdown", file="figures/pollard_rho_log_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/discrete_log.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const auto target = dm::algorithms::mod_pow(2, 17, 1019);
+    auto t = dm::algorithms::pollard_rho_log_trace(2, target, 1019, 1018);
+    std::print("\n| actual Floyd iteration | cursor | branch | value before | a before | b before | value " "after | a after | b after |\n| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: " "|\n");
+    for (std::size_t i = 0; i < std::min<std::size_t>(6, t.steps.size()); ++i) {
+        auto &r = t.steps[i];
+        std::print("| {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",
+                   r.iteration, r.hare ? "hare" : "tortoise", r.branch,
+                   r.before.value, r.before.a, r.before.b, r.after.value,
+                   r.after.a, r.after.b);
+    }
+
+    dm::graphics::Diagram d;
+    d.node("n0", {0, 0},
+           std::format("Actual initial cursor value\n{}",
+                       t.steps[0].before.value));
+    d.node("n1", {9, 0},
+           std::format("Actual first tortoise update\n{}",
+                       t.steps[0].after.value));
+    d.node("n2", {18, 0},
+           std::format("Actual collision-solver outcome\nfound={}, exponent{}",
+                       t.run.found, t.run.exponent));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/pollard_rho_log_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual Floyd iteration | cursor | branch | value before | a before | b before | value after | a after | b after |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | tortoise | 0 | 867 | 481 | 393 | 544 | 481 | 394 |
+| 1 | hare | 0 | 867 | 481 | 393 | 544 | 481 | 394 |
+| 1 | hare | 1 | 544 | 481 | 394 | 426 | 962 | 788 |
+| 2 | tortoise | 1 | 544 | 481 | 394 | 426 | 962 | 788 |
+| 2 | hare | 0 | 426 | 962 | 788 | 567 | 962 | 789 |
+| 2 | hare | 0 | 567 | 962 | 789 | 116 | 962 | 790 |
+\image(figures/pollard_rho_log_tiny.svg)
+// result_end
+\caption(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+\alttext(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/pollard_rho_log_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/discrete_log.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const std::uint64_t prime =
+        104729, base =
+        6, secret =
+        31337, target = dm::algorithms::mod_pow(base, secret, prime);
+    auto result =
+        dm::algorithms::pollard_rho_log_run(base, target, prime, prime - 1);
+    std::print("Original6^x={} mod104729: actual returned exponent{}, found{}. The declared104728 is an " "annihilating multiple, not the exact base order.\n",
+               target, result.exponent, result.found);
+    std::vector<double> x, y;
+    std::print("\n| original prime | actual completed starts | actual mean Floyd iterations | original " "zero-based index mean |\n| ---: | ---: | ---: | ---: |\n");
+    for (const auto &r : dm::algorithms::pollard_rho_log_collision_study()) {
+        x.push_back(std::sqrt(static_cast<double>(r.declared_order)));
+        y.push_back(r.mean_iterations);
+        std::print("| {} | {} | {} | {} |\n", r.prime, r.collided,
+                   r.mean_iterations, r.mean_legacy_index);
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.lines(x, y, "actual completed Floyd iterations", {37, 99, 235}).points(
+        x, y, {37, 99, 235}, 5).title("Original six-prime first-collision experiment: actual native shared walks").x_label("sqrt(declared annihilating order)").y_label("mean actual completed Floyd iterations");
+    p.save_svg("build/pollard_rho_log_original.svg");
+}
+```
+// result_begin: markdown
+Original6^x=97237 mod104729: actual returned exponent31337, foundtrue. The declared104728 is an annihilating multiple, not the exact base order.
+
+| original prime | actual completed starts | actual mean Floyd iterations | original zero-based index mean |
+| ---: | ---: | ---: | ---: |
+| 1019 | 40 | 39.4 | 38.4 |
+| 2039 | 40 | 60.275 | 59.275 |
+| 5087 | 40 | 73.1 | 72.1 |
+| 10007 | 40 | 125.55 | 124.55 |
+| 20707 | 40 | 177.15 | 176.15 |
+| 50021 | 40 | 235.75 | 234.75 |
+\image(figures/pollard_rho_log_original.svg)
+// result_end
+\caption(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+\alttext(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+
+> Explicit controls
+
+```{cpp, results="markdown", file="figures/pollard_rho_log_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/discrete_log.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const std::uint64_t prime =
+        104729, base =
+        6, secret =
+        31337, target =
+        dm::algorithms::mod_pow(base, secret, prime), actual_order =
+        dm::algorithms::element_order(base, prime);
+    const auto canonical =
+        dm::algorithms::pohlig_hellman_log(base, target, prime, actual_order);
+    std::vector<std::uint64_t> exponents{secret,
+                                         static_cast<std::uint64_t>(canonical),
+                                         static_cast<std::uint64_t>(canonical) +
+                                         actual_order};
+    std::vector<double> v;
+    std::vector<std::string> labels{"original secret", "native exact-order log",
+                                    "one period later"};
+    std::print("Native exact base order{}.\n| representative | exponent | actual equation verified |\n| --- " "| ---: | --- |\n",
+               actual_order);
+    for (std::size_t i = 0; i < exponents.size(); ++i) {
+        v.push_back(exponents[i]);
+        std::print("| {} | {} | {} |\n", labels[i], exponents[i],
+                   dm::algorithms::mod_pow(base, exponents[i], prime) == target);
+    }
+    auto p =
+        dm::graphics::RPlot::barplot(v, labels,
+                                     "distinct verified exponent representatives");
+    p.title("Original base6 has order5512: a verified logarithm does not identify a unique secret").y_label("verified exponent representative");
+    p.save_svg("build/pollard_rho_log_controls.svg");
+}
+```
+// result_begin: markdown
+Native exact base order5512.
+| representative | exponent | actual equation verified |
+| --- | ---: | --- |
+| original secret | 31337 | true |
+| native exact-order log | 3777 | true |
+| one period later | 9289 | true |
+\image(figures/pollard_rho_log_controls.svg)
+// result_end
+\caption(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+\alttext(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+
+> Actual selected work
+
+```{cpp, results="markdown", file="figures/pollard_rho_log_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/algorithms/discrete_log.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const auto target = dm::algorithms::mod_pow(2, 17, 1019);
+    auto r = dm::algorithms::pollard_rho_log_run(2, target, 1019, 1018);
+    std::vector<std::string> labels{"cursor updates", "collisions",
+                                    "candidate tests", "power calls"};
+    std::vector<double> raw{double(r.work.walk_updates),
+                            double(r.work.collisions),
+                            double(r.work.candidate_tests),
+                            double(r.work.power_calls)}, shown = raw;
+    std::print("\n| actual selected event | actual raw count |\n| --- | ---: |\n");
+    for (std::size_t i = 0; i < raw.size(); ++i) {
+        std::print("| {} | {} |\n", labels[i], raw[i]);
+        shown[i] = std::log10(raw[i] + 1);
+    }
+    auto p =
+        dm::graphics::RPlot::barplot(shown, labels,
+                                     "actual selected work, logarithmic display");
+    p.title("Native rho-log solver: actual cursor, collision and verification work").y_label("log10(actual selected count + 1)");
+    p.save_svg("build/pollard_rho_log_work.svg");
+}
+```
+// result_begin: markdown
+| actual selected event | actual raw count |
+| --- | ---: |
+| cursor updates | 81 |
+| collisions | 1 |
+| candidate tests | 1 |
+| power calls | 5 |
+\image(figures/pollard_rho_log_work.svg)
+// result_end
+\caption(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+\alttext(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+
+> API and interpretation
+
+Every block is a complete editable C++ program. Reusable searches, walks,
+geometry decisions, fixture histories and algorithm work live in the canonical
+library. Captured records own their values and are not reconstructed by a second
+algorithm in the report. Explicit policies count the documented selected calls,
+records or scalar entries; they are not peak-byte or wall-clock budgets.
+Original reference curves are labelled as references, and finite returned
+results are not promoted into universal convergence, recovery, scaling or speed
+guarantees.
+
+Python exact powers check every captured multiplicative state and branch,
+collision residue/gcd decisions and verified returned equations. Frozen
+comparisons preserve three hundred ordinary seeded solver results; a verified
+exponent does not identify the original secret uniquely. The shared batch
+passes83 native regression tests,18 directly instrumented sanitizer tests,84
+compiled and executed public examples,391/391 scoped documentation definitions,
+standalone and installed header checks, a linked installed consumer and ten
+representative symbol hovers. All four complete programs execute and their
+computed results and local figures survive HTML and Markdown export. Build
+receipts: `build/mepml-conversion/batch-284-293/`.

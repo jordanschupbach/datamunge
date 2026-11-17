@@ -3091,6 +3091,53 @@ sub ACQUIRE {
 }
 
 
+############# Class : Datamunge::MLPClassifierSearch ##############
+
+package Datamunge::MLPClassifierSearch;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_MLPClassifierSearch(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*best_hidden_nodes = *Datamungec::MLPClassifierSearch_best_hidden_nodes;
+*validation_log_loss = *Datamungec::MLPClassifierSearch_validation_log_loss;
+*test_accuracy = *Datamungec::MLPClassifierSearch_test_accuracy;
+*training_rows = *Datamungec::MLPClassifierSearch_training_rows;
+*validation_rows = *Datamungec::MLPClassifierSearch_validation_rows;
+*test_rows = *Datamungec::MLPClassifierSearch_test_rows;
+*summary = *Datamungec::MLPClassifierSearch_summary;
+*trials = *Datamungec::MLPClassifierSearch_trials;
+*predict = *Datamungec::MLPClassifierSearch_predict;
+*plot_decision_regions = *Datamungec::MLPClassifierSearch_plot_decision_regions;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_MLPClassifierSearch($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 ############# Class : Datamunge::RGB ##############
 
 package Datamunge::RGB;

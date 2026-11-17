@@ -1,0 +1,318 @@
+//? Title: Contextual Bandits: A Native Neural Policy and Explicit REINFORCE
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The source uses6000 rounds,32-row batches,187 SGD updates at learning rate.1 and entropy coefficient.01. The last16 observations do not form another update. Four native leaves retain the original initialization seeds.
+)
+\toc
+
+> Follow the computation
+
+```{cpp, results="markdown", file="figures/contextual_bandit_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle s;s.width=13;s.height=5;s.font_size=23;d.node("input",{-17,0},"Context batch [32,8]",s);d.node("math",{0,0},"Tanh [32,32] / logits [32,4]",s);d.node("output",{17,0},"REINFORCE plus entropy",s);d.edge("input","math").edge("math","output").save_svg("build/contextual_bandit_method.svg");}
+```
+// result_begin: markdown
+\image(figures/contextual_bandit_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+Zero weights give four equal logits and probability1/4 per action. The real experiment below initializes nonzero weights; its stopped batch-mean baseline and entropy objective stay visible.
+
+```{cpp, results="markdown", file="figures/contextual_bandit_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("build");auto path=f::TanhCategoricalPolicy(dm::nn::zeros({1,8}),dm::nn::zeros({8,32}),dm::nn::zeros({32}),dm::nn::zeros({32,4}),dm::nn::zeros({4}));auto p=dm::nn::exp(path.log_probability).to_vector<double>();std::vector<double>values=p;for(double v:p)if(std::abs(v-.25)>1e-7)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/contextual_bandit_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("contextual bandit worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/contextual_bandit_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 0.250000000 |
+| 1 | 0.250000000 |
+| 2 | 0.250000000 |
+| 3 | 0.250000000 |
+\image(figures/contextual_bandit_worked.svg)
+// result_end
+
+> Complete preserved experiment
+
+The source uses6000 rounds,32-row batches,187 SGD updates at learning rate.1 and entropy coefficient.01. The last16 observations do not form another update. Four native leaves retain the original initialization seeds. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;
+template<class T> void Save(const std::string& name,const std::vector<T>& values){arrays.push_back({name,dm::nn::from_vector(values)});}
+inline void Table(const std::string& name,const dm::rl::foundations::QTable&q){arrays.push_back({name,q.tensor()});}
+struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/contextual_bandit_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn contextual_bandit
+// Contextual bandits with a neural policy.
+//
+// Port of tflow's contextual_bandit. Each round shows a context vector; the
+// agent picks one of K arms and sees only that arm's (Bernoulli) reward. A
+// small network maps the context to a softmax over arms and is trained with
+// the one-step policy gradient
+//   grad log pi(a | x) * (r - baseline),
+// the simplest member of the REINFORCE family (6.4). TF builds the graph,
+// AddSymbolicGradients and ApplyGradientDescent ops and runs them in a
+// session; here the same loss is eager nn ops on four leaf tensors, and
+// nn::Optimizer (plain SGD) applies the update. The environment
+// (common/rl/bandit.hpp) and the action-sampling stream are identical to
+// tflow; the initial weights come from nn's generator (seeds 1 and 2 as in
+// TF, but a different normal stream), so the learning curve matches TF
+// statistically, not digit for digit. The vsim video of 30 greedy rounds is
+// omitted: the rounds are played and summarised instead. The port adds
+// checks on the learning curve (exit 1 on failure).
+
+#include <cmath>
+#include <cstdio>
+#include <datamunge/nn/nn.hpp>
+#include <iostream>
+#include <random>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/bandit.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::ArmNames;
+using datamunge::rl::environments::MultiArmedBandit;
+using datamunge::rl::environments::ContextualBandit;
+}
+
+// Editable workflow support: rl/pg_common.hpp
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+inline dm::nn::Tensor LogProbOf(const dm::nn::Tensor& p,const dm::nn::Tensor&a,int K){if(p.size(1)!=K)throw std::invalid_argument("action width");return dm::rl::foundations::CategoricalActionLogProbability(p,a);}
+inline int SampleAction(const float*p,int n,std::mt19937_64&r){return dm::rl::foundations::SampleCategoricalAction(p,n,r);}
+inline dm::nn::Tensor ObsMatrix(const std::vector<Obs>&x){return dm::rl::foundations::ObservationMatrix(x);}
+inline dm::nn::Tensor IntVector(const std::vector<int>&v){return dm::nn::from_vector(std::vector<int64_t>(v.begin(),v.end()));}
+inline dm::nn::Tensor FloatVector(const std::vector<float>&v){return dm::nn::from_vector(v);}
+}
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+
+int main() {
+  try {
+    const int   dim = 8, K = 4, hidden = 32, batch = 32, rounds = 6000;
+    const float lr = 0.1f, entropy_beta = 0.01f;
+    rl::ContextualBandit env(dim, K, /*seed=*/11);
+    env.Seed(0);
+    std::printf("== %s: %d-dim context, %d arms, Bernoulli rewards; %d rounds, batches of %d, lr %.2f\n",
+                env.name().c_str(), dim, K, rounds, batch, lr);
+
+    // ---- Policy network: x -> tanh(x W1 + b1) -> logits = h W2 + b2
+    nn::Generator g1(1), g2(2);
+    Tensor        W1 = nn::normal({dim, hidden}, 0.0, std::sqrt(1.0 / dim), g1).requires_grad_();
+    Tensor        b1 = nn::zeros({hidden}).requires_grad_();
+    Tensor        W2 = nn::normal({hidden, K}, 0.0, std::sqrt(1.0 / hidden), g2).requires_grad_();
+    Tensor        b2 = nn::zeros({K}).requires_grad_();
+    auto          log_policy = [&](const Tensor& x) {
+return dm::rl::foundations::TanhCategoricalPolicy(x,W1,b1,W2,b2).log_probability;
+};
+    nn::Optimizer sgd({W1, b1, W2, b2}, lr, {nn::OptimizerKind::Sgd});
+
+    // ---- Loss: -mean( logp[a] * (r - baseline) ) - beta * entropy
+    auto loss_of = [&](const Tensor& x, const Tensor& a, const Tensor& r) {
+      const Tensor logp = log_policy(x);
+      const Tensor probs = nn::exp(logp);
+      const Tensor chosen_logp = rl::LogProbOf(logp, a, K);              // [B]
+      const Tensor advantage = r - nn::stop_gradient(nn::mean(r, {0}));  // baseline: the batch mean reward
+      const Tensor entropy = -nn::sum(probs * logp, {1});                // [B]
+      return -nn::mean(chosen_logp * advantage, {0}) - entropy_beta * nn::mean(entropy, {0});
+    };
+    auto probs_of = [&](const rl::Obs& ctx) {
+      nn::NoGradGuard no_grad;
+      return nn::exp(log_policy(nn::from_vector(ctx, {1, dim}))).to_vector<float>();
+    };
+
+    // ---- Interaction loop
+    std::mt19937_64      rng(0);
+    std::vector<rl::Obs> xb;
+    std::vector<int>     ab;
+    std::vector<float>   rb;
+    double               window_reward = 0, window_oracle = 0, window_random = 0, window_greedy = 0;
+    int                  window = 0;
+    std::vector<double>  policy_curve, greedy_curve, oracle_curve, random_curve;
+    std::printf("  %-12s %12s %12s %12s %12s\n", "rounds", "policy", "greedy", "oracle", "random");
+    for (int t = 0; t < rounds; ++t) {
+      rl::Obs                  ctx = env.reset();
+      const std::vector<float> p = probs_of(ctx);
+      // Sample an arm from the policy.
+      const int arm = rl::SampleAction(p.data(), K, rng);
+      int       greedy_arm = 0;
+      for (int k = 1; k < K; ++k)
+        if (p[k] > p[greedy_arm]) greedy_arm = k;
+      const float reward = env.step(arm).reward;
+
+      // Exact expected rewards make the evaluation low-variance.
+      window_reward += env.ExpectedReward(arm);
+      window_greedy += env.ExpectedReward(greedy_arm);
+      window_oracle += env.ExpectedReward(env.BestArm());
+      window_random += env.ExpectedReward(static_cast<int>(rng() % K));
+      ++window;
+
+      xb.push_back(ctx), ab.push_back(arm), rb.push_back(reward);
+      if (static_cast<int>(xb.size()) == batch) {
+        sgd.minimize(loss_of(rl::ObsMatrix(xb), rl::IntVector(ab), rl::FloatVector(rb)));
+        xb.clear(), ab.clear(), rb.clear();
+      }
+
+      if ((t + 1) % 1000 == 0) {
+        std::printf("  %5d-%-6d %12.3f %12.3f %12.3f %12.3f\n", t + 2 - window, t + 1, window_reward / window,
+                    window_greedy / window, window_oracle / window, window_random / window);
+        policy_curve.push_back(window_reward / window), greedy_curve.push_back(window_greedy / window);
+        oracle_curve.push_back(window_oracle / window), random_curve.push_back(window_random / window);
+        window_reward = window_oracle = window_random = window_greedy = 0;
+        window = 0;
+      }
+    }
+    std::cout << "  (mean expected reward of the arm chosen; 'policy' samples, 'greedy' takes the argmax)\n";
+
+    // tflow films 30 rounds of the trained policy's greedy arm here.
+    int    wins = 0, best_picks = 0;
+    double greedy_expected = 0;
+    for (int t = 0; t < 30; ++t) {
+      rl::Obs                  ctx = env.reset();
+      const std::vector<float> p = probs_of(ctx);
+      int                      arm = 0;
+      for (int k = 1; k < K; ++k)
+        if (p[k] > p[arm]) arm = k;
+      best_picks += arm == env.BestArm();
+      greedy_expected += env.ExpectedReward(arm);
+      wins += env.step(arm).reward > 0;
+    }
+    std::printf("  30 greedy rounds (vsim film omitted): %d rewards, best arm chosen %d times, mean expected %.3f\n",
+                wins, best_picks, greedy_expected / 30);
+
+    // Checks. TF: policy 0.502 -> 0.724, greedy 0.568 -> 0.785, oracle ~0.80, random ~0.46.
+    check::Require(policy_curve.back() > policy_curve.front() + 0.1, "the sampled policy should improve");
+    check::Require(policy_curve.back() > random_curve.back() + 0.15, "the trained policy should beat random pulls");
+    check::Require(greedy_curve.back() > oracle_curve.back() - 0.06, "the greedy arm should be near the oracle");
+    check::Require(greedy_curve.back() >= policy_curve.back(), "argmax should beat sampling once trained");
+    report_capture::Save("policy",policy_curve);report_capture::Save("greedy",greedy_curve);report_capture::Save("oracle",oracle_curve);report_capture::Save("random",random_curve);report_capture::arrays.insert(report_capture::arrays.end(),{{"W1",W1.detach().clone()},{"b1",b1.detach().clone()},{"W2",W2.detach().clone()},{"b2",b2.detach().clone()}});
+    std::cout << "\nchecks passed (vsim video omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == ContextualBandit: 8-dim context, 4 arms, Bernoulli rewards; 6000 rounds, batches of 32, lr 0.10
+//   rounds             policy       greedy       oracle       random
+//       1-1000          0.531        0.668        0.784        0.437
+//    1001-2000          0.611        0.740        0.788        0.440
+//    2001-3000          0.649        0.755        0.787        0.460
+//    3001-4000          0.668        0.759        0.780        0.445
+//    4001-5000          0.699        0.778        0.793        0.454
+//    5001-6000          0.703        0.775        0.786        0.448
+//   (mean expected reward of the arm chosen; 'policy' samples, 'greedy' takes the argmax)
+//   30 greedy rounds (vsim film omitted): 26 rewards, best arm chosen 25 times, mean expected 0.788
+//
+// checks passed (vsim video omitted)
+// result_end
+
+> Inspect the actual experiment results
+
+The plot uses the original1000-round expectation windows, not Bernoulli sample rewards. Oracle is an upper benchmark with full knowledge of the current context. Greedy evaluation differs from the sampled training policy.
+
+```{cpp, results="markdown", file="figures/contextual_bandit_results.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/contextual_bandit_source.npz");auto get=[&](const std::string& name){auto it=std::find_if(archive.begin(),archive.end(),[&](const auto& p){return p.first==name;});if(it==archive.end())throw std::runtime_error("missing source series "+name);return it->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();{auto values=get("policy");std::vector<double>x;x.resize(values.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,values,"policy",{37,99,235});}{auto values=get("greedy");std::vector<double>x;x.resize(values.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,values,"greedy",{234,88,12});}{auto values=get("oracle");std::vector<double>x;x.resize(values.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,values,"oracle",{22,163,74});}{auto values=get("random");std::vector<double>x;x.resize(values.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,values,"random",{147,51,234});}plot.title("contextual bandit source results").x_label("Source1000-round window index").y_label("Mean expected reward").size(1150,650).save_svg("build/contextual_bandit_results.svg");}
+```
+// result_begin: markdown
+\image(figures/contextual_bandit_results.svg)
+// result_end
+
+> Interpretation and provenance
+
+Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.

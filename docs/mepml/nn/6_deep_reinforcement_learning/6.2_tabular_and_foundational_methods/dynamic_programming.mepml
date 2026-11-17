@@ -1,0 +1,413 @@
+//? Title: Dynamic Programming: Bellman Backups and Exact Policy Evaluation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The original GridWorld slip.2/gamma.95 and CliffWalking gamma.99 solves retain stopping tolerances, policy initialization and2000-episode Monte Carlo checks. Terminal rewards remain in R but terminal continuation is removed from P.
+)
+\toc
+
+> Follow the computation
+
+```{cpp, results="markdown", file="figures/dynamic_programming_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle s;s.width=13;s.height=5;s.font_size=23;d.node("input",{-17,0},"Continuation P / reward R",s);d.node("math",{0,0},"Native einsum or linear solve",s);d.node("output",{17,0},"Caller value / policy iteration",s);d.edge("input","math").edge("math","output").save_svg("build/dynamic_programming_method.svg");}
+```
+// result_begin: markdown
+\image(figures/dynamic_programming_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+For one action with reward2 and continuation probability.5, discount.8 gives V=2+.4V=10/3. The continuation deficit represents terminal outcomes.
+
+```{cpp, results="markdown", file="figures/dynamic_programming_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("build");auto P=dm::nn::from_vector(std::vector<float>{.5f},{1,1,1});auto R=dm::nn::from_vector(std::vector<float>{2},{1,1});auto V=f::EvaluateMdpPolicy(P,R,dm::nn::from_vector(std::vector<int>{0}),.8);std::vector<double>values{V.item<double>(),2./.6};if(std::abs(values[0]-values[1])>1e-6)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/dynamic_programming_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("dynamic programming worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/dynamic_programming_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 3.333333254 |
+| 1 | 3.333333333 |
+\image(figures/dynamic_programming_worked.svg)
+// result_end
+
+> Complete preserved experiment
+
+The original GridWorld slip.2/gamma.95 and CliffWalking gamma.99 solves retain stopping tolerances, policy initialization and2000-episode Monte Carlo checks. Terminal rewards remain in R but terminal continuation is removed from P. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;
+template<class T> void Save(const std::string& name,const std::vector<T>& values){arrays.push_back({name,dm::nn::from_vector(values)});}
+inline void Table(const std::string& name,const dm::rl::foundations::QTable&q){arrays.push_back({name,q.tensor()});}
+struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/dynamic_programming_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn dynamic_programming
+// Dynamic programming: policy iteration and value iteration.
+//
+// Port of tflow's dynamic_programming. Both methods need the MDP's model,
+// which the grid environments expose as p(s', r | s, a). The model is packed
+// into two tensors, P[s, a, s'] and R[s, a], and the Bellman backups become
+// batched tensor ops: one einsum computes the expected next-state value for
+// every (s, a) at once, and policy evaluation is a single linear solve
+// (nn::einsum and nn::solve in place of TF's Einsum and MatrixSolve). The vsim
+// videos of the greedy policy are omitted; the port adds one check, that
+// policy and value iteration agree.
+
+#include <cmath>
+#include <cstdio>
+#include <datamunge/nn/einsum.hpp>
+#include <datamunge/nn/linalg.hpp>
+#include <datamunge/nn/nn.hpp>
+#include <iostream>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/grid_world.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::GridBase;
+using datamunge::rl::environments::GridWorld;
+using datamunge::rl::environments::CliffWalking;
+}
+
+// Editable workflow support: rl/tabular.hpp
+#include <datamunge/rl/tabular.hpp>
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+using dm::rl::foundations::QTable;using dm::rl::foundations::PolicyGrid;using dm::rl::foundations::ValueGrid;
+inline float Mean(const std::vector<float>&v,size_t from,size_t to){if(to>v.size())to=v.size();if(from>=to)return 0.f;return std::accumulate(v.begin()+from,v.begin()+to,0.f)/(to-from);}
+}
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+
+namespace {
+
+// P[s, a, s'] = probability of continuing in s'; transitions into terminal
+// states contribute reward but no continuation. R[s, a] = expected reward.
+using Model=dm::rl::foundations::MdpTensorModel;
+inline Model BuildModel(const rl::TabularEnv& env){return dm::rl::foundations::BuildMdpModel(env);}
+
+std::vector<float> ToVector(const Tensor& t) { return t.to_vector<float>(); }
+
+std::vector<int> ToInts(const Tensor& t) { return t.to_vector<int>(); }
+
+// Monte Carlo check of V(start) by running the policy in the real environment.
+float DiscountedReturn(rl::TabularEnv& env, const std::vector<int>& policy, float gamma, int episodes) {
+  double total = 0;
+  for (int e = 0; e < episodes; ++e) {
+    rl::Obs obs = env.reset(1000 + e);
+    double  g = 0, discount = 1;
+    while (true) {
+      rl::StepResult r = env.step(policy[static_cast<int>(obs[0])]);
+      g += discount * r.reward;
+      discount *= gamma;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    total += g;
+  }
+  return static_cast<float>(total / episodes);
+}
+
+void Solve(rl::GridBase& env, float gamma) {
+  std::cout << "\n==== " << env.name() << " (gamma = " << gamma << ")\n";
+  env.reset(0);
+  const Model  model = BuildModel(env);
+  const int    S = model.S, A = model.A;
+  const Tensor &P = model.P, &R = model.R;
+
+  // ---- Value iteration: V <- max_a [ R[s,a] + gamma * sum_s' P[s,a,s'] V[s'] ]
+  const auto q_of = [&](const Tensor& V) { return dm::rl::foundations::BellmanActionValues(P,R,V,gamma); };
+  // ---- Policy evaluation as a linear system: (I - gamma P_pi) V = R_pi
+  const auto evaluate = [&](const Tensor& pi) {
+return dm::rl::foundations::EvaluateMdpPolicy(P,R,pi,gamma);
+};
+
+  // Value iteration loop.
+  Tensor V = nn::zeros({S});
+  Tensor greedy;
+  int    sweeps = 0;
+  float  delta  = 0;
+  do {
+    const Tensor Q     = q_of(V);
+    const Tensor V_out = nn::max(Q, {1});
+    greedy             = nn::argmax(Q, 1);
+    delta              = nn::max(nn::abs(V_out - V)).item<float>();
+    V                  = V_out;
+    ++sweeps;
+  } while (delta > 1e-6f && sweeps < 10000);
+  const std::vector<int> vi_policy = ToInts(greedy);
+  std::printf("\n-- Value iteration converged in %d sweeps (max change %.1e)\n", sweeps, delta);
+  std::cout << "  V*:\n" << rl::ValueGrid(env, ToVector(V)) << "  greedy policy:\n" << rl::PolicyGrid(env, vi_policy);
+
+  // Policy iteration loop, starting from "always up".
+  std::vector<int>   pi(S, 0);
+  int                iterations = 0;
+  std::vector<float> V_final;
+  while (true) {
+    const Tensor V_pi   = evaluate(nn::from_vector(pi));
+    // Policy improvement: greedy w.r.t. Q_pi
+    const auto   pi_out = ToInts(nn::argmax(q_of(V_pi), 1));
+    ++iterations;
+    bool stable = true;
+    for (int s = 0; s < S; ++s) {
+      // Keep the old action when it is still optimal (avoids flip-flopping on ties).
+      if (pi[s] != pi_out[s]) {
+        stable = false;
+        pi[s]  = pi_out[s];
+      }
+    }
+    V_final = ToVector(V_pi);
+    if (stable || iterations > 100) break;
+  }
+  std::printf("\n-- Policy iteration converged in %d evaluate/improve rounds\n", iterations);
+  std::cout << "  V^pi:\n" << rl::ValueGrid(env, V_final) << "  policy:\n" << rl::PolicyGrid(env, pi);
+  float max_diff = 0;
+  const auto v_star = ToVector(V);
+  for (int s = 0; s < S; ++s) max_diff = std::max(max_diff, std::abs(V_final[s] - v_star[s]));
+  std::printf("  max |V_policy_iteration - V_value_iteration| = %.2e\n", max_diff);
+  check::Require(max_diff < 1e-4f, "policy and value iteration agree");
+
+  report_capture::arrays.push_back({env.name()+"_values",V.detach().clone()});report_capture::Save(env.name()+"_policy",vi_policy);
+  const int start = env.state();  // still at the start cell after reset()
+  std::printf("  V*(start) = %.3f; Monte Carlo return of the greedy policy over 2000 episodes = %.3f\n", v_star[start],
+              DiscountedReturn(env, vi_policy, gamma, 2000));
+}
+
+}  // namespace
+
+int main() {
+  try {
+    rl::GridWorld grid(/*slip_prob=*/0.2f);
+    Solve(grid, 0.95f);
+    rl::CliffWalking cliff;
+    Solve(cliff, 0.99f);
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+//
+// ==== GridWorld (gamma = 0.95)
+//
+// -- Value iteration converged in 33 sweeps (max change 9.5e-07)
+//   V*:
+//   -8.75  -8.23  -7.69      #  -5.25  -4.80
+//   -8.08  -7.46  -6.81      #  -4.34  -3.74
+//   -7.37  -6.63  -5.86      #  -3.38  -2.60
+//   -6.63  -5.76  -4.83      #  -2.39  -1.36
+//   -5.86  -4.83  -3.72  -2.51  -1.36   0.00
+//   greedy policy:
+// v v v # v v 
+// v v v # v v 
+// v v v # v v 
+// v v v # v v 
+// > > > > > G 
+//
+// -- Policy iteration converged in 5 evaluate/improve rounds
+//   V^pi:
+//   -8.75  -8.23  -7.69      #  -5.25  -4.80
+//   -8.08  -7.46  -6.81      #  -4.34  -3.74
+//   -7.37  -6.63  -5.86      #  -3.38  -2.60
+//   -6.63  -5.76  -4.83      #  -2.39  -1.36
+//   -5.86  -4.83  -3.72  -2.51  -1.36   0.00
+//   policy:
+// v v v # v v 
+// v v v # v v 
+// v v v # v v 
+// v v v # v v 
+// > > > > > G 
+//   max |V_policy_iteration - V_value_iteration| = 1.91e-06
+//   V*(start) = -8.750; Monte Carlo return of the greedy policy over 2000 episodes = -8.770
+//
+// ==== CliffWalking (gamma = 0.99)
+//
+// -- Value iteration converged in 15 sweeps (max change 0.0e+00)
+//   V*:
+//  -13.13 -12.25 -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -2.97
+//  -12.25 -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -2.97  -1.99
+//  -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -2.97  -1.99  -1.00
+//  -12.25 -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -1.00   0.00
+//   greedy policy:
+// > > > > > > > > > > > v 
+// > > > > > > > > > > > v 
+// > > > > > > > > > > > v 
+// ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ > G 
+//
+// -- Policy iteration converged in 15 evaluate/improve rounds
+//   V^pi:
+//  -13.13 -12.25 -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -2.97
+//  -12.25 -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -2.97  -1.99
+//  -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -2.97  -1.99  -1.00
+//  -12.25 -11.36 -10.47  -9.56  -8.65  -7.73  -6.79  -5.85  -4.90  -3.94  -1.00   0.00
+//   policy:
+// > > > > > > > > > > > v 
+// > > > > > > > > > > > v 
+// > > > > > > > > > > > v 
+// ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ > G 
+//   max |V_policy_iteration - V_value_iteration| = 9.54e-07
+//   V*(start) = -12.248; Monte Carlo return of the greedy policy over 2000 episodes = -12.248
+// result_end
+
+> Inspect the actual experiment results
+
+Values are plotted in native state order, including walls/absorbing cells. The ASCII grids above preserve the spatial policy and convergence residuals. The two environments have different rewards and discounts.
+
+```{cpp, results="markdown", file="figures/dynamic_programming_results.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/dynamic_programming_source.npz");auto get=[&](const std::string& name){auto it=std::find_if(archive.begin(),archive.end(),[&](const auto& p){return p.first==name;});if(it==archive.end())throw std::runtime_error("missing source series "+name);return it->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();{auto values=get("GridWorld_values");std::vector<double>x;x.resize(values.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,values,"GridWorld",{37,99,235});}{auto values=get("CliffWalking_values");std::vector<double>x;x.resize(values.size());std::iota(x.begin(),x.end(),1.);plot.lines(x,values,"CliffWalking",{234,88,12});}plot.title("dynamic programming source results").x_label("Flattened state index").y_label("Converged state value").size(1150,650).save_svg("build/dynamic_programming_results.svg");}
+```
+// result_begin: markdown
+\image(figures/dynamic_programming_results.svg)
+// result_end
+
+> Interpretation and provenance
+
+Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.

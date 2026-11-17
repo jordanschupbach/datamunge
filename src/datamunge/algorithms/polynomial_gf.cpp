@@ -88,21 +88,32 @@ GFPoly multiply(const GFPoly& a,const GFPoly& b,std::int64_t p) {
   for(std::size_t i=0;i<a.size();++i)if(a[i])for(std::size_t j=0;j<b.size();++j)out[i+j]=add(out[i+j],mul(a[i],b[j],p),p);
   trim(out);return out;
 }
-/// @brief Divide an owned normalized dividend by a normalized nonzero divisor.
-/// @param a Owned normalized dividend, reduced in place to the remainder.
-/// @param b Borrowed normalized divisor, nonempty.
-/// @param p Valid prime modulus.
-/// @return Owned quotient and remainder.
-PolyDivMod divide(GFPoly a,const GFPoly& b,std::int64_t p) {
-  if(a.size()<b.size())return {{},std::move(a)};
-  GFPoly quotient(a.size()-b.size()+1,0);
-  const auto inverse=scalar_power(b.back(),static_cast<std::uint64_t>(p-2),p);
-  while(!a.empty() && a.size()>=b.size()) {
-    const auto shift=a.size()-b.size();const auto coefficient=mul(a.back(),inverse,p);quotient[shift]=coefficient;
-    for(std::size_t i=0;i<b.size();++i)a[i+shift]=mod(a[i+shift]-mul(coefficient,b[i],p),p);
-    trim(a);
-  }
-  trim(quotient);return {std::move(quotient),std::move(a)};
+/// @brief Divide an owned normalized dividend by a normalized nonzero divisor, optionally recording actual cancellations.
+/// @param a Owned normalized dividend, reduced in place.
+/// @param b Borrowed normalized nonzero divisor.
+/// @param p Validated prime modulus.
+/// @param trace Optional owned actual-history sink, null for ordinary no-history execution.
+/// @param options Traced step/history caps; unused when trace is null.
+/// @return Owned normalized quotient and remainder.
+/// @throws std::length_error If the traced step/history policy or vector storage is exceeded.
+/// @throws std::overflow_error If an actual selected count exceeds size_t.
+PolyDivMod divide(GFPoly a,const GFPoly& b,std::int64_t p,PolynomialDivisionTrace* trace=nullptr,PolynomialDivisionOptions options={}) {
+ std::size_t entries=0;
+ if(trace){if(a.size()>std::numeric_limits<std::size_t>::max()-b.size())throw std::length_error("polynomial division history size");entries=a.size()+b.size();if(options.max_trace_entries&&entries>options.max_trace_entries)throw std::length_error("polynomial division history cap");trace->dividend=a;trace->divisor=b;}
+ if(a.size()<b.size())return {{},std::move(a)};
+ GFPoly quotient(a.size()-b.size()+1,0);
+ const auto inverse=scalar_power(b.back(),static_cast<std::uint64_t>(p-2),p);
+ if(trace){trace->has_inverse=true;trace->leading_inverse=inverse;}
+ while(!a.empty()&&a.size()>=b.size()){
+  if(trace&&options.max_steps&&trace->steps.size()>=options.max_steps)throw std::length_error("polynomial division step cap");
+  const auto shift=a.size()-b.size();const auto coefficient=mul(a.back(),inverse,p);PolynomialDivisionStep record{shift,coefficient,{},{},{}};
+  if(trace){std::size_t cost=1;for(auto amount:{a.size(),quotient.size()}){if(amount>std::numeric_limits<std::size_t>::max()-cost)throw std::length_error("polynomial history size");cost+=amount;}if(cost>std::numeric_limits<std::size_t>::max()-entries||(options.max_trace_entries&&(entries>options.max_trace_entries||cost>options.max_trace_entries-entries)))throw std::length_error("polynomial history cap");entries+=cost;record.before=a;}
+  quotient[shift]=coefficient;
+  for(std::size_t i=0;i<b.size();++i){if(trace)count(trace->coefficient_updates);a[i+shift]=mod(a[i+shift]-mul(coefficient,b[i],p),p);}
+  trim(a);
+  if(trace){if(a.size()>std::numeric_limits<std::size_t>::max()-entries||(options.max_trace_entries&&(entries>options.max_trace_entries||a.size()>options.max_trace_entries-entries)))throw std::length_error("polynomial history cap");entries+=a.size();record.after=a;record.quotient=quotient;trace->steps.push_back(std::move(record));}
+ }
+ trim(quotient);return {std::move(quotient),std::move(a)};
 }
 /// @brief Reduce a normalized polynomial modulo a normalized nonzero modulus.
 /// @param a Borrowed normalized polynomial.
@@ -391,6 +402,7 @@ PolyDivMod poly_divmod_gf(const GFPoly& a,const GFPoly& b,std::int64_t p) {
   if(divisor.empty())throw std::invalid_argument("GF polynomial: zero divisor");
   return gfpoly_detail::divide(gfpoly_detail::reduce(a,p),divisor,p);
 }
+PolynomialDivisionTrace poly_divmod_gf_trace(const GFPoly&a,const GFPoly&b,std::int64_t p,PolynomialDivisionOptions options){gfpoly_detail::field(p);auto divisor=gfpoly_detail::reduce(b,p);if(divisor.empty())throw std::invalid_argument("GF polynomial: zero divisor");PolynomialDivisionTrace trace;trace.result=gfpoly_detail::divide(gfpoly_detail::reduce(a,p),divisor,p,&trace,options);return trace;}
 GFPoly poly_gcd_gf(const GFPoly& a,const GFPoly& b,std::int64_t p) {
   gfpoly_detail::field(p);return gfpoly_detail::gcd(gfpoly_detail::reduce(a,p),gfpoly_detail::reduce(b,p),p);
 }

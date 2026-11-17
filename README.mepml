@@ -2,7 +2,7 @@
 
 > DATAMUNGE
 
-```{cpp, flags="$(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, nix-shell=".#report-cpp", cmd="c++ {file} -o {bin} -std=c++23 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
 #include <dm/dm.hpp>
 
 int main() {
@@ -11,40 +11,45 @@ int main() {
 }
 ```
 // result_begin:
-// /var/tmp/tmp.0.JPc8MY.cpp:2:10: fatal error: 'datamunge/datamunge.hpp' file not found
-//     2 | #include <datamunge/datamunge.hpp>
-//       |          ^~~~~~~~~~~~~~~~~~~~~~~~~
-// 1 error generated.
+// Hello datamunge
 // result_end
 
 > Test drive
 
+Press C-c C-c inside a block to run it. Each block selects its own Nix shell;
+code examples use `report-*` shells, which include the built library or binding.
+The first run may build dependencies. Build and REPL commands open a terminal;
+exit the REPL or shell to finish that block.
+
 >> NixOS
 
-```bash
+```{bash, nix-shell=".#cpp-tools", results="terminal"}
 nix develop
 ```
 
-```bash
+```{bash, nix-shell=".#cpp-tools", results="terminal"}
 just build
 ```
 
-```bash
+```{bash, nix-shell=".#cpp-tools", results="terminal"}
 just test
 ```
 
-```bash
+```{bash, nix-shell=".#cpp-tools", results="terminal"}
 just examples
 ```
 
-```bash
-just run TARGET=example_name
+```{bash, nix-shell=".#cpp-tools", results="terminal"}
+just TARGET=datamunge_ex run
 ```
 
 > Renaming this template
 
-```bash
-./rename_datamunge <new_project_name>
+Inspect the rename options below, then run `./rename_datamunge new_project_name`
+with your chosen name.
+
+```{bash, nix-shell=".#cpp-tools", results="terminal"}
+./rename_datamunge --help
 ```
 
 > Bindings
@@ -53,28 +58,28 @@ just run TARGET=example_name
 
 >>> Python
 
-```bash
-just python
+```{bash, nix-shell=".#python", results="terminal"}
+just run-python
+just repl-python
 ```
 
 >>> R
 
-```bash
-just build-r
-just install-r
-just r
+```{bash, nix-shell=".#r", results="terminal"}
+just run-r
+just repl-r
 ```
 
 >>> Javascript
 
-```bash
-just js
-just js-repl
+```{bash, nix-shell=".#javascript", results="terminal"}
+just run-javascript
+just repl-javascript
 ```
 
 >>> Lua
 
-```bash
+```{bash, nix-shell=".#lua", results="terminal"}
 just run-lua
 just repl-lua
 just test-lua
@@ -82,7 +87,7 @@ just test-lua
 
 >>> Rust
 
-```bash
+```{bash, nix-shell=".#rust", results="terminal"}
 just run-rust
 just repl-rust
 just test-rust
@@ -90,7 +95,7 @@ just test-rust
 
 >>> Julia
 
-```bash
+```{bash, nix-shell=".#julia", results="terminal"}
 just run-julia
 just repl-julia
 just test-julia
@@ -98,7 +103,7 @@ just test-julia
 
 >>> C#
 
-```bash
+```{bash, nix-shell=".#csharp", results="terminal"}
 just run-csharp
 just repl-csharp
 just test-csharp
@@ -109,7 +114,7 @@ just test-csharp
 Fortran has no REPL: `run-fortran` compiles `examples/fortran/$TARGET.f90` with gfortran
 against `build/fortran/prefix` and runs it.
 
-```bash
+```{bash, nix-shell=".#fortran", results="terminal"}
 just run-fortran
 just test-fortran
 ```
@@ -122,25 +127,10 @@ directory (and `src/datamungeruby/lib`, whose YARD comments carry the C\+\+ docu
 `RUBYLIB`, so `require "datamunge"` works anywhere in the shell. `repl-ruby` is irb with the
 binding loaded.
 
-```bash
+```{bash, nix-shell=".#ruby", results="terminal"}
 just TARGET=dataframe_ex run-ruby
 just repl-ruby
 just test-ruby
-```
-
-```{ruby, eval=false}
-require "datamunge"
-
-frame = Datamunge::DataFrame.new
-frame.add_numeric_column("x", Datamunge.seql(0, 1, 5))  # std::vector<double> is an Array
-frame.add_string_column("g", %w[a b a b a])
-puts frame                                               # to_string as to_s
-frame.nrows                                              # 5
-class Twice < Datamunge::Callback                        # override a C++ virtual method
-  def call(x) = 2 * x
-end
-Datamunge.call_with_callback(3.0, Twice.new)             # 6.0
-Datamunge.runif(1.0, 0.0, 3)                             # raises Datamunge::ArgumentError (a Datamunge::Error)
 ```
 
 >>> Octave
@@ -153,22 +143,10 @@ and the dev shells put that directory on the load path, so `datamunge.DataFrame 
 help text (`help datamunge.DataFrame.filter`; mep reads it through `MEP_OCTAVE_PATH`).
 `repl-octave` is octave-cli with the binding on the path.
 
-```bash
+```{bash, nix-shell=".#octave", results="terminal"}
 just TARGET=dataframe_ex run-octave
 just repl-octave
 just test-octave
-```
-
-```{octave, eval=false}
-frame = datamunge.DataFrame ();
-frame.add_numeric_column ('x', datamunge.seql (0, 1, 5));  % std::vector<double> is a row vector
-frame.add_string_column ('g', {'a', 'b', 'a', 'b', 'a'});  % vector<string> is a cellstr
-disp (frame.to_string ())
-frame.nrows ()                                              % 5
-help datamunge.DataFrame.select                             % Doxygen as Octave help text
-% classdef Twice < datamunge.Callback, methods, function r = call (obj, x), r = 2 * x; end, end, end
-datamunge.call_with_callback (3, Twice ())                  % 6: Octave overrides C++ virtual methods
-datamunge.runif (1, 0, 3)                                   % error datamunge:invalid_argument
 ```
 
 >>> Tcl
@@ -181,31 +159,10 @@ and the dev shells put that directory on `TCLLIBPATH`, so `package require datam
 `proc`/`oo::class` stubs (mep reads them through `MEP_TCL_PATH`). `repl-tcl` is tclsh with the
 package loaded.
 
-```bash
+```{bash, nix-shell=".#tcl", results="terminal"}
 just TARGET=dataframe_ex run-tcl
 just repl-tcl
 just test-tcl
-```
-
-```{tcl, eval=false}
-package require datamunge
-
-set frame [datamunge::DataFrame new]
-$frame add_numeric_column x [datamunge::seql 0 1 5]   ;# std::vector<double> is a Tcl list
-$frame add_string_column g {a b a b a}
-puts [$frame to_string]
-$frame nrows                                          ;# 5
-oo::class create Twice {                              ;# override a C++ virtual method
-    superclass ::datamunge::Callback
-    method call {x} { expr {2 * $x} }
-}
-datamunge::call_with_callback 3.0 [Twice new]         ;# 6.0
-try {
-    datamunge::runif 1.0 0.0 3
-} trap {DATAMUNGE invalid_argument} {message} {      ;# -errorcode {DATAMUNGE kind cpp_type message}
-    puts "caught: $message"
-}
-$frame destroy
 ```
 
 >>> Guile
@@ -218,29 +175,10 @@ are GOOPS classes and methods are generics. Every procedure's docstring carries 
 documentation (`procedure-documentation`, `,describe`; mep reads the committed
 `src/datamungeguile/scheme` through `MEP_GUILE_PATH`). `repl-guile` is guile with the module loaded.
 
-```bash
+```{bash, nix-shell=".#guile", results="terminal"}
 just TARGET=dataframe_ex run-guile
 just repl-guile
 just test-guile
-```
-
-```{scheme, eval=false}
-(use-modules (oop goops) (datamunge) ((datamunge data) #:select (iris)))
-
-(define frame (make <data-frame>))
-(add-numeric-column frame "x" (seql 0.0 1.0 5))         ; std::vector<double> is a list
-(add-string-column frame "g" '("a" "b" "a" "b" "a"))
-(display (to-string frame)) (newline)
-(nrows frame)                                           ; 5
-(nrows (iris))                                          ; 150: policy module Data is (datamunge data)
-(display (procedure-documentation select)) (newline)    ; Doxygen as a docstring
-(define-class <twice> (<callback>))                     ; override a C++ virtual method
-(define-method (call (self <twice>) x) (* 2 x))
-(call-with-callback 3.0 (make <twice>))                 ; 6.0
-(catch 'datamunge-invalid-argument                      ; C++ exceptions throw datamunge-<kind>
-  (lambda () (runif 1.0 0.0 3))
-  (lambda (key subr message irritants data) (format #t "caught: ~a\n" message)))
-(close! frame)                                          ; frees it now (else a finalizer does)
 ```
 
 >>> Java
@@ -254,33 +192,10 @@ and the datasets are in `datamunge.data.Data`. The generated sources carry the C
 Javadoc (mep reads them through `MEP_JAVA_SOURCEPATH`). `repl-java` is jshell with the jar on the class
 path and `import datamunge.*;` done.
 
-```bash
+```{bash, nix-shell=".#java", results="terminal"}
 just TARGET=dataframe_ex run-java
 just repl-java
 just test-java
-```
-
-```{java, eval=false}
-import datamunge.*;
-import datamunge.data.Data;
-import java.util.List;
-
-try (var frame = new DataFrame()) {
-  frame.addNumericColumn("x", Datamunge.seql(0, 1, 5));        // std::vector<double> is a double[]
-  frame.addStringColumn("g", List.of("a", "b", "a", "b", "a")); // vector<string> is a List<String>
-  System.out.println(frame);                                    // to_string as toString()
-  frame.nrows();                                                // 5
-}
-Data.iris().nrows();                                            // 150: policy module Data is datamunge.data
-class Twice extends Callback {                                  // override a C++ virtual method
-  @Override public double call(double x) { return 2 * x; }
-}
-Datamunge.callWithCallback(3.0, new Twice());                   // 6.0
-try {
-  Datamunge.runif(1.0, 0.0, 3);
-} catch (NativeError.InvalidArgument e) {                       // C++ exceptions are typed NativeErrors
-  System.out.println("caught: " + e.getMessage());
-}
 ```
 
 >>> Go
@@ -297,41 +212,9 @@ Calls return `(T, error)`, constructors are `NewX`, overloads and C\+\+ defaults
 documentation as godoc comments (`go doc datamunge.Seql`; mep reads them through the go.mod
 `replace`). Go has no REPL, so there is no `repl-go`.
 
-```bash
+```{bash, nix-shell=".#go", results="terminal"}
 just TARGET=dataframe_ex run-go
 just test-go
-```
-
-```{go, eval=false}
-package main
-
-import (
-	"datamunge"
-	"datamunge/data"
-	"errors"
-	"fmt"
-)
-
-type twice struct{} // override a C++ virtual method
-
-func (twice) Call(x float64) float64 { return 2 * x }
-
-func main() {
-	frame := datamunge.Must(datamunge.NewDataFrame()) // calls return (T, error); Must panics on the error
-	defer frame.Close()                               // else a cleanup frees it later
-	frame.AddNumericColumn("x", datamunge.Must(datamunge.Seql(0, 1, 5))) // vector<double> is []float64
-	frame.AddStringColumn("g", []string{"a", "b", "a", "b", "a"})
-	fmt.Println(frame)                                               // to_string as String()
-	fmt.Println(datamunge.Must(frame.Nrows()))                       // 5
-	fmt.Println(datamunge.Must(datamunge.Must(data.Iris()).Nrows())) // 150: policy module data
-	fmt.Println(datamunge.Must(frame.SortByWithAscending("x", false))) // C++ defaults as named variants
-	cb := datamunge.Must(datamunge.NewCallbackFrom(twice{}))
-	fmt.Println(datamunge.Must(datamunge.CallWithCallback(3.0, cb))) // 6
-	var e *datamunge.Error
-	if _, err := datamunge.Runif(1.0, 0.0, 3); errors.As(err, &e) && e.Kind == datamunge.InvalidArgument {
-		fmt.Println("caught:", e.Message) // C++ exceptions are *Error values
-	}
-}
 ```
 
 >>> OCaml
@@ -347,476 +230,692 @@ type-suffixed functions, and OCaml subclasses override virtual methods through `
 committed `datamunge.mli` carries the C\+\+ documentation as odoc comments (mep reads it through
 `MEP_OCAML_PATH`). `repl-ocaml` is utop with the package loaded and opened.
 
-```bash
+```{bash, nix-shell=".#ocaml", results="terminal"}
 just TARGET=dataframe_ex run-ocaml
 just repl-ocaml
 just test-ocaml
 ```
 
-```{ocaml, eval=false}
-open Datamunge
+> Binding examples: Bayesian-tuned Iris MLP
 
-let () =
-  let frame = DataFrame.create () in
-  DataFrame.add_numeric_column frame "x" (seql 0. 1. 5);        (* std::vector<double> is a float array *)
-  DataFrame.add_string_column frame "g" [ "a"; "b"; "a"; "b"; "a" ]; (* vector<string> is a list *)
-  print_endline (DataFrame.to_string frame);
-  Printf.printf "%d\n" (DataFrame.nrows frame);                (* 5 *)
-  Printf.printf "%d\n" (Data.iris () |> DataFrame.nrows);      (* 150: policy module Data *)
-  let sorted = DataFrame.sort_by ~ascending:false frame "x" in (* C++ defaults are labelled *)
-  ignore sorted;
-  let twice = Callback.extend ~call:(fun _ x -> 2. *. x) () in (* override a C++ virtual method *)
-  Printf.printf "%g\n" (call_with_callback 3.0 twice);         (* 6 *)
-  match runif 1.0 0.0 3 with
-  | _ -> ()
-  | exception Invalid_argument m -> print_endline ("caught: " ^ m) (* C++ exceptions are OCaml ones *)
-```
+Every block below loads the bundled Iris dataset and fits the same native MLP
+classifier using **Petal.Length and Petal.Width only**, both measured in centimetres.
+The three output classes are setosa, versicolor and virginica.
 
-> Binding examples
+`MLPClassifierSearch` performs a seeded, stratified 90/30/30 split: candidate
+networks learn from 90 rows, hidden width is chosen on 30 validation rows, and
+30 test rows remain untouched until the end. A Gaussian-process surrogate with
+expected improvement follows four random proposals with eight Bayesian proposals,
+searching **2–24 hidden nodes** in one tanh hidden layer. Continuous proposals are
+rounded to integers; repeated widths reuse a cached fit. The printed history shows
+all 12 proposals and which were cached. The objective is validation mean log loss,
+not training accuracy or test accuracy.
 
-These blocks replicate the per-language examples under `examples/`.
+All other settings stay fixed: 400 SGD epochs, learning rate 0.05, batch size 32,
+L2 penalty 0.0001 and seed 42. Predictor standardization is fitted only on the
+candidate's training rows. The selected width is then refitted on all 120 development
+rows, including new standardization statistics, before the final test score is
+computed. Validation loss is the selected candidate's loss before refitting.
 
->> C/C\+\+ (`examples/cpp/source/data/datamunge_ex.cpp`)
+Each plot shows the final model's predicted class regions and the 120 development
+observations, coloured by their actual species. The 120 × 120 region grid is a
+visual approximation of the decision boundary; test points are not overlaid.
+This is a small worked example, not a claim that one split finds the globally best
+architecture. Edit the visible search controls to explore other budgets or seeds.
 
-```{cpp, nix-shell=".#cpp", results="output", exports="both", flags="$(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/datamunge.hpp>
+C-c C-c runs each block in its `report-*` Nix shell, which supplies the language
+runtime and binding. Training, search and SVG rendering use native datamunge.
+Images are local build output;
+MEP embeds the saved SVG through the block's `file=` option.
 
-int main(void) {
-  datamunge::hello("Jordan");
-  return 0;
+>> C/C++
+
+```{cpp, nix-shell=".#report-cpp", results="output", file="build/iris-mlp-cpp.svg", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+#include <dm/dm.hpp>
+#include <iostream>
+
+int main() {
+  dm::mkdir("build");
+  const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+  dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width",
+                              2, 24, 4, 8, 400, 42);
+  std::cout << fit.summary() << '\n';
+  const std::unique_ptr<dm::DataFrame> trials(fit.trials());
+  std::cout << trials->to_md(6) << '\n';
+  fit.plot_decision_regions().save("build/iris-mlp-cpp.svg");
 }
 ```
 // result_begin:
-// warning: Git tree '/mnt/projects/datamunge' is dirty
-// /tmp/file4dmgT7.cpp:1:10: fatal error: datamunge/datamunge.hpp: No such file or directory
-//     1 | #include <datamunge/datamunge.hpp>
-//       |          ^~~~~~~~~~~~~~~~~~~~~~~~~
-// compilation terminated.
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-cpp.svg)
 // result_end
 
->> C# (`examples/csharp/stl_ex.cs`)
+>> C#
 
-A .NET 10 file-based app: `#:project` references the generated project, so
-`dotnet run examples/csharp/stl_ex.cs` (or `just TARGET=stl_ex run-csharp`) runs it.
-
-```{csharp, eval=false}
-// CMD: just TARGET=stl_ex run-csharp
-#:project ../../src/datamungecsharp/Datamunge.csproj
-// C++ std::vector and std::pair values in C#: vectors are List<T>, pairs are tuples.
+```{csharp, nix-shell=".#report-csharp", results="output", file="build/iris-mlp-csharp.svg"}
+#:package Datamunge@0.0.1
 using Datamunge;
 
-const int n = 100;
-var v = Enumerable.Range(0, n).Select(i => i * 1.5).ToList();
-v.ForEach(Console.WriteLine);
-var v2 = Enumerable.Range(0, n).Select(i => (int)Math.Floor(i * 1.5)).ToList();
-v2.ForEach(Console.WriteLine);
-
-var p = (3, 4);
-Console.WriteLine($"p: ({p.Item1}, {p.Item2})");
-
-var p2 = (10, 20);
-Console.WriteLine($"p2: ({p2.Item1}, {p2.Item2})");
-
-// A C++ std::pair<double,double> comes back as a tuple.
-var p3 = Functions.MakeDpair(1.25, 2.75);
-Console.WriteLine($"make_dpair(1.25, 2.75): {p3}, sum_dpair = {Functions.SumDpair(p3)}");
+Directory.CreateDirectory("build");
+using var iris = Data.Iris()!;
+using var fit = new MLPClassifierSearch(iris, "Species", "Petal.Length", "Petal.Width",
+                                       2, 24, 4, 8, 400, 42);
+Console.WriteLine(fit.Summary());
+using var trials = fit.Trials()!;
+Console.WriteLine(trials.ToMd(6));
+using var regions = fit.PlotDecisionRegions();
+regions.Save("build/iris-mlp-csharp.svg");
 ```
+// result_begin:
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-csharp.svg)
+// result_end
 
->> D (`examples/d/source/app.d`)
+>> D
 
-```d
-module app;
-
+```{d, nix-shell=".#report-d", results="output", file="build/iris-mlp-d.svg", cmd="ldc2 -I$DATAMUNGED_SOURCE {file} $DATAMUNGED_SOURCE/datamunge.d $DATAMUNGED_SOURCE/datamunge_im.d -of={bin} && {bin}"}
+module iris_mlp;
+import std.file : exists, mkdirRecurse;
 import std.stdio : writeln;
 import datamunge;
 
-class TimesTwo : Callback {
-  override double call(double x) {
-    return x * 2.0;
-  }
-}
-
 void main() {
-  hello();
-
-  auto vec = make_dvector(1.0, 2.0, 3.0);
-  writeln("sum_dvector(1,2,3) = ", sum_dvector(vec));
-
-  auto pair = make_dpair(4.0, 5.0);
-  writeln("sum_dpair(4,5) = ", sum_dpair(pair));
-
-  auto cb = new TimesTwo();
-  writeln("call_with_callback(3.0) = ", call_with_callback(3.0, cb));
-  auto vec2 = map_dvector_with_callback(vec, cb);
-  writeln("sum_dvector(map_dvector_with_callback(1,2,3)) = ", sum_dvector(vec2));
+  if (!exists("build")) mkdirRecurse("build");
+  auto iris = data_iris();
+  auto fit = new MLPClassifierSearch(iris, "Species", "Petal.Length", "Petal.Width",
+                                     2, 24, 4, 8, 400, 42);
+  writeln(fit.summary());
+  auto trials = fit.trials();
+  writeln(trials.to_md(6));
+  auto regions = fit.plot_decision_regions();
+  regions.save("build/iris-mlp-d.svg");
 }
 ```
+// result_begin:
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-d.svg)
+// result_end
 
->> Go (`examples/go/datamunge_ex.go`)
+>> Go
 
-```{go, results="output", exports="both"}
+```{go, nix-shell=".#report-go", results="output", file="build/iris-mlp-go.svg"}
 package main
 
 import (
-	"datamunge"
-	"fmt"
+    "datamunge"
+    "datamunge/data"
+    "fmt"
+    "os"
 )
 
 func main() {
-	if err := datamunge.Hello(); err != nil {
-		panic(err)
-	}
-
-	v := datamunge.Must(datamunge.MakeDvector(1.0, 2.0, 3.0))
-	fmt.Printf("sum_dvector:\t%v\n", datamunge.Must(datamunge.SumDvector(v)))
-
-	p := datamunge.Must(datamunge.MakeDpair(1.25, 2.75))
-	fmt.Printf("sum_dpair:\t%v\n", datamunge.Must(datamunge.SumDpair(p)))
-
-	cb := datamunge.Must(datamunge.NewCallback())
-	defer cb.Close()
-	fmt.Printf("call_with_callback(3.0):\t%v\n", datamunge.Must(datamunge.CallWithCallback(3.0, cb)))
+    if err := os.MkdirAll("build", 0755); err != nil { panic(err) }
+    iris := datamunge.Must(data.Iris())
+    defer iris.Close()
+    fit := datamunge.Must(datamunge.NewMLPClassifierSearchWithSeed(
+        iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42))
+    defer fit.Close()
+    fmt.Println(datamunge.Must(fit.Summary()))
+    trials := datamunge.Must(fit.Trials())
+    defer trials.Close()
+    fmt.Println(datamunge.Must(trials.ToMdWithDigits(6)))
+    regions := datamunge.Must(fit.PlotDecisionRegions())
+    defer regions.Close()
+    if err := regions.Save("build/iris-mlp-go.svg"); err != nil { panic(err) }
 }
 ```
 // result_begin:
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-go.svg)
 // result_end
 
->> Guile/Scheme (`examples/guile/datamunge_ex.scm`)
+>> Guile/Scheme
 
-```{scheme, results="output", exports="both"}
-(use-modules (oop goops) (datamunge))
+```{scheme, nix-shell=".#report-guile", results="output", file="build/iris-mlp-guile.svg"}
+(use-modules (oop goops) (datamunge) ((datamunge data) #:select (iris)))
+(unless (file-exists? "build") (mkdir "build"))
 
-(hello)
-(format #t "sum-dvector = ~a\n" (sum-dvector (make-dvector 10.0 20.0 30.0)))  ; vectors are lists
-(format #t "sum-dpair = ~a\n" (sum-dpair (make-dpair 4.0 5.0)))               ; pairs are pairs
-(define-class <twice> (<callback>))                                             ; override a C++ virtual
-(define-method (call (self <twice>) x) (* 2 x))
-(format #t "call-with-callback = ~a\n" (call-with-callback 3.0 (make <twice>)))
+(define flowers (iris))
+(define fit (make <mlp-classifier-search> flowers "Species" "Petal.Length" "Petal.Width"
+                  2 24 4 8 400 42))
+(display (summary fit)) (newline)
+(define history (trials fit))
+(display (to-md history 6)) (newline)
+(define regions (plot-decision-regions fit))
+(save regions "build/iris-mlp-guile.svg")
+(for-each close! (list regions history fit flowers))
 ```
+// result_begin:
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-guile.svg)
+// result_end
 
->> Java (`examples/java/DatamungeEx.java`)
+>> Java
 
-```{java, nix-shell=".#java", results="output", exports="both"}
-import datamunge.Callback;
-import datamunge.Datamunge;
+```{java, nix-shell=".#report-java", results="output", file="build/iris-mlp-java.svg", cmd="java -cp $CLASSPATH {file}"}
+import datamunge.*;
+import datamunge.data.Data;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-public class DatamungeEx {
-  // A Java subclass overrides the C++ Callback's virtual call().
-  static class TimesTwo extends Callback {
-    @Override
-    public double call(double x) {
-      return 2.0 * x;
-    }
-  }
-
-  public static void main(String[] args) {
-    Datamunge.hello();
-
-    var pair = Datamunge.makeDpair(1.0, 2.0); // std::pair<double, double> is the Pair record
-    System.out.println("make_dpair: " + pair + ", sum_dpair = " + Datamunge.sumDpair(pair));
-
-    try (var cb = new TimesTwo()) {
-      System.out.println("call_with_callback(3.0) = " + Datamunge.callWithCallback(3.0, cb));
-      double[] v = Datamunge.makeDvector(1.0, 2.0, 3.0);
-      double[] v2 = Datamunge.mapDvectorWithCallback(v, cb);
-      System.out.println("sum_dvector(map_dvector_with_callback(1,2,3)) = " + Datamunge.sumDvector(v2));
+class Main {
+  public static void main(String[] args) throws Exception {
+    Files.createDirectories(Path.of("build"));
+    try (var iris = Data.iris();
+         var fit = new MLPClassifierSearch(iris, "Species", "Petal.Length", "Petal.Width",
+                                           2, 24, 4, 8, 400, 42);
+         var trials = fit.trials();
+         var regions = fit.plotDecisionRegions()) {
+      System.out.println(fit.summary());
+      System.out.println(trials.toMd(6));
+      regions.save("build/iris-mlp-java.svg");
     }
   }
 }
 ```
 // result_begin:
-// Hello datamunge
-// make_dpair: Pair[first=1.0, second=2.0], sum_dpair = 3.0
-// call_with_callback(3.0) = 6.0
-// sum_dvector(map_dvector_with_callback(1,2,3)) = 12.0
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-java.svg)
 // result_end
 
->> JavaScript (`examples/javascript/datamunge_ex.js`)
+>> JavaScript
 
-```{js, results="output", exports="both"}
-// Local dev: build first (`just build-javascript`), then run this example.
-const datamunge = require("../../index.js");
+```{js, nix-shell=".#report-javascript", results="output", file="build/iris-mlp-javascript.svg"}
+const fs = require("node:fs");
+const dm = require("@datamunge/datamungejs");
+fs.mkdirSync("build", {recursive: true});
 
-datamunge.hello();
-
-// Note: SWIG's Node/JavaScript backend does not support directors/virtual-method
-// overrides the same way as Python/Ruby/Perl. `Callback` can still be passed,
-// but the default implementation is identity.
-const cb = new datamunge.Callback();
-console.log("call_with_callback(3.0) =", datamunge.call_with_callback(3.0, cb));
-const v2 = datamunge.map_dvector_with_callback(datamunge.make_dvector(1.0, 2.0, 3.0), cb);
-console.log("sum_dvector(map_dvector_with_callback) =", datamunge.sum_dvector(v2));
-
-// Bridging: pass a JS function into native code (via C callback trampoline).
-console.log("call_with_function(3.0) =", datamunge.call_with_function(3.0, (x) => x * 2.0));
-const out = datamunge.map_array_with_function([1.0, 2.0, 3.0], (x) => x * 2.0);
-console.log("map_array_with_function([1,2,3]) =", out);
+const iris = dm.data.iris();
+const fit = new dm.MLPClassifierSearch(iris, "Species", "Petal.Length", "Petal.Width",
+                                      2, 24, 4, 8, 400, 42);
+console.log(fit.summary());
+console.log(fit.trials().to_md(6));
+fit.plot_decision_regions().save("build/iris-mlp-javascript.svg");
 ```
 // result_begin:
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-javascript.svg)
 // result_end
 
->> Lua (`examples/lua/datamunge_ex.lua`)
+>> Lua
 
-```{lua, results="output", exports="both"}
-local datamunge = require("datamunge")
-datamunge.hello()
+```{lua, nix-shell=".#report-lua", results="output", file="build/iris-mlp-lua.svg"}
+local dm = require("datamunge")
+os.execute("mkdir -p build")
 
-local v = datamunge.make_dvector(1.0, 2.0, 3.0)
-print("sum_dvector:", datamunge.sum_dvector(v))
-
-local p = datamunge.make_dpair(1.25, 2.75)
-print("sum_dpair:", datamunge.sum_dpair(p))
-
-local cb = datamunge.Callback()
-print("call_with_callback(3.0):", datamunge.call_with_callback(3.0, cb))
-local v2 = datamunge.map_dvector_with_callback(datamunge.make_dvector(1.0, 2.0, 3.0), cb)
-print("sum_dvector(map_dvector_with_callback(1,2,3)):", datamunge.sum_dvector(v2))
+local iris = dm.data.iris()
+local fit = dm.MLPClassifierSearch(iris, "Species", "Petal.Length", "Petal.Width",
+                                   2, 24, 4, 8, 400, 42)
+print(fit:summary())
+print(fit:trials():to_md(6))
+fit:plot_decision_regions():save("build/iris-mlp-lua.svg")
 ```
 // result_begin:
-// Hello datamunge
-// sum_dvector:	6.0
-// sum_dpair:	4.0
-// call_with_callback(3.0):	3.0
-// sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-lua.svg)
 // result_end
 
->> OCaml (`examples/ocaml/datamunge_ex.ml`)
+>> OCaml
 
-```{ocaml, nix-shell=".#ocaml", results="output", exports="both"}
+```{ocaml, nix-shell=".#report-ocaml", results="output", file="build/iris-mlp-ocaml.svg"}
 #use "topfind";;
 #require "datamunge";;
 open Datamunge;;
 
 let () =
-  hello ();
-  let v = make_dvector 1.0 2.0 3.0 in
-  Printf.printf "sum_dvector:\t%g\n" (sum_dvector v);
-  let p = make_dpair 1.25 2.75 in
-  Printf.printf "sum_dpair:\t%g\n" (sum_dpair p);
-  (* An OCaml subclass overrides the C++ Callback's virtual call(). *)
-  let cb = Callback.extend ~call:(fun _ x -> 2.0 *. x) () in
-  Printf.printf "call_with_callback(3.0):\t%g\n" (call_with_callback 3.0 cb);
-  let v2 = map_dvector_with_callback (make_dvector 1.0 2.0 3.0) cb in
-  Printf.printf "sum_dvector(map_dvector_with_callback(1,2,3)):\t%g\n" (sum_dvector v2)
+  if not (Sys.file_exists "build") then Sys.mkdir "build" 0o755;
+  let iris = Data.iris () in
+  let fit = MLPClassifierSearch.create iris "Species" "Petal.Length" "Petal.Width"
+      ~min_hidden:2 ~max_hidden:24 ~initial_samples:4 ~iterations:8 ~epochs:400 ~seed:42 in
+  print_endline (MLPClassifierSearch.summary fit);
+  let trials = MLPClassifierSearch.trials fit in
+  print_endline (DataFrame.to_md ~digits:6 trials);
+  let regions = MLPClassifierSearch.plot_decision_regions fit in
+  RPlot.save regions "build/iris-mlp-ocaml.svg"
 ```
 // result_begin:
-// Hello datamunge
-// sum_dvector:	6
-// sum_dpair:	4
-// call_with_callback(3.0):	6
-// sum_dvector(map_dvector_with_callback(1,2,3)):	12
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-ocaml.svg)
 // result_end
 
->> Octave (`examples/octave/datamunge_ex.m`)
+>> Octave
 
-```{octave, nix-shell=".#octave", results="output", exports="both"}
-datamunge.hello ();
-
-v = datamunge.make_dvector (1.0, 2.0, 3.0);
-printf ('sum_dvector:\t%.1f\n', datamunge.sum_dvector (v));
-
-p = datamunge.make_dpair (1.25, 2.75);
-printf ('sum_dpair:\t%.1f\n', datamunge.sum_dpair (p));
-
-cb = datamunge.Callback ();
-printf ('call_with_callback(3.0):\t%.1f\n', datamunge.call_with_callback (3.0, cb));
-v2 = datamunge.map_dvector_with_callback (datamunge.make_dvector (1.0, 2.0, 3.0), cb);
-printf ('sum_dvector(map_dvector_with_callback(1,2,3)):\t%.1f\n', datamunge.sum_dvector (v2));
+```{octave, nix-shell=".#report-octave", results="output", file="build/iris-mlp-octave.svg"}
+if (! isfolder ("build")), mkdir ("build"); endif
+iris = datamunge.Data.iris ();
+fit = datamunge.MLPClassifierSearch (iris, "Species", "Petal.Length", "Petal.Width",
+                                     2, 24, 4, 8, 400, 42);
+disp (fit.summary ())
+history = fit.trials ();
+disp (history.to_md (6))
+regions = fit.plot_decision_regions ();
+regions.save ("build/iris-mlp-octave.svg");
 ```
 // result_begin:
-// Hello datamunge
-// sum_dvector:	6.0
-// sum_dpair:	4.0
-// call_with_callback(3.0):	3.0
-// sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-octave.svg)
 // result_end
 
->> Perl (`examples/perl/datamunge_ex.pl`)
+>> Perl
 
-```{perl, results="output", exports="both"}
+```{perl, nix-shell=".#report-perl", results="output", file="build/iris-mlp-perl.svg"}
 use strict;
 use warnings;
-
+use File::Path qw(make_path);
 use Datamunge;
+make_path("build");
 
-Datamunge::hello();
-
-my $dp = Datamunge::DPair->new(1.0, 2.0);
-print "DPair: First=" . $dp->swig_first_get() . ", Second=" . $dp->swig_second_get() . "\n";
-
-{
-  package TimesTwo;
-  our @ISA = ('Datamunge::Callback');
-
-  sub call {
-    my ($self, $x) = @_;
-    return $x * 2.0;
-  }
-}
-
-my $cb = TimesTwo->new();
-print "call_with_callback(3.0) = ", Datamunge::call_with_callback(3.0, $cb), "\n";
-my $v = Datamunge::make_dvector(1.0, 2.0, 3.0);
-my $v2 = Datamunge::map_dvector_with_callback($v, $cb);
-print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Datamunge::sum_dvector($v2), "\n";
+my $iris = Datamunge::data_iris();
+my $fit = Datamunge::MLPClassifierSearch->new($iris, "Species", "Petal.Length", "Petal.Width",
+                                            2, 24, 4, 8, 400, 42);
+print $fit->summary(), "\n";
+my $trials = $fit->trials();
+print $trials->to_md(6), "\n";
+my $regions = $fit->plot_decision_regions();
+$regions->save("build/iris-mlp-perl.svg");
 ```
 // result_begin:
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-perl.svg)
 // result_end
 
->> PHP (`examples/php/datamunge_ex.php`)
+>> PHP
 
-```{php, results="output", exports="both"}
-<?php
-
-
-$n = 100;
-$v = new DVector($n);
-for($i = 0; $i < 10; $i += 1) {
-    $v->set($i, $i * 1.5);
-}
-for($i = 0; $i < 10; $i += 1) {
-    print($v->get($i) . "\n");
-}
-
-$v2 = new IVector($n);
-for($i = 0; $i < 10; $i += 1) {
-    $v2->set($i, $i * 1.5); // NOTE: Type coercion happens implicitly
-}
-
-for($i = 0; $i < 10; $i += 1) {
-    print($v2->get($i) . "\n");
-}
-
-hello()
-
-?>
-```
-
->> Python (`examples/python/datamunge_ex.py`)
-
-```{python, results="output", exports="both"}
-from pydatamunge import datamunge
-
-# dir(datamunge)
-
-datamunge.hello()
-
-dp = datamunge.DPair(1, 2)
-
-s = datamunge.SVector(3)
-s[0] = "1"
-s[1] = "2"
-s[2] = "3"
-# s[3] = "4"  # <- Gets index out of bounds error
-
-
-class TimesTwo(datamunge.Callback):
-    def call(self, x):
-        return x * 2.0
-
-
-class TimesThree(datamunge.Callback):
-    def call(self, x):
-        return x * 3.0
-
-
-# cb = TimesTwo()
-cb = TimesThree()
-print("call_with_callback(3.0) =", datamunge.call_with_callback(3.0, cb))
-v = datamunge.make_dvector(1.0, 2.0, 3.0)
-v2 = datamunge.map_dvector_with_callback(v, cb)
-print("sum_dvector(map_dvector_with_callback(1,2,3)) =", datamunge.sum_dvector(v2))
+```{php, nix-shell=".#report-php", results="output", file="build/iris-mlp-php.svg"}
+if (!is_dir("build")) { mkdir("build", 0777, true); }
+$iris = data_iris();
+$fit = new MLPClassifierSearch($iris, "Species", "Petal.Length", "Petal.Width",
+                              2, 24, 4, 8, 400, 42);
+echo $fit->summary(), "\n";
+$trials = $fit->trials();
+echo $trials->to_md(6), "\n";
+$regions = $fit->plot_decision_regions();
+$regions->save("build/iris-mlp-php.svg");
 ```
 // result_begin:
-// Hello datamunge
-// call_with_callback(3.0) = 9.0
-// sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-php.svg)
 // result_end
 
->> R (`examples/r/datamunge_ex.r`)
+>> Python
 
-```{R, results="output", exports="both"}
+The command preserves the native SVG when MEP also tries to export a Matplotlib figure.
+
+```{python, nix-shell=".#report-python", results="output", file="build/iris-mlp-python.svg", cmd="python3 {file} && cp build/iris-mlp-python-native.svg build/iris-mlp-python.svg"}
+import os
+from pydatamunge import datamunge as dm
+
+os.makedirs("build", exist_ok=True)
+iris = dm.data.iris()
+fit = dm.MLPClassifierSearch(iris, "Species", "Petal.Length", "Petal.Width",
+                             min_hidden=2, max_hidden=24, initial_samples=4,
+                             iterations=8, epochs=400, seed=42)
+print(fit.summary())
+print(fit.trials().to_md(6))
+fit.plot_decision_regions().save("build/iris-mlp-python-native.svg")
+```
+// result_begin:
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-python.svg)
+// result_end
+
+>> R
+
+```{R, nix-shell=".#report-r", results="output", file="build/iris-mlp-r.svg"}
 library(datamunger)
+dir.create("build", showWarnings = FALSE)
 
-datamunger::hello()
-
-# Can only coerce (can't use methods directly without a wrapper)
-v <- datamunger::DVector(c(0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0,
-    1.0, 1.0, 0.0,
-    0.0, 1.0, 0.0))
-
-# This works as expected
-p <- datamunger::DPair(1.1, 2.2)
-p$first
-p$second
-
-# This works as expected
-p <- datamunger::IPair(1.1, 2.2) # converts to integer
-p$first
-p$second
+iris <- data$iris()
+fit <- MLPClassifierSearch$new(iris, "Species", "Petal.Length", "Petal.Width",
+                               min_hidden = 2, max_hidden = 24, initial_samples = 4,
+                               iterations = 8, epochs = 400, seed = 42)
+cat(fit$summary(), "\n", sep = "")
+cat(fit$trials()$to_md(6), "\n", sep = "")
+fit$plot_decision_regions()$save("build/iris-mlp-r.svg")
 ```
 // result_begin:
-// Hello datamunge
-// NULL
-// [1] 1.1
-// [1] 2.2
-// [1] 1
-// [1] 2
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-r.svg)
 // result_end
 
->> Ruby (`examples/ruby/datamunge_ex.rb`)
+>> Ruby
 
-```{ruby, nix-shell=".#ruby", results="output", exports="both"}
+```{ruby, nix-shell=".#report-ruby", results="output", file="build/iris-mlp-ruby.svg"}
 require "datamunge"
+Dir.mkdir("build") unless Dir.exist?("build")
 
-Datamunge.hello
-
-pair = Datamunge.make_dpair(1.0, 2.0)  # std::pair<double, double> is a two-element Array
-puts "make_dpair: #{pair.inspect}, sum_dpair = #{Datamunge.sum_dpair(pair)}"
-
-# A Ruby subclass overrides the C++ Callback's virtual call().
-class TimesTwo < Datamunge::Callback
-  def call(x) = x * 2.0
-end
-
-cb = TimesTwo.new
-puts "call_with_callback(3.0) = #{Datamunge.call_with_callback(3.0, cb)}"
-v = Datamunge.make_dvector(1.0, 2.0, 3.0)
-v2 = Datamunge.map_dvector_with_callback(v, cb)
-puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Datamunge.sum_dvector(v2)}"
+iris = Datamunge::Data.iris
+fit = Datamunge::MLPClassifierSearch.new(iris, "Species", "Petal.Length", "Petal.Width",
+                                       2, 24, 4, 8, 400, 42)
+puts fit.summary
+puts fit.trials.to_md(6)
+fit.plot_decision_regions.save("build/iris-mlp-ruby.svg")
 ```
 // result_begin:
-// Hello datamunge
-// make_dpair: [1.0, 2.0], sum_dpair = 3.0
-// call_with_callback(3.0) = 6.0
-// sum_dvector(map_dvector_with_callback(1,2,3)) = 12.0
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+// \image(build/iris-mlp-ruby.svg)
 // result_end
 
->> Tcl (`examples/tcl/datamunge_ex.tcl`)
+>> Tcl
 
-```{tcl, nix-shell=".#tcl", results="output", exports="both"}
+```{tcl, nix-shell=".#report-tcl", results="output", file="build/iris-mlp-tcl.svg"}
 package require datamunge
+file mkdir build
 
-datamunge::hello
-
-set pair [datamunge::make_dpair 1.0 2.0]  ;# std::pair<double, double> is a two-element list
-puts "make_dpair: $pair, sum_dpair = [datamunge::sum_dpair $pair]"
-
-# A TclOO subclass overrides the C++ Callback's virtual call().
-oo::class create TimesTwo {
-    superclass ::datamunge::Callback
-    method call {x} { expr {2.0 * $x} }
-}
-set cb [TimesTwo new]
-puts "call_with_callback(3.0) = [datamunge::call_with_callback 3.0 $cb]"
-set v [datamunge::make_dvector 1.0 2.0 3.0]
-set v2 [datamunge::map_dvector_with_callback $v $cb]
-puts "sum_dvector(map_dvector_with_callback(1,2,3)) = [datamunge::sum_dvector $v2]"
+set iris [datamunge::Data::iris]
+set fit [datamunge::MLPClassifierSearch new $iris "Species" "Petal.Length" "Petal.Width" \
+         2 24 4 8 400 42]
+puts [$fit summary]
+set history [$fit trials]
+puts [$history to_md 6]
+set regions [$fit plot_decision_regions]
+$regions save "build/iris-mlp-tcl.svg"
+foreach obj [list $regions $history $fit $iris] { $obj destroy }
 ```
 // result_begin:
-// Hello datamunge
-// make_dpair: 1.0 2.0, sum_dpair = 3.0
-// call_with_callback(3.0) = 6.0
-// sum_dvector(map_dvector_with_callback(1,2,3)) = 12.0
+// MLP: Petal.Length + Petal.Width -> Species
+// Fit / validation / test rows: 90 / 30 / 30
+// Hidden nodes (Bayesian search): 14
+// Validation log loss: 0.137578
+// Test accuracy (development refit): 0.933333
+// | evaluation | hidden_nodes | validation_log_loss | best_log_loss | cached | phase |
+// | ---: | ---: | ---: | ---: | ---: | :--- |
+// | 1 | 19 | 0.137636 | 0.137636 | 0 | initial |
+// | 2 | 16 | 0.140184 | 0.137636 | 0 | initial |
+// | 3 | 19 | 0.137636 | 0.137636 | 1 | initial |
+// | 4 | 5 | 0.144824 | 0.137636 | 0 | initial |
+// | 5 | 24 | 0.141836 | 0.137636 | 0 | bayesian |
+// | 6 | 10 | 0.140514 | 0.137636 | 0 | bayesian |
+// | 7 | 13 | 0.138035 | 0.137636 | 0 | bayesian |
+// | 8 | 14 | 0.137578 | 0.137578 | 0 | bayesian |
+// | 9 | 2 | 0.152914 | 0.137578 | 0 | bayesian |
+// | 10 | 8 | 0.138794 | 0.137578 | 0 | bayesian |
+// | 11 | 13 | 0.138035 | 0.137578 | 1 | bayesian |
+// | 12 | 15 | 0.140327 | 0.137578 | 0 | bayesian |
+//
+// \image(build/iris-mlp-tcl.svg)
 // result_end

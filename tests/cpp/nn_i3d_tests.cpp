@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_i3d_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/i3d.cpp"
-#undef main
+#include "../fixtures/nn_i3d_checks.hpp"
 TEST(I3d, Every196InflationKernelInputDerivativeAndStaticTemporalBorders) {
   InflationChecks();
 }
@@ -47,7 +45,7 @@ TEST(I3d, PopulationMovingVarianceAndExplicitAllStateMutationPolicy) {
     EXPECT_NEAR(raw[i], std::max(0., (i + 1 - 2.5) / std::sqrt(1.25 + .001)), 2e-7);
   nn::ParameterStore model(677), state(679);
   nn::Generator gen(673);
-  const auto pools = m::LoadVideo("build/cnn-datasets/action_video");
+  const auto pools = m::LoadVideo((std::filesystem::path(dm::datasets::data_home()) / "action_video"));
   const auto input = nn::slice_axis(pools[0].rgb, 0, 0, 2);
   const m::I3dConfig c{8, 3, 16, 32};
   m::I3d(model, state, input, c);

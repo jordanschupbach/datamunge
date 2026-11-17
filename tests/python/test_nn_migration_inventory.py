@@ -32,7 +32,7 @@ def test_output_comparison_checks_nested_variant_histories_and_missing_arrays(tm
 
 
 def test_complete_canonical_inventory_and_honest_implementation_status():
-    report = json.loads((ROOT / "examples/nn/language_status.json").read_text())
+    report = json.loads((ROOT / "prebindings/nn/language_status.json").read_text())
     canonical = {p.stem: p for p in (ROOT / "examples/cpp/source/nn").glob("[12]_*/**/*.cpp")}
     canonical.update(
         {p.stem: p for p in (ROOT / "examples/nn").glob("[0-9]*/**/*.cpp")}
@@ -80,7 +80,7 @@ def test_language_command_names_use_native_launchers():
 @pytest.mark.parametrize("dependency", [
     "examples/bindings/nn_components.i",
     "src/pydatamunge/nn_components.py",
-    "examples/nn/common/model.hpp",
+    "prebindings/nn/include/common/model.hpp",
     "examples/python/nn/common/model.py",
     "examples/r/nn/common/model.R",
 ])
@@ -89,7 +89,7 @@ def test_shared_component_changes_invalidate_validation_evidence(tmp_path, monke
     migration = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(migration)
     monkeypatch.setattr(migration, "ROOT", tmp_path)
-    monkeypatch.setattr(migration, "STATUS", tmp_path / "examples/nn/language_status.json")
+    monkeypatch.setattr(migration, "STATUS", tmp_path / "prebindings/nn/language_status.json")
     files = {
         "prebindings/nn/src/nn.i": "",
         "examples/bindings/nn_components.i": "",
@@ -98,7 +98,7 @@ def test_shared_component_changes_invalidate_validation_evidence(tmp_path, monke
         "src/pydatamunge/nn_workflows.py": "",
         "prebindings/nn/r/R/nn.R": "",
         "examples/r/nn/common.R": "",
-        "examples/nn/common/model.hpp": "",
+        "prebindings/nn/include/common/model.hpp": "",
         "examples/python/nn/common/model.py": "",
         "examples/r/nn/common/model.R": "",
         "examples/cpp/source/nn/1_demo/model.cpp": "int main() {}",
@@ -109,6 +109,7 @@ def test_shared_component_changes_invalidate_validation_evidence(tmp_path, monke
         path = tmp_path / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
+    migration.STATUS.parent.mkdir(parents=True, exist_ok=True)
     report = migration.refresh(write_catalog=False)
     entry = report["examples"]["model"]
     for language in ("python", "r"):
@@ -128,3 +129,19 @@ def test_shared_component_changes_invalidate_validation_evidence(tmp_path, monke
     catalogue = (tmp_path / "src/pydatamunge/_nn_catalog.py").read_text()
     assert "'model': '1_demo/model.cpp'" in catalogue
     assert "NATIVE_EXAMPLES = ('model',)" in catalogue
+
+
+def test_nn_binding_headers_are_independent_of_retired_example_tree():
+    import re
+    common = ROOT / "prebindings/nn/include/common"
+    assert not (ROOT / "examples/nn/common").exists()
+    adapters = list(common.rglob('*.hpp'))
+    assert adapters
+    for path in adapters:
+        for dependency in re.findall(r'#include\s+"common/([^"]+)"', path.read_text()):
+            assert (common / dependency).is_file(), (path, dependency)
+    for name in ("pydatamunge", "datamungerNN"):
+        policy = ROOT / "src" / name / "rosetta/nn_policy.json"
+        assert "examples/nn/common" not in policy.read_text()
+        for dependency in re.findall(r'"([^"]*common/[^\"]+\.hpp)"', policy.read_text()):
+            assert (policy.parent / dependency).is_file()

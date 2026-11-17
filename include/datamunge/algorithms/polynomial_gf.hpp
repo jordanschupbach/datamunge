@@ -30,6 +30,63 @@ struct PolyDivMod {
   GFPoly quotient; ///< Owned normalized quotient.
   GFPoly remainder; ///< Owned normalized remainder, empty for exact divisibility.
 };
+
+/// @brief Optional producing-step and retained-scalar policies for division history.
+/// Zero disables its corresponding cap; ordinary polynomial division has no history policy.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::PolynomialDivisionOptions{}.max_steps); // 1000000
+/// @endcode
+struct PolynomialDivisionOptions {
+ std::size_t max_steps{1000000}; ///< Maximum actual leading-term cancellation steps.
+ std::size_t max_trace_entries{1000000}; ///< Normalized input coefficients and per-step record/remainder/quotient coefficient copies.
+};
+/// @brief One actual leading-term cancellation over the validated prime field.
+/// Vectors contain actual normalized before/after producer storage; zero polynomials are empty.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::poly_divmod_gf_trace({1,0,1},{1,1},7).steps[0].shift); // 1
+/// @endcode
+struct PolynomialDivisionStep {
+ std::size_t shift; ///< Actual degree difference before this cancellation.
+ std::int64_t coefficient; ///< Actual quotient coefficient selected at this shift.
+ GFPoly before; ///< Actual normalized working dividend immediately before subtraction.
+ GFPoly after; ///< Actual working remainder after subtraction and trimming.
+ GFPoly quotient; ///< Actual quotient storage after setting this coefficient; trailing zero entries can remain until final trim.
+};
+/// @brief Ordinary result and actual canonical polynomial cancellation history.
+/// All records come from the same divide kernel used by ordinary division and existing polynomial algorithms.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::poly_divmod_gf_trace({1,0,1},{1,1},7).result.remainder); // [2]
+/// @endcode
+struct PolynomialDivisionTrace {
+ PolyDivMod result; ///< Actual normalized quotient and remainder.
+ GFPoly dividend; ///< Actual normalized original dividend.
+ GFPoly divisor; ///< Actual normalized nonzero divisor.
+ bool has_inverse{false}; ///< True iff the native producer needed a leading-coefficient inverse.
+ std::int64_t leading_inverse{0}; ///< Actual reused inverse, or zero sentinel when no cancellation was needed.
+ std::size_t coefficient_updates{0}; ///< Actual working-coefficient subtractions, including zero divisor coefficients.
+ std::vector<PolynomialDivisionStep> steps; ///< Actual cancellation steps, not a second division.
+};
+/// @brief Capture actual prime-field long-division cancellations.
+/// Coefficients are low-degree first and normalized into[0,p); signed inputs and trailing zeros are accepted. The full signed positive prime range is supported by widened products. Retains the normalized inputs and each actual working remainder and quotient. For degrees m>=n, ordinary work is O((m-n+1)*(n+1)) field operations plus normalization, primality validation and one scalar inverse power; copied histories can require quadratic coefficient storage. No caller storage or shared state is mutated.
+/// @param a Borrowed signed dividend coefficients.
+/// @param b Borrowed divisor, nonzero after normalization.
+/// @param p Prime signed modulus in[2,INT64_MAX].
+/// @param options Actual step and retained-scalar policies, zero independently disables each.
+/// @return Owned normalized result and complete actual producing history.
+/// @throws std::invalid_argument If p is not prime or b normalizes to zero.
+/// @throws std::length_error If the traced step/history policy or vector storage is exceeded.
+/// @throws std::overflow_error If an actual selected count exceeds size_t.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::poly_divmod_gf_trace({1,0,1},{1,1},7).result.quotient); // [6, 1]
+/// @endcode
+/// @par References
+/// - J. von zur Gathen and J. Gerhard, Modern Computer Algebra, third edition, Cambridge University Press,2013, chapter2 (Euclidean polynomial division).
+/// @see poly_divmod_gf(), poly_multiply_gf()
+PolynomialDivisionTrace poly_divmod_gf_trace(const GFPoly& a,const GFPoly& b,std::int64_t p,PolynomialDivisionOptions options={});
 /// @brief One actual distinct-degree step on the current remaining monic polynomial.
 /// frobenius is x^(p^degree) modulo remaining_before. bucket is the monic gcd
 /// with frobenius-x, possibly the unit [1]. remaining_after is the exact quotient.

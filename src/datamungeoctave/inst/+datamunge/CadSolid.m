@@ -62,7 +62,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Kernel failure. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::united(const Solid & other) const
-      r = __datamunge__(2932, obj, other);
+      r = __datamunge__(2943, obj, other);
     end
     function r = subtracted (obj, other)
       % subtracted  Subtract another solid, preserving cavities and trimmed faces.
@@ -82,7 +82,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Kernel failure or empty result. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::subtracted(const Solid & other) const
-      r = __datamunge__(2933, obj, other);
+      r = __datamunge__(2944, obj, other);
     end
     function r = intersected (obj, other)
       % intersected  Return the common material of two solids.
@@ -103,7 +103,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Kernel failure or empty result. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::intersected(const Solid & other) const
-      r = __datamunge__(2934, obj, other);
+      r = __datamunge__(2945, obj, other);
     end
     function r = translated (obj, x, y, z)
       % translated  Return a translated copy.
@@ -126,7 +126,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Transform failure. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::translated(double x, double y, double z) const
-      r = __datamunge__(2935, obj, x, y, z);
+      r = __datamunge__(2946, obj, x, y, z);
     end
     function r = rotated (obj, x, y, z, radians)
       % rotated  Rotate about an axis through the origin, using the right-hand rule.
@@ -150,7 +150,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Kernel failure. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::rotated(double x, double y, double z, double radians) const
-      r = __datamunge__(2936, obj, x, y, z, radians);
+      r = __datamunge__(2947, obj, x, y, z, radians);
     end
     function r = filleted (obj, edges, radius)
       % filleted  Fillet selected edge IDs in sequence using persistent face-pair references.
@@ -173,7 +173,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Unsupported edge/blend geometry. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::filleted(const std::vector<int> & edges, double radius) const
-      r = __datamunge__(2937, obj, edges, radius);
+      r = __datamunge__(2948, obj, edges, radius);
     end
     function r = chamfered (obj, edges, setback)
       % chamfered  Chamfer selected edge IDs by a common setback.
@@ -196,7 +196,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Kernel failure. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::chamfered(const std::vector<int> & edges, double setback) const
-      r = __datamunge__(2938, obj, edges, setback);
+      r = __datamunge__(2949, obj, edges, setback);
     end
     function r = shelled (obj, varargin)
       % shelled  Hollow a solid, optionally opening specified faces.
@@ -219,7 +219,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Kernel failure. (C++ std::runtime_error)
       %
       %   C++: Solid datamunge::cad::Solid::shelled(double thickness, const std::vector<int> & open_faces = {}) const
-      r = __datamunge__(2939, obj, varargin{:});
+      r = __datamunge__(2950, obj, varargin{:});
     end
     function r = volume (obj, varargin)
       % volume  Measure volume from the trimmed tessellated boundary.
@@ -241,7 +241,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Tessellation failure. (C++ std::runtime_error)
       %
       %   C++: double datamunge::cad::Solid::volume(double chord = 0.01) const
-      r = __datamunge__(2940, obj, varargin{:});
+      r = __datamunge__(2951, obj, varargin{:});
     end
     function r = valid (obj)
       % valid  Validate topology, orientations and geometric boundary consistency.
@@ -255,7 +255,7 @@ classdef CadSolid < datamunge.NativeObject
       %     r  logical: True when the kernel validation report has no errors.
       %
       %   C++: bool datamunge::cad::Solid::valid() const
-      r = __datamunge__(2941, obj);
+      r = __datamunge__(2952, obj);
     end
     function r = edges (obj)
       % edges  List the source edge IDs usable by filleted() and chamfered().
@@ -266,7 +266,7 @@ classdef CadSolid < datamunge.NativeObject
       %     r  integer vector: Owned vector of unique edge IDs.
       %
       %   C++: std::vector<int> datamunge::cad::Solid::edges() const
-      r = __datamunge__(2942, obj);
+      r = __datamunge__(2953, obj);
     end
     function r = faces (obj)
       % faces  List face IDs usable by shelled() and the low-level modifiers.
@@ -277,7 +277,7 @@ classdef CadSolid < datamunge.NativeObject
       %     r  integer vector: Owned vector of face IDs.
       %
       %   C++: std::vector<int> datamunge::cad::Solid::faces() const
-      r = __datamunge__(2943, obj);
+      r = __datamunge__(2954, obj);
     end
     function save (obj, varargin)
       % save  Save STEP, binary STL, OBJ, glTF or an SVG drawing by extension.
@@ -297,7 +297,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:native  Export or file I/O failure. (C++ std::runtime_error)
       %
       %   C++: void datamunge::cad::Solid::save(const std::string & path, double chord = 0.01) const
-      __datamunge__(2944, obj, varargin{:});
+      __datamunge__(2955, obj, varargin{:});
     end
   end
   methods (Static)
@@ -321,7 +321,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:invalid_argument  Nonpositive/nonfinite size. (C++ std::invalid_argument)
       %
       %   C++: Solid datamunge::cad::Solid::box(double width, double depth, double height)
-      r = __datamunge__(2928, width, depth, height);
+      r = __datamunge__(2939, width, depth, height);
     end
     function r = cylinder (radius, height)
       % cylinder  Construct a cylinder with base at the origin and axis +Z.
@@ -342,7 +342,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid dimensions. (C++ std::invalid_argument)
       %
       %   C++: Solid datamunge::cad::Solid::cylinder(double radius, double height)
-      r = __datamunge__(2929, radius, height);
+      r = __datamunge__(2940, radius, height);
     end
     function r = sphere (radius)
       % sphere  Construct a sphere centred at the origin.
@@ -362,7 +362,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid radius. (C++ std::invalid_argument)
       %
       %   C++: Solid datamunge::cad::Solid::sphere(double radius)
-      r = __datamunge__(2930, radius);
+      r = __datamunge__(2941, radius);
     end
     function r = torus (major_radius, minor_radius)
       % torus  Construct a ring torus centred at the origin around +Z.
@@ -383,7 +383,7 @@ classdef CadSolid < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid radii. (C++ std::invalid_argument)
       %
       %   C++: Solid datamunge::cad::Solid::torus(double major_radius, double minor_radius)
-      r = __datamunge__(2931, major_radius, minor_radius);
+      r = __datamunge__(2942, major_radius, minor_radius);
     end
   end
 end

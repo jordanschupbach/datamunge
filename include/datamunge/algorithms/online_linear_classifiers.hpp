@@ -24,73 +24,13 @@
 /// multiplicative/\f$L_\infty\f$-to-\f$L_1\f$ for Winnow -- make the pair a classic
 /// illustration of how the geometry of the update shapes sample efficiency.
 
+#include <datamunge/algorithms/perceptron.hpp>
 #include <cmath>
 #include <cstddef>
 #include <stdexcept>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// A trained Perceptron: a linear decision rule \f$\operatorname{sign}(w\cdot x + b)\f$.
-struct PerceptronModel {
-    std::vector<double> weights;              ///< Weight vector \f$w\f$.
-    double              bias           = 0.0;  ///< Bias \f$b\f$.
-    std::size_t         epochs_run     = 0;    ///< Passes over the data actually made.
-    bool                converged      = false;///< True if an entire epoch made no mistake.
-    std::size_t         total_mistakes = 0;    ///< Total updates across all epochs.
-};
-
-/// \brief Train a Perceptron by the mistake-driven additive rule.
-///
-/// Labels must be \f$\pm 1\f$. For each example in order, if
-/// \f$y_i(w\cdot x_i + b) \le 0\f$ (a mistake or a point exactly on the boundary),
-/// update \f$w \leftarrow w + \eta\,y_i\,x_i\f$ and \f$b \leftarrow b + \eta\,y_i\f$.
-/// A full pass with no mistakes proves linear separation has been achieved and
-/// training stops early (\p converged = true). On non-separable data it runs the
-/// full \p max_epochs and returns the last weights.
-///
-/// \param features  Row-major design matrix (each row an example).
-/// \param labels    Class labels, each \f$+1\f$ or \f$-1\f$.
-/// \param max_epochs  Maximum passes over the data.
-/// \param learning_rate  Step size \f$\eta>0\f$ (only rescales \f$w,b\f$ for the plain Perceptron).
-inline PerceptronModel perceptron_train(const std::vector<std::vector<double>>& features,
-                                        const std::vector<int>&                 labels,
-                                        std::size_t                             max_epochs    = 100,
-                                        double                                  learning_rate = 1.0) {
-    if (features.size() != labels.size()) throw std::invalid_argument("perceptron: size mismatch");
-    PerceptronModel model;
-    if (features.empty()) return model;
-    const std::size_t dim = features.front().size();
-    model.weights.assign(dim, 0.0);
-
-    for (std::size_t epoch = 0; epoch < max_epochs; ++epoch) {
-        bool mistake_this_epoch = false;
-        for (std::size_t i = 0; i < features.size(); ++i) {
-            double score = model.bias;
-            for (std::size_t j = 0; j < dim; ++j) score += model.weights[j] * features[i][j];
-            const double y = static_cast<double>(labels[i]);
-            if (y * score <= 0.0) {  // mistake (or on the boundary)
-                for (std::size_t j = 0; j < dim; ++j) model.weights[j] += learning_rate * y * features[i][j];
-                model.bias += learning_rate * y;
-                ++model.total_mistakes;
-                mistake_this_epoch = true;
-            }
-        }
-        model.epochs_run = epoch + 1;
-        if (!mistake_this_epoch) {
-            model.converged = true;
-            break;
-        }
-    }
-    return model;
-}
-
-/// Predict \f$+1\f$ or \f$-1\f$ for a feature vector with a trained Perceptron.
-inline int perceptron_predict(const PerceptronModel& model, const std::vector<double>& x) {
-    double score = model.bias;
-    for (std::size_t j = 0; j < model.weights.size() && j < x.size(); ++j) score += model.weights[j] * x[j];
-    return score > 0.0 ? 1 : -1;
-}
 
 /// @brief Owned positive-weight Boolean threshold rule learned by Winnow2.
 ///

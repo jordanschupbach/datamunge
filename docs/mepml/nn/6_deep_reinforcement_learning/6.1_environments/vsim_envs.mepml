@@ -1,0 +1,185 @@
+//? Title: Native Physical Tasks: Explicit Rollouts and Terminal Masks
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native reusable physics/frame/data/model components support the full editable source protocol. Original seeds, control loops, objective/optimizer steps and actual default budgets are retained. Optional emulator execution and native physical task definitions are labelled explicitly.
+)
+\toc
+
+> Follow the actual data path
+
+TaskBatch physics -> masked transitions -> actual task returns.
+
+```{cpp, results="markdown", file="figures/vsim_envs_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("input",{-18,0},"Source observations / actions",s).node("component",{0,0},"TaskBatch physics -> masked transitions -> actual task returns",s).node("report",{18,0},"Editable experiment / checks",s).edge("input","component").edge("component","report").save_svg("build/vsim_envs_method.svg");}
+```
+// result_begin: markdown
+\image(figures/vsim_envs_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+A time-limit boundary cuts the GAE recurrence while retaining the actual final-state bootstrap: reward1, value.5 and next value4 give advantage4.1 at discount.9. Native task definitions differ from Jolt and Gym.
+
+```{cpp, results="markdown", file="figures/vsim_envs_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");auto result=dm::rl::returns::NativeGae({1},{.5f},{4},{1},.9f,.95f);std::vector<double>values{result.first[0],1+.9*4-.5};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"computed",{37,99,235}).ylim(low-.05*span,high+.05*span).title("vsim envs worked calculation").size(1000,550).save_svg("build/vsim_envs_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 4.099999905 |
+| 1 | 4.100000000 |
+\image(figures/vsim_envs_worked.svg)
+// result_end
+
+> Complete preserved source protocol
+
+The code retains the source seeds, actual default caps and original optional full settings. Every controller, rollout, replay, objective, gradient/clipping/optimizer step and update schedule remains editable. Read-only capture hooks add no random draws or evaluations. In the local ALE-free build, the original synthetic preprocessing/Nature-update checks execute and emulator rollouts are explicitly skipped. Native InvertedPendulum/Hopper use datamunge physics; their smoke results establish execution and finite updates, without convergence or external-simulator parity. Timing rows are machine-dependent and excluded from source stdout equality checks.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;inline std::map<std::string,std::vector<double>> traces;
+inline void Trace(const std::string&name,double value){traces[name].push_back(value);}inline int monitor_index=0,checkpoint_index=0;
+template<class T>void Save(const std::string& name,const std::vector<T>&v){arrays.push_back({name,dm::nn::from_vector(v)});}
+struct Checkpoint{dm::nn::ParameterStore& store;~Checkpoint(){auto tag=std::to_string(checkpoint_index++);for(const auto& name:store.names())arrays.push_back({"parameters_"+tag+"_"+name,store.at(name).detach().clone()});}};
+struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/vsim_envs_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn vsim_envs
+// Native CPU physics rollouts; datamunge task definitions use their own solver.
+// Jolt/reference returns and renderer output are not asserted here.
+#include <datamunge/sim/tasks.hpp>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+namespace {
+double episode(datamunge::sim::Task kind,bool feedback){
+  constexpr std::size_t count=8;
+  datamunge::sim::TaskBatch task(kind,count,datamunge::compute::Context({},2),42,200);
+  std::vector<double> actions(count*task.action_size(),0),returns(count,0);
+  std::vector<std::uint8_t> active(count,1);
+  std::mt19937_64 random(7);std::uniform_real_distribution<double> force(-3,3);
+  for(int tick=0;tick<200&&std::any_of(active.begin(),active.end(),[](auto v){return v!=0;});++tick){
+    const auto& obs=task.output().observations;
+    if(kind==datamunge::sim::Task::InvertedPendulum)for(std::size_t i=0;i<count;++i){
+      const auto* row=obs.data()+i*4;
+      actions[i]=feedback?std::clamp(.08*row[0]+.15*row[2]-1.5*row[1]-.3*row[3],-3.,3.):force(random);
+    }
+    const auto& result=task.step(actions,active);
+    for(std::size_t i=0;i<count;++i)if(active[i]){returns[i]+=result.rewards[i];active[i]=!result.terminated[i]&&!result.truncated[i];}
+  }
+  double total=0;for(auto value:returns){check::Require(std::isfinite(value),"native rollout reward must be finite");total+=value;}
+  report_capture::Trace("native_return",total/count);return total/count;
+}
+}
+int main(){
+  try{
+    const double random=episode(datamunge::sim::Task::InvertedPendulum,false);
+    const double feedback=episode(datamunge::sim::Task::InvertedPendulum,true);
+    const double hopper=episode(datamunge::sim::Task::Hopper,false);
+    std::cout<<"Native CPU InvertedPendulum: random mean return="<<random<<", feedback="<<feedback<<'\n';
+    std::cout<<"Native CPU Hopper: zero-torque mean return="<<hopper<<" (three physical hinge joints)\n";
+    check::Require(random>0&&feedback>0,"pendulum must advance real episodes");
+    std::cout<<"checks passed (native physics rollouts; explicit termination and truncation)\n";
+  }catch(const std::exception& error){std::cerr<<"FAILED: "<<error.what()<<'\n';return 1;}
+}
+
+```
+// result_begin:
+// Native CPU InvertedPendulum: random mean return=3.875, feedback=200
+// Native CPU Hopper: zero-torque mean return=25.1537 (three physical hinge joints)
+// checks passed (native physics rollouts; explicit termination and truncation)
+// result_end
+
+> Actual source diagnostics
+
+These are captured source measurements, in original execution order. They retain weak results and explicit availability flags. Distinct tasks may use different reward scales; a smoke run does not establish convergence.
+
+```{cpp, results="markdown", file="figures/vsim_envs_diagnostic0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto data=dm::nn::load_npz("build/vsim_envs_source.npz");auto plot=dm::graphics::RPlot::create();int series=0;for(const auto&[key,t]:data){if(!key.starts_with("native_return"))continue;auto y=t.to_vector<double>();if(y.empty())continue;std::vector<double>x(y.size());std::iota(x.begin(),x.end(),0.);plot.lines(x,y,key,{37+(series%4)*50,99,235-(series%4)*50}).points(x,y,key+" points",{37+(series%4)*50,99,235-(series%4)*50},4);++series;}if(!series)throw std::runtime_error("source diagnostic missing");plot.title("vsim envs actual source diagnostics").x_label("Random pendulum / feedback / zero-torque Hopper").y_label("Task return").size(1100,600).save_svg("build/vsim_envs_diagnostic0.svg");}
+```
+// result_begin: markdown
+\image(figures/vsim_envs_diagnostic0.svg)
+// result_end
+
+> Interpretation and provenance
+
+The displayed checks belong to the original local native protocol. Optional runtime skips, deferred quality checks and machine timings remain explicit. Canonical components contain reusable physical/frame adapters and pure graphs/return algebra; the report owns the experiment and its optimizer state.

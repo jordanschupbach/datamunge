@@ -30883,6 +30883,359 @@ public partial class Tape : NativeObject
 }
 
 /// <summary>
+/// A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+/// </summary>
+/// <remarks>
+/// <para>Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+/// test rows (per-class rounding applies). Four random widths followed by eight
+/// Gaussian-process expected-improvement proposals are the default search budget.
+/// Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+/// widths reuse their cached validation log loss. Smaller loss wins; ties retain
+/// the first proposal. Each candidate has one tanh hidden layer, softmax output,
+/// training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+/// penalty 0.0001. Initialization/shuffling use seed for every candidate.</para>
+/// <para>After selection the network is refitted on fitting plus validation rows,
+/// with new standardization statistics, then scored once on the untouched test.
+/// Validation loss belongs to the candidate fit, not the final refit, and is an
+/// optimistic selection score. Neither split nor test performance is a guarantee
+/// for other seeds or datasets. Owns all state, borrows inputs only during calls,
+/// does not change data or global RNG state. Const methods may run concurrently.
+/// Search cost is at most (initial_samples+iterations) fits plus one refit;
+/// cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.</para>
+/// <para><b>Example</b></para>
+/// <code>
+/// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+/// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+/// const bool valid = fit.best_hidden_nodes() &gt;= 2 &amp;&amp; fit.best_hidden_nodes() &lt;= 24; // true
+/// </code>
+/// <para><b>References</b></para>
+/// <para>- D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+///   of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147</para>
+/// <para>See also: <c>stats::MLPClassifier</c>, <c>optim::BayesianOptimization</c>, <c>stats::train_test_split()</c>.</para>
+/// </remarks>
+public partial class MLPClassifierSearch : NativeObject
+{
+    internal MLPClassifierSearch(NativeRaw raw) : base(raw) { }
+
+    /// <summary>
+    /// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    /// const auto n = fit.test_rows(); // 30
+    /// </code>
+    /// <para>See also: <c>MLPClassifierSearch</c>, <c>summary()</c>.</para>
+    /// <para>Uses the C++ default for <c>minHidden = 2</c>, <c>maxHidden = 24</c>, <c>initialSamples = 4</c>, <c>iterations = 8</c>, <c>epochs = 400</c>, <c>seed = 42</c>.</para>
+    /// </remarks>
+    /// <param name="data">Borrowed labelled frame; unchanged. Every selected value must be present and finite.</param>
+    /// <param name="response">String response column, with nonempty labels and at least five rows per class.</param>
+    /// <param name="xFeature">First numeric predictor, distinct from response and y_feature.</param>
+    /// <param name="yFeature">Second numeric predictor; these two are the only model inputs.</param>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: For invalid columns, labels, nonfinite/missing data or search controls.</exception>
+    /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If fitting or scoring fails to produce finite probabilities.</exception>
+    public MLPClassifierSearch(DataFrame data, string response, string xFeature, string yFeature) : base(default(NativeRaw))
+    {
+        Rosetta.Construct(this, typeof(MLPClassifierSearch), false, 2938, data, response, xFeature, yFeature);
+    }
+
+    /// <summary>
+    /// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    /// const auto n = fit.test_rows(); // 30
+    /// </code>
+    /// <para>See also: <c>MLPClassifierSearch</c>, <c>summary()</c>.</para>
+    /// <para>Uses the C++ default for <c>maxHidden = 24</c>, <c>initialSamples = 4</c>, <c>iterations = 8</c>, <c>epochs = 400</c>, <c>seed = 42</c>.</para>
+    /// </remarks>
+    /// <param name="data">Borrowed labelled frame; unchanged. Every selected value must be present and finite.</param>
+    /// <param name="response">String response column, with nonempty labels and at least five rows per class.</param>
+    /// <param name="xFeature">First numeric predictor, distinct from response and y_feature.</param>
+    /// <param name="yFeature">Second numeric predictor; these two are the only model inputs.</param>
+    /// <param name="minHidden">Smallest hidden width, default 2; at least 1 and below max_hidden.</param>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: For invalid columns, labels, nonfinite/missing data or search controls.</exception>
+    /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If fitting or scoring fails to produce finite probabilities.</exception>
+    public MLPClassifierSearch(DataFrame data, string response, string xFeature, string yFeature, ulong minHidden) : base(default(NativeRaw))
+    {
+        Rosetta.Construct(this, typeof(MLPClassifierSearch), false, 2938, data, response, xFeature, yFeature, minHidden);
+    }
+
+    /// <summary>
+    /// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    /// const auto n = fit.test_rows(); // 30
+    /// </code>
+    /// <para>See also: <c>MLPClassifierSearch</c>, <c>summary()</c>.</para>
+    /// <para>Uses the C++ default for <c>initialSamples = 4</c>, <c>iterations = 8</c>, <c>epochs = 400</c>, <c>seed = 42</c>.</para>
+    /// </remarks>
+    /// <param name="data">Borrowed labelled frame; unchanged. Every selected value must be present and finite.</param>
+    /// <param name="response">String response column, with nonempty labels and at least five rows per class.</param>
+    /// <param name="xFeature">First numeric predictor, distinct from response and y_feature.</param>
+    /// <param name="yFeature">Second numeric predictor; these two are the only model inputs.</param>
+    /// <param name="minHidden">Smallest hidden width, default 2; at least 1 and below max_hidden.</param>
+    /// <param name="maxHidden">Largest hidden width, default 24; at most 1000000.</param>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: For invalid columns, labels, nonfinite/missing data or search controls.</exception>
+    /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If fitting or scoring fails to produce finite probabilities.</exception>
+    public MLPClassifierSearch(DataFrame data, string response, string xFeature, string yFeature, ulong minHidden, ulong maxHidden) : base(default(NativeRaw))
+    {
+        Rosetta.Construct(this, typeof(MLPClassifierSearch), false, 2938, data, response, xFeature, yFeature, minHidden, maxHidden);
+    }
+
+    /// <summary>
+    /// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    /// const auto n = fit.test_rows(); // 30
+    /// </code>
+    /// <para>See also: <c>MLPClassifierSearch</c>, <c>summary()</c>.</para>
+    /// <para>Uses the C++ default for <c>iterations = 8</c>, <c>epochs = 400</c>, <c>seed = 42</c>.</para>
+    /// </remarks>
+    /// <param name="data">Borrowed labelled frame; unchanged. Every selected value must be present and finite.</param>
+    /// <param name="response">String response column, with nonempty labels and at least five rows per class.</param>
+    /// <param name="xFeature">First numeric predictor, distinct from response and y_feature.</param>
+    /// <param name="yFeature">Second numeric predictor; these two are the only model inputs.</param>
+    /// <param name="minHidden">Smallest hidden width, default 2; at least 1 and below max_hidden.</param>
+    /// <param name="maxHidden">Largest hidden width, default 24; at most 1000000.</param>
+    /// <param name="initialSamples">Random initial proposals, default 4; at least 1.</param>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: For invalid columns, labels, nonfinite/missing data or search controls.</exception>
+    /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If fitting or scoring fails to produce finite probabilities.</exception>
+    public MLPClassifierSearch(DataFrame data, string response, string xFeature, string yFeature, ulong minHidden, ulong maxHidden, ulong initialSamples) : base(default(NativeRaw))
+    {
+        Rosetta.Construct(this, typeof(MLPClassifierSearch), false, 2938, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples);
+    }
+
+    /// <summary>
+    /// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    /// const auto n = fit.test_rows(); // 30
+    /// </code>
+    /// <para>See also: <c>MLPClassifierSearch</c>, <c>summary()</c>.</para>
+    /// <para>Uses the C++ default for <c>epochs = 400</c>, <c>seed = 42</c>.</para>
+    /// </remarks>
+    /// <param name="data">Borrowed labelled frame; unchanged. Every selected value must be present and finite.</param>
+    /// <param name="response">String response column, with nonempty labels and at least five rows per class.</param>
+    /// <param name="xFeature">First numeric predictor, distinct from response and y_feature.</param>
+    /// <param name="yFeature">Second numeric predictor; these two are the only model inputs.</param>
+    /// <param name="minHidden">Smallest hidden width, default 2; at least 1 and below max_hidden.</param>
+    /// <param name="maxHidden">Largest hidden width, default 24; at most 1000000.</param>
+    /// <param name="initialSamples">Random initial proposals, default 4; at least 1.</param>
+    /// <param name="iterations">Surrogate-guided proposals, default 8; zero permits initial design only.</param>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: For invalid columns, labels, nonfinite/missing data or search controls.</exception>
+    /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If fitting or scoring fails to produce finite probabilities.</exception>
+    public MLPClassifierSearch(DataFrame data, string response, string xFeature, string yFeature, ulong minHidden, ulong maxHidden, ulong initialSamples, ulong iterations) : base(default(NativeRaw))
+    {
+        Rosetta.Construct(this, typeof(MLPClassifierSearch), false, 2938, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples, iterations);
+    }
+
+    /// <summary>
+    /// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    /// const auto n = fit.test_rows(); // 30
+    /// </code>
+    /// <para>See also: <c>MLPClassifierSearch</c>, <c>summary()</c>.</para>
+    /// <para>Uses the C++ default for <c>seed = 42</c>.</para>
+    /// </remarks>
+    /// <param name="data">Borrowed labelled frame; unchanged. Every selected value must be present and finite.</param>
+    /// <param name="response">String response column, with nonempty labels and at least five rows per class.</param>
+    /// <param name="xFeature">First numeric predictor, distinct from response and y_feature.</param>
+    /// <param name="yFeature">Second numeric predictor; these two are the only model inputs.</param>
+    /// <param name="minHidden">Smallest hidden width, default 2; at least 1 and below max_hidden.</param>
+    /// <param name="maxHidden">Largest hidden width, default 24; at most 1000000.</param>
+    /// <param name="initialSamples">Random initial proposals, default 4; at least 1.</param>
+    /// <param name="iterations">Surrogate-guided proposals, default 8; zero permits initial design only.</param>
+    /// <param name="epochs">SGD passes for each candidate and the final refit, default 400; at least 1.</param>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: For invalid columns, labels, nonfinite/missing data or search controls.</exception>
+    /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If fitting or scoring fails to produce finite probabilities.</exception>
+    public MLPClassifierSearch(DataFrame data, string response, string xFeature, string yFeature, ulong minHidden, ulong maxHidden, ulong initialSamples, ulong iterations, ulong epochs) : base(default(NativeRaw))
+    {
+        Rosetta.Construct(this, typeof(MLPClassifierSearch), false, 2938, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples, iterations, epochs);
+    }
+
+    /// <summary>
+    /// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    /// const auto n = fit.test_rows(); // 30
+    /// </code>
+    /// <para>See also: <c>MLPClassifierSearch</c>, <c>summary()</c>.</para>
+    /// </remarks>
+    /// <param name="data">Borrowed labelled frame; unchanged. Every selected value must be present and finite.</param>
+    /// <param name="response">String response column, with nonempty labels and at least five rows per class.</param>
+    /// <param name="xFeature">First numeric predictor, distinct from response and y_feature.</param>
+    /// <param name="yFeature">Second numeric predictor; these two are the only model inputs.</param>
+    /// <param name="minHidden">Smallest hidden width, default 2; at least 1 and below max_hidden.</param>
+    /// <param name="maxHidden">Largest hidden width, default 24; at most 1000000.</param>
+    /// <param name="initialSamples">Random initial proposals, default 4; at least 1.</param>
+    /// <param name="iterations">Surrogate-guided proposals, default 8; zero permits initial design only.</param>
+    /// <param name="epochs">SGD passes for each candidate and the final refit, default 400; at least 1.</param>
+    /// <param name="seed">Local split/search/initialization seed, default 42; validation split uses seed+1 modulo 2^64.</param>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: For invalid columns, labels, nonfinite/missing data or search controls.</exception>
+    /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If fitting or scoring fails to produce finite probabilities.</exception>
+    public MLPClassifierSearch(DataFrame data, string response, string xFeature, string yFeature, ulong minHidden, ulong maxHidden, ulong initialSamples, ulong iterations, ulong epochs, ulong seed) : base(default(NativeRaw))
+    {
+        Rosetta.Construct(this, typeof(MLPClassifierSearch), false, 2938, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples, iterations, epochs, seed);
+    }
+
+    /// <summary>
+    /// Selected integer width of the single hidden layer.
+    /// </summary>
+    /// <returns>A value in the requested inclusive search range.</returns>
+    public ulong BestHiddenNodes() => Rosetta.To<ulong>(Rosetta.Call(2928, this));
+
+    /// <summary>
+    /// Minimum validation mean negative log probability of the true class.
+    /// </summary>
+    /// <returns>Finite nonnegative loss of the selected candidate before refitting.</returns>
+    public double ValidationLogLoss() => Rosetta.To<double>(Rosetta.Call(2929, this));
+
+    /// <summary>
+    /// Held-out test accuracy of the final development-data refit.
+    /// </summary>
+    /// <returns>Fraction correctly classified in [0,1]; test rows were never used for selection.</returns>
+    public double TestAccuracy() => Rosetta.To<double>(Rosetta.Call(2930, this));
+
+    /// <summary>
+    /// Number of rows used to fit each search candidate.
+    /// </summary>
+    /// <returns>Fitting partition size, excluding validation and test.</returns>
+    public ulong TrainingRows() => Rosetta.To<ulong>(Rosetta.Call(2931, this));
+
+    /// <summary>
+    /// Number of rows used to choose hidden width.
+    /// </summary>
+    /// <returns>Validation partition size.</returns>
+    public ulong ValidationRows() => Rosetta.To<ulong>(Rosetta.Call(2932, this));
+
+    /// <summary>
+    /// Number of untouched rows used for the final evaluation.
+    /// </summary>
+    /// <returns>Test partition size.</returns>
+    public ulong TestRows() => Rosetta.To<ulong>(Rosetta.Call(2933, this));
+
+    /// <summary>
+    /// Summarize split sizes, selected width, validation loss and final test accuracy.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    /// const bool named = fit.summary().find("Test accuracy") != std::string::npos; // true
+    /// </code>
+    /// <para>See also: <c>trials()</c>.</para>
+    /// </remarks>
+    /// <returns>Owned multiline text, without a trailing newline.</returns>
+    public string Summary() => Rosetta.To<string>(Rosetta.Call(2934, this));
+
+    /// <summary>
+    /// Copy the complete Bayesian proposal history into an owned dataframe.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; history(fit.trials());
+    /// const auto n = history-&gt;nrows(); // 12
+    /// </code>
+    /// <para>See also: <c>summary()</c>.</para>
+    /// </remarks>
+    /// <returns>New caller-owned frame with evaluation (1-based), hidden_nodes, validation_log_loss, best_log_loss, cached (0/1), and phase (initial/bayesian). One row per proposal, including repeated cached widths. Bindings own the result.</returns>
+    public DataFrame? Trials() => Rosetta.To<DataFrame?>(Rosetta.Call(2935, this));
+
+    /// <summary>
+    /// Predict labels from the final refit using only its two predictor columns.
+    /// </summary>
+    /// <remarks>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    /// const auto n = fit.predict(*iris).size(); // 150
+    /// </code>
+    /// <para>See also: <c>stats::MLPClassifier::predict()</c>.</para>
+    /// </remarks>
+    /// <param name="newdata">Borrowed frame, unchanged; missing predictors yield empty labels.</param>
+    /// <returns>One class label per input row, in input order.</returns>
+    /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: If a required column is absent.</exception>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If predictor types are incompatible.</exception>
+    public List<string> Predict(DataFrame newdata) => Rosetta.To<List<string>>(Rosetta.Call(2936, this, newdata));
+
+    /// <summary>
+    /// Plot final predicted class regions and development observations in the predictor plane.
+    /// </summary>
+    /// <remarks>
+    /// <para>Pale merged rectangles show the predicted class; saturated points show
+    /// observed development labels in the same palette. Test rows are excluded.
+    /// Axis ranges cover development points plus 10% padding, in original units.
+    /// Rendering samples cell centers, so boundaries are a grid approximation.</para>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    /// auto plot = fit.plot_decision_regions();
+    /// plot.save_svg("build/iris-mlp.svg");
+    /// </code>
+    /// <para>See also: <c>graphics::add_class_regions()</c>, <c>predict()</c>.</para>
+    /// <para>Uses the C++ default for <c>gridResolution = 120</c>.</para>
+    /// </remarks>
+    /// <returns>Owned editable native plot; save it to an SVG/PNG file rather than printing XML.</returns>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If grid_resolution is less than 2.</exception>
+    public RPlot PlotDecisionRegions() => Rosetta.To<RPlot>(Rosetta.Call(2937, this));
+
+    /// <summary>
+    /// Plot final predicted class regions and development observations in the predictor plane.
+    /// </summary>
+    /// <remarks>
+    /// <para>Pale merged rectangles show the predicted class; saturated points show
+    /// observed development labels in the same palette. Test rows are excluded.
+    /// Axis ranges cover development points plus 10% padding, in original units.
+    /// Rendering samples cell centers, so boundaries are a grid approximation.</para>
+    /// <para><b>Example</b></para>
+    /// <code>
+    /// const std::unique_ptr&lt;dm::DataFrame&gt; iris(dm::data::iris());
+    /// dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    /// auto plot = fit.plot_decision_regions();
+    /// plot.save_svg("build/iris-mlp.svg");
+    /// </code>
+    /// <para>See also: <c>graphics::add_class_regions()</c>, <c>predict()</c>.</para>
+    /// </remarks>
+    /// <param name="gridResolution">Cells per axis, default 120; at least 2.</param>
+    /// <returns>Owned editable native plot; save it to an SVG/PNG file rather than printing XML.</returns>
+    /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If grid_resolution is less than 2.</exception>
+    public RPlot PlotDecisionRegions(ulong gridResolution) => Rosetta.To<RPlot>(Rosetta.Call(2937, this, gridResolution));
+}
+
+/// <summary>
 /// An owned B-rep solid with value-returning modelling and export operations.
 /// Geometry uses doubles in caller-selected consistent units. Copies own topology;
 /// immutable surfaces may be shared. Operations return new solids, preserving inputs.
@@ -30915,7 +31268,7 @@ public partial class CadSolid : NativeObject
     /// <param name="height">Positive finite Z extent.</param>
     /// <returns>Owned solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Nonpositive/nonfinite size.</exception>
-    public static CadSolid Box(double width, double depth, double height) => Rosetta.To<CadSolid>(Rosetta.Call(2928, width, depth, height));
+    public static CadSolid Box(double width, double depth, double height) => Rosetta.To<CadSolid>(Rosetta.Call(2939, width, depth, height));
 
     /// <summary>
     /// Construct a cylinder with base at the origin and axis +Z.
@@ -30928,7 +31281,7 @@ public partial class CadSolid : NativeObject
     /// <param name="height">Positive finite height.</param>
     /// <returns>Owned solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid dimensions.</exception>
-    public static CadSolid Cylinder(double radius, double height) => Rosetta.To<CadSolid>(Rosetta.Call(2929, radius, height));
+    public static CadSolid Cylinder(double radius, double height) => Rosetta.To<CadSolid>(Rosetta.Call(2940, radius, height));
 
     /// <summary>
     /// Construct a sphere centred at the origin.
@@ -30942,7 +31295,7 @@ public partial class CadSolid : NativeObject
     /// <param name="radius">Positive finite radius.</param>
     /// <returns>Owned solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid radius.</exception>
-    public static CadSolid Sphere(double radius) => Rosetta.To<CadSolid>(Rosetta.Call(2930, radius));
+    public static CadSolid Sphere(double radius) => Rosetta.To<CadSolid>(Rosetta.Call(2941, radius));
 
     /// <summary>
     /// Construct a ring torus centred at the origin around +Z.
@@ -30957,7 +31310,7 @@ public partial class CadSolid : NativeObject
     /// <param name="minorRadius">Positive finite tube radius smaller than major_radius.</param>
     /// <returns>Owned solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid radii.</exception>
-    public static CadSolid Torus(double majorRadius, double minorRadius) => Rosetta.To<CadSolid>(Rosetta.Call(2931, majorRadius, minorRadius));
+    public static CadSolid Torus(double majorRadius, double minorRadius) => Rosetta.To<CadSolid>(Rosetta.Call(2942, majorRadius, minorRadius));
 
     /// <summary>
     /// Return the union with another solid.
@@ -30973,7 +31326,7 @@ public partial class CadSolid : NativeObject
     /// <param name="other">Borrowed operand, in the same units/frame.</param>
     /// <returns>New solid; inputs unchanged.</returns>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Kernel failure.</exception>
-    public CadSolid United(CadSolid other) => Rosetta.To<CadSolid>(Rosetta.Call(2932, this, other));
+    public CadSolid United(CadSolid other) => Rosetta.To<CadSolid>(Rosetta.Call(2943, this, other));
 
     /// <summary>
     /// Subtract another solid, preserving cavities and trimmed faces.
@@ -30985,7 +31338,7 @@ public partial class CadSolid : NativeObject
     /// <param name="other">Borrowed tool solid.</param>
     /// <returns>New solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Kernel failure or empty result.</exception>
-    public CadSolid Subtracted(CadSolid other) => Rosetta.To<CadSolid>(Rosetta.Call(2933, this, other));
+    public CadSolid Subtracted(CadSolid other) => Rosetta.To<CadSolid>(Rosetta.Call(2944, this, other));
 
     /// <summary>
     /// Return the common material of two solids.
@@ -31000,7 +31353,7 @@ public partial class CadSolid : NativeObject
     /// <param name="other">Borrowed operand.</param>
     /// <returns>New solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Kernel failure or empty result.</exception>
-    public CadSolid Intersected(CadSolid other) => Rosetta.To<CadSolid>(Rosetta.Call(2934, this, other));
+    public CadSolid Intersected(CadSolid other) => Rosetta.To<CadSolid>(Rosetta.Call(2945, this, other));
 
     /// <summary>
     /// Return a translated copy.
@@ -31015,7 +31368,7 @@ public partial class CadSolid : NativeObject
     /// <returns>New solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Nonfinite displacement.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Transform failure.</exception>
-    public CadSolid Translated(double x, double y, double z) => Rosetta.To<CadSolid>(Rosetta.Call(2935, this, x, y, z));
+    public CadSolid Translated(double x, double y, double z) => Rosetta.To<CadSolid>(Rosetta.Call(2946, this, x, y, z));
 
     /// <summary>
     /// Rotate about an axis through the origin, using the right-hand rule.
@@ -31033,7 +31386,7 @@ public partial class CadSolid : NativeObject
     /// <returns>New solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid axis or angle.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Kernel failure.</exception>
-    public CadSolid Rotated(double x, double y, double z, double radians) => Rosetta.To<CadSolid>(Rosetta.Call(2936, this, x, y, z, radians));
+    public CadSolid Rotated(double x, double y, double z, double radians) => Rosetta.To<CadSolid>(Rosetta.Call(2947, this, x, y, z, radians));
 
     /// <summary>
     /// Fillet selected edge IDs in sequence using persistent face-pair references.
@@ -31050,7 +31403,7 @@ public partial class CadSolid : NativeObject
     /// <returns>New solid. Source kernel supports straight edges between planar faces.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid radius.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Unsupported edge/blend geometry.</exception>
-    public CadSolid Filleted(IEnumerable<int> edges, double radius) => Rosetta.To<CadSolid>(Rosetta.Call(2937, this, edges, radius));
+    public CadSolid Filleted(IEnumerable<int> edges, double radius) => Rosetta.To<CadSolid>(Rosetta.Call(2948, this, edges, radius));
 
     /// <summary>
     /// Chamfer selected edge IDs by a common setback.
@@ -31067,7 +31420,7 @@ public partial class CadSolid : NativeObject
     /// <returns>New solid.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid setback.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Kernel failure.</exception>
-    public CadSolid Chamfered(IEnumerable<int> edges, double setback) => Rosetta.To<CadSolid>(Rosetta.Call(2938, this, edges, setback));
+    public CadSolid Chamfered(IEnumerable<int> edges, double setback) => Rosetta.To<CadSolid>(Rosetta.Call(2949, this, edges, setback));
 
     /// <summary>
     /// Hollow a solid, optionally opening specified faces.
@@ -31083,7 +31436,7 @@ public partial class CadSolid : NativeObject
     /// <returns>New solid, subject to ShellBody's supported surface combinations.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid thickness.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Kernel failure.</exception>
-    public CadSolid Shelled(double thickness) => Rosetta.To<CadSolid>(Rosetta.Call(2939, this, thickness));
+    public CadSolid Shelled(double thickness) => Rosetta.To<CadSolid>(Rosetta.Call(2950, this, thickness));
 
     /// <summary>
     /// Hollow a solid, optionally opening specified faces.
@@ -31099,7 +31452,7 @@ public partial class CadSolid : NativeObject
     /// <returns>New solid, subject to ShellBody's supported surface combinations.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid thickness.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Kernel failure.</exception>
-    public CadSolid Shelled(double thickness, IEnumerable<int> openFaces) => Rosetta.To<CadSolid>(Rosetta.Call(2939, this, thickness, openFaces));
+    public CadSolid Shelled(double thickness, IEnumerable<int> openFaces) => Rosetta.To<CadSolid>(Rosetta.Call(2950, this, thickness, openFaces));
 
     /// <summary>
     /// Measure volume from the trimmed tessellated boundary.
@@ -31114,7 +31467,7 @@ public partial class CadSolid : NativeObject
     /// <returns>Signed volume in cubic model units; honours imported STEP trimming.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid tolerance.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Tessellation failure.</exception>
-    public double Volume() => Rosetta.To<double>(Rosetta.Call(2940, this));
+    public double Volume() => Rosetta.To<double>(Rosetta.Call(2951, this));
 
     /// <summary>
     /// Measure volume from the trimmed tessellated boundary.
@@ -31129,7 +31482,7 @@ public partial class CadSolid : NativeObject
     /// <returns>Signed volume in cubic model units; honours imported STEP trimming.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid tolerance.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Tessellation failure.</exception>
-    public double Volume(double chord) => Rosetta.To<double>(Rosetta.Call(2940, this, chord));
+    public double Volume(double chord) => Rosetta.To<double>(Rosetta.Call(2951, this, chord));
 
     /// <summary>
     /// Validate topology, orientations and geometric boundary consistency.
@@ -31141,19 +31494,19 @@ public partial class CadSolid : NativeObject
     /// </code>
     /// </remarks>
     /// <returns>True when the kernel validation report has no errors.</returns>
-    public bool Valid() => Rosetta.To<bool>(Rosetta.Call(2941, this));
+    public bool Valid() => Rosetta.To<bool>(Rosetta.Call(2952, this));
 
     /// <summary>
     /// List the source edge IDs usable by filleted() and chamfered().
     /// </summary>
     /// <returns>Owned vector of unique edge IDs.</returns>
-    public List<int> Edges() => Rosetta.To<List<int>>(Rosetta.Call(2942, this));
+    public List<int> Edges() => Rosetta.To<List<int>>(Rosetta.Call(2953, this));
 
     /// <summary>
     /// List face IDs usable by shelled() and the low-level modifiers.
     /// </summary>
     /// <returns>Owned vector of face IDs.</returns>
-    public List<int> Faces() => Rosetta.To<List<int>>(Rosetta.Call(2943, this));
+    public List<int> Faces() => Rosetta.To<List<int>>(Rosetta.Call(2954, this));
 
     /// <summary>
     /// Save STEP, binary STL, OBJ, glTF or an SVG drawing by extension.
@@ -31166,7 +31519,7 @@ public partial class CadSolid : NativeObject
     /// <param name="path">Output path; parent directory must exist; existing files are replaced.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Unsupported extension or tolerance.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Export or file I/O failure.</exception>
-    public void Save(string path) => Rosetta.Call(2944, this, path);
+    public void Save(string path) => Rosetta.Call(2955, this, path);
 
     /// <summary>
     /// Save STEP, binary STL, OBJ, glTF or an SVG drawing by extension.
@@ -31179,7 +31532,7 @@ public partial class CadSolid : NativeObject
     /// <param name="chord">Positive tessellation tolerance for mesh/drawing output; default .01.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Unsupported extension or tolerance.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Export or file I/O failure.</exception>
-    public void Save(string path, double chord) => Rosetta.Call(2944, this, path, chord);
+    public void Save(string path, double chord) => Rosetta.Call(2955, this, path, chord);
 }
 
 /// <summary>
@@ -31208,7 +31561,7 @@ public partial class CadScene : NativeObject
     /// </remarks>
     public CadScene() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(CadScene), false, 2963);
+        Rosetta.Construct(this, typeof(CadScene), false, 2974);
     }
 
     /// <summary>
@@ -31225,7 +31578,7 @@ public partial class CadScene : NativeObject
     /// <returns>Owned view with automatic framing.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Unsupported format.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Import/I/O failure.</exception>
-    public static CadScene FromFile(string path) => Rosetta.To<CadScene>(Rosetta.Call(2945, path));
+    public static CadScene FromFile(string path) => Rosetta.To<CadScene>(Rosetta.Call(2956, path));
 
     /// <summary>
     /// Load an articulated URDF visual model and its asset files.
@@ -31241,7 +31594,7 @@ public partial class CadScene : NativeObject
     /// <returns>Owned view at the loader's initial joint coordinates.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid URDF/joint data.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Import failure.</exception>
-    public static CadScene FromUrdf(string path) => Rosetta.To<CadScene>(Rosetta.Call(2946, path));
+    public static CadScene FromUrdf(string path) => Rosetta.To<CadScene>(Rosetta.Call(2957, path));
 
     /// <summary>
     /// Set a movable independent joint on a view loaded from URDF.
@@ -31253,13 +31606,13 @@ public partial class CadScene : NativeObject
     /// <param name="name">Joint name.</param>
     /// <param name="value">Coordinate in radians/metres, within limits.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: View has no robot or joint value is invalid.</exception>
-    public void SetJoint(string name, double value) => Rosetta.Call(2947, this, name, value);
+    public void SetJoint(string name, double value) => Rosetta.Call(2958, this, name, value);
 
     /// <summary>
     /// List independent movable joints of a URDF view.
     /// </summary>
     /// <returns>Owned names; empty for ordinary scenes.</returns>
-    public List<string> JointNames() => Rosetta.To<List<string>>(Rosetta.Call(2948, this));
+    public List<string> JointNames() => Rosetta.To<List<string>>(Rosetta.Call(2959, this));
 
     /// <summary>
     /// Tessellate a solid and append it as a scene object.
@@ -31273,7 +31626,7 @@ public partial class CadScene : NativeObject
     /// <returns>New object ID.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid color.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Tessellation failure.</exception>
-    public int Add(CadSolid solid) => Rosetta.To<int>(Rosetta.Call(2949, this, solid));
+    public int Add(CadSolid solid) => Rosetta.To<int>(Rosetta.Call(2960, this, solid));
 
     /// <summary>
     /// Tessellate a solid and append it as a scene object.
@@ -31288,7 +31641,7 @@ public partial class CadScene : NativeObject
     /// <returns>New object ID.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid color.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Tessellation failure.</exception>
-    public int Add(CadSolid solid, string color) => Rosetta.To<int>(Rosetta.Call(2949, this, solid, color));
+    public int Add(CadSolid solid, string color) => Rosetta.To<int>(Rosetta.Call(2960, this, solid, color));
 
     /// <summary>
     /// Tessellate a solid and append it as a scene object.
@@ -31303,7 +31656,7 @@ public partial class CadScene : NativeObject
     /// <returns>New object ID.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid color.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Tessellation failure.</exception>
-    public int Add(CadSolid solid, string color, string name) => Rosetta.To<int>(Rosetta.Call(2949, this, solid, color, name));
+    public int Add(CadSolid solid, string color, string name) => Rosetta.To<int>(Rosetta.Call(2960, this, solid, color, name));
 
     /// <summary>
     /// Append a source polygon modeller primitive.
@@ -31317,7 +31670,7 @@ public partial class CadScene : NativeObject
     /// <param name="kind">cube, sphere, cylinder, cone, plane, torus or wedge (lowercase).</param>
     /// <returns>New object ID; editable via scene() in C++.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Unknown kind.</exception>
-    public int Primitive(string kind) => Rosetta.To<int>(Rosetta.Call(2950, this, kind));
+    public int Primitive(string kind) => Rosetta.To<int>(Rosetta.Call(2961, this, kind));
 
     /// <summary>
     /// Set the output dimensions used by render() and picking.
@@ -31329,7 +31682,7 @@ public partial class CadScene : NativeObject
     /// <param name="width">Pixel width, 1..8192.</param>
     /// <param name="height">Pixel height, 1..8192.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid dimensions.</exception>
-    public void Size(int width, int height) => Rosetta.Call(2951, this, width, height);
+    public void Size(int width, int height) => Rosetta.Call(2962, this, width, height);
 
     /// <summary>
     /// Set regular-grid antialiasing samples per axis.
@@ -31342,7 +31695,7 @@ public partial class CadScene : NativeObject
     /// </remarks>
     /// <param name="count">1..4, i.e. 1..16 rays/pixel.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid count.</exception>
-    public void Samples(int count) => Rosetta.Call(2952, this, count);
+    public void Samples(int count) => Rosetta.Call(2963, this, count);
 
     /// <summary>
     /// Select shaded, unlit, wireframe or shaded-wireframe output.
@@ -31355,7 +31708,7 @@ public partial class CadScene : NativeObject
     /// </remarks>
     /// <param name="name">One of those exact lowercase names.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Unknown style.</exception>
-    public void Style(string name) => Rosetta.Call(2953, this, name);
+    public void Style(string name) => Rosetta.Call(2964, this, name);
 
     /// <summary>
     /// Enable/disable shadows cast by the first visible light.
@@ -31367,7 +31720,7 @@ public partial class CadScene : NativeObject
     /// </code>
     /// </remarks>
     /// <param name="enabled">True enables triangle-ray shadow tests.</param>
-    public void Shadows(bool enabled) => Rosetta.Call(2954, this, enabled);
+    public void Shadows(bool enabled) => Rosetta.Call(2965, this, enabled);
 
     /// <summary>
     /// Set explicit camera position and target, with +Z as up.
@@ -31385,7 +31738,7 @@ public partial class CadScene : NativeObject
     /// <param name="targetY">Target Y.</param>
     /// <param name="targetZ">Target Z; all values finite, target distinct and view not parallel to +Z.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid camera.</exception>
-    public void Camera(double x, double y, double z, double targetX, double targetY, double targetZ) => Rosetta.Call(2955, this, x, y, z, targetX, targetY, targetZ);
+    public void Camera(double x, double y, double z, double targetX, double targetY, double targetZ) => Rosetta.Call(2966, this, x, y, z, targetX, targetY, targetZ);
 
     /// <summary>
     /// Resume automatic perspective framing after an explicit camera.
@@ -31396,7 +31749,7 @@ public partial class CadScene : NativeObject
     /// dm::cad::View view; view.fit();
     /// </code>
     /// </remarks>
-    public void Fit() => Rosetta.Call(2956, this);
+    public void Fit() => Rosetta.Call(2967, this);
 
     /// <summary>
     /// Add a directional light; the first explicit light replaces the fallback light.
@@ -31413,7 +31766,7 @@ public partial class CadScene : NativeObject
     /// <param name="z">Direction Z; finite nonzero vector.</param>
     /// <returns>New light ID.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid direction, color or intensity.</exception>
-    public int Light(double x, double y, double z) => Rosetta.To<int>(Rosetta.Call(2957, this, x, y, z));
+    public int Light(double x, double y, double z) => Rosetta.To<int>(Rosetta.Call(2968, this, x, y, z));
 
     /// <summary>
     /// Add a directional light; the first explicit light replaces the fallback light.
@@ -31431,7 +31784,7 @@ public partial class CadScene : NativeObject
     /// <param name="color">Hex RGB/RGBA light color, default white; alpha unused.</param>
     /// <returns>New light ID.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid direction, color or intensity.</exception>
-    public int Light(double x, double y, double z, string color) => Rosetta.To<int>(Rosetta.Call(2957, this, x, y, z, color));
+    public int Light(double x, double y, double z, string color) => Rosetta.To<int>(Rosetta.Call(2968, this, x, y, z, color));
 
     /// <summary>
     /// Add a directional light; the first explicit light replaces the fallback light.
@@ -31449,7 +31802,7 @@ public partial class CadScene : NativeObject
     /// <param name="intensity">Nonnegative finite multiplier, default 1.</param>
     /// <returns>New light ID.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid direction, color or intensity.</exception>
-    public int Light(double x, double y, double z, string color, double intensity) => Rosetta.To<int>(Rosetta.Call(2957, this, x, y, z, color, intensity));
+    public int Light(double x, double y, double z, string color, double intensity) => Rosetta.To<int>(Rosetta.Call(2968, this, x, y, z, color, intensity));
 
     /// <summary>
     /// Render synchronously and save a PNG/JPEG/PPM color image.
@@ -31461,7 +31814,7 @@ public partial class CadScene : NativeObject
     /// <param name="path">Output filename, parent directory must exist.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid scene or extension.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: File I/O failure.</exception>
-    public void Render(string path) => Rosetta.Call(2958, this, path);
+    public void Render(string path) => Rosetta.Call(2969, this, path);
 
     /// <summary>
     /// Save the scene as self-contained glTF with meshes, textures and lights.
@@ -31474,7 +31827,7 @@ public partial class CadScene : NativeObject
     /// </remarks>
     /// <param name="path">Output .gltf filename; parent must exist.</param>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: Export/I/O failure.</exception>
-    public void SaveGltf(string path) => Rosetta.Call(2959, this, path);
+    public void SaveGltf(string path) => Rosetta.Call(2970, this, path);
 
     /// <summary>
     /// Pick a source object using the current camera and image dimensions.
@@ -31489,19 +31842,19 @@ public partial class CadScene : NativeObject
     /// <param name="y">Pixel Y from top.</param>
     /// <returns>Object ID or -1 for background.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid ray or geometry.</exception>
-    public int PickObject(double x, double y) => Rosetta.To<int>(Rosetta.Call(2960, this, x, y));
+    public int PickObject(double x, double y) => Rosetta.To<int>(Rosetta.Call(2971, this, x, y));
 
     /// <summary>
     /// Count scene objects, including empty groups.
     /// </summary>
     /// <returns>Object count.</returns>
-    public int ObjectCount() => Rosetta.To<int>(Rosetta.Call(2961, this));
+    public int ObjectCount() => Rosetta.To<int>(Rosetta.Call(2972, this));
 
     /// <summary>
     /// Count triangles over all object mesh references, including hidden objects.
     /// </summary>
     /// <returns>Triangle count.</returns>
-    public int TriangleCount() => Rosetta.To<int>(Rosetta.Call(2962, this));
+    public int TriangleCount() => Rosetta.To<int>(Rosetta.Call(2973, this));
 }
 
 /// <summary>
@@ -31525,7 +31878,7 @@ public partial class SplineSolveOptions : NativeObject
     /// </summary>
     public SplineSolveOptions() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(SplineSolveOptions), false, 2972);
+        Rosetta.Construct(this, typeof(SplineSolveOptions), false, 2983);
     }
 
     /// <summary>
@@ -31533,8 +31886,8 @@ public partial class SplineSolveOptions : NativeObject
     /// </summary>
     public SplineSolver Method
     {
-        get => Rosetta.To<SplineSolver>(Rosetta.Call(2964, this));
-        set => Rosetta.Call(2965, this, value);
+        get => Rosetta.To<SplineSolver>(Rosetta.Call(2975, this));
+        set => Rosetta.Call(2976, this, value);
     }
 
     /// <summary>
@@ -31542,8 +31895,8 @@ public partial class SplineSolveOptions : NativeObject
     /// </summary>
     public ulong DirectLimit
     {
-        get => Rosetta.To<ulong>(Rosetta.Call(2966, this));
-        set => Rosetta.Call(2967, this, value);
+        get => Rosetta.To<ulong>(Rosetta.Call(2977, this));
+        set => Rosetta.Call(2978, this, value);
     }
 
     /// <summary>
@@ -31551,8 +31904,8 @@ public partial class SplineSolveOptions : NativeObject
     /// </summary>
     public double Tolerance
     {
-        get => Rosetta.To<double>(Rosetta.Call(2968, this));
-        set => Rosetta.Call(2969, this, value);
+        get => Rosetta.To<double>(Rosetta.Call(2979, this));
+        set => Rosetta.Call(2980, this, value);
     }
 
     /// <summary>
@@ -31560,8 +31913,8 @@ public partial class SplineSolveOptions : NativeObject
     /// </summary>
     public ulong MaxIterations
     {
-        get => Rosetta.To<ulong>(Rosetta.Call(2970, this));
-        set => Rosetta.Call(2971, this, value);
+        get => Rosetta.To<ulong>(Rosetta.Call(2981, this));
+        set => Rosetta.Call(2982, this, value);
     }
 }
 
@@ -31589,7 +31942,7 @@ public partial class BSplineRefinement : NativeObject
     /// </summary>
     public BSplineRefinement() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(BSplineRefinement), false, 2976);
+        Rosetta.Construct(this, typeof(BSplineRefinement), false, 2987);
     }
 
     /// <summary>
@@ -31605,15 +31958,15 @@ public partial class BSplineRefinement : NativeObject
     /// <param name="coefficients">One coefficient per coarse basis function.</param>
     /// <returns>One coefficient per refined basis function, representing the same spline.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If <c>coefficients</c> does not match the coarse basis size.</exception>
-    public List<double> Apply(IEnumerable<double> coefficients) => Rosetta.To<List<double>>(Rosetta.Call(2973, this, coefficients));
+    public List<double> Apply(IEnumerable<double> coefficients) => Rosetta.To<List<double>>(Rosetta.Call(2984, this, coefficients));
 
     /// <summary>
     /// Refined basis (same degree and domain).
     /// </summary>
     public BSplineBasis Basis
     {
-        get => Rosetta.To<BSplineBasis>(Rosetta.Call(2974, this));
-        set => Rosetta.Call(2975, this, value);
+        get => Rosetta.To<BSplineBasis>(Rosetta.Call(2985, this));
+        set => Rosetta.Call(2986, this, value);
     }
 }
 
@@ -31656,7 +32009,7 @@ public partial class TensorBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If the coefficient count differs from basis.basis_size().</exception>
     public TensorBSpline(BSplineBasis basis, IEnumerable<double> coefficients) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(TensorBSpline), false, 2990, basis, coefficients);
+        Rosetta.Construct(this, typeof(TensorBSpline), false, 3001, basis, coefficients);
     }
 
     /// <summary>
@@ -31675,50 +32028,50 @@ public partial class TensorBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If <c>bases</c> is empty or the net size does not match.</exception>
     public TensorBSpline(IEnumerable<BSplineBasis> bases, IEnumerable<double> coefficients) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(TensorBSpline), false, 2990, bases, coefficients);
+        Rosetta.Construct(this, typeof(TensorBSpline), false, 3001, bases, coefficients);
     }
 
     /// <summary>
     /// Number of parameter dimensions d.
     /// </summary>
     /// <returns>bases().size().</returns>
-    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(2977, this));
+    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(2988, this));
 
     /// <summary>
     /// The per-axis bases.
     /// </summary>
     /// <returns>Reference valid for the lifetime of this object.</returns>
-    public List<BSplineBasis> Bases() => Rosetta.To<List<BSplineBasis>>(Rosetta.Call(2978, this));
+    public List<BSplineBasis> Bases() => Rosetta.To<List<BSplineBasis>>(Rosetta.Call(2989, this));
 
     /// <summary>
     /// Per-axis basis sizes, i.e. the shape of the coefficient net.
     /// </summary>
     /// <returns>d sizes in axis order.</returns>
-    public List<int> Shape() => Rosetta.To<List<int>>(Rosetta.Call(2979, this));
+    public List<int> Shape() => Rosetta.To<List<int>>(Rosetta.Call(2990, this));
 
     /// <summary>
     /// Total number of coefficients (product of shape()).
     /// </summary>
     /// <returns>Coefficient count.</returns>
-    public ulong CoefficientCount() => Rosetta.To<ulong>(Rosetta.Call(2980, this));
+    public ulong CoefficientCount() => Rosetta.To<ulong>(Rosetta.Call(2991, this));
 
     /// <summary>
     /// The row-major coefficient net.
     /// </summary>
     /// <returns>Reference valid until the next mutation of this object.</returns>
-    public List<double> Coefficients() => Rosetta.To<List<double>>(Rosetta.Call(2981, this));
+    public List<double> Coefficients() => Rosetta.To<List<double>>(Rosetta.Call(2992, this));
 
     /// <summary>
     /// Lower corner of the parameter domain (each basis's first clamped knot).
     /// </summary>
     /// <returns>d coordinates.</returns>
-    public List<double> DomainMin() => Rosetta.To<List<double>>(Rosetta.Call(2982, this));
+    public List<double> DomainMin() => Rosetta.To<List<double>>(Rosetta.Call(2993, this));
 
     /// <summary>
     /// Upper corner of the parameter domain.
     /// </summary>
     /// <returns>d coordinates.</returns>
-    public List<double> DomainMax() => Rosetta.To<List<double>>(Rosetta.Call(2983, this));
+    public List<double> DomainMax() => Rosetta.To<List<double>>(Rosetta.Call(2994, this));
 
     /// <summary>
     /// Reads one coefficient by per-axis basis index.
@@ -31735,7 +32088,7 @@ public partial class TensorBSpline : NativeObject
     /// <returns>The coefficient.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If index.size() != dimensions().</exception>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: If a component is out of range.</exception>
-    public double Coefficient(IEnumerable<int> index) => Rosetta.To<double>(Rosetta.Call(2984, this, index));
+    public double Coefficient(IEnumerable<int> index) => Rosetta.To<double>(Rosetta.Call(2995, this, index));
 
     /// <summary>
     /// Overwrites one coefficient by per-axis basis index.
@@ -31752,7 +32105,7 @@ public partial class TensorBSpline : NativeObject
     /// <param name="value">New coefficient.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If index.size() != dimensions().</exception>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: If a component is out of range.</exception>
-    public void SetCoefficient(IEnumerable<int> index, double value) => Rosetta.Call(2985, this, index, value);
+    public void SetCoefficient(IEnumerable<int> index, double value) => Rosetta.Call(2996, this, index, value);
 
     /// <summary>
     /// Evaluates a one-dimensional spline at <c>x</c> (clamped into the domain).
@@ -31767,7 +32120,7 @@ public partial class TensorBSpline : NativeObject
     /// <param name="x">Finite coordinate.</param>
     /// <returns>f(x).</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If dimensions() != 1 or <c>x</c> is not finite.</exception>
-    public double Evaluate(double x) => Rosetta.To<double>(Rosetta.Call(2986, this, x));
+    public double Evaluate(double x) => Rosetta.To<double>(Rosetta.Call(2997, this, x));
 
     /// <summary>
     /// Evaluates at one d-dimensional point (each coordinate clamped into the domain).
@@ -31783,7 +32136,7 @@ public partial class TensorBSpline : NativeObject
     /// <param name="point">d finite coordinates.</param>
     /// <returns>f(point).</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If point.size() != dimensions() or a coordinate is not finite.</exception>
-    public double Evaluate(IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(2986, this, point));
+    public double Evaluate(IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(2997, this, point));
 
     /// <summary>
     /// Evaluates at many points.
@@ -31798,7 +32151,7 @@ public partial class TensorBSpline : NativeObject
     /// <param name="points">Points, each of length d.</param>
     /// <returns>One value per point, in input order.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for evaluate(const std::vector&lt;double&gt;&amp;).</exception>
-    public List<double> EvaluatePoints(IEnumerable<IEnumerable<double>> points) => Rosetta.To<List<double>>(Rosetta.Call(2987, this, points));
+    public List<double> EvaluatePoints(IEnumerable<IEnumerable<double>> points) => Rosetta.To<List<double>>(Rosetta.Call(2998, this, points));
 
     /// <summary>
     /// Evaluates on the Cartesian product of per-axis sample values.
@@ -31814,7 +32167,7 @@ public partial class TensorBSpline : NativeObject
     /// <param name="axes">d non-empty coordinate lists.</param>
     /// <returns>Row-major grid of values (axis 0 slowest, last axis fastest).</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If axes.size() != dimensions() or an axis is empty.</exception>
-    public List<double> EvaluateGrid(IEnumerable<IEnumerable<double>> axes) => Rosetta.To<List<double>>(Rosetta.Call(2988, this, axes));
+    public List<double> EvaluateGrid(IEnumerable<IEnumerable<double>> axes) => Rosetta.To<List<double>>(Rosetta.Call(2999, this, axes));
 
     /// <summary>
     /// Dyadically refines every axis and maps the coefficients, giving an identical
@@ -31831,7 +32184,7 @@ public partial class TensorBSpline : NativeObject
     /// </remarks>
     /// <returns>The refined spline.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If some axis basis is not clamped.</exception>
-    public TensorBSpline DyadicRefine() => Rosetta.To<TensorBSpline>(Rosetta.Call(2989, this));
+    public TensorBSpline DyadicRefine() => Rosetta.To<TensorBSpline>(Rosetta.Call(3000, this));
 }
 
 /// <summary>
@@ -31853,72 +32206,72 @@ public partial class OrthantCellTree : NativeObject
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On empty/mismatched/non-finite bounds, lo &gt;= hi, or more than 20 dimensions.</exception>
     public OrthantCellTree(IEnumerable<double> lo, IEnumerable<double> hi) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(OrthantCellTree), false, 3011, lo, hi);
+        Rosetta.Construct(this, typeof(OrthantCellTree), false, 3022, lo, hi);
     }
 
     /// <summary>
     /// Number of dimensions d.
     /// </summary>
     /// <returns>d.</returns>
-    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(2991, this));
+    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(3002, this));
 
     /// <summary>
     /// Children per cell, 2^d.
     /// </summary>
     /// <returns>2^d.</returns>
-    public int Arity() => Rosetta.To<int>(Rosetta.Call(2992, this));
+    public int Arity() => Rosetta.To<int>(Rosetta.Call(3003, this));
 
     /// <summary>
     /// Number of cells created so far.
     /// </summary>
     /// <returns>Cell count.</returns>
-    public int Size() => Rosetta.To<int>(Rosetta.Call(2993, this));
+    public int Size() => Rosetta.To<int>(Rosetta.Call(3004, this));
 
     /// <summary>
     /// Greatest depth of any cell.
     /// </summary>
     /// <returns>Maximum depth (root is 0).</returns>
-    public int MaxDepth() => Rosetta.To<int>(Rosetta.Call(2994, this));
+    public int MaxDepth() => Rosetta.To<int>(Rosetta.Call(3005, this));
 
     /// <summary>
     /// Throws std::out_of_range unless <c>cell</c> is a valid id.
     /// </summary>
     /// <param name="cell">Cell id.</param>
-    public void Check(int cell) => Rosetta.Call(2995, this, cell);
+    public void Check(int cell) => Rosetta.Call(3006, this, cell);
 
     /// <summary>
     /// Throws std::out_of_range unless 0 &lt;= <c>slot</c> &lt; arity().
     /// </summary>
     /// <param name="slot">Child slot.</param>
-    public void CheckSlot(int slot) => Rosetta.Call(2996, this, slot);
+    public void CheckSlot(int slot) => Rosetta.Call(3007, this, slot);
 
     /// <summary>
     /// Cell lower corner.
     /// </summary>
     /// <param name="cell">Cell id.</param>
     /// <returns>d coordinates.</returns>
-    public List<double> Lo(int cell) => Rosetta.To<List<double>>(Rosetta.Call(2997, this, cell));
+    public List<double> Lo(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3008, this, cell));
 
     /// <summary>
     /// Cell upper corner.
     /// </summary>
     /// <param name="cell">Cell id.</param>
     /// <returns>d coordinates.</returns>
-    public List<double> Hi(int cell) => Rosetta.To<List<double>>(Rosetta.Call(2998, this, cell));
+    public List<double> Hi(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3009, this, cell));
 
     /// <summary>
     /// Cell depth.
     /// </summary>
     /// <param name="cell">Cell id.</param>
     /// <returns>Depth (root 0).</returns>
-    public int Depth(int cell) => Rosetta.To<int>(Rosetta.Call(2999, this, cell));
+    public int Depth(int cell) => Rosetta.To<int>(Rosetta.Call(3010, this, cell));
 
     /// <summary>
     /// Parent id.
     /// </summary>
     /// <param name="cell">Cell id.</param>
     /// <returns>Parent id, or -1 for the root.</returns>
-    public int Parent(int cell) => Rosetta.To<int>(Rosetta.Call(3000, this, cell));
+    public int Parent(int cell) => Rosetta.To<int>(Rosetta.Call(3011, this, cell));
 
     /// <summary>
     /// Child id.
@@ -31926,14 +32279,14 @@ public partial class OrthantCellTree : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <param name="slot">Child slot.</param>
     /// <returns>Id or -1 if absent.</returns>
-    public int Child(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3001, this, cell, slot));
+    public int Child(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3012, this, cell, slot));
 
     /// <summary>
     /// True when no child of <c>cell</c> exists.
     /// </summary>
     /// <param name="cell">Cell id.</param>
     /// <returns>Leaf flag.</returns>
-    public bool IsLeaf(int cell) => Rosetta.To<bool>(Rosetta.Call(3002, this, cell));
+    public bool IsLeaf(int cell) => Rosetta.To<bool>(Rosetta.Call(3013, this, cell));
 
     /// <summary>
     /// Returns the child at <c>slot</c>, creating it if needed.
@@ -31941,7 +32294,7 @@ public partial class OrthantCellTree : NativeObject
     /// <param name="cell">Parent id.</param>
     /// <param name="slot">Child slot.</param>
     /// <returns>Child id.</returns>
-    public int EnsureChild(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3003, this, cell, slot));
+    public int EnsureChild(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3014, this, cell, slot));
 
     /// <summary>
     /// Box of the (possibly not yet created) child at <c>slot</c>.
@@ -31949,7 +32302,7 @@ public partial class OrthantCellTree : NativeObject
     /// <param name="cell">Parent id.</param>
     /// <param name="slot">Child slot.</param>
     /// <returns>Pair (lo, hi) of the child box.</returns>
-    public (List<double>, List<double>) ChildBox(int cell, int slot) => Rosetta.To<(List<double>, List<double>)>(Rosetta.Call(3004, this, cell, slot));
+    public (List<double>, List<double>) ChildBox(int cell, int slot) => Rosetta.To<(List<double>, List<double>)>(Rosetta.Call(3015, this, cell, slot));
 
     /// <summary>
     /// Slot of <c>cell's</c> child that contains <c>point</c> (upper half on ties at the max).
@@ -31957,7 +32310,7 @@ public partial class OrthantCellTree : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <param name="point">d coordinates.</param>
     /// <returns>Child slot.</returns>
-    public int SlotFor(int cell, IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3005, this, cell, point));
+    public int SlotFor(int cell, IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3016, this, cell, point));
 
     /// <summary>
     /// Whether <c>point</c> lies in the closed box of <c>cell</c>.
@@ -31965,21 +32318,21 @@ public partial class OrthantCellTree : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <param name="point">d coordinates.</param>
     /// <returns>Containment flag.</returns>
-    public bool Contains(int cell, IEnumerable<double> point) => Rosetta.To<bool>(Rosetta.Call(3006, this, cell, point));
+    public bool Contains(int cell, IEnumerable<double> point) => Rosetta.To<bool>(Rosetta.Call(3017, this, cell, point));
 
     /// <summary>
     /// Deepest existing cell containing <c>point</c>.
     /// </summary>
     /// <param name="point">d coordinates.</param>
     /// <returns>Cell id, or -1 outside the root box.</returns>
-    public int Locate(IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3007, this, point));
+    public int Locate(IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3018, this, point));
 
     /// <summary>
     /// Ids of every cell at <c>depth</c>.
     /// </summary>
     /// <param name="depth">Depth.</param>
     /// <returns>Ids in creation order.</returns>
-    public List<int> CellsAtDepth(int depth) => Rosetta.To<List<int>>(Rosetta.Call(3008, this, depth));
+    public List<int> CellsAtDepth(int depth) => Rosetta.To<List<int>>(Rosetta.Call(3019, this, depth));
 
     /// <summary>
     /// Whether the open box (lo, hi) intersects the box [blo, bhi].
@@ -31989,7 +32342,7 @@ public partial class OrthantCellTree : NativeObject
     /// <param name="blo">Box B lower corner.</param>
     /// <param name="bhi">Box B upper corner.</param>
     /// <returns>True when the interiors overlap.</returns>
-    public static bool Overlaps(IEnumerable<double> lo, IEnumerable<double> hi, IEnumerable<double> blo, IEnumerable<double> bhi) => Rosetta.To<bool>(Rosetta.Call(3009, lo, hi, blo, bhi));
+    public static bool Overlaps(IEnumerable<double> lo, IEnumerable<double> hi, IEnumerable<double> blo, IEnumerable<double> bhi) => Rosetta.To<bool>(Rosetta.Call(3020, lo, hi, blo, bhi));
 
     /// <summary>
     /// Whether the part of [blo, bhi] inside the root is covered by cells of depth
@@ -31999,7 +32352,7 @@ public partial class OrthantCellTree : NativeObject
     /// <param name="blo">Box lower corner.</param>
     /// <param name="bhi">Box upper corner.</param>
     /// <returns>Coverage flag.</returns>
-    public bool CoveredToDepth(int targetDepth, IEnumerable<double> blo, IEnumerable<double> bhi) => Rosetta.To<bool>(Rosetta.Call(3010, this, targetDepth, blo, bhi));
+    public bool CoveredToDepth(int targetDepth, IEnumerable<double> blo, IEnumerable<double> bhi) => Rosetta.To<bool>(Rosetta.Call(3021, this, targetDepth, blo, bhi));
 }
 
 /// <summary>
@@ -32014,7 +32367,7 @@ public partial class AxisRefinement : NativeObject
     /// </summary>
     public AxisRefinement() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(AxisRefinement), false, 3016);
+        Rosetta.Construct(this, typeof(AxisRefinement), false, 3027);
     }
 
     /// <summary>
@@ -32022,8 +32375,8 @@ public partial class AxisRefinement : NativeObject
     /// </summary>
     public List<List<(int, double)>> Rows
     {
-        get => Rosetta.To<List<List<(int, double)>>>(Rosetta.Call(3012, this));
-        set => Rosetta.Call(3013, this, value);
+        get => Rosetta.To<List<List<(int, double)>>>(Rosetta.Call(3023, this));
+        set => Rosetta.Call(3024, this, value);
     }
 
     /// <summary>
@@ -32031,8 +32384,8 @@ public partial class AxisRefinement : NativeObject
     /// </summary>
     public List<List<(int, double)>> Cols
     {
-        get => Rosetta.To<List<List<(int, double)>>>(Rosetta.Call(3014, this));
-        set => Rosetta.Call(3015, this, value);
+        get => Rosetta.To<List<List<(int, double)>>>(Rosetta.Call(3025, this));
+        set => Rosetta.Call(3026, this, value);
     }
 }
 
@@ -32078,26 +32431,26 @@ public partial class HierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On empty, mismatched or non-finite bounds, min &gt;= max, or more than 20 dimensions.</exception>
     public HierarchicalBSpline(IEnumerable<double> domainMin, IEnumerable<double> domainMax) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(HierarchicalBSpline), false, 3038, domainMin, domainMax);
+        Rosetta.Construct(this, typeof(HierarchicalBSpline), false, 3049, domainMin, domainMax);
     }
 
     /// <summary>
     /// Number of dimensions d.
     /// </summary>
     /// <returns>d.</returns>
-    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(3017, this));
+    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(3028, this));
 
     /// <summary>
     /// Number of cells created so far.
     /// </summary>
     /// <returns>Cell count.</returns>
-    public int CellCount() => Rosetta.To<int>(Rosetta.Call(3018, this));
+    public int CellCount() => Rosetta.To<int>(Rosetta.Call(3029, this));
 
     /// <summary>
     /// Root cell id.
     /// </summary>
     /// <returns>Always 0.</returns>
-    public int Root() => Rosetta.To<int>(Rosetta.Call(3019, this));
+    public int Root() => Rosetta.To<int>(Rosetta.Call(3030, this));
 
     /// <summary>
     /// Parent id.
@@ -32105,7 +32458,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>Parent id, -1 for the root.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public int Parent(int cell) => Rosetta.To<int>(Rosetta.Call(3020, this, cell));
+    public int Parent(int cell) => Rosetta.To<int>(Rosetta.Call(3031, this, cell));
 
     /// <summary>
     /// Child id at <c>slot</c>.
@@ -32114,7 +32467,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="slot">Child slot in [0, 2^d).</param>
     /// <returns>Child id, or -1 when not created.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid ids/slots.</exception>
-    public int Child(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3021, this, cell, slot));
+    public int Child(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3032, this, cell, slot));
 
     /// <summary>
     /// Depth of <c>cell</c> (root 0).
@@ -32122,7 +32475,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>Depth.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public int Depth(int cell) => Rosetta.To<int>(Rosetta.Call(3022, this, cell));
+    public int Depth(int cell) => Rosetta.To<int>(Rosetta.Call(3033, this, cell));
 
     /// <summary>
     /// Lower corner of <c>cell</c>.
@@ -32130,7 +32483,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>d coordinates.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public List<double> CellMin(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3023, this, cell));
+    public List<double> CellMin(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3034, this, cell));
 
     /// <summary>
     /// Upper corner of <c>cell</c>.
@@ -32138,7 +32491,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>d coordinates.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public List<double> CellMax(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3024, this, cell));
+    public List<double> CellMax(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3035, this, cell));
 
     /// <summary>
     /// Deepest existing cell containing <c>point</c>.
@@ -32154,7 +32507,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="point">d coordinates.</param>
     /// <returns>Cell id, or -1 if <c>point</c> is outside the domain.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If point.size() != dimensions().</exception>
-    public int Locate(IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3025, this, point));
+    public int Locate(IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3036, this, point));
 
     /// <summary>
     /// Whether <c>cell</c> carries a patch.
@@ -32162,7 +32515,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>Flag.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public bool HasSpline(int cell) => Rosetta.To<bool>(Rosetta.Call(3026, this, cell));
+    public bool HasSpline(int cell) => Rosetta.To<bool>(Rosetta.Call(3037, this, cell));
 
     /// <summary>
     /// The patch of <c>cell</c>.
@@ -32171,7 +32524,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <returns>Reference valid until the patch is replaced or cleared.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If no patch.</exception>
-    public TensorBSpline Spline(int cell) => Rosetta.To<TensorBSpline>(Rosetta.Call(3027, this, cell));
+    public TensorBSpline Spline(int cell) => Rosetta.To<TensorBSpline>(Rosetta.Call(3038, this, cell));
 
     /// <summary>
     /// Installs (or replaces) the patch of <c>cell</c>.
@@ -32180,14 +32533,14 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="spline">Patch in cell-local [0, 1]^d coordinates.</param>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If the patch dimension differs from dimensions().</exception>
-    public void SetSpline(int cell, TensorBSpline spline) => Rosetta.Call(3028, this, cell, spline);
+    public void SetSpline(int cell, TensorBSpline spline) => Rosetta.Call(3039, this, cell, spline);
 
     /// <summary>
     /// Removes the patch of <c>cell</c> (no-op if none).
     /// </summary>
     /// <param name="cell">Cell id.</param>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public void ClearSpline(int cell) => Rosetta.Call(3029, this, cell);
+    public void ClearSpline(int cell) => Rosetta.Call(3040, this, cell);
 
     /// <summary>
     /// Creates all 2^d children of <c>cell</c> (existing ones are kept), without patches.
@@ -32202,7 +32555,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>The 2^d child ids in slot order.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public List<int> Subdivide(int cell) => Rosetta.To<List<int>>(Rosetta.Call(3030, this, cell));
+    public List<int> Subdivide(int cell) => Rosetta.To<List<int>>(Rosetta.Call(3041, this, cell));
 
     /// <summary>
     /// Creates (if needed) only the child of <c>cell</c> at <c>slot</c>.
@@ -32219,7 +32572,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="slot">Child slot; bit k selects the upper half of axis k.</param>
     /// <returns>The child id.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id or slot.</exception>
-    public int Refine(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3031, this, cell, slot));
+    public int Refine(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3042, this, cell, slot));
 
     /// <summary>
     /// Creates (if needed) the child at <c>slot</c> and installs <c>spline</c> on it.
@@ -32234,7 +32587,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <returns>The child id.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id or slot.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If the patch dimension differs from dimensions().</exception>
-    public int Refine(int cell, int slot, TensorBSpline spline) => Rosetta.To<int>(Rosetta.Call(3031, this, cell, slot, spline));
+    public int Refine(int cell, int slot, TensorBSpline spline) => Rosetta.To<int>(Rosetta.Call(3042, this, cell, slot, spline));
 
     /// <summary>
     /// Subdivides, down to depth <c>depth</c>, every cell overlapping the open box
@@ -32252,7 +32605,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="regionMax">Upper corner (min &lt; max per axis).</param>
     /// <param name="depth">Deepest depth to create (cells already deeper are untouched).</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On mismatched sizes or min &gt;= max.</exception>
-    public void RefineRegion(IEnumerable<double> regionMin, IEnumerable<double> regionMax, int depth) => Rosetta.Call(3032, this, regionMin, regionMax, depth);
+    public void RefineRegion(IEnumerable<double> regionMin, IEnumerable<double> regionMax, int depth) => Rosetta.Call(3043, this, regionMin, regionMax, depth);
 
     /// <summary>
     /// Like refine_region(region_min, region_max, depth) but calls <c>factory</c> on every
@@ -32272,7 +32625,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="depth">Deepest depth.</param>
     /// <param name="factory">Patch callback; std::nullopt leaves a cell unchanged.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On invalid bounds or a patch of the wrong dimension.</exception>
-    public void RefineRegion(IEnumerable<double> regionMin, IEnumerable<double> regionMax, int depth, Func<List<double>, List<double>, TensorBSpline?> factory) => Rosetta.Call(3032, this, regionMin, regionMax, depth, factory);
+    public void RefineRegion(IEnumerable<double> regionMin, IEnumerable<double> regionMax, int depth, Func<List<double>, List<double>, TensorBSpline?> factory) => Rosetta.Call(3043, this, regionMin, regionMax, depth, factory);
 
     /// <summary>
     /// Least-squares fits a new patch on <c>cell</c> so the whole hierarchy matches
@@ -32298,7 +32651,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If the cell has a patch, inputs are empty/mismatched, or a point lies outside the cell.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the local normal equations are singular.</exception>
-    public void FitCell(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values) => Rosetta.Call(3033, this, cell, bases, points, values);
+    public void FitCell(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values) => Rosetta.Call(3044, this, cell, bases, points, values);
 
     /// <summary>
     /// Least-squares fits a new patch on <c>cell</c> so the whole hierarchy matches
@@ -32324,7 +32677,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If the cell has a patch, inputs are empty/mismatched, or a point lies outside the cell.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the local normal equations are singular.</exception>
-    public void FitCell(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, SplineSolveOptions options) => Rosetta.Call(3033, this, cell, bases, points, values, options);
+    public void FitCell(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, SplineSolveOptions options) => Rosetta.Call(3044, this, cell, bases, points, values, options);
 
     /// <summary>
     /// Penalized (P-spline) variant of fit_cell() with per-axis <c>lambdas</c> and
@@ -32348,7 +32701,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit_cell() and fit_tensor_pspline().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the penalized normal equations are singular.</exception>
-    public void FitCellPenalized(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas) => Rosetta.Call(3034, this, cell, bases, points, values, lambdas);
+    public void FitCellPenalized(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas) => Rosetta.Call(3045, this, cell, bases, points, values, lambdas);
 
     /// <summary>
     /// Penalized (P-spline) variant of fit_cell() with per-axis <c>lambdas</c> and
@@ -32373,7 +32726,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit_cell() and fit_tensor_pspline().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the penalized normal equations are singular.</exception>
-    public void FitCellPenalized(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order) => Rosetta.Call(3034, this, cell, bases, points, values, lambdas, order);
+    public void FitCellPenalized(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order) => Rosetta.Call(3045, this, cell, bases, points, values, lambdas, order);
 
     /// <summary>
     /// Penalized (P-spline) variant of fit_cell() with per-axis <c>lambdas</c> and
@@ -32398,7 +32751,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit_cell() and fit_tensor_pspline().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the penalized normal equations are singular.</exception>
-    public void FitCellPenalized(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order, SplineSolveOptions options) => Rosetta.Call(3034, this, cell, bases, points, values, lambdas, order, options);
+    public void FitCellPenalized(int cell, IEnumerable<BSplineBasis> bases, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order, SplineSolveOptions options) => Rosetta.Call(3045, this, cell, bases, points, values, lambdas, order, options);
 
     /// <summary>
     /// Sum of the patches along the path of cells containing <c>point</c>.
@@ -32410,7 +32763,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="point">d coordinates inside the domain.</param>
     /// <returns>Hierarchy value (0 where no patch applies).</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a size mismatch or a point outside the domain.</exception>
-    public double Evaluate(IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(3035, this, point));
+    public double Evaluate(IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(3046, this, point));
 
     /// <summary>
     /// Evaluates at many points.
@@ -32425,7 +32778,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="points">Points of length d.</param>
     /// <returns>One value per point.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for evaluate().</exception>
-    public List<double> EvaluatePoints(IEnumerable<IEnumerable<double>> points) => Rosetta.To<List<double>>(Rosetta.Call(3036, this, points));
+    public List<double> EvaluatePoints(IEnumerable<IEnumerable<double>> points) => Rosetta.To<List<double>>(Rosetta.Call(3047, this, points));
 
     /// <summary>
     /// Evaluates on a Cartesian grid.
@@ -32440,7 +32793,7 @@ public partial class HierarchicalBSpline : NativeObject
     /// <param name="axes">d non-empty coordinate lists.</param>
     /// <returns>Row-major values (last axis fastest).</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a dimension mismatch, empty axis, or outside point.</exception>
-    public List<double> EvaluateGrid(IEnumerable<IEnumerable<double>> axes) => Rosetta.To<List<double>>(Rosetta.Call(3037, this, axes));
+    public List<double> EvaluateGrid(IEnumerable<IEnumerable<double>> axes) => Rosetta.To<List<double>>(Rosetta.Call(3048, this, axes));
 }
 
 /// <summary>
@@ -32490,20 +32843,20 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If an axis basis is not clamped or d &gt; 20.</exception>
     public TruncatedHierarchicalBSpline(TensorBSpline @base) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(TruncatedHierarchicalBSpline), false, 3068, @base);
+        Rosetta.Construct(this, typeof(TruncatedHierarchicalBSpline), false, 3079, @base);
     }
 
     /// <summary>
     /// Number of dimensions d.
     /// </summary>
     /// <returns>d.</returns>
-    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(3039, this));
+    public ulong Dimensions() => Rosetta.To<ulong>(Rosetta.Call(3050, this));
 
     /// <summary>
     /// Number of materialized levels (1 + deepest cell depth).
     /// </summary>
     /// <returns>Level count.</returns>
-    public int LevelCount() => Rosetta.To<int>(Rosetta.Call(3040, this));
+    public int LevelCount() => Rosetta.To<int>(Rosetta.Call(3051, this));
 
     /// <summary>
     /// The level- <c>l</c> spline on the whole domain; it equals the hierarchy wherever
@@ -32512,19 +32865,19 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="level">Level in [0, level_count()).</param>
     /// <returns>Reference valid until the next refinement or coefficient edit.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid level.</exception>
-    public TensorBSpline Level(int level) => Rosetta.To<TensorBSpline>(Rosetta.Call(3041, this, level));
+    public TensorBSpline Level(int level) => Rosetta.To<TensorBSpline>(Rosetta.Call(3052, this, level));
 
     /// <summary>
     /// Number of cells.
     /// </summary>
     /// <returns>Cell count.</returns>
-    public int CellCount() => Rosetta.To<int>(Rosetta.Call(3042, this));
+    public int CellCount() => Rosetta.To<int>(Rosetta.Call(3053, this));
 
     /// <summary>
     /// Root cell id.
     /// </summary>
     /// <returns>Always 0.</returns>
-    public int Root() => Rosetta.To<int>(Rosetta.Call(3043, this));
+    public int Root() => Rosetta.To<int>(Rosetta.Call(3054, this));
 
     /// <summary>
     /// Parent id.
@@ -32532,7 +32885,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>Parent id, -1 for the root.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public int Parent(int cell) => Rosetta.To<int>(Rosetta.Call(3044, this, cell));
+    public int Parent(int cell) => Rosetta.To<int>(Rosetta.Call(3055, this, cell));
 
     /// <summary>
     /// Child id.
@@ -32541,7 +32894,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="slot">Child slot.</param>
     /// <returns>Child id or -1.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid ids/slots.</exception>
-    public int Child(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3045, this, cell, slot));
+    public int Child(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3056, this, cell, slot));
 
     /// <summary>
     /// Depth (= level used there if it is a leaf).
@@ -32549,7 +32902,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>Depth.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public int Depth(int cell) => Rosetta.To<int>(Rosetta.Call(3046, this, cell));
+    public int Depth(int cell) => Rosetta.To<int>(Rosetta.Call(3057, this, cell));
 
     /// <summary>
     /// Lower corner.
@@ -32557,7 +32910,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>d coordinates.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public List<double> CellMin(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3047, this, cell));
+    public List<double> CellMin(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3058, this, cell));
 
     /// <summary>
     /// Upper corner.
@@ -32565,7 +32918,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>d coordinates.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public List<double> CellMax(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3048, this, cell));
+    public List<double> CellMax(int cell) => Rosetta.To<List<double>>(Rosetta.Call(3059, this, cell));
 
     /// <summary>
     /// Deepest cell containing <c>point</c> (its depth is the finest level there).
@@ -32573,7 +32926,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="point">d coordinates.</param>
     /// <returns>Cell id, or -1 outside the domain.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: If point.size() != dimensions().</exception>
-    public int Locate(IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3049, this, point));
+    public int Locate(IEnumerable<double> point) => Rosetta.To<int>(Rosetta.Call(3060, this, point));
 
     /// <summary>
     /// Creates (if needed) the child of <c>cell</c> at <c>slot</c>, materializing the next
@@ -32592,7 +32945,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="slot">Child slot.</param>
     /// <returns>Child id.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id or slot.</exception>
-    public int Refine(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3050, this, cell, slot));
+    public int Refine(int cell, int slot) => Rosetta.To<int>(Rosetta.Call(3061, this, cell, slot));
 
     /// <summary>
     /// Creates all 2^d children of <c>cell</c>.
@@ -32604,7 +32957,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="cell">Cell id.</param>
     /// <returns>Child ids in slot order.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid id.</exception>
-    public List<int> Subdivide(int cell) => Rosetta.To<List<int>>(Rosetta.Call(3051, this, cell));
+    public List<int> Subdivide(int cell) => Rosetta.To<List<int>>(Rosetta.Call(3062, this, cell));
 
     /// <summary>
     /// Subdivides, down to depth <c>depth</c>, every cell overlapping the open box
@@ -32618,7 +32971,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="regionMax">Upper corner (min &lt; max per axis).</param>
     /// <param name="depth">Deepest level to create.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On mismatched sizes or min &gt;= max.</exception>
-    public void RefineRegion(IEnumerable<double> regionMin, IEnumerable<double> regionMax, int depth) => Rosetta.Call(3052, this, regionMin, regionMax, depth);
+    public void RefineRegion(IEnumerable<double> regionMin, IEnumerable<double> regionMax, int depth) => Rosetta.Call(3063, this, regionMin, regionMax, depth);
 
     /// <summary>
     /// Lower corner of the support box of basis function <c>index</c> at <c>level</c>.
@@ -32628,7 +32981,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <returns>d coordinates.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid levels/indices.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a dimension mismatch.</exception>
-    public List<double> SupportMin(int level, IEnumerable<int> index) => Rosetta.To<List<double>>(Rosetta.Call(3053, this, level, index));
+    public List<double> SupportMin(int level, IEnumerable<int> index) => Rosetta.To<List<double>>(Rosetta.Call(3064, this, level, index));
 
     /// <summary>
     /// Upper corner of the support box.
@@ -32638,7 +32991,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <returns>d coordinates.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid levels/indices.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a dimension mismatch.</exception>
-    public List<double> SupportMax(int level, IEnumerable<int> index) => Rosetta.To<List<double>>(Rosetta.Call(3054, this, level, index));
+    public List<double> SupportMax(int level, IEnumerable<int> index) => Rosetta.To<List<double>>(Rosetta.Call(3065, this, level, index));
 
     /// <summary>
     /// Whether level- <c>level</c> function <c>index</c> is in the THB basis (support in
@@ -32658,7 +33011,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <returns>Activity flag.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid levels/indices.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a dimension mismatch.</exception>
-    public bool IsActive(int level, IEnumerable<int> index) => Rosetta.To<bool>(Rosetta.Call(3055, this, level, index));
+    public bool IsActive(int level, IEnumerable<int> index) => Rosetta.To<bool>(Rosetta.Call(3066, this, level, index));
 
     /// <summary>
     /// Every active multi-index at <c>level</c>, in row-major order.
@@ -32674,7 +33027,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="level">Level.</param>
     /// <returns>Multi-indices.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid level.</exception>
-    public List<List<int>> ActiveIndices(int level) => Rosetta.To<List<List<int>>>(Rosetta.Call(3056, this, level));
+    public List<List<int>> ActiveIndices(int level) => Rosetta.To<List<List<int>>>(Rosetta.Call(3067, this, level));
 
     /// <summary>
     /// Total number of THB basis functions over all levels.
@@ -32689,7 +33042,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// </code>
     /// </remarks>
     /// <returns>Count.</returns>
-    public ulong BasisSize() => Rosetta.To<ulong>(Rosetta.Call(3057, this));
+    public ulong BasisSize() => Rosetta.To<ulong>(Rosetta.Call(3068, this));
 
     /// <summary>
     /// THB coefficient of a basis function (for active functions; inactive entries
@@ -32700,7 +33053,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <returns>Coefficient.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid levels/indices.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a dimension mismatch.</exception>
-    public double Coefficient(int level, IEnumerable<int> index) => Rosetta.To<double>(Rosetta.Call(3058, this, level, index));
+    public double Coefficient(int level, IEnumerable<int> index) => Rosetta.To<double>(Rosetta.Call(3069, this, level, index));
 
     /// <summary>
     /// Sets the coefficient of an active function and propagates the change, with
@@ -32720,7 +33073,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="value">New coefficient.</param>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid levels/indices.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a dimension mismatch or an inactive index.</exception>
-    public void SetCoefficient(int level, IEnumerable<int> index, double value) => Rosetta.Call(3059, this, level, index, value);
+    public void SetCoefficient(int level, IEnumerable<int> index, double value) => Rosetta.Call(3070, this, level, index, value);
 
     /// <summary>
     /// Value of the truncated basis function (level, index) at <c>point</c>.
@@ -32739,7 +33092,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <returns>Truncated basis value.</returns>
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For invalid levels/indices.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a size mismatch or a point outside the domain.</exception>
-    public double TruncatedBasis(int level, IEnumerable<int> index, IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(3060, this, level, index, point));
+    public double TruncatedBasis(int level, IEnumerable<int> index, IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(3071, this, level, index, point));
 
     /// <summary>
     /// Least-squares update of the active coefficients at <c>level</c> only.
@@ -32765,7 +33118,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid level.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On empty/mismatched inputs, points outside the domain, or a level with no active functions.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitLevel(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values) => Rosetta.Call(3061, this, level, points, values);
+    public void FitLevel(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values) => Rosetta.Call(3072, this, level, points, values);
 
     /// <summary>
     /// Least-squares update of the active coefficients at <c>level</c> only.
@@ -32791,7 +33144,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid level.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On empty/mismatched inputs, points outside the domain, or a level with no active functions.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitLevel(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, SplineSolveOptions options) => Rosetta.Call(3061, this, level, points, values, options);
+    public void FitLevel(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, SplineSolveOptions options) => Rosetta.Call(3072, this, level, points, values, options);
 
     /// <summary>
     /// Penalized variant of fit_level(): adds the level's full-grid tensor difference
@@ -32814,7 +33167,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid level.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit_level() and tensor_difference_penalty().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitLevelPenalized(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas) => Rosetta.Call(3062, this, level, points, values, lambdas);
+    public void FitLevelPenalized(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas) => Rosetta.Call(3073, this, level, points, values, lambdas);
 
     /// <summary>
     /// Penalized variant of fit_level(): adds the level's full-grid tensor difference
@@ -32838,7 +33191,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid level.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit_level() and tensor_difference_penalty().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitLevelPenalized(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order) => Rosetta.Call(3062, this, level, points, values, lambdas, order);
+    public void FitLevelPenalized(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order) => Rosetta.Call(3073, this, level, points, values, lambdas, order);
 
     /// <summary>
     /// Penalized variant of fit_level(): adds the level's full-grid tensor difference
@@ -32862,7 +33215,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <exception cref="NativeException">C++ <c>std::out_of_range</c>: For an invalid level.</exception>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit_level() and tensor_difference_penalty().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitLevelPenalized(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order, SplineSolveOptions options) => Rosetta.Call(3062, this, level, points, values, lambdas, order, options);
+    public void FitLevelPenalized(int level, IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order, SplineSolveOptions options) => Rosetta.Call(3073, this, level, points, values, lambdas, order, options);
 
     /// <summary>
     /// Least-squares fit of every active coefficient on every level at once
@@ -32883,7 +33236,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="values">One value per point.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On empty/mismatched inputs or points outside the domain.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If some active function has too little data (singular).</exception>
-    public void Fit(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values) => Rosetta.Call(3063, this, points, values);
+    public void Fit(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values) => Rosetta.Call(3074, this, points, values);
 
     /// <summary>
     /// Least-squares fit of every active coefficient on every level at once
@@ -32904,7 +33257,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="options">Solver settings.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On empty/mismatched inputs or points outside the domain.</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If some active function has too little data (singular).</exception>
-    public void Fit(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, SplineSolveOptions options) => Rosetta.Call(3063, this, points, values, options);
+    public void Fit(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, SplineSolveOptions options) => Rosetta.Call(3074, this, points, values, options);
 
     /// <summary>
     /// Penalized all-level fit: adds lambda_k times the squared order-q differences
@@ -32929,7 +33282,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="lambdas">Nonnegative per-axis weights.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit() and tensor_difference_penalty().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitPenalized(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas) => Rosetta.Call(3064, this, points, values, lambdas);
+    public void FitPenalized(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas) => Rosetta.Call(3075, this, points, values, lambdas);
 
     /// <summary>
     /// Penalized all-level fit: adds lambda_k times the squared order-q differences
@@ -32955,7 +33308,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="order">Difference order (default 2).</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit() and tensor_difference_penalty().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitPenalized(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order) => Rosetta.Call(3064, this, points, values, lambdas, order);
+    public void FitPenalized(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order) => Rosetta.Call(3075, this, points, values, lambdas, order);
 
     /// <summary>
     /// Penalized all-level fit: adds lambda_k times the squared order-q differences
@@ -32981,7 +33334,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="options">Solver settings.</param>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for fit() and tensor_difference_penalty().</exception>
     /// <exception cref="NativeException">C++ <c>std::runtime_error</c>: If the normal equations are singular.</exception>
-    public void FitPenalized(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order, SplineSolveOptions options) => Rosetta.Call(3064, this, points, values, lambdas, order, options);
+    public void FitPenalized(IEnumerable<IEnumerable<double>> points, IEnumerable<double> values, IEnumerable<double> lambdas, int order, SplineSolveOptions options) => Rosetta.Call(3075, this, points, values, lambdas, order, options);
 
     /// <summary>
     /// Evaluates the hierarchical spline (finest level covering <c>point</c>).
@@ -32993,7 +33346,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="point">d coordinates inside the domain.</param>
     /// <returns>Value.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a size mismatch or a point outside the domain.</exception>
-    public double Evaluate(IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(3065, this, point));
+    public double Evaluate(IEnumerable<double> point) => Rosetta.To<double>(Rosetta.Call(3076, this, point));
 
     /// <summary>
     /// Evaluates at many points.
@@ -33009,7 +33362,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="points">Points of length d.</param>
     /// <returns>One value per point.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: As for evaluate().</exception>
-    public List<double> EvaluatePoints(IEnumerable<IEnumerable<double>> points) => Rosetta.To<List<double>>(Rosetta.Call(3066, this, points));
+    public List<double> EvaluatePoints(IEnumerable<IEnumerable<double>> points) => Rosetta.To<List<double>>(Rosetta.Call(3077, this, points));
 
     /// <summary>
     /// Evaluates on a Cartesian grid.
@@ -33025,7 +33378,7 @@ public partial class TruncatedHierarchicalBSpline : NativeObject
     /// <param name="axes">d non-empty coordinate lists.</param>
     /// <returns>Row-major values (last axis fastest).</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: On a dimension mismatch, empty axis, or outside point.</exception>
-    public List<double> EvaluateGrid(IEnumerable<IEnumerable<double>> axes) => Rosetta.To<List<double>>(Rosetta.Call(3067, this, axes));
+    public List<double> EvaluateGrid(IEnumerable<IEnumerable<double>> axes) => Rosetta.To<List<double>>(Rosetta.Call(3078, this, axes));
 }
 
 /// <summary>
@@ -33040,7 +33393,7 @@ public partial class NnTensor : NativeObject
     /// </summary>
     public NnTensor() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(NnTensor), false, 3123);
+        Rosetta.Construct(this, typeof(NnTensor), false, 3134);
     }
 
     /// <summary>
@@ -33053,7 +33406,7 @@ public partial class NnTensor : NativeObject
     /// <param name="shape"></param>
     public NnTensor(IEnumerable<double> values, IEnumerable<int> shape) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(NnTensor), false, 3123, values, shape);
+        Rosetta.Construct(this, typeof(NnTensor), false, 3134, values, shape);
     }
 
     /// <summary>
@@ -33064,7 +33417,7 @@ public partial class NnTensor : NativeObject
     /// <param name="dtype"></param>
     public NnTensor(IEnumerable<double> values, IEnumerable<int> shape, string dtype) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(NnTensor), false, 3123, values, shape, dtype);
+        Rosetta.Construct(this, typeof(NnTensor), false, 3134, values, shape, dtype);
     }
 
     /// <summary>
@@ -33074,14 +33427,14 @@ public partial class NnTensor : NativeObject
     /// <para>Uses the C++ default for <c>dtype = "float32"</c>.</para>
     /// </remarks>
     /// <param name="shape"></param>
-    public static NnTensor Zeros(IEnumerable<int> shape) => Rosetta.To<NnTensor>(Rosetta.Call(3069, shape));
+    public static NnTensor Zeros(IEnumerable<int> shape) => Rosetta.To<NnTensor>(Rosetta.Call(3080, shape));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::zeros</c>.
     /// </summary>
     /// <param name="shape"></param>
     /// <param name="dtype"></param>
-    public static NnTensor Zeros(IEnumerable<int> shape, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3069, shape, dtype));
+    public static NnTensor Zeros(IEnumerable<int> shape, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3080, shape, dtype));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::ones</c>.
@@ -33090,14 +33443,14 @@ public partial class NnTensor : NativeObject
     /// <para>Uses the C++ default for <c>dtype = "float32"</c>.</para>
     /// </remarks>
     /// <param name="shape"></param>
-    public static NnTensor Ones(IEnumerable<int> shape) => Rosetta.To<NnTensor>(Rosetta.Call(3070, shape));
+    public static NnTensor Ones(IEnumerable<int> shape) => Rosetta.To<NnTensor>(Rosetta.Call(3081, shape));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::ones</c>.
     /// </summary>
     /// <param name="shape"></param>
     /// <param name="dtype"></param>
-    public static NnTensor Ones(IEnumerable<int> shape, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3070, shape, dtype));
+    public static NnTensor Ones(IEnumerable<int> shape, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3081, shape, dtype));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::full</c>.
@@ -33107,7 +33460,7 @@ public partial class NnTensor : NativeObject
     /// </remarks>
     /// <param name="shape"></param>
     /// <param name="value"></param>
-    public static NnTensor Full(IEnumerable<int> shape, double value) => Rosetta.To<NnTensor>(Rosetta.Call(3071, shape, value));
+    public static NnTensor Full(IEnumerable<int> shape, double value) => Rosetta.To<NnTensor>(Rosetta.Call(3082, shape, value));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::full</c>.
@@ -33115,7 +33468,7 @@ public partial class NnTensor : NativeObject
     /// <param name="shape"></param>
     /// <param name="value"></param>
     /// <param name="dtype"></param>
-    public static NnTensor Full(IEnumerable<int> shape, double value, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3071, shape, value, dtype));
+    public static NnTensor Full(IEnumerable<int> shape, double value, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3082, shape, value, dtype));
 
     /// <summary>
     /// start, start + step, ... below stop.
@@ -33125,7 +33478,7 @@ public partial class NnTensor : NativeObject
     /// </remarks>
     /// <param name="start"></param>
     /// <param name="stop"></param>
-    public static NnTensor Arange(double start, double stop) => Rosetta.To<NnTensor>(Rosetta.Call(3072, start, stop));
+    public static NnTensor Arange(double start, double stop) => Rosetta.To<NnTensor>(Rosetta.Call(3083, start, stop));
 
     /// <summary>
     /// start, start + step, ... below stop.
@@ -33136,7 +33489,7 @@ public partial class NnTensor : NativeObject
     /// <param name="start"></param>
     /// <param name="stop"></param>
     /// <param name="step"></param>
-    public static NnTensor Arange(double start, double stop, double step) => Rosetta.To<NnTensor>(Rosetta.Call(3072, start, stop, step));
+    public static NnTensor Arange(double start, double stop, double step) => Rosetta.To<NnTensor>(Rosetta.Call(3083, start, stop, step));
 
     /// <summary>
     /// start, start + step, ... below stop.
@@ -33145,7 +33498,7 @@ public partial class NnTensor : NativeObject
     /// <param name="stop"></param>
     /// <param name="step"></param>
     /// <param name="dtype"></param>
-    public static NnTensor Arange(double start, double stop, double step, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3072, start, stop, step, dtype));
+    public static NnTensor Arange(double start, double stop, double step, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3083, start, stop, step, dtype));
 
     /// <summary>
     /// Seeded N(mean, std^2) and U(low, high) samples.
@@ -33155,7 +33508,7 @@ public partial class NnTensor : NativeObject
     /// </remarks>
     /// <param name="shape"></param>
     /// <param name="seed"></param>
-    public static NnTensor Randn(IEnumerable<int> shape, uint seed) => Rosetta.To<NnTensor>(Rosetta.Call(3073, shape, seed));
+    public static NnTensor Randn(IEnumerable<int> shape, uint seed) => Rosetta.To<NnTensor>(Rosetta.Call(3084, shape, seed));
 
     /// <summary>
     /// Seeded N(mean, std^2) and U(low, high) samples.
@@ -33166,7 +33519,7 @@ public partial class NnTensor : NativeObject
     /// <param name="shape"></param>
     /// <param name="seed"></param>
     /// <param name="mean"></param>
-    public static NnTensor Randn(IEnumerable<int> shape, uint seed, double mean) => Rosetta.To<NnTensor>(Rosetta.Call(3073, shape, seed, mean));
+    public static NnTensor Randn(IEnumerable<int> shape, uint seed, double mean) => Rosetta.To<NnTensor>(Rosetta.Call(3084, shape, seed, mean));
 
     /// <summary>
     /// Seeded N(mean, std^2) and U(low, high) samples.
@@ -33178,7 +33531,7 @@ public partial class NnTensor : NativeObject
     /// <param name="seed"></param>
     /// <param name="mean"></param>
     /// <param name="std"></param>
-    public static NnTensor Randn(IEnumerable<int> shape, uint seed, double mean, double std) => Rosetta.To<NnTensor>(Rosetta.Call(3073, shape, seed, mean, std));
+    public static NnTensor Randn(IEnumerable<int> shape, uint seed, double mean, double std) => Rosetta.To<NnTensor>(Rosetta.Call(3084, shape, seed, mean, std));
 
     /// <summary>
     /// Seeded N(mean, std^2) and U(low, high) samples.
@@ -33188,7 +33541,7 @@ public partial class NnTensor : NativeObject
     /// <param name="mean"></param>
     /// <param name="std"></param>
     /// <param name="dtype"></param>
-    public static NnTensor Randn(IEnumerable<int> shape, uint seed, double mean, double std, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3073, shape, seed, mean, std, dtype));
+    public static NnTensor Randn(IEnumerable<int> shape, uint seed, double mean, double std, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3084, shape, seed, mean, std, dtype));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::uniform</c>.
@@ -33198,7 +33551,7 @@ public partial class NnTensor : NativeObject
     /// </remarks>
     /// <param name="shape"></param>
     /// <param name="seed"></param>
-    public static NnTensor Uniform(IEnumerable<int> shape, uint seed) => Rosetta.To<NnTensor>(Rosetta.Call(3074, shape, seed));
+    public static NnTensor Uniform(IEnumerable<int> shape, uint seed) => Rosetta.To<NnTensor>(Rosetta.Call(3085, shape, seed));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::uniform</c>.
@@ -33209,7 +33562,7 @@ public partial class NnTensor : NativeObject
     /// <param name="shape"></param>
     /// <param name="seed"></param>
     /// <param name="low"></param>
-    public static NnTensor Uniform(IEnumerable<int> shape, uint seed, double low) => Rosetta.To<NnTensor>(Rosetta.Call(3074, shape, seed, low));
+    public static NnTensor Uniform(IEnumerable<int> shape, uint seed, double low) => Rosetta.To<NnTensor>(Rosetta.Call(3085, shape, seed, low));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::uniform</c>.
@@ -33221,7 +33574,7 @@ public partial class NnTensor : NativeObject
     /// <param name="seed"></param>
     /// <param name="low"></param>
     /// <param name="high"></param>
-    public static NnTensor Uniform(IEnumerable<int> shape, uint seed, double low, double high) => Rosetta.To<NnTensor>(Rosetta.Call(3074, shape, seed, low, high));
+    public static NnTensor Uniform(IEnumerable<int> shape, uint seed, double low, double high) => Rosetta.To<NnTensor>(Rosetta.Call(3085, shape, seed, low, high));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::uniform</c>.
@@ -33231,77 +33584,77 @@ public partial class NnTensor : NativeObject
     /// <param name="low"></param>
     /// <param name="high"></param>
     /// <param name="dtype"></param>
-    public static NnTensor Uniform(IEnumerable<int> shape, uint seed, double low, double high, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3074, shape, seed, low, high, dtype));
+    public static NnTensor Uniform(IEnumerable<int> shape, uint seed, double low, double high, string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3085, shape, seed, low, high, dtype));
 
     /// <summary>
     /// NumPy .npy files.
     /// </summary>
     /// <param name="path"></param>
-    public static NnTensor LoadNpy(string path) => Rosetta.To<NnTensor>(Rosetta.Call(3075, path));
+    public static NnTensor LoadNpy(string path) => Rosetta.To<NnTensor>(Rosetta.Call(3086, path));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::save_npy</c>.
     /// </summary>
     /// <param name="path"></param>
-    public void SaveNpy(string path) => Rosetta.Call(3076, this, path);
+    public void SaveNpy(string path) => Rosetta.Call(3087, this, path);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::defined</c>.
     /// </summary>
-    public bool Defined() => Rosetta.To<bool>(Rosetta.Call(3077, this));
+    public bool Defined() => Rosetta.To<bool>(Rosetta.Call(3088, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::values</c>.
     /// </summary>
-    public List<double> Values() => Rosetta.To<List<double>>(Rosetta.Call(3078, this));
+    public List<double> Values() => Rosetta.To<List<double>>(Rosetta.Call(3089, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::shape</c>.
     /// </summary>
-    public List<int> Shape() => Rosetta.To<List<int>>(Rosetta.Call(3079, this));
+    public List<int> Shape() => Rosetta.To<List<int>>(Rosetta.Call(3090, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::dtype</c>.
     /// </summary>
-    public string Dtype() => Rosetta.To<string>(Rosetta.Call(3080, this));
+    public string Dtype() => Rosetta.To<string>(Rosetta.Call(3091, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::ndim</c>.
     /// </summary>
-    public int Ndim() => Rosetta.To<int>(Rosetta.Call(3081, this));
+    public int Ndim() => Rosetta.To<int>(Rosetta.Call(3092, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::numel</c>.
     /// </summary>
-    public int Numel() => Rosetta.To<int>(Rosetta.Call(3082, this));
+    public int Numel() => Rosetta.To<int>(Rosetta.Call(3093, this));
 
     /// <summary>
     /// The value of a one-element tensor.
     /// </summary>
-    public double Item() => Rosetta.To<double>(Rosetta.Call(3083, this));
+    public double Item() => Rosetta.To<double>(Rosetta.Call(3094, this));
 
     /// <summary>
     /// The element at a full index.
     /// </summary>
     /// <param name="index"></param>
-    public double At(IEnumerable<int> index) => Rosetta.To<double>(Rosetta.Call(3084, this, index));
+    public double At(IEnumerable<int> index) => Rosetta.To<double>(Rosetta.Call(3095, this, index));
 
     /// <summary>
     /// A short printable description with the values.
     /// </summary>
-    public string Str() => Rosetta.To<string>(Rosetta.Call(3085, this));
+    public string Str() => Rosetta.To<string>(Rosetta.Call(3096, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::astype</c>.
     /// </summary>
     /// <param name="dtype"></param>
-    public NnTensor Astype(string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3086, this, dtype));
+    public NnTensor Astype(string dtype) => Rosetta.To<NnTensor>(Rosetta.Call(3097, this, dtype));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::reshape</c>.
     /// </summary>
     /// <param name="shape"></param>
-    public NnTensor Reshape(IEnumerable<int> shape) => Rosetta.To<NnTensor>(Rosetta.Call(3087, this, shape));
+    public NnTensor Reshape(IEnumerable<int> shape) => Rosetta.To<NnTensor>(Rosetta.Call(3098, this, shape));
 
     /// <summary>
     /// Permutes axes; an empty <c>perm</c> reverses them.
@@ -33309,13 +33662,13 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>perm = default</c>.</para>
     /// </remarks>
-    public NnTensor Transpose() => Rosetta.To<NnTensor>(Rosetta.Call(3088, this));
+    public NnTensor Transpose() => Rosetta.To<NnTensor>(Rosetta.Call(3099, this));
 
     /// <summary>
     /// Permutes axes; an empty <c>perm</c> reverses them.
     /// </summary>
     /// <param name="perm"></param>
-    public NnTensor Transpose(IEnumerable<int> perm) => Rosetta.To<NnTensor>(Rosetta.Call(3088, this, perm));
+    public NnTensor Transpose(IEnumerable<int> perm) => Rosetta.To<NnTensor>(Rosetta.Call(3099, this, perm));
 
     /// <summary>
     /// x[start:stop] along <c>axis</c>.
@@ -33323,61 +33676,61 @@ public partial class NnTensor : NativeObject
     /// <param name="axis"></param>
     /// <param name="start"></param>
     /// <param name="stop"></param>
-    public NnTensor Slice(int axis, int start, int stop) => Rosetta.To<NnTensor>(Rosetta.Call(3089, this, axis, start, stop));
+    public NnTensor Slice(int axis, int start, int stop) => Rosetta.To<NnTensor>(Rosetta.Call(3100, this, axis, start, stop));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::concat</c>.
     /// </summary>
     /// <param name="other"></param>
     /// <param name="axis"></param>
-    public NnTensor Concat(NnTensor other, int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3090, this, other, axis));
+    public NnTensor Concat(NnTensor other, int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3101, this, other, axis));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::add</c>.
     /// </summary>
     /// <param name="other"></param>
-    public NnTensor Add(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3091, this, other));
+    public NnTensor Add(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3102, this, other));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::sub</c>.
     /// </summary>
     /// <param name="other"></param>
-    public NnTensor Sub(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3092, this, other));
+    public NnTensor Sub(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3103, this, other));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::mul</c>.
     /// </summary>
     /// <param name="other"></param>
-    public NnTensor Mul(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3093, this, other));
+    public NnTensor Mul(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3104, this, other));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::div</c>.
     /// </summary>
     /// <param name="other"></param>
-    public NnTensor Div(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3094, this, other));
+    public NnTensor Div(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3105, this, other));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::add_scalar</c>.
     /// </summary>
     /// <param name="value"></param>
-    public NnTensor AddScalar(double value) => Rosetta.To<NnTensor>(Rosetta.Call(3095, this, value));
+    public NnTensor AddScalar(double value) => Rosetta.To<NnTensor>(Rosetta.Call(3106, this, value));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::mul_scalar</c>.
     /// </summary>
     /// <param name="value"></param>
-    public NnTensor MulScalar(double value) => Rosetta.To<NnTensor>(Rosetta.Call(3096, this, value));
+    public NnTensor MulScalar(double value) => Rosetta.To<NnTensor>(Rosetta.Call(3107, this, value));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::pow</c>.
     /// </summary>
     /// <param name="exponent"></param>
-    public NnTensor Pow(double exponent) => Rosetta.To<NnTensor>(Rosetta.Call(3097, this, exponent));
+    public NnTensor Pow(double exponent) => Rosetta.To<NnTensor>(Rosetta.Call(3108, this, exponent));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::neg</c>.
     /// </summary>
-    public NnTensor Neg() => Rosetta.To<NnTensor>(Rosetta.Call(3098, this));
+    public NnTensor Neg() => Rosetta.To<NnTensor>(Rosetta.Call(3109, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::matmul</c>.
@@ -33386,7 +33739,7 @@ public partial class NnTensor : NativeObject
     /// <para>Uses the C++ default for <c>transposeA = false</c>, <c>transposeB = false</c>.</para>
     /// </remarks>
     /// <param name="other"></param>
-    public NnTensor Matmul(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3099, this, other));
+    public NnTensor Matmul(NnTensor other) => Rosetta.To<NnTensor>(Rosetta.Call(3110, this, other));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::matmul</c>.
@@ -33396,7 +33749,7 @@ public partial class NnTensor : NativeObject
     /// </remarks>
     /// <param name="other"></param>
     /// <param name="transposeA"></param>
-    public NnTensor Matmul(NnTensor other, bool transposeA) => Rosetta.To<NnTensor>(Rosetta.Call(3099, this, other, transposeA));
+    public NnTensor Matmul(NnTensor other, bool transposeA) => Rosetta.To<NnTensor>(Rosetta.Call(3110, this, other, transposeA));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::matmul</c>.
@@ -33404,53 +33757,53 @@ public partial class NnTensor : NativeObject
     /// <param name="other"></param>
     /// <param name="transposeA"></param>
     /// <param name="transposeB"></param>
-    public NnTensor Matmul(NnTensor other, bool transposeA, bool transposeB) => Rosetta.To<NnTensor>(Rosetta.Call(3099, this, other, transposeA, transposeB));
+    public NnTensor Matmul(NnTensor other, bool transposeA, bool transposeB) => Rosetta.To<NnTensor>(Rosetta.Call(3110, this, other, transposeA, transposeB));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::exp</c>.
     /// </summary>
-    public NnTensor Exp() => Rosetta.To<NnTensor>(Rosetta.Call(3100, this));
+    public NnTensor Exp() => Rosetta.To<NnTensor>(Rosetta.Call(3111, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::log</c>.
     /// </summary>
-    public NnTensor Log() => Rosetta.To<NnTensor>(Rosetta.Call(3101, this));
+    public NnTensor Log() => Rosetta.To<NnTensor>(Rosetta.Call(3112, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::sqrt</c>.
     /// </summary>
-    public NnTensor Sqrt() => Rosetta.To<NnTensor>(Rosetta.Call(3102, this));
+    public NnTensor Sqrt() => Rosetta.To<NnTensor>(Rosetta.Call(3113, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::abs</c>.
     /// </summary>
-    public NnTensor Abs() => Rosetta.To<NnTensor>(Rosetta.Call(3103, this));
+    public NnTensor Abs() => Rosetta.To<NnTensor>(Rosetta.Call(3114, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::square</c>.
     /// </summary>
-    public NnTensor Square() => Rosetta.To<NnTensor>(Rosetta.Call(3104, this));
+    public NnTensor Square() => Rosetta.To<NnTensor>(Rosetta.Call(3115, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::tanh</c>.
     /// </summary>
-    public NnTensor Tanh() => Rosetta.To<NnTensor>(Rosetta.Call(3105, this));
+    public NnTensor Tanh() => Rosetta.To<NnTensor>(Rosetta.Call(3116, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::sigmoid</c>.
     /// </summary>
-    public NnTensor Sigmoid() => Rosetta.To<NnTensor>(Rosetta.Call(3106, this));
+    public NnTensor Sigmoid() => Rosetta.To<NnTensor>(Rosetta.Call(3117, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::relu</c>.
     /// </summary>
-    public NnTensor Relu() => Rosetta.To<NnTensor>(Rosetta.Call(3107, this));
+    public NnTensor Relu() => Rosetta.To<NnTensor>(Rosetta.Call(3118, this));
 
     /// <summary>
     /// Any activation by name: "relu", "gelu", "silu", "softplus", "elu", "leaky_relu", ...
     /// </summary>
     /// <param name="activation"></param>
-    public NnTensor Activate(string activation) => Rosetta.To<NnTensor>(Rosetta.Call(3108, this, activation));
+    public NnTensor Activate(string activation) => Rosetta.To<NnTensor>(Rosetta.Call(3119, this, activation));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::softmax</c>.
@@ -33458,13 +33811,13 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>axis = -1</c>.</para>
     /// </remarks>
-    public NnTensor Softmax() => Rosetta.To<NnTensor>(Rosetta.Call(3109, this));
+    public NnTensor Softmax() => Rosetta.To<NnTensor>(Rosetta.Call(3120, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::softmax</c>.
     /// </summary>
     /// <param name="axis"></param>
-    public NnTensor Softmax(int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3109, this, axis));
+    public NnTensor Softmax(int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3120, this, axis));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::log_softmax</c>.
@@ -33472,13 +33825,13 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>axis = -1</c>.</para>
     /// </remarks>
-    public NnTensor LogSoftmax() => Rosetta.To<NnTensor>(Rosetta.Call(3110, this));
+    public NnTensor LogSoftmax() => Rosetta.To<NnTensor>(Rosetta.Call(3121, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::log_softmax</c>.
     /// </summary>
     /// <param name="axis"></param>
-    public NnTensor LogSoftmax(int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3110, this, axis));
+    public NnTensor LogSoftmax(int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3121, this, axis));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::sum</c>.
@@ -33486,7 +33839,7 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>axes = default</c>, <c>keepdims = false</c>.</para>
     /// </remarks>
-    public NnTensor Sum() => Rosetta.To<NnTensor>(Rosetta.Call(3111, this));
+    public NnTensor Sum() => Rosetta.To<NnTensor>(Rosetta.Call(3122, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::sum</c>.
@@ -33495,14 +33848,14 @@ public partial class NnTensor : NativeObject
     /// <para>Uses the C++ default for <c>keepdims = false</c>.</para>
     /// </remarks>
     /// <param name="axes"></param>
-    public NnTensor Sum(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3111, this, axes));
+    public NnTensor Sum(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3122, this, axes));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::sum</c>.
     /// </summary>
     /// <param name="axes"></param>
     /// <param name="keepdims"></param>
-    public NnTensor Sum(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3111, this, axes, keepdims));
+    public NnTensor Sum(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3122, this, axes, keepdims));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::mean</c>.
@@ -33510,7 +33863,7 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>axes = default</c>, <c>keepdims = false</c>.</para>
     /// </remarks>
-    public NnTensor Mean() => Rosetta.To<NnTensor>(Rosetta.Call(3112, this));
+    public NnTensor Mean() => Rosetta.To<NnTensor>(Rosetta.Call(3123, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::mean</c>.
@@ -33519,14 +33872,14 @@ public partial class NnTensor : NativeObject
     /// <para>Uses the C++ default for <c>keepdims = false</c>.</para>
     /// </remarks>
     /// <param name="axes"></param>
-    public NnTensor Mean(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3112, this, axes));
+    public NnTensor Mean(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3123, this, axes));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::mean</c>.
     /// </summary>
     /// <param name="axes"></param>
     /// <param name="keepdims"></param>
-    public NnTensor Mean(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3112, this, axes, keepdims));
+    public NnTensor Mean(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3123, this, axes, keepdims));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::max</c>.
@@ -33534,7 +33887,7 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>axes = default</c>, <c>keepdims = false</c>.</para>
     /// </remarks>
-    public NnTensor Max() => Rosetta.To<NnTensor>(Rosetta.Call(3113, this));
+    public NnTensor Max() => Rosetta.To<NnTensor>(Rosetta.Call(3124, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::max</c>.
@@ -33543,14 +33896,14 @@ public partial class NnTensor : NativeObject
     /// <para>Uses the C++ default for <c>keepdims = false</c>.</para>
     /// </remarks>
     /// <param name="axes"></param>
-    public NnTensor Max(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3113, this, axes));
+    public NnTensor Max(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3124, this, axes));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::max</c>.
     /// </summary>
     /// <param name="axes"></param>
     /// <param name="keepdims"></param>
-    public NnTensor Max(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3113, this, axes, keepdims));
+    public NnTensor Max(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3124, this, axes, keepdims));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::min</c>.
@@ -33558,7 +33911,7 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>axes = default</c>, <c>keepdims = false</c>.</para>
     /// </remarks>
-    public NnTensor Min() => Rosetta.To<NnTensor>(Rosetta.Call(3114, this));
+    public NnTensor Min() => Rosetta.To<NnTensor>(Rosetta.Call(3125, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::min</c>.
@@ -33567,14 +33920,14 @@ public partial class NnTensor : NativeObject
     /// <para>Uses the C++ default for <c>keepdims = false</c>.</para>
     /// </remarks>
     /// <param name="axes"></param>
-    public NnTensor Min(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3114, this, axes));
+    public NnTensor Min(IEnumerable<int> axes) => Rosetta.To<NnTensor>(Rosetta.Call(3125, this, axes));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::min</c>.
     /// </summary>
     /// <param name="axes"></param>
     /// <param name="keepdims"></param>
-    public NnTensor Min(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3114, this, axes, keepdims));
+    public NnTensor Min(IEnumerable<int> axes, bool keepdims) => Rosetta.To<NnTensor>(Rosetta.Call(3125, this, axes, keepdims));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::argmax</c>.
@@ -33582,13 +33935,13 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>axis = -1</c>.</para>
     /// </remarks>
-    public NnTensor Argmax() => Rosetta.To<NnTensor>(Rosetta.Call(3115, this));
+    public NnTensor Argmax() => Rosetta.To<NnTensor>(Rosetta.Call(3126, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::argmax</c>.
     /// </summary>
     /// <param name="axis"></param>
-    public NnTensor Argmax(int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3115, this, axis));
+    public NnTensor Argmax(int axis) => Rosetta.To<NnTensor>(Rosetta.Call(3126, this, axis));
 
     /// <summary>
     /// Marks a float tensor as a leaf whose gradient <c>backward</c> accumulates.
@@ -33596,43 +33949,43 @@ public partial class NnTensor : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>requiresGrad = true</c>.</para>
     /// </remarks>
-    public void SetRequiresGrad() => Rosetta.Call(3116, this);
+    public void SetRequiresGrad() => Rosetta.Call(3127, this);
 
     /// <summary>
     /// Marks a float tensor as a leaf whose gradient <c>backward</c> accumulates.
     /// </summary>
     /// <param name="requiresGrad"></param>
-    public void SetRequiresGrad(bool requiresGrad) => Rosetta.Call(3116, this, requiresGrad);
+    public void SetRequiresGrad(bool requiresGrad) => Rosetta.Call(3127, this, requiresGrad);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::requires_grad</c>.
     /// </summary>
-    public bool RequiresGrad() => Rosetta.To<bool>(Rosetta.Call(3117, this));
+    public bool RequiresGrad() => Rosetta.To<bool>(Rosetta.Call(3128, this));
 
     /// <summary>
     /// Back-propagates from this one-element tensor into every leaf's grad().
     /// </summary>
-    public void Backward() => Rosetta.Call(3118, this);
+    public void Backward() => Rosetta.Call(3129, this);
 
     /// <summary>
     /// The accumulated gradient (undefined if none).
     /// </summary>
-    public NnTensor Grad() => Rosetta.To<NnTensor>(Rosetta.Call(3119, this));
+    public NnTensor Grad() => Rosetta.To<NnTensor>(Rosetta.Call(3130, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnTensor::zero_grad</c>.
     /// </summary>
-    public void ZeroGrad() => Rosetta.Call(3120, this);
+    public void ZeroGrad() => Rosetta.Call(3131, this);
 
     /// <summary>
     /// The same values without gradient history.
     /// </summary>
-    public NnTensor Detach() => Rosetta.To<NnTensor>(Rosetta.Call(3121, this));
+    public NnTensor Detach() => Rosetta.To<NnTensor>(Rosetta.Call(3132, this));
 
     /// <summary>
     /// C++ <c>datamunge::csharp_bindings::nn_tensor_repr</c>.
     /// </summary>
-    public override string ToString() => Rosetta.To<string>(Rosetta.Call(3122, this));
+    public override string ToString() => Rosetta.To<string>(Rosetta.Call(3133, this));
 }
 
 /// <summary>
@@ -33653,7 +34006,7 @@ public partial class NnModel : NativeObject
     /// </remarks>
     public NnModel() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(NnModel), false, 3150);
+        Rosetta.Construct(this, typeof(NnModel), false, 3161);
     }
 
     /// <summary>
@@ -33662,7 +34015,7 @@ public partial class NnModel : NativeObject
     /// <param name="seed"></param>
     public NnModel(uint seed) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(NnModel), false, 3150, seed);
+        Rosetta.Construct(this, typeof(NnModel), false, 3161, seed);
     }
 
     /// <summary>
@@ -33672,14 +34025,14 @@ public partial class NnModel : NativeObject
     /// <para>Uses the C++ default for <c>activation = "none"</c>.</para>
     /// </remarks>
     /// <param name="units"></param>
-    public void AddDense(int units) => Rosetta.Call(3124, this, units);
+    public void AddDense(int units) => Rosetta.Call(3135, this, units);
 
     /// <summary>
     /// Fully connected layer; activation "none", "relu", "tanh", "sigmoid", "gelu", ...
     /// </summary>
     /// <param name="units"></param>
     /// <param name="activation"></param>
-    public void AddDense(int units, string activation) => Rosetta.Call(3124, this, units, activation);
+    public void AddDense(int units, string activation) => Rosetta.Call(3135, this, units, activation);
 
     /// <summary>
     /// 2-D convolution on NHWC input; padding "same" or "valid".
@@ -33689,7 +34042,7 @@ public partial class NnModel : NativeObject
     /// </remarks>
     /// <param name="filters"></param>
     /// <param name="kernel"></param>
-    public void AddConv2d(int filters, int kernel) => Rosetta.Call(3125, this, filters, kernel);
+    public void AddConv2d(int filters, int kernel) => Rosetta.Call(3136, this, filters, kernel);
 
     /// <summary>
     /// 2-D convolution on NHWC input; padding "same" or "valid".
@@ -33700,7 +34053,7 @@ public partial class NnModel : NativeObject
     /// <param name="filters"></param>
     /// <param name="kernel"></param>
     /// <param name="stride"></param>
-    public void AddConv2d(int filters, int kernel, int stride) => Rosetta.Call(3125, this, filters, kernel, stride);
+    public void AddConv2d(int filters, int kernel, int stride) => Rosetta.Call(3136, this, filters, kernel, stride);
 
     /// <summary>
     /// 2-D convolution on NHWC input; padding "same" or "valid".
@@ -33712,7 +34065,7 @@ public partial class NnModel : NativeObject
     /// <param name="kernel"></param>
     /// <param name="stride"></param>
     /// <param name="padding"></param>
-    public void AddConv2d(int filters, int kernel, int stride, string padding) => Rosetta.Call(3125, this, filters, kernel, stride, padding);
+    public void AddConv2d(int filters, int kernel, int stride, string padding) => Rosetta.Call(3136, this, filters, kernel, stride, padding);
 
     /// <summary>
     /// 2-D convolution on NHWC input; padding "same" or "valid".
@@ -33722,7 +34075,7 @@ public partial class NnModel : NativeObject
     /// <param name="stride"></param>
     /// <param name="padding"></param>
     /// <param name="activation"></param>
-    public void AddConv2d(int filters, int kernel, int stride, string padding, string activation) => Rosetta.Call(3125, this, filters, kernel, stride, padding, activation);
+    public void AddConv2d(int filters, int kernel, int stride, string padding, string activation) => Rosetta.Call(3136, this, filters, kernel, stride, padding, activation);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_max_pool2d</c>.
@@ -33732,7 +34085,7 @@ public partial class NnModel : NativeObject
     /// </remarks>
     /// <param name="window"></param>
     /// <param name="stride"></param>
-    public void AddMaxPool2d(int window, int stride) => Rosetta.Call(3126, this, window, stride);
+    public void AddMaxPool2d(int window, int stride) => Rosetta.Call(3137, this, window, stride);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_max_pool2d</c>.
@@ -33740,7 +34093,7 @@ public partial class NnModel : NativeObject
     /// <param name="window"></param>
     /// <param name="stride"></param>
     /// <param name="padding"></param>
-    public void AddMaxPool2d(int window, int stride, string padding) => Rosetta.Call(3126, this, window, stride, padding);
+    public void AddMaxPool2d(int window, int stride, string padding) => Rosetta.Call(3137, this, window, stride, padding);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_avg_pool2d</c>.
@@ -33750,7 +34103,7 @@ public partial class NnModel : NativeObject
     /// </remarks>
     /// <param name="window"></param>
     /// <param name="stride"></param>
-    public void AddAvgPool2d(int window, int stride) => Rosetta.Call(3127, this, window, stride);
+    public void AddAvgPool2d(int window, int stride) => Rosetta.Call(3138, this, window, stride);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_avg_pool2d</c>.
@@ -33758,12 +34111,12 @@ public partial class NnModel : NativeObject
     /// <param name="window"></param>
     /// <param name="stride"></param>
     /// <param name="padding"></param>
-    public void AddAvgPool2d(int window, int stride, string padding) => Rosetta.Call(3127, this, window, stride, padding);
+    public void AddAvgPool2d(int window, int stride, string padding) => Rosetta.Call(3138, this, window, stride, padding);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_global_avg_pool2d</c>.
     /// </summary>
-    public void AddGlobalAvgPool2d() => Rosetta.Call(3128, this);
+    public void AddGlobalAvgPool2d() => Rosetta.Call(3139, this);
 
     /// <summary>
     /// Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults).
@@ -33771,7 +34124,7 @@ public partial class NnModel : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>momentum = 0.99</c>, <c>eps = 0.001</c>.</para>
     /// </remarks>
-    public void AddBatchNorm() => Rosetta.Call(3129, this);
+    public void AddBatchNorm() => Rosetta.Call(3140, this);
 
     /// <summary>
     /// Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults).
@@ -33780,14 +34133,14 @@ public partial class NnModel : NativeObject
     /// <para>Uses the C++ default for <c>eps = 0.001</c>.</para>
     /// </remarks>
     /// <param name="momentum"></param>
-    public void AddBatchNorm(double momentum) => Rosetta.Call(3129, this, momentum);
+    public void AddBatchNorm(double momentum) => Rosetta.Call(3140, this, momentum);
 
     /// <summary>
     /// Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults).
     /// </summary>
     /// <param name="momentum"></param>
     /// <param name="eps"></param>
-    public void AddBatchNorm(double momentum, double eps) => Rosetta.Call(3129, this, momentum, eps);
+    public void AddBatchNorm(double momentum, double eps) => Rosetta.Call(3140, this, momentum, eps);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_layer_norm</c>.
@@ -33795,46 +34148,46 @@ public partial class NnModel : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>eps = 1e-05</c>.</para>
     /// </remarks>
-    public void AddLayerNorm() => Rosetta.Call(3130, this);
+    public void AddLayerNorm() => Rosetta.Call(3141, this);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_layer_norm</c>.
     /// </summary>
     /// <param name="eps"></param>
-    public void AddLayerNorm(double eps) => Rosetta.Call(3130, this, eps);
+    public void AddLayerNorm(double eps) => Rosetta.Call(3141, this, eps);
 
     /// <summary>
     /// Inverted dropout, active only when training.
     /// </summary>
     /// <param name="rate"></param>
-    public void AddDropout(double rate) => Rosetta.Call(3131, this, rate);
+    public void AddDropout(double rate) => Rosetta.Call(3142, this, rate);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::add_activation</c>.
     /// </summary>
     /// <param name="activation"></param>
-    public void AddActivation(string activation) => Rosetta.Call(3132, this, activation);
+    public void AddActivation(string activation) => Rosetta.Call(3143, this, activation);
 
     /// <summary>
     /// Collapses every axis but the first.
     /// </summary>
-    public void AddFlatten() => Rosetta.Call(3133, this);
+    public void AddFlatten() => Rosetta.Call(3144, this);
 
     /// <summary>
     /// Reshapes each example (the batch axis is kept): e.g. {28, 28, 1}.
     /// </summary>
     /// <param name="shape"></param>
-    public void AddReshape(IEnumerable<int> shape) => Rosetta.Call(3134, this, shape);
+    public void AddReshape(IEnumerable<int> shape) => Rosetta.Call(3145, this, shape);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::num_layers</c>.
     /// </summary>
-    public int NumLayers() => Rosetta.To<int>(Rosetta.Call(3135, this));
+    public int NumLayers() => Rosetta.To<int>(Rosetta.Call(3146, this));
 
     /// <summary>
     /// One line per layer with its parameter shapes (after the first forward pass).
     /// </summary>
-    public string Summary() => Rosetta.To<string>(Rosetta.Call(3136, this));
+    public string Summary() => Rosetta.To<string>(Rosetta.Call(3147, this));
 
     /// <summary>
     /// Runs the network. <c>training</c> enables dropout and batch statistics (and
@@ -33844,7 +34197,7 @@ public partial class NnModel : NativeObject
     /// <para>Uses the C++ default for <c>training = false</c>.</para>
     /// </remarks>
     /// <param name="x"></param>
-    public NnTensor Forward(NnTensor x) => Rosetta.To<NnTensor>(Rosetta.Call(3137, this, x));
+    public NnTensor Forward(NnTensor x) => Rosetta.To<NnTensor>(Rosetta.Call(3148, this, x));
 
     /// <summary>
     /// Runs the network. <c>training</c> enables dropout and batch statistics (and
@@ -33852,13 +34205,13 @@ public partial class NnModel : NativeObject
     /// </summary>
     /// <param name="x"></param>
     /// <param name="training"></param>
-    public NnTensor Forward(NnTensor x, bool training) => Rosetta.To<NnTensor>(Rosetta.Call(3137, this, x, training));
+    public NnTensor Forward(NnTensor x, bool training) => Rosetta.To<NnTensor>(Rosetta.Call(3148, this, x, training));
 
     /// <summary>
     /// forward(x, false) without recording gradients.
     /// </summary>
     /// <param name="x"></param>
-    public NnTensor Predict(NnTensor x) => Rosetta.To<NnTensor>(Rosetta.Call(3138, this, x));
+    public NnTensor Predict(NnTensor x) => Rosetta.To<NnTensor>(Rosetta.Call(3149, this, x));
 
     /// <summary>
     /// Loss of the network on (x, y): "mse", "softmax_cross_entropy" (y holds
@@ -33869,7 +34222,7 @@ public partial class NnModel : NativeObject
     /// </remarks>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public double Loss(NnTensor x, NnTensor y) => Rosetta.To<double>(Rosetta.Call(3139, this, x, y));
+    public double Loss(NnTensor x, NnTensor y) => Rosetta.To<double>(Rosetta.Call(3150, this, x, y));
 
     /// <summary>
     /// Loss of the network on (x, y): "mse", "softmax_cross_entropy" (y holds
@@ -33881,7 +34234,7 @@ public partial class NnModel : NativeObject
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="loss"></param>
-    public double Loss(NnTensor x, NnTensor y, string loss) => Rosetta.To<double>(Rosetta.Call(3139, this, x, y, loss));
+    public double Loss(NnTensor x, NnTensor y, string loss) => Rosetta.To<double>(Rosetta.Call(3150, this, x, y, loss));
 
     /// <summary>
     /// Loss of the network on (x, y): "mse", "softmax_cross_entropy" (y holds
@@ -33891,7 +34244,7 @@ public partial class NnModel : NativeObject
     /// <param name="y"></param>
     /// <param name="loss"></param>
     /// <param name="training"></param>
-    public double Loss(NnTensor x, NnTensor y, string loss, bool training) => Rosetta.To<double>(Rosetta.Call(3139, this, x, y, loss, training));
+    public double Loss(NnTensor x, NnTensor y, string loss, bool training) => Rosetta.To<double>(Rosetta.Call(3150, this, x, y, loss, training));
 
     /// <summary>
     /// Computes the loss in training mode and stores the gradient of every
@@ -33902,7 +34255,7 @@ public partial class NnModel : NativeObject
     /// </remarks>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public double ComputeGradients(NnTensor x, NnTensor y) => Rosetta.To<double>(Rosetta.Call(3140, this, x, y));
+    public double ComputeGradients(NnTensor x, NnTensor y) => Rosetta.To<double>(Rosetta.Call(3151, this, x, y));
 
     /// <summary>
     /// Computes the loss in training mode and stores the gradient of every
@@ -33911,13 +34264,13 @@ public partial class NnModel : NativeObject
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="loss"></param>
-    public double ComputeGradients(NnTensor x, NnTensor y, string loss) => Rosetta.To<double>(Rosetta.Call(3140, this, x, y, loss));
+    public double ComputeGradients(NnTensor x, NnTensor y, string loss) => Rosetta.To<double>(Rosetta.Call(3151, this, x, y, loss));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::gradient</c>.
     /// </summary>
     /// <param name="name"></param>
-    public NnTensor Gradient(string name) => Rosetta.To<NnTensor>(Rosetta.Call(3141, this, name));
+    public NnTensor Gradient(string name) => Rosetta.To<NnTensor>(Rosetta.Call(3152, this, name));
 
     /// <summary>
     /// Optimizer for <c>train_step</c>: "sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad", ...
@@ -33925,7 +34278,7 @@ public partial class NnModel : NativeObject
     /// <remarks>
     /// <para>Uses the C++ default for <c>kind = "adam"</c>, <c>learningRate = 0.001</c>.</para>
     /// </remarks>
-    public void SetOptimizer() => Rosetta.Call(3142, this);
+    public void SetOptimizer() => Rosetta.Call(3153, this);
 
     /// <summary>
     /// Optimizer for <c>train_step</c>: "sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad", ...
@@ -33934,14 +34287,14 @@ public partial class NnModel : NativeObject
     /// <para>Uses the C++ default for <c>learningRate = 0.001</c>.</para>
     /// </remarks>
     /// <param name="kind"></param>
-    public void SetOptimizer(string kind) => Rosetta.Call(3142, this, kind);
+    public void SetOptimizer(string kind) => Rosetta.Call(3153, this, kind);
 
     /// <summary>
     /// Optimizer for <c>train_step</c>: "sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad", ...
     /// </summary>
     /// <param name="kind"></param>
     /// <param name="learningRate"></param>
-    public void SetOptimizer(string kind, double learningRate) => Rosetta.Call(3142, this, kind, learningRate);
+    public void SetOptimizer(string kind, double learningRate) => Rosetta.Call(3153, this, kind, learningRate);
 
     /// <summary>
     /// compute_gradients followed by one optimizer update. Returns the loss.
@@ -33951,7 +34304,7 @@ public partial class NnModel : NativeObject
     /// </remarks>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public double TrainStep(NnTensor x, NnTensor y) => Rosetta.To<double>(Rosetta.Call(3143, this, x, y));
+    public double TrainStep(NnTensor x, NnTensor y) => Rosetta.To<double>(Rosetta.Call(3154, this, x, y));
 
     /// <summary>
     /// compute_gradients followed by one optimizer update. Returns the loss.
@@ -33959,42 +34312,42 @@ public partial class NnModel : NativeObject
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="loss"></param>
-    public double TrainStep(NnTensor x, NnTensor y, string loss) => Rosetta.To<double>(Rosetta.Call(3143, this, x, y, loss));
+    public double TrainStep(NnTensor x, NnTensor y, string loss) => Rosetta.To<double>(Rosetta.Call(3154, this, x, y, loss));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::parameter_names</c>.
     /// </summary>
-    public List<string> ParameterNames() => Rosetta.To<List<string>>(Rosetta.Call(3144, this));
+    public List<string> ParameterNames() => Rosetta.To<List<string>>(Rosetta.Call(3155, this));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::parameter</c>.
     /// </summary>
     /// <param name="name"></param>
-    public NnTensor Parameter(string name) => Rosetta.To<NnTensor>(Rosetta.Call(3145, this, name));
+    public NnTensor Parameter(string name) => Rosetta.To<NnTensor>(Rosetta.Call(3156, this, name));
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::set_parameter</c>.
     /// </summary>
     /// <param name="name"></param>
     /// <param name="value"></param>
-    public void SetParameter(string name, NnTensor value) => Rosetta.Call(3146, this, name, value);
+    public void SetParameter(string name, NnTensor value) => Rosetta.Call(3157, this, name, value);
 
     /// <summary>
     /// C++ <c>datamunge::nn::NnModel::parameter_count</c>.
     /// </summary>
-    public int ParameterCount() => Rosetta.To<int>(Rosetta.Call(3147, this));
+    public int ParameterCount() => Rosetta.To<int>(Rosetta.Call(3158, this));
 
     /// <summary>
     /// Parameters and batch-norm statistics as one .npz archive ("state/..." for statistics).
     /// </summary>
     /// <param name="path"></param>
-    public void Save(string path) => Rosetta.Call(3148, this, path);
+    public void Save(string path) => Rosetta.Call(3159, this, path);
 
     /// <summary>
     /// Loads an archive written by save() (or any .npz with the same names).
     /// </summary>
     /// <param name="path"></param>
-    public void Load(string path) => Rosetta.Call(3149, this, path);
+    public void Load(string path) => Rosetta.Call(3160, this, path);
 }
 
 /// <summary>
@@ -34019,7 +34372,7 @@ public partial class TaskOutput : NativeObject
     /// </summary>
     public TaskOutput() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(TaskOutput), false, 3163);
+        Rosetta.Construct(this, typeof(TaskOutput), false, 3174);
     }
 
     /// <summary>
@@ -34027,7 +34380,7 @@ public partial class TaskOutput : NativeObject
     /// </summary>
     public List<double> Observations
     {
-        get => Rosetta.To<List<double>>(Rosetta.Call(3151, this));
+        get => Rosetta.To<List<double>>(Rosetta.Call(3162, this));
     }
 
     /// <summary>
@@ -34035,7 +34388,7 @@ public partial class TaskOutput : NativeObject
     /// </summary>
     public List<double> Rewards
     {
-        get => Rosetta.To<List<double>>(Rosetta.Call(3153, this));
+        get => Rosetta.To<List<double>>(Rosetta.Call(3164, this));
     }
 
     /// <summary>
@@ -34043,7 +34396,7 @@ public partial class TaskOutput : NativeObject
     /// </summary>
     public List<byte> Terminated
     {
-        get => Rosetta.To<List<byte>>(Rosetta.Call(3155, this));
+        get => Rosetta.To<List<byte>>(Rosetta.Call(3166, this));
     }
 
     /// <summary>
@@ -34051,7 +34404,7 @@ public partial class TaskOutput : NativeObject
     /// </summary>
     public List<byte> Truncated
     {
-        get => Rosetta.To<List<byte>>(Rosetta.Call(3157, this));
+        get => Rosetta.To<List<byte>>(Rosetta.Call(3168, this));
     }
 
     /// <summary>
@@ -34060,7 +34413,7 @@ public partial class TaskOutput : NativeObject
     /// </summary>
     public List<double> FinalObservations
     {
-        get => Rosetta.To<List<double>>(Rosetta.Call(3159, this));
+        get => Rosetta.To<List<double>>(Rosetta.Call(3170, this));
     }
 
     /// <summary>
@@ -34068,7 +34421,7 @@ public partial class TaskOutput : NativeObject
     /// </summary>
     public List<byte> FinalValid
     {
-        get => Rosetta.To<List<byte>>(Rosetta.Call(3161, this));
+        get => Rosetta.To<List<byte>>(Rosetta.Call(3172, this));
     }
 }
 
@@ -34095,25 +34448,25 @@ public partial class TaskBatch : NativeObject
     /// Return the number of independent environments.
     /// </summary>
     /// <returns>Positive environment count.</returns>
-    public ulong Size() => Rosetta.To<ulong>(Rosetta.Call(3164, this));
+    public ulong Size() => Rosetta.To<ulong>(Rosetta.Call(3175, this));
 
     /// <summary>
     /// Read the task's observation width.
     /// </summary>
     /// <returns>Four for InvertedPendulum or eleven for Hopper.</returns>
-    public ulong ObservationSize() => Rosetta.To<ulong>(Rosetta.Call(3165, this));
+    public ulong ObservationSize() => Rosetta.To<ulong>(Rosetta.Call(3176, this));
 
     /// <summary>
     /// Read the continuous action width.
     /// </summary>
     /// <returns>One for InvertedPendulum or three for Hopper.</returns>
-    public ulong ActionSize() => Rosetta.To<ulong>(Rosetta.Call(3166, this));
+    public ulong ActionSize() => Rosetta.To<ulong>(Rosetta.Call(3177, this));
 
     /// <summary>
     /// Borrow current rollout outputs without advancing the simulation.
     /// </summary>
     /// <returns>Internal reusable arrays, valid until destruction and modified by step/reset.</returns>
-    public TaskOutput Output() => Rosetta.To<TaskOutput>(Rosetta.Call(3167, this));
+    public TaskOutput Output() => Rosetta.To<TaskOutput>(Rosetta.Call(3178, this));
 
     /// <summary>
     /// Advance selected task rows and retain final observations on episode end.
@@ -34132,7 +34485,7 @@ public partial class TaskBatch : NativeObject
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid action shape/value or mask, before mutation.</exception>
     /// <exception cref="NativeException">C++ <c>std::logic_error</c>: A selected row already finished.</exception>
     /// <exception cref="NativeException">C++ <c>std::exception</c>: Physics failure; explicit reset is required before retrying.</exception>
-    public TaskOutput Step(IEnumerable<double> actions) => Rosetta.To<TaskOutput>(Rosetta.Call(3168, this, actions));
+    public TaskOutput Step(IEnumerable<double> actions) => Rosetta.To<TaskOutput>(Rosetta.Call(3179, this, actions));
 
     /// <summary>
     /// Advance selected task rows and retain final observations on episode end.
@@ -34151,7 +34504,7 @@ public partial class TaskBatch : NativeObject
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid action shape/value or mask, before mutation.</exception>
     /// <exception cref="NativeException">C++ <c>std::logic_error</c>: A selected row already finished.</exception>
     /// <exception cref="NativeException">C++ <c>std::exception</c>: Physics failure; explicit reset is required before retrying.</exception>
-    public TaskOutput Step(IEnumerable<double> actions, IEnumerable<byte> mask) => Rosetta.To<TaskOutput>(Rosetta.Call(3168, this, actions, mask));
+    public TaskOutput Step(IEnumerable<double> actions, IEnumerable<byte> mask) => Rosetta.To<TaskOutput>(Rosetta.Call(3179, this, actions, mask));
 
     /// <summary>
     /// Restore and perturb selected rows; retain final observations for rollout collectors.
@@ -34166,7 +34519,7 @@ public partial class TaskBatch : NativeObject
     /// </remarks>
     /// <returns>Borrowed reset observations and current unselected rows.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid mask.</exception>
-    public TaskOutput Reset() => Rosetta.To<TaskOutput>(Rosetta.Call(3169, this));
+    public TaskOutput Reset() => Rosetta.To<TaskOutput>(Rosetta.Call(3180, this));
 
     /// <summary>
     /// Restore and perturb selected rows; retain final observations for rollout collectors.
@@ -34181,7 +34534,7 @@ public partial class TaskBatch : NativeObject
     /// <param name="mask">Empty selects all; otherwise size() binary bytes.</param>
     /// <returns>Borrowed reset observations and current unselected rows.</returns>
     /// <exception cref="NativeException">C++ <c>std::invalid_argument</c>: Invalid mask.</exception>
-    public TaskOutput Reset(IEnumerable<byte> mask) => Rosetta.To<TaskOutput>(Rosetta.Call(3169, this, mask));
+    public TaskOutput Reset(IEnumerable<byte> mask) => Rosetta.To<TaskOutput>(Rosetta.Call(3180, this, mask));
 
     /// <summary>
     /// Reproduce fresh reset draws after explicit reseeding; physics is unchanged until reset.
@@ -34193,7 +34546,7 @@ public partial class TaskBatch : NativeObject
     /// </code>
     /// </remarks>
     /// <param name="seed">New batch random seed.</param>
-    public void Seed(ulong seed) => Rosetta.Call(3170, this, seed);
+    public void Seed(ulong seed) => Rosetta.Call(3181, this, seed);
 
     /// <summary>
     /// Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers
@@ -34204,7 +34557,7 @@ public partial class TaskBatch : NativeObject
     /// </remarks>
     /// <param name="task"></param>
     /// <param name="count"></param>
-    public static TaskBatch? Create(Task task, ulong count) => Rosetta.To<TaskBatch?>(Rosetta.Call(3171, task, count));
+    public static TaskBatch? Create(Task task, ulong count) => Rosetta.To<TaskBatch?>(Rosetta.Call(3182, task, count));
 
     /// <summary>
     /// Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers
@@ -34216,7 +34569,7 @@ public partial class TaskBatch : NativeObject
     /// <param name="task"></param>
     /// <param name="count"></param>
     /// <param name="workers"></param>
-    public static TaskBatch? Create(Task task, ulong count, ulong workers) => Rosetta.To<TaskBatch?>(Rosetta.Call(3171, task, count, workers));
+    public static TaskBatch? Create(Task task, ulong count, ulong workers) => Rosetta.To<TaskBatch?>(Rosetta.Call(3182, task, count, workers));
 
     /// <summary>
     /// Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers
@@ -34229,7 +34582,7 @@ public partial class TaskBatch : NativeObject
     /// <param name="count"></param>
     /// <param name="workers"></param>
     /// <param name="seed"></param>
-    public static TaskBatch? Create(Task task, ulong count, ulong workers, ulong seed) => Rosetta.To<TaskBatch?>(Rosetta.Call(3171, task, count, workers, seed));
+    public static TaskBatch? Create(Task task, ulong count, ulong workers, ulong seed) => Rosetta.To<TaskBatch?>(Rosetta.Call(3182, task, count, workers, seed));
 
     /// <summary>
     /// Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers
@@ -34240,7 +34593,7 @@ public partial class TaskBatch : NativeObject
     /// <param name="workers"></param>
     /// <param name="seed"></param>
     /// <param name="timeLimit"></param>
-    public static TaskBatch? Create(Task task, ulong count, ulong workers, ulong seed, ulong timeLimit) => Rosetta.To<TaskBatch?>(Rosetta.Call(3171, task, count, workers, seed, timeLimit));
+    public static TaskBatch? Create(Task task, ulong count, ulong workers, ulong seed, ulong timeLimit) => Rosetta.To<TaskBatch?>(Rosetta.Call(3182, task, count, workers, seed, timeLimit));
 }
 
 /// <summary>
@@ -34255,7 +34608,7 @@ public partial class DirectedGraph : NativeObject
     /// </summary>
     public DirectedGraph() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(DirectedGraph), false, 3192);
+        Rosetta.Construct(this, typeof(DirectedGraph), false, 3203);
     }
 
     /// <summary>
@@ -34264,125 +34617,125 @@ public partial class DirectedGraph : NativeObject
     /// <param name="vertices"></param>
     public DirectedGraph(IEnumerable<string> vertices) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(DirectedGraph), false, 3192, vertices);
+        Rosetta.Construct(this, typeof(DirectedGraph), false, 3203, vertices);
     }
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::empty</c>.
     /// </summary>
-    public bool Empty() => Rosetta.To<bool>(Rosetta.Call(3172, this));
+    public bool Empty() => Rosetta.To<bool>(Rosetta.Call(3183, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::vertex_count</c>.
     /// </summary>
-    public ulong VertexCount() => Rosetta.To<ulong>(Rosetta.Call(3173, this));
+    public ulong VertexCount() => Rosetta.To<ulong>(Rosetta.Call(3184, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::edge_count</c>.
     /// </summary>
-    public ulong EdgeCount() => Rosetta.To<ulong>(Rosetta.Call(3174, this));
+    public ulong EdgeCount() => Rosetta.To<ulong>(Rosetta.Call(3185, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::clear</c>.
     /// </summary>
-    public void Clear() => Rosetta.Call(3175, this);
+    public void Clear() => Rosetta.Call(3186, this);
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::add_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool AddVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3176, this, vertex));
+    public bool AddVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3187, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::remove_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool RemoveVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3177, this, vertex));
+    public bool RemoveVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3188, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::has_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool HasVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3178, this, vertex));
+    public bool HasVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3189, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::add_edge</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public bool AddEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3179, this, src, dst));
+    public bool AddEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3190, this, src, dst));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::remove_edge</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public bool RemoveEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3180, this, src, dst));
+    public bool RemoveEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3191, this, src, dst));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::has_edge</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public bool HasEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3181, this, src, dst));
+    public bool HasEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3192, this, src, dst));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::vertices</c>.
     /// </summary>
-    public List<string> Vertices() => Rosetta.To<List<string>>(Rosetta.Call(3182, this));
+    public List<string> Vertices() => Rosetta.To<List<string>>(Rosetta.Call(3193, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::outgoing_neighbors</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public List<string> OutgoingNeighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3183, this, vertex));
+    public List<string> OutgoingNeighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3194, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::incoming_neighbors</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public List<string> IncomingNeighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3184, this, vertex));
+    public List<string> IncomingNeighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3195, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::out_degree</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public ulong OutDegree(string vertex) => Rosetta.To<ulong>(Rosetta.Call(3185, this, vertex));
+    public ulong OutDegree(string vertex) => Rosetta.To<ulong>(Rosetta.Call(3196, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::in_degree</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public ulong InDegree(string vertex) => Rosetta.To<ulong>(Rosetta.Call(3186, this, vertex));
+    public ulong InDegree(string vertex) => Rosetta.To<ulong>(Rosetta.Call(3197, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::bfs</c>.
     /// </summary>
     /// <param name="start"></param>
-    public List<string> Bfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3187, this, start));
+    public List<string> Bfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3198, this, start));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::dfs</c>.
     /// </summary>
     /// <param name="start"></param>
-    public List<string> Dfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3188, this, start));
+    public List<string> Dfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3199, this, start));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::contains_path</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public bool ContainsPath(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3189, this, src, dst));
+    public bool ContainsPath(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3200, this, src, dst));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::transpose</c>.
     /// </summary>
-    public DirectedGraph Transpose() => Rosetta.To<DirectedGraph>(Rosetta.Call(3190, this));
+    public DirectedGraph Transpose() => Rosetta.To<DirectedGraph>(Rosetta.Call(3201, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::DirectedGraph&lt;std::string&gt;::topological_sort</c>.
     /// </summary>
-    public List<string> TopologicalSort() => Rosetta.To<List<string>>(Rosetta.Call(3191, this));
+    public List<string> TopologicalSort() => Rosetta.To<List<string>>(Rosetta.Call(3202, this));
 }
 
 /// <summary>
@@ -34397,7 +34750,7 @@ public partial class UndirectedGraph : NativeObject
     /// </summary>
     public UndirectedGraph() : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(UndirectedGraph), false, 3211);
+        Rosetta.Construct(this, typeof(UndirectedGraph), false, 3222);
     }
 
     /// <summary>
@@ -34406,115 +34759,115 @@ public partial class UndirectedGraph : NativeObject
     /// <param name="vertices"></param>
     public UndirectedGraph(IEnumerable<string> vertices) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(UndirectedGraph), false, 3211, vertices);
+        Rosetta.Construct(this, typeof(UndirectedGraph), false, 3222, vertices);
     }
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::empty</c>.
     /// </summary>
-    public bool Empty() => Rosetta.To<bool>(Rosetta.Call(3193, this));
+    public bool Empty() => Rosetta.To<bool>(Rosetta.Call(3204, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::vertex_count</c>.
     /// </summary>
-    public ulong VertexCount() => Rosetta.To<ulong>(Rosetta.Call(3194, this));
+    public ulong VertexCount() => Rosetta.To<ulong>(Rosetta.Call(3205, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::edge_count</c>.
     /// </summary>
-    public ulong EdgeCount() => Rosetta.To<ulong>(Rosetta.Call(3195, this));
+    public ulong EdgeCount() => Rosetta.To<ulong>(Rosetta.Call(3206, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::clear</c>.
     /// </summary>
-    public void Clear() => Rosetta.Call(3196, this);
+    public void Clear() => Rosetta.Call(3207, this);
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::add_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool AddVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3197, this, vertex));
+    public bool AddVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3208, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::remove_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool RemoveVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3198, this, vertex));
+    public bool RemoveVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3209, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::has_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool HasVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3199, this, vertex));
+    public bool HasVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3210, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::add_edge</c>.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
-    public bool AddEdge(string a, string b) => Rosetta.To<bool>(Rosetta.Call(3200, this, a, b));
+    public bool AddEdge(string a, string b) => Rosetta.To<bool>(Rosetta.Call(3211, this, a, b));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::remove_edge</c>.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
-    public bool RemoveEdge(string a, string b) => Rosetta.To<bool>(Rosetta.Call(3201, this, a, b));
+    public bool RemoveEdge(string a, string b) => Rosetta.To<bool>(Rosetta.Call(3212, this, a, b));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::has_edge</c>.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
-    public bool HasEdge(string a, string b) => Rosetta.To<bool>(Rosetta.Call(3202, this, a, b));
+    public bool HasEdge(string a, string b) => Rosetta.To<bool>(Rosetta.Call(3213, this, a, b));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::vertices</c>.
     /// </summary>
-    public List<string> Vertices() => Rosetta.To<List<string>>(Rosetta.Call(3203, this));
+    public List<string> Vertices() => Rosetta.To<List<string>>(Rosetta.Call(3214, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::neighbors</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public List<string> Neighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3204, this, vertex));
+    public List<string> Neighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3215, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::degree</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public ulong Degree(string vertex) => Rosetta.To<ulong>(Rosetta.Call(3205, this, vertex));
+    public ulong Degree(string vertex) => Rosetta.To<ulong>(Rosetta.Call(3216, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::bfs</c>.
     /// </summary>
     /// <param name="start"></param>
-    public List<string> Bfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3206, this, start));
+    public List<string> Bfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3217, this, start));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::dfs</c>.
     /// </summary>
     /// <param name="start"></param>
-    public List<string> Dfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3207, this, start));
+    public List<string> Dfs(string start) => Rosetta.To<List<string>>(Rosetta.Call(3218, this, start));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::UndirectedGraph&lt;std::string&gt;::contains_path</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public bool ContainsPath(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3208, this, src, dst));
+    public bool ContainsPath(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3219, this, src, dst));
 
     /// <summary>
     /// The graph's connected components, each as a vector of vertices in BFS-visit
     /// order; components themselves appear in vertices() order.
     /// </summary>
-    public List<List<string>> ConnectedComponents() => Rosetta.To<List<List<string>>>(Rosetta.Call(3209, this));
+    public List<List<string>> ConnectedComponents() => Rosetta.To<List<List<string>>>(Rosetta.Call(3220, this));
 
     /// <summary>
     /// True if the graph contains a cycle (a self-loop, or two distinct paths between
     /// some pair of vertices) in any component.
     /// </summary>
-    public bool HasCycle() => Rosetta.To<bool>(Rosetta.Call(3210, this));
+    public bool HasCycle() => Rosetta.To<bool>(Rosetta.Call(3221, this));
 }
 
 /// <summary>
@@ -34530,7 +34883,7 @@ public partial class WeightedGraph : NativeObject
     /// <param name="directed"></param>
     public WeightedGraph(bool directed) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(WeightedGraph), false, 3233, directed);
+        Rosetta.Construct(this, typeof(WeightedGraph), false, 3244, directed);
     }
 
     /// <summary>
@@ -34540,51 +34893,51 @@ public partial class WeightedGraph : NativeObject
     /// <param name="directed"></param>
     public WeightedGraph(IEnumerable<string> vertices, bool directed) : base(default(NativeRaw))
     {
-        Rosetta.Construct(this, typeof(WeightedGraph), false, 3233, vertices, directed);
+        Rosetta.Construct(this, typeof(WeightedGraph), false, 3244, vertices, directed);
     }
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::directed</c>.
     /// </summary>
-    public bool Directed() => Rosetta.To<bool>(Rosetta.Call(3212, this));
+    public bool Directed() => Rosetta.To<bool>(Rosetta.Call(3223, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::empty</c>.
     /// </summary>
-    public bool Empty() => Rosetta.To<bool>(Rosetta.Call(3213, this));
+    public bool Empty() => Rosetta.To<bool>(Rosetta.Call(3224, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::vertex_count</c>.
     /// </summary>
-    public ulong VertexCount() => Rosetta.To<ulong>(Rosetta.Call(3214, this));
+    public ulong VertexCount() => Rosetta.To<ulong>(Rosetta.Call(3225, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::edge_count</c>.
     /// </summary>
-    public ulong EdgeCount() => Rosetta.To<ulong>(Rosetta.Call(3215, this));
+    public ulong EdgeCount() => Rosetta.To<ulong>(Rosetta.Call(3226, this));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::clear</c>.
     /// </summary>
-    public void Clear() => Rosetta.Call(3216, this);
+    public void Clear() => Rosetta.Call(3227, this);
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::add_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool AddVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3217, this, vertex));
+    public bool AddVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3228, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::remove_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool RemoveVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3218, this, vertex));
+    public bool RemoveVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3229, this, vertex));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::has_vertex</c>.
     /// </summary>
     /// <param name="vertex"></param>
-    public bool HasVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3219, this, vertex));
+    public bool HasVertex(string vertex) => Rosetta.To<bool>(Rosetta.Call(3230, this, vertex));
 
     /// <summary>
     /// Replaces the weight if the edge already exists (rather than rejecting the call,
@@ -34594,39 +34947,39 @@ public partial class WeightedGraph : NativeObject
     /// <param name="src"></param>
     /// <param name="dst"></param>
     /// <param name="weight"></param>
-    public bool AddEdge(string src, string dst, double weight) => Rosetta.To<bool>(Rosetta.Call(3220, this, src, dst, weight));
+    public bool AddEdge(string src, string dst, double weight) => Rosetta.To<bool>(Rosetta.Call(3231, this, src, dst, weight));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::remove_edge</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public bool RemoveEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3221, this, src, dst));
+    public bool RemoveEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3232, this, src, dst));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::has_edge</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public bool HasEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3222, this, src, dst));
+    public bool HasEdge(string src, string dst) => Rosetta.To<bool>(Rosetta.Call(3233, this, src, dst));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::edge_weight</c>.
     /// </summary>
     /// <param name="src"></param>
     /// <param name="dst"></param>
-    public double EdgeWeight(string src, string dst) => Rosetta.To<double>(Rosetta.Call(3223, this, src, dst));
+    public double EdgeWeight(string src, string dst) => Rosetta.To<double>(Rosetta.Call(3234, this, src, dst));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::vertices</c>.
     /// </summary>
-    public List<string> Vertices() => Rosetta.To<List<string>>(Rosetta.Call(3224, this));
+    public List<string> Vertices() => Rosetta.To<List<string>>(Rosetta.Call(3235, this));
 
     /// <summary>
     /// Outgoing neighbors if directed(); all incident neighbors if !directed().
     /// </summary>
     /// <param name="vertex"></param>
-    public List<string> Neighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3225, this, vertex));
+    public List<string> Neighbors(string vertex) => Rosetta.To<List<string>>(Rosetta.Call(3236, this, vertex));
 
     /// <summary>
     /// Same computation as dijkstra(), but returned as (vertex, distance) pairs in
@@ -34635,7 +34988,7 @@ public partial class WeightedGraph : NativeObject
     /// elsewhere) for language bindings where std::unordered_map isn't cleanly exposed.
     /// </summary>
     /// <param name="source"></param>
-    public List<(string, double)> DijkstraDistances(string source) => Rosetta.To<List<(string, double)>>(Rosetta.Call(3226, this, source));
+    public List<(string, double)> DijkstraDistances(string source) => Rosetta.To<List<(string, double)>>(Rosetta.Call(3237, this, source));
 
     /// <summary>
     /// Same computation as bellman_ford(), but returned as (vertex, distance) pairs in
@@ -34644,26 +34997,26 @@ public partial class WeightedGraph : NativeObject
     /// cycle makes the distances themselves meaningless.
     /// </summary>
     /// <param name="source"></param>
-    public List<(string, double)> BellmanFordDistances(string source) => Rosetta.To<List<(string, double)>>(Rosetta.Call(3227, this, source));
+    public List<(string, double)> BellmanFordDistances(string source) => Rosetta.To<List<(string, double)>>(Rosetta.Call(3238, this, source));
 
     /// <summary>
     /// C++ <c>datamunge::dstruct::WeightedGraph&lt;std::string, double&gt;::bellman_ford_has_negative_cycle</c>.
     /// </summary>
     /// <param name="source"></param>
-    public bool BellmanFordHasNegativeCycle(string source) => Rosetta.To<bool>(Rosetta.Call(3228, this, source));
+    public bool BellmanFordHasNegativeCycle(string source) => Rosetta.To<bool>(Rosetta.Call(3239, this, source));
 
     /// <summary>
     /// Kruskal's minimum spanning tree/forest, as a new undirected WeightedGraph
     /// containing every vertex and the selected edges. Throws std::logic_error if
     /// directed() (MST is only defined for undirected graphs).
     /// </summary>
-    public WeightedGraph MinimumSpanningTree() => Rosetta.To<WeightedGraph>(Rosetta.Call(3229, this));
+    public WeightedGraph MinimumSpanningTree() => Rosetta.To<WeightedGraph>(Rosetta.Call(3240, this));
 
     /// <summary>
     /// Connected components (ignoring weights). Throws std::logic_error if directed()
     /// (use strongly_connected_components() instead).
     /// </summary>
-    public List<List<string>> ConnectedComponents() => Rosetta.To<List<List<string>>>(Rosetta.Call(3230, this));
+    public List<List<string>> ConnectedComponents() => Rosetta.To<List<List<string>>>(Rosetta.Call(3241, this));
 
     /// <summary>
     /// Strongly connected components (Tarjan's algorithm), each as a vector of
@@ -34671,14 +35024,14 @@ public partial class WeightedGraph : NativeObject
     /// no edges leaving it to another component comes first). Throws std::logic_error
     /// if !directed() (use connected_components() instead).
     /// </summary>
-    public List<List<string>> StronglyConnectedComponents() => Rosetta.To<List<List<string>>>(Rosetta.Call(3231, this));
+    public List<List<string>> StronglyConnectedComponents() => Rosetta.To<List<List<string>>>(Rosetta.Call(3242, this));
 
     /// <summary>
     /// True if the graph contains a cycle: a self-loop (either kind), or -- for a
     /// directed graph, a directed cycle (found via 3-color DFS); for an undirected
     /// graph, two distinct paths between some pair of vertices.
     /// </summary>
-    public bool HasCycle() => Rosetta.To<bool>(Rosetta.Call(3232, this));
+    public bool HasCycle() => Rosetta.To<bool>(Rosetta.Call(3243, this));
 }
 
 /// <summary>The functions and constants of native module <c>datamunge</c>.</summary>
@@ -41193,6 +41546,7 @@ internal static partial class Rosetta
         () => new global::Datamunge.HyperDual(default(NativeRaw)),
         () => new global::Datamunge.Var(default(NativeRaw)),
         () => new global::Datamunge.Tape(default(NativeRaw)),
+        () => new global::Datamunge.MLPClassifierSearch(default(NativeRaw)),
         () => new global::Datamunge.CadSolid(default(NativeRaw)),
         () => new global::Datamunge.CadScene(default(NativeRaw)),
         () => new global::Datamunge.SplineSolveOptions(default(NativeRaw)),

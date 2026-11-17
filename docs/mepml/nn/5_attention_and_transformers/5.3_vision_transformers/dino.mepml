@@ -1,0 +1,815 @@
+//? Title: Dino
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Student/teacher views -> centered sharpened targets -> EMA teacher. The complete native C++ experiment preserves model equations, source seeds, update budgets and explicit fitting/generation loops. Missing data recipes are reconstructed and labelled; original TensorFlow recordings are checked only when genuinely present.
+)
+\toc
+
+> Provenance and scope
+
+The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
+
+> Follow the computation
+
+Student/teacher views -> centered sharpened targets -> EMA teacher.
+
+```{cpp, results="markdown", file="figures/dino_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("data",{-18,0},"Versioned native inputs",s).node("model",{0,0},"Student/teacher views -> centered sharpened targets -> EMA teacher",s).node("audit",{18,0},"Explicit training and deployment checks",s).edge("data","model").edge("model","audit").save_svg("build/dino_method.svg");}
+```
+// result_begin: markdown
+\image(figures/dino_method.svg)
+// result_end
+
+> A calculation before fitting
+
+A selected categorical target with two uniform outcomes costs log(2). The actual experiment applies its own teacher/completion mask and normalization; unselected positions do not become extra supervised observations.
+
+```{cpp, results="markdown", file="figures/dino_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+int main(){namespace n=dm::nn;double computed=-n::log_softmax(n::zeros({1,2},n::DType::Float64),1).to_vector<double>()[0],analytic=std::log(2.);if(std::abs(computed-analytic)>2e-6)throw std::runtime_error("hand calculation differs from native primitives");std::print("| native calculation | analytic reference |\n|---:|---:|\n| {:.9f} | {:.9f} |\n",computed,analytic);dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,analytic},"worked reference",{37,99,235}).ylim(0,std::max(.5,std::max(computed,analytic)*1.2)).x_label("0 = native calculation;1 = analytic reference").y_label("Toy objective or diagnostic value").title("dino hand calculation").size(1000,550).save_svg("build/dino_worked.svg");}
+```
+// result_begin: markdown
+| native calculation | analytic reference |
+|---:|---:|
+| 0.693147181 | 0.693147181 |
+\image(figures/dino_worked.svg)
+// result_end
+
+> Prepare reproducible inputs
+
+Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
+```
+// result_begin: markdown
+Versioned recipe root: /home/jordan/.cache/datamunge/datasets/nn-completion-assets
+// result_end
+
+> Inspect the native graph
+
+The preview traces the actual canonical component with independent parameters; it does not alter training. Composite grouping keeps full unrolls readable.
+
+```{cpp, results="markdown", file="figures/dino_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;n::ParameterStore p(7);n::Module model([&](const n::Tensor&trace_input){auto y=m::dino::Forward(p,trace_input);return n::model_stage("dino native component",trace_input,y.logits);},"dino native component graph");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;model.plot(n::zeros({1,32,32,3}),options).save_svg("build/dino_network.svg");}
+```
+// result_begin: markdown
+\image(figures/dino_network.svg)
+// result_end
+
+> Complete editable experiment
+
+Historical comments in the preserved source describe the original experiment; the versioned reconstruction manifest above describes the active inputs. Objectives, optimizer ownership, update schedules, sampling and search remain here. Source finite-difference, padding, causal/label-independence, checkpoint and immutability controls remain active. Weak held-out outcomes are retained.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace recovered_checkpoints {
+inline std::filesystem::path Model(const std::string&name){auto p=std::filesystem::path(dm::datasets::data_home())/"nn-completion-checkpoints/models"/name;std::filesystem::create_directories(p);return p;}
+}
+// DINO self-distillation with multi-crop views, detached teacher and EMA state.
+// CMD: just run-nn dino
+// Eager port with NPZ checkpoints and recorded TF initial-array replay.
+// Same seeded crop construction, student-only Adam, EMA/center schedule and checks.
+// Editable workflow support: dino.hpp
+// Editable workflow support: vision_transformer.hpp
+// Editable workflow support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}
+
+namespace dataset_assets {
+inline dm::nn::ImageDataset LoadCifar10(const std::string&directory,const std::string&split){dm::datasets::fetch("cifar10",std::filesystem::path(directory).parent_path().string());return dm::nn::load_cifar10(directory,split);}
+}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { if(name=="cifar10"||name=="character_rnn")return DataRoot()/name;return std::filesystem::path(dm::datasets::prepare_example_data("nn-completion-assets"))/name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/nn-completion");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace vit {using namespace dm::nn::models::vit;
+inline Tensor Loss(const Tensor& logits, const Tensor& labels) {
+  return -nn::mean(
+      nn::sum(
+          nn::one_hot(labels, 10, 1, 0, nn::DType::Float32) * nn::log_softmax(logits, -1), {1}));
+}
+class Model {
+ public:
+  nn::ParameterStore             parameters{48301};
+  std::unique_ptr<nn::Optimizer> optimizer;
+  explicit Model(bool training = true) {
+    {
+      nn::NoGradGuard guard;
+      Forward(parameters, nn::zeros({1, 32, 32, 3}));
+    }
+    if (training) {
+      nn::OptimizerConfig c;
+      c.kind    = nn::OptimizerKind::Adam;
+      optimizer = std::make_unique<nn::Optimizer>(parameters, .003, c);
+    }
+  }
+  static void Validate(const A& b) {
+    const auto& x = b.at("images");
+    check::Require(
+        x.dtype() == nn::DType::Float32 && x.dim() == 4 && x.size(0) > 0 && x.size(1) == 32 &&
+            x.size(2) == 32 && x.size(3) == 3,
+        "ViT32x32RGB images");
+    for (float v : x.to_vector<float>())
+      check::Require(std::isfinite(v), "finite ViT pixels");
+  }
+  A Run(const A& b, bool gradients = false, const A& overrides = {}) {
+    Validate(b);
+    A saved;
+    for (const auto& [k, v] : overrides) {
+      saved[k] = parameters.at(k).detach().clone();
+      parameters.set(k, v);
+    }
+    struct Restore {
+      nn::ParameterStore& p;
+      A&                  saved;
+      ~Restore() {
+        for (const auto& [k, v] : saved)
+          p.set(k, v);
+      }
+    } restore{parameters, saved};
+    auto                x    = b.at("images").detach().requires_grad_();
+    auto                path = Forward(parameters, x);
+    auto                loss = Loss(path.logits, b.at("labels"));
+    std::vector<Tensor> inputs{x};
+    if (gradients) {
+      auto values = parameters.parameters();
+      inputs.insert(inputs.end(), values.begin(), values.end());
+    }
+    auto g = nn::grad(loss, inputs);
+    A    out{
+           {"logits", path.logits},
+           {"patches", path.patches},
+           {"embedded", path.embedded},
+           {"hidden", path.hidden},
+           {"attention0", path.attention[0]},
+           {"attention1", path.attention[1]},
+           {"state0", path.states[0]},
+           {"state1", path.states[1]},
+           {"loss", loss},
+           {"input_gradient", g[0]}};
+    if (gradients)
+      for (std::size_t i = 0; i < parameters.size(); ++i)
+        out[parameters.names()[i]] = g[i + 1];
+    for (auto& [k, v] : out)
+      v = v.detach().clone();
+    return out;
+  }
+  Tensor Predict(const A& b) {
+    Validate(b);
+    nn::NoGradGuard guard;
+    return Forward(parameters, b.at("images")).logits;
+  }
+  void Update(const A& b) {
+    Validate(b);
+    auto path = Forward(parameters, b.at("images"));
+    optimizer->minimize(Loss(path.logits, b.at("labels")));
+  }
+  A Arrays() const { return replay::Arrays(parameters); }
+};
+inline A Pool(const A& data, const std::string& split) {
+  A out;
+  for (const auto key : {"images", "labels", "source_ids"})
+    out[key] = data.at(split + "_" + key);
+  return out;
+}
+inline Tensor Permute(const Tensor& images) {
+  const auto n       = images.size(0);
+  auto       patches = nn::reshape(
+      nn::transpose(nn::reshape(images, {n, 4, 8, 4, 8, 3}), {0, 1, 3, 2, 4, 5}), {n, 16, 8, 8, 3});
+  return nn::reshape(
+      nn::transpose(nn::reshape(nn::reverse(patches, {1}), {n, 4, 4, 8, 8, 3}), {0, 1, 3, 2, 4, 5}),
+      images.shape());
+}
+} // namespace vit
+
+namespace dino {using namespace dm::nn::models::dino;
+
+class Model {
+ public:
+  nn::ParameterStore             student{50101}, teacher{50103}, state{50105};
+  std::unique_ptr<nn::Optimizer> optimizer;
+  explicit Model(bool training = true) {
+    {
+      nn::NoGradGuard guard;
+      Forward(student, nn::zeros({1, 32, 32, 3}));
+      Forward(teacher, nn::zeros({1, 32, 32, 3}));
+      state.get("center", {1, 16}, nn::init::zeros());
+      teacher.copy_from(student);
+    }
+    if (training) {
+      nn::OptimizerConfig c;
+      c.kind    = nn::OptimizerKind::Adam;
+      optimizer = std::make_unique<nn::Optimizer>(student, .0003, c);
+    }
+  }
+  A Arrays() const {
+    A out;
+    for (const auto& [k, v] : replay::Arrays(student))
+      out["student/" + k] = v;
+    for (const auto& [k, v] : replay::Arrays(teacher))
+      out["teacher/" + k] = v;
+    out["state/center"] = state.at("center").detach().clone();
+    return out;
+  }
+  void Assign(const A& arrays) {
+    for (const auto& [k, v] : arrays) {
+      if (k.rfind("student/", 0) == 0) {
+        check::Require(student.contains(k.substr(8)), "DINO student key");
+        student.set(k.substr(8), v);
+      } else if (k.rfind("teacher/", 0) == 0) {
+        check::Require(teacher.contains(k.substr(8)), "DINO teacher key");
+        teacher.set(k.substr(8), v);
+      } else {
+        check::Require(k == "state/center", "DINO center key");
+        state.set("center", v);
+      }
+    }
+  }
+  A Fields(const Tensor& views) {
+    check::Require(
+        views.dim() == 5 && views.size(0) == 4 && views.size(1) > 0 && views.size(2) == 32 &&
+            views.size(3) == 32 && views.size(4) == 3,
+        "four DINO RGB views");
+    std::vector<Tensor> sl, tl, sf, tf;
+    auto                crops = nn::unstack(views, 0);
+    A                   out;
+    for (int v = 0; v < 4; ++v) {
+      auto path = Forward(student, crops[v]);
+      sl.push_back(path.logits);
+      sf.push_back(path.features);
+      if (v == 0) {
+        out["student_attention"]  = path.attention.back();
+        out["student_bottleneck"] = path.bottleneck;
+      }
+      if (v < 2) {
+        auto p = Forward(teacher, crops[v]);
+        tl.push_back(p.logits);
+        tf.push_back(p.features);
+      }
+    }
+    auto student_logits = nn::stack(sl, 0), teacher_logits = nn::stack(tl, 0);
+    out["student_logits"]   = student_logits;
+    out["teacher_logits"]   = teacher_logits;
+    out["student_features"] = nn::stack(sf, 0);
+    out["teacher_features"] = nn::stack(tf, 0);
+    auto targets = nn::stop_gradient(nn::softmax((teacher_logits - state.at("center")) / .04, -1));
+    out["targets"]                   = targets;
+    auto                target_views = nn::unstack(targets, 0);
+    std::vector<Tensor> terms;
+    for (int q = 0; q < 2; ++q)
+      for (int v = 0; v < 4; ++v)
+        if (q != v)
+          terms.push_back(
+              -nn::mean(nn::sum(target_views[q] * nn::log_softmax(sl[v] / .1, -1), {1})));
+    out["terms"] = nn::stack(terms, 0);
+    out["loss"]  = nn::mean(out.at("terms"));
+    return out;
+  }
+  A Run(const A& b, bool gradients = false) {
+    auto                x   = b.at("views").detach().requires_grad_();
+    auto                out = Fields(x);
+    std::vector<Tensor> inputs{x};
+    if (gradients) {
+      auto s = student.parameters(), t = teacher.parameters();
+      inputs.insert(inputs.end(), s.begin(), s.end());
+      inputs.insert(inputs.end(), t.begin(), t.end());
+    }
+    nn::GradOptions options;
+    options.allow_unused  = true;
+    auto g                = nn::grad(out.at("loss"), inputs, options);
+    out["input_gradient"] = g[0];
+    if (gradients) {
+      for (std::size_t i = 0; i < student.size(); ++i) {
+        check::Require(g[i + 1].defined(), "every DINO student parameter connected");
+        out["student/" + student.names()[i]] = g[i + 1];
+      }
+      for (std::size_t i = 0; i < teacher.size(); ++i) {
+        check::Require(
+            !g[1 + student.size() + i].defined(),
+            "every teacher parameter disconnected by StopGradient");
+        out["teacher/" + teacher.names()[i]] = nn::zeros_like(teacher.at(teacher.names()[i]));
+      }
+    }
+    for (auto& [k, v] : out)
+      v = v.detach().clone();
+    return out;
+  }
+  void Update(const A& b, int step, int total, bool frozen) {
+    check::Require(total > 0 && step >= 0 && step < total, "DINO EMA step range");
+    auto                before = Arrays();
+    auto                out    = Run(b, true);
+    std::vector<Tensor> gradients;
+    for (const auto& key : student.names())
+      gradients.push_back(
+          frozen && key == "projection/last_v" ? nn::zeros_like(student.at(key))
+                                               : out.at("student/" + key));
+    optimizer->step(gradients);
+    if (frozen)
+      check::Require(
+          replay::SameBits(student.at("projection/last_v"), before.at("student/projection/last_v")),
+          "last projection frozen in first epoch");
+    const double momentum =
+        1. - (1. - .996) * (.5 * (1. + std::cos(3.141592653589793 * step / total)));
+    teacher.copy_from(student, 1. - momentum);
+    const auto raw    = out.at("teacher_logits").to_vector<float>();
+    const int  n      = out.at("teacher_logits").size(1);
+    auto       center = before.at("state/center").to_vector<float>();
+    for (int k = 0; k < 16; ++k) {
+      double mean = 0;
+      for (int view = 0; view < 2; ++view)
+        for (int row = 0; row < n; ++row)
+          mean += raw[(view * n + row) * 16 + k];
+      center[k] = .9f * center[k] + .1f * float(mean / (2 * n));
+    }
+    state.set("center", nn::from_vector(center, {1, 16}));
+  }
+};
+} // namespace dino
+
+namespace nn = datamunge::nn;
+namespace {
+using vit::A;
+void Save(const std::filesystem::path& path, const A& a) {
+  nn::save_npz(path.string(), replay::ToNamed(a));
+}
+void Run(int epochs) {
+  const auto root = paths::OutputDir("models/dino");
+  replay::CopyAssets(paths::Dataset("vision_transformer"), root, {"data.npz", "manifest.json"});
+  auto data = replay::ToMap(nn::load_npz((root / "data.npz").string()));
+  auto fit = vit::Pool(data, "fit"), validation = dino::Views(vit::Pool(data, "validation"), 50111),
+       test = dino::Views(vit::Pool(data, "test"), 50113);
+  dino::Model model;
+  check::Require(
+      model.student.count() == 3452 && model.student.size() == 37 && model.teacher.count() == 3452,
+      "matching 3452-parameter37-tensor DINO networks");
+  const auto tf        = replay::TfModels("dino");
+  const bool replay_tf = std::filesystem::exists(tf / "initial_arrays.npz");
+  if (replay_tf)
+    model.Assign(replay::ToMap(nn::load_npz((tf / "initial_arrays.npz").string())));
+  auto init = model.Arrays();
+  for (const auto& [name, value] : init)
+    if (name.rfind("student/", 0) == 0)
+      check::Require(
+          replay::SameBits(value, init.at("teacher/" + name.substr(8))),
+          "teacher initialized exactly from student");
+  auto compare = [&](const A& out, const std::string& file, double tolerance) {
+    if (replay_tf && std::filesystem::exists(tf / file)) {
+      const auto error = replay::MaxDiff(out, tf / file);
+      check::Near(error, 0, tolerance, "TF DINO " + file);
+      std::cout << "TF " << file << " difference=" << error << std::endl;
+    }
+  };
+  Save(root / "initial_arrays.npz", init);
+  Save(root / "validation_inputs.npz", validation);
+  Save(root / "test_inputs.npz", test);
+  auto initial = model.Run(test);
+  Save(root / "initial_outputs.npz", initial);
+  compare(initial, "initial_outputs.npz", 5e-5);
+  auto fit_original  = dino::Views(fit, 0, true),
+       test_original = dino::Views(vit::Pool(data, "test"), 0, true);
+  Save(root / "initial_fit_original.npz", model.Run(fit_original));
+  Save(root / "initial_test_original.npz", model.Run(test_original));
+  nn::BatchOrder order(128, 8, 50107);
+  std::ofstream  batches(root / "batches.tsv"), history(root / "history.tsv");
+  batches << "epoch\tstep\trow\tsource_id\n";
+  history << "epoch\tvalidation_loss\n";
+  int step = 0;
+  A   first;
+  for (int epoch = 1; epoch <= epochs; ++epoch) {
+    order.begin_epoch();
+    for (;;) {
+      auto ids = order.next();
+      if (ids.empty())
+        break;
+      auto b = dino::Views(replay::Rows(fit, ids), 50119 + step);
+      Save(root / ("step" + std::to_string(step) + "_inputs.npz"), b);
+      Save(root / ("step" + std::to_string(step) + "_before.npz"), model.Arrays());
+      if (!step) {
+        first = b;
+        Save(root / "first_batch.npz", first);
+        auto g = model.Run(first, true);
+        Save(root / "initial_gradients.npz", g);
+        compare(g, "initial_gradients.npz", 1e-4);
+      }
+      model.Update(b, step, epochs * 16, epoch == 1);
+      auto after = model.Arrays();
+      Save(root / ("step" + std::to_string(step) + "_after.npz"), after);
+      if (!step)
+        Save(root / "first_after.npz", after);
+      const auto sources = fit.at("source_ids").to_vector<int>();
+      for (auto row : ids)
+        batches << epoch << '\t' << step << '\t' << row << '\t' << sources[row] << '\n';
+      ++step;
+    }
+    auto result = model.Run(validation);
+    history << epoch << '\t' << result.at("loss").item() << '\n';
+    const auto prefix = "epoch" + std::to_string(epoch);
+    Save(root / (prefix + "_arrays.npz"), model.Arrays());
+    Save(root / (prefix + "_validation.npz"), result);
+    compare(result, prefix + "_validation.npz", 5e-4);
+    std::cout << "epoch=" << epoch << " crossViewValidationLoss=" << result.at("loss").item()
+              << std::endl;
+  }
+  const auto arrays    = model.Arrays();
+  auto       gradients = model.Run(first, true);
+  Save(root / "final_gradients.npz", gradients);
+  for (const auto& name : model.teacher.names())
+    check::Near(
+        nn::max(nn::abs(gradients.at("teacher/" + name))).item(),
+        0,
+        0,
+        "teacher detached loss gradient exact zero");
+  double fd    = 0;
+  int    count = 0;
+  for (const auto& name : model.student.names()) {
+    const auto value  = arrays.at("student/" + name);
+    auto       values = value.to_vector<float>();
+    for (int i : {0, int(values.size() / 2), int(values.size() - 1)}) {
+      const float old = values[i];
+      values[i]       = old + .00005f;
+      model.Assign({{"student/" + name, nn::from_vector(values, value.shape())}});
+      const auto plus = model.Run(first).at("loss").item();
+      values[i]       = old - .00005f;
+      model.Assign({{"student/" + name, nn::from_vector(values, value.shape())}});
+      const auto minus = model.Run(first).at("loss").item();
+      values[i]        = old;
+      model.Assign({{"student/" + name, nn::from_vector(values, value.shape())}});
+      fd = std::max(
+          fd,
+          std::abs((plus - minus) / .0001 - gradients.at("student/" + name).to_vector<float>()[i]));
+      ++count;
+    }
+  }
+  check::Require(fd < .02, "DINO whole-student finite differences");
+  Save(root / "model_arrays.npz", model.Arrays());
+  Save(root / "final.npz", model.Arrays());
+  dino::Model deployed(false);
+  deployed.Assign(replay::ToMap(nn::load_npz((root / "final.npz").string())));
+  auto before = deployed.Arrays();
+  check::Require(
+      replay::SameBits(arrays, before), "all student/teacher/center tensors restored bitexact");
+  auto result = deployed.Run(test);
+  Save(root / "outputs.npz", result);
+  compare(result, "outputs.npz", 5e-4);
+  Save(root / "fit_original.npz", deployed.Run(fit_original));
+  Save(root / "test_original.npz", deployed.Run(test_original));
+  auto      local_changed = test;
+  auto      pixels        = test.at("views").to_vector<float>();
+  const int start         = 2 * 32 * 32 * 32 * 3;
+  for (std::size_t i = start; i < pixels.size(); ++i)
+    pixels[i] = 1 - pixels[i];
+  local_changed["views"] = nn::from_vector(pixels, test.at("views").shape());
+  auto control           = deployed.Run(local_changed);
+  check::Near(
+      replay::MaxAbsDiff(control.at("teacher_logits"), result.at("teacher_logits")),
+      0,
+      0,
+      "teacher sees only two global views");
+  check::Require(
+      replay::MaxAbsDiff(control.at("student_logits"), result.at("student_logits")) > 1e-7,
+      "student responds to local crops");
+  Save(root / "local_changed_inputs.npz", local_changed);
+  Save(root / "local_changed_outputs.npz", control);
+  for (int row = 0; row < 3; ++row) {
+    auto one =
+        nn::gather(test.at("views"), nn::from_vector(std::vector<std::int32_t>{row}, {1}), 1);
+    auto single = deployed.Run({{"views", one}});
+    check::Near(
+        replay::MaxAbsDiff(
+            single.at("student_logits"),
+            nn::slice(result.at("student_logits"), {0, row, 0}, {4, 1, 16})),
+        0,
+        5e-6,
+        "crop/image batch isolation");
+  }
+  check::Require(
+      replay::SameBits(before, deployed.Arrays()),
+      "inference leaves teacher/student/center immutable");
+  std::ofstream meta(root / "metrics.json");
+  meta.precision(17);
+  meta << "{\"parameters_per_network\":3452,\"variables_per_network\":37,\"epochs\":" << epochs
+       << ",\"updates\":" << step << ",\"test_loss\":" << result.at("loss").item()
+       << ",\"native_fd_count\":" << count << ",\"native_fd_error\":" << fd << "}\n";
+  std::cout << "DINO testCrossViewLoss=" << result.at("loss").item() << "; " << count
+            << " FD max=" << fd << ";detachedTeacher/EMA/center/multicrop/restore/immutable PASS\n";
+}
+} // namespace
+int main(int argc, char** argv) {
+  try {
+    nn::set_num_threads(2);
+    int epochs = 3;
+    for (int i = 1; i < argc; ++i) {
+      std::string a = argv[i];
+      check::Require(a.rfind("epochs=", 0) == 0, "epochs=N");
+      epochs = std::stoi(a.substr(7));
+    }
+    check::Require(epochs > 0 && epochs <= 100, "epochs1..100");
+    Run(epochs);
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin:
+// epoch=1 crossViewValidationLoss=2.23605
+// epoch=2 crossViewValidationLoss=4.71963
+// epoch=3 crossViewValidationLoss=5.37174
+// DINO testCrossViewLoss=5.22628; 111 FD max=0.00816028;detachedTeacher/EMA/center/multicrop/restore/immutable PASS
+// result_end
+
+> Inspect the actual saved results
+
+The figures below read actual saved outputs from this run. Native graph previews appear above the complete program. Reconstructed-task results retain the source budgets and are not reported as original benchmark scores.
+
+> Actual validation history
+
+Each panel reads the first recorded objective from a saved `history.tsv`. Different tasks and loss definitions have different units; compare curves within a panel. These are reconstructed-data outcomes with the original update budgets.
+
+```{cpp, results="markdown", file="figures/dino_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace fs=std::filesystem;std::vector<fs::path> files;for(const auto&entry:fs::recursive_directory_iterator("build/nn-completion/models/dino"))if(entry.path().filename()=="history.tsv")files.push_back(entry.path());std::sort(files.begin(),files.end());if(files.empty())throw std::runtime_error("actual validation histories missing");auto layout=dm::graphics::RLayout::create((files.size()+1)/2,std::min(size_t(2),files.size()));for(const auto&file:files){std::ifstream in(file);std::string header,line;std::getline(in,header);std::vector<double>x,y;while(std::getline(in,line)){std::istringstream row(line);double step,value;if(row>>step>>value){x.push_back(step);y.push_back(value);}}if(x.empty())continue;auto plot=dm::graphics::RPlot::create();plot.lines(x,y,"saved validation objective",{37,99,235}).points(x,y,"saved rows",{37,99,235},4).x_label("Epoch or source step").y_label("Source objective; panels may use different units").title(file.parent_path().filename().string());layout.add(plot);}layout.size(1200,std::max(size_t(700),400*((files.size()+1)/2))).fit_panels().save_svg("build/dino_history.svg");}
+```
+// result_begin: markdown
+\image(figures/dino_history.svg)
+// result_end
+
+
+> Actual saved attention layout
+
+This reads `outputs.npz`, field `student_attention`, from the real held-out run. It shows the first leading-index slice and at most64 rows/columns. For sparse, hashed or projected attention, candidate slots are the source layout, not a dense physical-token axis. The complete program retains the index/projection mappings. Attention is not a saliency or causal explanation.
+
+```{cpp, results="markdown", file="figures/dino_attention.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto load=[](const std::string&path){auto a=dm::nn::load_npz(path);return std::map<std::string,dm::nn::Tensor>(a.begin(),a.end());};auto a=load("build/nn-completion/models/dino/outputs.npz");auto tensor=a.at("student_attention");int rows=tensor.size(tensor.dim()-2),columns=tensor.size(tensor.dim()-1),r=std::min(rows,64),c=std::min(columns,64);auto values=tensor.to_vector<double>();std::vector<double>x(c),y(r);std::iota(x.begin(),x.end(),0.);std::iota(y.begin(),y.end(),0.);std::vector<std::vector<double>>z(c,std::vector<double>(r));for(int i=0;i<r;++i)for(int j=0;j<c;++j)z[j][i]=values[i*columns+j];std::print("Native saved student_attention last axes: {} by {}; showing first sample/head/chunk and up to64 positions. Colour range: zero to the maximum in these rows, {}.\n",rows,columns,*std::max_element(values.begin(),values.begin()+r*columns));dm::graphics::RPlot::create().image(x,y,z,dm::graphics::terrain_colors(256),0,*std::max_element(values.begin(),values.begin()+r*columns)).title("dino actual student_attention").x_label("Source key/candidate/compressed slot index").y_label("Source query/layout row index").size(1000,750).save_svg("build/dino_attention.svg");}
+```
+// result_begin: markdown
+Native saved student_attention last axes: 17 by 17; showing first sample/head/chunk and up to64 positions. Colour range: zero to the maximum in these rows, 0.07264546304941177.
+\image(figures/dino_attention.svg)
+// result_end

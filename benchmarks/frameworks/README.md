@@ -2,7 +2,7 @@
 
 External PyTorch and TensorFlow/Keras reference points for the in-house
 `datamunge::nn` SqueezeNet training workload in
-[`docs/mepml/examples/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml`](../../docs/mepml/examples/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml)
+[`docs/mepml/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml`](../../docs/mepml/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.mepml)
 (model: [`include/datamunge/nn/squeezenet_models.hpp`](../../include/datamunge/nn/squeezenet_models.hpp)).
 
 Both scripts reproduce the same step: SqueezeNet v1.0 (CIFAR stem, 96-channel

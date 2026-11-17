@@ -126,11 +126,15 @@ TEST(Velvet, ReconstructsSequenceFromKmers) {
     EXPECT_EQ(velvet_assemble(reads, k), orig);
 }
 
-TEST(Velvet, AssemblesFromOverlappingReads) {
+TEST(Velvet, RejectsUnevenCoverageWithoutEulerTrail) {
     // Two overlapping reads of ACGTACGTACGT... style sequence.
     std::string orig = "TTACGGCATTAC";
     int         k    = 3;
     std::vector<std::string> reads = {orig.substr(0, 8), orig.substr(4, 8)};
     std::string              a     = velvet_assemble(reads, k);
-    EXPECT_FALSE(a.empty());
+    // Uneven repeated k-mer coverage gives two starts and two ends, so there is
+    // no single Euler trail using every observed occurrence. A partial spelling
+    // must not be reported as a complete contig.
+    EXPECT_TRUE(a.empty());
+    EXPECT_FALSE(velvet_work(reads,k).eulerian);
 }

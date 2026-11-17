@@ -16715,6 +16715,128 @@ rosetta_ref <- function(value = NULL) {
     `backward` = function(...) .Call(`.rs_2923`, self, list(...))
   )
 )
+#' A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+#'
+#' Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+#' test rows (per-class rounding applies). Four random widths followed by eight
+#' Gaussian-process expected-improvement proposals are the default search budget.
+#' Proposals in \[min_hidden,max_hidden\] are rounded to integer widths; repeated
+#' widths reuse their cached validation log loss. Smaller loss wins; ties retain
+#' the first proposal. Each candidate has one tanh hidden layer, softmax output,
+#' training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+#' penalty 0.0001. Initialization/shuffling use seed for every candidate.
+#'
+#' After selection the network is refitted on fitting plus validation rows,
+#' with new standardization statistics, then scored once on the untouched test.
+#' Validation loss belongs to the candidate fit, not the final refit, and is an
+#' optimistic selection score. Neither split nor test performance is a guarantee
+#' for other seeds or datasets. Owns all state, borrows inputs only during calls,
+#' does not change data or global RNG state. Const methods may run concurrently.
+#' Search cost is at most (initial_samples+iterations) fits plus one refit;
+#' cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+#' @section Constructor:
+#' `MLPClassifierSearch$new(data, response, x_feature, y_feature, min_hidden = 2, max_hidden = 24, initial_samples = 4, iterations = 8, epochs = 400, seed = 42)`
+#'
+#' Tune a single hidden layer, refit on development rows and evaluate the test rows.
+#'
+#' * `data` (`DataFrame`): Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+#' * `response` (`character`): String response column, with nonempty labels and at least five rows per class.
+#' * `x_feature` (`character`): First numeric predictor, distinct from response and y_feature.
+#' * `y_feature` (`character`): Second numeric predictor; these two are the only model inputs.
+#' * `min_hidden` (`integer`): Smallest hidden width, default 2; at least 1 and below max_hidden.
+#' * `max_hidden` (`integer`): Largest hidden width, default 24; at most 1000000.
+#' * `initial_samples` (`integer`): Random initial proposals, default 4; at least 1.
+#' * `iterations` (`integer`): Surrogate-guided proposals, default 8; zero permits initial design only.
+#' * `epochs` (`integer`): SGD passes for each candidate and the final refit, default 400; at least 1.
+#' * `seed` (`integer`): Local split/search/initialization seed, default 42; validation split uses seed+1 modulo 2^64.
+#' @section Methods:
+#' * `$best_hidden_nodes()` -> `integer`
+#'
+#'   Selected integer width of the single hidden layer.
+#'   - Returns: A value in the requested inclusive search range.
+#'
+#' * `$validation_log_loss()` -> `numeric`
+#'
+#'   Minimum validation mean negative log probability of the true class.
+#'   - Returns: Finite nonnegative loss of the selected candidate before refitting.
+#'
+#' * `$test_accuracy()` -> `numeric`
+#'
+#'   Held-out test accuracy of the final development-data refit.
+#'   - Returns: Fraction correctly classified in \[0,1\]; test rows were never used for selection.
+#'
+#' * `$training_rows()` -> `integer`
+#'
+#'   Number of rows used to fit each search candidate.
+#'   - Returns: Fitting partition size, excluding validation and test.
+#'
+#' * `$validation_rows()` -> `integer`
+#'
+#'   Number of rows used to choose hidden width.
+#'   - Returns: Validation partition size.
+#'
+#' * `$test_rows()` -> `integer`
+#'
+#'   Number of untouched rows used for the final evaluation.
+#'   - Returns: Test partition size.
+#'
+#' * `$summary()` -> `character`
+#'
+#'   Summarize split sizes, selected width, validation loss and final test accuracy.
+#'   - Returns: Owned multiline text, without a trailing newline.
+#'
+#' * `$trials()` -> `DataFrame or NULL`
+#'
+#'   Copy the complete Bayesian proposal history into an owned dataframe.
+#'   - Returns: New caller-owned frame with evaluation (1-based), hidden_nodes,
+#'     validation_log_loss, best_log_loss, cached (0/1), and phase (initial/bayesian).
+#'     One row per proposal, including repeated cached widths. Bindings own the result.
+#'
+#' * `$predict(newdata)` -> `character vector`
+#'
+#'   Predict labels from the final refit using only its two predictor columns.
+#'   - `newdata`: Borrowed frame, unchanged; missing predictors yield empty labels.
+#'   - Returns: One class label per input row, in input order.
+#'
+#' * `$plot_decision_regions(grid_resolution = 120)` -> `RPlot`
+#'
+#'   Plot final predicted class regions and development observations in the predictor plane.
+#'   - `grid_resolution`: Cells per axis, default 120; at least 2.
+#'   - Returns: Owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+#' @section Examples (C++):
+#' ```cpp
+#' const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+#' dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+#' const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: For invalid columns, labels, nonfinite/missing data or search controls.
+#'
+#' * `std::runtime_error`: If fitting or scoring fails to produce finite probabilities.
+#' @references - D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+#'   of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+#' @seealso stats::MLPClassifier, optim::BayesianOptimization, stats::train_test_split()
+#' @md
+#'
+`MLPClassifierSearch` <- R6::R6Class("MLPClassifierSearch", inherit = `.rosetta_object`, cloneable = FALSE,
+  public = list(
+    initialize = function(...) {
+      if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2935`, list(...)) }
+      invisible(self)
+    },
+    `best_hidden_nodes` = function(...) .Call(`.rs_2925`, self, list(...)),
+    `validation_log_loss` = function(...) .Call(`.rs_2926`, self, list(...)),
+    `test_accuracy` = function(...) .Call(`.rs_2927`, self, list(...)),
+    `training_rows` = function(...) .Call(`.rs_2928`, self, list(...)),
+    `validation_rows` = function(...) .Call(`.rs_2929`, self, list(...)),
+    `test_rows` = function(...) .Call(`.rs_2930`, self, list(...)),
+    `summary` = function(...) .Call(`.rs_2931`, self, list(...)),
+    `trials` = function(...) .Call(`.rs_2932`, self, list(...)),
+    `predict` = function(...) .Call(`.rs_2933`, self, list(...)),
+    `plot_decision_regions` = function(...) .Call(`.rs_2934`, self, list(...))
+  )
+)
 #' An owned B-rep solid with value-returning modelling and export operations.
 #'
 #' Geometry uses doubles in caller-selected consistent units. Copies own topology; immutable surfaces may be shared. Operations return new solids, preserving inputs. Unsupported kernel operations throw std::runtime_error with the kernel diagnostic. Concurrent const access is safe; do not mutate a shared object concurrently.
@@ -16848,29 +16970,29 @@ rosetta_ref <- function(value = NULL) {
       else stop("CadSolid has no public constructor")
       invisible(self)
     },
-    `box` = function(...) .Call(`.rs_2925`, NULL, list(...)),
-    `cylinder` = function(...) .Call(`.rs_2926`, NULL, list(...)),
-    `sphere` = function(...) .Call(`.rs_2927`, NULL, list(...)),
-    `torus` = function(...) .Call(`.rs_2928`, NULL, list(...)),
-    `united` = function(...) .Call(`.rs_2929`, self, list(...)),
-    `subtracted` = function(...) .Call(`.rs_2930`, self, list(...)),
-    `intersected` = function(...) .Call(`.rs_2931`, self, list(...)),
-    `translated` = function(...) .Call(`.rs_2932`, self, list(...)),
-    `rotated` = function(...) .Call(`.rs_2933`, self, list(...)),
-    `filleted` = function(...) .Call(`.rs_2934`, self, list(...)),
-    `chamfered` = function(...) .Call(`.rs_2935`, self, list(...)),
-    `shelled` = function(...) .Call(`.rs_2936`, self, list(...)),
-    `volume` = function(...) .Call(`.rs_2937`, self, list(...)),
-    `valid` = function(...) .Call(`.rs_2938`, self, list(...)),
-    `edges` = function(...) .Call(`.rs_2939`, self, list(...)),
-    `faces` = function(...) .Call(`.rs_2940`, self, list(...)),
-    `save` = function(...) invisible(.Call(`.rs_2941`, self, list(...)))
+    `box` = function(...) .Call(`.rs_2936`, NULL, list(...)),
+    `cylinder` = function(...) .Call(`.rs_2937`, NULL, list(...)),
+    `sphere` = function(...) .Call(`.rs_2938`, NULL, list(...)),
+    `torus` = function(...) .Call(`.rs_2939`, NULL, list(...)),
+    `united` = function(...) .Call(`.rs_2940`, self, list(...)),
+    `subtracted` = function(...) .Call(`.rs_2941`, self, list(...)),
+    `intersected` = function(...) .Call(`.rs_2942`, self, list(...)),
+    `translated` = function(...) .Call(`.rs_2943`, self, list(...)),
+    `rotated` = function(...) .Call(`.rs_2944`, self, list(...)),
+    `filleted` = function(...) .Call(`.rs_2945`, self, list(...)),
+    `chamfered` = function(...) .Call(`.rs_2946`, self, list(...)),
+    `shelled` = function(...) .Call(`.rs_2947`, self, list(...)),
+    `volume` = function(...) .Call(`.rs_2948`, self, list(...)),
+    `valid` = function(...) .Call(`.rs_2949`, self, list(...)),
+    `edges` = function(...) .Call(`.rs_2950`, self, list(...)),
+    `faces` = function(...) .Call(`.rs_2951`, self, list(...)),
+    `save` = function(...) invisible(.Call(`.rs_2952`, self, list(...)))
   )
 )
-`CadSolid`$`box` <- function(...) .Call(`.rs_2925`, NULL, list(...))
-`CadSolid`$`cylinder` <- function(...) .Call(`.rs_2926`, NULL, list(...))
-`CadSolid`$`sphere` <- function(...) .Call(`.rs_2927`, NULL, list(...))
-`CadSolid`$`torus` <- function(...) .Call(`.rs_2928`, NULL, list(...))
+`CadSolid`$`box` <- function(...) .Call(`.rs_2936`, NULL, list(...))
+`CadSolid`$`cylinder` <- function(...) .Call(`.rs_2937`, NULL, list(...))
+`CadSolid`$`sphere` <- function(...) .Call(`.rs_2938`, NULL, list(...))
+`CadSolid`$`torus` <- function(...) .Call(`.rs_2939`, NULL, list(...))
 #' A small code-driven scene facade, exposed as CadScene in Python/R.
 #'
 #' Owns scene/camera/render controls. All operations delegate to the canonical CAD, polygon and renderer APIs; copying retains independent scene state.
@@ -16999,31 +17121,31 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2960`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2971`, list(...)) }
       invisible(self)
     },
-    `from_file` = function(...) .Call(`.rs_2942`, NULL, list(...)),
-    `from_urdf` = function(...) .Call(`.rs_2943`, NULL, list(...)),
-    `set_joint` = function(...) invisible(.Call(`.rs_2944`, self, list(...))),
-    `joint_names` = function(...) .Call(`.rs_2945`, self, list(...)),
-    `add` = function(...) .Call(`.rs_2946`, self, list(...)),
-    `primitive` = function(...) .Call(`.rs_2947`, self, list(...)),
-    `size` = function(...) invisible(.Call(`.rs_2948`, self, list(...))),
-    `samples` = function(...) invisible(.Call(`.rs_2949`, self, list(...))),
-    `style` = function(...) invisible(.Call(`.rs_2950`, self, list(...))),
-    `shadows` = function(...) invisible(.Call(`.rs_2951`, self, list(...))),
-    `camera` = function(...) invisible(.Call(`.rs_2952`, self, list(...))),
-    `fit` = function(...) invisible(.Call(`.rs_2953`, self, list(...))),
-    `light` = function(...) .Call(`.rs_2954`, self, list(...)),
-    `render` = function(...) invisible(.Call(`.rs_2955`, self, list(...))),
-    `save_gltf` = function(...) invisible(.Call(`.rs_2956`, self, list(...))),
-    `pick_object` = function(...) .Call(`.rs_2957`, self, list(...)),
-    `object_count` = function(...) .Call(`.rs_2958`, self, list(...)),
-    `triangle_count` = function(...) .Call(`.rs_2959`, self, list(...))
+    `from_file` = function(...) .Call(`.rs_2953`, NULL, list(...)),
+    `from_urdf` = function(...) .Call(`.rs_2954`, NULL, list(...)),
+    `set_joint` = function(...) invisible(.Call(`.rs_2955`, self, list(...))),
+    `joint_names` = function(...) .Call(`.rs_2956`, self, list(...)),
+    `add` = function(...) .Call(`.rs_2957`, self, list(...)),
+    `primitive` = function(...) .Call(`.rs_2958`, self, list(...)),
+    `size` = function(...) invisible(.Call(`.rs_2959`, self, list(...))),
+    `samples` = function(...) invisible(.Call(`.rs_2960`, self, list(...))),
+    `style` = function(...) invisible(.Call(`.rs_2961`, self, list(...))),
+    `shadows` = function(...) invisible(.Call(`.rs_2962`, self, list(...))),
+    `camera` = function(...) invisible(.Call(`.rs_2963`, self, list(...))),
+    `fit` = function(...) invisible(.Call(`.rs_2964`, self, list(...))),
+    `light` = function(...) .Call(`.rs_2965`, self, list(...)),
+    `render` = function(...) invisible(.Call(`.rs_2966`, self, list(...))),
+    `save_gltf` = function(...) invisible(.Call(`.rs_2967`, self, list(...))),
+    `pick_object` = function(...) .Call(`.rs_2968`, self, list(...)),
+    `object_count` = function(...) .Call(`.rs_2969`, self, list(...)),
+    `triangle_count` = function(...) .Call(`.rs_2970`, self, list(...))
   )
 )
-`CadScene`$`from_file` <- function(...) .Call(`.rs_2942`, NULL, list(...))
-`CadScene`$`from_urdf` <- function(...) .Call(`.rs_2943`, NULL, list(...))
+`CadScene`$`from_file` <- function(...) .Call(`.rs_2953`, NULL, list(...))
+`CadScene`$`from_urdf` <- function(...) .Call(`.rs_2954`, NULL, list(...))
 #' Solver settings shared by fit_tensor_bspline(), fit_tensor_pspline() and the hierarchical fitting methods.
 #' @section Constructor:
 #' `SplineSolveOptions$new()`
@@ -17044,15 +17166,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2969`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2980`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `method` = function(value) if (missing(value)) .Call(`.rs_2961`, self) else invisible(.Call(`.rs_2962`, self, value)),
-    `direct_limit` = function(value) if (missing(value)) .Call(`.rs_2963`, self) else invisible(.Call(`.rs_2964`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_2965`, self) else invisible(.Call(`.rs_2966`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_2967`, self) else invisible(.Call(`.rs_2968`, self, value))
+    `method` = function(value) if (missing(value)) .Call(`.rs_2972`, self) else invisible(.Call(`.rs_2973`, self, value)),
+    `direct_limit` = function(value) if (missing(value)) .Call(`.rs_2974`, self) else invisible(.Call(`.rs_2975`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_2976`, self) else invisible(.Call(`.rs_2977`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_2978`, self) else invisible(.Call(`.rs_2979`, self, value))
   )
 )
 #' A refined B-spline basis together with the operator that maps coarse coefficients onto it.
@@ -17082,13 +17204,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2973`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2984`, list(...)) }
       invisible(self)
     },
-    `apply` = function(...) .Call(`.rs_2970`, self, list(...))
+    `apply` = function(...) .Call(`.rs_2981`, self, list(...))
   ),
   active = list(
-    `basis` = function(value) if (missing(value)) .Call(`.rs_2971`, self) else invisible(.Call(`.rs_2972`, self, value))
+    `basis` = function(value) if (missing(value)) .Call(`.rs_2982`, self) else invisible(.Call(`.rs_2983`, self, value))
   )
 )
 #' A scalar tensor-product B-spline f(x) = sum_j c_j B_j(x) with owned coefficients.
@@ -17205,22 +17327,22 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2987`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2998`, list(...)) }
       invisible(self)
     },
-    `dimensions` = function(...) .Call(`.rs_2974`, self, list(...)),
-    `bases` = function(...) .Call(`.rs_2975`, self, list(...)),
-    `shape` = function(...) .Call(`.rs_2976`, self, list(...)),
-    `coefficient_count` = function(...) .Call(`.rs_2977`, self, list(...)),
-    `coefficients` = function(...) .Call(`.rs_2978`, self, list(...)),
-    `domain_min` = function(...) .Call(`.rs_2979`, self, list(...)),
-    `domain_max` = function(...) .Call(`.rs_2980`, self, list(...)),
-    `coefficient` = function(...) .Call(`.rs_2981`, self, list(...)),
-    `set_coefficient` = function(...) invisible(.Call(`.rs_2982`, self, list(...))),
-    `evaluate` = function(...) .Call(`.rs_2983`, self, list(...)),
-    `evaluate_points` = function(...) .Call(`.rs_2984`, self, list(...)),
-    `evaluate_grid` = function(...) .Call(`.rs_2985`, self, list(...)),
-    `dyadic_refine` = function(...) .Call(`.rs_2986`, self, list(...))
+    `dimensions` = function(...) .Call(`.rs_2985`, self, list(...)),
+    `bases` = function(...) .Call(`.rs_2986`, self, list(...)),
+    `shape` = function(...) .Call(`.rs_2987`, self, list(...)),
+    `coefficient_count` = function(...) .Call(`.rs_2988`, self, list(...)),
+    `coefficients` = function(...) .Call(`.rs_2989`, self, list(...)),
+    `domain_min` = function(...) .Call(`.rs_2990`, self, list(...)),
+    `domain_max` = function(...) .Call(`.rs_2991`, self, list(...)),
+    `coefficient` = function(...) .Call(`.rs_2992`, self, list(...)),
+    `set_coefficient` = function(...) invisible(.Call(`.rs_2993`, self, list(...))),
+    `evaluate` = function(...) .Call(`.rs_2994`, self, list(...)),
+    `evaluate_points` = function(...) .Call(`.rs_2995`, self, list(...)),
+    `evaluate_grid` = function(...) .Call(`.rs_2996`, self, list(...)),
+    `dyadic_refine` = function(...) .Call(`.rs_2997`, self, list(...))
   )
 )
 #' Dyadic 2^d-ary tree of axis-aligned boxes shared by the hierarchical splines.
@@ -17368,32 +17490,32 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3008`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3019`, list(...)) }
       invisible(self)
     },
-    `dimensions` = function(...) .Call(`.rs_2988`, self, list(...)),
-    `arity` = function(...) .Call(`.rs_2989`, self, list(...)),
-    `size` = function(...) .Call(`.rs_2990`, self, list(...)),
-    `max_depth` = function(...) .Call(`.rs_2991`, self, list(...)),
-    `check` = function(...) invisible(.Call(`.rs_2992`, self, list(...))),
-    `check_slot` = function(...) invisible(.Call(`.rs_2993`, self, list(...))),
-    `lo` = function(...) .Call(`.rs_2994`, self, list(...)),
-    `hi` = function(...) .Call(`.rs_2995`, self, list(...)),
-    `depth` = function(...) .Call(`.rs_2996`, self, list(...)),
-    `parent` = function(...) .Call(`.rs_2997`, self, list(...)),
-    `child` = function(...) .Call(`.rs_2998`, self, list(...)),
-    `is_leaf` = function(...) .Call(`.rs_2999`, self, list(...)),
-    `ensure_child` = function(...) .Call(`.rs_3000`, self, list(...)),
-    `child_box` = function(...) .Call(`.rs_3001`, self, list(...)),
-    `slot_for` = function(...) .Call(`.rs_3002`, self, list(...)),
-    `contains` = function(...) .Call(`.rs_3003`, self, list(...)),
-    `locate` = function(...) .Call(`.rs_3004`, self, list(...)),
-    `cells_at_depth` = function(...) .Call(`.rs_3005`, self, list(...)),
-    `overlaps` = function(...) .Call(`.rs_3006`, NULL, list(...)),
-    `covered_to_depth` = function(...) .Call(`.rs_3007`, self, list(...))
+    `dimensions` = function(...) .Call(`.rs_2999`, self, list(...)),
+    `arity` = function(...) .Call(`.rs_3000`, self, list(...)),
+    `size` = function(...) .Call(`.rs_3001`, self, list(...)),
+    `max_depth` = function(...) .Call(`.rs_3002`, self, list(...)),
+    `check` = function(...) invisible(.Call(`.rs_3003`, self, list(...))),
+    `check_slot` = function(...) invisible(.Call(`.rs_3004`, self, list(...))),
+    `lo` = function(...) .Call(`.rs_3005`, self, list(...)),
+    `hi` = function(...) .Call(`.rs_3006`, self, list(...)),
+    `depth` = function(...) .Call(`.rs_3007`, self, list(...)),
+    `parent` = function(...) .Call(`.rs_3008`, self, list(...)),
+    `child` = function(...) .Call(`.rs_3009`, self, list(...)),
+    `is_leaf` = function(...) .Call(`.rs_3010`, self, list(...)),
+    `ensure_child` = function(...) .Call(`.rs_3011`, self, list(...)),
+    `child_box` = function(...) .Call(`.rs_3012`, self, list(...)),
+    `slot_for` = function(...) .Call(`.rs_3013`, self, list(...)),
+    `contains` = function(...) .Call(`.rs_3014`, self, list(...)),
+    `locate` = function(...) .Call(`.rs_3015`, self, list(...)),
+    `cells_at_depth` = function(...) .Call(`.rs_3016`, self, list(...)),
+    `overlaps` = function(...) .Call(`.rs_3017`, NULL, list(...)),
+    `covered_to_depth` = function(...) .Call(`.rs_3018`, self, list(...))
   )
 )
-`OrthantCellTree`$`overlaps` <- function(...) .Call(`.rs_3006`, NULL, list(...))
+`OrthantCellTree`$`overlaps` <- function(...) .Call(`.rs_3017`, NULL, list(...))
 #' One axis's level-to-level refinement operator stored both ways.
 #' @section Constructor:
 #' `AxisRefinement$new()`
@@ -17406,13 +17528,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3013`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3024`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `rows` = function(value) if (missing(value)) .Call(`.rs_3009`, self) else invisible(.Call(`.rs_3010`, self, value)),
-    `cols` = function(value) if (missing(value)) .Call(`.rs_3011`, self) else invisible(.Call(`.rs_3012`, self, value))
+    `rows` = function(value) if (missing(value)) .Call(`.rs_3020`, self) else invisible(.Call(`.rs_3021`, self, value)),
+    `cols` = function(value) if (missing(value)) .Call(`.rs_3022`, self) else invisible(.Call(`.rs_3023`, self, value))
   )
 )
 #' Classical (overlay) hierarchical B-spline in the style of Forsey and Bartels: every cell of a dyadic tree may carry its own local "detail" TensorBSpline.
@@ -17600,30 +17722,30 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3035`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3046`, list(...)) }
       invisible(self)
     },
-    `dimensions` = function(...) .Call(`.rs_3014`, self, list(...)),
-    `cell_count` = function(...) .Call(`.rs_3015`, self, list(...)),
-    `root` = function(...) .Call(`.rs_3016`, self, list(...)),
-    `parent` = function(...) .Call(`.rs_3017`, self, list(...)),
-    `child` = function(...) .Call(`.rs_3018`, self, list(...)),
-    `depth` = function(...) .Call(`.rs_3019`, self, list(...)),
-    `cell_min` = function(...) .Call(`.rs_3020`, self, list(...)),
-    `cell_max` = function(...) .Call(`.rs_3021`, self, list(...)),
-    `locate` = function(...) .Call(`.rs_3022`, self, list(...)),
-    `has_spline` = function(...) .Call(`.rs_3023`, self, list(...)),
-    `spline` = function(...) .Call(`.rs_3024`, self, list(...)),
-    `set_spline` = function(...) invisible(.Call(`.rs_3025`, self, list(...))),
-    `clear_spline` = function(...) invisible(.Call(`.rs_3026`, self, list(...))),
-    `subdivide` = function(...) .Call(`.rs_3027`, self, list(...)),
-    `refine` = function(...) .Call(`.rs_3028`, self, list(...)),
-    `refine_region` = function(...) invisible(.Call(`.rs_3029`, self, list(...))),
-    `fit_cell` = function(...) invisible(.Call(`.rs_3030`, self, list(...))),
-    `fit_cell_penalized` = function(...) invisible(.Call(`.rs_3031`, self, list(...))),
-    `evaluate` = function(...) .Call(`.rs_3032`, self, list(...)),
-    `evaluate_points` = function(...) .Call(`.rs_3033`, self, list(...)),
-    `evaluate_grid` = function(...) .Call(`.rs_3034`, self, list(...))
+    `dimensions` = function(...) .Call(`.rs_3025`, self, list(...)),
+    `cell_count` = function(...) .Call(`.rs_3026`, self, list(...)),
+    `root` = function(...) .Call(`.rs_3027`, self, list(...)),
+    `parent` = function(...) .Call(`.rs_3028`, self, list(...)),
+    `child` = function(...) .Call(`.rs_3029`, self, list(...)),
+    `depth` = function(...) .Call(`.rs_3030`, self, list(...)),
+    `cell_min` = function(...) .Call(`.rs_3031`, self, list(...)),
+    `cell_max` = function(...) .Call(`.rs_3032`, self, list(...)),
+    `locate` = function(...) .Call(`.rs_3033`, self, list(...)),
+    `has_spline` = function(...) .Call(`.rs_3034`, self, list(...)),
+    `spline` = function(...) .Call(`.rs_3035`, self, list(...)),
+    `set_spline` = function(...) invisible(.Call(`.rs_3036`, self, list(...))),
+    `clear_spline` = function(...) invisible(.Call(`.rs_3037`, self, list(...))),
+    `subdivide` = function(...) .Call(`.rs_3038`, self, list(...)),
+    `refine` = function(...) .Call(`.rs_3039`, self, list(...)),
+    `refine_region` = function(...) invisible(.Call(`.rs_3040`, self, list(...))),
+    `fit_cell` = function(...) invisible(.Call(`.rs_3041`, self, list(...))),
+    `fit_cell_penalized` = function(...) invisible(.Call(`.rs_3042`, self, list(...))),
+    `evaluate` = function(...) .Call(`.rs_3043`, self, list(...)),
+    `evaluate_points` = function(...) .Call(`.rs_3044`, self, list(...)),
+    `evaluate_grid` = function(...) .Call(`.rs_3045`, self, list(...))
   )
 )
 #' Truncated hierarchical B-spline (THB-spline) of Giannelli, Juttler and Speleers.
@@ -17867,38 +17989,38 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3065`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3076`, list(...)) }
       invisible(self)
     },
-    `dimensions` = function(...) .Call(`.rs_3036`, self, list(...)),
-    `level_count` = function(...) .Call(`.rs_3037`, self, list(...)),
-    `level` = function(...) .Call(`.rs_3038`, self, list(...)),
-    `cell_count` = function(...) .Call(`.rs_3039`, self, list(...)),
-    `root` = function(...) .Call(`.rs_3040`, self, list(...)),
-    `parent` = function(...) .Call(`.rs_3041`, self, list(...)),
-    `child` = function(...) .Call(`.rs_3042`, self, list(...)),
-    `depth` = function(...) .Call(`.rs_3043`, self, list(...)),
-    `cell_min` = function(...) .Call(`.rs_3044`, self, list(...)),
-    `cell_max` = function(...) .Call(`.rs_3045`, self, list(...)),
-    `locate` = function(...) .Call(`.rs_3046`, self, list(...)),
-    `refine` = function(...) .Call(`.rs_3047`, self, list(...)),
-    `subdivide` = function(...) .Call(`.rs_3048`, self, list(...)),
-    `refine_region` = function(...) invisible(.Call(`.rs_3049`, self, list(...))),
-    `support_min` = function(...) .Call(`.rs_3050`, self, list(...)),
-    `support_max` = function(...) .Call(`.rs_3051`, self, list(...)),
-    `is_active` = function(...) .Call(`.rs_3052`, self, list(...)),
-    `active_indices` = function(...) .Call(`.rs_3053`, self, list(...)),
-    `basis_size` = function(...) .Call(`.rs_3054`, self, list(...)),
-    `coefficient` = function(...) .Call(`.rs_3055`, self, list(...)),
-    `set_coefficient` = function(...) invisible(.Call(`.rs_3056`, self, list(...))),
-    `truncated_basis` = function(...) .Call(`.rs_3057`, self, list(...)),
-    `fit_level` = function(...) invisible(.Call(`.rs_3058`, self, list(...))),
-    `fit_level_penalized` = function(...) invisible(.Call(`.rs_3059`, self, list(...))),
-    `fit` = function(...) invisible(.Call(`.rs_3060`, self, list(...))),
-    `fit_penalized` = function(...) invisible(.Call(`.rs_3061`, self, list(...))),
-    `evaluate` = function(...) .Call(`.rs_3062`, self, list(...)),
-    `evaluate_points` = function(...) .Call(`.rs_3063`, self, list(...)),
-    `evaluate_grid` = function(...) .Call(`.rs_3064`, self, list(...))
+    `dimensions` = function(...) .Call(`.rs_3047`, self, list(...)),
+    `level_count` = function(...) .Call(`.rs_3048`, self, list(...)),
+    `level` = function(...) .Call(`.rs_3049`, self, list(...)),
+    `cell_count` = function(...) .Call(`.rs_3050`, self, list(...)),
+    `root` = function(...) .Call(`.rs_3051`, self, list(...)),
+    `parent` = function(...) .Call(`.rs_3052`, self, list(...)),
+    `child` = function(...) .Call(`.rs_3053`, self, list(...)),
+    `depth` = function(...) .Call(`.rs_3054`, self, list(...)),
+    `cell_min` = function(...) .Call(`.rs_3055`, self, list(...)),
+    `cell_max` = function(...) .Call(`.rs_3056`, self, list(...)),
+    `locate` = function(...) .Call(`.rs_3057`, self, list(...)),
+    `refine` = function(...) .Call(`.rs_3058`, self, list(...)),
+    `subdivide` = function(...) .Call(`.rs_3059`, self, list(...)),
+    `refine_region` = function(...) invisible(.Call(`.rs_3060`, self, list(...))),
+    `support_min` = function(...) .Call(`.rs_3061`, self, list(...)),
+    `support_max` = function(...) .Call(`.rs_3062`, self, list(...)),
+    `is_active` = function(...) .Call(`.rs_3063`, self, list(...)),
+    `active_indices` = function(...) .Call(`.rs_3064`, self, list(...)),
+    `basis_size` = function(...) .Call(`.rs_3065`, self, list(...)),
+    `coefficient` = function(...) .Call(`.rs_3066`, self, list(...)),
+    `set_coefficient` = function(...) invisible(.Call(`.rs_3067`, self, list(...))),
+    `truncated_basis` = function(...) .Call(`.rs_3068`, self, list(...)),
+    `fit_level` = function(...) invisible(.Call(`.rs_3069`, self, list(...))),
+    `fit_level_penalized` = function(...) invisible(.Call(`.rs_3070`, self, list(...))),
+    `fit` = function(...) invisible(.Call(`.rs_3071`, self, list(...))),
+    `fit_penalized` = function(...) invisible(.Call(`.rs_3072`, self, list(...))),
+    `evaluate` = function(...) .Call(`.rs_3073`, self, list(...)),
+    `evaluate_points` = function(...) .Call(`.rs_3074`, self, list(...)),
+    `evaluate_grid` = function(...) .Call(`.rs_3075`, self, list(...))
   )
 )
 #' C++ class `datamunge::nn::NnTensor`
@@ -18054,72 +18176,72 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3120`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3131`, list(...)) }
       invisible(self)
     },
-    `zeros` = function(...) .Call(`.rs_3066`, NULL, list(...)),
-    `ones` = function(...) .Call(`.rs_3067`, NULL, list(...)),
-    `full` = function(...) .Call(`.rs_3068`, NULL, list(...)),
-    `arange` = function(...) .Call(`.rs_3069`, NULL, list(...)),
-    `randn` = function(...) .Call(`.rs_3070`, NULL, list(...)),
-    `uniform` = function(...) .Call(`.rs_3071`, NULL, list(...)),
-    `load_npy` = function(...) .Call(`.rs_3072`, NULL, list(...)),
-    `save_npy` = function(...) invisible(.Call(`.rs_3073`, self, list(...))),
-    `defined` = function(...) .Call(`.rs_3074`, self, list(...)),
-    `values` = function(...) .Call(`.rs_3075`, self, list(...)),
-    `shape` = function(...) .Call(`.rs_3076`, self, list(...)),
-    `dtype` = function(...) .Call(`.rs_3077`, self, list(...)),
-    `ndim` = function(...) .Call(`.rs_3078`, self, list(...)),
-    `numel` = function(...) .Call(`.rs_3079`, self, list(...)),
-    `item` = function(...) .Call(`.rs_3080`, self, list(...)),
-    `at` = function(...) .Call(`.rs_3081`, self, list(...)),
-    `str` = function(...) .Call(`.rs_3082`, self, list(...)),
-    `astype` = function(...) .Call(`.rs_3083`, self, list(...)),
-    `reshape` = function(...) .Call(`.rs_3084`, self, list(...)),
-    `transpose` = function(...) .Call(`.rs_3085`, self, list(...)),
-    `slice` = function(...) .Call(`.rs_3086`, self, list(...)),
-    `concat` = function(...) .Call(`.rs_3087`, self, list(...)),
-    `add` = function(...) .Call(`.rs_3088`, self, list(...)),
-    `sub` = function(...) .Call(`.rs_3089`, self, list(...)),
-    `mul` = function(...) .Call(`.rs_3090`, self, list(...)),
-    `div` = function(...) .Call(`.rs_3091`, self, list(...)),
-    `add_scalar` = function(...) .Call(`.rs_3092`, self, list(...)),
-    `mul_scalar` = function(...) .Call(`.rs_3093`, self, list(...)),
-    `pow` = function(...) .Call(`.rs_3094`, self, list(...)),
-    `neg` = function(...) .Call(`.rs_3095`, self, list(...)),
-    `matmul` = function(...) .Call(`.rs_3096`, self, list(...)),
-    `exp` = function(...) .Call(`.rs_3097`, self, list(...)),
-    `log` = function(...) .Call(`.rs_3098`, self, list(...)),
-    `sqrt` = function(...) .Call(`.rs_3099`, self, list(...)),
-    `abs` = function(...) .Call(`.rs_3100`, self, list(...)),
-    `square` = function(...) .Call(`.rs_3101`, self, list(...)),
-    `tanh` = function(...) .Call(`.rs_3102`, self, list(...)),
-    `sigmoid` = function(...) .Call(`.rs_3103`, self, list(...)),
-    `relu` = function(...) .Call(`.rs_3104`, self, list(...)),
-    `activate` = function(...) .Call(`.rs_3105`, self, list(...)),
-    `softmax` = function(...) .Call(`.rs_3106`, self, list(...)),
-    `log_softmax` = function(...) .Call(`.rs_3107`, self, list(...)),
-    `sum` = function(...) .Call(`.rs_3108`, self, list(...)),
-    `mean` = function(...) .Call(`.rs_3109`, self, list(...)),
-    `max` = function(...) .Call(`.rs_3110`, self, list(...)),
-    `min` = function(...) .Call(`.rs_3111`, self, list(...)),
-    `argmax` = function(...) .Call(`.rs_3112`, self, list(...)),
-    `set_requires_grad` = function(...) invisible(.Call(`.rs_3113`, self, list(...))),
-    `requires_grad` = function(...) .Call(`.rs_3114`, self, list(...)),
-    `backward` = function(...) invisible(.Call(`.rs_3115`, self, list(...))),
-    `grad` = function(...) .Call(`.rs_3116`, self, list(...)),
-    `zero_grad` = function(...) invisible(.Call(`.rs_3117`, self, list(...))),
-    `detach` = function(...) .Call(`.rs_3118`, self, list(...)),
-    `format` = function(...) .Call(`.rs_3119`, self, list(...))
+    `zeros` = function(...) .Call(`.rs_3077`, NULL, list(...)),
+    `ones` = function(...) .Call(`.rs_3078`, NULL, list(...)),
+    `full` = function(...) .Call(`.rs_3079`, NULL, list(...)),
+    `arange` = function(...) .Call(`.rs_3080`, NULL, list(...)),
+    `randn` = function(...) .Call(`.rs_3081`, NULL, list(...)),
+    `uniform` = function(...) .Call(`.rs_3082`, NULL, list(...)),
+    `load_npy` = function(...) .Call(`.rs_3083`, NULL, list(...)),
+    `save_npy` = function(...) invisible(.Call(`.rs_3084`, self, list(...))),
+    `defined` = function(...) .Call(`.rs_3085`, self, list(...)),
+    `values` = function(...) .Call(`.rs_3086`, self, list(...)),
+    `shape` = function(...) .Call(`.rs_3087`, self, list(...)),
+    `dtype` = function(...) .Call(`.rs_3088`, self, list(...)),
+    `ndim` = function(...) .Call(`.rs_3089`, self, list(...)),
+    `numel` = function(...) .Call(`.rs_3090`, self, list(...)),
+    `item` = function(...) .Call(`.rs_3091`, self, list(...)),
+    `at` = function(...) .Call(`.rs_3092`, self, list(...)),
+    `str` = function(...) .Call(`.rs_3093`, self, list(...)),
+    `astype` = function(...) .Call(`.rs_3094`, self, list(...)),
+    `reshape` = function(...) .Call(`.rs_3095`, self, list(...)),
+    `transpose` = function(...) .Call(`.rs_3096`, self, list(...)),
+    `slice` = function(...) .Call(`.rs_3097`, self, list(...)),
+    `concat` = function(...) .Call(`.rs_3098`, self, list(...)),
+    `add` = function(...) .Call(`.rs_3099`, self, list(...)),
+    `sub` = function(...) .Call(`.rs_3100`, self, list(...)),
+    `mul` = function(...) .Call(`.rs_3101`, self, list(...)),
+    `div` = function(...) .Call(`.rs_3102`, self, list(...)),
+    `add_scalar` = function(...) .Call(`.rs_3103`, self, list(...)),
+    `mul_scalar` = function(...) .Call(`.rs_3104`, self, list(...)),
+    `pow` = function(...) .Call(`.rs_3105`, self, list(...)),
+    `neg` = function(...) .Call(`.rs_3106`, self, list(...)),
+    `matmul` = function(...) .Call(`.rs_3107`, self, list(...)),
+    `exp` = function(...) .Call(`.rs_3108`, self, list(...)),
+    `log` = function(...) .Call(`.rs_3109`, self, list(...)),
+    `sqrt` = function(...) .Call(`.rs_3110`, self, list(...)),
+    `abs` = function(...) .Call(`.rs_3111`, self, list(...)),
+    `square` = function(...) .Call(`.rs_3112`, self, list(...)),
+    `tanh` = function(...) .Call(`.rs_3113`, self, list(...)),
+    `sigmoid` = function(...) .Call(`.rs_3114`, self, list(...)),
+    `relu` = function(...) .Call(`.rs_3115`, self, list(...)),
+    `activate` = function(...) .Call(`.rs_3116`, self, list(...)),
+    `softmax` = function(...) .Call(`.rs_3117`, self, list(...)),
+    `log_softmax` = function(...) .Call(`.rs_3118`, self, list(...)),
+    `sum` = function(...) .Call(`.rs_3119`, self, list(...)),
+    `mean` = function(...) .Call(`.rs_3120`, self, list(...)),
+    `max` = function(...) .Call(`.rs_3121`, self, list(...)),
+    `min` = function(...) .Call(`.rs_3122`, self, list(...)),
+    `argmax` = function(...) .Call(`.rs_3123`, self, list(...)),
+    `set_requires_grad` = function(...) invisible(.Call(`.rs_3124`, self, list(...))),
+    `requires_grad` = function(...) .Call(`.rs_3125`, self, list(...)),
+    `backward` = function(...) invisible(.Call(`.rs_3126`, self, list(...))),
+    `grad` = function(...) .Call(`.rs_3127`, self, list(...)),
+    `zero_grad` = function(...) invisible(.Call(`.rs_3128`, self, list(...))),
+    `detach` = function(...) .Call(`.rs_3129`, self, list(...)),
+    `format` = function(...) .Call(`.rs_3130`, self, list(...))
   )
 )
-`NnTensor`$`zeros` <- function(...) .Call(`.rs_3066`, NULL, list(...))
-`NnTensor`$`ones` <- function(...) .Call(`.rs_3067`, NULL, list(...))
-`NnTensor`$`full` <- function(...) .Call(`.rs_3068`, NULL, list(...))
-`NnTensor`$`arange` <- function(...) .Call(`.rs_3069`, NULL, list(...))
-`NnTensor`$`randn` <- function(...) .Call(`.rs_3070`, NULL, list(...))
-`NnTensor`$`uniform` <- function(...) .Call(`.rs_3071`, NULL, list(...))
-`NnTensor`$`load_npy` <- function(...) .Call(`.rs_3072`, NULL, list(...))
+`NnTensor`$`zeros` <- function(...) .Call(`.rs_3077`, NULL, list(...))
+`NnTensor`$`ones` <- function(...) .Call(`.rs_3078`, NULL, list(...))
+`NnTensor`$`full` <- function(...) .Call(`.rs_3079`, NULL, list(...))
+`NnTensor`$`arange` <- function(...) .Call(`.rs_3080`, NULL, list(...))
+`NnTensor`$`randn` <- function(...) .Call(`.rs_3081`, NULL, list(...))
+`NnTensor`$`uniform` <- function(...) .Call(`.rs_3082`, NULL, list(...))
+`NnTensor`$`load_npy` <- function(...) .Call(`.rs_3083`, NULL, list(...))
 #' A sequential network.
 #'
 #' Layers are added by spec and own parameters named "<kind><index>/..." (e.g. "dense0/W", "conv1/b"); batch-norm moving statistics live in a second store. Parameters are created on the first forward pass, when the input width is known.
@@ -18218,35 +18340,35 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3147`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3158`, list(...)) }
       invisible(self)
     },
-    `add_dense` = function(...) invisible(.Call(`.rs_3121`, self, list(...))),
-    `add_conv2d` = function(...) invisible(.Call(`.rs_3122`, self, list(...))),
-    `add_max_pool2d` = function(...) invisible(.Call(`.rs_3123`, self, list(...))),
-    `add_avg_pool2d` = function(...) invisible(.Call(`.rs_3124`, self, list(...))),
-    `add_global_avg_pool2d` = function(...) invisible(.Call(`.rs_3125`, self, list(...))),
-    `add_batch_norm` = function(...) invisible(.Call(`.rs_3126`, self, list(...))),
-    `add_layer_norm` = function(...) invisible(.Call(`.rs_3127`, self, list(...))),
-    `add_dropout` = function(...) invisible(.Call(`.rs_3128`, self, list(...))),
-    `add_activation` = function(...) invisible(.Call(`.rs_3129`, self, list(...))),
-    `add_flatten` = function(...) invisible(.Call(`.rs_3130`, self, list(...))),
-    `add_reshape` = function(...) invisible(.Call(`.rs_3131`, self, list(...))),
-    `num_layers` = function(...) .Call(`.rs_3132`, self, list(...)),
-    `summary` = function(...) .Call(`.rs_3133`, self, list(...)),
-    `forward` = function(...) .Call(`.rs_3134`, self, list(...)),
-    `predict` = function(...) .Call(`.rs_3135`, self, list(...)),
-    `loss` = function(...) .Call(`.rs_3136`, self, list(...)),
-    `compute_gradients` = function(...) .Call(`.rs_3137`, self, list(...)),
-    `gradient` = function(...) .Call(`.rs_3138`, self, list(...)),
-    `set_optimizer` = function(...) invisible(.Call(`.rs_3139`, self, list(...))),
-    `train_step` = function(...) .Call(`.rs_3140`, self, list(...)),
-    `parameter_names` = function(...) .Call(`.rs_3141`, self, list(...)),
-    `parameter` = function(...) .Call(`.rs_3142`, self, list(...)),
-    `set_parameter` = function(...) invisible(.Call(`.rs_3143`, self, list(...))),
-    `parameter_count` = function(...) .Call(`.rs_3144`, self, list(...)),
-    `save` = function(...) invisible(.Call(`.rs_3145`, self, list(...))),
-    `load` = function(...) invisible(.Call(`.rs_3146`, self, list(...)))
+    `add_dense` = function(...) invisible(.Call(`.rs_3132`, self, list(...))),
+    `add_conv2d` = function(...) invisible(.Call(`.rs_3133`, self, list(...))),
+    `add_max_pool2d` = function(...) invisible(.Call(`.rs_3134`, self, list(...))),
+    `add_avg_pool2d` = function(...) invisible(.Call(`.rs_3135`, self, list(...))),
+    `add_global_avg_pool2d` = function(...) invisible(.Call(`.rs_3136`, self, list(...))),
+    `add_batch_norm` = function(...) invisible(.Call(`.rs_3137`, self, list(...))),
+    `add_layer_norm` = function(...) invisible(.Call(`.rs_3138`, self, list(...))),
+    `add_dropout` = function(...) invisible(.Call(`.rs_3139`, self, list(...))),
+    `add_activation` = function(...) invisible(.Call(`.rs_3140`, self, list(...))),
+    `add_flatten` = function(...) invisible(.Call(`.rs_3141`, self, list(...))),
+    `add_reshape` = function(...) invisible(.Call(`.rs_3142`, self, list(...))),
+    `num_layers` = function(...) .Call(`.rs_3143`, self, list(...)),
+    `summary` = function(...) .Call(`.rs_3144`, self, list(...)),
+    `forward` = function(...) .Call(`.rs_3145`, self, list(...)),
+    `predict` = function(...) .Call(`.rs_3146`, self, list(...)),
+    `loss` = function(...) .Call(`.rs_3147`, self, list(...)),
+    `compute_gradients` = function(...) .Call(`.rs_3148`, self, list(...)),
+    `gradient` = function(...) .Call(`.rs_3149`, self, list(...)),
+    `set_optimizer` = function(...) invisible(.Call(`.rs_3150`, self, list(...))),
+    `train_step` = function(...) .Call(`.rs_3151`, self, list(...)),
+    `parameter_names` = function(...) .Call(`.rs_3152`, self, list(...)),
+    `parameter` = function(...) .Call(`.rs_3153`, self, list(...)),
+    `set_parameter` = function(...) invisible(.Call(`.rs_3154`, self, list(...))),
+    `parameter_count` = function(...) .Call(`.rs_3155`, self, list(...)),
+    `save` = function(...) invisible(.Call(`.rs_3156`, self, list(...))),
+    `load` = function(...) invisible(.Call(`.rs_3157`, self, list(...)))
   )
 )
 #' Preallocated observations, rewards and independent episode-end flags.
@@ -18273,17 +18395,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3160`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3171`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `observations` = function(value) if (missing(value)) .Call(`.rs_3148`, self) else invisible(.Call(`.rs_3149`, self, value)),
-    `rewards` = function(value) if (missing(value)) .Call(`.rs_3150`, self) else invisible(.Call(`.rs_3151`, self, value)),
-    `terminated` = function(value) if (missing(value)) .Call(`.rs_3152`, self) else invisible(.Call(`.rs_3153`, self, value)),
-    `truncated` = function(value) if (missing(value)) .Call(`.rs_3154`, self) else invisible(.Call(`.rs_3155`, self, value)),
-    `final_observations` = function(value) if (missing(value)) .Call(`.rs_3156`, self) else invisible(.Call(`.rs_3157`, self, value)),
-    `final_valid` = function(value) if (missing(value)) .Call(`.rs_3158`, self) else invisible(.Call(`.rs_3159`, self, value))
+    `observations` = function(value) if (missing(value)) .Call(`.rs_3159`, self) else invisible(.Call(`.rs_3160`, self, value)),
+    `rewards` = function(value) if (missing(value)) .Call(`.rs_3161`, self) else invisible(.Call(`.rs_3162`, self, value)),
+    `terminated` = function(value) if (missing(value)) .Call(`.rs_3163`, self) else invisible(.Call(`.rs_3164`, self, value)),
+    `truncated` = function(value) if (missing(value)) .Call(`.rs_3165`, self) else invisible(.Call(`.rs_3166`, self, value)),
+    `final_observations` = function(value) if (missing(value)) .Call(`.rs_3167`, self) else invisible(.Call(`.rs_3168`, self, value)),
+    `final_valid` = function(value) if (missing(value)) .Call(`.rs_3169`, self) else invisible(.Call(`.rs_3170`, self, value))
   )
 )
 #' Batched native InvertedPendulum or Hopper rollouts without a graphics dependency.
@@ -18350,17 +18472,17 @@ rosetta_ref <- function(value = NULL) {
       else stop("TaskBatch has no public constructor")
       invisible(self)
     },
-    `size` = function(...) .Call(`.rs_3161`, self, list(...)),
-    `observation_size` = function(...) .Call(`.rs_3162`, self, list(...)),
-    `action_size` = function(...) .Call(`.rs_3163`, self, list(...)),
-    `output` = function(...) .Call(`.rs_3164`, self, list(...)),
-    `step` = function(...) .Call(`.rs_3165`, self, list(...)),
-    `reset` = function(...) .Call(`.rs_3166`, self, list(...)),
-    `seed` = function(...) invisible(.Call(`.rs_3167`, self, list(...))),
-    `create` = function(...) .Call(`.rs_3168`, NULL, list(...))
+    `size` = function(...) .Call(`.rs_3172`, self, list(...)),
+    `observation_size` = function(...) .Call(`.rs_3173`, self, list(...)),
+    `action_size` = function(...) .Call(`.rs_3174`, self, list(...)),
+    `output` = function(...) .Call(`.rs_3175`, self, list(...)),
+    `step` = function(...) .Call(`.rs_3176`, self, list(...)),
+    `reset` = function(...) .Call(`.rs_3177`, self, list(...)),
+    `seed` = function(...) invisible(.Call(`.rs_3178`, self, list(...))),
+    `create` = function(...) .Call(`.rs_3179`, NULL, list(...))
   )
 )
-`TaskBatch`$`create` <- function(...) .Call(`.rs_3168`, NULL, list(...))
+`TaskBatch`$`create` <- function(...) .Call(`.rs_3179`, NULL, list(...))
 #' C++ class `datamunge::dstruct::DirectedGraph<std::string>`
 #' @section Constructor:
 #' `DirectedGraph$new()`
@@ -18414,29 +18536,29 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3189`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3200`, list(...)) }
       invisible(self)
     },
-    `empty` = function(...) .Call(`.rs_3169`, self, list(...)),
-    `vertex_count` = function(...) .Call(`.rs_3170`, self, list(...)),
-    `edge_count` = function(...) .Call(`.rs_3171`, self, list(...)),
-    `clear` = function(...) invisible(.Call(`.rs_3172`, self, list(...))),
-    `add_vertex` = function(...) .Call(`.rs_3173`, self, list(...)),
-    `remove_vertex` = function(...) .Call(`.rs_3174`, self, list(...)),
-    `has_vertex` = function(...) .Call(`.rs_3175`, self, list(...)),
-    `add_edge` = function(...) .Call(`.rs_3176`, self, list(...)),
-    `remove_edge` = function(...) .Call(`.rs_3177`, self, list(...)),
-    `has_edge` = function(...) .Call(`.rs_3178`, self, list(...)),
-    `vertices` = function(...) .Call(`.rs_3179`, self, list(...)),
-    `outgoing_neighbors` = function(...) .Call(`.rs_3180`, self, list(...)),
-    `incoming_neighbors` = function(...) .Call(`.rs_3181`, self, list(...)),
-    `out_degree` = function(...) .Call(`.rs_3182`, self, list(...)),
-    `in_degree` = function(...) .Call(`.rs_3183`, self, list(...)),
-    `bfs` = function(...) .Call(`.rs_3184`, self, list(...)),
-    `dfs` = function(...) .Call(`.rs_3185`, self, list(...)),
-    `contains_path` = function(...) .Call(`.rs_3186`, self, list(...)),
-    `transpose` = function(...) .Call(`.rs_3187`, self, list(...)),
-    `topological_sort` = function(...) .Call(`.rs_3188`, self, list(...))
+    `empty` = function(...) .Call(`.rs_3180`, self, list(...)),
+    `vertex_count` = function(...) .Call(`.rs_3181`, self, list(...)),
+    `edge_count` = function(...) .Call(`.rs_3182`, self, list(...)),
+    `clear` = function(...) invisible(.Call(`.rs_3183`, self, list(...))),
+    `add_vertex` = function(...) .Call(`.rs_3184`, self, list(...)),
+    `remove_vertex` = function(...) .Call(`.rs_3185`, self, list(...)),
+    `has_vertex` = function(...) .Call(`.rs_3186`, self, list(...)),
+    `add_edge` = function(...) .Call(`.rs_3187`, self, list(...)),
+    `remove_edge` = function(...) .Call(`.rs_3188`, self, list(...)),
+    `has_edge` = function(...) .Call(`.rs_3189`, self, list(...)),
+    `vertices` = function(...) .Call(`.rs_3190`, self, list(...)),
+    `outgoing_neighbors` = function(...) .Call(`.rs_3191`, self, list(...)),
+    `incoming_neighbors` = function(...) .Call(`.rs_3192`, self, list(...)),
+    `out_degree` = function(...) .Call(`.rs_3193`, self, list(...)),
+    `in_degree` = function(...) .Call(`.rs_3194`, self, list(...)),
+    `bfs` = function(...) .Call(`.rs_3195`, self, list(...)),
+    `dfs` = function(...) .Call(`.rs_3196`, self, list(...)),
+    `contains_path` = function(...) .Call(`.rs_3197`, self, list(...)),
+    `transpose` = function(...) .Call(`.rs_3198`, self, list(...)),
+    `topological_sort` = function(...) .Call(`.rs_3199`, self, list(...))
   )
 )
 #' C++ class `datamunge::dstruct::UndirectedGraph<std::string>`
@@ -18494,27 +18616,27 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3208`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3219`, list(...)) }
       invisible(self)
     },
-    `empty` = function(...) .Call(`.rs_3190`, self, list(...)),
-    `vertex_count` = function(...) .Call(`.rs_3191`, self, list(...)),
-    `edge_count` = function(...) .Call(`.rs_3192`, self, list(...)),
-    `clear` = function(...) invisible(.Call(`.rs_3193`, self, list(...))),
-    `add_vertex` = function(...) .Call(`.rs_3194`, self, list(...)),
-    `remove_vertex` = function(...) .Call(`.rs_3195`, self, list(...)),
-    `has_vertex` = function(...) .Call(`.rs_3196`, self, list(...)),
-    `add_edge` = function(...) .Call(`.rs_3197`, self, list(...)),
-    `remove_edge` = function(...) .Call(`.rs_3198`, self, list(...)),
-    `has_edge` = function(...) .Call(`.rs_3199`, self, list(...)),
-    `vertices` = function(...) .Call(`.rs_3200`, self, list(...)),
-    `neighbors` = function(...) .Call(`.rs_3201`, self, list(...)),
-    `degree` = function(...) .Call(`.rs_3202`, self, list(...)),
-    `bfs` = function(...) .Call(`.rs_3203`, self, list(...)),
-    `dfs` = function(...) .Call(`.rs_3204`, self, list(...)),
-    `contains_path` = function(...) .Call(`.rs_3205`, self, list(...)),
-    `connected_components` = function(...) .Call(`.rs_3206`, self, list(...)),
-    `has_cycle` = function(...) .Call(`.rs_3207`, self, list(...))
+    `empty` = function(...) .Call(`.rs_3201`, self, list(...)),
+    `vertex_count` = function(...) .Call(`.rs_3202`, self, list(...)),
+    `edge_count` = function(...) .Call(`.rs_3203`, self, list(...)),
+    `clear` = function(...) invisible(.Call(`.rs_3204`, self, list(...))),
+    `add_vertex` = function(...) .Call(`.rs_3205`, self, list(...)),
+    `remove_vertex` = function(...) .Call(`.rs_3206`, self, list(...)),
+    `has_vertex` = function(...) .Call(`.rs_3207`, self, list(...)),
+    `add_edge` = function(...) .Call(`.rs_3208`, self, list(...)),
+    `remove_edge` = function(...) .Call(`.rs_3209`, self, list(...)),
+    `has_edge` = function(...) .Call(`.rs_3210`, self, list(...)),
+    `vertices` = function(...) .Call(`.rs_3211`, self, list(...)),
+    `neighbors` = function(...) .Call(`.rs_3212`, self, list(...)),
+    `degree` = function(...) .Call(`.rs_3213`, self, list(...)),
+    `bfs` = function(...) .Call(`.rs_3214`, self, list(...)),
+    `dfs` = function(...) .Call(`.rs_3215`, self, list(...)),
+    `contains_path` = function(...) .Call(`.rs_3216`, self, list(...)),
+    `connected_components` = function(...) .Call(`.rs_3217`, self, list(...)),
+    `has_cycle` = function(...) .Call(`.rs_3218`, self, list(...))
   )
 )
 #' C++ class `datamunge::dstruct::WeightedGraph<std::string, double>`
@@ -18605,30 +18727,30 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3230`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_3241`, list(...)) }
       invisible(self)
     },
-    `directed` = function(...) .Call(`.rs_3209`, self, list(...)),
-    `empty` = function(...) .Call(`.rs_3210`, self, list(...)),
-    `vertex_count` = function(...) .Call(`.rs_3211`, self, list(...)),
-    `edge_count` = function(...) .Call(`.rs_3212`, self, list(...)),
-    `clear` = function(...) invisible(.Call(`.rs_3213`, self, list(...))),
-    `add_vertex` = function(...) .Call(`.rs_3214`, self, list(...)),
-    `remove_vertex` = function(...) .Call(`.rs_3215`, self, list(...)),
-    `has_vertex` = function(...) .Call(`.rs_3216`, self, list(...)),
-    `add_edge` = function(...) .Call(`.rs_3217`, self, list(...)),
-    `remove_edge` = function(...) .Call(`.rs_3218`, self, list(...)),
-    `has_edge` = function(...) .Call(`.rs_3219`, self, list(...)),
-    `edge_weight` = function(...) .Call(`.rs_3220`, self, list(...)),
-    `vertices` = function(...) .Call(`.rs_3221`, self, list(...)),
-    `neighbors` = function(...) .Call(`.rs_3222`, self, list(...)),
-    `dijkstra_distances` = function(...) .Call(`.rs_3223`, self, list(...)),
-    `bellman_ford_distances` = function(...) .Call(`.rs_3224`, self, list(...)),
-    `bellman_ford_has_negative_cycle` = function(...) .Call(`.rs_3225`, self, list(...)),
-    `minimum_spanning_tree` = function(...) .Call(`.rs_3226`, self, list(...)),
-    `connected_components` = function(...) .Call(`.rs_3227`, self, list(...)),
-    `strongly_connected_components` = function(...) .Call(`.rs_3228`, self, list(...)),
-    `has_cycle` = function(...) .Call(`.rs_3229`, self, list(...))
+    `directed` = function(...) .Call(`.rs_3220`, self, list(...)),
+    `empty` = function(...) .Call(`.rs_3221`, self, list(...)),
+    `vertex_count` = function(...) .Call(`.rs_3222`, self, list(...)),
+    `edge_count` = function(...) .Call(`.rs_3223`, self, list(...)),
+    `clear` = function(...) invisible(.Call(`.rs_3224`, self, list(...))),
+    `add_vertex` = function(...) .Call(`.rs_3225`, self, list(...)),
+    `remove_vertex` = function(...) .Call(`.rs_3226`, self, list(...)),
+    `has_vertex` = function(...) .Call(`.rs_3227`, self, list(...)),
+    `add_edge` = function(...) .Call(`.rs_3228`, self, list(...)),
+    `remove_edge` = function(...) .Call(`.rs_3229`, self, list(...)),
+    `has_edge` = function(...) .Call(`.rs_3230`, self, list(...)),
+    `edge_weight` = function(...) .Call(`.rs_3231`, self, list(...)),
+    `vertices` = function(...) .Call(`.rs_3232`, self, list(...)),
+    `neighbors` = function(...) .Call(`.rs_3233`, self, list(...)),
+    `dijkstra_distances` = function(...) .Call(`.rs_3234`, self, list(...)),
+    `bellman_ford_distances` = function(...) .Call(`.rs_3235`, self, list(...)),
+    `bellman_ford_has_negative_cycle` = function(...) .Call(`.rs_3236`, self, list(...)),
+    `minimum_spanning_tree` = function(...) .Call(`.rs_3237`, self, list(...)),
+    `connected_components` = function(...) .Call(`.rs_3238`, self, list(...)),
+    `strongly_connected_components` = function(...) .Call(`.rs_3239`, self, list(...)),
+    `has_cycle` = function(...) .Call(`.rs_3240`, self, list(...))
   )
 )
 #' Monomial orderings supported for multivariate polynomial leading-term selection.
@@ -18808,4 +18930,4 @@ base::rm(list = base::intersect(base::c(".rosetta_name", ".rosetta_pkg", ".roset
   }
   invisible(NULL)
 }
-.rosetta_exports <- c("ABLine", "ACOR", "ACOROptions", "AMSGrad", "AMSGradOptions", "ARIMA", "ARIMAOptions", "Acquisition", "AdaDelta", "AdaDeltaOptions", "AdaGrad", "AdaGradOptions", "Adam", "AdamOptions", "AgglomerativeClustering", "AlphaBetaFilter", "AlphaBetaGammaFilter", "AlphaBetaGammaState", "AlphaBetaState", "Alternative", "ArbitraryFunction", "ArtificialBeeColony", "ArtificialBeeColonyOptions", "AugmentedLagrangian", "AugmentedLagrangianOptions", "AxisRefinement", "BCType", "BSR", "BSplineBasis", "BSplineRefinement", "BSplineRegression", "BayesianOptimization", "BayesianOptimizationOptions", "BayesianOptimizationResult", "BayesianSurrogate", "BoundaryCondition1D", "BoundingBox", "Bspline", "CMAES", "CMAESOptions", "CadScene", "CadSolid", "Callback", "Circle", "ClosestPairResult", "Complex", "ConjugateGradient", "ConjugateGradientOptions", "ConvexHullAnalysis", "ConvexHullOptions", "ConvexHullTrace", "ConvexHullWork", "CoordinateDescent", "CoordinateDescentOptions", "Corner", "Cplx", "CrossEntropyMethod", "CrossEntropyMethodOptions", "CsvReader", "CuckooSearch", "CuckooSearchOptions", "DBSCAN", "DEOptions", "DTWComputation", "DTWPredecessor", "DTWResult", "DTWTrace", "DTWWork", "DataFrame", "DataSeries", "DataSeries_Kind", "DecisionTreeClassifier", "DecisionTreeRegressor", "DelaunayAnalysis", "DelaunayInsertion", "DelaunayTrace", "DelaunayWork", "DiameterResult", "DifferentiableFunction", "DifferentiableSeparableFunction", "DifferentialEvolution", "DiffusionMaps", "DirectedGraph", "Dual", "ElasticNet", "EnsembleKalmanFilter", "EqualityConstrainedFunction", "EstimationOfDistribution", "EstimationOfDistributionOptions", "EvolutionStrategy", "EvolutionStrategyOptions", "ExponentialSmoothing", "ExponentialSmoothingOptions", "Expr", "ExtendedKalmanFilter", "FEM1D", "FEM1DResult", "FEM1DTimeSeries", "FEM2D", "FEM2DResult", "FISTA", "FISTAOptions", "FireflyAlgorithm", "FireflyAlgorithmOptions", "FlowVector", "GAOptions", "GBMClassifier", "GBMRegressor", "GGPlot", "GLM", "GLMM", "GaussianProcessRegression", "GaussianProcessSurrogateOptions", "GeneticAlgorithm", "GfFactorization", "GibbsOptions", "GibbsResult", "GibbsSampler", "GradientDescent", "GradientDescentOptions", "GreyWolfOptimizer", "GreyWolfOptimizerOptions", "HMC", "HMCOptions", "HMCResult", "HSV", "HarmonySearch", "HarmonySearchOptions", "HessianFunction", "HierarchicalBSpline", "HoughCircle", "HoughLine", "HullAction", "HullEvent", "HullIndexedPoint", "HullPass", "HyperDual", "HypothesisTestResult", "INLAMixedModel", "Image", "ImageBatch", "ImageLoader", "ImageMode", "ImportanceSampling", "ImportanceSamplingOptions", "ImportanceSamplingResult", "InequalityConstrainedFunction", "InformationFilter", "InteriorPoint", "InteriorPointOptions", "Isomap", "KDTree2D", "KMeans", "KNNClassifier", "KNNRegressor", "KalmanFilter", "KalmanState", "KendallTau", "KernelPCA", "KernelRegression", "KeyPoint", "LBFGS", "LBFGSOptions", "LDA", "LLE", "LM", "LMM", "LabelMap", "LaplacianEigenmaps", "Lasso", "LegendEntry", "LevenbergMarquardt", "LevenbergMarquardtOptions", "LinalgMatrix", "MAP", "MAPOptions", "MDS", "Mesh1D", "Mesh2D", "MinimumBoundingRectangle", "MonomialOrder", "MultivariatePolynomial", "NUTS", "NUTSOptions", "NUTSResult", "Nadam", "NadamOptions", "NaiveBayesClassifier", "NelderMead", "NelderMeadOptions", "NesterovAcceleratedGradient", "NesterovAcceleratedGradientOptions", "Newton", "NewtonOptions", "NnModel", "NnTensor", "ODEOptions", "ODESolution", "ODESolver", "Orientation", "OrthantCellTree", "PAdjustMethod", "PCA", "PSO", "PSOOptions", "PSR", "PSplineRegression", "ParallelTempering", "ParallelTemperingOptions", "ParticleFilter", "Pixel", "Plot", "Point2D", "PolyExtendedGcdResult", "Polynomial", "ProximalFunction", "ProximalGradient", "ProximalGradientOptions", "RBFGaussianProcessSurrogate", "RGB", "RGBA", "RHS", "RLayout", "RMSProp", "RMSPropOptions", "RPlot", "RWMOptions", "RWMResult", "RandomForestClassifier", "RandomForestRegressor", "RandomWalkMetropolis", "RandomizedBlockCoordinateDescent", "RandomizedBlockCoordinateDescentOptions", "RationalFunction", "RealFactor", "RealFactorization", "RealRootIntervals", "ResampleFilter", "ResidualFunction", "Ridge", "SAGA", "SAGAOptions", "SGD", "SGDOptions", "SQP", "SQPOptions", "SVM", "SVRG", "SVRGOptions", "SammonMapping", "ScalarField1D", "ScalarField2D", "SeasonalType", "SeparableFunction", "ShapeLayer", "SimulatedAnnealing", "SimulatedAnnealingOptions", "SmoothResult", "SplineSolveOptions", "SplineSolver", "Splom", "SquareFreeFactor", "StepMethod", "StructureTensorField", "StructuringElement", "SurrogatePrediction", "TSNE", "Tape", "Task", "TaskBatch", "TaskOutput", "Tensor", "TensorBSpline", "TrendType", "Triangle", "TruncatedHierarchicalBSpline", "TrustRegionNewton", "TrustRegionNewtonOptions", "UMAP", "UndirectedGraph", "UnscentedKalmanFilter", "Var", "VectorFunction", "VoronoiDiagram", "WeightedGraph", "WhaleOptimization", "WhaleOptimizationOptions", "XGBoostClassifier", "XGBoostRegressor", "adaptive_simpson_recurse", "adjust_brightness", "adjust_contrast", "berlekamp_factor_count", "berlekamp_factor_mod", "berlekamp_null_space", "bilinear_sample", "binomial_test", "boundary_nodes", "bounding_box", "box_blur", "box_kernel", "bs", "c_abs", "c_add", "c_div", "c_eval", "c_mul", "c_sub", "call_with_callback", "cauchy_root_bound", "chi_squared_goodness_of_fit", "chi_squared_test_independence", "circle_contains", "circle_from_one_point", "circle_from_three_points", "circle_from_two_points", "circumcenter", "clip_polygon", "closest_pair", "compare_monomials", "complex_roots", "connected_components", "convex_hull", "convex_hull_analyze", "convex_hull_trace", "count_monic_irreducibles", "crop", "cross", "crt", "data", "data_home", "definite_integral", "delaunay_analyze", "delaunay_trace", "delaunay_triangulation", "delaunay_uniform_cloud", "descartes_negative_root_bound", "descartes_sign_changes", "determinant", "dilate", "discrete_frechet_distance", "discriminant", "distance", "diverging_colors", "dog_blobs", "download_file", "downloadable", "draw_circle", "draw_line", "draw_polygon", "draw_rectangle", "dtw_path_cost", "dtw_trace_entries", "dyadic_refine", "dynamic_time_warping", "dynamic_time_warping_trace", "dynamic_time_warping_work", "erode", "expected_distinct_irreducible_factors", "expected_improvement", "extract_local_maxima", "f_test_variance", "factor_gf_p", "factor_over_reals", "fast_corners", "fetch", "fisher_exact_test_2x2", "fit_tensor_bspline", "fit_tensor_pspline", "flip_horizontal", "flip_vertical", "gaussian_blur", "gaussian_importance_efficiency", "gaussian_kernel", "gaussian_pyramid", "gf_derivative", "gf_mul", "gf_square_free", "groebner_basis", "harris_corners", "hello", "hough_circles", "hough_lines", "hsv_to_rgb", "image_convolve", "in_structuring_element", "inside_clip_edge", "is_convex_polygon", "is_foreground", "is_negligible_remainder", "isolate_real_roots", "kendall_tau", "kmeans_segment", "kruskal_wallis_test", "ks_test_one_sample_normal", "ks_test_one_sample_uniform", "ks_test_two_sample", "lagrange_interpolate", "laplacian_pyramid", "lcm_exponent", "leapfrog_gaussian_acceptance", "lerp_byte", "line_endpoints", "line_intersection_point", "lucas_kanade_optical_flow", "make_dpair", "make_dvector", "make_mesh2d_from_points", "make_rectangular_mesh2d", "make_uniform_mesh1d", "map_dvector_with_callback", "merge_channels", "min_enclosing_circle", "minimum_bounding_rectangle", "mkdir", "mod_inverse", "mod_pow", "monic", "monomial_divides", "morphological_close", "morphological_open", "multivariate_reduce", "native_rnorm", "native_runif", "newton_interpolate", "nn_gemm_backend", "nn_get_num_threads", "nn_set_num_threads", "on_segment", "one_way_anova", "orientation", "otsu_threshold", "p_adjust", "pearson_correlation_test", "plot_dtw_alignment", "point_in_polygon", "point_in_triangle", "point_to_line_distance", "poly_extended_gcd", "poly_gcd", "poly_gcd_pseudo_remainder_sequence", "poly_quotient", "poly_remainder", "polygon_area", "polygon_centroid", "polygon_diameter", "probability_of_improvement", "proportion_test_one_sample", "proportion_test_two_sample", "rational_roots", "read_bmp", "read_pbm", "read_pgm", "read_png", "read_ppm", "real_roots", "reduce", "refine_basis", "refine_root", "resize", "resultant", "rgb_to_gray", "rgb_to_hsv", "romano_wolf_adjust", "rosetta_ref", "rotate", "rotate90", "s_polynomial", "sample_gaussian_points", "segment_intersection_point", "segments_intersect", "seql", "set_pixel_clipped", "set_seed", "shapiro_francia_test", "sharpen", "shi_tomasi_corners", "signed_difference_image", "signed_polygon_area", "simplify_polyline", "simpson_estimate", "sobel_edges", "spearman_correlation_test", "split_channels", "square_free_factorization", "squared_distance", "stamp", "structure_tensor", "sturm_root_count", "sturm_sequence", "sturm_sign_changes", "sum_dpair", "sum_dvector", "sylvester_matrix", "t_test_one_sample", "t_test_paired", "t_test_two_sample", "taylor_series", "terrain_colors", "threshold", "to_grayscale", "to_integer", "to_rgb", "to_rgba", "total_degree", "triangulate_polygon", "unif", "value_colors", "viridis_colors", "voronoi_diagram", "westfall_young_adjust", "wilcoxon_rank_sum_test", "wilcoxon_signed_rank_test", "write_bmp", "write_pbm", "write_pgm", "write_png", "write_ppm")
+.rosetta_exports <- c("ABLine", "ACOR", "ACOROptions", "AMSGrad", "AMSGradOptions", "ARIMA", "ARIMAOptions", "Acquisition", "AdaDelta", "AdaDeltaOptions", "AdaGrad", "AdaGradOptions", "Adam", "AdamOptions", "AgglomerativeClustering", "AlphaBetaFilter", "AlphaBetaGammaFilter", "AlphaBetaGammaState", "AlphaBetaState", "Alternative", "ArbitraryFunction", "ArtificialBeeColony", "ArtificialBeeColonyOptions", "AugmentedLagrangian", "AugmentedLagrangianOptions", "AxisRefinement", "BCType", "BSR", "BSplineBasis", "BSplineRefinement", "BSplineRegression", "BayesianOptimization", "BayesianOptimizationOptions", "BayesianOptimizationResult", "BayesianSurrogate", "BoundaryCondition1D", "BoundingBox", "Bspline", "CMAES", "CMAESOptions", "CadScene", "CadSolid", "Callback", "Circle", "ClosestPairResult", "Complex", "ConjugateGradient", "ConjugateGradientOptions", "ConvexHullAnalysis", "ConvexHullOptions", "ConvexHullTrace", "ConvexHullWork", "CoordinateDescent", "CoordinateDescentOptions", "Corner", "Cplx", "CrossEntropyMethod", "CrossEntropyMethodOptions", "CsvReader", "CuckooSearch", "CuckooSearchOptions", "DBSCAN", "DEOptions", "DTWComputation", "DTWPredecessor", "DTWResult", "DTWTrace", "DTWWork", "DataFrame", "DataSeries", "DataSeries_Kind", "DecisionTreeClassifier", "DecisionTreeRegressor", "DelaunayAnalysis", "DelaunayInsertion", "DelaunayTrace", "DelaunayWork", "DiameterResult", "DifferentiableFunction", "DifferentiableSeparableFunction", "DifferentialEvolution", "DiffusionMaps", "DirectedGraph", "Dual", "ElasticNet", "EnsembleKalmanFilter", "EqualityConstrainedFunction", "EstimationOfDistribution", "EstimationOfDistributionOptions", "EvolutionStrategy", "EvolutionStrategyOptions", "ExponentialSmoothing", "ExponentialSmoothingOptions", "Expr", "ExtendedKalmanFilter", "FEM1D", "FEM1DResult", "FEM1DTimeSeries", "FEM2D", "FEM2DResult", "FISTA", "FISTAOptions", "FireflyAlgorithm", "FireflyAlgorithmOptions", "FlowVector", "GAOptions", "GBMClassifier", "GBMRegressor", "GGPlot", "GLM", "GLMM", "GaussianProcessRegression", "GaussianProcessSurrogateOptions", "GeneticAlgorithm", "GfFactorization", "GibbsOptions", "GibbsResult", "GibbsSampler", "GradientDescent", "GradientDescentOptions", "GreyWolfOptimizer", "GreyWolfOptimizerOptions", "HMC", "HMCOptions", "HMCResult", "HSV", "HarmonySearch", "HarmonySearchOptions", "HessianFunction", "HierarchicalBSpline", "HoughCircle", "HoughLine", "HullAction", "HullEvent", "HullIndexedPoint", "HullPass", "HyperDual", "HypothesisTestResult", "INLAMixedModel", "Image", "ImageBatch", "ImageLoader", "ImageMode", "ImportanceSampling", "ImportanceSamplingOptions", "ImportanceSamplingResult", "InequalityConstrainedFunction", "InformationFilter", "InteriorPoint", "InteriorPointOptions", "Isomap", "KDTree2D", "KMeans", "KNNClassifier", "KNNRegressor", "KalmanFilter", "KalmanState", "KendallTau", "KernelPCA", "KernelRegression", "KeyPoint", "LBFGS", "LBFGSOptions", "LDA", "LLE", "LM", "LMM", "LabelMap", "LaplacianEigenmaps", "Lasso", "LegendEntry", "LevenbergMarquardt", "LevenbergMarquardtOptions", "LinalgMatrix", "MAP", "MAPOptions", "MDS", "MLPClassifierSearch", "Mesh1D", "Mesh2D", "MinimumBoundingRectangle", "MonomialOrder", "MultivariatePolynomial", "NUTS", "NUTSOptions", "NUTSResult", "Nadam", "NadamOptions", "NaiveBayesClassifier", "NelderMead", "NelderMeadOptions", "NesterovAcceleratedGradient", "NesterovAcceleratedGradientOptions", "Newton", "NewtonOptions", "NnModel", "NnTensor", "ODEOptions", "ODESolution", "ODESolver", "Orientation", "OrthantCellTree", "PAdjustMethod", "PCA", "PSO", "PSOOptions", "PSR", "PSplineRegression", "ParallelTempering", "ParallelTemperingOptions", "ParticleFilter", "Pixel", "Plot", "Point2D", "PolyExtendedGcdResult", "Polynomial", "ProximalFunction", "ProximalGradient", "ProximalGradientOptions", "RBFGaussianProcessSurrogate", "RGB", "RGBA", "RHS", "RLayout", "RMSProp", "RMSPropOptions", "RPlot", "RWMOptions", "RWMResult", "RandomForestClassifier", "RandomForestRegressor", "RandomWalkMetropolis", "RandomizedBlockCoordinateDescent", "RandomizedBlockCoordinateDescentOptions", "RationalFunction", "RealFactor", "RealFactorization", "RealRootIntervals", "ResampleFilter", "ResidualFunction", "Ridge", "SAGA", "SAGAOptions", "SGD", "SGDOptions", "SQP", "SQPOptions", "SVM", "SVRG", "SVRGOptions", "SammonMapping", "ScalarField1D", "ScalarField2D", "SeasonalType", "SeparableFunction", "ShapeLayer", "SimulatedAnnealing", "SimulatedAnnealingOptions", "SmoothResult", "SplineSolveOptions", "SplineSolver", "Splom", "SquareFreeFactor", "StepMethod", "StructureTensorField", "StructuringElement", "SurrogatePrediction", "TSNE", "Tape", "Task", "TaskBatch", "TaskOutput", "Tensor", "TensorBSpline", "TrendType", "Triangle", "TruncatedHierarchicalBSpline", "TrustRegionNewton", "TrustRegionNewtonOptions", "UMAP", "UndirectedGraph", "UnscentedKalmanFilter", "Var", "VectorFunction", "VoronoiDiagram", "WeightedGraph", "WhaleOptimization", "WhaleOptimizationOptions", "XGBoostClassifier", "XGBoostRegressor", "adaptive_simpson_recurse", "adjust_brightness", "adjust_contrast", "berlekamp_factor_count", "berlekamp_factor_mod", "berlekamp_null_space", "bilinear_sample", "binomial_test", "boundary_nodes", "bounding_box", "box_blur", "box_kernel", "bs", "c_abs", "c_add", "c_div", "c_eval", "c_mul", "c_sub", "call_with_callback", "cauchy_root_bound", "chi_squared_goodness_of_fit", "chi_squared_test_independence", "circle_contains", "circle_from_one_point", "circle_from_three_points", "circle_from_two_points", "circumcenter", "clip_polygon", "closest_pair", "compare_monomials", "complex_roots", "connected_components", "convex_hull", "convex_hull_analyze", "convex_hull_trace", "count_monic_irreducibles", "crop", "cross", "crt", "data", "data_home", "definite_integral", "delaunay_analyze", "delaunay_trace", "delaunay_triangulation", "delaunay_uniform_cloud", "descartes_negative_root_bound", "descartes_sign_changes", "determinant", "dilate", "discrete_frechet_distance", "discriminant", "distance", "diverging_colors", "dog_blobs", "download_file", "downloadable", "draw_circle", "draw_line", "draw_polygon", "draw_rectangle", "dtw_path_cost", "dtw_trace_entries", "dyadic_refine", "dynamic_time_warping", "dynamic_time_warping_trace", "dynamic_time_warping_work", "erode", "expected_distinct_irreducible_factors", "expected_improvement", "extract_local_maxima", "f_test_variance", "factor_gf_p", "factor_over_reals", "fast_corners", "fetch", "fisher_exact_test_2x2", "fit_tensor_bspline", "fit_tensor_pspline", "flip_horizontal", "flip_vertical", "gaussian_blur", "gaussian_importance_efficiency", "gaussian_kernel", "gaussian_pyramid", "gf_derivative", "gf_mul", "gf_square_free", "groebner_basis", "harris_corners", "hello", "hough_circles", "hough_lines", "hsv_to_rgb", "image_convolve", "in_structuring_element", "inside_clip_edge", "is_convex_polygon", "is_foreground", "is_negligible_remainder", "isolate_real_roots", "kendall_tau", "kmeans_segment", "kruskal_wallis_test", "ks_test_one_sample_normal", "ks_test_one_sample_uniform", "ks_test_two_sample", "lagrange_interpolate", "laplacian_pyramid", "lcm_exponent", "leapfrog_gaussian_acceptance", "lerp_byte", "line_endpoints", "line_intersection_point", "lucas_kanade_optical_flow", "make_dpair", "make_dvector", "make_mesh2d_from_points", "make_rectangular_mesh2d", "make_uniform_mesh1d", "map_dvector_with_callback", "merge_channels", "min_enclosing_circle", "minimum_bounding_rectangle", "mkdir", "mod_inverse", "mod_pow", "monic", "monomial_divides", "morphological_close", "morphological_open", "multivariate_reduce", "native_rnorm", "native_runif", "newton_interpolate", "nn_gemm_backend", "nn_get_num_threads", "nn_set_num_threads", "on_segment", "one_way_anova", "orientation", "otsu_threshold", "p_adjust", "pearson_correlation_test", "plot_dtw_alignment", "point_in_polygon", "point_in_triangle", "point_to_line_distance", "poly_extended_gcd", "poly_gcd", "poly_gcd_pseudo_remainder_sequence", "poly_quotient", "poly_remainder", "polygon_area", "polygon_centroid", "polygon_diameter", "probability_of_improvement", "proportion_test_one_sample", "proportion_test_two_sample", "rational_roots", "read_bmp", "read_pbm", "read_pgm", "read_png", "read_ppm", "real_roots", "reduce", "refine_basis", "refine_root", "resize", "resultant", "rgb_to_gray", "rgb_to_hsv", "romano_wolf_adjust", "rosetta_ref", "rotate", "rotate90", "s_polynomial", "sample_gaussian_points", "segment_intersection_point", "segments_intersect", "seql", "set_pixel_clipped", "set_seed", "shapiro_francia_test", "sharpen", "shi_tomasi_corners", "signed_difference_image", "signed_polygon_area", "simplify_polyline", "simpson_estimate", "sobel_edges", "spearman_correlation_test", "split_channels", "square_free_factorization", "squared_distance", "stamp", "structure_tensor", "sturm_root_count", "sturm_sequence", "sturm_sign_changes", "sum_dpair", "sum_dvector", "sylvester_matrix", "t_test_one_sample", "t_test_paired", "t_test_two_sample", "taylor_series", "terrain_colors", "threshold", "to_grayscale", "to_integer", "to_rgb", "to_rgba", "total_degree", "triangulate_polygon", "unif", "value_colors", "viridis_colors", "voronoi_diagram", "westfall_young_adjust", "wilcoxon_rank_sum_test", "wilcoxon_signed_rank_test", "write_bmp", "write_pbm", "write_pgm", "write_png", "write_ppm")

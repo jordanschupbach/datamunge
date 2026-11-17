@@ -1,42 +1,82 @@
 #pragma once
-
+/// @file miller_rabin.hpp
+/// @brief Deterministic uint64 primality and actual strong probable-prime rounds.
+#include <cstddef>
 #include <cstdint>
-
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <vector>
 namespace datamunge::algorithms {
-
-/// @brief The Miller-Rabin primality test, made *deterministic* for every 64-bit integer. A prime
-///        modulus @f$n@f$ has, by Fermat's little theorem, @f$a^{n-1}\equiv1\pmod n@f$ for every
-///        base @f$a@f$ coprime to it -- but so do the Carmichael numbers, which is why the plain
-///        Fermat test fails. Miller-Rabin strengthens it: writing @f$n-1 = d\cdot2^{s}@f$ with
-///        @f$d@f$ odd, a prime @f$n@f$ forces the sequence @f$a^{d}, a^{2d}, \dots, a^{2^{s-1}d}@f$
-///        to reach @f$1@f$ only *through* @f$\pm1@f$, since modulo a prime the only square roots of
-///        @f$1@f$ are @f$\pm1@f$. Concretely @f$a^{d}\equiv1@f$, or @f$a^{2^{r}d}\equiv n-1@f$ for
-///        some @f$r\in[0,s)@f$; a base @f$a@f$ for which neither holds is a *witness* proving @f$n@f$
-///        composite. Every composite has many witnesses, and it is a theorem (Jaeschke; Sinclair)
-///        that the twelve smallest primes @f$\{2,3,5,7,11,13,17,19,23,29,31,37\}@f$ already witness
-///        every composite below @f$3.3\times10^{24}@f$ -- comfortably past @f$2^{64}@f$. Testing
-///        exactly that fixed set therefore decides primality with *certainty* for any
-///        @c std::uint64_t, in @f$O(\log^{3} n)@f$-ish time (12 modular exponentiations).
-///
-///        The name keeps the conventional @c is_probable_prime, but note that over the whole
-///        @c std::uint64_t range this implementation is not probabilistic: it never errs.
-///
-/// @param n the number to test.
-/// @return true iff @p n is prime. Correctly returns false for n < 2, for even n > 2, and -- unlike
-///         the Fermat test -- for every Carmichael number (561, 1105, 1729, ...).
+/// @brief Owned actual sequence of one strong probable-prime round.
+/// Early guards have no powering record. For odd n>=3 and a%n!=0, d is odd,
+/// n-1=d*2^s, and residues begin with a^d followed by actual post-powering
+/// squares until n-1 is reached or all s-1 squares finish. A pass is not a
+/// primality certificate. No constant-time guarantee.
+/// @par Example
+/// @code
+/// auto t=dm::algorithms::miller_rabin_round_trace(17,3);
+/// std::print("{} {} {}\n",t.d,t.s,t.passed); // 1 4 true
+/// @endcode
+/// @see miller_rabin_round_trace()
+struct MillerRabinRoundTrace {
+  std::uint64_t n{0};            ///< Original candidate.
+  std::uint64_t base{0};         ///< Original unreduced base.
+  std::uint64_t reduced_base{0}; ///< Base modulo n for odd n>=3; otherwise zero.
+  std::uint64_t d{0};            ///< Odd part of n-1 when powering occurs; otherwise zero.
+  unsigned      s{0};            ///< Factor-of-two exponent when powering occurs; otherwise zero.
+  bool          passed{false};   ///< Actual round outcome, including vacuous base-multiple passes.
+  ModPowTrace   powering;        ///< Actual shared modular-power trace, empty on early guards.
+  std::vector<std::uint64_t> residues; ///< Actual initial residue and successive tested squares.
+};
+/// @brief Decide primality for the complete unsigned64-bit domain.
+/// Screens division by the first twelve primes, then uses these same bases for
+/// strong rounds. Their smallest simultaneous strong pseudoprime is
+/// 318665857834031151167461, above UINT64_MAX. At most twelve O(log n)
+/// fixed-word rounds and O(1) driver storage; no constant-time guarantee.
+/// @param n Candidate; zero and one are not prime.
+/// @return True exactly when n is prime.
+/// @par Example
+/// @code
+/// std::print("{} {}\n",dm::algorithms::is_probable_prime(2047),dm::algorithms::is_probable_prime(65537)); // false true
+/// @endcode
+/// @par References
+/// - J. Sorenson and J. Webster (2017), Strong pseudoprimes to twelve prime bases, Mathematics of Computation86,985–1003, doi:10.1090/mcom/3134.
+/// @see is_strong_probable_prime_base()
 [[nodiscard]] bool is_probable_prime(std::uint64_t n);
-
-/// @brief A single Miller-Rabin round: is @p n a *strong probable prime* to base @p a? Writing
-///        @f$n-1 = d\cdot2^{s}@f$, this returns true iff @f$a^{d}\equiv1\pmod n@f$ or
-///        @f$a^{2^{r}d}\equiv n-1\pmod n@f$ for some @f$r\in[0,s)@f$ -- i.e. iff @p a is *not* a
-///        witness against @p n. A single round can be fooled (2047 = 23*89 is a strong probable
-///        prime to base 2); is_probable_prime runs the fixed twelve-base set, which cannot be.
-///        Handy for the report and tests, where the trace of one round is what exposes a Carmichael
-///        number.
-///
-/// @param n the number to test (n < 2 -> false; even n -> true only for n == 2).
-/// @param a the base; reduced modulo @p n, and a base that is a multiple of @p n passes vacuously.
-/// @return true iff @p n is a strong probable prime to base @p a.
+/// @brief Perform one actual strong probable-prime round with exact modular arithmetic.
+/// For odd n>=3, factor n-1=d*2^s and accept a^d=1 or any tested
+/// a^(d*2^r)=n-1 for 0<=r<s. Continue all scheduled squares if a residue
+/// becomes one without an earlier minus-one. O(log n) word products, O(1)
+/// driver storage. A base divisible by n passes vacuously.
+/// @param n Candidate; below2 fails; even candidates pass only for2.
+/// @param a Arbitrary base, reduced modulo odd n>=3.
+/// @return Actual single-base pass, which can include composites.
+/// @par Example
+/// @code
+/// std::print("{} {}\n",dm::algorithms::is_strong_probable_prime_base(2047,2),dm::algorithms::is_strong_probable_prime_base(2047,3)); // true false
+/// @endcode
+/// @par References
+/// - M. O. Rabin (1980), Probabilistic algorithm for testing primality, Journal of Number Theory12,128–138, doi:10.1016/0022-314X(80)90084-0.
+/// @see miller_rabin_round_trace(), is_probable_prime()
 [[nodiscard]] bool is_strong_probable_prime_base(std::uint64_t n, std::uint64_t a);
-
+/// @brief Capture the actual producer's powering and strong-round residues.
+/// Same body and early exits as is_strong_probable_prime_base(), without replay.
+/// Upfront cap counts powering bit records plus all potentially scheduled strong
+/// residues (s); at most64 entries for uint64 candidates. Zero disables the cap.
+/// Trace owns its data and uses O(log n) storage; exponent bits are observable.
+/// @param n Candidate, with the ordinary early-guard conventions.
+/// @param a Arbitrary unreduced base, retained in the trace.
+/// @param max_entries Upper-bound record cap, default128; zero disables.
+/// @return Owned actual history; unused upper-bound slots are not emitted.
+/// @throws std::length_error If the complete upper bound exceeds a nonzero cap, before powering.
+/// @throws std::bad_alloc If capture allocation fails.
+/// @par Example
+/// @code
+/// auto t=dm::algorithms::miller_rabin_round_trace(561,2);
+/// std::print("{} {} {}\n",t.d,t.s,t.passed); // 35 4 false
+/// @endcode
+/// @par References
+/// - M. O. Rabin (1980), doi:10.1016/0022-314X(80)90084-0.
+/// @see MillerRabinRoundTrace, is_strong_probable_prime_base()
+[[nodiscard]] MillerRabinRoundTrace
+miller_rabin_round_trace(std::uint64_t n, std::uint64_t a, std::size_t max_entries = 128);
 } // namespace datamunge::algorithms

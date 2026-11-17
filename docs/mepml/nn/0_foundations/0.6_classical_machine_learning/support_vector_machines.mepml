@@ -1,0 +1,163 @@
+//? Title: Support Vector Machines: Hinge Loss and Random Features
+//? Subtitle: A finite Fourier feature map approximates an RBF kernel
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A classifier can seek a decision boundary with a margin rather than fit class probabilities.
+We inspect hinge-loss regions, fit a tiny linear margin model and check the Gaussian-kernel
+approximation supplied by random Fourier features. The finite-feature primal model is distinct
+from an exact kernel dual, and neither its margins nor its votes are probabilities.
+)
+\toc
+
+> The method
+
+For labels y in {-1,1} and score f=xᵀw+b, the regularised primal objective is
+
+$$
+J(w,b)=\frac1N\sum_i\max(0,1-y_i f(x_i))+\frac\lambda2\|w\|^2.
+$$
+\alttext(The mean hinge penalty is zero at margins at least one; a squared weight penalty controls the tradeoff.)
+
+The bias is unpenalised. Misclassification (margin <=0) differs from margin violation (margin<1).
+At the hinge kink a valid subgradient is used. For nonlinear decisions, concatenate cosine and
+sine features with Gaussian frequencies B and divide by sqrt(m). With
+B_ij distributed N(0,gamma/(2 pi²)), their expected inner product is exp(-gamma||x-x'||²).
+This follows from the characteristic function of a Gaussian. A finite draw approximates the
+kernel and may deviate; training a linear margin model on it solves a finite-feature problem.
+Feature evaluation costs O(NDm), and primal steps O(Nm).
+
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
+
+```{cpp, file="figures/support_vector_machines_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Signed margin\nyf(x)");
+  diagram.node("n1", {5.2, 0}, "Hinge penalty\nmax(0,1-yf)");
+  diagram.node("n2", {10.4, 0}, "Weight regularisation\nlinear or Fourier features");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/support_vector_machines_concept.svg");
+}
+```
+// result_begin:
+// \image(figures/support_vector_machines_concept.svg)
+// result_end
+\caption(A finite Fourier feature map approximates an RBF kernel)
+\alttext(Signed margin; yf(x) Then Hinge penalty; \max(0,1-yf) Then Weight regularisation; linear or Fourier features.)
+
+> Simple examples
+
+Margins -1,0,.5,1,2 have hinge losses 2,1,.5,0,0. This exposes correctly classified points that still violate the unit margin.
+
+```{cpp, results="markdown", file="figures/support_vector_machines_hinge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  const auto margin = n::tensor({-1, 0, .5, 1, 2}), loss = n::relu(1 - margin);
+  auto p = dm::graphics::RPlot::create();
+  p.lines(margin.to_vector<double>(), loss.to_vector<double>(), "hinge loss")
+      .title("Correct classification can still incur margin loss")
+      .x_label("signed margin")
+      .y_label("hinge loss");
+  std::filesystem::create_directories("build");
+  p.size(850, 420).save_svg("build/support_vector_machines_hinge.svg");
+  dm::dstruct::DataFrame t;
+  t.add_column("margin", margin.to_vector<double>());
+  t.add_column("hinge", loss.to_vector<double>());
+  std::print("{}\n", t.to_md());
+}
+```
+// result_begin: markdown
+| margin | hinge |
+| ---: | ---: |
+| -1.0 | 2.0 |
+| 0.0 | 1.0 |
+| 0.5 | 0.5 |
+| 1.0 | 0.0 |
+| 2.0 | 0.0 |
+
+\image(figures/support_vector_machines_hinge.svg)
+// result_end
+\caption(Hinge loss measures a unit-margin requirement rather than a calibrated probability.)
+\alttext(Hinge loss measures a unit-margin requirement rather than a calibrated probability.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::tensor({-2, -1, 1, 2}, {4, 1}, n::DType::Float64),
+             y = n::tensor({-1, -1, 1, 1}, {4, 1}, n::DType::Float64);
+  auto w = n::zeros({1, 1}, n::DType::Float64).requires_grad_(),
+       b = n::scalar(0, n::DType::Float64).requires_grad_();
+  n::OptimizerConfig c;
+  c.kind = n::OptimizerKind::Adam;
+  n::Optimizer opt({w, b}, .02, c);
+  for (int i = 0; i < 400; ++i)
+    opt.minimize(n::mean(n::relu(1 - y * (n::matmul(x, w) + b))) + .05 * n::sum(n::square(w)));
+  const auto margin = y * (n::matmul(x, w) + b);
+  if (n::min(margin).item() <= 0)
+    return 1;
+  n::Generator rng(19);
+  const auto q = n::tensor({0, 0, .5, 0, 1, 0}, {3, 2}, n::DType::Float64);
+  const auto B =
+      n::normal({2, 2048}, 0, std::sqrt(1 / (2 * std::numbers::pi * std::numbers::pi)), rng,
+                n::DType::Float64);
+  const auto phi = n::gaussian_fourier_features(q, B) / std::sqrt(2048.);
+  std::print("Fitted weight {:.6f}, bias {:.6f}, signed margins {}.\n", w.item(), b.item(),
+             margin.to_vector<double>());
+  const auto kernel = n::matmul(phi, phi, false, true);
+  dm::dstruct::DataFrame t;
+  t.add_column("distance", std::vector<double>{0, .5, 1});
+  t.add_column("approx_kernel",
+               std::vector<double>{kernel.at({0, 0}), kernel.at({0, 1}), kernel.at({0, 2})});
+  t.add_column("exact_kernel", std::vector<double>{1, std::exp(-.25), std::exp(-1.)});
+  std::print("\n{}\n", t.to_md(8));
+}
+```
+// result_begin: markdown
+Fitted weight 1.004081, bias 0.000000, signed margins [2.0081627777914988, 1.0040813888957494, 1.0040813888957494, 2.0081627777914988].
+
+| distance | approx_kernel | exact_kernel |
+| ---: | ---: | ---: |
+| 0.0 | 1.00000000 | 1.00000000 |
+| 0.5 | 0.78525832 | 0.77880078 |
+| 1.0 | 0.37611267 | 0.36787944 |
+// result_end
+
+
+> Conclusion
+
+The hinge examples distinguish errors from margin violations, and the trained linear fixture
+separates its four observations. Fourier inner products approximate the specified Gaussian
+kernel; a single finite draw does not establish a uniform approximation bound or generalization.
+
+> References
+
+- [Cortes and Vapnik (1995), Support-vector networks](https://doi.org/10.1007/BF00994018).
+- [Rahimi and Recht (2007), Random Features for Large-Scale Kernel Machines](https://papers.nips.cc/paper/3182-random-features-for-large-scale-kernel-machines).
+
+> Fixed random features for the RBF kernel
+
+The former kernel helper is now `dm::nn::ml::RandomFourierFeatures`. It draws
+Float32 frequencies with variance `2 gamma` and uniform phases using a local
+seeded stream. The map is `sqrt(2/F) cos(x W + phase)`: its dot products approximate
+`exp(-gamma ||x-y||²)`. The frequencies are fixed; a caller may fit a linear head
+on these features. This figure compares one finite draw with the exact kernel,
+so approximation error remains visible rather than being presented as parity.
+
+```{cpp, results="markdown", file="figures/common_rff.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;n::ml::RandomFourierFeatures features(1,1024,1.f,73);auto x=n::linspace(-3,3,121).reshape({121,1});auto origin=n::zeros({1,1});auto approximation=n::matmul(features.Transform(x),features.Transform(origin),false,true).reshape({121});auto exact=n::ml::RbfKernel(x,origin,1.f).reshape({121});std::print("1024-feature mean absolute kernel error: {:.6f}.\n",n::mean(n::abs(approximation-exact)).item());dm::graphics::RPlot::create().lines(x.to_vector<double>(),exact.to_vector<double>(),"exact RBF",{37,99,235}).lines(x.to_vector<double>(),approximation.to_vector<double>(),"fixed random features",{234,88,12}).title("A fixed Fourier-feature approximation").x_label("Coordinate x (reference y=0)").y_label("Kernel similarity").save_svg("build/common_rff.svg");}
+```
+// result_begin: markdown
+1024-feature mean absolute kernel error: 0.033442.
+\image(figures/common_rff.svg)
+// result_end

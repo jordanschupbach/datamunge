@@ -23059,6 +23059,160 @@ namespace eval ::datamunge {
         method backward {output} {}
     }
 
+    # MLPClassifierSearch -- A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+    #
+    #   Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+    #   test rows (per-class rounding applies). Four random widths followed by eight
+    #   Gaussian-process expected-improvement proposals are the default search budget.
+    #   Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+    #   widths reuse their cached validation log loss. Smaller loss wins; ties retain
+    #   the first proposal. Each candidate has one tanh hidden layer, softmax output,
+    #   training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+    #   penalty 0.0001. Initialization/shuffling use seed for every candidate.
+    #
+    #   After selection the network is refitted on fitting plus validation rows,
+    #   with new standardization statistics, then scored once on the untouched test.
+    #   Validation loss belongs to the candidate fit, not the final refit, and is an
+    #   optimistic selection score. Neither split nor test performance is a guarantee
+    #   for other seeds or datasets. Owns all state, borrows inputs only during calls,
+    #   does not change data or global RNG state. Const methods may run concurrently.
+    #   Search cost is at most (initial_samples+iterations) fits plus one refit;
+    #   cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+    #
+    #       const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    #       dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    #       const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+    #
+    #   - D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+    #     of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+    #
+    #   Create with `set obj [datamunge::MLPClassifierSearch new ...]`; `$obj destroy` (or `rename $obj {}`)
+    #   destroys the C++ object.
+    #
+    oo::class create MLPClassifierSearch {
+        superclass ::datamunge::NativeObject
+        # constructor -- Tune a single hidden layer, refit on development rows and evaluate the test rows.
+        #
+        #   usage: datamunge::MLPClassifierSearch new data response x_feature y_feature ?min_hidden? ?max_hidden? ?initial_samples? ?iterations? ?epochs? ?seed?
+        #   args:
+        #     data - DataFrame: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+        #     response - string: String response column, with nonempty labels and at least five rows per class.
+        #     x_feature - string: First numeric predictor, distinct from response and y_feature.
+        #     y_feature - string: Second numeric predictor; these two are the only model inputs.
+        #     min_hidden - unsigned int, default 2: Smallest hidden width, default 2; at least 1 and below max_hidden.
+        #     max_hidden - unsigned int, default 24: Largest hidden width, default 24; at most 1000000.
+        #     initial_samples - unsigned int, default 4: Random initial proposals, default 4; at least 1.
+        #     iterations - unsigned int, default 8: Surrogate-guided proposals, default 8; zero permits initial design only.
+        #     epochs - unsigned int, default 400: SGD passes for each candidate and the final refit, default 400; at least 1.
+        #     seed - unsigned int, default 42: Local split/search/initialization seed, default 42; validation split uses seed+1 modulo 2^64.
+        #   errors:
+        #     {DATAMUNGE invalid_argument} For invalid columns, labels, nonfinite/missing data or search controls.
+        #     {DATAMUNGE runtime_error} If fitting or scoring fails to produce finite probabilities.
+        #   see: MLPClassifierSearch, summary()
+        #   example:
+        #     const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+        #     dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+        #     const auto n = fit.test_rows(); // 30
+        #
+        constructor {data response x_feature y_feature {min_hidden 2} {max_hidden 24} {initial_samples 4} {iterations 8} {epochs 400} {seed 42}} {}
+        # best_hidden_nodes -- Selected integer width of the single hidden layer.
+        #
+        #   usage: $obj best_hidden_nodes
+        #   result: unsigned int - A value in the requested inclusive search range.
+        #
+        method best_hidden_nodes {} {}
+        # validation_log_loss -- Minimum validation mean negative log probability of the true class.
+        #
+        #   usage: $obj validation_log_loss
+        #   result: double - Finite nonnegative loss of the selected candidate before refitting.
+        #
+        method validation_log_loss {} {}
+        # test_accuracy -- Held-out test accuracy of the final development-data refit.
+        #
+        #   usage: $obj test_accuracy
+        #   result: double - Fraction correctly classified in [0,1]; test rows were never used for selection.
+        #
+        method test_accuracy {} {}
+        # training_rows -- Number of rows used to fit each search candidate.
+        #
+        #   usage: $obj training_rows
+        #   result: unsigned int - Fitting partition size, excluding validation and test.
+        #
+        method training_rows {} {}
+        # validation_rows -- Number of rows used to choose hidden width.
+        #
+        #   usage: $obj validation_rows
+        #   result: unsigned int - Validation partition size.
+        #
+        method validation_rows {} {}
+        # test_rows -- Number of untouched rows used for the final evaluation.
+        #
+        #   usage: $obj test_rows
+        #   result: unsigned int - Test partition size.
+        #
+        method test_rows {} {}
+        # summary -- Summarize split sizes, selected width, validation loss and final test accuracy.
+        #
+        #   usage: $obj summary
+        #   result: string - Owned multiline text, without a trailing newline.
+        #   see: trials()
+        #   example:
+        #     const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+        #     dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+        #     const bool named = fit.summary().find("Test accuracy") != std::string::npos; // true
+        #
+        method summary {} {}
+        # trials -- Copy the complete Bayesian proposal history into an owned dataframe.
+        #
+        #   usage: $obj trials
+        #   result: DataFrame or {} - New caller-owned frame with evaluation (1-based), hidden_nodes, validation_log_loss, best_log_loss, cached (0/1), and phase (initial/bayesian). One row per proposal, including repeated cached widths. Bindings own the result.
+        #   see: summary()
+        #   example:
+        #     const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+        #     dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+        #     const std::unique_ptr<dm::DataFrame> history(fit.trials());
+        #     const auto n = history->nrows(); // 12
+        #
+        method trials {} {}
+        # predict -- Predict labels from the final refit using only its two predictor columns.
+        #
+        #   usage: $obj predict newdata
+        #   args:
+        #     newdata - DataFrame: Borrowed frame, unchanged; missing predictors yield empty labels.
+        #   result: list of string - One class label per input row, in input order.
+        #   errors:
+        #     {DATAMUNGE out_of_range} If a required column is absent.
+        #     {DATAMUNGE invalid_argument} If predictor types are incompatible.
+        #   see: stats::MLPClassifier::predict()
+        #   example:
+        #     const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+        #     dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+        #     const auto n = fit.predict(*iris).size(); // 150
+        #
+        method predict {newdata} {}
+        # plot_decision_regions -- Plot final predicted class regions and development observations in the predictor plane.
+        #
+        #   Pale merged rectangles show the predicted class; saturated points show
+        #   observed development labels in the same palette. Test rows are excluded.
+        #   Axis ranges cover development points plus 10% padding, in original units.
+        #   Rendering samples cell centers, so boundaries are a grid approximation.
+        #
+        #   usage: $obj plot_decision_regions ?grid_resolution?
+        #   args:
+        #     grid_resolution - unsigned int, default 120: Cells per axis, default 120; at least 2.
+        #   result: RPlot - Owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+        #   errors:
+        #     {DATAMUNGE invalid_argument} If grid_resolution is less than 2.
+        #   see: graphics::add_class_regions(), predict()
+        #   example:
+        #     const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+        #     dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+        #     auto plot = fit.plot_decision_regions();
+        #     plot.save_svg("build/iris-mlp.svg");
+        #
+        method plot_decision_regions {{grid_resolution 120}} {}
+    }
+
     # CadSolid -- An owned B-rep solid with value-returning modelling and export operations. Geometry uses doubles in caller-selected consistent units. Copies own topology; immutable surfaces may be shared. Operations return new solids, preserving inputs. Unsupported kernel operations throw std::runtime_error with the kernel diagnostic. Concurrent const access is safe; do not mutate a shared object concurrently.
     #
     #       auto block = dm::cad::Solid::box(4, 3, 2);

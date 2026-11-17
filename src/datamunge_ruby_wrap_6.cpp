@@ -1688,6 +1688,7 @@ template<> struct Bound<datamunge::Dual> : std::true_type {};
 template<> struct Bound<datamunge::HyperDual> : std::true_type {};
 template<> struct Bound<datamunge::Var> : std::true_type {};
 template<> struct Bound<datamunge::Tape> : std::true_type {};
+template<> struct Bound<datamunge::MLPClassifierSearch> : std::true_type {};
 template<> struct Bound<datamunge::cad::Solid> : std::true_type {};
 template<> struct Bound<datamunge::cad::View> : std::true_type {};
 template<> struct Bound<datamunge::fda::SplineSolveOptions> : std::true_type {};
@@ -2015,57 +2016,30 @@ struct rosetta_class_181_director final : datamunge::optim::RBFGaussianProcessSu
 };
 }
 namespace ROSETTA_RB_MODULE {
-VALUE rosetta_function_815(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_819(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"f", "var", "a", "b", "tolerance", "max_depth"};
-                static const bool fillable[] = {false, false, false, false, true, true};
-                VALUE a[6]; long n = 0;
-                if (args.collect(names, fillable, 6, 4, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::algebra::Expr &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::__cxx11::basic_string<char> &>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<double>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<double>::check(a[3], strict))
-                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<double>::check(a[4], strict))
-                    && (n <= 5 || a[5] == Qundef || rosetta_rb::Param<int>::check(a[5], strict))) {
-                    if (n == 4) {
-                        rosetta_rb::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        rosetta_rb::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
-                        rosetta_rb::Param<double> p2(a[2]);
-                        rosetta_rb::Param<double> p3(a[3]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::definite_integral(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                    if (n == 5) {
-                        rosetta_rb::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        rosetta_rb::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
-                        rosetta_rb::Param<double> p2(a[2]);
-                        rosetta_rb::Param<double> p3(a[3]);
-                        auto p4 = a[4] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 1.0000000000000001E-9) : rosetta_rb::Param<double>(a[4]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::definite_integral(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                    if (n == 6) {
-                        rosetta_rb::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        rosetta_rb::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
-                        rosetta_rb::Param<double> p2(a[2]);
-                        rosetta_rb::Param<double> p3(a[3]);
-                        auto p4 = a[4] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 1.0000000000000001E-9) : rosetta_rb::Param<double>(a[4]);
-                        auto p5 = a[5] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 50) : rosetta_rb::Param<int>(a[5]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::definite_integral(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, Qnil, rosetta_rb::Return::automatic);
+                static const char* const names[] = {"p"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::algebra::Polynomial &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::descartes_negative_root_bound(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("definite_integral", "    definite_integral(f [Expr], var [String], a [Float], b [Float], tolerance [Float] = ..., max_depth [Integer] = ...) -> Float\n", args);
+        rosetta_rb::no_overload("descartes_negative_root_bound", "    descartes_negative_root_bound(p [Polynomial]) -> Integer\n", args);
     });
 }
-VALUE rosetta_function_819(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_820(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2088,308 +2062,314 @@ VALUE rosetta_function_819(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("monic", "    monic(p [Polynomial]) -> Polynomial\n", args);
     });
 }
-VALUE rosetta_function_845(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_854(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"f", "g", "order"};
-                static const bool fillable[] = {false, false, false};
-                VALUE a[3]; long n = 0;
-                if (args.collect(names, fillable, 3, 3, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::algebra::MultivariatePolynomial &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const datamunge::algebra::MultivariatePolynomial &>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<datamunge::algebra::MonomialOrder>::check(a[2], strict))) {
-                    if (n == 3) {
-                        rosetta_rb::Param<const datamunge::algebra::MultivariatePolynomial &> p0(a[0]);
-                        rosetta_rb::Param<const datamunge::algebra::MultivariatePolynomial &> p1(a[1]);
-                        rosetta_rb::Param<datamunge::algebra::MonomialOrder> p2(a[2]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::s_polynomial(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("s_polynomial", "    s_polynomial(f [MultivariatePolynomial], g [MultivariatePolynomial], order [Symbol]) -> MultivariatePolynomial\n", args);
-    });
-}
-VALUE rosetta_function_851(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"v"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_rb::Param<double> p0(a[0]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::to_integer(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("to_integer", "    to_integer(v [Float]) -> Integer\n", args);
-    });
-}
-VALUE rosetta_function_893(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"prev", "next_", "points", "window_radius"};
-                static const bool fillable[] = {false, false, false, true};
-                VALUE a[4]; long n = 0;
-                if (args.collect(names, fillable, 4, 3, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::image::Image &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const datamunge::image::Image &>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<const std::vector<std::pair<int, int>> &>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<int>::check(a[3], strict))) {
-                    if (n == 3) {
-                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_rb::Param<const datamunge::image::Image &> p1(a[1]);
-                        rosetta_rb::Param<const std::vector<std::pair<int, int>> &> p2(a[2]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::lucas_kanade_optical_flow(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                    if (n == 4) {
-                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_rb::Param<const datamunge::image::Image &> p1(a[1]);
-                        rosetta_rb::Param<const std::vector<std::pair<int, int>> &> p2(a[2]);
-                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 7) : rosetta_rb::Param<int>(a[3]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::lucas_kanade_optical_flow(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("lucas_kanade_optical_flow", "    lucas_kanade_optical_flow(prev [Image], next_ [Image], points [Array<Array(Integer, Integer)>], window_radius [Integer] = ...) -> Array<FlowVector>\n", args);
-    });
-}
-VALUE rosetta_function_896(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"src", "kernel"};
+                static const char* const names[] = {"a", "m"};
                 static const bool fillable[] = {false, false};
                 VALUE a[2]; long n = 0;
                 if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::image::Image &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[1], strict))) {
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<double>::check(a[1], strict))) {
                     if (n == 2) {
-                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::image::convolve(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        rosetta_rb::Param<double> p0(a[0]);
+                        rosetta_rb::Param<double> p1(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::mod_inverse(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("convolve", "    convolve(src [Image], kernel [Array<Float>]) -> Image\n", args);
+        rosetta_rb::no_overload("mod_inverse", "    mod_inverse(a [Float], m [Float]) -> Float\n", args);
     });
 }
-VALUE rosetta_function_906(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_857(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"src", "new_width", "new_height", "filter"};
+                static const char* const names[] = {"a", "p"};
+                static const bool fillable[] = {false, false};
+                VALUE a[2]; long n = 0;
+                if (args.collect(names, fillable, 2, 2, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<long long> &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<long long>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_rb::Param<const std::vector<long long> &> p0(a[0]);
+                        rosetta_rb::Param<long long> p1(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::gf_derivative(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("gf_derivative", "    gf_derivative(a [Array<Integer>], p [Integer]) -> Array<Integer>\n", args);
+    });
+}
+VALUE rosetta_function_868(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"p"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::algebra::Polynomial &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::algebra::discriminant(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("discriminant", "    discriminant(p [Polynomial]) -> Float\n", args);
+    });
+}
+VALUE rosetta_function_869(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"step_size", "num_steps", "sd", "angles"};
                 static const bool fillable[] = {false, false, false, true};
                 VALUE a[4]; long n = 0;
                 if (args.collect(names, fillable, 4, 3, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<unsigned long>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<double>::check(a[2], strict))
+                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<unsigned long>::check(a[3], strict))) {
+                    if (n == 3) {
+                        rosetta_rb::Param<double> p0(a[0]);
+                        rosetta_rb::Param<unsigned long> p1(a[1]);
+                        rosetta_rb::Param<double> p2(a[2]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::bayes::leapfrog_gaussian_acceptance(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 4) {
+                        rosetta_rb::Param<double> p0(a[0]);
+                        rosetta_rb::Param<unsigned long> p1(a[1]);
+                        rosetta_rb::Param<double> p2(a[2]);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 4096) : rosetta_rb::Param<unsigned long>(a[3]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::bayes::leapfrog_gaussian_acceptance(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("leapfrog_gaussian_acceptance", "    leapfrog_gaussian_acceptance(step_size [Float], num_steps [Integer], sd [Float], angles [Integer] = ...) -> Float\n", args);
+    });
+}
+VALUE rosetta_function_887(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"img", "min_radius", "max_radius", "gradient_threshold", "min_votes", "nms_radius"};
+                static const bool fillable[] = {false, false, false, true, true, true};
+                VALUE a[6]; long n = 0;
+                if (args.collect(names, fillable, 6, 3, -1, a, &n)
                     && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::image::Image &>::check(a[0], strict))
                     && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<int>::check(a[1], strict))
                     && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<int>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<datamunge::image::ResampleFilter>::check(a[3], strict))) {
+                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<double>::check(a[3], strict))
+                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<int>::check(a[4], strict))
+                    && (n <= 5 || a[5] == Qundef || rosetta_rb::Param<int>::check(a[5], strict))) {
                     if (n == 3) {
                         rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
                         rosetta_rb::Param<int> p1(a[1]);
                         rosetta_rb::Param<int> p2(a[2]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::image::resize(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                     if (n == 4) {
                         rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
                         rosetta_rb::Param<int> p1(a[1]);
                         rosetta_rb::Param<int> p2(a[2]);
-                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<datamunge::image::ResampleFilter>(rosetta_rb::fill, ::datamunge::image::ResampleFilter::Bilinear) : rosetta_rb::Param<datamunge::image::ResampleFilter>(a[3]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::image::resize(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("resize", "    resize(src [Image], new_width [Integer], new_height [Integer], filter [Symbol] = ...) -> Image\n", args);
-    });
-}
-VALUE rosetta_function_922(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"a", "b", "num_elements"};
-                static const bool fillable[] = {false, false, false};
-                VALUE a[3]; long n = 0;
-                if (args.collect(names, fillable, 3, 3, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<double>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<unsigned long>::check(a[2], strict))) {
-                    if (n == 3) {
-                        rosetta_rb::Param<double> p0(a[0]);
-                        rosetta_rb::Param<double> p1(a[1]);
-                        rosetta_rb::Param<unsigned long> p2(a[2]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::fem::make_uniform_mesh1d(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("make_uniform_mesh1d", "    make_uniform_mesh1d(a [Float], b [Float], num_elements [Integer]) -> Mesh1D\n", args);
-    });
-}
-VALUE rosetta_function_924(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"a", "b"};
-                static const bool fillable[] = {false, false};
-                VALUE a[2]; long n = 0;
-                if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_rb::Param<const datamunge::geometry::Point2D &> p0(a[0]);
-                        rosetta_rb::Param<const datamunge::geometry::Point2D &> p1(a[1]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::distance(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("distance", "    distance(a [Point2D], b [Point2D]) -> Float\n", args);
-    });
-}
-VALUE rosetta_function_930(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"x0", "y0", "x1", "y1", "nx", "ny"};
-                static const bool fillable[] = {false, false, false, false, false, false};
-                VALUE a[6]; long n = 0;
-                if (args.collect(names, fillable, 6, 6, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<double>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<double>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<double>::check(a[3], strict))
-                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<unsigned long>::check(a[4], strict))
-                    && (n <= 5 || a[5] == Qundef || rosetta_rb::Param<unsigned long>::check(a[5], strict))) {
-                    if (n == 6) {
-                        rosetta_rb::Param<double> p0(a[0]);
-                        rosetta_rb::Param<double> p1(a[1]);
-                        rosetta_rb::Param<double> p2(a[2]);
-                        rosetta_rb::Param<double> p3(a[3]);
-                        rosetta_rb::Param<unsigned long> p4(a[4]);
-                        rosetta_rb::Param<unsigned long> p5(a[5]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::fem::make_rectangular_mesh2d(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("make_rectangular_mesh2d", "    make_rectangular_mesh2d(x0 [Float], y0 [Float], x1 [Float], y1 [Float], nx [Integer], ny [Integer]) -> Mesh2D\n", args);
-    });
-}
-VALUE rosetta_function_931(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"points"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::fem::make_mesh2d_from_points(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("make_mesh2d_from_points", "    make_mesh2d_from_points(points [Array<Point2D>]) -> Mesh2D\n", args);
-    });
-}
-VALUE rosetta_function_948(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"a", "b", "result", "offset", "max_pairs"};
-                static const bool fillable[] = {false, false, false, true, true};
-                VALUE a[5]; long n = 0;
-                if (args.collect(names, fillable, 5, 3, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<const datamunge::geometry::DTWResult &>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<double>::check(a[3], strict))
-                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<unsigned long>::check(a[4], strict))) {
-                    if (n == 3) {
-                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
-                        rosetta_rb::Param<const datamunge::geometry::DTWResult &> p2(a[2]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::plot_dtw_alignment(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                    if (n == 4) {
-                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
-                        rosetta_rb::Param<const datamunge::geometry::DTWResult &> p2(a[2]);
-                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 1.6000000000000001) : rosetta_rb::Param<double>(a[3]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::plot_dtw_alignment(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 50.0) : rosetta_rb::Param<double>(a[3]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                     if (n == 5) {
-                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
-                        rosetta_rb::Param<const datamunge::geometry::DTWResult &> p2(a[2]);
-                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 1.6000000000000001) : rosetta_rb::Param<double>(a[3]);
-                        auto p4 = a[4] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 4096) : rosetta_rb::Param<unsigned long>(a[4]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::plot_dtw_alignment(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_rb::Param<int> p1(a[1]);
+                        rosetta_rb::Param<int> p2(a[2]);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 50.0) : rosetta_rb::Param<double>(a[3]);
+                        auto p4 = a[4] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 20) : rosetta_rb::Param<int>(a[4]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 6) {
+                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_rb::Param<int> p1(a[1]);
+                        rosetta_rb::Param<int> p2(a[2]);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 50.0) : rosetta_rb::Param<double>(a[3]);
+                        auto p4 = a[4] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 20) : rosetta_rb::Param<int>(a[4]);
+                        auto p5 = a[5] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 10) : rosetta_rb::Param<int>(a[5]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("plot_dtw_alignment", "    plot_dtw_alignment(a [Array<Float>], b [Array<Float>], result [DTWResult], offset [Float] = ..., max_pairs [Integer] = ...) -> RPlot\n", args);
+        rosetta_rb::no_overload("hough_circles", "    hough_circles(img [Image], min_radius [Integer], max_radius [Integer], gradient_threshold [Float] = ..., min_votes [Integer] = ..., nms_radius [Integer] = ...) -> Array<HoughCircle>\n", args);
     });
 }
-VALUE rosetta_function_951(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_890(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"img", "se", "radius"};
+                static const bool fillable[] = {false, true, true};
+                VALUE a[3]; long n = 0;
+                if (args.collect(names, fillable, 3, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::image::Image &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<datamunge::cv::StructuringElement>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<int>::check(a[2], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::erode(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 2) {
+                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
+                        auto p1 = a[1] == Qundef ? rosetta_rb::Param<datamunge::cv::StructuringElement>(rosetta_rb::fill, ::datamunge::cv::StructuringElement::Square) : rosetta_rb::Param<datamunge::cv::StructuringElement>(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::erode(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 3) {
+                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
+                        auto p1 = a[1] == Qundef ? rosetta_rb::Param<datamunge::cv::StructuringElement>(rosetta_rb::fill, ::datamunge::cv::StructuringElement::Square) : rosetta_rb::Param<datamunge::cv::StructuringElement>(a[1]);
+                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 1) : rosetta_rb::Param<int>(a[2]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::cv::erode(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("erode", "    erode(img [Image], se [Symbol] = ..., radius [Integer] = ...) -> Image\n", args);
+    });
+}
+VALUE rosetta_function_908(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"src", "x", "y", "width", "height"};
+                static const bool fillable[] = {false, false, false, false, false};
+                VALUE a[5]; long n = 0;
+                if (args.collect(names, fillable, 5, 5, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::image::Image &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<int>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<int>::check(a[2], strict))
+                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<int>::check(a[3], strict))
+                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<int>::check(a[4], strict))) {
+                    if (n == 5) {
+                        rosetta_rb::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_rb::Param<int> p1(a[1]);
+                        rosetta_rb::Param<int> p2(a[2]);
+                        rosetta_rb::Param<int> p3(a[3]);
+                        rosetta_rb::Param<int> p4(a[4]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::image::crop(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("crop", "    crop(src [Image], x [Integer], y [Integer], width [Integer], height [Integer]) -> Image\n", args);
+    });
+}
+VALUE rosetta_function_937(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"points", "options_"};
+                static const bool fillable[] = {false, false};
+                VALUE a[2]; long n = 0;
+                if (args.collect(names, fillable, 2, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<datamunge::geometry::ConvexHullOptions>::check(a[1], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::convex_hull_analyze(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 2) {
+                        rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
+                        rosetta_rb::Param<datamunge::geometry::ConvexHullOptions> p1(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::convex_hull_analyze(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("convex_hull_analyze", "    convex_hull_analyze(points [Array<Point2D>], options_ [ConvexHullOptions] = ...) -> ConvexHullAnalysis\n", args);
+    });
+}
+VALUE rosetta_function_939(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"count", "seed", "max_points"};
+                static const bool fillable[] = {true, true, true};
+                VALUE a[3]; long n = 0;
+                if (args.collect(names, fillable, 3, 0, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<unsigned int>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<unsigned long>::check(a[2], strict))) {
+                    if (n == 0) {
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::sample_gaussian_points(); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 1) {
+                        auto p0 = a[0] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 40) : rosetta_rb::Param<unsigned long>(a[0]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::sample_gaussian_points(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 2) {
+                        auto p0 = a[0] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 40) : rosetta_rb::Param<unsigned long>(a[0]);
+                        auto p1 = a[1] == Qundef ? rosetta_rb::Param<unsigned int>(rosetta_rb::fill, 20240728) : rosetta_rb::Param<unsigned int>(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::sample_gaussian_points(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 3) {
+                        auto p0 = a[0] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 40) : rosetta_rb::Param<unsigned long>(a[0]);
+                        auto p1 = a[1] == Qundef ? rosetta_rb::Param<unsigned int>(rosetta_rb::fill, 20240728) : rosetta_rb::Param<unsigned int>(a[1]);
+                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 1000000) : rosetta_rb::Param<unsigned long>(a[2]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::sample_gaussian_points(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("sample_gaussian_points", "    sample_gaussian_points(count [Integer] = ..., seed [Integer] = ..., max_points [Integer] = ...) -> Array<Point2D>\n", args);
+    });
+}
+VALUE rosetta_function_946(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2400,148 +2380,148 @@ VALUE rosetta_function_951(int argc, VALUE* argv, VALUE self) {
                 static const bool fillable[] = {false, false};
                 VALUE a[2]; long n = 0;
                 if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[1], strict))) {
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[1], strict))) {
                     if (n == 2) {
+                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
+                        rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::dynamic_time_warping(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("dynamic_time_warping", "    dynamic_time_warping(a [Array<Float>], b [Array<Float>]) -> DTWResult\n", args);
+    });
+}
+VALUE rosetta_function_953(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"a", "b", "c"};
+                static const bool fillable[] = {false, false, false};
+                VALUE a[3]; long n = 0;
+                if (args.collect(names, fillable, 3, 3, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[2], strict))) {
+                    if (n == 3) {
                         rosetta_rb::Param<const datamunge::geometry::Point2D &> p0(a[0]);
                         rosetta_rb::Param<const datamunge::geometry::Point2D &> p1(a[1]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::detail::circle_from_two_points(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        rosetta_rb::Param<const datamunge::geometry::Point2D &> p2(a[2]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::detail::circle_from_three_points(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("circle_from_two_points", "    circle_from_two_points(a [Point2D], b [Point2D]) -> Circle\n", args);
+        rosetta_rb::no_overload("circle_from_three_points", "    circle_from_three_points(a [Point2D], b [Point2D], c [Point2D]) -> Circle\n", args);
     });
 }
-VALUE rosetta_function_958(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_956(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"vertices"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::polygon_centroid(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                static const char* const names[] = {"point", "vertices"};
+                static const bool fillable[] = {false, false};
+                VALUE a[2]; long n = 0;
+                if (args.collect(names, fillable, 2, 2, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::geometry::Point2D &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_rb::Param<const datamunge::geometry::Point2D &> p0(a[0]);
+                        rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &> p1(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::point_in_polygon(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("polygon_centroid", "    polygon_centroid(vertices [Array<Point2D>]) -> Point2D\n", args);
+        rosetta_rb::no_overload("point_in_polygon", "    point_in_polygon(point [Point2D], vertices [Array<Point2D>]) -> Boolean\n", args);
     });
 }
-VALUE rosetta_function_966(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_973(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"subject", "clip"};
+                static const char* const names[] = {"points", "epsilon"};
                 static const bool fillable[] = {false, false};
                 VALUE a[2]; long n = 0;
                 if (args.collect(names, fillable, 2, 2, -1, a, &n)
                     && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[1], strict))) {
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<double>::check(a[1], strict))) {
                     if (n == 2) {
                         rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
-                        rosetta_rb::Param<const std::vector<datamunge::geometry::Point2D> &> p1(a[1]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::clip_polygon(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        rosetta_rb::Param<double> p1(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::geometry::simplify_polyline(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("clip_polygon", "    clip_polygon(subject [Array<Point2D>], clip [Array<Point2D>]) -> Array<Point2D>\n", args);
+        rosetta_rb::no_overload("simplify_polyline", "    simplify_polyline(points [Array<Point2D>], epsilon [Float]) -> Array<Point2D>\n", args);
     });
 }
-VALUE rosetta_function_1019(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1002(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::hello(); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("hello", "    hello()\n", args);
-    });
-}
-VALUE rosetta_function_1045(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"basis"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const datamunge::fda::BSplineBasis &>::check(a[0], strict))) {
+                static const char* const names[] = {"x", "mean", "sd", "alternative"};
+                static const bool fillable[] = {false, true, true, true};
+                VALUE a[4]; long n = 0;
+                if (args.collect(names, fillable, 4, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<double>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<double>::check(a[2], strict))
+                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<datamunge::stats::Alternative>::check(a[3], strict))) {
                     if (n == 1) {
-                        rosetta_rb::Param<const datamunge::fda::BSplineBasis &> p0(a[0]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::fda::dyadic_refine(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 2) {
+                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
+                        auto p1 = a[1] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[1]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 3) {
+                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
+                        auto p1 = a[1] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[1]);
+                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 1.0) : rosetta_rb::Param<double>(a[2]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 4) {
+                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
+                        auto p1 = a[1] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[1]);
+                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 1.0) : rosetta_rb::Param<double>(a[2]);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<datamunge::stats::Alternative>(rosetta_rb::fill, ::datamunge::stats::Alternative::TwoSided) : rosetta_rb::Param<datamunge::stats::Alternative>(a[3]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("dyadic_refine", "    dyadic_refine(basis [BSplineBasis]) -> BSplineRefinement\n", args);
+        rosetta_rb::no_overload("ks_test_one_sample_normal", "    ks_test_one_sample_normal(x [Array<Float>], mean [Float] = ..., sd [Float] = ..., alternative [Symbol] = ...) -> HypothesisTestResult\n", args);
     });
 }
-VALUE rosetta_field_277_get(VALUE self) {
+VALUE rosetta_function_1036(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::algebra::SquareFreeFactor>(self);
-        return rosetta_rb::result<decltype((native->factor))>(native->factor, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_277_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::algebra::SquareFreeFactor&>().factor)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::algebra::SquareFreeFactor>(self);
-        rosetta_rb::assign_field(native->factor, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_278_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::algebra::SquareFreeFactor>(self);
-        return rosetta_rb::result<decltype((native->multiplicity))>(native->multiplicity, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_278_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::algebra::SquareFreeFactor&>().multiplicity)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::algebra::SquareFreeFactor>(self);
-        rosetta_rb::assign_field(native->multiplicity, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_class_6_initialize(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
         rosetta_rb::Args args(argc, argv);
-        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
-        auto* object = rosetta_rb::instance(self);
-        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
@@ -2550,19 +2530,37 @@ VALUE rosetta_class_6_initialize(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        datamunge::algebra::SquareFreeFactor* created = nullptr;
-                        created = new datamunge::algebra::SquareFreeFactor();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::algebra::SquareFreeFactor>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::data::mtcars(); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("SquareFreeFactor.new", "    SquareFreeFactor.new()\n", args);
+        rosetta_rb::no_overload("mtcars", "    mtcars() -> DataFrame, nil\n", args);
     });
 }
-VALUE rosetta_function_1143(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1042(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::data::california_housing(); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("california_housing", "    california_housing() -> DataFrame, nil\n", args);
+    });
+}
+VALUE rosetta_function_1136(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2573,22 +2571,22 @@ VALUE rosetta_function_1143(int argc, VALUE* argv, VALUE self) {
                 static const bool fillable[] = {false, false};
                 VALUE a[2]; long n = 0;
                 if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::DifferentiableFunction &>::check(a[0], strict))
                     && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[1], strict))) {
                     if (n == 2) {
-                        rosetta_rb::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
+                        rosetta_rb::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
                         rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
-                        auto* native = rosetta_rb::native<datamunge::bayes::RandomWalkMetropolis>(self);
+                        auto* native = rosetta_rb::native<datamunge::bayes::HMC>(self);
                         VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->sample(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("sample", "    sample(log_posterior [ArbitraryFunction], initial_params [Array<Float>]) -> RWMResult\n", args);
+        rosetta_rb::no_overload("sample", "    sample(log_posterior [DifferentiableFunction], initial_params [Array<Float>]) -> HMCResult\n", args);
     });
 }
-VALUE rosetta_function_1144(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1137(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2600,17 +2598,17 @@ VALUE rosetta_function_1144(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::bayes::RandomWalkMetropolis>(self);
+                        auto* native = rosetta_rb::native<datamunge::bayes::HMC>(self);
                         VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("options", "    options() -> RWMOptions\n", args);
+        rosetta_rb::no_overload("options", "    options() -> HMCOptions\n", args);
     });
 }
-VALUE rosetta_class_37_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_class_26_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
@@ -2623,74 +2621,149 @@ VALUE rosetta_class_37_initialize(int argc, VALUE* argv, VALUE self) {
                 static const bool fillable[] = {false};
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 1, 0, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::bayes::RWMOptions>::check(a[0], strict))) {
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::bayes::HMCOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::bayes::RandomWalkMetropolis* created = nullptr;
-                        created = new datamunge::bayes::RandomWalkMetropolis();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::bayes::RandomWalkMetropolis>::value;
+                        datamunge::bayes::HMC* created = nullptr;
+                        created = new datamunge::bayes::HMC();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::bayes::HMC>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                     if (n == 1) {
-                        rosetta_rb::Param<datamunge::bayes::RWMOptions> p0(a[0]);
-                        datamunge::bayes::RandomWalkMetropolis* created = nullptr;
-                        created = new datamunge::bayes::RandomWalkMetropolis(p0.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::bayes::RandomWalkMetropolis>::value;
+                        rosetta_rb::Param<datamunge::bayes::HMCOptions> p0(a[0]);
+                        datamunge::bayes::HMC* created = nullptr;
+                        created = new datamunge::bayes::HMC(p0.get());
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::bayes::HMC>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("RandomWalkMetropolis.new", "    RandomWalkMetropolis.new(options_ [RWMOptions] = ...)\n", args);
+        rosetta_rb::no_overload("HMC.new", "    HMC.new(options_ [HMCOptions] = ...)\n", args);
     });
 }
-VALUE rosetta_field_350_get(VALUE self) {
+VALUE rosetta_field_319_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::cv::detail::StructureTensorField>(self);
-        return rosetta_rb::result<decltype((native->sxx))>(native->sxx, self, rosetta_rb::Return::automatic);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->samples))>(native->samples, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_field_350_set(VALUE self, VALUE value) {
+VALUE rosetta_field_319_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxx)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::cv::detail::StructureTensorField>(self);
-        rosetta_rb::assign_field(native->sxx, converted.get());
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().samples)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->samples, converted.get());
         return value;
     });
 }
-VALUE rosetta_field_351_get(VALUE self) {
+VALUE rosetta_field_320_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::cv::detail::StructureTensorField>(self);
-        return rosetta_rb::result<decltype((native->syy))>(native->syy, self, rosetta_rb::Return::automatic);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->accept_rate))>(native->accept_rate, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_field_351_set(VALUE self, VALUE value) {
+VALUE rosetta_field_320_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().syy)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::cv::detail::StructureTensorField>(self);
-        rosetta_rb::assign_field(native->syy, converted.get());
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().accept_rate)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->accept_rate, converted.get());
         return value;
     });
 }
-VALUE rosetta_field_352_get(VALUE self) {
+VALUE rosetta_field_321_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::cv::detail::StructureTensorField>(self);
-        return rosetta_rb::result<decltype((native->sxy))>(native->sxy, self, rosetta_rb::Return::automatic);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->final_step_size))>(native->final_step_size, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_field_352_set(VALUE self, VALUE value) {
+VALUE rosetta_field_321_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::cv::detail::StructureTensorField&>().sxy)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::cv::detail::StructureTensorField>(self);
-        rosetta_rb::assign_field(native->sxy, converted.get());
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().final_step_size)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->final_step_size, converted.get());
         return value;
     });
 }
-VALUE rosetta_class_43_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_322_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->num_divergences))>(native->num_divergences, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_322_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().num_divergences)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->num_divergences, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_323_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->divergent))>(native->divergent, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_323_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().divergent)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->divergent, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_324_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->tree_depth))>(native->tree_depth, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_324_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().tree_depth)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->tree_depth, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_325_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->n_leapfrog))>(native->n_leapfrog, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_325_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().n_leapfrog)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->n_leapfrog, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_326_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        return rosetta_rb::result<decltype((native->energy))>(native->energy, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_326_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::bayes::NUTSResult&>().energy)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::bayes::NUTSResult>(self);
+        rosetta_rb::assign_field(native->energy, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_class_33_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
@@ -2704,19 +2777,19 @@ VALUE rosetta_class_43_initialize(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        datamunge::cv::detail::StructureTensorField* created = nullptr;
-                        created = new datamunge::cv::detail::StructureTensorField();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::cv::detail::StructureTensorField>::value;
+                        datamunge::bayes::NUTSResult* created = nullptr;
+                        created = new datamunge::bayes::NUTSResult();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::bayes::NUTSResult>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("StructureTensorField.new", "    StructureTensorField.new()\n", args);
+        rosetta_rb::no_overload("NUTSResult.new", "    NUTSResult.new()\n", args);
     });
 }
-VALUE rosetta_function_1257(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1211(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2728,18 +2801,113 @@ VALUE rosetta_function_1257(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        rosetta_rb::writable(self);
-                        auto* native = rosetta_rb::native<datamunge::filter::ParticleFilter>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->predict(); }, self, rosetta_rb::Return::automatic);
+                        auto* native = rosetta_rb::native<datamunge::fem::Mesh2D>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->num_nodes(); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("predict", "    predict()\n", args);
+        rosetta_rb::no_overload("num_nodes", "    num_nodes() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_1258(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1212(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::fem::Mesh2D>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->num_triangles(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("num_triangles", "    num_triangles() -> Integer\n", args);
+    });
+}
+VALUE rosetta_function_1213(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::fem::Mesh2D>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->node_at(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("node_at", "    node_at(index [Integer]) -> Point2D\n", args);
+    });
+}
+VALUE rosetta_function_1214(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::fem::Mesh2D>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->triangle_at(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("triangle_at", "    triangle_at(index [Integer]) -> Triangle\n", args);
+    });
+}
+VALUE rosetta_class_63_initialize(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::Args args(argc, argv);
+        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
+        auto* object = rosetta_rb::instance(self);
+        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        datamunge::fem::Mesh2D* created = nullptr;
+                        created = new datamunge::fem::Mesh2D();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::fem::Mesh2D>::value;
+                        object->owned = 1; object->director = false;
+                        return Qnil;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("Mesh2D.new", "    Mesh2D.new()\n", args);
+    });
+}
+VALUE rosetta_function_1220(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2750,21 +2918,21 @@ VALUE rosetta_function_1258(int argc, VALUE* argv, VALUE self) {
                 static const bool fillable[] = {false};
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 1, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[0], strict))) {
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))) {
                     if (n == 1) {
-                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
+                        rosetta_rb::Param<double> p0(a[0]);
                         rosetta_rb::writable(self);
-                        auto* native = rosetta_rb::native<datamunge::filter::ParticleFilter>(self);
+                        auto* native = rosetta_rb::native<datamunge::filter::AlphaBetaFilter>(self);
                         VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->update(p0.get()); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("update", "    update(z [Array<Float>])\n", args);
+        rosetta_rb::no_overload("update", "    update(z [Float])\n", args);
     });
 }
-VALUE rosetta_function_1259(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1221(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2776,17 +2944,17 @@ VALUE rosetta_function_1259(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::filter::ParticleFilter>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->state(); }, self, rosetta_rb::Return::automatic);
+                        auto* native = rosetta_rb::native<datamunge::filter::AlphaBetaFilter>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->position(); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("state", "    state() -> Array<Float>\n", args);
+        rosetta_rb::no_overload("position", "    position() -> Float\n", args);
     });
 }
-VALUE rosetta_function_1260(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1222(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2798,17 +2966,83 @@ VALUE rosetta_function_1260(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::filter::ParticleFilter>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->covariance(); }, self, rosetta_rb::Return::automatic);
+                        auto* native = rosetta_rb::native<datamunge::filter::AlphaBetaFilter>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->velocity(); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("covariance", "    covariance() -> Array<Array<Float>>\n", args);
+        rosetta_rb::no_overload("velocity", "    velocity() -> Float\n", args);
     });
 }
-VALUE rosetta_function_1261(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1223(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::filter::AlphaBetaFilter>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->alpha(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("alpha", "    alpha() -> Float\n", args);
+    });
+}
+VALUE rosetta_function_1224(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::filter::AlphaBetaFilter>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->beta(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("beta", "    beta() -> Float\n", args);
+    });
+}
+VALUE rosetta_function_1225(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::filter::AlphaBetaFilter>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->dt(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("dt", "    dt() -> Float\n", args);
+    });
+}
+VALUE rosetta_function_1226(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -2819,21 +3053,21 @@ VALUE rosetta_function_1261(int argc, VALUE* argv, VALUE self) {
                 static const bool fillable[] = {false};
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 1, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<std::vector<double>> &>::check(a[0], strict))) {
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[0], strict))) {
                     if (n == 1) {
-                        rosetta_rb::Param<const std::vector<std::vector<double>> &> p0(a[0]);
+                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
                         rosetta_rb::writable(self);
-                        auto* native = rosetta_rb::native<datamunge::filter::ParticleFilter>(self);
+                        auto* native = rosetta_rb::native<datamunge::filter::AlphaBetaFilter>(self);
                         VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->filter(p0.get()); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("filter", "    filter(measurements [Array<Array<Float>>]) -> Array<KalmanState>\n", args);
+        rosetta_rb::no_overload("filter", "    filter(measurements [Array<Float>]) -> Array<AlphaBetaState>\n", args);
     });
 }
-VALUE rosetta_class_77_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_class_67_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
@@ -2842,186 +3076,109 @@ VALUE rosetta_class_77_initialize(int argc, VALUE* argv, VALUE self) {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"f", "h", "q", "r", "x0", "p0", "num_particles", "seed"};
-                static const bool fillable[] = {false, false, false, false, false, false, true, true};
-                VALUE a[8]; long n = 0;
-                if (args.collect(names, fillable, 8, 6, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::filter::VectorFunction &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<datamunge::filter::VectorFunction &>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<std::vector<std::vector<double>>>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<std::vector<std::vector<double>>>::check(a[3], strict))
-                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<std::vector<double>>::check(a[4], strict))
-                    && (n <= 5 || a[5] == Qundef || rosetta_rb::Param<std::vector<std::vector<double>>>::check(a[5], strict))
-                    && (n <= 6 || a[6] == Qundef || rosetta_rb::Param<int>::check(a[6], strict))
-                    && (n <= 7 || a[7] == Qundef || rosetta_rb::Param<unsigned int>::check(a[7], strict))) {
-                    if (n == 6) {
-                        rosetta_rb::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_rb::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_rb::Param<std::vector<double>> p4(a[4]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        datamunge::filter::ParticleFilter* created = nullptr;
-                        created = new datamunge::filter::ParticleFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::filter::ParticleFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                    if (n == 7) {
-                        rosetta_rb::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_rb::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_rb::Param<std::vector<double>> p4(a[4]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        auto p6 = a[6] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 200) : rosetta_rb::Param<int>(a[6]);
-                        datamunge::filter::ParticleFilter* created = nullptr;
-                        created = new datamunge::filter::ParticleFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::filter::ParticleFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                    if (n == 8) {
-                        rosetta_rb::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_rb::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_rb::Param<std::vector<double>> p4(a[4]);
-                        rosetta_rb::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        auto p6 = a[6] == Qundef ? rosetta_rb::Param<int>(rosetta_rb::fill, 200) : rosetta_rb::Param<int>(a[6]);
-                        auto p7 = a[7] == Qundef ? rosetta_rb::Param<unsigned int>(rosetta_rb::fill, 42) : rosetta_rb::Param<unsigned int>(a[7]);
-                        datamunge::filter::ParticleFilter* created = nullptr;
-                        created = new datamunge::filter::ParticleFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::filter::ParticleFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("ParticleFilter.new", "    ParticleFilter.new(f [VectorFunction], h [VectorFunction], q [Array<Array<Float>>], r [Array<Array<Float>>], x0 [Array<Float>], p0 [Array<Array<Float>>], num_particles [Integer] = ..., seed [Integer] = ...)\n", args);
-    });
-}
-VALUE rosetta_function_1414(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"t", "y"};
-                static const bool fillable[] = {false, false};
-                VALUE a[2]; long n = 0;
-                if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_rb::Param<double> p0(a[0]);
-                        rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
-                        rosetta_rb::writable(self);
-                        auto* native = rosetta_rb::native<datamunge::ode::RHS>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { if (rosetta_rb::is_director(self)) rosetta_rb::pure_virtual("datamunge::ode::RHS::evaluate"); return native->evaluate(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("evaluate", "    evaluate(t [Float], y [Array<Float>]) -> Array<Float>\n", args);
-    });
-}
-VALUE rosetta_class_105_initialize(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::Args args(argc, argv);
-        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
-        auto* object = rosetta_rb::instance(self);
-        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
-        const bool director = rb_obj_class(self) != rosetta_rb::Info<datamunge::ode::RHS>::value.klass;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        datamunge::ode::RHS* created = nullptr;
-                        if (director) created = new rosetta_class_105_director(self);
-                        else rosetta_rb::fail(rb_eTypeError, "RHS is abstract; subclass it in Ruby and implement its pure virtual methods");
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::ode::RHS>::value;
-                        object->owned = 1; object->director = director;
-                        if (director) static_cast<rosetta_rb::Director*>(static_cast<rosetta_class_105_director*>(created))->rosetta_self = self;
-                        return Qnil;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("RHS.new", "    RHS.new()\n", args);
-    });
-}
-VALUE rosetta_function_1437(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "lower", "upper", "surrogate"};
-                static const bool fillable[] = {false, false, false, false};
-                VALUE a[4]; long n = 0;
-                if (args.collect(names, fillable, 4, 4, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<datamunge::optim::BayesianSurrogate &>::check(a[3], strict))) {
-                    if (n == 4) {
-                        rosetta_rb::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
-                        rosetta_rb::Param<const std::vector<double> &> p1(a[1]);
-                        rosetta_rb::Param<const std::vector<double> &> p2(a[2]);
-                        rosetta_rb::Param<datamunge::optim::BayesianSurrogate &> p3(a[3]);
-                        auto* native = rosetta_rb::native<datamunge::optim::BayesianOptimization>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->run(p0.get(), p1.get(), p2.get(), p3.get()); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("run", "    run(function [ArbitraryFunction], lower [Array<Float>], upper [Array<Float>], surrogate [BayesianSurrogate]) -> BayesianOptimizationResult\n", args);
-    });
-}
-VALUE rosetta_function_1438(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "coordinates", "lower", "upper", "surrogate"};
-                static const bool fillable[] = {false, false, false, false, false};
+                static const char* const names[] = {"alpha", "beta", "dt", "x0", "v0"};
+                static const bool fillable[] = {false, false, false, true, true};
                 VALUE a[5]; long n = 0;
-                if (args.collect(names, fillable, 5, 5, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<std::vector<double> &>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[3], strict))
-                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<datamunge::optim::BayesianSurrogate &>::check(a[4], strict))) {
+                if (args.collect(names, fillable, 5, 3, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<double>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<double>::check(a[2], strict))
+                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<double>::check(a[3], strict))
+                    && (n <= 4 || a[4] == Qundef || rosetta_rb::Param<double>::check(a[4], strict))) {
+                    if (n == 3) {
+                        rosetta_rb::Param<double> p0(a[0]);
+                        rosetta_rb::Param<double> p1(a[1]);
+                        rosetta_rb::Param<double> p2(a[2]);
+                        datamunge::filter::AlphaBetaFilter* created = nullptr;
+                        created = new datamunge::filter::AlphaBetaFilter(p0.get(), p1.get(), p2.get());
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::filter::AlphaBetaFilter>::value;
+                        object->owned = 1; object->director = false;
+                        return Qnil;
+                    }
+                    if (n == 4) {
+                        rosetta_rb::Param<double> p0(a[0]);
+                        rosetta_rb::Param<double> p1(a[1]);
+                        rosetta_rb::Param<double> p2(a[2]);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[3]);
+                        datamunge::filter::AlphaBetaFilter* created = nullptr;
+                        created = new datamunge::filter::AlphaBetaFilter(p0.get(), p1.get(), p2.get(), p3.get());
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::filter::AlphaBetaFilter>::value;
+                        object->owned = 1; object->director = false;
+                        return Qnil;
+                    }
                     if (n == 5) {
-                        rosetta_rb::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
-                        rosetta_rb::Param<std::vector<double> &> p1(a[1]);
-                        rosetta_rb::Param<const std::vector<double> &> p2(a[2]);
-                        rosetta_rb::Param<const std::vector<double> &> p3(a[3]);
-                        rosetta_rb::Param<datamunge::optim::BayesianSurrogate &> p4(a[4]);
-                        auto* native = rosetta_rb::native<datamunge::optim::BayesianOptimization>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, self, rosetta_rb::Return::automatic);
-                        if (a[1] != Qundef) p1.writeback(a[1]);
+                        rosetta_rb::Param<double> p0(a[0]);
+                        rosetta_rb::Param<double> p1(a[1]);
+                        rosetta_rb::Param<double> p2(a[2]);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[3]);
+                        auto p4 = a[4] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[4]);
+                        datamunge::filter::AlphaBetaFilter* created = nullptr;
+                        created = new datamunge::filter::AlphaBetaFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get());
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::filter::AlphaBetaFilter>::value;
+                        object->owned = 1; object->director = false;
+                        return Qnil;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("AlphaBetaFilter.new", "    AlphaBetaFilter.new(alpha [Float], beta [Float], dt [Float], x0 [Float] = ..., v0 [Float] = ...)\n", args);
+    });
+}
+VALUE rosetta_function_1268(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"x"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<double>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<double> p0(a[0]);
+                        rosetta_rb::writable(self);
+                        auto* native = rosetta_rb::native<datamunge::Callback>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { if (rosetta_rb::is_director(self)) return native->datamunge::Callback::call(p0.get()); return native->call(p0.get()); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("optimize", "    optimize(function [ArbitraryFunction], coordinates [Array<Float>], lower [Array<Float>], upper [Array<Float>], surrogate [BayesianSurrogate]) -> Float\n", args);
+        rosetta_rb::no_overload("call", "    call(x [Float]) -> Float\n", args);
     });
 }
-VALUE rosetta_function_1439(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_class_87_initialize(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::Args args(argc, argv);
+        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
+        auto* object = rosetta_rb::instance(self);
+        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
+        const bool director = rb_obj_class(self) != rosetta_rb::Info<datamunge::Callback>::value.klass;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        datamunge::Callback* created = nullptr;
+                        if (director) created = new rosetta_class_87_director(self);
+                        else created = new datamunge::Callback();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::Callback>::value;
+                        object->owned = 1; object->director = director;
+                        if (director) static_cast<rosetta_rb::Director*>(static_cast<rosetta_class_87_director*>(created))->rosetta_self = self;
+                        return Qnil;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("Callback.new", "    Callback.new()\n", args);
+    });
+}
+VALUE rosetta_function_1416(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -3033,82 +3190,100 @@ VALUE rosetta_function_1439(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::optim::BayesianOptimization>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_rb::Return::automatic);
+                        auto* native = rosetta_rb::native<datamunge::ode::ODESolution>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->size(); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("options", "    options() -> BayesianOptimizationOptions\n", args);
+        rosetta_rb::no_overload("size", "    size() -> Integer\n", args);
     });
 }
-VALUE rosetta_class_126_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1417(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::ode::ODESolution>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->time_at(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("time_at", "    time_at(index [Integer]) -> Float\n", args);
+    });
+}
+VALUE rosetta_function_1418(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::ode::ODESolution>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->state_at(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("state_at", "    state_at(index [Integer]) -> Array<Float>\n", args);
+    });
+}
+VALUE rosetta_field_504_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::ode::ODESolution>(self);
+        return rosetta_rb::result<decltype((native->steps_taken))>(native->steps_taken, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_504_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::ode::ODESolution&>().steps_taken)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::ode::ODESolution>(self);
+        rosetta_rb::assign_field(native->steps_taken, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_505_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::ode::ODESolution>(self);
+        return rosetta_rb::result<decltype((native->function_evaluations))>(native->function_evaluations, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_505_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::ode::ODESolution&>().function_evaluations)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::ode::ODESolution>(self);
+        rosetta_rb::assign_field(native->function_evaluations, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_class_107_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
         auto* object = rosetta_rb::instance(self);
         if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"options_"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 0, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::BayesianOptimizationOptions>::check(a[0], strict))) {
-                    if (n == 0) {
-                        datamunge::optim::BayesianOptimization* created = nullptr;
-                        created = new datamunge::optim::BayesianOptimization();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::BayesianOptimization>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                    if (n == 1) {
-                        rosetta_rb::Param<datamunge::optim::BayesianOptimizationOptions> p0(a[0]);
-                        datamunge::optim::BayesianOptimization* created = nullptr;
-                        created = new datamunge::optim::BayesianOptimization(p0.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::BayesianOptimization>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("BayesianOptimization.new", "    BayesianOptimization.new(options_ [BayesianOptimizationOptions] = ...)\n", args);
-    });
-}
-VALUE rosetta_function_1440(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "coordinates"};
-                static const bool fillable[] = {false, false};
-                VALUE a[2]; long n = 0;
-                if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::DifferentiableFunction &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<std::vector<double> &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_rb::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
-                        rosetta_rb::Param<std::vector<double> &> p1(a[1]);
-                        auto* native = rosetta_rb::native<datamunge::optim::ConjugateGradient>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
-                        if (a[1] != Qundef) p1.writeback(a[1]);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("optimize", "    optimize(function [DifferentiableFunction], coordinates [Array<Float>]) -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1441(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
@@ -3117,426 +3292,94 @@ VALUE rosetta_function_1441(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::optim::ConjugateGradient>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("options", "    options() -> ConjugateGradientOptions\n", args);
-    });
-}
-VALUE rosetta_class_128_initialize(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::Args args(argc, argv);
-        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
-        auto* object = rosetta_rb::instance(self);
-        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"options_"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 0, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::ConjugateGradientOptions>::check(a[0], strict))) {
-                    if (n == 0) {
-                        datamunge::optim::ConjugateGradient* created = nullptr;
-                        created = new datamunge::optim::ConjugateGradient();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::ConjugateGradient>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                    if (n == 1) {
-                        rosetta_rb::Param<datamunge::optim::ConjugateGradientOptions> p0(a[0]);
-                        datamunge::optim::ConjugateGradient* created = nullptr;
-                        created = new datamunge::optim::ConjugateGradient(p0.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::ConjugateGradient>::value;
+                        datamunge::ode::ODESolution* created = nullptr;
+                        created = new datamunge::ode::ODESolution();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::ode::ODESolution>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("ConjugateGradient.new", "    ConjugateGradient.new(options_ [ConjugateGradientOptions] = ...)\n", args);
+        rosetta_rb::no_overload("ODESolution.new", "    ODESolution.new()\n", args);
     });
 }
-VALUE rosetta_function_1458(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_559_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "coordinates"};
-                static const bool fillable[] = {false, false};
-                VALUE a[2]; long n = 0;
-                if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::ProximalFunction &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<std::vector<double> &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_rb::Param<datamunge::optim::ProximalFunction &> p0(a[0]);
-                        rosetta_rb::Param<std::vector<double> &> p1(a[1]);
-                        auto* native = rosetta_rb::native<datamunge::optim::FISTA>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
-                        if (a[1] != Qundef) p1.writeback(a[1]);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("optimize", "    optimize(function [ProximalFunction], coordinates [Array<Float>]) -> Float\n", args);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
+        return rosetta_rb::result<decltype((native->population_size))>(native->population_size, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_function_1459(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::optim::FISTA>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("options", "    options() -> FISTAOptions\n", args);
-    });
-}
-VALUE rosetta_class_146_initialize(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::Args args(argc, argv);
-        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
-        auto* object = rosetta_rb::instance(self);
-        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"options_"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 0, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::FISTAOptions>::check(a[0], strict))) {
-                    if (n == 0) {
-                        datamunge::optim::FISTA* created = nullptr;
-                        created = new datamunge::optim::FISTA();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::FISTA>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                    if (n == 1) {
-                        rosetta_rb::Param<datamunge::optim::FISTAOptions> p0(a[0]);
-                        datamunge::optim::FISTA* created = nullptr;
-                        created = new datamunge::optim::FISTA(p0.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::FISTA>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("FISTA.new", "    FISTA.new(options_ [FISTAOptions] = ...)\n", args);
-    });
-}
-VALUE rosetta_function_1476(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "coordinates"};
-                static const bool fillable[] = {false, false};
-                VALUE a[2]; long n = 0;
-                if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::DifferentiableFunction &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<std::vector<double> &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_rb::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
-                        rosetta_rb::Param<std::vector<double> &> p1(a[1]);
-                        auto* native = rosetta_rb::native<datamunge::optim::NesterovAcceleratedGradient>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
-                        if (a[1] != Qundef) p1.writeback(a[1]);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("optimize", "    optimize(function [DifferentiableFunction], coordinates [Array<Float>]) -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1477(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::optim::NesterovAcceleratedGradient>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("options", "    options() -> NesterovAcceleratedGradientOptions\n", args);
-    });
-}
-VALUE rosetta_class_164_initialize(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::Args args(argc, argv);
-        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
-        auto* object = rosetta_rb::instance(self);
-        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"options_"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 0, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::NesterovAcceleratedGradientOptions>::check(a[0], strict))) {
-                    if (n == 0) {
-                        datamunge::optim::NesterovAcceleratedGradient* created = nullptr;
-                        created = new datamunge::optim::NesterovAcceleratedGradient();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::NesterovAcceleratedGradient>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                    if (n == 1) {
-                        rosetta_rb::Param<datamunge::optim::NesterovAcceleratedGradientOptions> p0(a[0]);
-                        datamunge::optim::NesterovAcceleratedGradient* created = nullptr;
-                        created = new datamunge::optim::NesterovAcceleratedGradient(p0.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::NesterovAcceleratedGradient>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("NesterovAcceleratedGradient.new", "    NesterovAcceleratedGradient.new(options_ [NesterovAcceleratedGradientOptions] = ...)\n", args);
-    });
-}
-VALUE rosetta_field_669_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        return rosetta_rb::result<decltype((native->step_size))>(native->step_size, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_669_set(VALUE self, VALUE value) {
+VALUE rosetta_field_559_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NadamOptions&>().step_size)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        rosetta_rb::assign_field(native->step_size, converted.get());
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().population_size)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
+        rosetta_rb::assign_field(native->population_size, converted.get());
         return value;
     });
 }
-VALUE rosetta_field_670_get(VALUE self) {
+VALUE rosetta_field_560_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        return rosetta_rb::result<decltype((native->beta1))>(native->beta1, self, rosetta_rb::Return::automatic);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
+        return rosetta_rb::result<decltype((native->initial_step_size))>(native->initial_step_size, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_field_670_set(VALUE self, VALUE value) {
+VALUE rosetta_field_560_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NadamOptions&>().beta1)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        rosetta_rb::assign_field(native->beta1, converted.get());
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().initial_step_size)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
+        rosetta_rb::assign_field(native->initial_step_size, converted.get());
         return value;
     });
 }
-VALUE rosetta_field_671_get(VALUE self) {
+VALUE rosetta_field_561_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        return rosetta_rb::result<decltype((native->beta2))>(native->beta2, self, rosetta_rb::Return::automatic);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
+        return rosetta_rb::result<decltype((native->max_generations))>(native->max_generations, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_field_671_set(VALUE self, VALUE value) {
+VALUE rosetta_field_561_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NadamOptions&>().beta2)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        rosetta_rb::assign_field(native->beta2, converted.get());
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().max_generations)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
+        rosetta_rb::assign_field(native->max_generations, converted.get());
         return value;
     });
 }
-VALUE rosetta_field_672_get(VALUE self) {
+VALUE rosetta_field_562_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        return rosetta_rb::result<decltype((native->epsilon))>(native->epsilon, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_672_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NadamOptions&>().epsilon)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        rosetta_rb::assign_field(native->epsilon, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_673_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        return rosetta_rb::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_673_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NadamOptions&>().max_iterations)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
-        rosetta_rb::assign_field(native->max_iterations, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_674_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
         return rosetta_rb::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_field_674_set(VALUE self, VALUE value) {
+VALUE rosetta_field_562_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::NadamOptions&>().tolerance)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::NadamOptions>(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().tolerance)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
         rosetta_rb::assign_field(native->tolerance, converted.get());
         return value;
     });
 }
-VALUE rosetta_class_165_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_563_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::Args args(argc, argv);
-        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
-        auto* object = rosetta_rb::instance(self);
-        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        datamunge::optim::NadamOptions* created = nullptr;
-                        created = new datamunge::optim::NadamOptions();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::NadamOptions>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("NadamOptions.new", "    NadamOptions.new()\n", args);
-    });
-}
-VALUE rosetta_field_725_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        return rosetta_rb::result<decltype((native->step_size))>(native->step_size, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_725_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::SGDOptions&>().step_size)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        rosetta_rb::assign_field(native->step_size, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_726_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        return rosetta_rb::result<decltype((native->max_epochs))>(native->max_epochs, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_726_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::SGDOptions&>().max_epochs)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        rosetta_rb::assign_field(native->max_epochs, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_727_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        return rosetta_rb::result<decltype((native->batch_size))>(native->batch_size, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_727_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::SGDOptions&>().batch_size)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        rosetta_rb::assign_field(native->batch_size, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_728_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        return rosetta_rb::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_728_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::SGDOptions&>().tolerance)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        rosetta_rb::assign_field(native->tolerance, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_729_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        return rosetta_rb::result<decltype((native->shuffle))>(native->shuffle, self, rosetta_rb::Return::automatic);
-    });
-}
-VALUE rosetta_field_729_set(VALUE self, VALUE value) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::SGDOptions&>().shuffle)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
-        rosetta_rb::assign_field(native->shuffle, converted.get());
-        return value;
-    });
-}
-VALUE rosetta_field_730_get(VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
         return rosetta_rb::result<decltype((native->seed))>(native->seed, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_field_730_set(VALUE self, VALUE value) {
+VALUE rosetta_field_563_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::writable(self);
-        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::SGDOptions&>().seed)>>&> converted(value);
-        auto* native = rosetta_rb::native<datamunge::optim::SGDOptions>(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::CMAESOptions&>().seed)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::CMAESOptions>(self);
         rosetta_rb::assign_field(native->seed, converted.get());
         return value;
     });
 }
-VALUE rosetta_class_182_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_class_129_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
@@ -3550,19 +3393,19 @@ VALUE rosetta_class_182_initialize(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        datamunge::optim::SGDOptions* created = nullptr;
-                        created = new datamunge::optim::SGDOptions();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::SGDOptions>::value;
+                        datamunge::optim::CMAESOptions* created = nullptr;
+                        created = new datamunge::optim::CMAESOptions();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::CMAESOptions>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("SGDOptions.new", "    SGDOptions.new()\n", args);
+        rosetta_rb::no_overload("CMAESOptions.new", "    CMAESOptions.new()\n", args);
     });
 }
-VALUE rosetta_function_1516(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1449(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -3582,7 +3425,7 @@ VALUE rosetta_function_1516(int argc, VALUE* argv, VALUE self) {
                         rosetta_rb::Param<std::vector<double> &> p1(a[1]);
                         rosetta_rb::Param<const std::vector<double> &> p2(a[2]);
                         rosetta_rb::Param<const std::vector<double> &> p3(a[3]);
-                        auto* native = rosetta_rb::native<datamunge::optim::WhaleOptimization>(self);
+                        auto* native = rosetta_rb::native<datamunge::optim::CuckooSearch>(self);
                         VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get(), p2.get(), p3.get()); }, self, rosetta_rb::Return::automatic);
                         if (a[1] != Qundef) p1.writeback(a[1]);
                         return result;
@@ -3593,7 +3436,7 @@ VALUE rosetta_function_1516(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("optimize", "    optimize(function [ArbitraryFunction], coordinates [Array<Float>], lower_bound [Array<Float>], upper_bound [Array<Float>]) -> Float\n", args);
     });
 }
-VALUE rosetta_function_1517(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1450(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -3605,17 +3448,17 @@ VALUE rosetta_function_1517(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::optim::WhaleOptimization>(self);
+                        auto* native = rosetta_rb::native<datamunge::optim::CuckooSearch>(self);
                         VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("options", "    options() -> WhaleOptimizationOptions\n", args);
+        rosetta_rb::no_overload("options", "    options() -> CuckooSearchOptions\n", args);
     });
 }
-VALUE rosetta_class_195_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_class_136_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
@@ -3628,165 +3471,95 @@ VALUE rosetta_class_195_initialize(int argc, VALUE* argv, VALUE self) {
                 static const bool fillable[] = {false};
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 1, 0, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::WhaleOptimizationOptions>::check(a[0], strict))) {
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::CuckooSearchOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::optim::WhaleOptimization* created = nullptr;
-                        created = new datamunge::optim::WhaleOptimization();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::WhaleOptimization>::value;
+                        datamunge::optim::CuckooSearch* created = nullptr;
+                        created = new datamunge::optim::CuckooSearch();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::CuckooSearch>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                     if (n == 1) {
-                        rosetta_rb::Param<datamunge::optim::WhaleOptimizationOptions> p0(a[0]);
-                        datamunge::optim::WhaleOptimization* created = nullptr;
-                        created = new datamunge::optim::WhaleOptimization(p0.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::WhaleOptimization>::value;
+                        rosetta_rb::Param<datamunge::optim::CuckooSearchOptions> p0(a[0]);
+                        datamunge::optim::CuckooSearch* created = nullptr;
+                        created = new datamunge::optim::CuckooSearch(p0.get());
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::CuckooSearch>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("WhaleOptimization.new", "    WhaleOptimization.new(options_ [WhaleOptimizationOptions] = ...)\n", args);
+        rosetta_rb::no_overload("CuckooSearch.new", "    CuckooSearch.new(options_ [CuckooSearchOptions] = ...)\n", args);
     });
 }
-VALUE rosetta_function_1518(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_630_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"degree", "basis_size", "min_x", "max_x"};
-                static const bool fillable[] = {false, false, true, true};
-                VALUE a[4]; long n = 0;
-                if (args.collect(names, fillable, 4, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<unsigned long>::check(a[1], strict))
-                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<double>::check(a[2], strict))
-                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<double>::check(a[3], strict))) {
-                    if (n == 2) {
-                        rosetta_rb::Param<unsigned long> p0(a[0]);
-                        rosetta_rb::Param<unsigned long> p1(a[1]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                    if (n == 3) {
-                        rosetta_rb::Param<unsigned long> p0(a[0]);
-                        rosetta_rb::Param<unsigned long> p1(a[1]);
-                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[2]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get(), p2.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                    if (n == 4) {
-                        rosetta_rb::Param<unsigned long> p0(a[0]);
-                        rosetta_rb::Param<unsigned long> p1(a[1]);
-                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 0.0) : rosetta_rb::Param<double>(a[2]);
-                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<double>(rosetta_rb::fill, 1.0) : rosetta_rb::Param<double>(a[3]);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get(), p2.get(), p3.get()); }, Qnil, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("open_uniform", "    open_uniform(degree [Integer], basis_size [Integer], min_x [Float] = ..., max_x [Float] = ...) -> BSplineBasis\n", args);
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        return rosetta_rb::result<decltype((native->step_size))>(native->step_size, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_function_1519(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_630_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::fda::BSplineBasis>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->degree(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("degree", "    degree() -> Integer\n", args);
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().step_size)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        rosetta_rb::assign_field(native->step_size, converted.get());
+        return value;
     });
 }
-VALUE rosetta_function_1520(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_631_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::fda::BSplineBasis>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->basis_size(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("basis_size", "    basis_size() -> Integer\n", args);
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        return rosetta_rb::result<decltype((native->momentum))>(native->momentum, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_function_1521(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_631_set(VALUE self, VALUE value) {
     return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::fda::BSplineBasis>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->knots(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("knots", "    knots() -> Array<Float>\n", args);
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().momentum)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        rosetta_rb::assign_field(native->momentum, converted.get());
+        return value;
     });
 }
-VALUE rosetta_function_1522(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_632_get(VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::fda::BSplineBasis>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->domain(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("domain", "    domain() -> Array(Float, Float)\n", args);
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        return rosetta_rb::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_rb::Return::automatic);
     });
 }
-VALUE rosetta_class_196_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_632_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().max_iterations)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        rosetta_rb::assign_field(native->max_iterations, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_633_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        return rosetta_rb::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_633_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::GradientDescentOptions&>().tolerance)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::GradientDescentOptions>(self);
+        rosetta_rb::assign_field(native->tolerance, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_class_149_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
         auto* object = rosetta_rb::instance(self);
         if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
-        for (int pass = 0; pass < 2; ++pass) {
+        for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 static const char* const names[] = {nullptr};
@@ -3794,37 +3567,237 @@ VALUE rosetta_class_196_initialize(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        datamunge::fda::BSplineBasis* created = nullptr;
-                        created = new datamunge::fda::BSplineBasis();
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::fda::BSplineBasis>::value;
-                        object->owned = 1; object->director = false;
-                        return Qnil;
-                    }
-                }
-            }
-            {
-                static const char* const names[] = {"degree", "knots"};
-                static const bool fillable[] = {false, false};
-                VALUE a[2]; long n = 0;
-                if (args.collect(names, fillable, 2, 2, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<std::vector<double>>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_rb::Param<unsigned long> p0(a[0]);
-                        rosetta_rb::Param<std::vector<double>> p1(a[1]);
-                        datamunge::fda::BSplineBasis* created = nullptr;
-                        created = new datamunge::fda::BSplineBasis(p0.get(), p1.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::fda::BSplineBasis>::value;
+                        datamunge::optim::GradientDescentOptions* created = nullptr;
+                        created = new datamunge::optim::GradientDescentOptions();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::GradientDescentOptions>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("BSplineBasis.new", "    BSplineBasis.new()\n    BSplineBasis.new(degree [Integer], knots [Array<Float>])\n", args);
+        rosetta_rb::no_overload("GradientDescentOptions.new", "    GradientDescentOptions.new()\n", args);
     });
 }
-VALUE rosetta_function_1542(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_field_686_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->population_size))>(native->population_size, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_686_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().population_size)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->population_size, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_687_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_687_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().max_iterations)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->max_iterations, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_688_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->inertia_weight))>(native->inertia_weight, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_688_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().inertia_weight)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->inertia_weight, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_689_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->cognitive_coefficient))>(native->cognitive_coefficient, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_689_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().cognitive_coefficient)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->cognitive_coefficient, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_690_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->social_coefficient))>(native->social_coefficient, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_690_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().social_coefficient)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->social_coefficient, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_691_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->topology))>(native->topology, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_691_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().topology)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->topology, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_692_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->ring_neighbors))>(native->ring_neighbors, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_692_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().ring_neighbors)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->ring_neighbors, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_693_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->inertia_strategy))>(native->inertia_strategy, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_693_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().inertia_strategy)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->inertia_strategy, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_694_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->final_inertia_weight))>(native->final_inertia_weight, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_694_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().final_inertia_weight)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->final_inertia_weight, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_695_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_695_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().tolerance)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->tolerance, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_field_696_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        return rosetta_rb::result<decltype((native->seed))>(native->seed, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_696_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::optim::PSOOptions&>().seed)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::optim::PSOOptions>(self);
+        rosetta_rb::assign_field(native->seed, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_class_171_initialize(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::Args args(argc, argv);
+        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
+        auto* object = rosetta_rb::instance(self);
+        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        datamunge::optim::PSOOptions* created = nullptr;
+                        created = new datamunge::optim::PSOOptions();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::PSOOptions>::value;
+                        object->owned = 1; object->director = false;
+                        return Qnil;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("PSOOptions.new", "    PSOOptions.new()\n", args);
+    });
+}
+VALUE rosetta_function_1511(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"function", "coordinates"};
+                static const bool fillable[] = {false, false};
+                VALUE a[2]; long n = 0;
+                if (args.collect(names, fillable, 2, 2, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::DifferentiableSeparableFunction &>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<std::vector<double> &>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_rb::Param<datamunge::optim::DifferentiableSeparableFunction &> p0(a[0]);
+                        rosetta_rb::Param<std::vector<double> &> p1(a[1]);
+                        auto* native = rosetta_rb::native<datamunge::optim::SVRG>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
+                        if (a[1] != Qundef) p1.writeback(a[1]);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("optimize", "    optimize(function [DifferentiableSeparableFunction], coordinates [Array<Float>]) -> Float\n", args);
+    });
+}
+VALUE rosetta_function_1512(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -3836,305 +3809,17 @@ VALUE rosetta_function_1542(int argc, VALUE* argv, VALUE self) {
                 VALUE a[1]; long n = 0;
                 if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
                     if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
+                        auto* native = rosetta_rb::native<datamunge::optim::SVRG>(self);
                         VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_rb::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("options", "    options() -> ExponentialSmoothingOptions\n", args);
+        rosetta_rb::no_overload("options", "    options() -> SVRGOptions\n", args);
     });
 }
-VALUE rosetta_function_1543(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->alpha(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("alpha", "    alpha() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1544(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->beta(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("beta", "    beta() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1545(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->gamma(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("gamma", "    gamma() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1546(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->phi(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("phi", "    phi() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1547(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->observations(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("observations", "    observations() -> Integer\n", args);
-    });
-}
-VALUE rosetta_function_1548(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->sse(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("sse", "    sse() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1549(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->sigma2(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("sigma2", "    sigma2() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1550(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->log_likelihood(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("log_likelihood", "    log_likelihood() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1551(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->aic(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("aic", "    aic() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1552(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->bic(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("bic", "    bic() -> Float\n", args);
-    });
-}
-VALUE rosetta_function_1553(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->fitted_values(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("fitted_values", "    fitted_values() -> Array<Float>\n", args);
-    });
-}
-VALUE rosetta_function_1554(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
-                    if (n == 0) {
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->residuals(); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("residuals", "    residuals() -> Array<Float>\n", args);
-    });
-}
-VALUE rosetta_function_1555(int argc, VALUE* argv, VALUE self) {
-    return rosetta_rb::guard([&]() -> VALUE {
-        (void)self;
-        rosetta_rb::Args args(argc, argv);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"horizon"};
-                static const bool fillable[] = {false};
-                VALUE a[1]; long n = 0;
-                if (args.collect(names, fillable, 1, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_rb::Param<unsigned long> p0(a[0]);
-                        auto* native = rosetta_rb::native<datamunge::stats::ExponentialSmoothing>(self);
-                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->forecast(p0.get()); }, self, rosetta_rb::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_rb::no_overload("forecast", "    forecast(horizon [Integer]) -> Array<Float>\n", args);
-    });
-}
-VALUE rosetta_class_202_initialize(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_class_189_initialize(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         rosetta_rb::Args args(argc, argv);
         if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
@@ -4143,36 +3828,348 @@ VALUE rosetta_class_202_initialize(int argc, VALUE* argv, VALUE self) {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"y", "options_"};
-                static const bool fillable[] = {false, false};
-                VALUE a[2]; long n = 0;
-                if (args.collect(names, fillable, 2, 1, -1, a, &n)
-                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[0], strict))
-                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<datamunge::stats::ExponentialSmoothingOptions>::check(a[1], strict))) {
-                    if (n == 1) {
-                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
-                        datamunge::stats::ExponentialSmoothing* created = nullptr;
-                        created = new datamunge::stats::ExponentialSmoothing(p0.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::stats::ExponentialSmoothing>::value;
+                static const char* const names[] = {"options_"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 0, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::optim::SVRGOptions>::check(a[0], strict))) {
+                    if (n == 0) {
+                        datamunge::optim::SVRG* created = nullptr;
+                        created = new datamunge::optim::SVRG();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::SVRG>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
-                    if (n == 2) {
-                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_rb::Param<datamunge::stats::ExponentialSmoothingOptions> p1(a[1]);
-                        datamunge::stats::ExponentialSmoothing* created = nullptr;
-                        created = new datamunge::stats::ExponentialSmoothing(p0.get(), p1.get());
-                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::stats::ExponentialSmoothing>::value;
+                    if (n == 1) {
+                        rosetta_rb::Param<datamunge::optim::SVRGOptions> p0(a[0]);
+                        datamunge::optim::SVRG* created = nullptr;
+                        created = new datamunge::optim::SVRG(p0.get());
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::optim::SVRG>::value;
                         object->owned = 1; object->director = false;
                         return Qnil;
                     }
                 }
             }
         }
-        rosetta_rb::no_overload("ExponentialSmoothing.new", "    ExponentialSmoothing.new(y [Array<Float>], options_ [ExponentialSmoothingOptions] = ...)\n", args);
+        rosetta_rb::no_overload("SVRG.new", "    SVRG.new(options_ [SVRGOptions] = ...)\n", args);
     });
 }
-VALUE rosetta_function_2043(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_1645(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"path"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return ::datamunge::ShapeLayer::read(p0.get()); }, Qnil, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("read", "    read(path [String]) -> ShapeLayer, nil\n", args);
+    });
+}
+VALUE rosetta_function_1646(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->size(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("size", "    size() -> Integer\n", args);
+    });
+}
+VALUE rosetta_function_1647(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->shape_type(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("shape_type", "    shape_type() -> String\n", args);
+    });
+}
+VALUE rosetta_function_1648(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->bounds(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("bounds", "    bounds() -> Array<Float>\n", args);
+    });
+}
+VALUE rosetta_function_1649(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->attributes(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("attributes", "    attributes() -> DataFrame, nil\n", args);
+    });
+}
+VALUE rosetta_function_1650(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"shape_index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->shape_kind(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("shape_kind", "    shape_kind(shape_index [Integer]) -> String\n", args);
+    });
+}
+VALUE rosetta_function_1651(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"shape_index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->num_parts(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("num_parts", "    num_parts(shape_index [Integer]) -> Integer\n", args);
+    });
+}
+VALUE rosetta_function_1652(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"shape_index", "part_index"};
+                static const bool fillable[] = {false, false};
+                VALUE a[2]; long n = 0;
+                if (args.collect(names, fillable, 2, 2, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<unsigned long>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        rosetta_rb::Param<unsigned long> p1(a[1]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->part_x(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("part_x", "    part_x(shape_index [Integer], part_index [Integer]) -> Array<Float>\n", args);
+    });
+}
+VALUE rosetta_function_1653(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"shape_index", "part_index"};
+                static const bool fillable[] = {false, false};
+                VALUE a[2]; long n = 0;
+                if (args.collect(names, fillable, 2, 2, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<unsigned long>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        rosetta_rb::Param<unsigned long> p1(a[1]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->part_y(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("part_y", "    part_y(shape_index [Integer], part_index [Integer]) -> Array<Float>\n", args);
+    });
+}
+VALUE rosetta_function_1654(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"shape_index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->point_x(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("point_x", "    point_x(shape_index [Integer]) -> Array<Float>\n", args);
+    });
+}
+VALUE rosetta_function_1655(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"shape_index"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<unsigned long>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<unsigned long> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->point_y(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("point_y", "    point_y(shape_index [Integer]) -> Array<Float>\n", args);
+    });
+}
+VALUE rosetta_function_1656(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"fill_color", "border_color", "width", "height"};
+                static const bool fillable[] = {false, false, true, true};
+                VALUE a[4]; long n = 0;
+                if (args.collect(names, fillable, 4, 0, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<datamunge::graphics::RGB>::check(a[0], strict))
+                    && (n <= 1 || a[1] == Qundef || rosetta_rb::Param<datamunge::graphics::RGB>::check(a[1], strict))
+                    && (n <= 2 || a[2] == Qundef || rosetta_rb::Param<unsigned long>::check(a[2], strict))
+                    && (n <= 3 || a[3] == Qundef || rosetta_rb::Param<unsigned long>::check(a[3], strict))) {
+                    if (n == 0) {
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->plot(); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 1) {
+                        rosetta_rb::Param<datamunge::graphics::RGB> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->plot(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 2) {
+                        rosetta_rb::Param<datamunge::graphics::RGB> p0(a[0]);
+                        rosetta_rb::Param<datamunge::graphics::RGB> p1(a[1]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->plot(p0.get(), p1.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 3) {
+                        rosetta_rb::Param<datamunge::graphics::RGB> p0(a[0]);
+                        rosetta_rb::Param<datamunge::graphics::RGB> p1(a[1]);
+                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 800) : rosetta_rb::Param<unsigned long>(a[2]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->plot(p0.get(), p1.get(), p2.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                    if (n == 4) {
+                        rosetta_rb::Param<datamunge::graphics::RGB> p0(a[0]);
+                        rosetta_rb::Param<datamunge::graphics::RGB> p1(a[1]);
+                        auto p2 = a[2] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 800) : rosetta_rb::Param<unsigned long>(a[2]);
+                        auto p3 = a[3] == Qundef ? rosetta_rb::Param<unsigned long>(rosetta_rb::fill, 800) : rosetta_rb::Param<unsigned long>(a[3]);
+                        auto* native = rosetta_rb::native<datamunge::ShapeLayer>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->plot(p0.get(), p1.get(), p2.get(), p3.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("plot", "    plot(fill_color [RGB] = ..., border_color [RGB] = ..., width [Integer] = ..., height [Integer] = ...) -> RPlot\n", args);
+    });
+}
+VALUE rosetta_function_2044(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4194,7 +4191,7 @@ VALUE rosetta_function_2043(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("feature_names", "    feature_names() -> Array<String>\n", args);
     });
 }
-VALUE rosetta_function_2044(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2045(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4216,7 +4213,7 @@ VALUE rosetta_function_2044(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("observations", "    observations() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_2045(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2046(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4238,7 +4235,7 @@ VALUE rosetta_function_2045(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("n_components", "    n_components() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_2046(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2047(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4260,7 +4257,7 @@ VALUE rosetta_function_2046(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("kept_row_indices", "    kept_row_indices() -> Array<Integer>\n", args);
     });
 }
-VALUE rosetta_function_2047(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2048(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4282,7 +4279,7 @@ VALUE rosetta_function_2047(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("eigenvalues", "    eigenvalues() -> Array<Float>\n", args);
     });
 }
-VALUE rosetta_function_2048(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2049(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4306,7 +4303,7 @@ VALUE rosetta_function_2048(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("dimension", "    dimension(index [Integer]) -> Array<Float>\n", args);
     });
 }
-VALUE rosetta_function_2049(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2050(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4328,7 +4325,7 @@ VALUE rosetta_function_2049(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("embedding_frame", "    embedding_frame() -> DataFrame, nil\n", args);
     });
 }
-VALUE rosetta_function_2050(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2051(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4350,7 +4347,7 @@ VALUE rosetta_function_2050(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("summary", "    summary() -> String\n", args);
     });
 }
-VALUE rosetta_function_2051(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2052(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4372,7 +4369,7 @@ VALUE rosetta_function_2051(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("print_summary", "    print_summary()\n", args);
     });
 }
-VALUE rosetta_function_2052(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2053(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4409,7 +4406,7 @@ VALUE rosetta_function_2052(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("plot_embedding", "    plot_embedding(dimension_x [Integer] = ..., dimension_y [Integer] = ...) -> RPlot\n", args);
     });
 }
-VALUE rosetta_function_2053(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2054(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4598,7 +4595,7 @@ VALUE rosetta_class_230_initialize(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("LLE.new", "    LLE.new(data [DataFrame], feature_columns [Array<String>], n_components [Integer] = ..., n_neighbors [Integer] = ..., regularization [Float] = ..., metric [String] = ...)\n    LLE.new(data [DataFrame], encoded_feature_columns [String], n_components [Integer] = ..., n_neighbors [Integer] = ..., regularization [Float] = ..., metric [String] = ...)\n", args);
     });
 }
-VALUE rosetta_function_2054(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2055(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4620,7 +4617,7 @@ VALUE rosetta_function_2054(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("feature_names", "    feature_names() -> Array<String>\n", args);
     });
 }
-VALUE rosetta_function_2055(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2056(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4642,7 +4639,7 @@ VALUE rosetta_function_2055(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("observations", "    observations() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_2056(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2057(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4664,7 +4661,7 @@ VALUE rosetta_function_2056(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("n_components", "    n_components() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_2057(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2058(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4686,7 +4683,7 @@ VALUE rosetta_function_2057(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("kept_row_indices", "    kept_row_indices() -> Array<Integer>\n", args);
     });
 }
-VALUE rosetta_function_2058(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2059(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4708,7 +4705,7 @@ VALUE rosetta_function_2058(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("achieved_perplexity", "    achieved_perplexity() -> Array<Float>\n", args);
     });
 }
-VALUE rosetta_function_2059(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2060(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4732,7 +4729,7 @@ VALUE rosetta_function_2059(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("dimension", "    dimension(index [Integer]) -> Array<Float>\n", args);
     });
 }
-VALUE rosetta_function_2060(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2061(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4754,7 +4751,7 @@ VALUE rosetta_function_2060(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("embedding_frame", "    embedding_frame() -> DataFrame, nil\n", args);
     });
 }
-VALUE rosetta_function_2061(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2062(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4776,7 +4773,7 @@ VALUE rosetta_function_2061(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("summary", "    summary() -> String\n", args);
     });
 }
-VALUE rosetta_function_2062(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2063(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4798,7 +4795,7 @@ VALUE rosetta_function_2062(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("print_summary", "    print_summary()\n", args);
     });
 }
-VALUE rosetta_function_2063(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2064(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -4835,7 +4832,7 @@ VALUE rosetta_function_2063(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("plot_embedding", "    plot_embedding(dimension_x [Integer] = ..., dimension_y [Integer] = ...) -> RPlot\n", args);
     });
 }
-VALUE rosetta_function_2064(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2065(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5276,7 +5273,7 @@ VALUE rosetta_class_231_initialize(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("TSNE.new", "    TSNE.new(data [DataFrame], feature_columns [Array<String>], n_components [Integer] = ..., perplexity [Float] = ..., max_iterations [Integer] = ..., learning_rate [Float] = ..., early_exaggeration [Float] = ..., early_exaggeration_iterations [Integer] = ..., initial_momentum [Float] = ..., final_momentum [Float] = ..., momentum_switch_iteration [Integer] = ..., metric [String] = ..., seed [Integer] = ...)\n    TSNE.new(data [DataFrame], encoded_feature_columns [String], n_components [Integer] = ..., perplexity [Float] = ..., max_iterations [Integer] = ..., learning_rate [Float] = ..., early_exaggeration [Float] = ..., early_exaggeration_iterations [Integer] = ..., initial_momentum [Float] = ..., final_momentum [Float] = ..., momentum_switch_iteration [Integer] = ..., metric [String] = ..., seed [Integer] = ...)\n", args);
     });
 }
-VALUE rosetta_function_2087(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2088(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5298,7 +5295,7 @@ VALUE rosetta_function_2087(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("feature_names", "    feature_names() -> Array<String>\n", args);
     });
 }
-VALUE rosetta_function_2088(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2089(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5320,7 +5317,7 @@ VALUE rosetta_function_2088(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("observations", "    observations() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_2089(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2090(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5342,7 +5339,7 @@ VALUE rosetta_function_2089(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("n_components", "    n_components() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_2090(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2091(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5364,7 +5361,7 @@ VALUE rosetta_function_2090(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("kept_row_indices", "    kept_row_indices() -> Array<Integer>\n", args);
     });
 }
-VALUE rosetta_function_2091(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2092(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5386,7 +5383,7 @@ VALUE rosetta_function_2091(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("eigenvalues", "    eigenvalues() -> Array<Float>\n", args);
     });
 }
-VALUE rosetta_function_2092(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2093(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5410,7 +5407,7 @@ VALUE rosetta_function_2092(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("dimension", "    dimension(index [Integer]) -> Array<Float>\n", args);
     });
 }
-VALUE rosetta_function_2093(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2094(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5432,7 +5429,7 @@ VALUE rosetta_function_2093(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("embedding_frame", "    embedding_frame() -> DataFrame, nil\n", args);
     });
 }
-VALUE rosetta_function_2094(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2095(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5454,7 +5451,7 @@ VALUE rosetta_function_2094(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("summary", "    summary() -> String\n", args);
     });
 }
-VALUE rosetta_function_2095(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2096(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5476,7 +5473,7 @@ VALUE rosetta_function_2095(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("print_summary", "    print_summary()\n", args);
     });
 }
-VALUE rosetta_function_2096(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2097(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5513,7 +5510,7 @@ VALUE rosetta_function_2096(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("plot_embedding", "    plot_embedding(dimension_x [Integer] = ..., dimension_y [Integer] = ...) -> RPlot\n", args);
     });
 }
-VALUE rosetta_function_2097(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2098(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5732,7 +5729,7 @@ VALUE rosetta_class_234_initialize(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("KernelPCA.new", "    KernelPCA.new(data [DataFrame], feature_columns [Array<String>], n_components [Integer] = ..., kernel [String] = ..., gamma [Float] = ..., degree [Float] = ..., coef0 [Float] = ...)\n    KernelPCA.new(data [DataFrame], encoded_feature_columns [String], n_components [Integer] = ..., kernel [String] = ..., gamma [Float] = ..., degree [Float] = ..., coef0 [Float] = ...)\n", args);
     });
 }
-VALUE rosetta_function_2399(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2400(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5754,7 +5751,7 @@ VALUE rosetta_function_2399(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("value", "    value() -> Float\n", args);
     });
 }
-VALUE rosetta_function_2400(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2401(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5776,7 +5773,7 @@ VALUE rosetta_function_2400(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("index", "    index() -> Integer\n", args);
     });
 }
-VALUE rosetta_function_2401(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2402(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5800,7 +5797,7 @@ VALUE rosetta_function_2401(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("add", "    add(other [Var]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2402(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2403(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5824,7 +5821,7 @@ VALUE rosetta_function_2402(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("subtract", "    subtract(other [Var]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2403(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2404(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5848,7 +5845,7 @@ VALUE rosetta_function_2403(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("multiply", "    multiply(other [Var]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2404(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2405(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5872,7 +5869,7 @@ VALUE rosetta_function_2404(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("divide", "    divide(other [Var]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2405(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2406(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5894,7 +5891,7 @@ VALUE rosetta_function_2405(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("negate", "    negate() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2406(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2407(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5918,7 +5915,7 @@ VALUE rosetta_function_2406(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("add_scalar", "    add_scalar(scalar [Float]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2407(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2408(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5942,7 +5939,7 @@ VALUE rosetta_function_2407(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("subtract_scalar", "    subtract_scalar(scalar [Float]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2408(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2409(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5966,7 +5963,7 @@ VALUE rosetta_function_2408(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("multiply_scalar", "    multiply_scalar(scalar [Float]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2409(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2410(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -5990,7 +5987,7 @@ VALUE rosetta_function_2409(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("divide_scalar", "    divide_scalar(scalar [Float]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2410(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2411(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6014,7 +6011,7 @@ VALUE rosetta_function_2410(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("pow", "    pow(exponent [Float]) -> Var\n", args);
     });
 }
-VALUE rosetta_function_2411(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2412(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6036,7 +6033,7 @@ VALUE rosetta_function_2411(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("exp", "    exp() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2412(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2413(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6058,7 +6055,7 @@ VALUE rosetta_function_2412(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("log", "    log() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2413(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2414(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6080,7 +6077,7 @@ VALUE rosetta_function_2413(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("sqrt", "    sqrt() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2414(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2415(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6102,7 +6099,7 @@ VALUE rosetta_function_2414(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("sin", "    sin() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2415(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2416(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6124,7 +6121,7 @@ VALUE rosetta_function_2415(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("cos", "    cos() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2416(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2417(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6146,7 +6143,7 @@ VALUE rosetta_function_2416(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("tan", "    tan() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2417(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2418(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6168,7 +6165,7 @@ VALUE rosetta_function_2417(int argc, VALUE* argv, VALUE self) {
         rosetta_rb::no_overload("tanh", "    tanh() -> Var\n", args);
     });
 }
-VALUE rosetta_function_2418(int argc, VALUE* argv, VALUE self) {
+VALUE rosetta_function_2419(int argc, VALUE* argv, VALUE self) {
     return rosetta_rb::guard([&]() -> VALUE {
         (void)self;
         rosetta_rb::Args args(argc, argv);
@@ -6218,6 +6215,71 @@ VALUE rosetta_class_250_initialize(int argc, VALUE* argv, VALUE self) {
             }
         }
         rosetta_rb::no_overload("Var.new", "    Var.new(tape [Tape], value [Float])\n", args);
+    });
+}
+VALUE rosetta_function_2468(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        (void)self;
+        rosetta_rb::Args args(argc, argv);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"coefficients"};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 1, 1, -1, a, &n)
+                    && (n <= 0 || a[0] == Qundef || rosetta_rb::Param<const std::vector<double> &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_rb::Param<const std::vector<double> &> p0(a[0]);
+                        auto* native = rosetta_rb::native<datamunge::fda::BSplineRefinement>(self);
+                        VALUE result = rosetta_rb::call([&]() -> decltype(auto) { return native->apply(p0.get()); }, self, rosetta_rb::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("apply", "    apply(coefficients [Array<Float>]) -> Array<Float>\n", args);
+    });
+}
+VALUE rosetta_field_803_get(VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        auto* native = rosetta_rb::native<datamunge::fda::BSplineRefinement>(self);
+        return rosetta_rb::result<decltype((native->basis))>(native->basis, self, rosetta_rb::Return::automatic);
+    });
+}
+VALUE rosetta_field_803_set(VALUE self, VALUE value) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::writable(self);
+        rosetta_rb::Param<const std::remove_cv_t<std::remove_reference_t<decltype(std::declval<datamunge::fda::BSplineRefinement&>().basis)>>&> converted(value);
+        auto* native = rosetta_rb::native<datamunge::fda::BSplineRefinement>(self);
+        rosetta_rb::assign_field(native->basis, converted.get());
+        return value;
+    });
+}
+VALUE rosetta_class_256_initialize(int argc, VALUE* argv, VALUE self) {
+    return rosetta_rb::guard([&]() -> VALUE {
+        rosetta_rb::Args args(argc, argv);
+        if (!rosetta_rb::is_instance_object(self)) rosetta_rb::fail(rb_eTypeError, "not a native object");
+        auto* object = rosetta_rb::instance(self);
+        if (object->ptr) rosetta_rb::fail(rb_eRuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                static const bool fillable[] = {false};
+                VALUE a[1]; long n = 0;
+                if (args.collect(names, fillable, 0, 0, -1, a, &n)) {
+                    if (n == 0) {
+                        datamunge::fda::BSplineRefinement* created = nullptr;
+                        created = new datamunge::fda::BSplineRefinement();
+                        object->ptr = created; object->info = &rosetta_rb::Info<datamunge::fda::BSplineRefinement>::value;
+                        object->owned = 1; object->director = false;
+                        return Qnil;
+                    }
+                }
+            }
+        }
+        rosetta_rb::no_overload("BSplineRefinement.new", "    BSplineRefinement.new()\n", args);
     });
 }
 } // namespace ROSETTA_RB_MODULE

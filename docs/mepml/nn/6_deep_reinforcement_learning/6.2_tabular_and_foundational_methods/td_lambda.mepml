@@ -1,0 +1,729 @@
+//? Title: Multi-Step SARSA and Eligibility Traces
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+All source n-step and accumulating/replacing-trace sweeps retain150 episodes over20 runs. The13-step trace snapshot and final1000-episode policy remain visible. No episode or optimizer runner is extracted into the library.
+)
+\toc
+
+> Follow the computation
+
+```{cpp, results="markdown", file="figures/td_lambda_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle s;s.width=13;s.height=5;s.font_size=23;d.node("input",{-17,0},"Reward sequence / one-step TD error",s);d.node("math",{0,0},"Native Q-table plus visible traces",s);d.node("output",{17,0},"Caller n-step / lambda updates",s);d.edge("input","math").edge("math","output").save_svg("build/td_lambda_method.svg");}
+```
+// result_begin: markdown
+\image(figures/td_lambda_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+A replacing trace set to1 decays by gamma*lambda=.95*.9=.855 after each step. Two decays leave.731025; repeated visits replace rather than add to that trace.
+
+```{cpp, results="markdown", file="figures/td_lambda_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("build");std::vector<double>values{1.,.95*.9,std::pow(.95*.9,2)};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/td_lambda_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("td lambda worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/td_lambda_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 1.000000000 |
+| 1 | 0.855000000 |
+| 2 | 0.731025000 |
+\image(figures/td_lambda_worked.svg)
+// result_end
+
+> Complete preserved experiment
+
+All source n-step and accumulating/replacing-trace sweeps retain150 episodes over20 runs. The13-step trace snapshot and final1000-episode policy remain visible. No episode or optimizer runner is extracted into the library. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;
+template<class T> void Save(const std::string& name,const std::vector<T>& values){arrays.push_back({name,dm::nn::from_vector(values)});}
+inline void Table(const std::string& name,const dm::rl::foundations::QTable&q){arrays.push_back({name,q.tensor()});}
+struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/td_lambda_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn td_lambda
+// n-step methods and TD(lambda) with eligibility traces.
+//
+// Port of tflow's td_lambda (TF-free apart from the Q-table, so the numbers
+// match tflow exactly). One-step TD bootstraps immediately; Monte Carlo waits
+// for the whole return. n-step SARSA sits in between by backing up n rewards
+// before bootstrapping. SARSA(lambda) blends all n in one pass with an
+// eligibility trace e(s, a): every visited pair keeps a decaying share of
+// each TD error. The experiment measures how fast each variant learns a
+// slippery grid. The vsim video of the final greedy policy is omitted: the
+// best of the same 3 seeded episodes is played and reported instead. The
+// port adds checks (exit 1 on failure).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+#include <map>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/grid_world.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::GridBase;
+using datamunge::rl::environments::GridWorld;
+using datamunge::rl::environments::CliffWalking;
+}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/play_best.hpp
+// datamunge::nn port helper standing in for tflow's vsim_studio.h RecordBest.
+//
+// RecordBest plays `candidates` seeded episodes (seeds seed .. seed+candidates-1) without
+// filming, then films the one with the highest return. PlayBestOfSeeds runs the same candidate
+// episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
+// (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
+
+#include <cstdint>
+#include <cstdio>
+#include <limits>
+#include <string>
+#include <utility>
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+namespace rl {
+
+template <typename Env, typename PolicyFn>
+Playback PlayBestOfSeeds(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, int candidates = 5) {
+  uint64_t best_seed = seed;
+  float    best = -std::numeric_limits<float>::infinity();
+  for (int c = 0; c < candidates; ++c) {
+    float ret = 0;
+    Obs   obs = env.reset(seed + c);
+    while (true) {
+      const StepResult r = env.step(Decide(policy, obs).action);
+      ret += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    if (ret > best) best = ret, best_seed = seed + c;
+  }
+  std::printf("  best of %d episodes (return %.1f):\n", candidates, best);
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, best_seed);
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/tabular.hpp
+#include <datamunge/rl/tabular.hpp>
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+using dm::rl::foundations::QTable;using dm::rl::foundations::PolicyGrid;using dm::rl::foundations::ValueGrid;
+inline float Mean(const std::vector<float>&v,size_t from,size_t to){if(to>v.size())to=v.size();if(from>=to)return 0.f;return std::accumulate(v.begin()+from,v.begin()+to,0.f)/(to-from);}
+}
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/tabular.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats GreedyEval(TabularEnv& env, const QTable& q, int episodes, uint64_t seed) {
+  return RunEpisodes(env, episodes, seed,
+                     [&](const Obs& o) { return Action(q.Greedy(static_cast<int>(o[0]))); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+const float kAlpha = 0.2f, kEps = 0.1f, kGamma = 0.95f;
+
+// Mean online return over the first `episodes` episodes.
+float NStepSarsa(rl::GridBase& env, int n, int episodes, uint64_t seed) {
+  const int       S = env.num_states(), A = env.action_space().n;
+  rl::QTable      Q(S, A);
+  std::mt19937_64 rng(seed);
+  double          total = 0;
+  for (int ep = 0; ep < episodes; ++ep) {
+    std::vector<int>   states{static_cast<int>(env.reset(seed * 31 + ep)[0])}, actions;
+    std::vector<float> rewards{0.f};  // rewards[t+1] is the reward after step t
+    actions.push_back(Q.EpsilonGreedy(states[0], kEps, rng));
+    int T = 1 << 30;
+    for (int t = 0;; ++t) {
+      if (t < T) {
+        rl::StepResult r = env.step(actions[t]);
+        rewards.push_back(r.reward);
+        total += r.reward;
+        states.push_back(static_cast<int>(r.obs[0]));
+        if (r.terminated) T = t + 1;
+        else if (r.truncated) T = t + 1;  // treat the cut as the end of the episode
+        else actions.push_back(Q.EpsilonGreedy(states[t + 1], kEps, rng));
+        if (r.truncated) actions.push_back(0);  // placeholder; unused when T = t + 1
+      }
+      const int tau = t - n + 1;  // the time whose estimate is updated
+      if (tau >= 0) {
+        float G = 0;
+        for (int i = tau + 1; i <= std::min(tau + n, T); ++i) G += std::pow(kGamma, i - tau - 1) * rewards[i];
+        if (tau + n < T) G += std::pow(kGamma, n) * Q(states[tau + n], actions[tau + n]);
+        Q(states[tau], actions[tau]) += kAlpha * (G - Q(states[tau], actions[tau]));
+      }
+      if (tau == T - 1) break;
+    }
+  }
+  return static_cast<float>(total / episodes);
+}
+
+float SarsaLambda(rl::GridBase& env, float lambda, bool replacing, int episodes, uint64_t seed,
+                  rl::QTable* out_Q = nullptr, std::vector<float>* trace_snapshot = nullptr) {
+  const int          S = env.num_states(), A = env.action_space().n;
+  rl::QTable         Q(S, A);
+  std::vector<float> e(S * A);
+  std::mt19937_64    rng(seed);
+  double             total = 0;
+  for (int ep = 0; ep < episodes; ++ep) {
+    std::fill(e.begin(), e.end(), 0.f);
+    int s = static_cast<int>(env.reset(seed * 31 + ep)[0]);
+    int a = Q.EpsilonGreedy(s, kEps, rng);
+    for (int t = 0;; ++t) {
+      rl::StepResult r = env.step(a);
+      total += r.reward;
+      const int   s2 = static_cast<int>(r.obs[0]);
+      const int   a2 = Q.EpsilonGreedy(s2, kEps, rng);
+      const float delta = r.reward + (r.terminated ? 0.f : kGamma * Q(s2, a2)) - Q(s, a);
+      if (replacing) e[s * A + a] = 1.f;
+      else e[s * A + a] += 1.f;
+      // Every pair with a trace shares the TD error, then traces decay.
+      for (int i = 0; i < S * A; ++i) {
+        if (e[i] == 0.f) continue;
+        Q(i / A, i % A) += kAlpha * delta * e[i];
+        e[i] *= kGamma * lambda;
+      }
+      if (trace_snapshot && ep == 0 && t == 12) *trace_snapshot = e;
+      s = s2;
+      a = a2;
+      if (r.done()) break;
+    }
+  }
+  if (out_Q) *out_Q = Q;
+  return static_cast<float>(total / episodes);
+}
+
+}  // namespace
+
+int main() {
+  try {
+    rl::GridWorld env(/*slip_prob=*/0.1f);
+    const int     episodes = 150, runs = 20;
+    std::printf("== %s (slip 0.1): mean return over the first %d episodes, averaged over %d runs\n"
+                "   alpha %.2f, epsilon %.2f, gamma %.2f\n",
+                env.name().c_str(), episodes, runs, kAlpha, kEps, kGamma);
+
+    std::printf("\n-- n-step SARSA\n");
+    std::map<int, double> nstep;
+    for (int n : {1, 2, 4, 8, 16}) {
+      double sum = 0;
+      for (int run = 0; run < runs; ++run) sum += NStepSarsa(env, n, episodes, run + 1);
+      nstep[n] = sum / runs;
+      std::printf("  n = %2d   mean return %7.2f\n", n, sum / runs);
+    }
+
+    std::printf("\n-- SARSA(lambda)\n");
+    std::printf("  %-8s %18s %18s\n", "lambda", "accumulating", "replacing");
+    std::map<float, double> acc_ret, rep_ret;
+    for (float lambda : {0.f, 0.5f, 0.8f, 0.9f, 0.95f}) {
+      double acc = 0, rep = 0;
+      for (int run = 0; run < runs; ++run) {
+        acc += SarsaLambda(env, lambda, false, episodes, run + 1);
+        rep += SarsaLambda(env, lambda, true, episodes, run + 1);
+      }
+      acc_ret[lambda] = acc / runs, rep_ret[lambda] = rep / runs;
+      std::printf("  %-8.2f %18.2f %18.2f\n", lambda, acc / runs, rep / runs);
+    }
+
+    std::printf("\n-- Eligibility trace after 13 steps of the first episode (lambda 0.9, replacing)\n");
+    std::vector<float> trace;
+    rl::QTable         Q(1, 1);
+    SarsaLambda(env, 0.9f, true, 1, 3, &Q, &trace);
+    std::vector<float> per_state(env.num_states(), 0.f);
+    for (int s = 0; s < env.num_states(); ++s)
+      for (int a = 0; a < 4; ++a) per_state[s] = std::max(per_state[s], trace[s * 4 + a]);
+    std::cout << "  max_a e(s, a); recent states carry the most credit:\n" << rl::ValueGrid(env, per_state);
+
+    SarsaLambda(env, 0.9f, true, 1000, 1, &Q);
+    std::cout << "\n-- Greedy policy after 1000 episodes of SARSA(0.9):\n" << rl::PolicyGrid(env, Q);
+    const rl::EpisodeStats stats = rl::GreedyEval(env, Q, 200, 0);
+    rl::PrintStats("greedy policy, 200 episodes", stats);
+    rl::PlayBestOfSeeds(
+        env, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); },
+        "td_lambda_sarsa_lambda_greedy", 4242, 3);
+
+    // Checks. lambda = 0 is one-step SARSA (identical updates for both trace kinds).
+    check::Near(acc_ret[0.f], rep_ret[0.f], 1e-9, "SARSA(0) should not depend on the trace kind");
+    check::Require(nstep[4] > nstep[1] + 3, "4-step SARSA should learn faster than 1-step");
+    check::Require(nstep[4] > nstep[16], "very long backups should lose to intermediate n");
+    check::Require(acc_ret[0.9f] > acc_ret[0.f] + 5, "SARSA(0.9) should learn much faster than SARSA(0)");
+    float max_trace = *std::max_element(per_state.begin(), per_state.end());
+    check::Near(max_trace, kGamma * 0.9f, 1e-6, "the last visited pair's replacing trace after one decay");
+    check::Require(stats.mean_return() > -12.f, "greedy policy after SARSA(0.9) should average better than -12");
+    std::vector<double> nval,nret,lval,accval,repval;for(auto [n,v]:nstep){nval.push_back(n);nret.push_back(v);}for(auto [l,v]:acc_ret){lval.push_back(l);accval.push_back(v);repval.push_back(rep_ret[l]);}report_capture::Save("n",nval);report_capture::Save("n_return",nret);report_capture::Save("lambda",lval);report_capture::Save("accumulating",accval);report_capture::Save("replacing",repval);report_capture::Save("trace",trace);report_capture::Table("q",Q);
+    std::cout << "\nchecks passed (vsim video omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == GridWorld (slip 0.1): mean return over the first 150 episodes, averaged over 20 runs
+//    alpha 0.20, epsilon 0.10, gamma 0.95
+//
+// -- n-step SARSA
+//   n =  1   mean return  -24.94
+//   n =  2   mean return  -20.85
+//   n =  4   mean return  -18.53
+//   n =  8   mean return  -19.20
+//   n = 16   mean return  -22.87
+//
+// -- SARSA(lambda)
+//   lambda         accumulating          replacing
+//   0.00                 -24.80             -24.80
+//   0.50                 -19.90             -20.73
+//   0.80                 -16.68             -17.86
+//   0.90                 -16.41             -17.17
+//   0.95                 -16.66             -17.06
+//
+// -- Eligibility trace after 13 steps of the first episode (lambda 0.9, replacing)
+//   max_a e(s, a); recent states carry the most credit:
+//    0.15   0.24   0.00      #   0.00   0.00
+//    0.33   0.29   0.00      #   0.00   0.00
+//    0.53   0.00   0.00      #   0.00   0.00
+//    0.63   0.73   0.00      #   0.00   0.00
+//    0.00   0.85   0.00   0.00   0.00   0.00
+//
+// -- Greedy policy after 1000 episodes of SARSA(0.9):
+// v > v # < > 
+// > > v # ^ v 
+// > > v # v ^ 
+// > v v # v v 
+// > > > > > G 
+//   greedy policy, 200 episodes      return mean   -10.18  min   -16.00  max    -9.00   length mean   10.2
+//   best of 3 episodes (return -9.0):
+//   played td_lambda_sarsa_lambda_greedy (video omitted): 9 steps, return -9.0
+//
+// checks passed (vsim video omitted)
+// result_end
+
+> Inspect the actual experiment results
+
+Each point averages20 original runs at its displayed lambda. The saved n-step sweep and13-step eligibility trace are separate diagnostics; the final policy uses1000 episodes.
+
+```{cpp, results="markdown", file="figures/td_lambda_results.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/td_lambda_source.npz");auto get=[&](const std::string& name){auto it=std::find_if(archive.begin(),archive.end(),[&](const auto& p){return p.first==name;});if(it==archive.end())throw std::runtime_error("missing source series "+name);return it->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();{auto values=get("accumulating");std::vector<double>x;x=get("lambda");plot.lines(x,values,"accumulating",{37,99,235});}{auto values=get("replacing");std::vector<double>x;x=get("lambda");plot.lines(x,values,"replacing",{234,88,12});}plot.title("td lambda source results").x_label("Lambda (source sweep)").y_label("Mean return over150 episodes").size(1150,650).save_svg("build/td_lambda_results.svg");}
+```
+// result_begin: markdown
+\image(figures/td_lambda_results.svg)
+// result_end
+
+> Interpretation and provenance
+
+Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.

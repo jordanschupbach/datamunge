@@ -126,6 +126,10 @@ def test_failed_producer_prevents_parallel_consumer_run(tmp_path):
 
 def test_single_example_build_includes_only_its_prerequisites():
     with (
+        mock.patch.object(runner, "examples", return_value={
+            "cnn_mnist": Path("cnn_mnist.cpp"),
+            "receptive_fields": Path("receptive_fields.cpp"),
+        }),
         mock.patch.object(
             sys, "argv", ["run_nn_examples.py", "--build-only", "receptive_fields"]
         ),
@@ -182,3 +186,17 @@ def test_output_base_and_override_keep_checkpoint_paths_consistent(
         with mock.patch.object(sys, "argv", ["run_nn_examples.py", "cnn_mnist"]):
             assert runner.main() == 0
         execute.assert_not_called()
+
+
+def test_retired_cpp_name_runs_its_report_without_recreating_example_tree(tmp_path):
+    report = tmp_path / "docs/mepml/nn/0_demo/demo.mepml"
+    report.parent.mkdir(parents=True)
+    report.write_text('//? Title: Demo\n')
+    with (mock.patch.object(runner, "ROOT", tmp_path),
+          mock.patch.object(runner, "examples", return_value={}),
+          mock.patch.object(runner.subprocess, "run") as execute,
+          mock.patch.object(sys, "argv", ["run_nn_examples.py", "demo"])):
+        assert runner.main() == 0
+        execute.assert_called_once_with(["just", "docs-mepml-run", str(report)],
+                                        cwd=tmp_path, check=True)
+    assert not (tmp_path / "examples/nn").exists()

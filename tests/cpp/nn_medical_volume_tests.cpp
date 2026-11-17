@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_medical_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/medical_volume_classification.cpp"
-#undef main
+#include "../fixtures/nn_medical_volume_checks.hpp"
 #include "../fixtures/nn_medical_reference.hpp"
 TEST(MedicalVolume, Every646OddEvenResidualKernelProjectionBiasInputHostDerivative) {
   NumericalChecks();
@@ -12,7 +10,7 @@ TEST(MedicalVolume, ActualAllStagesAnd20LearnedGradients) {
   nn::set_num_threads(2);
   GraphChecks();
   namespace m = dm::nn::models;
-  const auto data = m::LoadMedical("build/cnn-datasets/medical_volume");
+  const auto data = m::LoadMedical((std::filesystem::path(dm::datasets::data_home()) / "medical_volume"));
   nn::ParameterStore p(1049), state(1051);
   const auto fit = data[0].voxels.to(nn::DType::Float64);
   state.set("normalization/mean", nn::mean(fit).to(nn::DType::Float32));
@@ -27,7 +25,7 @@ TEST(MedicalVolume, ActualAllStagesAnd20LearnedGradients) {
 }
 TEST(MedicalVolume, Every3161088OriginalVoxelAndReleasedLabelSourceIdentity) {
   namespace m = dm::nn::models;
-  const auto root = std::filesystem::path("build/cnn-datasets/medical_volume");
+  const auto root = std::filesystem::path((std::filesystem::path(dm::datasets::data_home()) / "medical_volume"));
   const auto pools = m::LoadMedical(root);
   std::map<std::string, nn::Tensor> original;
   for (const auto &[key, value] : nn::load_npz((root / "nodulemnist3d.npz").string()))
@@ -56,7 +54,7 @@ TEST(MedicalVolume, Every3161088OriginalVoxelAndReleasedLabelSourceIdentity) {
 }
 TEST(MedicalVolume, IndependentEveryFittingMomentBlockFeatureAndNearestScore) {
   namespace m = dm::nn::models;
-  const auto pools = m::LoadMedical("build/cnn-datasets/medical_volume");
+  const auto pools = m::LoadMedical((std::filesystem::path(dm::datasets::data_home()) / "medical_volume"));
   const auto raw = pools[0].voxels.to_vector<float>();
   double mean = 0;
   for (float x : raw)
@@ -84,7 +82,7 @@ TEST(MedicalVolume, IndependentEveryFittingMomentBlockFeatureAndNearestScore) {
 }
 TEST(MedicalVolume, IndependentIntensityOnlyRestoreAndNormalizationContracts) {
   namespace m = dm::nn::models;
-  const auto d = m::LoadMedical("build/cnn-datasets/medical_volume");
+  const auto d = m::LoadMedical((std::filesystem::path(dm::datasets::data_home()) / "medical_volume"));
   nn::ParameterStore p(1049), s(1051), fresh(99), state(100);
   const auto x = nn::slice_axis(d[2].voxels, 0, 0, 2);
   m::MedicalVolume(p, s, x);

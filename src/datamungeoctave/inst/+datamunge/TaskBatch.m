@@ -38,7 +38,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     r  integer: Positive environment count.
       %
       %   C++: std::size_t datamunge::sim::TaskBatch::size() const
-      r = __datamunge__(3164, obj);
+      r = __datamunge__(3175, obj);
     end
     function r = observation_size (obj)
       % observation_size  Read the task's observation width.
@@ -49,7 +49,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     r  integer: Four for InvertedPendulum or eleven for Hopper.
       %
       %   C++: std::size_t datamunge::sim::TaskBatch::observation_size() const
-      r = __datamunge__(3165, obj);
+      r = __datamunge__(3176, obj);
     end
     function r = action_size (obj)
       % action_size  Read the continuous action width.
@@ -60,7 +60,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     r  integer: One for InvertedPendulum or three for Hopper.
       %
       %   C++: std::size_t datamunge::sim::TaskBatch::action_size() const
-      r = __datamunge__(3166, obj);
+      r = __datamunge__(3177, obj);
     end
     function r = output (obj)
       % output  Borrow current rollout outputs without advancing the simulation.
@@ -71,7 +71,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     r  datamunge.TaskOutput: Internal reusable arrays, valid until destruction and modified by step/reset.
       %
       %   C++: const TaskOutput & datamunge::sim::TaskBatch::output() const
-      r = __datamunge__(3167, obj);
+      r = __datamunge__(3178, obj);
     end
     function r = step (obj, varargin)
       % step  Advance selected task rows and retain final observations on episode end. Selected completed rows must be reset first. An unselected row remains unchanged.
@@ -96,7 +96,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     datamunge:native  Physics failure; explicit reset is required before retrying. (C++ std::exception)
       %
       %   C++: const TaskOutput & datamunge::sim::TaskBatch::step(const std::vector<double> & actions, const std::vector<std::uint8_t> & mask = {})
-      r = __datamunge__(3168, obj, varargin{:});
+      r = __datamunge__(3179, obj, varargin{:});
     end
     function r = reset (obj, varargin)
       % reset  Restore and perturb selected rows; retain final observations for rollout collectors. Clears rewards/end flags for selected rows. Random streams continue between episodes.
@@ -117,7 +117,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid mask. (C++ std::invalid_argument)
       %
       %   C++: const TaskOutput & datamunge::sim::TaskBatch::reset(const std::vector<std::uint8_t> & mask = {})
-      r = __datamunge__(3169, obj, varargin{:});
+      r = __datamunge__(3180, obj, varargin{:});
     end
     function seed (obj, seed)
       % seed  Reproduce fresh reset draws after explicit reseeding; physics is unchanged until reset.
@@ -131,7 +131,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     seed  integer: New batch random seed.
       %
       %   C++: void datamunge::sim::TaskBatch::seed(std::uint64_t seed)
-      __datamunge__(3170, obj, seed);
+      __datamunge__(3181, obj, seed);
     end
   end
   methods (Static)
@@ -154,7 +154,7 @@ classdef TaskBatch < datamunge.NativeObject
       %     r  datamunge.TaskBatch or []
       %
       %   C++: datamunge::sim::TaskBatch * datamunge::octave_bindings::task_batch_create(datamunge::sim::Task task, std::size_t count, std::size_t workers = 1, std::uint64_t seed = 0, std::uint64_t time_limit = 1000)
-      r = __datamunge__(3171, varargin{:});
+      r = __datamunge__(3182, varargin{:});
     end
   end
 end

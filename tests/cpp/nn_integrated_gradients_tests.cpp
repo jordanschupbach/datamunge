@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_ig_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.11_interpretability/integrated_gradients.cpp"
-#undef main
+#include "../fixtures/nn_integrated_gradients_checks.hpp"
 #include "../fixtures/nn_integrated_reference.hpp"
 TEST(IntegratedGradients,
      EveryAnalyticSaturationDummyImplementationInvariantAndBatchingControl) {

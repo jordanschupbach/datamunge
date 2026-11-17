@@ -1,0 +1,652 @@
+//? Title: Dyna-Q and Dyna-Q+: Planning with a Mutable Tabular Model
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Canonical native graphs and owning search/data objects support a complete editable source experiment. Original seeds, parameter names, actual default budgets, objectives and random streams are retained. Fitting, self-play, episode collection and planning schedules remain visible.
+)
+\toc
+
+> Follow the model and data
+
+Real transition -> remembered model -> caller planning updates.
+
+```{cpp, results="markdown", file="figures/dyna_q_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("input",{-18,0},"Source data / observations",s).node("graph",{0,0},"Real transition -> remembered model -> caller planning updates",s).node("loop",{18,0},"Editable experiment / evaluation",s).edge("input","graph").edge("graph","loop").save_svg("build/dyna_q_method.svg");}
+```
+// result_begin: markdown
+\image(figures/dyna_q_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+At Q=0, reward1, successor maxQ2, alpha.1 and gamma.95 give updated Q.29. A recency bonus with kappa.001 after100 steps is.01; the source keeps this bonus separate from goal reward.
+
+```{cpp, results="markdown", file="figures/dyna_q_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::vector<double>values{.1*(1+.95*2),.001*std::sqrt(100.)};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"computed values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("dyna q worked calculation").size(1000,550).save_svg("build/dyna_q_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 0.290000000 |
+| 1 | 0.010000000 |
+\image(figures/dyna_q_worked.svg)
+// result_end
+
+> Complete preserved source experiment
+
+The original default protocol below is retained, including existing bounded-mode limits and deferred quality assertions where present. AlphaZero retains25 iterations of20 self-play games and60 updates per iteration. World Models retains300 random episodes,2000 VAE steps,1500 recurrent steps and60 generations with24 candidates. DATAMUNGE_EXAMPLES_FULL=1 restores full budgets only where the original helper uses that flag. No external-framework parity is asserted. Capture hooks read existing histories and final parameters without additional random draws or evaluation calls.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;inline std::map<std::string,std::vector<double>> traces;
+inline void Trace(const std::string&name,double value){traces[name].push_back(value);}inline int monitor_index=0,checkpoint_index=0;
+template<class T>void Save(const std::string& name,const std::vector<T>&v){arrays.push_back({name,dm::nn::from_vector(v)});}
+struct Checkpoint{dm::nn::ParameterStore& store;~Checkpoint(){auto tag=std::to_string(checkpoint_index++);for(const auto& name:store.names())arrays.push_back({"parameters_"+tag+"_"+name,store.at(name).detach().clone()});}};
+struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/dyna_q_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn dyna_q
+// Dyna-Q: learning and planning from a learned tabular model.
+//
+// Port of tflow's dyna_q (TF-free apart from the Q-table, so the numbers match
+// tflow exactly).
+// Sutton & Barto chapter 8: every real step updates Q by Q-learning *and*
+// records (s, a) -> (r, s') in a model; then n extra "planning" updates
+// replay random remembered pairs through the same Q-learning rule. The
+// planning steps squeeze far more learning out of each real interaction.
+// Dyna-Q+ adds an exploration bonus kappa sqrt(tau) for pairs not tried for
+// tau steps, which lets it notice when the world changes (the blocking maze).
+//
+// The vsim video of Dyna-Q+'s greedy policy is replaced by PlayEpisode (the
+// same episode, printed, no video). The port adds checks (exit 1 on failure).
+
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <random>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/grid_world.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::GridBase;
+using datamunge::rl::environments::GridWorld;
+using datamunge::rl::environments::CliffWalking;
+}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/tabular.hpp
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {using dm::rl::foundations::QTable;using dm::rl::foundations::PolicyGrid;using dm::rl::foundations::ValueGrid;
+inline float Mean(const std::vector<float>&v,size_t from,size_t to){if(to>v.size())to=v.size();if(from>=to)return 0.f;return std::accumulate(v.begin()+from,v.begin()+to,0.f)/(to-from);}}
+
+namespace {
+
+// A grid with a configurable wall row that can be changed mid-run.
+using BlockingMaze=dm::rl::environments::BlockingMaze;
+
+struct Result {
+  std::vector<float> steps_per_episode;
+  std::vector<int> cumulative_reward_per_step;
+};
+
+// Dyna-Q(+) on `env` for `total_steps` real steps. `change_at` flips the maze.
+Result Run(rl::GridBase& env, int planning_steps, float kappa, int total_steps, int change_at, uint64_t seed,
+           rl::QTable* q_out = nullptr) {
+  const int S = env.num_states(), A = env.action_space().n;
+  rl::QTable Q(S, A);
+  std::map<std::pair<int, int>, std::pair<float, int>> model;  // (s, a) -> (r, s')
+  std::vector<int> last_tried(S * A, 0);
+  std::mt19937_64 rng(seed);
+  const float alpha = 0.1f, gamma = 0.95f, eps = 0.1f;
+  Result res;
+  int cumulative = 0, ep_steps = 0;
+  int s = static_cast<int>(env.reset(seed)[0]);
+  for (int step = 1; step <= total_steps; ++step) {
+    if (step == change_at) dynamic_cast<BlockingMaze&>(env).SetWall(true);
+    const int a = Q.EpsilonGreedy(s, eps, rng);
+    rl::StepResult r = env.step(a);
+    const int s2 = static_cast<int>(r.obs[0]);
+    // (a) direct RL
+    Q(s, a) += alpha * (r.reward + (r.terminated ? 0.f : gamma * Q.Max(s2)) - Q(s, a));
+    // (b) model learning (deterministic environment: remember the last outcome)
+    model[{s, a}] = {r.reward, r.terminated ? -1 : s2};
+    last_tried[s * A + a] = step;
+    // (c) planning: replay random remembered pairs. Dyna-Q+ also tries
+    // untried actions from visited states, assuming they lead back to s.
+    for (int n = 0; n < planning_steps && !model.empty(); ++n) {
+      auto it = model.begin();
+      std::advance(it, rng() % model.size());
+      int ps = it->first.first, pa = it->first.second;
+      float pr = it->second.first;
+      int ps2 = it->second.second;
+      if (kappa > 0) {
+        pa = static_cast<int>(rng() % A);
+        auto found = model.find({ps, pa});
+        if (found == model.end()) pr = 0, ps2 = ps;
+        else pr = found->second.first, ps2 = found->second.second;
+        pr += kappa * std::sqrt(static_cast<float>(step - last_tried[ps * A + pa]));
+      }
+      Q(ps, pa) += alpha * (pr + (ps2 < 0 ? 0.f : gamma * Q.Max(ps2)) - Q(ps, pa));
+    }
+    cumulative += r.reward > 0.5f;
+    res.cumulative_reward_per_step.push_back(cumulative);
+    ++ep_steps;
+    s = s2;
+    if (r.done()) {
+      res.steps_per_episode.push_back(static_cast<float>(ep_steps));
+      ep_steps = 0;
+      s = static_cast<int>(env.reset()[0]);
+    }
+  }
+  if (q_out) *q_out = Q;
+  static int index=0;auto tag=std::to_string(index++);report_capture::Save("episodes_"+tag,res.steps_per_episode);report_capture::Save("cumulative_"+tag,res.cumulative_reward_per_step);return res;
+}
+
+}  // namespace
+
+int main() {
+  try {
+    std::printf("== Dyna-Q on the blocking maze (reward 1 at the goal, 0 elsewhere)\n");
+    BlockingMaze maze;
+    maze.reset(0);
+    std::cout << maze.render();
+    std::printf("\n-- Planning steps vs. learning speed: steps per episode (averaged over 10 runs), first 10 episodes\n");
+    std::printf("  %-12s", "n");
+    for (int e = 1; e <= 10; ++e) std::printf(" %6d", e);
+    std::printf("\n");
+    std::map<int, std::vector<double>> curves;
+    for (int n : {0, 5, 50}) {
+      std::vector<double> avg(10, 0);
+      for (int run = 0; run < 10; ++run) {
+        BlockingMaze m;
+        Result r = Run(m, n, 0.f, 6000, /*change_at=*/-1, run + 1);
+        for (int e = 0; e < 10 && e < static_cast<int>(r.steps_per_episode.size()); ++e) avg[e] += r.steps_per_episode[e] / 10;
+      }
+      std::printf("  n = %-8d", n);
+      for (int e = 0; e < 10; ++e) std::printf(" %6.0f", avg[e]);
+      std::printf("\n");
+      curves[n] = avg;
+    }
+    // Planning speeds learning up: by episode 3, n = 50 needs a fraction of the
+    // steps n = 0 does, and n = 50 reaches the shortest path (10 steps) quickly.
+    check::Require(curves[50][2] < 0.5 * curves[0][2] && curves[5][2] < curves[0][2], "more planning steps learn faster (episode 3)");
+    check::Require(curves[50][9] < 20, "Dyna-Q (n = 50) is near the 10-step shortest path by episode 10");
+
+    std::printf("\n-- The world changes at step 1000 (the gap moves from the right to the left end of the wall)\n");
+    std::printf("   cumulative goals reached, averaged over 10 runs, Dyna-Q vs Dyna-Q+ (kappa 1e-4), n = 50\n");
+    std::printf("  %-10s", "step");
+    for (int t = 500; t <= 3000; t += 500) std::printf(" %7d", t);
+    std::printf("\n");
+    std::vector<double> final_goals;
+    for (float kappa : {0.f, 1e-4f}) {
+      std::vector<double> avg(3000, 0);
+      for (int run = 0; run < 10; ++run) {
+        BlockingMaze m;
+        Result r = Run(m, 50, kappa, 3000, 1000, 100 + run);
+        for (int t = 0; t < 3000; ++t) avg[t] += r.cumulative_reward_per_step[t] / 10.0;
+      }
+      std::printf("  %-10s", kappa > 0 ? "Dyna-Q+" : "Dyna-Q");
+      for (int t = 500; t <= 3000; t += 500) std::printf(" %7.1f", avg[t - 1]);
+      std::printf("\n");
+      final_goals.push_back(avg[2999]);
+    }
+    std::cout << "  After the change, Dyna-Q keeps planning with the stale model until exploration happens to find the\n"
+                 "  new gap; Dyna-Q+'s bonus for long-untried actions makes it re-explore and recover sooner.\n";
+    check::Require(final_goals[1] > final_goals[0], "Dyna-Q+ reaches the goal more often than Dyna-Q after the change");
+
+    // In tflow, on film: Dyna-Q+'s greedy policy on the changed maze (the gap
+    // is now on the left). Here the same episode is played and printed.
+    std::cout << "\n-- Playing Dyna-Q+'s greedy policy after the wall moved (tflow films it)\n";
+    BlockingMaze film_maze;
+    rl::QTable Q(1, 1);
+    Run(film_maze, 50, 1e-4f, 3000, 1000, 100, &Q);
+    const rl::Playback pb = rl::PlayEpisode(film_maze, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); },
+                                            "dyna_q_plus_blocking_maze", 0);
+    check::Require(pb.ret == 1.f && pb.steps <= 20, "the greedy Dyna-Q+ policy goes round the moved wall to the goal");
+    std::printf("\nchecks passed (vsim video omitted)\n");
+  } catch (const std::exception& e) {
+    std::fprintf(stderr, "CHECK FAILED: %s\n", e.what());
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == Dyna-Q on the blocking maze (reward 1 at the goal, 0 elsewhere)
+// . . . . . . . . G 
+// . . . . . . . . . 
+// . . . . . . . . . 
+// # # # # # # # # . 
+// . . . . . . . . . 
+// . . . A . . . . . 
+//
+// -- Planning steps vs. learning speed: steps per episode (averaged over 10 runs), first 10 episodes
+//   n                 1      2      3      4      5      6      7      8      9     10
+//   n = 0           434    470    371    303    154    121    183     78     64     47
+//   n = 5           552     84     25     15     14     14     12     11     12     11
+//   n = 50          421     28     13     13     13     13     13     13     12     12
+//
+// -- The world changes at step 1000 (the gap moves from the right to the left end of the wall)
+//    cumulative goals reached, averaged over 10 runs, Dyna-Q vs Dyna-Q+ (kappa 1e-4), n = 50
+//   step           500    1000    1500    2000    2500    3000
+//   Dyna-Q         6.7    32.2    32.4    34.7    41.6    52.4
+//   Dyna-Q+        4.7    25.7    25.9    31.7    46.2    65.7
+//   After the change, Dyna-Q keeps planning with the stale model until exploration happens to find the
+//   new gap; Dyna-Q+'s bonus for long-untried actions makes it re-explore and recover sooner.
+//
+// -- Playing Dyna-Q+'s greedy policy after the wall moved (tflow films it)
+//   played dyna_q_plus_blocking_maze (video omitted): 16 steps, return 1.0
+//
+// checks passed (vsim video omitted)
+// result_end
+
+> Actual source performance
+
+These are the original ten-run comparison averages. The first plot shows the first ten episodes for0,5,50 planning updates per real step. The second uses the original changing-maze runs; the wall gap switches at real step1000. The separate final playback run is excluded from these averages.
+
+```{cpp, results="markdown", file="figures/dyna_q_diagnostic0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto data=dm::nn::load_npz("build/dyna_q_source.npz");auto lookup=[&](const std::string&key){return std::find_if(data.begin(),data.end(),[&](const auto&v){return v.first==key;})->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();for(int group=0;group<3;++group){std::vector<double>x(10),y(10,0);std::iota(x.begin(),x.end(),1.);for(int run=0;run<10;++run){auto v=lookup("episodes_"+std::to_string(group*10+run));for(size_t i=0;i<std::min(size_t(10),v.size());++i)y[i]+=v[i]/10;}plot.lines(x,y,"planning steps="+std::to_string(group==0?0:group==1?5:50),{37+group*70,99,235-group*70});}plot.x_label("Ended episode").y_label("Mean real steps, ten original runs");plot.title("Dyna-Q original comparison averages").size(1100,600).save_svg("build/dyna_q_diagnostic0.svg");}
+```
+// result_begin: markdown
+\image(figures/dyna_q_diagnostic0.svg)
+// result_end
+
+> Actual source model/search diagnostics
+
+These are the original ten-run comparison averages. The first plot shows the first ten episodes for0,5,50 planning updates per real step. The second uses the original changing-maze runs; the wall gap switches at real step1000. The separate final playback run is excluded from these averages.
+
+```{cpp, results="markdown", file="figures/dyna_q_diagnostic1.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto data=dm::nn::load_npz("build/dyna_q_source.npz");auto lookup=[&](const std::string&key){return std::find_if(data.begin(),data.end(),[&](const auto&v){return v.first==key;})->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();for(int group=0;group<2;++group){std::vector<double>x(3000),y(3000,0);std::iota(x.begin(),x.end(),1.);for(int run=0;run<10;++run){auto v=lookup("cumulative_"+std::to_string(30+group*10+run));for(size_t i=0;i<3000;++i)y[i]+=v[i]/10;}plot.lines(x,y,group?"Dyna-Q+":"Dyna-Q",{37+group*150,99,235-group*150});}plot.x_label("Real step; wall gap changes at1000").y_label("Mean cumulative goals, ten original runs");plot.title("Dyna-Q original comparison averages").size(1100,600).save_svg("build/dyna_q_diagnostic1.svg");}
+```
+// result_begin: markdown
+\image(figures/dyna_q_diagnostic1.svg)
+// result_end
+
+> Interpretation and provenance
+
+The retained checks and printed outcomes determine what this run supports. Weak or deferred quality checks are not evidence of full convergence. Native APIs provide pure differentiable model components, owning transitions and cloned-game search; every objective, optimizer, episode/self-play loop, controller search and training schedule stays editable above.

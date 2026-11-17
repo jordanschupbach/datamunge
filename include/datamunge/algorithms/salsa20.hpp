@@ -1,123 +1,270 @@
 #pragma once
-
-/// \file salsa20.hpp
-/// \brief The Salsa20 stream cipher (Bernstein, eSTREAM portfolio).
-///
-/// Salsa20 is the predecessor of ChaCha20 and shares its shape: a 512-bit state of sixteen
-/// 32-bit words -- four "expand 32-byte k" constants, eight key words, two nonce words, two
-/// counter words -- stirred by 20 ARX rounds and fed forward. Its quarter-round differs
-/// from ChaCha's in the rotation amounts and update order:
-/// \f[
-///   b\oplus\!=\text{ROTL}_{7}(a+d),\ \ c\oplus\!=\text{ROTL}_{9}(b+a),\ \
-///   d\oplus\!=\text{ROTL}_{13}(c+b),\ \ a\oplus\!=\text{ROTL}_{18}(d+c),
-/// \f]
-/// and it alternates *column* rounds with *row* rounds rather than columns and diagonals.
-/// ChaCha20 later reorganised these operations for better diffusion per round, but Salsa20
-/// remains a clean, fast, well-analysed design. This implementation verifies the round-trip
-/// property and Bernstein's documented Salsa20 core example.
-
-#include <algorithm>
+/// @file salsa20.hpp
+/// @brief Salsa20/20 core and checked streams with actual quarter-round/block histories.
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <string>
-
+#include <vector>
+/// @brief Canonical byte-stream cipher primitives and conformance records.
 namespace datamunge::algorithms {
-
-namespace detail {
-
-inline std::uint32_t salsa_rotl(std::uint32_t x, int c) {
-    return (x << c) | (x >> (32 - c));
-}
-
-inline void salsa_quarter(std::uint32_t& a, std::uint32_t& b, std::uint32_t& c,
-                          std::uint32_t& d) {
-    b ^= salsa_rotl(a + d, 7);
-    c ^= salsa_rotl(b + a, 9);
-    d ^= salsa_rotl(c + b, 13);
-    a ^= salsa_rotl(d + c, 18);
-}
-
-inline std::uint32_t salsa_load32(const std::uint8_t* p) {
-    return static_cast<std::uint32_t>(p[0]) | (static_cast<std::uint32_t>(p[1]) << 8) |
-           (static_cast<std::uint32_t>(p[2]) << 16) | (static_cast<std::uint32_t>(p[3]) << 24);
-}
-
-}  // namespace detail
-
-/// \brief The Salsa20 core: 20 rounds plus feed-forward on a 64-byte state block.
-/// Exposed because it is the unit Bernstein's specification gives a test vector for.
-inline std::array<std::uint8_t, 64> salsa20_core(const std::array<std::uint8_t, 64>& in) {
-    std::uint32_t s[16], x[16];
-    for (int i = 0; i < 16; ++i) {
-        s[i] = detail::salsa_load32(in.data() + 4 * i);
-        x[i] = s[i];
-    }
-    for (int r = 0; r < 10; ++r) {
-        // column round
-        detail::salsa_quarter(x[0], x[4], x[8], x[12]);
-        detail::salsa_quarter(x[5], x[9], x[13], x[1]);
-        detail::salsa_quarter(x[10], x[14], x[2], x[6]);
-        detail::salsa_quarter(x[15], x[3], x[7], x[11]);
-        // row round
-        detail::salsa_quarter(x[0], x[1], x[2], x[3]);
-        detail::salsa_quarter(x[5], x[6], x[7], x[4]);
-        detail::salsa_quarter(x[10], x[11], x[8], x[9]);
-        detail::salsa_quarter(x[15], x[12], x[13], x[14]);
-    }
-    std::array<std::uint8_t, 64> out{};
-    for (int i = 0; i < 16; ++i) {
-        std::uint32_t v = x[i] + s[i];
-        out[4 * i + 0] = static_cast<std::uint8_t>(v & 0xFF);
-        out[4 * i + 1] = static_cast<std::uint8_t>((v >> 8) & 0xFF);
-        out[4 * i + 2] = static_cast<std::uint8_t>((v >> 16) & 0xFF);
-        out[4 * i + 3] = static_cast<std::uint8_t>((v >> 24) & 0xFF);
-    }
-    return out;
-}
-
-/// \brief Produce one 64-byte Salsa20 keystream block for a 256-bit key.
-/// \param key   32-byte key.
-/// \param counter 64-bit block counter.
-/// \param nonce 8-byte nonce.
-inline std::array<std::uint8_t, 64> salsa20_block(const std::array<std::uint8_t, 32>& key,
-                                                  std::uint64_t counter,
-                                                  const std::array<std::uint8_t, 8>& nonce) {
-    // Assemble the 64-byte input block in Salsa20 word layout, then run the core.
-    std::uint32_t s[16];
-    s[0] = 0x61707865u;  // "expa"
-    s[5] = 0x3320646eu;  // "nd 3"
-    s[10] = 0x79622d32u; // "2-by"
-    s[15] = 0x6b206574u; // "te k"
-    for (int i = 0; i < 4; ++i) s[1 + i] = detail::salsa_load32(key.data() + 4 * i);
-    for (int i = 0; i < 4; ++i) s[11 + i] = detail::salsa_load32(key.data() + 16 + 4 * i);
-    s[6] = detail::salsa_load32(nonce.data());
-    s[7] = detail::salsa_load32(nonce.data() + 4);
-    s[8] = static_cast<std::uint32_t>(counter & 0xFFFFFFFFu);
-    s[9] = static_cast<std::uint32_t>(counter >> 32);
-
-    std::array<std::uint8_t, 64> in{};
-    for (int i = 0; i < 16; ++i) {
-        in[4 * i + 0] = static_cast<std::uint8_t>(s[i] & 0xFF);
-        in[4 * i + 1] = static_cast<std::uint8_t>((s[i] >> 8) & 0xFF);
-        in[4 * i + 2] = static_cast<std::uint8_t>((s[i] >> 16) & 0xFF);
-        in[4 * i + 3] = static_cast<std::uint8_t>((s[i] >> 24) & 0xFF);
-    }
-    return salsa20_core(in);
-}
-
-/// \brief Encrypt (or decrypt) \p data with Salsa20; decryption is the same operation.
-inline std::string salsa20_encrypt(const std::array<std::uint8_t, 32>& key, std::uint64_t counter,
-                                   const std::array<std::uint8_t, 8>& nonce,
-                                   const std::string& data) {
-    std::string out = data;
-    for (std::size_t i = 0; i < out.size(); i += 64) {
-        auto ks = salsa20_block(key, counter + i / 64, nonce);
-        std::size_t n = std::min<std::size_t>(64, out.size() - i);
-        for (std::size_t j = 0; j < n; ++j)
-            out[i + j] = static_cast<char>(static_cast<std::uint8_t>(out[i + j]) ^ ks[j]);
-    }
-    return out;
-}
-
-}  // namespace datamunge::algorithms
+/// @brief One actual column/row quarter-round input and output.
+/// @par Example
+/// @code
+/// const dm::algorithms::Salsa20Quarter value{};
+/// std::print("{}\n",value.round); // 0
+/// @endcode
+struct Salsa20Quarter {
+  std::size_t                  round{};   ///< Actual round0..19, even column and odd row.
+  std::size_t                  quarter{}; ///< Actual quartet0..3 in the specified round order.
+  std::array<std::size_t, 4>   indices{}; ///< Actual state word indices in a,b,c,d order.
+  std::array<std::uint32_t, 4> before{};  ///< Actual four words before the four ARX updates.
+  std::array<std::uint32_t, 4> after{};   ///< Actual four words after those updates.
+};
+/// @brief Owned actual Salsa20 core input, mixed words, feed-forward and emitted bytes.
+/// @par Example
+/// @code
+/// const dm::algorithms::Salsa20CoreTrace value{};
+/// std::print("{}\n",value.quarters.size()); // 0
+/// @endcode
+struct Salsa20CoreTrace {
+  std::array<std::uint32_t, 16> initial{}; ///< Actual little-endian input words.
+  std::array<std::uint32_t, 16> mixed{};   ///< Actual state after20 rounds, before feed-forward.
+  std::array<std::uint32_t, 16>
+      output_words{};                    ///< Actual modulo2^32 sums of mixed and initial words.
+  std::array<std::uint8_t, 64> bytes{};  ///< Actual little-endian emitted core output.
+  std::vector<Salsa20Quarter>  quarters; ///< Actual80 optional quarter-round records.
+};
+/// @brief Complete stream-byte and actual captured-block policies; zero disables a cap.
+/// @par Example
+/// @code
+/// const dm::algorithms::Salsa20Options value{};
+/// std::print("{}\n",value.max_bytes); // 1000000
+/// @endcode
+struct Salsa20Options {
+  std::size_t max_bytes{1000000}; ///< Complete input/output byte count.
+  std::size_t max_trace_entries{
+      1000000}; ///< Actual64 key-stream bytes plus one header per captured block.
+};
+/// @brief One actual counter block and its key-stream bytes used by XOR.
+/// @par Example
+/// @code
+/// const dm::algorithms::Salsa20BlockRecord value{};
+/// std::print("{}\n",value.used); // 0
+/// @endcode
+struct Salsa20BlockRecord {
+  std::uint64_t counter{}; ///< Actual nonwrapped block counter.
+  std::size_t   offset{};  ///< Actual first message byte using this block.
+  std::size_t   used{};    ///< Actual XOR byte count,1..64.
+  std::array<std::uint8_t, 64>
+      keystream{}; ///< Actual generated block, including an unused partial-block tail.
+};
+/// @brief Owned actual stream output and selected native block/XOR work.
+/// @par Example
+/// @code
+/// const dm::algorithms::Salsa20StreamRun value{};
+/// std::print("{}\n",value.block_calls); // 0
+/// @endcode
+struct Salsa20StreamRun {
+  std::string output;        ///< Actual XOR output, preserving every raw byte.
+  std::size_t block_calls{}; ///< Actual generated counter blocks, including a final partial block.
+  std::size_t byte_xors{};   ///< Actual message-byte XOR updates.
+  std::vector<Salsa20BlockRecord>
+      blocks; ///< Actual optional block records, not regenerated output.
+};
+/// @brief Apply the canonical Salsa20/20 core to one64-byte state.
+/// Decodes16 little-endian words, executes10 column/row double rounds with modulo2^32 additions and specified rotations7,9,13,18, adds the original state, then emits64 little-endian bytes. Fixed work/storage, no allocation or shared mutable state; input unchanged. This bare permutation-plus-feed-forward core is not an authenticated message format.
+/// @param in Complete borrowed64 input bytes.
+/// @return Owned actual64-byte core result.
+/// @par Example
+/// @code
+/// const auto out=dm::algorithms::salsa20_core({});
+/// std::print("{}\n",unsigned(out[0])); // 0
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_core_trace(), salsa20_block()
+std::array<std::uint8_t, 64> salsa20_core(const std::array<std::uint8_t, 64>& in);
+/// @brief Capture all actual quarter-round inputs/outputs from the same Salsa20 core.
+/// The80 records read the four real words immediately before and after each specified quarter; no second execution populates history. Complete optional geometry is known:48 retained initial/mixed/feed-forward words plus80*(8 words+1 header)=768 logical units. Check this before decoding/mutation; output64 bytes are intrinsic and excluded from that optional geometry. Fixed-time core work, owned copied values, input unchanged; zero disables only the quota.
+/// @param in Borrowed64 state bytes.
+/// @param max_trace_entries Complete optional word/header policy, default1000000; zero disables.
+/// @return Owned actual state words,80 real quarter events and emitted bytes.
+/// @throws std::length_error Complete768-unit history exceeds the policy.
+/// @par Example
+/// @code
+/// auto t=dm::algorithms::salsa20_core_trace({});
+/// std::print("{}\n",t.quarters.size()); // 80
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_core()
+Salsa20CoreTrace salsa20_core_trace(
+    const std::array<std::uint8_t, 64>& in,
+    std::size_t                         max_trace_entries = 1000000);
+/// @brief Generate one actual Salsa20/20 block for a256-bit key and64-bit nonce/counter.
+/// Uses the standard expand32-byte-k constants and original Salsa word layout: key at1..4/11..14, nonce6..7, counter8..9. Calls the same canonical core once. Fixed work/owned output; copying key/nonce is synchronous and no references survive.
+/// @param key Complete32 raw key bytes.
+/// @param counter Exact64-bit block counter, any value.
+/// @param nonce Complete8 raw nonce bytes.
+/// @return Owned actual64 key-stream bytes.
+/// @par Example
+/// @code
+/// const auto b=dm::algorithms::salsa20_block({},0,{});
+/// std::print("{}\n",b.size()); // 64
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_stream_run()
+std::array<std::uint8_t, 64> salsa20_block(
+    const std::array<std::uint8_t, 32>& key,
+    std::uint64_t                       counter,
+    const std::array<std::uint8_t, 8>&  nonce);
+/// @brief XOR a raw message with checked actual consecutive Salsa20 blocks.
+/// Validates complete byte length, nonwrapping final counter and known captured geometry before output allocation/core execution. Empty data uses no counter blocks. Generates ceil(bytes/64) actual blocks, then XORs exactly one key-stream byte per message byte. Capture costs65 logical units per generated block, including its full64-byte key stream even for a partial final block. This is raw unauthenticated XOR; caller controls key/nonce/counter uniqueness and message framing. Time O(bytes), owned output O(bytes) plus optional O(blocks) history; input/key/nonce unchanged and no shared mutable state.
+/// @param key Complete32 key bytes.
+/// @param counter First actual64-bit counter.
+/// @param nonce Complete8 nonce bytes.
+/// @param data Borrowed complete raw message/ciphertext, including NUL/high bytes.
+/// @param options Complete byte and optional captured-block policies.
+/// @return Owned actual XOR output, block/XOR counts and optional actual key streams.
+/// @throws std::length_error Complete byte/history/container or count capacity exceeded.
+/// @throws std::overflow_error The last required block counter would wrap uint64.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::salsa20_stream_run({},0,{},"abc");
+/// std::print("{} {}\n",r.block_calls,r.byte_xors); // 1 3
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_encrypt(), salsa20_core_trace()
+Salsa20StreamRun salsa20_stream_run(
+    const std::array<std::uint8_t, 32>& key,
+    std::uint64_t                       counter,
+    const std::array<std::uint8_t, 8>&  nonce,
+    const std::string&                  data,
+    const Salsa20Options&               options = {});
+/// @brief XOR a raw message with checked actual consecutive Salsa20 blocks and retain the used blocks.
+/// Validates complete byte length, nonwrapping final counter and known captured geometry before output allocation/core execution. Empty data uses no counter blocks. Generates ceil(bytes/64) actual blocks, then XORs exactly one key-stream byte per message byte. Capture costs65 logical units per generated block, including its full64-byte key stream even for a partial final block. This is raw unauthenticated XOR; caller controls key/nonce/counter uniqueness and message framing. Time O(bytes), owned output O(bytes) plus optional O(blocks) history; input/key/nonce unchanged and no shared mutable state.
+/// @param key Complete32 key bytes.
+/// @param counter First actual64-bit counter.
+/// @param nonce Complete8 nonce bytes.
+/// @param data Borrowed complete raw message/ciphertext, including NUL/high bytes.
+/// @param options Complete byte and optional captured-block policies.
+/// @return Owned actual XOR output, block/XOR counts and optional actual key streams.
+/// @throws std::length_error Complete byte/history/container or count capacity exceeded.
+/// @throws std::overflow_error The last required block counter would wrap uint64.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::salsa20_stream_trace({},0,{},"abc");
+/// std::print("{} {}\n",r.block_calls,r.byte_xors); // 1 3
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_encrypt(), salsa20_core_trace()
+Salsa20StreamRun salsa20_stream_trace(
+    const std::array<std::uint8_t, 32>& key,
+    std::uint64_t                       counter,
+    const std::array<std::uint8_t, 8>&  nonce,
+    const std::string&                  data,
+    const Salsa20Options&               options = {});
+/// @brief Encrypt/decrypt through the preserved native Salsa20 XOR signature.
+/// Delegates once to the same producer/default million-byte bound. Preserves valid ordinary outputs; required counter wrap now rejects before generating repeated stream blocks. No authentication/tag format is added.
+/// @param key Complete32 key bytes.
+/// @param counter First64-bit block counter.
+/// @param nonce Complete8 nonce bytes.
+/// @param data Complete raw message/ciphertext.
+/// @return Owned actual same-length XOR bytes.
+/// @throws std::length_error Default byte policy exceeded.
+/// @throws std::overflow_error Required counter wrap.
+/// @par Example
+/// @code
+/// auto c=dm::algorithms::salsa20_encrypt({},0,{},"abc");
+/// std::print("{}\n",dm::algorithms::salsa20_encrypt({},0,{},c)); // abc
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_stream_run()
+std::string salsa20_encrypt(
+    const std::array<std::uint8_t, 32>& key,
+    std::uint64_t                       counter,
+    const std::array<std::uint8_t, 8>&  nonce,
+    const std::string&                  data);
+/// @brief Owned original documented core vector and stream-report inputs.
+/// @par Example
+/// @code
+/// const dm::algorithms::Salsa20Example value{};
+/// std::print("{}\n",value.plaintext.size()); // 0
+/// @endcode
+struct Salsa20Example {
+  std::array<std::uint8_t, 64> input{};    ///< Bernstein documented core input.
+  std::array<std::uint8_t, 64> expected{}; ///< Documented complete64-byte core output.
+  std::array<std::uint8_t, 32> key{};      ///< Original report key byte i*7+1 modulo256.
+  std::array<std::uint8_t, 8>  nonce{};    ///< Original nonce1,...,8.
+  std::string plaintext; ///< Original exact message, whose actual block count must be measured.
+};
+/// @brief Return the original core conformance vector and deterministic report key/message.
+/// Owns fixed specification bytes, the original deterministic32-byte key, nonce and exact plaintext. No randomness or encryption is hidden; invoke the producing API explicitly.
+/// @return Owned original conformance/report inputs.
+/// @par Example
+/// @code
+/// std::print("{}\n",unsigned(dm::algorithms::salsa20_example().input[0])); // 211
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_core_trace()
+Salsa20Example salsa20_example();
+/// @brief Actual byte and high-nibble counts across consecutive generated blocks.
+/// @par Example
+/// @code
+/// const dm::algorithms::Salsa20ByteStudy value{};
+/// std::print("{}\n",value.bytes); // 0
+/// @endcode
+struct Salsa20ByteStudy {
+  std::array<std::size_t, 256> counts{}; ///< Actual individual byte values observed.
+  std::array<std::size_t, 16>
+              groups{}; ///< Actual high-nibble bins, each aggregating16 byte values.
+  std::size_t blocks{}; ///< Actual generated consecutive counter blocks.
+  std::size_t bytes{};  ///< Actual observed key-stream bytes,64*blocks.
+};
+/// @brief Count actual key-stream bytes from consecutive native blocks.
+/// Generates each real block once and counts every output byte into both256 byte bins and16 high-nibble bins. This fixed-key/counter histogram is descriptive, not a test or proof of cryptographic security or independent randomness. Complete requested byte geometry and final counter are checked before block execution.
+/// @param key Complete32 key bytes.
+/// @param nonce Complete8 nonce bytes.
+/// @param counter First actual counter, default0.
+/// @param blocks Requested complete blocks, default64.
+/// @param max_bytes Complete64*blocks policy, default1000000; zero disables.
+/// @return Owned actual observed counts and native block/byte work.
+/// @throws std::length_error Complete byte geometry/policy exceeded.
+/// @throws std::overflow_error Required final counter wraps uint64.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::salsa20_byte_study({},{});
+/// std::print("{}\n",r.bytes); // 4096
+/// @endcode
+/// @par References
+/// - D. J. Bernstein, Salsa20 specification, https://cr.yp.to/snuffle/spec.pdf.
+/// @par References
+/// - Bernstein, Salsa20 specification. https://cr.yp.to/snuffle/spec.pdf
+/// @see salsa20_block()
+Salsa20ByteStudy salsa20_byte_study(
+    const std::array<std::uint8_t, 32>& key,
+    const std::array<std::uint8_t, 8>&  nonce,
+    std::uint64_t                       counter   = 0,
+    std::size_t                         blocks    = 64,
+    std::size_t                         max_bytes = 1000000);
+} // namespace datamunge::algorithms

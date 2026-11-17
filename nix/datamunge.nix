@@ -65,6 +65,19 @@ let
 
     installPhase = ''
       cmake --install build --prefix $out
+
+      # CMake installs into versioned subdirectories (include/datamunge-X.Y.Z,
+      # lib/datamunge-X.Y.Z), which nixpkgs' cc-wrapper does not search: a
+      # consumer that only has this package in a nix shell could not find
+      # <dm/dm.hpp> or -ldatamunge without pkg-config. Expose both under the
+      # standard $out/include and $out/lib too (the versioned paths stay, so
+      # pkg-config and the CMake config are unchanged).
+      for d in $out/include/${pname}-${version}/*; do
+        ln -s "$d" "$out/include/$(basename "$d")"
+      done
+      for f in $out/lib/${pname}-${version}/*; do
+        ln -s "$f" "$out/lib/$(basename "$f")"
+      done
     '';
   };
 in

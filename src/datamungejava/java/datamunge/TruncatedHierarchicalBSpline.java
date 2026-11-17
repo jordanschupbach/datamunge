@@ -69,7 +69,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
     @SuppressWarnings("this-escape")
     public TruncatedHierarchicalBSpline(TensorBSpline base) {
         super(RAW);
-        Rosetta.construct(this, TruncatedHierarchicalBSpline.class, false, 3068, base);
+        Rosetta.construct(this, TruncatedHierarchicalBSpline.class, false, 3079, base);
     }
 
     /**
@@ -80,7 +80,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @return d.
      */
     public long dimensions() {
-        return Rosetta.asLong(Rosetta.call(3039, this));
+        return Rosetta.asLong(Rosetta.call(3050, this));
     }
 
     /**
@@ -91,7 +91,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @return Level count.
      */
     public int levelCount() {
-        return Rosetta.asInt(Rosetta.call(3040, this));
+        return Rosetta.asInt(Rosetta.call(3051, this));
     }
 
     /**
@@ -105,7 +105,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid level. (C++ {@code std::out_of_range})
      */
     public TensorBSpline level(int level) {
-        return Rosetta.asObject(Rosetta.call(3041, this, level), TensorBSpline.class);
+        return Rosetta.asObject(Rosetta.call(3052, this, level), TensorBSpline.class);
     }
 
     /**
@@ -116,7 +116,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @return Cell count.
      */
     public int cellCount() {
-        return Rosetta.asInt(Rosetta.call(3042, this));
+        return Rosetta.asInt(Rosetta.call(3053, this));
     }
 
     /**
@@ -127,7 +127,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @return Always 0.
      */
     public int root() {
-        return Rosetta.asInt(Rosetta.call(3043, this));
+        return Rosetta.asInt(Rosetta.call(3054, this));
     }
 
     /**
@@ -140,7 +140,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid id. (C++ {@code std::out_of_range})
      */
     public int parent(int cell) {
-        return Rosetta.asInt(Rosetta.call(3044, this, cell));
+        return Rosetta.asInt(Rosetta.call(3055, this, cell));
     }
 
     /**
@@ -154,7 +154,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For invalid ids/slots. (C++ {@code std::out_of_range})
      */
     public int child(int cell, int slot) {
-        return Rosetta.asInt(Rosetta.call(3045, this, cell, slot));
+        return Rosetta.asInt(Rosetta.call(3056, this, cell, slot));
     }
 
     /**
@@ -167,7 +167,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid id. (C++ {@code std::out_of_range})
      */
     public int depth(int cell) {
-        return Rosetta.asInt(Rosetta.call(3046, this, cell));
+        return Rosetta.asInt(Rosetta.call(3057, this, cell));
     }
 
     /**
@@ -180,7 +180,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid id. (C++ {@code std::out_of_range})
      */
     public double[] cellMin(int cell) {
-        return Rosetta.asDoubles(Rosetta.call(3047, this, cell));
+        return Rosetta.asDoubles(Rosetta.call(3058, this, cell));
     }
 
     /**
@@ -193,7 +193,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid id. (C++ {@code std::out_of_range})
      */
     public double[] cellMax(int cell) {
-        return Rosetta.asDoubles(Rosetta.call(3048, this, cell));
+        return Rosetta.asDoubles(Rosetta.call(3059, this, cell));
     }
 
     /**
@@ -206,7 +206,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument If point.size() != dimensions(). (C++ {@code std::invalid_argument})
      */
     public int locate(double[] point) {
-        return Rosetta.asInt(Rosetta.call(3049, this, point));
+        return Rosetta.asInt(Rosetta.call(3060, this, point));
     }
 
     /**
@@ -230,7 +230,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid id or slot. (C++ {@code std::out_of_range})
      */
     public int refine(int cell, int slot) {
-        return Rosetta.asInt(Rosetta.call(3050, this, cell, slot));
+        return Rosetta.asInt(Rosetta.call(3061, this, cell, slot));
     }
 
     /**
@@ -247,7 +247,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid id. (C++ {@code std::out_of_range})
      */
     public int[] subdivide(int cell) {
-        return Rosetta.asInts(Rosetta.call(3051, this, cell));
+        return Rosetta.asInts(Rosetta.call(3062, this, cell));
     }
 
     /**
@@ -266,7 +266,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On mismatched sizes or min &gt;= max. (C++ {@code std::invalid_argument})
      */
     public void refineRegion(double[] regionMin, double[] regionMax, int depth) {
-        Rosetta.call(3052, this, regionMin, regionMax, depth);
+        Rosetta.call(3063, this, regionMin, regionMax, depth);
     }
 
     /**
@@ -281,7 +281,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a dimension mismatch. (C++ {@code std::invalid_argument})
      */
     public double[] supportMin(int level, int[] index) {
-        return Rosetta.asDoubles(Rosetta.call(3053, this, level, index));
+        return Rosetta.asDoubles(Rosetta.call(3064, this, level, index));
     }
 
     /**
@@ -296,7 +296,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a dimension mismatch. (C++ {@code std::invalid_argument})
      */
     public double[] supportMax(int level, int[] index) {
-        return Rosetta.asDoubles(Rosetta.call(3054, this, level, index));
+        return Rosetta.asDoubles(Rosetta.call(3065, this, level, index));
     }
 
     /**
@@ -321,7 +321,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a dimension mismatch. (C++ {@code std::invalid_argument})
      */
     public boolean isActive(int level, int[] index) {
-        return Rosetta.asBoolean(Rosetta.call(3055, this, level, index));
+        return Rosetta.asBoolean(Rosetta.call(3066, this, level, index));
     }
 
     /**
@@ -342,7 +342,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.OutOfRange For an invalid level. (C++ {@code std::out_of_range})
      */
     public List<int[]> activeIndices(int level) {
-        return Rosetta.asList(Rosetta.call(3056, this, level), rosettaV0 -> Rosetta.asInts(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3067, this, level), rosettaV0 -> Rosetta.asInts(rosettaV0));
     }
 
     /**
@@ -362,7 +362,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @return Count.
      */
     public long basisSize() {
-        return Rosetta.asLong(Rosetta.call(3057, this));
+        return Rosetta.asLong(Rosetta.call(3068, this));
     }
 
     /**
@@ -378,7 +378,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a dimension mismatch. (C++ {@code std::invalid_argument})
      */
     public double coefficient(int level, int[] index) {
-        return Rosetta.asDouble(Rosetta.call(3058, this, level, index));
+        return Rosetta.asDouble(Rosetta.call(3069, this, level, index));
     }
 
     /**
@@ -403,7 +403,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a dimension mismatch or an inactive index. (C++ {@code std::invalid_argument})
      */
     public void setCoefficient(int level, int[] index, double value) {
-        Rosetta.call(3059, this, level, index, value);
+        Rosetta.call(3070, this, level, index, value);
     }
 
     /**
@@ -427,7 +427,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a size mismatch or a point outside the domain. (C++ {@code std::invalid_argument})
      */
     public double truncatedBasis(int level, int[] index, double[] point) {
-        return Rosetta.asDouble(Rosetta.call(3060, this, level, index, point));
+        return Rosetta.asDouble(Rosetta.call(3071, this, level, index, point));
     }
 
     /**
@@ -460,7 +460,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitLevel(int level, List<double[]> points, double[] values) {
-        Rosetta.call(3061, this, level, points, values);
+        Rosetta.call(3072, this, level, points, values);
     }
 
     /**
@@ -492,7 +492,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitLevel(int level, List<double[]> points, double[] values, SplineSolveOptions options) {
-        Rosetta.call(3061, this, level, points, values, options);
+        Rosetta.call(3072, this, level, points, values, options);
     }
 
     /**
@@ -521,7 +521,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitLevelPenalized(int level, List<double[]> points, double[] values, double[] lambdas) {
-        Rosetta.call(3062, this, level, points, values, lambdas);
+        Rosetta.call(3073, this, level, points, values, lambdas);
     }
 
     /**
@@ -551,7 +551,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitLevelPenalized(int level, List<double[]> points, double[] values, double[] lambdas, int order) {
-        Rosetta.call(3062, this, level, points, values, lambdas, order);
+        Rosetta.call(3073, this, level, points, values, lambdas, order);
     }
 
     /**
@@ -580,7 +580,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitLevelPenalized(int level, List<double[]> points, double[] values, double[] lambdas, int order, SplineSolveOptions options) {
-        Rosetta.call(3062, this, level, points, values, lambdas, order, options);
+        Rosetta.call(3073, this, level, points, values, lambdas, order, options);
     }
 
     /**
@@ -607,7 +607,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If some active function has too little data (singular). (C++ {@code std::runtime_error})
      */
     public void fit(List<double[]> points, double[] values) {
-        Rosetta.call(3063, this, points, values);
+        Rosetta.call(3074, this, points, values);
     }
 
     /**
@@ -633,7 +633,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If some active function has too little data (singular). (C++ {@code std::runtime_error})
      */
     public void fit(List<double[]> points, double[] values, SplineSolveOptions options) {
-        Rosetta.call(3063, this, points, values, options);
+        Rosetta.call(3074, this, points, values, options);
     }
 
     /**
@@ -665,7 +665,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitPenalized(List<double[]> points, double[] values, double[] lambdas) {
-        Rosetta.call(3064, this, points, values, lambdas);
+        Rosetta.call(3075, this, points, values, lambdas);
     }
 
     /**
@@ -698,7 +698,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitPenalized(List<double[]> points, double[] values, double[] lambdas, int order) {
-        Rosetta.call(3064, this, points, values, lambdas, order);
+        Rosetta.call(3075, this, points, values, lambdas, order);
     }
 
     /**
@@ -730,7 +730,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeException If the normal equations are singular. (C++ {@code std::runtime_error})
      */
     public void fitPenalized(List<double[]> points, double[] values, double[] lambdas, int order, SplineSolveOptions options) {
-        Rosetta.call(3064, this, points, values, lambdas, order, options);
+        Rosetta.call(3075, this, points, values, lambdas, order, options);
     }
 
     /**
@@ -747,7 +747,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a size mismatch or a point outside the domain. (C++ {@code std::invalid_argument})
      */
     public double evaluate(double[] point) {
-        return Rosetta.asDouble(Rosetta.call(3065, this, point));
+        return Rosetta.asDouble(Rosetta.call(3076, this, point));
     }
 
     /**
@@ -768,7 +768,7 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument As for evaluate(). (C++ {@code std::invalid_argument})
      */
     public double[] evaluatePoints(List<double[]> points) {
-        return Rosetta.asDoubles(Rosetta.call(3066, this, points));
+        return Rosetta.asDoubles(Rosetta.call(3077, this, points));
     }
 
     /**
@@ -789,6 +789,6 @@ public class TruncatedHierarchicalBSpline extends NativeObject {
      * @throws NativeError.InvalidArgument On a dimension mismatch, empty axis, or outside point. (C++ {@code std::invalid_argument})
      */
     public double[] evaluateGrid(List<double[]> axes) {
-        return Rosetta.asDoubles(Rosetta.call(3067, this, axes));
+        return Rosetta.asDoubles(Rosetta.call(3078, this, axes));
     }
 }

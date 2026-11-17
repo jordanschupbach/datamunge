@@ -1,0 +1,333 @@
+//? Title: Vector Environments: Auto-Reset, Final Observations and Worker Threads
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native C++ simulations expose explicit actions, seeded state transitions and owning observations. The complete editable source protocol retains its policy comparisons and checks. There is no hidden learning loop or external simulator process.
+)
+\toc
+
+> Follow one actual transition
+
+```{cpp, results="markdown", file="figures/vec_env_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle style;style.width=13;style.height=5;style.font_size=24;d.node("input",{-17,0},"One action per environment",style);d.node("step",{0,0},"Step independent local RNGs",style);d.node("result",{17,0},"Final state plus auto-reset",style);d.edge("input","step").edge("step","result").save_svg("build/vec_env_method.svg");}
+```
+// result_begin: markdown
+\image(figures/vec_env_method.svg)
+// result_end
+
+> Keep the final observation when auto-resetting
+
+Two CartPoles with limit1 truncate after their first safe step. Each vector row returns both the old episode final observation and the new episode reset observation. These have the same width but different meanings.
+
+```{cpp, results="markdown", file="figures/vec_env_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;std::filesystem::create_directories("build");e::VecEnv env([]{return std::make_unique<e::CartPole>(1);},2,1,2);env.reset();auto r=env.step({0,1});std::vector<double>values;for(int i=0;i<2;++i){if(!r.truncated[i]||r.final_obs[i].size()!=4||r.obs[i].size()!=4)return 1;values.push_back(r.final_obs[i][0]);values.push_back(r.obs[i][0]);}std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/vec_env_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);const double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1e-9,high-low);dm::graphics::RPlot::create().ylim(low-.05*span,high+.05*span).bars(x,values,"computed values",{37,99,235}).title("Keep the final observation when auto-resetting").x_label("Coordinate in displayed calculation").size(1000,550).save_svg("build/vec_env_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | -0.037339520 |
+| 1 | -0.014910188 |
+| 2 | 0.041060876 |
+| 3 | -0.024709633 |
+\image(figures/vec_env_worked.svg)
+// result_end
+
+> Complete source experiment
+
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn vec_env
+// Vectorized environments for parallel rollouts.
+//
+// Port of tflow's vec_env. rl::VecEnv (common/rl/vec_env.hpp, copied from
+// tflow, TF-free) steps N environments with one call and resets any that
+// finish, so a learner always has a full batch of observations. It can use a
+// thread pool; this program measures when that is worth it. The port adds
+// checks: the auto-reset bookkeeping (final_obs, done flags, episode count)
+// and that a threaded VecEnv produces exactly the single-threaded rollout.
+// Throughput numbers depend on the machine and its load.
+
+#include <chrono>
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+#include <memory>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/classic_control.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::kPi;
+using datamunge::rl::environments::Clamp;
+using datamunge::rl::environments::WrapAngle;
+using datamunge::rl::environments::CartPole;
+using datamunge::rl::environments::MountainCar;
+using datamunge::rl::environments::MountainCarContinuous;
+using datamunge::rl::environments::Pendulum;
+using datamunge::rl::environments::Acrobot;
+}
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+// Editable workflow support: rl/vec_env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::VecStep;
+using datamunge::rl::environments::VecEnv;
+}
+
+namespace {
+
+// Wraps an environment and burns CPU on every step, standing in for an
+// expensive simulator.
+class Expensive : public rl::Env {
+ public:
+  Expensive(std::unique_ptr<rl::Env> inner, int work) : inner_(std::move(inner)), work_(work) {}
+  std::string name() const override { return "Expensive(" + inner_->name() + ")"; }
+  int obs_size() const override { return inner_->obs_size(); }
+  rl::ActionSpace action_space() const override { return inner_->action_space(); }
+  rl::Obs Reset() override { return inner_->reset(); }
+  void Seed(uint64_t seed) override { inner_->Seed(seed); }
+  rl::StepResult step(const rl::Action& a) override {
+    volatile float sink = 0;
+    for (int i = 0; i < work_; ++i) sink += std::sin(static_cast<float>(i));
+    return inner_->step(a);
+  }
+
+ private:
+  std::unique_ptr<rl::Env> inner_;
+  int work_;
+};
+
+double StepsPerSecond(rl::VecEnv& venv, int iterations, uint64_t seed) {
+  std::mt19937_64 rng(seed);
+  const rl::ActionSpace space = venv.action_space();
+  std::vector<rl::Action> actions(venv.size());
+  venv.reset();
+  auto t0 = std::chrono::steady_clock::now();
+  for (int it = 0; it < iterations; ++it) {
+    for (auto& a : actions) a = space.Sample(rng);
+    venv.step(actions);
+  }
+  auto t1 = std::chrono::steady_clock::now();
+  return static_cast<double>(venv.size()) * iterations /
+         std::chrono::duration<double>(t1 - t0).count();
+}
+
+// Steps two VecEnvs with the same random actions; true when every batch matches.
+bool SameRollout(rl::VecEnv& a, rl::VecEnv& b, int iterations, uint64_t seed) {
+  std::mt19937_64 rng(seed);
+  const rl::ActionSpace space = a.action_space();
+  std::vector<rl::Action> actions(a.size());
+  if (a.reset() != b.reset()) return false;
+  for (int it = 0; it < iterations; ++it) {
+    for (auto& act : actions) act = space.Sample(rng);
+    const rl::VecStep sa = a.step(actions), sb = b.step(actions);
+    if (sa.obs != sb.obs || sa.reward != sb.reward || sa.terminated != sb.terminated ||
+        sa.truncated != sb.truncated)
+      return false;
+  }
+  return true;
+}
+
+}  // namespace
+
+int main() {
+  try {
+    std::cout << "== Batched stepping with auto-reset\n";
+    rl::VecEnv venv([] { return std::make_unique<rl::CartPole>(); }, /*n=*/8, /*seed=*/0);
+    std::vector<rl::Obs> obs = venv.reset();
+    std::printf("  %d x %s, batch observation %zu x %d\n", venv.size(), venv.env(0).name().c_str(),
+                obs.size(), venv.obs_size());
+    std::mt19937_64 rng(0);
+    std::vector<rl::Action> actions(venv.size());
+    int episodes_finished = 0;
+    bool bookkeeping_ok = true;
+    std::vector<float> returns(venv.size(), 0.f);
+    for (int t = 1; t <= 100; ++t) {
+      for (auto& a : actions) a = venv.action_space().Sample(rng);
+      rl::VecStep s = venv.step(actions);
+      bookkeeping_ok &= static_cast<int>(s.obs.size()) == venv.size();
+      for (int i = 0; i < venv.size(); ++i) {
+        returns[i] += s.reward[i];
+        if (s.done(i)) {
+          ++episodes_finished;
+          // CartPole ends when |x| > 2.4 or |theta| > 0.2095 (or at 500 steps); a fresh episode
+          // starts within +-0.05 of rest.
+          bookkeeping_ok &= s.final_obs[i].size() == 4 &&
+                            (std::abs(s.final_obs[i][0]) > 2.4f || std::abs(s.final_obs[i][2]) > 0.2094f);
+          bookkeeping_ok &= std::abs(s.obs[i][0]) <= 0.05f && std::abs(s.obs[i][2]) <= 0.05f;
+          if (episodes_finished <= 5)
+            std::printf("  t=%-3d env %d finished with return %.0f; final x=%+.2f, new episode starts at x=%+.2f\n",
+                        t, i, returns[i], s.final_obs[i][0], s.obs[i][0]);
+          returns[i] = 0;
+        }
+      }
+    }
+    std::printf("  after 100 batched steps: %d episodes finished across %d environments\n",
+                episodes_finished, venv.size());
+
+    std::cout << "\n== Throughput: environment steps per second (64 envs, random actions)\n";
+    std::printf("  %-28s %10s %10s %10s %10s\n", "", "1 thread", "2 threads", "4 threads",
+                "8 threads");
+    for (int work : {0, 2000, 20000}) {
+      std::printf("  %-28s", work == 0 ? "CartPole (cheap)"
+                                       : ("CartPole + " + std::to_string(work) + " sins").c_str());
+      for (int threads : {1, 2, 4, 8}) {
+        rl::VecEnv v(
+            [work]() -> std::unique_ptr<rl::Env> {
+              std::unique_ptr<rl::Env> e = std::make_unique<rl::CartPole>();
+              if (work == 0) return e;
+              return std::make_unique<Expensive>(std::move(e), work);
+            },
+            64, 0, threads);
+        const int iters = work == 0 ? 2000 : (work < 10000 ? 200 : 30);
+        std::printf(" %10.0f", StepsPerSecond(v, iters, 1));
+        std::fflush(stdout);
+      }
+      std::printf("\n");
+    }
+    std::cout << "  Threads only help once a step costs more than the synchronisation.\n";
+
+    auto cartpole = [] { return std::make_unique<rl::CartPole>(); };
+    rl::VecEnv serial(cartpole, 64, 0, 1), threaded(cartpole, 64, 0, 4);
+    const bool same = SameRollout(serial, threaded, 300, 7);
+    std::printf("\n  4-thread rollout identical to the 1-thread rollout (64 envs, 300 steps): %s\n", same ? "yes" : "NO");
+
+    check::Require(obs.size() == 8 && venv.obs_size() == 4, "the batch observation should be 8 x 4");
+    check::Require(bookkeeping_ok, "finished environments should report a terminal final_obs and restart near rest");
+    check::Require(episodes_finished == 34, "random CartPole from seed 0 should finish 34 episodes in 100 steps (as in tflow)");
+    check::Require(same, "threading must not change the rollout");
+    std::cout << "\nchecks passed\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == Batched stepping with auto-reset
+//   8 x CartPole, batch observation 8 x 4
+//   t=9   env 1 finished with return 9; final x=+0.09, new episode starts at x=-0.01
+//   t=18  env 7 finished with return 18; final x=+0.16, new episode starts at x=-0.04
+//   t=19  env 2 finished with return 19; final x=+0.22, new episode starts at x=-0.02
+//   t=19  env 5 finished with return 19; final x=-0.18, new episode starts at x=-0.04
+//   t=21  env 0 finished with return 21; final x=-0.18, new episode starts at x=+0.00
+//   after 100 batched steps: 34 episodes finished across 8 environments
+//
+// == Throughput: environment steps per second (64 envs, random actions)
+//                                  1 thread  2 threads  4 threads  8 threads
+//   CartPole (cheap)               19050621    6870312    5262301    2070206
+//   CartPole + 2000 sins             193780     326450     596115     959513
+//   CartPole + 20000 sins             19652      36074      68403     106442
+//   Threads only help once a step costs more than the synchronisation.
+//
+//   4-thread rollout identical to the 1-thread rollout (64 envs, 300 steps): yes
+//
+// checks passed
+// result_end
+
+> Track auto-reset boundaries explicitly
+
+Four seeded CartPoles with a five-step limit expose cumulative done counts. Auto-reset observations belong to the next episode; saved final observations belong to the episode that just ended. Two worker threads execute this diagnostic.
+
+```{cpp, results="markdown", file="figures/vec_env_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;e::VecEnv env([]{return std::make_unique<e::CartPole>(5);},4,1,2);env.reset();std::vector<double>step,finished;int total=0;for(int t=0;t<20;++t){auto result=env.step({0,1,0,1});for(int i=0;i<4;++i)if(result.done(i)){++total;if(result.final_obs[i].size()!=4)return 1;}step.push_back(t+1);finished.push_back(total);}dm::nn::save_npz("build/vec_env_boundaries.npz",{{"step",dm::nn::from_vector(step)},{"finished",dm::nn::from_vector(finished)}});dm::graphics::RPlot::create().lines(step,finished,"ended episodes",{37,99,235}).x_label("Vector step").y_label("Cumulative ended episodes").title("Final-observation and auto-reset boundaries").size(1000,550).save_svg("build/vec_env_boundaries.svg");}
+```
+// result_begin: markdown
+\image(figures/vec_env_boundaries.svg)
+// result_end
+
+> Interpretation
+
+The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.

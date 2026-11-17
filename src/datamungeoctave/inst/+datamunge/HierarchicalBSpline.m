@@ -70,7 +70,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3038, false, varargin{:});
+      __datamunge__(-2, obj, 3049, false, varargin{:});
     end
     function r = dimensions (obj)
       % dimensions  Number of dimensions d.
@@ -81,7 +81,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     r  integer: d.
       %
       %   C++: std::size_t datamunge::fda::HierarchicalBSpline::dimensions() const
-      r = __datamunge__(3017, obj);
+      r = __datamunge__(3028, obj);
     end
     function r = cell_count (obj)
       % cell_count  Number of cells created so far.
@@ -92,7 +92,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     r  integer: Cell count.
       %
       %   C++: int datamunge::fda::HierarchicalBSpline::cell_count() const
-      r = __datamunge__(3018, obj);
+      r = __datamunge__(3029, obj);
     end
     function r = root (obj)
       % root  Root cell id.
@@ -103,7 +103,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     r  integer: Always 0.
       %
       %   C++: int datamunge::fda::HierarchicalBSpline::root() const
-      r = __datamunge__(3019, obj);
+      r = __datamunge__(3030, obj);
     end
     function r = parent (obj, cell)
       % parent  Parent id.
@@ -120,7 +120,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: int datamunge::fda::HierarchicalBSpline::parent(int cell) const
-      r = __datamunge__(3020, obj, cell);
+      r = __datamunge__(3031, obj, cell);
     end
     function r = child (obj, cell, slot)
       % child  Child id at `slot`.
@@ -138,7 +138,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For invalid ids/slots. (C++ std::out_of_range)
       %
       %   C++: int datamunge::fda::HierarchicalBSpline::child(int cell, int slot) const
-      r = __datamunge__(3021, obj, cell, slot);
+      r = __datamunge__(3032, obj, cell, slot);
     end
     function r = depth (obj, cell)
       % depth  Depth of `cell` (root 0).
@@ -155,7 +155,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: int datamunge::fda::HierarchicalBSpline::depth(int cell) const
-      r = __datamunge__(3022, obj, cell);
+      r = __datamunge__(3033, obj, cell);
     end
     function r = cell_min (obj, cell)
       % cell_min  Lower corner of `cell`.
@@ -172,7 +172,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: std::vector<double> datamunge::fda::HierarchicalBSpline::cell_min(int cell) const
-      r = __datamunge__(3023, obj, cell);
+      r = __datamunge__(3034, obj, cell);
     end
     function r = cell_max (obj, cell)
       % cell_max  Upper corner of `cell`.
@@ -189,7 +189,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: std::vector<double> datamunge::fda::HierarchicalBSpline::cell_max(int cell) const
-      r = __datamunge__(3024, obj, cell);
+      r = __datamunge__(3035, obj, cell);
     end
     function r = locate (obj, point)
       % locate  Deepest existing cell containing `point`.
@@ -211,7 +211,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  If point.size() != dimensions(). (C++ std::invalid_argument)
       %
       %   C++: int datamunge::fda::HierarchicalBSpline::locate(const std::vector<double> & point) const
-      r = __datamunge__(3025, obj, point);
+      r = __datamunge__(3036, obj, point);
     end
     function r = has_spline (obj, cell)
       % has_spline  Whether `cell` carries a patch.
@@ -228,7 +228,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: bool datamunge::fda::HierarchicalBSpline::has_spline(int cell) const
-      r = __datamunge__(3026, obj, cell);
+      r = __datamunge__(3037, obj, cell);
     end
     function r = spline (obj, cell)
       % spline  The patch of `cell`.
@@ -246,7 +246,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  If no patch. (C++ std::invalid_argument)
       %
       %   C++: const TensorBSpline & datamunge::fda::HierarchicalBSpline::spline(int cell) const
-      r = __datamunge__(3027, obj, cell);
+      r = __datamunge__(3038, obj, cell);
     end
     function set_spline (obj, cell, spline)
       % set_spline  Installs (or replaces) the patch of `cell`.
@@ -262,7 +262,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  If the patch dimension differs from dimensions(). (C++ std::invalid_argument)
       %
       %   C++: void datamunge::fda::HierarchicalBSpline::set_spline(int cell, TensorBSpline spline)
-      __datamunge__(3028, obj, cell, spline);
+      __datamunge__(3039, obj, cell, spline);
     end
     function clear_spline (obj, cell)
       % clear_spline  Removes the patch of `cell` (no-op if none).
@@ -276,7 +276,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: void datamunge::fda::HierarchicalBSpline::clear_spline(int cell)
-      __datamunge__(3029, obj, cell);
+      __datamunge__(3040, obj, cell);
     end
     function r = subdivide (obj, cell)
       % subdivide  Creates all 2^d children of `cell` (existing ones are kept), without patches.
@@ -297,7 +297,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:out_of_range  For an invalid id. (C++ std::out_of_range)
       %
       %   C++: std::vector<int> datamunge::fda::HierarchicalBSpline::subdivide(int cell)
-      r = __datamunge__(3030, obj, cell);
+      r = __datamunge__(3041, obj, cell);
     end
     function r = refine (obj, varargin)
       % refine  Creates (if needed) only the child of `cell` at `slot`.
@@ -316,7 +316,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %   Overloads are chosen at run time from the argument types (C++):
       %   C++: int datamunge::fda::HierarchicalBSpline::refine(int cell, int slot)
       %   C++: int datamunge::fda::HierarchicalBSpline::refine(int cell, int slot, TensorBSpline spline)
-      r = __datamunge__(3031, obj, varargin{:});
+      r = __datamunge__(3042, obj, varargin{:});
     end
     function refine_region (obj, varargin)
       % refine_region  Subdivides, down to depth `depth`, every cell overlapping the open box (region_min, region_max).
@@ -335,7 +335,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %   Overloads are chosen at run time from the argument types (C++):
       %   C++: void datamunge::fda::HierarchicalBSpline::refine_region(const std::vector<double> & region_min, const std::vector<double> & region_max, int depth)
       %   C++: void datamunge::fda::HierarchicalBSpline::refine_region(const std::vector<double> & region_min, const std::vector<double> & region_max, int depth, const SplineFactory & factory)
-      __datamunge__(3032, obj, varargin{:});
+      __datamunge__(3043, obj, varargin{:});
     end
     function fit_cell (obj, varargin)
       % fit_cell  Least-squares fits a new patch on `cell` so the whole hierarchy matches `values` at `points`.
@@ -366,7 +366,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:native  If the local normal equations are singular. (C++ std::runtime_error)
       %
       %   C++: void datamunge::fda::HierarchicalBSpline::fit_cell(int cell, std::vector<BSplineBasis> bases, const std::vector<std::vector<double>> & points, const std::vector<double> & values, const SplineSolveOptions & options = {})
-      __datamunge__(3033, obj, varargin{:});
+      __datamunge__(3044, obj, varargin{:});
     end
     function fit_cell_penalized (obj, varargin)
       % fit_cell_penalized  Penalized (P-spline) variant of fit_cell() with per-axis `lambdas` and difference `order`; all-zero lambdas give fit_cell().
@@ -396,7 +396,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:native  If the penalized normal equations are singular. (C++ std::runtime_error)
       %
       %   C++: void datamunge::fda::HierarchicalBSpline::fit_cell_penalized(int cell, std::vector<BSplineBasis> bases, const std::vector<std::vector<double>> & points, const std::vector<double> & values, const std::vector<double> & lambdas, int order = 2, const SplineSolveOptions & options = {})
-      __datamunge__(3034, obj, varargin{:});
+      __datamunge__(3045, obj, varargin{:});
     end
     function r = evaluate (obj, point)
       % evaluate  Sum of the patches along the path of cells containing `point`.
@@ -416,7 +416,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a size mismatch or a point outside the domain. (C++ std::invalid_argument)
       %
       %   C++: double datamunge::fda::HierarchicalBSpline::evaluate(const std::vector<double> & point) const
-      r = __datamunge__(3035, obj, point);
+      r = __datamunge__(3046, obj, point);
     end
     function r = evaluate_points (obj, points)
       % evaluate_points  Evaluates at many points.
@@ -437,7 +437,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  As for evaluate(). (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::HierarchicalBSpline::evaluate_points(const std::vector<std::vector<double>> & points) const
-      r = __datamunge__(3036, obj, points);
+      r = __datamunge__(3047, obj, points);
     end
     function r = evaluate_grid (obj, axes)
       % evaluate_grid  Evaluates on a Cartesian grid.
@@ -458,7 +458,7 @@ classdef HierarchicalBSpline < datamunge.NativeObject
       %     datamunge:invalid_argument  On a dimension mismatch, empty axis, or outside point. (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::HierarchicalBSpline::evaluate_grid(const std::vector<std::vector<double>> & axes) const
-      r = __datamunge__(3037, obj, axes);
+      r = __datamunge__(3048, obj, axes);
     end
   end
 end

@@ -1,0 +1,424 @@
+//? Title: Environment Interfaces: Terminality, Time Limits and Reproducible State
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native C++ simulations expose explicit actions, seeded state transitions and owning observations. The complete editable source protocol retains its policy comparisons and checks. There is no hidden learning loop or external simulator process.
+)
+\toc
+
+> Follow one actual transition
+
+```{cpp, results="markdown", file="figures/env_interface_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle style;style.width=13;style.height=5;style.font_size=24;d.node("input",{-17,0},"Explicit action and seed",style);d.node("step",{0,0},"Owning observation / reward",style);d.node("result",{17,0},"Terminal versus time limit",style);d.edge("input","step").edge("step","result").save_svg("build/env_interface_method.svg");}
+```
+// result_begin: markdown
+\image(figures/env_interface_method.svg)
+// result_end
+
+> A one-step limit is not a terminal state
+
+A seven-cell corridor starts at3. Either possible first move reaches2 or4, never an endpoint. With time limit1, reward is0, terminated is false, and truncated is true. A learner may bootstrap from the saved final state.
+
+```{cpp, results="markdown", file="figures/env_interface_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;std::filesystem::create_directories("build");e::Corridor env(7,1);env.reset(1);auto r=env.step(1);std::vector<double>values{r.obs[0],r.reward,double(r.terminated),double(r.truncated)};if(r.terminated||!r.truncated||r.reward!=0)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/env_interface_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);const double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1e-9,high-low);dm::graphics::RPlot::create().ylim(low-.05*span,high+.05*span).bars(x,values,"computed values",{37,99,235}).title("A one-step limit is not a terminal state").x_label("Coordinate in displayed calculation").size(1000,550).save_svg("build/env_interface_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 4.000000000 |
+| 1 | 0.000000000 |
+| 2 | 0.000000000 |
+| 3 | 1.000000000 |
+\image(figures/env_interface_worked.svg)
+// result_end
+
+> Complete source experiment
+
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn env_interface
+// Environment interface: reset, step, render, seeding.
+//
+// Port of tflow's env_interface. All RL examples talk to environments through
+// rl::Env (common/rl/env.hpp, copied from tflow), a small Gymnasium-style
+// interface:
+//   reset()            -> first observation (optionally with a seed)
+//   step(action)       -> {obs, reward, terminated, truncated}
+//   render()           -> text picture of the state
+//   action_space()     -> Discrete(n) or Continuous(low, high)
+// This program writes a tiny environment against that interface and then
+// drives it, and a built-in one, through the same generic loop. The vsim video
+// of a random CartPole episode is omitted; the port adds checks that seeding
+// reproduces an episode and that every corridor episode ends one of the three
+// ways.
+
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include <string>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/classic_control.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::kPi;
+using datamunge::rl::environments::Clamp;
+using datamunge::rl::environments::WrapAngle;
+using datamunge::rl::environments::CartPole;
+using datamunge::rl::environments::MountainCar;
+using datamunge::rl::environments::MountainCarContinuous;
+using datamunge::rl::environments::Pendulum;
+using datamunge::rl::environments::Acrobot;
+}
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+inline int ArgMax(const std::vector<float>& v) {
+  return static_cast<int>(std::max_element(v.begin(), v.end()) - v.begin());
+}
+
+// Argmax with ties broken uniformly at random.
+inline int ArgMaxRandomTie(const float* q, int n, std::mt19937_64& rng) {
+  float best = q[0];
+  for (int i = 1; i < n; ++i) best = std::max(best, q[i]);
+  std::vector<int> ties;
+  for (int i = 0; i < n; ++i)
+    if (q[i] == best) ties.push_back(i);
+  return ties[rng() % ties.size()];
+}
+
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunRandom(Env& env, int episodes, uint64_t seed) {
+  std::mt19937_64 rng(seed);
+  const ActionSpace space = env.action_space();
+  return RunEpisodes(env, episodes, seed, [&](const Obs&) { return space.Sample(rng); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+// A 1-D corridor: the agent starts in the middle of `length` cells and must
+// reach the right end (+1) while avoiding the left end (-1). Each step the
+// chosen move succeeds with probability 0.8, otherwise the agent slips the
+// other way, so the environment needs its RNG and seeding matters.
+using Corridor=dm::rl::environments::Corridor;
+
+// One episode through the generic interface, printing every step. Returns the
+// sequence of observations and rewards as text (for the seeding check).
+std::string Trace(rl::Env& env, uint64_t seed, int max_print, bool show_render = true) {
+  std::ostringstream log;
+  std::mt19937_64 rng(seed);
+  const rl::ActionSpace space = env.action_space();
+  rl::Obs obs = env.reset(seed);
+  std::cout << "  t=0  obs=" << rl::FormatObs(obs) << "  " << (show_render ? env.render() : "") << "\n";
+  log << rl::FormatObs(obs);
+  for (int t = 1;; ++t) {
+    rl::Action a = space.Sample(rng);
+    rl::StepResult r = env.step(a);
+    log << " " << a.discrete << ":" << r.reward << ":" << rl::FormatObs(r.obs);
+    if (t <= max_print)
+      std::printf("  t=%-2d a=%d  r=%+.2f  obs=%s  %s%s%s\n", t, a.discrete, r.reward,
+                  rl::FormatObs(r.obs).c_str(), show_render ? env.render().c_str() : "",
+                  r.terminated ? "  TERMINATED" : "", r.truncated ? "  TRUNCATED" : "");
+    if (r.done()) {
+      if (t > max_print) std::printf("  ... episode ended at t=%d\n", t);
+      break;
+    }
+  }
+  return log.str();
+}
+
+}  // namespace
+
+int main() {
+  try {
+    Corridor corridor;
+    std::cout << "== " << corridor.name() << ": obs_size=" << corridor.obs_size()
+              << " action_space=" << corridor.action_space().ToString()
+              << " max_steps=" << corridor.max_steps() << "\n";
+    std::cout << "\n-- A random episode (seed 1)\n";
+    Trace(corridor, 1, 25);
+
+    std::cout << "\n-- Seeding: the same seed reproduces the episode exactly\n";
+    const std::string a = Trace(corridor, 7, 4);
+    const std::string b = Trace(corridor, 7, 4);
+    std::cout << "-- A different seed does not\n";
+    const std::string c = Trace(corridor, 8, 4);
+    check::Require(a == b, "the same seed should reproduce the episode");
+    check::Require(a != c, "a different seed should give a different episode");
+
+    std::cout << "\n-- terminated vs truncated over 1000 random episodes\n";
+    {
+      std::mt19937_64 rng(0);
+      int goal = 0, pit = 0, timeout = 0;
+      for (int e = 0; e < 1000; ++e) {
+        corridor.reset(100 + e);
+        while (true) {
+          rl::StepResult r = corridor.step(corridor.action_space().Sample(rng));
+          if (r.terminated) (r.reward > 0 ? goal : pit)++;
+          if (r.truncated) ++timeout;
+          if (r.done()) break;
+        }
+      }
+      std::printf("  reached goal %d, fell in pit %d, hit the %d-step limit %d\n", goal, pit,
+                  corridor.max_steps(), timeout);
+      check::Require(goal + pit + timeout == 1000, "every episode ends exactly one way");
+      check::Require(goal > 300 && pit > 300 && timeout > 0, "a symmetric random walk reaches both ends about equally often");
+    }
+
+    std::cout << "\n-- The same loop works on any Env: CartPole through the base class\n";
+    std::unique_ptr<rl::Env> env = std::make_unique<rl::CartPole>();
+    std::cout << "  " << env->name() << ": obs_size=" << env->obs_size()
+              << " action_space=" << env->action_space().ToString() << "\n";
+    Trace(*env, 3, 3, /*show_render=*/false);
+    rl::PrintStats("random policy, 20 episodes", rl::RunRandom(*env, 20, 0));
+
+    std::cout << "\n-- Continuous action spaces sample vectors\n";
+    rl::Pendulum pendulum;
+    std::mt19937_64 rng(0);
+    const rl::Action sample = pendulum.action_space().Sample(rng);
+    std::cout << "  " << pendulum.name() << " action_space=" << pendulum.action_space().ToString()
+              << "  sample=" << rl::FormatObs(sample.continuous) << "\n";
+    check::Require(sample.continuous.size() == 1 && sample.continuous[0] >= -2.f && sample.continuous[0] <= 2.f,
+                   "a Pendulum action is one torque in [-2, 2]");
+    std::cout << "\nchecks passed (vsim video omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == Corridor: obs_size=1 action_space=Discrete(2) max_steps=20
+//
+// -- A random episode (seed 1)
+//   t=0  obs=[3.000]  x..A..G
+//   t=1  a=0  r=+0.00  obs=[2.000]  x.A...G
+//   t=2  a=0  r=+0.00  obs=[1.000]  xA....G
+//   t=3  a=0  r=-1.00  obs=[0.000]  A.....G  TERMINATED
+//
+// -- Seeding: the same seed reproduces the episode exactly
+//   t=0  obs=[3.000]  x..A..G
+//   t=1  a=1  r=+0.00  obs=[4.000]  x...A.G
+//   t=2  a=0  r=+0.00  obs=[5.000]  x....AG
+//   t=3  a=0  r=+0.00  obs=[4.000]  x...A.G
+//   t=4  a=0  r=+0.00  obs=[5.000]  x....AG
+//   ... episode ended at t=5
+//   t=0  obs=[3.000]  x..A..G
+//   t=1  a=1  r=+0.00  obs=[4.000]  x...A.G
+//   t=2  a=0  r=+0.00  obs=[5.000]  x....AG
+//   t=3  a=0  r=+0.00  obs=[4.000]  x...A.G
+//   t=4  a=0  r=+0.00  obs=[5.000]  x....AG
+//   ... episode ended at t=5
+// -- A different seed does not
+//   t=0  obs=[3.000]  x..A..G
+//   t=1  a=1  r=+0.00  obs=[4.000]  x...A.G
+//   t=2  a=0  r=+0.00  obs=[5.000]  x....AG
+//   t=3  a=0  r=+1.00  obs=[6.000]  x.....A  TERMINATED
+//
+// -- terminated vs truncated over 1000 random episodes
+//   reached goal 475, fell in pit 444, hit the 20-step limit 81
+//
+// -- The same loop works on any Env: CartPole through the base class
+//   CartPole: obs_size=4 action_space=Discrete(2)
+//   t=0  obs=[0.006 -0.030 0.009 -0.015]  
+//   t=1  a=1  r=+1.00  obs=[0.005 0.165 0.009 -0.305]  
+//   t=2  a=1  r=+1.00  obs=[0.009 0.360 0.003 -0.595]  
+//   t=3  a=1  r=+1.00  obs=[0.016 0.555 -0.009 -0.887]  
+//   ... episode ended at t=12
+//   random policy, 20 episodes       return mean    21.95  min    10.00  max    56.00   length mean   22.0
+//
+// -- Continuous action spaces sample vectors
+//   Pendulum action_space=Box(1) [-2.000000..2.000000]  sample=[-1.361]
+//
+// checks passed (vsim video omitted)
+// result_end
+
+> A fixed-action diagnostic trajectory
+
+This additional trace starts from seed1 and repeatedly applies the displayed constant action until the first done flag or200 steps. It shows state evolution and rewards; it is not a learned-policy result. The complete original policy comparison above remains the experiment.
+
+```{cpp, results="markdown", file="figures/env_interface_trajectory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace e=dm::rl::environments;e::Corridor env;auto observation=env.reset(1);std::vector<double>step{0},coordinate{observation[0]},returns{0};for(int t=1;t<=200;++t){auto result=env.step(e::Action(1));step.push_back(t);coordinate.push_back(result.obs[0]);returns.push_back(returns.back()+result.reward);if(result.done())break;}dm::nn::save_npz("build/env_interface_trajectory.npz",{{"step",dm::nn::from_vector(step)},{"first_coordinate",dm::nn::from_vector(coordinate)},{"return",dm::nn::from_vector(returns)}});dm::graphics::RPlot::create().lines(step,coordinate,"first observation coordinate",{37,99,235}).x_label("Environment step").y_label("Source observation coordinate0").title("Corridor fixed-action state trace").size(1000,550).save_svg("build/env_interface_trajectory.svg");std::print("{} transitions; cumulative reward {:.6f}.\n",step.size()-1,returns.back());}
+```
+// result_begin: markdown
+3 transitions; cumulative reward 1.000000.
+\image(figures/env_interface_trajectory.svg)
+// result_end
+
+> Interpretation
+
+The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.

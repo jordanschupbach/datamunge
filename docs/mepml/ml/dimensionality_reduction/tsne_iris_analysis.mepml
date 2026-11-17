@@ -1,0 +1,335 @@
+//? Title: TSNE: inspectable affinities, Iris and Swiss-roll checks
+//? Subtitle: Actual native state, retained fixtures and explicit limits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Visualizing observations with several features requires compressing their
+relationships into two coordinates. TSNE builds local affinities before
+iterative layout; we inspect those actual weights before using four unscaled
+Iris measurements and a known synthetic manifold.
+)
+
+\toc
+
+> The method
+
+t-SNE calibrates p(j|i) proportional to exp(−β_i d(i,j)²) so 2^H approximates
+the requested perplexity, then P_ij=(p(j|i)+p(i|j))/(2n). In the embedding Q_ij
+is proportional to1/(1+||y_i−y_j||²), and the non-exaggerated objective is
+KL(P||Q). Its gradient is4Σ_j(P_ij−Q_ij)(y_i−y_j)/(1+||y_i−y_j||²). Momentum
+updates use the configured learning rate; early exaggeration multiplies P during
+its initial phase. This dense implementation uses O(n²) affinity storage and
+O(iterations*n²*components) work. Perplexity calibration has a finite50-step
+cap; tied distances can make the target unattainable.
+
+> Simple worked example
+
+```{cpp, results="markdown", file="figures/tsne_iris_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/stats/embedding_diagnostics.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    dm::dstruct::DataFrame d;
+    d.add_column("x", std::vector<double>{0, 1, 3, 7});
+    dm::stats::TSNEOptions o;
+    o.perplexity = 2;
+    o.max_iterations = 0;
+    dm::stats::TSNE m(d, {"x"}, o);
+    const auto &weights = m.conditional_probabilities();
+    std::print("| source | target | actual directed weight |\n|---:|---:|---:|\n");
+    for (std::size_t i = 0; i < 4; ++i)
+        for (std::size_t j = 0; j < 4; ++j)
+            if (i != j)
+                std::print("|{}|{}|{}|\n", i, j, weights(i, j));
+    g::Diagram concept_diagram(48, 1100);
+    concept_diagram.node("n0", {0, 0}, "Four raw points0,1,3,7");
+    concept_diagram.node("n1", {5, 0}, "Actual directed affinity matrix");
+    concept_diagram.node("n2", {10, 0},
+                         std::format("{} retained rows", m.observations()));
+    concept_diagram.edge("n0", "n1").edge("n1", "n2");
+    concept_diagram.save_svg("build/tsne_iris_tiny.svg");
+}
+```
+// result_begin: markdown
+| source | target | actual directed weight |
+|---:|---:|---:|
+|0|1|0.6558907339345663|
+|0|2|0.3328968192462041|
+|0|3|0.011212446819229576|
+|1|0|0.6041232584467416|
+|1|2|0.39199040162363175|
+|1|3|0.0038863399296266395|
+|2|0|0.22268843702931446|
+|2|1|0.735503948334625|
+|2|3|0.04180761463606045|
+|3|0|0.0665571743174706|
+|3|1|0.17369076520469415|
+|3|2|0.7597520604778353|
+\image(figures/tsne_iris_tiny.svg)
+// result_end
+\caption(Actual native intermediate values from the small worked example.)
+\alttext(Actual native intermediate values from the small worked example.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/tsne_iris_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/stats/embedding_diagnostics.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    const auto iris = dm::datasets::iris();
+    const std::vector<std::string> features{"Sepal.Length", "Sepal.Width",
+                                            "Petal.Length", "Petal.Width"};
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < iris.nrows(); ++i)
+        labels.push_back(iris.string_at("Species", i));
+    dm::stats::TSNE m(iris, features);
+    std::print("{}\n", m.summary());
+    std::print("\n{}\n",
+               dm::stats::embedding_group_distances(m.embedding(), labels).to_md());
+    auto eda = g::RPlot::create();
+    eda.points(iris.numeric_column("Petal.Length").values(),
+               iris.numeric_column("Petal.Width").values(),
+               "all150 observations", {148, 163, 184});
+    eda.title("Raw petal measurements, cm").x_label("Petal.Length").y_label(
+        "Petal.Width");
+    auto embed = m.plot_embedding(labels);
+    embed.title("TSNE; species withheld during fit");
+    g::RLayout::create(1, 2).add(eda).add(embed).size(1100, 490).fit_panels().save_svg("build/tsne_iris_original.svg");
+    std::print("\n| row | actual calibrated value |\n|---:|---:|\n");
+    for (std::size_t i : {0, 1, 50, 51, 100, 101, 149})
+        std::print("|{}|{}|\n", i, m.achieved_perplexity()[i]);
+}
+```
+// result_begin: markdown
+t-Distributed Stochastic Neighbor Embedding
+Features: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width
+Distance metric: euclidean
+Number of obs: 150, dimensions: 2
+Target perplexity: 30, iterations: 1000
+Mean achieved perplexity: 30.0000
+
+
+| within | between | within_pairs | between_pairs |
+| ---: | ---: | ---: | ---: |
+| 3.282 | 46.480 | 3675 | 7500 |
+
+
+| row | actual calibrated value |
+|---:|---:|
+|0|30.000156303127348|
+|1|29.999850321496115|
+|50|30.00004458358988|
+|51|30.00002529802416|
+|100|30.00009283487114|
+|101|30.000033283308067|
+|149|29.999806873043212|
+\image(figures/tsne_iris_original.svg)
+// result_end
+\caption(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+\alttext(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+
+> Checking the theory and controls
+
+```{cpp, results="markdown", file="figures/tsne_iris_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/stats/embedding_diagnostics.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    const auto iris = dm::datasets::iris();
+    const std::vector<std::string> features{"Sepal.Length", "Sepal.Width",
+                                            "Petal.Length", "Petal.Width"};
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < iris.nrows(); ++i)
+        labels.push_back(iris.string_at("Species", i));
+    std::vector<double> x, y;
+    std::print("| setting | within | between | actual calibration diagnostic |\n|---:|---:|---:|---:|\n");
+    for (double setting : {5., 30., 50.}) {
+        dm::stats::TSNEOptions o;
+        o.perplexity = setting;
+        dm::stats::TSNE m(iris, features, o);
+        auto metrics =
+            dm::stats::embedding_group_distances(m.embedding(), labels);
+        double mean =
+            std::accumulate(m.achieved_perplexity().begin(),
+                            m.achieved_perplexity().end(), 0.) /
+            m.observations();
+        std::print("|{}|{}|{}|{}|\n", setting, metrics.double_at("within", 0),
+                   metrics.double_at("between", 0), mean);
+        x.push_back(setting);
+        y.push_back(metrics.double_at("within", 0) / metrics.double_at(
+                    "between", 0));
+    }
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Actual Iris sensitivity; no universal method ranking").x_label(
+        "perplexity").y_label("within / between mean distance");
+    p.save_svg("build/tsne_iris_controls.svg");
+}
+```
+// result_begin: markdown
+| setting | within | between | actual calibration diagnostic |
+|---:|---:|---:|---:|
+|5|25.223169695442426|71.7958700266345|5.000000840420734|
+|30|3.2819821278517822|46.48026433192682|30.000004644105037|
+|50|18.95447615641164|48.27574747221509|50.00000350942394|
+\image(figures/tsne_iris_controls.svg)
+// result_end
+\caption(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+\alttext(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+
+> Sensitivity and selected work
+
+```{cpp, results="markdown", file="figures/tsne_iris_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/stats/embedding_diagnostics.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    auto roll = dm::stats::embedding_swiss_roll();
+    std::vector<std::string> features{"x", "y", "z"};
+    dm::stats::TSNEOptions o;
+    dm::stats::TSNE m(roll, features, o);
+    dm::stats::PCA pca(roll, features, {true, false});
+    dm::stats::MDS mds(roll, features);
+    dm::stats::Isomap iso(roll, features);
+    std::print("| method | abs corr(axis0,t) | abs corr(axis1,t) | abs corr(axis0,height) | abs " "corr(axis1,height) |\n|---|---:|---:|---:|---:|---:|\n");
+    auto t =
+        roll.numeric_column("t").values(), h =
+        roll.numeric_column("height").values();
+    for (auto pair : std::vector<std::pair<std::string, const dm::linalg::DenseMatrix<double> *>>{{"TSNE", &m.embedding()}, {"PCA unscaled", &pca.scores()}, {"MDS", &mds.embedding()}, {"Isomap k10", &iso.embedding()}}) {
+        const auto &z = *pair.second;
+        std::print("|{}|{}|{}|{}|{}|\n", pair.first,
+                   dm::stats::embedding_abs_correlation(z.col(0), t),
+                   dm::stats::embedding_abs_correlation(z.col(1), t),
+                   dm::stats::embedding_abs_correlation(z.col(0), h),
+                   dm::stats::embedding_abs_correlation(z.col(1), h));
+    }
+    std::vector<std::string> bins;
+    for (auto q : t)
+        bins.push_back("t band " + std::to_string(int((q -
+                                                       1.5 * std::numbers::pi) /
+                                                      std::numbers::pi)));
+    auto fitted = m.plot_embedding(bins);
+    fitted.title("Swiss roll: TSNE seed42");
+    auto baseline = pca.plot_scores(bins);
+    baseline.title("Same data: unscaled PCA");
+    g::RLayout::create(1, 2).add(fitted).add(baseline).size(1100, 490).fit_panels().save_svg("build/tsne_iris_work.svg");
+}
+```
+// result_begin: markdown
+| method | abs corr(axis0,t) | abs corr(axis1,t) | abs corr(axis0,height) | abs corr(axis1,height) |
+|---|---:|---:|---:|---:|---:|
+|TSNE|0.410546203065132|0.2218002967021908|0.06727775192371224|0.14541381269944686|
+|PCA unscaled|0.24261224339616808|0.02535787356309644|0.08642574462497842|0.002206843045475988|
+|MDS|0.24261224339616788|0.0253578735630985|0.08642574462495146|0.00220684304547638|
+|Isomap k10|0.39050122094356476|0.4441381770222513|0.031787855280948484|0.0696622359216511|
+\image(figures/tsne_iris_work.svg)
+// result_end
+\caption(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+\alttext(Actual canonical output; analytic references and external labels are identified in the text and computed table.)
+
+> Interpretation and limits
+
+The models fit unsupervised host numerical layouts; labels and manifold
+coordinates are held outside fitting. Species distances and axis correlations
+are descriptive checks, not classification accuracy. Translation, rotation and
+scale complicate direct coordinate comparisons; correlation is axis-dependent
+and is not a rotation-invariant manifold score. Dense pair geometry is limited
+to2000 rows and64 embedding axes; nonfinite features/options and distances
+throw. Fitting remains finite-iteration optimization without a convergence
+guarantee. Original raw Iris features, default settings, perplexity/neighbor
+sweeps,400-point seed42 Swiss roll and PCA/MDS/Isomap controls are retained.
+t-SNE random initialization uses standard deviation.01. UMAP min_dist has no
+computational effect in this simplified kernel. Public affinity matrices are
+borrowed read-only state from the actual fit.
+
+Every figure is saved locally by its complete editable program. No separate
+reconstruction supplies algorithm state. Counters describe the selected events,
+not elapsed time or peak memory.
+
+> References
+
+- [van der Maaten and Hinton, Visualizing Data using t-SNE|https://www.jmlr.org/papers/v9/vandermaaten08a.html]
+
+Verified in the shared ten-document batch: 85 scoped native cases;21 directly
+instrumented ASan/UBSan cases;36 executable public examples;63/63 definitions
+across13 full scopes plus8 changed mixed-scope contracts;10 hovers;14393
+independent records/67914 checks;frozen valid-input comparisons across all ten
+families including bit-identical default Iris fits;11 checkout/installed
+standalone headers and linked ten-family consumer;40 executed programs and40
+inspected figures with both exports. Receipts:
+`build/mepml-conversion/batch-404-413/`.

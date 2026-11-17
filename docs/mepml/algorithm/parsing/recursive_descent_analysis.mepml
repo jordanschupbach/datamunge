@@ -1,0 +1,369 @@
+//? Title: Recursive descent: actual grammar calls, evaluated nodes and source spans
+//? Subtitle: Actual canonical histories, retained original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Arithmetic text must be grouped by precedence before its operators can be
+evaluated correctly. Recursive descent encodes that grouping directly in expr,
+term and factor functions. The native producer now records its actual completed
+syntax nodes and byte spans, replacing a hand-drawn tree unrelated to parser
+state. The original six expressions remain, together with complete-token,
+malformed-input and finite-arithmetic controls.
+)
+
+\toc
+
+> Mechanism and mathematical scope
+
+The grammar separates additive and multiplicative precedence:
+$$ E\to T((+\mid-)T)^*,\quad T\to F((*\mid/)F)^*,\quad F\to\mathrm{number}\mid(+\mid-)F\mid(E). $$
+\alttext(Expression folds additive terms, term folds multiplicative factors, and factor handles signs, groups and decimal numbers.)
+Each nonterminal consumes exactly its grammatical prefix and returns its
+evaluated value. Binary loops fold left, so10-2-3 means(10-2)-3 and 8/4/2
+means(8/4)/2. Prefix recursion binds signs at factor level; parentheses
+recursively invoke the full expression rule. Induction over the produced syntax
+tree proves that every stored node value matches its child operation.
+
+Actual nodes append in completion postorder, with real child ids and original
+source byte spans. Complete-input checking rejects a second decimal point or
+trailing token rather than silently accepting a numeric prefix. The grammar
+excludes exponents and power syntax. Runtime is linear in bytes plus actual
+grammar entries, with bounded recursion and optional linear retained tree
+storage. This parser is an evaluator for this explicit grammar, not a general
+left-recursive grammar parser.
+
+> A tiny actual producing history
+
+The table and native concept diagram read the same producing execution. Every
+block below is a complete editable C++ program.
+
+```{cpp, results="markdown", file="figures/recursive_descent_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/recursive_descent_parser.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    auto t = a::recursive_descent_trace("1+2*3");
+    const auto &root = t.nodes[t.root];
+    std::print("\n| actual postorder id | source bytes | actual operator code | actual left child | actual " "right child | actual value |\n| ---: | --- | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < t.nodes.size(); ++i) {
+        const auto &n = t.nodes[i];
+        std::print("| {} | [{},{}) | {} | {} | {} | {} |\n", i, n.begin, n.end,
+                   int(n.operation), n.left, n.right, n.value);
+    }
+
+    g::Diagram d;
+    d.node("n0", {0, 0},
+           std::format("Actual multiplication child value\n{}",
+                       t.nodes[root.right].value));
+    d.node("n1", {10, 0},
+           std::format("Actual completed root operator\n{}", root.operation));
+    d.node("n2", {20, 0},
+           std::format("Actual root value / node count\n{} / {}", t.value,
+                       t.nodes.size()));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/recursive_descent_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual postorder id | source bytes | actual operator code | actual left child | actual right child | actual value |
+| ---: | --- | ---: | ---: | ---: | ---: |
+| 0 | [0,1) | 0 | 18446744073709551615 | 18446744073709551615 | 1 |
+| 1 | [2,3) | 0 | 18446744073709551615 | 18446744073709551615 | 2 |
+| 2 | [4,5) | 0 | 18446744073709551615 | 18446744073709551615 | 3 |
+| 3 | [2,5) | 42 | 1 | 2 | 6 |
+| 4 | [0,5) | 43 | 0 | 3 | 7 |
+\image(figures/recursive_descent_tiny.svg)
+// result_end
+\caption(Actual small native producing values and decisions; the diagram is generated by the complete program above.)
+\alttext(Actual small native producing values and decisions; the diagram is generated by the complete program above.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/recursive_descent_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/recursive_descent_parser.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    const std::vector<std::string> expressions{"1 + 2 * 3", "(1 + 2) * 3",
+                                               "2 * 3 + 4 * 5", "10 - 2 - 3",
+                                               "-3 + 5", "2 * (3 + (4 - 1))"};
+    std::print("\n| original expression | actual result | actual grammar calls | actual completed nodes " "|\n| --- | ---: | ---: | ---: |\n");
+    for (const auto &text : expressions) {
+        auto t = a::recursive_descent_trace(text);
+        std::print("| {} | {} | {} | {} |\n", text, t.value, t.calls,
+                   t.nodes.size());
+    }
+    auto t = a::recursive_descent_trace(expressions[0]);
+    auto diagram = a::recursive_descent_diagram(t);
+    diagram.save_svg("build/recursive_descent_original.svg");
+}
+```
+// result_begin: markdown
+| original expression | actual result | actual grammar calls | actual completed nodes |
+| --- | ---: | ---: | ---: |
+| 1 + 2 * 3 | 7 | 9 | 5 |
+| (1 + 2) * 3 | 9 | 12 | 6 |
+| 2 * 3 + 4 * 5 | 26 | 11 | 7 |
+| 10 - 2 - 3 | 5 | 10 | 5 |
+| -3 + 5 | 2 | 8 | 4 |
+| 2 * (3 + (4 - 1)) | 12 | 18 | 9 |
+\image(figures/recursive_descent_original.svg)
+// result_end
+\caption(Retained original inputs and substantive experiment, with actual native outputs and explicitly labelled mathematical references.)
+\alttext(Retained original inputs and substantive experiment, with actual native outputs and explicitly labelled mathematical references.)
+
+> Explicit controls
+
+```{cpp, results="markdown", file="figures/recursive_descent_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/recursive_descent_parser.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    const std::vector<std::string> valid{"--3", "-.5*2", "8/4/2", "10-2-3"};
+    std::vector<double> values;
+    std::print("\n| valid control | actual scalar |\n| --- | ---: |\n");
+    for (const auto &text : valid) {
+        const auto value = a::recursive_descent_eval(text);
+        values.push_back(value);
+        std::print("| {} | {} |\n", text, value);
+    }
+    std::size_t rejected = 0;
+    for (const auto &text : std::vector<std::string>{"1 + ", "(1 + 2", "1 2",
+                                                     "1.2.3", "1/0",
+                                                     std::string("1\0+2", 4)}) {
+        try {
+            a::recursive_descent_eval(text);
+        } catch (const std::runtime_error &) {
+            ++rejected;
+        }
+    }
+    std::print("Actual complete-source malformed/nonfinite controls rejected: {} of6.\n",
+               rejected);
+    auto p = g::RPlot::barplot(values, valid, "actual finite grammar value");
+    p.title("Prefix signs, decimals and left-associative folds").y_label(
+        "actual evaluated scalar");
+    p.save_svg("build/recursive_descent_controls.svg");
+    if (rejected != 6)
+        return 1;
+}
+```
+// result_begin: markdown
+| valid control | actual scalar |
+| --- | ---: |
+| --3 | 3 |
+| -.5*2 | -1 |
+| 8/4/2 | 1 |
+| 10-2-3 | 5 |
+Actual complete-source malformed/nonfinite controls rejected: 6 of6.
+\image(figures/recursive_descent_controls.svg)
+// result_end
+\caption(Actual outcomes on controlled native inputs; errors, truncation and unresolved outcomes retain their stated meanings.)
+\alttext(Actual outcomes on controlled native inputs; errors, truncation and unresolved outcomes retain their stated meanings.)
+
+> Actual selected work and sensitivity
+
+```{cpp, results="markdown", file="figures/recursive_descent_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
+#include <iomanip>
+#include <datamunge/algorithms/qr_algorithm.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/model_plot.hpp>
+#include <bit>
+#include <datamunge/algorithms/recursive_descent_parser.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+
+    std::vector<double> x, y, z;
+    std::print("\n| explicit group pairs | actual grammar calls | actual maximum depth | actual retained " "syntax nodes |\n| ---: | ---: | ---: | ---: |\n");
+    for (std::size_t n : {1, 4, 16, 64, 128}) {
+        const auto text = std::string(n, '(') + "1" + std::string(n, ')');
+        auto t = a::recursive_descent_trace(text);
+        x.push_back(n);
+        y.push_back(t.calls);
+        z.push_back(t.max_depth);
+        std::print("| {} | {} | {} | {} |\n", n, t.calls, t.max_depth,
+                   t.nodes.size());
+    }
+    auto p = g::RPlot::create();
+    p.lines(x, y, "actual grammar entries", {37, 99, 235}).lines(
+        x, z, "actual live grammar depth", {234, 88, 12}).points(x, y,
+                                                                 {37, 99, 235},
+                                                                 5).title(
+        "Native nested-group parsing: actual calls and stack depth").x_label(
+        "input parenthesis pairs").y_label("actual grammar calls / live depth");
+    p.save_svg("build/recursive_descent_work.svg");
+}
+```
+// result_begin: markdown
+| explicit group pairs | actual grammar calls | actual maximum depth | actual retained syntax nodes |
+| ---: | ---: | ---: | ---: |
+| 1 | 7 | 7 | 2 |
+| 4 | 16 | 16 | 5 |
+| 16 | 52 | 52 | 17 |
+| 64 | 196 | 196 | 65 |
+| 128 | 388 | 388 | 129 |
+\image(figures/recursive_descent_work.svg)
+// result_end
+\caption(Actual selected event counts or represented numerical outcomes; raw values are retained in the computed table.)
+\alttext(Actual selected event counts or represented numerical outcomes; raw values are retained in the computed table.)
+
+> API and interpretation
+
+Number conversion uses locale-independent from_chars over exactly the scanned
+decimal token. Nonfinite conversion/arithmetic and division by zero reject; no
+NaN/Infinity is reported as an evaluated scalar. Embedded NUL never masquerades
+as end of the borrowed source. The produced tree owns its source and node
+values. Native measured tree layout validates source spans and tree shape,
+rather than reconstructing a guessed parse from text. A node child equal to
+SIZE_MAX means absent; that explicit sentinel is printed as an integer in the
+tiny table. The default 512 live-call bound protects ordinary nesting; callers
+may configure it explicitly.
+
+Reusable producers, fixtures and histories live in the canonical C++ library.
+Captured records own their values and do not come from a separate report replay.
+Selected counters and record/scalar policies are specified at their API
+boundaries; they are not peak-byte or wall-time budgets. Synthetic structural
+inputs are controlled fixtures for these mechanisms.
+
+> References
+
+- [Aho, Lam, Sethi and Ullman, Compilers: Principles, Techniques, and Tools, second edition|https://suif.stanford.edu/dragonbook/]
+
+Verification: 214 scoped native cases;15 directly instrumented ASan/UBSan
+cases;127 executable public examples;567/567 full-file definitions;10
+hovers;1340 independent records/58514 checks;frozen compatibility across six
+changed legacy families;independent NumPy tensor-training comparisons with
+recorded tolerances;12 checkout/installed standalone headers and linked
+consumer;41 executed programs and41 inspected figures with both exports.
+Receipts: `build/mepml-conversion/batch-314-323/`.

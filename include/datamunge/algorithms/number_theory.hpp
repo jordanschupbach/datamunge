@@ -1,4 +1,6 @@
 #pragma once
+#include <datamunge/algorithms/tonelli_shanks.hpp>
+#include <datamunge/algorithms/karatsuba.hpp>
 
 /// @file number_theory.hpp
 /// @brief Binary GCD, Tonelli-Shanks square roots, Karatsuba multiplication, and Shanks's
@@ -11,37 +13,9 @@
 
 namespace datamunge::algorithms {
 
-/// @brief The result of a modular square root: whether a root @ref exists, and if so one @ref root
-///        @c r (the smaller of the two, @c r <= p-r) with @c r*r ≡ n (mod p).
-struct ModSqrt {
-    bool          exists{false}; ///< whether @c n is a quadratic residue modulo @c p.
-    std::uint64_t root{0};       ///< a square root of @c n modulo @c p (the smaller one).
-};
 
-/// @brief The *Tonelli-Shanks algorithm*: computes a square root of @p n modulo an odd prime @p p,
-///        i.e. an @c r with @c r*r ≡ n (mod p), or reports that none exists. It first tests
-///        solvability by Euler's criterion (@c n^{(p-1)/2} ≡ 1), then, writing @c p-1 = Q·2^S with
-///        @c Q odd, iteratively refines a candidate root using a fixed quadratic non-residue -- the
-///        general method behind computing square roots in finite fields (used in elliptic-curve
-///        point decompression and quadratic sieves). For @c p ≡ 3 (mod 4) it uses the direct
-///        @c n^{(p+1)/4} shortcut. Expected @c O(log^2 p) time.
-///
-/// @param n the value whose square root is sought (taken modulo @p p).
-/// @param p an odd prime modulus.
-/// @return a @ref ModSqrt: @c exists is false when @p n is a non-residue; otherwise @c root*root ≡ n.
-ModSqrt tonelli_shanks(std::uint64_t n, std::uint64_t p);
 
-/// @brief *Karatsuba multiplication* (Karatsuba, 1960): multiplies two arbitrarily large
-///        non-negative integers given as decimal strings, in @c O(n^{log_2 3}) ≈ @c O(n^{1.585})
-///        time rather than the schoolbook @c O(n^2). It splits each number into high and low halves
-///        and computes the product from only *three* half-size products (instead of four) via the
-///        identity @c (x1·B+x0)(y1·B+y0) = z2·B^2 + z1·B + z0 with @c z1 = (x1+x0)(y1+y0) - z2 - z0.
-///        The recursion falls back to schoolbook multiplication for small operands.
-///
-/// @param a the first factor as a non-negative decimal string (no sign; leading zeros allowed).
-/// @param b the second factor as a non-negative decimal string.
-/// @return the product as a decimal string with no leading zeros (\"0\" for a zero product).
-std::string karatsuba_multiply(const std::string& a, const std::string& b);
+
 
 /// @brief The result of a discrete-logarithm search: whether a solution @ref exists and, if so, an
 ///        @ref exponent @c x with @c base^x ≡ target (mod p).

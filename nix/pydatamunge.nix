@@ -17,10 +17,10 @@ buildPythonPackage rec {
   pyproject = true;
   src = import ./source.nix {
     inherit lib;
-    # nn_components.i and the example component headers it binds (see setup.py).
+    # nn_components.i and its binding compatibility headers (see setup.py).
     keep = [
       "examples/bindings"
-      "examples/nn/common"
+      "prebindings/nn/include/common"
     ];
   };
   build-system = [ setuptools ];

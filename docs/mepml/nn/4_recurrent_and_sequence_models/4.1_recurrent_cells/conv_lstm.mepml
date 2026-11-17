@@ -1,0 +1,1479 @@
+//? Title: ConvLSTM: Explicit Masking, State Paths and Source Controls
+//? Subtitle: Native recurrent tensor components and an editable source training loop
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The original conv lstm experiment is retained with source fixtures, parameter initialization, full state histories and gradient controls. Reusable model math lives in datamunge; the complete C++ program below owns training, optimizer writes, checkpoints and diagnostic queries.
+)
+\toc
+
+> Source experiment and explicit tensor workflow
+
+The source uses a small synthetic moving-dot next-frame task. These are mechanism experiments with the original short budgets, rather than real-data benchmark claims. Optional TensorFlow replay is skipped when its recordings are absent. The program preserves every recorded state, input/initial-state derivative, padding/causality control and source checkpoint.
+
+> Read the state, mask and update separately
+
+The original48/16/16 moving-dot pools contain variable-length 2..4-step motion on a 4x4 torus. A two-channel ConvLSTM has 3x3 SAME input/recurrent kernels, followed by a 1x1 pixel head. The target is the next frame and never enters inference. Three epochs of eight-row Adam(.01) batches produce18 updates; the objective weights positive pixels by 15.
+
+The report introduces 227 learned values in the actual source graph. Valid lengths are structural inputs, while hidden/cell tensors and weights retain live derivative paths. Inference receives inputs, lengths and explicit initial states; targets belong to the objective only.
+
+```{cpp, results="markdown", file="figures/conv_lstm_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram          d(28, 1150);
+  dm::graphics::DiagramNodeStyle style;
+  style.width     = 12;
+  style.height    = 5;
+  style.font_size = 29;
+  d.node("input", {-21, 0}, "Valid sequence + length\nExplicit initial states", style)
+      .node("cell", {-7, 0}, "Spatial3x3 gates\nSeparate hidden / memory", style)
+      .node("head", {7, 0}, "Final state and head\nTarget-free inference", style)
+      .node("fit", {21, 0}, "Visible Adam + checks\n18 optimizer writes", style)
+      .edge("input", "cell")
+      .edge("cell", "head")
+      .edge("head", "fit")
+      .save_svg("build/conv_lstm_method.svg");
+}
+```
+// result_begin: markdown
+\image(figures/conv_lstm_method.svg)
+// result_end
+
+> Retain two distinct spatial state maps
+
+With zero input/recurrent kernels, unit forget bias and one valid frame, each memory pixel changes from.4 to.4*sigmoid(1), and hidden readout from.2 to.5*tanh(c_next). Both maps then hold through three padded frames. The source1x1 head is independent of this worked state calculation.
+
+```{cpp, results="markdown", file="figures/conv_lstm_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <iostream>
+namespace n = dm::nn;
+namespace m = n::models;
+using T     = n::Tensor;
+void Zero(n::ParameterStore& p, const std::string& name) {
+  auto value = p.at(name);
+  p.set(name, n::zeros(value.shape(), value.dtype()));
+}
+int main() {
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(37003, n::DType::Float64);
+  auto              x = n::zeros({1, 4, 4, 4, 1}, n::DType::Float64),
+       h              = n::full({1, 4, 4, 2}, .2, n::DType::Float64),
+       c              = n::full({1, 4, 4, 2}, .4, n::DType::Float64);
+  m::MaskedConvLstmSequence(p, x, n::from_vector(std::vector<std::int32_t>{1}), {h, c});
+  Zero(p, "cell/Wx");
+  Zero(p, "cell/Wh");
+  auto y    = m::MaskedConvLstmSequence(p, x, n::from_vector(std::vector<std::int32_t>{1}), {h, c});
+  T    left = n::arange(0, 5, 1, n::DType::Float64),
+    right   = n::select(n::reshape(y.states, {5, 32}), 1, 0),
+    extra   = n::select(n::reshape(y.cell_states, {5, 32}), 1, 0);
+  double expected = .4 / (1. + std::exp(-1.));
+  if (std::abs(right.to_vector<double>()[1] - .5 * std::tanh(expected)) > 1e-14 ||
+      std::abs(extra.to_vector<double>()[1] - expected) > 1e-14)
+    throw std::runtime_error("Hand spatial memory");
+  auto av = left.to_vector<double>(), bv = right.to_vector<double>(),
+       cv = extra.to_vector<double>();
+  std::cout.precision(12);
+  std::cout << "| State time | Native hidden pixel | Native cell pixel |\n|---:|---:|---:|\n";
+  for (std::size_t i = 0; i < av.size(); ++i)
+    std::cout << "|" << av[i] << "|" << bv[i] << "|" << cv[i] << "|\n";
+  n::save_npz("build/conv_lstm_worked.npz", {{"a", left}, {"b", right}, {"c", extra}});
+  dm::graphics::RPlot::create()
+      .lines(av, bv, "Native hidden pixel", {37, 99, 235})
+      .points(av, bv, "All native checks", {37, 99, 235}, 5)
+      .points(av, cv, "Native cell pixel", {234, 88, 12}, 3)
+      .x_label("State time")
+      .y_label("Endpoint value")
+      .title("Retain two distinct spatial state maps")
+      .size(950, 520)
+      .save_svg("build/conv_lstm_worked.svg");
+}
+```
+// result_begin: markdown
+| State time | Native hidden pixel | Native cell pixel |
+|---:|---:|---:|
+|0|0.2|0.4|
+|1|0.142181905222|0.292423431452|
+|2|0.142181905222|0.292423431452|
+|3|0.142181905222|0.292423431452|
+|4|0.142181905222|0.292423431452|
+\image(figures/conv_lstm_worked.svg)
+// result_end
+
+> Trace the executed source graph
+
+The native trace uses the exact compact source configuration, explicit zero initial states and full valid length. It counts 227 unique parameter values; classification outputs are logits, and the spatial model emits a pixel-logit map. Structural lengths and every initial-state branch are included in the recurrent stage.
+
+```{cpp, results="markdown", file="figures/conv_lstm_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  std::filesystem::create_directories("build");
+  n::set_num_threads(2);
+  n::ParameterStore      p(37003);
+  auto                   length = n::full({1}, 4, n::DType::Int32);
+  std::vector<n::Tensor> initial;
+  for (int k = 0; k < 2; ++k)
+    initial.push_back(n::zeros({1, 4, 4, 2}));
+  n::Module model(
+      [&](const n::Tensor& input) {
+        auto out = m::MaskedConvLstmSequence(p, input, length, {initial[0], initial[1]});
+        n::model_stage(
+            "Masked source recurrence",
+            std::vector<n::Tensor>{input, length, initial[0], initial[1]},
+            out.final_state);
+        return n::model_stage("Source prediction head", out.final_state, out.logits);
+      },
+      "conv_lstm:227 source parameter values");
+  n::ModelPlotOptions options;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.sizing.minimum_extent = 2;
+  options.sizing.max_planes     = 2;
+  auto graph                    = model.plot(n::zeros({1, 4, 4, 4, 1}), options);
+  if (p.count() != 227 || graph.parameter_count() != 227)
+    throw std::runtime_error("Executed source parameter census");
+  graph.save_svg("build/conv_lstm_network.svg");
+}
+```
+// result_begin: markdown
+\image(figures/conv_lstm_network.svg)
+// result_end
+
+> Complete editable experiment
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn conv_lstm
+// Genuine spatial ConvLSTM on tiny moving-dot next-frame prediction; three
+// cheap epochs.
+//
+// Port of tflow's conv_lstm. No dataset: 48 fit / 16 validation / 16 test
+// moving-dot sequences on a 4x4 torus are generated with tflow's std::mt19937
+// recipe (bit-identical data.npz). 3x3 SAME input-to-state and state-to-state
+// convolutions, 4x4x2 hidden and cell maps, a 1x1 pixel head (227 parameters
+// in 5 tensors); positive-weighted (x15) pixel BCE, Adam .01, batch 8, three
+// epochs (18 updates).
+// Checks (all of tflow's): parameter counts, bit-exact .npz restore,
+// label-free inference == evaluation and repeatable, single-row parity, padded
+// input partials exactly zero, the first spatial state depends only on the
+// time-0 3x3 neighbourhood, hidden and cell maps held on padding, padding
+// garbage cannot change any output or partial, last-frame ablation cannot
+// change earlier maps, zero-length fixture, weights immutable.
+// Weights initialise from nn's generator (statistical parity); init=PATH
+// (tflow's output/models/conv_lstm/initial_arrays.npz) replays tflow's run and
+// compares every record with tflow's run directory (tf=PATH).
+// Options: epochs=3 out=PATH init=PATH tf=PATH. Output: output/nn/models/conv_lstm/.
+// Report-local workflow and diagnostics: conv_lstm.hpp
+// Spatial ConvLSTM: 3x3 input/recurrent kernels, two-channel hidden/cell maps
+// and a 1x1 pixel head. Port of tflow's common/nn/conv_lstm.h (path) and
+// common/ml/conv_lstm.h (model: 227 parameters, Adam .01, Params seed 37003,
+// positive-weighted (x15) sigmoid cross-entropy on the next frame).
+
+#include <cmath>
+#include <memory>
+
+// Report-local workflow and diagnostics: recurrent_model.hpp
+// Generic eager harness for tflow's small explicit-unroll recurrent models
+// (the ml::<Name>Model classes of tflow's common/ml/{bidirectional_rnn,
+// clockwork_rnn,conv_lstm,gated_sequence,gradient_clipping,indrnn,mgu}.h).
+//
+// Every tflow model there has the same shape: placeholders for a sequence
+// batch, its valid lengths and zero initial states; a cell unrolled with an
+// explicit length mask; a head; a loss and a "chosen logit" whose gradients
+// with respect to the inputs and initial states are fetched next to the
+// forward values; Adam (or SGD with a gradient policy) over every parameter;
+// a SaveV2 checkpoint. Here the graph is the `Forward` function, the session
+// fetches are eager calls, gradients come from nn::grad and checkpoints are
+// .npz files of the parameter store.
+//
+// A Forward returns named tensors and must contain "logits". Evaluate()
+// returns the forward fields, "probability", "loss", "input_gradient", one
+// gradient per initial state (named by `initial_gradient_names`) and any
+// probe gradients, exactly like tflow's Evaluate fetches.
+
+#include <cstring>
+#include <datamunge/nn/nn.hpp>
+#include <filesystem>
+#include <functional>
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Report-local workflow and diagnostics: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Report-local workflow and diagnostics: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template<typename T>
+T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+} // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition)
+    throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full())
+    Require(condition, message);
+  else
+    std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(
+        message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template<typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+} // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+namespace rnn_cells {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Outputs = std::map<std::string, Tensor>;
+
+/// (store, input, lengths, initial states) -> named outputs incl. "logits".
+using Forward = std::function<
+    Outputs(nn::ParameterStore&, const Tensor&, const Tensor&, const std::vector<Tensor>&)>;
+/// (outputs, labels) -> {loss, chosen}: the training loss and the scalar whose
+/// input/initial-state gradients Evaluate reports.
+using LossFn = std::function<std::pair<Tensor, Tensor>(const Outputs&, const Tensor&)>;
+
+/// A gradient probe: d target(outputs) / d (input when wrt == 0, else initial state wrt - 1).
+struct Probe {
+  std::string                           name;
+  std::function<Tensor(const Outputs&)> target;
+  int                                   wrt{0};
+};
+
+/// One batch fed to a model: inputs, int32 lengths and labels.
+struct Feed {
+  Tensor inputs, lengths, labels;
+};
+
+/// Softmax cross-entropy over two classes with int32 labels, and the summed
+/// target logit (tflow's `loss` and `chosen`).
+inline std::pair<Tensor, Tensor> SoftmaxLoss(const Outputs& out, const Tensor& labels) {
+  const Tensor& logits  = out.at("logits");
+  const Tensor  one_hot = nn::one_hot(labels, logits.shape().back());
+  const Tensor  loss =
+      nn::neg(nn::mean(nn::sum(nn::mul(one_hot, nn::log_softmax(logits, -1)), {1}), {0}));
+  return {loss, nn::sum(nn::mul(logits, one_hot))};
+}
+
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape())
+    return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0;
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32:
+      return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64:
+      return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32:
+      return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default:
+      return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const nn::NamedTensors& a, const nn::NamedTensors& b) {
+  if (a.size() != b.size())
+    return false;
+  for (std::size_t i = 0; i < a.size(); ++i)
+    if (a[i].first != b[i].first || !SameBits(a[i].second, b[i].second))
+      return false;
+  return true;
+}
+
+inline nn::NamedTensors Named(const Outputs& out) {
+  return {out.begin(), out.end()};
+}
+
+inline Tensor Find(const nn::NamedTensors& arrays, const std::string& name) {
+  for (const auto& [key, value] : arrays)
+    if (key == name)
+      return value;
+  throw std::runtime_error("missing array " + name);
+}
+
+/// A gradient from nn::grad (detached), or zeros shaped like `like` when the
+/// target did not depend on it (allow_unused).
+inline Tensor DefinedGradient(const Tensor& g, const Tensor& like) {
+  return g.defined() ? g.detach() : nn::zeros_like(like.detach());
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  if (x.size() != y.size())
+    return INFINITY;
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i)
+    m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+class RecurrentModel {
+ public:
+  nn::ParameterStore                   store;
+  Forward                              forward;
+  LossFn                               loss_fn     = SoftmaxLoss;
+  std::function<Tensor(const Tensor&)> probability = [](const Tensor& logits) {
+    return nn::softmax(logits, -1);
+  };
+  /// Per-example shapes of the input and of each zero initial state.
+  nn::Shape              input_shape;
+  std::vector<nn::Shape> initial_shapes;
+  /// Names of the initial-state gradients in Evaluate (empty: not reported).
+  std::vector<std::string> initial_gradient_names;
+  /// Forward fields returned by Predict (Evaluate returns these plus losses and gradients).
+  std::vector<std::string> fields;
+  std::vector<Probe>       evaluate_probes;
+  /// Optional transform of the raw parameter gradients before the optimizer (gradient policies).
+  std::function<std::vector<Tensor>(const std::vector<Tensor>&)> gradient_policy;
+  /// Optional projection after each update (IndRNN coefficient bound).
+  std::function<void(nn::ParameterStore&)> after_update;
+  /// Extra named inputs a Forward may read through a captured model pointer
+  /// (tflow's additional placeholders: dropout masks, timestamps, leak). Set by
+  /// the caller around Evaluate/Gradient/Update; empty by default.
+  std::map<std::string, Tensor> side_inputs;
+  /// Optional extra Evaluate fields (e.g. gradients w.r.t. a side input), added to the result.
+  std::function<void(Outputs& result, const Feed&)> evaluate_extra;
+
+  RecurrentModel(
+      std::uint64_t            seed,
+      Forward                  f,
+      nn::Shape                input,
+      std::vector<nn::Shape>   initials,
+      std::vector<std::string> initial_names,
+      std::vector<std::string> fetch)
+      : store(seed),
+        forward(std::move(f)),
+        input_shape(std::move(input)),
+        initial_shapes(std::move(initials)),
+        initial_gradient_names(std::move(initial_names)),
+        fields(std::move(fetch)) {}
+
+  /// Warm the source parameter leaves with one zero-length shape probe.
+  /// Factory arguments retain source compatibility; main owns the optimizer explicitly.
+  void Build(
+      bool              training,
+      double            learning_rate = .01,
+      nn::OptimizerKind kind          = nn::OptimizerKind::Adam) {
+    nn::NoGradGuard guard;
+    nn::Shape       shape{1};
+    shape.insert(shape.end(), input_shape.begin(), input_shape.end());
+    forward(store, nn::zeros(shape), nn::zeros({1}, nn::DType::Int32), Initials(1));
+  }
+
+  std::vector<Tensor> Initials(std::int64_t n) const {
+    std::vector<Tensor> out;
+    for (const auto& s : initial_shapes) {
+      nn::Shape shape{n};
+      shape.insert(shape.end(), s.begin(), s.end());
+      out.push_back(nn::zeros(shape));
+    }
+    return out;
+  }
+
+  /// Sequence and lengths only, no labels (tflow's Predict).
+  Outputs Predict(const Feed& x) {
+    nn::NoGradGuard guard;
+    Outputs         out = forward(store, x.inputs, x.lengths, Initials(x.inputs.shape()[0]));
+    Outputs         result;
+    for (const auto& f : fields)
+      result[f] = f == "probability" ? probability(out.at("logits")) : out.at(f);
+    return result;
+  }
+
+  // Transitional bundles (forward + loss + gradients [+ optimizer step]).
+  // The 4.1 examples bidirectional_rnn, clockwork_rnn, conv_lstm,
+  // gradient_clipping, gru, indrnn, layer_norm_lstm, lstm and mgu write these
+  // steps out themselves; Evaluate/ProbeGradients/Gradient/RawGradients/Update
+  // remain only for the examples that have not been unbundled yet (the other
+  // 4.1 cells and 4.3 memory networks). Delete them once nothing uses them.
+
+  /// Forward fields, loss and the full-BPTT input/initial-state gradients of the chosen logit.
+  Outputs Evaluate(const Feed& x) {
+    Tensor              input    = x.inputs.detach().clone();
+    std::vector<Tensor> initials = Initials(x.inputs.shape()[0]);
+    input.requires_grad_(true);
+    for (auto& s : initials)
+      s.requires_grad_(true);
+    Outputs out               = forward(store, input, x.lengths, initials);
+    out["probability"]        = probability(out.at("logits"));
+    const auto [loss, chosen] = loss_fn(out, x.labels);
+    std::vector<Tensor> wrt{input};
+    wrt.insert(wrt.end(), initials.begin(), initials.end());
+    nn::GradOptions options;
+    options.retain_graph = true;
+    options.allow_unused = true;
+    const auto g         = nn::grad(std::vector<Tensor>{chosen}, wrt, {}, options);
+    Outputs    result;
+    for (const auto& f : fields)
+      result[f] = out.at(f).detach();
+    result["loss"]           = loss.detach();
+    result["input_gradient"] = Defined(g[0], input);
+    for (std::size_t k = 0; k < initial_gradient_names.size(); ++k)
+      if (!initial_gradient_names[k].empty())
+        result[initial_gradient_names[k]] = Defined(g[k + 1], initials[k]);
+    for (const auto& probe : evaluate_probes) {
+      const Tensor& target = wrt.at(static_cast<std::size_t>(probe.wrt));
+      result[probe.name]   = Defined(
+          nn::grad(std::vector<Tensor>{probe.target(out)}, {target}, {}, options)[0], target);
+    }
+    if (evaluate_extra)
+      evaluate_extra(result, x);
+    return result;
+  }
+
+  /// Gradients of each probe target (tflow's ModuleGradients / ChannelGradients).
+  Outputs ProbeGradients(const Feed& x, const std::vector<Probe>& probes) {
+    Tensor              input    = x.inputs.detach().clone();
+    std::vector<Tensor> initials = Initials(x.inputs.shape()[0]);
+    input.requires_grad_(true);
+    for (auto& s : initials)
+      s.requires_grad_(true);
+    const Outputs       out = forward(store, input, x.lengths, initials);
+    std::vector<Tensor> wrt{input};
+    wrt.insert(wrt.end(), initials.begin(), initials.end());
+    nn::GradOptions options;
+    options.retain_graph = true;
+    options.allow_unused = true;
+    Outputs result;
+    for (const auto& probe : probes) {
+      const Tensor& target = wrt.at(static_cast<std::size_t>(probe.wrt));
+      result[probe.name]   = Defined(
+          nn::grad(std::vector<Tensor>{probe.target(out)}, {target}, {}, options)[0], target);
+    }
+    return result;
+  }
+
+  /// Raw loss gradient of every parameter, by name.
+  nn::NamedTensors Gradient(const Feed& x) {
+    const auto       g = RawGradients(x);
+    nn::NamedTensors result;
+    for (std::size_t i = 0; i < g.size(); ++i)
+      result.emplace_back(store.names()[i], g[i]);
+    return result;
+  }
+
+  std::vector<Tensor> RawGradients(const Feed& x) {
+    Outputs         out    = forward(store, x.inputs, x.lengths, Initials(x.inputs.shape()[0]));
+    const auto      params = store.parameters();
+    nn::GradOptions options;
+    options.allow_unused = true;
+    auto g = nn::grad(std::vector<Tensor>{loss_fn(out, x.labels).first}, params, {}, options);
+    for (std::size_t i = 0; i < g.size(); ++i)
+      g[i] = Defined(g[i], params[i]);
+    return g;
+  }
+
+  /// Copies of every parameter, by name.
+  nn::NamedTensors Arrays() const {
+    nn::NamedTensors out;
+    for (const auto& name : store.names())
+      out.emplace_back(name, store.at(name).detach().clone());
+    return out;
+  }
+
+  void Save(const std::filesystem::path& file) const { store.save(file.string()); }
+  void Restore(const std::filesystem::path& file) { store.load(file.string(), true); }
+
+  /// Overwrites every parameter from an .npz written by tflow (initial_arrays.npz).
+  void LoadArrays(const std::filesystem::path& file) {
+    const auto arrays = nn::load_npz(file.string());
+    check::Require(
+        arrays.size() == store.size(), "init arrays cover exactly the model's parameters");
+    for (const auto& [name, value] : arrays) {
+      check::Require(store.contains(name), "init array " + name + " is a model parameter");
+      store.set(name, nn::cast(value, store.at(name).dtype()));
+    }
+  }
+
+ private:
+  static Tensor Defined(const Tensor& g, const Tensor& like) { return DefinedGradient(g, like); }
+};
+
+} // namespace rnn_cells
+
+// Report-local workflow and diagnostics: rnn.hpp
+// Helpers shared by the explicit-unroll recurrent cells (tflow's common/nn/rnn.h
+// and the masking idiom its 4.1 cells repeat). The cells themselves are
+// datamunge::nn::rnn_step / gru_step / lstm_step or are written out in the
+// per-cell headers when an example needs intermediate gate values.
+
+#include <datamunge/nn/nn.hpp>
+#include <string>
+#include <vector>
+
+namespace rnn_cells {
+
+/// Float [B, 1] mask: 1 where lengths > t (tflow: ExpandDims(Cast(Greater(lengths, t)), 1)).
+inline Tensor StepMask(const Tensor& lengths, int t) {
+  return nn::expand_dims(nn::cast(nn::greater(lengths, double(t)), nn::DType::Float32), 1);
+}
+
+/// Bool [B, 1] mask for SelectV2-style blends.
+inline Tensor StepValid(const Tensor& lengths, int t) {
+  return nn::expand_dims(nn::greater(lengths, double(t)), 1);
+}
+
+/// mask * next + (1 - mask) * previous, exactly tflow's arithmetic masking.
+inline Tensor Blend(const Tensor& mask, const Tensor& next, const Tensor& previous) {
+  return nn::add(nn::mul(mask, next), nn::mul(nn::sub(1.0, mask), previous));
+}
+
+/// Dense head "<name>/W" ~ N(0, 0.1^2), "<name>/b" = 0 (tflow pre-adds head/W
+/// with AddNormal(.1) before calling Dense, so the normal init wins).
+inline Tensor Head(
+    nn::ParameterStore& p,
+    const std::string&  name,
+    const Tensor&       x,
+    std::int64_t        in,
+    std::int64_t        out) {
+  const Tensor W = p.get(name + "/W", {in, out}, nn::init::normal(.1));
+  const Tensor b = p.get(name + "/b", {out}, nn::init::zeros());
+  return nn::bias_add(nn::matmul(x, W), b);
+}
+
+/// Zeros where the [B, 1] bool mask is false (tflow: SelectV2(valid, x, ZerosLike(x))).
+inline Tensor MaskedDiagnostics(const Tensor& valid, const Tensor& x) {
+  return nn::where(valid, x, nn::zeros_like(x));
+}
+
+} // namespace rnn_cells
+
+namespace rnn_cells {
+
+/// input [B, T, 4, 4, 1], initial {h, c} [B, 4, 4, 2]; gates i, f, z, o along channels.
+inline Outputs ConvLstm(
+    nn::ParameterStore&        p,
+    const Tensor&              input,
+    const Tensor&              lengths,
+    const std::vector<Tensor>& initial) {
+  auto path = nn::models::MaskedConvLstmSequence(p, input, lengths, initial);
+  return {
+      {"logits", path.logits},
+      {"states", path.states},
+      {"cell_states", path.cell_states},
+      {"final_state", path.final_state},
+      {"final_cell", path.final_cell},
+      {"gates", path.gates}};
+}
+
+/// Mean of 15 * y * softplus(-logit) + (1 - y) * softplus(logit); chosen = sum(logits * y).
+inline std::pair<Tensor, Tensor> WeightedPixelLoss(const Outputs& out, const Tensor& labels) {
+  const Tensor& logits   = out.at("logits");
+  const Tensor  positive = nn::mul(nn::mul(labels, 15.0), nn::softplus(nn::neg(logits)));
+  const Tensor  negative = nn::mul(nn::sub(1.0, labels), nn::softplus(logits));
+  return {nn::mean(nn::add(positive, negative)), nn::sum(nn::mul(logits, labels))};
+}
+
+inline std::unique_ptr<RecurrentModel> ConvLstmModel(bool training = true) {
+  auto m = std::make_unique<RecurrentModel>(
+      37003,
+      ConvLstm,
+      nn::Shape{4, 4, 4, 1},
+      std::vector<nn::Shape>{{4, 4, 2}, {4, 4, 2}},
+      std::vector<std::string>{"initial_gradient", "initial_cell_gradient"},
+      std::vector<std::string>{
+          "logits", "probability", "states", "final_state", "cell_states", "final_cell", "gates"});
+  m->loss_fn     = WeightedPixelLoss;
+  m->probability = [](const Tensor& logits) { return nn::sigmoid(logits); };
+  // First spatial hidden state (time 1, pixel (1, 1), channel 0): only time-0 inputs in its 3x3 neighbourhood.
+  m->evaluate_probes = {
+      {"first_gate_input_gradient",
+       [](const Outputs& o) {
+         return nn::sum(nn::slice(o.at("states"), {0, 1, 1, 1, 0}, {-1, 1, 1, 1, 1}));
+       },
+       0}};
+  m->Build(training);
+  return m;
+}
+
+} // namespace rnn_cells
+
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+
+// Report-local workflow and diagnostics: marked_sequence_demo.hpp
+// The three-epoch marked-token memory experiment shared by tflow's 4.1
+// recurrent-cell examples (bidirectional_rnn, clockwork_rnn, gradient_clipping,
+// indrnn, mgu and, through tflow's common/ml/gated_sequence_demo.h, lstm, gru,
+// peephole_lstm and layer_norm_lstm). tflow repeats this Run() in every .cc;
+// here it is written once with hooks for each example's extra checks.
+//
+// Flow (identical to tflow): 512/128/128 marked sequences, Adam .01 (or the
+// example's optimizer), batch 32 with tflow's BatchOrder(512, 32, 26019), three
+// epochs = 48 updates; npz records of the initial/first/epoch/final state;
+// save -> restore into a fresh model (bit-exact); label-free prediction equals
+// evaluation; repeat and single-row parity; arbitrary padding cannot change any
+// output or gradient; flipping the last valid token cannot change earlier
+// states; zero-length sequences keep the zero state; weights immutable under
+// inference. Checkpoints are .npz files of the parameter store.
+//
+// Parity with tflow: the data and batch order are bit-identical to tflow's.
+// Parameters initialise from nn's generator, so a default run matches tflow
+// only statistically; `init=PATH` (tflow's initial_arrays.npz) replays tflow's
+// run, and when the tflow run directory (`tf=`) has the same files the port
+// prints and checks the differences.
+
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
+
+// Report-local workflow and diagnostics: marked_sequence_data.hpp
+// Synthetic variable-length single-marker memory task; padding is never a
+// model input through the mask. Port of tflow's common/ml/marked_sequence_data.h
+// plus the per-example helpers (SaveData, Copy, Accuracy, Heatmap) that the
+// tflow 4.1 recurrent-cell examples repeat in every .cc file.
+//
+// The generator is std::mt19937 exactly as in tflow, so every split is
+// bit-identical to tflow's data.npz.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <datamunge/nn/nn.hpp>
+#include <filesystem>
+#include <numeric>
+#include <random>
+#include <vector>
+
+namespace rnn_cells {
+
+/// inputs float [n, 12, 2] (value, marker), lengths/labels/source_ids int32 [n], uniforms float64 [n, 14].
+struct MarkedSequences {
+  Tensor                     inputs, lengths, labels, source_ids, uniforms;
+  [[nodiscard]] Feed         feed() const { return {inputs, lengths, labels}; }
+  [[nodiscard]] std::int64_t size() const { return inputs.shape()[0]; }
+};
+
+inline MarkedSequences MakeMarkedSequences(int n, int seed, int offset) {
+  auto y = nn::models::MakeMarkedSequences(n, std::uint32_t(seed), offset);
+  return {y.inputs, y.lengths, y.labels, y.source_ids, y.uniforms};
+}
+
+inline MarkedSequences MarkedRows(const MarkedSequences& x, const std::vector<std::int64_t>& rows) {
+  return {
+      nn::take_rows(x.inputs, rows),
+      nn::take_rows(x.lengths, rows),
+      nn::take_rows(x.labels, rows),
+      nn::take_rows(x.source_ids, rows),
+      nn::take_rows(x.uniforms, rows)};
+}
+
+inline MarkedSequences Copy(const MarkedSequences& x) {
+  std::vector<std::int64_t> rows(static_cast<std::size_t>(x.size()));
+  std::iota(rows.begin(), rows.end(), 0);
+  return MarkedRows(x, rows);
+}
+
+inline void SaveData(const std::filesystem::path& file, const MarkedSequences& x) {
+  nn::save_npz(
+      file.string(),
+      {{"inputs", x.inputs},
+       {"lengths", x.lengths},
+       {"labels", x.labels},
+       {"source_ids", x.source_ids},
+       {"uniforms", x.uniforms}});
+}
+
+inline MarkedSequences LoadData(const std::filesystem::path& file) {
+  const auto a = nn::load_npz(file.string());
+  return {
+      Find(a, "inputs"),
+      Find(a, "lengths"),
+      Find(a, "labels"),
+      Find(a, "source_ids"),
+      Find(a, "uniforms")};
+}
+
+/// The three splits (512 fit / 128 validation / 128 test) and their data.npz arrays.
+inline std::vector<MarkedSequences> MarkedPools(nn::NamedTensors* arrays = nullptr) {
+  std::vector<MarkedSequences> pools;
+  for (int k = 0; k < 3; ++k) {
+    const std::string split = k == 0 ? "fit" : k == 1 ? "validation" : "test";
+    pools.push_back(MakeMarkedSequences(k ? 128 : 512, 26001 + 2 * k, 10000 * k));
+    const auto& x = pools.back();
+    if (arrays) {
+      arrays->emplace_back(split + "_inputs", x.inputs);
+      arrays->emplace_back(split + "_lengths", x.lengths);
+      arrays->emplace_back(split + "_labels", x.labels);
+      arrays->emplace_back(split + "_source_ids", x.source_ids);
+      arrays->emplace_back(split + "_uniforms", x.uniforms);
+    }
+  }
+  return pools;
+}
+
+/// Fraction of rows whose logit 1 exceeds logit 0 exactly when the label is 1.
+inline double Accuracy(const Tensor& logits, const Tensor& labels) {
+  const auto correct = nn::sum(
+                           nn::cast(
+                               nn::equal(nn::argmax(logits, 1), nn::cast(labels, nn::DType::Int64)),
+                               nn::DType::Int64))
+                           .item<std::int64_t>();
+  return double(correct) / double(labels.size(0));
+}
+
+/// tflow's Heatmap: first 24 sequences, 12 columns of 29x15 cells; blue = -1,
+/// red = +1, white = 0, black strip = marker. With `gradients`, values are
+/// scaled by the global peak |value| of channel 0.
+inline void Heatmap(const std::filesystem::path& file, const Tensor& x, bool gradients = false) {
+  nn::save_png(nn::models::MarkedSequenceHeatmap(x, gradients), file.string(), 0, 255);
+}
+
+} // namespace rnn_cells
+
+// Report-local workflow and diagnostics: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Report-local workflow and diagnostics: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets {
+inline std::string DataRoot() {
+  return datamunge::datasets::data_home();
+}
+inline void EnsureSaliency(const std::string& directory) {
+  datamunge::datasets::prepare_example_data(
+      "mnist-assets", std::filesystem::path(directory).parent_path().string());
+}
+} // namespace dataset_assets
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) {
+  return DataRoot() / name;
+}
+
+inline std::filesystem::path OutputRoot() {
+  if (const char* dir = std::getenv("DATAMUNGE_OUTPUT_DIR"); dir && *dir)
+    return dir;
+  return example_runtime::Full() ? "build/recurrent-models" : "build/recurrent-models";
+}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+} // namespace paths
+
+namespace rnn_cells {
+
+namespace fs = std::filesystem;
+
+struct DemoOptions {
+  int      epochs = 3;
+  fs::path out;  // output directory
+  fs::path init; // optional initial arrays (tflow's initial_arrays.npz)
+  fs::path tf;   // tflow's run directory for comparisons (skipped when missing)
+};
+
+/// tflow's output/models/<name> (where its examples write their runs).
+inline fs::path TflowRunDir(const std::string& name) {
+  return std::filesystem::absolute("build/no-tflow-records") / name;
+}
+
+/// Parses epochs=N out=PATH init=PATH tf=PATH.
+inline DemoOptions ParseDemoOptions(int argc, char** argv, const std::string& name) {
+  DemoOptions o;
+  o.out = paths::OutputRoot() / "models" / name;
+  o.tf  = TflowRunDir(name);
+  for (int i = 1; i < argc; ++i) {
+    const std::string a = argv[i];
+    if (a.rfind("epochs=", 0) == 0)
+      o.epochs = std::stoi(a.substr(7));
+    else if (a.rfind("out=", 0) == 0)
+      o.out = a.substr(4);
+    else if (a.rfind("init=", 0) == 0)
+      o.init = a.substr(5);
+    else if (a.rfind("tf=", 0) == 0)
+      o.tf = a.substr(3);
+    else
+      throw std::invalid_argument("options: epochs=N out=PATH init=PATH tf=PATH");
+  }
+  check::Require(o.epochs > 0 && o.epochs <= 100, "threeCheapDefaultEpochs");
+  return o;
+}
+
+struct DemoContext {
+  fs::path                      root;
+  std::vector<MarkedSequences>& pools;
+  RecurrentModel&               model;    // the trained model
+  RecurrentModel*               deployed; // restored, inference only (null before restore)
+  Outputs                       output, last_output, cue_output;
+  nn::NamedTensors              initial_arrays;
+  std::ostringstream            metrics; // extra ",\"key\":value" metrics.json entries
+};
+
+struct MarkedDemo {
+  std::string                                                   name;
+  std::int64_t                                                  parameters = 0, tensors = 0;
+  std::string                                                   count_message, restore_message;
+  std::function<std::unique_ptr<RecurrentModel>(bool training)> make;
+  /// Extra leading metrics.json entries ("\"key\":value," each).
+  std::string metrics_prefix;
+  std::string title, description,
+      pass_tag = "fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable";
+  /// Called for every update with the batch, before Update (gradient_clipping's per-step records).
+  std::function<void(RecurrentModel&, const MarkedSequences&, const fs::path&, int step)>
+                                    before_update, after_update;
+  std::function<void(DemoContext&)> after_training; // after the last epoch, before saving
+  /// Called at the start of every batch, before the first-batch records and the
+  /// update (per-step dropout masks, training-mode switches).
+  std::function<void(RecurrentModel&, const MarkedSequences&, const fs::path&, int step)>
+                                    before_batch;
+  std::function<void(DemoContext&)> after_outputs; // right after outputs.npz (structure checks)
+  std::function<void(DemoContext&)> after_counterfactuals; // after padding/flip evaluations
+  std::function<void(DemoContext&)> after_predictions;     // after predictions.tsv
+};
+
+inline void SaveOutputs(const fs::path& file, const Outputs& out) {
+  nn::save_npz(file.string(), Named(out));
+}
+
+/// Max |ours - tflow| over the arrays both npz files contain; -1 when tflow's file is missing.
+inline double CompareNpz(const fs::path& ours, const fs::path& theirs) {
+  if (!fs::exists(theirs))
+    return -1;
+  const auto a = nn::load_npz(ours.string()), b = nn::load_npz(theirs.string());
+  double     worst = 0;
+  for (const auto& [name, value] : a)
+    for (const auto& [other, tf_value] : b)
+      if (name == other)
+        worst = std::max(worst, MaxAbsDiff(value, tf_value));
+  return worst;
+}
+
+inline std::string ReadText(const fs::path& file) {
+  std::ifstream f(file, std::ios::binary);
+  return {std::istreambuf_iterator<char>(f), {}};
+}
+
+/// Compares this run with tflow's run directory: data and batch order always
+/// (they must be identical); with init= also every replayed record.
+/// The number after "key": in a flat JSON object (NaN when absent).
+inline double JsonNumber(const std::string& json, const std::string& key) {
+  const auto at = json.find("\"" + key + "\":");
+  return at == std::string::npos ? NAN : std::stod(json.substr(at + key.size() + 3));
+}
+
+inline void CompareWithTflow(
+    const fs::path&                 root,
+    const DemoOptions&              options,
+    const std::vector<std::string>& records,
+    const std::string&              test_key = "test_ce") {
+  if (options.tf.empty() || !fs::exists(options.tf / "data.npz")) {
+    std::cout << "tflow run " << options.tf << " not found; skipping the comparison\n";
+    return;
+  }
+  check::Near(
+      CompareNpz(root / "data.npz", options.tf / "data.npz"), 0, 0, "dataBitIdenticalToTflow");
+  if (fs::exists(options.tf / "batches.tsv")) {
+    // tflow ran three epochs; with another epochs= budget the shorter record
+    // must be a prefix of the longer one (same BatchOrder stream).
+    const std::string ours   = ReadText(root / "batches.tsv"),
+                      theirs = ReadText(options.tf / "batches.tsv");
+    check::Require(
+        ours.rfind(theirs, 0) == 0 || theirs.rfind(ours, 0) == 0, "batchOrderIdenticalToTflow");
+  }
+  std::cout << "vs tflow: data.npz and batches.tsv identical";
+  if (options.init.empty()) {
+    std::cout << " (pass init=" << (options.tf / "initial_arrays.npz").string()
+              << " to replay tflow's run)\n";
+    return;
+  }
+  double worst_initial = 0, worst_final = 0;
+  for (const auto& file : records) {
+    const double d = CompareNpz(root / file, options.tf / file);
+    if (d < 0)
+      continue;
+    std::cout << "\n  " << file << " max|diff|=" << d;
+    double& worst =
+        file.rfind("initial", 0) == 0 || file.rfind("first", 0) == 0 ? worst_initial : worst_final;
+    worst = std::max(worst, d);
+  }
+  std::cout << "\n";
+  check::Require(worst_initial <= 1e-5, "replayedInitialForwardGradientsAndFirstUpdateMatchTflow");
+  // Later records drift with float32 rounding (Adam divides by tiny second
+  // moments), so the trained run is checked through its test loss.
+  const double ours   = JsonNumber(ReadText(root / "metrics.json"), test_key),
+               theirs = JsonNumber(ReadText(options.tf / "metrics.json"), test_key);
+  if (!std::isnan(theirs)) {
+    std::cout << "  " << test_key << " ours=" << ours << " tflow=" << theirs
+              << " (trained records max|diff|=" << worst_final << ")\n";
+    check::Near(ours, theirs, 5e-3, "replayedTrainedTestLossMatchesTflow");
+  }
+}
+
+} // namespace rnn_cells
+
+// Report-local workflow and diagnostics: moving_dot_data.hpp
+// Tiny variable-length moving-dot sequences on a 4x4 torus; the next-frame
+// target never enters inference. Port of tflow's common/ml/moving_dot_data.h
+// (std::mt19937 recipe, so every split is bit-identical to tflow's data.npz).
+
+#include <cstdint>
+#include <datamunge/nn/nn.hpp>
+#include <filesystem>
+#include <random>
+#include <vector>
+
+namespace rnn_cells {
+
+/// inputs float [n, 4, 4, 4, 1] (time, y, x, 1), lengths int32 [n] in 2..4,
+/// labels float [n, 4, 4, 1] (the next frame), source_ids int32 [n], uniforms float64 [n, 4].
+struct MovingDots {
+  Tensor                     inputs, lengths, labels, source_ids, uniforms;
+  [[nodiscard]] Feed         feed() const { return {inputs, lengths, labels}; }
+  [[nodiscard]] std::int64_t size() const { return inputs.shape()[0]; }
+};
+
+inline MovingDots MakeMovingDots(int n, int seed, int offset) {
+  auto y = nn::models::MakeMovingDotSequences(n, std::uint32_t(seed), offset);
+  return {y.inputs, y.lengths, y.labels, y.source_ids, y.uniforms};
+}
+
+inline MovingDots MovingDotRows(const MovingDots& x, const std::vector<std::int64_t>& rows) {
+  return {
+      nn::take_rows(x.inputs, rows),
+      nn::take_rows(x.lengths, rows),
+      nn::take_rows(x.labels, rows),
+      nn::take_rows(x.source_ids, rows),
+      nn::take_rows(x.uniforms, rows)};
+}
+
+inline void SaveMovingDots(const std::filesystem::path& file, const MovingDots& x) {
+  nn::save_npz(
+      file.string(),
+      {{"inputs", x.inputs},
+       {"lengths", x.lengths},
+       {"labels", x.labels},
+       {"source_ids", x.source_ids},
+       {"uniforms", x.uniforms}});
+}
+
+inline MovingDots LoadMovingDots(const std::filesystem::path& file) {
+  const auto a = nn::load_npz(file.string());
+  return {
+      Find(a, "inputs"),
+      Find(a, "lengths"),
+      Find(a, "labels"),
+      Find(a, "source_ids"),
+      Find(a, "uniforms")};
+}
+
+} // namespace rnn_cells
+
+using namespace rnn_cells;
+
+namespace {
+
+int Argmax(const std::vector<float>& x, int b) {
+  return int(std::max_element(x.begin() + 16 * b, x.begin() + 16 * (b + 1)) - x.begin() - 16 * b);
+}
+
+double SpatialAccuracy(const Tensor& logits, const Tensor& labels) {
+  auto left  = nn::argmax(nn::reshape(logits, {logits.size(0), 16}), 1),
+       right = nn::argmax(nn::reshape(labels, {labels.size(0), 16}), 1);
+  return nn::sum(nn::cast(nn::equal(left, right), nn::DType::Int64)).item<std::int64_t>() /
+         double(labels.size(0));
+}
+
+// Each row: four input frames, the target frame and the predicted probability (fixed [0, 1] grey
+// scale).
+void Panels(const fs::path& file, const MovingDots& x, const Tensor& probability) {
+  nn::save_png(nn::models::MovingDotPanels(x.inputs, x.labels, probability), file.string(), 0, 255);
+}
+
+// The eager equivalents of tflow's session fetches, written out in this
+// example: forward pass, loss and nn::grad (RecurrentModel only holds the
+// parameters, the forward function and the optimizer).
+
+/// Forward fields, loss and the full-BPTT gradients of the chosen logit with
+/// respect to the inputs and every zero initial state (tflow's Evaluate fetches).
+inline Outputs Evaluate(RecurrentModel& m, const Feed& x) {
+  Tensor              input    = x.inputs.detach().clone();
+  std::vector<Tensor> initials = m.Initials(x.inputs.shape()[0]);
+  input.requires_grad_(true);
+  for (auto& s : initials)
+    s.requires_grad_(true);
+  Outputs out               = m.forward(m.store, input, x.lengths, initials);
+  out["probability"]        = m.probability(out.at("logits"));
+  const auto [loss, chosen] = m.loss_fn(out, x.labels);
+  std::vector<Tensor> wrt{input};
+  wrt.insert(wrt.end(), initials.begin(), initials.end());
+  nn::GradOptions options;
+  options.retain_graph = true;
+  options.allow_unused = true;
+  const auto g         = nn::grad(std::vector<Tensor>{chosen}, wrt, {}, options);
+  Outputs    result;
+  for (const auto& f : m.fields)
+    result[f] = out.at(f).detach();
+  result["loss"]           = loss.detach();
+  result["input_gradient"] = DefinedGradient(g[0], input);
+  for (std::size_t k = 0; k < m.initial_gradient_names.size(); ++k)
+    if (!m.initial_gradient_names[k].empty())
+      result[m.initial_gradient_names[k]] = DefinedGradient(g[k + 1], initials[k]);
+  for (const auto& probe : m.evaluate_probes) {
+    const Tensor& target = wrt.at(static_cast<std::size_t>(probe.wrt));
+    result[probe.name]   = DefinedGradient(
+        nn::grad(std::vector<Tensor>{probe.target(out)}, {target}, {}, options)[0], target);
+  }
+  return result;
+}
+
+/// Loss gradient of every parameter, in store order (zeros where unused).
+inline std::vector<Tensor> LossGradients(RecurrentModel& m, const Feed& x) {
+  const Outputs   out    = m.forward(m.store, x.inputs, x.lengths, m.Initials(x.inputs.shape()[0]));
+  const Tensor    loss   = m.loss_fn(out, x.labels).first;
+  const auto      params = m.store.parameters();
+  nn::GradOptions options;
+  options.allow_unused = true;
+  auto g               = nn::grad(std::vector<Tensor>{loss}, params, {}, options);
+  for (std::size_t i = 0; i < g.size(); ++i)
+    g[i] = DefinedGradient(g[i], params[i]);
+  return g;
+}
+
+/// Gradients by parameter name (the initial/final_gradients.npz records).
+inline nn::NamedTensors NamedGradients(const RecurrentModel& m, const std::vector<Tensor>& g) {
+  nn::NamedTensors result;
+  for (std::size_t i = 0; i < g.size(); ++i)
+    result.emplace_back(m.store.names()[i], g[i]);
+  return result;
+}
+
+} // namespace
+
+int main(int argc, char** argv) {
+  try {
+    nn::set_num_threads(4);
+    const auto     options = ParseDemoOptions(argc, argv, "conv_lstm");
+    const auto     start   = std::chrono::steady_clock::now();
+    const fs::path root    = options.out;
+    fs::create_directories(root);
+    std::vector<MovingDots> pools;
+    nn::NamedTensors        all;
+    for (int k = 0; k < 3; ++k) {
+      const std::string split = k == 0 ? "fit" : k == 1 ? "validation" : "test";
+      pools.push_back(MakeMovingDots(k ? 16 : 48, 37001 + 2 * k, 10000 * k));
+      const auto& x = pools.back();
+      all.insert(
+          all.end(),
+          {{split + "_inputs", x.inputs},
+           {split + "_lengths", x.lengths},
+           {split + "_labels", x.labels},
+           {split + "_source_ids", x.source_ids},
+           {split + "_uniforms", x.uniforms}});
+    }
+    nn::save_npz((root / "data.npz").string(), all);
+    auto                model = ConvLstmModel(true);
+    nn::OptimizerConfig report_config;
+    report_config.kind = nn::OptimizerKind::Adam;
+    nn::Optimizer report_optimizer(model->store, .01, report_config);
+    check::Require(
+        model->store.count() == 227 && model->store.size() == 5,
+        "227RealSpatialKernelAndPixelHeadParameters");
+    if (!options.init.empty())
+      model->LoadArrays(options.init);
+    nn::save_npz((root / "initial_arrays.npz").string(), model->Arrays());
+    SaveOutputs(root / "initial_outputs.npz", Evaluate(*model, pools[2].feed()));
+    std::ofstream history(root / "history.tsv"), batches(root / "batches.tsv");
+    history.precision(17);
+    history << "epoch\tvalidation_weighted_ce\tvalidation_top1_accuracy\n";
+    batches << "epoch\tstep\trow\n";
+    nn::BatchOrder order(48, 8, 37019);
+    int            updates = 0;
+    for (int epoch = 1; epoch <= options.epochs; ++epoch) {
+      order.begin_epoch();
+      for (;;) {
+        const auto rows = order.next();
+        if (rows.empty())
+          break;
+        const auto batch = MovingDotRows(pools[0], rows);
+        if (!updates) {
+          SaveMovingDots(root / "first_batch.npz", batch);
+          SaveOutputs(root / "first_forward.npz", Evaluate(*model, batch.feed()));
+          nn::save_npz(
+              (root / "initial_gradients.npz").string(),
+              NamedGradients(*model, LossGradients(*model, batch.feed())));
+        }
+        // One optimizer update written out: forward, loss, the gradient of every
+        // parameter, the optional gradient policy, the optimizer step and the
+        // optional projection.
+        {
+          const Outputs out = model->forward(
+              model->store, batch.inputs, batch.lengths, model->Initials(batch.inputs.shape()[0]));
+          const Tensor    loss   = model->loss_fn(out, batch.labels).first;
+          const auto      params = model->store.parameters();
+          nn::GradOptions grad_options;
+          grad_options.allow_unused = true;
+          auto g                    = nn::grad(std::vector<Tensor>{loss}, params, {}, grad_options);
+          for (std::size_t i = 0; i < g.size(); ++i)
+            g[i] = DefinedGradient(g[i], params[i]);
+          if (model->gradient_policy)
+            g = model->gradient_policy(g);
+          report_optimizer.step(g);
+          if (model->after_update)
+            model->after_update(model->store);
+        }
+        if (!updates)
+          nn::save_npz((root / "first_after.npz").string(), model->Arrays());
+        for (auto row : rows)
+          batches << epoch << '\t' << updates << '\t' << row << '\n';
+        ++updates;
+      }
+      const auto   val  = Evaluate(*model, pools[1].feed());
+      const double ce   = val.at("loss").item<double>(),
+                   top1 = SpatialAccuracy(val.at("logits"), pools[1].labels);
+      history << epoch << '\t' << float(ce) << '\t' << top1 << '\n';
+      nn::save_npz(
+          (root / ("epoch" + std::to_string(epoch) + "_arrays.npz")).string(), model->Arrays());
+      SaveOutputs(root / ("epoch" + std::to_string(epoch) + "_validation.npz"), val);
+      std::cout << "epoch" << epoch << " validationWeightedCE=" << float(ce) << " top1=" << top1
+                << std::endl;
+    }
+    batches.flush();
+    nn::save_npz(
+        (root / "final_gradients.npz").string(),
+        NamedGradients(
+            *model, LossGradients(*model, LoadMovingDots(root / "first_batch.npz").feed())));
+    model->Save(root / "final.npz");
+    auto deployed = ConvLstmModel(false);
+    deployed->Restore(root / "final.npz");
+    check::Require(
+        SameBits(model->Arrays(), deployed->Arrays()), "allSpatialWeightsRestoreBitexact");
+    const auto before = deployed->Arrays();
+    auto&      test   = pools[2];
+    const auto out = Evaluate(*deployed, test.feed()), pred = deployed->Predict(test.feed()),
+               repeat = deployed->Predict(test.feed());
+    for (const auto& [k, v] : pred) {
+      check::Require(SameBits(v, out.at(k)), "inferenceNoTargetFeedParity");
+      check::Require(SameBits(v, repeat.at(k)), "repeatSpatialInferenceBitexact");
+    }
+    nn::save_npz((root / "model_arrays.npz").string(), deployed->Arrays());
+    SaveOutputs(root / "outputs.npz", out);
+    const auto single =
+        deployed->Predict(MovingDotRows(test, {0}).feed()).at("logits").to_vector<float>();
+    const auto logits = out.at("logits").to_vector<float>();
+    for (int p = 0; p < 16; ++p)
+      check::Near(single[p], logits[p], 2e-6, "singleAndBatchSpatialParity");
+    const auto lengths        = test.lengths.to_vector<std::int32_t>();
+    const auto input_gradient = out.at("input_gradient").to_vector<float>(),
+               first_gate     = out.at("first_gate_input_gradient").to_vector<float>();
+    const auto states         = out.at("states").to_vector<float>(),
+               cells          = out.at("cell_states").to_vector<float>();
+    auto padded = test.inputs.to_vector<float>(), last = padded;
+    for (int b = 0; b < 16; ++b) {
+      const int length = lengths[b];
+      for (int t = 0; t < 4; ++t)
+        for (int y = 0; y < 4; ++y)
+          for (int x = 0; x < 4; ++x) {
+            const std::size_t i = static_cast<std::size_t>(b) * 64 + t * 16 + y * 4 + x;
+            if (t >= length) {
+              padded[i] = float(123 + b + t + y + x);
+              check::Require(input_gradient[i] == 0, "allPaddedSpatialInputPartialsExactlyZero");
+            }
+            if (t > 0 || y == 3 || x == 3)
+              check::Require(first_gate[i] == 0, "firstSpatialStateOnlyTimeZero3x3Neighborhood");
+          }
+      for (int t = length; t < 4; ++t)
+        for (int j = 0; j < 32; ++j) {
+          check::Require(
+              states[b * 160 + (t + 1) * 32 + j] == states[b * 160 + t * 32 + j],
+              "spatialHiddenRetainedOnPadding");
+          check::Require(
+              cells[b * 160 + (t + 1) * 32 + j] == cells[b * 160 + t * 32 + j],
+              "spatialCellRetainedOnPadding");
+        }
+      for (int j = 0; j < 16; ++j)
+        last[static_cast<std::size_t>(b) * 64 + (length - 1) * 16 + j] = 0;
+    }
+    MovingDots pad_data =
+                   MovingDotRows(test, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}),
+               last_data = pad_data;
+    pad_data.inputs      = nn::from_vector(padded, {16, 4, 4, 4, 1});
+    last_data.inputs     = nn::from_vector(last, {16, 4, 4, 4, 1});
+    const auto padout    = Evaluate(*deployed, pad_data.feed()),
+               lastout   = Evaluate(*deployed, last_data.feed());
+    for (const auto& [k, v] : out)
+      check::Require(
+          SameBits(v, padout.at(k)), "allOutputsAndSpatialPartialsInvariantToPaddingGarbage:" + k);
+    const auto last_states = lastout.at("states").to_vector<float>();
+    for (int b = 0; b < 16; ++b)
+      for (int t = 0; t < lengths[b]; ++t)
+        for (int j = 0; j < 32; ++j)
+          check::Require(
+              last_states[b * 160 + t * 32 + j] == states[b * 160 + t * 32 + j],
+              "lastFrameAblationCannotChangeEarlierMaps");
+    SaveMovingDots(root / "padding_inputs.npz", pad_data);
+    SaveMovingDots(root / "last_frame_inputs.npz", last_data);
+    SaveOutputs(root / "padding_outputs.npz", padout);
+    SaveOutputs(root / "last_frame_outputs.npz", lastout);
+    auto empty          = MovingDotRows(test, {0, 1});
+    empty.lengths       = nn::zeros({2}, nn::DType::Int32);
+    const auto emptyout = Evaluate(*deployed, empty.feed());
+    for (const char* name : {"states", "cell_states", "input_gradient", "initial_cell_gradient"})
+      for (float v : emptyout.at(name).to_vector<float>())
+        check::Require(v == 0, "zeroLengthSpatialFixture");
+    SaveMovingDots(root / "zero_length_inputs.npz", empty);
+    SaveOutputs(root / "zero_length_outputs.npz", emptyout);
+    Panels(root / "predictions.png", test, out.at("probability"));
+    const auto probability = out.at("probability").to_vector<float>(),
+               labels      = test.labels.to_vector<float>();
+    double brier           = 0;
+    for (int i = 0; i < 256; ++i)
+      brier += std::pow(probability[i] - labels[i], 2) / 256.;
+    const double test_ce = out.at("loss").item<double>(),
+                 top1    = SpatialAccuracy(out.at("logits"), test.labels),
+                 ablated = SpatialAccuracy(lastout.at("logits"), test.labels);
+    std::ofstream metrics(root / "metrics.json");
+    metrics.precision(17);
+    metrics << "{\"parameters\":227,\"parameter_tensors\":5,\"epochs\":" << options.epochs
+            << ",\"optimizer_updates\":" << updates << ",\"test_weighted_ce\":" << float(test_ce)
+            << ",\"test_top1_accuracy\":" << top1
+            << ",\"last_frame_ablated_top1_accuracy\":" << ablated << ",\"test_brier\":" << brier
+            << ",\"uniform_top1_chance\":0.0625,\"uniform_probability_brier\":0.05859375,\"zero_"
+               "frame_brier\":0.0625,"
+               "\"motion_oracle_top1\":1,\"persistence_top1\":0}\n";
+    std::ofstream predictions(root / "predictions.tsv");
+    predictions << "source_id\tlength\ttarget_pixel\tpredicted_pixel\n";
+    nn::ConfusionMatrix confusion(16);
+    const auto          predicted_pixels = nn::argmax(nn::reshape(out.at("logits"), {16, 16}), 1);
+    const auto          target_pixels    = nn::argmax(nn::reshape(test.labels, {16, 16}), 1);
+    confusion.add(target_pixels, predicted_pixels);
+    std::cout << "confusion (target pixel rows, predicted pixel columns):\n";
+    for (const auto& row : confusion.cells()) {
+      for (auto count : row)
+        std::cout << count << ' ';
+      std::cout << '\n';
+    }
+    const auto ids = test.source_ids.to_vector<std::int32_t>();
+    for (int b = 0; b < 16; ++b)
+      predictions << ids[b] << '\t' << lengths[b] << '\t' << Argmax(labels, b) << '\t'
+                  << Argmax(logits, b) << '\n';
+    std::ofstream html(root / "index.html");
+    html << "<!doctype html><meta charset='utf-8'><title>Spatial "
+            "ConvLSTM</title><style>body{font:16px system-ui;margin:30px;"
+            "max-width:1000px}img{image-rendering:pixelated;width:600px;max-width:100%}</"
+            "style><h1>ConvLSTM moving-dot next-frame "
+            "prediction</h1><p>3x3 input-to-state and state-to-state SAME zero-padded "
+            "convolutions; hidden and cell maps 4x4x2 stay "
+            "spatial at every step; input 4x4x1. Four input steps, valid length 2..4, the mask "
+            "retains both states. "
+            "Input/forget/candidate/output gates, forget bias 1, no peepholes, final 1x1 pixel "
+            "head; 227 parameters in 5 tensors.</p>"
+            "<p>48 fit / 16 validation / 16 test synthetic sequences: one dot moves with a "
+            "constant cardinal velocity on a 4x4 torus. "
+            "Training uses zero-padded kernels although motion wraps at the boundaries, an "
+            "explicit modelling mismatch. Three epochs, "
+            "18 Adam .01 updates, positive-pixel BCE weight 15 to balance the 15 negative pixels. "
+            "Top-1 measures the dot location.</p>"
+            "<h2>Held-out sequences, target, predicted probability</h2><p>Each row: four input "
+            "frames (black padding), the next-frame "
+            "target and the probability heatmap on a fixed [0,1] grey scale.</p><img "
+            "src='predictions.png'><p>Test weighted CE "
+         << float(test_ce) << ", top-1 " << top1 << ", Brier " << brier
+         << ", last-frame-ablated top-1 " << ablated
+         << ". See metrics.json and predictions.tsv.</p>";
+    check::Require(
+        SameBits(before, deployed->Arrays()), "spatialInferenceControlsLeaveWeightsImmutable");
+    check::Require(
+        bool(metrics) && bool(html) && bool(history) && bool(batches) && bool(predictions),
+        "completeSpatialRecords");
+    metrics.close(), html.close(), history.close(), batches.close(), predictions.close();
+    const double seconds =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+    std::cout << "testWeightedCE=" << float(test_ce) << " top1=" << top1 << " brier=" << brier
+              << ";spatialKernels/maps/padding/causality/restore/labelFree PASS (" << seconds
+              << " s)\nArtifacts:" << (root / "index.html") << std::endl;
+    CompareWithTflow(
+        root,
+        options,
+        {"initial_outputs.npz",
+         "first_forward.npz",
+         "initial_gradients.npz",
+         "first_after.npz",
+         "epoch1_arrays.npz",
+         "epoch" + std::to_string(options.epochs) + "_arrays.npz",
+         "final_gradients.npz",
+         "outputs.npz",
+         "last_frame_outputs.npz"},
+        "test_weighted_ce");
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+```
+// result_begin: markdown
+epoch1 validationWeightedCE=1.29983 top1=0
+epoch2 validationWeightedCE=1.29912 top1=0.1875
+epoch3 validationWeightedCE=1.2977 top1=0.125
+confusion (target pixel rows, predicted pixel columns):
+0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 
+0 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 
+0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 1 0 0 0 0 0 0 0 0 2 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+testWeightedCE=1.29713 top1=0.4375 brier=0.249244;spatialKernels/maps/padding/causality/restore/labelFree PASS (0.0183868 s)
+Artifacts:"build/recurrent-models/models/conv_lstm/index.html"
+tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/conv_lstm" not found; skipping the comparison
+// result_end
+
+> Recorded outcomes and limits
+
+The held-out next-location accuracy is 0.4375, against uniform top-1 chance 0.0625 and the motion oracle 1.0000. Its Brier score 0.2492 is worse than the uniform-probability baseline 0.0586; this short run does not produce calibrated occupancy predictions. The binary pixel confusion below uses threshold .5 across all 256 held-out pixels. It measures a different task from the source's 16-way argmax next-location accuracy.
+
+All three validation epochs are plotted; the test pool does not select the checkpoint.
+
+```{cpp, results="markdown", file="figures/conv_lstm_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/conv_lstm/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Expected all three source epochs");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").y_ticks({1.2978,1.2984,1.2990,1.2996},{"1.2978","1.2984","1.2990","1.2996"}).title("ConvLSTM: validation history").size(950,520).save_svg("build/conv_lstm_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
+
+```
+// result_begin: markdown
+| Epoch | Validation objective |
+|---:|---:|
+|1|1.29983|
+|2|1.29912|
+|3|1.2977|
+\image(figures/conv_lstm_history.svg)
+// result_end
+
+```{cpp, results="markdown", file="figures/conv_lstm_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <map>
+#include <iostream>
+int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/conv_lstm/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/conv_lstm/data.npz"))data.emplace(key,value);n::ConfusionMatrix cm(2);cm.add(n::reshape(n::cast(data.at("test_labels"),n::DType::Int64),{256}),n::reshape(n::cast(n::greater_equal(output.at("probability"),n::scalar(.5f)),n::DType::Int64),{256}));cm.save_svg("build/conv_lstm_confusion.svg",{.title="ConvLSTM: held-out confusion",.labels={"Empty","Occupied"}});n::save_npz("build/conv_lstm_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<(n::reshape(n::cast(data.at("test_labels"),n::DType::Int64),{256})).numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
+
+```
+// result_begin: markdown
+Truth rows, prediction columns; 256 held-out observations
+156 84 
+1 15 
+\image(figures/conv_lstm_confusion.svg)
+// result_end
+
+> Preserved source diagnostics
+
+These images are rendered by the complete program above from its recorded inputs, derivatives and states. Every source PNG is retained. Optional TensorFlow parity was skipped because its independent recordings are unavailable.
+
+predictions.png.
+
+```{cpp, results="markdown", file="figures/conv_lstm_predictions.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/recurrent-models/models/conv_lstm/predictions.png","build/conv_lstm_predictions.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/conv_lstm_predictions.png)
+// result_end
+
+> References
+
+Shi et al. (2015), Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting. https://arxiv.org/abs/1506.04214
+
+The compact preset, data, seeds, source initialization and short fit budget above are the repository experiment; they are not a reproduction of the paper's full benchmark.

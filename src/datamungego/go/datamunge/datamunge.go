@@ -41959,6 +41959,507 @@ func (t *Tape) Backward(output *Var) ([]float64, error) {
 	return rosetta.Result[[]float64](rosetta.Call(2926, t, output))
 }
 
+// MLPClassifierSearchLike is implemented by *MLPClassifierSearch, by the classes deriving from
+// MLPClassifierSearch and by Go types embedding one of them: they all pass where C++ expects a
+// datamunge::MLPClassifierSearch.
+type MLPClassifierSearchLike interface {
+	AsMLPClassifierSearch() *MLPClassifierSearch
+}
+
+// MLPClassifierSearch wraps the C++ class datamunge::MLPClassifierSearch.
+//
+// A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+//
+// Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+// test rows (per-class rounding applies). Four random widths followed by eight
+// Gaussian-process expected-improvement proposals are the default search budget.
+// Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+// widths reuse their cached validation log loss. Smaller loss wins; ties retain
+// the first proposal. Each candidate has one tanh hidden layer, softmax output,
+// training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+// penalty 0.0001. Initialization/shuffling use seed for every candidate.
+//
+// After selection the network is refitted on fitting plus validation rows,
+// with new standardization statistics, then scored once on the untouched test.
+// Validation loss belongs to the candidate fit, not the final refit, and is an
+// optimistic selection score. Neither split nor test performance is a guarantee
+// for other seeds or datasets. Owns all state, borrows inputs only during calls,
+// does not change data or global RNG state. Const methods may run concurrently.
+// Search cost is at most (initial_samples+iterations) fits plus one refit;
+// cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+//	const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+//
+// # References
+//
+//   - D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+//     of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+//
+// [MLPClassifierSearch.Close] releases the C++ object; otherwise the garbage collector does.
+//
+// See also stats::MLPClassifier, optim::BayesianOptimization and stats::train_test_split().
+type MLPClassifierSearch struct {
+	ref *rosetta.Handle
+}
+
+func makeMLPClassifierSearch(h *rosetta.Handle) MLPClassifierSearch {
+	return MLPClassifierSearch{ref: h}
+}
+
+func (m *MLPClassifierSearch) nativeRef() *rosetta.Handle {
+	if m == nil {
+		return nil
+	}
+	return m.ref
+}
+
+// AsMLPClassifierSearch returns the object as a [MLPClassifierSearch] (itself), or nil for a nil receiver.
+func (m *MLPClassifierSearch) AsMLPClassifierSearch() *MLPClassifierSearch {
+	return m
+}
+
+// Close releases the C++ object now (it is idempotent); later calls fail with a [BindingError].
+func (m *MLPClassifierSearch) Close() { rosetta.Close(m.nativeRef()) }
+
+// IsClosed reports whether the C++ object is released.
+func (m *MLPClassifierSearch) IsClosed() bool { return m.nativeRef().Closed() }
+
+// String names the object's class (fmt.Stringer).
+func (m *MLPClassifierSearch) String() string { return rosetta.Describe(m.nativeRef()) }
+
+// NewMLPClassifierSearch calls the C++ constructor datamunge::MLPClassifierSearch.
+//
+// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+//	const auto n = fit.test_rows(); // 30
+//
+// Parameters:
+//
+//   - data: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+//   - response: String response column, with nonempty labels and at least five rows per class.
+//   - xFeature: First numeric predictor, distinct from response and y_feature.
+//   - yFeature: Second numeric predictor; these two are the only model inputs.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): For invalid columns, labels,
+//     nonfinite/missing data or search controls.
+//   - [NativeError] (C++ std::runtime_error): If fitting or scoring fails to produce finite
+//     probabilities.
+//
+// It uses the C++ defaults minHidden = 2, maxHidden = 24, initialSamples = 4, iterations = 8,
+// epochs = 400, seed = 42; [NewMLPClassifierSearchWithMinHidden],
+// [NewMLPClassifierSearchWithMaxHidden], [NewMLPClassifierSearchWithInitialSamples],
+// [NewMLPClassifierSearchWithIterations], [NewMLPClassifierSearchWithEpochs] and
+// [NewMLPClassifierSearchWithSeed] pass more arguments.
+//
+// See also [MLPClassifierSearch] and summary().
+func NewMLPClassifierSearch(data *DataFrame, response string, xFeature string, yFeature string) (*MLPClassifierSearch, error) {
+	return rosetta.Construct[*MLPClassifierSearch](2938, nil, data, response, xFeature, yFeature)
+}
+
+// NewMLPClassifierSearchWithMinHidden calls the C++ constructor datamunge::MLPClassifierSearch.
+//
+// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+//	const auto n = fit.test_rows(); // 30
+//
+// Parameters:
+//
+//   - data: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+//   - response: String response column, with nonempty labels and at least five rows per class.
+//   - xFeature: First numeric predictor, distinct from response and y_feature.
+//   - yFeature: Second numeric predictor; these two are the only model inputs.
+//   - minHidden: Smallest hidden width, default 2; at least 1 and below max_hidden.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): For invalid columns, labels,
+//     nonfinite/missing data or search controls.
+//   - [NativeError] (C++ std::runtime_error): If fitting or scoring fails to produce finite
+//     probabilities.
+//
+// It uses the C++ defaults maxHidden = 24, initialSamples = 4, iterations = 8, epochs = 400, seed
+// = 42; [NewMLPClassifierSearchWithMaxHidden], [NewMLPClassifierSearchWithInitialSamples],
+// [NewMLPClassifierSearchWithIterations], [NewMLPClassifierSearchWithEpochs] and
+// [NewMLPClassifierSearchWithSeed] pass more arguments.
+//
+// See also [MLPClassifierSearch] and summary().
+func NewMLPClassifierSearchWithMinHidden(data *DataFrame, response string, xFeature string, yFeature string, minHidden int) (*MLPClassifierSearch, error) {
+	return rosetta.Construct[*MLPClassifierSearch](2938, nil, data, response, xFeature, yFeature, minHidden)
+}
+
+// NewMLPClassifierSearchWithMaxHidden calls the C++ constructor datamunge::MLPClassifierSearch.
+//
+// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+//	const auto n = fit.test_rows(); // 30
+//
+// Parameters:
+//
+//   - data: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+//   - response: String response column, with nonempty labels and at least five rows per class.
+//   - xFeature: First numeric predictor, distinct from response and y_feature.
+//   - yFeature: Second numeric predictor; these two are the only model inputs.
+//   - minHidden: Smallest hidden width, default 2; at least 1 and below max_hidden.
+//   - maxHidden: Largest hidden width, default 24; at most 1000000.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): For invalid columns, labels,
+//     nonfinite/missing data or search controls.
+//   - [NativeError] (C++ std::runtime_error): If fitting or scoring fails to produce finite
+//     probabilities.
+//
+// It uses the C++ defaults initialSamples = 4, iterations = 8, epochs = 400, seed = 42;
+// [NewMLPClassifierSearchWithInitialSamples], [NewMLPClassifierSearchWithIterations],
+// [NewMLPClassifierSearchWithEpochs] and [NewMLPClassifierSearchWithSeed] pass more arguments.
+//
+// See also [MLPClassifierSearch] and summary().
+func NewMLPClassifierSearchWithMaxHidden(data *DataFrame, response string, xFeature string, yFeature string, minHidden int, maxHidden int) (*MLPClassifierSearch, error) {
+	return rosetta.Construct[*MLPClassifierSearch](2938, nil, data, response, xFeature, yFeature, minHidden, maxHidden)
+}
+
+// NewMLPClassifierSearchWithInitialSamples calls the C++ constructor
+// datamunge::MLPClassifierSearch.
+//
+// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+//	const auto n = fit.test_rows(); // 30
+//
+// Parameters:
+//
+//   - data: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+//   - response: String response column, with nonempty labels and at least five rows per class.
+//   - xFeature: First numeric predictor, distinct from response and y_feature.
+//   - yFeature: Second numeric predictor; these two are the only model inputs.
+//   - minHidden: Smallest hidden width, default 2; at least 1 and below max_hidden.
+//   - maxHidden: Largest hidden width, default 24; at most 1000000.
+//   - initialSamples: Random initial proposals, default 4; at least 1.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): For invalid columns, labels,
+//     nonfinite/missing data or search controls.
+//   - [NativeError] (C++ std::runtime_error): If fitting or scoring fails to produce finite
+//     probabilities.
+//
+// It uses the C++ defaults iterations = 8, epochs = 400, seed = 42;
+// [NewMLPClassifierSearchWithIterations], [NewMLPClassifierSearchWithEpochs] and
+// [NewMLPClassifierSearchWithSeed] pass more arguments.
+//
+// See also [MLPClassifierSearch] and summary().
+func NewMLPClassifierSearchWithInitialSamples(data *DataFrame, response string, xFeature string, yFeature string, minHidden int, maxHidden int, initialSamples int) (*MLPClassifierSearch, error) {
+	return rosetta.Construct[*MLPClassifierSearch](2938, nil, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples)
+}
+
+// NewMLPClassifierSearchWithIterations calls the C++ constructor datamunge::MLPClassifierSearch.
+//
+// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+//	const auto n = fit.test_rows(); // 30
+//
+// Parameters:
+//
+//   - data: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+//   - response: String response column, with nonempty labels and at least five rows per class.
+//   - xFeature: First numeric predictor, distinct from response and y_feature.
+//   - yFeature: Second numeric predictor; these two are the only model inputs.
+//   - minHidden: Smallest hidden width, default 2; at least 1 and below max_hidden.
+//   - maxHidden: Largest hidden width, default 24; at most 1000000.
+//   - initialSamples: Random initial proposals, default 4; at least 1.
+//   - iterations: Surrogate-guided proposals, default 8; zero permits initial design only.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): For invalid columns, labels,
+//     nonfinite/missing data or search controls.
+//   - [NativeError] (C++ std::runtime_error): If fitting or scoring fails to produce finite
+//     probabilities.
+//
+// It uses the C++ defaults epochs = 400, seed = 42; [NewMLPClassifierSearchWithEpochs] and
+// [NewMLPClassifierSearchWithSeed] pass more arguments.
+//
+// See also [MLPClassifierSearch] and summary().
+func NewMLPClassifierSearchWithIterations(data *DataFrame, response string, xFeature string, yFeature string, minHidden int, maxHidden int, initialSamples int, iterations int) (*MLPClassifierSearch, error) {
+	return rosetta.Construct[*MLPClassifierSearch](2938, nil, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples, iterations)
+}
+
+// NewMLPClassifierSearchWithEpochs calls the C++ constructor datamunge::MLPClassifierSearch.
+//
+// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+//	const auto n = fit.test_rows(); // 30
+//
+// Parameters:
+//
+//   - data: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+//   - response: String response column, with nonempty labels and at least five rows per class.
+//   - xFeature: First numeric predictor, distinct from response and y_feature.
+//   - yFeature: Second numeric predictor; these two are the only model inputs.
+//   - minHidden: Smallest hidden width, default 2; at least 1 and below max_hidden.
+//   - maxHidden: Largest hidden width, default 24; at most 1000000.
+//   - initialSamples: Random initial proposals, default 4; at least 1.
+//   - iterations: Surrogate-guided proposals, default 8; zero permits initial design only.
+//   - epochs: SGD passes for each candidate and the final refit, default 400; at least 1.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): For invalid columns, labels,
+//     nonfinite/missing data or search controls.
+//   - [NativeError] (C++ std::runtime_error): If fitting or scoring fails to produce finite
+//     probabilities.
+//
+// It uses the C++ defaults seed = 42; [NewMLPClassifierSearchWithSeed] passes more arguments.
+//
+// See also [MLPClassifierSearch] and summary().
+func NewMLPClassifierSearchWithEpochs(data *DataFrame, response string, xFeature string, yFeature string, minHidden int, maxHidden int, initialSamples int, iterations int, epochs int) (*MLPClassifierSearch, error) {
+	return rosetta.Construct[*MLPClassifierSearch](2938, nil, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples, iterations, epochs)
+}
+
+// NewMLPClassifierSearchWithSeed calls the C++ constructor datamunge::MLPClassifierSearch.
+//
+// Tune a single hidden layer, refit on development rows and evaluate the test rows.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+//	const auto n = fit.test_rows(); // 30
+//
+// Parameters:
+//
+//   - data: Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+//   - response: String response column, with nonempty labels and at least five rows per class.
+//   - xFeature: First numeric predictor, distinct from response and y_feature.
+//   - yFeature: Second numeric predictor; these two are the only model inputs.
+//   - minHidden: Smallest hidden width, default 2; at least 1 and below max_hidden.
+//   - maxHidden: Largest hidden width, default 24; at most 1000000.
+//   - initialSamples: Random initial proposals, default 4; at least 1.
+//   - iterations: Surrogate-guided proposals, default 8; zero permits initial design only.
+//   - epochs: SGD passes for each candidate and the final refit, default 400; at least 1.
+//   - seed: Local split/search/initialization seed, default 42; validation split uses seed+1
+//     modulo 2^64.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): For invalid columns, labels,
+//     nonfinite/missing data or search controls.
+//   - [NativeError] (C++ std::runtime_error): If fitting or scoring fails to produce finite
+//     probabilities.
+//
+// See also [MLPClassifierSearch] and summary().
+func NewMLPClassifierSearchWithSeed(data *DataFrame, response string, xFeature string, yFeature string, minHidden int, maxHidden int, initialSamples int, iterations int, epochs int, seed uint64) (*MLPClassifierSearch, error) {
+	return rosetta.Construct[*MLPClassifierSearch](2938, nil, data, response, xFeature, yFeature, minHidden, maxHidden, initialSamples, iterations, epochs, seed)
+}
+
+// BestHiddenNodes calls the C++ method datamunge::MLPClassifierSearch::best_hidden_nodes.
+//
+// Selected integer width of the single hidden layer.
+//
+// It returns A value in the requested inclusive search range.
+func (m *MLPClassifierSearch) BestHiddenNodes() (int, error) {
+	return rosetta.Result[int](rosetta.Call(2928, m))
+}
+
+// ValidationLogLoss calls the C++ method datamunge::MLPClassifierSearch::validation_log_loss.
+//
+// Minimum validation mean negative log probability of the true class.
+//
+// It returns finite nonnegative loss of the selected candidate before refitting.
+func (m *MLPClassifierSearch) ValidationLogLoss() (float64, error) {
+	return rosetta.Result[float64](rosetta.Call(2929, m))
+}
+
+// TestAccuracy calls the C++ method datamunge::MLPClassifierSearch::test_accuracy.
+//
+// Held-out test accuracy of the final development-data refit.
+//
+// It returns fraction correctly classified in [0,1]; test rows were never used for selection.
+func (m *MLPClassifierSearch) TestAccuracy() (float64, error) {
+	return rosetta.Result[float64](rosetta.Call(2930, m))
+}
+
+// TrainingRows calls the C++ method datamunge::MLPClassifierSearch::training_rows.
+//
+// Number of rows used to fit each search candidate.
+//
+// It returns fitting partition size, excluding validation and test.
+func (m *MLPClassifierSearch) TrainingRows() (int, error) {
+	return rosetta.Result[int](rosetta.Call(2931, m))
+}
+
+// ValidationRows calls the C++ method datamunge::MLPClassifierSearch::validation_rows.
+//
+// Number of rows used to choose hidden width.
+//
+// It returns validation partition size.
+func (m *MLPClassifierSearch) ValidationRows() (int, error) {
+	return rosetta.Result[int](rosetta.Call(2932, m))
+}
+
+// TestRows calls the C++ method datamunge::MLPClassifierSearch::test_rows.
+//
+// Number of untouched rows used for the final evaluation.
+//
+// It returns test partition size.
+func (m *MLPClassifierSearch) TestRows() (int, error) {
+	return rosetta.Result[int](rosetta.Call(2933, m))
+}
+
+// Summary calls the C++ method datamunge::MLPClassifierSearch::summary.
+//
+// Summarize split sizes, selected width, validation loss and final test accuracy.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+//	const bool named = fit.summary().find("Test accuracy") != std::string::npos; // true
+//
+// It returns owned multiline text, without a trailing newline.
+//
+// See also trials().
+func (m *MLPClassifierSearch) Summary() (string, error) {
+	return rosetta.Result[string](rosetta.Call(2934, m))
+}
+
+// Trials calls the C++ method datamunge::MLPClassifierSearch::trials.
+//
+// Copy the complete Bayesian proposal history into an owned dataframe.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+//	const std::unique_ptr<dm::DataFrame> history(fit.trials());
+//	const auto n = history->nrows(); // 12
+//
+// It returns new caller-owned frame with evaluation (1-based), hidden_nodes, validation_log_loss,
+// best_log_loss, cached (0/1), and phase (initial/bayesian). One row per proposal, including
+// repeated cached widths. Bindings own the result.
+//
+// See also summary().
+func (m *MLPClassifierSearch) Trials() (*DataFrame, error) {
+	return rosetta.Result[*DataFrame](rosetta.Call(2935, m))
+}
+
+// Predict calls the C++ method datamunge::MLPClassifierSearch::predict.
+//
+// Predict labels from the final refit using only its two predictor columns.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+//	const auto n = fit.predict(*iris).size(); // 150
+//
+// Parameters:
+//
+//   - newdata: Borrowed frame, unchanged; missing predictors yield empty labels.
+//
+// It returns one class label per input row, in input order.
+//
+// The error is an [*Error] of kind:
+//
+//   - [OutOfRange] (C++ std::out_of_range): If a required column is absent.
+//   - [InvalidArgument] (C++ std::invalid_argument): If predictor types are incompatible.
+//
+// See also stats::MLPClassifier::predict().
+func (m *MLPClassifierSearch) Predict(newdata *DataFrame) ([]string, error) {
+	return rosetta.Result[[]string](rosetta.Call(2936, m, newdata))
+}
+
+// PlotDecisionRegions calls the C++ method datamunge::MLPClassifierSearch::plot_decision_regions.
+//
+// Plot final predicted class regions and development observations in the predictor plane.
+//
+// Pale merged rectangles show the predicted class; saturated points show
+// observed development labels in the same palette. Test rows are excluded.
+// Axis ranges cover development points plus 10% padding, in original units.
+// Rendering samples cell centers, so boundaries are a grid approximation.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+//	auto plot = fit.plot_decision_regions();
+//	plot.save_svg("build/iris-mlp.svg");
+//
+// It returns owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): If grid_resolution is less than 2.
+//
+// It uses the C++ defaults gridResolution = 120;
+// [MLPClassifierSearch.PlotDecisionRegionsWithGridResolution] passes more arguments.
+//
+// See also graphics::add_class_regions() and predict().
+func (m *MLPClassifierSearch) PlotDecisionRegions() (*RPlot, error) {
+	return rosetta.Result[*RPlot](rosetta.Call(2937, m))
+}
+
+// PlotDecisionRegionsWithGridResolution calls the C++ method
+// datamunge::MLPClassifierSearch::plot_decision_regions.
+//
+// Plot final predicted class regions and development observations in the predictor plane.
+//
+// Pale merged rectangles show the predicted class; saturated points show
+// observed development labels in the same palette. Test rows are excluded.
+// Axis ranges cover development points plus 10% padding, in original units.
+// Rendering samples cell centers, so boundaries are a grid approximation.
+//
+// # Example
+//
+//	const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+//	dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+//	auto plot = fit.plot_decision_regions();
+//	plot.save_svg("build/iris-mlp.svg");
+//
+// Parameters:
+//
+//   - gridResolution: Cells per axis, default 120; at least 2.
+//
+// It returns owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+//
+// The error is an [*Error] of kind:
+//
+//   - [InvalidArgument] (C++ std::invalid_argument): If grid_resolution is less than 2.
+//
+// See also graphics::add_class_regions() and predict().
+func (m *MLPClassifierSearch) PlotDecisionRegionsWithGridResolution(gridResolution int) (*RPlot, error) {
+	return rosetta.Result[*RPlot](rosetta.Call(2937, m, gridResolution))
+}
+
 // CadSolidLike is implemented by *CadSolid, by the classes deriving from CadSolid and by Go types
 // embedding one of them: they all pass where C++ expects a datamunge::cad::Solid.
 type CadSolidLike interface {
@@ -42032,7 +42533,7 @@ func (c *CadSolid) String() string { return rosetta.Describe(c.nativeRef()) }
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Nonpositive/nonfinite size.
 func CadSolidBox(width float64, depth float64, height float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2928, width, depth, height))
+	return rosetta.Result[*CadSolid](rosetta.Call(2939, width, depth, height))
 }
 
 // CadSolidCylinder calls the C++ method datamunge::cad::Solid::cylinder.
@@ -42054,7 +42555,7 @@ func CadSolidBox(width float64, depth float64, height float64) (*CadSolid, error
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid dimensions.
 func CadSolidCylinder(radius float64, height float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2929, radius, height))
+	return rosetta.Result[*CadSolid](rosetta.Call(2940, radius, height))
 }
 
 // CadSolidSphere calls the C++ method datamunge::cad::Solid::sphere.
@@ -42075,7 +42576,7 @@ func CadSolidCylinder(radius float64, height float64) (*CadSolid, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid radius.
 func CadSolidSphere(radius float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2930, radius))
+	return rosetta.Result[*CadSolid](rosetta.Call(2941, radius))
 }
 
 // CadSolidTorus calls the C++ method datamunge::cad::Solid::torus.
@@ -42097,7 +42598,7 @@ func CadSolidSphere(radius float64) (*CadSolid, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid radii.
 func CadSolidTorus(majorRadius float64, minorRadius float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2931, majorRadius, minorRadius))
+	return rosetta.Result[*CadSolid](rosetta.Call(2942, majorRadius, minorRadius))
 }
 
 // United calls the C++ method datamunge::cad::Solid::united.
@@ -42120,7 +42621,7 @@ func CadSolidTorus(majorRadius float64, minorRadius float64) (*CadSolid, error) 
 //
 //   - [NativeError] (C++ std::runtime_error): Kernel failure.
 func (c *CadSolid) United(other *CadSolid) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2932, c, other))
+	return rosetta.Result[*CadSolid](rosetta.Call(2943, c, other))
 }
 
 // Subtracted calls the C++ method datamunge::cad::Solid::subtracted.
@@ -42141,7 +42642,7 @@ func (c *CadSolid) United(other *CadSolid) (*CadSolid, error) {
 //
 //   - [NativeError] (C++ std::runtime_error): Kernel failure or empty result.
 func (c *CadSolid) Subtracted(other *CadSolid) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2933, c, other))
+	return rosetta.Result[*CadSolid](rosetta.Call(2944, c, other))
 }
 
 // Intersected calls the C++ method datamunge::cad::Solid::intersected.
@@ -42163,7 +42664,7 @@ func (c *CadSolid) Subtracted(other *CadSolid) (*CadSolid, error) {
 //
 //   - [NativeError] (C++ std::runtime_error): Kernel failure or empty result.
 func (c *CadSolid) Intersected(other *CadSolid) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2934, c, other))
+	return rosetta.Result[*CadSolid](rosetta.Call(2945, c, other))
 }
 
 // Translated calls the C++ method datamunge::cad::Solid::translated.
@@ -42187,7 +42688,7 @@ func (c *CadSolid) Intersected(other *CadSolid) (*CadSolid, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): Nonfinite displacement.
 //   - [NativeError] (C++ std::runtime_error): Transform failure.
 func (c *CadSolid) Translated(x float64, y float64, z float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2935, c, x, y, z))
+	return rosetta.Result[*CadSolid](rosetta.Call(2946, c, x, y, z))
 }
 
 // Rotated calls the C++ method datamunge::cad::Solid::rotated.
@@ -42212,7 +42713,7 @@ func (c *CadSolid) Translated(x float64, y float64, z float64) (*CadSolid, error
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid axis or angle.
 //   - [NativeError] (C++ std::runtime_error): Kernel failure.
 func (c *CadSolid) Rotated(x float64, y float64, z float64, radians float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2936, c, x, y, z, radians))
+	return rosetta.Result[*CadSolid](rosetta.Call(2947, c, x, y, z, radians))
 }
 
 // Filleted calls the C++ method datamunge::cad::Solid::filleted.
@@ -42236,7 +42737,7 @@ func (c *CadSolid) Rotated(x float64, y float64, z float64, radians float64) (*C
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid radius.
 //   - [NativeError] (C++ std::runtime_error): Unsupported edge/blend geometry.
 func (c *CadSolid) Filleted(edges []int, radius float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2937, c, edges, radius))
+	return rosetta.Result[*CadSolid](rosetta.Call(2948, c, edges, radius))
 }
 
 // Chamfered calls the C++ method datamunge::cad::Solid::chamfered.
@@ -42260,7 +42761,7 @@ func (c *CadSolid) Filleted(edges []int, radius float64) (*CadSolid, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid setback.
 //   - [NativeError] (C++ std::runtime_error): Kernel failure.
 func (c *CadSolid) Chamfered(edges []int, setback float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2938, c, edges, setback))
+	return rosetta.Result[*CadSolid](rosetta.Call(2949, c, edges, setback))
 }
 
 // Shelled calls the C++ method datamunge::cad::Solid::shelled.
@@ -42285,7 +42786,7 @@ func (c *CadSolid) Chamfered(edges []int, setback float64) (*CadSolid, error) {
 // It uses the C++ defaults openFaces = the zero value; [CadSolid.ShelledWithOpenFaces] passes more
 // arguments.
 func (c *CadSolid) Shelled(thickness float64) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2939, c, thickness))
+	return rosetta.Result[*CadSolid](rosetta.Call(2950, c, thickness))
 }
 
 // ShelledWithOpenFaces calls the C++ method datamunge::cad::Solid::shelled.
@@ -42308,7 +42809,7 @@ func (c *CadSolid) Shelled(thickness float64) (*CadSolid, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid thickness.
 //   - [NativeError] (C++ std::runtime_error): Kernel failure.
 func (c *CadSolid) ShelledWithOpenFaces(thickness float64, openFaces []int) (*CadSolid, error) {
-	return rosetta.Result[*CadSolid](rosetta.Call(2939, c, thickness, openFaces))
+	return rosetta.Result[*CadSolid](rosetta.Call(2950, c, thickness, openFaces))
 }
 
 // Volume calls the C++ method datamunge::cad::Solid::volume.
@@ -42328,7 +42829,7 @@ func (c *CadSolid) ShelledWithOpenFaces(thickness float64, openFaces []int) (*Ca
 //
 // It uses the C++ defaults chord = 0.01; [CadSolid.VolumeWithChord] passes more arguments.
 func (c *CadSolid) Volume() (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(2940, c))
+	return rosetta.Result[float64](rosetta.Call(2951, c))
 }
 
 // VolumeWithChord calls the C++ method datamunge::cad::Solid::volume.
@@ -42350,7 +42851,7 @@ func (c *CadSolid) Volume() (float64, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid tolerance.
 //   - [NativeError] (C++ std::runtime_error): Tessellation failure.
 func (c *CadSolid) VolumeWithChord(chord float64) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(2940, c, chord))
+	return rosetta.Result[float64](rosetta.Call(2951, c, chord))
 }
 
 // Valid calls the C++ method datamunge::cad::Solid::valid.
@@ -42363,7 +42864,7 @@ func (c *CadSolid) VolumeWithChord(chord float64) (float64, error) {
 //
 // It returns true when the kernel validation report has no errors.
 func (c *CadSolid) Valid() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(2941, c))
+	return rosetta.Result[bool](rosetta.Call(2952, c))
 }
 
 // Edges calls the C++ method datamunge::cad::Solid::edges.
@@ -42372,7 +42873,7 @@ func (c *CadSolid) Valid() (bool, error) {
 //
 // It returns owned vector of unique edge IDs.
 func (c *CadSolid) Edges() ([]int, error) {
-	return rosetta.Result[[]int](rosetta.Call(2942, c))
+	return rosetta.Result[[]int](rosetta.Call(2953, c))
 }
 
 // Faces calls the C++ method datamunge::cad::Solid::faces.
@@ -42381,7 +42882,7 @@ func (c *CadSolid) Edges() ([]int, error) {
 //
 // It returns owned vector of face IDs.
 func (c *CadSolid) Faces() ([]int, error) {
-	return rosetta.Result[[]int](rosetta.Call(2943, c))
+	return rosetta.Result[[]int](rosetta.Call(2954, c))
 }
 
 // Save calls the C++ method datamunge::cad::Solid::save.
@@ -42403,7 +42904,7 @@ func (c *CadSolid) Faces() ([]int, error) {
 //
 // It uses the C++ defaults chord = 0.01; [CadSolid.SaveWithChord] passes more arguments.
 func (c *CadSolid) Save(path string) error {
-	return rosetta.Void(rosetta.Call(2944, c, path))
+	return rosetta.Void(rosetta.Call(2955, c, path))
 }
 
 // SaveWithChord calls the C++ method datamunge::cad::Solid::save.
@@ -42424,7 +42925,7 @@ func (c *CadSolid) Save(path string) error {
 //   - [InvalidArgument] (C++ std::invalid_argument): Unsupported extension or tolerance.
 //   - [NativeError] (C++ std::runtime_error): Export or file I/O failure.
 func (c *CadSolid) SaveWithChord(path string, chord float64) error {
-	return rosetta.Void(rosetta.Call(2944, c, path, chord))
+	return rosetta.Void(rosetta.Call(2955, c, path, chord))
 }
 
 // CadSceneLike is implemented by *CadScene, by the classes deriving from CadScene and by Go types
@@ -42483,7 +42984,7 @@ func (c *CadScene) String() string { return rosetta.Describe(c.nativeRef()) }
 //
 // See the class example.
 func NewCadScene() (*CadScene, error) {
-	return rosetta.Construct[*CadScene](2963, nil)
+	return rosetta.Construct[*CadScene](2974, nil)
 }
 
 // CadSceneFromFile calls the C++ method datamunge::cad::View::from_file.
@@ -42506,7 +43007,7 @@ func NewCadScene() (*CadScene, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): Unsupported format.
 //   - [NativeError] (C++ std::runtime_error): Import/I/O failure.
 func CadSceneFromFile(path string) (*CadScene, error) {
-	return rosetta.Result[*CadScene](rosetta.Call(2945, path))
+	return rosetta.Result[*CadScene](rosetta.Call(2956, path))
 }
 
 // CadSceneFromUrdf calls the C++ method datamunge::cad::View::from_urdf.
@@ -42529,7 +43030,7 @@ func CadSceneFromFile(path string) (*CadScene, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid URDF/joint data.
 //   - [NativeError] (C++ std::runtime_error): Import failure.
 func CadSceneFromUrdf(path string) (*CadScene, error) {
-	return rosetta.Result[*CadScene](rosetta.Call(2946, path))
+	return rosetta.Result[*CadScene](rosetta.Call(2957, path))
 }
 
 // SetJoint calls the C++ method datamunge::cad::View::set_joint.
@@ -42549,7 +43050,7 @@ func CadSceneFromUrdf(path string) (*CadScene, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): View has no robot or joint value is invalid.
 func (c *CadScene) SetJoint(name string, value float64) error {
-	return rosetta.Void(rosetta.Call(2947, c, name, value))
+	return rosetta.Void(rosetta.Call(2958, c, name, value))
 }
 
 // JointNames calls the C++ method datamunge::cad::View::joint_names.
@@ -42558,7 +43059,7 @@ func (c *CadScene) SetJoint(name string, value float64) error {
 //
 // It returns owned names; empty for ordinary scenes.
 func (c *CadScene) JointNames() ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(2948, c))
+	return rosetta.Result[[]string](rosetta.Call(2959, c))
 }
 
 // Add calls the C++ method datamunge::cad::View::add.
@@ -42583,7 +43084,7 @@ func (c *CadScene) JointNames() ([]string, error) {
 // It uses the C++ defaults color = "#4080d9", name = "Solid"; [CadScene.AddWithColor] and
 // [CadScene.AddWithName] pass more arguments.
 func (c *CadScene) Add(solid *CadSolid) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2949, c, solid))
+	return rosetta.Result[int](rosetta.Call(2960, c, solid))
 }
 
 // AddWithColor calls the C++ method datamunge::cad::View::add.
@@ -42608,7 +43109,7 @@ func (c *CadScene) Add(solid *CadSolid) (int, error) {
 //
 // It uses the C++ defaults name = "Solid"; [CadScene.AddWithName] passes more arguments.
 func (c *CadScene) AddWithColor(solid *CadSolid, color string) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2949, c, solid, color))
+	return rosetta.Result[int](rosetta.Call(2960, c, solid, color))
 }
 
 // AddWithName calls the C++ method datamunge::cad::View::add.
@@ -42632,7 +43133,7 @@ func (c *CadScene) AddWithColor(solid *CadSolid, color string) (int, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid color.
 //   - [NativeError] (C++ std::runtime_error): Tessellation failure.
 func (c *CadScene) AddWithName(solid *CadSolid, color string, name string) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2949, c, solid, color, name))
+	return rosetta.Result[int](rosetta.Call(2960, c, solid, color, name))
 }
 
 // Primitive calls the C++ method datamunge::cad::View::primitive.
@@ -42653,7 +43154,7 @@ func (c *CadScene) AddWithName(solid *CadSolid, color string, name string) (int,
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Unknown kind.
 func (c *CadScene) Primitive(kind string) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2950, c, kind))
+	return rosetta.Result[int](rosetta.Call(2961, c, kind))
 }
 
 // Size calls the C++ method datamunge::cad::View::size.
@@ -42673,7 +43174,7 @@ func (c *CadScene) Primitive(kind string) (int, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid dimensions.
 func (c *CadScene) Size(width int, height int) error {
-	return rosetta.Void(rosetta.Call(2951, c, width, height))
+	return rosetta.Void(rosetta.Call(2962, c, width, height))
 }
 
 // Samples calls the C++ method datamunge::cad::View::samples.
@@ -42692,7 +43193,7 @@ func (c *CadScene) Size(width int, height int) error {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid count.
 func (c *CadScene) Samples(count int) error {
-	return rosetta.Void(rosetta.Call(2952, c, count))
+	return rosetta.Void(rosetta.Call(2963, c, count))
 }
 
 // Style calls the C++ method datamunge::cad::View::style.
@@ -42711,7 +43212,7 @@ func (c *CadScene) Samples(count int) error {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Unknown style.
 func (c *CadScene) Style(name string) error {
-	return rosetta.Void(rosetta.Call(2953, c, name))
+	return rosetta.Void(rosetta.Call(2964, c, name))
 }
 
 // Shadows calls the C++ method datamunge::cad::View::shadows.
@@ -42726,7 +43227,7 @@ func (c *CadScene) Style(name string) error {
 //
 //   - enabled: True enables triangle-ray shadow tests.
 func (c *CadScene) Shadows(enabled bool) error {
-	return rosetta.Void(rosetta.Call(2954, c, enabled))
+	return rosetta.Void(rosetta.Call(2965, c, enabled))
 }
 
 // Camera calls the C++ method datamunge::cad::View::camera.
@@ -42750,7 +43251,7 @@ func (c *CadScene) Shadows(enabled bool) error {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid camera.
 func (c *CadScene) Camera(x float64, y float64, z float64, targetX float64, targetY float64, targetZ float64) error {
-	return rosetta.Void(rosetta.Call(2955, c, x, y, z, targetX, targetY, targetZ))
+	return rosetta.Void(rosetta.Call(2966, c, x, y, z, targetX, targetY, targetZ))
 }
 
 // Fit calls the C++ method datamunge::cad::View::fit.
@@ -42761,7 +43262,7 @@ func (c *CadScene) Camera(x float64, y float64, z float64, targetX float64, targ
 //
 //	dm::cad::View view; view.fit();
 func (c *CadScene) Fit() error {
-	return rosetta.Void(rosetta.Call(2956, c))
+	return rosetta.Void(rosetta.Call(2967, c))
 }
 
 // Light calls the C++ method datamunge::cad::View::light.
@@ -42787,7 +43288,7 @@ func (c *CadScene) Fit() error {
 // It uses the C++ defaults color = "#ffffff", intensity = 1.0; [CadScene.LightWithColor] and
 // [CadScene.LightWithIntensity] pass more arguments.
 func (c *CadScene) Light(x float64, y float64, z float64) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2957, c, x, y, z))
+	return rosetta.Result[int](rosetta.Call(2968, c, x, y, z))
 }
 
 // LightWithColor calls the C++ method datamunge::cad::View::light.
@@ -42813,7 +43314,7 @@ func (c *CadScene) Light(x float64, y float64, z float64) (int, error) {
 //
 // It uses the C++ defaults intensity = 1.0; [CadScene.LightWithIntensity] passes more arguments.
 func (c *CadScene) LightWithColor(x float64, y float64, z float64, color string) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2957, c, x, y, z, color))
+	return rosetta.Result[int](rosetta.Call(2968, c, x, y, z, color))
 }
 
 // LightWithIntensity calls the C++ method datamunge::cad::View::light.
@@ -42838,7 +43339,7 @@ func (c *CadScene) LightWithColor(x float64, y float64, z float64, color string)
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid direction, color or intensity.
 func (c *CadScene) LightWithIntensity(x float64, y float64, z float64, color string, intensity float64) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2957, c, x, y, z, color, intensity))
+	return rosetta.Result[int](rosetta.Call(2968, c, x, y, z, color, intensity))
 }
 
 // Render calls the C++ method datamunge::cad::View::render.
@@ -42858,7 +43359,7 @@ func (c *CadScene) LightWithIntensity(x float64, y float64, z float64, color str
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid scene or extension.
 //   - [NativeError] (C++ std::runtime_error): File I/O failure.
 func (c *CadScene) Render(path string) error {
-	return rosetta.Void(rosetta.Call(2958, c, path))
+	return rosetta.Void(rosetta.Call(2969, c, path))
 }
 
 // SaveGltf calls the C++ method datamunge::cad::View::save_gltf.
@@ -42877,7 +43378,7 @@ func (c *CadScene) Render(path string) error {
 //
 //   - [NativeError] (C++ std::runtime_error): Export/I/O failure.
 func (c *CadScene) SaveGltf(path string) error {
-	return rosetta.Void(rosetta.Call(2959, c, path))
+	return rosetta.Void(rosetta.Call(2970, c, path))
 }
 
 // PickObject calls the C++ method datamunge::cad::View::pick_object.
@@ -42899,7 +43400,7 @@ func (c *CadScene) SaveGltf(path string) error {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid ray or geometry.
 func (c *CadScene) PickObject(x float64, y float64) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2960, c, x, y))
+	return rosetta.Result[int](rosetta.Call(2971, c, x, y))
 }
 
 // ObjectCount calls the C++ method datamunge::cad::View::object_count.
@@ -42908,7 +43409,7 @@ func (c *CadScene) PickObject(x float64, y float64) (int, error) {
 //
 // It returns object count.
 func (c *CadScene) ObjectCount() (int, error) {
-	return rosetta.Result[int](rosetta.Call(2961, c))
+	return rosetta.Result[int](rosetta.Call(2972, c))
 }
 
 // TriangleCount calls the C++ method datamunge::cad::View::triangle_count.
@@ -42917,7 +43418,7 @@ func (c *CadScene) ObjectCount() (int, error) {
 //
 // It returns triangle count.
 func (c *CadScene) TriangleCount() (int, error) {
-	return rosetta.Result[int](rosetta.Call(2962, c))
+	return rosetta.Result[int](rosetta.Call(2973, c))
 }
 
 // SplineSolveOptionsLike is implemented by *SplineSolveOptions, by the classes deriving from
@@ -42971,55 +43472,55 @@ func (s *SplineSolveOptions) String() string { return rosetta.Describe(s.nativeR
 
 // NewSplineSolveOptions calls the C++ constructor datamunge::fda::SplineSolveOptions.
 func NewSplineSolveOptions() (*SplineSolveOptions, error) {
-	return rosetta.Construct[*SplineSolveOptions](2972, nil)
+	return rosetta.Construct[*SplineSolveOptions](2983, nil)
 }
 
 // Method returns the C++ field datamunge::fda::SplineSolveOptions::method.
 //
 // Requested solver.
 func (s *SplineSolveOptions) Method() SplineSolver {
-	return rosetta.MustResult[SplineSolver](rosetta.Call(2964, s))
+	return rosetta.MustResult[SplineSolver](rosetta.Call(2975, s))
 }
 
 // SetMethod sets the C++ field datamunge::fda::SplineSolveOptions::method.
 func (s *SplineSolveOptions) SetMethod(value SplineSolver) error {
-	return rosetta.Void(rosetta.Call(2965, s, value))
+	return rosetta.Void(rosetta.Call(2976, s, value))
 }
 
 // DirectLimit returns the C++ field datamunge::fda::SplineSolveOptions::direct_limit.
 //
 // Automatic switches from Cholesky to CG above this many unknowns.
 func (s *SplineSolveOptions) DirectLimit() int {
-	return rosetta.MustResult[int](rosetta.Call(2966, s))
+	return rosetta.MustResult[int](rosetta.Call(2977, s))
 }
 
 // SetDirectLimit sets the C++ field datamunge::fda::SplineSolveOptions::direct_limit.
 func (s *SplineSolveOptions) SetDirectLimit(value int) error {
-	return rosetta.Void(rosetta.Call(2967, s, value))
+	return rosetta.Void(rosetta.Call(2978, s, value))
 }
 
 // Tolerance returns the C++ field datamunge::fda::SplineSolveOptions::tolerance.
 //
 // CG relative residual tolerance.
 func (s *SplineSolveOptions) Tolerance() float64 {
-	return rosetta.MustResult[float64](rosetta.Call(2968, s))
+	return rosetta.MustResult[float64](rosetta.Call(2979, s))
 }
 
 // SetTolerance sets the C++ field datamunge::fda::SplineSolveOptions::tolerance.
 func (s *SplineSolveOptions) SetTolerance(value float64) error {
-	return rosetta.Void(rosetta.Call(2969, s, value))
+	return rosetta.Void(rosetta.Call(2980, s, value))
 }
 
 // MaxIterations returns the C++ field datamunge::fda::SplineSolveOptions::max_iterations.
 //
 // CG iteration cap; 0 means 10 times the unknown count.
 func (s *SplineSolveOptions) MaxIterations() int {
-	return rosetta.MustResult[int](rosetta.Call(2970, s))
+	return rosetta.MustResult[int](rosetta.Call(2981, s))
 }
 
 // SetMaxIterations sets the C++ field datamunge::fda::SplineSolveOptions::max_iterations.
 func (s *SplineSolveOptions) SetMaxIterations(value int) error {
-	return rosetta.Void(rosetta.Call(2971, s, value))
+	return rosetta.Void(rosetta.Call(2982, s, value))
 }
 
 // BSplineRefinementLike is implemented by *BSplineRefinement, by the classes deriving from
@@ -43077,7 +43578,7 @@ func (b *BSplineRefinement) String() string { return rosetta.Describe(b.nativeRe
 
 // NewBSplineRefinement calls the C++ constructor datamunge::fda::BSplineRefinement.
 func NewBSplineRefinement() (*BSplineRefinement, error) {
-	return rosetta.Construct[*BSplineRefinement](2976, nil)
+	return rosetta.Construct[*BSplineRefinement](2987, nil)
 }
 
 // Apply maps coarse coefficients to the refined basis.
@@ -43098,7 +43599,7 @@ func NewBSplineRefinement() (*BSplineRefinement, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): If `coefficients` does not match the coarse
 //     basis size.
 func (b *BSplineRefinement) Apply(coefficients []float64) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(2973, b, coefficients))
+	return rosetta.Result[[]float64](rosetta.Call(2984, b, coefficients))
 }
 
 // Basis returns the C++ field datamunge::fda::BSplineRefinement::basis.
@@ -43107,12 +43608,12 @@ func (b *BSplineRefinement) Apply(coefficients []float64) ([]float64, error) {
 //
 // The result refers to the field inside this object, which it keeps alive.
 func (b *BSplineRefinement) Basis() *BSplineBasis {
-	return rosetta.MustResult[*BSplineBasis](rosetta.Call(2974, b))
+	return rosetta.MustResult[*BSplineBasis](rosetta.Call(2985, b))
 }
 
 // SetBasis sets the C++ field datamunge::fda::BSplineRefinement::basis.
 func (b *BSplineRefinement) SetBasis(value *BSplineBasis) error {
-	return rosetta.Void(rosetta.Call(2975, b, value))
+	return rosetta.Void(rosetta.Call(2986, b, value))
 }
 
 // TensorBSplineLike is implemented by *TensorBSpline, by the classes deriving from TensorBSpline
@@ -43195,7 +43696,7 @@ func (t *TensorBSpline) String() string { return rosetta.Describe(t.nativeRef())
 //   - [InvalidArgument] (C++ std::invalid_argument): If the coefficient count differs from
 //     basis.basis_size().
 func NewTensorBSpline(basis *BSplineBasis, coefficients []float64) (*TensorBSpline, error) {
-	return rosetta.Construct[*TensorBSpline](2990, nil, basis, coefficients)
+	return rosetta.Construct[*TensorBSpline](3001, nil, basis, coefficients)
 }
 
 // NewTensorBSplineBasesCoefficients calls the C++ constructor
@@ -43219,7 +43720,7 @@ func NewTensorBSpline(basis *BSplineBasis, coefficients []float64) (*TensorBSpli
 //   - [InvalidArgument] (C++ std::invalid_argument): If `bases` is empty or the net size does not
 //     match.
 func NewTensorBSplineBasesCoefficients(bases []*BSplineBasis, coefficients []float64) (*TensorBSpline, error) {
-	return rosetta.Construct[*TensorBSpline](2990, nil, bases, coefficients)
+	return rosetta.Construct[*TensorBSpline](3001, nil, bases, coefficients)
 }
 
 // Dimensions calls the C++ method datamunge::fda::TensorBSpline::dimensions.
@@ -43228,7 +43729,7 @@ func NewTensorBSplineBasesCoefficients(bases []*BSplineBasis, coefficients []flo
 //
 // It returns bases().size().
 func (t *TensorBSpline) Dimensions() int {
-	return rosetta.MustResult[int](rosetta.Call(2977, t))
+	return rosetta.MustResult[int](rosetta.Call(2988, t))
 }
 
 // Bases calls the C++ method datamunge::fda::TensorBSpline::bases.
@@ -43237,7 +43738,7 @@ func (t *TensorBSpline) Dimensions() int {
 //
 // It returns reference valid for the lifetime of this object.
 func (t *TensorBSpline) Bases() []*BSplineBasis {
-	return rosetta.MustResult[[]*BSplineBasis](rosetta.Call(2978, t))
+	return rosetta.MustResult[[]*BSplineBasis](rosetta.Call(2989, t))
 }
 
 // Shape calls the C++ method datamunge::fda::TensorBSpline::shape.
@@ -43246,7 +43747,7 @@ func (t *TensorBSpline) Bases() []*BSplineBasis {
 //
 // It returns d sizes in axis order.
 func (t *TensorBSpline) Shape() ([]int, error) {
-	return rosetta.Result[[]int](rosetta.Call(2979, t))
+	return rosetta.Result[[]int](rosetta.Call(2990, t))
 }
 
 // CoefficientCount calls the C++ method datamunge::fda::TensorBSpline::coefficient_count.
@@ -43255,7 +43756,7 @@ func (t *TensorBSpline) Shape() ([]int, error) {
 //
 // It returns coefficient count.
 func (t *TensorBSpline) CoefficientCount() int {
-	return rosetta.MustResult[int](rosetta.Call(2980, t))
+	return rosetta.MustResult[int](rosetta.Call(2991, t))
 }
 
 // Coefficients calls the C++ method datamunge::fda::TensorBSpline::coefficients.
@@ -43264,7 +43765,7 @@ func (t *TensorBSpline) CoefficientCount() int {
 //
 // It returns reference valid until the next mutation of this object.
 func (t *TensorBSpline) Coefficients() []float64 {
-	return rosetta.MustResult[[]float64](rosetta.Call(2981, t))
+	return rosetta.MustResult[[]float64](rosetta.Call(2992, t))
 }
 
 // DomainMin calls the C++ method datamunge::fda::TensorBSpline::domain_min.
@@ -43273,7 +43774,7 @@ func (t *TensorBSpline) Coefficients() []float64 {
 //
 // It returns d coordinates.
 func (t *TensorBSpline) DomainMin() ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(2982, t))
+	return rosetta.Result[[]float64](rosetta.Call(2993, t))
 }
 
 // DomainMax calls the C++ method datamunge::fda::TensorBSpline::domain_max.
@@ -43282,7 +43783,7 @@ func (t *TensorBSpline) DomainMin() ([]float64, error) {
 //
 // It returns d coordinates.
 func (t *TensorBSpline) DomainMax() ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(2983, t))
+	return rosetta.Result[[]float64](rosetta.Call(2994, t))
 }
 
 // Coefficient reads one coefficient by per-axis basis index.
@@ -43304,7 +43805,7 @@ func (t *TensorBSpline) DomainMax() ([]float64, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): If index.size() != dimensions().
 //   - [OutOfRange] (C++ std::out_of_range): If a component is out of range.
 func (t *TensorBSpline) Coefficient(index []int) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(2984, t, index))
+	return rosetta.Result[float64](rosetta.Call(2995, t, index))
 }
 
 // SetCoefficient overwrites one coefficient by per-axis basis index.
@@ -43325,7 +43826,7 @@ func (t *TensorBSpline) Coefficient(index []int) (float64, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): If index.size() != dimensions().
 //   - [OutOfRange] (C++ std::out_of_range): If a component is out of range.
 func (t *TensorBSpline) SetCoefficient(index []int, value float64) error {
-	return rosetta.Void(rosetta.Call(2985, t, index, value))
+	return rosetta.Void(rosetta.Call(2996, t, index, value))
 }
 
 // Evaluate evaluates a one-dimensional spline at `x` (clamped into the domain).
@@ -43345,7 +43846,7 @@ func (t *TensorBSpline) SetCoefficient(index []int, value float64) error {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): If dimensions() != 1 or `x` is not finite.
 func (t *TensorBSpline) Evaluate(x float64) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(2986, t, x))
+	return rosetta.Result[float64](rosetta.Call(2997, t, x))
 }
 
 // EvaluatePoint evaluates at one d-dimensional point (each coordinate clamped into the domain).
@@ -43367,7 +43868,7 @@ func (t *TensorBSpline) Evaluate(x float64) (float64, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): If point.size() != dimensions() or a
 //     coordinate is not finite.
 func (t *TensorBSpline) EvaluatePoint(point []float64) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(2986, t, point))
+	return rosetta.Result[float64](rosetta.Call(2997, t, point))
 }
 
 // EvaluatePoints evaluates at many points.
@@ -43387,7 +43888,7 @@ func (t *TensorBSpline) EvaluatePoint(point []float64) (float64, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): As for evaluate(const std::vector<double>&).
 func (t *TensorBSpline) EvaluatePoints(points [][]float64) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(2987, t, points))
+	return rosetta.Result[[]float64](rosetta.Call(2998, t, points))
 }
 
 // EvaluateGrid evaluates on the Cartesian product of per-axis sample values.
@@ -43409,7 +43910,7 @@ func (t *TensorBSpline) EvaluatePoints(points [][]float64) ([]float64, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): If axes.size() != dimensions() or an axis is
 //     empty.
 func (t *TensorBSpline) EvaluateGrid(axes [][]float64) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(2988, t, axes))
+	return rosetta.Result[[]float64](rosetta.Call(2999, t, axes))
 }
 
 // DyadicRefine calls the C++ method datamunge::fda::TensorBSpline::dyadic_refine.
@@ -43431,7 +43932,7 @@ func (t *TensorBSpline) EvaluateGrid(axes [][]float64) ([]float64, error) {
 //
 // See also dyadic_refine(const BSplineBasis&).
 func (t *TensorBSpline) DyadicRefine() (*TensorBSpline, error) {
-	return rosetta.Result[*TensorBSpline](rosetta.Call(2989, t))
+	return rosetta.Result[*TensorBSpline](rosetta.Call(3000, t))
 }
 
 // OrthantCellTreeLike is implemented by *OrthantCellTree, by the classes deriving from
@@ -43492,7 +43993,7 @@ func (o *OrthantCellTree) String() string { return rosetta.Describe(o.nativeRef(
 //   - [InvalidArgument] (C++ std::invalid_argument): On empty/mismatched/non-finite bounds, lo >=
 //     hi, or more than 20 dimensions.
 func NewOrthantCellTree(lo []float64, hi []float64) (*OrthantCellTree, error) {
-	return rosetta.Construct[*OrthantCellTree](3011, nil, lo, hi)
+	return rosetta.Construct[*OrthantCellTree](3022, nil, lo, hi)
 }
 
 // Dimensions calls the C++ method datamunge::fda::detail::OrthantCellTree::dimensions.
@@ -43501,7 +44002,7 @@ func NewOrthantCellTree(lo []float64, hi []float64) (*OrthantCellTree, error) {
 //
 // It returns d.
 func (o *OrthantCellTree) Dimensions() int {
-	return rosetta.MustResult[int](rosetta.Call(2991, o))
+	return rosetta.MustResult[int](rosetta.Call(3002, o))
 }
 
 // Arity calls the C++ method datamunge::fda::detail::OrthantCellTree::arity.
@@ -43510,7 +44011,7 @@ func (o *OrthantCellTree) Dimensions() int {
 //
 // It returns 2^d.
 func (o *OrthantCellTree) Arity() int {
-	return rosetta.MustResult[int](rosetta.Call(2992, o))
+	return rosetta.MustResult[int](rosetta.Call(3003, o))
 }
 
 // Size calls the C++ method datamunge::fda::detail::OrthantCellTree::size.
@@ -43519,7 +44020,7 @@ func (o *OrthantCellTree) Arity() int {
 //
 // It returns cell count.
 func (o *OrthantCellTree) Size() int {
-	return rosetta.MustResult[int](rosetta.Call(2993, o))
+	return rosetta.MustResult[int](rosetta.Call(3004, o))
 }
 
 // MaxDepth calls the C++ method datamunge::fda::detail::OrthantCellTree::max_depth.
@@ -43528,7 +44029,7 @@ func (o *OrthantCellTree) Size() int {
 //
 // It returns maximum depth (root is 0).
 func (o *OrthantCellTree) MaxDepth() int {
-	return rosetta.MustResult[int](rosetta.Call(2994, o))
+	return rosetta.MustResult[int](rosetta.Call(3005, o))
 }
 
 // Check throws std::out_of_range unless `cell` is a valid id.
@@ -43537,7 +44038,7 @@ func (o *OrthantCellTree) MaxDepth() int {
 //
 //   - cell: Cell id.
 func (o *OrthantCellTree) Check(cell int) error {
-	return rosetta.Void(rosetta.Call(2995, o, cell))
+	return rosetta.Void(rosetta.Call(3006, o, cell))
 }
 
 // CheckSlot throws std::out_of_range unless 0 <= `slot` < arity().
@@ -43546,7 +44047,7 @@ func (o *OrthantCellTree) Check(cell int) error {
 //
 //   - slot: Child slot.
 func (o *OrthantCellTree) CheckSlot(slot int) error {
-	return rosetta.Void(rosetta.Call(2996, o, slot))
+	return rosetta.Void(rosetta.Call(3007, o, slot))
 }
 
 // Lo calls the C++ method datamunge::fda::detail::OrthantCellTree::lo.
@@ -43559,7 +44060,7 @@ func (o *OrthantCellTree) CheckSlot(slot int) error {
 //
 // It returns d coordinates.
 func (o *OrthantCellTree) Lo(cell int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(2997, o, cell))
+	return rosetta.Result[[]float64](rosetta.Call(3008, o, cell))
 }
 
 // Hi calls the C++ method datamunge::fda::detail::OrthantCellTree::hi.
@@ -43572,7 +44073,7 @@ func (o *OrthantCellTree) Lo(cell int) ([]float64, error) {
 //
 // It returns d coordinates.
 func (o *OrthantCellTree) Hi(cell int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(2998, o, cell))
+	return rosetta.Result[[]float64](rosetta.Call(3009, o, cell))
 }
 
 // Depth calls the C++ method datamunge::fda::detail::OrthantCellTree::depth.
@@ -43585,7 +44086,7 @@ func (o *OrthantCellTree) Hi(cell int) ([]float64, error) {
 //
 // It returns depth (root 0).
 func (o *OrthantCellTree) Depth(cell int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(2999, o, cell))
+	return rosetta.Result[int](rosetta.Call(3010, o, cell))
 }
 
 // Parent calls the C++ method datamunge::fda::detail::OrthantCellTree::parent.
@@ -43598,7 +44099,7 @@ func (o *OrthantCellTree) Depth(cell int) (int, error) {
 //
 // It returns parent id, or -1 for the root.
 func (o *OrthantCellTree) Parent(cell int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3000, o, cell))
+	return rosetta.Result[int](rosetta.Call(3011, o, cell))
 }
 
 // Child calls the C++ method datamunge::fda::detail::OrthantCellTree::child.
@@ -43612,7 +44113,7 @@ func (o *OrthantCellTree) Parent(cell int) (int, error) {
 //
 // It returns id or -1 if absent.
 func (o *OrthantCellTree) Child(cell int, slot int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3001, o, cell, slot))
+	return rosetta.Result[int](rosetta.Call(3012, o, cell, slot))
 }
 
 // IsLeaf calls the C++ method datamunge::fda::detail::OrthantCellTree::is_leaf.
@@ -43625,7 +44126,7 @@ func (o *OrthantCellTree) Child(cell int, slot int) (int, error) {
 //
 // It returns leaf flag.
 func (o *OrthantCellTree) IsLeaf(cell int) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3002, o, cell))
+	return rosetta.Result[bool](rosetta.Call(3013, o, cell))
 }
 
 // EnsureChild returns the child at `slot`, creating it if needed.
@@ -43637,7 +44138,7 @@ func (o *OrthantCellTree) IsLeaf(cell int) (bool, error) {
 //
 // It returns child id.
 func (o *OrthantCellTree) EnsureChild(cell int, slot int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3003, o, cell, slot))
+	return rosetta.Result[int](rosetta.Call(3014, o, cell, slot))
 }
 
 // ChildBox calls the C++ method datamunge::fda::detail::OrthantCellTree::child_box.
@@ -43651,7 +44152,7 @@ func (o *OrthantCellTree) EnsureChild(cell int, slot int) (int, error) {
 //
 // It returns pair (lo, hi) of the child box.
 func (o *OrthantCellTree) ChildBox(cell int, slot int) (Pair[[]float64, []float64], error) {
-	return rosetta.Result[Pair[[]float64, []float64]](rosetta.Call(3004, o, cell, slot))
+	return rosetta.Result[Pair[[]float64, []float64]](rosetta.Call(3015, o, cell, slot))
 }
 
 // SlotFor calls the C++ method datamunge::fda::detail::OrthantCellTree::slot_for.
@@ -43665,7 +44166,7 @@ func (o *OrthantCellTree) ChildBox(cell int, slot int) (Pair[[]float64, []float6
 //
 // It returns child slot.
 func (o *OrthantCellTree) SlotFor(cell int, point []float64) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3005, o, cell, point))
+	return rosetta.Result[int](rosetta.Call(3016, o, cell, point))
 }
 
 // Contains calls the C++ method datamunge::fda::detail::OrthantCellTree::contains.
@@ -43679,7 +44180,7 @@ func (o *OrthantCellTree) SlotFor(cell int, point []float64) (int, error) {
 //
 // It returns containment flag.
 func (o *OrthantCellTree) Contains(cell int, point []float64) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3006, o, cell, point))
+	return rosetta.Result[bool](rosetta.Call(3017, o, cell, point))
 }
 
 // Locate calls the C++ method datamunge::fda::detail::OrthantCellTree::locate.
@@ -43692,7 +44193,7 @@ func (o *OrthantCellTree) Contains(cell int, point []float64) (bool, error) {
 //
 // It returns cell id, or -1 outside the root box.
 func (o *OrthantCellTree) Locate(point []float64) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3007, o, point))
+	return rosetta.Result[int](rosetta.Call(3018, o, point))
 }
 
 // CellsAtDepth ids of every cell at `depth`.
@@ -43703,7 +44204,7 @@ func (o *OrthantCellTree) Locate(point []float64) (int, error) {
 //
 // It returns ids in creation order.
 func (o *OrthantCellTree) CellsAtDepth(depth int) ([]int, error) {
-	return rosetta.Result[[]int](rosetta.Call(3008, o, depth))
+	return rosetta.Result[[]int](rosetta.Call(3019, o, depth))
 }
 
 // OrthantCellTreeOverlaps calls the C++ method datamunge::fda::detail::OrthantCellTree::overlaps.
@@ -43719,7 +44220,7 @@ func (o *OrthantCellTree) CellsAtDepth(depth int) ([]int, error) {
 //
 // It returns true when the interiors overlap.
 func OrthantCellTreeOverlaps(lo []float64, hi []float64, blo []float64, bhi []float64) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3009, lo, hi, blo, bhi))
+	return rosetta.Result[bool](rosetta.Call(3020, lo, hi, blo, bhi))
 }
 
 // CoveredToDepth calls the C++ method datamunge::fda::detail::OrthantCellTree::covered_to_depth.
@@ -43735,7 +44236,7 @@ func OrthantCellTreeOverlaps(lo []float64, hi []float64, blo []float64, bhi []fl
 //
 // It returns coverage flag.
 func (o *OrthantCellTree) CoveredToDepth(targetDepth int, blo []float64, bhi []float64) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3010, o, targetDepth, blo, bhi))
+	return rosetta.Result[bool](rosetta.Call(3021, o, targetDepth, blo, bhi))
 }
 
 // AxisRefinementLike is implemented by *AxisRefinement, by the classes deriving from
@@ -43781,31 +44282,31 @@ func (a *AxisRefinement) String() string { return rosetta.Describe(a.nativeRef()
 
 // NewAxisRefinement calls the C++ constructor datamunge::fda::detail::AxisRefinement.
 func NewAxisRefinement() (*AxisRefinement, error) {
-	return rosetta.Construct[*AxisRefinement](3016, nil)
+	return rosetta.Construct[*AxisRefinement](3027, nil)
 }
 
 // Rows returns the C++ field datamunge::fda::detail::AxisRefinement::rows.
 //
 // rows[i]: (coarse j, R(i, j)) for refined index i.
 func (a *AxisRefinement) Rows() [][]Pair[int, float64] {
-	return rosetta.MustResult[[][]Pair[int, float64]](rosetta.Call(3012, a))
+	return rosetta.MustResult[[][]Pair[int, float64]](rosetta.Call(3023, a))
 }
 
 // SetRows sets the C++ field datamunge::fda::detail::AxisRefinement::rows.
 func (a *AxisRefinement) SetRows(value [][]Pair[int, float64]) error {
-	return rosetta.Void(rosetta.Call(3013, a, value))
+	return rosetta.Void(rosetta.Call(3024, a, value))
 }
 
 // Cols returns the C++ field datamunge::fda::detail::AxisRefinement::cols.
 //
 // cols[j]: (refined i, R(i, j)) for coarse index j.
 func (a *AxisRefinement) Cols() [][]Pair[int, float64] {
-	return rosetta.MustResult[[][]Pair[int, float64]](rosetta.Call(3014, a))
+	return rosetta.MustResult[[][]Pair[int, float64]](rosetta.Call(3025, a))
 }
 
 // SetCols sets the C++ field datamunge::fda::detail::AxisRefinement::cols.
 func (a *AxisRefinement) SetCols(value [][]Pair[int, float64]) error {
-	return rosetta.Void(rosetta.Call(3015, a, value))
+	return rosetta.Void(rosetta.Call(3026, a, value))
 }
 
 // HierarchicalBSplineLike is implemented by *HierarchicalBSpline, by the classes deriving from
@@ -43890,7 +44391,7 @@ func (h *HierarchicalBSpline) String() string { return rosetta.Describe(h.native
 //   - [InvalidArgument] (C++ std::invalid_argument): On empty, mismatched or non-finite bounds,
 //     min >= max, or more than 20 dimensions.
 func NewHierarchicalBSpline(domainMin []float64, domainMax []float64) (*HierarchicalBSpline, error) {
-	return rosetta.Construct[*HierarchicalBSpline](3038, nil, domainMin, domainMax)
+	return rosetta.Construct[*HierarchicalBSpline](3049, nil, domainMin, domainMax)
 }
 
 // Dimensions calls the C++ method datamunge::fda::HierarchicalBSpline::dimensions.
@@ -43899,7 +44400,7 @@ func NewHierarchicalBSpline(domainMin []float64, domainMax []float64) (*Hierarch
 //
 // It returns d.
 func (h *HierarchicalBSpline) Dimensions() int {
-	return rosetta.MustResult[int](rosetta.Call(3017, h))
+	return rosetta.MustResult[int](rosetta.Call(3028, h))
 }
 
 // CellCount calls the C++ method datamunge::fda::HierarchicalBSpline::cell_count.
@@ -43908,7 +44409,7 @@ func (h *HierarchicalBSpline) Dimensions() int {
 //
 // It returns cell count.
 func (h *HierarchicalBSpline) CellCount() int {
-	return rosetta.MustResult[int](rosetta.Call(3018, h))
+	return rosetta.MustResult[int](rosetta.Call(3029, h))
 }
 
 // Root calls the C++ method datamunge::fda::HierarchicalBSpline::root.
@@ -43917,7 +44418,7 @@ func (h *HierarchicalBSpline) CellCount() int {
 //
 // It returns always 0.
 func (h *HierarchicalBSpline) Root() int {
-	return rosetta.MustResult[int](rosetta.Call(3019, h))
+	return rosetta.MustResult[int](rosetta.Call(3030, h))
 }
 
 // Parent calls the C++ method datamunge::fda::HierarchicalBSpline::parent.
@@ -43934,7 +44435,7 @@ func (h *HierarchicalBSpline) Root() int {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (h *HierarchicalBSpline) Parent(cell int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3020, h, cell))
+	return rosetta.Result[int](rosetta.Call(3031, h, cell))
 }
 
 // Child calls the C++ method datamunge::fda::HierarchicalBSpline::child.
@@ -43952,7 +44453,7 @@ func (h *HierarchicalBSpline) Parent(cell int) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For invalid ids/slots.
 func (h *HierarchicalBSpline) Child(cell int, slot int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3021, h, cell, slot))
+	return rosetta.Result[int](rosetta.Call(3032, h, cell, slot))
 }
 
 // Depth calls the C++ method datamunge::fda::HierarchicalBSpline::depth.
@@ -43969,7 +44470,7 @@ func (h *HierarchicalBSpline) Child(cell int, slot int) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (h *HierarchicalBSpline) Depth(cell int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3022, h, cell))
+	return rosetta.Result[int](rosetta.Call(3033, h, cell))
 }
 
 // CellMin calls the C++ method datamunge::fda::HierarchicalBSpline::cell_min.
@@ -43986,7 +44487,7 @@ func (h *HierarchicalBSpline) Depth(cell int) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (h *HierarchicalBSpline) CellMin(cell int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3023, h, cell))
+	return rosetta.Result[[]float64](rosetta.Call(3034, h, cell))
 }
 
 // CellMax calls the C++ method datamunge::fda::HierarchicalBSpline::cell_max.
@@ -44003,7 +44504,7 @@ func (h *HierarchicalBSpline) CellMin(cell int) ([]float64, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (h *HierarchicalBSpline) CellMax(cell int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3024, h, cell))
+	return rosetta.Result[[]float64](rosetta.Call(3035, h, cell))
 }
 
 // Locate calls the C++ method datamunge::fda::HierarchicalBSpline::locate.
@@ -44026,7 +44527,7 @@ func (h *HierarchicalBSpline) CellMax(cell int) ([]float64, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): If point.size() != dimensions().
 func (h *HierarchicalBSpline) Locate(point []float64) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3025, h, point))
+	return rosetta.Result[int](rosetta.Call(3036, h, point))
 }
 
 // HasSpline calls the C++ method datamunge::fda::HierarchicalBSpline::has_spline.
@@ -44043,7 +44544,7 @@ func (h *HierarchicalBSpline) Locate(point []float64) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (h *HierarchicalBSpline) HasSpline(cell int) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3026, h, cell))
+	return rosetta.Result[bool](rosetta.Call(3037, h, cell))
 }
 
 // Spline calls the C++ method datamunge::fda::HierarchicalBSpline::spline.
@@ -44061,7 +44562,7 @@ func (h *HierarchicalBSpline) HasSpline(cell int) (bool, error) {
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 //   - [InvalidArgument] (C++ std::invalid_argument): If no patch.
 func (h *HierarchicalBSpline) Spline(cell int) (*TensorBSpline, error) {
-	return rosetta.Result[*TensorBSpline](rosetta.Call(3027, h, cell))
+	return rosetta.Result[*TensorBSpline](rosetta.Call(3038, h, cell))
 }
 
 // SetSpline installs (or replaces) the patch of `cell`.
@@ -44077,7 +44578,7 @@ func (h *HierarchicalBSpline) Spline(cell int) (*TensorBSpline, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): If the patch dimension differs from
 //     dimensions().
 func (h *HierarchicalBSpline) SetSpline(cell int, spline *TensorBSpline) error {
-	return rosetta.Void(rosetta.Call(3028, h, cell, spline))
+	return rosetta.Void(rosetta.Call(3039, h, cell, spline))
 }
 
 // ClearSpline removes the patch of `cell` (no-op if none).
@@ -44090,7 +44591,7 @@ func (h *HierarchicalBSpline) SetSpline(cell int, spline *TensorBSpline) error {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (h *HierarchicalBSpline) ClearSpline(cell int) error {
-	return rosetta.Void(rosetta.Call(3029, h, cell))
+	return rosetta.Void(rosetta.Call(3040, h, cell))
 }
 
 // Subdivide creates all 2^d children of `cell` (existing ones are kept), without patches.
@@ -44110,7 +44611,7 @@ func (h *HierarchicalBSpline) ClearSpline(cell int) error {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (h *HierarchicalBSpline) Subdivide(cell int) ([]int, error) {
-	return rosetta.Result[[]int](rosetta.Call(3030, h, cell))
+	return rosetta.Result[[]int](rosetta.Call(3041, h, cell))
 }
 
 // Refine creates (if needed) only the child of `cell` at `slot`.
@@ -44132,7 +44633,7 @@ func (h *HierarchicalBSpline) Subdivide(cell int) ([]int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id or slot.
 func (h *HierarchicalBSpline) Refine(cell int, slot int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3031, h, cell, slot))
+	return rosetta.Result[int](rosetta.Call(3042, h, cell, slot))
 }
 
 // RefineCellSlotSpline creates (if needed) the child at `slot` and installs `spline` on it.
@@ -44155,7 +44656,7 @@ func (h *HierarchicalBSpline) Refine(cell int, slot int) (int, error) {
 //   - [InvalidArgument] (C++ std::invalid_argument): If the patch dimension differs from
 //     dimensions().
 func (h *HierarchicalBSpline) RefineCellSlotSpline(cell int, slot int, spline *TensorBSpline) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3031, h, cell, slot, spline))
+	return rosetta.Result[int](rosetta.Call(3042, h, cell, slot, spline))
 }
 
 // RefineRegion calls the C++ method datamunge::fda::HierarchicalBSpline::refine_region(const
@@ -44180,7 +44681,7 @@ func (h *HierarchicalBSpline) RefineCellSlotSpline(cell int, slot int, spline *T
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): On mismatched sizes or min >= max.
 func (h *HierarchicalBSpline) RefineRegion(regionMin []float64, regionMax []float64, depth int) error {
-	return rosetta.Void(rosetta.Call(3032, h, regionMin, regionMax, depth))
+	return rosetta.Void(rosetta.Call(3043, h, regionMin, regionMax, depth))
 }
 
 // RefineRegionRegionMinRegionMaxDepthFactory calls the C++ method
@@ -44209,7 +44710,7 @@ func (h *HierarchicalBSpline) RefineRegion(regionMin []float64, regionMax []floa
 //   - [InvalidArgument] (C++ std::invalid_argument): On invalid bounds or a patch of the wrong
 //     dimension.
 func (h *HierarchicalBSpline) RefineRegionRegionMinRegionMaxDepthFactory(regionMin []float64, regionMax []float64, depth int, factory func([]float64, []float64) *TensorBSpline) error {
-	return rosetta.Void(rosetta.Call(3032, h, regionMin, regionMax, depth, factory))
+	return rosetta.Void(rosetta.Call(3043, h, regionMin, regionMax, depth, factory))
 }
 
 // FitCell calls the C++ method datamunge::fda::HierarchicalBSpline::fit_cell.
@@ -44245,7 +44746,7 @@ func (h *HierarchicalBSpline) RefineRegionRegionMinRegionMaxDepthFactory(regionM
 // It uses the C++ defaults options = the zero value; [HierarchicalBSpline.FitCellWithOptions]
 // passes more arguments.
 func (h *HierarchicalBSpline) FitCell(cell int, bases []*BSplineBasis, points [][]float64, values []float64) error {
-	return rosetta.Void(rosetta.Call(3033, h, cell, bases, points, values))
+	return rosetta.Void(rosetta.Call(3044, h, cell, bases, points, values))
 }
 
 // FitCellWithOptions calls the C++ method datamunge::fda::HierarchicalBSpline::fit_cell.
@@ -44279,7 +44780,7 @@ func (h *HierarchicalBSpline) FitCell(cell int, bases []*BSplineBasis, points []
 //     empty/mismatched, or a point lies outside the cell.
 //   - [NativeError] (C++ std::runtime_error): If the local normal equations are singular.
 func (h *HierarchicalBSpline) FitCellWithOptions(cell int, bases []*BSplineBasis, points [][]float64, values []float64, options *SplineSolveOptions) error {
-	return rosetta.Void(rosetta.Call(3033, h, cell, bases, points, values, options))
+	return rosetta.Void(rosetta.Call(3044, h, cell, bases, points, values, options))
 }
 
 // FitCellPenalized calls the C++ method datamunge::fda::HierarchicalBSpline::fit_cell_penalized.
@@ -44312,7 +44813,7 @@ func (h *HierarchicalBSpline) FitCellWithOptions(cell int, bases []*BSplineBasis
 // [HierarchicalBSpline.FitCellPenalizedWithOrder] and
 // [HierarchicalBSpline.FitCellPenalizedWithOptions] pass more arguments.
 func (h *HierarchicalBSpline) FitCellPenalized(cell int, bases []*BSplineBasis, points [][]float64, values []float64, lambdas []float64) error {
-	return rosetta.Void(rosetta.Call(3034, h, cell, bases, points, values, lambdas))
+	return rosetta.Void(rosetta.Call(3045, h, cell, bases, points, values, lambdas))
 }
 
 // FitCellPenalizedWithOrder calls the C++ method
@@ -44346,7 +44847,7 @@ func (h *HierarchicalBSpline) FitCellPenalized(cell int, bases []*BSplineBasis, 
 // It uses the C++ defaults options = the zero value;
 // [HierarchicalBSpline.FitCellPenalizedWithOptions] passes more arguments.
 func (h *HierarchicalBSpline) FitCellPenalizedWithOrder(cell int, bases []*BSplineBasis, points [][]float64, values []float64, lambdas []float64, order int) error {
-	return rosetta.Void(rosetta.Call(3034, h, cell, bases, points, values, lambdas, order))
+	return rosetta.Void(rosetta.Call(3045, h, cell, bases, points, values, lambdas, order))
 }
 
 // FitCellPenalizedWithOptions calls the C++ method
@@ -44378,7 +44879,7 @@ func (h *HierarchicalBSpline) FitCellPenalizedWithOrder(cell int, bases []*BSpli
 //   - [InvalidArgument] (C++ std::invalid_argument): As for fit_cell() and fit_tensor_pspline().
 //   - [NativeError] (C++ std::runtime_error): If the penalized normal equations are singular.
 func (h *HierarchicalBSpline) FitCellPenalizedWithOptions(cell int, bases []*BSplineBasis, points [][]float64, values []float64, lambdas []float64, order int, options *SplineSolveOptions) error {
-	return rosetta.Void(rosetta.Call(3034, h, cell, bases, points, values, lambdas, order, options))
+	return rosetta.Void(rosetta.Call(3045, h, cell, bases, points, values, lambdas, order, options))
 }
 
 // Evaluate calls the C++ method datamunge::fda::HierarchicalBSpline::evaluate.
@@ -44400,7 +44901,7 @@ func (h *HierarchicalBSpline) FitCellPenalizedWithOptions(cell int, bases []*BSp
 //   - [InvalidArgument] (C++ std::invalid_argument): On a size mismatch or a point outside the
 //     domain.
 func (h *HierarchicalBSpline) Evaluate(point []float64) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3035, h, point))
+	return rosetta.Result[float64](rosetta.Call(3046, h, point))
 }
 
 // EvaluatePoints evaluates at many points.
@@ -44420,7 +44921,7 @@ func (h *HierarchicalBSpline) Evaluate(point []float64) (float64, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): As for evaluate().
 func (h *HierarchicalBSpline) EvaluatePoints(points [][]float64) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3036, h, points))
+	return rosetta.Result[[]float64](rosetta.Call(3047, h, points))
 }
 
 // EvaluateGrid evaluates on a Cartesian grid.
@@ -44441,7 +44942,7 @@ func (h *HierarchicalBSpline) EvaluatePoints(points [][]float64) ([]float64, err
 //   - [InvalidArgument] (C++ std::invalid_argument): On a dimension mismatch, empty axis, or
 //     outside point.
 func (h *HierarchicalBSpline) EvaluateGrid(axes [][]float64) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3037, h, axes))
+	return rosetta.Result[[]float64](rosetta.Call(3048, h, axes))
 }
 
 // TruncatedHierarchicalBSplineLike is implemented by *TruncatedHierarchicalBSpline, by the classes
@@ -44535,7 +45036,7 @@ func (t *TruncatedHierarchicalBSpline) String() string { return rosetta.Describe
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): If an axis basis is not clamped or d > 20.
 func NewTruncatedHierarchicalBSpline(base *TensorBSpline) (*TruncatedHierarchicalBSpline, error) {
-	return rosetta.Construct[*TruncatedHierarchicalBSpline](3068, nil, base)
+	return rosetta.Construct[*TruncatedHierarchicalBSpline](3079, nil, base)
 }
 
 // Dimensions calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::dimensions.
@@ -44544,7 +45045,7 @@ func NewTruncatedHierarchicalBSpline(base *TensorBSpline) (*TruncatedHierarchica
 //
 // It returns d.
 func (t *TruncatedHierarchicalBSpline) Dimensions() int {
-	return rosetta.MustResult[int](rosetta.Call(3039, t))
+	return rosetta.MustResult[int](rosetta.Call(3050, t))
 }
 
 // LevelCount calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::level_count.
@@ -44553,7 +45054,7 @@ func (t *TruncatedHierarchicalBSpline) Dimensions() int {
 //
 // It returns level count.
 func (t *TruncatedHierarchicalBSpline) LevelCount() int {
-	return rosetta.MustResult[int](rosetta.Call(3040, t))
+	return rosetta.MustResult[int](rosetta.Call(3051, t))
 }
 
 // Level calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::level.
@@ -44571,7 +45072,7 @@ func (t *TruncatedHierarchicalBSpline) LevelCount() int {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid level.
 func (t *TruncatedHierarchicalBSpline) Level(level int) (*TensorBSpline, error) {
-	return rosetta.Result[*TensorBSpline](rosetta.Call(3041, t, level))
+	return rosetta.Result[*TensorBSpline](rosetta.Call(3052, t, level))
 }
 
 // CellCount calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::cell_count.
@@ -44580,7 +45081,7 @@ func (t *TruncatedHierarchicalBSpline) Level(level int) (*TensorBSpline, error) 
 //
 // It returns cell count.
 func (t *TruncatedHierarchicalBSpline) CellCount() int {
-	return rosetta.MustResult[int](rosetta.Call(3042, t))
+	return rosetta.MustResult[int](rosetta.Call(3053, t))
 }
 
 // Root calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::root.
@@ -44589,7 +45090,7 @@ func (t *TruncatedHierarchicalBSpline) CellCount() int {
 //
 // It returns always 0.
 func (t *TruncatedHierarchicalBSpline) Root() int {
-	return rosetta.MustResult[int](rosetta.Call(3043, t))
+	return rosetta.MustResult[int](rosetta.Call(3054, t))
 }
 
 // Parent calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::parent.
@@ -44606,7 +45107,7 @@ func (t *TruncatedHierarchicalBSpline) Root() int {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (t *TruncatedHierarchicalBSpline) Parent(cell int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3044, t, cell))
+	return rosetta.Result[int](rosetta.Call(3055, t, cell))
 }
 
 // Child calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::child.
@@ -44624,7 +45125,7 @@ func (t *TruncatedHierarchicalBSpline) Parent(cell int) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For invalid ids/slots.
 func (t *TruncatedHierarchicalBSpline) Child(cell int, slot int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3045, t, cell, slot))
+	return rosetta.Result[int](rosetta.Call(3056, t, cell, slot))
 }
 
 // Depth calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::depth.
@@ -44641,7 +45142,7 @@ func (t *TruncatedHierarchicalBSpline) Child(cell int, slot int) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (t *TruncatedHierarchicalBSpline) Depth(cell int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3046, t, cell))
+	return rosetta.Result[int](rosetta.Call(3057, t, cell))
 }
 
 // CellMin calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::cell_min.
@@ -44658,7 +45159,7 @@ func (t *TruncatedHierarchicalBSpline) Depth(cell int) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (t *TruncatedHierarchicalBSpline) CellMin(cell int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3047, t, cell))
+	return rosetta.Result[[]float64](rosetta.Call(3058, t, cell))
 }
 
 // CellMax calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::cell_max.
@@ -44675,7 +45176,7 @@ func (t *TruncatedHierarchicalBSpline) CellMin(cell int) ([]float64, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (t *TruncatedHierarchicalBSpline) CellMax(cell int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3048, t, cell))
+	return rosetta.Result[[]float64](rosetta.Call(3059, t, cell))
 }
 
 // Locate calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::locate.
@@ -44692,7 +45193,7 @@ func (t *TruncatedHierarchicalBSpline) CellMax(cell int) ([]float64, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): If point.size() != dimensions().
 func (t *TruncatedHierarchicalBSpline) Locate(point []float64) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3049, t, point))
+	return rosetta.Result[int](rosetta.Call(3060, t, point))
 }
 
 // Refine creates (if needed) the child of `cell` at `slot`, materializing the next
@@ -44716,7 +45217,7 @@ func (t *TruncatedHierarchicalBSpline) Locate(point []float64) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id or slot.
 func (t *TruncatedHierarchicalBSpline) Refine(cell int, slot int) (int, error) {
-	return rosetta.Result[int](rosetta.Call(3050, t, cell, slot))
+	return rosetta.Result[int](rosetta.Call(3061, t, cell, slot))
 }
 
 // Subdivide creates all 2^d children of `cell`.
@@ -44735,7 +45236,7 @@ func (t *TruncatedHierarchicalBSpline) Refine(cell int, slot int) (int, error) {
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid id.
 func (t *TruncatedHierarchicalBSpline) Subdivide(cell int) ([]int, error) {
-	return rosetta.Result[[]int](rosetta.Call(3051, t, cell))
+	return rosetta.Result[[]int](rosetta.Call(3062, t, cell))
 }
 
 // RefineRegion calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::refine_region.
@@ -44757,7 +45258,7 @@ func (t *TruncatedHierarchicalBSpline) Subdivide(cell int) ([]int, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): On mismatched sizes or min >= max.
 func (t *TruncatedHierarchicalBSpline) RefineRegion(regionMin []float64, regionMax []float64, depth int) error {
-	return rosetta.Void(rosetta.Call(3052, t, regionMin, regionMax, depth))
+	return rosetta.Void(rosetta.Call(3063, t, regionMin, regionMax, depth))
 }
 
 // SupportMin calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::support_min.
@@ -44776,7 +45277,7 @@ func (t *TruncatedHierarchicalBSpline) RefineRegion(regionMin []float64, regionM
 //   - [OutOfRange] (C++ std::out_of_range): For invalid levels/indices.
 //   - [InvalidArgument] (C++ std::invalid_argument): On a dimension mismatch.
 func (t *TruncatedHierarchicalBSpline) SupportMin(level int, index []int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3053, t, level, index))
+	return rosetta.Result[[]float64](rosetta.Call(3064, t, level, index))
 }
 
 // SupportMax calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::support_max.
@@ -44795,7 +45296,7 @@ func (t *TruncatedHierarchicalBSpline) SupportMin(level int, index []int) ([]flo
 //   - [OutOfRange] (C++ std::out_of_range): For invalid levels/indices.
 //   - [InvalidArgument] (C++ std::invalid_argument): On a dimension mismatch.
 func (t *TruncatedHierarchicalBSpline) SupportMax(level int, index []int) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3054, t, level, index))
+	return rosetta.Result[[]float64](rosetta.Call(3065, t, level, index))
 }
 
 // IsActive calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::is_active.
@@ -44822,7 +45323,7 @@ func (t *TruncatedHierarchicalBSpline) SupportMax(level int, index []int) ([]flo
 //   - [OutOfRange] (C++ std::out_of_range): For invalid levels/indices.
 //   - [InvalidArgument] (C++ std::invalid_argument): On a dimension mismatch.
 func (t *TruncatedHierarchicalBSpline) IsActive(level int, index []int) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3055, t, level, index))
+	return rosetta.Result[bool](rosetta.Call(3066, t, level, index))
 }
 
 // ActiveIndices calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::active_indices.
@@ -44845,7 +45346,7 @@ func (t *TruncatedHierarchicalBSpline) IsActive(level int, index []int) (bool, e
 //
 //   - [OutOfRange] (C++ std::out_of_range): For an invalid level.
 func (t *TruncatedHierarchicalBSpline) ActiveIndices(level int) ([][]int, error) {
-	return rosetta.Result[[][]int](rosetta.Call(3056, t, level))
+	return rosetta.Result[[][]int](rosetta.Call(3067, t, level))
 }
 
 // BasisSize calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::basis_size.
@@ -44861,7 +45362,7 @@ func (t *TruncatedHierarchicalBSpline) ActiveIndices(level int) ([][]int, error)
 //
 // It returns count.
 func (t *TruncatedHierarchicalBSpline) BasisSize() (int, error) {
-	return rosetta.Result[int](rosetta.Call(3057, t))
+	return rosetta.Result[int](rosetta.Call(3068, t))
 }
 
 // Coefficient calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::coefficient.
@@ -44881,7 +45382,7 @@ func (t *TruncatedHierarchicalBSpline) BasisSize() (int, error) {
 //   - [OutOfRange] (C++ std::out_of_range): For invalid levels/indices.
 //   - [InvalidArgument] (C++ std::invalid_argument): On a dimension mismatch.
 func (t *TruncatedHierarchicalBSpline) Coefficient(level int, index []int) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3058, t, level, index))
+	return rosetta.Result[float64](rosetta.Call(3069, t, level, index))
 }
 
 // SetCoefficient sets the coefficient of an active function and propagates the change, with
@@ -44905,7 +45406,7 @@ func (t *TruncatedHierarchicalBSpline) Coefficient(level int, index []int) (floa
 //   - [OutOfRange] (C++ std::out_of_range): For invalid levels/indices.
 //   - [InvalidArgument] (C++ std::invalid_argument): On a dimension mismatch or an inactive index.
 func (t *TruncatedHierarchicalBSpline) SetCoefficient(level int, index []int, value float64) error {
-	return rosetta.Void(rosetta.Call(3059, t, level, index, value))
+	return rosetta.Void(rosetta.Call(3070, t, level, index, value))
 }
 
 // TruncatedBasis calls the C++ method
@@ -44933,7 +45434,7 @@ func (t *TruncatedHierarchicalBSpline) SetCoefficient(level int, index []int, va
 //   - [InvalidArgument] (C++ std::invalid_argument): On a size mismatch or a point outside the
 //     domain.
 func (t *TruncatedHierarchicalBSpline) TruncatedBasis(level int, index []int, point []float64) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3060, t, level, index, point))
+	return rosetta.Result[float64](rosetta.Call(3071, t, level, index, point))
 }
 
 // FitLevel calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::fit_level.
@@ -44969,7 +45470,7 @@ func (t *TruncatedHierarchicalBSpline) TruncatedBasis(level int, index []int, po
 // It uses the C++ defaults options = the zero value;
 // [TruncatedHierarchicalBSpline.FitLevelWithOptions] passes more arguments.
 func (t *TruncatedHierarchicalBSpline) FitLevel(level int, points [][]float64, values []float64) error {
-	return rosetta.Void(rosetta.Call(3061, t, level, points, values))
+	return rosetta.Void(rosetta.Call(3072, t, level, points, values))
 }
 
 // FitLevelWithOptions calls the C++ method
@@ -45004,7 +45505,7 @@ func (t *TruncatedHierarchicalBSpline) FitLevel(level int, points [][]float64, v
 //     the domain, or a level with no active functions.
 //   - [NativeError] (C++ std::runtime_error): If the normal equations are singular.
 func (t *TruncatedHierarchicalBSpline) FitLevelWithOptions(level int, points [][]float64, values []float64, options *SplineSolveOptions) error {
-	return rosetta.Void(rosetta.Call(3061, t, level, points, values, options))
+	return rosetta.Void(rosetta.Call(3072, t, level, points, values, options))
 }
 
 // FitLevelPenalized calls the C++ method
@@ -45038,7 +45539,7 @@ func (t *TruncatedHierarchicalBSpline) FitLevelWithOptions(level int, points [][
 // [TruncatedHierarchicalBSpline.FitLevelPenalizedWithOrder] and
 // [TruncatedHierarchicalBSpline.FitLevelPenalizedWithOptions] pass more arguments.
 func (t *TruncatedHierarchicalBSpline) FitLevelPenalized(level int, points [][]float64, values []float64, lambdas []float64) error {
-	return rosetta.Void(rosetta.Call(3062, t, level, points, values, lambdas))
+	return rosetta.Void(rosetta.Call(3073, t, level, points, values, lambdas))
 }
 
 // FitLevelPenalizedWithOrder calls the C++ method
@@ -45072,7 +45573,7 @@ func (t *TruncatedHierarchicalBSpline) FitLevelPenalized(level int, points [][]f
 // It uses the C++ defaults options = the zero value;
 // [TruncatedHierarchicalBSpline.FitLevelPenalizedWithOptions] passes more arguments.
 func (t *TruncatedHierarchicalBSpline) FitLevelPenalizedWithOrder(level int, points [][]float64, values []float64, lambdas []float64, order int) error {
-	return rosetta.Void(rosetta.Call(3062, t, level, points, values, lambdas, order))
+	return rosetta.Void(rosetta.Call(3073, t, level, points, values, lambdas, order))
 }
 
 // FitLevelPenalizedWithOptions calls the C++ method
@@ -45104,7 +45605,7 @@ func (t *TruncatedHierarchicalBSpline) FitLevelPenalizedWithOrder(level int, poi
 //     tensor_difference_penalty().
 //   - [NativeError] (C++ std::runtime_error): If the normal equations are singular.
 func (t *TruncatedHierarchicalBSpline) FitLevelPenalizedWithOptions(level int, points [][]float64, values []float64, lambdas []float64, order int, options *SplineSolveOptions) error {
-	return rosetta.Void(rosetta.Call(3062, t, level, points, values, lambdas, order, options))
+	return rosetta.Void(rosetta.Call(3073, t, level, points, values, lambdas, order, options))
 }
 
 // Fit calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::fit.
@@ -45135,7 +45636,7 @@ func (t *TruncatedHierarchicalBSpline) FitLevelPenalizedWithOptions(level int, p
 // It uses the C++ defaults options = the zero value; [TruncatedHierarchicalBSpline.FitWithOptions]
 // passes more arguments.
 func (t *TruncatedHierarchicalBSpline) Fit(points [][]float64, values []float64) error {
-	return rosetta.Void(rosetta.Call(3063, t, points, values))
+	return rosetta.Void(rosetta.Call(3074, t, points, values))
 }
 
 // FitWithOptions calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::fit.
@@ -45164,7 +45665,7 @@ func (t *TruncatedHierarchicalBSpline) Fit(points [][]float64, values []float64)
 //   - [NativeError] (C++ std::runtime_error): If some active function has too little data
 //     (singular).
 func (t *TruncatedHierarchicalBSpline) FitWithOptions(points [][]float64, values []float64, options *SplineSolveOptions) error {
-	return rosetta.Void(rosetta.Call(3063, t, points, values, options))
+	return rosetta.Void(rosetta.Call(3074, t, points, values, options))
 }
 
 // FitPenalized calls the C++ method datamunge::fda::TruncatedHierarchicalBSpline::fit_penalized.
@@ -45199,7 +45700,7 @@ func (t *TruncatedHierarchicalBSpline) FitWithOptions(points [][]float64, values
 // [TruncatedHierarchicalBSpline.FitPenalizedWithOrder] and
 // [TruncatedHierarchicalBSpline.FitPenalizedWithOptions] pass more arguments.
 func (t *TruncatedHierarchicalBSpline) FitPenalized(points [][]float64, values []float64, lambdas []float64) error {
-	return rosetta.Void(rosetta.Call(3064, t, points, values, lambdas))
+	return rosetta.Void(rosetta.Call(3075, t, points, values, lambdas))
 }
 
 // FitPenalizedWithOrder calls the C++ method
@@ -45235,7 +45736,7 @@ func (t *TruncatedHierarchicalBSpline) FitPenalized(points [][]float64, values [
 // It uses the C++ defaults options = the zero value;
 // [TruncatedHierarchicalBSpline.FitPenalizedWithOptions] passes more arguments.
 func (t *TruncatedHierarchicalBSpline) FitPenalizedWithOrder(points [][]float64, values []float64, lambdas []float64, order int) error {
-	return rosetta.Void(rosetta.Call(3064, t, points, values, lambdas, order))
+	return rosetta.Void(rosetta.Call(3075, t, points, values, lambdas, order))
 }
 
 // FitPenalizedWithOptions calls the C++ method
@@ -45269,7 +45770,7 @@ func (t *TruncatedHierarchicalBSpline) FitPenalizedWithOrder(points [][]float64,
 //   - [InvalidArgument] (C++ std::invalid_argument): As for fit() and tensor_difference_penalty().
 //   - [NativeError] (C++ std::runtime_error): If the normal equations are singular.
 func (t *TruncatedHierarchicalBSpline) FitPenalizedWithOptions(points [][]float64, values []float64, lambdas []float64, order int, options *SplineSolveOptions) error {
-	return rosetta.Void(rosetta.Call(3064, t, points, values, lambdas, order, options))
+	return rosetta.Void(rosetta.Call(3075, t, points, values, lambdas, order, options))
 }
 
 // Evaluate evaluates the hierarchical spline (finest level covering `point`).
@@ -45289,7 +45790,7 @@ func (t *TruncatedHierarchicalBSpline) FitPenalizedWithOptions(points [][]float6
 //   - [InvalidArgument] (C++ std::invalid_argument): On a size mismatch or a point outside the
 //     domain.
 func (t *TruncatedHierarchicalBSpline) Evaluate(point []float64) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3065, t, point))
+	return rosetta.Result[float64](rosetta.Call(3076, t, point))
 }
 
 // EvaluatePoints evaluates at many points.
@@ -45310,7 +45811,7 @@ func (t *TruncatedHierarchicalBSpline) Evaluate(point []float64) (float64, error
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): As for evaluate().
 func (t *TruncatedHierarchicalBSpline) EvaluatePoints(points [][]float64) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3066, t, points))
+	return rosetta.Result[[]float64](rosetta.Call(3077, t, points))
 }
 
 // EvaluateGrid evaluates on a Cartesian grid.
@@ -45332,7 +45833,7 @@ func (t *TruncatedHierarchicalBSpline) EvaluatePoints(points [][]float64) ([]flo
 //   - [InvalidArgument] (C++ std::invalid_argument): On a dimension mismatch, empty axis, or
 //     outside point.
 func (t *TruncatedHierarchicalBSpline) EvaluateGrid(axes [][]float64) ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3067, t, axes))
+	return rosetta.Result[[]float64](rosetta.Call(3078, t, axes))
 }
 
 // NnTensorLike is implemented by *NnTensor, by the classes deriving from NnTensor and by Go types
@@ -45379,7 +45880,7 @@ func (n *NnTensor) String() string {
 //
 // An empty (undefined) tensor.
 func NewNnTensor() (*NnTensor, error) {
-	return rosetta.Construct[*NnTensor](3123, nil)
+	return rosetta.Construct[*NnTensor](3134, nil)
 }
 
 // NewNnTensorValuesShapeDtype calls the C++ constructor datamunge::nn::NnTensor(const
@@ -45391,7 +45892,7 @@ func NewNnTensor() (*NnTensor, error) {
 // It uses the C++ defaults dtype = "float32"; [NewNnTensorValuesShapeDtypeWithDtype] passes more
 // arguments.
 func NewNnTensorValuesShapeDtype(values []float64, shape []int) (*NnTensor, error) {
-	return rosetta.Construct[*NnTensor](3123, nil, values, shape)
+	return rosetta.Construct[*NnTensor](3134, nil, values, shape)
 }
 
 // NewNnTensorValuesShapeDtypeWithDtype calls the C++ constructor datamunge::nn::NnTensor(const
@@ -45400,43 +45901,43 @@ func NewNnTensorValuesShapeDtype(values []float64, shape []int) (*NnTensor, erro
 // `values` in row-major order filling `shape`; dtype "float32", "float64", "int32", "int64" or
 // "bool".
 func NewNnTensorValuesShapeDtypeWithDtype(values []float64, shape []int, dtype string) (*NnTensor, error) {
-	return rosetta.Construct[*NnTensor](3123, nil, values, shape, dtype)
+	return rosetta.Construct[*NnTensor](3134, nil, values, shape, dtype)
 }
 
 // NnTensorZeros calls the C++ method datamunge::nn::NnTensor::zeros.
 //
 // It uses the C++ defaults dtype = "float32"; [NnTensorZerosWithDtype] passes more arguments.
 func NnTensorZeros(shape []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3069, shape))
+	return rosetta.Result[*NnTensor](rosetta.Call(3080, shape))
 }
 
 // NnTensorZerosWithDtype calls the C++ method datamunge::nn::NnTensor::zeros.
 func NnTensorZerosWithDtype(shape []int, dtype string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3069, shape, dtype))
+	return rosetta.Result[*NnTensor](rosetta.Call(3080, shape, dtype))
 }
 
 // NnTensorOnes calls the C++ method datamunge::nn::NnTensor::ones.
 //
 // It uses the C++ defaults dtype = "float32"; [NnTensorOnesWithDtype] passes more arguments.
 func NnTensorOnes(shape []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3070, shape))
+	return rosetta.Result[*NnTensor](rosetta.Call(3081, shape))
 }
 
 // NnTensorOnesWithDtype calls the C++ method datamunge::nn::NnTensor::ones.
 func NnTensorOnesWithDtype(shape []int, dtype string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3070, shape, dtype))
+	return rosetta.Result[*NnTensor](rosetta.Call(3081, shape, dtype))
 }
 
 // NnTensorFull calls the C++ method datamunge::nn::NnTensor::full.
 //
 // It uses the C++ defaults dtype = "float32"; [NnTensorFullWithDtype] passes more arguments.
 func NnTensorFull(shape []int, value float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3071, shape, value))
+	return rosetta.Result[*NnTensor](rosetta.Call(3082, shape, value))
 }
 
 // NnTensorFullWithDtype calls the C++ method datamunge::nn::NnTensor::full.
 func NnTensorFullWithDtype(shape []int, value float64, dtype string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3071, shape, value, dtype))
+	return rosetta.Result[*NnTensor](rosetta.Call(3082, shape, value, dtype))
 }
 
 // NnTensorArange calls the C++ method datamunge::nn::NnTensor::arange.
@@ -45446,7 +45947,7 @@ func NnTensorFullWithDtype(shape []int, value float64, dtype string) (*NnTensor,
 // It uses the C++ defaults step = 1.0, dtype = "float32"; [NnTensorArangeWithStep] and
 // [NnTensorArangeWithDtype] pass more arguments.
 func NnTensorArange(start float64, stop float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3072, start, stop))
+	return rosetta.Result[*NnTensor](rosetta.Call(3083, start, stop))
 }
 
 // NnTensorArangeWithStep calls the C++ method datamunge::nn::NnTensor::arange.
@@ -45455,14 +45956,14 @@ func NnTensorArange(start float64, stop float64) (*NnTensor, error) {
 //
 // It uses the C++ defaults dtype = "float32"; [NnTensorArangeWithDtype] passes more arguments.
 func NnTensorArangeWithStep(start float64, stop float64, step float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3072, start, stop, step))
+	return rosetta.Result[*NnTensor](rosetta.Call(3083, start, stop, step))
 }
 
 // NnTensorArangeWithDtype calls the C++ method datamunge::nn::NnTensor::arange.
 //
 // start, start + step, ... below stop.
 func NnTensorArangeWithDtype(start float64, stop float64, step float64, dtype string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3072, start, stop, step, dtype))
+	return rosetta.Result[*NnTensor](rosetta.Call(3083, start, stop, step, dtype))
 }
 
 // NnTensorRandn calls the C++ method datamunge::nn::NnTensor::randn.
@@ -45472,7 +45973,7 @@ func NnTensorArangeWithDtype(start float64, stop float64, step float64, dtype st
 // It uses the C++ defaults mean = 0.0, std = 1.0, dtype = "float32"; [NnTensorRandnWithMean],
 // [NnTensorRandnWithStd] and [NnTensorRandnWithDtype] pass more arguments.
 func NnTensorRandn(shape []int, seed uint32) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3073, shape, seed))
+	return rosetta.Result[*NnTensor](rosetta.Call(3084, shape, seed))
 }
 
 // NnTensorRandnWithMean calls the C++ method datamunge::nn::NnTensor::randn.
@@ -45482,7 +45983,7 @@ func NnTensorRandn(shape []int, seed uint32) (*NnTensor, error) {
 // It uses the C++ defaults std = 1.0, dtype = "float32"; [NnTensorRandnWithStd] and
 // [NnTensorRandnWithDtype] pass more arguments.
 func NnTensorRandnWithMean(shape []int, seed uint32, mean float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3073, shape, seed, mean))
+	return rosetta.Result[*NnTensor](rosetta.Call(3084, shape, seed, mean))
 }
 
 // NnTensorRandnWithStd calls the C++ method datamunge::nn::NnTensor::randn.
@@ -45491,14 +45992,14 @@ func NnTensorRandnWithMean(shape []int, seed uint32, mean float64) (*NnTensor, e
 //
 // It uses the C++ defaults dtype = "float32"; [NnTensorRandnWithDtype] passes more arguments.
 func NnTensorRandnWithStd(shape []int, seed uint32, mean float64, std float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3073, shape, seed, mean, std))
+	return rosetta.Result[*NnTensor](rosetta.Call(3084, shape, seed, mean, std))
 }
 
 // NnTensorRandnWithDtype calls the C++ method datamunge::nn::NnTensor::randn.
 //
 // Seeded N(mean, std^2) and U(low, high) samples.
 func NnTensorRandnWithDtype(shape []int, seed uint32, mean float64, std float64, dtype string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3073, shape, seed, mean, std, dtype))
+	return rosetta.Result[*NnTensor](rosetta.Call(3084, shape, seed, mean, std, dtype))
 }
 
 // NnTensorUniform calls the C++ method datamunge::nn::NnTensor::uniform.
@@ -45506,7 +46007,7 @@ func NnTensorRandnWithDtype(shape []int, seed uint32, mean float64, std float64,
 // It uses the C++ defaults low = 0.0, high = 1.0, dtype = "float32"; [NnTensorUniformWithLow],
 // [NnTensorUniformWithHigh] and [NnTensorUniformWithDtype] pass more arguments.
 func NnTensorUniform(shape []int, seed uint32) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3074, shape, seed))
+	return rosetta.Result[*NnTensor](rosetta.Call(3085, shape, seed))
 }
 
 // NnTensorUniformWithLow calls the C++ method datamunge::nn::NnTensor::uniform.
@@ -45514,92 +46015,92 @@ func NnTensorUniform(shape []int, seed uint32) (*NnTensor, error) {
 // It uses the C++ defaults high = 1.0, dtype = "float32"; [NnTensorUniformWithHigh] and
 // [NnTensorUniformWithDtype] pass more arguments.
 func NnTensorUniformWithLow(shape []int, seed uint32, low float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3074, shape, seed, low))
+	return rosetta.Result[*NnTensor](rosetta.Call(3085, shape, seed, low))
 }
 
 // NnTensorUniformWithHigh calls the C++ method datamunge::nn::NnTensor::uniform.
 //
 // It uses the C++ defaults dtype = "float32"; [NnTensorUniformWithDtype] passes more arguments.
 func NnTensorUniformWithHigh(shape []int, seed uint32, low float64, high float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3074, shape, seed, low, high))
+	return rosetta.Result[*NnTensor](rosetta.Call(3085, shape, seed, low, high))
 }
 
 // NnTensorUniformWithDtype calls the C++ method datamunge::nn::NnTensor::uniform.
 func NnTensorUniformWithDtype(shape []int, seed uint32, low float64, high float64, dtype string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3074, shape, seed, low, high, dtype))
+	return rosetta.Result[*NnTensor](rosetta.Call(3085, shape, seed, low, high, dtype))
 }
 
 // NnTensorLoadNpy calls the C++ method datamunge::nn::NnTensor::load_npy.
 //
 // NumPy .npy files.
 func NnTensorLoadNpy(path string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3075, path))
+	return rosetta.Result[*NnTensor](rosetta.Call(3086, path))
 }
 
 // SaveNpy calls the C++ method datamunge::nn::NnTensor::save_npy.
 func (n *NnTensor) SaveNpy(path string) error {
-	return rosetta.Void(rosetta.Call(3076, n, path))
+	return rosetta.Void(rosetta.Call(3087, n, path))
 }
 
 // Defined calls the C++ method datamunge::nn::NnTensor::defined.
 func (n *NnTensor) Defined() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3077, n))
+	return rosetta.Result[bool](rosetta.Call(3088, n))
 }
 
 // Values calls the C++ method datamunge::nn::NnTensor::values.
 func (n *NnTensor) Values() ([]float64, error) {
-	return rosetta.Result[[]float64](rosetta.Call(3078, n))
+	return rosetta.Result[[]float64](rosetta.Call(3089, n))
 }
 
 // Shape calls the C++ method datamunge::nn::NnTensor::shape.
 func (n *NnTensor) Shape() ([]int, error) {
-	return rosetta.Result[[]int](rosetta.Call(3079, n))
+	return rosetta.Result[[]int](rosetta.Call(3090, n))
 }
 
 // Dtype calls the C++ method datamunge::nn::NnTensor::dtype.
 func (n *NnTensor) Dtype() (string, error) {
-	return rosetta.Result[string](rosetta.Call(3080, n))
+	return rosetta.Result[string](rosetta.Call(3091, n))
 }
 
 // Ndim calls the C++ method datamunge::nn::NnTensor::ndim.
 func (n *NnTensor) Ndim() (int, error) {
-	return rosetta.Result[int](rosetta.Call(3081, n))
+	return rosetta.Result[int](rosetta.Call(3092, n))
 }
 
 // Numel calls the C++ method datamunge::nn::NnTensor::numel.
 func (n *NnTensor) Numel() (int, error) {
-	return rosetta.Result[int](rosetta.Call(3082, n))
+	return rosetta.Result[int](rosetta.Call(3093, n))
 }
 
 // Item calls the C++ method datamunge::nn::NnTensor::item.
 //
 // The value of a one-element tensor.
 func (n *NnTensor) Item() (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3083, n))
+	return rosetta.Result[float64](rosetta.Call(3094, n))
 }
 
 // At calls the C++ method datamunge::nn::NnTensor::at.
 //
 // The element at a full index.
 func (n *NnTensor) At(index []int) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3084, n, index))
+	return rosetta.Result[float64](rosetta.Call(3095, n, index))
 }
 
 // Str calls the C++ method datamunge::nn::NnTensor::str.
 //
 // A short printable description with the values.
 func (n *NnTensor) Str() (string, error) {
-	return rosetta.Result[string](rosetta.Call(3085, n))
+	return rosetta.Result[string](rosetta.Call(3096, n))
 }
 
 // Astype calls the C++ method datamunge::nn::NnTensor::astype.
 func (n *NnTensor) Astype(dtype string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3086, n, dtype))
+	return rosetta.Result[*NnTensor](rosetta.Call(3097, n, dtype))
 }
 
 // Reshape calls the C++ method datamunge::nn::NnTensor::reshape.
 func (n *NnTensor) Reshape(shape []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3087, n, shape))
+	return rosetta.Result[*NnTensor](rosetta.Call(3098, n, shape))
 }
 
 // Transpose permutes axes; an empty `perm` reverses them.
@@ -45607,64 +46108,64 @@ func (n *NnTensor) Reshape(shape []int) (*NnTensor, error) {
 // It uses the C++ defaults perm = the zero value; [NnTensor.TransposeWithPerm] passes more
 // arguments.
 func (n *NnTensor) Transpose() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3088, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3099, n))
 }
 
 // TransposeWithPerm permutes axes; an empty `perm` reverses them.
 func (n *NnTensor) TransposeWithPerm(perm []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3088, n, perm))
+	return rosetta.Result[*NnTensor](rosetta.Call(3099, n, perm))
 }
 
 // Slice calls the C++ method datamunge::nn::NnTensor::slice.
 //
 // x[start:stop] along `axis`.
 func (n *NnTensor) Slice(axis int, start int, stop int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3089, n, axis, start, stop))
+	return rosetta.Result[*NnTensor](rosetta.Call(3100, n, axis, start, stop))
 }
 
 // Concat calls the C++ method datamunge::nn::NnTensor::concat.
 func (n *NnTensor) Concat(other *NnTensor, axis int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3090, n, other, axis))
+	return rosetta.Result[*NnTensor](rosetta.Call(3101, n, other, axis))
 }
 
 // Add calls the C++ method datamunge::nn::NnTensor::add.
 func (n *NnTensor) Add(other *NnTensor) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3091, n, other))
+	return rosetta.Result[*NnTensor](rosetta.Call(3102, n, other))
 }
 
 // Sub calls the C++ method datamunge::nn::NnTensor::sub.
 func (n *NnTensor) Sub(other *NnTensor) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3092, n, other))
+	return rosetta.Result[*NnTensor](rosetta.Call(3103, n, other))
 }
 
 // Mul calls the C++ method datamunge::nn::NnTensor::mul.
 func (n *NnTensor) Mul(other *NnTensor) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3093, n, other))
+	return rosetta.Result[*NnTensor](rosetta.Call(3104, n, other))
 }
 
 // Div calls the C++ method datamunge::nn::NnTensor::div.
 func (n *NnTensor) Div(other *NnTensor) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3094, n, other))
+	return rosetta.Result[*NnTensor](rosetta.Call(3105, n, other))
 }
 
 // AddScalar calls the C++ method datamunge::nn::NnTensor::add_scalar.
 func (n *NnTensor) AddScalar(value float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3095, n, value))
+	return rosetta.Result[*NnTensor](rosetta.Call(3106, n, value))
 }
 
 // MulScalar calls the C++ method datamunge::nn::NnTensor::mul_scalar.
 func (n *NnTensor) MulScalar(value float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3096, n, value))
+	return rosetta.Result[*NnTensor](rosetta.Call(3107, n, value))
 }
 
 // Pow calls the C++ method datamunge::nn::NnTensor::pow.
 func (n *NnTensor) Pow(exponent float64) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3097, n, exponent))
+	return rosetta.Result[*NnTensor](rosetta.Call(3108, n, exponent))
 }
 
 // Neg calls the C++ method datamunge::nn::NnTensor::neg.
 func (n *NnTensor) Neg() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3098, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3109, n))
 }
 
 // Matmul calls the C++ method datamunge::nn::NnTensor::matmul.
@@ -45672,7 +46173,7 @@ func (n *NnTensor) Neg() (*NnTensor, error) {
 // It uses the C++ defaults transposeA = false, transposeB = false; [NnTensor.MatmulWithTransposeA]
 // and [NnTensor.MatmulWithTransposeB] pass more arguments.
 func (n *NnTensor) Matmul(other *NnTensor) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3099, n, other))
+	return rosetta.Result[*NnTensor](rosetta.Call(3110, n, other))
 }
 
 // MatmulWithTransposeA calls the C++ method datamunge::nn::NnTensor::matmul.
@@ -45680,83 +46181,83 @@ func (n *NnTensor) Matmul(other *NnTensor) (*NnTensor, error) {
 // It uses the C++ defaults transposeB = false; [NnTensor.MatmulWithTransposeB] passes more
 // arguments.
 func (n *NnTensor) MatmulWithTransposeA(other *NnTensor, transposeA bool) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3099, n, other, transposeA))
+	return rosetta.Result[*NnTensor](rosetta.Call(3110, n, other, transposeA))
 }
 
 // MatmulWithTransposeB calls the C++ method datamunge::nn::NnTensor::matmul.
 func (n *NnTensor) MatmulWithTransposeB(other *NnTensor, transposeA bool, transposeB bool) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3099, n, other, transposeA, transposeB))
+	return rosetta.Result[*NnTensor](rosetta.Call(3110, n, other, transposeA, transposeB))
 }
 
 // Exp calls the C++ method datamunge::nn::NnTensor::exp.
 func (n *NnTensor) Exp() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3100, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3111, n))
 }
 
 // Log calls the C++ method datamunge::nn::NnTensor::log.
 func (n *NnTensor) Log() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3101, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3112, n))
 }
 
 // Sqrt calls the C++ method datamunge::nn::NnTensor::sqrt.
 func (n *NnTensor) Sqrt() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3102, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3113, n))
 }
 
 // Abs calls the C++ method datamunge::nn::NnTensor::abs.
 func (n *NnTensor) Abs() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3103, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3114, n))
 }
 
 // Square calls the C++ method datamunge::nn::NnTensor::square.
 func (n *NnTensor) Square() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3104, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3115, n))
 }
 
 // Tanh calls the C++ method datamunge::nn::NnTensor::tanh.
 func (n *NnTensor) Tanh() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3105, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3116, n))
 }
 
 // Sigmoid calls the C++ method datamunge::nn::NnTensor::sigmoid.
 func (n *NnTensor) Sigmoid() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3106, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3117, n))
 }
 
 // Relu calls the C++ method datamunge::nn::NnTensor::relu.
 func (n *NnTensor) Relu() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3107, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3118, n))
 }
 
 // Activate calls the C++ method datamunge::nn::NnTensor::activate.
 //
 // Any activation by name: "relu", "gelu", "silu", "softplus", "elu", "leaky_relu", ...
 func (n *NnTensor) Activate(activation string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3108, n, activation))
+	return rosetta.Result[*NnTensor](rosetta.Call(3119, n, activation))
 }
 
 // Softmax calls the C++ method datamunge::nn::NnTensor::softmax.
 //
 // It uses the C++ defaults axis = -1; [NnTensor.SoftmaxWithAxis] passes more arguments.
 func (n *NnTensor) Softmax() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3109, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3120, n))
 }
 
 // SoftmaxWithAxis calls the C++ method datamunge::nn::NnTensor::softmax.
 func (n *NnTensor) SoftmaxWithAxis(axis int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3109, n, axis))
+	return rosetta.Result[*NnTensor](rosetta.Call(3120, n, axis))
 }
 
 // LogSoftmax calls the C++ method datamunge::nn::NnTensor::log_softmax.
 //
 // It uses the C++ defaults axis = -1; [NnTensor.LogSoftmaxWithAxis] passes more arguments.
 func (n *NnTensor) LogSoftmax() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3110, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3121, n))
 }
 
 // LogSoftmaxWithAxis calls the C++ method datamunge::nn::NnTensor::log_softmax.
 func (n *NnTensor) LogSoftmaxWithAxis(axis int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3110, n, axis))
+	return rosetta.Result[*NnTensor](rosetta.Call(3121, n, axis))
 }
 
 // Sum calls the C++ method datamunge::nn::NnTensor::sum.
@@ -45764,19 +46265,19 @@ func (n *NnTensor) LogSoftmaxWithAxis(axis int) (*NnTensor, error) {
 // It uses the C++ defaults axes = the zero value, keepdims = false; [NnTensor.SumWithAxes] and
 // [NnTensor.SumWithKeepdims] pass more arguments.
 func (n *NnTensor) Sum() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3111, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3122, n))
 }
 
 // SumWithAxes calls the C++ method datamunge::nn::NnTensor::sum.
 //
 // It uses the C++ defaults keepdims = false; [NnTensor.SumWithKeepdims] passes more arguments.
 func (n *NnTensor) SumWithAxes(axes []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3111, n, axes))
+	return rosetta.Result[*NnTensor](rosetta.Call(3122, n, axes))
 }
 
 // SumWithKeepdims calls the C++ method datamunge::nn::NnTensor::sum.
 func (n *NnTensor) SumWithKeepdims(axes []int, keepdims bool) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3111, n, axes, keepdims))
+	return rosetta.Result[*NnTensor](rosetta.Call(3122, n, axes, keepdims))
 }
 
 // Mean calls the C++ method datamunge::nn::NnTensor::mean.
@@ -45784,19 +46285,19 @@ func (n *NnTensor) SumWithKeepdims(axes []int, keepdims bool) (*NnTensor, error)
 // It uses the C++ defaults axes = the zero value, keepdims = false; [NnTensor.MeanWithAxes] and
 // [NnTensor.MeanWithKeepdims] pass more arguments.
 func (n *NnTensor) Mean() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3112, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3123, n))
 }
 
 // MeanWithAxes calls the C++ method datamunge::nn::NnTensor::mean.
 //
 // It uses the C++ defaults keepdims = false; [NnTensor.MeanWithKeepdims] passes more arguments.
 func (n *NnTensor) MeanWithAxes(axes []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3112, n, axes))
+	return rosetta.Result[*NnTensor](rosetta.Call(3123, n, axes))
 }
 
 // MeanWithKeepdims calls the C++ method datamunge::nn::NnTensor::mean.
 func (n *NnTensor) MeanWithKeepdims(axes []int, keepdims bool) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3112, n, axes, keepdims))
+	return rosetta.Result[*NnTensor](rosetta.Call(3123, n, axes, keepdims))
 }
 
 // Max calls the C++ method datamunge::nn::NnTensor::max.
@@ -45804,19 +46305,19 @@ func (n *NnTensor) MeanWithKeepdims(axes []int, keepdims bool) (*NnTensor, error
 // It uses the C++ defaults axes = the zero value, keepdims = false; [NnTensor.MaxWithAxes] and
 // [NnTensor.MaxWithKeepdims] pass more arguments.
 func (n *NnTensor) Max() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3113, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3124, n))
 }
 
 // MaxWithAxes calls the C++ method datamunge::nn::NnTensor::max.
 //
 // It uses the C++ defaults keepdims = false; [NnTensor.MaxWithKeepdims] passes more arguments.
 func (n *NnTensor) MaxWithAxes(axes []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3113, n, axes))
+	return rosetta.Result[*NnTensor](rosetta.Call(3124, n, axes))
 }
 
 // MaxWithKeepdims calls the C++ method datamunge::nn::NnTensor::max.
 func (n *NnTensor) MaxWithKeepdims(axes []int, keepdims bool) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3113, n, axes, keepdims))
+	return rosetta.Result[*NnTensor](rosetta.Call(3124, n, axes, keepdims))
 }
 
 // Min calls the C++ method datamunge::nn::NnTensor::min.
@@ -45824,31 +46325,31 @@ func (n *NnTensor) MaxWithKeepdims(axes []int, keepdims bool) (*NnTensor, error)
 // It uses the C++ defaults axes = the zero value, keepdims = false; [NnTensor.MinWithAxes] and
 // [NnTensor.MinWithKeepdims] pass more arguments.
 func (n *NnTensor) Min() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3114, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3125, n))
 }
 
 // MinWithAxes calls the C++ method datamunge::nn::NnTensor::min.
 //
 // It uses the C++ defaults keepdims = false; [NnTensor.MinWithKeepdims] passes more arguments.
 func (n *NnTensor) MinWithAxes(axes []int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3114, n, axes))
+	return rosetta.Result[*NnTensor](rosetta.Call(3125, n, axes))
 }
 
 // MinWithKeepdims calls the C++ method datamunge::nn::NnTensor::min.
 func (n *NnTensor) MinWithKeepdims(axes []int, keepdims bool) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3114, n, axes, keepdims))
+	return rosetta.Result[*NnTensor](rosetta.Call(3125, n, axes, keepdims))
 }
 
 // Argmax calls the C++ method datamunge::nn::NnTensor::argmax.
 //
 // It uses the C++ defaults axis = -1; [NnTensor.ArgmaxWithAxis] passes more arguments.
 func (n *NnTensor) Argmax() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3115, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3126, n))
 }
 
 // ArgmaxWithAxis calls the C++ method datamunge::nn::NnTensor::argmax.
 func (n *NnTensor) ArgmaxWithAxis(axis int) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3115, n, axis))
+	return rosetta.Result[*NnTensor](rosetta.Call(3126, n, axis))
 }
 
 // SetRequiresGrad marks a float tensor as a leaf whose gradient `backward` accumulates.
@@ -45856,49 +46357,49 @@ func (n *NnTensor) ArgmaxWithAxis(axis int) (*NnTensor, error) {
 // It uses the C++ defaults requiresGrad = true; [NnTensor.SetRequiresGradWithRequiresGrad] passes
 // more arguments.
 func (n *NnTensor) SetRequiresGrad() error {
-	return rosetta.Void(rosetta.Call(3116, n))
+	return rosetta.Void(rosetta.Call(3127, n))
 }
 
 // SetRequiresGradWithRequiresGrad marks a float tensor as a leaf whose gradient `backward`
 // accumulates.
 func (n *NnTensor) SetRequiresGradWithRequiresGrad(requiresGrad bool) error {
-	return rosetta.Void(rosetta.Call(3116, n, requiresGrad))
+	return rosetta.Void(rosetta.Call(3127, n, requiresGrad))
 }
 
 // RequiresGrad calls the C++ method datamunge::nn::NnTensor::requires_grad.
 func (n *NnTensor) RequiresGrad() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3117, n))
+	return rosetta.Result[bool](rosetta.Call(3128, n))
 }
 
 // Backward calls the C++ method datamunge::nn::NnTensor::backward.
 //
 // Back-propagates from this one-element tensor into every leaf's grad().
 func (n *NnTensor) Backward() error {
-	return rosetta.Void(rosetta.Call(3118, n))
+	return rosetta.Void(rosetta.Call(3129, n))
 }
 
 // Grad calls the C++ method datamunge::nn::NnTensor::grad.
 //
 // The accumulated gradient (undefined if none).
 func (n *NnTensor) Grad() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3119, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3130, n))
 }
 
 // ZeroGrad calls the C++ method datamunge::nn::NnTensor::zero_grad.
 func (n *NnTensor) ZeroGrad() error {
-	return rosetta.Void(rosetta.Call(3120, n))
+	return rosetta.Void(rosetta.Call(3131, n))
 }
 
 // Detach calls the C++ method datamunge::nn::NnTensor::detach.
 //
 // The same values without gradient history.
 func (n *NnTensor) Detach() (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3121, n))
+	return rosetta.Result[*NnTensor](rosetta.Call(3132, n))
 }
 
 // ToString calls C++ datamunge::go_bindings::nn_tensor_repr.
 func (n *NnTensor) ToString() (string, error) {
-	return rosetta.Result[string](rosetta.Call(3122, n))
+	return rosetta.Result[string](rosetta.Call(3133, n))
 }
 
 // NnModelLike is implemented by *NnModel, by the classes deriving from NnModel and by Go types
@@ -45948,12 +46449,12 @@ func (n *NnModel) String() string { return rosetta.Describe(n.nativeRef()) }
 //
 // It uses the C++ defaults seed = 0; [NewNnModelWithSeed] passes more arguments.
 func NewNnModel() (*NnModel, error) {
-	return rosetta.Construct[*NnModel](3150, nil)
+	return rosetta.Construct[*NnModel](3161, nil)
 }
 
 // NewNnModelWithSeed calls the C++ constructor datamunge::nn::NnModel.
 func NewNnModelWithSeed(seed uint32) (*NnModel, error) {
-	return rosetta.Construct[*NnModel](3150, nil, seed)
+	return rosetta.Construct[*NnModel](3161, nil, seed)
 }
 
 // AddDense calls the C++ method datamunge::nn::NnModel::add_dense.
@@ -45963,14 +46464,14 @@ func NewNnModelWithSeed(seed uint32) (*NnModel, error) {
 // It uses the C++ defaults activation = "none"; [NnModel.AddDenseWithActivation] passes more
 // arguments.
 func (n *NnModel) AddDense(units int) error {
-	return rosetta.Void(rosetta.Call(3124, n, units))
+	return rosetta.Void(rosetta.Call(3135, n, units))
 }
 
 // AddDenseWithActivation calls the C++ method datamunge::nn::NnModel::add_dense.
 //
 // Fully connected layer; activation "none", "relu", "tanh", "sigmoid", "gelu", ...
 func (n *NnModel) AddDenseWithActivation(units int, activation string) error {
-	return rosetta.Void(rosetta.Call(3124, n, units, activation))
+	return rosetta.Void(rosetta.Call(3135, n, units, activation))
 }
 
 // AddConv2d calls the C++ method datamunge::nn::NnModel::add_conv2d.
@@ -45981,7 +46482,7 @@ func (n *NnModel) AddDenseWithActivation(units int, activation string) error {
 // [NnModel.AddConv2dWithStride], [NnModel.AddConv2dWithPadding] and
 // [NnModel.AddConv2dWithActivation] pass more arguments.
 func (n *NnModel) AddConv2d(filters int, kernel int) error {
-	return rosetta.Void(rosetta.Call(3125, n, filters, kernel))
+	return rosetta.Void(rosetta.Call(3136, n, filters, kernel))
 }
 
 // AddConv2dWithStride calls the C++ method datamunge::nn::NnModel::add_conv2d.
@@ -45991,7 +46492,7 @@ func (n *NnModel) AddConv2d(filters int, kernel int) error {
 // It uses the C++ defaults padding = "same", activation = "none"; [NnModel.AddConv2dWithPadding]
 // and [NnModel.AddConv2dWithActivation] pass more arguments.
 func (n *NnModel) AddConv2dWithStride(filters int, kernel int, stride int) error {
-	return rosetta.Void(rosetta.Call(3125, n, filters, kernel, stride))
+	return rosetta.Void(rosetta.Call(3136, n, filters, kernel, stride))
 }
 
 // AddConv2dWithPadding calls the C++ method datamunge::nn::NnModel::add_conv2d.
@@ -46001,14 +46502,14 @@ func (n *NnModel) AddConv2dWithStride(filters int, kernel int, stride int) error
 // It uses the C++ defaults activation = "none"; [NnModel.AddConv2dWithActivation] passes more
 // arguments.
 func (n *NnModel) AddConv2dWithPadding(filters int, kernel int, stride int, padding string) error {
-	return rosetta.Void(rosetta.Call(3125, n, filters, kernel, stride, padding))
+	return rosetta.Void(rosetta.Call(3136, n, filters, kernel, stride, padding))
 }
 
 // AddConv2dWithActivation calls the C++ method datamunge::nn::NnModel::add_conv2d.
 //
 // 2-D convolution on NHWC input; padding "same" or "valid".
 func (n *NnModel) AddConv2dWithActivation(filters int, kernel int, stride int, padding string, activation string) error {
-	return rosetta.Void(rosetta.Call(3125, n, filters, kernel, stride, padding, activation))
+	return rosetta.Void(rosetta.Call(3136, n, filters, kernel, stride, padding, activation))
 }
 
 // AddMaxPool2d calls the C++ method datamunge::nn::NnModel::add_max_pool2d.
@@ -46016,12 +46517,12 @@ func (n *NnModel) AddConv2dWithActivation(filters int, kernel int, stride int, p
 // It uses the C++ defaults padding = "valid"; [NnModel.AddMaxPool2dWithPadding] passes more
 // arguments.
 func (n *NnModel) AddMaxPool2d(window int, stride int) error {
-	return rosetta.Void(rosetta.Call(3126, n, window, stride))
+	return rosetta.Void(rosetta.Call(3137, n, window, stride))
 }
 
 // AddMaxPool2dWithPadding calls the C++ method datamunge::nn::NnModel::add_max_pool2d.
 func (n *NnModel) AddMaxPool2dWithPadding(window int, stride int, padding string) error {
-	return rosetta.Void(rosetta.Call(3126, n, window, stride, padding))
+	return rosetta.Void(rosetta.Call(3137, n, window, stride, padding))
 }
 
 // AddAvgPool2d calls the C++ method datamunge::nn::NnModel::add_avg_pool2d.
@@ -46029,17 +46530,17 @@ func (n *NnModel) AddMaxPool2dWithPadding(window int, stride int, padding string
 // It uses the C++ defaults padding = "valid"; [NnModel.AddAvgPool2dWithPadding] passes more
 // arguments.
 func (n *NnModel) AddAvgPool2d(window int, stride int) error {
-	return rosetta.Void(rosetta.Call(3127, n, window, stride))
+	return rosetta.Void(rosetta.Call(3138, n, window, stride))
 }
 
 // AddAvgPool2dWithPadding calls the C++ method datamunge::nn::NnModel::add_avg_pool2d.
 func (n *NnModel) AddAvgPool2dWithPadding(window int, stride int, padding string) error {
-	return rosetta.Void(rosetta.Call(3127, n, window, stride, padding))
+	return rosetta.Void(rosetta.Call(3138, n, window, stride, padding))
 }
 
 // AddGlobalAvgPool2d calls the C++ method datamunge::nn::NnModel::add_global_avg_pool2d.
 func (n *NnModel) AddGlobalAvgPool2d() error {
-	return rosetta.Void(rosetta.Call(3128, n))
+	return rosetta.Void(rosetta.Call(3139, n))
 }
 
 // AddBatchNorm calls the C++ method datamunge::nn::NnModel::add_batch_norm.
@@ -46049,7 +46550,7 @@ func (n *NnModel) AddGlobalAvgPool2d() error {
 // It uses the C++ defaults momentum = 0.99, eps = 0.001; [NnModel.AddBatchNormWithMomentum] and
 // [NnModel.AddBatchNormWithEps] pass more arguments.
 func (n *NnModel) AddBatchNorm() error {
-	return rosetta.Void(rosetta.Call(3129, n))
+	return rosetta.Void(rosetta.Call(3140, n))
 }
 
 // AddBatchNormWithMomentum calls the C++ method datamunge::nn::NnModel::add_batch_norm.
@@ -46058,60 +46559,60 @@ func (n *NnModel) AddBatchNorm() error {
 //
 // It uses the C++ defaults eps = 0.001; [NnModel.AddBatchNormWithEps] passes more arguments.
 func (n *NnModel) AddBatchNormWithMomentum(momentum float64) error {
-	return rosetta.Void(rosetta.Call(3129, n, momentum))
+	return rosetta.Void(rosetta.Call(3140, n, momentum))
 }
 
 // AddBatchNormWithEps calls the C++ method datamunge::nn::NnModel::add_batch_norm.
 //
 // Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults).
 func (n *NnModel) AddBatchNormWithEps(momentum float64, eps float64) error {
-	return rosetta.Void(rosetta.Call(3129, n, momentum, eps))
+	return rosetta.Void(rosetta.Call(3140, n, momentum, eps))
 }
 
 // AddLayerNorm calls the C++ method datamunge::nn::NnModel::add_layer_norm.
 //
 // It uses the C++ defaults eps = 1e-05; [NnModel.AddLayerNormWithEps] passes more arguments.
 func (n *NnModel) AddLayerNorm() error {
-	return rosetta.Void(rosetta.Call(3130, n))
+	return rosetta.Void(rosetta.Call(3141, n))
 }
 
 // AddLayerNormWithEps calls the C++ method datamunge::nn::NnModel::add_layer_norm.
 func (n *NnModel) AddLayerNormWithEps(eps float64) error {
-	return rosetta.Void(rosetta.Call(3130, n, eps))
+	return rosetta.Void(rosetta.Call(3141, n, eps))
 }
 
 // AddDropout calls the C++ method datamunge::nn::NnModel::add_dropout.
 //
 // Inverted dropout, active only when training.
 func (n *NnModel) AddDropout(rate float64) error {
-	return rosetta.Void(rosetta.Call(3131, n, rate))
+	return rosetta.Void(rosetta.Call(3142, n, rate))
 }
 
 // AddActivation calls the C++ method datamunge::nn::NnModel::add_activation.
 func (n *NnModel) AddActivation(activation string) error {
-	return rosetta.Void(rosetta.Call(3132, n, activation))
+	return rosetta.Void(rosetta.Call(3143, n, activation))
 }
 
 // AddFlatten collapses every axis but the first.
 func (n *NnModel) AddFlatten() error {
-	return rosetta.Void(rosetta.Call(3133, n))
+	return rosetta.Void(rosetta.Call(3144, n))
 }
 
 // AddReshape reshapes each example (the batch axis is kept): e.g. {28, 28, 1}.
 func (n *NnModel) AddReshape(shape []int) error {
-	return rosetta.Void(rosetta.Call(3134, n, shape))
+	return rosetta.Void(rosetta.Call(3145, n, shape))
 }
 
 // NumLayers calls the C++ method datamunge::nn::NnModel::num_layers.
 func (n *NnModel) NumLayers() (int, error) {
-	return rosetta.Result[int](rosetta.Call(3135, n))
+	return rosetta.Result[int](rosetta.Call(3146, n))
 }
 
 // Summary calls the C++ method datamunge::nn::NnModel::summary.
 //
 // One line per layer with its parameter shapes (after the first forward pass).
 func (n *NnModel) Summary() (string, error) {
-	return rosetta.Result[string](rosetta.Call(3136, n))
+	return rosetta.Result[string](rosetta.Call(3147, n))
 }
 
 // Forward runs the network. `training` enables dropout and batch statistics (and
@@ -46119,20 +46620,20 @@ func (n *NnModel) Summary() (string, error) {
 //
 // It uses the C++ defaults training = false; [NnModel.ForwardWithTraining] passes more arguments.
 func (n *NnModel) Forward(x *NnTensor) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3137, n, x))
+	return rosetta.Result[*NnTensor](rosetta.Call(3148, n, x))
 }
 
 // ForwardWithTraining runs the network. `training` enables dropout and batch statistics (and
 // updates batch-norm moving averages).
 func (n *NnModel) ForwardWithTraining(x *NnTensor, training bool) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3137, n, x, training))
+	return rosetta.Result[*NnTensor](rosetta.Call(3148, n, x, training))
 }
 
 // Predict calls the C++ method datamunge::nn::NnModel::predict.
 //
 // forward(x, false) without recording gradients.
 func (n *NnModel) Predict(x *NnTensor) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3138, n, x))
+	return rosetta.Result[*NnTensor](rosetta.Call(3149, n, x))
 }
 
 // Loss calls the C++ method datamunge::nn::NnModel::loss.
@@ -46143,7 +46644,7 @@ func (n *NnModel) Predict(x *NnTensor) (*NnTensor, error) {
 // It uses the C++ defaults loss = "mse", training = false; [NnModel.LossWithLoss] and
 // [NnModel.LossWithTraining] pass more arguments.
 func (n *NnModel) Loss(x *NnTensor, y *NnTensor) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3139, n, x, y))
+	return rosetta.Result[float64](rosetta.Call(3150, n, x, y))
 }
 
 // LossWithLoss calls the C++ method datamunge::nn::NnModel::loss.
@@ -46153,7 +46654,7 @@ func (n *NnModel) Loss(x *NnTensor, y *NnTensor) (float64, error) {
 //
 // It uses the C++ defaults training = false; [NnModel.LossWithTraining] passes more arguments.
 func (n *NnModel) LossWithLoss(x *NnTensor, y *NnTensor, loss string) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3139, n, x, y, loss))
+	return rosetta.Result[float64](rosetta.Call(3150, n, x, y, loss))
 }
 
 // LossWithTraining calls the C++ method datamunge::nn::NnModel::loss.
@@ -46161,7 +46662,7 @@ func (n *NnModel) LossWithLoss(x *NnTensor, y *NnTensor, loss string) (float64, 
 // Loss of the network on (x, y): "mse", "softmax_cross_entropy" (y holds
 // integer class labels) or "sigmoid_cross_entropy" (y in [0, 1]).
 func (n *NnModel) LossWithTraining(x *NnTensor, y *NnTensor, loss string, training bool) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3139, n, x, y, loss, training))
+	return rosetta.Result[float64](rosetta.Call(3150, n, x, y, loss, training))
 }
 
 // ComputeGradients computes the loss in training mode and stores the gradient of every
@@ -46169,18 +46670,18 @@ func (n *NnModel) LossWithTraining(x *NnTensor, y *NnTensor, loss string, traini
 //
 // It uses the C++ defaults loss = "mse"; [NnModel.ComputeGradientsWithLoss] passes more arguments.
 func (n *NnModel) ComputeGradients(x *NnTensor, y *NnTensor) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3140, n, x, y))
+	return rosetta.Result[float64](rosetta.Call(3151, n, x, y))
 }
 
 // ComputeGradientsWithLoss computes the loss in training mode and stores the gradient of every
 // parameter (read them with `gradient`). Returns the loss.
 func (n *NnModel) ComputeGradientsWithLoss(x *NnTensor, y *NnTensor, loss string) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3140, n, x, y, loss))
+	return rosetta.Result[float64](rosetta.Call(3151, n, x, y, loss))
 }
 
 // Gradient calls the C++ method datamunge::nn::NnModel::gradient.
 func (n *NnModel) Gradient(name string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3141, n, name))
+	return rosetta.Result[*NnTensor](rosetta.Call(3152, n, name))
 }
 
 // SetOptimizer calls the C++ method datamunge::nn::NnModel::set_optimizer.
@@ -46190,7 +46691,7 @@ func (n *NnModel) Gradient(name string) (*NnTensor, error) {
 // It uses the C++ defaults kind = "adam", learningRate = 0.001; [NnModel.SetOptimizerWithKind] and
 // [NnModel.SetOptimizerWithLearningRate] pass more arguments.
 func (n *NnModel) SetOptimizer() error {
-	return rosetta.Void(rosetta.Call(3142, n))
+	return rosetta.Void(rosetta.Call(3153, n))
 }
 
 // SetOptimizerWithKind calls the C++ method datamunge::nn::NnModel::set_optimizer.
@@ -46200,14 +46701,14 @@ func (n *NnModel) SetOptimizer() error {
 // It uses the C++ defaults learningRate = 0.001; [NnModel.SetOptimizerWithLearningRate] passes
 // more arguments.
 func (n *NnModel) SetOptimizerWithKind(kind string) error {
-	return rosetta.Void(rosetta.Call(3142, n, kind))
+	return rosetta.Void(rosetta.Call(3153, n, kind))
 }
 
 // SetOptimizerWithLearningRate calls the C++ method datamunge::nn::NnModel::set_optimizer.
 //
 // Optimizer for `train_step`: "sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad", ...
 func (n *NnModel) SetOptimizerWithLearningRate(kind string, learningRate float64) error {
-	return rosetta.Void(rosetta.Call(3142, n, kind, learningRate))
+	return rosetta.Void(rosetta.Call(3153, n, kind, learningRate))
 }
 
 // TrainStep calls the C++ method datamunge::nn::NnModel::train_step.
@@ -46216,46 +46717,46 @@ func (n *NnModel) SetOptimizerWithLearningRate(kind string, learningRate float64
 //
 // It uses the C++ defaults loss = "mse"; [NnModel.TrainStepWithLoss] passes more arguments.
 func (n *NnModel) TrainStep(x *NnTensor, y *NnTensor) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3143, n, x, y))
+	return rosetta.Result[float64](rosetta.Call(3154, n, x, y))
 }
 
 // TrainStepWithLoss calls the C++ method datamunge::nn::NnModel::train_step.
 //
 // compute_gradients followed by one optimizer update. Returns the loss.
 func (n *NnModel) TrainStepWithLoss(x *NnTensor, y *NnTensor, loss string) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3143, n, x, y, loss))
+	return rosetta.Result[float64](rosetta.Call(3154, n, x, y, loss))
 }
 
 // ParameterNames calls the C++ method datamunge::nn::NnModel::parameter_names.
 func (n *NnModel) ParameterNames() ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3144, n))
+	return rosetta.Result[[]string](rosetta.Call(3155, n))
 }
 
 // Parameter calls the C++ method datamunge::nn::NnModel::parameter.
 func (n *NnModel) Parameter(name string) (*NnTensor, error) {
-	return rosetta.Result[*NnTensor](rosetta.Call(3145, n, name))
+	return rosetta.Result[*NnTensor](rosetta.Call(3156, n, name))
 }
 
 // SetParameter calls the C++ method datamunge::nn::NnModel::set_parameter.
 func (n *NnModel) SetParameter(name string, value *NnTensor) error {
-	return rosetta.Void(rosetta.Call(3146, n, name, value))
+	return rosetta.Void(rosetta.Call(3157, n, name, value))
 }
 
 // ParameterCount calls the C++ method datamunge::nn::NnModel::parameter_count.
 func (n *NnModel) ParameterCount() (int, error) {
-	return rosetta.Result[int](rosetta.Call(3147, n))
+	return rosetta.Result[int](rosetta.Call(3158, n))
 }
 
 // Save calls the C++ method datamunge::nn::NnModel::save.
 //
 // Parameters and batch-norm statistics as one .npz archive ("state/..." for statistics).
 func (n *NnModel) Save(path string) error {
-	return rosetta.Void(rosetta.Call(3148, n, path))
+	return rosetta.Void(rosetta.Call(3159, n, path))
 }
 
 // Load loads an archive written by save() (or any .npz with the same names).
 func (n *NnModel) Load(path string) error {
-	return rosetta.Void(rosetta.Call(3149, n, path))
+	return rosetta.Void(rosetta.Call(3160, n, path))
 }
 
 // TaskOutputLike is implemented by *TaskOutput, by the classes deriving from TaskOutput and by Go
@@ -46308,35 +46809,35 @@ func (t *TaskOutput) String() string { return rosetta.Describe(t.nativeRef()) }
 
 // NewTaskOutput calls the C++ constructor datamunge::sim::TaskOutput.
 func NewTaskOutput() (*TaskOutput, error) {
-	return rosetta.Construct[*TaskOutput](3163, nil)
+	return rosetta.Construct[*TaskOutput](3174, nil)
 }
 
 // Observations returns the C++ field datamunge::sim::TaskOutput::observations.
 //
 // Current observations, including terminal states.
 func (t *TaskOutput) Observations() []float64 {
-	return rosetta.MustResult[[]float64](rosetta.Call(3151, t))
+	return rosetta.MustResult[[]float64](rosetta.Call(3162, t))
 }
 
 // Rewards returns the C++ field datamunge::sim::TaskOutput::rewards.
 //
 // Reward from the last selected step, zero after reset.
 func (t *TaskOutput) Rewards() []float64 {
-	return rosetta.MustResult[[]float64](rosetta.Call(3153, t))
+	return rosetta.MustResult[[]float64](rosetta.Call(3164, t))
 }
 
 // Terminated returns the C++ field datamunge::sim::TaskOutput::terminated.
 //
 // Physical failure, requiring explicit reset.
 func (t *TaskOutput) Terminated() []uint8 {
-	return rosetta.MustResult[[]uint8](rosetta.Call(3155, t))
+	return rosetta.MustResult[[]uint8](rosetta.Call(3166, t))
 }
 
 // Truncated returns the C++ field datamunge::sim::TaskOutput::truncated.
 //
 // Time limit, requiring explicit reset; bootstrap is valid.
 func (t *TaskOutput) Truncated() []uint8 {
-	return rosetta.MustResult[[]uint8](rosetta.Call(3157, t))
+	return rosetta.MustResult[[]uint8](rosetta.Call(3168, t))
 }
 
 // FinalObservations returns the C++ field datamunge::sim::TaskOutput::final_observations.
@@ -46344,14 +46845,14 @@ func (t *TaskOutput) Truncated() []uint8 {
 // Last episode's final observations, meaningful when
 // final_valid is one.
 func (t *TaskOutput) FinalObservations() []float64 {
-	return rosetta.MustResult[[]float64](rosetta.Call(3159, t))
+	return rosetta.MustResult[[]float64](rosetta.Call(3170, t))
 }
 
 // FinalValid returns the C++ field datamunge::sim::TaskOutput::final_valid.
 //
 // Whether a final observation has ever been recorded for this row.
 func (t *TaskOutput) FinalValid() []uint8 {
-	return rosetta.MustResult[[]uint8](rosetta.Call(3161, t))
+	return rosetta.MustResult[[]uint8](rosetta.Call(3172, t))
 }
 
 // TaskBatchLike is implemented by *TaskBatch, by the classes deriving from TaskBatch and by Go
@@ -46410,7 +46911,7 @@ func (t *TaskBatch) String() string { return rosetta.Describe(t.nativeRef()) }
 //
 // It returns positive environment count.
 func (t *TaskBatch) Size() int {
-	return rosetta.MustResult[int](rosetta.Call(3164, t))
+	return rosetta.MustResult[int](rosetta.Call(3175, t))
 }
 
 // ObservationSize calls the C++ method datamunge::sim::TaskBatch::observation_size.
@@ -46419,7 +46920,7 @@ func (t *TaskBatch) Size() int {
 //
 // It returns four for InvertedPendulum or eleven for Hopper.
 func (t *TaskBatch) ObservationSize() int {
-	return rosetta.MustResult[int](rosetta.Call(3165, t))
+	return rosetta.MustResult[int](rosetta.Call(3176, t))
 }
 
 // ActionSize calls the C++ method datamunge::sim::TaskBatch::action_size.
@@ -46428,7 +46929,7 @@ func (t *TaskBatch) ObservationSize() int {
 //
 // It returns one for InvertedPendulum or three for Hopper.
 func (t *TaskBatch) ActionSize() int {
-	return rosetta.MustResult[int](rosetta.Call(3166, t))
+	return rosetta.MustResult[int](rosetta.Call(3177, t))
 }
 
 // Output calls the C++ method datamunge::sim::TaskBatch::output.
@@ -46437,7 +46938,7 @@ func (t *TaskBatch) ActionSize() int {
 //
 // It returns internal reusable arrays, valid until destruction and modified by step/reset.
 func (t *TaskBatch) Output() *TaskOutput {
-	return rosetta.MustResult[*TaskOutput](rosetta.Call(3167, t))
+	return rosetta.MustResult[*TaskOutput](rosetta.Call(3178, t))
 }
 
 // Step calls the C++ method datamunge::sim::TaskBatch::step.
@@ -46466,7 +46967,7 @@ func (t *TaskBatch) Output() *TaskOutput {
 //
 // It uses the C++ defaults mask = the zero value; [TaskBatch.StepWithMask] passes more arguments.
 func (t *TaskBatch) Step(actions []float64) (*TaskOutput, error) {
-	return rosetta.Result[*TaskOutput](rosetta.Call(3168, t, actions))
+	return rosetta.Result[*TaskOutput](rosetta.Call(3179, t, actions))
 }
 
 // StepWithMask calls the C++ method datamunge::sim::TaskBatch::step.
@@ -46494,7 +46995,7 @@ func (t *TaskBatch) Step(actions []float64) (*TaskOutput, error) {
 //   - [NativeError] (C++ std::exception): Physics failure; explicit reset is required before
 //     retrying.
 func (t *TaskBatch) StepWithMask(actions []float64, mask []uint8) (*TaskOutput, error) {
-	return rosetta.Result[*TaskOutput](rosetta.Call(3168, t, actions, mask))
+	return rosetta.Result[*TaskOutput](rosetta.Call(3179, t, actions, mask))
 }
 
 // Reset calls the C++ method datamunge::sim::TaskBatch::reset.
@@ -46514,7 +47015,7 @@ func (t *TaskBatch) StepWithMask(actions []float64, mask []uint8) (*TaskOutput, 
 //
 // It uses the C++ defaults mask = the zero value; [TaskBatch.ResetWithMask] passes more arguments.
 func (t *TaskBatch) Reset() (*TaskOutput, error) {
-	return rosetta.Result[*TaskOutput](rosetta.Call(3169, t))
+	return rosetta.Result[*TaskOutput](rosetta.Call(3180, t))
 }
 
 // ResetWithMask calls the C++ method datamunge::sim::TaskBatch::reset.
@@ -46536,7 +47037,7 @@ func (t *TaskBatch) Reset() (*TaskOutput, error) {
 //
 //   - [InvalidArgument] (C++ std::invalid_argument): Invalid mask.
 func (t *TaskBatch) ResetWithMask(mask []uint8) (*TaskOutput, error) {
-	return rosetta.Result[*TaskOutput](rosetta.Call(3169, t, mask))
+	return rosetta.Result[*TaskOutput](rosetta.Call(3180, t, mask))
 }
 
 // Seed calls the C++ method datamunge::sim::TaskBatch::seed.
@@ -46551,7 +47052,7 @@ func (t *TaskBatch) ResetWithMask(mask []uint8) (*TaskOutput, error) {
 //
 //   - seed: New batch random seed.
 func (t *TaskBatch) Seed(seed uint64) {
-	rosetta.MustVoid(rosetta.Call(3170, t, seed))
+	rosetta.MustVoid(rosetta.Call(3181, t, seed))
 }
 
 // TaskBatchCreate calls C++ datamunge::go_bindings::task_batch_create.
@@ -46562,7 +47063,7 @@ func (t *TaskBatch) Seed(seed uint64) {
 // It uses the C++ defaults workers = 1, seed = 0, timeLimit = 1000; [TaskBatchCreateWithWorkers],
 // [TaskBatchCreateWithSeed] and [TaskBatchCreateWithTimeLimit] pass more arguments.
 func TaskBatchCreate(task Task, count int) (*TaskBatch, error) {
-	return rosetta.Result[*TaskBatch](rosetta.Call(3171, task, count))
+	return rosetta.Result[*TaskBatch](rosetta.Call(3182, task, count))
 }
 
 // TaskBatchCreateWithWorkers calls C++ datamunge::go_bindings::task_batch_create.
@@ -46573,7 +47074,7 @@ func TaskBatchCreate(task Task, count int) (*TaskBatch, error) {
 // It uses the C++ defaults seed = 0, timeLimit = 1000; [TaskBatchCreateWithSeed] and
 // [TaskBatchCreateWithTimeLimit] pass more arguments.
 func TaskBatchCreateWithWorkers(task Task, count int, workers int) (*TaskBatch, error) {
-	return rosetta.Result[*TaskBatch](rosetta.Call(3171, task, count, workers))
+	return rosetta.Result[*TaskBatch](rosetta.Call(3182, task, count, workers))
 }
 
 // TaskBatchCreateWithSeed calls C++ datamunge::go_bindings::task_batch_create.
@@ -46583,7 +47084,7 @@ func TaskBatchCreateWithWorkers(task Task, count int, workers int) (*TaskBatch, 
 //
 // It uses the C++ defaults timeLimit = 1000; [TaskBatchCreateWithTimeLimit] passes more arguments.
 func TaskBatchCreateWithSeed(task Task, count int, workers int, seed uint64) (*TaskBatch, error) {
-	return rosetta.Result[*TaskBatch](rosetta.Call(3171, task, count, workers, seed))
+	return rosetta.Result[*TaskBatch](rosetta.Call(3182, task, count, workers, seed))
 }
 
 // TaskBatchCreateWithTimeLimit calls C++ datamunge::go_bindings::task_batch_create.
@@ -46591,7 +47092,7 @@ func TaskBatchCreateWithSeed(task Task, count int, workers int, seed uint64) (*T
 // Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers
 // must be positive. seed defaults to zero and time_limit to 1000 successful episode steps.
 func TaskBatchCreateWithTimeLimit(task Task, count int, workers int, seed uint64, timeLimit uint64) (*TaskBatch, error) {
-	return rosetta.Result[*TaskBatch](rosetta.Call(3171, task, count, workers, seed, timeLimit))
+	return rosetta.Result[*TaskBatch](rosetta.Call(3182, task, count, workers, seed, timeLimit))
 }
 
 // DirectedGraphLike is implemented by *DirectedGraph, by the classes deriving from DirectedGraph
@@ -46635,118 +47136,118 @@ func (d *DirectedGraph) String() string { return rosetta.Describe(d.nativeRef())
 
 // NewDirectedGraph calls the C++ constructor datamunge::dstruct::DirectedGraph<std::string>().
 func NewDirectedGraph() (*DirectedGraph, error) {
-	return rosetta.Construct[*DirectedGraph](3192, nil)
+	return rosetta.Construct[*DirectedGraph](3203, nil)
 }
 
 // NewDirectedGraphVertices calls the C++ constructor
 // datamunge::dstruct::DirectedGraph<std::string>(const std::vector<std::basic_string<char,
 // std::char_traits<char>, std::allocator<char>>> &).
 func NewDirectedGraphVertices(vertices []string) (*DirectedGraph, error) {
-	return rosetta.Construct[*DirectedGraph](3192, nil, vertices)
+	return rosetta.Construct[*DirectedGraph](3203, nil, vertices)
 }
 
 // Empty calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::empty.
 func (d *DirectedGraph) Empty() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3172, d))
+	return rosetta.Result[bool](rosetta.Call(3183, d))
 }
 
 // VertexCount calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::vertex_count.
 func (d *DirectedGraph) VertexCount() (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3173, d))
+	return rosetta.Result[uint64](rosetta.Call(3184, d))
 }
 
 // EdgeCount calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::edge_count.
 func (d *DirectedGraph) EdgeCount() (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3174, d))
+	return rosetta.Result[uint64](rosetta.Call(3185, d))
 }
 
 // Clear calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::clear.
 func (d *DirectedGraph) Clear() error {
-	return rosetta.Void(rosetta.Call(3175, d))
+	return rosetta.Void(rosetta.Call(3186, d))
 }
 
 // AddVertex calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::add_vertex(const
 // std::basic_string<char> &).
 func (d *DirectedGraph) AddVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3176, d, vertex))
+	return rosetta.Result[bool](rosetta.Call(3187, d, vertex))
 }
 
 // RemoveVertex calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::remove_vertex.
 func (d *DirectedGraph) RemoveVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3177, d, vertex))
+	return rosetta.Result[bool](rosetta.Call(3188, d, vertex))
 }
 
 // HasVertex calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::has_vertex.
 func (d *DirectedGraph) HasVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3178, d, vertex))
+	return rosetta.Result[bool](rosetta.Call(3189, d, vertex))
 }
 
 // AddEdge calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::add_edge.
 func (d *DirectedGraph) AddEdge(src string, dst string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3179, d, src, dst))
+	return rosetta.Result[bool](rosetta.Call(3190, d, src, dst))
 }
 
 // RemoveEdge calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::remove_edge.
 func (d *DirectedGraph) RemoveEdge(src string, dst string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3180, d, src, dst))
+	return rosetta.Result[bool](rosetta.Call(3191, d, src, dst))
 }
 
 // HasEdge calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::has_edge.
 func (d *DirectedGraph) HasEdge(src string, dst string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3181, d, src, dst))
+	return rosetta.Result[bool](rosetta.Call(3192, d, src, dst))
 }
 
 // Vertices calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::vertices.
 func (d *DirectedGraph) Vertices() ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3182, d))
+	return rosetta.Result[[]string](rosetta.Call(3193, d))
 }
 
 // OutgoingNeighbors calls the C++ method
 // datamunge::dstruct::DirectedGraph<std::string>::outgoing_neighbors.
 func (d *DirectedGraph) OutgoingNeighbors(vertex string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3183, d, vertex))
+	return rosetta.Result[[]string](rosetta.Call(3194, d, vertex))
 }
 
 // IncomingNeighbors calls the C++ method
 // datamunge::dstruct::DirectedGraph<std::string>::incoming_neighbors.
 func (d *DirectedGraph) IncomingNeighbors(vertex string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3184, d, vertex))
+	return rosetta.Result[[]string](rosetta.Call(3195, d, vertex))
 }
 
 // OutDegree calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::out_degree.
 func (d *DirectedGraph) OutDegree(vertex string) (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3185, d, vertex))
+	return rosetta.Result[uint64](rosetta.Call(3196, d, vertex))
 }
 
 // InDegree calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::in_degree.
 func (d *DirectedGraph) InDegree(vertex string) (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3186, d, vertex))
+	return rosetta.Result[uint64](rosetta.Call(3197, d, vertex))
 }
 
 // Bfs calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::bfs.
 func (d *DirectedGraph) Bfs(start string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3187, d, start))
+	return rosetta.Result[[]string](rosetta.Call(3198, d, start))
 }
 
 // Dfs calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::dfs.
 func (d *DirectedGraph) Dfs(start string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3188, d, start))
+	return rosetta.Result[[]string](rosetta.Call(3199, d, start))
 }
 
 // ContainsPath calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::contains_path.
 func (d *DirectedGraph) ContainsPath(src string, dst string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3189, d, src, dst))
+	return rosetta.Result[bool](rosetta.Call(3200, d, src, dst))
 }
 
 // Transpose calls the C++ method datamunge::dstruct::DirectedGraph<std::string>::transpose.
 func (d *DirectedGraph) Transpose() (*DirectedGraph, error) {
-	return rosetta.Result[*DirectedGraph](rosetta.Call(3190, d))
+	return rosetta.Result[*DirectedGraph](rosetta.Call(3201, d))
 }
 
 // TopologicalSort calls the C++ method
 // datamunge::dstruct::DirectedGraph<std::string>::topological_sort.
 func (d *DirectedGraph) TopologicalSort() ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3191, d))
+	return rosetta.Result[[]string](rosetta.Call(3202, d))
 }
 
 // UndirectedGraphLike is implemented by *UndirectedGraph, by the classes deriving from
@@ -46790,97 +47291,97 @@ func (u *UndirectedGraph) String() string { return rosetta.Describe(u.nativeRef(
 
 // NewUndirectedGraph calls the C++ constructor datamunge::dstruct::UndirectedGraph<std::string>().
 func NewUndirectedGraph() (*UndirectedGraph, error) {
-	return rosetta.Construct[*UndirectedGraph](3211, nil)
+	return rosetta.Construct[*UndirectedGraph](3222, nil)
 }
 
 // NewUndirectedGraphVertices calls the C++ constructor
 // datamunge::dstruct::UndirectedGraph<std::string>(const std::vector<std::basic_string<char,
 // std::char_traits<char>, std::allocator<char>>> &).
 func NewUndirectedGraphVertices(vertices []string) (*UndirectedGraph, error) {
-	return rosetta.Construct[*UndirectedGraph](3211, nil, vertices)
+	return rosetta.Construct[*UndirectedGraph](3222, nil, vertices)
 }
 
 // Empty calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::empty.
 func (u *UndirectedGraph) Empty() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3193, u))
+	return rosetta.Result[bool](rosetta.Call(3204, u))
 }
 
 // VertexCount calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::vertex_count.
 func (u *UndirectedGraph) VertexCount() (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3194, u))
+	return rosetta.Result[uint64](rosetta.Call(3205, u))
 }
 
 // EdgeCount calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::edge_count.
 func (u *UndirectedGraph) EdgeCount() (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3195, u))
+	return rosetta.Result[uint64](rosetta.Call(3206, u))
 }
 
 // Clear calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::clear.
 func (u *UndirectedGraph) Clear() error {
-	return rosetta.Void(rosetta.Call(3196, u))
+	return rosetta.Void(rosetta.Call(3207, u))
 }
 
 // AddVertex calls the C++ method
 // datamunge::dstruct::UndirectedGraph<std::string>::add_vertex(const std::basic_string<char> &).
 func (u *UndirectedGraph) AddVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3197, u, vertex))
+	return rosetta.Result[bool](rosetta.Call(3208, u, vertex))
 }
 
 // RemoveVertex calls the C++ method
 // datamunge::dstruct::UndirectedGraph<std::string>::remove_vertex.
 func (u *UndirectedGraph) RemoveVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3198, u, vertex))
+	return rosetta.Result[bool](rosetta.Call(3209, u, vertex))
 }
 
 // HasVertex calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::has_vertex.
 func (u *UndirectedGraph) HasVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3199, u, vertex))
+	return rosetta.Result[bool](rosetta.Call(3210, u, vertex))
 }
 
 // AddEdge calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::add_edge.
 func (u *UndirectedGraph) AddEdge(a string, b string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3200, u, a, b))
+	return rosetta.Result[bool](rosetta.Call(3211, u, a, b))
 }
 
 // RemoveEdge calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::remove_edge.
 func (u *UndirectedGraph) RemoveEdge(a string, b string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3201, u, a, b))
+	return rosetta.Result[bool](rosetta.Call(3212, u, a, b))
 }
 
 // HasEdge calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::has_edge.
 func (u *UndirectedGraph) HasEdge(a string, b string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3202, u, a, b))
+	return rosetta.Result[bool](rosetta.Call(3213, u, a, b))
 }
 
 // Vertices calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::vertices.
 func (u *UndirectedGraph) Vertices() ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3203, u))
+	return rosetta.Result[[]string](rosetta.Call(3214, u))
 }
 
 // Neighbors calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::neighbors.
 func (u *UndirectedGraph) Neighbors(vertex string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3204, u, vertex))
+	return rosetta.Result[[]string](rosetta.Call(3215, u, vertex))
 }
 
 // Degree calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::degree.
 func (u *UndirectedGraph) Degree(vertex string) (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3205, u, vertex))
+	return rosetta.Result[uint64](rosetta.Call(3216, u, vertex))
 }
 
 // Bfs calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::bfs.
 func (u *UndirectedGraph) Bfs(start string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3206, u, start))
+	return rosetta.Result[[]string](rosetta.Call(3217, u, start))
 }
 
 // Dfs calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::dfs.
 func (u *UndirectedGraph) Dfs(start string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3207, u, start))
+	return rosetta.Result[[]string](rosetta.Call(3218, u, start))
 }
 
 // ContainsPath calls the C++ method
 // datamunge::dstruct::UndirectedGraph<std::string>::contains_path.
 func (u *UndirectedGraph) ContainsPath(src string, dst string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3208, u, src, dst))
+	return rosetta.Result[bool](rosetta.Call(3219, u, src, dst))
 }
 
 // ConnectedComponents calls the C++ method
@@ -46889,7 +47390,7 @@ func (u *UndirectedGraph) ContainsPath(src string, dst string) (bool, error) {
 // The graph's connected components, each as a vector of vertices in BFS-visit
 // order; components themselves appear in vertices() order.
 func (u *UndirectedGraph) ConnectedComponents() ([][]string, error) {
-	return rosetta.Result[[][]string](rosetta.Call(3209, u))
+	return rosetta.Result[[][]string](rosetta.Call(3220, u))
 }
 
 // HasCycle calls the C++ method datamunge::dstruct::UndirectedGraph<std::string>::has_cycle.
@@ -46897,7 +47398,7 @@ func (u *UndirectedGraph) ConnectedComponents() ([][]string, error) {
 // True if the graph contains a cycle (a self-loop, or two distinct paths between
 // some pair of vertices) in any component.
 func (u *UndirectedGraph) HasCycle() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3210, u))
+	return rosetta.Result[bool](rosetta.Call(3221, u))
 }
 
 // WeightedGraphLike is implemented by *WeightedGraph, by the classes deriving from WeightedGraph
@@ -46942,88 +47443,88 @@ func (w *WeightedGraph) String() string { return rosetta.Describe(w.nativeRef())
 // NewWeightedGraph calls the C++ constructor datamunge::dstruct::WeightedGraph<std::string,
 // double>(bool).
 func NewWeightedGraph(directed bool) (*WeightedGraph, error) {
-	return rosetta.Construct[*WeightedGraph](3233, nil, directed)
+	return rosetta.Construct[*WeightedGraph](3244, nil, directed)
 }
 
 // NewWeightedGraphVerticesDirected calls the C++ constructor
 // datamunge::dstruct::WeightedGraph<std::string, double>(const std::vector<std::basic_string<char,
 // std::char_traits<char>, std::allocator<char>>> &, bool).
 func NewWeightedGraphVerticesDirected(vertices []string, directed bool) (*WeightedGraph, error) {
-	return rosetta.Construct[*WeightedGraph](3233, nil, vertices, directed)
+	return rosetta.Construct[*WeightedGraph](3244, nil, vertices, directed)
 }
 
 // Directed calls the C++ method datamunge::dstruct::WeightedGraph<std::string, double>::directed.
 func (w *WeightedGraph) Directed() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3212, w))
+	return rosetta.Result[bool](rosetta.Call(3223, w))
 }
 
 // Empty calls the C++ method datamunge::dstruct::WeightedGraph<std::string, double>::empty.
 func (w *WeightedGraph) Empty() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3213, w))
+	return rosetta.Result[bool](rosetta.Call(3224, w))
 }
 
 // VertexCount calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::vertex_count.
 func (w *WeightedGraph) VertexCount() (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3214, w))
+	return rosetta.Result[uint64](rosetta.Call(3225, w))
 }
 
 // EdgeCount calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::edge_count.
 func (w *WeightedGraph) EdgeCount() (uint64, error) {
-	return rosetta.Result[uint64](rosetta.Call(3215, w))
+	return rosetta.Result[uint64](rosetta.Call(3226, w))
 }
 
 // Clear calls the C++ method datamunge::dstruct::WeightedGraph<std::string, double>::clear.
 func (w *WeightedGraph) Clear() error {
-	return rosetta.Void(rosetta.Call(3216, w))
+	return rosetta.Void(rosetta.Call(3227, w))
 }
 
 // AddVertex calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::add_vertex.
 func (w *WeightedGraph) AddVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3217, w, vertex))
+	return rosetta.Result[bool](rosetta.Call(3228, w, vertex))
 }
 
 // RemoveVertex calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::remove_vertex.
 func (w *WeightedGraph) RemoveVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3218, w, vertex))
+	return rosetta.Result[bool](rosetta.Call(3229, w, vertex))
 }
 
 // HasVertex calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::has_vertex.
 func (w *WeightedGraph) HasVertex(vertex string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3219, w, vertex))
+	return rosetta.Result[bool](rosetta.Call(3230, w, vertex))
 }
 
 // AddEdge replaces the weight if the edge already exists (rather than rejecting the call,
 // unlike DirectedGraph/UndirectedGraph's add_edge -- weights are the whole point
 // of this class, so re-adding with a new weight is the natural way to update one).
 func (w *WeightedGraph) AddEdge(src string, dst string, weight float64) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3220, w, src, dst, weight))
+	return rosetta.Result[bool](rosetta.Call(3231, w, src, dst, weight))
 }
 
 // RemoveEdge calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::remove_edge.
 func (w *WeightedGraph) RemoveEdge(src string, dst string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3221, w, src, dst))
+	return rosetta.Result[bool](rosetta.Call(3232, w, src, dst))
 }
 
 // HasEdge calls the C++ method datamunge::dstruct::WeightedGraph<std::string, double>::has_edge.
 func (w *WeightedGraph) HasEdge(src string, dst string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3222, w, src, dst))
+	return rosetta.Result[bool](rosetta.Call(3233, w, src, dst))
 }
 
 // EdgeWeight calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::edge_weight.
 func (w *WeightedGraph) EdgeWeight(src string, dst string) (float64, error) {
-	return rosetta.Result[float64](rosetta.Call(3223, w, src, dst))
+	return rosetta.Result[float64](rosetta.Call(3234, w, src, dst))
 }
 
 // Vertices calls the C++ method datamunge::dstruct::WeightedGraph<std::string, double>::vertices.
 func (w *WeightedGraph) Vertices() ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3224, w))
+	return rosetta.Result[[]string](rosetta.Call(3235, w))
 }
 
 // Neighbors calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
@@ -47031,7 +47532,7 @@ func (w *WeightedGraph) Vertices() ([]string, error) {
 //
 // Outgoing neighbors if directed(); all incident neighbors if !directed().
 func (w *WeightedGraph) Neighbors(vertex string) ([]string, error) {
-	return rosetta.Result[[]string](rosetta.Call(3225, w, vertex))
+	return rosetta.Result[[]string](rosetta.Call(3236, w, vertex))
 }
 
 // DijkstraDistances calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
@@ -47042,7 +47543,7 @@ func (w *WeightedGraph) Neighbors(vertex string) ([]string, error) {
 // vector<pair<>>, using the same std_pair/std_vector machinery already relied on
 // elsewhere) for language bindings where std::unordered_map isn't cleanly exposed.
 func (w *WeightedGraph) DijkstraDistances(source string) ([]Pair[string, float64], error) {
-	return rosetta.Result[[]Pair[string, float64]](rosetta.Call(3226, w, source))
+	return rosetta.Result[[]Pair[string, float64]](rosetta.Call(3237, w, source))
 }
 
 // BellmanFordDistances calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
@@ -47053,13 +47554,13 @@ func (w *WeightedGraph) DijkstraDistances(source string) ([]Pair[string, float64
 // Empty (with has_negative_cycle() separately reporting the reason) when a negative
 // cycle makes the distances themselves meaningless.
 func (w *WeightedGraph) BellmanFordDistances(source string) ([]Pair[string, float64], error) {
-	return rosetta.Result[[]Pair[string, float64]](rosetta.Call(3227, w, source))
+	return rosetta.Result[[]Pair[string, float64]](rosetta.Call(3238, w, source))
 }
 
 // BellmanFordHasNegativeCycle calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
 // double>::bellman_ford_has_negative_cycle.
 func (w *WeightedGraph) BellmanFordHasNegativeCycle(source string) (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3228, w, source))
+	return rosetta.Result[bool](rosetta.Call(3239, w, source))
 }
 
 // MinimumSpanningTree calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
@@ -47069,7 +47570,7 @@ func (w *WeightedGraph) BellmanFordHasNegativeCycle(source string) (bool, error)
 // containing every vertex and the selected edges. Throws std::logic_error if
 // directed() (MST is only defined for undirected graphs).
 func (w *WeightedGraph) MinimumSpanningTree() (*WeightedGraph, error) {
-	return rosetta.Result[*WeightedGraph](rosetta.Call(3229, w))
+	return rosetta.Result[*WeightedGraph](rosetta.Call(3240, w))
 }
 
 // ConnectedComponents calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
@@ -47078,7 +47579,7 @@ func (w *WeightedGraph) MinimumSpanningTree() (*WeightedGraph, error) {
 // Connected components (ignoring weights). Throws std::logic_error if directed()
 // (use strongly_connected_components() instead).
 func (w *WeightedGraph) ConnectedComponents() ([][]string, error) {
-	return rosetta.Result[[][]string](rosetta.Call(3230, w))
+	return rosetta.Result[[][]string](rosetta.Call(3241, w))
 }
 
 // StronglyConnectedComponents calls the C++ method datamunge::dstruct::WeightedGraph<std::string,
@@ -47089,7 +47590,7 @@ func (w *WeightedGraph) ConnectedComponents() ([][]string, error) {
 // no edges leaving it to another component comes first). Throws std::logic_error
 // if !directed() (use connected_components() instead).
 func (w *WeightedGraph) StronglyConnectedComponents() ([][]string, error) {
-	return rosetta.Result[[][]string](rosetta.Call(3231, w))
+	return rosetta.Result[[][]string](rosetta.Call(3242, w))
 }
 
 // HasCycle calls the C++ method datamunge::dstruct::WeightedGraph<std::string, double>::has_cycle.
@@ -47098,7 +47599,7 @@ func (w *WeightedGraph) StronglyConnectedComponents() ([][]string, error) {
 // directed graph, a directed cycle (found via 3-color DFS); for an undirected
 // graph, two distinct paths between some pair of vertices.
 func (w *WeightedGraph) HasCycle() (bool, error) {
-	return rosetta.Result[bool](rosetta.Call(3232, w))
+	return rosetta.Result[bool](rosetta.Call(3243, w))
 }
 
 // PolyQuotient calls C++ datamunge::algebra::poly_quotient.
@@ -54091,6 +54592,7 @@ func init() {
 			func(h *rosetta.Handle) any { x := makeHyperDual(h); return &x },
 			func(h *rosetta.Handle) any { x := makeVar(h); return &x },
 			func(h *rosetta.Handle) any { x := makeTape(h); return &x },
+			func(h *rosetta.Handle) any { x := makeMLPClassifierSearch(h); return &x },
 			func(h *rosetta.Handle) any { x := makeCadSolid(h); return &x },
 			func(h *rosetta.Handle) any { x := makeCadScene(h); return &x },
 			func(h *rosetta.Handle) any { x := makeSplineSolveOptions(h); return &x },

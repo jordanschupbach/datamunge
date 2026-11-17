@@ -8,14 +8,14 @@ The target shape of every example is:
   evaluation, checkpointing, reporting) in ``main`` or an example-specific
   function of the same file -- never behind a generic ``Run``/``Train`` harness,
   whether that harness lives in a shared header or was pasted into the file;
-* shared ``examples/nn/common`` headers only provide components (model forward
+* shared ``prebindings/nn/include/common`` headers only provide components (model forward
   functions, data readers, metrics, checks) and are bound through SWIG
   (``examples/bindings/nn_components.i``) so the R and Python examples can call
   the same C++;
 * the R and Python examples implement the same loop over those bindings.
 
 This script classifies all canonical examples and writes
-``examples/nn/example_audit.json``.  ``--markdown PATH`` also writes a report,
+``build/nn-example-audit.json``.  ``--markdown PATH`` also writes a report,
 ``--check`` exits nonzero when a shared header owns a training loop or when an
 example listed in ``--require-compliant`` is not compliant.
 """
@@ -30,10 +30,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from nn_migration_status import sources  # noqa: E402
 
-COMMON = ROOT / "examples/nn/common"
+COMMON = ROOT / "prebindings/nn/include/common"
 COMPONENTS_I = ROOT / "examples/bindings/nn_components.i"
-AUDIT = ROOT / "examples/nn/example_audit.json"
-LEDGER = ROOT / "examples/nn/language_status.json"
+AUDIT = ROOT / "build/nn-example-audit.json"
+LEDGER = ROOT / "prebindings/nn/language_status.json"
 
 LITERALS = re.compile(
     r'//[^\n]*|/\*[\s\S]*?\*/|R"([^ ()\\\t\r\n]{0,16})\([\s\S]*?\)\1"|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\''
@@ -378,6 +378,7 @@ def main():
     report = audit()
     text = json.dumps(report, indent=1, sort_keys=False) + "\n"
     if not AUDIT.exists() or AUDIT.read_text() != text:
+        AUDIT.parent.mkdir(parents=True, exist_ok=True)
         AUDIT.write_text(text)
     if args.markdown:
         Path(args.markdown).write_text(markdown(report))

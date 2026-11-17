@@ -1,183 +1,216 @@
 #pragma once
-
-/// \file rvm.hpp
-/// \brief The Relevance Vector Machine (RVM) for regression: sparse Bayesian
-///        kernel learning (Tipping 2001).
-///
-/// The RVM is a Bayesian counterpart to the support vector machine. It fits a
-/// kernel expansion \f$y(x)=w_0+\sum_j w_j\,k(x,x_j)\f$ but places an independent
-/// Gaussian prior \f$w_j\sim\mathcal{N}(0,\alpha_j^{-1})\f$ on each weight, with its
-/// *own* precision hyperparameter \f$\alpha_j\f$. Maximizing the marginal likelihood
-/// (evidence) over the \f$\alpha_j\f$ drives most of them to infinity -- pruning their
-/// weights to exactly zero. The few surviving basis points are the *relevance
-/// vectors*. Compared with the SVM, the RVM typically needs far fewer kernel terms,
-/// produces *probabilistic* predictions (a full predictive variance), and needs no
-/// cross-validation of a margin parameter -- at the cost of a non-convex evidence
-/// optimization.
-///
-/// The evidence is maximized by the fixed-point re-estimation (with
-/// \f$\Sigma=(A+\beta\Phi^\top\Phi)^{-1}\f$, \f$\mu=\beta\Sigma\Phi^\top t\f$,
-/// \f$A=\mathrm{diag}(\alpha)\f$):
-/// \f[
-///   \gamma_j = 1-\alpha_j\Sigma_{jj},\quad
-///   \alpha_j \leftarrow \frac{\gamma_j}{\mu_j^2},\quad
-///   \beta \leftarrow \frac{N-\sum_j\gamma_j}{\lVert t-\Phi\mu\rVert^2}.
-/// \f]
-
-#include <algorithm>
-#include <cmath>
+/// @file rvm.hpp
+/// @brief Checked sparse Bayesian kernel regression with matched final posterior uncertainty.
 #include <cstddef>
-#include <limits>
-#include <utility>
 #include <vector>
-
+/// @brief Canonical checked native algorithm producers and owned outputs.
 namespace datamunge::algorithms {
-
-/// A trained RVM regressor.
+/// @brief Owned fitted RBF regressor with bias-first posterior means.
+/// @par Example
+/// @code
+/// const dm::algorithms::RVMModel value{};
+/// std::print("{}\n",value.beta); // 1
+/// @endcode
 struct RVMModel {
-    std::vector<std::vector<double>> centers;   ///< Kernel centers (the training inputs).
-    std::vector<double>              weights;    ///< Posterior mean weights (index 0 = bias, then per-center).
-    std::vector<char>               relevant;   ///< Whether each center survived pruning (size = centers).
-    double                          gamma = 1.0; ///< RBF kernel width parameter.
-    double                          beta  = 1.0; ///< Learned noise precision.
-    std::size_t                     iterations = 0;
-    std::size_t                     num_relevance_vectors = 0;
+  std::vector<std::vector<double>> centers; ///< Owned complete training inputs.
+  std::vector<double> weights;      ///< Bias followed by per-center means; inactive entries zero.
+  std::vector<char>   relevant;     ///< One active marker per center; bias is always active.
+  double              gamma{1};     ///< Positive finite RBF inverse squared-distance scale.
+  double              beta{1};      ///< Positive finite fitted noise precision.
+  std::size_t         iterations{}; ///< Actual completed hyperparameter updates.
+  std::size_t         num_relevance_vectors{}; ///< Actual active nonbias center count.
 };
-
-namespace detail {
-
-inline double rvm_sq_dist(const std::vector<double>& a, const std::vector<double>& b) {
-    double s = 0.0;
-    for (std::size_t i = 0; i < a.size(); ++i) { const double d = a[i] - b[i]; s += d * d; }
-    return s;
-}
-
-/// Invert an m x m matrix in place by Gauss-Jordan with partial pivoting; returns false if singular.
-inline bool rvm_inverse(std::vector<std::vector<double>>& A) {
-    const std::size_t m = A.size();
-    std::vector<std::vector<double>> I(m, std::vector<double>(m, 0.0));
-    for (std::size_t i = 0; i < m; ++i) I[i][i] = 1.0;
-    for (std::size_t col = 0; col < m; ++col) {
-        std::size_t piv = col;
-        for (std::size_t r = col + 1; r < m; ++r)
-            if (std::fabs(A[r][col]) > std::fabs(A[piv][col])) piv = r;
-        if (std::fabs(A[piv][col]) < 1e-300) return false;
-        std::swap(A[col], A[piv]);
-        std::swap(I[col], I[piv]);
-        const double d = A[col][col];
-        for (std::size_t j = 0; j < m; ++j) { A[col][j] /= d; I[col][j] /= d; }
-        for (std::size_t r = 0; r < m; ++r) {
-            if (r == col) continue;
-            const double f = A[r][col];
-            for (std::size_t j = 0; j < m; ++j) { A[r][j] -= f * A[col][j]; I[r][j] -= f * I[col][j]; }
-        }
-    }
-    A.swap(I);
-    return true;
-}
-
-}  // namespace detail
-
-/// \brief Train an RVM for regression with a Gaussian (RBF) kernel.
-///
-/// \param X            Training inputs.
-/// \param t            Training targets.
-/// \param gamma        RBF kernel width in \f$k(x,x')=e^{-\gamma\lVert x-x'\rVert^2}\f$.
-/// \param max_iters    Maximum evidence re-estimation iterations.
-/// \param prune_threshold \f$\alpha_j\f$ above this is treated as pruned (weight forced to 0).
-/// \param tol          Convergence tolerance on the largest log-alpha change.
-inline RVMModel rvm_train(const std::vector<std::vector<double>>& X, const std::vector<double>& t,
-                          double gamma = 1.0, std::size_t max_iters = 200, double prune_threshold = 1e9,
-                          double tol = 1e-4) {
-    const std::size_t n = X.size();
-    const std::size_t m = n + 1;  // bias + one basis per training point
-    RVMModel          model;
-    model.centers = X;
-    model.gamma   = gamma;
-    if (n == 0) return model;
-
-    // Design matrix Phi (n x m): column 0 = bias, column j+1 = k(x_i, x_j).
-    std::vector<std::vector<double>> Phi(n, std::vector<double>(m, 0.0));
-    for (std::size_t i = 0; i < n; ++i) {
-        Phi[i][0] = 1.0;
-        for (std::size_t j = 0; j < n; ++j) Phi[i][j + 1] = std::exp(-gamma * detail::rvm_sq_dist(X[i], X[j]));
-    }
-
-    double tvar = 0.0, tmean = 0.0;
-    for (double v : t) tmean += v;
-    tmean /= n;
-    for (double v : t) tvar += (v - tmean) * (v - tmean);
-    tvar /= (n > 1 ? n - 1 : 1);
-
-    std::vector<double> alpha(m, 1.0);
-    double              beta = 1.0 / (0.1 * tvar + 1e-9);
-    std::vector<double> mu(m, 0.0);
-
-    for (std::size_t it = 0; it < max_iters; ++it) {
-        // Sigma = (A + beta Phi^T Phi)^{-1}.
-        std::vector<std::vector<double>> S(m, std::vector<double>(m, 0.0));
-        for (std::size_t a = 0; a < m; ++a)
-            for (std::size_t b = 0; b < m; ++b) {
-                double s = 0.0;
-                for (std::size_t i = 0; i < n; ++i) s += Phi[i][a] * Phi[i][b];
-                S[a][b] = beta * s + (a == b ? alpha[a] : 0.0);
-            }
-        if (!detail::rvm_inverse(S)) break;
-
-        // mu = beta Sigma Phi^T t.
-        std::vector<double> pt(m, 0.0);
-        for (std::size_t a = 0; a < m; ++a)
-            for (std::size_t i = 0; i < n; ++i) pt[a] += Phi[i][a] * t[i];
-        for (std::size_t a = 0; a < m; ++a) {
-            double s = 0.0;
-            for (std::size_t b = 0; b < m; ++b) s += S[a][b] * pt[b];
-            mu[a] = beta * s;
-        }
-
-        // Re-estimate alpha and beta.
-        double max_change = 0.0, sum_gamma = 0.0;
-        for (std::size_t a = 0; a < m; ++a) {
-            const double g = 1.0 - alpha[a] * S[a][a];
-            sum_gamma += g;
-            double new_alpha = (mu[a] * mu[a] > 1e-300) ? g / (mu[a] * mu[a]) : prune_threshold * 10.0;
-            if (new_alpha <= 0.0 || !std::isfinite(new_alpha)) new_alpha = prune_threshold * 10.0;
-            max_change = std::max(max_change, std::fabs(std::log(new_alpha + 1e-300) - std::log(alpha[a] + 1e-300)));
-            alpha[a] = new_alpha;
-        }
-        double resid = 0.0;
-        for (std::size_t i = 0; i < n; ++i) {
-            double pred = 0.0;
-            for (std::size_t a = 0; a < m; ++a) pred += Phi[i][a] * mu[a];
-            resid += (t[i] - pred) * (t[i] - pred);
-        }
-        beta = (static_cast<double>(n) - sum_gamma) / (resid + 1e-12);
-        if (beta <= 0.0 || !std::isfinite(beta)) beta = 1.0 / (tvar + 1e-9);
-
-        model.iterations = it + 1;
-        if (max_change < tol && it > 1) break;
-    }
-
-    model.weights = mu;
-    model.beta    = beta;
-    model.relevant.assign(n, 0);
-    model.num_relevance_vectors = 0;
-    for (std::size_t j = 0; j < n; ++j)
-        if (alpha[j + 1] < prune_threshold) {
-            model.relevant[j] = 1;
-            ++model.num_relevance_vectors;
-        } else {
-            model.weights[j + 1] = 0.0;  // pruned
-        }
-    return model;
-}
-
-/// Predict the RVM regression output at \p x.
-inline double rvm_predict(const RVMModel& model, const std::vector<double>& x) {
-    double y = model.weights[0];  // bias
-    for (std::size_t j = 0; j < model.centers.size(); ++j)
-        if (model.relevant[j])
-            y += model.weights[j + 1] * std::exp(-model.gamma * detail::rvm_sq_dist(x, model.centers[j]));
-    return y;
-}
-
-}  // namespace datamunge::algorithms
+/// @brief Complete geometry, update and capture policies; zero disables a size cap.
+/// @par Example
+/// @code
+/// const dm::algorithms::RVMOptions value{};
+/// std::print("{}\n",value.max_samples); // 256
+/// @endcode
+struct RVMOptions {
+  double      gamma{1}; ///< RBF exp(-gamma*squared distance), positive finite.
+  std::size_t max_iterations{
+      200}; ///< Actual fixed-point update budget; zero gives initial-prior posterior.
+  double prune_threshold{
+      1e9}; ///< Active iff alpha below this threshold, required finite >1 with finite tenfold fallback.
+  double      tolerance{1e-4};  ///< Nonnegative finite maximum log-alpha-change stopping tolerance.
+  std::size_t max_samples{256}; ///< Complete training-row cap.
+  std::size_t max_matrix_entries{1000000}; ///< Complete design or square posterior matrix cap.
+  std::size_t max_updates{1000};           ///< Complete requested-update cap.
+  std::size_t max_trace_entries{
+      1000000}; ///< Iteration headers and five captured basis-length vectors.
+};
+/// @brief One actual solved posterior followed by one actual hyperparameter update.
+/// @par Example
+/// @code
+/// const dm::algorithms::RVMStep value{};
+/// std::print("{}\n",value.iteration); // 0
+/// @endcode
+struct RVMStep {
+  std::size_t         iteration{}; ///< One-based actual update.
+  std::vector<double> alpha_before; ///< Actual solve precisions, updated precisions, mean, covariance diagonal and gamma_j.
+  std::vector<double> alpha_after; ///< Actual solve precisions, updated precisions, mean, covariance diagonal and gamma_j.
+  std::vector<double> mean; ///< Actual solve precisions, updated precisions, mean, covariance diagonal and gamma_j.
+  std::vector<double> covariance_diagonal; ///< Actual solve precisions, updated precisions, mean, covariance diagonal and gamma_j.
+  std::vector<double> effective_parameters; ///< Actual solve precisions, updated precisions, mean, covariance diagonal and gamma_j.
+  double beta_before{}; ///< Actual solve precision, updated precision, preupdate SSE and maximum alpha change.
+  double beta_after{}; ///< Actual solve precision, updated precision, preupdate SSE and maximum alpha change.
+  double squared_error{}; ///< Actual solve precision, updated precision, preupdate SSE and maximum alpha change.
+  double maximum_log_change{}; ///< Actual solve precision, updated precision, preupdate SSE and maximum alpha change.
+};
+/// @brief Owned fitted mean and covariance matched to the final active basis and reported precisions.
+/// @par Example
+/// @code
+/// const dm::algorithms::RVMRun value{};
+/// std::print("{}\n",value.posterior_solves); // 0
+/// @endcode
+struct RVMRun {
+  RVMModel            model; ///< Actual final active posterior mean model.
+  std::vector<double> alpha; ///< Final full bias-first precisions, including inactive centers.
+  std::vector<std::vector<double>>
+      covariance; ///< Full expanded final covariance, inactive rows/columns zero.
+  std::size_t
+       posterior_solves{}; ///< Actual factorizations, including the final active-basis refit.
+  bool converged{};        ///< Actual update stopping criterion met after at least three updates.
+  std::vector<RVMStep> steps; ///< Optional actual update histories.
+};
+/// @brief Actual matched Gaussian predictive quantities at one input.
+/// @par Example
+/// @code
+/// const dm::algorithms::RVMPrediction value{};
+/// std::print("{}\n",value.mean); // 0
+/// @endcode
+struct RVMPrediction {
+  double mean{}; ///< Mean, phi^T Sigma phi, 1/beta, and their variance sum.
+  double latent_variance{}; ///< Mean, phi^T Sigma phi, 1/beta, and their variance sum.
+  double noise_variance{}; ///< Mean, phi^T Sigma phi, 1/beta, and their variance sum.
+  double variance{}; ///< Mean, phi^T Sigma phi, 1/beta, and their variance sum.
+};
+/// @brief Owned original noiseless sine fixture and its evaluation grid.
+/// @par Example
+/// @code
+/// const dm::algorithms::RVMExample value{};
+/// std::print("{}\n",value.inputs.size()); // 0
+/// @endcode
+struct RVMExample {
+  std::vector<std::vector<double>> inputs; ///< Forty-one training and 201 evaluation one-dimensional inputs.
+  std::vector<std::vector<double>> grid; ///< Forty-one training and 201 evaluation one-dimensional inputs.
+  std::vector<double> targets; ///< Exact computed sine at the corresponding coordinates; no sampled noise.
+  std::vector<double> truth; ///< Exact computed sine at the corresponding coordinates; no sampled noise.
+};
+/// @brief Fit checked sparse Bayesian RBF regression.
+/// Builds a bias plus one Gaussian basis per training point. Canonical long-double Cholesky solves Sigma=(diag(alpha)+beta*Phi^T*Phi)^-1 and mu=beta*Sigma*Phi^T*t. Actual gamma_j=1-alpha_j*Sigma_jj updates alpha_j=gamma_j/mu_j^2 and beta=(n-sum gamma)/(SSE+1e-12); nonpositive/nonfinite alpha uses ten times prune_threshold and beta uses inverse(target sample variance+1e-9). Initial alpha=1 and beta=1/(0.1*sample variance+1e-9). Tiny numerical gamma_j excursions are clamped to [0,1]; substantial excursions fail. Stops on maximum log-alpha change after at least three updates or budget. After final selection alpha<threshold, ALWAYS refits the active basis plus bias using the final reported alpha and beta. This fixes historical stale means and supplies covariance matching the pruned mean; finite-budget legacy predictions may change. Zero updates gives the initial posterior. Empty/ragged/nonfinite inputs are rejected. No global evidence optimum, sparsity level, calibration or convergence guarantee. Each solve O((n+1)^3), working O((n+1)^2); trace O(updates*(n+1)). Complete geometry and capture checked before work/copies. Borrowed input unchanged; calls share no mutable state.
+/// @param inputs Nonempty rectangular finite n-by-d inputs with d>0.
+/// @param targets Exactly n finite regression targets.
+/// @param options Kernel scale, fixed-point controls and complete geometry/history policies.
+/// @return Owned actual final active posterior, full precisions, solve count and optional update histories.
+/// @throws std::invalid_argument Invalid controls, shape or finite-data requirement.
+/// @throws std::length_error Complete geometry/update/capture policy exceeded.
+/// @throws std::domain_error Posterior is numerically non-SPD or an intermediate/output is unrepresentable.
+/// @par Example
+/// @code
+/// dm::algorithms::RVMOptions o;o.max_iterations=0;
+/// auto r=dm::algorithms::rvm_train_run({{0}},{0},o);
+/// std::print("{} {}\n",r.model.weights,r.posterior_solves); // [0, 0] 1
+/// @endcode
+/// @par References
+/// - Tipping (2001), Sparse Bayesian Learning and the Relevance Vector Machine. https://jmlr.org/papers/v1/tipping01a.html
+/// @see rvm_predictive(), rvm_train()
+RVMRun rvm_train_run(
+    const std::vector<std::vector<double>>& inputs,
+    const std::vector<double>&              targets,
+    const RVMOptions&                       options = {});
+/// @brief Fit checked sparse Bayesian RBF regression retaining actual fixed-point updates.
+/// Builds a bias plus one Gaussian basis per training point. Canonical long-double Cholesky solves Sigma=(diag(alpha)+beta*Phi^T*Phi)^-1 and mu=beta*Sigma*Phi^T*t. Actual gamma_j=1-alpha_j*Sigma_jj updates alpha_j=gamma_j/mu_j^2 and beta=(n-sum gamma)/(SSE+1e-12); nonpositive/nonfinite alpha uses ten times prune_threshold and beta uses inverse(target sample variance+1e-9). Initial alpha=1 and beta=1/(0.1*sample variance+1e-9). Tiny numerical gamma_j excursions are clamped to [0,1]; substantial excursions fail. Stops on maximum log-alpha change after at least three updates or budget. After final selection alpha<threshold, ALWAYS refits the active basis plus bias using the final reported alpha and beta. This fixes historical stale means and supplies covariance matching the pruned mean; finite-budget legacy predictions may change. Zero updates gives the initial posterior. Empty/ragged/nonfinite inputs are rejected. No global evidence optimum, sparsity level, calibration or convergence guarantee. Each solve O((n+1)^3), working O((n+1)^2); trace O(updates*(n+1)). Complete geometry and capture checked before work/copies. Borrowed input unchanged; calls share no mutable state.
+/// @param inputs Nonempty rectangular finite n-by-d inputs with d>0.
+/// @param targets Exactly n finite regression targets.
+/// @param options Kernel scale, fixed-point controls and complete geometry/history policies.
+/// @return Owned actual final active posterior, full precisions, solve count and optional update histories.
+/// @throws std::invalid_argument Invalid controls, shape or finite-data requirement.
+/// @throws std::length_error Complete geometry/update/capture policy exceeded.
+/// @throws std::domain_error Posterior is numerically non-SPD or an intermediate/output is unrepresentable.
+/// @par Example
+/// @code
+/// dm::algorithms::RVMOptions o;o.max_iterations=0;
+/// auto r=dm::algorithms::rvm_train_trace({{0}},{0},o);
+/// std::print("{} {}\n",r.model.weights,r.posterior_solves); // [0, 0] 1
+/// @endcode
+/// @par References
+/// - Tipping (2001), Sparse Bayesian Learning and the Relevance Vector Machine. https://jmlr.org/papers/v1/tipping01a.html
+/// @see rvm_predictive(), rvm_train()
+RVMRun rvm_train_trace(
+    const std::vector<std::vector<double>>& inputs,
+    const std::vector<double>&              targets,
+    const RVMOptions&                       options = {});
+/// @brief Fit the checked posterior through the preserved legacy signature.
+/// Delegates to the same native producer with default geometry policies and final active-basis refit.
+/// @param X Nonempty rectangular finite training inputs.
+/// @param t Finite target for every row.
+/// @param gamma Positive finite RBF inverse squared-distance scale; default 1.
+/// @param max_iters Actual update budget; default 200.
+/// @param prune_threshold Finite positive threshold >1; default 1e9.
+/// @param tol Finite nonnegative stopping tolerance; default 1e-4.
+/// @return Owned mean model with matched final precisions.
+/// @throws std::invalid_argument Invalid inputs/controls.
+/// @throws std::length_error Default geometry/update policy exceeded.
+/// @throws std::domain_error Numerically invalid posterior or output.
+/// @par Example
+/// @code
+/// auto m=dm::algorithms::rvm_train({{0}},{0},1,0);
+/// std::print("{}\n",dm::algorithms::rvm_predict(m,{0})); // 0
+/// @endcode
+/// @par References
+/// - Tipping (2001), Sparse Bayesian Learning and the Relevance Vector Machine. https://jmlr.org/papers/v1/tipping01a.html
+/// @see rvm_train_run()
+RVMModel rvm_train(
+    const std::vector<std::vector<double>>& X,
+    const std::vector<double>&              t,
+    double                                  gamma           = 1,
+    std::size_t                             max_iters       = 200,
+    double                                  prune_threshold = 1e9,
+    double                                  tol             = 1e-4);
+/// @brief Evaluate a checked bias-first RBF mean model.
+/// Validates complete model geometry, finite weights/centers, positive gamma/beta, active markers/count and input shape before indexing. Empty/unfitted models are invalid. Borrowed storage unchanged; no shared state.
+/// @param model Borrowed fitted canonical mean model.
+/// @param x Finite input matching center dimension.
+/// @return Finite actual predicted mean.
+/// @throws std::invalid_argument Malformed model/input.
+/// @throws std::domain_error Unrepresentable mean.
+/// @par Example
+/// @code
+/// auto m=dm::algorithms::rvm_train({{0}},{0},1,0);
+/// std::print("{}\n",dm::algorithms::rvm_predict(m,{0})); // 0
+/// @endcode
+/// @par References
+/// - Tipping (2001), Sparse Bayesian Learning and the Relevance Vector Machine. https://jmlr.org/papers/v1/tipping01a.html
+/// @see rvm_predictive()
+double rvm_predict(const RVMModel& model, const std::vector<double>& x);
+/// @brief Evaluate actual matched posterior mean and Gaussian predictive variance.
+/// Uses the final active covariance stored by the producing run. Latent variance is phi^T Sigma phi; observation variance adds 1/beta. Validates covariance shape, finiteness and symmetry; arbitrary manual edits cannot be certified as a fitted posterior. Tiny negative roundoff is clamped, substantial negative variance fails. These are model-conditional quantities and do not establish empirical uncertainty calibration.
+/// @param run Borrowed canonically fitted mean and matched covariance.
+/// @param x Finite correctly shaped input.
+/// @return Actual mean, latent variance, noise variance and total variance.
+/// @throws std::invalid_argument Malformed model, input or covariance.
+/// @throws std::domain_error Invalid or unrepresentable variance/mean.
+/// @par Example
+/// @code
+/// dm::algorithms::RVMOptions o;o.max_iterations=0;
+/// auto r=dm::algorithms::rvm_train_run({{0}},{0},o);
+/// std::print("{}\n",dm::algorithms::rvm_predictive(r,{0}).mean); // 0
+/// @endcode
+/// @par References
+/// - Tipping (2001), Sparse Bayesian Learning and the Relevance Vector Machine. https://jmlr.org/papers/v1/tipping01a.html
+/// @see rvm_train_run()
+RVMPrediction rvm_predictive(const RVMRun& run, const std::vector<double>& x);
+/// @brief Return the original noiseless sine study inputs through the native library.
+/// Training x=2*pi*i/40 for i=0..40 and grid x=2*pi*i/200 for i=0..200; target/truth are sin(x). Uses no random noise or shared state.
+/// @return Owned inputs, targets, grid and exact computed sine truth.
+/// @par Example
+/// @code
+/// auto e=dm::algorithms::rvm_sine_example();
+/// std::print("{} {}\n",e.inputs.size(),e.grid.size()); // 41 201
+/// @endcode
+/// @par References
+/// - Tipping (2001), Sparse Bayesian Learning and the Relevance Vector Machine. https://jmlr.org/papers/v1/tipping01a.html
+/// @see rvm_train_trace()
+RVMExample rvm_sine_example();
+} // namespace datamunge::algorithms

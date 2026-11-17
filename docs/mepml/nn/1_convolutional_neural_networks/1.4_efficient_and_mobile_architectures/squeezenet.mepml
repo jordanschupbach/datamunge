@@ -1,0 +1,624 @@
+//? Title: SqueezeNet: Fire Modules, Ceil Pooling and Visible Optimization
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+SqueezeNet reduces expensive spatial-filter inputs with narrow squeeze layers and parallel
+expand branches. We check exact Fire equivalence and derivatives, isolate ceil pooling, verify
+both released versions and explicitly fit three full-width CIFAR configurations with tensor Adam,
+scoring the full CIFAR-10 test set with GPU inference.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.cpp`.
+
+> The method
+
+A *Fire* module first squeezes Cin channels to S using biased 1×1/ReLU, then expands with
+parallel biased 1×1/ReLU and SAME 3×3/ReLU branches of widths E1 and E3. Concatenation
+emits E1+E3 channels. Its learned budget, including biases, is
+
+$$P=C_{\rm in}S+S+SE_1+E_1+9SE_3+E_3.$$
+\alttext(A narrow squeeze limits channels entering the expensive spatial branch; parallel expand outputs concatenate.)
+
+Fire2 at Cin=96,S=16,E1=E3=64 has 11920 learned scalars versus 110720 for a plain
+3×3 to 128 channels. A controlled fixture centre-embeds the 1×1 expand kernel into a 3×3
+and concatenates it with the spatial kernel; values and all input/parameter derivatives agree.
+That equivalence applies after the nonlinear squeeze, not to an arbitrary dense filter on x.
+
+Full v1.0 uses a VALID 7×7/2 stem to 96 channels; v1.1 uses VALID 3×3/2 to 64.
+Both initially pool and retain eight Fire modules. V1.0 later pools after Fire4/8; v1.1 after
+Fire3/5. Caffe ceil-rounded 3×3/2 max pooling pads bottom/right with negative infinity when
+necessary. At 224 pixels their Fire stage sides are 54/27/13 and 55/27/13; the final map is
+13×13×512. Full learned counts are 1248424/1235496. Optional simple equal-width bypasses
+add no parameters. The model has no BN or moving-statistic store.
+
+He-uniform initializes Fire/stem filters. After dropout, a biased 1×1 class filter initialized
+normal(0,.01) uses ReLU, then global mean. Thus class-map scores are nonnegative; this is not
+a generic unconstrained linear head. Large optimizer steps can kill the final ReLU and remove
+data gradients. The source port uses Adam(.0001) for that reason. The visible fits use a
+warmed-up cosine schedule peaking at .0005: in pilot runs, peaks of .001 and .002 left v1.1 at
+exactly chance NLL ln 10, while .0005 trained all three configurations.
+No pretrained weights or compression are used; a parameter count is not a compressed file size.
+
+Three explicit fits compare v1.0, v1.0 with simple bypasses, and v1.1. The CIFAR adaptation uses
+a SAME 3×3/1 stem at original 32×32 resolution, retaining every Fire module/pool/dropout/class
+map. Learned counts are 729034/729034/727626. Each resets parameter, dropout, minibatch and
+augmentation seeds. The first training file supplies 8,000 fit and 2,000 validation rows; the
+test set is all 10,000 official test images. Each configuration trains on the CPU for ten
+batch-32 epochs (2,500 updates) with Adam, a 100-step linear warmup then cosine decay from .0005
+to zero, and explicit kernel L2=.0001/2; the three fits together take about twelve minutes.
+Independent padded crops/flips precede scaling to [-1,1]. The lowest validation NLL selects
+parameters before the official-test evaluation; there is no moving state to save.
+
+All inference (per-epoch validation, the selected training NLL and the test predictions)
+runs on the first CUDA GPU when the linked datamunge has CUDA and cuBLAS. The parameter store is
+copied with `ParameterStore::to`, and images move in batches of 1,000. Without a usable GPU the
+same code runs on the CPU, but scoring 10,000 test images per configuration then takes about
+fifty times longer. These are short single-seed fits; they differ from the larger original
+source run and ImageNet experiments and do not establish an architecture ranking.
+
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
+
+```{cpp, file="figures/squeezenet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Narrow squeeze\nParallel expand");
+  diagram.node("n1", {5.2, 0}, "Ceil max pooling\nReLU class maps");
+  diagram.node("n2", {10.4, 0}, "Three CIFAR fits\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/squeezenet_concept.svg");
+}
+```
+// result_begin:
+// \image(figures/squeezenet_concept.svg)
+// result_end
+\caption(SqueezeNet: Fire Modules, Ceil Pooling and Visible Optimization)
+\alttext(Narrow squeeze; Parallel expand; then Ceil max pooling; ReLU class maps; then Three CIFAR fits; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/squeezenet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  const int                   version = 10;
+  const bool                  bypass  = false;
+  n::models::SqueezeNetConfig cfg;
+  cfg.version       = version;
+  cfg.simple_bypass = bypass;
+  cfg.cifar_stem    = true;
+  cfg.image_size    = 32;
+  cfg.classes       = 10;
+  n::Generator      dropout_rng(101);
+  n::ParameterStore p(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::SqueezeNet(p, image, cfg, false, &dropout_rng).logits;
+      },
+      "SqueezeNet: Fire Modules, Ceil Pooling and Visible Optimization");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/squeezenet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+41 displayed nodes; 729034 reachable learned values.
+\image(figures/squeezenet_architecture.svg)
+// result_end
+\caption(Executed squeezenet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right squeezenet architecture with rotated names and exact output shapes.)
+
+> Simple Fire equivalence
+
+The fixture preserves squeeze, biases, expand activation and every derivative.
+
+```{cpp, results="markdown", file="figures/squeezenet_fire.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type);
+  const auto x = n::sin(.37 * n::arange(0, 360).to(type) + .1)
+                     .reshape({2, 6, 6, 5})
+                     .detach()
+                     .requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::Fire(p, "f", x, 3, 4, 6);
+    for (const auto &name : p.names())
+      if (name.ends_with("/b"))
+        p.set(name,
+              .2 * n::sin(n::arange(0, p.at(name).numel()).to(type) + double(name.size())));
+  }
+  const auto out = n::models::Fire(p, "f", x, 3, 4, 6);
+  const auto centred = n::pad(p.at("f/expand1x1/W"), {{1, 1}, {1, 1}, {0, 0}, {0, 0}});
+  const auto kernel = n::concat({centred, p.at("f/expand3x3/W")}, 3),
+             bias = n::concat({p.at("f/expand1x1/b"), p.at("f/expand3x3/b")}, 0);
+  const auto merged =
+      n::relu(n::conv2d(out.squeeze, kernel, n::conv_options(1, n::Padding::Same)) + bias);
+  auto variables = p.parameters();
+  variables.insert(variables.begin(), x);
+  const auto weights =
+      n::sin(.37 * n::arange(0, 720).to(type) + .3).reshape(out.output.shape());
+  const auto a = n::grad(n::sum(out.output * weights), variables, {.retain_graph = true}),
+             b = n::grad(n::sum(merged * weights), variables);
+  double error = n::max(n::abs(out.output - merged)).item();
+  for (size_t i = 0; i < a.size(); ++i)
+    error = std::max(error, n::max(n::abs(a[i] - b[i])).item());
+  if (error > 1e-11)
+    return 1;
+  auto first = [](const auto &t) {
+    return n::slice_axis(n::slice_axis(t, 0, 0, 1), 3, 0, 1).reshape({6, 6});
+  };
+  const double high = std::max(1e-12, n::max(out.output).item());
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout
+      .add(n::plot_tensor_map(first(out.output), 0, high)
+               .title("Fire: concatenated expand branches"))
+      .add(n::plot_tensor_map(first(merged), 0, high)
+               .title("Centre-embedded expand convolution"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 470).fit_panels().save_svg("build/squeezenet_fire.svg");
+  std::print("Fire expand equivalence: outputs and all input/parameter derivatives agree to "
+             "{:.12f}. Fire2 with Cin=96,S=16,E1=E3=64: 11920 learned scalars versus 110720 "
+             "for a plain 3x3 to 128 channels, including biases.\n",
+             error);
+}
+```
+// result_begin: markdown
+Fire expand equivalence: outputs and all input/parameter derivatives agree to 0.000000000000. Fire2 with Cin=96,S=16,E1=E3=64: 11920 learned scalars versus 110720 for a plain 3x3 to 128 channels, including biases.
+\image(figures/squeezenet_fire.svg)
+// result_end
+\caption(The two expand filters share a nonlinear squeeze map. Centre embedding merges the expand operation, including biases and ReLU, while preserving all input/parameter derivatives. It does not remove the nonlinear squeeze or represent arbitrary dense input filters.)
+\alttext(The two expand filters share a nonlinear squeeze map. Centre embedding merges the expand operation, including biases and ReLU, while preserving all input/parameter derivatives. It does not remove the nonlinear squeeze or represent arbitrary dense input filters.)
+
+> Simple ceil-pooling example
+
+All-negative data makes incorrect zero padding immediately visible.
+
+```{cpp, results="markdown", file="figures/squeezenet_pooling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  const auto x = n::arange(-16, 0).to(type).reshape({1, 4, 4, 1}).detach().requires_grad_();
+  int side = 4;
+  const auto y = n::models::CeilMaxPool(x, side);
+  const auto expected = n::from_vector(std::vector<double>{-6, -5, -2, -1}, {1, 2, 2, 1});
+  if (side != 2 || n::max(n::abs(y - expected)).item() != 0)
+    return 1;
+  const auto dx = n::grad(n::sum(y), {x})[0];
+  for (int r = 0; r < 4; ++r)
+    for (int c = 0; c < 4; ++c)
+      if (dx.at({0, r, c, 0}) != double(r >= 2 && c >= 2))
+        return 1;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(n::plot_tensor_map(x.reshape({4, 4}), -16, -1).title("Negative input: 4x4"))
+      .add(n::plot_tensor_map(y.reshape({2, 2}), -16, -1).title("Ceil 3x3/2 pool: 2x2"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 470).fit_panels().save_svg("build/squeezenet_pooling.svg");
+  std::print(
+      "Ceil pooling retains the final row/column: [-6,-5;-2,-1], with derivatives at the four "
+      "winning pixels. Negative-infinity padding cannot win over the negative data.\n");
+}
+```
+// result_begin: markdown
+Ceil pooling retains the final row/column: [-6,-5;-2,-1], with derivatives at the four winning pixels. Negative-infinity padding cannot win over the negative data.
+\image(figures/squeezenet_pooling.svg)
+// result_end
+\caption(Padding is only at the bottom/right and uses negative infinity, preserving maxima for entirely negative images. Floor-rounded pooling would return one output and lose the edge windows. The four winning input derivatives are checked exactly.)
+\alttext(Padding is only at the bottom/right and uses negative infinity, preserving maxima for entirely negative images. Floor-rounded pooling would return one output and lose the edge windows. The four winning input derivatives are checked exactly.)
+
+> Complete released geometry and gradients
+
+Full 224-pixel counts/shapes are separate from full-width backward probes at 64 pixels.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  for (auto [version, bypass, count, sizes] :
+       std::vector<std::tuple<int, bool, int64_t, std::vector<int>>>{
+           {10, false, 1248424, {54, 54, 54, 27, 27, 27, 27, 13}},
+           {10, true, 1248424, {54, 54, 54, 27, 27, 27, 27, 13}},
+           {11, false, 1235496, {55, 55, 27, 27, 13, 13, 13, 13}}}) {
+    {
+      n::NoGradGuard guard;
+      n::ParameterStore p(17);
+      n::models::SqueezeNetConfig cfg;
+      cfg.version = version;
+      cfg.simple_bypass = bypass;
+      const auto out = n::models::SqueezeNet(p, n::zeros({1, 224, 224, 3}), cfg);
+      if (p.count() != count || out.sizes != sizes || out.fires.size() != 8 ||
+          out.fires.back().shape() != n::Shape{1, 13, 13, 512} ||
+          out.logits.shape() != n::Shape{1, 1000})
+        return 1;
+      std::print("SqueezeNet version {}, bypass {}: {} learned scalars; all eight 224-pixel "
+                 "Fire shapes and ceil-pool stages verified.\n",
+                 version, bypass, count);
+    }
+    n::ParameterStore p(17);
+    n::models::SqueezeNetConfig cfg;
+    cfg.version = version;
+    cfg.simple_bypass = bypass;
+    cfg.image_size = 64;
+    cfg.keep_probability = 1;
+    const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                       .reshape({2, 64, 64, 3});
+    const auto out = n::models::SqueezeNet(p, x, cfg);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    double minimum = std::numeric_limits<double>::infinity();
+    for (const auto &g : gradients) {
+      const double norm = n::sqrt(n::sum(n::square(g))).item();
+      if (!std::isfinite(norm))
+        return 1;
+      minimum = std::min(minimum, norm);
+    }
+    if (minimum <= 0)
+      return 1;
+    std::print("Complete 64-pixel backward, same widths/modules: {} finite nonzero "
+               "parameter-tensor gradients; minimum norm {:.9f}.\n",
+               gradients.size(), minimum);
+  }
+}
+```
+// result_begin: markdown
+SqueezeNet version 10, bypass false: 1248424 learned scalars; all eight 224-pixel Fire shapes and ceil-pool stages verified.
+Complete 64-pixel backward, same widths/modules: 52 finite nonzero parameter-tensor gradients; minimum norm 0.001402558.
+SqueezeNet version 10, bypass true: 1248424 learned scalars; all eight 224-pixel Fire shapes and ceil-pool stages verified.
+Complete 64-pixel backward, same widths/modules: 52 finite nonzero parameter-tensor gradients; minimum norm 0.015759319.
+SqueezeNet version 11, bypass false: 1235496 learned scalars; all eight 224-pixel Fire shapes and ceil-pool stages verified.
+Complete 64-pixel backward, same widths/modules: 52 finite nonzero parameter-tensor gradients; minimum norm 0.001198814.
+// result_end
+
+> Dataset and explicit fitting
+
+Original images precede all three optimizer runs.
+
+```{cpp, results="markdown", file="figures/squeezenet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/squeezenet_inputs.png", 5, 0., 1., 4,
+                     1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/squeezenet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/squeezenet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <chrono>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  namespace c             = dm::compute;
+  using clock             = std::chrono::steady_clock;
+  n::set_num_threads(8);
+
+  // Inference runs on the first CUDA GPU when this datamunge build has CUDA and
+  // cuBLAS; otherwise the identical code runs on the CPU. Training stays on CPU.
+  const c::Context host;
+  c::Context       device = host;
+  if (c::probe({c::Backend::CUDA, 0}).available) {
+    const c::Context gpu({c::Backend::CUDA, 0});
+    if (gpu.supports_matmul())
+      device = gpu;
+  }
+  const auto device_name = device.device().backend == c::Backend::CUDA
+                               ? "CUDA " + c::probe(device.device()).name
+                               : std::string("CPU (no usable CUDA device in this build)");
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  constexpr std::int64_t fit = 8000, held = 2000, batch = 32, epochs = 10, warmup = 100;
+  constexpr double       peak = .0005;
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, fit), ty = n::slice_axis(labels, 0, 0, fit);
+  const auto vx = 2 * n::slice_axis(images, 0, fit, fit + held) - 1,
+             vy = n::slice_axis(labels, 0, fit, fit + held);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx = 2 * official.images - 1, qy = official.labels;
+
+  // Batched dropout-free inference on `device`; logits come back to the host.
+  auto infer = [&](const n::ParameterStore& p, const n::models::SqueezeNetConfig& cfg,
+                   const n::Tensor& x) {
+    n::NoGradGuard         guard;
+    auto                   dp = p.to(device);
+    std::vector<n::Tensor> logits;
+    for (std::int64_t i = 0; i < x.size(0); i += 1000) {
+      const auto rows = n::slice_axis(x, 0, i, std::min(i + 1000, x.size(0)));
+      logits.push_back(n::models::SqueezeNet(dp, rows.to(device), cfg, false).logits.to(host));
+    }
+    return n::concat(logits, 0);
+  };
+
+  auto   training_plot = dm::graphics::RPlot::create(),
+         validation_plot = dm::graphics::RPlot::create();
+  int    setting = 0;
+  double inference_seconds = 0;
+  std::vector<std::string> names;
+  std::vector<double>      counts, selected, validation_nll, train_nll, test_nll, accuracy;
+  std::filesystem::create_directories("build");
+  for (auto [version, bypass] :
+       std::vector<std::pair<int, bool>>{{10, false}, {10, true}, {11, false}}) {
+    n::models::SqueezeNetConfig cfg;
+    cfg.version       = version;
+    cfg.simple_bypass = bypass;
+    cfg.cifar_stem    = true;
+    cfg.image_size    = 32;
+    cfg.classes       = 10;
+    n::Generator      dropout_rng(101);
+    n::ParameterStore p(17);
+    {
+      n::NoGradGuard guard;
+      n::models::SqueezeNet(p, n::zeros({1, 32, 32, 3}), cfg, false);
+    }
+    if (p.count() != (version == 10 ? 729034 : 727626))
+      return 1;
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer        optimizer(p, peak, config);
+    n::BatchOrder       batches(fit, batch, 2026);
+    n::Generator        augmentation(151);
+    const std::int64_t  steps      = epochs * ((fit + batch - 1) / batch);
+    const std::string   checkpoint = "build/squeezenet_best";
+    double              best       = std::numeric_limits<double>::infinity(), seconds = 0;
+    int                 best_epoch = 0;
+    std::vector<double> epoch_axis, train, validation;
+    for (int epoch = 1; epoch <= epochs; ++epoch) {
+      const auto start = clock::now();
+      batches.begin_epoch();
+      n::WeightedMean average;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto             x = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+        std::vector<n::Tensor> transformed;
+        for (int64_t row = 0; row < x.size(0); ++row) {
+          auto image =
+              n::pad(n::slice_axis(x, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+          image = n::augment::random_crop(image, 32, 32, augmentation);
+          transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+        }
+        const auto logits = n::models::SqueezeNet(p, 2 * n::concat(transformed, 0) - 1, cfg,
+                                                  true, &dropout_rng)
+                                .logits;
+        const auto nll       = n::sparse_softmax_cross_entropy(logits, target);
+        auto       objective = nll;
+        for (const auto& w : p.parameters())
+          if (w.dim() >= 2)
+            objective = objective + .00005 * n::sum(n::square(w));
+        optimizer.set_learning_rate(
+            n::schedule::warmup_cosine(peak, 0, warmup, steps, optimizer.iterations()));
+        optimizer.minimize(objective);
+        average.add(nll.item(), rows.size());
+      }
+      seconds += std::chrono::duration<double>(clock::now() - start).count();
+      const auto   inferred = clock::now();
+      const double val = n::sparse_softmax_cross_entropy(infer(p, cfg, vx), vy).item();
+      inference_seconds += std::chrono::duration<double>(clock::now() - inferred).count();
+      if (!std::isfinite(val))
+        return 1;
+      epoch_axis.push_back(epoch);
+      train.push_back(average.value());
+      validation.push_back(val);
+      if (val < best) {
+        best       = val;
+        best_epoch = epoch;
+        p.save(checkpoint + "_params.npz");
+      }
+    }
+    p.load(checkpoint + "_params.npz");
+    const auto inferred     = clock::now();
+    const auto prediction   = infer(p, cfg, qx);
+    const auto training_out = infer(p, cfg, 2 * tx - 1);
+    inference_seconds += std::chrono::duration<double>(clock::now() - inferred).count();
+    n::NoGradGuard guard;
+    const double   test = n::sparse_softmax_cross_entropy(prediction, qy).item();
+    if (!std::isfinite(test))
+      return 1;
+    n::ConfusionMatrix confusion(10);
+    confusion.add(qy, n::argmax(prediction, 1));
+ n::save_npz("build/squeezenet_heldout_"+std::to_string(rendered_confusions)+".npz",{{"truth",qy},{"logits",prediction},{"counts",confusion.to_tensor()}});
+    confusion.save_svg(
+        "build/squeezenet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+        {.title = "squeezenet / selected-checkpoint test counts"});
+
+    const std::string label = version == 11 ? "v1.1" : bypass ? "v1.0 + bypass" : "v1.0";
+    const std::vector<dm::graphics::RGB> colours = {{37, 99, 235}, {234, 88, 12}, {22, 163, 74}};
+    training_plot.lines(epoch_axis, train, label, colours[setting]);
+    validation_plot.lines(epoch_axis, validation, label, colours[setting]);
+    ++setting;
+    names.push_back(label);
+    counts.push_back(p.count());
+    selected.push_back(best_epoch);
+    validation_nll.push_back(best);
+    train_nll.push_back(n::sparse_softmax_cross_entropy(training_out, ty).item());
+    test_nll.push_back(test);
+    accuracy.push_back(n::accuracy(prediction, qy));
+    std::print("SqueezeNet {}: {} Adam updates in {:.0f} s of CPU training.\n", label,
+               optimizer.iterations(), seconds);
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("configuration", names);
+  table.add_column("parameters", counts);
+  table.add_column("best_epoch", selected);
+  table.add_column("selected_train_NLL", train_nll);
+  table.add_column("validation_NLL", validation_nll);
+  table.add_column("test_NLL", test_nll);
+  table.add_column("test_accuracy", accuracy);
+  std::print("Inference device: {}; all inference took {:.1f} s.\n", device_name,
+             inference_seconds);
+  std::print("{} fit / {} validation / {} official-test rows per configuration.\n\n{}\n", fit,
+             held, qx.size(0), table.to_md(4));
+  training_plot.title("SqueezeNet: augmented training").x_label("epoch").y_label("mean NLL");
+  validation_plot.title("SqueezeNet: validation").x_label("epoch").y_label("mean NLL");
+  dm::graphics::RLayout::create(1, 2)
+      .add(training_plot)
+      .add(validation_plot)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/squeezenet_training.svg");
+}
+```
+// result_begin: markdown
+SqueezeNet v1.0: 2500 Adam updates in 71 s of CPU training.
+SqueezeNet v1.0 + bypass: 2500 Adam updates in 69 s of CPU training.
+SqueezeNet v1.1: 2500 Adam updates in 45 s of CPU training.
+Inference device: CPU (no usable CUDA device in this build); all inference took 41.7 s.
+8000 fit / 2000 validation / 10000 official-test rows per configuration.
+
+| configuration | parameters | best_epoch | selected_train_NLL | validation_NLL | test_NLL | test_accuracy |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| v1.0 | 729034 | 10 | 1.4052 | 1.4707 | 1.4749 | 0.4425 |
+| v1.0 + bypass | 729034 | 1 | 2.3026 | 2.3026 | 2.3026 | 0.1000 |
+| v1.1 | 727626 | 10 | 1.3618 | 1.4226 | 1.4270 | 0.4651 |
+
+\image(figures/squeezenet_training.svg)
+// result_end
+\caption(Three full-width models share the same CIFAR subsets, warmed-up cosine Adam schedule, ten epochs and checkpoint rule. The graph uses no BN state; inference disables dropout. All eight Fire modules and ceil pools remain present.)
+\alttext(Three full-width models share the same CIFAR subsets, warmed-up cosine Adam schedule, ten epochs and checkpoint rule. The graph uses no BN state; inference disables dropout. All eight Fire modules and ceil pools remain present.)
+
+The executed results above report the current selected checkpoint. These fixed small
+subsets and source budgets do not establish a ranking of architectures. Assess
+training, validation and test NLL together with the complete held-out confusion.
+Augmented or batch-moment training objectives and saved-state inference can differ;
+weak or below-chance outcomes remain part of the result. The independent geometry,
+parameter-count and derivative checks establish separate implementation claims.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/squeezenet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/squeezenet_confusion_api_1.svg)
+\caption(Held-out classification confusion counts, evaluation 2. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/squeezenet_confusion_api_2.svg)
+\caption(Held-out classification confusion counts, evaluation 3. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Regenerate every adjacent view
+
+Each alternate architecture or held-out confusion below is copied from this run's local build directory.
+
+```{cpp, results="markdown", file="figures/squeezenet_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/squeezenet_confusion_api_0.svg","build/export_squeezenet_confusion_api_0.svg",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/squeezenet_confusion_api_0.svg)
+// result_end
+
+```{cpp, results="markdown", file="figures/squeezenet_confusion_api_1.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/squeezenet_confusion_api_1.svg","build/export_squeezenet_confusion_api_1.svg",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/squeezenet_confusion_api_1.svg)
+// result_end
+
+```{cpp, results="markdown", file="figures/squeezenet_confusion_api_2.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/squeezenet_confusion_api_2.svg","build/export_squeezenet_confusion_api_2.svg",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/squeezenet_confusion_api_2.svg)
+// result_end
+
+> Conclusion
+
+Narrow squeeze layers reduce spatial-filter budgets; expand branches, ceil pooling and the
+ReLU class-map head define the full released behavior. Exact value/gradient fixtures and visible
+Adam loops make those choices and their small-data limitations reviewable.
+
+> References
+
+- [Iandola et al. (2016), SqueezeNet](https://arxiv.org/abs/1602.07360).
+- [Authors' release](https://github.com/forresti/SqueezeNet).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

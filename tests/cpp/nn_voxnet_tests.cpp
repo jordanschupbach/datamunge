@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_voxnet_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/voxnet.cpp"
-#undef main
+#include "../fixtures/nn_voxnet_checks.hpp"
 TEST(Voxnet, EveryIndependentHostConvolutionValueAndDerivative) {
   ConvChecks();
 }
@@ -19,7 +17,7 @@ TEST(Voxnet, ActualFull40ClassAndThreeClassGeometryEveryGradient) {
 TEST(Voxnet, EveryVoxelDescriptorAndMemoryPredictionMatchesRetainedHostOracle) {
   namespace n = dm::nn;
   namespace m = n::models;
-  auto pools = m::LoadVoxnet("build/cnn-datasets/voxnet");
+  auto pools = m::LoadVoxnet((std::filesystem::path(dm::datasets::data_home()) / "modelnet"));
   for (const auto &d : pools) {
     auto features = m::VoxnetFeatures(d).to_vector<float>(), v = d.voxels.to_vector<float>();
     std::vector<float> expected(d.voxels.size(0) * 64);

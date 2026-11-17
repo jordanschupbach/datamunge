@@ -11,6 +11,7 @@
 /// automatically under C++23.
 
 #include <datamunge/datamunge.hpp>
+#include <datamunge/random/sampling_analysis.hpp>
 #include <datamunge/algorithms/algorithms.hpp>
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/info.hpp>
@@ -62,3 +63,34 @@
 
 /// @brief Short public namespace spelling for the canonical library API.
 namespace dm = datamunge;
+
+#include <datamunge/rl/environments.hpp>
+
+#include <datamunge/rl/tabular.hpp>
+#include <datamunge/rl/count_exploration.hpp>
+#include <datamunge/rl/tile_coding.hpp>
+#include <datamunge/rl/bandit_selection.hpp>
+#include <datamunge/rl/environments/sparse_rooms.hpp>
+#include <datamunge/rl/tensor_components.hpp>
+
+#include <datamunge/rl/replay.hpp>
+
+#include <datamunge/rl/returns.hpp>
+#include <datamunge/rl/environments/normalized_mountain_car.hpp>
+
+#include <datamunge/rl/continuous_actions.hpp>
+#include <datamunge/rl/sequence_replay.hpp>
+#include <datamunge/rl/environments/masked_cartpole.hpp>
+#include <datamunge/rl/off_policy.hpp>
+
+#include <datamunge/rl/mcts.hpp>
+#include <datamunge/rl/transition_data.hpp>
+#include <datamunge/rl/environments/planning_tasks.hpp>
+
+#include <datamunge/rl/environments/lunar_lander.hpp>
+
+#include <datamunge/rl/environments/atari_frames.hpp>
+
+#include <datamunge/rl/environments/physics_tasks.hpp>
+
+#include <datamunge/rl/bootstrapped_returns.hpp>

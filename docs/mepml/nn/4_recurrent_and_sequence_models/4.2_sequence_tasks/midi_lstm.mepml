@@ -1,0 +1,636 @@
+//? Title: Midi Lstm
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+13-token note embedding -> stateful LSTM8 ->12 pitch-class logits. The complete native C++ experiment preserves model equations, source seeds, update budgets and explicit fitting/generation loops. Missing data recipes are reconstructed and labelled; original TensorFlow recordings are checked only when genuinely present.
+)
+\toc
+
+> Provenance and scope
+
+The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
+
+> Follow the computation
+
+13-token note embedding -> stateful LSTM8 ->12 pitch-class logits.
+
+```{cpp, results="markdown", file="figures/midi_lstm_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("data",{-18,0},"Versioned native inputs",s).node("model",{0,0},"13-token note embedding -> stateful LSTM8 ->12 pitch-class logits",s).node("audit",{18,0},"Explicit training and deployment checks",s).edge("data","model").edge("model","audit").save_svg("build/midi_lstm_method.svg");}
+```
+// result_begin: markdown
+\image(figures/midi_lstm_method.svg)
+// result_end
+
+> A calculation before fitting
+
+A uniform distribution over12 target classes gives probability1/12 and negative log likelihood log(12) per scored token. Padding is excluded by the actual objective; greedy sequence accuracy is a separate quantity.
+
+```{cpp, results="markdown", file="figures/midi_lstm_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+int main(){namespace n=dm::nn;double computed=-n::log_softmax(n::zeros({1,12},n::DType::Float64),1).to_vector<double>()[0],analytic=std::log(12.);if(std::abs(computed-analytic)>2e-6)throw std::runtime_error("hand calculation differs from native primitives");std::print("| native calculation | analytic reference |\n|---:|---:|\n| {:.9f} | {:.9f} |\n",computed,analytic);dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,analytic},"worked reference",{37,99,235}).ylim(0,std::max(.5,std::max(computed,analytic)*1.2)).x_label("0 = native calculation;1 = analytic reference").y_label("Toy objective or diagnostic value").title("midi lstm hand calculation").size(1000,550).save_svg("build/midi_lstm_worked.svg");}
+```
+// result_begin: markdown
+| native calculation | analytic reference |
+|---:|---:|
+| 2.484906650 | 2.484906650 |
+\image(figures/midi_lstm_worked.svg)
+// result_end
+
+> Prepare reproducible inputs
+
+Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
+```
+// result_begin: markdown
+Versioned recipe root: /home/jordan/.cache/datamunge/datasets/nn-completion-assets
+// result_end
+
+> Inspect the native graph
+
+The preview traces the actual canonical component with independent parameters; it does not alter training. Composite grouping keeps full unrolls readable.
+
+```{cpp, results="markdown", file="figures/midi_lstm_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;n::ParameterStore p(7);n::Module model([&](const n::Tensor&trace_input){auto y=m::midi::MidiLstm(p,trace_input);return n::model_stage("midi lstm native component",trace_input,y.logits);},"midi lstm native component graph");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;model.plot(n::zeros({1,16,13}),options).save_svg("build/midi_lstm_network.svg");}
+```
+// result_begin: markdown
+\image(figures/midi_lstm_network.svg)
+// result_end
+
+> Complete editable experiment
+
+Historical comments in the preserved source describe the original experiment; the versioned reconstruction manifest above describes the active inputs. Objectives, optimizer ownership, update schedules, sampling and search remain here. Source finite-difference, padding, causal/label-independence, checkpoint and immutability controls remain active. Weak held-out outcomes are retained.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace recovered_checkpoints {
+inline std::filesystem::path Model(const std::string&name){auto p=std::filesystem::path(dm::datasets::data_home())/"nn-completion-checkpoints/models"/name;std::filesystem::create_directories(p);return p;}
+}
+// CMD: just run-nn midi_lstm
+// Stateful LSTM note generation trained on original procedural MIDI melodies.
+//
+// Port of tflow's midi_lstm. Data: tflow's output/datasets/midi_lstm (data.npz:
+// 192 procedural melodies rendered to MIDI and read back as 16-note windows of
+// 12 pitch classes, input = start token 12 + notes, target = notes; 128 fit /
+// 32 validation / 32 test; written by tflow's scripts/fetch_datasets.py).
+// Model (common/midi_lstm.hpp): 13-token one-hot embedding [13, 8], one 8-unit
+// LSTM, 12-way head; mean next-note CE, Adam .01, batch 8, three epochs (48
+// updates); 756 parameters.
+// The port first replays tflow's recorded run (output/models/midi_lstm,
+// skipped if absent) from TF's initial weights: initial outputs (logits, all
+// states, loss and the loss gradient w.r.t. the one-hot input), first-batch
+// gradients, weights after the first update, the validation history and the
+// final weights; from TF's final weights it reproduces TF's test outputs,
+// final gradients and both seeded samples bit-for-bit (notes). The own run
+// then checks restore, the standalone one-step cell against the unroll at
+// every position, seeded repeat sampling and immutability.
+// Checkpoints are .npz (final.npz); sample MIDI files and piano_roll.png are
+// not written (the notes, uniforms, logits and states are in sample08.npz /
+// sample12.npz).
+// Options: epochs=3 data=PATH (the midi_lstm dataset) tf=PATH (tflow's output/models/midi_lstm).
+// Output: output/nn/models/midi_lstm/.
+
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <random>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: midi_lstm.hpp
+namespace midi {using namespace dm::nn::models::midi;
+
+}
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}
+
+namespace dataset_assets {
+inline dm::nn::ImageDataset LoadCifar10(const std::string&directory,const std::string&split){dm::datasets::fetch("cifar10",std::filesystem::path(directory).parent_path().string());return dm::nn::load_cifar10(directory,split);}
+}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { if(name=="cifar10"||name=="character_rnn")return DataRoot()/name;return std::filesystem::path(dm::datasets::prepare_example_data("nn-completion-assets"))/name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/nn-completion");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+// Editable workflow support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using replay::Map;
+using namespace midi;
+
+namespace {
+
+struct Model {
+  nn::ParameterStore p;
+  explicit Model(std::uint64_t seed) : p(seed) {
+    nn::NoGradGuard guard;
+    MidiLstm(p, nn::zeros({1, kSteps, kInputs}));
+    check::Require(p.count() == 756, "756parameters");
+  }
+  static Tensor Loss(const Tensor& logits, const Tensor& target) {
+    const Tensor lp = nn::log_softmax(nn::reshape(logits, {-1, kNotes}), -1);
+    return nn::neg(nn::mean(nn::sum(nn::mul(lp, nn::one_hot(nn::reshape(target, {-1}), kNotes)), {1})));
+  }
+  Map Evaluate(const Map& b) {
+    Tensor x = nn::one_hot(b.at("input"), kInputs);
+    x.requires_grad_(true);
+    const Path   path = MidiLstm(p, x);
+    const Tensor loss = Loss(path.logits, b.at("target"));
+    return {{"logits", path.logits.detach()}, {"loss", loss.detach()}, {"h", path.h.detach()}, {"c", path.c.detach()},
+            {"input_gradient", nn::grad(loss, {x})[0]}};
+  }
+  std::vector<Tensor> Gradients(const Map& b) {
+    return nn::grad(Loss(MidiLstm(p, nn::one_hot(b.at("input"), kInputs)).logits, b.at("target")), p.parameters());
+  }
+  /// The actual previous note only.
+  Step StepOnce(const Tensor& token, const Tensor& h, const Tensor& c) {
+    nn::NoGradGuard guard;
+    return MidiLstmStep(p, nn::one_hot(token, kInputs), {h, c});
+  }
+  /// 32 notes from the start token, inverse-CDF draws u = (mt19937() + .5) / 2^32.
+  Map Sample(double temperature, std::uint32_t seed) {
+    Tensor              t = nn::from_vector(std::vector<std::int32_t>{kStart}), h = nn::zeros({1, kUnits}), c = nn::zeros({1, kUnits});
+    std::vector<std::int32_t> notes(32);
+    std::vector<double>       uniform(32);
+    std::vector<float>        scores(32 * kNotes), hs(32 * kUnits), cs(32 * kUnits);
+    std::mt19937              rng(seed);
+    for (int j = 0; j < 32; ++j) {
+      const auto out = StepOnce(t, h, c);
+      h              = out.state.h;
+      c              = out.state.c;
+      const auto lg  = out.logits.to_vector<float>();
+      double     maximum = -INFINITY, mass = 0;
+      for (int k = 0; k < kNotes; ++k) {
+        scores[j * kNotes + k] = lg[k];
+        maximum                = std::max(maximum, double(lg[k]) / temperature);
+      }
+      for (int k = 0; k < kNotes; ++k) mass += std::exp(lg[k] / temperature - maximum);
+      const double u = (double(rng()) + .5) / 4294967296.;
+      uniform[j]     = u;
+      double cumulative = 0;
+      int    chosen     = kNotes - 1;
+      for (int k = 0; k < kNotes; ++k) {
+        cumulative += std::exp(lg[k] / temperature - maximum) / mass;
+        if (u < cumulative) {
+          chosen = k;
+          break;
+        }
+      }
+      notes[j] = chosen;
+      t        = nn::from_vector(std::vector<std::int32_t>{chosen});
+      const auto hv = h.to_vector<float>(), cv = c.to_vector<float>();
+      for (int k = 0; k < kUnits; ++k) hs[j * kUnits + k] = hv[k], cs[j * kUnits + k] = cv[k];
+    }
+    return {{"notes", nn::from_vector(notes)},
+            {"uniform", nn::from_vector(uniform)},
+            {"logits", nn::from_vector(scores, {32, kNotes})},
+            {"h", nn::from_vector(hs, {32, kUnits})},
+            {"c", nn::from_vector(cs, {32, kUnits})}};
+  }
+};
+
+std::vector<double> Train(Model& m, const Map& fit, const Map& validation, int epochs, std::ofstream* batches,
+                          const std::filesystem::path* root, double* first_after = nullptr, const std::filesystem::path* tf = nullptr) {
+  nn::Optimizer       opt(m.p, .01, replay::Adam());
+  nn::BatchOrder      order(128, 8, 44907);
+  std::vector<double> history;
+  int                 updates = 0;
+  for (int e = 1; e <= epochs; ++e) {
+    order.begin_epoch();
+    for (;;) {
+      const auto rows = order.next();
+      if (rows.empty()) break;
+      const auto b = replay::Rows(fit, rows);
+      if (!updates && root) {
+        nn::save_npz((*root / "first_batch.npz").string(), replay::ToNamed(b));
+        nn::save_npz((*root / "initial_gradients.npz").string(), replay::ToNamed(replay::Named(m.p, m.Gradients(b))));
+      }
+      opt.step(m.Gradients(b));
+      if (!updates && root) m.p.save((*root / "first_after.npz").string());
+      if (!updates && first_after && tf && std::filesystem::exists(*tf / "first_after.npz"))
+        *first_after = replay::MaxDiff(replay::Arrays(m.p), *tf / "first_after.npz");
+      if (batches)
+        for (auto r : rows) *batches << e << '\t' << updates << '\t' << r << '\n';
+      ++updates;
+    }
+    history.push_back(m.Evaluate(validation).at("loss").item<double>());
+  }
+  return history;
+}
+
+void TfParity(const std::filesystem::path& tf, const Map& fit, const Map& validation, const Map& test, int epochs) {
+  if (!std::filesystem::exists(tf / "initial_arrays.npz")) {
+    std::cout << "(tflow run not found at " << tf << "; TF parity skipped)\n";
+    return;
+  }
+  Model m(0);
+  replay::LoadInto(m.p, tf / "initial_arrays.npz");
+  const double out = replay::MaxDiff(m.Evaluate(test), tf / "initial_outputs.npz");
+  const auto   fb  = replay::ToMap(nn::load_npz((tf / "first_batch.npz").string()));
+  const double gd  = replay::MaxDiff(replay::Named(m.p, m.Gradients(fb)), tf / "initial_gradients.npz");
+  check::Near(out, 0, 2e-6, "initial outputs and input gradients match TF");
+  check::Near(gd, 0, 2e-6, "first-batch parameter gradients match TF");
+  double     after = -1;
+  const auto hist  = Train(m, fit, validation, epochs, nullptr, nullptr, &after, &tf);
+  const auto tfh   = replay::History(tf / "history.tsv");
+  double     worst = 0;
+  for (std::size_t e = 0; e < hist.size() && e < tfh.size(); ++e) {
+    std::cout << "  replay epoch=" << e + 1 << " validationCE=" << hist[e] << " (TF " << tfh[e] << ")\n";
+    worst = std::max(worst, std::abs(hist[e] - tfh[e]));
+  }
+  std::cout << "TF parity from TF's initial weights: initial outputs max diff=" << out << ", gradients max diff=" << gd
+            << ", weights after first update max diff=" << after << ", history max diff=" << worst;
+  check::Near(after, 0, 1e-4, "weights after the first Adam update match TF");
+  if (epochs == 3) {
+    const double w = replay::MaxDiff(replay::Arrays(m.p), tf / "model_arrays.npz");
+    std::cout << ", final weights max diff=" << w;
+    check::Near(worst, 0, 1e-4, "validation history tracks TF's recorded run");
+    check::Near(w, 0, 1e-3, "final weights track TF's after 48 Adam updates");
+  }
+  Model f(0);
+  replay::LoadInto(f.p, tf / "model_arrays.npz");
+  const double fo = replay::MaxDiff(f.Evaluate(test), tf / "outputs.npz");
+  const double fg = replay::MaxDiff(replay::Named(f.p, f.Gradients(fb)), tf / "final_gradients.npz");
+  int          same = 0;
+  for (auto [file, temperature, seed] : {std::tuple{"sample08.npz", .8, 44911u}, std::tuple{"sample12.npz", 1.2, 44913u}}) {
+    const Map s = f.Sample(temperature, seed), ref = replay::ToMap(nn::load_npz((tf / file).string()));
+    same += replay::SameBits(s.at("notes"), ref.at("notes")) && replay::SameBits(s.at("uniform"), ref.at("uniform"));
+    check::Near(replay::MaxDiff(s, ref), 0, 2e-6, std::string("seeded sample matches TF's ") + file);
+  }
+  std::cout << "\nfrom TF's final weights: test outputs max diff=" << fo << ", final gradients max diff=" << fg
+            << ", seeded samples with identical notes " << same << "/2\n";
+  check::Near(fo, 0, 1e-5, "TF's trained weights reproduce TF's test outputs");
+  check::Near(fg, 0, 2e-6, "TF's trained weights reproduce TF's final gradients");
+  check::Require(same == 2, "TF's trained weights reproduce TF's sampled notes");
+}
+
+}  // namespace
+
+int main(int argc, char** argv) {
+  try {
+    const auto            start  = std::chrono::steady_clock::now();
+    int                   epochs = 3;
+    std::filesystem::path data = paths::Dataset("midi_lstm"), tf = replay::TfModels("midi_lstm");
+    for (int i = 1; i < argc; ++i) {
+      const std::string a = argv[i];
+      if (a.rfind("epochs=", 0) == 0) epochs = std::stoi(a.substr(7));
+      else if (a.rfind("data=", 0) == 0) data = a.substr(5);
+      else if (a.rfind("tf=", 0) == 0) tf = a.substr(3);
+      else throw std::invalid_argument("epochs=N data=PATH tf=PATH");
+    }
+    check::Require(epochs > 0 && epochs <= 100, "positive epochs");
+    const auto root = paths::OutputDir("models/midi_lstm");
+    replay::CopyAssets(data, root, {"data.npz", "manifest.json"});
+    const auto all = nn::load_npz((data / "data.npz").string());
+    const std::vector<std::string> keys{"input", "target", "source_ids"};
+    const Map  fit = replay::Split(all, "fit", keys), validation = replay::Split(all, "validation", keys),
+              test = replay::Split(all, "test", keys);
+    TfParity(tf, fit, validation, test, epochs);
+
+    Model m(44903);
+    m.p.save((root / "initial_arrays.npz").string());
+    nn::save_npz((root / "initial_outputs.npz").string(), replay::ToNamed(m.Evaluate(test)));
+    std::ofstream history(root / "history.tsv"), batches(root / "batches.tsv");
+    history << "epoch\tvalidation_ce\n";
+    batches << "epoch\tstep\trow\n";
+    const auto hist = Train(m, fit, validation, epochs, &batches, &root);
+    for (std::size_t e = 0; e < hist.size(); ++e) {
+      history << e + 1 << '\t' << hist[e] << '\n';
+      std::cout << "epoch=" << e + 1 << " validationCE=" << hist[e] << std::endl;
+    }
+    const Map first = replay::ToMap(nn::load_npz((root / "first_batch.npz").string()));
+    nn::save_npz((root / "final_gradients.npz").string(), replay::ToNamed(replay::Named(m.p, m.Gradients(first))));
+    m.p.save((root / "final.npz").string());
+    Model deployed(0);
+    deployed.p.load((root / "final.npz").string());
+    const Map weights = replay::Arrays(deployed.p);
+    check::Require(replay::SameBits(replay::Arrays(m.p), weights), "restore bitexact");
+    const Map out = deployed.Evaluate(test);
+    for (int t = 0; t < kSteps; ++t) {
+      const auto step = deployed.StepOnce(nn::select(test.at("input"), 1, t), nn::select(out.at("h"), 1, t), nn::select(out.at("c"), 1, t));
+      check::Near(replay::MaxAbsDiff(step.logits, nn::select(out.at("logits"), 1, t)), 0, 2e-6, "streaming logits");
+      check::Near(replay::MaxAbsDiff(step.state.h, nn::select(out.at("h"), 1, t + 1)), 0, 2e-6, "streaming h");
+      check::Near(replay::MaxAbsDiff(step.state.c, nn::select(out.at("c"), 1, t + 1)), 0, 2e-6, "streaming c");
+    }
+    const Map sample = deployed.Sample(.8, 44911);
+    check::Require(replay::SameBits(sample.at("notes"), deployed.Sample(.8, 44911).at("notes")), "seeded repeat sampling");
+    nn::save_npz((root / "sample08.npz").string(), replay::ToNamed(sample));
+    nn::save_npz((root / "sample12.npz").string(), replay::ToNamed(deployed.Sample(1.2, 44913)));
+    nn::save_npz((root / "outputs.npz").string(), replay::ToNamed(out));
+    nn::save_npz((root / "model_arrays.npz").string(), replay::ToNamed(weights));
+    check::Require(replay::SameBits(replay::Arrays(deployed.p), weights), "immutable generation");
+    const double  ce = out.at("loss").item<double>();
+    std::ofstream metrics(root / "metrics.json");
+    metrics << "{\"parameters\":756,\"epochs\":" << epochs << ",\"updates\":" << epochs * 16 << ",\"test_ce\":" << ce << "}\n";
+    std::cout << "testCE=" << ce << ";restore/streaming/seeded/immutable PASS\n(TF recorded: testCE=1.4281)\nwall "
+              << std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count() << " s\n";
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin:
+// (tflow run not found at "/home/jordan/.cache/datamunge/models/midi_lstm"; TF parity skipped)
+// epoch=1 validationCE=2.37398
+// epoch=2 validationCE=2.02912
+// epoch=3 validationCE=1.78951
+// testCE=1.79364;restore/streaming/seeded/immutable PASS
+// (TF recorded: testCE=1.4281)
+// wall 0.0445715 s
+// result_end
+
+> Inspect the actual saved results
+
+The figures below read actual saved outputs from this run. Native graph previews appear above the complete program. Reconstructed-task results retain the source budgets and are not reported as original benchmark scores.
+
+> Actual validation history
+
+Each panel reads the first recorded objective from a saved `history.tsv`. Different tasks and loss definitions have different units; compare curves within a panel. These are reconstructed-data outcomes with the original update budgets.
+
+```{cpp, results="markdown", file="figures/midi_lstm_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace fs=std::filesystem;std::vector<fs::path> files;for(const auto&entry:fs::recursive_directory_iterator("build/nn-completion/models/midi_lstm"))if(entry.path().filename()=="history.tsv")files.push_back(entry.path());std::sort(files.begin(),files.end());if(files.empty())throw std::runtime_error("actual validation histories missing");auto layout=dm::graphics::RLayout::create((files.size()+1)/2,std::min(size_t(2),files.size()));for(const auto&file:files){std::ifstream in(file);std::string header,line;std::getline(in,header);std::vector<double>x,y;while(std::getline(in,line)){std::istringstream row(line);double step,value;if(row>>step>>value){x.push_back(step);y.push_back(value);}}if(x.empty())continue;auto plot=dm::graphics::RPlot::create();plot.lines(x,y,"saved validation objective",{37,99,235}).points(x,y,"saved rows",{37,99,235},4).x_label("Epoch or source step").y_label("Source objective; panels may use different units").title(file.parent_path().filename().string());layout.add(plot);}layout.size(1200,std::max(size_t(700),400*((files.size()+1)/2))).fit_panels().save_svg("build/midi_lstm_history.svg");}
+```
+// result_begin: markdown
+\image(figures/midi_lstm_history.svg)
+// result_end
+
+
+> Actual generated note streams
+
+The two saved sample files retain the original temperature and seed choices, shown in the complete program. These are reconstructed procedural pitch-class melodies; the plot does not claim recovery of the missing MIDI file roundtrip.
+
+```{cpp, results="markdown", file="figures/midi_lstm_notes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto load=[](const std::string&path){auto a=dm::nn::load_npz(path);return std::map<std::string,dm::nn::Tensor>(a.begin(),a.end());};auto layout=dm::graphics::RLayout::create(1,2);for(auto file:{"sample08.npz","sample12.npz"}){auto a=load("build/nn-completion/models/midi_lstm/"+std::string(file));auto note=a.at("notes").to_vector<double>();std::vector<double>x(note.size());std::iota(x.begin(),x.end(),0.);auto plot=dm::graphics::RPlot::create();plot.points(x,note,"actual sampled pitch class",{37,99,235},5).ylim(-.5,11.5).x_label("Generated note index").y_label("Pitch class0..11").title(file);layout.add(plot);}layout.size(1200,550).fit_panels().save_svg("build/midi_lstm_notes.svg");}
+```
+// result_begin: markdown
+\image(figures/midi_lstm_notes.svg)
+// result_end

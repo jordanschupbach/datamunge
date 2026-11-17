@@ -1,188 +1,223 @@
 #pragma once
-
-/// \file rbf_network.hpp
-/// \brief Radial basis function (RBF) network: a two-layer network that fits a
-///        function as a weighted sum of Gaussian bumps placed at data-driven centers.
-///
-/// An RBF network approximates \f$f(x)\f$ as
-/// \f[
-///   \hat f(x) = w_0 + \sum_{k=1}^{K} w_k\,\phi_k(x),\qquad
-///   \phi_k(x) = \exp\!\Big(-\frac{\|x-c_k\|^2}{2\sigma^2}\Big),
-/// \f]
-/// a linear combination of \f$K\f$ *radial basis functions* -- Gaussians centered at
-/// points \f$c_k\f$ with common width \f$\sigma\f$. Training has two decoupled stages
-/// (Broomhead & Lowe 1988; Moody & Darken 1989):
-///   1. *Unsupervised placement of centers.* The centers \f$c_k\f$ are chosen from
-///      the input distribution -- here by k-means -- and \f$\sigma\f$ is set by a
-///      spread heuristic.
-///   2. *Linear output weights.* With the centers fixed, the map from basis
-///      activations to targets is *linear*, so the output weights solve a
-///      (ridge-regularized) least-squares problem in closed form -- no iterative
-///      gradient training needed.
-/// This makes RBF networks fast to fit and a clean example of the "fixed nonlinear
-/// features + linear readout" recipe that also underlies kernel methods and extreme
-/// learning machines.
-
-#include <algorithm>
-#include <cmath>
+/// @file rbf_network.hpp
+/// @brief Checked native Gaussian-basis regression, actual Lloyd passes and explicit closed-form comparison APIs.
 #include <cstddef>
 #include <cstdint>
-#include <limits>
-#include <random>
-#include <stdexcept>
-#include <utility>
 #include <vector>
-
+/// @brief Canonical Gaussian basis regression and owned execution records.
 namespace datamunge::algorithms {
-
-/// A trained RBF network for scalar regression.
+/// @brief Owned legacy-layout Gaussian-feature scalar regression model.
+/// @par Example
+/// @code
+/// const dm::algorithms::RBFNetwork value{};
+/// std::print("{}\n",sizeof(value)>0); // true
+/// @endcode
 struct RBFNetwork {
-    std::vector<std::vector<double>> centers;   ///< \f$c_k\f$, \f$K\f$ centers in input space.
-    double                           width = 1.0;///< Shared Gaussian width \f$\sigma\f$.
-    std::vector<double>              weights;    ///< Output weights \f$w_1..w_K\f$.
-    double                           bias = 0.0; ///< Output bias \f$w_0\f$.
+  std::vector<std::vector<double>> centers;  ///< Owned K finite input-space centers.
+  double                           width{1}; ///< Actual positive finite common Gaussian sigma.
+  std::vector<double>              weights;  ///< Actual K output weights.
+  double                           bias{0};  ///< Actual finite intercept.
 };
-
-namespace detail {
-
-inline double rbf_sq_dist(const std::vector<double>& a, const std::vector<double>& b) {
-    double s = 0.0;
-    for (std::size_t i = 0; i < a.size(); ++i) {
-        const double d = a[i] - b[i];
-        s += d * d;
-    }
-    return s;
-}
-
-/// Lloyd's k-means to place \p k centers (few iterations; deterministic given \p seed).
-inline std::vector<std::vector<double>> rbf_kmeans(const std::vector<std::vector<double>>& X, std::size_t k,
-                                                   std::size_t iters, std::uint64_t seed) {
-    std::mt19937_64                            rng(seed);
-    std::uniform_int_distribution<std::size_t> pick(0, X.size() - 1);
-    std::vector<std::vector<double>>           c(k);
-    for (auto& ck : c) ck = X[pick(rng)];  // random-sample init
-
-    const std::size_t dim = X.front().size();
-    for (std::size_t it = 0; it < iters; ++it) {
-        std::vector<std::vector<double>> sum(k, std::vector<double>(dim, 0.0));
-        std::vector<std::size_t>         cnt(k, 0);
-        for (const auto& x : X) {
-            std::size_t best = 0;
-            double      bd   = std::numeric_limits<double>::infinity();
-            for (std::size_t j = 0; j < k; ++j) {
-                const double d = rbf_sq_dist(x, c[j]);
-                if (d < bd) {
-                    bd   = d;
-                    best = j;
-                }
-            }
-            for (std::size_t i = 0; i < dim; ++i) sum[best][i] += x[i];
-            ++cnt[best];
-        }
-        for (std::size_t j = 0; j < k; ++j)
-            if (cnt[j] > 0)
-                for (std::size_t i = 0; i < dim; ++i) c[j][i] = sum[j][i] / static_cast<double>(cnt[j]);
-    }
-    return c;
-}
-
-/// Solve the symmetric positive-definite system A x = b by Gaussian elimination with
-/// partial pivoting (A is m x m, destroyed in place).
-inline std::vector<double> rbf_solve(std::vector<std::vector<double>> A, std::vector<double> b) {
-    const std::size_t m = b.size();
-    for (std::size_t col = 0; col < m; ++col) {
-        std::size_t piv = col;
-        for (std::size_t r = col + 1; r < m; ++r)
-            if (std::abs(A[r][col]) > std::abs(A[piv][col])) piv = r;
-        std::swap(A[col], A[piv]);
-        std::swap(b[col], b[piv]);
-        const double d = A[col][col];
-        if (std::abs(d) < 1e-15) continue;
-        for (std::size_t r = 0; r < m; ++r) {
-            if (r == col) continue;
-            const double f = A[r][col] / d;
-            for (std::size_t cc = col; cc < m; ++cc) A[r][cc] -= f * A[col][cc];
-            b[r] -= f * b[col];
-        }
-    }
-    std::vector<double> x(m, 0.0);
-    for (std::size_t i = 0; i < m; ++i)
-        if (std::abs(A[i][i]) > 1e-15) x[i] = b[i] / A[i][i];
-    return x;
-}
-
-}  // namespace detail
-
-/// \brief Train an RBF network for scalar regression.
-///
-/// Centers are placed by k-means; the shared width defaults to the spread heuristic
-/// \f$\sigma = d_{\max}/\sqrt{2K}\f$ where \f$d_{\max}\f$ is the largest distance
-/// between centers. The output weights (including a bias) solve the ridge least
-/// squares \f$(\Phi^\top\Phi + \lambda I)\,w = \Phi^\top y\f$, where \f$\Phi\f$ is the
-/// design matrix of basis activations (plus a constant column).
-///
-/// \param X            Input vectors.
-/// \param y            Scalar targets, one per input.
-/// \param num_centers  Number of RBF centers \f$K\f$.
-/// \param ridge_lambda Tikhonov regularization on the output weights.
-/// \param width        Gaussian width; <=0 selects the spread heuristic.
-/// \param kmeans_iters Lloyd iterations for center placement.
-/// \param seed         RNG seed for center initialization.
-inline RBFNetwork rbf_train(const std::vector<std::vector<double>>& X, const std::vector<double>& y,
-                            std::size_t num_centers, double ridge_lambda = 1e-6, double width = 0.0,
-                            std::size_t kmeans_iters = 20, std::uint64_t seed = 0) {
-    if (X.size() != y.size() || X.empty()) throw std::invalid_argument("rbf: bad data");
-    const std::size_t k = std::min(num_centers, X.size());
-    RBFNetwork        net;
-    net.centers = detail::rbf_kmeans(X, k, kmeans_iters, seed);
-
-    if (width > 0.0) {
-        net.width = width;
-    } else {
-        double dmax = 0.0;
-        for (std::size_t a = 0; a < k; ++a)
-            for (std::size_t b = a + 1; b < k; ++b) dmax = std::max(dmax, std::sqrt(detail::rbf_sq_dist(net.centers[a], net.centers[b])));
-        net.width = (k > 1 && dmax > 0.0) ? dmax / std::sqrt(2.0 * static_cast<double>(k)) : 1.0;
-    }
-
-    // Design matrix Phi (n x (k+1)); column 0 is the bias.
-    const std::size_t              n   = X.size();
-    const std::size_t              m   = k + 1;
-    const double                   two_s2 = 2.0 * net.width * net.width;
-    std::vector<std::vector<double>> Phi(n, std::vector<double>(m, 0.0));
-    for (std::size_t i = 0; i < n; ++i) {
-        Phi[i][0] = 1.0;
-        for (std::size_t j = 0; j < k; ++j)
-            Phi[i][j + 1] = std::exp(-detail::rbf_sq_dist(X[i], net.centers[j]) / two_s2);
-    }
-
-    // Normal equations with ridge: (Phi^T Phi + lambda I) w = Phi^T y.
-    std::vector<std::vector<double>> A(m, std::vector<double>(m, 0.0));
-    std::vector<double>              rhs(m, 0.0);
-    for (std::size_t a = 0; a < m; ++a) {
-        for (std::size_t b = 0; b < m; ++b) {
-            double s = 0.0;
-            for (std::size_t i = 0; i < n; ++i) s += Phi[i][a] * Phi[i][b];
-            A[a][b] = s + (a == b ? ridge_lambda : 0.0);
-        }
-        double r = 0.0;
-        for (std::size_t i = 0; i < n; ++i) r += Phi[i][a] * y[i];
-        rhs[a] = r;
-    }
-
-    const std::vector<double> w = detail::rbf_solve(A, rhs);
-    net.bias                    = w[0];
-    net.weights.assign(w.begin() + 1, w.end());
-    return net;
-}
-
-/// Predict the scalar output of a trained RBF network at \p x.
-inline double rbf_predict(const RBFNetwork& net, const std::vector<double>& x) {
-    double out = net.bias;
-    const double two_s2 = 2.0 * net.width * net.width;
-    for (std::size_t j = 0; j < net.centers.size(); ++j)
-        out += net.weights[j] * std::exp(-detail::rbf_sq_dist(x, net.centers[j]) / two_s2);
-    return out;
-}
-
-}  // namespace datamunge::algorithms
+/// @brief Complete training input, selected-distance and actual-history policies; zero disables a cap.
+/// @par Example
+/// @code
+/// const dm::algorithms::RBFTrainingOptions value{};
+/// std::print("{}\n",sizeof(value)>0); // true
+/// @endcode
+struct RBFTrainingOptions {
+  std::size_t max_points{1000000};  ///< Complete observation count.
+  std::size_t max_centers{256};     ///< Actual center count after min(requested,n).
+  std::size_t max_dimensions{1024}; ///< Complete input coordinate dimension.
+  std::size_t max_iterations{1000}; ///< Requested fixed Lloyd passes.
+  std::size_t max_distance_tests{
+      10000000}; ///< Actual squared-distance calls in Lloyd, width and features.
+  std::size_t max_matrix_entries{1000000}; ///< Complete design plus normal-system scalar count.
+  std::size_t max_trace_entries{
+      1000000}; ///< Actual initial/pass/design/system retained scalars and headers.
+};
+/// @brief One actual completed Lloyd assignment/update pass.
+/// @par Example
+/// @code
+/// const dm::algorithms::RBFKmeansPass value{};
+/// std::print("{}\n",sizeof(value)>0); // true
+/// @endcode
+struct RBFKmeansPass {
+  std::size_t                      iteration{}; ///< Zero-based actual fixed Lloyd pass.
+  std::vector<std::vector<double>> before;      ///< Actual center positions used for assignment.
+  std::vector<std::size_t>
+      assignments; ///< Actual selected nearest-center id per observation, first wins ties.
+  std::vector<std::size_t> counts; ///< Actual observation count assigned to each center.
+  std::vector<std::vector<double>>
+      after; ///< Actual updated means; empty clusters keep their previous center.
+};
+/// @brief Owned closed-form baseline and actual producer diagnostics.
+/// @par Example
+/// @code
+/// const dm::algorithms::RBFTrainingRun value{};
+/// std::print("{}\n",sizeof(value)>0); // true
+/// @endcode
+struct RBFTrainingRun {
+  RBFNetwork model; ///< Actual canonical trained scalar model.
+  std::vector<std::vector<double>>
+      initial_centers; ///< Actual sampled initial centers, only captured by trace.
+  std::vector<RBFKmeansPass>       passes; ///< Actual optional fixed-count Lloyd histories.
+  std::vector<std::vector<double>> design; ///< Actual optional n-by-(K+1) features, bias first.
+  std::vector<std::vector<double>> normal_matrix; ///< Actual optional ridge normal system.
+  std::vector<double>              rhs;           ///< Actual optional normal-system right side.
+  std::size_t distance_tests{}; ///< Actual squared-distance evaluations across training stages.
+};
+/// @brief Fit a checked native Gaussian-basis closed-form regression baseline.
+/// Validates finite nonempty rectangular inputs and matching finite targets, finite nonnegative ridge and finite width. K=min(requested,n); K0 is an explicit intercept-only baseline without Lloyd. Initializes centers with the historical mt19937_64 random-sample stream and executes exactly the requested Lloyd passes, retaining empty-cluster centers. A positive width is used directly; nonpositive finite width selects the historical maximum-center-distance/sqrt(2K) heuristic, falling back to1. Forms actual bias-first Gaussian design and ridge normal equations, penalizing the bias too. Uses widened arithmetic and checked partial-pivot elimination, throwing on an exact singular system instead of silently dropping its coefficients. Time O(passes*n*K*d+n*K^2+K^3), O(n*K+K^2) working storage; inputs unchanged, outputs owned. This is an independent closed-form comparison for reports whose demonstrated neural fitting uses explicit tensor optimization.
+/// @param X Finite nonempty rectangular rows with positive dimension.
+/// @param y Finite scalar targets, one per row.
+/// @param num_centers Requested centers, capped by n; zero selects intercept-only.
+/// @param ridge_lambda Finite nonnegative regularization, default1e-6.
+/// @param width Positive explicit sigma; nonpositive finite selects heuristic, default0.
+/// @param kmeans_iters Actual fixed Lloyd passes, default20.
+/// @param seed Native initial-center seed, default0.
+/// @param options Input, work, matrix and history policies.
+/// @return Owned actual baseline model and selected training work.
+/// @throws std::invalid_argument Input shape/value, ridge or width invalid.
+/// @throws std::length_error Input/work/matrix/history policy exceeded.
+/// @throws std::domain_error Actual normal system is singular.
+/// @throws std::overflow_error Unrepresentable geometry or coefficient.
+/// @par Example
+/// @code
+/// auto r=dm::algorithms::rbf_train_run({{0},{1}},{2,4},0,0);
+/// std::print("{}\n",r.model.bias); // 3
+/// @endcode
+/// @par References
+/// - Broomhead and Lowe (1988), Multivariable Functional Interpolation and Adaptive Networks, https://www.complex-systems.com/abstracts/v02_i03_a05/
+/// @see rbf_train_trace(), rbf_fit_output()
+RBFTrainingRun rbf_train_run(
+    const std::vector<std::vector<double>>& X,
+    const std::vector<double>&              y,
+    std::size_t                             num_centers,
+    double                                  ridge_lambda = 1e-6,
+    double                                  width        = 0,
+    std::size_t                             kmeans_iters = 20,
+    std::uint64_t                           seed         = 0,
+    const RBFTrainingOptions&               options      = {});
+/// @brief Capture actual sampled centers, Lloyd passes, design and normal equations.
+/// Same single producer as rbf_train_run(). Retained scalar entries count initial center coordinates, real before/after centers and assignments/counts, then actual design/system/right-side values, plus one header for each capture. Admission precedes copies. Zero capture cap disables that bound; diagnostic narrowing may throw if a retained system scalar exceeds finite double range.
+/// @param X Finite rectangular input rows.
+/// @param y Finite matching targets.
+/// @param num_centers Requested centers.
+/// @param ridge_lambda Nonnegative finite ridge, default1e-6.
+/// @param width Explicit positive sigma or finite automatic selector, default0.
+/// @param kmeans_iters Actual fixed Lloyd passes, default20.
+/// @param seed Initial-center seed, default0.
+/// @param options Input, work and actual scalar-history policies.
+/// @return Actual optional full producer histories and closed-form comparison model.
+/// @throws std::invalid_argument Invalid complete input/control.
+/// @throws std::length_error Any execution/history policy exceeded.
+/// @throws std::domain_error Singular actual normal system.
+/// @throws std::overflow_error Unrepresentable geometry/coefficient/diagnostic.
+/// @par Example
+/// @code
+/// auto t=dm::algorithms::rbf_train_trace({{0},{1}},{2,4},1,1e-3,1,2,1);
+/// std::print("{}\n",t.passes.size()); // 2
+/// @endcode
+/// @see rbf_train_run()
+RBFTrainingRun rbf_train_trace(
+    const std::vector<std::vector<double>>& X,
+    const std::vector<double>&              y,
+    std::size_t                             num_centers,
+    double                                  ridge_lambda = 1e-6,
+    double                                  width        = 0,
+    std::size_t                             kmeans_iters = 20,
+    std::uint64_t                           seed         = 0,
+    const RBFTrainingOptions&               options      = {});
+/// @brief Return the checked canonical closed-form model through the preserved signature.
+/// Delegates to rbf_train_run() with the same defaults and model field layout. Complete validation and singular-system failure replace previous unchecked shapes/zero-center indexing and silent coefficient dropping. For tensor neural fitting, use nn::rbf_features() with an explicit optimizer loop and keep this as a separate baseline.
+/// @param X Finite rectangular observations.
+/// @param y Finite matching targets.
+/// @param num_centers Requested centers, including zero.
+/// @param ridge_lambda Nonnegative finite ridge, default1e-6.
+/// @param width Positive finite sigma or finite automatic selector, default0.
+/// @param kmeans_iters Actual fixed Lloyd passes, default20.
+/// @param seed Initial-center seed, default0.
+/// @return Owned canonical Gaussian regression model.
+/// @throws std::invalid_argument Invalid data/control.
+/// @throws std::length_error Default policies exceeded.
+/// @throws std::domain_error Singular system.
+/// @throws std::overflow_error Unrepresentable arithmetic.
+/// @par Example
+/// @code
+/// auto m=dm::algorithms::rbf_train({{0},{1}},{2,4},0,0);
+/// std::print("{}\n",m.bias); // 3
+/// @endcode
+/// @see rbf_train_run()
+RBFNetwork rbf_train(
+    const std::vector<std::vector<double>>& X,
+    const std::vector<double>&              y,
+    std::size_t                             num_centers,
+    double                                  ridge_lambda = 1e-6,
+    double                                  width        = 0,
+    std::size_t                             kmeans_iters = 20,
+    std::uint64_t                           seed         = 0);
+/// @brief Fit only the checked output coefficients for caller-selected fixed Gaussian centers.
+/// Uses the same native feature/normal-system solver as rbf_train_run(), with no Lloyd placement or width heuristic. Penalizes all output coefficients including bias, permitting a like-for-like independent comparison to an explicitly optimized tensor model. Center inputs are copied; no fitting iterations are hidden. Same shape/value, complexity and error semantics as the native training run after center placement.
+/// @param X Finite nonempty rectangular observations.
+/// @param y Finite matching targets.
+/// @param centers Finite matching-dimensional fixed centers, possibly empty.
+/// @param width Positive finite Gaussian sigma.
+/// @param ridge_lambda Nonnegative finite ridge, default1e-6.
+/// @param options Input, matrix and selected-distance policies.
+/// @return Owned fixed-center closed-form comparison model.
+/// @throws std::invalid_argument Invalid inputs/control.
+/// @throws std::length_error Execution policy exceeded.
+/// @throws std::domain_error Singular normal system.
+/// @throws std::overflow_error Unrepresentable arithmetic.
+/// @par Example
+/// @code
+/// auto m=dm::algorithms::rbf_fit_output({{0},{1}},{2,4},{},1,0);
+/// std::print("{}\n",m.bias); // 3
+/// @endcode
+/// @see rbf_train_run(), nn::rbf_features()
+RBFNetwork rbf_fit_output(
+    const std::vector<std::vector<double>>& X,
+    const std::vector<double>&              y,
+    const std::vector<std::vector<double>>& centers,
+    double                                  width,
+    double                                  ridge_lambda = 1e-6,
+    const RBFTrainingOptions&               options      = {});
+/// @brief Predict with a completely checked native closed-form comparison model.
+/// Validates every center/weight and finite matching input coordinates before feature evaluation. Width must be finite/positive and weights must match centers. Empty-center model predicts its finite bias. Uses the same widened Gaussian feature formula as fitting; O(K*d) time, constant extra working storage, no model mutation.
+/// @param model Owned finite valid scalar RBF model.
+/// @param x Finite positive-dimensional input matching every center.
+/// @return Actual finite scalar comparison prediction.
+/// @throws std::invalid_argument Invalid model/input shape, width or value.
+/// @throws std::overflow_error Unrepresentable feature arithmetic or prediction.
+/// @par Example
+/// @code
+/// dm::algorithms::RBFNetwork m{{},1,{},3};
+/// std::print("{}\n",dm::algorithms::rbf_predict(m,{0})); // 3
+/// @endcode
+/// @see rbf_fit_output()
+double rbf_predict(const RBFNetwork& model, const std::vector<double>& x);
+/// @brief Owned original synthetic regression observations and independent noiseless grid.
+/// @par Example
+/// @code
+/// const dm::algorithms::RBFExampleData value{};
+/// std::print("{}\n",sizeof(value)>0); // true
+/// @endcode
+struct RBFExampleData {
+  std::vector<std::vector<double>> input; ///< Actual61 original one-dimensional input rows.
+  std::vector<double>
+      target; ///< Actual original std::normal noise realization added to the analytic target.
+  std::vector<double> grid;  ///< Actual201 independent noiseless evaluation coordinates.
+  std::vector<double> truth; ///< Actual sin(x)+sin(3x)/3 values on that grid.
+};
+/// @brief Generate the original61-point seed11 noisy regression fixture and201-point truth grid.
+/// Uses x=2*pi*i/60, i0..60, and one mt19937_64(seed)/normal_distribution(0,.15) stream. The noiseless201-point grid is independent evaluation against the known analytic function, not held-out observations. O(61+201) owned input storage; no model fitting or preprocessing occurs. Convert these canonical observations to tensors for neural model computation.
+/// @param seed Original native noise seed, default11.
+/// @return Owned original observations and analytic evaluation grid.
+/// @par Example
+/// @code
+/// auto d=dm::algorithms::rbf_example_data();
+/// std::print("{} {}\n",d.input.size(),d.grid.size()); // 61 201
+/// @endcode
+/// @see rbf_train_run(), nn::rbf_features()
+RBFExampleData rbf_example_data(std::uint64_t seed = 11);
+} // namespace datamunge::algorithms

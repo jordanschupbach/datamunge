@@ -35,7 +35,7 @@ public class TaskOutput extends NativeObject {
     @SuppressWarnings("this-escape")
     public TaskOutput() {
         super(RAW);
-        Rosetta.construct(this, TaskOutput.class, false, 3163);
+        Rosetta.construct(this, TaskOutput.class, false, 3174);
     }
 
     /**
@@ -44,7 +44,7 @@ public class TaskOutput extends NativeObject {
      * @return the value of the C++ field {@code observations}
      */
     public double[] getObservations() {
-        return Rosetta.asDoubles(Rosetta.call(3151, this));
+        return Rosetta.asDoubles(Rosetta.call(3162, this));
     }
 
     /**
@@ -53,7 +53,7 @@ public class TaskOutput extends NativeObject {
      * @return the value of the C++ field {@code rewards}
      */
     public double[] getRewards() {
-        return Rosetta.asDoubles(Rosetta.call(3153, this));
+        return Rosetta.asDoubles(Rosetta.call(3164, this));
     }
 
     /**
@@ -62,7 +62,7 @@ public class TaskOutput extends NativeObject {
      * @return the value of the C++ field {@code terminated}
      */
     public byte[] getTerminated() {
-        return Rosetta.asBytes(Rosetta.call(3155, this));
+        return Rosetta.asBytes(Rosetta.call(3166, this));
     }
 
     /**
@@ -71,7 +71,7 @@ public class TaskOutput extends NativeObject {
      * @return the value of the C++ field {@code truncated}
      */
     public byte[] getTruncated() {
-        return Rosetta.asBytes(Rosetta.call(3157, this));
+        return Rosetta.asBytes(Rosetta.call(3168, this));
     }
 
     /**
@@ -81,7 +81,7 @@ public class TaskOutput extends NativeObject {
      * @return the value of the C++ field {@code final_observations}
      */
     public double[] getFinalObservations() {
-        return Rosetta.asDoubles(Rosetta.call(3159, this));
+        return Rosetta.asDoubles(Rosetta.call(3170, this));
     }
 
     /**
@@ -90,6 +90,6 @@ public class TaskOutput extends NativeObject {
      * @return the value of the C++ field {@code final_valid}
      */
     public byte[] getFinalValid() {
-        return Rosetta.asBytes(Rosetta.call(3161, this));
+        return Rosetta.asBytes(Rosetta.call(3172, this));
     }
 }

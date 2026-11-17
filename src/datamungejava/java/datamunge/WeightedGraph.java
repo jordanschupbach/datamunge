@@ -27,7 +27,7 @@ public class WeightedGraph extends NativeObject {
     @SuppressWarnings("this-escape")
     public WeightedGraph(boolean directed) {
         super(RAW);
-        Rosetta.construct(this, WeightedGraph.class, false, 3233, directed);
+        Rosetta.construct(this, WeightedGraph.class, false, 3244, directed);
     }
 
     /**
@@ -41,7 +41,7 @@ public class WeightedGraph extends NativeObject {
     @SuppressWarnings("this-escape")
     public WeightedGraph(List<String> vertices, boolean directed) {
         super(RAW);
-        Rosetta.construct(this, WeightedGraph.class, false, 3233, vertices, directed);
+        Rosetta.construct(this, WeightedGraph.class, false, 3244, vertices, directed);
     }
 
     /**
@@ -52,7 +52,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean directed() {
-        return Rosetta.asBoolean(Rosetta.call(3212, this));
+        return Rosetta.asBoolean(Rosetta.call(3223, this));
     }
 
     /**
@@ -63,7 +63,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean empty() {
-        return Rosetta.asBoolean(Rosetta.call(3213, this));
+        return Rosetta.asBoolean(Rosetta.call(3224, this));
     }
 
     /**
@@ -74,7 +74,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public long vertexCount() {
-        return Rosetta.asLong(Rosetta.call(3214, this));
+        return Rosetta.asLong(Rosetta.call(3225, this));
     }
 
     /**
@@ -85,7 +85,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public long edgeCount() {
-        return Rosetta.asLong(Rosetta.call(3215, this));
+        return Rosetta.asLong(Rosetta.call(3226, this));
     }
 
     /**
@@ -94,7 +94,7 @@ public class WeightedGraph extends NativeObject {
      * <p>C++: {@code void datamunge::dstruct::WeightedGraph<std::string, double>::clear()}
      */
     public void clear() {
-        Rosetta.call(3216, this);
+        Rosetta.call(3227, this);
     }
 
     /**
@@ -106,7 +106,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean addVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3217, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3228, this, vertex));
     }
 
     /**
@@ -118,7 +118,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean removeVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3218, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3229, this, vertex));
     }
 
     /**
@@ -130,7 +130,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3219, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3230, this, vertex));
     }
 
     /**
@@ -146,7 +146,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean addEdge(String src, String dst, double weight) {
-        return Rosetta.asBoolean(Rosetta.call(3220, this, src, dst, weight));
+        return Rosetta.asBoolean(Rosetta.call(3231, this, src, dst, weight));
     }
 
     /**
@@ -159,7 +159,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean removeEdge(String src, String dst) {
-        return Rosetta.asBoolean(Rosetta.call(3221, this, src, dst));
+        return Rosetta.asBoolean(Rosetta.call(3232, this, src, dst));
     }
 
     /**
@@ -172,7 +172,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasEdge(String src, String dst) {
-        return Rosetta.asBoolean(Rosetta.call(3222, this, src, dst));
+        return Rosetta.asBoolean(Rosetta.call(3233, this, src, dst));
     }
 
     /**
@@ -185,7 +185,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public double edgeWeight(String src, String dst) {
-        return Rosetta.asDouble(Rosetta.call(3223, this, src, dst));
+        return Rosetta.asDouble(Rosetta.call(3234, this, src, dst));
     }
 
     /**
@@ -196,7 +196,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public List<String> vertices() {
-        return Rosetta.asList(Rosetta.call(3224, this), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3235, this), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -208,7 +208,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public List<String> neighbors(String vertex) {
-        return Rosetta.asList(Rosetta.call(3225, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3236, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -223,7 +223,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public List<Pair<String, Double>> dijkstraDistances(String source) {
-        return Rosetta.asList(Rosetta.call(3226, this, source), rosettaV0 -> Rosetta.tuple(rosettaV0, 2, rosettaT1 -> new Pair<String, Double>(Rosetta.asString(rosettaT1.get(0)), Rosetta.asDouble(rosettaT1.get(1)))));
+        return Rosetta.asList(Rosetta.call(3237, this, source), rosettaV0 -> Rosetta.tuple(rosettaV0, 2, rosettaT1 -> new Pair<String, Double>(Rosetta.asString(rosettaT1.get(0)), Rosetta.asDouble(rosettaT1.get(1)))));
     }
 
     /**
@@ -238,7 +238,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public List<Pair<String, Double>> bellmanFordDistances(String source) {
-        return Rosetta.asList(Rosetta.call(3227, this, source), rosettaV0 -> Rosetta.tuple(rosettaV0, 2, rosettaT1 -> new Pair<String, Double>(Rosetta.asString(rosettaT1.get(0)), Rosetta.asDouble(rosettaT1.get(1)))));
+        return Rosetta.asList(Rosetta.call(3238, this, source), rosettaV0 -> Rosetta.tuple(rosettaV0, 2, rosettaT1 -> new Pair<String, Double>(Rosetta.asString(rosettaT1.get(0)), Rosetta.asDouble(rosettaT1.get(1)))));
     }
 
     /**
@@ -250,7 +250,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean bellmanFordHasNegativeCycle(String source) {
-        return Rosetta.asBoolean(Rosetta.call(3228, this, source));
+        return Rosetta.asBoolean(Rosetta.call(3239, this, source));
     }
 
     /**
@@ -263,7 +263,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public WeightedGraph minimumSpanningTree() {
-        return Rosetta.asObject(Rosetta.call(3229, this), WeightedGraph.class);
+        return Rosetta.asObject(Rosetta.call(3240, this), WeightedGraph.class);
     }
 
     /**
@@ -275,7 +275,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public List<List<String>> connectedComponents() {
-        return Rosetta.asList(Rosetta.call(3230, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.asString(rosettaV1)));
+        return Rosetta.asList(Rosetta.call(3241, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.asString(rosettaV1)));
     }
 
     /**
@@ -289,7 +289,7 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public List<List<String>> stronglyConnectedComponents() {
-        return Rosetta.asList(Rosetta.call(3231, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.asString(rosettaV1)));
+        return Rosetta.asList(Rosetta.call(3242, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.asString(rosettaV1)));
     }
 
     /**
@@ -302,6 +302,6 @@ public class WeightedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasCycle() {
-        return Rosetta.asBoolean(Rosetta.call(3232, this));
+        return Rosetta.asBoolean(Rosetta.call(3243, this));
     }
 }

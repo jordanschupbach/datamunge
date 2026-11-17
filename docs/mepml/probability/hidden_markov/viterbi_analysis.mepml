@@ -1,0 +1,300 @@
+//? Title: Viterbi: actual maximum-path tables and backtracking
+//? Subtitle: Actual native state and retained original experiments
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An observed symbol stream can be compatible with many hidden state sequences.
+Viterbi finds the single path with greatest joint model probability, retaining
+the predecessors needed to reconstruct it.
+)
+
+\toc
+
+> The method
+
+Initialize delta_0(i)=log pi_i+log B(i,o_0). Then
+delta_t(j)=max_i[delta_(t−1)(i)+log A(i,j)]+log B(j,o_t), recording the actual
+maximizing predecessor. The best prefix to state j must extend a best prefix to
+some predecessor, proving optimal substructure. Backtrack from the final
+maximizing state. This maximizes joint path probability, not each smoothed
+marginal independently; P(path|observations) shares the same maximizer because
+the evidence normalizer is common. Work is(T−1)N² predecessor candidates, with
+O(TN) retained tables. Zero weights give −infinity; impossible evidence has no
+decoded path.
+
+> Simple worked example
+
+```{cpp, results="markdown", file="figures/viterbi_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/viterbi.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    auto h = a::forward_backward_example_model();
+    auto r = a::viterbi_work(h, {0, 1, 2});
+    std::print("| day index | actual delta | actual predecessors |\n|---:|---|---|\n");
+    for (std::size_t t = 0; t < r.delta.size(); ++t)
+        std::print("|{}|`{}`|`{}`|\n", t, r.delta[t], r.predecessor[t]);
+    std::print("\nActual path `{}`, joint log mass {}.\n", r.result.states,
+               r.result.log_probability);
+    g::Diagram concept_diagram(48, 1100);
+    concept_diagram.node("n0", {0, 0}, "Symbols normal,cold,dizzy");
+    concept_diagram.node("n1", {5, 0},
+                         std::format("{} actual predecessor candidates",
+                                     r.transition_terms));
+    concept_diagram.node("n2", {10, 0},
+                         std::format("Actual best path {}", r.result.states));
+    concept_diagram.edge("n0", "n1").edge("n1", "n2");
+    concept_diagram.save_svg("build/viterbi_tiny.svg");
+}
+```
+// result_begin: markdown
+| day index | actual delta | actual predecessors |
+|---:|---|---|
+|0|`[-1.203972804325936, -3.2188758248682006]`|`[0, 0]`|
+|1|`[-2.4769384801388235, -3.6119184129778077]`|`[0, 0]`|
+|2|`[-5.136198517071602, -4.19173690823075]`|`[0, 0]`|
+
+Actual path `[0, 0, 1]`, joint log mass -4.19173690823075.
+\image(figures/viterbi_tiny.svg)
+// result_end
+\caption(Actual native producing state from the complete small worked example.)
+\alttext(Actual native producing state from the complete small worked example.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/viterbi_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/viterbi.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    auto h = a::forward_backward_example_model();
+    std::vector<std::size_t> obs{0, 0, 1, 2, 2, 2, 1, 0, 1, 2, 2, 1, 0, 0};
+    auto r = a::viterbi_work(h, obs);
+    std::vector<double> days, symbols, states;
+    std::vector<std::string> state_name{"Healthy", "Fever"}, symbol_name{
+        "normal", "cold", "dizzy"
+    };
+    std::print("| day | symbol | actual decoded state |\n|---:|---|---|\n");
+    for (std::size_t i = 0; i < obs.size(); ++i) {
+        std::print("|{}|{}|{}|\n", i + 1, symbol_name[obs[i]],
+                   state_name[r.result.states[i]]);
+        days.push_back(i + 1);
+        symbols.push_back(obs[i]);
+        states.push_back(r.result.states[i]);
+    }
+    auto p = g::RPlot::create();
+    p.line(days, symbols, "observed symbol0..2", {37, 99, 235});
+    p.line(days, states, "decoded state0..1", {220, 38, 38});
+    p.title("Original14-symbol hidden-path decode").x_label("day").y_label(
+        "symbol/state ID, distinct meanings");
+    p.save_svg("build/viterbi_original.svg");
+    std::print("\nActual joint log mass {}. Model labels are illustrative, not clinical predictions.\n",
+               r.result.log_probability);
+}
+```
+// result_begin: markdown
+| day | symbol | actual decoded state |
+|---:|---|---|
+|1|normal|Healthy|
+|2|normal|Healthy|
+|3|cold|Healthy|
+|4|dizzy|Fever|
+|5|dizzy|Fever|
+|6|dizzy|Fever|
+|7|cold|Healthy|
+|8|normal|Healthy|
+|9|cold|Healthy|
+|10|dizzy|Fever|
+|11|dizzy|Fever|
+|12|cold|Healthy|
+|13|normal|Healthy|
+|14|normal|Healthy|
+
+Actual joint log mass -18.10890618022283. Model labels are illustrative, not clinical predictions.
+\image(figures/viterbi_original.svg)
+// result_end
+\caption(Actual canonical output; analytic references and unresolved statuses are identified explicitly.)
+\alttext(Actual canonical output; analytic references and unresolved statuses are identified explicitly.)
+
+> Checking the theory and controls
+
+```{cpp, results="markdown", file="figures/viterbi_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/viterbi.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    auto h = a::forward_backward_example_model();
+    std::vector<double> x, y;
+    std::print("| observations | actual possible | path | joint log mass |\n|---|---|---|---:|\n");
+    int i = 0;
+    for (auto obs : std::vector<std::vector<std::size_t>>{{}, {0}, {2},
+                                                          {0, 1, 2}}) {
+        auto r = a::viterbi(h, obs);
+        std::print("|`{}`|{}|`{}`|{}|\n", obs, r.possible, r.states,
+                   r.log_probability);
+        x.push_back(i++);
+        y.push_back(r.states.size());
+    }
+    h.emission = {{1, 0, 0}, {1, 0, 0}};
+    auto impossible = a::viterbi(h, {2});
+    std::print("\nImpossible evidence: possible {}; path length {}; log mass {}.\n",
+               impossible.possible, impossible.states.size(),
+               impossible.log_probability);
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Empty and valid streams retain explicit path status").x_label(
+        "control index").y_label("actual path length");
+    p.save_svg("build/viterbi_controls.svg");
+}
+```
+// result_begin: markdown
+| observations | actual possible | path | joint log mass |
+|---|---|---|---:|
+|`[]`|true|`[]`|0|
+|`[0]`|true|`[0]`|-1.203972804325936|
+|`[2]`|true|`[1]`|-1.4271163556401456|
+|`[0, 1, 2]`|true|`[0, 0, 1]`|-4.19173690823075|
+
+Impossible evidence: possible false; path length 0; log mass -inf.
+\image(figures/viterbi_controls.svg)
+// result_end
+\caption(Actual canonical output; analytic references and unresolved statuses are identified explicitly.)
+\alttext(Actual canonical output; analytic references and unresolved statuses are identified explicitly.)
+
+> Sensitivity and selected work
+
+```{cpp, results="markdown", file="figures/viterbi_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <array>
+#include <tuple>
+#include <bit>
+#include <datamunge/random/quality.hpp>
+#include <datamunge/algorithms/viterbi.hpp>
+int main() {
+    namespace a = dm::algorithms;
+    namespace g = dm::graphics;
+    std::filesystem::create_directories("build");
+    auto h = a::forward_backward_example_model();
+    std::vector<double> x, y;
+    std::print("| observations | actual predecessor candidates | formula(T-1)*4 |\n|---:|---:|---:|\n");
+    for (std::size_t n : {1, 2, 4, 8, 16, 32, 64, 128}) {
+        auto r = a::viterbi_work(h, std::vector<std::size_t>(n, 0));
+        std::print("|{}|{}|{}|\n", n, r.transition_terms, (n - 1) * 4);
+        x.push_back(n);
+        y.push_back(r.transition_terms);
+    }
+    auto p = g::RPlot::create();
+    p.line(x, y, "actual", {37, 99, 235}, 2);
+    p.points(x, y, "", {37, 99, 235}, 5);
+    p.title("Actual two-state candidate work grows linearly with time").x_label(
+        "observations T").y_label("actual predecessor candidates");
+    p.save_svg("build/viterbi_work.svg");
+}
+```
+// result_begin: markdown
+| observations | actual predecessor candidates | formula(T-1)*4 |
+|---:|---:|---:|
+|1|0|0|
+|2|4|4|
+|4|12|12|
+|8|28|28|
+|16|60|60|
+|32|124|124|
+|64|252|252|
+|128|508|508|
+\image(figures/viterbi_work.svg)
+// result_end
+\caption(Actual canonical output; analytic references and unresolved statuses are identified explicitly.)
+\alttext(Actual canonical output; analytic references and unresolved statuses are identified explicitly.)
+
+> Interpretation and limits
+
+Complete model shape, finite stochastic rows and every symbol are validated
+through the shared native validator. Strict improvements retain the smallest
+predecessor/final state at ties; this local rule is not a whole-path
+lexicographic promise. Table and candidate budgets are explicit. The
+illustrative symptom labels do not make this a medical model.
+
+All programs are complete editable C++ sources; figures are local files. Actual
+traces and selected counts come from the producing native kernels, not an
+independent report reconstruction.
+
+> References
+
+- [Rabiner, A tutorial on hidden Markov models|https://doi.org/10.1109/5.18626]
+
+Verified in the shared final four-document batch: 46 scoped native cases;8
+directly instrumented ASan/UBSan cases;42 executable public examples;168/168
+definitions across10 full scopes;4 hovers;6866 independent records/32327
+checks;four frozen surfaces with original seeded fixtures retained;5
+checkout/installed standalone headers and linked four-family consumer;16
+executed programs and16 inspected figures with both exports. Receipts:
+`build/mepml-conversion/batch-424-427/`.

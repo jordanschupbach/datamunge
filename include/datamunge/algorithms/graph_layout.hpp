@@ -1,17 +1,14 @@
 #pragma once
-
-#include <datamunge/algorithms/layout_geometry.hpp>
-#include <datamunge/algorithms/force_directed_layout.hpp>
-#include <datamunge/algorithms/circle_packing.hpp>
+/// @file graph_layout.hpp
+/// @brief Compatibility aggregation for dedicated checked native producers.
 #include <cstddef>
 #include <cstdint>
+#include <datamunge/algorithms/circle_packing.hpp>
+#include <datamunge/algorithms/force_directed_layout.hpp>
+#include <datamunge/algorithms/layout_geometry.hpp>
+#include <datamunge/algorithms/spectral_layout.hpp>
 #include <utility>
 #include <vector>
 
-namespace datamunge::algorithms {
-
-std::vector<Point2D> spectral_layout(
-    std::size_t vertex_count,
-    const std::vector<std::pair<std::size_t, std::size_t>>& edges);
-
-} // namespace datamunge::algorithms
+/// @brief Canonical checked native producers and owned values.
+namespace datamunge::algorithms {} // namespace datamunge::algorithms

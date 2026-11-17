@@ -1,0 +1,1058 @@
+//? Title: Seq2Seq
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Shared embedding -> encoder/decoder LSTM -> reversal and addition. The complete native C++ experiment preserves model equations, source seeds, update budgets and explicit fitting/generation loops. Missing data recipes are reconstructed and labelled; original TensorFlow recordings are checked only when genuinely present.
+)
+\toc
+
+> Provenance and scope
+
+The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
+
+> Follow the computation
+
+Shared embedding -> encoder/decoder LSTM -> reversal and addition.
+
+```{cpp, results="markdown", file="figures/seq2seq_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("data",{-18,0},"Versioned native inputs",s).node("model",{0,0},"Shared embedding -> encoder/decoder LSTM -> reversal and addition",s).node("audit",{18,0},"Explicit training and deployment checks",s).edge("data","model").edge("model","audit").save_svg("build/seq2seq_method.svg");}
+```
+// result_begin: markdown
+\image(figures/seq2seq_method.svg)
+// result_end
+
+> A calculation before fitting
+
+A uniform distribution over14 target classes gives probability1/14 and negative log likelihood log(14) per scored token. Padding is excluded by the actual objective; greedy sequence accuracy is a separate quantity.
+
+```{cpp, results="markdown", file="figures/seq2seq_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+int main(){namespace n=dm::nn;double computed=-n::log_softmax(n::zeros({1,14},n::DType::Float64),1).to_vector<double>()[0],analytic=std::log(14.);if(std::abs(computed-analytic)>2e-6)throw std::runtime_error("hand calculation differs from native primitives");std::print("| native calculation | analytic reference |\n|---:|---:|\n| {:.9f} | {:.9f} |\n",computed,analytic);dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,analytic},"worked reference",{37,99,235}).ylim(0,std::max(.5,std::max(computed,analytic)*1.2)).x_label("0 = native calculation;1 = analytic reference").y_label("Toy objective or diagnostic value").title("seq2seq hand calculation").size(1000,550).save_svg("build/seq2seq_worked.svg");}
+```
+// result_begin: markdown
+| native calculation | analytic reference |
+|---:|---:|
+| 2.639057330 | 2.639057330 |
+\image(figures/seq2seq_worked.svg)
+// result_end
+
+> Prepare reproducible inputs
+
+Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
+```
+// result_begin: markdown
+Versioned recipe root: /home/jordan/.cache/datamunge/datasets/nn-completion-assets
+// result_end
+
+> Inspect the native graph
+
+The preview traces the actual canonical component with independent parameters; it does not alter training. Composite grouping keeps full unrolls readable.
+
+```{cpp, results="markdown", file="figures/seq2seq_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;n::ParameterStore p(7);n::Module model([&](const n::Tensor&trace_input){auto x=trace_input,z=n::zeros({1,8}),l=n::full({1},6,n::DType::Int32);auto y=m::seq2seq::Plain(p,x,x,l,l,z,z,14);return n::model_stage("seq2seq native component",trace_input,y.logits);},"seq2seq native component graph");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;model.plot(n::zeros({1,6,14}),options).save_svg("build/seq2seq_network.svg");}
+```
+// result_begin: markdown
+\image(figures/seq2seq_network.svg)
+// result_end
+
+> Complete editable experiment
+
+Historical comments in the preserved source describe the original experiment; the versioned reconstruction manifest above describes the active inputs. Objectives, optimizer ownership, update schedules, sampling and search remain here. Source finite-difference, padding, causal/label-independence, checkpoint and immutability controls remain active. Weak held-out outcomes are retained.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace recovered_checkpoints {
+inline std::filesystem::path Model(const std::string&name){auto p=std::filesystem::path(dm::datasets::data_home())/"nn-completion-checkpoints/models"/name;std::filesystem::create_directories(p);return p;}
+}
+// CMD: just run-nn seq2seq
+// LSTM encoder-decoder reversal and addition, three epochs per task, teacher
+// forcing versus greedy decoding.
+//
+// Port of tflow's seq2seq. Data: tflow's output/datasets/seq2seq/{reversal,
+// addition} (data.npz: synthetic 14-token tasks, 128 fit / 32 validation / 32
+// test pairs of at most 6 tokens with teacher (BOS-shifted) and target (EOS)
+// sequences and their lengths; written by tflow's scripts/fetch_datasets.py).
+// A shared 8-D embedding, a length-masked 8-unit encoder LSTM whose final
+// state starts an independent 8-unit decoder LSTM (no attention: the fixed
+// vector bottleneck), a linear head; masked mean token CE, Adam .01, batch 8,
+// three epochs (48 updates) per task; 1326 parameters in 9 tensors.
+// For each task the port first replays tflow's recorded run (output/models/
+// seq2seq/<task>, skipped if absent) from TF's initial weights: initial
+// outputs with all six BPTT partials (encoded/decoder inputs, initial and
+// bridge states), first-batch forward and gradients, history, final weights
+// and greedy decodes. The own-initialisation run then checks restore, the
+// standalone one-step decoder against the teacher-forced unroll,
+// deterministic label-free greedy decoding, padding invariance of every output
+// and partial, the empty source and immutability (common/seq2seq_example.hpp).
+// Checkpoints are .npz (final.npz).
+// Options: epochs=3 data=PATH (the seq2seq dataset root) tf=PATH (tflow's output/models/seq2seq).
+// Output: output/nn/models/seq2seq/<task>/.
+
+// Editable workflow support: seq2seq.hpp
+// Editable workflow support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}
+
+namespace dataset_assets {
+inline dm::nn::ImageDataset LoadCifar10(const std::string&directory,const std::string&split){dm::datasets::fetch("cifar10",std::filesystem::path(directory).parent_path().string());return dm::nn::load_cifar10(directory,split);}
+}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { if(name=="cifar10"||name=="character_rnn")return DataRoot()/name;return std::filesystem::path(dm::datasets::prepare_example_data("nn-completion-assets"))/name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/nn-completion");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace seq2seq {using namespace dm::nn::models::seq2seq;
+inline const std::vector<std::string>& BatchKeys();
+inline std::vector<Map> LoadPools(const std::filesystem::path& file) {
+  const auto       all = nn::load_npz(file.string());
+  std::vector<Map> pools;
+  for (const std::string split : {"fit", "validation", "test"}) pools.push_back(replay::Split(all, split, BatchKeys()));
+  return pools;
+}
+inline const std::vector<std::string>& BatchKeys() {
+  static const std::vector<std::string> keys{"input", "target", "teacher", "input_lengths", "output_lengths", "source_ids"};
+  return keys;
+}
+inline Tensor TokenCE(const Tensor& logits, const Tensor& target, const Tensor& out_lengths) {
+  const auto   V    = logits.shape().back();
+  const Tensor mask = nn::cast(ValidPositions(out_lengths), logits.dtype());
+  const Tensor ce   = nn::neg(nn::sum(nn::mul(nn::log_softmax(logits, -1), nn::one_hot(target, V)), {2}));
+  return nn::div(nn::sum(nn::mul(mask, ce)), nn::maximum(nn::sum(mask), nn::scalar(1.0, logits.dtype())));
+}
+inline Tensor Greedy(const StepFn& step, Tensor h, Tensor c, Tensor* trace = nullptr) {
+  nn::NoGradGuard           guard;
+  const auto                n = h.shape()[0];
+  std::vector<std::int32_t> tokens(n, kBos), result(n * kSteps, 0);
+  std::vector<float>        attention(n * kSteps * kSteps, 0.f);
+  std::vector<char>         done(n, 0);
+  for (int t = 0; t < kSteps; ++t) {
+    const auto out = step(nn::from_vector(tokens), h, c);
+    const auto V   = out.logits.shape().back();
+    const auto lg  = out.logits.to_vector<float>();
+    auto       hv = h.to_vector<float>(), cv = c.to_vector<float>();
+    const auto nh = out.h.to_vector<float>(), nc = out.c.to_vector<float>();
+    const auto aw = out.attention.defined() ? out.attention.to_vector<float>() : std::vector<float>();
+    for (std::int64_t j = 0; j < n; ++j) {
+      if (done[j]) continue;
+      if (!aw.empty())
+        for (int k = 0; k < kSteps; ++k) attention[(j * kSteps + t) * kSteps + k] = aw[j * kSteps + k];
+      int best = 0;
+      for (int k = 1; k < V; ++k)
+        if (lg[j * V + k] > lg[j * V + best]) best = k;
+      result[j * kSteps + t] = best;
+      tokens[j]              = best;
+      done[j]                = best == kEos;
+      for (int k = 0; k < kUnits; ++k) hv[j * kUnits + k] = nh[j * kUnits + k], cv[j * kUnits + k] = nc[j * kUnits + k];
+    }
+    h = nn::from_vector(hv, {n, kUnits});
+    c = nn::from_vector(cv, {n, kUnits});
+  }
+  if (trace) *trace = nn::from_vector(attention, {n, kSteps, kSteps});
+  return nn::from_vector(result, {n, kSteps});
+}
+inline Tensor GreedyWith(const StepFn& step, Tensor h, Tensor c, Tensor* trace, int bos, int eos, int fill) {
+  nn::NoGradGuard           guard;
+  const auto                n = h.shape()[0];
+  std::vector<std::int32_t> tokens(n, bos), result(n * kSteps, fill);
+  std::vector<float>        attention(n * kSteps * kSteps, 0.f);
+  std::vector<char>         done(n, 0);
+  for (int t = 0; t < kSteps; ++t) {
+    const auto out = step(nn::from_vector(tokens), h, c);
+    const auto V   = out.logits.shape().back();
+    const auto lg  = out.logits.to_vector<float>();
+    auto       hv = h.to_vector<float>(), cv = c.to_vector<float>();
+    const auto nh = out.h.to_vector<float>(), nc = out.c.to_vector<float>();
+    const auto aw = out.attention.defined() ? out.attention.to_vector<float>() : std::vector<float>();
+    for (std::int64_t j = 0; j < n; ++j) {
+      if (done[j]) continue;
+      if (!aw.empty())
+        for (int k = 0; k < kSteps; ++k) attention[(j * kSteps + t) * kSteps + k] = aw[j * kSteps + k];
+      int best = 0;
+      for (int k = 1; k < V; ++k)
+        if (lg[j * V + k] > lg[j * V + best]) best = k;
+      result[j * kSteps + t] = best;
+      tokens[j]              = best;
+      done[j]                = best == eos;
+      for (int k = 0; k < kUnits; ++k) hv[j * kUnits + k] = nh[j * kUnits + k], cv[j * kUnits + k] = nc[j * kUnits + k];
+    }
+    h = nn::from_vector(hv, {n, kUnits});
+    c = nn::from_vector(cv, {n, kUnits});
+  }
+  if (trace) *trace = nn::from_vector(attention, {n, kSteps, kSteps});
+  return nn::from_vector(result, {n, kSteps});
+}
+}
+
+// Editable workflow support: seq2seq_example.hpp
+// Shared configuration, padding controls and evaluation fields for the
+// encoder-decoder examples. Each .cpp owns both its normal fitting loop and
+// its optional recorded-run replay loop; no training driver lives here.
+
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <datamunge/nn/nn.hpp>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
+
+
+
+
+
+namespace seq2seq_example {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using replay::Map;
+using seq2seq::kSteps;
+using seq2seq::kUnits;
+
+struct Spec {
+  std::string              name;    // output/nn/models/<name>, tflow's output/models/<name>
+  std::string              dataset; // tflow dataset directory name
+  std::vector<std::string> tasks;
+  bool                     flat_data = false; // data.npz directly under the dataset (translation)
+  std::vector<std::string> assets{"data.npz", "manifest.json"};
+  std::int64_t             params = 0, tensors = 0;
+  int                      vocab     = 14;    // output classes
+  std::uint64_t            seed      = 0;     // own-initialisation seed (tflow's Params seed)
+  int                      corrupt   = 13;    // token written into teacher/target/padding
+  bool                     pointer   = false; // pointer network: float points, STOP 5, BOS -1
+  bool                     attention = true;  // decoded.npz carries the greedy attention
+  std::string              exact_key = "greedy_exact_accuracy", exact_label = "greedyExact";
+  std::string              tf_recorded; // printed TF reference line
+  // Replay tolerances after 48 Adam updates (float32 rounding differences grow
+  // along the trajectory; the pointer models amplify them most).
+  double history_tol = 1e-4, weights_tol = 1e-3;
+};
+
+struct Parity {
+  bool   ran     = false;
+  double outputs = 0, forward = 0, gradients = 0, first_after = -1, history = 0, weights = -1,
+         final_outputs = -1, final_gradients = -1;
+  int greedy_same = -1, greedy_total = 0;
+};
+
+/// Sets every padded input/teacher position of `b` to the spec's corrupt values.
+inline void Pad(const Spec& spec, Map& b) {
+  const auto n  = b.at("input").shape()[0];
+  const auto il = b.at("input_lengths").to_vector<int>(),
+             ol = b.at("output_lengths").to_vector<int>();
+  auto te       = b.at("teacher").to_vector<std::int32_t>();
+  for (std::int64_t i = 0; i < n; ++i)
+    for (int t = 0; t < kSteps; ++t)
+      if (t >= ol[i])
+        te[i * kSteps + t] = spec.corrupt;
+  b.at("teacher") = nn::from_vector(te, {n, kSteps});
+  if (spec.pointer) {
+    auto       in    = b.at("input").to_vector<float>();
+    const auto shape = b.at("input").shape();
+    for (std::int64_t i = 0; i < n; ++i)
+      for (int t = 0; t < shape[1]; ++t)
+        if (t >= il[i])
+          for (int k = 0; k < shape[2]; ++k)
+            in[(i * shape[1] + t) * shape[2] + k] = 13.f;
+    b.at("input") = nn::from_vector(in, shape);
+  } else {
+    auto in = b.at("input").to_vector<std::int32_t>();
+    for (std::int64_t i = 0; i < n; ++i)
+      for (int t = 0; t < kSteps; ++t)
+        if (t >= il[i])
+          in[i * kSteps + t] = 13;
+    b.at("input") = nn::from_vector(in, {n, kSteps});
+  }
+}
+
+struct Result {
+  Parity              parity;
+  double              test_ce = 0, teacher_accuracy = 0;
+  int                 exact = 0;
+  std::vector<double> history;
+};
+
+/// Zero LSTM state [n, 8].
+inline Tensor Zero(std::int64_t n) {
+  return nn::zeros({n, kUnits});
+}
+
+/// Evaluate() bookkeeping shared by the models: the forward fields plus one
+/// partial per `wrt` (zeros where the loss does not depend on it).
+inline Map Fields(
+    const Tensor&                                      loss,
+    const std::vector<std::pair<std::string, Tensor>>& fields,
+    const std::vector<Tensor>&                         wrt) {
+  nn::GradOptions o;
+  o.allow_unused = true;
+  const auto g   = nn::grad(std::vector<Tensor>{loss}, wrt, {}, o);
+  Map        out{{"loss", loss.detach()}};
+  for (const auto& [k, v] : fields)
+    out[k] = v.detach();
+  for (std::size_t i = 0; i < g.size(); ++i)
+    out["partial" + std::to_string(i)] = g[i].defined() ? g[i] : nn::zeros_like(wrt[i]).detach();
+  return out;
+}
+
+} // namespace seq2seq_example
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using replay::Map;
+using seq2seq::kSteps;
+using seq2seq_example::Zero;
+
+namespace {
+
+constexpr int kVocab = 14;
+
+struct Model {
+  nn::ParameterStore p;
+  explicit Model(std::uint64_t seed) : p(seed) {
+    nn::NoGradGuard guard;
+    const Tensor    one = nn::one_hot(nn::zeros({1, kSteps}, nn::DType::Int32), kVocab),
+                 len    = nn::ones({1}, nn::DType::Int32);
+    seq2seq::Plain(p, one, one, len, len, Zero(1), Zero(1), kVocab);
+  }
+  seq2seq::PlainPath
+  Forward(const Map& b, const Tensor& x, const Tensor& d, const Tensor& ih, const Tensor& ic) {
+    return seq2seq::Plain(p, x, d, b.at("input_lengths"), b.at("output_lengths"), ih, ic, kVocab);
+  }
+  Map Evaluate(const Map& b) {
+    const auto n = b.at("input").shape()[0];
+    Tensor     x = nn::one_hot(b.at("input"), kVocab), d = nn::one_hot(b.at("teacher"), kVocab),
+           ih = Zero(n), ic = Zero(n);
+    for (Tensor* t : {&x, &d, &ih, &ic})
+      t->requires_grad_(true);
+    const auto path = Forward(b, x, d, ih, ic);
+    return seq2seq_example::Fields(
+        seq2seq::TokenCE(path.logits, b.at("target"), b.at("output_lengths")),
+        {{"logits", path.logits},
+         {"encoder_h", path.encoder_h},
+         {"encoder_c", path.encoder_c},
+         {"decoder_h", path.decoder_h},
+         {"decoder_c", path.decoder_c}},
+        {x, d, ih, ic, path.bridge_h, path.bridge_c});
+  }
+  std::vector<Tensor> Gradients(const Map& b) {
+    const auto n    = b.at("input").shape()[0];
+    const auto path = Forward(
+        b,
+        nn::one_hot(b.at("input"), kVocab),
+        nn::one_hot(b.at("teacher"), kVocab),
+        Zero(n),
+        Zero(n));
+    return nn::grad(
+        seq2seq::TokenCE(path.logits, b.at("target"), b.at("output_lengths")), p.parameters());
+  }
+  /// One decoder step from owned state (tflow's step_token/step_h/step_c placeholders).
+  seq2seq::DecoderStep StepOnce(const Tensor& token, const Tensor& h, const Tensor& c) {
+    nn::NoGradGuard guard;
+    return seq2seq::PlainStep(
+        p, seq2seq::Embedding(p, nn::one_hot(token, kVocab), kVocab), {h, c}, kVocab);
+  }
+  seq2seq::DecoderStep StepAt(const Map& b, const Map& out, int t) {
+    return StepOnce(
+        nn::select(b.at("teacher"), 1, t),
+        nn::select(out.at("decoder_h"), 1, t),
+        nn::select(out.at("decoder_c"), 1, t));
+  }
+  /// Label-free greedy decoding: only the source ids and lengths are read.
+  Tensor Greedy(const Map& b, Tensor* trace) {
+    nn::NoGradGuard guard;
+    const auto      n   = b.at("input").shape()[0];
+    const auto      enc = seq2seq::Encode(
+        p,
+        seq2seq::Embedding(p, nn::one_hot(b.at("input"), kVocab), kVocab),
+        b.at("input_lengths"),
+        Zero(n),
+        Zero(n));
+    return seq2seq::Greedy(
+        [&](const Tensor& t, const Tensor& h, const Tensor& c) { return StepOnce(t, h, c); },
+        enc.h.back(),
+        enc.c.back(),
+        trace);
+  }
+};
+
+} // namespace
+
+int main(int argc, char** argv) {
+  seq2seq_example::Spec spec;
+  spec.name      = "seq2seq";
+  spec.dataset   = "seq2seq";
+  spec.tasks     = {"reversal", "addition"};
+  spec.params    = 1326;
+  spec.tensors   = 9;
+  spec.vocab     = kVocab;
+  spec.seed      = 44103;
+  spec.attention = false;
+  spec.tf_recorded =
+      "reversal testTokenCE=2.06234 teacherTokenAccuracy=0.257862 greedyExact=0/32; addition "
+      "1.91069 / 0.40566 / 0";
+  using namespace seq2seq_example;
+  try {
+    const auto            start  = std::chrono::steady_clock::now();
+    int                   epochs = 3;
+    std::filesystem::path data = paths::Dataset(spec.dataset), tf = replay::TfModels(spec.name);
+    for (int i = 1; i < argc; ++i) {
+      const std::string a = argv[i];
+      if (a.rfind("epochs=", 0) == 0)
+        epochs = std::stoi(a.substr(7));
+      else if (a.rfind("data=", 0) == 0)
+        data = a.substr(5);
+      else if (a.rfind("tf=", 0) == 0)
+        tf = a.substr(3);
+      else
+        throw std::invalid_argument("epochs=N data=PATH tf=PATH");
+    }
+    check::Require(epochs > 0 && epochs <= 100, "positiveEpochs");
+    for (const auto& task : spec.tasks) {
+      const auto root = paths::OutputDir("models/" + spec.name + "/" + task);
+      const auto src  = spec.flat_data ? data : data / task;
+      replay::CopyAssets(src, root, spec.assets);
+      const auto pools = seq2seq::LoadPools(src / "data.npz");
+      const Map& test  = pools[2];
+      Result     result;
+      result.parity = [&]() -> Parity {
+        const auto recorded = tf / task;
+        Parity     r;
+        if (!std::filesystem::exists(recorded / "initial_arrays.npz")) {
+          std::cout << " (tflow run not found at " << recorded << "; TF parity skipped)\n";
+          return r;
+        }
+        r.ran = true;
+        Model m(0);
+        replay::LoadInto(m.p, recorded / "initial_arrays.npz");
+        r.outputs     = replay::MaxDiff(m.Evaluate(pools[2]), recorded / "initial_outputs.npz");
+        const auto fb = replay::ToMap(nn::load_npz((recorded / "first_batch.npz").string()));
+        r.forward     = replay::MaxDiff(m.Evaluate(fb), recorded / "first_forward.npz");
+        r.gradients   = replay::MaxDiff(
+            replay::Named(m.p, m.Gradients(fb)), recorded / "initial_gradients.npz");
+        check::Near(
+            std::max(r.outputs, r.forward),
+            0,
+            2e-6,
+            "initial outputs and all BPTT partials match TF");
+        check::Near(r.gradients, 0, 2e-6, "first-batch parameter gradients match TF");
+        nn::Optimizer       opt(m.p, .01, replay::Adam());
+        nn::BatchOrder      order(128, 8, 44107);
+        std::vector<double> hist;
+        int                 updates = 0;
+        for (int e = 1; e <= epochs; ++e) {
+          order.begin_epoch();
+          for (;;) {
+            const auto rows = order.next();
+            if (rows.empty())
+              break;
+            const auto b = replay::Rows(pools[0], rows);
+
+            const auto n    = b.at("input").shape()[0];
+            const auto path = m.Forward(
+                b,
+                nn::one_hot(b.at("input"), kVocab),
+                nn::one_hot(b.at("teacher"), kVocab),
+                Zero(n),
+                Zero(n));
+            const auto gradients = nn::grad(
+                seq2seq::TokenCE(path.logits, b.at("target"), b.at("output_lengths")),
+                m.p.parameters());
+
+            opt.step(gradients);
+            if (!updates && std::filesystem::exists(recorded / "first_after.npz"))
+              r.first_after = replay::MaxDiff(replay::Arrays(m.p), recorded / "first_after.npz");
+            ++updates;
+          }
+          hist.push_back(m.Evaluate(pools[1]).at("loss").item<double>());
+        }
+
+        // Adam's first step is lr g / (|g| + eps): parameters whose gradient is
+        // ~1e-8 (comparable to eps) move by a rounding-sensitive fraction of lr.
+        if (r.first_after >= 0)
+          check::Near(r.first_after, 0, 1e-4, "weights after the first Adam update match TF");
+        const auto tfh = replay::History(recorded / "history.tsv");
+        for (std::size_t e = 0; e < hist.size() && e < tfh.size(); ++e) {
+          std::cout << "  replay " << task << " epoch=" << e + 1 << " validationTokenCE=" << hist[e]
+                    << " (TF " << tfh[e] << ")\n";
+          r.history = std::max(r.history, std::abs(hist[e] - tfh[e]));
+        }
+        std::cout << " TF parity from TF's initial weights: initial outputs/partials max diff="
+                  << r.outputs << ", first-batch forward max diff=" << r.forward
+                  << ", gradients max diff=" << r.gradients;
+        if (epochs == 3) {
+          r.weights     = replay::MaxDiff(replay::Arrays(m.p), recorded / "model_arrays.npz");
+          const auto g  = m.Greedy(pools[2], nullptr).to_vector<int>();
+          const auto tg = replay::Get(nn::load_npz((recorded / "decoded.npz").string()), "greedy")
+                              .to_vector<int>();
+          r.greedy_same  = 0;
+          r.greedy_total = int(g.size());
+          for (std::size_t i = 0; i < g.size(); ++i)
+            r.greedy_same += g[i] == tg[i];
+          std::cout << ", history max diff=" << r.history
+                    << ", final weights max diff=" << r.weights << ", greedy tokens identical "
+                    << r.greedy_same << "/" << g.size();
+          check::Near(
+              r.history, 0, spec.history_tol, "validation history tracks TF's recorded run");
+          check::Near(
+              r.weights, 0, spec.weights_tol, "final weights track TF's after 48 Adam updates");
+        }
+        // Independently of the trajectory: TF's own final weights give TF's test
+        // outputs (all partials) and first-batch gradients.
+        if (std::filesystem::exists(recorded / "model_arrays.npz") &&
+            std::filesystem::exists(recorded / "final_gradients.npz")) {
+          Model f(0);
+          replay::LoadInto(f.p, recorded / "model_arrays.npz");
+          r.final_outputs   = replay::MaxDiff(f.Evaluate(pools[2]), recorded / "outputs.npz");
+          r.final_gradients = replay::MaxDiff(
+              replay::Named(f.p, f.Gradients(fb)), recorded / "final_gradients.npz");
+          std::cout << "\n from TF's final weights: test outputs/partials max diff="
+                    << r.final_outputs << ", first-batch gradients max diff=" << r.final_gradients
+                    << ", weights after first update max diff=" << r.first_after;
+          check::Near(
+              r.final_outputs,
+              0,
+              1e-5,
+              "TF's trained weights reproduce TF's test outputs and partials");
+          check::Near(
+              r.final_gradients, 0, 1e-5, "TF's trained weights reproduce TF's final gradients");
+        }
+        std::cout << "\n";
+        return r;
+      }();
+
+      Model m(spec.seed);
+      check::Require(
+          m.p.count() == spec.params && std::int64_t(m.p.size()) == spec.tensors,
+          std::to_string(spec.params) + "SharedEmbeddingIndependentEncoderDecoderAndHead");
+      m.p.save((root / "initial_arrays.npz").string());
+      nn::save_npz((root / "initial_outputs.npz").string(), replay::ToNamed(m.Evaluate(test)));
+      std::ofstream history(root / "history.tsv"), batches(root / "batches.tsv");
+      batches << "epoch\tstep\trow\n";
+      history << "epoch\tvalidation_token_ce\n";
+      nn::Optimizer  opt(m.p, .01, replay::Adam());
+      nn::BatchOrder order(128, 8, 44107);
+      int            updates = 0;
+      for (int e = 1; e <= epochs; ++e) {
+        order.begin_epoch();
+        for (;;) {
+          const auto rows = order.next();
+          if (rows.empty())
+            break;
+          const auto b = replay::Rows(pools[0], rows);
+          if (!updates) {
+            nn::save_npz((root / "first_batch.npz").string(), replay::ToNamed(b));
+            nn::save_npz(
+                (root / "initial_gradients.npz").string(),
+                replay::ToNamed(replay::Named(m.p, m.Gradients(b))));
+            nn::save_npz((root / "first_forward.npz").string(), replay::ToNamed(m.Evaluate(b)));
+          }
+          const auto n    = b.at("input").shape()[0];
+          const auto path = m.Forward(
+              b,
+              nn::one_hot(b.at("input"), kVocab),
+              nn::one_hot(b.at("teacher"), kVocab),
+              Zero(n),
+              Zero(n));
+          const auto gradients = nn::grad(
+              seq2seq::TokenCE(path.logits, b.at("target"), b.at("output_lengths")),
+              m.p.parameters());
+
+          opt.step(gradients);
+          if (!updates)
+            m.p.save((root / "first_after.npz").string());
+          for (auto row : rows)
+            batches << e << '\t' << updates << '\t' << row << '\n';
+          ++updates;
+        }
+        result.history.push_back(m.Evaluate(pools[1]).at("loss").item<double>());
+      }
+
+      for (std::size_t e = 0; e < result.history.size(); ++e) {
+        history << e + 1 << '\t' << result.history[e] << '\n';
+        std::cout << task << " epoch=" << e + 1 << " validationTokenCE=" << result.history[e]
+                  << std::endl;
+      }
+      const Map first = replay::ToMap(nn::load_npz((root / "first_batch.npz").string()));
+      nn::save_npz(
+          (root / "final_gradients.npz").string(),
+          replay::ToNamed(replay::Named(m.p, m.Gradients(first))));
+      m.p.save((root / "final.npz").string());
+      Model deployed(0);
+      deployed.p.load((root / "final.npz").string());
+      const Map weights = replay::Arrays(deployed.p);
+      check::Require(replay::SameBits(replay::Arrays(m.p), weights), spec.name + "RestoreBitexact");
+      const Map out = deployed.Evaluate(test);
+      // The standalone one-step decoder reproduces the teacher-forced unroll.
+      const auto olen = test.at("output_lengths").to_vector<int>();
+      const int  V    = spec.vocab;
+      const auto n    = test.at("teacher").shape()[0];
+      for (int t = 0; t < kSteps; ++t) {
+        const auto step = deployed.StepAt(test, out, t);
+        const auto sl = step.logits.to_vector<float>(), sh = step.h.to_vector<float>(),
+                   sc = step.c.to_vector<float>();
+        const auto ol = nn::select(out.at("logits"), 1, t).to_vector<float>(),
+                   oh = nn::select(out.at("decoder_h"), 1, t + 1).to_vector<float>(),
+                   oc = nn::select(out.at("decoder_c"), 1, t + 1).to_vector<float>();
+        for (std::int64_t b = 0; b < n; ++b)
+          if (t < olen[b]) {
+            for (int k = 0; k < V; ++k)
+              check::Near(sl[b * V + k], ol[b * V + k], 2e-6, "nativeStreamingTeacherLogits");
+            for (int k = 0; k < kUnits; ++k) {
+              check::Near(sh[b * kUnits + k], oh[b * kUnits + k], 2e-6, "nativeStreamingTeacherH");
+              check::Near(sc[b * kUnits + k], oc[b * kUnits + k], 2e-6, "nativeStreamingTeacherC");
+            }
+          }
+      }
+      Tensor       greedy_attention;
+      const Tensor greedy = deployed.Greedy(test, &greedy_attention);
+      check::Require(
+          replay::SameBits(greedy, deployed.Greedy(test, nullptr)), "deterministicGreedy");
+      {
+        Map corrupt                  = replay::Rows(test, {0, 1});
+        corrupt.at("teacher")        = nn::full_like(corrupt.at("teacher"), spec.corrupt);
+        corrupt.at("target")         = nn::full_like(corrupt.at("target"), spec.corrupt);
+        corrupt.at("output_lengths") = nn::zeros_like(corrupt.at("output_lengths"));
+        check::Require(
+            replay::SameBits(
+                deployed.Greedy(replay::Rows(test, {0, 1}), nullptr),
+                deployed.Greedy(corrupt, nullptr)),
+            "greedyCannotUseTeacherOrGoldLengthOrTarget");
+      }
+      Map padded = replay::Rows(test, {0, 1});
+      Pad(spec, padded);
+      const Map regular = deployed.Evaluate(replay::Rows(test, {0, 1})),
+                padout  = deployed.Evaluate(padded);
+      check::Require(
+          replay::SameBits(regular, padout), "allSeqPathsAndLossPartialsPaddingInvariant");
+      nn::save_npz((root / "padding_inputs.npz").string(), replay::ToNamed(padded));
+      nn::save_npz((root / "padding_outputs.npz").string(), replay::ToNamed(padout));
+      Map empty                 = replay::Rows(test, {0, 1});
+      empty.at("input_lengths") = nn::zeros({2}, nn::DType::Int32);
+      if (spec.pointer) {
+        empty.at("target")         = nn::full_like(empty.at("target"), 5);
+        empty.at("teacher")        = nn::full_like(empty.at("teacher"), -1);
+        empty.at("output_lengths") = nn::ones({2}, nn::DType::Int32);
+      }
+      const Map eo = deployed.Evaluate(empty);
+      for (auto k : {"encoder_h", "encoder_c", "partial0"})
+        for (float v : eo.at(k).to_vector<float>())
+          check::Require(v == 0, "emptyEncoderZeroStatesAndPartials");
+      if (spec.pointer)
+        check::Require(eo.at("loss").item<double>() == 0, "emptyPointerOnlySTOPHasZeroLoss");
+      else
+        check::Require(eo.at("loss").item<double>() > 0, "emptyEncoderStillHasDecoderLoss");
+      nn::save_npz((root / "empty_inputs.npz").string(), replay::ToNamed(empty));
+      nn::save_npz((root / "empty_outputs.npz").string(), replay::ToNamed(eo));
+      nn::save_npz((root / "outputs.npz").string(), replay::ToNamed(out));
+      nn::save_npz((root / "model_arrays.npz").string(), replay::ToNamed(weights));
+      if (spec.attention)
+        nn::save_npz(
+            (root / "decoded.npz").string(), {{"greedy", greedy}, {"attention", greedy_attention}});
+      else
+        nn::save_npz((root / "decoded.npz").string(), {{"greedy", greedy}});
+      std::map<std::pair<int, int>, int> confusion;
+      int                                tokens = 0, correct = 0, exact = 0;
+      const auto g = greedy.to_vector<int>(), target = test.at("target").to_vector<int>(),
+                 ids   = test.at("source_ids").to_vector<int>();
+      const auto    lg = out.at("logits").to_vector<float>();
+      std::ofstream predictions(root / "predictions.tsv");
+      predictions
+          << (spec.pointer ? "source_id\tgold_indices\tpredicted_indices\n"
+                           : "source_id\tinput_ids\tgold_ids\tgreedy_ids\n");
+      std::vector<int> input;
+      if (!spec.pointer)
+        input = test.at("input").to_vector<int>();
+      for (std::int64_t b = 0; b < n; ++b) {
+        bool match = true;
+        for (int t = 0; t < kSteps; ++t) {
+          const int gold = spec.pointer && t >= olen[b] ? -1 : target[b * kSteps + t];
+          match &= g[b * kSteps + t] == gold;
+          if (t < olen[b]) {
+            const float* row        = lg.data() + (b * kSteps + t) * V;
+            const int    prediction = static_cast<int>(std::max_element(row, row + V) - row);
+            const int    truth      = target[b * kSteps + t];
+            ++confusion[{truth, prediction}];
+            correct += prediction == truth;
+            ++tokens;
+          }
+        }
+        exact += match;
+        predictions << ids[b];
+        std::vector<const std::vector<int>*> columns{&target, &g};
+        if (!spec.pointer)
+          columns.insert(columns.begin(), &input);
+        for (const auto* a : columns) {
+          predictions << '\t';
+          for (int t = 0; t < kSteps; ++t)
+            predictions << (*a)[b * kSteps + t] << ',';
+        }
+        predictions << '\n';
+      }
+      std::cout << "confusion (truth rows, predicted columns; " << V
+                << " classes; sparse counts, omitted cells are zero):\ntruth\tprediction\tcount\n";
+      int confusion_total = 0, confusion_correct = 0;
+      for (const auto& [cell, count] : confusion) {
+        std::cout << cell.first << '\t' << cell.second << '\t' << count << '\n';
+        confusion_total += count;
+        if (cell.first == cell.second)
+          confusion_correct += count;
+      }
+      check::Require(
+          confusion_total == tokens && confusion_correct == correct,
+          "all valid held-out token predictions counted");
+      result.test_ce          = out.at("loss").item<double>();
+      result.teacher_accuracy = double(correct) / tokens;
+      result.exact            = exact;
+      std::ofstream metrics(root / "metrics.json");
+      metrics << "{\"parameters\":" << spec.params << ",\"epochs\":" << epochs
+              << ",\"updates\":" << epochs * 16 << ",\"test_token_ce\":" << result.test_ce
+              << ",\"teacher_token_accuracy\":" << result.teacher_accuracy << ",\""
+              << spec.exact_key << "\":" << exact / double(n) << "}\n";
+      check::Require(
+          replay::SameBits(replay::Arrays(deployed.p), weights), spec.name + "InferenceImmutable");
+      std::cout << task << " testTokenCE=" << result.test_ce
+                << " teacherTokenAccuracy=" << result.teacher_accuracy << " " << spec.exact_label
+                << "=" << exact << "/" << n << "; padding/empty/restore/labelFree/immutable PASS\n";
+    }
+    std::cout << "(TF recorded: " << spec.tf_recorded << ")\nwall "
+              << std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count()
+              << " s\n";
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin:
+//  (tflow run not found at "/home/jordan/.cache/datamunge/models/seq2seq/reversal"; TF parity skipped)
+// reversal epoch=1 validationTokenCE=2.46731
+// reversal epoch=2 validationTokenCE=2.2357
+// reversal epoch=3 validationTokenCE=2.06531
+// confusion (truth rows, predicted columns; 14 classes; sparse counts, omitted cells are zero):
+// truth	prediction	count
+// 2	2	32
+// 3	2	8
+// 3	11	10
+// 4	2	6
+// 4	11	3
+// 5	2	5
+// 5	11	9
+// 6	2	4
+// 6	11	10
+// 7	2	3
+// 7	11	7
+// 8	2	3
+// 8	11	13
+// 9	2	4
+// 9	11	10
+// 10	2	2
+// 10	11	7
+// 11	2	4
+// 11	11	3
+// 12	2	3
+// 12	11	5
+// reversal testTokenCE=2.10738 teacherTokenAccuracy=0.231788 greedyExact=0/32; padding/empty/restore/labelFree/immutable PASS
+//  (tflow run not found at "/home/jordan/.cache/datamunge/models/seq2seq/addition"; TF parity skipped)
+// addition epoch=1 validationTokenCE=2.24946
+// addition epoch=2 validationTokenCE=1.93823
+// addition epoch=3 validationTokenCE=1.75875
+// confusion (truth rows, predicted columns; 14 classes; sparse counts, omitted cells are zero):
+// truth	prediction	count
+// 2	2	32
+// 3	2	1
+// 4	2	19
+// 5	2	2
+// 6	2	5
+// 7	2	4
+// 8	2	3
+// 9	2	3
+// 10	2	4
+// 11	2	4
+// 12	2	4
+// addition testTokenCE=1.75444 teacherTokenAccuracy=0.395062 greedyExact=0/32; padding/empty/restore/labelFree/immutable PASS
+// (TF recorded: reversal testTokenCE=2.06234 teacherTokenAccuracy=0.257862 greedyExact=0/32; addition 1.91069 / 0.40566 / 0)
+// wall 0.0781263 s
+// result_end
+
+> Inspect the actual saved results
+
+The figures below read actual saved outputs from this run. Native graph previews appear above the complete program. Reconstructed-task results retain the source budgets and are not reported as original benchmark scores.
+
+> Actual validation history
+
+Each panel reads the first recorded objective from a saved `history.tsv`. Different tasks and loss definitions have different units; compare curves within a panel. These are reconstructed-data outcomes with the original update budgets.
+
+```{cpp, results="markdown", file="figures/seq2seq_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace fs=std::filesystem;std::vector<fs::path> files;for(const auto&entry:fs::recursive_directory_iterator("build/nn-completion/models/seq2seq"))if(entry.path().filename()=="history.tsv")files.push_back(entry.path());std::sort(files.begin(),files.end());if(files.empty())throw std::runtime_error("actual validation histories missing");auto layout=dm::graphics::RLayout::create((files.size()+1)/2,std::min(size_t(2),files.size()));for(const auto&file:files){std::ifstream in(file);std::string header,line;std::getline(in,header);std::vector<double>x,y;while(std::getline(in,line)){std::istringstream row(line);double step,value;if(row>>step>>value){x.push_back(step);y.push_back(value);}}if(x.empty())continue;auto plot=dm::graphics::RPlot::create();plot.lines(x,y,"saved validation objective",{37,99,235}).points(x,y,"saved rows",{37,99,235},4).x_label("Epoch or source step").y_label("Source objective; panels may use different units").title(file.parent_path().filename().string());layout.add(plot);}layout.size(1200,std::max(size_t(700),400*((files.size()+1)/2))).fit_panels().save_svg("build/seq2seq_history.svg");}
+```
+// result_begin: markdown
+\image(figures/seq2seq_history.svg)
+// result_end

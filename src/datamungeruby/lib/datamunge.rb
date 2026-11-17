@@ -15799,6 +15799,142 @@ module Datamunge
     def backward(output); end
   end
 
+  # A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+  #
+  # Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+  # test rows (per-class rounding applies). Four random widths followed by eight
+  # Gaussian-process expected-improvement proposals are the default search budget.
+  # Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+  # widths reuse their cached validation log loss. Smaller loss wins; ties retain
+  # the first proposal. Each candidate has one tanh hidden layer, softmax output,
+  # training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+  # penalty 0.0001. Initialization/shuffling use seed for every candidate.
+  #
+  # After selection the network is refitted on fitting plus validation rows,
+  # with new standardization statistics, then scored once on the untouched test.
+  # Validation loss belongs to the candidate fit, not the final refit, and is an
+  # optimistic selection score. Neither split nor test performance is a guarantee
+  # for other seeds or datasets. Owns all state, borrows inputs only during calls,
+  # does not change data or global RNG state. Const methods may run concurrently.
+  # Search cost is at most (initial_samples+iterations) fits plus one refit;
+  # cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+  #
+  # ```cpp
+  # const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+  # dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+  # const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+  # ```
+  #
+  # - D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+  #   of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+  class MLPClassifierSearch < NativeObject
+    # Tune a single hidden layer, refit on development rows and evaluate the test rows.
+    #
+    # @overload initialize(data, response, x_feature, y_feature, min_hidden = 2, max_hidden = 24, initial_samples = 4, iterations = 8, epochs = 400, seed = 42)
+    #   @param data [DataFrame] Borrowed labelled frame; unchanged. Every selected value must be present and finite.
+    #   @param response [String] String response column, with nonempty labels and at least five rows per class.
+    #   @param x_feature [String] First numeric predictor, distinct from response and y_feature.
+    #   @param y_feature [String] Second numeric predictor; these two are the only model inputs.
+    #   @param min_hidden [Integer] Smallest hidden width, default 2; at least 1 and below max_hidden. (default: `2`)
+    #   @param max_hidden [Integer] Largest hidden width, default 24; at most 1000000. (default: `24`)
+    #   @param initial_samples [Integer] Random initial proposals, default 4; at least 1. (default: `4`)
+    #   @param iterations [Integer] Surrogate-guided proposals, default 8; zero permits initial design only. (default: `8`)
+    #   @param epochs [Integer] SGD passes for each candidate and the final refit, default 400; at least 1. (default: `400`)
+    #   @param seed [Integer] Local split/search/initialization seed, default 42; validation split uses seed+1 modulo 2^64. (default: `42`)
+    # @overload initialize(data, response, x_feature, y_feature, **options)
+    #   Defaulted parameters by keyword, in any order.
+    #   @option options [Integer] :min_hidden (2) Smallest hidden width, default 2; at least 1 and below max_hidden.
+    #   @option options [Integer] :max_hidden (24) Largest hidden width, default 24; at most 1000000.
+    #   @option options [Integer] :initial_samples (4) Random initial proposals, default 4; at least 1.
+    #   @option options [Integer] :iterations (8) Surrogate-guided proposals, default 8; zero permits initial design only.
+    #   @option options [Integer] :epochs (400) SGD passes for each candidate and the final refit, default 400; at least 1.
+    #   @option options [Integer] :seed (42) Local split/search/initialization seed, default 42; validation split uses seed+1 modulo 2^64.
+    # @raise [ArgumentError] For invalid columns, labels, nonfinite/missing data or search controls.
+    # @raise [RuntimeError] `std::runtime_error`: If fitting or scoring fails to produce finite probabilities.
+    # @example
+    #   const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    #   dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+    #   const auto n = fit.test_rows(); // 30
+    # @see MLPClassifierSearch
+    # @see summary()
+    def initialize(data, response, x_feature, y_feature, min_hidden = 2, max_hidden = 24, initial_samples = 4, iterations = 8, epochs = 400, seed = 42); end
+    # Selected integer width of the single hidden layer.
+    #
+    # @return [Integer] A value in the requested inclusive search range.
+    def best_hidden_nodes; end
+    # Minimum validation mean negative log probability of the true class.
+    #
+    # @return [Float] Finite nonnegative loss of the selected candidate before refitting.
+    def validation_log_loss; end
+    # Held-out test accuracy of the final development-data refit.
+    #
+    # @return [Float] Fraction correctly classified in [0,1]; test rows were never used for selection.
+    def test_accuracy; end
+    # Number of rows used to fit each search candidate.
+    #
+    # @return [Integer] Fitting partition size, excluding validation and test.
+    def training_rows; end
+    # Number of rows used to choose hidden width.
+    #
+    # @return [Integer] Validation partition size.
+    def validation_rows; end
+    # Number of untouched rows used for the final evaluation.
+    #
+    # @return [Integer] Test partition size.
+    def test_rows; end
+    # Summarize split sizes, selected width, validation loss and final test accuracy.
+    #
+    # @return [String] Owned multiline text, without a trailing newline.
+    # @example
+    #   const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    #   dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    #   const bool named = fit.summary().find("Test accuracy") != std::string::npos; // true
+    # @see trials()
+    def summary; end
+    # Copy the complete Bayesian proposal history into an owned dataframe.
+    #
+    # @return [DataFrame, nil] New caller-owned frame with evaluation (1-based), hidden_nodes,
+    #   validation_log_loss, best_log_loss, cached (0/1), and phase (initial/bayesian).
+    #   One row per proposal, including repeated cached widths. Bindings own the result.
+    # @example
+    #   const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    #   dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    #   const std::unique_ptr<dm::DataFrame> history(fit.trials());
+    #   const auto n = history->nrows(); // 12
+    # @see summary()
+    def trials; end
+    # Predict labels from the final refit using only its two predictor columns.
+    #
+    # @param newdata [DataFrame] Borrowed frame, unchanged; missing predictors yield empty labels.
+    # @return [Array<String>] One class label per input row, in input order.
+    # @raise [IndexError] If a required column is absent.
+    # @raise [ArgumentError] If predictor types are incompatible.
+    # @example
+    #   const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    #   dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    #   const auto n = fit.predict(*iris).size(); // 150
+    # @see stats::MLPClassifier::predict()
+    def predict(newdata); end
+    # Plot final predicted class regions and development observations in the predictor plane.
+    #
+    # Pale merged rectangles show the predicted class; saturated points show
+    # observed development labels in the same palette. Test rows are excluded.
+    # Axis ranges cover development points plus 10% padding, in original units.
+    # Rendering samples cell centers, so boundaries are a grid approximation.
+    #
+    # @param grid_resolution [Integer] Cells per axis, default 120; at least 2. (default: `120`)
+    # @return [RPlot] Owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+    # @raise [ArgumentError] If grid_resolution is less than 2.
+    # @example
+    #   const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    #   dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+    #   auto plot = fit.plot_decision_regions();
+    #   plot.save_svg("build/iris-mlp.svg");
+    # @see graphics::add_class_regions()
+    # @see predict()
+    def plot_decision_regions(grid_resolution = 120); end
+  end
+
   # An owned B-rep solid with value-returning modelling and export operations.
   # Geometry uses doubles in caller-selected consistent units. Copies own topology;
   # immutable surfaces may be shared. Operations return new solids, preserving inputs.

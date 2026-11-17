@@ -20,16 +20,16 @@ namespace datamunge::algorithms {
 /// - L.R. Rabiner (1989), A tutorial on hidden Markov models and selected applications in speech recognition, Proceedings of the IEEE77(2),257–286, doi:10.1109/5.18626; https://www.cs.ubc.ca/~murphyk/Software/HMM/rabiner.pdf
 /// @see forward_backward(), hmm_path_probability()
 struct HiddenMarkovModel {
-    std::vector<double> initial; ///< Initial-state probabilities, length N.
-    std::vector<std::vector<double>> transition; ///< A[i][j]=P(next j given current i), N by N.
-    std::vector<std::vector<double>> emission; ///< B[i][k]=P(symbol k given state i), N by M.
+  std::vector<double>              initial;    ///< Initial-state probabilities, length N.
+  std::vector<std::vector<double>> transition; ///< A[i][j]=P(next j given current i), N by N.
+  std::vector<std::vector<double>> emission;   ///< B[i][k]=P(symbol k given state i), N by M.
 
-    /// @brief Read the initial-vector length without validating the model.
-    /// @return Number of entries in initial, possibly zero.
-    std::size_t num_states() const { return initial.size(); }
-    /// @brief Read the first emission-row length without validating remaining rows.
-    /// @return First emission-row length, or zero when there are no rows.
-    std::size_t num_symbols() const { return emission.empty()?0:emission.front().size(); }
+  /// @brief Read the initial-vector length without validating the model.
+  /// @return Number of entries in initial, possibly zero.
+  std::size_t num_states() const { return initial.size(); }
+  /// @brief Read the first emission-row length without validating remaining rows.
+  /// @return First emission-row length, or zero when there are no rows.
+  std::size_t num_symbols() const { return emission.empty() ? 0 : emission.front().size(); }
 };
 /// @brief Owned actual scaled forward/backward tables and smoothed state marginals.
 /// Historical field layout retained. For positive representable evidence, alpha rows are filtering distributions; beta uses terminal beta[T-1]=scale[T-1] and is not a probability distribution. In exact arithmetic sum(alpha[t]*beta[t])=scale[t], so gamma is explicitly normalized. Impossible sequences have log_likelihood=-infinity and zero gamma placeholders, not defined posteriors. Empty observations have empty arrays and log likelihood0.
@@ -40,11 +40,16 @@ struct HiddenMarkovModel {
 /// @endcode
 /// @see forward_backward(), hmm_enumerate_paths()
 struct ForwardBackwardResult {
-    std::vector<std::vector<double>> alpha{}; ///< Actual scaled forward rows, T by N; valid prefixes retained before impossibility.
-    std::vector<std::vector<double>> beta{}; ///< Actual scaled backward rows, T by N; all zero for impossible evidence.
-    std::vector<std::vector<double>> gamma{}; ///< Smoothed marginals, T by N; zero placeholders for impossible evidence.
-    std::vector<double> scale{}; ///< Reciprocal predictive masses c[t], length T; zero at/after impossibility.
-    double log_likelihood{}; ///< Negative sum log(c[t]) for possible evidence; -infinity if impossible,0 when empty.
+  std::vector<std::vector<double>>
+      alpha{}; ///< Actual scaled forward rows, T by N; valid prefixes retained before impossibility.
+  std::vector<std::vector<double>>
+      beta{}; ///< Actual scaled backward rows, T by N; all zero for impossible evidence.
+  std::vector<std::vector<double>>
+      gamma{}; ///< Smoothed marginals, T by N; zero placeholders for impossible evidence.
+  std::vector<double>
+      scale{}; ///< Reciprocal predictive masses c[t], length T; zero at/after impossibility.
+  double
+      log_likelihood{}; ///< Negative sum log(c[t]) for possible evidence; -infinity if impossible,0 when empty.
 };
 /// @brief Actual once-only inference counts, excluding validation and allocations.
 /// Transition terms count pair visits: one product plus accumulation in the forward pass, two products plus accumulation in the backward pass. Support probes run only on the first zero predictive mass to distinguish a mathematically impossible prefix from numeric underflow. No replay or diagnostic arithmetic is included.
@@ -55,22 +60,25 @@ struct ForwardBackwardResult {
 /// @endcode
 /// @see forward_backward(), hmm_enumerate_paths()
 struct ForwardBackwardWork {
-    std::size_t states{}; ///< N hidden states.
-    std::size_t symbols{}; ///< M emission symbols.
-    std::size_t observations{}; ///< T observation records.
-    std::size_t initial_products{}; ///< Initial pi times emission products.
-    std::size_t forward_transition_terms{}; ///< Actual forward predecessor-pair terms.
-    std::size_t forward_emission_products{}; ///< Actual emission products after the first row.
-    std::size_t forward_scalings{}; ///< Actual alpha times c operations.
-    std::size_t backward_initializations{}; ///< Terminal beta assignments.
-    std::size_t backward_transition_terms{}; ///< Actual backward successor-pair terms.
-    std::size_t backward_scalings{}; ///< Actual backward accumulator times c products.
-    std::size_t posterior_products{}; ///< Actual alpha times beta products.
-    std::size_t posterior_divisions{}; ///< Actual gamma normalization divisions; zero for impossible evidence.
-    std::size_t scale_logs{}; ///< Logarithms of positive scale factors actually evaluated.
-    std::size_t completed_forward_steps{}; ///< Forward rows completed.
-    std::size_t support_initial_tests{}; ///< Initial-state visits in a zero-mass Boolean support probe.
-    std::size_t support_pair_visits{}; ///< State-pair visits in that exceptional Boolean support probe.
+  std::size_t states{};                    ///< N hidden states.
+  std::size_t symbols{};                   ///< M emission symbols.
+  std::size_t observations{};              ///< T observation records.
+  std::size_t initial_products{};          ///< Initial pi times emission products.
+  std::size_t forward_transition_terms{};  ///< Actual forward predecessor-pair terms.
+  std::size_t forward_emission_products{}; ///< Actual emission products after the first row.
+  std::size_t forward_scalings{};          ///< Actual alpha times c operations.
+  std::size_t backward_initializations{};  ///< Terminal beta assignments.
+  std::size_t backward_transition_terms{}; ///< Actual backward successor-pair terms.
+  std::size_t backward_scalings{};         ///< Actual backward accumulator times c products.
+  std::size_t posterior_products{};        ///< Actual alpha times beta products.
+  std::size_t
+      posterior_divisions{}; ///< Actual gamma normalization divisions; zero for impossible evidence.
+  std::size_t scale_logs{};  ///< Logarithms of positive scale factors actually evaluated.
+  std::size_t completed_forward_steps{}; ///< Forward rows completed.
+  std::size_t
+      support_initial_tests{}; ///< Initial-state visits in a zero-mass Boolean support probe.
+  std::size_t
+      support_pair_visits{}; ///< State-pair visits in that exceptional Boolean support probe.
 };
 /// @brief Owned inference tables and actual work from the same kernel.
 /// All arrays own storage; caller edits are independent. There is no additional phase-history copy because the result already contains the actual tables.
@@ -81,8 +89,8 @@ struct ForwardBackwardWork {
 /// @endcode
 /// @see forward_backward(), hmm_enumerate_paths()
 struct ForwardBackwardOutcome {
-    ForwardBackwardResult result{}; ///< Owned actual inference result.
-    ForwardBackwardWork work{}; ///< Actual counts from that execution.
+  ForwardBackwardResult result{}; ///< Owned actual inference result.
+  ForwardBackwardWork   work{};   ///< Actual counts from that execution.
 };
 /// @brief Owned widened path sum, state marginals and best joint path.
 /// A bounded small-model reference, not a fast inference method or exact arithmetic. Time0 is the least significant base-N digit; strict best-weight updates keep the first enumerated tie. Impossible evidence yields probability0, log_likelihood=-infinity, zero marginal placeholders and no best path. Empty observations enumerate one empty path of weight1. Long-double positive product underflow throws.
@@ -93,12 +101,15 @@ struct ForwardBackwardOutcome {
 /// @endcode
 /// @see forward_backward(), hmm_enumerate_paths()
 struct HmmPathEnumeration {
-    long double probability{}; ///< Sum of all enumerated joint path masses.
-    long double log_likelihood{}; ///< Log of total mass, or -infinity for zero mass.
-    std::vector<std::vector<long double>> gamma{}; ///< T by N widened state marginals, or zero placeholders for impossible evidence.
-    std::vector<std::size_t> best_states{}; ///< Owned first maximum-weight path; empty for empty or impossible observations.
-    long double best_probability{}; ///< Maximum joint path weight;1 for empty observations,0 if impossible.
-    std::size_t paths{}; ///< Actual enumerated path count, including zero-weight paths.
+  long double probability{};    ///< Sum of all enumerated joint path masses.
+  long double log_likelihood{}; ///< Log of total mass, or -infinity for zero mass.
+  std::vector<std::vector<long double>>
+      gamma{}; ///< T by N widened state marginals, or zero placeholders for impossible evidence.
+  std::vector<std::size_t>
+      best_states{}; ///< Owned first maximum-weight path; empty for empty or impossible observations.
+  long double
+      best_probability{}; ///< Maximum joint path weight;1 for empty observations,0 if impossible.
+  std::size_t paths{};    ///< Actual enumerated path count, including zero-weight paths.
 };
 /// @brief Compute validated scaled filtering, smoothing and log likelihood.
 /// Fully validate model shapes/finite stochastic rows and every observation before
@@ -130,7 +141,9 @@ struct HmmPathEnumeration {
 /// @par References
 /// - L.R. Rabiner (1989), A tutorial on hidden Markov models and selected applications in speech recognition, Proceedings of the IEEE77(2),257–286, doi:10.1109/5.18626; https://www.cs.ubc.ca/~murphyk/Software/HMM/rabiner.pdf; terminal beta equals the final scale factor.
 /// @see forward_backward_entries(), hmm_enumerate_paths()
-ForwardBackwardResult forward_backward(const HiddenMarkovModel& hmm, const std::vector<std::size_t>& observations);
+ForwardBackwardResult forward_backward(
+    const HiddenMarkovModel&        hmm,
+    const std::vector<std::size_t>& observations);
 /// @brief Measure actual smoothing work with optional whole-result admission.
 /// Fully validate model shapes/finite stochastic rows and every observation before
 /// allocation, quotas or empty-input shortcuts. No caller mutation, RNG or shared
@@ -162,7 +175,10 @@ ForwardBackwardResult forward_backward(const HiddenMarkovModel& hmm, const std::
 /// @par References
 /// - L.R. Rabiner (1989), A tutorial on hidden Markov models and selected applications in speech recognition, Proceedings of the IEEE77(2),257–286, doi:10.1109/5.18626; https://www.cs.ubc.ca/~murphyk/Software/HMM/rabiner.pdf; terminal beta equals the final scale factor.
 /// @see forward_backward_entries(), hmm_enumerate_paths()
-ForwardBackwardOutcome forward_backward_work(const HiddenMarkovModel& hmm, const std::vector<std::size_t>& observations, std::size_t max_entries=1000000);
+ForwardBackwardOutcome forward_backward_work(
+    const HiddenMarkovModel&        hmm,
+    const std::vector<std::size_t>& observations,
+    std::size_t                     max_entries = 1000000);
 /// @brief Forecast whole owned inference entry records without allocation.
 /// For positive N,T, counts4T+3TN: three row records and one scale scalar per
 /// time plus three N-scalar rows. Otherwise0. Units are entry records, not bytes
@@ -209,7 +225,10 @@ std::size_t hmm_enumeration_paths(std::size_t states, std::size_t observations);
 /// @par References
 /// - L.R. Rabiner (1989), A tutorial on hidden Markov models and selected applications in speech recognition, Proceedings of the IEEE77(2),257–286, doi:10.1109/5.18626; https://www.cs.ubc.ca/~murphyk/Software/HMM/rabiner.pdf; direct path definition, equations12–17.
 /// @see forward_backward(), hmm_enumeration_paths()
-long double hmm_path_probability(const HiddenMarkovModel& hmm, const std::vector<std::size_t>& observations, const std::vector<std::size_t>& states);
+long double hmm_path_probability(
+    const HiddenMarkovModel&        hmm,
+    const std::vector<std::size_t>& observations,
+    const std::vector<std::size_t>& states);
 /// @brief Sum joint paths and state marginals by bounded widened enumeration.
 /// Full model/symbol validation precedes path admission and copies. Checked integer N^T and T*N^T work bounds remain with cap0. This cap counts paths, separately from inference entry records. Time O(N²+NM+T*N^T), output O(TN+T), scratch O(T), no caller mutation or RNG. Long-double products/sums are rounded; positive product underflow throws. No partial enumeration result.
 /// @param hmm Finite stochastic discrete model.
@@ -230,7 +249,10 @@ long double hmm_path_probability(const HiddenMarkovModel& hmm, const std::vector
 /// @par References
 /// - L.R. Rabiner (1989), A tutorial on hidden Markov models and selected applications in speech recognition, Proceedings of the IEEE77(2),257–286, doi:10.1109/5.18626; https://www.cs.ubc.ca/~murphyk/Software/HMM/rabiner.pdf; direct path definition, equations12–17.
 /// @see forward_backward(), hmm_enumeration_paths()
-HmmPathEnumeration hmm_enumerate_paths(const HiddenMarkovModel& hmm, const std::vector<std::size_t>& observations, std::size_t max_paths=1000000);
+HmmPathEnumeration hmm_enumerate_paths(
+    const HiddenMarkovModel&        hmm,
+    const std::vector<std::size_t>& observations,
+    std::size_t                     max_paths = 1000000);
 /// @brief Return the original two-state, three-symbol illustrative model.
 /// Deterministic fixture, no RNG or shared state. Labels0/1 name Healthy/Fever;
 /// symbols0/1/2 name normal/cold/dizzy in the original synthetic example.
@@ -253,4 +275,18 @@ HiddenMarkovModel forward_backward_example_model();
 /// @endcode
 /// @see forward_backward()
 std::vector<std::size_t> forward_backward_example_observations();
+/// @brief Validate a complete finite-alphabet HMM and observation sequence.
+/// All shapes checked before any weight or symbol indexing. Empty model is accepted only with empty observations. Does not normalize or mutate inputs; calls independent.
+/// @param model Borrowed model with finite stochastic rows within absolute1e-12.
+/// @param observations Borrowed zero-based symbols.
+/// @throws std::invalid_argument Invalid model shape or stochastic probabilities.
+/// @throws std::out_of_range Observation outside the emission alphabet.
+/// @par Example
+/// @code
+/// dm::algorithms::hmm_validate(dm::algorithms::forward_backward_example_model(),{0,1});
+/// @endcode
+/// @par References
+/// - The companion report derives the implemented recurrence.
+/// @see Related operations in this header.
+void hmm_validate(const HiddenMarkovModel& model, const std::vector<std::size_t>& observations);
 } // namespace datamunge::algorithms

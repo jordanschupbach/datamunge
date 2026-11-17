@@ -1,117 +1,194 @@
+/// @file tarjan_lca.cpp
+/// @brief Actual checked iterative offline LCA and invocation-owned union-find.
 #include <datamunge/algorithms/tarjan_lca.hpp>
-
+#include <limits>
+#include <numeric>
 #include <stdexcept>
-
 namespace datamunge::algorithms {
-
+/// @brief Private actual union-find and tree-validation kernels.
 namespace {
-
-// Disjoint-set forest with path compression and union by rank. Every node starts in its own
-// singleton set; Tarjan's method resets the per-set representative `ancestor` after each union,
-// so any union heuristic is correct -- rank just keeps the trees shallow for near-linear cost.
-struct DisjointSet {
-    std::vector<std::size_t> parent;
-    std::vector<std::size_t> rank;
-
-    explicit DisjointSet(std::size_t n) : parent(n), rank(n, 0) {
-        for (std::size_t i = 0; i < n; ++i) parent[i] = i;
-    }
-
-    std::size_t find(std::size_t x) {
-        std::size_t root = x;
-        while (parent[root] != root) root = parent[root];
-        while (parent[x] != root) { // path compression: point everything straight at the root
-            const std::size_t next = parent[x];
-            parent[x] = root;
-            x = next;
-        }
-        return root;
-    }
-
-    void unite(std::size_t a, std::size_t b) {
-        std::size_t ra = find(a);
-        std::size_t rb = find(b);
-        if (ra == rb) return;
-        if (rank[ra] < rank[rb]) { const std::size_t t = ra; ra = rb; rb = t; }
-        parent[rb] = ra;
-        if (rank[ra] == rank[rb]) ++rank[ra];
-    }
-};
-
-} // namespace
-
-std::vector<std::size_t>
-tarjan_offline_lca(std::size_t n, std::size_t root,
-                   const std::vector<std::pair<std::size_t, std::size_t>>& tree_edges,
-                   const std::vector<std::pair<std::size_t, std::size_t>>& queries) {
-    // --- validation (checking root < n first also rejects the n == 0 case before n - 1) ---
-    if (root >= n)
-        throw std::invalid_argument("tarjan_offline_lca: root must be < n");
-    if (tree_edges.size() != n - 1)
-        throw std::invalid_argument("tarjan_offline_lca: a tree on n nodes must have exactly n-1 edges");
-    for (const auto& [u, v] : tree_edges)
-        if (u >= n || v >= n)
-            throw std::invalid_argument("tarjan_offline_lca: edge endpoints must be < n");
-    for (const auto& [a, b] : queries)
-        if (a >= n || b >= n)
-            throw std::invalid_argument("tarjan_offline_lca: query endpoints must be < n");
-
-    // --- undirected adjacency list of the tree ---
-    std::vector<std::vector<std::size_t>> adj(n);
-    for (const auto& [u, v] : tree_edges) {
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-
-    // --- queries indexed by node: for query k = (a, b), record (other-endpoint, k) at both ends ---
-    std::vector<std::vector<std::pair<std::size_t, std::size_t>>> query_at(n);
-    for (std::size_t k = 0; k < queries.size(); ++k) {
-        const auto [a, b] = queries[k];
-        query_at[a].push_back({b, k});
-        query_at[b].push_back({a, k});
-    }
-
-    std::vector<std::size_t> lca(queries.size(), 0);
-    std::vector<char>        black(n, 0);   // node's subtree DFS is complete
-    std::vector<std::size_t> ancestor(n);   // representative ancestor of each set (valid at its root)
-    DisjointSet              dsu(n);
-    for (std::size_t i = 0; i < n; ++i) ancestor[i] = i;
-
-    // --- explicit-stack DFS (avoids recursion depth limits on deep/degenerate trees) ---
-    struct Frame {
-        std::size_t node;
-        std::size_t parent;    // DFS parent, or n for the root (skipped during traversal)
-        std::size_t next_child; // index into adj[node] of the next neighbour to visit
-    };
-    std::vector<Frame> stack;
-    stack.push_back({root, n, 0}); // ancestor[root] already == root
-
-    while (!stack.empty()) {
-        Frame& f = stack.back();
-        if (f.next_child < adj[f.node].size()) {
-            const std::size_t v = adj[f.node][f.next_child++];
-            if (v == f.parent) continue; // don't walk back up the tree edge we came in on
-            ancestor[v] = v;             // make_set(v) already done by DisjointSet ctor
-            stack.push_back({v, f.node, 0});
-        } else {
-            // All of f.node's children are fully processed -> finish this node.
-            const std::size_t u      = f.node;
-            const std::size_t parent = f.parent;
-            black[u] = 1;
-            // Answer every query touching u whose partner has already been finished.
-            for (const auto& [w, k] : query_at[u])
-                if (black[w]) lca[k] = ancestor[dsu.find(w)];
-            stack.pop_back();
-            // Merge u's whole (now-finished) subtree into its parent's set; the set's ancestor
-            // becomes the parent -- so any later find() from within reports the parent.
-            if (parent != n) {
-                dsu.unite(parent, u);
-                ancestor[dsu.find(parent)] = parent;
-            }
-        }
-    }
-
-    return lca;
+/// @brief Count one representable actual event.
+void increment(std::size_t& n) {
+  if (n == std::numeric_limits<std::size_t>::max())
+    throw std::length_error("LCA counter");
+  ++n;
 }
+/// @brief Invocation-owned rank/compression forest with producing counters.
+struct DisjointSet {
+  std::vector<std::size_t> parent; ///< Actual parent per node.
+  std::vector<std::size_t> rank;   ///< Actual rank at representatives.
+  TarjanLCARun&            run;    ///< Borrowed current invocation counters.
 
+  /// @brief Initialize actual singleton sets.
+  DisjointSet(std::size_t n, TarjanLCARun& r) : parent(n), rank(n), run(r) {
+    std::iota(parent.begin(), parent.end(), 0);
+  }
+  /// @brief Find an actual representative and compress its path.
+  std::size_t find(std::size_t x) {
+    increment(run.find_calls);
+    auto root = x;
+    while (parent[root] != root) {
+      increment(run.parent_hops);
+      root = parent[root];
+    }
+    while (parent[x] != root) {
+      auto next = parent[x];
+      parent[x] = root;
+      x         = next;
+    }
+    return root;
+  }
+  /// @brief Merge actual child/parent sets by rank and return the resulting representative.
+  std::size_t unite(std::size_t a, std::size_t b) {
+    auto ra = find(a), rb = find(b);
+    if (ra == rb)
+      return ra;
+    if (rank[ra] < rank[rb])
+      std::swap(ra, rb);
+    parent[rb] = ra;
+    if (rank[ra] == rank[rb])
+      ++rank[ra];
+    increment(run.unions);
+    return ra;
+  }
+};
+/// @brief Validate all tree geometry then execute actual finish, query and union events.
+TarjanLCARun execute(
+    std::size_t                                             n,
+    std::size_t                                             root,
+    const std::vector<std::pair<std::size_t, std::size_t>>& edges,
+    const std::vector<std::pair<std::size_t, std::size_t>>& queries,
+    const TarjanLCAOptions&                                 o,
+    bool                                                    capture) {
+  if (!n || root >= n || edges.size() != n - 1)
+    throw std::invalid_argument("LCA tree/root count");
+  if ((o.max_vertices && n > o.max_vertices) || (o.max_queries && queries.size() > o.max_queries) ||
+      n == std::numeric_limits<std::size_t>::max())
+    throw std::length_error("LCA geometry");
+  for (auto [u, v] : edges)
+    if (u >= n || v >= n || u == v)
+      throw std::invalid_argument("LCA tree endpoints/loop");
+  for (auto [u, v] : queries)
+    if (u >= n || v >= n)
+      throw std::invalid_argument("LCA query endpoint");
+  std::vector<std::vector<std::size_t>> adj(n);
+  for (auto [u, v] : edges) {
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+  }
+  TarjanLCARun                                     r;
+  std::vector<char>                                seen(n);
+  std::vector<std::pair<std::size_t, std::size_t>> validation{{root, n}};
+  seen[root] = 1;
+  while (!validation.empty()) {
+    auto [u, p] = validation.back();
+    validation.pop_back();
+    ++r.preflight_nodes;
+    for (auto v : adj[u]) {
+      increment(r.preflight_edges);
+      if (v == p)
+        continue;
+      if (seen[v])
+        throw std::invalid_argument("LCA cycle/duplicate");
+      seen[v] = 1;
+      validation.emplace_back(v, u);
+    }
+  }
+  if (r.preflight_nodes != n)
+    throw std::invalid_argument("LCA disconnected tree");
+  std::vector<std::vector<std::pair<std::size_t, std::size_t>>> at(n);
+  for (std::size_t k = 0; k < queries.size(); ++k) {
+    auto [a, b] = queries[k];
+    at[a].push_back({b, k});
+    at[b].push_back({a, k});
+  }
+  r.lca.resize(queries.size());
+  std::vector<char>        black(n);
+  std::vector<std::size_t> ancestor(n);
+  std::iota(ancestor.begin(), ancestor.end(), 0);
+  DisjointSet              dsu(n, r);
+  std::vector<std::size_t> representatives(n);
+  std::iota(representatives.begin(), representatives.end(), 0);
+  /// @brief Capture a real event using an already computed representative, without extra find work.
+  auto record = [&](const char* action,
+                    std::size_t u,
+                    std::size_t other,
+                    std::size_t query,
+                    std::size_t rep) {
+    if (!capture)
+      return;
+    if (o.max_records && r.steps.size() >= o.max_records)
+      throw std::length_error("LCA history");
+    r.steps.push_back({action, u, other, query, rep, ancestor[rep]});
+  };
+  /// @brief One actual iterative producer DFS frame.
+  struct Frame {
+    std::size_t node;
+    std::size_t parent;
+    std::size_t next;
+  };
+  std::vector<Frame> stack{{root, n, 0}};
+  r.entered.push_back(root);
+  record("enter", root, n, queries.size(), root);
+  while (!stack.empty()) {
+    auto& f = stack.back();
+    if (f.next < adj[f.node].size()) {
+      auto v = adj[f.node][f.next++];
+      increment(r.edge_visits);
+      if (v == f.parent)
+        continue;
+      auto u      = f.node;
+      ancestor[v] = v;
+      r.entered.push_back(v);
+      record("enter", v, n, queries.size(), v);
+      stack.push_back({v, u, 0});
+    } else {
+      auto u = f.node, p = f.parent;
+      black[u] = 1;
+      r.finished.push_back(u);
+      record("black", u, n, queries.size(), representatives[u]);
+      for (auto [w, k] : at[u]) {
+        increment(r.query_visits);
+        if (black[w]) {
+          auto rep = dsu.find(w);
+          r.lca[k] = ancestor[rep];
+          increment(r.answer_writes);
+          record("answer", u, w, k, rep);
+        }
+      }
+      stack.pop_back();
+      if (p != n) {
+        auto rep           = dsu.unite(p, u);
+        ancestor[rep]      = p;
+        representatives[p] = rep;
+        record("union", p, u, queries.size(), rep);
+      }
+    }
+  }
+  return r;
+}
+} // namespace
+TarjanLCARun tarjan_lca_run(
+    std::size_t                                             n,
+    std::size_t                                             root,
+    const std::vector<std::pair<std::size_t, std::size_t>>& edges,
+    const std::vector<std::pair<std::size_t, std::size_t>>& queries,
+    const TarjanLCAOptions&                                 options) {
+  return execute(n, root, edges, queries, options, false);
+}
+TarjanLCARun tarjan_lca_trace(
+    std::size_t                                             n,
+    std::size_t                                             root,
+    const std::vector<std::pair<std::size_t, std::size_t>>& edges,
+    const std::vector<std::pair<std::size_t, std::size_t>>& queries,
+    const TarjanLCAOptions&                                 options) {
+  return execute(n, root, edges, queries, options, true);
+}
+std::vector<std::size_t> tarjan_offline_lca(
+    std::size_t                                             n,
+    std::size_t                                             root,
+    const std::vector<std::pair<std::size_t, std::size_t>>& edges,
+    const std::vector<std::pair<std::size_t, std::size_t>>& queries) {
+  return tarjan_lca_run(n, root, edges, queries).lca;
+}
 } // namespace datamunge::algorithms

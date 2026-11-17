@@ -50,7 +50,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeError.InvalidArgument Nonpositive/nonfinite size. (C++ {@code std::invalid_argument})
      */
     public static CadSolid box(double width, double depth, double height) {
-        return Rosetta.asObject(Rosetta.call(2928, width, depth, height), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2939, width, depth, height), CadSolid.class);
     }
 
     /**
@@ -68,7 +68,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid dimensions. (C++ {@code std::invalid_argument})
      */
     public static CadSolid cylinder(double radius, double height) {
-        return Rosetta.asObject(Rosetta.call(2929, radius, height), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2940, radius, height), CadSolid.class);
     }
 
     /**
@@ -87,7 +87,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid radius. (C++ {@code std::invalid_argument})
      */
     public static CadSolid sphere(double radius) {
-        return Rosetta.asObject(Rosetta.call(2930, radius), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2941, radius), CadSolid.class);
     }
 
     /**
@@ -107,7 +107,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid radii. (C++ {@code std::invalid_argument})
      */
     public static CadSolid torus(double majorRadius, double minorRadius) {
-        return Rosetta.asObject(Rosetta.call(2931, majorRadius, minorRadius), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2942, majorRadius, minorRadius), CadSolid.class);
     }
 
     /**
@@ -128,7 +128,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Kernel failure. (C++ {@code std::runtime_error})
      */
     public CadSolid united(CadSolid other) {
-        return Rosetta.asObject(Rosetta.call(2932, this, other), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2943, this, other), CadSolid.class);
     }
 
     /**
@@ -145,7 +145,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Kernel failure or empty result. (C++ {@code std::runtime_error})
      */
     public CadSolid subtracted(CadSolid other) {
-        return Rosetta.asObject(Rosetta.call(2933, this, other), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2944, this, other), CadSolid.class);
     }
 
     /**
@@ -165,7 +165,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Kernel failure or empty result. (C++ {@code std::runtime_error})
      */
     public CadSolid intersected(CadSolid other) {
-        return Rosetta.asObject(Rosetta.call(2934, this, other), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2945, this, other), CadSolid.class);
     }
 
     /**
@@ -185,7 +185,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Transform failure. (C++ {@code std::runtime_error})
      */
     public CadSolid translated(double x, double y, double z) {
-        return Rosetta.asObject(Rosetta.call(2935, this, x, y, z), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2946, this, x, y, z), CadSolid.class);
     }
 
     /**
@@ -208,7 +208,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Kernel failure. (C++ {@code std::runtime_error})
      */
     public CadSolid rotated(double x, double y, double z, double radians) {
-        return Rosetta.asObject(Rosetta.call(2936, this, x, y, z, radians), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2947, this, x, y, z, radians), CadSolid.class);
     }
 
     /**
@@ -230,7 +230,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Unsupported edge/blend geometry. (C++ {@code std::runtime_error})
      */
     public CadSolid filleted(int[] edges, double radius) {
-        return Rosetta.asObject(Rosetta.call(2937, this, edges, radius), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2948, this, edges, radius), CadSolid.class);
     }
 
     /**
@@ -252,7 +252,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Kernel failure. (C++ {@code std::runtime_error})
      */
     public CadSolid chamfered(int[] edges, double setback) {
-        return Rosetta.asObject(Rosetta.call(2938, this, edges, setback), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2949, this, edges, setback), CadSolid.class);
     }
 
     /**
@@ -274,7 +274,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Kernel failure. (C++ {@code std::runtime_error})
      */
     public CadSolid shelled(double thickness) {
-        return Rosetta.asObject(Rosetta.call(2939, this, thickness), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2950, this, thickness), CadSolid.class);
     }
 
     /**
@@ -295,7 +295,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Kernel failure. (C++ {@code std::runtime_error})
      */
     public CadSolid shelled(double thickness, int[] openFaces) {
-        return Rosetta.asObject(Rosetta.call(2939, this, thickness, openFaces), CadSolid.class);
+        return Rosetta.asObject(Rosetta.call(2950, this, thickness, openFaces), CadSolid.class);
     }
 
     /**
@@ -316,7 +316,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Tessellation failure. (C++ {@code std::runtime_error})
      */
     public double volume() {
-        return Rosetta.asDouble(Rosetta.call(2940, this));
+        return Rosetta.asDouble(Rosetta.call(2951, this));
     }
 
     /**
@@ -336,7 +336,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Tessellation failure. (C++ {@code std::runtime_error})
      */
     public double volume(double chord) {
-        return Rosetta.asDouble(Rosetta.call(2940, this, chord));
+        return Rosetta.asDouble(Rosetta.call(2951, this, chord));
     }
 
     /**
@@ -353,7 +353,7 @@ public class CadSolid extends NativeObject {
      * @return True when the kernel validation report has no errors.
      */
     public boolean valid() {
-        return Rosetta.asBoolean(Rosetta.call(2941, this));
+        return Rosetta.asBoolean(Rosetta.call(2952, this));
     }
 
     /**
@@ -364,7 +364,7 @@ public class CadSolid extends NativeObject {
      * @return Owned vector of unique edge IDs.
      */
     public int[] edges() {
-        return Rosetta.asInts(Rosetta.call(2942, this));
+        return Rosetta.asInts(Rosetta.call(2953, this));
     }
 
     /**
@@ -375,7 +375,7 @@ public class CadSolid extends NativeObject {
      * @return Owned vector of face IDs.
      */
     public int[] faces() {
-        return Rosetta.asInts(Rosetta.call(2943, this));
+        return Rosetta.asInts(Rosetta.call(2954, this));
     }
 
     /**
@@ -394,7 +394,7 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Export or file I/O failure. (C++ {@code std::runtime_error})
      */
     public void save(String path) {
-        Rosetta.call(2944, this, path);
+        Rosetta.call(2955, this, path);
     }
 
     /**
@@ -412,6 +412,6 @@ public class CadSolid extends NativeObject {
      * @throws NativeException Export or file I/O failure. (C++ {@code std::runtime_error})
      */
     public void save(String path, double chord) {
-        Rosetta.call(2944, this, path, chord);
+        Rosetta.call(2955, this, path, chord);
     }
 }

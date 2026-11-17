@@ -1,3 +1,4 @@
+#include <datamunge/algorithms/viterbi.hpp>
 #pragma once
 
 /// \file hmm.hpp
@@ -27,96 +28,32 @@
 /// Baum-Welch drives its E-step from the
 /// same scaled recursions.
 
-#include <datamunge/algorithms/forward_backward.hpp>
 #include <cmath>
 #include <cstddef>
+#include <datamunge/algorithms/forward_backward.hpp>
 #include <limits>
 #include <stdexcept>
 #include <vector>
 
 namespace datamunge::algorithms {
 
-/// Result of Viterbi decoding.
-struct ViterbiResult {
-    std::vector<std::size_t> states;           ///< Most likely hidden state path, length \f$T\f$.
-    double                   log_probability;  ///< \f$\log P(\text{path}, O \mid \lambda)\f$.
-};
-
 /// Result of Baum-Welch training.
 struct BaumWelchResult {
-    HiddenMarkovModel   model;                   ///< Re-estimated parameters.
-    std::vector<double> log_likelihood_history;  ///< Total log-likelihood after each iteration.
-    std::size_t         iterations = 0;          ///< Number of EM iterations actually run.
+  HiddenMarkovModel   model;                  ///< Re-estimated parameters.
+  std::vector<double> log_likelihood_history; ///< Total log-likelihood after each iteration.
+  std::size_t         iterations = 0;         ///< Number of EM iterations actually run.
 };
 
 namespace detail {
 
 inline void check_observations(const HiddenMarkovModel& hmm, const std::vector<std::size_t>& obs) {
-    const std::size_t m = hmm.num_symbols();
-    for (const std::size_t o : obs)
-        if (o >= m) throw std::out_of_range("hmm: observation symbol out of range");
+  const std::size_t m = hmm.num_symbols();
+  for (const std::size_t o : obs)
+    if (o >= m)
+      throw std::out_of_range("hmm: observation symbol out of range");
 }
 
-}  // namespace detail
-
-/// \brief Viterbi decoding: the single most likely hidden state sequence.
-///
-/// Defines \f$\delta_t(i)=\max_{q_1\dots q_{t-1}} \log P(q_1\dots q_{t-1}, q_t=i, o_1\dots o_t\mid\lambda)\f$.
-/// The recursion is \f$\delta_t(j)=\big(\max_i \delta_{t-1}(i)+\log A_{ij}\big)+\log B_{j,o_t}\f$, with
-/// back-pointers \f$\psi_t(j)\f$ recording the maximizing predecessor; the optimal path is recovered
-/// by backtracking from \f$\arg\max_i \delta_T(i)\f$. All arithmetic is in log space.
-/// Complexity \f$O(T N^2)\f$ time, \f$O(T N)\f$ space. Zero probabilities map to \f$-\infty\f$.
-///
-/// \param hmm  Model parameters.
-/// \param obs  Observation symbols in \f$\{0,\dots,M-1\}\f$.
-/// \return the most likely path and its joint log-probability. Empty for empty input.
-inline ViterbiResult viterbi(const HiddenMarkovModel& hmm, const std::vector<std::size_t>& obs) {
-    detail::check_observations(hmm, obs);
-    const std::size_t n = hmm.num_states();
-    const std::size_t t = obs.size();
-    ViterbiResult result;
-    if (t == 0 || n == 0) {
-        result.log_probability = 0.0;
-        return result;
-    }
-
-    constexpr double kNegInf = -std::numeric_limits<double>::infinity();
-    auto             safe_log = [](double p) { return p > 0.0 ? std::log(p) : -std::numeric_limits<double>::infinity(); };
-
-    std::vector<std::vector<double>>      delta(t, std::vector<double>(n, kNegInf));
-    std::vector<std::vector<std::size_t>> psi(t, std::vector<std::size_t>(n, 0));
-
-    for (std::size_t i = 0; i < n; ++i) delta[0][i] = safe_log(hmm.initial[i]) + safe_log(hmm.emission[i][obs[0]]);
-
-    for (std::size_t step = 1; step < t; ++step)
-        for (std::size_t j = 0; j < n; ++j) {
-            double      best     = kNegInf;
-            std::size_t best_arg = 0;
-            for (std::size_t i = 0; i < n; ++i) {
-                const double cand = delta[step - 1][i] + safe_log(hmm.transition[i][j]);
-                if (cand > best) {
-                    best     = cand;
-                    best_arg = i;
-                }
-            }
-            delta[step][j] = best + safe_log(hmm.emission[j][obs[step]]);
-            psi[step][j]   = best_arg;
-        }
-
-    double      best_final = kNegInf;
-    std::size_t last_state = 0;
-    for (std::size_t i = 0; i < n; ++i)
-        if (delta[t - 1][i] > best_final) {
-            best_final = delta[t - 1][i];
-            last_state = i;
-        }
-
-    result.states.assign(t, 0);
-    result.states[t - 1] = last_state;
-    for (std::size_t step = t - 1; step > 0; --step) result.states[step - 1] = psi[step][result.states[step]];
-    result.log_probability = best_final;
-    return result;
-}
+} // namespace detail
 
 /// \brief Baum-Welch (EM) parameter re-estimation from one or more observation sequences.
 ///
@@ -136,76 +73,84 @@ inline ViterbiResult viterbi(const HiddenMarkovModel& hmm, const std::vector<std
 /// \param initial_model   Starting parameters; also fixes \f$N\f$ and \f$M\f$.
 /// \param max_iterations  Iteration cap.
 /// \param tolerance       Stop when the log-likelihood gain is below this.
-inline BaumWelchResult baum_welch(const std::vector<std::vector<std::size_t>>& sequences,
-                                  HiddenMarkovModel                            initial_model,
-                                  std::size_t                                  max_iterations = 100,
-                                  double                                       tolerance      = 1e-6) {
-    const std::size_t n = initial_model.num_states();
-    const std::size_t m = initial_model.num_symbols();
-    BaumWelchResult   out;
-    out.model = initial_model;
-    if (n == 0 || m == 0 || sequences.empty()) return out;
-
-    double prev_ll = -std::numeric_limits<double>::infinity();
-    for (std::size_t iter = 0; iter < max_iterations; ++iter) {
-        std::vector<double>              pi_acc(n, 0.0);
-        std::vector<std::vector<double>> a_num(n, std::vector<double>(n, 0.0));
-        std::vector<double>              a_den(n, 0.0);
-        std::vector<std::vector<double>> b_num(n, std::vector<double>(m, 0.0));
-        std::vector<double>              b_den(n, 0.0);
-        double                           total_ll = 0.0;
-        std::size_t                      used     = 0;
-
-        for (const auto& obs : sequences) {
-            const std::size_t t = obs.size();
-            if (t == 0) continue;
-            ++used;
-            const ForwardBackwardResult fb = forward_backward(out.model, obs);
-            total_ll += fb.log_likelihood;
-
-            for (std::size_t i = 0; i < n; ++i) pi_acc[i] += fb.gamma[0][i];
-
-            for (std::size_t step = 0; step + 1 < t; ++step) {
-                // xi_t(i,j) proportional to alpha_t(i) A_ij B_{j,o_{t+1}} beta_{t+1}(j); normalize over (i,j).
-                double norm = 0.0;
-                std::vector<std::vector<double>> xi(n, std::vector<double>(n, 0.0));
-                for (std::size_t i = 0; i < n; ++i)
-                    for (std::size_t j = 0; j < n; ++j) {
-                        xi[i][j] = fb.alpha[step][i] * out.model.transition[i][j] *
-                                   out.model.emission[j][obs[step + 1]] * fb.beta[step + 1][j];
-                        norm += xi[i][j];
-                    }
-                if (norm > 0.0)
-                    for (std::size_t i = 0; i < n; ++i)
-                        for (std::size_t j = 0; j < n; ++j) {
-                            const double v = xi[i][j] / norm;
-                            a_num[i][j] += v;
-                            a_den[i] += v;
-                        }
-            }
-            for (std::size_t step = 0; step < t; ++step)
-                for (std::size_t i = 0; i < n; ++i) {
-                    b_num[i][obs[step]] += fb.gamma[step][i];
-                    b_den[i] += fb.gamma[step][i];
-                }
-        }
-
-        // M-step.
-        if (used > 0)
-            for (std::size_t i = 0; i < n; ++i) out.model.initial[i] = pi_acc[i] / static_cast<double>(used);
-        for (std::size_t i = 0; i < n; ++i) {
-            if (a_den[i] > 0.0)
-                for (std::size_t j = 0; j < n; ++j) out.model.transition[i][j] = a_num[i][j] / a_den[i];
-            if (b_den[i] > 0.0)
-                for (std::size_t k = 0; k < m; ++k) out.model.emission[i][k] = b_num[i][k] / b_den[i];
-        }
-
-        out.log_likelihood_history.push_back(total_ll);
-        out.iterations = iter + 1;
-        if (total_ll - prev_ll < tolerance && iter > 0) break;
-        prev_ll = total_ll;
-    }
+inline BaumWelchResult baum_welch(
+    const std::vector<std::vector<std::size_t>>& sequences,
+    HiddenMarkovModel                            initial_model,
+    std::size_t                                  max_iterations = 100,
+    double                                       tolerance      = 1e-6) {
+  const std::size_t n = initial_model.num_states();
+  const std::size_t m = initial_model.num_symbols();
+  BaumWelchResult   out;
+  out.model = initial_model;
+  if (n == 0 || m == 0 || sequences.empty())
     return out;
+
+  double prev_ll = -std::numeric_limits<double>::infinity();
+  for (std::size_t iter = 0; iter < max_iterations; ++iter) {
+    std::vector<double>              pi_acc(n, 0.0);
+    std::vector<std::vector<double>> a_num(n, std::vector<double>(n, 0.0));
+    std::vector<double>              a_den(n, 0.0);
+    std::vector<std::vector<double>> b_num(n, std::vector<double>(m, 0.0));
+    std::vector<double>              b_den(n, 0.0);
+    double                           total_ll = 0.0;
+    std::size_t                      used     = 0;
+
+    for (const auto& obs : sequences) {
+      const std::size_t t = obs.size();
+      if (t == 0)
+        continue;
+      ++used;
+      const ForwardBackwardResult fb = forward_backward(out.model, obs);
+      total_ll += fb.log_likelihood;
+
+      for (std::size_t i = 0; i < n; ++i)
+        pi_acc[i] += fb.gamma[0][i];
+
+      for (std::size_t step = 0; step + 1 < t; ++step) {
+        // xi_t(i,j) proportional to alpha_t(i) A_ij B_{j,o_{t+1}} beta_{t+1}(j); normalize over (i,j).
+        double                           norm = 0.0;
+        std::vector<std::vector<double>> xi(n, std::vector<double>(n, 0.0));
+        for (std::size_t i = 0; i < n; ++i)
+          for (std::size_t j = 0; j < n; ++j) {
+            xi[i][j] = fb.alpha[step][i] * out.model.transition[i][j] *
+                       out.model.emission[j][obs[step + 1]] * fb.beta[step + 1][j];
+            norm += xi[i][j];
+          }
+        if (norm > 0.0)
+          for (std::size_t i = 0; i < n; ++i)
+            for (std::size_t j = 0; j < n; ++j) {
+              const double v = xi[i][j] / norm;
+              a_num[i][j] += v;
+              a_den[i] += v;
+            }
+      }
+      for (std::size_t step = 0; step < t; ++step)
+        for (std::size_t i = 0; i < n; ++i) {
+          b_num[i][obs[step]] += fb.gamma[step][i];
+          b_den[i] += fb.gamma[step][i];
+        }
+    }
+
+    // M-step.
+    if (used > 0)
+      for (std::size_t i = 0; i < n; ++i)
+        out.model.initial[i] = pi_acc[i] / static_cast<double>(used);
+    for (std::size_t i = 0; i < n; ++i) {
+      if (a_den[i] > 0.0)
+        for (std::size_t j = 0; j < n; ++j)
+          out.model.transition[i][j] = a_num[i][j] / a_den[i];
+      if (b_den[i] > 0.0)
+        for (std::size_t k = 0; k < m; ++k)
+          out.model.emission[i][k] = b_num[i][k] / b_den[i];
+    }
+
+    out.log_likelihood_history.push_back(total_ll);
+    out.iterations = iter + 1;
+    if (total_ll - prev_ll < tolerance && iter > 0)
+      break;
+    prev_ll = total_ll;
+  }
+  return out;
 }
 
-}  // namespace datamunge::algorithms
+} // namespace datamunge::algorithms

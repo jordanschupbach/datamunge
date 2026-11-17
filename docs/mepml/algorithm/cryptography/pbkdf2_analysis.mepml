@@ -1,0 +1,313 @@
+//? Title: PBKDF2: actual HMAC chains and block XORs
+//? Subtitle: Canonical C++ producers, original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+For each output block, U1 hashes salt followed by the one-based big-endian block
+index. Later U values hash the preceding32-byte U; their XOR forms that output
+block. The requested prefix is returned. The exact producing HMAC calls are
+counted, including every partial output block. Distinct salts alter these
+fixtures but cannot make a finite hash collision-free or add password entropy.
+Public tiny iteration counts are educational fixtures, not deployment settings.
+[RFC8018 section5.2|https://www.rfc-editor.org/rfc/rfc8018#section-5.2] defines
+the construction. No external dataset is needed.
+)
+
+\toc
+
+> Mechanism and scope
+
+For each output block, U1 hashes salt followed by the one-based big-endian block
+index. Later U values hash the preceding32-byte U; their XOR forms that output
+block. The requested prefix is returned. The exact producing HMAC calls are
+counted, including every partial output block. Distinct salts alter these
+fixtures but cannot make a finite hash collision-free or add password entropy.
+Public tiny iteration counts are educational fixtures, not deployment settings.
+[RFC8018 section5.2|https://www.rfc-editor.org/rfc/rfc8018#section-5.2] defines
+the construction. No external dataset is needed.
+
+$$ U_1=\operatorname{HMAC}(P,S\Vert\operatorname{INT32BE}(i)),\quad U_j=\operatorname{HMAC}(P,U_{j-1}),\quad T_i=\bigoplus_{j=1}^{c}U_j. $$
+
+> A tiny actual producing history
+
+The table and native diagram use the same producing run. Captured records own
+their values; the report does not reconstruct the algorithm.
+
+```{cpp, results="markdown", file="figures/pbkdf2_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/pbkdf2.hpp>
+#include <datamunge/algorithms/hex_encoding.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+    auto t =
+        dm::algorithms::pbkdf2_hmac_sha256_trace("password", "salt", 2, 32);
+    std::print("| block | round | actual U | actual running XOR |\n| ---: | ---: | --- | --- |\n");
+    for (auto &r : t.steps)
+        std::print("| {} | {} | `{}` | `{}` |\n", r.block, r.round,
+                   dm::algorithms::to_hex(r.u),
+                   dm::algorithms::to_hex(r.accumulator));
+    dm::graphics::Diagram d;
+    d.node("n0", {0, 0},
+           std::format("Actual first block\n{} rounds", t.steps.size()));
+    d.node("n1", {8, 0}, std::format("Actual HMAC calls\n{}", t.hmac_calls));
+    d.node("n2", {16, 0},
+           std::format("Actual key prefix\n{} bytes", t.key.size()));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/pbkdf2_tiny.svg");
+}
+```
+// result_begin: markdown
+| block | round | actual U | actual running XOR |
+| ---: | ---: | --- | --- |
+| 1 | 1 | `120fb6cffcf8b32c43e7225256c4f837a86548c92ccc35480805987cb70be17b` | `120fb6cffcf8b32c43e7225256c4f837a86548c92ccc35480805987cb70be17b` |
+| 1 | 2 | `bc42ba5a5393f5ff6eedfdab7e3495e782557747df0e6497dee74026224cad38` | `ae4d0c95af6b46d32d0adff928f06dd02a303f8ef3c251dfd6e2d85a95474c43` |
+\image(figures/pbkdf2_tiny.svg)
+// result_end
+\caption(Actual tiny producing operands, decisions and final state.)
+\alttext(Actual tiny producing operands, decisions and final state.)
+
+> The original fixture, retained
+
+This complete program retains the original inputs, seed and substantive
+experiment. Any added display prefix is explicitly separate from the original
+random call schedule.
+
+```{cpp, results="markdown", file="figures/pbkdf2_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/pbkdf2.hpp>
+#include <datamunge/algorithms/hex_encoding.hpp>
+#include <filesystem>
+#include <datamunge/algorithms/pbkdf2.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::graphics;
+
+int main() {
+    std::ostringstream original_output;
+    auto *original_cout = std::cout.rdbuf(original_output.rdbuf());
+
+    std::filesystem::create_directories("build");
+    std::cout <<
+        "=== Standard PBKDF2-HMAC-SHA256 vectors (\"password\",\"salt\") ===\n";
+    std::cout << "c=1     : " <<
+        pbkdf2_hmac_sha256_hex("password", "salt", 1, 32) << "\n";
+    std::cout << "c=2     : " <<
+        pbkdf2_hmac_sha256_hex("password", "salt", 2, 32) << "\n";
+    std::cout << "c=4096  : " <<
+        pbkdf2_hmac_sha256_hex("password", "salt", 4096, 32) << "\n";
+
+    std::cout << "\n=== Same password, different salt -> unrelated keys ===\n";
+    std::cout << "salt=\"salt1\": " <<
+        pbkdf2_hmac_sha256_hex("password", "salt1", 1000, 16) << "\n";
+    std::cout << "salt=\"salt2\": " <<
+        pbkdf2_hmac_sha256_hex("password", "salt2", 1000, 16) << "\n";
+
+    // Cost curve: HMAC evaluations = c per 32-byte block. Plot vs iteration count.
+    std::vector<double> iters = {1000, 2000, 4000, 8000, 16000, 32000};
+    std::vector<double> hmac_calls;
+    for (double c : iters)
+        hmac_calls.push_back(pbkdf2_hmac_sha256_run("password", "salt",
+                                                    static_cast<std::uint32_t>(
+                                                    c), 32).hmac_calls);  // one 32-byte block -> exactly c HMACs
+    std::cout <<
+        "\n=== Work factor (HMAC-SHA256 evaluations per derivation) ===\n";
+    for (std::size_t i = 0; i < iters.size(); ++i)
+        std::cout << "  c=" << (int) iters[i] << " -> " <<
+            (int) hmac_calls[i] << " HMAC calls\n";
+
+    RPlot p = RPlot::create();
+    p.lines(iters, hmac_calls, "HMAC evaluations", {37, 99, 235}, 2.0);
+    p.points(iters, hmac_calls, "", {220, 38, 38}, 5.0);
+    p.title("Original PBKDF2 settings: actual HMAC calls").x_label(
+        "iterations per 32-byte block").y_label("actual HMAC calls");
+    p.save_svg("build/pbkdf2_original.svg");
+    std::cout << "\nwrote build/pbkdf2_original.svg\n";
+    std::cout.rdbuf(original_cout);
+    std::print("| Original computed output |\n| --- |\n");
+    std::istringstream lines(original_output.str());
+    std::string line;
+    while (std::getline(lines, line)) {
+        while (!line.empty() && line.back() == ' ') line.pop_back();
+        if (!line.empty()) std::print("| `{}` |\n", line);
+    }
+
+    return 0;
+}
+```
+// result_begin: markdown
+| Original computed output |
+| --- |
+| `=== Standard PBKDF2-HMAC-SHA256 vectors ("password","salt") ===` |
+| `c=1     : 120fb6cffcf8b32c43e7225256c4f837a86548c92ccc35480805987cb70be17b` |
+| `c=2     : ae4d0c95af6b46d32d0adff928f06dd02a303f8ef3c251dfd6e2d85a95474c43` |
+| `c=4096  : c5e478d59288c841aa530db6845c4c8d962893a001ce4e11a4963873aa98134a` |
+| `=== Same password, different salt -> unrelated keys ===` |
+| `salt="salt1": 43a5fbdf861506858816102f630c3ba7` |
+| `salt="salt2": e388b7cf7ab7dceb5e7a02dd8b8b5b58` |
+| `=== Work factor (HMAC-SHA256 evaluations per derivation) ===` |
+| `  c=1000 -> 1000 HMAC calls` |
+| `  c=2000 -> 2000 HMAC calls` |
+| `  c=4000 -> 4000 HMAC calls` |
+| `  c=8000 -> 8000 HMAC calls` |
+| `  c=16000 -> 16000 HMAC calls` |
+| `  c=32000 -> 32000 HMAC calls` |
+| `wrote build/pbkdf2_original.svg` |
+\image(figures/pbkdf2_original.svg)
+// result_end
+\caption(Original fixture output and native numerical figure.)
+\alttext(Original fixture output and native numerical figure.)
+
+> Controls and boundary cases
+
+```{cpp, results="markdown", file="figures/pbkdf2_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/pbkdf2.hpp>
+#include <datamunge/algorithms/hex_encoding.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+    std::vector<double> v;
+    std::vector<std::string> labels;
+    std::print("| requested bytes | actual HMAC calls at c=2 | derived hex |\n| ---: | ---: | --- |\n");
+    for (std::size_t n : {0, 1, 31, 32, 33, 64, 65}) {
+        auto r = dm::algorithms::pbkdf2_hmac_sha256_run("p", "s", 2, n);
+        labels.push_back(std::to_string(n));
+        v.push_back(r.hmac_calls);
+        std::print("| {} | {} | `{}` |\n", n, r.hmac_calls,
+                   (n ? dm::algorithms::pbkdf2_hmac_sha256_hex("p", "s", 2, n)
+                    : std::string("(empty)")));
+    }
+    auto p = dm::graphics::RPlot::barplot(v, labels, "actual HMAC calls");
+    p.title("PBKDF2 block-boundary work: partial blocks still require full chains").x_label("requested key bytes").y_label("actual HMAC calls");
+    p.save_svg("build/pbkdf2_controls.svg");
+}
+```
+// result_begin: markdown
+| requested bytes | actual HMAC calls at c=2 | derived hex |
+| ---: | ---: | --- |
+| 0 | 0 | `(empty)` |
+| 1 | 2 | `19` |
+| 31 | 2 | `1998f3d3f22119b7f9a77c8ae8b1df0d6e5dde8ae44a6adea8bd836734ca36` |
+| 32 | 2 | `1998f3d3f22119b7f9a77c8ae8b1df0d6e5dde8ae44a6adea8bd836734ca3673` |
+| 33 | 4 | `1998f3d3f22119b7f9a77c8ae8b1df0d6e5dde8ae44a6adea8bd836734ca367379` |
+| 64 | 4 | `1998f3d3f22119b7f9a77c8ae8b1df0d6e5dde8ae44a6adea8bd836734ca367379812ed24a007ecf9a6393c65872ed627ac85325377974a39cacc9a7ef46c706` |
+| 65 | 6 | `1998f3d3f22119b7f9a77c8ae8b1df0d6e5dde8ae44a6adea8bd836734ca367379812ed24a007ecf9a6393c65872ed627ac85325377974a39cacc9a7ef46c7061c` |
+\image(figures/pbkdf2_controls.svg)
+// result_end
+\caption(Explicit controlled inputs and their actual native outcomes.)
+\alttext(Explicit controlled inputs and their actual native outcomes.)
+
+> Producing work and finite observations
+
+```{cpp, results="markdown", file="figures/pbkdf2_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+#include <string>
+#include <datamunge/algorithms/pbkdf2.hpp>
+#include <datamunge/algorithms/hex_encoding.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+    std::vector<double> x, y;
+    std::print("| iterations | actual HMAC calls |\n| ---: | ---: |\n");
+    for (std::uint32_t c : {1000, 2000, 4000, 8000, 16000, 32000}) {
+        auto r =
+            dm::algorithms::pbkdf2_hmac_sha256_run("password", "salt", c, 32);
+        x.push_back(c);
+        y.push_back(r.hmac_calls);
+        std::print("| {} | {} |\n", c, r.hmac_calls);
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.lines(x, y, "actual HMAC calls", {37, 99, 235}).points(x, y,
+                                                             {37, 99, 235}, 4).title("Original PBKDF2 work settings: measured producing call counts").x_label("iterations c").y_label("actual HMAC calls");
+    p.save_svg("build/pbkdf2_work.svg");
+}
+```
+// result_begin: markdown
+| iterations | actual HMAC calls |
+| ---: | ---: |
+| 1000 | 1000 |
+| 2000 | 2000 |
+| 4000 | 4000 |
+| 8000 | 8000 |
+| 16000 | 16000 |
+| 32000 | 32000 |
+\image(figures/pbkdf2_work.svg)
+// result_end
+\caption(Actual producing counts or states; no timing or statistical-quality inference.)
+\alttext(Actual producing counts or states; no timing or statistical-quality inference.)
+
+> API and interpretation
+
+All four blocks are complete editable C++ programs. Numerical tables retain raw
+native values; figures display only those returned records. Trace limits count
+documented logical records or scalar entries, not peak bytes or wall-clock work.
+Validation is complete before unchecked indexing; captured histories are
+educational owned storage. A returned result is interpreted under the
+algorithm-specific scope above, without a universal optimality, convergence or
+statistical-quality claim.
+
+> Verification
+
+This ten-report batch passes 89 CTest cases, 20 ASan/UBSan cases with all ten
+producing families directly instrumented, 62 compiled and executed public
+examples, 200/200 scoped file definitions plus 15/15 exact PCG class
+definitions, and ten representative clangd hovers. Independent Python
+hashlib/HMAC and arbitrary-integer PCG checks verify 75189 records with 123243
+checks. Native independent per-pixel visibility, exhaustive prefix reversals,
+quadratic LIS, integer perceptron updates, sampled-label tail counts and
+exhaustive Boolean-cover checks supplement frozen valid-input comparisons for
+all ten producers. Ten checkout and ten byte-identical installed development
+headers compile independently; an installed-header native consumer links and
+runs. All 40 complete programs execute; all 40 native figures have been visually
+reviewed. HTML/Markdown exports preserve computed result rows and identical
+image bytes. These are scoped native checks. Receipts:
+`build/mepml-conversion/batch-274-283/`.

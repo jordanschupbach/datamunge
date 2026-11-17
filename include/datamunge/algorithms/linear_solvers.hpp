@@ -1,4 +1,8 @@
 #pragma once
+#include <datamunge/algorithms/thomas.hpp>
+#include <datamunge/algorithms/iterative_solution.hpp>
+#include <datamunge/algorithms/levinson.hpp>
+#include <datamunge/algorithms/sor.hpp>
 
 /// @file linear_solvers.hpp
 /// @brief Dense and matrix-free linear solvers: Jacobi, Gauss-Seidel, CG, BiCG, Thomas, Gauss-Jordan.
@@ -20,8 +24,8 @@ namespace datamunge::algorithms {
 /// @endcode
 /// @see gaussian_elimination_solve()
 struct LinearSolution {
-    bool                solved{false}; ///< True when the selected direct method completed.
-    std::vector<double> x;             ///< Owned solution, empty on Gaussian cutoff failure.
+  bool                solved{false}; ///< True when the selected direct method completed.
+  std::vector<double> x;             ///< Owned solution, empty on Gaussian cutoff failure.
 };
 
 /// @brief Checked legacy Gaussian elimination with earliest-tie partial pivoting.
@@ -52,16 +56,6 @@ struct LinearSolution {
 /// @see gaussian_elimination_solve(), gaussian_elimination_trace(), LinearSolution
 LinearSolution gaussian_elimination(std::vector<std::vector<double>> a, std::vector<double> b);
 
-/// @brief The result of an iterative linear solve: whether it @ref converged to the tolerance, the
-///        approximate solution @ref x, the number of @ref iterations, and the final @ref residual
-///        @c ||A x - b||.
-struct IterativeSolution {
-    bool                converged{false}; ///< Whether the tolerance was reached.
-    std::vector<double> x;                ///< The approximate solution.
-    int                 iterations{0};    ///< Iterations performed.
-    double              residual{0.0};    ///< Final residual norm ||A x - b||.
-};
-
 /// @brief Checked forward in-place Gauss-Seidel from a zero initial iterate.
 /// Validates full finite square shape, matching RHS, nonzero diagonal and controls
 /// before any sweep. Uses the newest coordinates with widened sums and checked
@@ -84,8 +78,11 @@ struct IterativeSolution {
 /// - Barrett et al., Templates for the Solution of Linear Systems, 2nd ed.,
 ///   https://netlib.org/templates/templates.html , forward Gauss-Seidel.
 /// @see gauss_seidel_trace(), IterativeSolution
-IterativeSolution gauss_seidel(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
-                               int max_iter = 1000, double tol = 1e-10);
+IterativeSolution gauss_seidel(
+    const std::vector<std::vector<double>>& a,
+    const std::vector<double>&              b,
+    int                                     max_iter = 1000,
+    double                                  tol      = 1e-10);
 
 /// @brief Checked dense conjugate gradient for a symmetric positive-definite system.
 /// Full finite/square/size and exact stored symmetry validation precedes solving.
@@ -113,23 +110,13 @@ IterativeSolution gauss_seidel(const std::vector<std::vector<double>>& a, const 
 /// - Hestenes and Stiefel (1952), Methods of Conjugate Gradients for Solving Linear
 ///   Systems, https://doi.org/10.6028/jres.049.044 .
 /// @see conjugate_gradient_solve(), conjugate_gradient_trace(), IterativeSolution
-IterativeSolution conjugate_gradient(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
-                                     int max_iter = 1000, double tol = 1e-10);
+IterativeSolution conjugate_gradient(
+    const std::vector<std::vector<double>>& a,
+    const std::vector<double>&              b,
+    int                                     max_iter = 1000,
+    double                                  tol      = 1e-10);
 
-/// @brief The *Thomas algorithm* (tridiagonal matrix algorithm): solves a tridiagonal system in
-///        *linear time* @c O(n) -- a specialized Gaussian elimination that exploits the banded
-///        structure, needing no pivoting when the matrix is diagonally dominant. The system is given
-///        by its three diagonals: @p sub (below), @p diag (main), @p super (above), and @p rhs.
-///        Tridiagonal systems arise everywhere -- cubic splines, 1-D finite differences, implicit
-///        PDE steps.
-///
-/// @param sub   the sub-diagonal (length @c n; @c sub[0] is unused).
-/// @param diag  the main diagonal (length @c n).
-/// @param super the super-diagonal (length @c n; @c super[n-1] is unused).
-/// @param rhs   the right-hand side (length @c n).
-/// @return the solution vector (length @c n).
-std::vector<double> thomas_solve(std::vector<double> sub, std::vector<double> diag,
-                                 std::vector<double> super, std::vector<double> rhs);
+
 
 /// @brief Owned legacy Gauss–Jordan result: computed cutoff success, solution and inverse.
 /// Both arrays are empty on cutoff failure. Successful arrays contain floating
@@ -142,9 +129,9 @@ std::vector<double> thomas_solve(std::vector<double> sub, std::vector<double> di
 /// @endcode
 /// @see gauss_jordan_solve()
 struct GaussJordanResult {
-    bool                             solved{false}; ///< True when all selected pivots passed the cutoff.
-    std::vector<double>              x;             ///< Owned approximate solution; empty on failure.
-    std::vector<std::vector<double>> inverse;        ///< Owned approximate inverse; empty on failure.
+  bool                solved{false};        ///< True when all selected pivots passed the cutoff.
+  std::vector<double> x;                    ///< Owned approximate solution; empty on failure.
+  std::vector<std::vector<double>> inverse; ///< Owned approximate inverse; empty on failure.
 };
 
 /// @brief Checked legacy full augmented Gauss–Jordan reduction with partial pivoting.
@@ -177,22 +164,6 @@ struct GaussJordanResult {
 /// @see gauss_jordan_solve(), gauss_jordan_trace(), GaussJordanResult
 GaussJordanResult gauss_jordan(std::vector<std::vector<double>> a, std::vector<double> b);
 
-/// @brief *Successive over-relaxation* (SOR): accelerates Gauss-Seidel by *over-shooting* each update
-///        with a relaxation factor @p omega. Each new value is a blend
-///        @c x_i <- (1-omega) x_i + omega * (Gauss-Seidel update), and for @c omega in @c (1,2) the
-///        extra push can cut the number of sweeps by an order of magnitude; @c omega = 1 is exactly
-///        Gauss-Seidel. The optimal @p omega depends on the spectral radius of the iteration matrix,
-///        and @p omega must lie in @c (0,2) for convergence (Kahan's theorem).
-///
-/// @param a the coefficient matrix (@c n x @c n).
-/// @param b the right-hand side.
-/// @param omega the relaxation factor in @c (0,2).
-/// @param max_iter the iteration cap.
-/// @param tol the convergence tolerance on the residual norm.
-/// @return the @ref IterativeSolution.
-IterativeSolution sor(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
-                      double omega, int max_iter = 1000, double tol = 1e-10);
-
 /// @brief The *biconjugate gradient* (BiCG) method: extends conjugate gradient to *non-symmetric*
 ///        systems by running two coupled recurrences -- one with @c A and a shadow one with @c A^T --
 ///        that keep the residuals bi-orthogonal. It needs no symmetry or definiteness, at the cost of
@@ -204,20 +175,25 @@ IterativeSolution sor(const std::vector<std::vector<double>>& a, const std::vect
 /// @param max_iter the iteration cap.
 /// @param tol the convergence tolerance on the residual norm.
 /// @return the @ref IterativeSolution.
-IterativeSolution biconjugate_gradient(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
-                                       int max_iter = 1000, double tol = 1e-10);
+IterativeSolution biconjugate_gradient(
+    const std::vector<std::vector<double>>& a,
+    const std::vector<double>&              b,
+    int                                     max_iter = 1000,
+    double                                  tol      = 1e-10);
 
 /// @brief A linear map \f$v\mapsto Mv\f$ supplied as a function, for matrix-free solvers.
 using LinearOperator = std::function<std::vector<double>(const std::vector<double>&)>;
 
 /// @brief Result of the matrix-free biconjugate_gradient(): the iterate, its history and why it stopped.
 struct BiCGResult {
-    std::vector<double> x;                  ///< The final iterate.
-    bool                converged{false};   ///< Whether the relative residual reached the tolerance.
-    bool                breakdown{false};   ///< Whether a vanishing \f$\tilde r^\top r\f$ or \f$\tilde p^\top Ap\f$ stopped it.
-    int                 iterations{0};      ///< Iterations taken.
-    int                 products{0};        ///< Operator applications (two per iteration: \f$A\f$ and \f$A^\top\f$).
-    std::vector<double> residual_history;   ///< \f$\|r_k\|/\|b\|\f$ for k = 0 .. iterations (recursively updated residual).
+  std::vector<double> x;                ///< The final iterate.
+  bool                converged{false}; ///< Whether the relative residual reached the tolerance.
+  bool                breakdown{
+      false}; ///< Whether a vanishing \f$\tilde r^\top r\f$ or \f$\tilde p^\top Ap\f$ stopped it.
+  int iterations{0}; ///< Iterations taken.
+  int products{0};   ///< Operator applications (two per iteration: \f$A\f$ and \f$A^\top\f$).
+  std::vector<double>
+      residual_history; ///< \f$\|r_k\|/\|b\|\f$ for k = 0 .. iterations (recursively updated residual).
 };
 
 /// @brief Matrix-free BiCG for \f$Ax=b\f$ from \f$x_0=0\f$, with shadow residual \f$\tilde r_0\f$ = @p shadow
@@ -250,20 +226,12 @@ struct BiCGResult {
 ///     [&](const auto& v) { return A.spmv(v); }, [&](const auto& v) { return At.spmv(v); }, b, 500, 1e-10);
 /// @endcode
 /// @see biconjugate_gradient(const std::vector<std::vector<double>>&, const std::vector<double>&, int, double)
-BiCGResult biconjugate_gradient(const LinearOperator& apply, const LinearOperator& apply_transpose,
-                                const std::vector<double>& b, int max_iter = 1000, double tol = 1e-10,
-                                const std::vector<double>& shadow = {});
-
-/// @brief *Levinson recursion*: solves a *symmetric Toeplitz* system @c T x = b in @c O(n^2) time
-///        (versus @c O(n^3) for a general solver), by exploiting the constant-diagonal structure. A
-///        Toeplitz matrix is defined entirely by its first row; the algorithm grows the solution one
-///        dimension at a time, reusing a forward/backward vector pair. Toeplitz systems arise in
-///        signal processing (linear prediction, autoregressive fitting) and time series.
-///
-/// @param first_row the first row of the symmetric Toeplitz matrix (so @c T(i,j)=first_row[|i-j|]);
-///        @c first_row[0] must be nonzero.
-/// @param rhs the right-hand side (same length as @p first_row).
-/// @return the solution vector.
-std::vector<double> levinson_solve(const std::vector<double>& first_row, const std::vector<double>& rhs);
+BiCGResult biconjugate_gradient(
+    const LinearOperator&      apply,
+    const LinearOperator&      apply_transpose,
+    const std::vector<double>& b,
+    int                        max_iter = 1000,
+    double                     tol      = 1e-10,
+    const std::vector<double>& shadow   = {});
 
 } // namespace datamunge::algorithms

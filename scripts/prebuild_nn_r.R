@@ -32,8 +32,10 @@ stage <- "build/nn-r-native/source/datamungerNN"
 dir.create(file.path(stage, "src"), recursive = TRUE, showWarnings = FALSE)
 copy_tree("prebindings/nn/r", stage)
 copy_tree("include", file.path(stage, "inst/include"))
-# Header-only example components bound by examples/bindings/nn_components.i.
-copy_tree("examples/nn/common", file.path(stage, "inst/include/common"), "[.]hpp$")
+# Private compatibility adapters bound by examples/bindings/nn_components.i.
+# This generated staging subtree must not retain retired headers from older builds.
+unlink(file.path(stage, "inst/include/common"), recursive = TRUE)
+copy_tree("prebindings/nn/include/common", file.path(stage, "inst/include/common"), "[.]hpp$")
 copy_tree("src/datamunge", file.path(stage, "src/datamunge"), "[.](cpp|h|hpp)$")
 for (file in list.files(pattern = "^LICENSE")) if (!dir.exists(file)) copy_changed(file, file.path(stage, file))
 
@@ -69,7 +71,7 @@ flags <- c(file.path(bindings, "nn_bindings.hpp"), "--language", "r", "--r-packa
   "--r-output", file.path(temporary, "nn_native.R"), "--module", "datamungerNN",
   "--policy", file.path(bindings, "nn_policy.json"), "--include-as", "datamungerNN/rosetta/nn_bindings.hpp",
   "--skip-function-bodies", "--skip-unsupported", "--parts", parts, "-o", file.path(temporary, "nn_r_wrap.cpp"),
-  "--", "-std=c++23", "-Iinclude", "-Iexamples/bindings", "-Iexamples/nn")
+  "--", "-std=c++23", "-Iinclude", "-Iexamples/bindings", "-Iprebindings/nn/include")
 status <- system2(Sys.getenv("ROSETTA", "rosetta"), vapply(flags, shQuote, character(1)))
 if (status != 0L) stop("Rosetta generation failed with status ", status)
 wrappers <- c("nn_r_wrap.cpp", sprintf("nn_r_wrap_%d.cpp", seq_len(parts - 1L)))

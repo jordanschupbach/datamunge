@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_wavenet_stack_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/wavenet_stack.cpp"
-#undef main
+#include "../fixtures/nn_wavenet_stack_checks.hpp"
 #include "../fixtures/nn_wave_reference.hpp"
 TEST(WaveStack, CodecAndEveryStableMaskedLogitDerivative) {
   CodecLossChecks();
@@ -20,7 +18,7 @@ TEST(WaveStack, FullEveryGateAndAll76LearnedGradients) {
 }
 TEST(WaveStack, EveryOriginalPcmSampleCodeShiftWindowIdentityAndPrompt) {
   namespace m = dm::nn::models;
-  const auto root = std::filesystem::path("build/cnn-datasets/wavenet");
+  const auto root = std::filesystem::path((std::filesystem::path(dm::datasets::data_home()) / "wavenet"));
   const auto data = m::LoadWaveStack(root);
   std::ifstream files(root / "source_files.tsv");
   std::string split, path;
@@ -63,7 +61,7 @@ TEST(WaveStack, EveryOriginalPcmSampleCodeShiftWindowIdentityAndPrompt) {
 }
 TEST(WaveStack, EveryOriginalCountMetricAndExplicitSgdReference) {
   namespace m = dm::nn::models;
-  const auto data = m::LoadWaveStack("build/cnn-datasets/wavenet");
+  const auto data = m::LoadWaveStack((std::filesystem::path(dm::datasets::data_home()) / "wavenet"));
   const auto &fit = data.pools[0];
   const auto &test = data.pools[2];
   const auto counts = m::WaveCountTargets(fit);

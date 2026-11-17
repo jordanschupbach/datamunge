@@ -1,0 +1,286 @@
+//? Title: Native Metaphone context rules
+//? Subtitle: Actual consumed spans, emitted bytes and the original twelve word fixtures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A phonetic key compresses a spelling into a rule-based representation that can
+group some similar pronunciations. This report specifies datamunge’s actual
+byte-oriented Metaphone rules, captures their real context decisions, and
+retains the original twelve word examples. It distinguishes reproducible native
+outputs from a universal pronunciation model, Unicode normalization or agreement
+with every historical Metaphone variant.
+)
+
+\toc
+
+> Context, consumption and emitted symbols
+
+Lowercase the original bytes using the active C locale. If the stream begins
+with kn,gn,pn,wr or ae, remove its first byte. The canonical producer then scans
+the actual resulting stream. A rule can emit zero, one or two working-output
+bytes and can consume additional source bytes. Finally uppercase the output. The
+trace records actual source spans, lookahead existence, entered top-level
+branch, appended working suffix and before/after output lengths.
+
+The retained implementation tests duplicates by comparing the current byte with
+the next byte, except cc. Thus it skips the first of equal adjacent bytes rather
+than testing the previous emitted symbol. Contexts include retained punctuation
+and spaces: a byte that emits nothing can still interrupt adjacency. Initial
+vowels, selected vowels after a space and the explicit space rule have their
+native conventions. Do not replace this byte contract with an imagined
+all-letters preprocessing pass.
+
+The original finite branch rules include ph→f, th→0, selected ch/cia/sh/sio/sia
+contexts→x, soft c/g cases, selected silent gh/gn endings and interior x→ks.
+Exact captured context/consumption matters: the implemented sign key is S
+because its gn branch consumes the n, while the first vowels and space rules
+have their own positions. These are native reproducibility facts, not an
+assertion that every word’s pronunciation is represented correctly.
+
+> A tiny real digraph consumption
+
+For ph, the actual p branch reads h, consumes the two-byte span and appends
+working f. Final case conversion produces F. The diagram and table read that
+real single iteration.
+
+```{cpp, results="markdown", file="figures/metaphone_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/metaphone.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    auto t = dm::algorithms::metaphone_trace("ph");
+    auto &s = t.steps.front();
+    std::print("| actual consumed begin | actual consumed end | current byte | next byte | next exists | " "actual branch | actual working suffix | actual final key |\n| ---: | ---: | ---: | ---: | " "--- | --- | --- | --- |\n| {} | {} | {} | {} | {} | {} | {} | {} |\n",
+               s.begin, s.end, unsigned(s.current), unsigned(s.next),
+               s.has_next, s.rule, s.emitted, t.analysis.key);
+    dm::graphics::Diagram d;
+    d.node("source", {0, 0},
+           std::format("Actual source span\n[{},{}): {}", s.begin, s.end,
+                       t.analysis.normalized)).node("branch", {6, 0},
+                                                    std::format(
+                                                    "Actual {}\nappend {}",
+                                                    s.rule, s.emitted)).node(
+        "key", {12, 0},
+        std::format("Actual final uppercase key\n{}", t.analysis.key)).edge(
+        "source", "branch").edge("branch", "key");
+    d.save_svg("build/metaphone_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual consumed begin | actual consumed end | current byte | next byte | next exists | actual branch | actual working suffix | actual final key |
+| ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| 0 | 2 | 112 | 104 | true | letter p context | f | F |
+\image(figures/metaphone_tiny.svg)
+// result_end
+\caption(Actual ph branch, consumed span and final uppercase output.)
+\alttext(The native branch consumes both source bytes in one iteration and appends one working-output byte.)
+
+> Retain the original twelve words
+
+The native helper retains
+Knight,Wright,Thompson,Xavier,sign,eight,comb,Pneumonia,psychology,Wednesday,Gnome
+and phlegm in their original order. The figure compares original byte length
+with actual key byte length. A shorter key is simply output compression under
+this rule set; the fixtures have no independently labelled pronunciation truth,
+so length reduction is not a measure of recognition accuracy.
+
+```{cpp, results="markdown", file="figures/metaphone_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/metaphone.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    auto words = dm::algorithms::metaphone_demo_words();
+    std::vector<double> x, input, key;
+    std::print("| original word index | original spelling | actual native key | input bytes | actual key " "bytes | actual rule iterations |\n| ---: | --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < words.size(); ++i) {
+        auto a = dm::algorithms::metaphone_analyze(words[i]);
+        std::print("| {} | {} | {} | {} | {} | {} |\n", i, words[i], a.key,
+                   words[i].size(), a.key.size(), a.iterations);
+        x.push_back(i);
+        input.push_back(words[i].size());
+        key.push_back(a.key.size());
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.points(x, input, "original bytes");
+    p.points(x, key, "native key bytes", {124, 58, 237});
+    p.x_label("original word index in table order").y_label("actual byte count").title("Original twelve words: native key lengths").save_svg("build/metaphone_original.svg");
+}
+```
+// result_begin: markdown
+| original word index | original spelling | actual native key | input bytes | actual key bytes | actual rule iterations |
+| ---: | --- | --- | ---: | ---: | ---: |
+| 0 | Knight | NT | 6 | 2 | 4 |
+| 1 | Wright | RT | 6 | 2 | 4 |
+| 2 | Thompson | 0MPSN | 8 | 5 | 7 |
+| 3 | Xavier | SFR | 6 | 3 | 6 |
+| 4 | sign | S | 4 | 1 | 3 |
+| 5 | eight | ET | 5 | 2 | 4 |
+| 6 | comb | KM | 4 | 2 | 4 |
+| 7 | Pneumonia | NMN | 9 | 3 | 8 |
+| 8 | psychology | PSXLJ | 10 | 5 | 9 |
+| 9 | Wednesday | WTNST | 9 | 5 | 9 |
+| 10 | Gnome | NM | 5 | 2 | 4 |
+| 11 | phlegm | FLKM | 6 | 4 | 5 |
+\image(figures/metaphone_original.svg)
+// result_end
+\caption(Actual original word keys and input/output lengths.)
+\alttext(These fixtures describe native rule outputs, without ground-truth pronunciation labels.)
+
+> Inspect every actual Knight rule
+
+The initial kn cluster removes k, leaving night. The native g branch sees h
+followed by consonant t, emits nothing and consumes gh. The trace’s actual
+source spans therefore cover the normalized stream without overlap or omission,
+while the emitted suffixes concatenate to the lowercase working key. The plotted
+counts compare consumed source bytes with appended output bytes at each real
+iteration.
+
+Zero lookahead values alone cannot distinguish absence from an embedded NUL. The
+trace therefore stores actual lookahead-existence flags as well as byte values.
+This makes the byte context inspectable while preserving the native algorithm’s
+exact sentinel comparisons.
+
+```{cpp, results="markdown", file="figures/metaphone_steps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/metaphone.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    auto t = dm::algorithms::metaphone_trace("Knight");
+    std::print("Actual normalized stream `{}`; removed onset bytes {}; actual final key `{}`.\n\n| actual " "iteration | consumed begin | consumed end | current byte | next byte | second lookahead " "byte | actual branch | appended bytes | output before | output after |\n| ---: | ---: | " "---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |\n",
+               t.analysis.normalized, t.analysis.onset_removed, t.analysis.key);
+    std::vector<double> x, consumed, emitted;
+    for (std::size_t i = 0; i < t.steps.size(); ++i) {
+        auto &s = t.steps[i];
+        std::print("| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |\n", i,
+                   s.begin, s.end, unsigned(s.current), unsigned(s.next),
+                   unsigned(s.next2), s.rule, s.emitted.size(), s.output_before,
+                   s.output_after);
+        x.push_back(i);
+        consumed.push_back(s.end - s.begin);
+        emitted.push_back(s.emitted.size());
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.points(x, consumed, "consumed source bytes");
+    p.points(x, emitted, "appended key bytes", {22, 163, 74});
+    p.x_label("actual context-rule iteration").y_label("actual byte count in that iteration").title("Actual Knight consumption and working emission").save_svg("build/metaphone_steps.svg");
+}
+```
+// result_begin: markdown
+Actual normalized stream `night`; removed onset bytes 1; actual final key `NT`.
+
+| actual iteration | consumed begin | consumed end | current byte | next byte | second lookahead byte | actual branch | appended bytes | output before | output after |
+| ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |
+| 0 | 0 | 1 | 110 | 105 | 103 | direct consonant | 1 | 0 | 1 |
+| 1 | 1 | 2 | 105 | 103 | 104 | vowel context | 0 | 1 | 1 |
+| 2 | 2 | 4 | 103 | 104 | 116 | letter g context | 0 | 1 | 1 |
+| 3 | 4 | 5 | 116 | 0 | 0 | letter t context | 1 | 1 | 2 |
+\image(figures/metaphone_steps.svg)
+// result_end
+\caption(Actual consumed/emitted spans for every Knight iteration.)
+\alttext(The real gh branch consumes two bytes and emits zero; final uppercase conversion is separate.)
+
+> Controls, scope and capture
+
+Consecutive bb collapses under the actual forward duplicate check, while cc
+keeps its exception. Inserting punctuation can change context despite emitting
+no symbol: b-b and m-b need not behave like bb and mb. Catherine and Kathryn
+retain their original equal native keys, demonstrating one useful grouping
+without establishing general homophone recognition.
+
+Normalization here is byte ctype case conversion under the active C locale. It
+is not Unicode normalization or accent transliteration. Spaces have a native
+output/context rule and unhandled bytes remain context positions. The library
+preserves its existing ordinary outputs and makes those limitations explicit
+rather than silently substituting another variant’s encoder.
+
+Each iteration consumes at least one input byte and emits at most two, so
+time/storage are O(N). Complete capture counts original bytes, actual normalized
+bytes, one actual step record per iteration, its actual emitted suffix bytes and
+final key bytes. Default logical cap is one million; zero disables it.
+Rule-label characters, record fields, capacities, runtime copies and bytes are
+not separately counted. Capture copies are admitted after the actual branch is
+known; the quota is not a runtime bound. Failure returns no partial trace.
+
+```{cpp, results="markdown", file="figures/metaphone_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/metaphone.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+    std::filesystem::create_directories("build");
+    std::vector<std::string> inputs{"bb", "cc", "b-b", "mb", "m-b", "Catherine",
+                                    "Kathryn"};
+    std::vector<double> x, keybytes;
+    std::print("| prescribed control | actual native key | actual normalized bytes | actual consumed bytes " "| actual rule iterations | actual emitted bytes | captured entries |\n| --- | --- | ---: | " "---: | ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < inputs.size(); ++i) {
+        auto t = dm::algorithms::metaphone_trace(inputs[i]);
+        auto &a = t.analysis;
+        std::print("| {} | {} | {} | {} | {} | {} | {} |\n", inputs[i], a.key,
+                   a.normalized.size(), a.consumed, a.iterations, a.emitted,
+                   t.captured_entries);
+        x.push_back(i);
+        keybytes.push_back(a.key.size());
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.points(x, keybytes, "actual native key bytes");
+    p.x_label("prescribed control index in table order").y_label(
+        "actual emitted key bytes").title("Actual duplicate, punctuation and spelling controls").save_svg("build/metaphone_controls.svg");
+}
+```
+// result_begin: markdown
+| prescribed control | actual native key | actual normalized bytes | actual consumed bytes | actual rule iterations | actual emitted bytes | captured entries |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| bb | B | 2 | 2 | 2 | 1 | 8 |
+| cc | KK | 2 | 2 | 2 | 2 | 10 |
+| b-b | BB | 3 | 3 | 3 | 2 | 13 |
+| mb | M | 2 | 2 | 2 | 1 | 8 |
+| m-b | MB | 3 | 3 | 3 | 2 | 13 |
+| Catherine | K0RN | 9 | 9 | 8 | 4 | 34 |
+| Kathryn | K0RN | 7 | 7 | 6 | 4 | 28 |
+\image(figures/metaphone_controls.svg)
+// result_end
+\caption(Actual duplicate/context controls and retained equal-key spellings.)
+\alttext(Punctuation can affect native context even when it emits no key byte.)
+
+> Verification and references
+
+Native tests retain all twelve original keys and independently hand-check20
+context fixtures, including digraphs, final mb, duplicate cc and retained
+original Catherine/Kathryn equality. They inspect actual normalized source
+spans/lookahead flags/emitted suffixes and counts for19608 short rule-alphabet
+words, every16384 ASCII byte pair and1000 arbitrary-byte strings. Empty input,
+NUL, actual onset removal, ownership and exact quota boundaries are covered.
+Existing phonetic regression tests remain. The shared ten-report batch passes 71
+CTest cases, 29 directly instrumented ASan/UBSan cases, 130 compiled and
+executed public examples, 598/598 scoped documentation definitions and ten
+representative hovers. Independent Python arbitrary-precision, hashlib,
+sorted-window, RNG, polynomial, graph and full-assignment references verify
+224,229 actual records. Frozen comparisons preserve ordinary legacy outputs,
+including selected clique identities, original density graphs and memetic
+partitions. Twelve checkout headers and twelve identically installed headers
+compile independently; an installed-header native consumer links and runs. All
+four complete programs and all four native figures pass execution and visual
+review, and HTML/Markdown exports preserve computed results and identical image
+bytes. Receipts: `build/mepml-conversion/batch-224-233/`.
+
+Philips (1990), *Hanging on the Metaphone*, Computer Language7(12),
+December1990, is the historical method reference. This report specifies the
+retained datamunge variant and does not claim equivalence to every
+implementation or repeat an unexecuted corpus-validation claim from the legacy
+report.
+
+The [Metaphone implementation archive|https://aspell.sourceforge.net/metaphone/]
+identifies the December1990 origin and links original code and multiple modified
+implementations. The native byte conventions above identify the version examined
+here.

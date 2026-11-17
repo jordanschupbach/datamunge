@@ -47,7 +47,7 @@ classdef CadScene < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 2963, false, varargin{:});
+      __datamunge__(-2, obj, 2974, false, varargin{:});
     end
     function set_joint (obj, name, value_)
       % set_joint  Set a movable independent joint on a view loaded from URDF.
@@ -65,7 +65,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  View has no robot or joint value is invalid. (C++ std::invalid_argument)
       %
       %   C++: void datamunge::cad::View::set_joint(const std::string & name, double value)
-      __datamunge__(2947, obj, name, value_);
+      __datamunge__(2958, obj, name, value_);
     end
     function r = joint_names (obj)
       % joint_names  List independent movable joints of a URDF view.
@@ -76,7 +76,7 @@ classdef CadScene < datamunge.NativeObject
       %     r  cell array of char: Owned names; empty for ordinary scenes.
       %
       %   C++: std::vector<std::string> datamunge::cad::View::joint_names() const
-      r = __datamunge__(2948, obj);
+      r = __datamunge__(2959, obj);
     end
     function r = add (obj, varargin)
       % add  Tessellate a solid and append it as a scene object.
@@ -101,7 +101,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:native  Tessellation failure. (C++ std::runtime_error)
       %
       %   C++: int datamunge::cad::View::add(const Solid & solid, const std::string & color = "#4080d9", const std::string & name = "Solid")
-      r = __datamunge__(2949, obj, varargin{:});
+      r = __datamunge__(2960, obj, varargin{:});
     end
     function r = primitive (obj, kind)
       % primitive  Append a source polygon modeller primitive.
@@ -121,7 +121,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  Unknown kind. (C++ std::invalid_argument)
       %
       %   C++: int datamunge::cad::View::primitive(const std::string & kind)
-      r = __datamunge__(2950, obj, kind);
+      r = __datamunge__(2961, obj, kind);
     end
     function size_ (obj, width, height)
       % size_  Set the output dimensions used by render() and picking.
@@ -139,7 +139,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid dimensions. (C++ std::invalid_argument)
       %
       %   C++: void datamunge::cad::View::size(int width, int height)
-      __datamunge__(2951, obj, width, height);
+      __datamunge__(2962, obj, width, height);
     end
     function samples (obj, count)
       % samples  Set regular-grid antialiasing samples per axis.
@@ -156,7 +156,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid count. (C++ std::invalid_argument)
       %
       %   C++: void datamunge::cad::View::samples(int count)
-      __datamunge__(2952, obj, count);
+      __datamunge__(2963, obj, count);
     end
     function style (obj, name)
       % style  Select shaded, unlit, wireframe or shaded-wireframe output.
@@ -173,7 +173,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  Unknown style. (C++ std::invalid_argument)
       %
       %   C++: void datamunge::cad::View::style(const std::string & name)
-      __datamunge__(2953, obj, name);
+      __datamunge__(2964, obj, name);
     end
     function shadows (obj, enabled)
       % shadows  Enable/disable shadows cast by the first visible light.
@@ -187,7 +187,7 @@ classdef CadScene < datamunge.NativeObject
       %     enabled  logical: True enables triangle-ray shadow tests.
       %
       %   C++: void datamunge::cad::View::shadows(bool enabled)
-      __datamunge__(2954, obj, enabled);
+      __datamunge__(2965, obj, enabled);
     end
     function camera (obj, x, y, z, target_x, target_y, target_z)
       % camera  Set explicit camera position and target, with +Z as up.
@@ -209,7 +209,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid camera. (C++ std::invalid_argument)
       %
       %   C++: void datamunge::cad::View::camera(double x, double y, double z, double target_x, double target_y, double target_z)
-      __datamunge__(2955, obj, x, y, z, target_x, target_y, target_z);
+      __datamunge__(2966, obj, x, y, z, target_x, target_y, target_z);
     end
     function fit (obj)
       % fit  Resume automatic perspective framing after an explicit camera.
@@ -220,7 +220,7 @@ classdef CadScene < datamunge.NativeObject
       %     dm::cad::View view; view.fit();
       %
       %   C++: void datamunge::cad::View::fit()
-      __datamunge__(2956, obj);
+      __datamunge__(2967, obj);
     end
     function r = light (obj, varargin)
       % light  Add a directional light; the first explicit light replaces the fallback light.
@@ -246,7 +246,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid direction, color or intensity. (C++ std::invalid_argument)
       %
       %   C++: int datamunge::cad::View::light(double x, double y, double z, const std::string & color = "#ffffff", double intensity = 1.0)
-      r = __datamunge__(2957, obj, varargin{:});
+      r = __datamunge__(2968, obj, varargin{:});
     end
     function render (obj, path)
       % render  Render synchronously and save a PNG/JPEG/PPM color image.
@@ -264,7 +264,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:native  File I/O failure. (C++ std::runtime_error)
       %
       %   C++: void datamunge::cad::View::render(const std::string & path) const
-      __datamunge__(2958, obj, path);
+      __datamunge__(2969, obj, path);
     end
     function save_gltf (obj, path)
       % save_gltf  Save the scene as self-contained glTF with meshes, textures and lights.
@@ -281,7 +281,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:native  Export/I/O failure. (C++ std::runtime_error)
       %
       %   C++: void datamunge::cad::View::save_gltf(const std::string & path) const
-      __datamunge__(2959, obj, path);
+      __datamunge__(2970, obj, path);
     end
     function r = pick_object (obj, x, y)
       % pick_object  Pick a source object using the current camera and image dimensions.
@@ -302,7 +302,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:invalid_argument  Invalid ray or geometry. (C++ std::invalid_argument)
       %
       %   C++: int datamunge::cad::View::pick_object(double x, double y) const
-      r = __datamunge__(2960, obj, x, y);
+      r = __datamunge__(2971, obj, x, y);
     end
     function r = object_count (obj)
       % object_count  Count scene objects, including empty groups.
@@ -313,7 +313,7 @@ classdef CadScene < datamunge.NativeObject
       %     r  integer: Object count.
       %
       %   C++: int datamunge::cad::View::object_count() const
-      r = __datamunge__(2961, obj);
+      r = __datamunge__(2972, obj);
     end
     function r = triangle_count (obj)
       % triangle_count  Count triangles over all object mesh references, including hidden objects.
@@ -324,7 +324,7 @@ classdef CadScene < datamunge.NativeObject
       %     r  integer: Triangle count.
       %
       %   C++: int datamunge::cad::View::triangle_count() const
-      r = __datamunge__(2962, obj);
+      r = __datamunge__(2973, obj);
     end
   end
   methods (Static)
@@ -348,7 +348,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:native  Import/I/O failure. (C++ std::runtime_error)
       %
       %   C++: View datamunge::cad::View::from_file(const std::string & path)
-      r = __datamunge__(2945, path);
+      r = __datamunge__(2956, path);
     end
     function r = from_urdf (path)
       % from_urdf  Load an articulated URDF visual model and its asset files.
@@ -370,7 +370,7 @@ classdef CadScene < datamunge.NativeObject
       %     datamunge:native  Import failure. (C++ std::runtime_error)
       %
       %   C++: View datamunge::cad::View::from_urdf(const std::string & path)
-      r = __datamunge__(2946, path);
+      r = __datamunge__(2957, path);
     end
   end
 end

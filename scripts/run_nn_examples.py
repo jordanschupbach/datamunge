@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Run the datamunge::nn example ports, skipping ones that already passed.
+"""Run verified NN reports by name; retain the source runner for legacy fixtures.
+
+The normal checkout has no standalone C++ NN sources. Names resolve through filesystem discovery in
+docs/mepml/nn and run with just docs-mepml-run. The
+cache and training options below apply only to remaining standalone sources.
 
 Each example gets a key: the SHA-256 of its .cpp plus every repository header it
-includes, followed transitively (examples/nn/common/..., include/datamunge/...).
+includes, followed transitively (prebindings/nn/include/common/..., include/datamunge/...).
 The built libdatamunge's hash is recorded with each pass; with --with-library an
 example also reruns when the library changed since it passed. An example is skipped when its key
 equals the key of its last successful run; failures always rerun.
@@ -36,7 +40,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLES = ROOT / "examples" / "nn"
 CPP_EXAMPLES = ROOT / "examples" / "cpp" / "source" / "nn"
-INCLUDE_DIRS = [CPP_EXAMPLES, EXAMPLES, ROOT / "include"]
+INCLUDE_DIRS = [CPP_EXAMPLES, EXAMPLES, ROOT / "prebindings/nn/include", ROOT / "include"]
 BIN_DIR = ROOT / "build" / "nn-examples" / "bin"
 CACHE = ROOT / "build" / "nn-examples" / "run-cache.tsv"
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^>"]+)[>"]', re.M)
@@ -183,6 +187,35 @@ def run_example(binary, arguments=(), timeout=180, env=None, log_path=None):
             return False
 
 
+def run_retired_reports(args, parser):
+    """Resolve retired C++ names to their verified reports without recreating the source tree."""
+    reports = {}
+    for path in sorted((ROOT / "docs/mepml/nn").rglob("*.mepml")):
+        name = path.stem
+        if name in reports:
+            parser.error(f"ambiguous NN report name: {name}")
+        reports[name] = path
+    if not reports:
+        parser.error("no NN reports found in docs/mepml/nn")
+    unknown = sorted(set(args.names) - reports.keys())
+    if unknown:
+        parser.error("unknown NN reports: " + ", ".join(unknown))
+    selected = args.names or sorted(reports)
+    if args.list:
+        for name in selected:
+            print(f"{name}\t{reports[name].relative_to(ROOT)}")
+        return 0
+    if (args.build_only or args.mark or args.full or args.example_args or args.with_library
+            or args.timeout is not None or args.jobs != 1):
+        parser.error("standalone build/cache/training options are retired; edit the report's "
+                     "program or use just docs-mepml-run REPORT.mepml")
+    paths = [reports[name] for name in selected]
+    if not all(path.is_file() for path in paths):
+        parser.error("a selected NN report is missing")
+    subprocess.run(["just", "docs-mepml-run", *map(str, paths)], cwd=ROOT, check=True)
+    return 0
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("names", nargs="*", help="only these examples")
@@ -217,6 +250,8 @@ def main():
     env.setdefault("VECLIB_MAXIMUM_THREADS", "2")
 
     all_examples = examples()
+    if not all_examples:
+        return run_retired_reports(args, parser)
     unknown = [n for n in args.names if n not in all_examples]
     if unknown:
         sys.exit("run_nn_examples: unknown example(s): " + " ".join(unknown))

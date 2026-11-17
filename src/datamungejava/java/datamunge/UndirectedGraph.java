@@ -25,7 +25,7 @@ public class UndirectedGraph extends NativeObject {
     @SuppressWarnings("this-escape")
     public UndirectedGraph() {
         super(RAW);
-        Rosetta.construct(this, UndirectedGraph.class, false, 3211);
+        Rosetta.construct(this, UndirectedGraph.class, false, 3222);
     }
 
     /**
@@ -38,7 +38,7 @@ public class UndirectedGraph extends NativeObject {
     @SuppressWarnings("this-escape")
     public UndirectedGraph(List<String> vertices) {
         super(RAW);
-        Rosetta.construct(this, UndirectedGraph.class, false, 3211, vertices);
+        Rosetta.construct(this, UndirectedGraph.class, false, 3222, vertices);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean empty() {
-        return Rosetta.asBoolean(Rosetta.call(3193, this));
+        return Rosetta.asBoolean(Rosetta.call(3204, this));
     }
 
     /**
@@ -60,7 +60,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public long vertexCount() {
-        return Rosetta.asLong(Rosetta.call(3194, this));
+        return Rosetta.asLong(Rosetta.call(3205, this));
     }
 
     /**
@@ -71,7 +71,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public long edgeCount() {
-        return Rosetta.asLong(Rosetta.call(3195, this));
+        return Rosetta.asLong(Rosetta.call(3206, this));
     }
 
     /**
@@ -80,7 +80,7 @@ public class UndirectedGraph extends NativeObject {
      * <p>C++: {@code void datamunge::dstruct::UndirectedGraph<std::string>::clear()}
      */
     public void clear() {
-        Rosetta.call(3196, this);
+        Rosetta.call(3207, this);
     }
 
     /**
@@ -92,7 +92,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean addVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3197, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3208, this, vertex));
     }
 
     /**
@@ -104,7 +104,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean removeVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3198, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3209, this, vertex));
     }
 
     /**
@@ -116,7 +116,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasVertex(String vertex) {
-        return Rosetta.asBoolean(Rosetta.call(3199, this, vertex));
+        return Rosetta.asBoolean(Rosetta.call(3210, this, vertex));
     }
 
     /**
@@ -129,7 +129,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean addEdge(String a, String b) {
-        return Rosetta.asBoolean(Rosetta.call(3200, this, a, b));
+        return Rosetta.asBoolean(Rosetta.call(3211, this, a, b));
     }
 
     /**
@@ -142,7 +142,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean removeEdge(String a, String b) {
-        return Rosetta.asBoolean(Rosetta.call(3201, this, a, b));
+        return Rosetta.asBoolean(Rosetta.call(3212, this, a, b));
     }
 
     /**
@@ -155,7 +155,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasEdge(String a, String b) {
-        return Rosetta.asBoolean(Rosetta.call(3202, this, a, b));
+        return Rosetta.asBoolean(Rosetta.call(3213, this, a, b));
     }
 
     /**
@@ -166,7 +166,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> vertices() {
-        return Rosetta.asList(Rosetta.call(3203, this), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3214, this), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -178,7 +178,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> neighbors(String vertex) {
-        return Rosetta.asList(Rosetta.call(3204, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3215, this, vertex), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -190,7 +190,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public long degree(String vertex) {
-        return Rosetta.asLong(Rosetta.call(3205, this, vertex));
+        return Rosetta.asLong(Rosetta.call(3216, this, vertex));
     }
 
     /**
@@ -202,7 +202,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> bfs(String start) {
-        return Rosetta.asList(Rosetta.call(3206, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3217, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -214,7 +214,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public List<String> dfs(String start) {
-        return Rosetta.asList(Rosetta.call(3207, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(3218, this, start), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -227,7 +227,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean containsPath(String src, String dst) {
-        return Rosetta.asBoolean(Rosetta.call(3208, this, src, dst));
+        return Rosetta.asBoolean(Rosetta.call(3219, this, src, dst));
     }
 
     /**
@@ -239,7 +239,7 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public List<List<String>> connectedComponents() {
-        return Rosetta.asList(Rosetta.call(3209, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.asString(rosettaV1)));
+        return Rosetta.asList(Rosetta.call(3220, this), rosettaV0 -> Rosetta.asList(rosettaV0, rosettaV1 -> Rosetta.asString(rosettaV1)));
     }
 
     /**
@@ -251,6 +251,6 @@ public class UndirectedGraph extends NativeObject {
      * @return the result
      */
     public boolean hasCycle() {
-        return Rosetta.asBoolean(Rosetta.call(3210, this));
+        return Rosetta.asBoolean(Rosetta.call(3221, this));
     }
 }

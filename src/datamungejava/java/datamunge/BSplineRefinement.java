@@ -40,7 +40,7 @@ public class BSplineRefinement extends NativeObject {
     @SuppressWarnings("this-escape")
     public BSplineRefinement() {
         super(RAW);
-        Rosetta.construct(this, BSplineRefinement.class, false, 2976);
+        Rosetta.construct(this, BSplineRefinement.class, false, 2987);
     }
 
     /**
@@ -60,7 +60,7 @@ public class BSplineRefinement extends NativeObject {
      * @throws NativeError.InvalidArgument If {@code coefficients} does not match the coarse basis size. (C++ {@code std::invalid_argument})
      */
     public double[] apply(double[] coefficients) {
-        return Rosetta.asDoubles(Rosetta.call(2973, this, coefficients));
+        return Rosetta.asDoubles(Rosetta.call(2984, this, coefficients));
     }
 
     /**
@@ -69,7 +69,7 @@ public class BSplineRefinement extends NativeObject {
      * @return the value of the C++ field {@code basis}
      */
     public BSplineBasis getBasis() {
-        return Rosetta.asObject(Rosetta.call(2974, this), BSplineBasis.class);
+        return Rosetta.asObject(Rosetta.call(2985, this), BSplineBasis.class);
     }
 
     /**
@@ -78,6 +78,6 @@ public class BSplineRefinement extends NativeObject {
      * @param value the new value
      */
     public void setBasis(BSplineBasis value) {
-        Rosetta.call(2975, this, value);
+        Rosetta.call(2986, this, value);
     }
 }

@@ -35,25 +35,25 @@ classdef TaskOutput < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3163, false, varargin{:});
+      __datamunge__(-2, obj, 3174, false, varargin{:});
     end
     function v = get.observations (obj)
-      v = __datamunge__(3151, obj);
+      v = __datamunge__(3162, obj);
     end
     function v = get.rewards (obj)
-      v = __datamunge__(3153, obj);
+      v = __datamunge__(3164, obj);
     end
     function v = get.terminated (obj)
-      v = __datamunge__(3155, obj);
+      v = __datamunge__(3166, obj);
     end
     function v = get.truncated (obj)
-      v = __datamunge__(3157, obj);
+      v = __datamunge__(3168, obj);
     end
     function v = get.final_observations (obj)
-      v = __datamunge__(3159, obj);
+      v = __datamunge__(3170, obj);
     end
     function v = get.final_valid (obj)
-      v = __datamunge__(3161, obj);
+      v = __datamunge__(3172, obj);
     end
   end
 end

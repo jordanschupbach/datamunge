@@ -1,0 +1,1342 @@
+//? Title: Deep Belief Networks: A Frozen Decoder and a Top RBM
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native tensor graphs expose the deep belief experiment, with explicit inputs, derivatives and reproducible source fixtures. The complete editable program preserves the bounded source protocol and its checks.
+)
+\toc
+
+> Follow the operation
+
+```{cpp, results="markdown", file="figures/deep_belief_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle s;s.width=12;s.height=5;s.font_size=26;d.node("input",{-16,0},"Frozen bottom RBM\nDirected decoder",s).node("graph",{0,0},"Top4-to-3 RBM\nExplicit CD updates",s).node("audit",{16,0},"Sum16 hidden states\nVisible likelihood",s).edge("input","graph").edge("graph","audit").save_svg("build/deep_belief_method.svg");}
+```
+// result_begin: markdown
+\image(figures/deep_belief_method.svg)
+// result_end
+
+> Separate recognition from generation
+
+The lower hidden bias belongs to recognition only. Replacing it with100 changes inferred recognition probabilities but leaves the exact generative likelihood unchanged. The two printed NLL values must agree exactly.
+
+```{cpp, results="markdown", file="figures/deep_belief_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_directories("build");n::ParameterStore p(21003),q(21003);m::RbmParameters(p,8,4);m::RbmParameters(q,4,3);auto x=m::BinaryStates(8);auto before=m::DeepBelief(p,q,x);p.set("hidden_bias",n::full({4},100));auto after=m::DeepBelief(p,q,x);auto values=n::stack({before.nll,after.nll,n::sum(n::exp(after.log_probability))},0);if(before.nll.item()!=after.nll.item())return 1;
+std::print("| coordinate | computed value |\n|---:|---:|\n");auto v=values.to_vector<double>();for(size_t i=0;i<v.size();++i)std::print("| {} | {:.9f} |\n",i,v[i]);n::save_npz("build/deep_belief_worked.npz",{{"values",values}});dm::graphics::RPlot::create().bars(n::arange(0,std::int64_t(v.size())).to_vector<double>(),v,"native values",{37,99,235}).title("Separate recognition from generation").size(1000,550).save_svg("build/deep_belief_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 5.547360897 |
+| 1 | 5.547360897 |
+| 2 | 0.999999881 |
+\image(figures/deep_belief_worked.svg)
+// result_end
+
+> Trace an executed native operation
+
+The block graph is traced from the actual operation below. Named stages mark its semantic endpoints; the complete program supplies the source geometry and parameter census.
+
+```{cpp, results="markdown", file="figures/deep_belief_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_directories("build");n::ParameterStore p(21003),q(21003);m::RbmParameters(p,8,4);m::RbmParameters(q,4,3);n::Module model([&](const n::Tensor& x){auto y=m::DeepBelief(p,q,x);n::model_stage("Exact16-state posterior",x,y.posterior);return n::model_stage("Visible log probability",y.posterior,y.log_probability);},"deep belief: native operation");n::ModelPlotOptions o;o.detail=n::ModelPlotDetail::Blocks;o.sizing.minimum_extent=2;o.sizing.max_planes=2;model.plot(n::zeros({1,8}),o).save_svg("build/deep_belief_network.svg");}
+```
+// result_begin: markdown
+\image(figures/deep_belief_network.svg)
+// result_end
+
+> Complete preserved experiment
+
+All mathematical components run natively. Optional TensorFlow recordings are absent; their comparisons are skipped rather than asserted. The source random seeds, parameter names and fixed three-epoch budgets remain visible. Diagnostics without fitting use their original fixed inputs. This is a teaching experiment, not a benchmark parity claim.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+// CMD: just run-nn deep_belief
+// Greedy DBN: freeze a pretrained bottom RBM, learn a top RBM, then generate
+// through the directed lower links.
+//
+// Port of tflow's deep_belief (common/{nn,ml}/deep_belief.h ->
+// examples/nn/common/deep_belief.hpp). Source: the frozen 3-epoch 8 -> 4 bottom RBM
+// and its data.npz from restricted_boltzmann, chosen by source=auto|ours|tf|DIR
+// (auto: our port's output/nn/models/restricted_boltzmann/final.npz when present,
+// else tflow's recorded output/models/restricted_boltzmann/model_arrays.npz). Each
+// source row gets ONE sampled recognition state h1 = [u < sigmoid(vW + c)] (tflow's
+// uniform banks 22001+2k). The upper 4 -> 3 RBM (19 parameters) trains three epochs
+// of 48 CD1 SGD(.05) updates (BatchOrder(512, 32, 22019), uniforms 2200051+step ...).
+// Generative DBN p(v,h1,h2) = p_top(h1,h2) p(v|h1): bottom hidden_bias is
+// recognition-only; 63 stored = 59 generative + 4 recognition parameters.
+//
+// Checks (as tflow): 19 top parameters; 63 stored weights; recognition bias
+// unreachable from the generative likelihood (nn::grad allow_unused returns no
+// gradient, TF's "unreachable" error); top restore bit-exact; hybrid restore from
+// all-zero initialization bit-exact; DBN visible marginal sums to 1; top Gibbs +
+// directed decode repeats bit-exactly; changing the recognition bias leaves every
+// generative probability bit-exact but changes recognition; bottom unchanged by
+// greedy training; inference immutable. TF parity: init=auto (default) replays TF's
+// initial_top_arrays.npz from tflow's output/models/deep_belief; first top
+// forward/gradients/update, history, final top weights and DBN outputs compared
+// with TF's; independently TF's final 63 weights must reproduce TF's outputs and
+// sampled chains. Deviations: final.npz / top_final.npz instead of SaveV2 bundles;
+// no independent_audit.json. Options: epochs=3 source=auto|ours|tf|DIR out=DIR
+// init=auto|tf|nn|PATH tf=DIR threads=4. Output: output/nn/models/deep_belief.
+#include <chrono>
+
+// Editable experiment support: deep_belief.hpp
+// Port of tflow's common/nn/deep_belief.h and common/ml/deep_belief.h: the hybrid
+// DBN p(v, h1, h2) = p_topRBM(h1, h2) p_directed(v | h1) assembled from a frozen
+// bottom RBM (W, visible_bias generative; hidden_bias recognition-only) and a
+// greedily trained top RBM. Exact marginal over v by enumerating the 16 h1 states.
+//
+// tflow -> datamunge: two Params scopes -> two nn::ParameterStores; arrays and
+// gradients are named "bottom/<name>" / "top/<name>" as tflow's records.
+
+// Editable experiment support: restricted_boltzmann.hpp
+// Port of tflow's common/nn/restricted_boltzmann.h and common/ml/restricted_boltzmann.h:
+// Bernoulli RBM energy, conditionals, exact (enumerated) log partition and a
+// sampled CD1 stopped-chain surrogate trained with SGD(.05).
+//
+// tflow -> datamunge: graph/session model -> class over a nn::ParameterStore
+// (names W / visible_bias / hidden_bias as tflow, so TF's .npz arrays load
+// directly); AddSymbolicGradients -> nn::grad; SaveV2 -> final.npz.
+
+// Editable experiment support: binary_energy_data.hpp
+// Shared support for the 3.5 energy-based model ports (restricted_boltzmann,
+// deep_belief, deep_boltzmann, energy_langevin, modern_hopfield): a port of
+// tflow's common/ml/binary_energy_data.h (synthetic single-bar corpus, explicit
+// mt19937 uniform banks, 12-pixel binary tiles) plus the program helpers those
+// examples repeat (option parsing, .npz records, TF record comparison).
+//
+// Every random draw of these examples is an explicit uniform/Gaussian bank from
+// std::mt19937(seed), so the ports reproduce tflow's data, Gibbs uniforms and
+// Langevin innovations bit for bit; only the weight initialisation differs
+// (nn's generator), which init=auto removes by replaying TF's initial arrays.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <random>
+#include <string>
+#include <vector>
+
+// Editable experiment support: binary_pixels.hpp
+// Shared harness of the binary 8x8 MNIST autoregressive density ports
+// (pixel_cnn, gated_pixel_cnn, made_density, pixel_rnn): the program body that
+// tflow repeats in each of those .cc files, plus the model-independent part of
+// tflow's common/ml/{pixel_cnn,gated_pixel_cnn,made_density,pixel_rnn}.h
+// (teacher-forced Bernoulli likelihood, causal logit/input Jacobian, prefix-only
+// ancestral sampling with MT19937 uniforms).
+//
+// Data: the 1000/200/200 MNIST pools of tflow's saliency assets (ae::LoadSaliency),
+// half-pixel bilinear 28 -> 8 in double then float32 threshold >= .5, as tflow.
+//
+// tflow -> datamunge: session graphs -> eager calls, AddSymbolicGradients ->
+// nn::grad, Adam train_op -> nn::Optimizer (Adam .003), SaveV2 -> final.npz.
+// TF parity: init=auto (default) replays TF's recorded initial_arrays.npz from
+// tflow's output/models/<name>[/<variant>] so the whole run follows TF's; every
+// record is then compared with TF's and the replayed first-step records must
+// match. Independently of the trajectory, TF's FINAL weights (model_arrays.npz)
+// are loaded into a fresh model which must reproduce TF's test outputs.
+
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <cstdio>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <memory>
+#include <random>
+#include <sstream>
+#include <string>
+#include <vector>
+
+// Editable experiment support: autoencoder.hpp
+// Shared support for the autoencoder ports: a port of the parts of tflow's
+// common/ml/{autoencoder,convolutional_autoencoder,variational_autoencoder,
+// saliency}.h and common/nn/{convolutional_autoencoder,variational_autoencoder,
+// smoothgrad}.h that convolutional_autoencoder and variational_autoencoder use.
+//
+// Data: the balanced 1000 fit / 200 validation / 200 test MNIST pools of
+// $DATAMUNGE_DATA_DIR/saliency/saliency_data.npz (tflow's `just
+// autoencoder-assets`). Checkpoints are .npz files of the parameter store
+// instead of TF SaveV2 bundles. Parameter initialisation uses datamunge's
+// generator, so trajectories match tflow only statistically; batch orders and
+// Gaussian noise banks are bit-identical to tflow's.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <cstring>
+#include <datamunge/nn/nn.hpp>
+#include <filesystem>
+#include <memory>
+#include <ostream>
+#include <random>
+#include <set>
+#include <string>
+#include <vector>
+
+// Editable experiment support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable experiment support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable experiment support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable experiment support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets {
+inline std::string DataRoot(){return dm::datasets::data_home();}
+inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}
+inline dm::nn::ImageDataset LoadCifar10(const std::string& directory,const std::string& split){dm::datasets::fetch("cifar10",directory);return dm::nn::load_cifar10(directory,split);}
+}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+return dm::datasets::data_home();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { return DataRoot() / name; }
+
+inline std::filesystem::path OutputRoot() {
+return std::filesystem::absolute("build/generative-models");
+}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+namespace ae {
+
+namespace nn = datamunge::nn;
+
+// ---- data ----------------------------------------------------------------------------
+
+using SaliencyData=datamunge::nn::models::SaliencyData;
+
+inline SaliencyData Rows(const SaliencyData& d, const std::vector<std::int64_t>& rows) {
+  return {nn::take_rows(d.images, rows), nn::take_rows(d.labels, rows), nn::take_rows(d.source, rows)};
+}
+
+inline nn::Tensor Find(const nn::NamedTensors& arrays, const std::string& name) {
+  for (const auto& [key, value] : arrays)
+    if (key == name) return value;
+  throw std::runtime_error("missing array " + name);
+}
+
+/// The fit, validation and test pools with tflow's integrity checks.
+inline std::vector<SaliencyData> LoadSaliency(const std::filesystem::path&root){dataset_assets::EnsureSaliency(root.string());return nn::models::LoadSaliency(root);}
+
+/// Copies tflow's provenance files next to the outputs when they exist.
+inline void CopyManifests(const std::filesystem::path& data, const std::filesystem::path& root) {
+  const auto opts = std::filesystem::copy_options::overwrite_existing;
+  if (std::filesystem::exists(data / "manifest.json"))
+    std::filesystem::copy_file(data / "manifest.json", root / "data_manifest.json", opts);
+  const auto source = paths::Dataset("autoencoder") / "source_manifest.json";
+  if (std::filesystem::exists(source)) std::filesystem::copy_file(source, root / "source_manifest.json", opts);
+}
+
+inline nn::Tensor GaussianNoise(const nn::Shape& shape,std::int64_t samples,std::uint32_t seed){return nn::models::GaussianNoise(shape,samples,seed); }
+}
+
+// Editable experiment support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace bpix {
+
+namespace nn = datamunge::nn;
+namespace fs = std::filesystem;
+using nn::Tensor;
+using Map = replay::Map;
+
+// ---- small helpers -----------------------------------------------------------------------------
+
+inline Tensor Floats(const std::vector<float>& v, const nn::Shape& s) {
+  return nn::from_vector(v, s);
+}
+
+/// tflow's Png: every 8x8 image as a 64x64 tile (8x nearest), `columns` per row,
+/// gray 220 background, floor(v * 255 + .5); `rgb` images use (v + 1) * 127.5
+/// with clamping when `signed_range`, else 255 clamp(v, 0, 1).
+inline void Png(const fs::path& path, const Tensor& images, int columns, int mode = 0) {
+  const auto         n = images.size(0), c = images.size(3);
+  const auto         v    = images.contiguous().to_vector<float>();
+  const std::int64_t rows = (n + columns - 1) / columns, H = rows * 64, W = columns * 64;
+  std::vector<float> out(static_cast<std::size_t>(H * W * 3), 220.f);
+  for (std::int64_t b = 0; b < n; ++b)
+    for (int y = 0; y < 64; ++y)
+      for (int x = 0; x < 64; ++x)
+        for (int k = 0; k < 3; ++k) {
+          const double value =
+              v[static_cast<std::size_t>(((b * 8 + y / 8) * 8 + x / 8) * c + (c == 1 ? 0 : k))];
+          double byte = mode == 0   ? std::floor(value * 255 + .5)
+                        : mode == 1 ? std::floor(std::clamp((value + 1) * 127.5, 0., 255.) + .5)
+                                    : std::floor(255 * std::clamp(value, 0., 1.) + .5);
+          out[static_cast<std::size_t>(
+              ((b / columns * 64 + y) * W + b % columns * 64 + x) * 3 + k)] = float(byte);
+        }
+  nn::save_png(Floats(out, {H, W, 3}), path.string(), 0, 255);
+}
+
+/// Writes a [H, W, 3] uint8-valued byte image.
+inline void
+PngBytes(const fs::path& path, const std::vector<float>& bytes, std::int64_t h, std::int64_t w) {
+  nn::save_png(Floats(bytes, {h, w, 3}), path.string(), 0, 255);
+}
+
+inline void RequireFinite(const Map& m, const std::string& what) {
+  for (const auto& [k, v] : m)
+    if (v.dtype() == nn::DType::Float32)
+      for (float x : v.contiguous().to_vector<float>())
+        check::Require(std::isfinite(x), what);
+}
+
+inline std::string Bits(const Tensor& t) {
+  const auto c = t.contiguous();
+  switch (c.dtype()) {
+    case nn::DType::Float32: {
+      const auto v = c.to_vector<float>();
+      return {reinterpret_cast<const char*>(v.data()), v.size() * sizeof(float)};
+    }
+    case nn::DType::Float64: {
+      const auto v = c.to_vector<double>();
+      return {reinterpret_cast<const char*>(v.data()), v.size() * sizeof(double)};
+    }
+    default: {
+      const auto v = c.to_vector<std::int32_t>();
+      return {reinterpret_cast<const char*>(v.data()), v.size() * sizeof(std::int32_t)};
+    }
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size())
+    return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || Bits(v) != Bits(b.at(k)) || v.shape() != b.at(k).shape())
+      return false;
+  return true;
+}
+
+// ---- options ----------------------------------------------------------------------------------
+
+struct Options {
+  int         epochs = 3, threads = 4;
+  fs::path    data    = paths::Dataset("saliency"), out, tf;
+  std::string init    = "auto";
+  bool        verbose = false;
+};
+
+/// epochs=N data=DIR out=DIR init=auto|tf|nn|PATH tf=DIR threads=N verbose=0|1
+inline Options ParseOptions(int argc, char** argv, const std::string& name, const fs::path& data) {
+  Options o;
+  o.data = data;
+  o.tf   = replay::TfModels(name);
+  for (int i = 1; i < argc; ++i) {
+    const std::string a = argv[i];
+    const auto        e = a.find('=');
+    check::Require(
+        e != std::string::npos,
+        "expected key=value (epochs= data= out= init= tf= threads= verbose=)");
+    const std::string k = a.substr(0, e), v = a.substr(e + 1);
+    if (k == "epochs")
+      o.epochs = std::stoi(v);
+    else if (k == "data")
+      o.data = v;
+    else if (k == "out")
+      o.out = v;
+    else if (k == "init")
+      o.init = v;
+    else if (k == "tf")
+      o.tf = v;
+    else if (k == "threads")
+      o.threads = std::stoi(v);
+    else if (k == "verbose")
+      o.verbose = v != "0";
+    else
+      throw std::invalid_argument(
+          "epochs=N data=PATH out=PATH init=auto|tf|nn|PATH tf=DIR threads=N verbose=0|1");
+  }
+  check::Require(
+      o.epochs > 0 && o.epochs <= 100, "three cheap default epochs or explicit 1..100 override");
+  if (o.out.empty())
+    o.out = paths::OutputRoot() / "models" / name;
+  fs::create_directories(o.out);
+  if (o.threads > 0)
+    nn::set_num_threads(o.threads);
+  return o;
+}
+
+/// The initial arrays to replay (empty: nn's generator). `tf` is the TF run directory.
+inline fs::path InitFile(const std::string& init, const fs::path& tf) {
+  if (init == "nn")
+    return {};
+  if (init == "auto" || init == "tf") {
+    const auto f = tf / "initial_arrays.npz";
+    if (init == "tf")
+      check::Require(fs::exists(f), "init=tf needs " + f.string());
+    return fs::exists(f) ? f : fs::path();
+  }
+  check::Require(fs::exists(init), "init file " + init + " missing");
+  return init;
+}
+
+/// Max |ours - TF| over the arrays both records share (-1 when TF's file is missing);
+/// `relative`: max |ours - TF| / (1 + |TF|).
+inline double Compare(
+    const fs::path&    tf,
+    const std::string& file,
+    const Map&         ours,
+    bool               verbose  = false,
+    bool               relative = false) {
+  if (!fs::exists(tf / file)) {
+    std::printf("  vs TF %-28s (no TF record)\n", file.c_str());
+    return -1;
+  }
+  const auto theirs = replay::ToMap(nn::load_npz((tf / file).string()));
+  double     m      = 0;
+  int        shared = 0;
+  for (const auto& [k, v] : ours) {
+    if (!theirs.count(k) || theirs.at(k).numel() != v.numel())
+      continue;
+    const auto x = nn::cast(v, nn::DType::Float64).to_vector<double>(),
+               y = nn::cast(theirs.at(k), nn::DType::Float64).to_vector<double>();
+    double d     = 0;
+    for (std::size_t i = 0; i < x.size(); ++i)
+      d = std::max(d, std::abs(x[i] - y[i]) / (relative ? 1 + std::abs(y[i]) : 1.));
+    if (verbose)
+      std::printf("      %-24s %.3g\n", k.c_str(), d);
+    m = std::max(m, d);
+    ++shared;
+  }
+  std::printf(
+      "  vs TF %-28s max |ours - TF|%s = %.3g (%d arrays)\n",
+      file.c_str(),
+      relative ? "/(1+|TF|)" : "",
+      m,
+      shared);
+  return m;
+}
+
+/// Fraction of equal elements of `key` in ours vs TF's record.
+inline double
+Agreement(const fs::path& tf, const std::string& file, const Map& ours, const std::string& key) {
+  if (!fs::exists(tf / file))
+    return -1;
+  const auto theirs = replay::ToMap(nn::load_npz((tf / file).string()));
+  if (!theirs.count(key))
+    return -1;
+  const auto a = nn::cast(ours.at(key), nn::DType::Float64).to_vector<double>();
+  const auto b = nn::cast(theirs.at(key), nn::DType::Float64).to_vector<double>();
+  if (a.size() != b.size())
+    return -1;
+  std::size_t same = 0;
+  for (std::size_t i = 0; i < a.size(); ++i)
+    same += a[i] == b[i];
+  return double(same) / double(a.size());
+}
+
+// ---- data -------------------------------------------------------------------------------------
+
+/// tflow's half-pixel bilinear 28 -> 8 resize (double accumulation, float result).
+inline Tensor Resize8(const Tensor& images) {
+return nn::models::BigGanResize8(images);
+}
+
+}
+
+namespace ebm {
+
+namespace nn = datamunge::nn;
+namespace fs = std::filesystem;
+using nn::Tensor;
+using Map = replay::Map;
+
+// ---- random banks and data -------------------------------------------------------------
+
+/// tflow's ml::BinaryUniform: (mt19937() + .5) / 2^32 as [n, dimensions] float32 (float64 when wide).
+inline Tensor BinaryUniform(std::int64_t n, std::int64_t dimensions, std::uint32_t seed, bool wide = false) {
+return nn::MidpointUniform(n,dimensions,seed,wide?nn::DType::Float64:nn::DType::Float32);
+}
+
+/// tflow's nn::GaussianNoise bank [n, dimensions] (float32, or float64 when wide).
+inline Tensor Gaussian(std::int64_t n, std::uint32_t seed, bool wide = false, std::int64_t dimensions = 2) {
+  const Tensor raw = nn::reshape(ae::GaussianNoise({n, dimensions}, 1, seed), {n, dimensions});
+  return wide ? raw : nn::cast(raw, nn::DType::Float32);
+}
+
+inline Tensor Ints(const std::vector<std::int32_t>& v) { return nn::from_vector(v, {std::int64_t(v.size())}); }
+
+/// tflow's ml::BinaryBars: uniformly one of 4 vertical / 2 horizontal bars of a 2x4
+/// grid, each bit flipped with probability .05. Keys points/uniform/components/source_ids.
+inline Map BinaryBars(std::int64_t n, std::uint32_t seed, int offset) {
+auto x=nn::models::BinaryBars(n,seed,offset);return {{"points",x.points},{"uniform",x.uniforms},{"components",x.components},{"source_ids",x.source_ids}};
+}
+
+/// tflow's nn::RbmBinaryStates: all 2^bits binary rows, bit j of row b = (b >> j) & 1.
+inline Tensor BinaryStates(int bits) {
+return nn::models::BinaryStates(bits);
+}
+
+/// tflow's ml::BinaryTiles: every row of `values` [n, bits] as a (bits / width) x width
+/// grid of 12-pixel cells, `columns` tiles per row, 4-pixel gray-220 gutters.
+inline void BinaryTiles(const fs::path& path, const Tensor& values, int columns, int width = 4) {
+  const auto n = values.size(0), bits = values.size(1);
+  check::Require(bits % width == 0, "binary tiles rectangular");
+  const std::int64_t height = bits / width, px = width * 12 + 4, py = height * 12 + 4;
+  const std::int64_t H = ((n + columns - 1) / columns) * py, W = columns * px;
+  const auto         v = values.contiguous().to_vector<float>();
+  std::vector<float> rgb(static_cast<std::size_t>(H * W * 3), 220.f);
+  for (std::int64_t b = 0; b < n; ++b)
+    for (std::int64_t y = 0; y < height * 12; ++y)
+      for (std::int64_t x = 0; x < width * 12; ++x) {
+        const double p = v[static_cast<std::size_t>(b * bits + (y / 12) * width + x / 12)];
+        check::Require(std::isfinite(p) && p >= 0 && p <= 1, "binary tiles probabilities");
+        for (int c = 0; c < 3; ++c)
+          rgb[static_cast<std::size_t>(((b / columns * py + y) * W + b % columns * px + x) * 3 + c)] = float(std::floor(p * 255 + .5));
+      }
+  bpix::PngBytes(path, rgb, H, W);
+}
+
+// ---- records -----------------------------------------------------------------------------
+
+inline Tensor Rows(const Tensor& x, const std::vector<std::int64_t>& rows) { return nn::take_rows(x, rows); }
+inline std::vector<std::int64_t> Range(std::int64_t n) {
+  std::vector<std::int64_t> r(static_cast<std::size_t>(n));
+  for (std::int64_t i = 0; i < n; ++i) r[i] = i;
+  return r;
+}
+inline void        Save(const fs::path& file, const Map& m) { nn::save_npz(file.string(), replay::ToNamed(m)); }
+inline Map         Load(const fs::path& file) { return replay::ToMap(nn::load_npz(file.string())); }
+inline std::string Bits(const Tensor& t) { return bpix::Bits(t); }
+inline double      Scalar(const Map& m, const std::string& k) { return nn::cast(m.at(k), nn::DType::Float64).item<double>(); }
+
+inline Map Detached(const Map& m) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = v.detach();
+  return out;
+}
+inline std::vector<std::string> Snapshot(const Map& arrays) {
+  std::vector<std::string> out;
+  for (const auto& [k, v] : arrays) out.push_back(Bits(v));
+  return out;
+}
+/// Bit-identical copies of every array of `ours` in TF's record `file` (missing file: true).
+inline bool SameAsTf(const fs::path& tf, const std::string& file, const Map& ours) {
+  if (!fs::exists(tf / file)) return true;
+  const auto theirs = Load(tf / file);
+  for (const auto& [k, v] : ours)
+    if (!theirs.count(k) || Bits(theirs.at(k)) != Bits(v) || theirs.at(k).shape() != v.shape()) return false;
+  return true;
+}
+/// Fraction of equal elements over the shared keys of `file` (all, or only `keys`;
+/// -1 without a TF record). Used for sampled binary states.
+inline double Agreement(const fs::path& tf, const std::string& file, const Map& ours, const std::vector<std::string>& keys = {}) {
+  if (!fs::exists(tf / file)) return -1;
+  const auto  theirs = Load(tf / file);
+  std::size_t same = 0, total = 0;
+  for (const auto& [k, v] : ours) {
+    if (!keys.empty() && std::find(keys.begin(), keys.end(), k) == keys.end()) continue;
+    if (!theirs.count(k) || theirs.at(k).numel() != v.numel()) continue;
+    const auto a = nn::cast(v, nn::DType::Float64).to_vector<double>(), b = nn::cast(theirs.at(k), nn::DType::Float64).to_vector<double>();
+    for (std::size_t i = 0; i < a.size(); ++i) same += a[i] == b[i];
+    total += a.size();
+  }
+  return total ? double(same) / double(total) : -1;
+}
+
+inline nn::OptimizerConfig Sgd() { return {}; }
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Gradients of `loss` w.r.t. every parameter of `p`, by name.
+inline Map ParameterGradients(const nn::ParameterStore& p, const Tensor& loss) {
+  return replay::Named(p, nn::grad(loss, p.parameters()));
+}
+
+/// Overwrites the parameters of `p` from `arrays` (names `prefix + name`).
+inline void SetFrom(nn::ParameterStore& p, const Map& arrays, const std::string& prefix = "") {
+  for (const auto& name : p.names()) {
+    check::Require(arrays.count(prefix + name) > 0, "array " + prefix + name + " present");
+    p.set(name, nn::cast(arrays.at(prefix + name), p.at(name).dtype()));
+  }
+}
+
+/// Finds a frozen checkpoint in `dir`: final.npz (our ports) or model_arrays.npz (TF's restored weights).
+inline fs::path FrozenFile(const fs::path& dir) {
+  if (fs::exists(dir / "final.npz")) return dir / "final.npz";
+  if (fs::exists(dir / "model_arrays.npz")) return dir / "model_arrays.npz";
+  return {};
+}
+/// "ours" (our port's output), "tf" (tflow's recorded run), "auto" (ours when present, else TF) or a directory.
+inline fs::path FrozenDir(const std::string& choice, const fs::path& ours, const fs::path& tf) {
+  if (choice == "ours") return ours;
+  if (choice == "tf") return tf;
+  if (choice == "auto") return FrozenFile(ours).empty() ? tf : ours;
+  return choice;
+}
+
+// ---- options -----------------------------------------------------------------------------
+
+struct Options {
+  int                                epochs = 3, threads = 4;
+  fs::path                           out, tf;
+  std::string                        init = "auto";
+  std::map<std::string, std::string> extra;  // source= / data=
+};
+
+/// key=value options: epochs out init tf threads + `extra` (name -> default).
+inline Options ParseOptions(int argc, char** argv, const std::string& name, const std::map<std::string, std::string>& extra,
+                            const std::string& usage) {
+  Options o;
+  o.tf    = replay::TfModels(name);
+  o.extra = extra;
+  for (int i = 1; i < argc; ++i) {
+    const std::string a = argv[i];
+    const auto        e = a.find('=');
+    if (e == std::string::npos) throw std::invalid_argument(usage);
+    const std::string k = a.substr(0, e), v = a.substr(e + 1);
+    if (k == "epochs") o.epochs = std::stoi(v);
+    else if (k == "out") o.out = v;
+    else if (k == "init") o.init = v;
+    else if (k == "tf") o.tf = v;
+    else if (k == "threads") o.threads = std::stoi(v);
+    else if (o.extra.count(k)) o.extra[k] = v;
+    else throw std::invalid_argument(usage);
+  }
+  check::Require(o.epochs > 0 && o.epochs <= 100, "three cheap default epochs or explicit 1..100 override");
+  if (o.out.empty()) o.out = paths::OutputRoot() / "models" / name;
+  fs::create_directories(o.out);
+  if (o.threads > 0) nn::set_num_threads(o.threads);
+  return o;
+}
+
+/// Bit-identity of our data record with TF's data.npz on `keys`.
+inline void CheckData(const fs::path& tf, const Map& data, const std::vector<std::string>& keys) {
+  if (!fs::exists(tf / "data.npz")) return;
+  const auto theirs = Load(tf / "data.npz");
+  for (const auto& k : keys)
+    check::Require(theirs.count(k) && Bits(theirs.at(k)) == Bits(data.at(k)), "data bit-identical to TF's data.npz: " + k);
+  std::cout << "data: " << keys.size() << " arrays bit-identical to TF's data.npz\n";
+}
+
+/// Prints ours vs TF per epoch for history column `column`.
+inline void CompareHistory(const fs::path& ours, const fs::path& tf, int column, const std::string& what) {
+  if (!fs::exists(tf / "history.tsv")) return;
+  const auto a = replay::History(ours / "history.tsv", column), b = replay::History(tf / "history.tsv", column);
+  for (std::size_t i = 0; i < std::min(a.size(), b.size()); ++i)
+    std::printf("  epoch %zu %s ours %.7f TF %.7f\n", i + 1, what.c_str(), a[i], b[i]);
+}
+
+}  // namespace ebm
+
+namespace ebm {
+using nn::models::RbmParameters;
+using nn::models::RbmHidden;
+using nn::models::RbmVisible;
+using nn::models::RbmFreeEnergy;
+using nn::models::LogSumExp;
+using nn::models::RbmLogPartition;
+using nn::models::RbmGibbsPath;
+using nn::models::RbmGibbs;
+/// tflow's ml::RestrictedBoltzmannModel (seed 21003; 8x4 -> 44 parameters / 3 tensors).
+class RestrictedBoltzmannModel {
+ public:
+  nn::ParameterStore             store;
+  int                            visible, hidden;
+
+
+  explicit RestrictedBoltzmannModel(bool training = true, int visible_count = 8, int hidden_count = 4, std::uint64_t seed = 21003)
+      : store(seed), visible(visible_count), hidden(hidden_count) {
+    RbmParameters(store, visible, hidden);
+
+  }
+  Tensor Nll(const Tensor& v) {
+    const Tensor logp = nn::neg(nn::add(RbmFreeEnergy(store, v), RbmLogPartition(store, visible)));
+    return nn::neg(nn::mean(logp, {0}));
+  }
+  /// mean(F(v0) - F(stop(v1))): derivative = -(positive - negative CD statistics).
+  Tensor CdLoss(const Tensor& v, const Tensor& u, const Tensor& w) {
+    const auto path = RbmGibbs(store, v, u, w);
+    return nn::mean(nn::sub(RbmFreeEnergy(store, v), RbmFreeEnergy(store, nn::stop_gradient(path.visible))), {0});
+  }
+  Map Evaluate(const Tensor& v) {
+    nn::NoGradGuard guard;
+    const Tensor    fe = RbmFreeEnergy(store, v), logz = RbmLogPartition(store, visible);
+    const Tensor    logp = nn::neg(nn::add(fe, logz));
+    return {{"free_energy", fe}, {"log_partition", logz}, {"log_probability", logp},
+            {"nll", nn::neg(nn::mean(logp, {0}))}, {"hidden_probability", RbmHidden(store, v)}};
+  }
+  Map Gibbs(const Tensor& v, const Tensor& u, const Tensor& w, bool include_loss = true) {
+    nn::NoGradGuard guard;
+    const auto      p = RbmGibbs(store, v, u, w);
+    Map             out{{"hidden_probability", p.hidden_probability}, {"hidden", p.hidden},
+                        {"visible_probability", p.visible_probability}, {"visible", p.visible},
+                        {"negative_hidden_probability", p.negative_hidden_probability}};
+    if (include_loss) out["cd_surrogate"] = CdLoss(v, u, w);
+    return out;
+  }
+  Map  Gradient(const Tensor& v, const Tensor& u, const Tensor& w, bool exact = false) {
+    return ParameterGradients(store, exact ? Nll(v) : CdLoss(v, u, w));
+  }
+
+  Map  Arrays() const { return replay::Arrays(store); }
+  std::vector<std::string> Snapshot() const { return ebm::Snapshot(Arrays()); }
+};
+
+}  // namespace ebm
+
+namespace ebm {
+using nn::models::DeepBeliefPath;
+using nn::models::DeepBelief;
+/// tflow's ml::DeepBeliefModel: 63 stored weights = 59 generative + 4 recognition-only.
+class DeepBeliefModel {
+ public:
+  nn::ParameterStore bottom, top;
+
+  DeepBeliefModel(const Map& lower, const Map& upper) {
+    for (const auto& [name, value] : lower) bottom.get(name, value.shape(), nn::init::zeros()), bottom.set(name, value);
+    for (const auto& [name, value] : upper) top.get(name, value.shape(), nn::init::zeros()), top.set(name, value);
+    check::Require(bottom.count() == 44 && top.count() == 19, "63 stored = 59 generative + 4 recognition only");
+  }
+  std::vector<Tensor> Generative(std::vector<std::string>* names = nullptr) const {
+    std::vector<Tensor> out{bottom.at("W"), bottom.at("visible_bias")};
+    if (names) *names = {"bottom/W", "bottom/visible_bias"};
+    for (const auto& n : top.names()) {
+      out.push_back(top.at(n));
+      if (names) names->push_back("top/" + n);
+    }
+    return out;
+  }
+  Map Evaluate(const Tensor& v) const {
+    nn::NoGradGuard guard;
+    const auto      p = DeepBelief(bottom, top, v);
+    return {{"log_probability", p.log_probability}, {"nll", p.nll}, {"top_log_probability", p.top_log_probability},
+            {"decoder_logits", p.decoder_logits},   {"decoder_probability", p.decoder_probability},
+            {"log_joint", p.log_joint},             {"posterior", p.posterior},
+            {"posterior_mean", p.posterior_mean},   {"recognition_probability", p.recognition_probability}};
+  }
+  /// All 59 exact generative likelihood gradients (diagnostics only).
+  Map Gradient(const Tensor& v) const {
+    std::vector<std::string> names;
+    const auto               vars = Generative(&names);
+    const auto               g    = nn::grad(DeepBelief(bottom, top, v).nll, vars);
+    Map                      out;
+    for (std::size_t i = 0; i < g.size(); ++i) out[names[i]] = g[i].detach();
+    return out;
+  }
+  /// True when the recognition-only bias is unreachable from the generative likelihood.
+  bool RecognitionUnreachable(const Tensor& v) const {
+    nn::GradOptions o;
+    o.allow_unused = true;
+    return !nn::grad(DeepBelief(bottom, top, v).nll, {bottom.at("hidden_bias")}, o)[0].defined();
+  }
+  Map TopStep(const Tensor& h1, const Tensor& u, const Tensor& w) const {
+    nn::NoGradGuard guard;
+    const auto      p = RbmGibbs(top, h1, u, w);
+    return {{"hidden_probability", p.hidden_probability}, {"hidden", p.hidden}, {"visible_probability", p.visible_probability},
+            {"visible", p.visible}};
+  }
+  /// DIRECTED decoder: only the top state and visible uniforms.
+  Map Decode(const Tensor& h1, const Tensor& u) const {
+    nn::NoGradGuard guard;
+    const Tensor    p = RbmVisible(bottom, h1);
+    return {{"probability", p}, {"visible", nn::cast(nn::less(u, p), nn::DType::Float32)}};
+  }
+  Map Arrays() const {
+    Map out;
+    for (const auto& [k, v] : replay::Arrays(bottom)) out["bottom/" + k] = v;
+    for (const auto& [k, v] : replay::Arrays(top)) out["top/" + k] = v;
+    return out;
+  }
+  void Restore(const fs::path& file) {
+    const auto arrays = Load(file);
+    SetFrom(bottom, arrays, "bottom/");
+    SetFrom(top, arrays, "top/");
+  }
+  std::vector<std::string> Snapshot() const { return ebm::Snapshot(Arrays()); }
+};
+
+}  // namespace ebm
+
+namespace {
+
+using namespace ebm;
+
+Map Sample(const DeepBeliefModel& model) {
+  const std::int64_t n     = 1024;
+  Tensor             state = nn::cast(nn::less(BinaryUniform(n, 4, 22201), .5), nn::DType::Float32);
+  Map                saved{{"initial", state}};
+  std::vector<Tensor> path{state};
+  std::map<std::string, std::vector<Tensor>> steps;
+  for (int k = 0; k < 100; ++k) {
+    const auto fields = model.TopStep(state, BinaryUniform(n, 3, 2220051 + k), BinaryUniform(n, 4, 3220051 + k));
+    for (const auto& [key, value] : fields) steps[key].push_back(value);
+    state = fields.at("visible");
+    path.push_back(state);
+  }
+  for (const auto& [key, values] : steps) saved[key] = nn::stack(values, 0);
+  const auto decode              = model.Decode(state, BinaryUniform(n, 8, 22203));
+  saved["path"]                  = nn::stack(path, 0);
+  saved["top_states"]            = state;
+  saved["decoder_probability"]   = decode.at("probability");
+  saved["samples"]               = decode.at("visible");
+  return saved;
+}
+
+Map Zeros(const Map& m) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::zeros_like(v);
+  return out;
+}
+
+void Run(const Options& o) {
+  const fs::path root = o.out, tf = o.tf;
+  const auto     started = std::chrono::steady_clock::now();
+  const fs::path source =
+      FrozenDir(o.extra.at("source"), paths::OutputRoot() / "models" / "restricted_boltzmann", replay::TfModels("restricted_boltzmann"));
+  const fs::path frozen = FrozenFile(source);
+  check::Require(!frozen.empty() && fs::exists(source / "data.npz"),
+                 "restore three-epoch bottom RBM 8x4: no final.npz/model_arrays.npz + data.npz in " + source.string() +
+                     " (run restricted_boltzmann first or pass source=tf)");
+  std::cout << "bottom RBM: " << frozen.string() << "\n";
+  RestrictedBoltzmannModel lower(false);
+  replay::LoadInto(lower.store, frozen);
+  const auto bottom_before = lower.Snapshot();
+  const Map  bottom_arrays = lower.Arrays();
+  Map        data          = Load(source / "data.npz");
+  std::vector<Tensor> original, pools;
+  for (int k = 0; k < 3; ++k) {
+    const std::string split = k == 0 ? "fit" : k == 1 ? "validation" : "test";
+    const Tensor      x     = data.at(split + "_points");
+    original.push_back(x);
+    const Tensor hp      = lower.Evaluate(x).at("hidden_probability");
+    const Tensor sampled = nn::cast(nn::less(BinaryUniform(x.size(0), 4, 22001 + 2 * k), hp), nn::DType::Float32);
+    data[split + "_hidden_probability"] = hp;
+    data[split + "_hidden_uniform"]     = BinaryUniform(x.size(0), 4, 22001 + 2 * k, true);
+    data[split + "_hidden"]             = sampled;
+    pools.push_back(sampled);
+  }
+  Save(root / "data.npz", data);
+  CheckData(tf, data, {"fit_points", "validation_points", "test_points", "fit_hidden_uniform"});
+  if (fs::exists(tf / "data.npz") && fs::exists(tf / "bottom_arrays.npz"))
+    std::printf("bottom vs TF's bottom_arrays.npz: max diff %.3g; sampled h1 codes agreement with TF's data.npz %.6f\n",
+                replay::MaxDiff(bottom_arrays, tf / "bottom_arrays.npz"),
+                Agreement(tf, "data.npz", data, {"fit_hidden", "validation_hidden", "test_hidden"}));
+  Save(root / "bottom_arrays.npz", bottom_arrays);
+  if (fs::exists(source / "metrics.json"))
+    fs::copy_file(source / "metrics.json", root / "source_bottom_metrics.json", fs::copy_options::overwrite_existing);
+
+  RestrictedBoltzmannModel upper(true, 4, 3);
+ nn::Optimizer report_optimizer(upper.store,.05,Sgd());
+  check::Require(upper.store.count() == 19, "19 top RBM parameters");
+  fs::path init;
+  if (o.init == "auto" || o.init == "tf") {
+    if (fs::exists(tf / "initial_top_arrays.npz")) init = tf / "initial_top_arrays.npz";
+    check::Require(o.init == "auto" || !init.empty(), "init=tf needs " + (tf / "initial_top_arrays.npz").string());
+  } else if (o.init != "nn") {
+    init = o.init;
+  }
+  const bool replaying = !init.empty();
+  if (replaying) {
+    replay::LoadInto(upper.store, init);
+    std::cout << "replaying TF's initial top arrays " << init.string() << "\n";
+  } else {
+    std::cout << "top weights from nn's generator (statistical parity with TF only)\n";
+  }
+  Save(root / "initial_top_arrays.npz", upper.Arrays());
+  {
+    const DeepBeliefModel initial(bottom_arrays, upper.Arrays());
+    Save(root / "initial_dbn_outputs.npz", initial.Evaluate(original[2]));
+    Save(root / "initial_dbn_gradients.npz", initial.Gradient(original[2]));
+    check::Require(initial.RecognitionUnreachable(original[2]), "recognition bias unreachable from generative likelihood");
+  }
+  nn::BatchOrder order(512, 32, 22019);
+  std::ofstream  history(root / "history.tsv"), batches(root / "batches.tsv");
+  history.precision(17);
+  history << "epoch\tvalidation_top_exact_nll\tvalidation_dbn_exact_nll\n";
+  batches << "epoch\tstep\trow\n";
+  Map randomness;
+  int updates = 0;
+  for (int epoch = 1; epoch <= o.epochs; ++epoch) {
+    order.begin_epoch();
+    for (;;) {
+      const auto rows = order.next();
+      if (rows.empty()) break;
+      const auto   n = std::int64_t(rows.size());
+      const Tensor x = Rows(pools[0], rows), u = BinaryUniform(n, 3, 2200051 + updates), v = BinaryUniform(n, 4, 3200051 + updates);
+      randomness["step" + std::to_string(updates) + "_hidden"]  = BinaryUniform(n, 3, 2200051 + updates, true);
+      randomness["step" + std::to_string(updates) + "_visible"] = BinaryUniform(n, 4, 3200051 + updates, true);
+      if (!updates) {
+        Save(root / "first_batch.npz", {{"points", x}, {"hidden_uniform", u}, {"visible_uniform", v}});
+        Save(root / "first_forward.npz", upper.Gibbs(x, u, v));
+        Save(root / "initial_top_gradients.npz", upper.Gradient(x, u, v));
+      }
+      report_optimizer.step(nn::grad(upper.CdLoss(x,u,v),upper.store.parameters()));
+      if (!updates) Save(root / "first_after.npz", upper.Arrays());
+      for (auto row : rows) batches << epoch << '\t' << updates << '\t' << row << '\n';
+      ++updates;
+    }
+    const auto            valid = upper.Evaluate(pools[1]);
+    const DeepBeliefModel assembled(bottom_arrays, upper.Arrays());
+    const auto            dbn_valid = assembled.Evaluate(original[1]);
+    history << epoch << '\t' << Scalar(valid, "nll") << '\t' << Scalar(dbn_valid, "nll") << '\n';
+    Save(root / ("epoch" + std::to_string(epoch) + "_top_arrays.npz"), upper.Arrays());
+    Save(root / ("epoch" + std::to_string(epoch) + "_top_validation.npz"), valid);
+    Save(root / ("epoch" + std::to_string(epoch) + "_dbn_validation.npz"), dbn_valid);
+    std::cout << "epoch" << epoch << " topExactNLL=" << Scalar(valid, "nll") << " DBNvisibleNLL=" << Scalar(dbn_valid, "nll") << std::endl;
+  }
+  history.flush();
+  batches.flush();
+  const double train_seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - started).count();
+  Save(root / "training_randomness.npz", randomness);
+  check::Require(SameAsTf(tf, "training_randomness.npz", randomness), "CD1 uniform banks bit-identical to TF's training_randomness.npz");
+  const auto first = Load(root / "first_batch.npz");
+  Save(root / "final_top_gradients.npz", upper.Gradient(first.at("points"), first.at("hidden_uniform"), first.at("visible_uniform")));
+  Save(root / "final_top_first_gibbs.npz", upper.Gibbs(first.at("points"), first.at("hidden_uniform"), first.at("visible_uniform")));
+  upper.store.save((root / "top_final.npz").string());
+  RestrictedBoltzmannModel restored_top(false, 4, 3);
+  restored_top.store.load((root / "top_final.npz").string(), true);
+  check::Require(upper.Snapshot() == restored_top.Snapshot(), "top 19 weights bitexact restore");
+  const Map top_arrays = restored_top.Arrays();
+  Save(root / "top_arrays.npz", top_arrays);
+  const DeepBeliefModel assembled(bottom_arrays, top_arrays);
+  Save(root / "final.npz", assembled.Arrays());
+  DeepBeliefModel deployed(Zeros(bottom_arrays), Zeros(top_arrays));
+  deployed.Restore(root / "final.npz");
+  check::Require(assembled.Snapshot() == deployed.Snapshot(), "all 63 weights bitexact hybrid restore from zero initialization");
+  const auto before = deployed.Snapshot();
+  Save(root / "model_arrays.npz", deployed.Arrays());
+  const auto output = deployed.Evaluate(original[2]);
+  Save(root / "outputs.npz", output);
+  Save(root / "final_dbn_gradients.npz", deployed.Gradient(original[2]));
+  const Tensor states = BinaryStates(8);
+  auto         all    = deployed.Evaluate(states);
+  all["states"]       = states;
+  double mass         = 0;
+  for (float lp : all.at("log_probability").to_vector<float>()) mass += std::exp(double(lp));
+  check::Near(mass, 1., 2e-6, "normalized DBN marginal from directed conditional and top prior");
+  Save(root / "exact_distribution.npz", all);
+  const auto sample = Sample(deployed), repeat = Sample(deployed);
+  for (const auto& [k, v] : sample) check::Require(Bits(v) == Bits(repeat.at(k)), "DBN top Gibbs + directed decode repeat bitexact");
+  Save(root / "samples.npz", sample);
+  BinaryTiles(root / "samples.png", Rows(sample.at("samples"), Range(64)), 8);
+  BinaryTiles(root / "decoder_means.png", Rows(sample.at("decoder_probability"), Range(64)), 8);
+
+  // Exact top prior categorical control: no finite-chain approximation, same bottom decoder uniforms.
+  const auto top_dist = restored_top.Evaluate(BinaryStates(4));
+  const auto uniforms = BinaryUniform(1024, 1, 22301, true);
+  const auto lp = top_dist.at("log_probability").to_vector<float>();
+  const auto uv = uniforms.to_vector<double>();
+  const auto top_states = BinaryStates(4).to_vector<float>();
+  double     probabilities[16], total = 0;
+  for (int k = 0; k < 16; ++k) total += probabilities[k] = std::exp(double(lp[k]));
+  std::vector<float> exact_top(1024 * 4);
+  for (int b = 0; b < 1024; ++b) {
+    const double u = uv[b] * total;
+    double       cumulative = 0;
+    int          selected   = 15;
+    for (int k = 0; k < 16; ++k) {
+      cumulative += probabilities[k];
+      if (u < cumulative) {
+        selected = k;
+        break;
+      }
+    }
+    std::copy_n(top_states.data() + selected * 4, 4, exact_top.data() + b * 4);
+  }
+  const Tensor exact_top_t     = nn::from_vector(exact_top, {1024, 4});
+  auto         exact_decode    = deployed.Decode(exact_top_t, BinaryUniform(1024, 8, 22203));
+  exact_decode["top_states"]   = exact_top_t;
+  exact_decode["uniform"]      = uniforms;
+  Save(root / "exact_prior_samples.npz", exact_decode);
+  BinaryTiles(root / "exact_prior_samples.png", Rows(exact_decode.at("visible"), Range(64)), 8);
+
+  // Changing the recognition-only bias must change recognition but leave ALL generative probabilities bit-exact.
+  Map changed                = bottom_arrays;
+  changed.at("hidden_bias")  = nn::add(bottom_arrays.at("hidden_bias"), nn::full({4}, .7f));
+  const DeepBeliefModel control(changed, top_arrays);
+  const auto            altered = control.Evaluate(original[2]);
+  check::Require(Bits(altered.at("log_probability")) == Bits(output.at("log_probability")), "recognition-only bias cannot affect DBN marginal");
+  check::Require(Bits(altered.at("recognition_probability")) != Bits(output.at("recognition_probability")),
+                 "recognition control actually changes recognition");
+  Save(root / "recognition_control.npz", altered);
+  check::Require(bottom_before == lower.Snapshot(), "pretrained bottom unchanged across greedy top training");
+  check::Require(before == deployed.Snapshot(), "hybrid inference all 63 weights immutable");
+  const double source_nll = Scalar(lower.Evaluate(original[2]), "nll");
+  std::ofstream meta(root / "metrics.json");
+  meta.precision(17);
+  meta << "{\"stored_parameters\":63,\"generative_parameters\":59,\"recognition_only_bias_parameters\":4,\"top_parameters\":19,"
+          "\"bottom_frozen_parameters\":44,\"top_epochs\":"
+       << o.epochs << ",\"top_optimizer_updates\":" << updates << ",\"bottom_source_epochs\":3,\"test_exact_dbn_nll\":" << Scalar(output, "nll")
+       << ",\"source_bottom_exact_nll\":" << source_nll << ",\"sampling_top_sweeps\":100,\"samples\":1024,\"replayed_tf_initial_arrays\":"
+       << (replaying ? "true" : "false") << ",\"training_seconds\":" << train_seconds << "}\n";
+  std::ofstream html(root / "index.html");
+  html << "<!doctype html><meta charset='utf-8'><title>Deep belief network</title><style>body{font:16px system-ui;margin:30px;"
+          "max-width:1100px}img{max-width:100%;image-rendering:pixelated}</style><h1>Greedy deep belief network: undirected top, "
+          "directed bottom</h1><p>Frozen 3-epoch 8->4 Bernoulli RBM from restricted_boltzmann; one sampled recognition state per "
+          "source; upper 4->3 RBM (19 parameters) trained three epochs of 48 CD1 SGD .05 updates. p(v,h1,h2) = p_topRBM(h1,h2) "
+          "p_directed(v|h1); the bottom hidden bias is recognition only (63 stored = 59 generative + 4 recognition). Exact "
+          "normalized DBN marginal by enumerating 16 h1 / 256 visible states. Datamunge port of tflow's deep_belief.</p><h2>First "
+          "64 generated samples</h2><p>1024 Bernoulli .5 top states, 100 top RBM Gibbs sweeps, then one directed Bernoulli "
+          "visible draw.</p><img src='samples.png'><h2>Corresponding directed decoder probabilities</h2><img src='decoder_means.png'>"
+          "<h2>Exact top prior categorical control, then directed decode</h2><img src='exact_prior_samples.png'><p><a "
+          "href='https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf'>Hinton, Osindero, Teh 2006</a>.</p>";
+  check::Require(bool(meta) && bool(html) && bool(history) && bool(batches), "complete deep belief records");
+  std::cout << "exactDBNtestNLL=" << Scalar(output, "nll") << " sourceBottom=" << source_nll
+            << ";frozenBottom/greedyTop/hybridNormalization/recognitionOnly/restore/chainRepeat/immutable PASS (training "
+            << train_seconds << " s)\n";
+
+  // ---- TF parity ----
+  if (!fs::exists(tf / "model_arrays.npz")) {
+    std::cout << "no TF record at " << tf.string() << "; parity checks skipped\nArtifacts: " << root.string() << "\n";
+    return;
+  }
+  std::cout << "TF parity (" << tf.string() << "):\n";
+  const bool same_codes = SameAsTf(tf, "data.npz", {{"fit_hidden", data.at("fit_hidden")}});
+  if (replaying && same_codes) {
+    const double fwd = bpix::Compare(tf, "first_forward.npz", Load(root / "first_forward.npz"));
+    const double grd = bpix::Compare(tf, "initial_top_gradients.npz", Load(root / "initial_top_gradients.npz"));
+    const double aft = bpix::Compare(tf, "first_after.npz", Load(root / "first_after.npz"));
+    check::Require(fwd < 1e-5 && grd < 1e-5 && aft < 1e-5, "replayed first top forward/gradients/update match TF");
+    if (o.epochs == 3) {
+      const double fin = bpix::Compare(tf, "top_arrays.npz", top_arrays);
+      bpix::Compare(tf, "outputs.npz", output);
+      check::Require(fin < 1e-4, "replayed run's final top weights match TF's");
+    }
+    CompareHistory(root, tf, 1, "validation top exact NLL");
+    CompareHistory(root, tf, 2, "validation DBN exact NLL");
+  } else if (replaying) {
+    std::cout << "  (sampled h1 codes differ from TF's: replay comparisons skipped)\n";
+  }
+  DeepBeliefModel tf_model(Zeros(bottom_arrays), Zeros(top_arrays));
+  tf_model.Restore(tf / "model_arrays.npz");
+  const Tensor tf_test  = Load(tf / "data.npz").at("test_points");
+  const double out_diff = bpix::Compare(tf, "outputs.npz", tf_model.Evaluate(tf_test));
+  const auto   chains   = Sample(tf_model);
+  const double prb_diff = bpix::Compare(tf, "samples.npz", chains);
+  const double agree    = Agreement(tf, "samples.npz", chains, {"path", "hidden", "visible", "samples", "top_states"});
+  std::printf("  TF final weights: top chain + decode sampled states agreement with TF's samples.npz %.6f\n", agree);
+  check::Require(out_diff < 1e-5 && prb_diff < 1e-5 && agree > .999, "TF's final weights reproduce TF's DBN outputs and samples");
+  std::cout << "Artifacts: " << root.string() << "\nAll deep_belief checks passed.\n";
+}
+
+}  // namespace
+
+int main(int argc, char** argv) {
+  try {
+    Run(ParseOptions(argc, argv, "deep_belief", {{"source", "auto"}},
+                     "epochs=N source=auto|ours|tf|DIR out=PATH init=auto|tf|nn|PATH tf=DIR threads=N"));
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin: markdown
+bottom RBM: /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.5_energy_based_models/build/generative-models/models/restricted_boltzmann/final.npz
+top weights from nn's generator (statistical parity with TF only)
+epoch1 topExactNLL=2.75399 DBNvisibleNLL=5.23221
+epoch2 topExactNLL=2.74498 DBNvisibleNLL=5.2339
+epoch3 topExactNLL=2.73736 DBNvisibleNLL=5.23505
+exactDBNtestNLL=5.26401 sourceBottom=5.26696;frozenBottom/greedyTop/hybridNormalization/recognitionOnly/restore/chainRepeat/immutable PASS (training 0.00643905 s)
+no TF record at /home/jordan/.cache/datamunge/models/deep_belief; parity checks skipped
+Artifacts: /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.5_energy_based_models/build/generative-models/models/deep_belief
+// result_end
+
+> Inspect the generated views
+
+These are the original experiment galleries from the current native execution. Their numerical records and held-out metrics are saved beside the checkpoints in the local build directory.
+
+```{cpp, results="markdown", file="figures/deep_belief_decoder_means.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::copy_file("build/generative-models/models/deep_belief/decoder_means.png","build/deep_belief_decoder_means.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/deep_belief_decoder_means.png)
+// result_end
+
+```{cpp, results="markdown", file="figures/deep_belief_exact_prior_samples.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::copy_file("build/generative-models/models/deep_belief/exact_prior_samples.png","build/deep_belief_exact_prior_samples.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/deep_belief_exact_prior_samples.png)
+// result_end
+
+```{cpp, results="markdown", file="figures/deep_belief_samples.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::copy_file("build/generative-models/models/deep_belief/samples.png","build/deep_belief_samples.png",std::filesystem::copy_options::overwrite_existing);}
+```
+// result_begin: markdown
+\image(figures/deep_belief_samples.png)
+// result_end
+
+> Read the validation history
+
+These points are validation diagnostics at the original three epoch boundaries; the fixed-final source protocol is retained. They do not imply convergence.
+
+```{cpp, results="markdown", file="figures/deep_belief_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::ifstream input("build/generative-models/models/deep_belief/history.tsv");std::string header;std::getline(input,header);std::vector<double>x,y;double a,b;double c;while(input>>a>>b>>c){x.push_back(a);y.push_back(c);}if(x.size()!=3)return 1;std::print("| epoch | validation objective |\n|---:|---:|\n");for(size_t i=0;i<x.size();++i)std::print("| {:.0f} | {:.9f} |\n",x[i],y[i]);dm::graphics::RPlot::create().lines(x,y,"validation",{37,99,235}).x_label("Epoch").y_label("Exact visible DBN NLL").title("deep belief validation").size(1000,550).save_svg("build/deep_belief_history.svg");}
+```
+// result_begin: markdown
+| epoch | validation objective |
+|---:|---:|
+| 1 | 5.232212067 |
+| 2 | 5.233896732 |
+| 3 | 5.235051632 |
+\image(figures/deep_belief_history.svg)
+// result_end
+
+> Interpretation
+
+Use the computed checks, held-out tables and galleries to assess this bounded run. Exact enumeration is restricted to tiny binary models; CD is a stopped sampled surrogate, and ULA is discretized sampling. The attention and memory fixtures verify mechanisms, not natural-language or long-memory benchmarks. Weak results remain part of the report.

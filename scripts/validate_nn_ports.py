@@ -4,7 +4,7 @@
 For each NAME this builds and runs the C++ example, then the native Python and
 R scripts, with the development budget (epochs=5 when the example takes an
 epoch option). Logs go to build/nn-language-validation/NAME.{cpp,python,r}.log
-and passing runs are recorded in examples/nn/language_status.json. Safe to run
+and passing runs are recorded in prebindings/nn/language_status.json. Safe to run
 concurrently: ledger updates and C++ builds are serialized with file locks.
 
     python3 scripts/validate_nn_ports.py NAME... [--classify NAME=yes|no] [--timeout S]

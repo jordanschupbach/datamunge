@@ -39,7 +39,7 @@ public class CadScene extends NativeObject {
     @SuppressWarnings("this-escape")
     public CadScene() {
         super(RAW);
-        Rosetta.construct(this, CadScene.class, false, 2963);
+        Rosetta.construct(this, CadScene.class, false, 2974);
     }
 
     /**
@@ -60,7 +60,7 @@ public class CadScene extends NativeObject {
      * @throws NativeException Import/I/O failure. (C++ {@code std::runtime_error})
      */
     public static CadScene fromFile(String path) {
-        return Rosetta.asObject(Rosetta.call(2945, path), CadScene.class);
+        return Rosetta.asObject(Rosetta.call(2956, path), CadScene.class);
     }
 
     /**
@@ -81,7 +81,7 @@ public class CadScene extends NativeObject {
      * @throws NativeException Import failure. (C++ {@code std::runtime_error})
      */
     public static CadScene fromUrdf(String path) {
-        return Rosetta.asObject(Rosetta.call(2946, path), CadScene.class);
+        return Rosetta.asObject(Rosetta.call(2957, path), CadScene.class);
     }
 
     /**
@@ -98,7 +98,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument View has no robot or joint value is invalid. (C++ {@code std::invalid_argument})
      */
     public void setJoint(String name, double value) {
-        Rosetta.call(2947, this, name, value);
+        Rosetta.call(2958, this, name, value);
     }
 
     /**
@@ -109,7 +109,7 @@ public class CadScene extends NativeObject {
      * @return Owned names; empty for ordinary scenes.
      */
     public List<String> jointNames() {
-        return Rosetta.asList(Rosetta.call(2948, this), rosettaV0 -> Rosetta.asString(rosettaV0));
+        return Rosetta.asList(Rosetta.call(2959, this), rosettaV0 -> Rosetta.asString(rosettaV0));
     }
 
     /**
@@ -129,7 +129,7 @@ public class CadScene extends NativeObject {
      * @throws NativeException Tessellation failure. (C++ {@code std::runtime_error})
      */
     public int add(CadSolid solid) {
-        return Rosetta.asInt(Rosetta.call(2949, this, solid));
+        return Rosetta.asInt(Rosetta.call(2960, this, solid));
     }
 
     /**
@@ -150,7 +150,7 @@ public class CadScene extends NativeObject {
      * @throws NativeException Tessellation failure. (C++ {@code std::runtime_error})
      */
     public int add(CadSolid solid, String color) {
-        return Rosetta.asInt(Rosetta.call(2949, this, solid, color));
+        return Rosetta.asInt(Rosetta.call(2960, this, solid, color));
     }
 
     /**
@@ -170,7 +170,7 @@ public class CadScene extends NativeObject {
      * @throws NativeException Tessellation failure. (C++ {@code std::runtime_error})
      */
     public int add(CadSolid solid, String color, String name) {
-        return Rosetta.asInt(Rosetta.call(2949, this, solid, color, name));
+        return Rosetta.asInt(Rosetta.call(2960, this, solid, color, name));
     }
 
     /**
@@ -189,7 +189,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Unknown kind. (C++ {@code std::invalid_argument})
      */
     public int primitive(String kind) {
-        return Rosetta.asInt(Rosetta.call(2950, this, kind));
+        return Rosetta.asInt(Rosetta.call(2961, this, kind));
     }
 
     /**
@@ -206,7 +206,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid dimensions. (C++ {@code std::invalid_argument})
      */
     public void size(int width, int height) {
-        Rosetta.call(2951, this, width, height);
+        Rosetta.call(2962, this, width, height);
     }
 
     /**
@@ -224,7 +224,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid count. (C++ {@code std::invalid_argument})
      */
     public void samples(int count) {
-        Rosetta.call(2952, this, count);
+        Rosetta.call(2963, this, count);
     }
 
     /**
@@ -242,7 +242,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Unknown style. (C++ {@code std::invalid_argument})
      */
     public void style(String name) {
-        Rosetta.call(2953, this, name);
+        Rosetta.call(2964, this, name);
     }
 
     /**
@@ -259,7 +259,7 @@ public class CadScene extends NativeObject {
      * @param enabled True enables triangle-ray shadow tests.
      */
     public void shadows(boolean enabled) {
-        Rosetta.call(2954, this, enabled);
+        Rosetta.call(2965, this, enabled);
     }
 
     /**
@@ -282,7 +282,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid camera. (C++ {@code std::invalid_argument})
      */
     public void camera(double x, double y, double z, double targetX, double targetY, double targetZ) {
-        Rosetta.call(2955, this, x, y, z, targetX, targetY, targetZ);
+        Rosetta.call(2966, this, x, y, z, targetX, targetY, targetZ);
     }
 
     /**
@@ -297,7 +297,7 @@ public class CadScene extends NativeObject {
      * <p>C++: {@code void datamunge::cad::View::fit()}
      */
     public void fit() {
-        Rosetta.call(2956, this);
+        Rosetta.call(2967, this);
     }
 
     /**
@@ -320,7 +320,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid direction, color or intensity. (C++ {@code std::invalid_argument})
      */
     public int light(double x, double y, double z) {
-        return Rosetta.asInt(Rosetta.call(2957, this, x, y, z));
+        return Rosetta.asInt(Rosetta.call(2968, this, x, y, z));
     }
 
     /**
@@ -344,7 +344,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid direction, color or intensity. (C++ {@code std::invalid_argument})
      */
     public int light(double x, double y, double z, String color) {
-        return Rosetta.asInt(Rosetta.call(2957, this, x, y, z, color));
+        return Rosetta.asInt(Rosetta.call(2968, this, x, y, z, color));
     }
 
     /**
@@ -367,7 +367,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid direction, color or intensity. (C++ {@code std::invalid_argument})
      */
     public int light(double x, double y, double z, String color, double intensity) {
-        return Rosetta.asInt(Rosetta.call(2957, this, x, y, z, color, intensity));
+        return Rosetta.asInt(Rosetta.call(2968, this, x, y, z, color, intensity));
     }
 
     /**
@@ -384,7 +384,7 @@ public class CadScene extends NativeObject {
      * @throws NativeException File I/O failure. (C++ {@code std::runtime_error})
      */
     public void render(String path) {
-        Rosetta.call(2958, this, path);
+        Rosetta.call(2969, this, path);
     }
 
     /**
@@ -402,7 +402,7 @@ public class CadScene extends NativeObject {
      * @throws NativeException Export/I/O failure. (C++ {@code std::runtime_error})
      */
     public void saveGltf(String path) {
-        Rosetta.call(2959, this, path);
+        Rosetta.call(2970, this, path);
     }
 
     /**
@@ -422,7 +422,7 @@ public class CadScene extends NativeObject {
      * @throws NativeError.InvalidArgument Invalid ray or geometry. (C++ {@code std::invalid_argument})
      */
     public int pickObject(double x, double y) {
-        return Rosetta.asInt(Rosetta.call(2960, this, x, y));
+        return Rosetta.asInt(Rosetta.call(2971, this, x, y));
     }
 
     /**
@@ -433,7 +433,7 @@ public class CadScene extends NativeObject {
      * @return Object count.
      */
     public int objectCount() {
-        return Rosetta.asInt(Rosetta.call(2961, this));
+        return Rosetta.asInt(Rosetta.call(2972, this));
     }
 
     /**
@@ -444,6 +444,6 @@ public class CadScene extends NativeObject {
      * @return Triangle count.
      */
     public int triangleCount() {
-        return Rosetta.asInt(Rosetta.call(2962, this));
+        return Rosetta.asInt(Rosetta.call(2973, this));
     }
 }

@@ -1,0 +1,711 @@
+//? Title: Count-Based Exploration: Density Pseudo-Counts and Task-Only Evaluation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The four original methods retain40000 steps per run,8 runs, seeds1..8, alpha.3, gamma.99, epsilon.1 and beta.02. Counts include resets and persist. Evaluation uses only task Q-values; novelty-augmented collection returns are not task performance.
+)
+\toc
+
+> Follow the computation
+
+```{cpp, results="markdown", file="figures/count_exploration_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle s;s.width=13;s.height=5;s.font_size=23;d.node("input",{-17,0},"Sparse four-room transition",s);d.node("math",{0,0},"Visit or density novelty bonus",s);d.node("output",{17,0},"Separate behavior / task Q tables",s);d.edge("input","math").edge("math","output").save_svg("build/count_exploration_method.svg");}
+```
+// result_begin: markdown
+\image(figures/count_exploration_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+An empirical event seen2 times in10 has rho=.2. One more observation gives rho_after=3/11, so the pseudo-count formula recovers2. Factorized densities can generalize novelty to unseen combinations.
+
+```{cpp, results="markdown", file="figures/count_exploration_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("build");auto n=f::PseudoCount(.2,3./11);std::vector<double>values{n,f::CountBonus(n,1)};if(std::abs(n-2)>1e-12)return 1;std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/count_exploration_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("count exploration worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/count_exploration_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 2.000000000 |
+| 1 | 0.577350269 |
+\image(figures/count_exploration_worked.svg)
+// result_end
+
+> Complete preserved experiment
+
+The four original methods retain40000 steps per run,8 runs, seeds1..8, alpha.3, gamma.99, epsilon.1 and beta.02. Counts include resets and persist. Evaluation uses only task Q-values; novelty-augmented collection returns are not task performance. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;
+template<class T> void Save(const std::string& name,const std::vector<T>& values){arrays.push_back({name,dm::nn::from_vector(values)});}
+inline void Table(const std::string& name,const dm::rl::foundations::QTable&q){arrays.push_back({name,q.tensor()});}
+struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/count_exploration_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn count_exploration
+// Count-based exploration and pseudo-counts.
+//
+// Port of tflow's count_exploration. The example is TF-free (tabular Q-learning,
+// common/rl/count_bonus.hpp is a verbatim copy of tflow's count_bonus.h), so every
+// number matches tflow exactly. The vsim videos are replaced by PlayEpisode (the
+// same greedy episode, printed, no video); video=0 skips them as in tflow. The
+// port adds result checks after the table (exit 1 on failure).
+//
+// Compare epsilon-greedy Q-learning, an optimistic epsilon-greedy control,
+// exact state-visit bonuses and density pseudo-count bonuses in a sparse-
+// reward four-room maze. Only reaching the goal pays +1; all other transitions
+// pay zero. The same step budget, seeds,
+// epsilon, learning rate and discount are used for all four methods.
+//
+// A state arrival earns beta / sqrt(N(s') + 1), using the count BEFORE the
+// arrival. Pseudo-counts replace N with rho(1-rho')/(rho'-rho): rho is the
+// density before learning s', and rho' is its probability after one update.
+// Here rho is a product of smoothed row and column frequencies, so novelty
+// generalizes between cells. It can also mistake unseen combinations of
+// familiar features for familiar states; the opening checks demonstrate it.
+// This is a small density-model example, not a pixel-density Atari agent.
+//
+// The behaviour Q-table learns task reward plus the novelty bonus. A second
+// off-policy Q-table learns task reward alone from exactly the same data.
+// Evaluation and the video use the latter, with no exploration or bonuses.
+// Counts include reset observations and persist across episodes. A real
+// terminal stops bootstrapping; a time limit only starts a fresh rollout.
+// Bonus rewards change as the counts grow, so augmented returns are never
+// reported as task performance. Positive bonuses may also reward loitering.
+// To avoid preferring visited cells just because their values have already
+// risen above zero, both bonus agents start with optimistic behaviour values
+// beta/(1-gamma) = 2. The optimistic epsilon-only control uses the same
+// initialization, isolating its effect. Every task-only evaluation table
+// starts at zero. All settings and both controls are printed in the results.
+//
+// Options: steps=40000 runs=8 seed=1 video=1 (video=0 skips rendering).
+// The numeric identity and edge-case checks run before every experiment.
+// Reference: Bellemare et al. (2016), https://arxiv.org/abs/1606.01868.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+#include <limits>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/count_bonus.hpp
+#include <datamunge/rl/count_exploration.hpp>
+namespace rl {using dm::rl::foundations::PseudoCount;using dm::rl::foundations::CountBonus;using dm::rl::foundations::FactorizedDensity;}
+
+// Editable workflow support: rl/dqn_common.hpp
+namespace rl {inline bool IsHardwareOption(const std::string& s){return s=="device"||s=="threads"||s=="intra_threads"||s=="inter_threads"||s=="xla";}}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/tabular.hpp
+#include <datamunge/rl/tabular.hpp>
+// Editable workflow support: rl/grid_world.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::GridBase;
+using datamunge::rl::environments::GridWorld;
+using datamunge::rl::environments::CliffWalking;
+}
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+using dm::rl::foundations::QTable;using dm::rl::foundations::PolicyGrid;using dm::rl::foundations::ValueGrid;
+inline float Mean(const std::vector<float>&v,size_t from,size_t to){if(to>v.size())to=v.size();if(from>=to)return 0.f;return std::accumulate(v.begin()+from,v.begin()+to,0.f)/(to-from);}
+}
+
+namespace {
+
+using SparseRooms=dm::rl::environments::SparseRooms;
+
+void Require(bool condition, const char* what) {
+  if (!condition) throw std::runtime_error(what);
+}
+
+template <typename Fn>
+void Rejects(Fn fn, const char* what) {
+  bool rejected = false;
+  try { fn(); } catch (const std::invalid_argument&) { rejected = true; }
+  Require(rejected, what);
+}
+
+void CheckCounts() {
+  std::cout << "== Pseudo-count identities and edge cases\n";
+  // For an empirical density rho=N/n, recoding gives (N+1)/(n+1).
+  double max_error = 0;
+  for (int total : {10, 100, 10000}) {
+    for (int count : {0, 1, total / 2, total - 1}) {
+      const double n = rl::PseudoCount(static_cast<double>(count) / total,
+                                      static_cast<double>(count + 1) / (total + 1));
+      max_error = std::max(max_error, std::abs(n - count));
+      Require(std::abs(n - count) < 1e-7 * (count + 1), "empirical density must recover N");
+    }
+  }
+  std::printf("  empirical density recovers visit counts: max error %.3g\n", max_error);
+
+  rl::FactorizedDensity joint({4});
+  int visits[4] = {};
+  for (int s : {0, 1, 0, 3, 0, 1, 2}) {
+    const double expected = visits[s]++ + 0.5;
+    Require(std::abs(joint.Observe({s}) - expected) < 1e-10, "Dirichlet count must be N + prior");
+  }
+  Require(rl::PseudoCount(0, 0) == 0 && rl::PseudoCount(0, 0.2) == 0, "unseen event count");
+  Require(std::isinf(rl::PseudoCount(0.2, 0.2)), "unchanged density implies infinite count");
+  Require(rl::CountBonus(std::numeric_limits<double>::infinity(), 1) == 0, "no gain means no bonus");
+  Require(rl::CountBonus(0, 0.1) == 0.1 && rl::CountBonus(99, 1) == 0.1, "inverse square-root bonus");
+  Rejects([] { rl::PseudoCount(0.3, 0.2); }, "decreasing density must be rejected");
+  Rejects([] { rl::PseudoCount(0.3, 1); }, "inconsistent recoding must be rejected");
+  Rejects([] { rl::PseudoCount(0, 1); }, "certain recoding of unseen event must be rejected");
+  Rejects([] { rl::CountBonus(-1, 1); }, "negative count must be rejected");
+  Rejects([] { rl::FactorizedDensity d({4}, 0); }, "zero prior must be rejected");
+  Rejects([] { rl::PseudoCount(std::numeric_limits<double>::quiet_NaN(), 0.5); }, "NaN density must be rejected");
+  const double before = joint.Probability({0});
+  bool invalid_feature = false;
+  try { joint.Observe({4}); } catch (const std::out_of_range&) { invalid_feature = true; }
+  Require(invalid_feature && joint.Probability({0}) == before, "invalid observation must not mutate density");
+  std::cout << "  smoothed categorical density recovers N + 0.5; edge cases passed\n";
+
+  // Only (0,1) and (1,0) have ever occurred. Both features of (0,0) are
+  // familiar, even though their combination has never been seen.
+  rl::FactorizedDensity factored({3, 3}), categorical({9});
+  for (int i = 0; i < 100; ++i) {
+    factored.Observe({0, 1});
+    factored.Observe({1, 0});
+    categorical.Observe({1});
+    categorical.Observe({3});
+  }
+  const double generalized = factored.Observe({0, 0});
+  const double unseen = categorical.Observe({0});
+  Require(generalized > unseen && std::abs(unseen - 0.5) < 1e-10, "feature sharing demonstration");
+  std::printf("  unseen (0,0): exact visits 0, joint pseudo-count %.2f, factored %.2f\n", unseen, generalized);
+  std::cout << "  Shared features reduce novelty, even for an unseen combination.\n";
+}
+
+enum class Method { kEpsilon, kOptimistic, kCount, kPseudo };
+const char* Name(Method method) {
+  if (method == Method::kCount) return "state counts";
+  if (method == Method::kPseudo) return "pseudo-counts";
+  if (method == Method::kOptimistic) return "optimistic eps";
+  return "epsilon only";
+}
+
+struct Result {
+  explicit Result(int states) : task_q(states, 4) {}
+  rl::QTable task_q;
+  int first_goal = 0, goals = 0, visited = 0, eval_steps = 0;
+  float eval_return = 0;
+};
+
+Result Train(Method method, int steps, uint64_t seed) {
+  SparseRooms env;
+  const int states = env.num_states();
+  Result result(states);
+  constexpr float alpha = 0.3f, gamma = 0.99f, epsilon = 0.1f, beta = 0.02f;
+  const bool use_bonus = method == Method::kCount || method == Method::kPseudo;
+  rl::QTable behaviour_q(states, 4, method == Method::kEpsilon ? 0.f : beta / (1 - gamma));
+  std::vector<int> counts(states, 0);
+  rl::FactorizedDensity density({env.height(), env.width()});
+  std::mt19937_64 rng(seed);
+  auto observe = [&](int state) {
+    const int previous = counts[state]++;
+    if (method == Method::kPseudo) {
+      const auto [r, c] = env.Coords(state);
+      return density.Observe({r, c});
+    }
+    return static_cast<double>(previous);
+  };
+  int s = static_cast<int>(env.reset(seed)[0]);
+  observe(s);  // reset observations count, but do not earn a reward
+  for (int t = 0; t < steps; ++t) {
+    const int a = behaviour_q.EpsilonGreedy(s, epsilon, rng);
+    const auto r = env.step(a);
+    const int next = static_cast<int>(r.obs[0]);
+    const double count = observe(next);
+    const float bonus = use_bonus ? static_cast<float>(rl::CountBonus(count, beta)) : 0.f;
+    const float bootstrap = r.terminated ? 0.f : gamma;
+    behaviour_q(s, a) += alpha * (r.reward + bonus + bootstrap * behaviour_q.Max(next) - behaviour_q(s, a));
+    result.task_q(s, a) += alpha * (r.reward + bootstrap * result.task_q.Max(next) - result.task_q(s, a));
+    if (r.terminated) {
+      ++result.goals;
+      if (!result.first_goal) result.first_goal = t + 1;
+    }
+    s = next;
+    if (r.done() && t + 1 < steps) {
+      s = static_cast<int>(env.reset()[0]);
+      observe(s);
+    }
+  }
+  result.visited = std::count_if(counts.begin(), counts.end(), [](int n) { return n > 0; });
+  // Separate environment, no novelty-model updates, no epsilon, task reward only.
+  SparseRooms eval;
+  s = static_cast<int>(eval.reset(seed)[0]);
+  while (true) {
+    const auto r = eval.step(result.task_q.Greedy(s));
+    ++result.eval_steps;
+    result.eval_return += r.reward;
+    s = static_cast<int>(r.obs[0]);
+    if (r.done()) break;
+  }
+  for (int state = 0; state < states; ++state)
+    for (int a = 0; a < 4; ++a)
+      Require(std::isfinite(behaviour_q(state, a)) && std::isfinite(result.task_q(state, a)), "Q values must stay finite");
+  return result;
+}
+
+int ParseInt(const std::string& value) {
+  size_t used = 0;
+  const int n = std::stoi(value, &used);
+  if (used != value.size()) throw std::invalid_argument("expected an integer: " + value);
+  return n;
+}
+
+}  // namespace
+
+int main(int argc, char** argv) {
+  try {
+    int steps = 40000, runs = 8, seed = 1, video = 1;
+    for (int i = 1; i < argc; ++i) {
+      const std::string arg = argv[i];
+      if (arg == "--help") {
+        std::cout << "count_exploration [steps=40000] [runs=8] [seed=1] [video=0|1]\n";
+        return 0;
+      }
+      const auto sep = arg.find('=');
+      if (sep == std::string::npos) throw std::invalid_argument("expected key=value: " + arg);
+      const auto key = arg.substr(0, sep), value = arg.substr(sep + 1);
+      if (rl::IsHardwareOption(key)) continue;
+      if (key == "steps") steps = ParseInt(value);
+      else if (key == "runs") runs = ParseInt(value);
+      else if (key == "seed") seed = ParseInt(value);
+      else if (key == "video") video = ParseInt(value);
+      else throw std::invalid_argument("unknown option: " + key);
+    }
+    if (steps < 1 || runs < 1 || seed < 0 || (video != 0 && video != 1))
+      throw std::invalid_argument("steps/runs must be positive, seed nonnegative, video 0 or 1");
+    CheckCounts();
+    SparseRooms maze;
+    maze.reset();
+    int cells = 0;
+    for (int r = 0; r < maze.height(); ++r)
+      for (int c = 0; c < maze.width(); ++c) cells += !maze.IsWall(r, c);
+    std::cout << "\n== Sparse four-room maze (+1 at the goal, zero elsewhere)\n" << maze.render();
+    std::printf("  %d steps/run, %d runs, seeds %d..%llu; epsilon .1, alpha .3, gamma .99, beta .02\n",
+                steps, runs, seed, static_cast<unsigned long long>(static_cast<uint64_t>(seed) + runs - 1));
+    std::printf("  %d reachable cells; horizon 250; first-goal mean excludes runs with no goal\n", cells);
+    std::cout << "  Behaviour Q starts at 0 for epsilon only, 2 for the other methods; task Q starts at 0.\n";
+    std::printf("  %-15s %11s %12s %12s %12s %12s\n", "method", "found goal", "first step", "goals/run", "coverage %", "greedy win %");
+    struct Summary {
+      int found;
+      double first, goals, coverage, win;
+    };
+    std::vector<Summary> summary;  // epsilon, optimistic, counts, pseudo-counts
+    for (Method method : {Method::kEpsilon, Method::kOptimistic, Method::kCount, Method::kPseudo}) {
+      double goals = 0, first = 0, coverage = 0, wins = 0;
+      int found = 0;
+      Result film(maze.num_states());
+      for (int run = 0; run < runs; ++run) {
+        auto result = Train(method, steps, static_cast<uint64_t>(seed) + run);
+        goals += result.goals;
+        coverage += result.visited;
+        wins += result.eval_return;
+        if (result.first_goal) ++found, first += result.first_goal;
+        // Always film the first seed, without selecting the best run.
+        if (run == 0) film = result;
+      }
+      const std::string first_text = found ? std::to_string(static_cast<int>(std::lround(first / found))) : "n/a";
+      std::printf("  %-15s %5d/%-5d %12s %12.1f %12.1f %12.1f\n", Name(method), found, runs,
+                  first_text.c_str(), goals / runs, 100 * coverage / (static_cast<double>(runs) * cells), 100 * wins / runs);
+      std::printf("    seed %d greedy task return %.0f, %d steps\n", seed, film.eval_return, film.eval_steps);
+      if (video) {
+        const std::string name = method == Method::kEpsilon ? "epsilon" : method == Method::kOptimistic ? "optimistic" : method == Method::kCount ? "counts" : "pseudo_counts";
+        rl::PlayEpisode(maze, [&](const rl::Obs& o) {
+          return rl::GreedyQ(film.task_q.Row(static_cast<int>(o[0])), film.task_q.A);
+        }, "count_exploration_" + name, seed);
+      }
+      report_capture::Save("summary_"+std::to_string(int(method)),std::vector<double>{double(found),found?first/found:0.,goals/runs,100*coverage/(double(runs)*cells),100*wins/runs});report_capture::Table("q_"+std::to_string(int(method)),film.task_q);
+      summary.push_back({found, found ? first / found : 1e30, goals / runs, 100 * coverage / (static_cast<double>(runs) * cells), 100 * wins / runs});
+    }
+    std::cout << "\n  Greedy evaluation uses only task Q-values; curiosity is used only during collection.\n"
+                 "  Coverage includes resets and goal cells; walls are excluded.\n"
+                 "  Feature sharing changes novelty, so pseudo-counts need not beat exact counts.\n";
+    // Checks added by the port (tflow prints the table only). At the default budget the
+    // bonus agents reach the goal in every run, much sooner than epsilon-greedy, and every
+    // method's task-only greedy policy wins (tflow: first goal 1763 / 416 / 225 / 261 steps).
+    if (steps >= 40000 && runs >= 8) {
+      Require(summary[2].found == runs && summary[3].found == runs, "both bonus methods reach the goal in every run");
+      Require(summary[2].first < 0.5 * summary[0].first && summary[3].first < 0.5 * summary[0].first,
+              "count and pseudo-count bonuses find the goal at least twice as fast as epsilon-greedy");
+      for (const Summary& m : summary) Require(m.win >= 75, "the task-only greedy policy reaches the goal in most runs");
+    }
+    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << "count_exploration: " << e.what() << "\n";
+    return 1;
+  }
+}
+
+```
+// result_begin:
+// == Pseudo-count identities and edge cases
+//   empirical density recovers visit counts: max error 2.76e-05
+//   smoothed categorical density recovers N + 0.5; edge cases passed
+//   unseen (0,0): exact visits 0, joint pseudo-count 0.50, factored 75.25
+//   Shared features reduce novelty, even for an unseen combination.
+//
+// == Sparse four-room maze (+1 at the goal, zero elsewhere)
+// A . . . # . . . . 
+// . . . . . . . . . 
+// . . . . # . . . . 
+// . . . . # . . . . 
+// # . # # # # # . # 
+// . . . . # . . . . 
+// . . . . # . . . . 
+// . . . . . . . . . 
+// . . . . # . . . G 
+//   40000 steps/run, 8 runs, seeds 1..8; epsilon .1, alpha .3, gamma .99, beta .02
+//   68 reachable cells; horizon 250; first-goal mean excludes runs with no goal
+//   Behaviour Q starts at 0 for epsilon only, 2 for the other methods; task Q starts at 0.
+//   method           found goal   first step    goals/run   coverage % greedy win %
+//   epsilon only        8/8             1763       1724.8        100.0        100.0
+//     seed 1 greedy task return 1, 16 steps
+//   played count_exploration_epsilon (video omitted): 16 steps, return 1.0
+//   optimistic eps      8/8              416         24.2        100.0        100.0
+//     seed 1 greedy task return 1, 16 steps
+//   played count_exploration_optimistic (video omitted): 16 steps, return 1.0
+//   state counts        8/8              225         24.1        100.0        100.0
+//     seed 1 greedy task return 1, 16 steps
+//   played count_exploration_counts (video omitted): 16 steps, return 1.0
+//   pseudo-counts       8/8              261         24.5        100.0        100.0
+//     seed 1 greedy task return 1, 16 steps
+//   played count_exploration_pseudo_counts (video omitted): 16 steps, return 1.0
+//
+//   Greedy evaluation uses only task Q-values; curiosity is used only during collection.
+//   Coverage includes resets and goal cells; walls are excluded.
+//   Feature sharing changes novelty, so pseudo-counts need not beat exact counts.
+//
+// checks passed (vsim videos omitted)
+// result_end
+
+> Inspect the actual experiment results
+
+The source first-goal mean excludes runs that never reach the goal. The accompanying table reports found counts, coverage, goals and task-only greedy wins; optimism is shared by both bonus agents and the optimistic control.
+
+```{cpp, results="markdown", file="figures/count_exploration_results.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/count_exploration_source.npz");auto get=[&](const std::string& name){auto it=std::find_if(archive.begin(),archive.end(),[&](const auto& p){return p.first==name;});if(it==archive.end())throw std::runtime_error("missing source series "+name);return it->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();std::vector<double>x{0,1,2,3},y;for(int m=0;m<4;++m)y.push_back(get("summary_"+std::to_string(m))[1]);plot.lines(x,y,"first-goal mean",{37,99,235});plot.title("count exploration source results").x_label("Method index: epsilon, optimistic, counts, pseudo").y_label("First goal (steps)").size(1150,650).save_svg("build/count_exploration_results.svg");}
+```
+// result_begin: markdown
+\image(figures/count_exploration_results.svg)
+// result_end
+
+> Interpretation and provenance
+
+Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.

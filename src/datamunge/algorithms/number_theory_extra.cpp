@@ -111,22 +111,6 @@ FermatOutcome fermat_kernel(
 
 } // namespace
 
-std::vector<std::uint64_t> trial_division_factorize(std::uint64_t n) {
-  std::vector<std::uint64_t> factors;
-  while (n % 2 == 0) {
-    factors.push_back(2);
-    n /= 2;
-  }
-  for (std::uint64_t d = 3; d * d <= n; d += 2)
-    while (n % d == 0) {
-      factors.push_back(d);
-      n /= d;
-    }
-  if (n > 1)
-    factors.push_back(n);
-  return factors;
-}
-
 std::uint64_t fermat_factor(std::uint64_t n) {
   return fermat_factor_work(n).returned_factor;
 }
@@ -150,23 +134,6 @@ std::string_view fermat_stop_name(FermatStop stop) noexcept {
       return "trial limit";
   }
   return "unknown";
-}
-
-std::uint64_t pollard_p_minus_1(std::uint64_t n, std::uint64_t bound) {
-  if (n % 2 == 0)
-    return 2;
-  std::uint64_t a = 2;
-  for (std::uint64_t j = 2; j <= bound; ++j) {
-    a = powmod(a, j, n);
-    // Test the gcd at every step: we want the *first* j where one prime's order divides the
-    // accumulated exponent but the other's does not (a later j may make both smooth -> g == n).
-    const std::uint64_t g = gcd_u(a == 0 ? n : a - 1, n);
-    if (g > 1 && g < n)
-      return g;
-    if (g == n)
-      return 0; // over-smooth: all factors collapsed at once
-  }
-  return 0;
 }
 
 } // namespace datamunge::algorithms

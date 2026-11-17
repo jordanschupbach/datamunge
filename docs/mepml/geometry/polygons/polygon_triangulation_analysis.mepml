@@ -1,0 +1,296 @@
+//? Title: Ear clipping: actual exact-predicate decisions and remaining rings
+//? Subtitle: Actual canonical histories, retained original fixtures and explicit controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Study the actual native producer from a tiny, inspectable example through the
+retained original experiment and explicit boundary/work controls. Complete
+editable C++ programs own every rendered native figure.
+)
+
+\toc
+
+> Mechanism and scope
+
+A candidate ear must turn counterclockwise in the normalized remaining ring, and
+no other remaining vertex may lie on or inside its triangle. The native producer
+now validates the complete finite simple boundary and uses exact
+stored-coordinate orientation signs for validation and ear tests. It rejects
+duplicates, crossings, touches and adjacent backtracking rather than returning a
+plausible partial mesh. After each actual clip it retains the actual remaining
+original indices. The original seven-vertex concave arrow remains; no external
+dataset is needed.
+
+$$ \#\mathrm{triangles}=n-2\quad\text{for a valid simple polygon with }n\ge3. $$
+
+> A tiny actual producing history
+
+The table reads actual producing records. The native diagram names actual
+captured values from that same run.
+
+```{cpp, results="markdown", file="figures/polygon_triangulation_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/geometry/polygon_triangulation.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    auto t =
+        dm::geometry::triangulate_polygon_trace({{0, 0}, {2, 0}, {2, 2}, {0, 2}});
+    std::print("\n| actual ring size | candidate a,b,c | exact turn | actual other-point tests | blocked | " "clipped |\n| ---: | --- | ---: | ---: | --- | --- |\n");
+    for (auto &r : t.candidates)
+        std::print("| {} | ({},{},{}) | {} | {} | {} | {} |\n", r.ring_size,
+                   r.triangle.a, r.triangle.b, r.triangle.c, r.orientation,
+                   r.containment_tests, r.has_blocker, r.clipped);
+
+    dm::graphics::Diagram d;
+    d.node("n0", {0, 0},
+           std::format("Actual normalized initial ring\n{}", t.initial_ring));
+    d.node("n1", {9, 0},
+           std::format("Actual emitted first ear\n({},{},{})",
+                       t.clips[0].triangle.a, t.clips[0].triangle.b,
+                       t.clips[0].triangle.c));
+    d.node("n2", {18, 0},
+           std::format("Actual remaining original ids\n{}", t.clips[0].remaining));
+    d.edge("n0", "n1").edge("n1", "n2");
+    d.save_svg("build/polygon_triangulation_tiny.svg");
+}
+```
+// result_begin: markdown
+| actual ring size | candidate a,b,c | exact turn | actual other-point tests | blocked | clipped |
+| ---: | --- | ---: | ---: | --- | --- |
+| 4 | (3,0,1) | 1 | 1 | false | true |
+\image(figures/polygon_triangulation_tiny.svg)
+// result_end
+\caption(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+\alttext(Actual tiny producing states, predicates or candidate decisions from the canonical C++ call.)
+
+> The retained original experiment
+
+```{cpp, results="markdown", file="figures/polygon_triangulation_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/geometry/polygon_triangulation.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    const std::vector<dm::geometry::Point2D> polygon{{0, 0}, {4, 2}, {8, 0},
+                                                     {6, 4}, {8, 8}, {4, 6},
+                                                     {0, 8}};
+    auto t = dm::geometry::triangulate_polygon_trace(polygon);
+    std::print("Original seven-vertex arrow: actual{} triangles, {} inspected candidates and {} exact " "orientation calls (including validation).\n",
+               t.run.triangles.size(), t.run.candidates, t.run.orientations);
+    std::print("\n| actual output triangle | a | b | c |\n| ---: | ---: | ---: | ---: |\n");
+    std::vector<double> x, y;
+    for (std::size_t i = 0; i < t.run.triangles.size(); ++i) {
+        auto q = t.run.triangles[i];
+        std::print("| {} | {} | {} | {} |\n", i, q.a, q.b, q.c);
+    }
+    for (auto q : polygon) {
+        x.push_back(q.x);
+        y.push_back(q.y);
+    }
+    x.push_back(x.front());
+    y.push_back(y.front());
+    auto p = dm::graphics::RPlot::create();
+    for (auto q : t.run.triangles)
+        p.polygon({polygon[q.a].x, polygon[q.b].x, polygon[q.c].x},
+                  {polygon[q.a].y, polygon[q.b].y, polygon[q.c].y},
+                  {16, 122, 87}, false);
+    p.lines(x, y, "original polygon boundary", {17, 24, 39}, 2.5).points(
+        x, y, "original vertices", {220, 38, 38}, 5).title(
+        "Original concave seven-vertex arrow: actual native ear triangulation").x_label("x").y_label("y");
+    p.save_svg("build/polygon_triangulation_original.svg");
+}
+```
+// result_begin: markdown
+Original seven-vertex arrow: actual5 triangles, 5 inspected candidates and 103 exact orientation calls (including validation).
+
+| actual output triangle | a | b | c |
+| ---: | ---: | ---: | ---: |
+| 0 | 6 | 0 | 1 |
+| 1 | 6 | 1 | 2 |
+| 2 | 6 | 2 | 3 |
+| 3 | 3 | 4 | 5 |
+| 4 | 3 | 5 | 6 |
+\image(figures/polygon_triangulation_original.svg)
+// result_end
+\caption(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+\alttext(Original inputs and substantive experiment, with native producing outputs and explicitly labelled references.)
+
+> Explicit controls
+
+```{cpp, results="markdown", file="figures/polygon_triangulation_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/geometry/polygon_triangulation.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    std::vector<std::vector<dm::geometry::Point2D>> polygons{
+        {{0, 0}, {2, 0}, {0, 2}}, {{0, 0}, {2, 0}, {2, 2}, {0, 2}},
+        {{0, 2}, {2, 2}, {2, 0}, {0, 0}},
+        {{0, 0}, {1, 0}, {2, 0}, {2, 2}, {0, 2}}
+    };
+    std::vector<std::string> labels{"triangle", "CCW square", "CW square",
+                                    "collinear boundary"};
+    std::vector<double> v;
+    std::print("\n| valid fixture | actual triangles | actual ring reversed |\n| --- | ---: | --- |\n");
+    for (std::size_t i = 0; i < polygons.size(); ++i) {
+        auto r = dm::geometry::triangulate_polygon_run(polygons[i]);
+        v.push_back(r.triangles.size());
+        std::print("| {} | {} | {} |\n", labels[i], r.triangles.size(),
+                   r.reversed);
+    }
+    bool rejected = false;
+    try {
+        dm::geometry::triangulate_polygon({{0, 0}, {2, 2}, {0, 2}, {2, 0}});
+    } catch (const std::invalid_argument &) {
+        rejected = true;
+    }
+    std::print("Self-crossing bow tie rejected before returning a mesh: {}.\n",
+               rejected);
+    auto p =
+        dm::graphics::RPlot::barplot(v, labels,
+                                     "actual complete output triangles");
+    p.title("Ear controls: winding, forward collinearity and invalid-boundary rejection").y_label("actual nondegenerate triangles");
+    p.save_svg("build/polygon_triangulation_controls.svg");
+}
+```
+// result_begin: markdown
+| valid fixture | actual triangles | actual ring reversed |
+| --- | ---: | --- |
+| triangle | 1 | false |
+| CCW square | 2 | false |
+| CW square | 2 | true |
+| collinear boundary | 3 | false |
+Self-crossing bow tie rejected before returning a mesh: true.
+\image(figures/polygon_triangulation_controls.svg)
+// result_end
+\caption(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+\alttext(Controlled native inputs and their actual outcomes; finite failure is interpreted under the stated contract.)
+
+> Actual selected work
+
+```{cpp, results="markdown", file="figures/polygon_triangulation_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <filesystem>
+#include <print>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <climits>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <numeric>
+#include <numbers>
+#include <random>
+#include <string>
+#include <vector>
+#include <datamunge/geometry/polygon_triangulation.hpp>
+int main() {
+    std::filesystem::create_directories("build");
+
+    std::vector<double> x, y;
+    std::print("\n| convex vertices | actual candidates | actual other-point containment queries | actual " "orientation calls including validation |\n| ---: | ---: | ---: | ---: |\n");
+    for (int n : {4, 8, 16, 32}) {
+        std::vector<dm::geometry::Point2D> polygon;
+        for (int i = 0; i < n; ++i) {
+            const double angle = 2 * std::numbers::pi * i / n;
+            polygon.push_back({std::cos(angle), std::sin(angle)});
+        }
+        auto r = dm::geometry::triangulate_polygon_run(polygon);
+        x.push_back(n);
+        y.push_back(r.orientations);
+        std::print("| {} | {} | {} | {} |\n", n, r.candidates,
+                   r.containment_tests, r.orientations);
+    }
+    auto p = dm::graphics::RPlot::create();
+    p.lines(x, y, "actual exact orientation calls", {37, 99, 235}).points(
+        x, y, {37, 99, 235}, 4).title("Convex fixture work: actual predicates include complete simplicity validation").x_label("input vertices").y_label("actual exact orientation calls");
+    p.save_svg("build/polygon_triangulation_work.svg");
+}
+```
+// result_begin: markdown
+| convex vertices | actual candidates | actual other-point containment queries | actual orientation calls including validation |
+| ---: | ---: | ---: | ---: |
+| 4 | 1 | 1 | 18 |
+| 8 | 5 | 15 | 140 |
+| 16 | 13 | 91 | 720 |
+| 32 | 29 | 435 | 3224 |
+\image(figures/polygon_triangulation_work.svg)
+// result_end
+\caption(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+\alttext(Actual selected producing counts or exact represented-value controls; raw table values are retained.)
+
+> API and interpretation
+
+Every block is a complete editable C++ program. Reusable searches, walks,
+geometry decisions, fixture histories and algorithm work live in the canonical
+library. Captured records own their values and are not reconstructed by a second
+algorithm in the report. Explicit policies count the documented selected calls,
+records or scalar entries; they are not peak-byte or wall-clock budgets.
+Original reference curves are labelled as references, and finite returned
+results are not promoted into universal convergence, recovery, scaling or speed
+guarantees.
+
+Independent exact Fraction areas, winding and directed edge-incidence
+certificates verify complete meshes for concave, clockwise, collinear-boundary
+and full-coordinate-range polygons. Selected predicate counts match
+independently counted validation and candidate queries. Frozen comparisons
+preserve original triangle-index sequences on three nondegenerate fixtures. The
+shared batch passes83 native regression tests,18 directly instrumented sanitizer
+tests,84 compiled and executed public examples,391/391 scoped documentation
+definitions, standalone and installed header checks, a linked installed consumer
+and ten representative symbol hovers. All four complete programs execute and
+their computed results and local figures survive HTML and Markdown export. Build
+receipts: `build/mepml-conversion/batch-284-293/`.

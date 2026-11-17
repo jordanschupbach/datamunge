@@ -48,7 +48,7 @@ nn <- new.env(parent = emptyenv())
     code()
   }
 }
-# Shared example components (examples/nn/common/*.hpp) regrouped by C++ namespace: C++
+# Shared example components (prebindings/nn/include/common/*.hpp) regrouped by C++ namespace: C++
 # image_training::ImageBatch is nn_components$image_training$ImageBatch. The R examples run the
 # same loops as the C++ examples over these pieces.
 nn_components <- new.env(parent = emptyenv())

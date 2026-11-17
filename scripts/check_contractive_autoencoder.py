@@ -5,7 +5,7 @@ Reads C++-generated arrays only; never downloads/prepares data or fits a model.
 Checks complete first-batch chain-rule gradients, the Float32 first Adam update,
 all held-out predictions, every retained Jacobian entry and original split IDs.
 Example: python3 scripts/check_contractive_autoencoder.py --directory
-docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/build
+docs/mepml/nn/2_autoencoders/2.1_deterministic_autoencoders/build
 --report build/nn-report-conversion/contractive/oracle.json
 """
 import argparse

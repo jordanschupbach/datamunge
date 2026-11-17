@@ -31,6 +31,10 @@ buildNpmPackage (finalAttrs: {
     description = "JavaScript (N-API) bindings for the datamunge C++ library.";
     license = lib.licenses.unlicense;
   };
+  # npm rebuild runs during the dependency hook, before the build script. Generate
+  # binding.gyp first so it uses this build's core paths, including after a Nix GC.
+  prePatch = "node setup.js";
+
   # npm pack honours .gitignore (which ignores build/), so the compiled addon that index.js
   # loads is left out of the installed package; copy it in.
   postInstall = ''

@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_factorized_video_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/factorized_video.cpp"
-#undef main
+#include "../fixtures/nn_factorized_video_checks.hpp"
 TEST(FactorVideo, Every530HostFactorKernelInputDerivativeAndAllP3dVariants) {
   FactorChecks();
 }
@@ -15,7 +13,7 @@ TEST(FactorVideo, ExplicitBatchStatsMutationAndImmutableInference) {
   namespace m = dm::nn::models;
   nn::ParameterStore p(727), s(729);
   const m::FactorVideoConfig c{false, 4, 3};
-  const auto pools = m::LoadVideo("build/cnn-datasets/action_video");
+  const auto pools = m::LoadVideo((std::filesystem::path(dm::datasets::data_home()) / "action_video"));
   const auto x = nn::slice_axis(pools[0].rgb, 0, 0, 2);
   m::FactorVideo(p, s, x, c);
   std::vector<nn::Tensor> before;

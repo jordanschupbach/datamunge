@@ -34,13 +34,13 @@ classdef BSplineRefinement < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 2976, false, varargin{:});
+      __datamunge__(-2, obj, 2987, false, varargin{:});
     end
     function v = get.basis (obj)
-      v = __datamunge__(2974, obj);
+      v = __datamunge__(2985, obj);
     end
     function set.basis (obj, v)
-      __datamunge__(2975, obj, v);
+      __datamunge__(2986, obj, v);
     end
     function r = apply (obj, coefficients)
       % apply  Maps coarse coefficients to the refined basis.
@@ -61,7 +61,7 @@ classdef BSplineRefinement < datamunge.NativeObject
       %     datamunge:invalid_argument  If `coefficients` does not match the coarse basis size. (C++ std::invalid_argument)
       %
       %   C++: std::vector<double> datamunge::fda::BSplineRefinement::apply(const std::vector<double> & coefficients) const
-      r = __datamunge__(2973, obj, coefficients);
+      r = __datamunge__(2984, obj, coefficients);
     end
   end
 end

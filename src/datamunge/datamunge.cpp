@@ -3281,3 +3281,181 @@ void INLAMixedModel::print_summary() const { model_.print_summary(); }
 std::vector<double> INLAMixedModel::predict(const DataFrame& newdata) const { return model_.predict(newdata.frame_); }
 
 } // namespace datamunge
+
+namespace datamunge {
+namespace {
+/// @brief Class colors shared by region fills and observed-label overlays.
+constexpr graphics::RGB colors[] = {
+    {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178}};
+
+/// @brief Cached integer-width objective evaluated only on a separate validation partition.
+struct WidthObjective final : optim::ArbitraryFunction {
+  const dstruct::DataFrame& train; ///< Borrowed candidate fitting rows.
+  const dstruct::DataFrame& validation; ///< Borrowed selection rows.
+  const std::string formula; ///< Two raw numeric predictors and a string response.
+  const std::string response; ///< Response column name.
+  stats::MLPClassifierOptions options; ///< Fixed settings, except hidden width.
+  std::map<std::size_t, double> cache; ///< One loss per distinct rounded width.
+  std::vector<double> cached; ///< Whether each proposal reused a previous fit.
+
+  /// @brief Bind immutable partitions and candidate controls for the search lifetime.
+  /// @param t Fitting frame.
+  /// @param v Validation frame.
+  /// @param f Formula text.
+  /// @param r Response column.
+  /// @param o Fixed candidate settings.
+  WidthObjective(const dstruct::DataFrame& t, const dstruct::DataFrame& v,
+                 std::string f, std::string r, stats::MLPClassifierOptions o)
+      : train(t), validation(v), formula(std::move(f)), response(std::move(r)), options(std::move(o)) {}
+
+  /// @brief Fit a rounded width once, then cache its validation cross entropy.
+  /// @param point Single continuous width in the validated search interval.
+  /// @return Mean negative log true-class probability, clamped below at double's minimum positive value.
+  /// @throws std::runtime_error For missing classes or nonfinite predictions.
+  double evaluate(const std::vector<double>& point) override {
+    const auto width = static_cast<std::size_t>(std::llround(point.at(0)));
+    const auto found = cache.find(width);
+    cached.push_back(found != cache.end() ? 1.0 : 0.0);
+    if (found != cache.end()) return found->second;
+    options.hidden_layer_sizes = {width};
+    const stats::MLPClassifier model(train, formula, options);
+    const auto prediction = model.predict_detail(validation);
+    const auto& labels = validation.get_column<std::string>(response).values();
+    double loss = 0.0;
+    for (std::size_t i = 0; i < labels.size(); ++i) {
+      const auto cls = std::find(model.classes().begin(), model.classes().end(), labels[i]);
+      if (cls == model.classes().end()) throw std::runtime_error("MLPClassifierSearch: unseen validation class");
+      const auto k = static_cast<std::size_t>(cls - model.classes().begin());
+      const double p = prediction.probabilities.at(i).at(k);
+      if (!std::isfinite(p)) throw std::runtime_error("MLPClassifierSearch: nonfinite validation probability");
+      loss -= std::log(std::clamp(p, std::numeric_limits<double>::min(), 1.0));
+    }
+    loss /= static_cast<double>(labels.size());
+    cache.emplace(width, loss);
+    return loss;
+  }
+};
+} // namespace
+
+MLPClassifierSearch::MLPClassifierSearch(const DataFrame& data, const std::string& response,
+    const std::string& x_feature, const std::string& y_feature, std::size_t min_hidden,
+    std::size_t max_hidden, std::size_t initial_samples, std::size_t iterations,
+    std::size_t epochs, std::uint64_t seed)
+    : x_feature_(x_feature), y_feature_(y_feature), response_(response) {
+  if (min_hidden == 0 || max_hidden <= min_hidden || max_hidden > 1000000 ||
+      initial_samples == 0 || epochs == 0 || iterations > std::numeric_limits<std::size_t>::max() - initial_samples)
+    throw std::invalid_argument("MLPClassifierSearch: invalid width range or search/training budget");
+  if (response.empty() || x_feature.empty() || y_feature.empty() ||
+      response == x_feature || response == y_feature || x_feature == y_feature)
+    throw std::invalid_argument("MLPClassifierSearch: response and predictors must be three distinct columns");
+  const auto& frame = data.frame_;
+  for (const auto& name : {response, x_feature, y_feature})
+    if (!frame.has_column(name)) throw std::invalid_argument("MLPClassifierSearch: missing column " + name);
+  if (frame.column_type(response) != dstruct::DataFrame::ColumnType::String ||
+      frame.column_type(x_feature) != dstruct::DataFrame::ColumnType::Numeric ||
+      frame.column_type(y_feature) != dstruct::DataFrame::ColumnType::Numeric)
+    throw std::invalid_argument("MLPClassifierSearch: response must be string and predictors numeric");
+  const auto& labels = frame.get_column<std::string>(response);
+  const auto& x = frame.get_column<double>(x_feature);
+  const auto& y = frame.get_column<double>(y_feature);
+  std::map<std::string, std::size_t> counts;
+  for (std::size_t i = 0; i < frame.nrows(); ++i) {
+    if (labels.is_null(i) || x.is_null(i) || y.is_null(i) || labels.values()[i].empty() ||
+        !std::isfinite(x.values()[i]) || !std::isfinite(y.values()[i]))
+      throw std::invalid_argument("MLPClassifierSearch: selected columns must be complete and finite");
+    ++counts[labels.values()[i]];
+  }
+  if (counts.size() < 2 || std::any_of(counts.begin(), counts.end(), [](const auto& item) { return item.second < 5; }))
+    throw std::invalid_argument("MLPClassifierSearch: need two classes with at least five rows per class");
+  const auto [development, test] = stats::train_test_split(frame, 0.2, seed, response);
+  const auto [train, validation] = stats::train_test_split(development, 0.25, seed + 1, response);
+  development_ = development;
+  training_rows_ = train.nrows();
+  validation_rows_ = validation.nrows();
+  test_rows_ = test.nrows();
+  const std::string formula = response + " ~ " + x_feature + " + " + y_feature;
+  stats::MLPClassifierOptions options;
+  options.activation = "tanh";
+  options.max_epochs = epochs;
+  options.seed = seed;
+  options.l2 = 0.0001;
+  WidthObjective objective(train, validation, formula, response, options);
+  optim::BayesianOptimizationOptions search_options;
+  search_options.initial_samples = initial_samples;
+  search_options.max_iterations = iterations;
+  search_options.seed = seed;
+  optim::RBFGaussianProcessSurrogate surrogate(optim::GaussianProcessSurrogateOptions{});
+  const auto search = optim::BayesianOptimization(search_options).run(
+      objective, {static_cast<double>(min_hidden)}, {static_cast<double>(max_hidden)}, surrogate);
+  best_hidden_nodes_ = static_cast<std::size_t>(std::llround(search.best_point[0]));
+  validation_log_loss_ = search.best_value;
+  std::vector<double> evaluation, widths;
+  std::vector<std::string> phase;
+  for (std::size_t i = 0; i < search.points.size(); ++i) {
+    evaluation.push_back(static_cast<double>(i + 1));
+    widths.push_back(static_cast<double>(std::llround(search.points[i][0])));
+    phase.push_back(i < initial_samples ? "initial" : "bayesian");
+  }
+  trials_.add_column("evaluation", evaluation);
+  trials_.add_column("hidden_nodes", widths);
+  trials_.add_column("validation_log_loss", search.values);
+  trials_.add_column("best_log_loss", search.best_values);
+  trials_.add_column("cached", objective.cached);
+  trials_.add_column("phase", phase);
+  options.hidden_layer_sizes = {best_hidden_nodes_};
+  model_ = std::make_shared<stats::MLPClassifier>(development_, formula, options);
+  test_accuracy_ = model_->accuracy(test);
+}
+
+std::string MLPClassifierSearch::summary() const {
+  std::ostringstream out;
+  out << "MLP: " << x_feature_ << " + " << y_feature_ << " -> " << response_
+      << "\nFit / validation / test rows: " << training_rows_ << " / " << validation_rows_ << " / " << test_rows_
+      << "\nHidden nodes (Bayesian search): " << best_hidden_nodes_
+      << std::fixed << std::setprecision(6) << "\nValidation log loss: " << validation_log_loss_
+      << "\nTest accuracy (development refit): " << test_accuracy_;
+  return out.str();
+}
+DataFrame* MLPClassifierSearch::trials() const { return new DataFrame(trials_); }
+std::vector<std::string> MLPClassifierSearch::predict(const DataFrame& newdata) const {
+  return model_->predict(newdata.frame_);
+}
+
+graphics::RPlot MLPClassifierSearch::plot_decision_regions(std::size_t grid_resolution) const {
+  if (grid_resolution < 2) throw std::invalid_argument("MLPClassifierSearch: plot resolution must be at least 2");
+  const auto& x = development_.get_column<double>(x_feature_).values();
+  const auto& y = development_.get_column<double>(y_feature_).values();
+  const auto& labels = development_.get_column<std::string>(response_).values();
+  const auto [xlo, xhi] = std::minmax_element(x.begin(), x.end());
+  const auto [ylo, yhi] = std::minmax_element(y.begin(), y.end());
+  const double xpad = std::max(1e-6, (*xhi - *xlo) * 0.1), ypad = std::max(1e-6, (*yhi - *ylo) * 0.1);
+  const std::array<double, 4> box{*xlo - xpad, *xhi + xpad, *ylo - ypad, *yhi + ypad};
+  // Predict the entire grid once, avoiding per-cell formula parsing and data allocation.
+  std::vector<double> gx, gy;
+  for (std::size_t j = 0; j < grid_resolution; ++j)
+    for (std::size_t i = 0; i < grid_resolution; ++i) {
+      gx.push_back(box[0] + (static_cast<double>(i) + 0.5) * (box[1] - box[0]) / grid_resolution);
+      gy.push_back(box[2] + (static_cast<double>(j) + 0.5) * (box[3] - box[2]) / grid_resolution);
+    }
+  dstruct::DataFrame grid;
+  grid.add_column(x_feature_, gx);
+  grid.add_column(y_feature_, gy);
+  const auto prediction = model_->predict(grid);
+  std::vector<std::size_t> index;
+  for (const auto& label : prediction)
+    index.push_back(static_cast<std::size_t>(std::find(model_->classes().begin(), model_->classes().end(), label) - model_->classes().begin()));
+  auto plot = graphics::RPlot::create();
+  std::vector<graphics::RGB> fills;
+  for (std::size_t k = 0; k < model_->classes().size(); ++k) fills.push_back(graphics::tint(colors[k % 6], 0.84));
+  std::size_t cell = 0;
+  graphics::add_class_regions(plot, [&](double, double) { return index[cell++]; }, box, grid_resolution, fills);
+  for (std::size_t k = 0; k < model_->classes().size(); ++k) {
+    std::vector<double> px, py;
+    for (std::size_t i = 0; i < x.size(); ++i) if (labels[i] == model_->classes()[k]) { px.push_back(x[i]); py.push_back(y[i]); }
+    plot.points(px, py, model_->classes()[k], colors[k % 6], 4.0);
+  }
+  plot.title("MLP decision regions").set_subtitle("Bayesian width search: " + std::to_string(best_hidden_nodes_) + " hidden nodes; development observations")
+      .x_label(x_feature_).y_label(y_feature_);
+  return plot;
+}
+} // namespace datamunge

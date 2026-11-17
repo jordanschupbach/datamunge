@@ -40,7 +40,7 @@ classdef DirectedGraph < datamunge.NativeObject
       if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
         return;
       end
-      __datamunge__(-2, obj, 3192, false, varargin{:});
+      __datamunge__(-2, obj, 3203, false, varargin{:});
     end
     function r = empty (obj)
       % empty  C++ datamunge::dstruct::DirectedGraph<std::string>::empty.
@@ -51,7 +51,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::empty() const
-      r = __datamunge__(3172, obj);
+      r = __datamunge__(3183, obj);
     end
     function r = vertex_count (obj)
       % vertex_count  C++ datamunge::dstruct::DirectedGraph<std::string>::vertex_count.
@@ -62,7 +62,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  integer
       %
       %   C++: size_type datamunge::dstruct::DirectedGraph<std::string>::vertex_count() const
-      r = __datamunge__(3173, obj);
+      r = __datamunge__(3184, obj);
     end
     function r = edge_count (obj)
       % edge_count  C++ datamunge::dstruct::DirectedGraph<std::string>::edge_count.
@@ -73,7 +73,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  integer
       %
       %   C++: size_type datamunge::dstruct::DirectedGraph<std::string>::edge_count() const
-      r = __datamunge__(3174, obj);
+      r = __datamunge__(3185, obj);
     end
     function clear (obj)
       % clear  C++ datamunge::dstruct::DirectedGraph<std::string>::clear.
@@ -81,7 +81,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %   obj.clear ()
       %
       %   C++: void datamunge::dstruct::DirectedGraph<std::string>::clear()
-      __datamunge__(3175, obj);
+      __datamunge__(3186, obj);
     end
     function r = add_vertex (obj, varargin)
       % add_vertex  C++ datamunge::dstruct::DirectedGraph<std::string>::add_vertex.
@@ -91,7 +91,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %   Overloads are chosen at run time from the argument types (C++):
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::add_vertex(const std::basic_string<char> & vertex)
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::add_vertex(std::basic_string<char> && vertex)
-      r = __datamunge__(3176, obj, varargin{:});
+      r = __datamunge__(3187, obj, varargin{:});
     end
     function r = remove_vertex (obj, vertex)
       % remove_vertex  C++ datamunge::dstruct::DirectedGraph<std::string>::remove_vertex.
@@ -105,7 +105,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::remove_vertex(const std::basic_string<char> & vertex)
-      r = __datamunge__(3177, obj, vertex);
+      r = __datamunge__(3188, obj, vertex);
     end
     function r = has_vertex (obj, vertex)
       % has_vertex  C++ datamunge::dstruct::DirectedGraph<std::string>::has_vertex.
@@ -119,7 +119,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::has_vertex(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3178, obj, vertex);
+      r = __datamunge__(3189, obj, vertex);
     end
     function r = add_edge (obj, src, dst)
       % add_edge  C++ datamunge::dstruct::DirectedGraph<std::string>::add_edge.
@@ -134,7 +134,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::add_edge(const std::basic_string<char> & src, const std::basic_string<char> & dst)
-      r = __datamunge__(3179, obj, src, dst);
+      r = __datamunge__(3190, obj, src, dst);
     end
     function r = remove_edge (obj, src, dst)
       % remove_edge  C++ datamunge::dstruct::DirectedGraph<std::string>::remove_edge.
@@ -149,7 +149,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::remove_edge(const std::basic_string<char> & src, const std::basic_string<char> & dst)
-      r = __datamunge__(3180, obj, src, dst);
+      r = __datamunge__(3191, obj, src, dst);
     end
     function r = has_edge (obj, src, dst)
       % has_edge  C++ datamunge::dstruct::DirectedGraph<std::string>::has_edge.
@@ -164,7 +164,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::has_edge(const std::basic_string<char> & src, const std::basic_string<char> & dst) const
-      r = __datamunge__(3181, obj, src, dst);
+      r = __datamunge__(3192, obj, src, dst);
     end
     function r = vertices (obj)
       % vertices  C++ datamunge::dstruct::DirectedGraph<std::string>::vertices.
@@ -175,7 +175,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::DirectedGraph<std::string>::vertices() const
-      r = __datamunge__(3182, obj);
+      r = __datamunge__(3193, obj);
     end
     function r = outgoing_neighbors (obj, vertex)
       % outgoing_neighbors  C++ datamunge::dstruct::DirectedGraph<std::string>::outgoing_neighbors.
@@ -189,7 +189,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::DirectedGraph<std::string>::outgoing_neighbors(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3183, obj, vertex);
+      r = __datamunge__(3194, obj, vertex);
     end
     function r = incoming_neighbors (obj, vertex)
       % incoming_neighbors  C++ datamunge::dstruct::DirectedGraph<std::string>::incoming_neighbors.
@@ -203,7 +203,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::DirectedGraph<std::string>::incoming_neighbors(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3184, obj, vertex);
+      r = __datamunge__(3195, obj, vertex);
     end
     function r = out_degree (obj, vertex)
       % out_degree  C++ datamunge::dstruct::DirectedGraph<std::string>::out_degree.
@@ -217,7 +217,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  integer
       %
       %   C++: size_type datamunge::dstruct::DirectedGraph<std::string>::out_degree(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3185, obj, vertex);
+      r = __datamunge__(3196, obj, vertex);
     end
     function r = in_degree (obj, vertex)
       % in_degree  C++ datamunge::dstruct::DirectedGraph<std::string>::in_degree.
@@ -231,7 +231,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  integer
       %
       %   C++: size_type datamunge::dstruct::DirectedGraph<std::string>::in_degree(const std::basic_string<char> & vertex) const
-      r = __datamunge__(3186, obj, vertex);
+      r = __datamunge__(3197, obj, vertex);
     end
     function r = bfs (obj, start)
       % bfs  C++ datamunge::dstruct::DirectedGraph<std::string>::bfs.
@@ -245,7 +245,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::DirectedGraph<std::string>::bfs(const std::basic_string<char> & start) const
-      r = __datamunge__(3187, obj, start);
+      r = __datamunge__(3198, obj, start);
     end
     function r = dfs (obj, start)
       % dfs  C++ datamunge::dstruct::DirectedGraph<std::string>::dfs.
@@ -259,7 +259,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::DirectedGraph<std::string>::dfs(const std::basic_string<char> & start) const
-      r = __datamunge__(3188, obj, start);
+      r = __datamunge__(3199, obj, start);
     end
     function r = contains_path (obj, src, dst)
       % contains_path  C++ datamunge::dstruct::DirectedGraph<std::string>::contains_path.
@@ -274,7 +274,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  logical
       %
       %   C++: bool datamunge::dstruct::DirectedGraph<std::string>::contains_path(const std::basic_string<char> & src, const std::basic_string<char> & dst) const
-      r = __datamunge__(3189, obj, src, dst);
+      r = __datamunge__(3200, obj, src, dst);
     end
     function r = transpose_ (obj)
       % transpose_  C++ datamunge::dstruct::DirectedGraph<std::string>::transpose.
@@ -285,7 +285,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  datamunge.DirectedGraph
       %
       %   C++: DirectedGraph<std::string> datamunge::dstruct::DirectedGraph<std::string>::transpose() const
-      r = __datamunge__(3190, obj);
+      r = __datamunge__(3201, obj);
     end
     function r = topological_sort (obj)
       % topological_sort  C++ datamunge::dstruct::DirectedGraph<std::string>::topological_sort.
@@ -296,7 +296,7 @@ classdef DirectedGraph < datamunge.NativeObject
       %     r  cell array of char
       %
       %   C++: std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> datamunge::dstruct::DirectedGraph<std::string>::topological_sort() const
-      r = __datamunge__(3191, obj);
+      r = __datamunge__(3202, obj);
     end
   end
 end

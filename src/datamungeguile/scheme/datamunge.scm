@@ -68,11 +68,12 @@
            <diffusion-maps> <kernel-pca> <sammon-mapping> <umap> <agglomerative-clustering>
            <dbscan> <gbm-classifier> <gbm-regressor> <xg-boost-classifier> <xg-boost-regressor>
            <kernel-regression> <gaussian-process-regression> <naive-bayes-classifier> <glm>
-           <tensor> <dual> <hyper-dual> <var> <tape> <CadSolid> <CadScene> <spline-solve-options>
-           <b-spline-refinement> <tensor-b-spline> <orthant-cell-tree> <axis-refinement>
-           <hierarchical-b-spline> <truncated-hierarchical-b-spline> <nn-tensor> <nn-model>
-           <task-output> <task-batch> <directed-graph> <undirected-graph> <weighted-graph> <rgba>
-           <bsr> <psr> monomial-order-values monomial-order->integer integer->monomial-order
+           <tensor> <dual> <hyper-dual> <var> <tape> <mlp-classifier-search> <CadSolid>
+           <CadScene> <spline-solve-options> <b-spline-refinement> <tensor-b-spline>
+           <orthant-cell-tree> <axis-refinement> <hierarchical-b-spline>
+           <truncated-hierarchical-b-spline> <nn-tensor> <nn-model> <task-output> <task-batch>
+           <directed-graph> <undirected-graph> <weighted-graph> <rgba> <bsr> <psr>
+           monomial-order-values monomial-order->integer integer->monomial-order
            structuring-element-values structuring-element->integer integer->structuring-element
            spline-solver-values spline-solver->integer integer->spline-solver bc-type-values
            bc-type->integer integer->bc-type dtw-predecessor-values dtw-predecessor->integer
@@ -316,35 +317,36 @@
            less-equal greater greater-equal sum prod argmax argmin all? any? sum-axis mean-axis
            max-axis min-axis prod-axis argmax-axis argmin-axis matmul dot outer tensor-from-image
            tensor-conv2d max-pool2d avg-pool2d relu sigmoid softmax pow eps1 eps2 eps1eps2 index
-           backward CadSolid-box CadSolid-cylinder CadSolid-sphere CadSolid-torus united
-           subtracted intersected translated rotated filleted chamfered shelled volume valid?
-           faces CadScene-from-file CadScene-from-urdf set-joint! joint-names primitive style
-           shadows camera light render save-gltf pick-object object-count triangle-count
-           direct-limit set-direct-limit! basis set-basis! dimensions bases coefficient-count
-           domain-min domain-max set-coefficient! evaluate-points evaluate-grid arity max-depth
-           check check-slot lo hi parent child leaf? ensure-child child-box slot-for contains?
-           locate cells-at-depth orthant-cell-tree-overlaps? covered-to-depth? set-rows!
-           set-cols! cell-count root cell-min cell-max has-spline? spline set-spline!
-           clear-spline subdivide refine refine-region fit-cell fit-cell-penalized level-count
-           level support-min support-max active? active-indices truncated-basis fit-level
-           fit-level-penalized fit-penalized nn-tensor-zeros nn-tensor-ones nn-tensor-full
-           nn-tensor-arange nn-tensor-randn nn-tensor-uniform nn-tensor-load-npy save-npy dtype
-           numel item str astype concat sub mul div mul-scalar neg square activate log-softmax
-           set-requires-grad! requires-grad? grad zero-grad detach add-dense add-conv2d
-           add-max-pool2d add-avg-pool2d add-global-avg-pool2d add-batch-norm add-layer-norm
-           add-dropout add-activation add-flatten add-reshape num-layers forward loss
-           compute-gradients set-optimizer! train-step parameter-names parameter set-parameter!
-           parameter-count load_ rewards terminated truncated final-observations final-valid
-           observation-size action-size output step task-batch-create vertex-count edge-count
-           clear add-vertex? remove-vertex? has-vertex? add-edge? remove-edge? has-edge?
-           outgoing-neighbors incoming-neighbors out-degree in-degree bfs dfs contains-path?
-           topological-sort neighbors has-cycle? directed? edge-weight dijkstra-distances
-           bellman-ford-distances bellman-ford-has-negative-cycle? minimum-spanning-tree
-           strongly-connected-components make-expr make-polynomial make-poly-extended-gcd-result
-           make-real-root-intervals make-complex_ make-cplx make-square-free-factor
-           make-real-factor make-real-factorization make-multivariate-polynomial
-           make-gf-factorization make-rational-function make-arbitrary-function
-           make-differentiable-function make-separable-function
+           backward best-hidden-nodes validation-log-loss test-accuracy training-rows
+           validation-rows test-rows trials CadSolid-box CadSolid-cylinder CadSolid-sphere
+           CadSolid-torus united subtracted intersected translated rotated filleted chamfered
+           shelled volume valid? faces CadScene-from-file CadScene-from-urdf set-joint!
+           joint-names primitive style shadows camera light render save-gltf pick-object
+           object-count triangle-count direct-limit set-direct-limit! basis set-basis! dimensions
+           bases coefficient-count domain-min domain-max set-coefficient! evaluate-points
+           evaluate-grid arity max-depth check check-slot lo hi parent child leaf? ensure-child
+           child-box slot-for contains? locate cells-at-depth orthant-cell-tree-overlaps?
+           covered-to-depth? set-rows! set-cols! cell-count root cell-min cell-max has-spline?
+           spline set-spline! clear-spline subdivide refine refine-region fit-cell
+           fit-cell-penalized level-count level support-min support-max active? active-indices
+           truncated-basis fit-level fit-level-penalized fit-penalized nn-tensor-zeros
+           nn-tensor-ones nn-tensor-full nn-tensor-arange nn-tensor-randn nn-tensor-uniform
+           nn-tensor-load-npy save-npy dtype numel item str astype concat sub mul div mul-scalar
+           neg square activate log-softmax set-requires-grad! requires-grad? grad zero-grad
+           detach add-dense add-conv2d add-max-pool2d add-avg-pool2d add-global-avg-pool2d
+           add-batch-norm add-layer-norm add-dropout add-activation add-flatten add-reshape
+           num-layers forward loss compute-gradients set-optimizer! train-step parameter-names
+           parameter set-parameter! parameter-count load_ rewards terminated truncated
+           final-observations final-valid observation-size action-size output step
+           task-batch-create vertex-count edge-count clear add-vertex? remove-vertex? has-vertex?
+           add-edge? remove-edge? has-edge? outgoing-neighbors incoming-neighbors out-degree
+           in-degree bfs dfs contains-path? topological-sort neighbors has-cycle? directed?
+           edge-weight dijkstra-distances bellman-ford-distances bellman-ford-has-negative-cycle?
+           minimum-spanning-tree strongly-connected-components make-expr make-polynomial
+           make-poly-extended-gcd-result make-real-root-intervals make-complex_ make-cplx
+           make-square-free-factor make-real-factor make-real-factorization
+           make-multivariate-polynomial make-gf-factorization make-rational-function
+           make-arbitrary-function make-differentiable-function make-separable-function
            make-differentiable-separable-function make-proximal-function make-hessian-function
            make-equality-constrained-function make-inequality-constrained-function
            make-residual-function make-gibbs-options make-gibbs-result make-gibbs-sampler
@@ -408,11 +410,11 @@
            make-gbm-classifier make-gbm-regressor make-xg-boost-classifier
            make-xg-boost-regressor make-kernel-regression make-gaussian-process-regression
            make-naive-bayes-classifier make-glm make-tensor make-dual make-hyper-dual make-var
-           make-tape make-CadScene make-spline-solve-options make-b-spline-refinement
-           make-tensor-b-spline make-orthant-cell-tree make-axis-refinement
-           make-hierarchical-b-spline make-truncated-hierarchical-b-spline make-nn-tensor
-           make-nn-model make-task-output make-directed-graph make-undirected-graph
-           make-weighted-graph r-layout-title-band-px r-layout-min-panel-px)
+           make-tape make-mlp-classifier-search make-CadScene make-spline-solve-options
+           make-b-spline-refinement make-tensor-b-spline make-orthant-cell-tree
+           make-axis-refinement make-hierarchical-b-spline make-truncated-hierarchical-b-spline
+           make-nn-tensor make-nn-model make-task-output make-directed-graph
+           make-undirected-graph make-weighted-graph r-layout-title-band-px r-layout-min-panel-px)
   #:replace (negate sin cos exp log zero? gcd numerator denominator filter min max eval values
            select null? abs sqrt apply tan tanh defined?))
 
@@ -6960,6 +6962,71 @@ Construct with:
 Methods: size value-at backward.
 C++: datamunge::Tape")
 
+;; A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+;;
+;; Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+;; test rows (per-class rounding applies). Four random widths followed by eight
+;; Gaussian-process expected-improvement proposals are the default search budget.
+;; Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+;; widths reuse their cached validation log loss. Smaller loss wins; ties retain
+;; the first proposal. Each candidate has one tanh hidden layer, softmax output,
+;; training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+;; penalty 0.0001. Initialization/shuffling use seed for every candidate.
+;;
+;; After selection the network is refitted on fitting plus validation rows,
+;; with new standardization statistics, then scored once on the untouched test.
+;; Validation loss belongs to the candidate fit, not the final refit, and is an
+;; optimistic selection score. Neither split nor test performance is a guarantee
+;; for other seeds or datasets. Owns all state, borrows inputs only during calls,
+;; does not change data or global RNG state. Const methods may run concurrently.
+;; Search cost is at most (initial_samples+iterations) fits plus one refit;
+;; cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+;;
+;;     const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+;;     dm::MLPClassifierSearch fit(*iris, "Species", "Petal.Length", "Petal.Width");
+;;     const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+;;
+;; - D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+;;   of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+;;
+;; Construct with:
+;;   (make <mlp-classifier-search> DATA RESPONSE X-FEATURE Y-FEATURE #:optional MIN-HIDDEN MAX-HIDDEN INITIAL-SAMPLES ITERATIONS EPOCHS SEED)
+;; Methods: best-hidden-nodes validation-log-loss test-accuracy training-rows validation-rows test-rows summary trials predict plot-decision-regions.
+;; C++: datamunge::MLPClassifierSearch
+(goops:define-class <mlp-classifier-search> (<native-object>))
+(core:set-object-property! <mlp-classifier-search> 'documentation
+  "A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+
+Splits complete labelled data by class into 60% fitting, 20% validation and 20%
+test rows (per-class rounding applies). Four random widths followed by eight
+Gaussian-process expected-improvement proposals are the default search budget.
+Proposals in [min_hidden,max_hidden] are rounded to integer widths; repeated
+widths reuse their cached validation log loss. Smaller loss wins; ties retain
+the first proposal. Each candidate has one tanh hidden layer, softmax output,
+training-only standardization, SGD learning rate 0.05, batch size 32 and L2
+penalty 0.0001. Initialization/shuffling use seed for every candidate.
+
+After selection the network is refitted on fitting plus validation rows,
+with new standardization statistics, then scored once on the untouched test.
+Validation loss belongs to the candidate fit, not the final refit, and is an
+optimistic selection score. Neither split nor test performance is a guarantee
+for other seeds or datasets. Owns all state, borrows inputs only during calls,
+does not change data or global RNG state. Const methods may run concurrently.
+Search cost is at most (initial_samples+iterations) fits plus one refit;
+cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    dm::MLPClassifierSearch fit(*iris, \"Species\", \"Petal.Length\", \"Petal.Width\");
+    const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+
+- D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization
+  of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147
+
+Construct with:
+  (make <mlp-classifier-search> DATA RESPONSE X-FEATURE Y-FEATURE #:optional MIN-HIDDEN MAX-HIDDEN INITIAL-SAMPLES ITERATIONS EPOCHS SEED)
+Methods: best-hidden-nodes validation-log-loss test-accuracy training-rows validation-rows test-rows summary trials predict plot-decision-regions.
+C++: datamunge::MLPClassifierSearch")
+
 ;; An owned B-rep solid with value-returning modelling and export operations.
 ;; Geometry uses doubles in caller-selected consistent units. Copies own topology;
 ;; immutable surfaces may be shared. Operations return new solids, preserving inputs.
@@ -8836,7 +8903,15 @@ C++: datamunge::dstruct::WeightedGraph<std::string, double>")
 (define %c:var:divide-scalar #f) (define %c:var:pow #f) (define %c:var:exp #f)
 (define %c:var:log #f) (define %c:var:sqrt #f) (define %c:var:sin #f) (define %c:var:cos #f)
 (define %c:var:tan #f) (define %c:var:tanh #f) (define %c:var:abs #f) (define %c:tape:size #f)
-(define %c:tape:value-at #f) (define %c:tape:backward #f) (define %f:CadSolid-box #f)
+(define %c:tape:value-at #f) (define %c:tape:backward #f)
+(define %c:mlp-classifier-search:best-hidden-nodes #f)
+(define %c:mlp-classifier-search:validation-log-loss #f)
+(define %c:mlp-classifier-search:test-accuracy #f)
+(define %c:mlp-classifier-search:training-rows #f)
+(define %c:mlp-classifier-search:validation-rows #f) (define %c:mlp-classifier-search:test-rows #f)
+(define %c:mlp-classifier-search:summary #f) (define %c:mlp-classifier-search:trials #f)
+(define %c:mlp-classifier-search:predict #f)
+(define %c:mlp-classifier-search:plot-decision-regions #f) (define %f:CadSolid-box #f)
 (define %f:CadSolid-cylinder #f) (define %f:CadSolid-sphere #f) (define %f:CadSolid-torus #f)
 (define %c:CadSolid:united #f) (define %c:CadSolid:subtracted #f)
 (define %c:CadSolid:intersected #f) (define %c:CadSolid:translated #f)
@@ -20027,6 +20102,7 @@ Generic function with methods for <smooth-result>; extend it with define-method.
 (goops:add-method! %g:predict (goops:method ((self <gaussian-process-regression>) . args) (core:apply %c:gaussian-process-regression:predict self args)))
 (goops:add-method! %g:predict (goops:method ((self <naive-bayes-classifier>) . args) (core:apply %c:naive-bayes-classifier:predict self args)))
 (goops:add-method! %g:predict (goops:method ((self <glm>) . args) (core:apply %c:glm:predict self args)))
+(goops:add-method! %g:predict (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:predict self args)))
 (goops:add-method! %g:predict (goops:method ((self <nn-model>) . args) (core:apply %c:nn-model:predict self args)))
 (define (predict self . args)
   "The time-update (prediction) step: x = F x, P = F P F^T + Q.
@@ -20072,7 +20148,7 @@ forward(x, false) without recording gradients.
   Returns: <nn-tensor>.
   C++: NnTensor datamunge::nn::NnModel::predict(const NnTensor & x)
 
-Generic function with methods for <kalman-filter> <ensemble-kalman-filter> <extended-kalman-filter> <information-filter> <particle-filter> <unscented-kalman-filter> <rbf-gaussian-process-surrogate> <b-spline-regression> <p-spline-regression> <lm> <lmm> <glmm> <inla-mixed-model> <lda> <svm> <decision-tree-classifier> <decision-tree-regressor> <random-forest-classifier> <random-forest-regressor> <elastic-net> <ridge> <lasso> <knn-classifier> <knn-regressor> <k-means> <gbm-classifier> <gbm-regressor> <xg-boost-classifier> <xg-boost-regressor> <kernel-regression> <gaussian-process-regression> <naive-bayes-classifier> <glm> <nn-model>; extend it with define-method."
+Generic function with methods for <kalman-filter> <ensemble-kalman-filter> <extended-kalman-filter> <information-filter> <particle-filter> <unscented-kalman-filter> <rbf-gaussian-process-surrogate> <b-spline-regression> <p-spline-regression> <lm> <lmm> <glmm> <inla-mixed-model> <lda> <svm> <decision-tree-classifier> <decision-tree-regressor> <random-forest-classifier> <random-forest-regressor> <elastic-net> <ridge> <lasso> <knn-classifier> <knn-regressor> <k-means> <gbm-classifier> <gbm-regressor> <xg-boost-classifier> <xg-boost-regressor> <kernel-regression> <gaussian-process-regression> <naive-bayes-classifier> <glm> <mlp-classifier-search> <nn-model>; extend it with define-method."
   (core:apply %g:predict self args))
 (set! predict (%documented predict %g:predict #f))
 
@@ -31059,6 +31135,7 @@ Generic function with methods for <lm>; extend it with define-method."
 (goops:add-method! %g:summary (goops:method ((self <gaussian-process-regression>) . args) (core:apply %c:gaussian-process-regression:summary self args)))
 (goops:add-method! %g:summary (goops:method ((self <naive-bayes-classifier>) . args) (core:apply %c:naive-bayes-classifier:summary self args)))
 (goops:add-method! %g:summary (goops:method ((self <glm>) . args) (core:apply %c:glm:summary self args)))
+(goops:add-method! %g:summary (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:summary self args)))
 (goops:add-method! %g:summary (goops:method ((self <nn-model>) . args) (core:apply %c:nn-model:summary self args)))
 (define (summary self . args)
   "Call the C++ method datamunge::LM::summary.
@@ -31067,7 +31144,7 @@ Generic function with methods for <lm>; extend it with define-method."
   Returns: String.
   C++: std::string datamunge::LM::summary() const
 
-Generic function with methods for <lm> <lmm> <glmm> <inla-mixed-model> <lda> <svm> <decision-tree-classifier> <decision-tree-regressor> <random-forest-classifier> <random-forest-regressor> <elastic-net> <ridge> <lasso> <knn-classifier> <knn-regressor> <k-means> <pca> <mds> <isomap> <lle> <tsne> <laplacian-eigenmaps> <diffusion-maps> <kernel-pca> <sammon-mapping> <umap> <agglomerative-clustering> <dbscan> <gbm-classifier> <gbm-regressor> <xg-boost-classifier> <xg-boost-regressor> <kernel-regression> <gaussian-process-regression> <naive-bayes-classifier> <glm> <nn-model>; extend it with define-method."
+Generic function with methods for <lm> <lmm> <glmm> <inla-mixed-model> <lda> <svm> <decision-tree-classifier> <decision-tree-regressor> <random-forest-classifier> <random-forest-regressor> <elastic-net> <ridge> <lasso> <knn-classifier> <knn-regressor> <k-means> <pca> <mds> <isomap> <lle> <tsne> <laplacian-eigenmaps> <diffusion-maps> <kernel-pca> <sammon-mapping> <umap> <agglomerative-clustering> <dbscan> <gbm-classifier> <gbm-regressor> <xg-boost-classifier> <xg-boost-regressor> <kernel-regression> <gaussian-process-regression> <naive-bayes-classifier> <glm> <mlp-classifier-search> <nn-model>; extend it with define-method."
   (core:apply %g:summary self args))
 (set! summary (%documented summary %g:summary #f))
 
@@ -31711,10 +31788,24 @@ Generic function with methods for <lda>; extend it with define-method."
 (goops:add-method! %g:plot-decision-regions (goops:method ((self <gbm-classifier>) . args) (core:apply %c:gbm-classifier:plot-decision-regions self args)))
 (goops:add-method! %g:plot-decision-regions (goops:method ((self <xg-boost-classifier>) . args) (core:apply %c:xg-boost-classifier:plot-decision-regions self args)))
 (goops:add-method! %g:plot-decision-regions (goops:method ((self <naive-bayes-classifier>) . args) (core:apply %c:naive-bayes-classifier:plot-decision-regions self args)))
+(goops:add-method! %g:plot-decision-regions (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:plot-decision-regions self args)))
 (define (plot-decision-regions self . args)
   "Decision regions in predictor space, for a model with exactly two predictors.
 
 Background grid of predicted class regions plus training points; requires exactly 2 predictors.
+
+Plot final predicted class regions and development observations in the predictor plane.
+
+Pale merged rectangles show the predicted class; saturated points show
+observed development labels in the same palette. Test rows are excluded.
+Axis ranges cover development points plus 10% padding, in original units.
+Rendering samples cell centers, so boundaries are a grid approximation.
+
+Example:
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    dm::MLPClassifierSearch fit(*iris, \"Species\", \"Petal.Length\", \"Petal.Width\");
+    auto plot = fit.plot_decision_regions();
+    plot.save_svg(\"build/iris-mlp.svg\");
 
 (plot-decision-regions LDA)
   Returns: <r-plot>.
@@ -31726,8 +31817,17 @@ Background grid of predicted class regions plus training points; requires exactl
     GRID-RESOLUTION: Exact integer; default 60.
   Returns: <r-plot>.
   C++: datamunge::graphics::RPlot datamunge::DecisionTreeClassifier::plot_decision_regions(const std::string & x_feature, const std::string & y_feature, std::size_t grid_resolution = 60) const
+(plot-decision-regions MLP-CLASSIFIER-SEARCH #:optional GRID-RESOLUTION)
+  Arguments:
+    GRID-RESOLUTION: Cells per axis, default 120; at least 2. Exact integer; default 120.
+  Returns: Owned editable native plot; save it to an SVG/PNG file rather than printing XML. <r-plot>.
+  Raises: datamunge-invalid-argument (std::invalid_argument) If grid_resolution is less than 2.
+  C++: datamunge::graphics::RPlot datamunge::MLPClassifierSearch::plot_decision_regions(std::size_t grid_resolution = 120) const
 
-Generic function with methods for <lda> <decision-tree-classifier> <random-forest-classifier> <knn-classifier> <gbm-classifier> <xg-boost-classifier> <naive-bayes-classifier>; extend it with define-method."
+See also: graphics::add_class_regions()
+See also: predict()
+
+Generic function with methods for <lda> <decision-tree-classifier> <random-forest-classifier> <knn-classifier> <gbm-classifier> <xg-boost-classifier> <naive-bayes-classifier> <mlp-classifier-search>; extend it with define-method."
   (core:apply %g:plot-decision-regions self args))
 (set! plot-decision-regions (%documented plot-decision-regions %g:plot-decision-regions #f))
 
@@ -34130,6 +34230,105 @@ Back-propagates from this one-element tensor into every leaf's grad().
 Generic function with methods for <tape> <nn-tensor>; extend it with define-method."
   (core:apply %g:backward self args))
 (set! backward (%documented backward %g:backward #f))
+
+(define %g:best-hidden-nodes (%generic 'best-hidden-nodes))
+(goops:add-method! %g:best-hidden-nodes (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:best-hidden-nodes self args)))
+(define (best-hidden-nodes self . args)
+  "Selected integer width of the single hidden layer.
+
+(best-hidden-nodes MLP-CLASSIFIER-SEARCH)
+  Returns: A value in the requested inclusive search range. Exact integer.
+  C++: std::size_t datamunge::MLPClassifierSearch::best_hidden_nodes() const
+
+Generic function with methods for <mlp-classifier-search>; extend it with define-method."
+  (core:apply %g:best-hidden-nodes self args))
+(set! best-hidden-nodes (%documented best-hidden-nodes %g:best-hidden-nodes #f))
+
+(define %g:validation-log-loss (%generic 'validation-log-loss))
+(goops:add-method! %g:validation-log-loss (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:validation-log-loss self args)))
+(define (validation-log-loss self . args)
+  "Minimum validation mean negative log probability of the true class.
+
+(validation-log-loss MLP-CLASSIFIER-SEARCH)
+  Returns: Finite nonnegative loss of the selected candidate before refitting. Real.
+  C++: double datamunge::MLPClassifierSearch::validation_log_loss() const
+
+Generic function with methods for <mlp-classifier-search>; extend it with define-method."
+  (core:apply %g:validation-log-loss self args))
+(set! validation-log-loss (%documented validation-log-loss %g:validation-log-loss #f))
+
+(define %g:test-accuracy (%generic 'test-accuracy))
+(goops:add-method! %g:test-accuracy (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:test-accuracy self args)))
+(define (test-accuracy self . args)
+  "Held-out test accuracy of the final development-data refit.
+
+(test-accuracy MLP-CLASSIFIER-SEARCH)
+  Returns: Fraction correctly classified in [0,1]; test rows were never used for selection. Real.
+  C++: double datamunge::MLPClassifierSearch::test_accuracy() const
+
+Generic function with methods for <mlp-classifier-search>; extend it with define-method."
+  (core:apply %g:test-accuracy self args))
+(set! test-accuracy (%documented test-accuracy %g:test-accuracy #f))
+
+(define %g:training-rows (%generic 'training-rows))
+(goops:add-method! %g:training-rows (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:training-rows self args)))
+(define (training-rows self . args)
+  "Number of rows used to fit each search candidate.
+
+(training-rows MLP-CLASSIFIER-SEARCH)
+  Returns: Fitting partition size, excluding validation and test. Exact integer.
+  C++: std::size_t datamunge::MLPClassifierSearch::training_rows() const
+
+Generic function with methods for <mlp-classifier-search>; extend it with define-method."
+  (core:apply %g:training-rows self args))
+(set! training-rows (%documented training-rows %g:training-rows #f))
+
+(define %g:validation-rows (%generic 'validation-rows))
+(goops:add-method! %g:validation-rows (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:validation-rows self args)))
+(define (validation-rows self . args)
+  "Number of rows used to choose hidden width.
+
+(validation-rows MLP-CLASSIFIER-SEARCH)
+  Returns: Validation partition size. Exact integer.
+  C++: std::size_t datamunge::MLPClassifierSearch::validation_rows() const
+
+Generic function with methods for <mlp-classifier-search>; extend it with define-method."
+  (core:apply %g:validation-rows self args))
+(set! validation-rows (%documented validation-rows %g:validation-rows #f))
+
+(define %g:test-rows (%generic 'test-rows))
+(goops:add-method! %g:test-rows (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:test-rows self args)))
+(define (test-rows self . args)
+  "Number of untouched rows used for the final evaluation.
+
+(test-rows MLP-CLASSIFIER-SEARCH)
+  Returns: Test partition size. Exact integer.
+  C++: std::size_t datamunge::MLPClassifierSearch::test_rows() const
+
+Generic function with methods for <mlp-classifier-search>; extend it with define-method."
+  (core:apply %g:test-rows self args))
+(set! test-rows (%documented test-rows %g:test-rows #f))
+
+(define %g:trials (%generic 'trials))
+(goops:add-method! %g:trials (goops:method ((self <mlp-classifier-search>) . args) (core:apply %c:mlp-classifier-search:trials self args)))
+(define (trials self . args)
+  "Copy the complete Bayesian proposal history into an owned dataframe.
+
+Example:
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    dm::MLPClassifierSearch fit(*iris, \"Species\", \"Petal.Length\", \"Petal.Width\");
+    const std::unique_ptr<dm::DataFrame> history(fit.trials());
+    const auto n = history->nrows(); // 12
+
+(trials MLP-CLASSIFIER-SEARCH)
+  Returns: New caller-owned frame with evaluation (1-based), hidden_nodes, validation_log_loss, best_log_loss, cached (0/1), and phase (initial/bayesian). One row per proposal, including repeated cached widths. Bindings own the result. <data-frame> or #f.
+  C++: DataFrame * datamunge::MLPClassifierSearch::trials() const
+
+See also: summary()
+
+Generic function with methods for <mlp-classifier-search>; extend it with define-method."
+  (core:apply %g:trials self args))
+(set! trials (%documented trials %g:trials #f))
 
 (define (CadSolid-box width depth height)
   "Construct an axis-aligned box with minimum corner at the origin.
@@ -40006,6 +40205,34 @@ C++: datamunge::Tape::Tape()
 
 Same as (make <tape> ARG ...)."
   (core:apply goops:make <tape> args))
+
+(define (make-mlp-classifier-search . args)
+  "Tune a single hidden layer, refit on development rows and evaluate the test rows.
+
+Example:
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    dm::MLPClassifierSearch fit(*iris, \"Species\", \"Petal.Length\", \"Petal.Width\", 2, 24, 4, 8, 400, 42);
+    const auto n = fit.test_rows(); // 30
+
+Arguments:
+  DATA: Borrowed labelled frame; unchanged. Every selected value must be present and finite. <data-frame>.
+  RESPONSE: String response column, with nonempty labels and at least five rows per class. String.
+  X-FEATURE: First numeric predictor, distinct from response and y_feature. String.
+  Y-FEATURE: Second numeric predictor; these two are the only model inputs. String.
+  MIN-HIDDEN: Smallest hidden width, default 2; at least 1 and below max_hidden. Exact integer; default 2.
+  MAX-HIDDEN: Largest hidden width, default 24; at most 1000000. Exact integer; default 24.
+  INITIAL-SAMPLES: Random initial proposals, default 4; at least 1. Exact integer; default 4.
+  ITERATIONS: Surrogate-guided proposals, default 8; zero permits initial design only. Exact integer; default 8.
+  EPOCHS: SGD passes for each candidate and the final refit, default 400; at least 1. Exact integer; default 400.
+  SEED: Local split/search/initialization seed, default 42; validation split uses seed+1 modulo 2^64. Exact integer; default 42.
+Raises: datamunge-invalid-argument (std::invalid_argument) For invalid columns, labels, nonfinite/missing data or search controls.
+Raises: datamunge-runtime-error (std::runtime_error) If fitting or scoring fails to produce finite probabilities.
+C++: datamunge::MLPClassifierSearch::MLPClassifierSearch(const DataFrame & data, const std::string & response, const std::string & x_feature, const std::string & y_feature, std::size_t min_hidden = 2, std::size_t max_hidden = 24, std::size_t initial_samples = 4, std::size_t iterations = 8, std::size_t epochs = 400, std::uint64_t seed = 42)
+
+See also: MLPClassifierSearch
+See also: summary()
+Same as (make <mlp-classifier-search> ARG ...)."
+  (core:apply goops:make <mlp-classifier-search> args))
 
 (define (make-CadScene . args)
   "Create an empty scene with automatic camera framing.

@@ -1,27 +1,14 @@
 #pragma once
+#include <datamunge/algorithms/jump_search.hpp>
 /// @file sorted_search.hpp
 /// @brief Integer searches on sorted arrays and instrumented complete-tree BFS layouts.
 #include <datamunge/algorithms/binary_search.hpp>
+#include <datamunge/algorithms/interpolation_search.hpp>
 
 #include <cstddef>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// @brief *Jump (block) search* on an ascending-sorted vector @p a: step forward in fixed blocks of
-///        size @c floor(sqrt(n)) until a block whose last element is >= key is found, then scan that
-///        block linearly. It makes @c O(sqrt(n)) comparisons -- worse than binary search but with a
-///        purely forward access pattern, historically useful when jumping back is expensive (e.g.
-///        tape or singly-linked storage).
-SearchResult jump_search(const std::vector<int>& a, int key);
-
-/// @brief *Interpolation (predictive) search* on an ascending-sorted vector @p a: instead of always
-///        probing the middle, it estimates the key's position by linear interpolation between the
-///        current endpoints' values, @c pos = lo + (key - a[lo]) * (hi - lo) / (a[hi] - a[lo]). On
-///        (near-)uniformly distributed data this converges in @c O(log log n) expected comparisons;
-///        in the worst case (very skewed data) it degrades to @c O(n). A division-by-zero guard
-///        handles equal endpoints. @p a must be sorted in non-decreasing order.
-SearchResult interpolation_search(const std::vector<int>& a, int key);
 
 /// @brief Initial exact consecutive Fibonacci sizes for a sorted-array search.
 /// For positive length, starts at small=0,middle=1,large=1 and grows until

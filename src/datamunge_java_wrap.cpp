@@ -185,6 +185,26 @@ struct Words {
     static constexpr const char* sequence = "a list or array";
     static constexpr const char* mapping = "an association list";
     static constexpr const char* tuple_kind = "tuple";
+#elif defined(ROSETTA_FULL_APL)
+    static constexpr const char* language = "APL";
+    static constexpr const char* nil = "⍬";
+    static constexpr const char* t = "1";
+    static constexpr const char* boolean = "a boolean (0 or 1)";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a number";
+    static constexpr const char* complex = "a complex number";
+    static constexpr const char* string = "a character vector";
+    static constexpr const char* symbol = "enumerator ";
+    static constexpr const char* bytes = "an integer vector";
+    static constexpr const char* reals = "a numeric vector";
+    static constexpr const char* list = "vector";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "2-column matrix";
+    static constexpr const char* function = "function reference";
+    static constexpr const char* ref = "updated argument";
+    static constexpr const char* sequence = "a vector";
+    static constexpr const char* mapping = "a 2-column matrix (keys, values) or a vector of pairs";
+    static constexpr const char* tuple_kind = "vector";
 #else
     static constexpr const char* language = "Lisp";
     static constexpr const char* nil = "NIL";
@@ -242,7 +262,7 @@ struct Node {
     explicit Node(Tag k) : kind(k) {}
     bool nil() const { return kind == tag_nil; }
 };
-#if defined(ROSETTA_FULL_JULIA) || defined(ROSETTA_FULL_CSHARP) || defined(ROSETTA_FULL_FORTRAN) || defined(ROSETTA_FULL_OCTAVE) || defined(ROSETTA_FULL_JAVA) || defined(ROSETTA_FULL_GO) || defined(ROSETTA_FULL_OCAML)
+#if defined(ROSETTA_FULL_JULIA) || defined(ROSETTA_FULL_CSHARP) || defined(ROSETTA_FULL_FORTRAN) || defined(ROSETTA_FULL_OCTAVE) || defined(ROSETTA_FULL_JAVA) || defined(ROSETTA_FULL_GO) || defined(ROSETTA_FULL_OCAML) || defined(ROSETTA_FULL_APL)
 inline Node boolean(bool value) { return Node(value ? tag_t : tag_false); }
 #else
 inline Node boolean(bool value) { return Node(value ? tag_t : tag_nil); }
@@ -614,11 +634,23 @@ inline double real_of(const Node& n) {
 }
 
 template<class T> struct Value<T, std::enable_if_t<std::is_same_v<T, bool>>> {
+#if defined(ROSETTA_FULL_APL)
+    // APL booleans are the numbers 0 and 1 (after integer overloads: lenient checks only).
+    static bool check(const Node& n, bool strict) {
+        if (n.kind == tag_t || n.kind == tag_false) return true;
+        return !strict && ((n.kind == tag_int && (n.integer == 0 || n.integer == 1)) || (n.kind == tag_real && (n.real == 0 || n.real == 1)));
+    }
+    static bool load(const Node& n) {
+        if (!check(n, false)) fail(std::string("expected ") + Words::boolean + ", got " + type_name(n));
+        return n.kind == tag_t || (n.kind == tag_int && n.integer == 1) || (n.kind == tag_real && n.real == 1);
+    }
+#else
     static bool check(const Node& n, bool) { return n.kind == tag_t || n.kind == tag_nil || n.kind == tag_false; }
     static bool load(const Node& n) {
         if (!check(n, false)) fail(std::string("expected ") + Words::boolean + ", got " + type_name(n));
         return n.kind == tag_t;
     }
+#endif
     static Node make(bool value) { return boolean(value); }
 };
 template<class T> struct Value<T, std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>>> {
@@ -756,7 +788,8 @@ template<class T> struct Value<T, std::enable_if_t<std::is_enum_v<T>>> {
     }
     static Node make(T value) {
         const auto v = static_cast<long long>(static_cast<U>(value));
-#if !defined(ROSETTA_FULL_OCTAVE) // Octave: enumerators are numbers (constants of an enum class)
+        (void)v;
+#if !defined(ROSETTA_FULL_OCTAVE) && !defined(ROSETTA_FULL_APL) // Octave, APL: enumerators are numbers (constants of an enum class)
         for (const auto& entry : EnumTable<T>::entries) if (entry.second == v) return text_node(tag_symbol, entry.first);
 #endif
         return number(static_cast<U>(value));
@@ -830,8 +863,8 @@ inline Node element(const Node& n, std::size_t i) {
     if (n.kind == tag_bytes) { Node e(tag_int); e.integer = static_cast<unsigned char>(n.text[i]); return e; }
     return n.items[i];
 }
-#if defined(ROSETTA_FULL_OCTAVE)
-// Octave has no scalar/vector distinction: a lone value is a one-element sequence (lenient checks).
+#if defined(ROSETTA_FULL_OCTAVE) || defined(ROSETTA_FULL_APL)
+// Octave has no scalar/vector distinction (nor, for arguments, APL): a lone value is a one-element sequence (lenient checks).
 inline bool lone(const Node& n) { return !sequence(n) && !n.nil() && n.kind != tag_map && n.kind != tag_ref; }
 #else
 inline bool lone(const Node&) { return false; }
@@ -947,6 +980,10 @@ template<class M, class K, class V> struct Mapping {
         if (n.kind != tag_list && n.kind != tag_tuple) return false;
         for (const auto& item : n.items) {
             if (item.kind == tag_cons) { if (!each(item.items[0], item.items[1])) return false; }
+#if defined(ROSETTA_FULL_APL)
+            // APL: the rows of a 2-column matrix, or 2-item vectors.
+            else if ((item.kind == tag_list || item.kind == tag_tuple) && item.items.size() == 2) { if (!each(item.items[0], item.items[1])) return false; }
+#endif
             else return false;
         }
         return true;
@@ -975,18 +1012,30 @@ template<class K, class V, class H, class E, class A> struct Value<std::unordere
 // Pairs and tuples are lists ((a b)); pairs also accept conses ((a . b)).
 template<class... T> struct Product {
     static constexpr std::size_t N = sizeof...(T);
-    static const std::vector<Node>* parts(const Node& n) {
+    static const std::vector<Node>* parts(const Node& n, std::vector<Node>& scratch) {
         if (n.kind == tag_cons && N == 2) return &n.items;
         if ((n.kind == tag_list || n.kind == tag_tuple) && n.items.size() == N) return &n.items;
+#if defined(ROSETTA_FULL_APL)
+        // APL: a pair or tuple of numbers is a simple numeric vector (1.25 2.75), which arrives as reals.
+        if (n.kind == tag_reals && n.reals.size() == N) {
+            scratch.clear();
+            for (const double x : n.reals) { Node e(tag_real); e.real = x; scratch.push_back(std::move(e)); }
+            return &scratch;
+        }
+#else
+        (void)scratch;
+#endif
         return nullptr;
     }
     template<std::size_t... I> static bool check_each(const Node& n, bool strict, std::index_sequence<I...>) {
-        const auto* items = parts(n);
+        std::vector<Node> scratch;
+        const auto* items = parts(n, scratch);
         if (!items) return false;
         return (Value<T>::check((*items)[I], strict) && ...);
     }
     template<class Tuple, std::size_t... I> static Tuple load_each(const Node& n, std::index_sequence<I...>) {
-        const auto* items = parts(n);
+        std::vector<Node> scratch;
+        const auto* items = parts(n, scratch);
         if (!items) fail(std::string("expected a ") + Words::tuple_kind + " of " + std::to_string(N) + " elements, got " + type_name(n));
         return Tuple(Value<T>::load((*items)[I])...);
     }
@@ -1033,8 +1082,8 @@ template<class Rep, class Period> struct Value<std::chrono::duration<Rep, Period
 // A (ref value) cell: a mutable reference parameter reads its value and stores the update back.
 template<class V, class = void> struct makeable : std::false_type {};
 template<class V> struct makeable<V, std::void_t<decltype(Value<V>::make(std::declval<const V&>()))>> : std::true_type {};
-#if defined(ROSETTA_FULL_OCTAVE)
-// Octave passes every argument at a position some overload updates as a ref cell.
+#if defined(ROSETTA_FULL_OCTAVE) || defined(ROSETTA_FULL_APL)
+// Octave (and APL) pass every argument at a position some overload updates as a ref cell.
 inline const Node& source(const Node& n, bool) { return n.kind == tag_ref ? n.items.at(0) : n; }
 #else
 inline const Node& source(const Node& n, bool out) { return out && n.kind == tag_ref ? n.items.at(0) : n; }
@@ -1597,6 +1646,7 @@ template<> struct Bound<datamunge::Dual> : std::true_type {};
 template<> struct Bound<datamunge::HyperDual> : std::true_type {};
 template<> struct Bound<datamunge::Var> : std::true_type {};
 template<> struct Bound<datamunge::Tape> : std::true_type {};
+template<> struct Bound<datamunge::MLPClassifierSearch> : std::true_type {};
 template<> struct Bound<datamunge::cad::Solid> : std::true_type {};
 template<> struct Bound<datamunge::cad::View> : std::true_type {};
 template<> struct Bound<datamunge::fda::SplineSolveOptions> : std::true_type {};
@@ -4855,6 +4905,17 @@ void rosetta_java_3230(rosetta_lisp::Call&);
 void rosetta_java_3231(rosetta_lisp::Call&);
 void rosetta_java_3232(rosetta_lisp::Call&);
 void rosetta_java_3233(rosetta_lisp::Call&);
+void rosetta_java_3234(rosetta_lisp::Call&);
+void rosetta_java_3235(rosetta_lisp::Call&);
+void rosetta_java_3236(rosetta_lisp::Call&);
+void rosetta_java_3237(rosetta_lisp::Call&);
+void rosetta_java_3238(rosetta_lisp::Call&);
+void rosetta_java_3239(rosetta_lisp::Call&);
+void rosetta_java_3240(rosetta_lisp::Call&);
+void rosetta_java_3241(rosetta_lisp::Call&);
+void rosetta_java_3242(rosetta_lisp::Call&);
+void rosetta_java_3243(rosetta_lisp::Call&);
+void rosetta_java_3244(rosetta_lisp::Call&);
 const rosetta_lisp::Function table[] = {rosetta_lisp::call_native,
     rosetta_java_1,
     rosetta_java_2,
@@ -8088,7 +8149,18 @@ const rosetta_lisp::Function table[] = {rosetta_lisp::call_native,
     rosetta_java_3230,
     rosetta_java_3231,
     rosetta_java_3232,
-    rosetta_java_3233};
+    rosetta_java_3233,
+    rosetta_java_3234,
+    rosetta_java_3235,
+    rosetta_java_3236,
+    rosetta_java_3237,
+    rosetta_java_3238,
+    rosetta_java_3239,
+    rosetta_java_3240,
+    rosetta_java_3241,
+    rosetta_java_3242,
+    rosetta_java_3243,
+    rosetta_java_3244};
 } // namespace ROSETTA_LISP_MODULE
 #if defined(_WIN32)
 #define ROSETTA_CABI_EXPORT extern "C" __declspec(dllexport)
@@ -8368,22 +8440,23 @@ ROSETTA_CABI_EXPORT int rosetta_datamunge_init(int version, ROSETTA_LISP_MODULE:
         rosetta_lisp::register_type<datamunge::HyperDual>("HyperDual", 249);
         rosetta_lisp::register_type<datamunge::Var>("Var", 250);
         rosetta_lisp::register_type<datamunge::Tape>("Tape", 251);
-        rosetta_lisp::register_type<datamunge::cad::Solid>("CadSolid", 252);
-        rosetta_lisp::register_type<datamunge::cad::View>("CadScene", 253);
-        rosetta_lisp::register_type<datamunge::fda::SplineSolveOptions>("SplineSolveOptions", 254);
-        rosetta_lisp::register_type<datamunge::fda::BSplineRefinement>("BSplineRefinement", 255);
-        rosetta_lisp::register_type<datamunge::fda::TensorBSpline>("TensorBSpline", 256);
-        rosetta_lisp::register_type<datamunge::fda::detail::OrthantCellTree>("OrthantCellTree", 257);
-        rosetta_lisp::register_type<datamunge::fda::detail::AxisRefinement>("AxisRefinement", 258);
-        rosetta_lisp::register_type<datamunge::fda::HierarchicalBSpline>("HierarchicalBSpline", 259);
-        rosetta_lisp::register_type<datamunge::fda::TruncatedHierarchicalBSpline>("TruncatedHierarchicalBSpline", 260);
-        rosetta_lisp::register_type<datamunge::nn::NnTensor>("NnTensor", 261);
-        rosetta_lisp::register_type<datamunge::nn::NnModel>("NnModel", 262);
-        rosetta_lisp::register_type<datamunge::sim::TaskOutput>("TaskOutput", 263);
-        rosetta_lisp::register_type<datamunge::sim::TaskBatch>("TaskBatch", 264);
-        rosetta_lisp::register_type<datamunge::dstruct::DirectedGraph<std::string>>("DirectedGraph", 265);
-        rosetta_lisp::register_type<datamunge::dstruct::UndirectedGraph<std::string>>("UndirectedGraph", 266);
-        rosetta_lisp::register_type<datamunge::dstruct::WeightedGraph<std::string, double>>("WeightedGraph", 267);
+        rosetta_lisp::register_type<datamunge::MLPClassifierSearch>("MLPClassifierSearch", 252);
+        rosetta_lisp::register_type<datamunge::cad::Solid>("CadSolid", 253);
+        rosetta_lisp::register_type<datamunge::cad::View>("CadScene", 254);
+        rosetta_lisp::register_type<datamunge::fda::SplineSolveOptions>("SplineSolveOptions", 255);
+        rosetta_lisp::register_type<datamunge::fda::BSplineRefinement>("BSplineRefinement", 256);
+        rosetta_lisp::register_type<datamunge::fda::TensorBSpline>("TensorBSpline", 257);
+        rosetta_lisp::register_type<datamunge::fda::detail::OrthantCellTree>("OrthantCellTree", 258);
+        rosetta_lisp::register_type<datamunge::fda::detail::AxisRefinement>("AxisRefinement", 259);
+        rosetta_lisp::register_type<datamunge::fda::HierarchicalBSpline>("HierarchicalBSpline", 260);
+        rosetta_lisp::register_type<datamunge::fda::TruncatedHierarchicalBSpline>("TruncatedHierarchicalBSpline", 261);
+        rosetta_lisp::register_type<datamunge::nn::NnTensor>("NnTensor", 262);
+        rosetta_lisp::register_type<datamunge::nn::NnModel>("NnModel", 263);
+        rosetta_lisp::register_type<datamunge::sim::TaskOutput>("TaskOutput", 264);
+        rosetta_lisp::register_type<datamunge::sim::TaskBatch>("TaskBatch", 265);
+        rosetta_lisp::register_type<datamunge::dstruct::DirectedGraph<std::string>>("DirectedGraph", 266);
+        rosetta_lisp::register_type<datamunge::dstruct::UndirectedGraph<std::string>>("UndirectedGraph", 267);
+        rosetta_lisp::register_type<datamunge::dstruct::WeightedGraph<std::string, double>>("WeightedGraph", 268);
         rosetta_lisp::EnumTable<datamunge::algebra::MonomialOrder>::entries = {{"Lex", 0LL}, {"Grlex", 1LL}, {"Grevlex", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::cv::StructuringElement>::entries = {{"Square", 0LL}, {"Cross", 1LL}, };
         rosetta_lisp::EnumTable<datamunge::fda::SplineSolver>::entries = {{"Automatic", 0LL}, {"Cholesky", 1LL}, {"ConjugateGradient", 2LL}, };

@@ -1,4 +1,6 @@
 #pragma once
+#include <datamunge/algorithms/levenshtein.hpp>
+#include <datamunge/algorithms/jaro_winkler.hpp>
 /// @file string_metrics.hpp
 /// @brief Byte-string edit distances, positional distance and lexical similarity measures.
 
@@ -8,25 +10,6 @@
 #include <string>
 
 namespace datamunge::algorithms {
-
-/// @brief The Levenshtein edit distance (Levenshtein 1965) between two byte strings @p a and @p b:
-///        the minimum number of single-character *insertions*, *deletions*, and *substitutions*
-///        that transform @p a into @p b. Equivalently it is the shortest-path cost in the edit
-///        graph whose diagonal moves (matching characters) are free and whose horizontal, vertical,
-///        and mismatching-diagonal moves cost one each.
-///
-///        Computed by the classic Wagner-Fischer dynamic program. Let @c D(i,j) be the distance
-///        between the length-@c i prefix of @p a and the length-@c j prefix of @p b. Then
-///        @c D(i,0)=i, @c D(0,j)=j, and for @c i,j>0
-///        @c D(i,j)=min(D(i-1,j)+1, D(i,j-1)+1, D(i-1,j-1)+[a_i!=b_j]). This implementation keeps
-///        only the two most recent rows, so it runs in @c O(|a|*|b|) time and @c O(min(|a|,|b|))
-///        space. The result is a true metric: it is symmetric, zero iff the strings are equal, and
-///        satisfies the triangle inequality.
-///
-/// @param a the first string.
-/// @param b the second string.
-/// @return the Levenshtein distance between @p a and @p b (0 iff they are equal).
-std::size_t levenshtein_distance(const std::string& a, const std::string& b);
 
 /// @brief Counts unequal byte positions in two fixed-width strings (Hamming distance).
 /// The strings must have equal byte length. Embedded NULs and every byte value are
@@ -48,32 +31,6 @@ std::size_t levenshtein_distance(const std::string& a, const std::string& b);
 ///   https://doi.org/10.1002/j.1538-7305.1950.tb00463.x
 /// @see levenshtein_distance()
 std::size_t hamming_distance(const std::string& a, const std::string& b);
-
-/// @brief The Jaro similarity (Jaro 1989) between @p a and @p b, a value in @c [0,1] where 1 means
-///        the strings are identical and 0 that they share no characters. It is defined as
-///        @c 0 when there are no matching characters, and otherwise
-///        @c (m/|a| + m/|b| + (m-t)/m)/3, where @c m is the number of *matching* characters -- equal
-///        characters no farther apart than @c floor(max(|a|,|b|)/2)-1 positions, each matched at
-///        most once -- and @c t is *half* the number of matched characters that occur out of order
-///        (the number of transpositions). Both empty strings are defined to have similarity 1.
-///
-/// @param a the first string.
-/// @param b the second string.
-/// @return the Jaro similarity in @c [0,1].
-double jaro_similarity(const std::string& a, const std::string& b);
-
-/// @brief The Jaro-Winkler similarity (Winkler 1990): the Jaro similarity boosted for strings that
-///        share a common prefix, which empirically improves matching of human names. With Jaro
-///        score @c j, common-prefix length @c l capped at 4, and scaling factor @p p (the standard
-///        value 0.1), it returns @c j + l*p*(1-j). The boost is applied unconditionally here (some
-///        variants apply it only when @c j exceeds a "boost threshold"); the result stays within
-///        @c [0,1] as long as @c l*p<=1, which holds for the default @c p=0.1.
-///
-/// @param a the first string.
-/// @param b the second string.
-/// @param prefix_scale the scaling factor @c p for the prefix bonus (default 0.1).
-/// @return the Jaro-Winkler similarity in @c [0,1].
-double jaro_winkler_similarity(const std::string& a, const std::string& b, double prefix_scale = 0.1);
 
 
 } // namespace datamunge::algorithms

@@ -1,0 +1,784 @@
+//? Title: Proximal Policy Optimization: Clipped and KL-Penalty Objectives
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Native actor/value graphs and explicit caller-owned objectives, gradients, optimizers and rollout loops reproduce the complete source protocol. Its default512-step bounded mode defers full convergence assertions; whole episodes/rollouts may finish past that nominal budget. Optional original full-training mode remains available.
+)
+\toc
+
+> Follow the policy update
+
+Fixed rollout -> shuffled minibatches -> clipped ratio.
+
+```{cpp, results="markdown", file="figures/ppo_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("input",{-18,0},"Seeded observations / actions",s).node("targets",{0,0},"Fixed rollout -> shuffled minibatches -> clipped ratio",s).node("step",{18,0},"Caller objective / native update",s).edge("input","targets").edge("targets","step").save_svg("build/ppo_method.svg");}
+```
+// result_begin: markdown
+\image(figures/ppo_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+For positive advantage2 and ratio1.5, epsilon.2 clips the surrogate to2.4 instead of3. The source compares this clipped objective with a KL-penalty alternative.
+
+```{cpp, results="markdown", file="figures/ppo_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");std::vector<double>values{1.5*2,1.2*2,std::min(1.5*2,1.2*2)};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/ppo_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("ppo worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/ppo_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 3.000000000 |
+| 1 | 2.400000000 |
+| 2 | 2.400000000 |
+\image(figures/ppo_worked.svg)
+// result_end
+
+> Inspect the actual native actor/value architecture
+
+This separate trace uses the source CartPole preset: four input coordinates, two64-wide tanh layers per actor/critic trunk and two actions. REINFORCE omits its critic; ACKTR retains manual pre-activation endpoints. Comparison reports show their critic-enabled variant. MountainCar in the entropy report instead uses two normalized inputs and three actions. The trace initializes its own store and does not alter training.
+
+```{cpp, results="markdown", file="figures/ppo_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_directories("build");n::ParameterStore p(0),critic(1);n::Module network([&](const n::Tensor&x){auto path=m::BuildActorCritic(p,x,2,64);return n::concat({path.probs,n::expand_dims(path.value,1)},1);},"ppo source actor/value");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;network.plot(n::zeros({1,4}),options).save_svg("build/ppo_network.svg");}
+```
+// result_begin: markdown
+\image(figures/ppo_network.svg)
+// result_end
+
+> Complete preserved source experiment
+
+The original PgConfig caps the default nominal budget at512 steps and vector count at4, retaining64-wide networks, source seeds, full episodes/rollouts and all comparison variants. Full mode is selected by DATAMUNGE_EXAMPLES_FULL=1 and keeps each visible source budget and its convergence assertions. Every objective, native gradient/clipping/optimizer step and interaction loop remains editable below.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;inline int monitor_index=0,checkpoint_index=0;
+template<class T>void Save(const std::string& name,const std::vector<T>&v){arrays.push_back({name,dm::nn::from_vector(v)});}
+struct Checkpoint{dm::nn::ParameterStore& store;~Checkpoint(){auto tag=std::to_string(checkpoint_index++);for(const auto& name:store.names())arrays.push_back({"parameters_"+tag+"_"+name,store.at(name).detach().clone()});}};
+struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/ppo_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn ppo
+// Proximal policy optimization (PPO), clipped and KL-penalty variants.
+//
+// Port of tflow's ppo. PPO (Schulman et al. 2017) reuses each batch of
+// experience for several epochs of minibatch updates while keeping the new
+// policy close to the one that collected the data. With
+// r_t = pi_new(a|s) / pi_old(a|s):
+//   clipped:    L = E[ min(r_t A_t, clip(r_t, 1-eps, 1+eps) A_t) ]
+//   KL penalty: L = E[ r_t A_t ] - beta KL(pi_old || pi_new), beta adapted
+//               up or down so the KL stays near a target.
+// Both variants are trained here on the same GAE-based batches.
+//
+// The TF graph (actor-critic, losses, Adam with global-norm clipping)
+// becomes eager nn ops over a ParameterStore; minibatches are gathered with
+// nn::take_rows instead of being copied into feed tensors. The vectorised
+// CartPole, the action sampling and the minibatch shuffles use the same
+// std::mt19937_64 streams as TF; the weight initialisation uses nn's
+// generator, so results match TF statistically, not digit for digit. The
+// vsim videos of the best evaluation episodes are omitted.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <datamunge/nn/nn.hpp>
+#include <memory>
+#include <numeric>
+#include <random>
+#include <string>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/classic_control.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::kPi;
+using datamunge::rl::environments::Clamp;
+using datamunge::rl::environments::WrapAngle;
+using datamunge::rl::environments::CartPole;
+using datamunge::rl::environments::MountainCar;
+using datamunge::rl::environments::MountainCarContinuous;
+using datamunge::rl::environments::Pendulum;
+using datamunge::rl::environments::Acrobot;
+}
+
+// Editable workflow support: rl/pg_common.hpp
+// datamunge::nn port of tflow_examples src/common/rl/pg_common.h.
+// Pieces shared by the policy-gradient and actor-critic examples: config,
+// a softmax actor + value critic built from nn layers, action sampling,
+// discounted returns and GAE on the host, and batched rollouts from a VecEnv.
+// Monitor, Evaluate and Adam are reused from dqn_common.hpp.
+//
+// Changes from the TF version: BuildActorCritic runs the network on a
+// tensor (eager) instead of adding graph nodes, ObsMatrix/IntVector return
+// nn::Tensor (actions as int64), and TF hardware options are ignored.
+
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <datamunge/nn/nn.hpp>
+#include <random>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/dqn_common.hpp
+// datamunge::nn port of tflow_examples src/common/rl/dqn_common.h.
+// Pieces shared by the DQN-family examples: hyper-parameters, the epsilon
+// schedule, a training monitor, Q-value heads (plain / dueling), greedy
+// evaluation, the C51 distribution projection, and Adam with global-norm
+// clipping (tflow's nn::Adam).
+//
+// Changes from the TF version: the TF hardware options (device=, threads=,
+// xla=) are accepted and ignored, since nn runs eagerly on the CPU; QHead
+// builds on a ParameterStore and returns a tensor instead of adding graph
+// nodes; the noisy-network head (nn::NoisyDense) is not included, because
+// datamunge::nn has no noisy layer yet.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <datamunge/nn/nn.hpp>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+
+namespace nn = datamunge::nn;
+
+struct DqnConfig {
+  int steps = 50000;          // environment steps
+  int warmup = 1000;          // steps before training starts
+  int batch = 64;
+  int buffer = 50000;
+  float gamma = 0.98f;        // 0.99 is the usual choice; 0.98 bounds Q by 50 and makes CartPole far more stable
+  float lr = 5e-4f;
+  float clip_norm = 10.f;
+  int target_sync = 500;      // hard target update period (steps), used when tau == 1
+  float tau = 0.005f;         // target <- tau * online + (1 - tau) * target every step; tau = 1 means a hard copy every target_sync steps
+  float eps_start = 1.f, eps_end = 0.05f;
+  int eps_decay_steps = 10000;
+  int hidden = 128;
+  int train_every = 2;
+  int log_every = 5000;
+  int eval_every = 5000;
+  int eval_episodes = 5;
+  uint64_t seed = 0;
+};
+
+// TF-only options that the ports accept and ignore.
+inline bool IsHardwareOption(const std::string& key) {
+  return key == "device" || key == "threads" || key == "intra_threads" || key == "inter_threads" || key == "xla";
+}
+
+// Overrides from the command line, e.g. `just run-nn dqn steps=50000 lr=5e-4`.
+inline void ParseConfig(int argc, char** argv, DqnConfig* c) {
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    const size_t eq = arg.find('=');
+    if (eq == std::string::npos) continue;
+    const std::string key = arg.substr(0, eq);
+    const float v = std::strtof(arg.c_str() + eq + 1, nullptr);
+    if (IsHardwareOption(key)) continue;
+    if (key == "steps") c->steps = static_cast<int>(v);
+    else if (key == "warmup") c->warmup = static_cast<int>(v);
+    else if (key == "batch") c->batch = static_cast<int>(v);
+    else if (key == "buffer") c->buffer = static_cast<int>(v);
+    else if (key == "gamma") c->gamma = v;
+    else if (key == "lr") c->lr = v;
+    else if (key == "clip_norm") c->clip_norm = v;
+    else if (key == "target_sync") c->target_sync = static_cast<int>(v);
+    else if (key == "tau") c->tau = v;
+    else if (key == "eps_start") c->eps_start = v;
+    else if (key == "eps_end") c->eps_end = v;
+    else if (key == "eps_decay_steps") c->eps_decay_steps = static_cast<int>(v);
+    else if (key == "hidden") c->hidden = static_cast<int>(v);
+    else if (key == "train_every") c->train_every = static_cast<int>(v);
+    else if (key == "log_every") c->log_every = static_cast<int>(v);
+    else if (key == "eval_every") c->eval_every = static_cast<int>(v);
+    else if (key == "seed") c->seed = static_cast<uint64_t>(v);
+    else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 512);
+    c->warmup = std::min(c->warmup, 32);
+    c->batch = std::min(c->batch, 8);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    c->eps_decay_steps = std::min(c->eps_decay_steps, c->steps);
+    example_runtime::Describe();
+  }
+}
+
+inline float Epsilon(const DqnConfig& c, int step) {
+  const float frac = std::min(1.f, static_cast<float>(step) / c.eps_decay_steps);
+  return c.eps_start + frac * (c.eps_end - c.eps_start);
+}
+
+// Greedy evaluation with any action function.
+inline float Evaluate(Env& env, const std::function<int(const Obs&)>& act, int episodes, uint64_t seed) {
+  double total = 0;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    while (true) {
+      StepResult r = env.step(act(obs));
+      total += r.reward;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+  }
+  return static_cast<float>(total / episodes);
+}
+
+// Tracks episode returns and losses and prints one line per log period.
+class Monitor {
+ public:
+  explicit Monitor(const DqnConfig& cfg, const char* third_column = "eps") : cfg_(cfg) {
+    std::printf("  %8s %8s %12s %7s %10s %10s\n", "step", "episodes", "return(20)", third_column, "loss", "eval");
+  }
+  void EndEpisode(float ret) { returns_.push_back(ret); }
+  ~Monitor(){auto tag=std::to_string(id_);report_capture::Save("return_"+tag,returns_);report_capture::Save("step_"+tag,steps_);report_capture::Save("eval_"+tag,evaluation_);report_capture::Save("loss_"+tag,mean_losses_);}
+  void AddLoss(float loss) { losses_.push_back(loss); }
+  int episodes() const { return static_cast<int>(returns_.size()); }
+  float RecentReturn(int n = 20) const {
+    if (returns_.empty()) return 0.f;
+    const size_t from = returns_.size() > static_cast<size_t>(n) ? returns_.size() - n : 0;
+    return std::accumulate(returns_.begin() + from, returns_.end(), 0.f) / (returns_.size() - from);
+  }
+  void Log(int step, float eps, float eval_return) {
+    const float loss = losses_.empty() ? 0.f : std::accumulate(losses_.begin(), losses_.end(), 0.f) / losses_.size();
+    steps_.push_back(step);evaluation_.push_back(eval_return);mean_losses_.push_back(loss);
+    losses_.clear();
+    char eval[16];
+    if (std::isnan(eval_return)) std::snprintf(eval, sizeof eval, "%10s", "");
+    else std::snprintf(eval, sizeof eval, "%10.1f", eval_return);
+    std::printf("  %8d %8d %12.1f %7.3f %10.4f %s\n", step, episodes(), RecentReturn(), eps, loss, eval);
+    std::fflush(stdout);
+  }
+
+ private:
+  int id_=report_capture::monitor_index++;std::vector<double>steps_,evaluation_,mean_losses_;
+  DqnConfig cfg_;
+  std::vector<float> returns_, losses_;
+};
+
+using dm::nn::models::ProjectDistribution;
+
+// One observation as a [1, obs_dim] tensor.
+inline nn::Tensor Row(const Obs& o) { return nn::from_vector(o, {1, static_cast<std::int64_t>(o.size())}); }
+
+}  // namespace rl
+
+
+
+// Editable workflow support: rl/vec_env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::VecStep;
+using datamunge::rl::environments::VecEnv;
+}
+
+namespace rl {
+
+struct PgConfig {
+  int steps = 100000;        // environment steps in total (all envs)
+  float gamma = 0.99f;
+  float lam = 0.95f;         // GAE lambda
+  float lr = 1e-3f;
+  float clip_norm = 0.5f;
+  float entropy_coef = 0.01f;
+  float value_coef = 0.5f;
+  int hidden = 64;
+  int n_envs = 8;            // parallel environments for batched rollouts
+  int n_steps = 5;           // rollout length per update
+  int log_every = 10000;
+  int eval_every = 10000;
+  int eval_episodes = 5;
+  uint64_t seed = 0;
+};
+
+// `just run-nn a2c steps=200000 lr=5e-4 n_envs=16`
+inline void ParsePgConfig(int argc, char** argv, PgConfig* c) {
+  for (int i = 1; i < argc; ++i) {
+    const std::string arg = argv[i];
+    const size_t eq = arg.find('=');
+    if (eq == std::string::npos) continue;
+    const std::string key = arg.substr(0, eq);
+    const float v = std::strtof(arg.c_str() + eq + 1, nullptr);
+    if (IsHardwareOption(key)) continue;
+    if (key == "steps") c->steps = static_cast<int>(v);
+    else if (key == "gamma") c->gamma = v;
+    else if (key == "lam") c->lam = v;
+    else if (key == "lr") c->lr = v;
+    else if (key == "clip_norm") c->clip_norm = v;
+    else if (key == "entropy") c->entropy_coef = v;
+    else if (key == "value_coef") c->value_coef = v;
+    else if (key == "hidden") c->hidden = static_cast<int>(v);
+    else if (key == "n_envs") c->n_envs = static_cast<int>(v);
+    else if (key == "n_steps") c->n_steps = static_cast<int>(v);
+    else if (key == "log_every") c->log_every = static_cast<int>(v);
+    else if (key == "eval_every") c->eval_every = static_cast<int>(v);
+    else if (key == "seed") c->seed = static_cast<uint64_t>(v);
+    else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 512);
+    c->n_envs = std::min(c->n_envs, 4);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    example_runtime::Describe();
+  }
+}
+
+// A DqnConfig carrying the logging fields, for the shared Monitor.
+inline DqnConfig MonitorConfig(const PgConfig& c) {
+  DqnConfig d;
+  d.log_every = c.log_every;
+  d.eval_every = c.eval_every;
+  d.eval_episodes = c.eval_episodes;
+  return d;
+}
+
+// Softmax policy over discrete actions plus (optionally) a state-value head
+// on its own trunk. All outputs are per row of `obs` [B, obs_dim].
+using dm::nn::models::ActorCritic;using dm::nn::models::BuildActorCritic;
+using dm::rl::returns::DiscountedReturns;using dm::rl::returns::Gae;
+inline nn::Tensor LogProbOf(const nn::Tensor& logp,const nn::Tensor& actions,int count){if(logp.size(1)!=count)throw std::invalid_argument("action width");return dm::rl::foundations::CategoricalActionLogProbability(logp,actions);}
+inline int SampleAction(const float* probs,int n,std::mt19937_64& rng){return dm::rl::foundations::SampleCategoricalAction(probs,n,rng);}
+// Rows of observations as a float [n, obs_dim] tensor.
+inline nn::Tensor ObsMatrix(const std::vector<Obs>&rows){return dm::rl::foundations::ObservationMatrix(rows);}
+// Actions as an int64 [n] tensor.
+inline nn::Tensor IntVector(const std::vector<int>& v) {
+  return nn::from_vector(std::vector<std::int64_t>(v.begin(), v.end()), {static_cast<std::int64_t>(v.size())});
+}
+inline nn::Tensor FloatVector(const std::vector<float>& v) {
+  return nn::from_vector(v, {static_cast<std::int64_t>(v.size())});
+}
+
+// n_steps x n_envs rollouts from a VecEnv, stored env-major so each
+// environment's sub-trajectory is contiguous for GAE.
+using dm::rl::returns::Rollout;
+
+// Collects a rollout. `policy(obs_batch, &probs [n_envs * A], &values [n_envs])`
+// runs the network; episode returns are reported to the monitor.
+class RolloutCollector {
+ public:
+  RolloutCollector(VecEnv& venv, int n_actions, uint64_t seed)
+      : venv_(venv), A_(n_actions), rng_(seed), obs_(venv.reset()), ep_return_(venv.size(), 0.f) {}
+
+  template <typename PolicyFn>
+  Rollout Collect(int n_steps, PolicyFn policy, Monitor* monitor) {
+    const int n = venv_.size();
+    Rollout ro;
+    ro.n_envs = n;
+    ro.n_steps = n_steps;
+    ro.obs.assign(n, {});
+    ro.act.assign(n, {});
+    ro.rew.assign(n, {});
+    ro.done.assign(n, {});
+    ro.val.assign(n, {});
+    ro.logp.assign(n, {});
+    std::vector<float> probs, values;
+    std::vector<Action> actions(n);
+    for (int t = 0; t < n_steps; ++t) {
+      policy(obs_, &probs, &values);
+      for (int i = 0; i < n; ++i) {
+        const int a = SampleAction(&probs[i * A_], A_, rng_);
+        actions[i] = Action(a);
+        ro.obs[i].push_back(obs_[i]);
+        ro.act[i].push_back(a);
+        ro.val[i].push_back(values[i]);
+        ro.logp[i].push_back(std::log(std::max(probs[i * A_ + a], 1e-8f)));
+      }
+      VecStep s = venv_.step(actions);
+      for (int i = 0; i < n; ++i) {
+        ro.rew[i].push_back(s.reward[i]);
+        ro.done[i].push_back(s.terminated[i] ? 1.f : 0.f);  // truncation still bootstraps
+        ep_return_[i] += s.reward[i];
+        if (s.done(i)) {
+          if (monitor) monitor->EndEpisode(ep_return_[i]);
+          ep_return_[i] = 0;
+        }
+        // On truncation the next observation is a fresh episode; bootstrap
+        // from the final observation instead would be more exact, but the
+        // reset observation is what we have in batch form.
+      }
+      obs_ = s.obs;
+      total_steps_ += n;
+    }
+    policy(obs_, &probs, &values);
+    ro.last_obs = obs_;
+    ro.last_val = values;
+    return ro;
+  }
+  long total_steps() const { return total_steps_; }
+
+ private:
+  VecEnv& venv_;
+  int A_;
+  std::mt19937_64 rng_;
+  std::vector<Obs> obs_;
+  std::vector<float> ep_return_;
+  long total_steps_ = 0;
+};
+
+}  // namespace rl
+
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+
+namespace {
+
+float Train(bool clipped, const rl::PgConfig& cfg) {
+  const float clip_eps = 0.2f, kl_target = 0.01f;
+  const int epochs = 4, minibatch = 64;
+  std::printf("\n== PPO-%s on CartPole: %d envs x %d steps per batch, %d epochs of minibatch %d, %d steps total\n",
+              clipped ? "clip" : "penalty", cfg.n_envs, cfg.n_steps, epochs, minibatch, cfg.steps);
+  rl::VecEnv venv([] { return std::make_unique<rl::CartPole>(); }, cfg.n_envs, cfg.seed);
+  rl::CartPole eval_env;
+  const int obs_dim = venv.obs_size(), A = venv.action_space().n;
+
+  nn::ParameterStore params(cfg.seed);
+  auto net = [&](const Tensor& obs) { return rl::BuildActorCritic(params, obs, A, cfg.hidden); };
+  {
+    nn::NoGradGuard no_grad;
+    net(nn::zeros({1, obs_dim}));
+  }
+  nn::Optimizer report_adam_optimizer(params,cfg.lr,{nn::OptimizerKind::Adam});
+  auto report_adam_minimize=[&](const Tensor&loss){auto grads=nn::grad(loss,report_adam_optimizer.parameters());double norm;if(cfg.clip_norm>0){auto clipped=nn::clip_by_global_norm(grads,cfg.clip_norm);grads=std::move(clipped.first);norm=clipped.second;}else norm=nn::global_norm(grads);report_adam_optimizer.step(grads);return norm;};
+  report_capture::Checkpoint checkpoint_params{params};
+
+  struct Step {
+    float loss, kl, clip_frac;
+  };
+  // One update on a minibatch; returns the loss, KL(pi_old || pi_new) and
+  // the fraction of clipped ratios, all from before the update.
+  auto update = [&](const Tensor& obs, const Tensor& act, const Tensor& adv, const Tensor& ret, const Tensor& logp_old,
+                    const Tensor& probs_old, float beta) {
+    const rl::ActorCritic ac = net(obs);
+    const Tensor logp_a = rl::LogProbOf(ac.logp, act, A);
+    const Tensor ratio = nn::exp(logp_a - logp_old);
+    // KL(pi_old || pi_new) with the old probabilities.
+    const Tensor kl = nn::mean(nn::sum(probs_old * (nn::log(nn::maximum(probs_old, nn::scalar(1e-8))) - ac.logp), {1}), {0});
+    Tensor policy_loss;
+    if (clipped) {
+      const Tensor unclipped = ratio * adv;
+      const Tensor clipped_r = nn::clip(ratio, 1 - clip_eps, 1 + clip_eps) * adv;
+      policy_loss = -nn::mean(nn::minimum(unclipped, clipped_r), {0});
+    } else {
+      policy_loss = -nn::mean(ratio * adv, {0}) + beta * kl;
+    }
+    const Tensor value_loss = nn::mean(nn::square(ret - ac.value), {0});
+    const Tensor entropy = nn::mean(ac.entropy, {0});
+    const Tensor loss = policy_loss + cfg.value_coef * value_loss - cfg.entropy_coef * entropy;
+    report_adam_minimize(loss);
+    nn::NoGradGuard no_grad;
+    const Tensor clip_frac = nn::mean(nn::cast(nn::greater(nn::abs(ratio.detach() - 1.0), clip_eps), nn::DType::Float32), {0});
+    return Step{loss.item<float>(), kl.item<float>(), clip_frac.item<float>()};
+  };
+
+  rl::Monitor monitor(rl::MonitorConfig(cfg), "kl");
+  auto policy = [&](const std::vector<rl::Obs>& o, std::vector<float>* probs, std::vector<float>* values) {
+    nn::NoGradGuard no_grad;
+    const rl::ActorCritic ac = net(rl::ObsMatrix(o));
+    *probs = ac.probs.to_vector<float>();
+    *values = ac.value.to_vector<float>();
+  };
+  auto greedy = [&](const rl::Obs& o) {  // the most probable action, for evaluation
+    nn::NoGradGuard no_grad;
+    return rl::ArgMax(net(rl::Row(o)).probs.to_vector<float>());
+  };
+  rl::RolloutCollector collector(venv, A, cfg.seed + 1);
+  std::mt19937_64 rng(cfg.seed + 2);
+  float beta_value = 1.f, last_kl = 0, last_clip = 0, best_eval = 0;
+  long next_log = cfg.log_every;
+  while (collector.total_steps() < cfg.steps) {
+    rl::Rollout ro = collector.Collect(cfg.n_steps, policy, &monitor);
+    // GAE per environment, then normalised advantages over the batch.
+    std::vector<float> advantages, returns, logps, a_i, r_i;
+    for (int i = 0; i < ro.n_envs; ++i) {
+      rl::Gae(ro.rew[i], ro.val[i], ro.done[i], ro.last_val[i], cfg.gamma, cfg.lam, &a_i, &r_i);
+      advantages.insert(advantages.end(), a_i.begin(), a_i.end());
+      returns.insert(returns.end(), r_i.begin(), r_i.end());
+      logps.insert(logps.end(), ro.logp[i].begin(), ro.logp[i].end());
+    }
+    const float mean = std::accumulate(advantages.begin(), advantages.end(), 0.f) / advantages.size();
+    float var = 0;
+    for (float a : advantages) var += (a - mean) * (a - mean);
+    const float sd = std::sqrt(var / advantages.size()) + 1e-8f;
+    for (float& a : advantages) a = (a - mean) / sd;
+    const Tensor all_obs = rl::ObsMatrix(ro.FlatObs()), all_act = rl::IntVector(ro.FlatAct());
+    const Tensor all_adv = rl::FloatVector(advantages), all_ret = rl::FloatVector(returns), all_logp = rl::FloatVector(logps);
+    const int N = static_cast<int>(all_obs.size(0));
+    // The old policy's full distributions, for the exact KL.
+    Tensor old_probs;
+    {
+      nn::NoGradGuard no_grad;
+      old_probs = net(all_obs).probs;
+    }
+
+    // Several epochs of shuffled minibatches on the same data.
+    std::vector<int> order(N);
+    std::iota(order.begin(), order.end(), 0);
+    float kl_sum = 0, clip_sum = 0;
+    int updates = 0;
+    for (int epoch = 0; epoch < epochs; ++epoch) {
+      std::shuffle(order.begin(), order.end(), rng);
+      for (int start = 0; start + minibatch <= N; start += minibatch) {
+        const std::vector<std::int64_t> rows(order.begin() + start, order.begin() + start + minibatch);
+        const Step s = update(nn::take_rows(all_obs, rows), nn::take_rows(all_act, rows), nn::take_rows(all_adv, rows),
+                              nn::take_rows(all_ret, rows), nn::take_rows(all_logp, rows), nn::take_rows(old_probs, rows),
+                              beta_value);
+        check::Require(std::isfinite(s.loss) && s.kl > -1e-5f, "finite loss and nonnegative KL");
+        monitor.AddLoss(s.loss);
+        kl_sum += s.kl;
+        clip_sum += s.clip_frac;
+        ++updates;
+      }
+    }
+    last_kl = kl_sum / updates;
+    last_clip = clip_sum / updates;
+    // Adaptive penalty coefficient (KL-penalty variant only).
+    if (!clipped) {
+      if (last_kl > 1.5f * kl_target) beta_value *= 2;
+      else if (last_kl < kl_target / 1.5f) beta_value /= 2;
+    }
+    if (collector.total_steps() >= next_log) {
+      const float eval = next_log % cfg.eval_every == 0 ? rl::Evaluate(eval_env, greedy, cfg.eval_episodes, 1000 + next_log) : NAN;
+      if (!std::isnan(eval)) best_eval = std::max(best_eval, eval);
+      monitor.Log(static_cast<int>(collector.total_steps()), last_kl, eval);
+      std::printf("           %s\n", clipped ? ("clip fraction " + std::to_string(last_clip).substr(0, 5)).c_str()
+                                              : ("beta " + std::to_string(beta_value).substr(0, 6)).c_str());
+      next_log += cfg.log_every;
+    }
+  }
+  const float ev = rl::Evaluate(eval_env, greedy, 20, 777);
+  std::printf("  final greedy evaluation over 20 episodes: %.1f\n", ev);
+  // A random policy averages about 22; TF's best evaluation is 500 for both variants on this seed.
+  check::TrainingQuality(std::max(best_eval, ev) >= 150, "PPO learned to balance (best greedy evaluation >= 150)");
+  return ev;
+}
+
+}  // namespace
+
+int main(int argc, char** argv) {
+  rl::PgConfig cfg;
+  cfg.n_steps = 32;
+  cfg.lr = 3e-4f;
+  cfg.steps = 100000;
+  cfg.log_every = 20000;
+  cfg.eval_every = 20000;
+  rl::ParsePgConfig(argc, argv, &cfg);
+
+  // GAE on a hand-checked trajectory: with lambda = 1 the advantages are
+  // Monte Carlo returns minus the values.
+  std::vector<float> adv, ret;
+  rl::Gae({1, 1, 1}, {0.5f, 0.5f, 0.5f}, {0, 0, 0}, 2.f, 0.5f, 1.f, &adv, &ret);
+  check::Near(ret[0], 1 + 0.5 + 0.25 + 0.125 * 2, 1e-6, "GAE(lambda=1) return = bootstrapped discounted sum");
+  check::Near(adv[2], 1 + 0.5 * 2 - 0.5, 1e-6, "GAE last advantage = TD error");
+
+  const float clip = Train(true, cfg), penalty = Train(false, cfg);
+  std::printf("\n  final greedy return: clipped %.1f, KL penalty %.1f\n", clip, penalty);
+  return 0;
+}
+
+```
+// result_begin:
+// Quick demonstration: bounded training; convergence metrics require DATAMUNGE_EXAMPLES_FULL=1.
+//
+// == PPO-clip on CartPole: 4 envs x 32 steps per batch, 4 epochs of minibatch 64, 512 steps total
+//       step episodes   return(20)      kl       loss       eval
+//        512       14         29.4   0.000    37.5451       69.0
+//            clip fraction 0.000
+//   final greedy evaluation over 20 episodes: 41.4
+//   full-training quality check deferred: PPO learned to balance (best greedy evaluation >= 150)
+//
+// == PPO-penalty on CartPole: 4 envs x 32 steps per batch, 4 epochs of minibatch 64, 512 steps total
+//       step episodes   return(20)      kl       loss       eval
+//        512       15         28.3   0.000    37.2419       67.0
+//            beta 0.0625
+//   final greedy evaluation over 20 episodes: 41.2
+//   full-training quality check deferred: PPO learned to balance (best greedy evaluation >= 150)
+//
+//   final greedy return: clipped 41.4, KL penalty 41.2
+// result_end
+
+> Interpret time-limit bootstraps carefully
+
+The source rollout collector marks only actual terminals as done, but retains auto-reset observations for time-limit successors. Using the true saved final observation would give a more exact bootstrap. This inherited approximation is retained and visible; the GAE API itself requires the caller to supply the correct final-state value. Collection and episode splitting remain report code.
+
+> Actual episode returns
+
+Each series is one original comparison/worker-policy training run, in the source execution order. These are captured task returns, not fabricated convergence curves or intrinsic-bonus totals. One logged point does not establish a trend.
+
+```{cpp, results="markdown", file="figures/ppo_return.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/ppo_source.npz");auto plot=dm::graphics::RPlot::create();int series=0;for(const auto& [key,tensor]:archive){if(!key.starts_with("return_"))continue;auto values=tensor.to_vector<double>();std::vector<double>x;for(size_t i=0;i<values.size();++i)x.push_back(i+1);plot.lines(x,values,key,{37+(series%4)*50,99,235-(series%4)*50}).points(x,values,key+" points",{37+(series%4)*50,99,235-(series%4)*50},4);++series;}plot.title("ppo actual return diagnostics").x_label("Ended training episode").y_label("Task return").size(1100,600).save_svg("build/ppo_return.svg");}
+```
+// result_begin: markdown
+\image(figures/ppo_return.svg)
+// result_end
+
+> Actual logged evaluations
+
+Each series is one original comparison/worker-policy training run, in the source execution order. These are captured task returns, not fabricated convergence curves or intrinsic-bonus totals. One logged point does not establish a trend.
+
+```{cpp, results="markdown", file="figures/ppo_eval.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/ppo_source.npz");auto plot=dm::graphics::RPlot::create();int series=0;for(const auto& [key,tensor]:archive){if(!key.starts_with("eval_"))continue;auto values=tensor.to_vector<double>();std::vector<double>x;for(size_t i=0;i<values.size();++i)x.push_back(i+1);plot.lines(x,values,key,{37+(series%4)*50,99,235-(series%4)*50}).points(x,values,key+" points",{37+(series%4)*50,99,235-(series%4)*50},4);++series;}plot.title("ppo actual eval diagnostics").x_label("Source evaluation-log index").y_label("Task return").size(1100,600).save_svg("build/ppo_eval.svg");}
+```
+// result_begin: markdown
+\image(figures/ppo_eval.svg)
+// result_end
+
+> Interpretation and provenance
+
+Read online task rewards, greedy evaluation, entropy and any exploration bonus separately. Bounded-mode quality checks remain labelled as deferred; no full convergence or TensorFlow-equivalence claim is inferred. All source seeds, actual budgets, weak results, final parameter checkpoints and policy comparisons are preserved. Canonical datamunge APIs supply mathematical graphs and data operations; every collection, fitting and trust-region loop remains visible in this report.

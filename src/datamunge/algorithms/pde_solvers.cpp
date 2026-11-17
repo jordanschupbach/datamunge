@@ -118,54 +118,6 @@ FiniteDifferencePoissonResult finite_difference_poisson_solve(
   return result;
 }
 
-std::vector<double>
-lax_wendroff_advection(const std::vector<double>& u0, double a, double dx, double dt, int nsteps) {
-  const int           m  = static_cast<int>(u0.size());
-  const double        nu = a * dt / dx; // Courant number
-  std::vector<double> u  = u0;
-  for (int step = 0; step < nsteps; ++step) {
-    std::vector<double> un(m);
-    for (int j = 0; j < m; ++j) {
-      const double up = u[(j + 1) % m];
-      const double um = u[(j - 1 + m) % m];
-      un[j]           = u[j] - 0.5 * nu * (up - um) + 0.5 * nu * nu * (up - 2.0 * u[j] + um);
-    }
-    u.swap(un);
-  }
-  return u;
-}
 
-std::vector<std::pair<double, double>> trapezoidal_ode(
-    const std::function<double(double, double)>& f,
-    double                                       y0,
-    double                                       t0,
-    double                                       t1,
-    int                                          steps) {
-  const double                           h = (t1 - t0) / steps;
-  std::vector<std::pair<double, double>> traj;
-  double                                 t = t0, y = y0;
-  traj.emplace_back(t, y);
-  for (int n = 0; n < steps; ++n) {
-    const double tn1 = t0 + (n + 1) * h;
-    const double fn  = f(t, y);
-    // Solve Y = y + (h/2)(fn + f(tn1, Y)) by Newton with a finite-difference derivative.
-    double Y = y + h * fn; // forward-Euler predictor
-    for (int it = 0; it < 60; ++it) {
-      const double g   = Y - y - 0.5 * h * (fn + f(tn1, Y));
-      const double eps = 1e-8 * (std::fabs(Y) + 1e-8);
-      const double gp  = 1.0 - 0.5 * h * (f(tn1, Y + eps) - f(tn1, Y)) / eps;
-      const double Yn  = Y - g / gp;
-      if (std::fabs(Yn - Y) <= 1e-14 * (std::fabs(Yn) + 1e-14)) {
-        Y = Yn;
-        break;
-      }
-      Y = Yn;
-    }
-    y = Y;
-    t = tn1;
-    traj.emplace_back(t, y);
-  }
-  return traj;
-}
 
 } // namespace datamunge::algorithms

@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iterator>
+#include <regex>
 #include <string>
 #include <type_traits>
 #include <vector>
@@ -646,4 +647,32 @@ TEST(PlotColors, EveryLayerAcceptsStringColorsAndKeepsStringLabels) {
   const auto bars = RPlot::barplot({1, 2}, {"a", "b"}, "bars", "cyan");
   EXPECT_EQ(bars.series()[0].color.g, 255);
   EXPECT_NO_THROW(RPlot::pie({1, 2}, {"a", "b"}, {"#ff000080", "blue"}));
+}
+
+TEST(Plot, LongManualAndAutomaticLegendsFitWithoutDroppingText) {
+  const auto path = std::filesystem::temp_directory_path() / "datamunge_long_legend.svg";
+  for (const bool manual : {false, true}) {
+    for (const int length : {5, 60, 400}) {
+      const std::string label(length, 'W');
+      auto plot = RPlot::create();
+      plot.line({0.0, 1.0}, {0.0, 1.0}, manual ? "ignored" : label);
+      if (manual) plot.legend({label}, {RGB{30, 40, 50}});
+      plot.save_svg(path.string());
+      const std::string svg = read_file(path);
+      const auto start = svg.find("id=\"dm-legend\"");
+      ASSERT_NE(start, std::string::npos);
+      const std::string legend = svg.substr(start);
+      EXPECT_NE(legend.find(label), std::string::npos);
+      std::smatch match;
+      ASSERT_TRUE(std::regex_search(legend, match, std::regex(R"re(<text x="([0-9.e+-]+)" y="[^"]+" font-size="([0-9.e+-]+)")re")));
+      const double x = std::stod(match[1]);
+      const double font = std::stod(match[2]);
+      EXPECT_GT(x, 70.0);
+      EXPECT_LE(font, 12.0);
+      EXPECT_GT(font, 0.0);
+      if (length == 400) EXPECT_LT(font, 12.0);
+      if (length == 60) EXPECT_LT(x, 300.0);
+    }
+  }
+  std::filesystem::remove(path);
 }

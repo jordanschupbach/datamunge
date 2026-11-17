@@ -1,0 +1,668 @@
+//? Title: SARSA: Sampled, Expected and Off-Policy Cliff Targets
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The source compares500 episodes over20 runs per method with alpha.5, epsilon.1 and gamma1. Online rewards and greedy evaluations remain distinct: a shortest greedy path can incur costly cliff falls during exploration.
+)
+\toc
+
+> Follow the computation
+
+```{cpp, results="markdown", file="figures/sarsa_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);dm::graphics::DiagramNodeStyle s;s.width=13;s.height=5;s.font_size=23;d.node("input",{-17,0},"Epsilon-greedy interaction",s);d.node("math",{0,0},"Sampled / expected / maximum target",s);d.node("output",{17,0},"Online reward versus greedy return",s);d.edge("input","math").edge("math","output").save_svg("build/sarsa_method.svg");}
+```
+// result_begin: markdown
+\image(figures/sarsa_method.svg)
+// result_end
+
+> A hand-checkable calculation
+
+With next values2,4 and reward1, sampled SARSA after choosing action0 gives2.8; expected SARSA under epsilon.1 gives4.51; Q-learning gives4.6. These are different targets, not interchangeable estimates.
+
+```{cpp, results="markdown", file="figures/sarsa_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("build");std::vector<double>values{1+.9*2,1+.9*(.95*4+.05*2),1+.9*4};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);dm::nn::save_npz("build/sarsa_worked.npz",{{"values",dm::nn::from_vector(values)}});std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"worked values",{37,99,235}).ylim(low-.05*span,high+.05*span).title("sarsa worked calculation").x_label("Displayed coordinate").size(1000,550).save_svg("build/sarsa_worked.svg");}
+```
+// result_begin: markdown
+| coordinate | computed value |
+|---:|---:|
+| 0 | 2.800000000 |
+| 1 | 4.510000000 |
+| 2 | 4.600000000 |
+\image(figures/sarsa_worked.svg)
+// result_end
+
+> Complete preserved experiment
+
+The source compares500 episodes over20 runs per method with alpha.5, epsilon.1 and gamma1. Online rewards and greedy evaluations remain distinct: a shortest greedy path can incur costly cliff falls during exploration. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace report_capture {
+inline dm::nn::NamedTensors arrays;
+template<class T> void Save(const std::string& name,const std::vector<T>& values){arrays.push_back({name,dm::nn::from_vector(values)});}
+inline void Table(const std::string& name,const dm::rl::foundations::QTable&q){arrays.push_back({name,q.tensor()});}
+struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/sarsa_source.npz",arrays);}}};inline Flush flush;
+}
+// CMD: just run-nn sarsa
+// SARSA and expected SARSA.
+//
+// Port of tflow's sarsa (TF-free apart from the Q-table, so the numbers match
+// tflow exactly). On-policy TD control. SARSA updates Q(s, a) toward
+// r + gamma Q(s', a') using the action a' the epsilon-greedy policy actually
+// takes next; expected SARSA uses the expectation over the policy instead,
+// which removes the variance from the sampled a'. The classic cliff-walking
+// comparison shows the on-policy effect: because exploration sometimes steps
+// off the cliff, SARSA learns the safer path along the top, while Q-learning
+// (shown for reference) learns the optimal but risky path along the edge.
+// The vsim videos of each greedy policy are omitted: the same seeded episode
+// is played and reported instead. The port adds checks (exit 1 on failure).
+
+#include <cstdio>
+#include <iostream>
+#include <vector>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: rl/grid_world.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::GridBase;
+using datamunge::rl::environments::GridWorld;
+using datamunge::rl::environments::CliffWalking;
+}
+
+// Editable workflow support: rl/hud.hpp
+// datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
+// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
+// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// The overlay on the videos: the move the agent makes and what it expects.
+//
+// A Decision is one move as the agent explains it: the action, the estimate
+// it holds for every candidate action (Q-values, action probabilities, visit
+// counts, planned returns, ...), which candidate it took, and the return it
+// expects from the current state. The recorders in vsim_studio.h accept
+// policies that return a Decision instead of a bare Action and draw it on
+// every frame together with the step count, the last reward and the return
+// so far (the Hud); a plain policy still gets the move, reward and return
+// shown. DrawHud draws onto a video::Canvas, so the videos drawn without the
+// 3D renderer (Atari) carry the same overlay.
+//
+// The helpers cover the usual cases: GreedyQ for value-based agents (the
+// argmax, the Q row and max_a Q as the expected return), GreedyPi for a
+// policy's probabilities with the critic's V(s), and Explain for an action
+// with one estimate attached (a continuous torque with its critic value, a
+// planner's first action with the planned return).
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <numeric>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Editable workflow support: rl/env.hpp
+#include <datamunge/rl/environments.hpp>
+namespace rl {
+using datamunge::rl::environments::Obs;
+using datamunge::rl::environments::Action;
+using datamunge::rl::environments::ActionSpace;
+using datamunge::rl::environments::StepResult;
+using datamunge::rl::environments::Env;
+using datamunge::rl::environments::EnvBase;
+using datamunge::rl::environments::Transition;
+using datamunge::rl::environments::TabularEnv;
+}
+
+namespace rl {
+
+struct Decision {
+  Action action;
+  std::string label;                // the move in words ("right", "torque +1.3"); from the action space when empty
+  std::string kind;                 // what `values` are: "Q(s,a)", "pi(a|s)", "visits", "planned return"
+  std::vector<std::string> labels;  // one per candidate; the environment's action names when empty
+  std::vector<float> values;        // the agent's estimate per candidate action (empty when it has none)
+  int chosen = -1;                  // the candidate taken (-1: the action is not one of them)
+  float value = NAN;                // the return the agent expects from here (V(s), max_a Q, root value, ...)
+  std::string value_name = "expected return";
+  float lo = NAN, hi = NAN;         // the bar scale for `values`; NaN: from the values themselves (and 0)
+  int decimals = -1;                // digits after the point for `values` (-1: by magnitude)
+  std::string note;                 // one free line, e.g. "CEM over 15 steps" or "epsilon 0.05"
+
+  Decision() = default;
+  explicit Decision(Action a) : action(std::move(a)) {}
+  // A Decision stands in for its action, so one policy serves both the
+  // recorders and the plain episode runners (RunEpisodes, env.step).
+  operator const Action&() const { return action; }  // NOLINT: implicit by design
+};
+
+// Greedy over Q(s, .): the argmax, the whole row, and max_a Q as the expected return.
+inline Decision GreedyQ(const float* q, int n, const std::string& kind = "Q(s,a)") {
+  Decision d;
+  d.values.assign(q, q + n);
+  d.chosen = static_cast<int>(std::max_element(q, q + n) - q);
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.value = q[d.chosen];
+  return d;
+}
+inline Decision GreedyQ(const std::vector<float>& q, const std::string& kind = "Q(s,a)") {
+  return GreedyQ(q.data(), static_cast<int>(q.size()), kind);
+}
+
+// The most probable action of a stochastic policy, with the probabilities and
+// (when the agent has a critic) V(s).
+inline Decision GreedyPi(const std::vector<float>& probs, float v = NAN, const std::string& kind = "pi(a|s)") {
+  Decision d;
+  d.values = probs;
+  d.chosen = static_cast<int>(std::max_element(probs.begin(), probs.end()) - probs.begin());
+  d.action = Action(d.chosen);
+  d.kind = kind;
+  d.lo = 0.f, d.hi = 1.f;
+  d.decimals = 2;
+  d.value = v;
+  d.value_name = "V(s)";
+  return d;
+}
+
+// An action with one estimate attached: a torque and its critic value, a
+// planner's action and the return of its plan.
+inline Decision Explain(Action action, float value, const std::string& value_name = "expected return", const std::string& note = "") {
+  Decision d(std::move(action));
+  d.value = value;
+  d.value_name = value_name;
+  d.note = note;
+  return d;
+}
+
+// An action with a remark for the overlay: what a hand-written rule looked at.
+inline Decision Note(Action action, const std::string& note) {
+  Decision d(std::move(action));
+  d.note = note;
+  return d;
+}
+
+// A number with as many decimals as its size warrants.
+inline std::string HudNum(float v, int decimals = -1) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  if (decimals < 0) decimals = std::abs(v) >= 100 ? 0 : std::abs(v) >= 10 ? 1 : 2;
+  std::snprintf(buf, sizeof buf, "%.*f", decimals, v);
+  return buf;
+}
+inline std::string HudSigned(float v) {
+  if (std::isnan(v)) return "-";
+  char buf[32];
+  std::snprintf(buf, sizeof buf, "%+.2f", v);
+  return buf;
+}
+
+// Everything the overlay shows: the episode so far and the current decision.
+// The recorders fill it; Complete() derives the labels from the action space.
+struct Hud {
+  std::string title;  // optional top line
+  int step = 0;
+  float reward = NAN;  // the last reward (NaN before the first step)
+  float ret = 0;       // the return so far
+  bool done = false, truncated = false;
+  bool has_decision = false;
+  Decision decision;
+  ActionSpace space;
+  std::vector<std::string> names;  // the environment's action names (discrete) or action dimensions (continuous)
+
+  void Reset(const ActionSpace& s, std::vector<std::string> action_names) {
+    step = 0, reward = NAN, ret = 0, done = truncated = false, has_decision = false;
+    decision = Decision();
+    space = s;
+    names = std::move(action_names);
+  }
+  // The move taken; the step that follows reports its reward through Observe().
+  void Choose(Decision d) {
+    decision = std::move(d);
+    has_decision = true;
+    Complete();
+  }
+  void Observe(const StepResult& r) {
+    ++step;
+    reward = r.reward;
+    ret += r.reward;
+    done = r.done();
+    truncated = r.truncated;
+  }
+  std::string NameOf(int i, const char* prefix) const {
+    if (i >= 0 && i < static_cast<int>(names.size())) return names[i];
+    return prefix + std::to_string(i);
+  }
+  // Fills the action label and the candidate labels the policy left empty.
+  void Complete() {
+    Decision& d = decision;
+    if (d.label.empty()) {
+      if (space.kind == ActionSpace::kDiscrete) {
+        d.label = NameOf(d.action.discrete, "action ");
+      } else {
+        for (size_t i = 0; i < d.action.continuous.size(); ++i) {
+          if (i) d.label += "  ";
+          if (i < names.size()) d.label += names[i] + " ";
+          d.label += HudSigned(d.action.continuous[i]);
+        }
+      }
+    }
+    if (d.labels.size() != d.values.size()) {
+      d.labels.clear();
+      const bool per_action = space.kind == ActionSpace::kDiscrete && static_cast<int>(d.values.size()) == space.n;
+      for (size_t i = 0; i < d.values.size(); ++i) d.labels.push_back(per_action ? NameOf(static_cast<int>(i), "action ") : std::to_string(i));
+    }
+  }
+};
+
+}  // namespace rl
+
+// Editable workflow support: rl/playback.hpp
+// datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
+//
+// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
+// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
+// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
+// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
+// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
+// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
+// the 6.1 examples film, the episode ends before the film is full.
+
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace rl {
+
+// The policy's decision for `obs`, as in vsim_studio.h: a Decision passes through, a bare
+// action (an int, a vector or an Action) is wrapped.
+template <typename PolicyFn>
+Decision Decide(PolicyFn& policy, const Obs& obs) {
+  if constexpr (std::is_same_v<std::decay_t<decltype(policy(obs))>, Decision>) return policy(obs);
+  else return Decision(Action(policy(obs)));
+}
+
+struct Playback {
+  int steps = 0;
+  float ret = 0;
+  Hud hud;  // the overlay state after the last step (decision, reward, return)
+};
+
+// Plays one episode of `policy` from env.reset(seed); `after_step(env, hud)` is called after
+// the reset (step 0) and after every step, e.g. to snapshot frames.
+template <typename Env, typename PolicyFn, typename AfterStep>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed, AfterStep after_step) {
+  Playback pb;
+  pb.hud.Reset(env.action_space(), env.action_names());
+  Obs obs = env.reset(seed);
+  after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+  while (true) {
+    pb.hud.Choose(Decide(policy, obs));
+    const StepResult r = env.step(pb.hud.decision.action);
+    pb.hud.Observe(r);
+    pb.ret += r.reward;
+    ++pb.steps;
+    obs = r.obs;
+    after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
+    if (r.done()) break;
+  }
+  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  return pb;
+}
+
+template <typename Env, typename PolicyFn>
+Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint64_t seed) {
+  return PlayEpisode(env, std::forward<PolicyFn>(policy), name, seed, [](const Env&, const Hud&) {});
+}
+
+}  // namespace rl
+
+// Editable workflow support: rl/tabular.hpp
+#include <datamunge/rl/tabular.hpp>
+
+// Editable workflow support: rl/utils.hpp
+// datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
+// Small helpers shared by the RL examples: episode statistics, random and
+// greedy rollouts, and printing.
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <numeric>
+#include <string>
+#include <vector>
+
+
+namespace rl {
+
+struct EpisodeStats {
+  std::vector<float> returns;
+  std::vector<int> lengths;
+  float mean_return() const {
+    return returns.empty() ? 0.f
+                           : std::accumulate(returns.begin(), returns.end(), 0.f) / returns.size();
+  }
+  float mean_length() const {
+    return lengths.empty() ? 0.f
+                           : std::accumulate(lengths.begin(), lengths.end(), 0.f) / lengths.size();
+  }
+  float min_return() const { return *std::min_element(returns.begin(), returns.end()); }
+  float max_return() const { return *std::max_element(returns.begin(), returns.end()); }
+};
+
+// Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
+
+// Uniformly random actions.
+
+inline void PrintStats(const std::string& label, const EpisodeStats& s) {
+  std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",
+              label.c_str(), s.mean_return(), s.min_return(), s.max_return(), s.mean_length());
+}
+
+using dm::rl::foundations::ArgMax;using dm::rl::foundations::ArgMaxRandomTie;
+inline std::string FormatObs(const Obs& o, int max_elems = 8) {
+  std::string s = "[";
+  for (size_t i = 0; i < o.size() && static_cast<int>(i) < max_elems; ++i) {
+    char buf[32];
+    std::snprintf(buf, sizeof buf, "%s%.3f", i ? " " : "", o[i]);
+    s += buf;
+  }
+  if (static_cast<int>(o.size()) > max_elems) s += " ...";
+  return s + "]";
+}
+
+}  // namespace rl
+
+
+namespace rl {
+using dm::rl::foundations::QTable;using dm::rl::foundations::PolicyGrid;using dm::rl::foundations::ValueGrid;
+inline float Mean(const std::vector<float>&v,size_t from,size_t to){if(to>v.size())to=v.size();if(from>=to)return 0.f;return std::accumulate(v.begin()+from,v.begin()+to,0.f)/(to-from);}
+}
+
+// Experiment workflow from examples/nn/common/rl/utils.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
+                                const std::function<Action(const Obs&)>& policy) {
+  EpisodeStats stats;
+  for (int e = 0; e < episodes; ++e) {
+    Obs obs = env.reset(seed + e);
+    float ret = 0;
+    int len = 0;
+    while (true) {
+      StepResult r = env.step(policy(obs));
+      ret += r.reward;
+      ++len;
+      obs = r.obs;
+      if (r.done()) break;
+    }
+    stats.returns.push_back(ret);
+    stats.lengths.push_back(len);
+  }
+  return stats;
+}
+}  // namespace rl
+
+// Experiment workflow from examples/nn/common/rl/tabular.hpp.
+namespace rl {
+using namespace ::rl;
+inline EpisodeStats GreedyEval(TabularEnv& env, const QTable& q, int episodes, uint64_t seed) {
+  return RunEpisodes(env, episodes, seed,
+                     [&](const Obs& o) { return Action(q.Greedy(static_cast<int>(o[0]))); });
+}
+}  // namespace rl
+
+
+
+namespace {
+
+enum Method { kSarsa, kExpectedSarsa, kQLearning };
+const char* kNames[] = {"SARSA", "Expected SARSA", "Q-learning"};
+
+struct Result {
+  std::vector<float> returns;  // online return per episode
+  rl::QTable         Q;
+};
+
+Result Train(rl::GridBase& env, Method method, int episodes, float alpha, float eps, float gamma, uint64_t seed) {
+  const int       S = env.num_states(), A = env.action_space().n;
+  Result          res{{}, rl::QTable(S, A)};
+  rl::QTable&     Q = res.Q;
+  std::mt19937_64 rng(seed);
+  for (int ep = 0; ep < episodes; ++ep) {
+    int   s = static_cast<int>(env.reset(seed * 10007 + ep)[0]);
+    int   a = Q.EpsilonGreedy(s, eps, rng);
+    float ret = 0;
+    while (true) {
+      rl::StepResult r = env.step(a);
+      ret += r.reward;
+      const int s2 = static_cast<int>(r.obs[0]);
+      const int a2 = Q.EpsilonGreedy(s2, eps, rng);  // the action we will take next
+      float     next_value = 0;
+      if (!r.terminated) {
+        switch (method) {
+          case kSarsa:
+            next_value = Q(s2, a2);
+            break;
+          case kExpectedSarsa: {
+            // E_pi[Q(s', .)] under epsilon-greedy: eps/A on every action plus
+            // (1 - eps) on the greedy one.
+            const float best = Q.Max(s2);
+            float       expect = 0;
+            for (int b = 0; b < A; ++b) expect += eps / A * Q(s2, b);
+            next_value = expect + (1 - eps) * best;
+            break;
+          }
+          case kQLearning:
+            next_value = Q.Max(s2);
+            break;
+        }
+      }
+      Q(s, a) += alpha * (r.reward + gamma * next_value - Q(s, a));
+      s = s2;
+      a = a2;
+      if (r.done()) break;
+    }
+    res.returns.push_back(ret);
+  }
+  return res;
+}
+
+}  // namespace
+
+int main() {
+  try {
+    rl::CliffWalking env;
+    const int        episodes = 500, runs = 20;
+    const float      alpha = 0.5f, eps = 0.1f, gamma = 1.f;
+    std::printf("== CliffWalking: alpha %.1f, epsilon %.1f, gamma %.0f, %d episodes, averaged over %d runs\n", alpha,
+                eps, gamma, episodes, runs);
+    std::printf("   mean online return (reward collected while exploring) per block of 50 episodes\n");
+    std::printf("  %-16s", "episodes");
+    for (int b = 0; b < episodes; b += 50) std::printf(" %7d", b + 50);
+    std::printf("\n");
+
+    double late_online[3], greedy_return[3];  // mean online return of episodes 101-500; greedy return
+    for (Method m : {kSarsa, kExpectedSarsa, kQLearning}) {
+      std::vector<double>     avg(episodes, 0.0);
+      std::vector<rl::QTable> tables;
+      for (int run = 0; run < runs; ++run) {
+        Result r = Train(env, m, episodes, alpha, eps, gamma, run + 1);
+        for (int e = 0; e < episodes; ++e) avg[e] += r.returns[e] / runs;
+        if (run == runs - 1) tables.push_back(r.Q);
+      }
+      report_capture::Save("online_"+std::to_string(m),avg);report_capture::Table("q_"+std::to_string(m),tables.back());
+      std::printf("  %-16s", kNames[m]);
+      for (int b = 0; b < episodes; b += 50) {
+        double block = 0;
+        for (int e = b; e < b + 50; ++e) block += avg[e];
+        std::printf(" %7.1f", block / 50);
+      }
+      std::printf("\n");
+      late_online[m] = 0;
+      for (int e = 100; e < episodes; ++e) late_online[m] += avg[e] / (episodes - 100);
+      std::cout << "    greedy policy after training (last run):\n";
+      std::string grid = rl::PolicyGrid(env, tables.back());
+      for (size_t pos = 0; pos < grid.size();) {
+        size_t end = grid.find('\n', pos);
+        std::cout << "      " << grid.substr(pos, end - pos) << "\n";
+        pos = end + 1;
+      }
+      const rl::EpisodeStats stats = rl::GreedyEval(env, tables.back(), 100, 0);
+      rl::PrintStats("  greedy policy, 100 episodes", stats);
+      greedy_return[m] = stats.mean_return();
+      // tflow films this greedy episode (seed 0) here.
+      const rl::QTable& Q = tables.back();
+      rl::PlayEpisode(
+          env, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); },
+          std::string("sarsa_greedy_") + kNames[m], 0);
+    }
+    std::cout << "\n  SARSA and expected SARSA earn more *while learning* (safer path); Q-learning's greedy\n"
+                 "  policy is optimal (-13) but its epsilon-greedy behaviour keeps falling off the cliff.\n";
+
+    // Checks: the on-policy effect.
+    check::Require(late_online[kSarsa] > late_online[kQLearning] + 10,
+                   "SARSA should earn more than Q-learning while learning");
+    check::Require(late_online[kExpectedSarsa] > late_online[kQLearning] + 10,
+                   "expected SARSA should earn more than Q-learning while learning");
+    check::Require(greedy_return[kQLearning] == -13, "Q-learning's greedy policy should take the optimal edge (-13)");
+    for (Method m : {kSarsa, kExpectedSarsa})
+      check::Require(greedy_return[m] < -13 && greedy_return[m] >= -21,
+                     std::string(kNames[m]) + "'s greedy policy should take a safer, longer path");
+    std::cout << "\nchecks passed (vsim videos omitted)\n";
+  } catch (const std::exception& e) {
+    std::cerr << "FAILED: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
+}
+
+```
+// result_begin:
+// == CliffWalking: alpha 0.5, epsilon 0.1, gamma 1, 500 episodes, averaged over 20 runs
+//    mean online return (reward collected while exploring) per block of 50 episodes
+//   episodes              50     100     150     200     250     300     350     400     450     500
+//   SARSA             -108.8   -33.9   -28.9   -28.3   -28.8   -28.6   -27.1   -25.1   -25.7   -34.1
+//     greedy policy after training (last run):
+//       > > > > > > > > > > v v 
+//       ^ ^ < ^ ^ > > ^ > ^ > v 
+//       ^ ^ ^ < ^ ^ ^ > > > > v 
+//       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
+//     greedy policy, 100 episodes    return mean   -17.00  min   -17.00  max   -17.00   length mean   17.0
+//   played sarsa_greedy_SARSA (video omitted): 17 steps, return -17.0
+//   Expected SARSA     -90.1   -23.3   -21.1   -21.0   -22.2   -20.8   -21.2   -21.5   -21.1   -20.3
+//     greedy policy after training (last run):
+//       < > > > > > > > > > > v 
+//       > > > > > > > > > > > v 
+//       ^ ^ ^ ^ ^ ^ ^ ^ ^ > > v 
+//       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
+//     greedy policy, 100 episodes    return mean   -15.00  min   -15.00  max   -15.00   length mean   15.0
+//   played sarsa_greedy_Expected SARSA (video omitted): 15 steps, return -15.0
+//   Q-learning        -114.9   -49.9   -49.4   -50.6   -52.2   -52.8   -47.0   -50.7   -50.0   -48.4
+//     greedy policy after training (last run):
+//       < > > > > > ^ > < > v v 
+//       v > > > > > > > > > v v 
+//       > > > > > > > > > > > v 
+//       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
+//     greedy policy, 100 episodes    return mean   -13.00  min   -13.00  max   -13.00   length mean   13.0
+//   played sarsa_greedy_Q-learning (video omitted): 13 steps, return -13.0
+//
+//   SARSA and expected SARSA earn more *while learning* (safer path); Q-learning's greedy
+//   policy is optimal (-13) but its epsilon-greedy behaviour keeps falling off the cliff.
+//
+// checks passed (vsim videos omitted)
+// result_end
+
+> Inspect the actual experiment results
+
+Each source per-episode history already averages20 runs. Further50-episode plotting bins reduce visual noise and use all500 episodes; greedy task returns are reported separately above.
+
+```{cpp, results="markdown", file="figures/sarsa_results.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto archive=dm::nn::load_npz("build/sarsa_source.npz");auto get=[&](const std::string& name){auto it=std::find_if(archive.begin(),archive.end(),[&](const auto& p){return p.first==name;});if(it==archive.end())throw std::runtime_error("missing source series "+name);return it->second.to_vector<double>();};auto plot=dm::graphics::RPlot::create();{auto values=get("online_0");std::vector<double>x;std::vector<double>binned;for(size_t start=0;start<values.size();start+=50){size_t end=std::min(values.size(),start+50);binned.push_back(std::accumulate(values.begin()+start,values.begin()+end,0.)/(end-start));x.push_back(end);}values=binned;plot.lines(x,values,"SARSA",{37,99,235});}{auto values=get("online_1");std::vector<double>x;std::vector<double>binned;for(size_t start=0;start<values.size();start+=50){size_t end=std::min(values.size(),start+50);binned.push_back(std::accumulate(values.begin()+start,values.begin()+end,0.)/(end-start));x.push_back(end);}values=binned;plot.lines(x,values,"expected SARSA",{234,88,12});}{auto values=get("online_2");std::vector<double>x;std::vector<double>binned;for(size_t start=0;start<values.size();start+=50){size_t end=std::min(values.size(),start+50);binned.push_back(std::accumulate(values.begin()+start,values.begin()+end,0.)/(end-start));x.push_back(end);}values=binned;plot.lines(x,values,"Q-learning",{22,163,74});}plot.title("sarsa source results").x_label("Training episode (50-episode bins)").y_label("Mean online task return").size(1150,650).save_svg("build/sarsa_results.svg");}
+```
+// result_begin: markdown
+\image(figures/sarsa_results.svg)
+// result_end
+
+> Interpretation and provenance
+
+Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.

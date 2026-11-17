@@ -1,10 +1,11 @@
-#include <datamunge/random/random.hpp>
-#include <datamunge/random/mt19937_64_analysis.hpp>
-#include <datamunge/random/chacha20_analysis.hpp>
-#include <datamunge/algorithms/chacha20.hpp>
-
-#include <cmath>
+/// @file random.cpp
+/// @brief Canonical raw engines and shared distribution samplers.
 #include <algorithm>
+#include <cmath>
+#include <datamunge/algorithms/chacha20.hpp>
+#include <datamunge/random/chacha20_analysis.hpp>
+#include <datamunge/random/mt19937_64_analysis.hpp>
+#include <datamunge/random/random.hpp>
 #include <limits>
 #include <numeric>
 #include <stdexcept>
@@ -15,7 +16,6 @@ namespace {
 constexpr std::uint64_t rotl(std::uint64_t value, int shift) {
   return (value << shift) | (value >> (64 - shift));
 }
-
 
 std::uint64_t splitmix64_step(std::uint64_t& state) {
   std::uint64_t value = (state += 0x9E3779B97F4A7C15ULL);
@@ -32,9 +32,14 @@ double RandomGenerator::uniform01() {
 
 double RandomGenerator::uniform(double lower, double upper) {
   if (!(std::isfinite(lower) && std::isfinite(upper) && upper > lower)) {
-    throw std::invalid_argument("uniform: bounds must be finite and upper must be greater than lower");
+    throw std::invalid_argument(
+        "uniform: bounds must be finite and upper must be greater than lower");
   }
-  return lower + (upper - lower) * uniform01();
+  const double u=uniform01();
+  const double span=upper-lower;
+  double value=std::isfinite(span)?lower+span*u:static_cast<double>((1-static_cast<long double>(u))*lower+static_cast<long double>(u)*upper);
+  if(value>=upper)value=std::nextafter(upper,lower);
+  return std::max(lower,value);
 }
 
 std::uint64_t RandomGenerator::uniform_u64(std::uint64_t lower, std::uint64_t upper) {
@@ -43,7 +48,8 @@ std::uint64_t RandomGenerator::uniform_u64(std::uint64_t lower, std::uint64_t up
   }
 
   const std::uint64_t range = upper - lower + 1U;
-  if (range == 0U) return next_u64();
+  if (range == 0U)
+    return next_u64();
 
   // Lemire's multiply-shift method: the answer is the top word of x * range, so it is taken from
   // the high bits of x (a modulo would use the low bits, which are periodic for generators
@@ -69,7 +75,9 @@ double RandomGenerator::exponential(double rate) {
   if (!(std::isfinite(rate) && rate > 0.0)) {
     throw std::invalid_argument("exponential: rate must be finite and greater than zero");
   }
-  return -std::log1p(-uniform01()) / rate;
+  const double value=-std::log1p(-uniform01())/rate;
+  if(!std::isfinite(value))throw std::overflow_error("exponential: result outside finite double range");
+  return value;
 }
 
 double RandomGenerator::normal() {
@@ -79,7 +87,8 @@ double RandomGenerator::normal() {
   }
 
   double u1 = 0.0;
-  while (u1 <= 0.0) u1 = uniform01();
+  while (u1 <= 0.0)
+    u1 = uniform01();
 
   const double u2     = uniform01();
   const double radius = std::sqrt(-2.0 * std::log(u1));
@@ -92,9 +101,12 @@ double RandomGenerator::normal() {
 
 double RandomGenerator::normal(double mean, double standard_deviation) {
   if (!(std::isfinite(mean) && std::isfinite(standard_deviation) && standard_deviation > 0.0)) {
-    throw std::invalid_argument("normal: mean must be finite and standard_deviation must be finite and greater than zero");
+    throw std::invalid_argument(
+        "normal: mean must be finite and standard_deviation must be finite and greater than zero");
   }
-  return mean + standard_deviation * normal();
+  const double value=mean+standard_deviation*normal();
+  if(!std::isfinite(value))throw std::overflow_error("normal: result outside finite double range");
+  return value;
 }
 
 SplitMix64::SplitMix64(std::uint64_t seed) : state_(seed) {}
@@ -109,7 +121,8 @@ Acorn64::Acorn64(std::uint64_t seed, std::size_t order) {
   }
   SplitMix64 seeder(seed);
   state_.resize(order + 1);
-  for (auto& word : state_) word = seeder.next_u64();
+  for (auto& word : state_)
+    word = seeder.next_u64();
   state_[0] |= 1ULL;
 }
 
@@ -123,7 +136,8 @@ Acorn64::Acorn64(std::vector<std::uint64_t> state) : state_(std::move(state)) {
 }
 
 std::uint64_t Acorn64::next_u64() {
-  for (std::size_t i = 1; i < state_.size(); ++i) state_[i] += state_[i - 1];
+  for (std::size_t i = 1; i < state_.size(); ++i)
+    state_[i] += state_[i - 1];
   return state_.back();
 }
 
@@ -131,8 +145,9 @@ namespace {
 
 /// @brief The inverse of an odd @p a modulo 2^64, by Newton's iteration x <- x (2 - a x).
 std::uint64_t inverse_mod_2_64(std::uint64_t a) {
-  std::uint64_t x = a;  // correct to 3 bits for odd a
-  for (int i = 0; i < 5; ++i) x *= 2U - a * x;
+  std::uint64_t x = a; // correct to 3 bits for odd a
+  for (int i = 0; i < 5; ++i)
+    x *= 2U - a * x;
   return x;
 }
 
@@ -145,25 +160,27 @@ std::uint64_t odd_part(unsigned __int128 t, int& twos) {
   return static_cast<std::uint64_t>(t);
 }
 
-}  // namespace
+} // namespace
 
 void Acorn64::discard(std::uint64_t steps) {
-  if (steps == 0) return;
+  if (steps == 0)
+    return;
   const std::size_t k = order();
   // c[r] = C(steps + r - 1, r) mod 2^64 = prod_{i=1..r} (steps + i - 1) / i.
   std::vector<std::uint64_t> c(k + 1, 1U);
-  std::uint64_t odd_num = 1U, odd_den = 1U;
-  int twos = 0;
+  std::uint64_t              odd_num = 1U, odd_den = 1U;
+  int                        twos = 0;
   for (std::size_t r = 1; r <= k; ++r) {
     int num_twos = 0, den_twos = 0;
     odd_num *= odd_part(static_cast<unsigned __int128>(steps) + r - 1U, num_twos);
     odd_den *= odd_part(r, den_twos);
-    twos += num_twos - den_twos;  // never negative: the ratio is an integer
+    twos += num_twos - den_twos; // never negative: the ratio is an integer
     c[r] = twos >= 64 ? 0U : (odd_num * inverse_mod_2_64(odd_den)) << twos;
   }
   std::vector<std::uint64_t> next(k + 1, 0U);
   for (std::size_t j = 0; j <= k; ++j)
-    for (std::size_t m = 0; m <= j; ++m) next[j] += c[j - m] * state_[m];
+    for (std::size_t m = 0; m <= j; ++m)
+      next[j] += c[j - m] * state_[m];
   state_ = std::move(next);
 }
 
@@ -184,41 +201,58 @@ BlumBlumShub::BlumBlumShub(std::uint64_t seed, std::uint64_t p, std::uint64_t q)
 }
 
 std::uint64_t BlumBlumShub::step() {
-  state_ = static_cast<std::uint64_t>(
-      (static_cast<unsigned __int128>(state_) * state_) % modulus_);
+  state_ = static_cast<std::uint64_t>((static_cast<unsigned __int128>(state_) * state_) % modulus_);
   return state_;
 }
 
 std::uint64_t BlumBlumShub::next_u64() {
   std::uint64_t word = 0;
-  for (unsigned bit = 0; bit < 64; ++bit) word |= next_bit() << bit;
+  for (unsigned bit = 0; bit < 64; ++bit)
+    word |= next_bit() << bit;
   return word;
 }
 
-std::uint64_t BlumBlumShub::next_bit() { return step() & 1ULL; }
+std::uint64_t BlumBlumShub::next_bit() {
+  return step() & 1ULL;
+}
 
-LaggedFibonacci64::LaggedFibonacci64(std::uint64_t seed, std::size_t short_lag,
-                                     std::size_t long_lag)
+LaggedFibonacci64::LaggedFibonacci64(
+    std::uint64_t seed,
+    std::size_t   short_lag,
+    std::size_t   long_lag)
     : short_lag_(short_lag) {
   if (short_lag == 0 || short_lag >= long_lag) {
     throw std::invalid_argument("LaggedFibonacci64: require 0 < short_lag < long_lag");
   }
   SplitMix64 seeder(seed);
   state_.resize(long_lag);
-  for (auto& word : state_) word = seeder.next_u64();
+  for (auto& word : state_)
+    word = seeder.next_u64();
 }
 
 std::uint64_t LaggedFibonacci64::next_u64() {
-  const std::size_t long_lag = state_.size();
-  const std::size_t short_index = (index_ + long_lag - short_lag_) % long_lag;
-  state_[index_] += state_[short_index];
-  const std::uint64_t result = state_[index_];
-  index_ = (index_ + 1) % long_lag;
-  return result;
+  return next_step().value;
+}
+LaggedFibonacciStep LaggedFibonacci64::next_step() noexcept {
+  const auto k           = state_.size();
+  const auto short_index = index_ >= short_lag_ ? index_ - short_lag_ : k - (short_lag_ - index_);
+  const auto next        = index_ + 1 == k ? 0 : index_ + 1;
+  LaggedFibonacciStep out{
+      index_,
+      short_index,
+      state_[index_],
+      state_[short_index],
+      state_[index_] + state_[short_index],
+      next};
+  state_[index_] = out.value;
+  index_         = next;
+  return out;
 }
 
-LinearCongruential64::LinearCongruential64(std::uint64_t seed, std::uint64_t multiplier,
-                                           std::uint64_t increment)
+LinearCongruential64::LinearCongruential64(
+    std::uint64_t seed,
+    std::uint64_t multiplier,
+    std::uint64_t increment)
     : state_(seed), multiplier_(multiplier), increment_(increment) {
   if ((multiplier & 3ULL) != 1ULL || (increment & 1ULL) == 0) {
     throw std::invalid_argument(
@@ -227,8 +261,12 @@ LinearCongruential64::LinearCongruential64(std::uint64_t seed, std::uint64_t mul
 }
 
 std::uint64_t LinearCongruential64::next_u64() {
-  state_ = multiplier_ * state_ + increment_;
-  return state_;
+  return next_step().after;
+}
+LCG64Step LinearCongruential64::next_step() noexcept {
+  auto step = lcg64_step(state_, multiplier_, increment_);
+  state_    = step.after;
+  return step;
 }
 
 MersenneTwister64::MersenneTwister64(std::uint64_t seed) {
@@ -241,13 +279,15 @@ MersenneTwister64::MersenneTwister64(std::uint64_t seed) {
 void MersenneTwister64::twist() {
   for (std::size_t i = 0; i < state_.size(); ++i) {
     state_[i] = mt19937_64_twist_steps(
-        state_[i], state_[(i + 1) % state_.size()], state_[(i + 156) % state_.size()]).back();
+                    state_[i], state_[(i + 1) % state_.size()], state_[(i + 156) % state_.size()])
+                    .back();
   }
   index_ = 0;
 }
 
 std::uint64_t MersenneTwister64::next_u64() {
-  if (index_ == state_.size()) twist();
+  if (index_ == state_.size())
+    twist();
   return mt19937_64_temper_steps(state_[index_++]).back();
 }
 
@@ -257,16 +297,18 @@ Pcg32::Pcg32(std::uint64_t seed, std::uint64_t sequence) : increment_((sequence 
   next_u32();
 }
 
-std::uint32_t Pcg32::next_u32() {
-  const std::uint64_t old_state = state_;
-  state_ = old_state * 6364136223846793005ULL + increment_;
-  const std::uint32_t xorshifted = static_cast<std::uint32_t>(((old_state >> 18U) ^ old_state) >> 27U);
-  const std::uint32_t rotation = old_state >> 59U;
-  return (xorshifted >> rotation) | (xorshifted << ((-rotation) & 31U));
+std::uint32_t Pcg32::next_u32(){return next_u32_trace().output;}
+Pcg32Step Pcg32::next_u32_trace() {
+ const std::uint64_t old=state_;
+ state_=old*6364136223846793005ULL+increment_;
+ const auto x=static_cast<std::uint32_t>(((old>>18U)^old)>>27U);
+ const auto r=static_cast<std::uint32_t>(old>>59U);
+ return {old,state_,x,r,static_cast<std::uint32_t>((x>>r)|(x<<((-r)&31U)))};
 }
 
 std::uint64_t Pcg32::next_u64() {
-  return (static_cast<std::uint64_t>(next_u32()) << 32U) | next_u32();
+  const auto high=next_u32();const auto low=next_u32();
+  return (static_cast<std::uint64_t>(high) << 32U) | low;
 }
 
 Xoroshiro128Plus::Xoroshiro128Plus(std::uint64_t seed) {
@@ -274,7 +316,7 @@ Xoroshiro128Plus::Xoroshiro128Plus(std::uint64_t seed) {
   state1_ = splitmix64_step(seed);
 }
 
-Xoroshiro128Plus::Xoroshiro128Plus(const std::array<std::uint64_t,2>& state)
+Xoroshiro128Plus::Xoroshiro128Plus(const std::array<std::uint64_t, 2>& state)
     : state0_(state[0]), state1_(state[1]) {
   if ((state0_ | state1_) == 0)
     throw std::invalid_argument("Xoroshiro128Plus: all-zero state");
@@ -288,15 +330,19 @@ std::uint64_t Xoroshiro128Plus::next_u64() {
   return result;
 }
 
-void Xoroshiro128Plus::apply_jump(const std::array<std::uint64_t,2>& polynomial) {
-  std::uint64_t a=0, b=0;
+void Xoroshiro128Plus::apply_jump(const std::array<std::uint64_t, 2>& polynomial) {
+  std::uint64_t a = 0, b = 0;
   for (const auto word : polynomial) {
-    for (int bit=0; bit<64; ++bit) {
-      if ((word >> bit) & 1U) { a ^= state0_; b ^= state1_; }
+    for (int bit = 0; bit < 64; ++bit) {
+      if ((word >> bit) & 1U) {
+        a ^= state0_;
+        b ^= state1_;
+      }
       (void)next_u64();
     }
   }
-  state0_ = a; state1_ = b;
+  state0_ = a;
+  state1_ = b;
   reset_normal_cache();
 }
 
@@ -309,10 +355,11 @@ void Xoroshiro128Plus::long_jump() {
 }
 
 Xoshiro256StarStar::Xoshiro256StarStar(std::uint64_t seed) {
-  for (auto& value : state_) value = splitmix64_step(seed);
+  for (auto& value : state_)
+    value = splitmix64_step(seed);
 }
 
-Xoshiro256StarStar::Xoshiro256StarStar(const std::array<std::uint64_t,4>& state) : state_(state) {
+Xoshiro256StarStar::Xoshiro256StarStar(const std::array<std::uint64_t, 4>& state) : state_(state) {
   if ((state_[0] | state_[1] | state_[2] | state_[3]) == 0)
     throw std::invalid_argument("Xoshiro256StarStar: all-zero state");
 }
@@ -330,12 +377,13 @@ std::uint64_t Xoshiro256StarStar::next_u64() {
   return result;
 }
 
-void Xoshiro256StarStar::apply_jump(const std::array<std::uint64_t,4>& polynomial) {
-  std::array<std::uint64_t,4> target{};
+void Xoshiro256StarStar::apply_jump(const std::array<std::uint64_t, 4>& polynomial) {
+  std::array<std::uint64_t, 4> target{};
   for (const auto word : polynomial) {
-    for (int bit=0; bit<64; ++bit) {
+    for (int bit = 0; bit < 64; ++bit) {
       if ((word >> bit) & 1U)
-        for (std::size_t i=0; i<state_.size(); ++i) target[i] ^= state_[i];
+        for (std::size_t i = 0; i < state_.size(); ++i)
+          target[i] ^= state_[i];
       (void)next_u64();
     }
   }
@@ -344,11 +392,13 @@ void Xoshiro256StarStar::apply_jump(const std::array<std::uint64_t,4>& polynomia
 }
 
 void Xoshiro256StarStar::jump() {
-  apply_jump({0x180ec6d33cfd0abaULL, 0xd5a61266f0c9392cULL, 0xa9582618e03fc9aaULL, 0x39abdc4529b1661cULL});
+  apply_jump(
+      {0x180ec6d33cfd0abaULL, 0xd5a61266f0c9392cULL, 0xa9582618e03fc9aaULL, 0x39abdc4529b1661cULL});
 }
 
 void Xoshiro256StarStar::long_jump() {
-  apply_jump({0x76e15d3efefdcbbfULL, 0xc5004e441c522fb3ULL, 0x77710069854ee241ULL, 0x39109bb02acbe635ULL});
+  apply_jump(
+      {0x76e15d3efefdcbbfULL, 0xc5004e441c522fb3ULL, 0x77710069854ee241ULL, 0x39109bb02acbe635ULL});
 }
 
 Sfc64::Sfc64(std::uint64_t seed) {
@@ -357,30 +407,47 @@ Sfc64::Sfc64(std::uint64_t seed) {
   state2_ = splitmix64_step(seed);
 }
 
-std::uint64_t Sfc64::next_u64() {
-  const std::uint64_t result = state0_ + state1_ + counter_++;
-  state0_ = state1_ ^ (state1_ >> 11U);
-  state1_ = state2_ + (state2_ << 3U);
-  state2_ = rotl(state2_, 24) + result;
-  return result;
-}
+Sfc64::Sfc64(const std::array<std::uint64_t,4>& state):state0_(state[0]),state1_(state[1]),state2_(state[2]),counter_(state[3]){}
+std::uint64_t Sfc64::next_impl(Sfc64Step* record){if(record)record->before=state();const std::uint64_t result=state0_+state1_+counter_++;state0_=state1_^(state1_>>11U);state1_=state2_+(state2_<<3U);state2_=rotl(state2_,24)+result;if(record){record->value=result;record->after=state();}return result;}
+std::uint64_t Sfc64::next_u64(){return next_impl(nullptr);}
+Sfc64Step Sfc64::next_trace(){Sfc64Step record;next_impl(&record);return record;}
+
 
 ChaCha20::ChaCha20(std::uint64_t seed) : ChaCha20(chacha20_seed_key(seed)) {}
 
-ChaCha20::ChaCha20(const std::array<std::uint32_t, 8>& key,
-                   const std::array<std::uint32_t, 3>& nonce,
-                   std::uint32_t initial_counter)
-    : state_{0x61707865U, 0x3320646eU, 0x79622d32U, 0x6b206574U,
-             key[0], key[1], key[2], key[3], key[4], key[5], key[6], key[7],
-             initial_counter, nonce[0], nonce[1], nonce[2]} {}
+ChaCha20::ChaCha20(
+    const std::array<std::uint32_t, 8>& key,
+    const std::array<std::uint32_t, 3>& nonce,
+    std::uint32_t                       initial_counter)
+    : state_{
+          0x61707865U,
+          0x3320646eU,
+          0x79622d32U,
+          0x6b206574U,
+          key[0],
+          key[1],
+          key[2],
+          key[3],
+          key[4],
+          key[5],
+          key[6],
+          key[7],
+          initial_counter,
+          nonce[0],
+          nonce[1],
+          nonce[2]} {}
 
 void ChaCha20::refill() {
-  if (counter_exhausted_) throw std::length_error("ChaCha20: fixed-nonce block counter exhausted");
+  if (counter_exhausted_)
+    throw std::length_error("ChaCha20: fixed-nonce block counter exhausted");
   auto work = state_;
   algorithms::detail::chacha_permute(work);
-  for (std::size_t i = 0; i < work.size(); ++i) buffer_[i] = work[i] + state_[i];
-  if (state_[12] == std::numeric_limits<std::uint32_t>::max()) counter_exhausted_ = true;
-  else ++state_[12];
+  for (std::size_t i = 0; i < work.size(); ++i)
+    buffer_[i] = work[i] + state_[i];
+  if (state_[12] == std::numeric_limits<std::uint32_t>::max())
+    counter_exhausted_ = true;
+  else
+    ++state_[12];
   buffer_index_ = 0;
 }
 
@@ -390,8 +457,9 @@ std::uint64_t ChaCha20::remaining_u64() const noexcept {
 }
 
 std::uint64_t ChaCha20::next_u64() {
-  if (buffer_index_ == buffer_.size()) refill();
-  const std::uint64_t low = buffer_[buffer_index_++];
+  if (buffer_index_ == buffer_.size())
+    refill();
+  const std::uint64_t low  = buffer_[buffer_index_++];
   const std::uint64_t high = buffer_[buffer_index_++];
   return low | (high << 32U);
 }

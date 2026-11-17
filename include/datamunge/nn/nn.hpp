@@ -91,6 +91,8 @@
 #include "datamunge/nn/profiler.hpp"
 #include "datamunge/nn/random.hpp"
 #include "datamunge/nn/recurrent_variants.hpp"
+#include "datamunge/nn/recurrent_components.hpp"
+#include "datamunge/nn/recurrent_data.hpp"
 #include "datamunge/nn/schedules.hpp"
 #include "datamunge/nn/sequence.hpp"
 #include "datamunge/nn/tape.hpp"
@@ -115,6 +117,7 @@
 #include "datamunge/nn/gaussian_mixture.hpp"
 #include "datamunge/nn/naive_bayes.hpp"
 #include "datamunge/nn/classical_inference.hpp"
+#include <datamunge/nn/classical_components.hpp>
 
 #include "datamunge/nn/convolution_components.hpp"
 #include "datamunge/nn/vision_plots.hpp"
@@ -473,3 +476,41 @@
 #include "datamunge/nn/flow_study.hpp"
 
 #include "datamunge/nn/diffusion.hpp"
+#include "datamunge/nn/diffusion_components.hpp"
+#include <datamunge/nn/rbf.hpp>
+#include <datamunge/nn/self_organizing_map.hpp>
+
+#include "datamunge/nn/recurrent_extensions.hpp"
+#include "datamunge/nn/memory_networks.hpp"
+
+#include "datamunge/nn/autorec.hpp"
+
+#include "datamunge/nn/energy_components.hpp"
+#include "datamunge/nn/dnc.hpp"
+#include "datamunge/nn/attention_components.hpp"
+
+#include <datamunge/nn/attention_diagnostics.hpp>
+
+#include <datamunge/nn/deep_q.hpp>
+
+#include <datamunge/nn/actor_critic.hpp>
+
+#include <datamunge/nn/continuous_control.hpp>
+
+#include <datamunge/nn/rssm.hpp>
+#include <datamunge/nn/model_based_control.hpp>
+
+#include <datamunge/nn/pixel_q.hpp>
+
+#include <datamunge/nn/autoregressive_components.hpp>
+
+#include <datamunge/nn/decoder_cache.hpp>
+
+#include <datamunge/nn/token_distribution.hpp>
+
+#include <datamunge/nn/sequence_language_graphs.hpp>
+
+#include <datamunge/nn/safetensors.hpp>
+
+#include <datamunge/nn/completion_graphs.hpp>
+#include <datamunge/nn/published_bert.hpp>

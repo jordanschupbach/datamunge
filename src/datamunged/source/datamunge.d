@@ -11255,6 +11255,143 @@ class Var {
   }
 }
 
+class MLPClassifierSearch {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_MLPClassifierSearch(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string response, string x_feature, string y_feature, size_t min_hidden, size_t max_hidden, size_t initial_samples, size_t iterations, size_t epochs, ulong seed) {
+    this(datamunge_im.new_MLPClassifierSearch__SWIG_0(DataFrame.swigGetCPtr(data), (response ? std.string.toStringz(response) : null), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), min_hidden, max_hidden, initial_samples, iterations, epochs, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string response, string x_feature, string y_feature, size_t min_hidden, size_t max_hidden, size_t initial_samples, size_t iterations, size_t epochs) {
+    this(datamunge_im.new_MLPClassifierSearch__SWIG_1(DataFrame.swigGetCPtr(data), (response ? std.string.toStringz(response) : null), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), min_hidden, max_hidden, initial_samples, iterations, epochs), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string response, string x_feature, string y_feature, size_t min_hidden, size_t max_hidden, size_t initial_samples, size_t iterations) {
+    this(datamunge_im.new_MLPClassifierSearch__SWIG_2(DataFrame.swigGetCPtr(data), (response ? std.string.toStringz(response) : null), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), min_hidden, max_hidden, initial_samples, iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string response, string x_feature, string y_feature, size_t min_hidden, size_t max_hidden, size_t initial_samples) {
+    this(datamunge_im.new_MLPClassifierSearch__SWIG_3(DataFrame.swigGetCPtr(data), (response ? std.string.toStringz(response) : null), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), min_hidden, max_hidden, initial_samples), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string response, string x_feature, string y_feature, size_t min_hidden, size_t max_hidden) {
+    this(datamunge_im.new_MLPClassifierSearch__SWIG_4(DataFrame.swigGetCPtr(data), (response ? std.string.toStringz(response) : null), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), min_hidden, max_hidden), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string response, string x_feature, string y_feature, size_t min_hidden) {
+    this(datamunge_im.new_MLPClassifierSearch__SWIG_5(DataFrame.swigGetCPtr(data), (response ? std.string.toStringz(response) : null), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), min_hidden), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string response, string x_feature, string y_feature) {
+    this(datamunge_im.new_MLPClassifierSearch__SWIG_6(DataFrame.swigGetCPtr(data), (response ? std.string.toStringz(response) : null), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public size_t best_hidden_nodes() const {
+    auto ret = datamunge_im.MLPClassifierSearch_best_hidden_nodes(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double validation_log_loss() const {
+    auto ret = datamunge_im.MLPClassifierSearch_validation_log_loss(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double test_accuracy() const {
+    auto ret = datamunge_im.MLPClassifierSearch_test_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t training_rows() const {
+    auto ret = datamunge_im.MLPClassifierSearch_training_rows(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t validation_rows() const {
+    auto ret = datamunge_im.MLPClassifierSearch_validation_rows(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t test_rows() const {
+    auto ret = datamunge_im.MLPClassifierSearch_test_rows(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.MLPClassifierSearch_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public DataFrame trials() const {
+    void* cPtr = datamunge_im.MLPClassifierSearch_trials(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, true);
+    return ret;
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.MLPClassifierSearch_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_decision_regions(size_t grid_resolution) const {
+    RPlot ret = new RPlot(datamunge_im.MLPClassifierSearch_plot_decision_regions__SWIG_0(cast(void*)swigCPtr, grid_resolution), true);
+    return ret;
+  }
+
+  public RPlot plot_decision_regions() const {
+    RPlot ret = new RPlot(datamunge_im.MLPClassifierSearch_plot_decision_regions__SWIG_1(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
 class RGB {
   private void* swigCPtr;
   protected bool swigCMemOwn;

@@ -25,6 +25,9 @@ pkgs.mkShell {
   # The package cache is per build of the binding: NuGet never re-extracts a package version it
   # has cached, so a shared cache would keep serving the first build of 0.0.1.
   shellHook = ''
+    # Use the native runtime asset belonging to the restored NuGet package.
+    # A caller's local development library may have different dispatch indices.
+    unset DATAMUNGE_CSHARP_LIBRARY
     export RestoreSources="${pkgs.lib.concatStringsSep ";" restoreSources}"
     cache="''${XDG_CACHE_HOME:-$HOME/.cache}/datamunge/report-csharp"
     export DOTNET_CLI_HOME="$cache"

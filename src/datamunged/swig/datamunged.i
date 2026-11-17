@@ -164,6 +164,7 @@
 %}
 
 %include "datamunge/data_names.i"
+%newobject datamunge::MLPClassifierSearch::trials;
 %include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
 %include "datamunge/vector.i"

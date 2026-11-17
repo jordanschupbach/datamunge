@@ -1353,6 +1353,9 @@ type var = [ `Var ] obj
 (** Objects of class {!Tape} (or derived). *)
 type tape = [ `Tape ] obj
 
+(** Objects of class {!MLPClassifierSearch} (or derived). *)
+type mlp_classifier_search = [ `MLPClassifierSearch ] obj
+
 (** Objects of class {!CadSolid} (or derived). *)
 type cad_solid = [ `CadSolid ] obj
 
@@ -27791,6 +27794,224 @@ module Tape : sig
 
   (** Whether {!close} was called on the object. *)
   val is_closed : [> `Tape ] obj -> bool
+end
+
+(** A two-predictor MLP classifier with Bayesian hidden-width selection and a held-out test.
+
+    Splits complete labelled data by class into 60% fitting, 20% validation and 20% test rows
+    (per-class rounding applies). Four random widths followed by eight Gaussian-process
+    expected-improvement proposals are the default search budget. Proposals in
+    \[min_hidden,max_hidden\] are rounded to integer widths; repeated widths reuse their cached
+    validation log loss. Smaller loss wins; ties retain the first proposal. Each candidate has
+    one tanh hidden layer, softmax output, training-only standardization, SGD learning rate
+    0.05, batch size 32 and L2 penalty 0.0001. Initialization/shuffling use seed for every
+    candidate.
+
+    After selection the network is refitted on fitting plus validation rows, with new
+    standardization statistics, then scored once on the untouched test. Validation loss belongs
+    to the candidate fit, not the final refit, and is an optimistic selection score. Neither
+    split nor test performance is a guarantee for other seeds or datasets. Owns all state,
+    borrows inputs only during calls, does not change data or global RNG state. Const methods
+    may run concurrently. Search cost is at most (initial_samples+iterations) fits plus one
+    refit; cached repeats are cheaper. Prediction/plot costs follow MLPClassifier.
+
+    {b Example:}
+
+    {@cpp[
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+    dm::MLPClassifierSearch fit( *iris, "Species", "Petal.Length", "Petal.Width");
+    const bool valid = fit.best_hidden_nodes() >= 2 && fit.best_hidden_nodes() <= 24; // true
+    ]}
+
+    {b References:}
+
+    {ul
+    {- D. R. Jones, M. Schonlau and W. J. Welch (1998), Efficient Global Optimization of Expensive Black-Box Functions, https://doi.org/10.1023/A:1008306431147}}
+
+    C++ class [datamunge::MLPClassifierSearch].
+
+    @see "stats::MLPClassifier" C++ [stats::MLPClassifier]
+    @see "optim::BayesianOptimization" C++ [optim::BayesianOptimization]
+    @see "stats::train_test_split()" C++ [stats::train_test_split()] *)
+module MLPClassifierSearch : sig
+  (** A native [datamunge::MLPClassifierSearch]: freed when collected, or by {!close}. *)
+  type t = mlp_classifier_search
+
+  (** Tune a single hidden layer, refit on development rows and evaluate the test rows.
+
+      {b Example:}
+
+      {@cpp[
+      const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+      dm::MLPClassifierSearch fit( *iris, "Species", "Petal.Length", "Petal.Width", 2, 24, 4, 8, 400, 42);
+      const auto n = fit.test_rows(); // 30
+      ]}
+
+      C++:
+      [datamunge::MLPClassifierSearch::MLPClassifierSearch(const DataFrame & data, const std::string & response, const std::string & x_feature, const std::string & y_feature, std::size_t min_hidden = 2, std::size_t max_hidden = 24, std::size_t initial_samples = 4, std::size_t iterations = 8, std::size_t epochs = 400, std::uint64_t seed = 42)]
+
+      @param data Borrowed labelled frame; unchanged. Every selected value must be present and
+        finite.
+      @param response String response column, with nonempty labels and at least five rows per
+        class.
+      @param x_feature First numeric predictor, distinct from response and y_feature.
+      @param y_feature Second numeric predictor; these two are the only model inputs.
+      @param min_hidden Smallest hidden width, default 2; at least 1 and below max_hidden.
+        (optional; C++ default [2])
+      @param max_hidden Largest hidden width, default 24; at most 1000000. (optional; C++ default
+        [24])
+      @param initial_samples Random initial proposals, default 4; at least 1. (optional; C++
+        default [4])
+      @param iterations Surrogate-guided proposals, default 8; zero permits initial design only.
+        (optional; C++ default [8])
+      @param epochs SGD passes for each candidate and the final refit, default 400; at least 1.
+        (optional; C++ default [400])
+      @param seed Local split/search/initialization seed, default 42; validation split uses seed+1
+        modulo 2^64. (optional; C++ default [42])
+      @raise Invalid_argument For invalid columns, labels, nonfinite/missing data or search
+        controls. (C++ [std::invalid_argument])
+      @raise Failure If fitting or scoring fails to produce finite probabilities. (C++
+        [std::runtime_error])
+      @see "MLPClassifierSearch" C++ [MLPClassifierSearch]
+      @see "summary()" C++ [summary()] *)
+  val create : ?min_hidden:int -> ?max_hidden:int -> ?initial_samples:int -> ?iterations:int -> ?epochs:int -> ?seed:int -> [> `DataFrame ] obj -> string -> string -> string -> t
+
+  (** Selected integer width of the single hidden layer.
+
+      C++: [std::size_t datamunge::MLPClassifierSearch::best_hidden_nodes() const]
+
+      @return A value in the requested inclusive search range. *)
+  val best_hidden_nodes : [> `MLPClassifierSearch ] obj -> int
+
+  (** Minimum validation mean negative log probability of the true class.
+
+      C++: [double datamunge::MLPClassifierSearch::validation_log_loss() const]
+
+      @return Finite nonnegative loss of the selected candidate before refitting. *)
+  val validation_log_loss : [> `MLPClassifierSearch ] obj -> float
+
+  (** Held-out test accuracy of the final development-data refit.
+
+      C++: [double datamunge::MLPClassifierSearch::test_accuracy() const]
+
+      @return Fraction correctly classified in \[0,1\]; test rows were never used for selection. *)
+  val test_accuracy : [> `MLPClassifierSearch ] obj -> float
+
+  (** Number of rows used to fit each search candidate.
+
+      C++: [std::size_t datamunge::MLPClassifierSearch::training_rows() const]
+
+      @return Fitting partition size, excluding validation and test. *)
+  val training_rows : [> `MLPClassifierSearch ] obj -> int
+
+  (** Number of rows used to choose hidden width.
+
+      C++: [std::size_t datamunge::MLPClassifierSearch::validation_rows() const]
+
+      @return Validation partition size. *)
+  val validation_rows : [> `MLPClassifierSearch ] obj -> int
+
+  (** Number of untouched rows used for the final evaluation.
+
+      C++: [std::size_t datamunge::MLPClassifierSearch::test_rows() const]
+
+      @return Test partition size. *)
+  val test_rows : [> `MLPClassifierSearch ] obj -> int
+
+  (** Summarize split sizes, selected width, validation loss and final test accuracy.
+
+      {b Example:}
+
+      {@cpp[
+      const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+      dm::MLPClassifierSearch fit( *iris, "Species", "Petal.Length", "Petal.Width");
+      const bool named = fit.summary().find("Test accuracy") != std::string::npos; // true
+      ]}
+
+      C++: [std::string datamunge::MLPClassifierSearch::summary() const]
+
+      @return Owned multiline text, without a trailing newline.
+      @see "trials()" C++ [trials()] *)
+  val summary : [> `MLPClassifierSearch ] obj -> string
+
+  (** Copy the complete Bayesian proposal history into an owned dataframe.
+
+      {b Example:}
+
+      {@cpp[
+      const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+      dm::MLPClassifierSearch fit( *iris, "Species", "Petal.Length", "Petal.Width");
+      const std::unique_ptr<dm::DataFrame> history(fit.trials());
+      const auto n = history->nrows(); // 12
+      ]}
+
+      C++: [DataFrame * datamunge::MLPClassifierSearch::trials() const]
+
+      @return New caller-owned frame with evaluation (1-based), hidden_nodes, validation_log_loss,
+        best_log_loss, cached (0/1), and phase (initial/bayesian). One row per proposal, including
+        repeated cached widths. Bindings own the result.
+      @see "summary()" C++ [summary()] *)
+  val trials : [> `MLPClassifierSearch ] obj -> data_frame
+
+  (** Predict labels from the final refit using only its two predictor columns.
+
+      {b Example:}
+
+      {@cpp[
+      const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+      dm::MLPClassifierSearch fit( *iris, "Species", "Petal.Length", "Petal.Width");
+      const auto n = fit.predict( *iris).size(); // 150
+      ]}
+
+      C++:
+      [std::vector<std::string> datamunge::MLPClassifierSearch::predict(const DataFrame & newdata) const]
+
+      @param newdata Borrowed frame, unchanged; missing predictors yield empty labels.
+      @return One class label per input row, in input order.
+      @raise Error [(`Out_of_range, _)] If a required column is absent. (C++ [std::out_of_range])
+      @raise Invalid_argument If predictor types are incompatible. (C++ [std::invalid_argument])
+      @see "stats::MLPClassifier::predict()" C++ [stats::MLPClassifier::predict()] *)
+  val predict : [> `MLPClassifierSearch ] obj -> [> `DataFrame ] obj -> string list
+
+  (** Plot final predicted class regions and development observations in the predictor plane.
+
+      Pale merged rectangles show the predicted class; saturated points show observed development
+      labels in the same palette. Test rows are excluded. Axis ranges cover development points
+      plus 10% padding, in original units. Rendering samples cell centers, so boundaries are a
+      grid approximation.
+
+      {b Example:}
+
+      {@cpp[
+      const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+      dm::MLPClassifierSearch fit( *iris, "Species", "Petal.Length", "Petal.Width");
+      auto plot = fit.plot_decision_regions();
+      plot.save_svg("build/iris-mlp.svg");
+      ]}
+
+      C++:
+      [datamunge::graphics::RPlot datamunge::MLPClassifierSearch::plot_decision_regions(std::size_t grid_resolution = 120) const]
+
+      @param grid_resolution Cells per axis, default 120; at least 2. (optional; C++ default
+        [120])
+      @return Owned editable native plot; save it to an SVG/PNG file rather than printing XML.
+      @raise Invalid_argument If grid_resolution is less than 2. (C++ [std::invalid_argument])
+      @see "graphics::add_class_regions()" C++ [graphics::add_class_regions()]
+      @see "predict()" C++ [predict()] *)
+  val plot_decision_regions : ?grid_resolution:int -> [> `MLPClassifierSearch ] obj -> r_plot
+
+  (** [Some x] when the object is (in C++) a [datamunge::MLPClassifierSearch] or derives from it, [None] otherwise. *)
+  val cast : 'a obj -> t option
+
+  (** The object as a [MLPClassifierSearch] (an upcast: no check is needed). *)
+  val upcast : [> `MLPClassifierSearch ] obj -> t
+
+  (** Frees the native object now (when OCaml owns it). Later calls on it raise
+      [Error (`Binding, _)]; closing twice does nothing. *)
+  val close : [> `MLPClassifierSearch ] obj -> unit
+
+  (** Whether {!close} was called on the object. *)
+  val is_closed : [> `MLPClassifierSearch ] obj -> bool
 end
 
 (** An owned B-rep solid with value-returning modelling and export operations. Geometry uses

@@ -70,7 +70,7 @@ struct std::formatter<datamunge::algorithms::RoundMode>
   }
 };
 
-/// @brief Prints an algorithms::SimplexStatus as `Optimal` or `Unbounded`.
+/// @brief Prints an algorithms::SimplexStatus as `Optimal`, `Unbounded` or `IterationLimit`.
 template <>
 struct std::formatter<datamunge::algorithms::SimplexStatus>
     : datamunge::format_detail::text_formatter<datamunge::algorithms::SimplexStatus> {
@@ -81,6 +81,7 @@ struct std::formatter<datamunge::algorithms::SimplexStatus>
     switch (status) {
       case datamunge::algorithms::SimplexStatus::Optimal: return "Optimal";
       case datamunge::algorithms::SimplexStatus::Unbounded: return "Unbounded";
+      case datamunge::algorithms::SimplexStatus::IterationLimit: return "IterationLimit";
     }
     return std::format("SimplexStatus({})", static_cast<int>(status));
   }

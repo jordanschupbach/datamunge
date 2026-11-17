@@ -49,6 +49,7 @@ TEST(AlgorithmsFormat, EnumsPrintEnumeratorNames) {
     EXPECT_EQ(std::format("{}", alg::RoundMode::Floor), "Floor");
     EXPECT_EQ(std::format("{}", static_cast<alg::RoundMode>(-1)), "RoundMode(-1)");
     EXPECT_EQ(std::format("{}", alg::SimplexStatus::Unbounded), "Unbounded");
+    EXPECT_EQ(std::format("{}", alg::SimplexStatus::IterationLimit), "IterationLimit");
     EXPECT_EQ(std::format("{}", alg::NagleEvent::Ack), "Ack");
 }
 

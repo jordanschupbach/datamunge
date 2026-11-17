@@ -304,3 +304,5 @@
 #include <datamunge/algorithms/winnow.hpp>
 #include <datamunge/algorithms/wildcard.hpp>
 #include <datamunge/algorithms/warnsdorff.hpp>
+
+#include <datamunge/algorithms/powerset_examples.hpp>

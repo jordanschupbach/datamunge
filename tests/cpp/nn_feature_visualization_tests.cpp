@@ -1,9 +1,7 @@
 
 #include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_feature_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.11_interpretability/feature_visualization.cpp"
-#undef main
+#include "../fixtures/nn_feature_visualization_checks.hpp"
 TEST(FeatureVisualization, All784SelectedChannelL2And1512EdgeTvAnalyticDerivatives) {
   Checks();
 }

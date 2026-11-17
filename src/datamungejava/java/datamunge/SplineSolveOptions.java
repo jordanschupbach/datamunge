@@ -35,7 +35,7 @@ public class SplineSolveOptions extends NativeObject {
     @SuppressWarnings("this-escape")
     public SplineSolveOptions() {
         super(RAW);
-        Rosetta.construct(this, SplineSolveOptions.class, false, 2972);
+        Rosetta.construct(this, SplineSolveOptions.class, false, 2983);
     }
 
     /**
@@ -44,7 +44,7 @@ public class SplineSolveOptions extends NativeObject {
      * @return the value of the C++ field {@code method}
      */
     public SplineSolver getMethod() {
-        return Rosetta.asEnum(Rosetta.call(2964, this), SplineSolver.class);
+        return Rosetta.asEnum(Rosetta.call(2975, this), SplineSolver.class);
     }
 
     /**
@@ -53,7 +53,7 @@ public class SplineSolveOptions extends NativeObject {
      * @param value the new value
      */
     public void setMethod(SplineSolver value) {
-        Rosetta.call(2965, this, value);
+        Rosetta.call(2976, this, value);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SplineSolveOptions extends NativeObject {
      * @return the value of the C++ field {@code direct_limit}
      */
     public long getDirectLimit() {
-        return Rosetta.asLong(Rosetta.call(2966, this));
+        return Rosetta.asLong(Rosetta.call(2977, this));
     }
 
     /**
@@ -71,7 +71,7 @@ public class SplineSolveOptions extends NativeObject {
      * @param value the new value
      */
     public void setDirectLimit(long value) {
-        Rosetta.call(2967, this, value);
+        Rosetta.call(2978, this, value);
     }
 
     /**
@@ -80,7 +80,7 @@ public class SplineSolveOptions extends NativeObject {
      * @return the value of the C++ field {@code tolerance}
      */
     public double getTolerance() {
-        return Rosetta.asDouble(Rosetta.call(2968, this));
+        return Rosetta.asDouble(Rosetta.call(2979, this));
     }
 
     /**
@@ -89,7 +89,7 @@ public class SplineSolveOptions extends NativeObject {
      * @param value the new value
      */
     public void setTolerance(double value) {
-        Rosetta.call(2969, this, value);
+        Rosetta.call(2980, this, value);
     }
 
     /**
@@ -98,7 +98,7 @@ public class SplineSolveOptions extends NativeObject {
      * @return the value of the C++ field {@code max_iterations}
      */
     public long getMaxIterations() {
-        return Rosetta.asLong(Rosetta.call(2970, this));
+        return Rosetta.asLong(Rosetta.call(2981, this));
     }
 
     /**
@@ -107,6 +107,6 @@ public class SplineSolveOptions extends NativeObject {
      * @param value the new value
      */
     public void setMaxIterations(long value) {
-        Rosetta.call(2971, this, value);
+        Rosetta.call(2982, this, value);
     }
 }

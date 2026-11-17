@@ -1,9 +1,12 @@
+/// @file multiplication.hpp
+/// @brief Compatibility aggregation of focused checked native producers.
 #pragma once
+#include <datamunge/algorithms/toom3.hpp>
 
 // Fast integer multiplication algorithms.
 //
 // (Karatsuba lives in number_theory.hpp as karatsuba_multiply; this header adds
-// the faster Toom-Cook and Schoenhage-Strassen big-integer multipliers plus
+// Toom-Cook and checked fixed-prime NTT decimal multipliers plus
 // Booth's signed hardware multiplication.)
 //
 // Big non-negative integers are passed and returned as ordinary base-10 decimal
@@ -11,17 +14,8 @@
 // operates on machine words and multiplies signed values.
 
 #include <cstdint>
-#include <string>
 #include <datamunge/algorithms/booth_multiplication.hpp>
+#include <datamunge/algorithms/ntt_multiplication.hpp>
+#include <string>
 
-namespace datamunge::algorithms {
-
-// Toom-Cook (Toom-3) multiplication: O(n^log3 5) ~ O(n^1.465) via five
-// evaluate-multiply-interpolate products of third-size operands.
-std::string toom3_mul(const std::string& a, const std::string& b);
-
-// Schoenhage-Strassen-style multiplication via a number-theoretic transform:
-// the product's digit convolution is computed by NTT in O(n log n).
-std::string ntt_mul(const std::string& a, const std::string& b);
-
-} // namespace datamunge::algorithms
+namespace datamunge::algorithms {} // namespace datamunge::algorithms

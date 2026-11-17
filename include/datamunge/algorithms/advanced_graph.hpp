@@ -1,4 +1,6 @@
 #pragma once
+#include <datamunge/algorithms/push_relabel.hpp>
+#include <datamunge/algorithms/karger.hpp>
 
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/euclidean_mst.hpp>
@@ -15,19 +17,8 @@
 
 namespace datamunge::algorithms {
 
-MaxFlowResult push_relabel_max_flow(std::size_t vertex_count,
-                                    const std::vector<CapacityEdge>& edges,
-                                    std::size_t source, std::size_t sink);
 
-struct MinCutResult {
-  std::size_t              cut_size{0};
-  std::vector<std::size_t> side_a;
-  std::vector<std::size_t> side_b;
-};
 
-MinCutResult karger_min_cut(std::size_t vertex_count,
-                            const std::vector<std::pair<std::size_t, std::size_t>>& edges,
-                            std::size_t trials = 0, std::uint64_t seed = 42);
 
 
 

@@ -1,9 +1,9 @@
 
-#include <dm/dm.hpp>
 #include <gtest/gtest.h>
-#define main original_johnson_main
-#include "../../examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/johnson_fast_style.cpp"
-#undef main
+
+#include <dm/dm.hpp>
+
+#include "../fixtures/nn_johnson_fast_style_checks.hpp"
 TEST(JohnsonFastStyle, IndependentReflectionResidualJacobian) {
   ReflectResidualChecks();
 }
@@ -17,18 +17,19 @@ TEST(JohnsonFastStyle, FullAndCompactStageParameterBnCensus) {
   ModelChecks();
 }
 TEST(JohnsonFastStyle, GenuineFullWidthKerasEveryBatchedPixelParity) {
-  const std::filesystem::path root = "build/cnn-datasets/style_transfer";
+  const auto root = std::filesystem::path(dm::datasets::data_home()) / "style_transfer";
   if (!std::filesystem::exists(root / "johnson_reference.npz"))
     GTEST_SKIP() << "prepare genuine Keras fixtures";
   dm::nn::set_num_threads(2);
-  KerasParity(LoadTensorMap((root / "vgg16.npz").string()),
-              LoadTensorMap((root / "johnson_reference.npz").string()));
+  KerasParity(
+      LoadTensorMap((root / "vgg16.npz").string()),
+      LoadTensorMap((root / "johnson_reference.npz").string()));
 }
 TEST(JohnsonFastStyle, FrozenOwnershipAndGeometry) {
   namespace n = dm::nn;
   namespace m = n::models;
   n::set_num_threads(2);
-  const std::filesystem::path root = "build/cnn-datasets/style_transfer";
+  const auto root = std::filesystem::path(dm::datasets::data_home()) / "style_transfer";
   if (!std::filesystem::exists(root / "vgg16.npz"))
     GTEST_SKIP() << "prepare official weights";
   auto make = [&] {
@@ -47,7 +48,7 @@ TEST(JohnsonFastStyle, FrozenOwnershipAndGeometry) {
   EXPECT_THROW(m::FrozenVgg16(m::TensorMap{}), std::invalid_argument);
   {
     n::NoGradGuard guard;
-    auto &b = vgg.constants.at("block1_conv1_b");
+    auto&          b = vgg.constants.at("block1_conv1_b");
     b.copy_(b + 1.);
   }
   EXPECT_THROW(vgg.CheckFrozen(), std::invalid_argument);
@@ -58,9 +59,9 @@ TEST(JohnsonFastStyle, EveryPreparedPixelAndPreviewHalfByte) {
   std::vector<std::int32_t> values(3 * 3072);
   for (std::size_t i = 0; i < values.size(); ++i)
     values[i] = (i * 31 + i / 3072 * 17) % 256;
-  const auto raw = n::from_vector(values, {3, 32, 32, 3});
+  const auto raw  = n::from_vector(values, {3, 32, 32, 3});
   const auto data = m::FastStyleImages(raw, {2, 0}), paint = n::full({1, 64, 64, 3}, .37),
-             pred = data * .8;
+             pred  = data * .8;
   const auto tiles = m::JohnsonPreviewTiles(data, paint, pred).to_vector<float>(),
              x = data.to_vector<float>(), p = pred.to_vector<float>();
   const float style = .37f;
@@ -68,20 +69,22 @@ TEST(JohnsonFastStyle, EveryPreparedPixelAndPreviewHalfByte) {
     for (int y = 0; y < 64; ++y)
       for (int col = 0; col < 64; ++col)
         for (int c = 0; c < 3; ++c) {
-          const int source = b ? 0 : 2, top = y / 2, left = col / 2,
-                    bottom = std::min(top + 1, 31), right = std::min(left + 1, 31);
+          const int source = b ? 0 : 2, top = y / 2, left = col / 2, bottom = std::min(top + 1, 31),
+                    right = std::min(left + 1, 31);
           const float dy = (y % 2) * .5f, dx = (col % 2) * .5f;
-          auto pixel = [&](int row, int column) {
+          auto        pixel = [&](int row, int column) {
             return float(values[((source * 32 + row) * 32 + column) * 3 + c]) / 255.f;
           };
-          const float a = pixel(top, left) * (1 - dx) + pixel(top, right) * dx,
-                      bb = pixel(bottom, left) * (1 - dx) + pixel(bottom, right) * dx;
+          const float a   = pixel(top, left) * (1 - dx) + pixel(top, right) * dx,
+                      bb  = pixel(bottom, left) * (1 - dx) + pixel(bottom, right) * dx;
           const int index = ((b * 64 + y) * 64 + col) * 3 + c;
           EXPECT_NEAR(x[index], a * (1 - dy) + bb * dy, 1e-7);
           const double channel[] = {x[index], style, p[index]};
           for (int panel = 0; panel < 3; ++panel)
-            EXPECT_NEAR(tiles[((b * 64 + y) * 192 + panel * 64 + col) * 3 + c],
-                        std::lround(255 * channel[panel]) / 255., 4e-8);
+            EXPECT_NEAR(
+                tiles[((b * 64 + y) * 192 + panel * 64 + col) * 3 + c],
+                std::lround(255 * channel[panel]) / 255.,
+                4e-8);
         }
   EXPECT_THROW(m::FastStyleImages(raw, {3}), std::invalid_argument);
 }

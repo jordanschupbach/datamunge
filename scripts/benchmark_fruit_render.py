@@ -42,7 +42,7 @@ def summarize(work, output, encoding, environment):
     baseline = ROOT / "benchmarks/results/fruit_render/baseline.json"
     historical_seconds = (json.loads(baseline.read_text())["historical_replay_seconds"] if baseline.exists()
                           else json.loads((ROOT / "build/playground/run.json").read_text())["seconds"])
-    data = ROOT / "docs/mepml/examples/build/fruit_stream_realistic"
+    data = ROOT / "docs/mepml/build/fruit_stream_realistic"
     expected = json.loads((data / "metrics.json").read_text())
     with (work / "simulation.csv").open() as stream:
         simulation = list(csv.DictReader(stream))
@@ -95,7 +95,7 @@ def main():
     args.build_dir = args.build_dir.resolve()
     args.work_dir = args.work_dir.resolve()
     args.work_dir.mkdir(parents=True, exist_ok=True)
-    data = ROOT / "docs/mepml/examples/build/fruit_stream_realistic"
+    data = ROOT / "docs/mepml/build/fruit_stream_realistic"
     for path in [data / "trajectory.csv", data / "fruit_trajectory.csv", data / "mobile.npz", data / "policy.txt", data / "frames/00899.png"]:
         if not path.is_file():
             parser.error("Missing %s; first run DATAMUNGE_VIDEO_START=0 DATAMUNGE_VIDEO_SECONDS=60 DATAMUNGE_STREAM_KEEP_FRAMES=1 just playground" % path)

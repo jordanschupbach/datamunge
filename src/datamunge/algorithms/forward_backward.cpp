@@ -375,4 +375,8 @@ HiddenMarkovModel forward_backward_example_model() {
 std::vector<std::size_t> forward_backward_example_observations() {
   return {0, 0, 1, 2, 2, 2, 1, 0, 1, 2, 2, 1, 0, 0};
 }
+/// @brief Expose the same complete HMM validator used by canonical scaled inference.
+void hmm_validate(const HiddenMarkovModel& model, const std::vector<std::size_t>& observations) {
+  forward_backward_detail::validate(model, observations);
+}
 } // namespace datamunge::algorithms

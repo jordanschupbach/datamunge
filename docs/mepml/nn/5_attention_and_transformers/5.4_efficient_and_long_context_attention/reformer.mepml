@@ -1,0 +1,841 @@
+//? Title: Reformer
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Shared Q/K -> LSH sorting and chunk neighbors -> reversible blocks. The complete native C++ experiment preserves model equations, source seeds, update budgets and explicit fitting/generation loops. Missing data recipes are reconstructed and labelled; original TensorFlow recordings are checked only when genuinely present.
+)
+\toc
+
+> Provenance and scope
+
+The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
+
+> Follow the computation
+
+Shared Q/K -> LSH sorting and chunk neighbors -> reversible blocks.
+
+```{cpp, results="markdown", file="figures/reformer_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("data",{-18,0},"Versioned native inputs",s).node("model",{0,0},"Shared Q/K -> LSH sorting and chunk neighbors -> reversible blocks",s).node("audit",{18,0},"Explicit training and deployment checks",s).edge("data","model").edge("model","audit").save_svg("build/reformer_method.svg");}
+```
+// result_begin: markdown
+\image(figures/reformer_method.svg)
+// result_end
+
+> A calculation before fitting
+
+Two visible keys with equal dot-product scores get attention weights1/2,1/2. Values2 and6 therefore mix to4. Sparse, projected, relative or routed attention changes which keys/features participate; it does not turn attention weights into independent observations.
+
+```{cpp, results="markdown", file="figures/reformer_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+int main(){namespace n=dm::nn;double computed=n::scaled_dot_product_attention(n::zeros({1,1,1,1}),n::zeros({1,1,2,1}),n::tensor({2.,6.},{1,1,2,1})).output.item(),analytic=4.;if(std::abs(computed-analytic)>2e-6)throw std::runtime_error("hand calculation differs from native primitives");std::print("| native calculation | analytic reference |\n|---:|---:|\n| {:.9f} | {:.9f} |\n",computed,analytic);dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,analytic},"worked reference",{37,99,235}).ylim(0,std::max(.5,std::max(computed,analytic)*1.2)).x_label("0 = native calculation;1 = analytic reference").y_label("Toy objective or diagnostic value").title("reformer hand calculation").size(1000,550).save_svg("build/reformer_worked.svg");}
+```
+// result_begin: markdown
+| native calculation | analytic reference |
+|---:|---:|
+| 4.000000000 | 4.000000000 |
+\image(figures/reformer_worked.svg)
+// result_end
+
+> Prepare reproducible inputs
+
+Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
+```
+// result_begin: markdown
+Versioned recipe root: /home/jordan/.cache/datamunge/datasets/nn-completion-assets
+// result_end
+
+> Inspect the native graph
+
+The preview traces the actual canonical component with independent parameters; it does not alter training. Composite grouping keeps full unrolls readable.
+
+```{cpp, results="markdown", file="figures/reformer_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;namespace m=n::models;n::ParameterStore p(7);n::Module model([&](const n::Tensor&trace_input){n::ParameterStore state(8);auto y=m::reformer::Forward(p,state,trace_input);return n::model_stage("reformer native component",trace_input,y.logits);},"reformer native component graph");n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;model.plot(n::zeros({1,32,32,3}),options).save_svg("build/reformer_network.svg");}
+```
+// result_begin: markdown
+\image(figures/reformer_network.svg)
+// result_end
+
+> Complete editable experiment
+
+Historical comments in the preserved source describe the original experiment; the versioned reconstruction manifest above describes the active inputs. Objectives, optimizer ownership, update schedules, sampling and search remain here. Source finite-difference, padding, causal/label-independence, checkpoint and immutability controls remain active. Weak held-out outcomes are retained.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace recovered_checkpoints {
+inline std::filesystem::path Model(const std::string&name){auto p=std::filesystem::path(dm::datasets::data_home())/"nn-completion-checkpoints/models"/name;std::filesystem::create_directories(p);return p;}
+}
+// Reformer single-hash LSH with fixed orthogonal features and linear attention checks.
+// CMD: just run-nn reformer
+// Eager port of tflow's reformer; same 2850 parameters/32 trainables plus two fixed projections,
+// batch order, Adam and checks. Replays recorded TF initial arrays when present
+// and compares saved fields; otherwise native initialization gives statistical
+// parity. Checkpoints use NPZ; epochs=N retains the source option.
+// Editable workflow support: reformer.hpp
+// Editable workflow support: vision_transformer.hpp
+// Editable workflow support: tf_replay.hpp
+// Small helpers the 4.2 sequence-task ports share for working with tflow's
+// recorded runs: named-array maps (tflow's `std::map<std::string, tf::Tensor>`
+// batches), row selection, exact/approximate comparisons, loading TF's
+// initial_arrays.npz into a ParameterStore and reading history.tsv columns.
+//
+// A tflow run directory (tflow's output/models/<name>) holds initial_arrays.npz,
+// first_batch.npz, initial_gradients.npz, history.tsv and model_arrays.npz.
+// Replaying the run from TF's own initial weights with the same batch order
+// (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
+// numerically, independently of the random initialisation.
+
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <datamunge/nn/nn.hpp>
+
+// Editable workflow support: checks.hpp
+// Small runtime checks used by the executable nn examples. They stay on in
+// Release builds and make the example exit nonzero on failure, so `just
+// run-all-nn` doubles as a regression test against the recorded TF numbers.
+
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+// Editable workflow support: runtime.hpp
+// Bounded demonstrations by default; opt into convergence experiments explicitly.
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+namespace example_runtime {
+
+inline bool Full() {
+  const char* value = std::getenv("DATAMUNGE_EXAMPLES_FULL");
+  return value && std::string(value) == "1";
+}
+
+template <typename T> T Limit(T requested, T quick_limit) {
+  return Full() ? requested : std::min(requested, quick_limit);
+}
+
+inline void Describe() {
+  if (!Full())
+    std::cout << "Quick demonstration: bounded training; convergence metrics require "
+                 "DATAMUNGE_EXAMPLES_FULL=1.\n";
+}
+
+}  // namespace example_runtime
+
+namespace check {
+
+inline void Require(bool condition, const std::string& message) {
+  if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
+}
+
+inline void Near(double actual, double expected, double tolerance, const std::string& message) {
+  if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > tolerance)
+    throw std::runtime_error(message + ": got " + std::to_string(actual) + ", expected " + std::to_string(expected));
+}
+
+/// Expects `f` to throw; returns the message.
+template <typename F>
+std::string Throws(F&& f, const std::string& message) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    return e.what();
+  }
+  throw std::runtime_error(message + ": expected an exception");
+}
+
+}  // namespace check
+
+inline void Header(const std::string& title) {
+  const std::size_t pad = title.size() < 60 ? 60 - title.size() : 0;
+  std::cout << "\n== " << title << " " << std::string(pad, '=') << "\n";
+}
+
+// Editable workflow support: paths.hpp
+// Where the nn example ports read datasets and write their outputs.
+//
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
+// Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
+// output/nn relative to the working directory (`just run-nn` runs from the
+// repository root). Both are created on demand by the caller.
+
+#include <cstdlib>
+#include <filesystem>
+#include <string>
+
+// Editable workflow support: dataset_assets.hpp
+#include <datamunge/datasets/assets.hpp>
+namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
+
+namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}
+
+namespace dataset_assets {
+inline dm::nn::ImageDataset LoadCifar10(const std::string&directory,const std::string&split){dm::datasets::fetch("cifar10",std::filesystem::path(directory).parent_path().string());return dm::nn::load_cifar10(directory,split);}
+}
+
+namespace paths {
+
+inline std::filesystem::path DataRoot() {
+  return dataset_assets::DataRoot();
+}
+
+/// DataRoot() / name, e.g. Dataset("mnist").
+inline std::filesystem::path Dataset(const std::string& name) { if(name=="cifar10"||name=="character_rnn")return DataRoot()/name;return std::filesystem::path(dm::datasets::prepare_example_data("nn-completion-assets"))/name; }
+
+inline std::filesystem::path OutputRoot(){return std::filesystem::absolute("build/nn-completion");}
+
+/// OutputRoot() / relative, created as a directory.
+inline std::filesystem::path OutputDir(const std::string& relative) {
+  auto dir = OutputRoot() / relative;
+  std::filesystem::create_directories(dir);
+  return dir;
+}
+
+}  // namespace paths
+
+namespace replay {
+
+namespace nn = datamunge::nn;
+using nn::Tensor;
+using Map = std::map<std::string, Tensor>;
+
+/// tflow's recorded output directory for an example (its output/models/<name>).
+inline std::filesystem::path TfModels(const std::string& name) {
+  return paths::DataRoot().parent_path() / "models" / name;
+}
+
+inline Tensor Get(const nn::NamedTensors& arrays, const std::string& key) {
+  for (const auto& [name, t] : arrays)
+    if (name == key) return t;
+  throw std::runtime_error("missing array " + key);
+}
+
+inline Map ToMap(const nn::NamedTensors& arrays) { return {arrays.begin(), arrays.end()}; }
+inline nn::NamedTensors ToNamed(const Map& m) { return {m.begin(), m.end()}; }
+
+/// Rows `rows` (axis 0) of every array.
+inline Map Rows(const Map& m, const std::vector<std::int64_t>& rows) {
+  Map out;
+  for (const auto& [k, v] : m) out[k] = nn::take_rows(v, rows);
+  return out;
+}
+
+/// {key: arrays["<split>_<key>"]} for each key.
+inline Map Split(const nn::NamedTensors& arrays, const std::string& split, const std::vector<std::string>& keys) {
+  Map out;
+  for (const auto& k : keys) out[k] = Get(arrays, split + "_" + k);
+  return out;
+}
+
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  const auto x = a.to_vector<double>(), y = b.to_vector<double>();
+  check::Require(x.size() == y.size(), "compared tensors have the same size");
+  double m = 0;
+  for (std::size_t i = 0; i < x.size(); ++i) m = std::max(m, std::abs(x[i] - y[i]));
+  return m;
+}
+
+/// Bit-identical values (dtype and shape included).
+inline bool SameBits(const Tensor& a, const Tensor& b) {
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  auto same = [](const auto& x, const auto& y) {
+    return x.size() == y.size() && (x.empty() || std::memcmp(x.data(), y.data(), x.size() * sizeof(x[0])) == 0);
+  };
+  switch (a.dtype()) {
+    case nn::DType::Float32: return same(a.to_vector<float>(), b.to_vector<float>());
+    case nn::DType::Float64: return same(a.to_vector<double>(), b.to_vector<double>());
+    case nn::DType::Int32: return same(a.to_vector<std::int32_t>(), b.to_vector<std::int32_t>());
+    default: return same(a.to_vector<std::int64_t>(), b.to_vector<std::int64_t>());
+  }
+}
+
+inline bool SameBits(const Map& a, const Map& b) {
+  if (a.size() != b.size()) return false;
+  for (const auto& [k, v] : a)
+    if (!b.count(k) || !SameBits(v, b.at(k))) return false;
+  return true;
+}
+
+/// Copies of every parameter, by name.
+inline Map Arrays(const nn::ParameterStore& p) {
+  Map out;
+  for (const auto& name : p.names()) out[name] = p.at(name).detach().clone();
+  return out;
+}
+
+/// Gradients aligned with p.names(), by name.
+inline Map Named(const nn::ParameterStore& p, const std::vector<Tensor>& g) {
+  Map out;
+  for (std::size_t i = 0; i < g.size(); ++i) out[p.names()[i]] = g[i].defined() ? g[i].detach() : nn::zeros_like(p.parameters()[i]).detach();
+  return out;
+}
+
+/// Overwrites every parameter of `p` from an .npz (e.g. TF's initial_arrays.npz),
+/// which must hold exactly p's names.
+inline void LoadInto(nn::ParameterStore& p, const std::filesystem::path& file) {
+  const auto arrays = nn::load_npz(file.string());
+  check::Require(arrays.size() == p.size(), "array file covers exactly the model's parameters: " + file.string());
+  for (const auto& [name, value] : arrays) {
+    check::Require(p.contains(name), "array " + name + " is a model parameter");
+    p.set(name, nn::cast(value, p.at(name).dtype()));
+  }
+}
+
+/// max |a[k] - b[k]| over the keys of `a` (all must exist in `b`).
+inline double MaxDiff(const Map& a, const Map& b) {
+  double m = 0;
+  for (const auto& [k, v] : a) {
+    check::Require(b.count(k) > 0, "reference has array " + k);
+    m = std::max(m, MaxAbsDiff(v, b.at(k)));
+  }
+  return m;
+}
+inline double MaxDiff(const Map& a, const std::filesystem::path& file) { return MaxDiff(a, ToMap(nn::load_npz(file.string()))); }
+
+/// Column `column` (0-based) of a tab-separated history file with a header line.
+inline std::vector<double> History(const std::filesystem::path& file, int column = 1) {
+  std::ifstream       in(file);
+  std::string         line;
+  std::vector<double> out;
+  std::getline(in, line);
+  while (std::getline(in, line)) {
+    std::stringstream ss(line);
+    std::string       cell;
+    for (int c = 0; c <= column && std::getline(ss, cell, '\t'); ++c)
+      if (c == column) out.push_back(std::stod(cell));
+  }
+  return out;
+}
+
+inline nn::OptimizerConfig Adam() {
+  nn::OptimizerConfig c;
+  c.kind = nn::OptimizerKind::Adam;
+  return c;
+}
+
+/// Copies `files` from `from` to `to` when present.
+inline void CopyAssets(const std::filesystem::path& from, const std::filesystem::path& to,
+                       const std::vector<std::string>& files) {
+  for (const auto& f : files)
+    if (std::filesystem::exists(from / f))
+      std::filesystem::copy_file(from / f, to / f, std::filesystem::copy_options::overwrite_existing);
+}
+
+}  // namespace replay
+
+namespace vit {using namespace dm::nn::models::vit;
+inline Tensor Loss(const Tensor& logits, const Tensor& labels) {
+  return -nn::mean(
+      nn::sum(
+          nn::one_hot(labels, 10, 1, 0, nn::DType::Float32) * nn::log_softmax(logits, -1), {1}));
+}
+class Model {
+ public:
+  nn::ParameterStore             parameters{48301};
+  std::unique_ptr<nn::Optimizer> optimizer;
+  explicit Model(bool training = true) {
+    {
+      nn::NoGradGuard guard;
+      Forward(parameters, nn::zeros({1, 32, 32, 3}));
+    }
+    if (training) {
+      nn::OptimizerConfig c;
+      c.kind    = nn::OptimizerKind::Adam;
+      optimizer = std::make_unique<nn::Optimizer>(parameters, .003, c);
+    }
+  }
+  static void Validate(const A& b) {
+    const auto& x = b.at("images");
+    check::Require(
+        x.dtype() == nn::DType::Float32 && x.dim() == 4 && x.size(0) > 0 && x.size(1) == 32 &&
+            x.size(2) == 32 && x.size(3) == 3,
+        "ViT32x32RGB images");
+    for (float v : x.to_vector<float>())
+      check::Require(std::isfinite(v), "finite ViT pixels");
+  }
+  A Run(const A& b, bool gradients = false, const A& overrides = {}) {
+    Validate(b);
+    A saved;
+    for (const auto& [k, v] : overrides) {
+      saved[k] = parameters.at(k).detach().clone();
+      parameters.set(k, v);
+    }
+    struct Restore {
+      nn::ParameterStore& p;
+      A&                  saved;
+      ~Restore() {
+        for (const auto& [k, v] : saved)
+          p.set(k, v);
+      }
+    } restore{parameters, saved};
+    auto                x    = b.at("images").detach().requires_grad_();
+    auto                path = Forward(parameters, x);
+    auto                loss = Loss(path.logits, b.at("labels"));
+    std::vector<Tensor> inputs{x};
+    if (gradients) {
+      auto values = parameters.parameters();
+      inputs.insert(inputs.end(), values.begin(), values.end());
+    }
+    auto g = nn::grad(loss, inputs);
+    A    out{
+           {"logits", path.logits},
+           {"patches", path.patches},
+           {"embedded", path.embedded},
+           {"hidden", path.hidden},
+           {"attention0", path.attention[0]},
+           {"attention1", path.attention[1]},
+           {"state0", path.states[0]},
+           {"state1", path.states[1]},
+           {"loss", loss},
+           {"input_gradient", g[0]}};
+    if (gradients)
+      for (std::size_t i = 0; i < parameters.size(); ++i)
+        out[parameters.names()[i]] = g[i + 1];
+    for (auto& [k, v] : out)
+      v = v.detach().clone();
+    return out;
+  }
+  Tensor Predict(const A& b) {
+    Validate(b);
+    nn::NoGradGuard guard;
+    return Forward(parameters, b.at("images")).logits;
+  }
+  void Update(const A& b) {
+    Validate(b);
+    auto path = Forward(parameters, b.at("images"));
+    optimizer->minimize(Loss(path.logits, b.at("labels")));
+  }
+  A Arrays() const { return replay::Arrays(parameters); }
+};
+inline A Pool(const A& data, const std::string& split) {
+  A out;
+  for (const auto key : {"images", "labels", "source_ids"})
+    out[key] = data.at(split + "_" + key);
+  return out;
+}
+inline Tensor Permute(const Tensor& images) {
+  const auto n       = images.size(0);
+  auto       patches = nn::reshape(
+      nn::transpose(nn::reshape(images, {n, 4, 8, 4, 8, 3}), {0, 1, 3, 2, 4, 5}), {n, 16, 8, 8, 3});
+  return nn::reshape(
+      nn::transpose(nn::reshape(nn::reverse(patches, {1}), {n, 4, 4, 8, 8, 3}), {0, 1, 3, 2, 4, 5}),
+      images.shape());
+}
+} // namespace vit
+
+namespace reformer {using namespace dm::nn::models::reformer;using vit::Loss;
+
+class Model {
+ public:
+  nn::ParameterStore             parameters{51101}, projection_state{51103};
+  std::unique_ptr<nn::Optimizer> optimizer;
+  explicit Model(bool training = true) {
+    {
+      nn::NoGradGuard guard;
+      Forward(parameters, projection_state, nn::zeros({1, 32, 32, 3}));
+    }
+    if (training) {
+      nn::OptimizerConfig c;
+      c.kind    = nn::OptimizerKind::Adam;
+      optimizer = std::make_unique<nn::Optimizer>(parameters, .003, c);
+    }
+  }
+  static void Validate(const A& b) {
+    const auto& x = b.at("images");
+    check::Require(
+        x.dtype() == nn::DType::Float32 && x.dim() == 4 && x.size(0) > 0 && x.size(1) == 32 &&
+            x.size(2) == 32 && x.size(3) == 3,
+        "ViT32x32RGB images");
+    for (float v : x.to_vector<float>())
+      check::Require(std::isfinite(v), "finite ViT pixels");
+  }
+  A Run(const A& b, bool gradients = false, const A& overrides = {}) {
+    Validate(b);
+    A saved;
+    for (const auto& [k, v] : overrides) {
+      if (!parameters.contains(k))
+        continue;
+      saved[k] = parameters.at(k).detach().clone();
+      parameters.set(k, v);
+    }
+    struct Restore {
+      nn::ParameterStore& p;
+      A&                  saved;
+      ~Restore() {
+        for (const auto& [k, v] : saved)
+          p.set(k, v);
+      }
+    } restore{parameters, saved};
+    auto                x    = b.at("images").detach().requires_grad_();
+    auto                path = Forward(parameters, projection_state, x, overrides);
+    auto                loss = Loss(path.logits, b.at("labels"));
+    std::vector<Tensor> inputs{x};
+    if (gradients) {
+      auto values = parameters.parameters();
+      inputs.insert(inputs.end(), values.begin(), values.end());
+    }
+    auto g = nn::grad(loss, inputs);
+    A    out{
+           {"logits", path.logits},
+           {"patches", path.patches},
+           {"embedded", path.embedded},
+           {"hidden", path.hidden},
+           {"state0", path.states[0]},
+           {"state1", path.states[1]},
+           {"loss", loss},
+           {"input_gradient", g[0]}};
+    for (int i = 0; i < 2; ++i) {
+      auto suffix               = std::to_string(i);
+      out["qk" + suffix]        = path.queries[i];
+      out["v" + suffix]         = path.values[i];
+      out["attention" + suffix] = path.attention[i];
+      out["buckets" + suffix]   = path.buckets[i];
+      out["order" + suffix]     = path.order[i];
+    }
+    if (gradients)
+      for (std::size_t i = 0; i < parameters.size(); ++i)
+        out[parameters.names()[i]] = g[i + 1];
+    for (auto& [k, v] : out)
+      v = v.detach().clone();
+    return out;
+  }
+  Tensor Predict(const A& b) {
+    Validate(b);
+    nn::NoGradGuard guard;
+    return Forward(parameters, projection_state, b.at("images")).logits;
+  }
+  void Update(const A& b) {
+    Validate(b);
+    auto path = Forward(parameters, projection_state, b.at("images"));
+    optimizer->minimize(Loss(path.logits, b.at("labels")));
+  }
+  A Arrays() const {
+    auto out = replay::Arrays(parameters);
+    for (const auto& [k, v] : replay::Arrays(projection_state))
+      check::Require(out.emplace(k, v).second, "distinct projection-state keys");
+    return out;
+  }
+  void Save(const std::filesystem::path& file) const {
+    nn::save_npz(file.string(), replay::ToNamed(Arrays()));
+  }
+  void Load(const std::filesystem::path& file) {
+    auto arrays = nn::load_npz(file.string());
+    check::Require(
+        arrays.size() == parameters.size() + projection_state.size(),
+        "all learned/fixed Reformer tensors");
+    for (const auto& [k, v] : arrays) {
+      check::Require(
+          parameters.contains(k) || projection_state.contains(k), "known Reformer checkpoint key");
+      (parameters.contains(k) ? parameters : projection_state).set(k, v);
+    }
+  }
+};
+} // namespace reformer
+
+namespace nn = datamunge::nn;
+namespace {
+void Save(const std::filesystem::path& file, const vit::A& values) {
+  nn::save_npz(file.string(), replay::ToNamed(values));
+}
+void OperatorChecks(const std::filesystem::path& root) {
+  for (int n : {5, 16, 64, 256, 1024}) {
+    vit::A b;
+    int    phase = 0;
+    for (auto key : {"qk", "v", "weight"}) {
+      std::vector<float> t(2 * n * 4);
+      for (int i = 0; i < int(t.size()); ++i)
+        t[i] = .4f * std::sin(.37f * (i + 1) + .2f * phase);
+      b[key] = nn::from_vector(t, {1, 2, n, 4});
+      ++phase;
+    }
+    b["rotation"] = reformer::Rotation(4, 2, 51119);
+    auto q = b.at("qk").detach().requires_grad_(), v = b.at("v").detach().requires_grad_();
+    auto path = reformer::Context(q, v, b.at("rotation"));
+    auto loss = nn::sum(path.context * b.at("weight"));
+    nn::GradOptions retained;
+    retained.retain_graph = true;
+    auto   g              = nn::grad(loss, {q, v}, retained);
+    auto   pg = nn::grad(nn::sum(nn::slice(path.context, {0, 0, 0, 0}, {1, 2, 1, 4})), {v})[0];
+    vit::A out{
+        {"context", path.context},
+        {"attention", path.attention},
+        {"buckets", path.buckets},
+        {"order", path.order},
+        {"loss", loss},
+        {"dqk", g[0]},
+        {"dv", g[1]},
+        {"probe_dv", pg}};
+    check::Require(path.attention.numel() == 2 * ((n + 3) / 4) * 4 * 8, "bounded chunk scores");
+    auto stem = "operator" + std::to_string(n);
+    Save(root / (stem + "_inputs.npz"), b);
+    Save(root / (stem + "_outputs.npz"), out);
+    auto tf = replay::TfModels("reformer") / (stem + "_outputs.npz");
+    if (std::filesystem::exists(tf)) {
+      auto expected = replay::ToMap(nn::load_npz(tf.string()));
+      for (const auto& [key, value] : out)
+        check::Near(
+            replay::MaxAbsDiff(value, expected.at(key)),
+            0,
+            key == "loss" ? 1e-4 : 2e-6,
+            "TF LSH " + key);
+    }
+  }
+  std::cout << "Reformer N5..1024 hash/sort/chunk/unsort conditional derivatives PASS" << std::endl;
+}
+void Run(int epochs) {
+  const auto root   = paths::OutputDir("models/reformer"),
+             assets = paths::Dataset("vision_transformer");
+  OperatorChecks(root);
+  replay::CopyAssets(assets, root, {"data.npz", "manifest.json"});
+  auto data = replay::ToMap(nn::load_npz((root / "data.npz").string()));
+  auto fit = vit::Pool(data, "fit"), validation = vit::Pool(data, "validation"),
+       test = vit::Pool(data, "test");
+  reformer::Model model;
+  check::Require(
+      model.parameters.count() == 2850 && model.parameters.size() == 32,
+      "2850 parameters/32 patch CLS two-block tensors");
+  const auto tf        = replay::TfModels("reformer");
+  const bool replay_tf = std::filesystem::exists(tf / "initial_arrays.npz");
+  if (replay_tf)
+    model.Load(tf / "initial_arrays.npz");
+  auto compare = [&](const vit::A& out, const std::string& file, double tolerance) {
+    if (replay_tf && std::filesystem::exists(tf / file)) {
+      const double error = replay::MaxDiff(out, tf / file);
+      check::Near(error, 0, tolerance, "TF replay " + file);
+      std::cout << "TF " << file << " max difference=" << error << std::endl;
+    }
+  };
+  Save(root / "initial_arrays.npz", model.Arrays());
+  auto initial = model.Run(test);
+  Save(root / "initial_outputs.npz", initial);
+  compare(initial, "initial_outputs.npz", 5e-5);
+  std::vector<float> ramp(3072);
+  for (int i = 0; i < 3072; ++i)
+    ramp[i] = i / 3071.f;
+  auto image   = nn::from_vector(ramp, {1, 32, 32, 3});
+  auto fixture = model.Run({{"images", image}, {"labels", nn::zeros({1}, nn::DType::Int32)}});
+  auto patches = fixture.at("patches").to_vector<float>();
+  for (int p = 0; p < 16; ++p)
+    for (int y = 0; y < 8; ++y)
+      for (int x = 0; x < 8; ++x)
+        for (int c = 0; c < 3; ++c)
+          check::Near(
+              patches[p * 192 + (y * 8 + x) * 3 + c],
+              ramp[(((p / 4) * 8 + y) * 32 + (p % 4) * 8 + x) * 3 + c],
+              0,
+              "exact RGB patch indexing");
+  Save(root / "patch_fixture.npz", {{"images", image}, {"patches", fixture.at("patches")}});
+  nn::BatchOrder order(128, 8, 51107);
+  std::ofstream  history(root / "history.tsv"), batches(root / "batches.tsv");
+  history << "epoch\tvalidation_ce\n";
+  batches << "epoch\tstep\trow\tsource_id\n";
+  int    updates = 0;
+  vit::A first;
+  for (int epoch = 1; epoch <= epochs; ++epoch) {
+    order.begin_epoch();
+    for (;;) {
+      auto rows = order.next();
+      if (rows.empty())
+        break;
+      auto b = replay::Rows(fit, rows);
+      if (!updates) {
+        first = b;
+        Save(root / "first_batch.npz", b);
+        auto g = model.Run(b, true);
+        Save(root / "initial_gradients.npz", g);
+        compare(g, "initial_gradients.npz", 1e-4);
+      }
+      model.Update(b);
+      if (!updates) {
+        Save(root / "first_after.npz", model.Arrays());
+      }
+      auto ids = fit.at("source_ids").to_vector<int>();
+      for (auto row : rows)
+        batches << epoch << '\t' << updates << '\t' << row << '\t' << ids[row] << '\n';
+      ++updates;
+    }
+    auto out = model.Run(validation);
+    history << epoch << '\t' << out.at("loss").item() << '\n';
+    const auto prefix = "epoch" + std::to_string(epoch);
+    Save(root / (prefix + "_validation.npz"), out);
+    Save(root / (prefix + "_arrays.npz"), model.Arrays());
+    compare(out, prefix + "_validation.npz", 5e-5);
+    std::cout << "epoch=" << epoch << " validationCE=" << out.at("loss").item() << std::endl;
+  }
+  auto final = model.Arrays(), grad = model.Run(first, true);
+  Save(root / "model_arrays.npz", final);
+  Save(root / "final_gradients.npz", grad);
+  compare(grad, "final_gradients.npz", 1e-4);
+  model.Save(root / "final.npz");
+  reformer::Model deployed(false);
+  deployed.Load(root / "final.npz");
+  check::Require(
+      replay::SameBits(model.Arrays(), deployed.Arrays()),
+      "all34 learned/fixed tensors restored bitexact");
+  auto before = deployed.Arrays(), out = deployed.Run(test);
+  Save(root / "outputs.npz", out);
+  compare(out, "outputs.npz", 5e-5);
+  check::Near(
+      replay::MaxAbsDiff(deployed.Predict({{"images", test.at("images")}}), out.at("logits")),
+      0,
+      0,
+      "image-only inference");
+  const auto initial_arrays = replay::ToMap(nn::load_npz((root / "initial_arrays.npz").string()));
+  for (const auto& [name, value] : final)
+    if (name.find("/rotation") != std::string::npos)
+      check::Near(
+          replay::MaxAbsDiff(value, initial_arrays.at(name)),
+          0,
+          0,
+          "fixed projection survives every optimizer update");
+  for (int row = 0; row < 4; ++row)
+    check::Near(
+        replay::MaxAbsDiff(
+            deployed.Predict(replay::Rows(test, {row})),
+            nn::slice(out.at("logits"), {row, 0}, {1, 10})),
+        0,
+        2e-6,
+        "Reformer batch isolation");
+  vit::A frozen;
+  for (int l = 0; l < 2; ++l)
+    for (auto key : {"buckets", "order"}) {
+      auto name    = std::string(key) + std::to_string(l);
+      frozen[name] = grad.at(name);
+    }
+  double fd    = 0;
+  int    count = 0;
+  for (const auto& name : model.parameters.names()) {
+    const auto value  = final.at(name);
+    auto       values = value.to_vector<float>();
+    for (int i : {0, int(values.size() / 2), int(values.size() - 1)}) {
+      const float old = values[i];
+      values[i]       = old + .0005f;
+      frozen[name]    = nn::from_vector(values, value.shape());
+      auto plus       = model.Run(first, false, frozen).at("loss").item();
+      values[i]       = old - .0005f;
+      frozen[name]    = nn::from_vector(values, value.shape());
+      auto minus      = model.Run(first, false, frozen).at("loss").item();
+      values[i]       = old;
+      frozen.erase(name);
+      fd = std::max(fd, std::abs((plus - minus) / .001 - grad.at(name).to_vector<float>()[i]));
+      ++count;
+    }
+  }
+  check::Require(fd < .003, "native Reformer all-parameter finite differences");
+  check::Require(
+      replay::SameBits(before, deployed.Arrays()), "Reformer inference and controls immutable");
+  const auto z       = out.at("logits").to_vector<float>();
+  const auto labels  = test.at("labels").to_vector<int>();
+  int        correct = 0;
+  for (int i = 0; i < 32; ++i) {
+    int best = 0;
+    for (int c = 1; c < 10; ++c)
+      if (z[i * 10 + c] > z[i * 10 + best])
+        best = c;
+    correct += best == labels[i];
+  }
+  std::ofstream metrics(root / "metrics.json");
+  metrics.precision(17);
+  metrics << "{\"parameters\":2850,\"variables\":32,\"epochs\":" << epochs
+          << ",\"updates\":" << updates << ",\"test_ce\":" << out.at("loss").item()
+          << ",\"test_accuracy\":" << correct / 32. << ",\"native_fd_count\":" << count
+          << ",\"native_fd_error\":" << fd << "}\n";
+  std::cout << "testCE=" << out.at("loss").item() << " accuracy=" << correct << "/32; " << count
+            << " FD max=" << fd
+            << ";single-hash LSH/fixedRotation/sortedChunks/restore/immutable PASS\n";
+}
+} // namespace
+int main(int argc, char** argv) {
+  try {
+    nn::set_num_threads(2);
+    int epochs = 3;
+    for (int i = 1; i < argc; ++i) {
+      std::string a = argv[i];
+      check::Require(a.rfind("epochs=", 0) == 0, "epochs=N");
+      epochs = std::stoi(a.substr(7));
+    }
+    check::Require(epochs > 0 && epochs <= 100, "epochs1..100");
+    Run(epochs);
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+
+```
+// result_begin:
+// Reformer N5..1024 hash/sort/chunk/unsort conditional derivatives PASS
+// epoch=1 validationCE=2.30881
+// epoch=2 validationCE=2.3397
+// epoch=3 validationCE=2.34903
+// testCE=2.31082 accuracy=2/32; 96 FD max=0.000253352;single-hash LSH/fixedRotation/sortedChunks/restore/immutable PASS
+// result_end
+
+> Inspect the actual saved results
+
+The figures below read actual saved outputs from this run. Native graph previews appear above the complete program. Reconstructed-task results retain the source budgets and are not reported as original benchmark scores.
+
+> Actual validation history
+
+Each panel reads the first recorded objective from a saved `history.tsv`. Different tasks and loss definitions have different units; compare curves within a panel. These are reconstructed-data outcomes with the original update budgets.
+
+```{cpp, results="markdown", file="figures/reformer_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace fs=std::filesystem;std::vector<fs::path> files;for(const auto&entry:fs::recursive_directory_iterator("build/nn-completion/models/reformer"))if(entry.path().filename()=="history.tsv")files.push_back(entry.path());std::sort(files.begin(),files.end());if(files.empty())throw std::runtime_error("actual validation histories missing");auto layout=dm::graphics::RLayout::create((files.size()+1)/2,std::min(size_t(2),files.size()));for(const auto&file:files){std::ifstream in(file);std::string header,line;std::getline(in,header);std::vector<double>x,y;while(std::getline(in,line)){std::istringstream row(line);double step,value;if(row>>step>>value){x.push_back(step);y.push_back(value);}}if(x.empty())continue;auto plot=dm::graphics::RPlot::create();plot.lines(x,y,"saved validation objective",{37,99,235}).points(x,y,"saved rows",{37,99,235},4).x_label("Epoch or source step").y_label("Source objective; panels may use different units").title(file.parent_path().filename().string());layout.add(plot);}layout.size(1200,std::max(size_t(700),400*((files.size()+1)/2))).fit_panels().save_svg("build/reformer_history.svg");}
+```
+// result_begin: markdown
+\image(figures/reformer_history.svg)
+// result_end
+
+
+> Actual held-out confusion
+
+Rows are true classes and columns are saved-model predictions. Counts use actual held-out outputs from the reconstructed recipe. Class labels retain the original source ontology.
+
+```{cpp, results="markdown", file="figures/reformer_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){namespace n=dm::nn;auto load=[](const std::string&path){auto a=n::load_npz(path);return std::map<std::string,n::Tensor>(a.begin(),a.end());};auto data=load("build/nn-completion/models/reformer/data.npz"),out=load("build/nn-completion/models/reformer/outputs.npz");auto logits=out.at("logits");auto prediction=n::argmax(logits,-1).to_vector<int>(),truth=data.at("test_labels").to_vector<int>();if(prediction.size()!=truth.size())throw std::runtime_error("held-out class geometry differs");std::vector<float>valid(truth.size(),1);n::ConfusionMatrix counts(10);size_t total=0;for(size_t i=0;i<truth.size();++i)if(valid[i]>0){counts.add(truth[i],prediction[i]);++total;}if(!total)throw std::runtime_error("held-out predictions missing");std::print("Counted {} actual held-out decisions.\n",total);n::ConfusionMatrixPlotOptions options;options.title="reformer  held-out counts";options.labels={"airplane","automobile","bird","cat","deer","dog","frog","horse","ship","truck"};counts.save_svg("build/reformer_confusion.svg",options);}
+```
+// result_begin: markdown
+Counted 32 actual held-out decisions.
+\image(figures/reformer_confusion.svg)
+// result_end
+
+> Actual saved attention layout
+
+This reads `outputs.npz`, field `attention0`, from the real held-out run. It shows the first leading-index slice and at most64 rows/columns. For sparse, hashed or projected attention, candidate slots are the source layout, not a dense physical-token axis. The complete program retains the index/projection mappings. Attention is not a saliency or causal explanation.
+
+```{cpp, results="markdown", file="figures/reformer_attention.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){auto load=[](const std::string&path){auto a=dm::nn::load_npz(path);return std::map<std::string,dm::nn::Tensor>(a.begin(),a.end());};auto a=load("build/nn-completion/models/reformer/outputs.npz");auto tensor=a.at("attention0");int rows=tensor.size(tensor.dim()-2),columns=tensor.size(tensor.dim()-1),r=std::min(rows,64),c=std::min(columns,64);auto values=tensor.to_vector<double>();std::vector<double>x(c),y(r);std::iota(x.begin(),x.end(),0.);std::iota(y.begin(),y.end(),0.);std::vector<std::vector<double>>z(c,std::vector<double>(r));for(int i=0;i<r;++i)for(int j=0;j<c;++j)z[j][i]=values[i*columns+j];std::print("Native saved attention0 last axes: {} by {}; showing first sample/head/chunk and up to64 positions. Colour range: zero to the maximum in these rows, {}.\n",rows,columns,*std::max_element(values.begin(),values.begin()+r*columns));dm::graphics::RPlot::create().image(x,y,z,dm::graphics::terrain_colors(256),0,*std::max_element(values.begin(),values.begin()+r*columns)).title("reformer actual attention0").x_label("Source key/candidate/compressed slot index").y_label("Source query/layout row index").size(1000,750).save_svg("build/reformer_attention.svg");}
+```
+// result_begin: markdown
+Native saved attention0 last axes: 4 by 8; showing first sample/head/chunk and up to64 positions. Colour range: zero to the maximum in these rows, 0.279646098613739.
+\image(figures/reformer_attention.svg)
+// result_end
