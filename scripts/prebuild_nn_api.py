@@ -22,7 +22,7 @@ def generate(language, reference=False):
         from nn_migration_status import STATUS, refresh
         # The port audit reads the whole examples tree. Package builds (nix) use a source tree
         # without it, and don't need the audit's catalog.
-        if STATUS.exists():
+        if STATUS.exists() and (ROOT / "examples/r/nn").is_dir():
             refresh()
         from prebuild_bindings import generate_rosetta
         bindings = Path('src/pydatamunge/rosetta')
