@@ -1,6 +1,7 @@
 #include <datamunge/stats/p_adjust.hpp>
 
 #include <algorithm>
+#include <cctype>
 #include <limits>
 #include <numeric>
 #include <stdexcept>
@@ -143,6 +144,25 @@ std::vector<double> p_adjust(const std::vector<double>& p, PAdjustMethod method)
         case PAdjustMethod::None:
         default: return p;
     }
+}
+
+PAdjustMethod p_adjust_method(std::string_view name) {
+    std::string key(name);
+    std::transform(key.begin(), key.end(), key.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+    if (key == "holm") return PAdjustMethod::Holm;
+    if (key == "hochberg") return PAdjustMethod::Hochberg;
+    if (key == "hommel") return PAdjustMethod::Hommel;
+    if (key == "bonferroni") return PAdjustMethod::Bonferroni;
+    if (key == "bh" || key == "fdr") return PAdjustMethod::BH;
+    if (key == "by") return PAdjustMethod::BY;
+    if (key == "none") return PAdjustMethod::None;
+    throw std::invalid_argument("p_adjust: unknown method '" + std::string(name) +
+                                "'; use holm, hochberg, hommel, bonferroni, BH, BY, fdr or none");
+}
+
+std::vector<double> p_adjust(const std::vector<double>& p, std::string_view method) {
+    return p_adjust(p, p_adjust_method(method));
 }
 
 namespace {

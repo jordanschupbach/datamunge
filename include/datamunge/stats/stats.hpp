@@ -62,6 +62,7 @@
 #include <datamunge/stats/v_statistic.hpp>
 #include <datamunge/stats/normality_test.hpp>
 #include <datamunge/stats/p_adjust.hpp>
+#include <datamunge/stats/pairwise_test.hpp>
 #include <datamunge/stats/proportion_test.hpp>
 #include <datamunge/stats/quantile_regression.hpp>
 #include <datamunge/stats/random_forest_classifier.hpp>
@@ -70,6 +71,7 @@
 #include <datamunge/stats/svm.hpp>
 #include <datamunge/stats/t_test.hpp>
 #include <datamunge/stats/tsne.hpp>
+#include <datamunge/stats/tukey_hsd.hpp>
 #include <datamunge/stats/umap.hpp>
 #include <datamunge/stats/variance_test.hpp>
 #include <datamunge/stats/wilcoxon_test.hpp>

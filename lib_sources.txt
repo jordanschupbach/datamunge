@@ -205,6 +205,8 @@ datamunge/stats/proportion_test
 datamunge/stats/fisher_exact_test
 datamunge/stats/normality_test
 datamunge/stats/p_adjust
+datamunge/stats/pairwise_test
+datamunge/stats/tukey_hsd
 datamunge/fda/bspline
 datamunge/fda/pspline
 datamunge/fda/hierarchical_bspline

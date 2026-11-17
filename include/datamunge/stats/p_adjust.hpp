@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string_view>
 #include <vector>
 
 namespace datamunge::stats {
@@ -29,6 +30,42 @@ enum class PAdjustMethod { Bonferroni, Holm, Hochberg, Hommel, BH, BY, None };
 ///        As in R, a single p-value (n <= 1) is always returned unchanged regardless of
 ///        @p method.
 std::vector<double> p_adjust(const std::vector<double>& p, PAdjustMethod method = PAdjustMethod::BH);
+
+/// @brief Parses an adjustment method name, like R's p.adjust.methods.
+///
+/// Case-insensitive. Accepts R's names "holm", "hochberg", "hommel", "bonferroni", "BH", "BY",
+/// "fdr" (an alias of BH, as in R) and "none". Tukey's HSD is not a p-value adjustment (it
+/// needs the group means, sizes and pooled variance), so it is not accepted here.
+/// @param name Method name.
+/// @return The matching PAdjustMethod.
+/// @throws std::invalid_argument An unknown name; the message lists the accepted names.
+/// @par Example
+/// @code
+/// const bool holm = dm::stats::p_adjust_method("Holm") == dm::stats::PAdjustMethod::Holm;
+/// std::print("{}\n", holm);   // true
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html
+/// @see p_adjust()
+PAdjustMethod p_adjust_method(std::string_view name);
+
+/// @brief p_adjust() with the method given by name, like R's `p.adjust(p, method = "holm")`.
+///
+/// Equivalent to `p_adjust(p, p_adjust_method(method))`; see p_adjust_method() for the accepted
+/// names. The input is unchanged and the result keeps its order.
+/// @param p p-values in [0, 1].
+/// @param method Method name, e.g. "bonferroni", "holm", "BH".
+/// @return The adjusted p-values, in input order.
+/// @throws std::invalid_argument An unknown method name.
+/// @par Example
+/// @code
+/// const auto adj = dm::stats::p_adjust({0.01, 0.02, 0.04}, "bonferroni");
+/// std::print("{:.2f} {:.2f} {:.2f}\n", adj[0], adj[1], adj[2]);   // 0.03 0.06 0.12
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html
+/// @see p_adjust(const std::vector<double>&, PAdjustMethod), p_adjust_method()
+std::vector<double> p_adjust(const std::vector<double>& p, std::string_view method);
 
 /// @brief Westfall-Young single-step minP adjustment (Westfall & Young, 1993) -- a resampling-
 ///        based FWER correction that accounts for the actual dependence structure between
