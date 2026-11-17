@@ -2,6 +2,7 @@
 #include <datamunge/plot/figure.hpp>
 
 #include <datamunge/datamunge.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
 #include <datamunge/random/distributions.hpp>
 #include <datamunge/algorithms/checksums.hpp>
 
@@ -2420,6 +2421,19 @@ RPlot RPlot::boxplot(std::vector<std::vector<double>> groups, std::vector<std::s
     p.x_tick_labels(std::move(names));
   }
   return p;
+}
+
+RPlot RPlot::boxplot(const dstruct::DataFrame& data, const std::string& value_column,
+                     const std::string& group_column, RGB color) {
+  std::vector<std::vector<double>> groups;
+  std::vector<std::string>         names;
+  for (auto& [name, values] : data.split(value_column, group_column)) {
+    names.push_back(name);
+    groups.push_back(std::move(values));
+  }
+  auto plt = boxplot(std::move(groups), std::move(names), color);
+  plt.xlab(group_column).ylab(value_column);
+  return plt;
 }
 
 RPlot RPlot::boxplot(std::vector<std::vector<double>> groups, std::vector<std::string> names, std::vector<RGB> colors) {

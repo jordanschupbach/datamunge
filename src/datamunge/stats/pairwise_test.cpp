@@ -2,7 +2,6 @@
 /// @brief Pairwise t-tests over every pair of groups, with p-value adjustment.
 #include <algorithm>
 #include <cmath>
-#include <datamunge/stats/detail/grouped_columns.hpp>
 #include <datamunge/stats/detail/test_common.hpp>
 #include <datamunge/stats/pairwise_test.hpp>
 #include <datamunge/stats/t_test.hpp>
@@ -11,20 +10,24 @@
 
 namespace datamunge::stats {
 
-dstruct::DataFrame pairwise_t_test(
-    const std::vector<double>&      values,
-    const std::vector<std::string>& groups,
-    PAdjustMethod                   method,
-    bool                            pool_sd,
-    Alternative                     alternative) {
+namespace {
+
+/// @brief The comparisons for groups already split by label (see DataFrame::split()).
+/// @param by Group label -> that group's values, in level order.
+/// @param method p-value adjustment.
+/// @param pool_sd Pool the standard deviation across all groups.
+/// @param alternative Tail for group1 - group2.
+/// @return The result frame documented on pairwise_t_test().
+/// @throws std::invalid_argument As pairwise_t_test().
+dstruct::DataFrame pairwise_t_test_groups(std::map<std::string, std::vector<double>> by, PAdjustMethod method,
+                                          bool pool_sd, Alternative alternative) {
   detail::check_alternative(alternative);
-  if (values.size() != groups.size())
-    throw std::invalid_argument("pairwise_t_test: values and groups must have the same length");
-  detail::check_sample(values);
-  // std::map orders the levels lexicographically, like R's factor().
-  std::map<std::string, std::vector<double>> by;
-  for (std::size_t i = 0; i < values.size(); ++i) by[groups[i]].push_back(values[i]);
   if (by.size() < 2) throw std::invalid_argument("pairwise_t_test: need at least two groups");
+  std::size_t total = 0;
+  for (const auto& [name, sample] : by) {
+    detail::check_sample(sample);
+    total += sample.size();
+  }
 
   std::vector<std::string>         names;
   std::vector<std::vector<double>> samples;
@@ -41,7 +44,7 @@ dstruct::DataFrame pairwise_t_test(
     for (double v : samples[g]) means[g] += static_cast<long double>(v) / samples[g].size();
     for (double v : samples[g]) within_ss += (v - means[g]) * (v - means[g]);
   }
-  const double pooled_df  = static_cast<double>(values.size() - k);
+  const double pooled_df  = static_cast<double>(total) - static_cast<double>(k);
   double       pooled_var = 0;
   if (pool_sd) {
     if (!(pooled_df > 0)) throw std::invalid_argument("pairwise_t_test: no residual degrees of freedom");
@@ -86,6 +89,22 @@ dstruct::DataFrame pairwise_t_test(
   return out;
 }
 
+} // namespace
+
+dstruct::DataFrame pairwise_t_test(
+    const std::vector<double>&      values,
+    const std::vector<std::string>& groups,
+    PAdjustMethod                   method,
+    bool                            pool_sd,
+    Alternative                     alternative) {
+  if (values.size() != groups.size())
+    throw std::invalid_argument("pairwise_t_test: values and groups must have the same length");
+  // std::map orders the levels lexicographically, like R's factor().
+  std::map<std::string, std::vector<double>> by;
+  for (std::size_t i = 0; i < values.size(); ++i) by[groups[i]].push_back(values[i]);
+  return pairwise_t_test_groups(std::move(by), method, pool_sd, alternative);
+}
+
 dstruct::DataFrame pairwise_t_test(
     const dstruct::DataFrame& data,
     const std::string&        value_column,
@@ -93,8 +112,7 @@ dstruct::DataFrame pairwise_t_test(
     PAdjustMethod             method,
     bool                      pool_sd,
     Alternative               alternative) {
-  const auto rows = detail::grouped_columns(data, value_column, group_column, "pairwise_t_test");
-  return pairwise_t_test(rows.first, rows.second, method, pool_sd, alternative);
+  return pairwise_t_test_groups(data.split(value_column, group_column), method, pool_sd, alternative);
 }
 
 } // namespace datamunge::stats

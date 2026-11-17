@@ -33,6 +33,11 @@ namespace datamunge {
 class Callback;
 } // namespace datamunge
 
+/// @brief Forward declaration for RPlot::boxplot(const dstruct::DataFrame&, ...).
+namespace datamunge::dstruct {
+class DataFrame;
+} // namespace datamunge::dstruct
+
 /// @brief Plotting: RPlot (dm::Plot) and RLayout (R base graphics), GGPlot (ggplot2-style),
 ///        Splom (pairs plots), and Figure, the common output type the free dm::plot()
 ///        functions return. Named `graphics` (after R's package) so that `dm::plot` can be a
@@ -1337,6 +1342,36 @@ class RPlot : public Plot {
   static RPlot boxplot(std::vector<std::vector<double>> groups,
                         std::vector<std::string>         names = {},
                         RGBA                               color = {96, 165, 250});
+
+  /// @brief Boxplots of one numeric column per group of a string column, like R's
+  ///        `boxplot(value ~ group, data = data)`.
+  ///
+  /// Splits the column with DataFrame::split() (groups in label order, null rows dropped) and
+  /// draws them as boxplot(groups, names, color). The axis labels are the column names, as R
+  /// labels a formula boxplot.
+  ///
+  /// @param data  Frame holding both columns; unchanged.
+  /// @param value_column  Numeric column drawn on the y axis.
+  /// @param group_column  String column naming the boxes.
+  /// @param color  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
+  /// @return A new plot holding one Box series per group.
+  /// @throws std::out_of_range  If either column does not exist.
+  /// @throws std::invalid_argument  If the column types are wrong or no rows remain.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plt = dm::Plot::boxplot(dm::datasets::iris(), "Sepal.Length", "Species");
+  /// std::print("{}\n", plt.series().size());   // 3
+  /// @endcode
+  ///
+  /// @par References
+  /// - R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html
+  ///
+  /// @see boxplot(std::vector<std::vector<double>>, std::vector<std::string>, RGBA), DataFrame::split()
+  static RPlot boxplot(const dstruct::DataFrame& data,
+                       const std::string&        value_column,
+                       const std::string&        group_column,
+                       RGBA                      color = {96, 165, 250});
 
   /// @brief boxplot() with one color per box, like R's `boxplot(..., col = colors)`.
   ///

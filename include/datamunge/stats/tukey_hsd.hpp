@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <datamunge/dstruct/dataframe.hpp>
 #include <datamunge/plot/plot.hpp>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -111,13 +112,14 @@ class TukeyHSD {
 
   /// @brief Runs Tukey's HSD on a numeric and a string column of a DataFrame.
   ///
-  /// Rows where either column is null are dropped, as R's aov() drops NA.
+  /// Groups come from DataFrame::split(), so rows where either column is null are dropped, as
+  /// R's aov() drops NA.
   /// @param data Frame holding both columns; unchanged.
   /// @param value_column Numeric response column.
   /// @param group_column String grouping column.
   /// @param conf_level Family-wise confidence level, default 0.95.
-  /// @throws std::invalid_argument A missing or mistyped column, or any error of the vector
-  /// constructor.
+  /// @throws std::out_of_range A missing column.
+  /// @throws std::invalid_argument A mistyped column, or any error of the vector constructor.
   /// @par Example
   /// See the class example.
   TukeyHSD(const dstruct::DataFrame& data,
@@ -170,10 +172,9 @@ class TukeyHSD {
 
  private:
   /// @brief Computes the comparisons; shared by both constructors.
-  /// @param values Finite observations.
-  /// @param groups Their group labels.
+  /// @param by Group label -> that group's finite values, as DataFrame::split() returns.
   /// @throws std::invalid_argument As the vector constructor.
-  void fit(const std::vector<double>& values, const std::vector<std::string>& groups);
+  void fit(const std::map<std::string, std::vector<double>>& by);
 
   std::vector<Comparison> comparisons_; ///< Pairwise results in R's order.
   double                  conf_level_;  ///< Family-wise confidence level.

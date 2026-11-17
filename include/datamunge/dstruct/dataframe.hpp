@@ -36,6 +36,7 @@
 #include <cstdint>
 #include <initializer_list>
 #include <limits>
+#include <map>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -2342,6 +2343,44 @@ class DataFrame {
       }
     }
     return counts;
+  }
+
+  /// @brief Splits a numeric column into one vector per value of a string column, like R's
+  ///        `split(data$value, data$by)`.
+  ///
+  /// Groups are keyed and ordered by label, lexicographically (R's default factor level order);
+  /// each vector keeps row order. Rows where either column is null are dropped, as R drops NA
+  /// levels. O(nrows() log k) for k groups; the frame is unchanged.
+  ///
+  /// @param value_column  Numeric column to split.
+  /// @param by_column  String column whose values name the groups.
+  /// @return  Group label -> that group's values.
+  /// @throws std::out_of_range  If either column does not exist.
+  /// @throws std::invalid_argument  If @p value_column is not numeric or @p by_column is not a
+  ///         string column.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto by = dm::datasets::iris().split("Sepal.Length", "Species");
+  /// std::print("{} {} {}\n", by.size(), by.begin()->first, by.at("setosa").size());   // 3 setosa 50
+  /// @endcode
+  ///
+  /// @par References
+  /// - R `split()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/split.html
+  ///
+  /// @see group_by(), RPlot::boxplot(const DataFrame&, const std::string&, const std::string&)
+  [[nodiscard]] std::map<std::string, std::vector<double>> split(const std::string& value_column,
+                                                                 const std::string& by_column) const {
+    if (column_type(value_column) != ColumnType::Numeric)
+      throw std::invalid_argument("DataFrame::split: value column must be numeric: " + value_column);
+    if (column_type(by_column) != ColumnType::String)
+      throw std::invalid_argument("DataFrame::split: by column must be a string column: " + by_column);
+    const auto& value = get_column<double>(value_column);
+    const auto& by = get_column<std::string>(by_column);
+    std::map<std::string, std::vector<double>> groups;
+    for (size_type row = 0; row < nrows(); ++row)
+      if (!value.is_null(row) && !by.is_null(row)) groups[by.values()[row]].push_back(value.values()[row]);
+    return groups;
   }
 
   /// @brief Number of distinct values in `column_name`; a null is counted as a single

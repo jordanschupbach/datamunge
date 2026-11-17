@@ -2,7 +2,6 @@
 /// @brief Studentized range distribution (after R's ptukey.c) and Tukey's HSD.
 #include <algorithm>
 #include <cmath>
-#include <datamunge/stats/detail/grouped_columns.hpp>
 #include <datamunge/stats/detail/test_common.hpp>
 #include <datamunge/stats/tukey_hsd.hpp>
 #include <format>
@@ -140,31 +139,33 @@ double studentized_range_quantile(double p, std::size_t nmeans, double df) {
 
 TukeyHSD::TukeyHSD(const std::vector<double>& values, const std::vector<std::string>& groups, double conf_level)
     : conf_level_(conf_level) {
-  fit(values, groups);
+  detail::check_confidence(conf_level);
+  if (values.size() != groups.size())
+    throw std::invalid_argument("TukeyHSD: values and groups must have the same length");
+  // std::map orders the levels lexicographically, like R's factor().
+  std::map<std::string, std::vector<double>> by;
+  for (std::size_t i = 0; i < values.size(); ++i) by[groups[i]].push_back(values[i]);
+  fit(by);
 }
 
 TukeyHSD::TukeyHSD(const dstruct::DataFrame& data, const std::string& value_column,
                    const std::string& group_column, double conf_level)
     : conf_level_(conf_level) {
-  const auto rows = detail::grouped_columns(data, value_column, group_column, "TukeyHSD");
-  fit(rows.first, rows.second);
+  detail::check_confidence(conf_level);
+  fit(data.split(value_column, group_column));
 }
 
-void TukeyHSD::fit(const std::vector<double>& values, const std::vector<std::string>& groups) {
-  detail::check_confidence(conf_level_);
-  if (values.size() != groups.size())
-    throw std::invalid_argument("TukeyHSD: values and groups must have the same length");
-  detail::check_sample(values);
-  // std::map orders the levels lexicographically, like R's factor().
-  std::map<std::string, std::vector<double>> by;
-  for (std::size_t i = 0; i < values.size(); ++i) by[groups[i]].push_back(values[i]);
+void TukeyHSD::fit(const std::map<std::string, std::vector<double>>& by) {
   const std::size_t k = by.size();
   if (k < 2) throw std::invalid_argument("TukeyHSD: need at least two groups");
 
   std::vector<std::string> names;
   std::vector<double>      means, sizes;
   long double              within_ss = 0;
+  std::size_t              total     = 0;
   for (const auto& [name, sample] : by) {
+    detail::check_sample(sample);
+    total += sample.size();
     long double mean = 0;
     for (double v : sample) mean += static_cast<long double>(v) / sample.size();
     for (double v : sample) within_ss += (v - mean) * (v - mean);
@@ -172,7 +173,7 @@ void TukeyHSD::fit(const std::vector<double>& values, const std::vector<std::str
     means.push_back(static_cast<double>(mean));
     sizes.push_back(static_cast<double>(sample.size()));
   }
-  df_ = static_cast<double>(values.size() - k);
+  df_ = static_cast<double>(total) - static_cast<double>(k);
   if (df_ < 2) throw std::invalid_argument("TukeyHSD: need at least two residual degrees of freedom");
   mse_ = static_cast<double>(within_ss / df_);
   if (!(mse_ > 0) || !std::isfinite(mse_))

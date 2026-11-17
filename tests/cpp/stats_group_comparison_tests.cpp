@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <datamunge/datasets/datasets.hpp>
+#include <datamunge/plot/plot.hpp>
 #include <datamunge/stats/p_adjust.hpp>
 #include <datamunge/stats/pairwise_test.hpp>
 #include <datamunge/stats/tukey_hsd.hpp>
@@ -85,4 +86,18 @@ TEST(PAdjust, ByName) {
     EXPECT_EQ(p_adjust_method("FDR"), PAdjustMethod::BH);
     EXPECT_EQ(p_adjust_method("Holm"), PAdjustMethod::Holm);
     EXPECT_THROW(p_adjust_method("tukey"), std::invalid_argument);
+}
+
+TEST(DataFrameSplit, GroupsByLabel) {
+    const auto iris = datamunge::datasets::iris();
+    const auto by   = iris.split("Sepal.Length", "Species");
+    ASSERT_EQ(by.size(), 3u);
+    EXPECT_EQ(by.begin()->first, "setosa");
+    EXPECT_EQ(by.at("virginica").size(), 50u);
+    EXPECT_EQ(by.at("setosa").front(), 5.1);
+    EXPECT_THROW((void)iris.split("Species", "Species"), std::invalid_argument);
+    EXPECT_THROW((void)iris.split("Sepal.Length", "Sepal.Width"), std::invalid_argument);
+    const auto plt = datamunge::graphics::RPlot::boxplot(iris, "Sepal.Length", "Species");
+    EXPECT_EQ(plt.series().size(), 3u);
+    EXPECT_EQ(plt.x_tick_label_list().at(2), "virginica");
 }

@@ -56,8 +56,8 @@ dstruct::DataFrame pairwise_t_test(
 /// @brief pairwise_t_test() on two columns of a DataFrame, like R
 ///        `with(df, pairwise.t.test(value, group))`.
 ///
-/// Rows where either column is null are dropped first, as R drops NA. Otherwise identical to
-/// the vector overload.
+/// Groups come from DataFrame::split(), so rows where either column is null are dropped, as R
+/// drops NA. Otherwise identical to the vector overload.
 /// @param data Frame holding both columns; unchanged.
 /// @param value_column Numeric column of observations.
 /// @param group_column String column of group labels.
@@ -65,8 +65,9 @@ dstruct::DataFrame pairwise_t_test(
 /// @param pool_sd True (default) pools the standard deviation across groups; false uses Welch.
 /// @param alternative TwoSided (default), Less or Greater, for mean(group1) - mean(group2).
 /// @return As the vector overload.
-/// @throws std::invalid_argument A missing column, a non-numeric @p value_column, a non-string
-/// @p group_column, or any error of the vector overload.
+/// @throws std::out_of_range A missing column.
+/// @throws std::invalid_argument A non-numeric @p value_column, a non-string @p group_column, or
+/// any error of the vector overload.
 /// @par Example
 /// @code
 /// const auto pw = dm::stats::pairwise_t_test(dm::datasets::iris(), "Sepal.Length", "Species");
