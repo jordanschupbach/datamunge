@@ -25,13 +25,6 @@ launches parallel work.
 
 ```{cpp, results="markdown", file="figures/goldschmidt_flow.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goldschmidt_division.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::goldschmidt_trace(3, 4, 2, 2);
@@ -111,13 +104,6 @@ table and omitted from the logarithmic native curve, with no artificial floor.
 
 ```{cpp, results="markdown", file="figures/goldschmidt_gap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goldschmidt_division.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| n | d | native quotient | hardware n/d | absolute difference | updates | loop products | " "stop |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |\n");
@@ -200,13 +186,6 @@ silently substituting a more accurate division.
 
 ```{cpp, results="markdown", file="figures/goldschmidt_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goldschmidt_division.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
     const double tiny = std::numeric_limits<double>::denorm_min();

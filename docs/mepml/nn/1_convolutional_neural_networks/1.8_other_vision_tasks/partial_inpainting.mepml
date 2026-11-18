@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/partial_inpainting_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -99,7 +97,6 @@ The signed fixture exposes counts,renormalized values and input derivatives.
 ```{cpp, results="markdown", file="figures/partial_inpainting_renormalize.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -147,7 +144,6 @@ three genuine partial convolutions with fixed weights.
 ```{cpp, results="markdown", file="figures/partial_inpainting_support.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -201,7 +197,6 @@ original versus dilated hole support and the actual raw-image adjoints.
 ```{cpp, results="markdown", file="figures/partial_inpainting_tv.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -250,7 +245,6 @@ feature/mask stage,all learned gradients,and empty/all-known identities.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -323,7 +317,6 @@ dm::datasets::prepare_example_data("style") and the shared pinned style asset ca
 ```{cpp, results="markdown", file="figures/partial_inpainting_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -436,7 +429,6 @@ mean per-image PSNR from PSNR of pooled MSE,which can be negative.
 ```{cpp, results="markdown", file="figures/partial_inpainting_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

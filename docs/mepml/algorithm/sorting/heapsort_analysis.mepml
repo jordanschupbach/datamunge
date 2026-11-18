@@ -26,16 +26,6 @@ records from a single shared heapsort execution.
 
 ```{cpp, results="markdown", file="figures/heapsort_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heapsort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <bit>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -113,16 +103,6 @@ sorted suffix; numbers remain actual integer values.
 
 ```{cpp, results="markdown", file="figures/heapsort_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heapsort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <bit>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -210,16 +190,6 @@ still swaps n−1 times.
 
 ```{cpp, results="markdown", file="figures/heapsort_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heapsort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <bit>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -296,16 +266,6 @@ constant-space claim.
 
 ```{cpp, results="markdown", file="figures/heapsort_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heapsort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <bit>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 

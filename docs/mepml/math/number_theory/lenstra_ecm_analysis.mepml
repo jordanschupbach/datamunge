@@ -29,10 +29,6 @@ validated on-curve inputs, not a narrated fictional curve search.
 
 ```{cpp, results="markdown", file="figures/ecm_inverse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lenstra_ecm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto e = dm::algorithms::ecm_add(91, 12, 1, {0, 1, false}, {7, 8, false});
@@ -73,10 +69,6 @@ attempted curves rather than elapsed time or a theoretical runtime estimate.
 
 ```{cpp, results="markdown", file="figures/ecm_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lenstra_ecm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;
@@ -123,11 +115,6 @@ returned or a quota exception is thrown, never a silently incomplete prefix.
 
 ```{cpp, results="markdown", file="figures/ecm_denominators.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lenstra_ecm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::lenstra_ecm_trace(10403, 1, {20, 20});
@@ -197,11 +184,6 @@ original eight target primes are retained.
 
 ```{cpp, results="markdown", file="figures/ecm_smoothness.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lenstra_ecm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

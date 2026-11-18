@@ -28,14 +28,6 @@ causal information flow, not a smoother or an iteration trace.
 
 ```{cpp, results="markdown", file="figures/kalman_stage.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/filter/kalman_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <numeric>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto s = dm::filter::kalman_tiny_step();
@@ -108,14 +100,6 @@ equivalence does not imply bitwise equality or a measured speed advantage.
 
 ```{cpp, results="markdown", file="figures/kalman_linear.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/filter/kalman_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <numeric>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto s =
@@ -211,14 +195,6 @@ of methods.
 
 ```{cpp, results="markdown", file="figures/kalman_nonlinear.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/filter/kalman_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <numeric>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto s =
@@ -284,14 +260,6 @@ common-data competition.
 
 ```{cpp, results="markdown", file="figures/kalman_fixed_gain.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/filter/kalman_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <numeric>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto s =
@@ -360,14 +328,6 @@ generally optimal alpha.
 
 ```{cpp, results="markdown", file="figures/kalman_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/filter/kalman_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <numeric>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     dm::filter::KalmanFilter control({{1}}, {{1}}, {{.1}}, {{1}}, {0}, {{1}});

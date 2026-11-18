@@ -70,14 +70,6 @@ coefficients.
 
 ```{cpp, results="markdown", nix-shell="git+file:../../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}", file="figures/spline_comparison.svg"}
 #include <dm/dm.hpp>
-#include <datamunge/fda/hierarchical_bspline.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <numbers>
-#include <print>
-#include <vector>
 
 int main() {
     using dm::fda::BSplineBasis;

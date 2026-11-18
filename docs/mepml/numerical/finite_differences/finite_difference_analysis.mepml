@@ -52,11 +52,6 @@ representation exact between the nodes.
 
 ```{cpp, results="markdown", file="figures/fd_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <numbers>
-#include <print>
-#include <climits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -104,11 +99,6 @@ the system in the report. Its exact reference is 2+3x+x(1−x)/2.
 
 ```{cpp, results="markdown", file="figures/fd_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <numbers>
-#include <print>
-#include <climits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -171,11 +161,6 @@ analytical prediction for the measured error and its limiting h² coefficient π
 
 ```{cpp, results="markdown", file="figures/fd_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <numbers>
-#include <print>
-#include <climits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -221,11 +206,6 @@ small error on a fixed grid: the fourth-derivative bound grows as k⁴.
 
 ```{cpp, results="markdown", file="figures/fd_resolution.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <numbers>
-#include <print>
-#include <climits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -275,11 +255,6 @@ These are outputs describing one solve, without an optional iteration-history qu
 
 ```{cpp, results="markdown", file="figures/fd_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <numbers>
-#include <print>
-#include <climits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

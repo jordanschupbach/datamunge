@@ -171,7 +171,6 @@ Berlekamp–Massey needs only \(2L=62\) of them.
 ```{cpp, results="markdown", file="figures/berlekamp_massey_keystream.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -362,9 +361,6 @@ instead of \(2^{59}\approx 6\times10^{17}\).
 ```{cpp, results="markdown", file="figures/berlekamp_massey_geffe.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <numeric>
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -592,7 +588,6 @@ sequences of fair random bits of the same length.
 ```{cpp, results="markdown", file="figures/berlekamp_massey_faithful.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 

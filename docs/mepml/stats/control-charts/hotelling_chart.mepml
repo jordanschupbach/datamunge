@@ -1,0 +1,65 @@
+//? Title: Hotelling T² for correlated measurements
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two synthetic sensor residuals are measured on each run. An independent
+calibration supplies their in-control mean, variances, and positive covariance.
+This example compares aligned and opposing deviations of equal component
+size. Opposing deviations are less likely under the calibrated covariance.
+)
+
+> Fit, monitor and plot
+
+```{cpp, results="markdown", file="figures/hotelling_chart.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace spc = datamunge::stats;
+using datamunge::graphics::RLayout;
+
+int main() {
+    const std::vector<std::vector<double>> readings{
+        {-0.6, -0.5}, {0.2, 0.3}, {0.7, 0.5}, {-0.9, -0.6}, {0., 0.1},
+        {1.5, 1.5}, {1.5, -1.5}, {-0.4, -0.1}, {1.4, -1.3}
+    };
+    const datamunge::linalg::DenseMatrix<double> covariance(2, 2, {1., 0.85, 0.85, 1.});
+    const auto chart = spc::hotelling_t2_chart(readings, {0., 0.}, covariance);
+    std::print("| Run | Sensor 1 | Sensor 2 | T² | Signal |\n"
+               "| ---: | ---: | ---: | ---: | :--- |\n");
+    for (std::size_t i = 0; i < readings.size(); ++i)
+        std::print("| {} | {:.2f} | {:.2f} | {:.2f} | {} |\n",
+                   i + 1, readings[i][0], readings[i][1],
+                   chart.points[i].value, chart.points[i].outside ? "yes" : "");
+    std::filesystem::create_directories("build");
+    chart.plot().save_svg("build/hotelling_chart.svg");
+}
+```
+// result_begin: markdown
+| Run | Sensor 1 | Sensor 2 | T² | Signal |
+| ---: | ---: | ---: | ---: | :--- |
+| 1 | -0.60 | -0.50 | 0.36 |  |
+| 2 | 0.20 | 0.30 | 0.10 |  |
+| 3 | 0.70 | 0.50 | 0.52 |  |
+| 4 | -0.90 | -0.60 | 0.91 |  |
+| 5 | 0.00 | 0.10 | 0.04 |  |
+| 6 | 1.50 | 1.50 | 2.43 |  |
+| 7 | 1.50 | -1.50 | 30.00 | yes |
+| 8 | -0.40 | -0.10 | 0.37 |  |
+| 9 | 1.40 | -1.30 | 24.30 | yes |
+\image(figures/hotelling_chart.svg)
+// result_end
+\caption(Squared Mahalanobis distances from the calibrated two-sensor reference.)
+\alttext(The Hotelling chart flags observations with opposing sensor deviations, including run seven.)
+
+> Interpret the chart
+
+Compare runs six and seven. Each sensor is 1.5 individual standard
+deviations from its target in both runs, but the signs differ in run seven.
+The squared Mahalanobis distance accounts for the positive covariance and
+flags that combination. The chi-squared limit here applies to independent
+multivariate Normal readings with a known reference mean and covariance.
+
+> References
+
+- [NIST Hotelling control charts|https://www.itl.nist.gov/div898/handbook/pmc/section3/pmc341.htm]

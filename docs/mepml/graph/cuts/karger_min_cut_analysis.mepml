@@ -25,13 +25,6 @@ resulting component count; no replay reconstructs the decision.
 
 ```{cpp, results="markdown", file="figures/karger_merge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karger.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::pair<std::size_t, std::size_t>> edges = {{0, 1},
@@ -110,13 +103,6 @@ That reasoning does not generalize to an arbitrary positive returned cut.
 
 ```{cpp, results="markdown", file="figures/karger_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karger.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::pair<std::size_t, std::size_t>> edges = {{0, 1},
@@ -186,13 +172,6 @@ at least two.
 
 ```{cpp, results="markdown", file="figures/karger_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karger.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| control | cut | side A size | side B size |\n| --- | ---: | ---: | ---: |\n");
@@ -259,13 +238,6 @@ and all budgets are controlled inputs, so no external dataset is needed.
 
 ```{cpp, results="markdown", file="figures/karger_profile.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karger.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <algorithm>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::pair<std::size_t, std::size_t>> edges = {{0, 1},

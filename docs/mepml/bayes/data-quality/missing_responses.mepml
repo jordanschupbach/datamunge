@@ -1,0 +1,63 @@
+//? Title: Missing responses under ignorability
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two scheduled Gaussian measurements are missing. Under an ignorable observation
+mechanism, integrating each missing response out leaves a likelihood contribution of
+one. The observed responses estimate the shared mean. A missing response, conditional
+on that mean, would have observation SD one, so its marginal predictive SD exceeds the
+plotted posterior SD.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/missing_responses.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const double y[]{1.1, NAN, 0.8, 1.5, NAN, 1.2};
+    b::LogDensity target([&](const auto& q) {
+        double lp = b::normal_lpdf(q[0], 0., 2.);
+        for (double value : y)
+            if (std::isfinite(value)) lp += b::normal_lpdf(value, q[0], 1.);
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {-3}, {5}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Common mean").y_label("Density");
+    std::vector<double> times, observed;
+    for (std::size_t i = 0; i < std::size(y); ++i)
+        if (std::isfinite(y[i])) {
+            times.push_back(i + 1);
+            observed.push_back(y[i]);
+        }
+    const double mean = post.mean[0];
+    const double half_width = 1.644854 * std::hypot(1., post.sd[0]);
+    auto fit = RPlot::create().points(times, observed, "observed", {70, 70, 70})
+        .lines({1, 6}, {mean, mean}, "fitted mean", {36, 105, 172})
+        .segments({2, 5}, {mean - half_width, mean - half_width},
+                  {2, 5}, {mean + half_width, mean + half_width}, {182, 83, 29}, 2)
+        .title("Fit and missing readings").x_label("Scheduled reading").y_label("Response");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/missing_responses.svg");
+}
+```
+// result_begin: markdown
+Posterior mean 1.082, posterior SD 0.485, edge mass 5.11e-17.
+\image(figures/missing_responses.svg)
+// result_end
+\caption(Common mean posterior, observed readings, and pointwise 90% predictive intervals for readings missing at positions two and five.)
+\alttext(Common mean posterior, observed readings, and pointwise 90% predictive intervals for readings missing at positions two and five.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 3.1.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

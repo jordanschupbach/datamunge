@@ -27,23 +27,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/srt_division_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/algorithms/srt_division.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -86,23 +69,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/srt_division_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/algorithms/srt_division.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -161,23 +127,6 @@ Original N=.7,D=.9,bits40; first16 digits `[1, 1, 0, 0, 1, 0, 0, -1, 0, 0, 1, 0,
 
 ```{cpp, results="markdown", file="figures/srt_division_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/algorithms/srt_division.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -224,23 +173,6 @@ Zero divisor rejected before normalization.
 
 ```{cpp, results="markdown", file="figures/srt_division_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/algorithms/srt_division.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

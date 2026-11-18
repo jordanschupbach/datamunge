@@ -42,10 +42,6 @@ implementation identities, not minimum-vertex labels.
 
 ```{cpp, results="markdown", file="figures/kruskal_union.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kruskal.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -89,10 +85,6 @@ only; they do not determine edge weights.
 
 ```{cpp, results="markdown", file="figures/kruskal_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kruskal.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<dm::algorithms::WeightedEdge> edges = {{0, 1, 7},
@@ -151,10 +143,6 @@ optimum total.
 
 ```{cpp, results="markdown", file="figures/kruskal_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kruskal.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto forest =
@@ -227,11 +215,6 @@ these formulas, rather than plotting theoretical curves as measured work.
 
 ```{cpp, results="markdown", file="figures/kruskal_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kruskal.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

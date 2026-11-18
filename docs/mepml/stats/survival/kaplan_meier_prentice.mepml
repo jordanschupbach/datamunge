@@ -1,0 +1,68 @@
+//? Title: Kaplan–Meier estimates and Prentice–Wilcoxon scores
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two simulated groups have different event-time scales. A fixed end of
+follow-up right-censors any subject whose event would occur later. Estimate
+each survival curve and compare the groups using scores computed from pooled
+risk sets.
+)
+
+> Data and analysis
+
+```{cpp, results="markdown", file="figures/kaplan_meier_prentice.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(52);
+    const auto simulate = [](double scale) {
+        std::vector<sp::SurvivalObservation> followup;
+        for (const double u : dm::runif(0, 1, 45)) {
+            const double event_time = -scale * std::log1p(-u);
+            followup.push_back({std::min(event_time, 6.), event_time <= 6.});
+        }
+        return followup;
+    };
+    const auto x = simulate(3);
+    const auto y = simulate(7);
+    const auto first = sp::kaplan_meier(x);
+    const auto second = sp::kaplan_meier(y);
+    const auto comparison = sp::prentice_wilcoxon_test(x, y);
+    std::print("| Group | Survival at end of follow-up | Greenwood SE |\n| --- | ---: | ---: |\n");
+    std::print("| A | {:.3f} | {:.3f} |\n", first.points.back().survival, first.points.back().standard_error);
+    std::print("| B | {:.3f} | {:.3f} |\n", second.points.back().survival, second.points.back().standard_error);
+    std::print("\nPrentice-Wilcoxon score sum for A {:.3f}, approximate p {:.4g}.\n",
+               comparison.statistic, comparison.p_value);
+
+    std::filesystem::create_directories("build");
+    sp::kaplan_meier_plot({first, second}, {"A", "B"}).save_svg("build/kaplan_meier_prentice.svg");
+}
+```
+// result_begin: markdown
+| Group | Survival at end of follow-up | Greenwood SE |
+| --- | ---: | ---: |
+| A | 0.222 | 0.062 |
+| B | 0.444 | 0.074 |
+
+Prentice-Wilcoxon score sum for A -7.989, approximate p 0.002797.
+\image(figures/kaplan_meier_prentice.svg)
+// result_end
+\caption(Product-limit survival curves for each group, with right-censoring marked on the curves.)
+\alttext(Product-limit survival curves for each group, with right-censoring marked on the curves.)
+
+> Interpretation
+
+A downward step records an event. A censoring removes a subject from later
+risk sets and leaves the current survival estimate unchanged. The Prentice
+weights change with the pooled event and risk counts, giving earlier
+discrepancies more weight than a constant-weight score. The reported normal
+reference assumes exchangeable follow-up records under the null.
+
+> References
+
+- [Kaplan and Meier, Nonparametric Estimation from Incomplete Observations|https://doi.org/10.1080/01621459.1958.10501452]
+- [coin survival-score reference|https://cran.r-project.org/web/packages/coin/refman/coin.html]

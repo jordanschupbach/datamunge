@@ -198,9 +198,7 @@ selects the checkpoint. The visible program saves initial/selected parameters an
 timing. The same validation pool later calibrates thresholds, as stated above.
 
 ```{cpp, results="markdown", file="figures/anomaly_prerequisite.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
 namespace n = dm::nn;
 double Score(const n::Tensor& prediction, const n::Tensor& target) {
   return n::mean(
@@ -328,8 +326,6 @@ changing that prevalence changes AP. No threshold sweep on test outcomes is perf
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <map>
 namespace n = dm::nn;
 namespace m = n::models;
 void Require(bool condition, const std::string& message) {
@@ -505,7 +501,6 @@ more strongly. Ink deviation directly measures brightness and behaves differentl
 
 ```{cpp, results="markdown", file="figures/anomaly_ae_cdf.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -541,7 +536,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/anomaly_mean_cdf.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -577,7 +571,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/anomaly_ink_cdf.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -622,7 +615,6 @@ single-pool diagnostics have no significance or real-deployment performance clai
 
 ```{cpp, results="markdown", file="figures/anomaly_auroc.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -662,7 +654,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/anomaly_tpr.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -710,7 +701,6 @@ The source IDs and all AE scores are printed alongside the corresponding program
 
 ```{cpp, results="markdown", file="figures/anomaly_cases_patch.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -759,7 +749,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/anomaly_cases_dark_shift.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -814,7 +803,6 @@ is not inserted into any normal/transformed ranking pool or used to tune the mod
 
 ```{cpp, results="markdown", file="figures/anomaly_blank.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

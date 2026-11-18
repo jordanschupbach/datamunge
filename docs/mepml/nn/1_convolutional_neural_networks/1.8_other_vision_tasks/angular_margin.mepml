@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/angular_margin_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -109,7 +107,6 @@ and CE derivative,including endpoints,zero margin and both tail policies.
 ```{cpp, results="markdown", file="figures/angular_margin_transform.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -167,7 +164,6 @@ They describe training;label-free inference retains the plain beta/2 boundary.
 ```{cpp, results="markdown", file="figures/angular_margin_boundary.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -229,7 +225,6 @@ four pools,two maxouts and a linear128D projection. There is no BN state.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -290,7 +285,6 @@ fitting preview is class-balanced and uses tensor image gathering throughout.
 ```{cpp, results="markdown", file="figures/angular_margin_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
 
@@ -344,8 +338,6 @@ MNIST runs do not reproduce the papers’ face datasets,backbones or training.
 
 ```{cpp, results="markdown", file="figures/angular_margin_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <print>
 int main() {
   int rendered_confusions = 0;
   namespace n             = dm::nn;

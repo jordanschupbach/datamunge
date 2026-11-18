@@ -17,10 +17,6 @@ A dense hidden layer computes h=activation(XW+b); the output layer computes logi
 
 ```{cpp, results="markdown", file="figures/neural_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/nn.hpp>
-#include <datamunge/nn/tabular_classification.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::filesystem::create_directories("build");
@@ -74,10 +70,6 @@ The visible loop minimizes tensor sparse softmax cross-entropy. The native tenso
 
 ```{cpp, results="markdown", file="figures/neural_xor.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/nn.hpp>
-#include <datamunge/nn/tabular_classification.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n     = dm::nn;
   namespace study = n::study;
@@ -146,10 +138,6 @@ Compare affine logits with two ReLU layers of16 units. Each model uses SGD at0.0
 
 ```{cpp, results="markdown", file="figures/neural_moons.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/nn.hpp>
-#include <datamunge/nn/tabular_classification.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n     = dm::nn;
   namespace study = n::study;
@@ -234,10 +222,6 @@ The original five architectures are affine,4,16,16+16 and64+64 hidden units, all
 
 ```{cpp, results="markdown", file="figures/neural_capacity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/nn.hpp>
-#include <datamunge/nn/tabular_classification.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n     = dm::nn;
   namespace study = n::study;
@@ -313,10 +297,6 @@ The decision grid is evaluated in raw petal units through the fitted tensor mode
 
 ```{cpp, results="markdown", file="figures/neural_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/nn.hpp>
-#include <datamunge/nn/tabular_classification.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n     = dm::nn;
   namespace study = n::study;
@@ -387,10 +367,6 @@ The complete program below independently reproduces the same seeded fit and send
 
 ```{cpp, results="markdown", file="figures/neural_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/nn.hpp>
-#include <datamunge/nn/tabular_classification.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n     = dm::nn;
   namespace study = n::study;

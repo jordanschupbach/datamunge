@@ -1,0 +1,63 @@
+//? Title: Mood median, Kruskal–Wallis and van der Waerden tests
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate three independent groups with a common spread and separated
+locations. All three tests use the observed groups, with different reductions
+of the data. A separate rank-sum comparison contrasts the first and last
+groups as a specified comparison.
+)
+
+> Simulate, test and plot
+
+```{cpp, results="markdown", file="figures/independent_groups.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(27);
+    const std::vector<std::vector<double>> groups{
+        dm::rnorm(0, 1, 28).values(), dm::rnorm(0.45, 1, 28).values(), dm::rnorm(0.9, 1, 28).values()
+    };
+    const auto median = sp::median_test(groups);
+    const auto kw = sp::kruskal_wallis_test(groups);
+    const auto scores = sp::van_der_waerden_test(groups);
+    const auto rank_sum = sp::wilcoxon_rank_sum_test(groups.front(), groups.back());
+    std::print("| Method | Statistic | p-value |\n| --- | ---: | ---: |\n");
+    for (const auto* test : {&median, &kw, &scores, &rank_sum})
+        std::print("| {} | {:.3f} | {:.4g} |\n", test->method, test->statistic, test->p_value);
+
+    std::filesystem::create_directories("build");
+    RPlot::boxplot(groups, {"A", "B", "C"}).abline_h(median.estimate1)
+        .title("Three independent groups").x_label("Group").y_label("Response")
+        .save_svg("build/independent_groups.svg");
+}
+```
+// result_begin: markdown
+| Method | Statistic | p-value |
+| --- | ---: | ---: |
+| Mood median test (Pearson chi-square) | 0.286 | 0.8669 |
+| Kruskal-Wallis rank sum test | 4.161 | 0.1249 |
+| van der Waerden normal scores test | 4.857 | 0.08817 |
+| Wilcoxon rank sum test with continuity correction | 271.000 | 0.04831 |
+\image(figures/independent_groups.svg)
+// result_end
+\caption(Group boxplots with a horizontal line at the pooled median used by Mood’s test.)
+\alttext(Group boxplots with a horizontal line at the pooled median used by Mood’s test.)
+
+> Interpretation
+
+Mood's test keeps only the side of the pooled median and discards any
+observations exactly on it. Kruskal–Wallis keeps pooled ranks, and van der
+Waerden uses Normal quantiles of those ranks. Similar distributional shapes
+support the location-shift interpretation in this simulation. The prespecified
+rank-sum comparison uses only groups A and C.
+
+> References
+
+- [NIST van der Waerden normal scores test|https://itl.nist.gov/div898/software/dataplot/refman1/auxillar/vanderwa.htm]
+- [R Kruskal–Wallis test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kruskal.test.html]
+- [SciPy Mood median test|https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.median_test.html]

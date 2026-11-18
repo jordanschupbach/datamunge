@@ -171,7 +171,6 @@ the determinant.
 
 ```{cpp, results="markdown", file="figures/linear_algebra_eigen.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
 
 int main() {
     using Matrix = dm::linalg::DenseMatrix<double>;

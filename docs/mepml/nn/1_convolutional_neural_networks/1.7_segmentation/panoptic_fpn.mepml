@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/panoptic_fpn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -115,7 +113,6 @@ from these arbitrary segment IDs.
 ```{cpp, results="markdown", file="figures/panoptic_fpn_merge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -188,7 +185,6 @@ matching uses category and support,not ID equality.
 ```{cpp, results="markdown", file="figures/panoptic_fpn_quality.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -235,7 +231,6 @@ every pooled value and image/level derivative sum.
 ```{cpp, results="markdown", file="figures/panoptic_fpn_routing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -304,7 +299,6 @@ complete compact model is fitted later.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -378,7 +372,6 @@ or a benchmark segmentation dataset.
 ```{cpp, results="markdown", file="figures/panoptic_fpn_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -443,7 +436,6 @@ separate. Integral mask AP remains distinct from official COCO mask AP.
 ```{cpp, results="markdown", file="figures/panoptic_fpn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

@@ -46,10 +46,6 @@ from the native operation trace.
 
 ```{cpp, results="markdown", file="figures/lll_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lll.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::lll_trace({{1, 0}, {3, 1}});
@@ -105,10 +101,6 @@ vector identities after swaps.
 
 ```{cpp, results="markdown", file="figures/lll_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lll.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<long long>> b{{201, 37, 5}, {143, 25, 3},
@@ -170,10 +162,6 @@ certificate. This report uses the actual elementary-operation witness instead.
 
 ```{cpp, results="markdown", file="figures/lll_transform.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lll.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -226,11 +214,6 @@ update.
 
 ```{cpp, results="markdown", file="figures/lll_budget.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lll.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<long long>> b{{201, 37, 5}, {143, 25, 3},

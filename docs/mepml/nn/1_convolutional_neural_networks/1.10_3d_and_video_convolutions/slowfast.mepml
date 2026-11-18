@@ -55,8 +55,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/slowfast_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -119,7 +117,6 @@ Show all96held-out frames,including both raw Slow samples at the endpoints.
 ```{cpp, results="markdown", file="figures/slowfast_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -200,7 +197,6 @@ convolution and central finite-difference checks in the native tests.
 ```{cpp, results="markdown", file="figures/slowfast_sampling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -259,7 +255,6 @@ four fusions. Do not interpret a reference census as a full-reference run.
 ```{cpp, results="markdown", file="figures/slowfast_features.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -371,7 +366,6 @@ by validation NLL,then restore both before fixed fitting and held-out inference.
 ```{cpp, results="markdown", file="figures/slowfast_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -517,7 +511,6 @@ and distance arithmetic use tensors and fitting observations only.
 ```{cpp, results="markdown", file="figures/slowfast_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -714,7 +707,6 @@ and moving arrays;this is inference intervention,not a retrained comparison.
 ```{cpp, results="markdown", file="figures/slowfast_transfer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -809,8 +801,6 @@ count range. Source class meanings remain those declared for the dataset above.
 
 ```{cpp, results="markdown", file="figures/slowfast_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::filesystem::create_directories("build");

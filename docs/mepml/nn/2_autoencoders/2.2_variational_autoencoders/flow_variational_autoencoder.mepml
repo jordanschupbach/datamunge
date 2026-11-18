@@ -165,10 +165,7 @@ log determinants with the analytic sum, inverts the second layer then the first,
 zero scale/shift identity. It retains all48 Jacobian entries and unit-flow arrays.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 void Require(bool condition, const std::string& why) {
   if (!condition)
@@ -427,10 +424,7 @@ and each of four draws is archived in all three pools. Inverse and prior inferen
 model parameters unchanged.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 void Require(bool condition, const std::string& why) {
   if (!condition)

@@ -1,0 +1,66 @@
+//? Title: Bayesian two-sample differences
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The continuous response has known measurement SD 0.6, and each group mean has an
+independent Normal(0, 5) prior. The group posteriors are independent Gaussians, so a
+contrast against group 1 is exactly Normal. Its variance is the sum of the two mean
+variances. Contrasts share the reference group, so the plotted marginal intervals are
+dependent and are pointwise.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/two_samples.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<std::vector<double>> groups{{3.2, 2.8, 3.5, 3.1, 2.9}, {4.1, 3.8, 4.5, 4.2}};
+    std::vector<b::NormalPosterior> post;
+    for (const auto& group : groups)
+        post.push_back(b::normal_mean_posterior(group, std::vector<double>(group.size(), 0.6), 0, 5));
+    std::vector<double> index, mean, lo, hi;
+    for (std::size_t j = 1; j < post.size(); ++j) {
+        const double difference = post[j].mean - post[0].mean;
+        const double sd = std::hypot(post[j].sd, post[0].sd);
+        index.push_back(j + 1);
+        mean.push_back(difference);
+        lo.push_back(difference - 1.644854 * sd);
+        hi.push_back(difference + 1.644854 * sd);
+        std::print("Group {} minus group 1: {:.2f} [ {:.2f}, {:.2f} ], P(positive) = {:.3f}.\n\n",
+                   j + 1, difference, lo.back(), hi.back(), 0.5 * std::erfc(-difference / (sd * std::sqrt(2.))));
+    }
+    std::filesystem::create_directories("build");
+    auto contrasts = RPlot::create().segments({0, 0}, {1.5, groups.size() + 0.5}, {0, 0}, {1.5, groups.size() + 0.5})
+        .segments(lo, index, hi, index, {36, 105, 172}, 2)
+        .points(mean, index, "posterior mean", {36, 105, 172})
+        .title("90% credible intervals for group contrasts")
+        .x_label("Difference from group 1").y_label("Group");
+    std::vector<double> group, observed, fitted, lower, upper;
+    for (std::size_t i = 0; i < groups.size(); ++i) {
+        group.push_back(i + 1);
+        observed.push_back(std::accumulate(groups[i].begin(), groups[i].end(), 0.) / groups[i].size());
+        fitted.push_back(post[i].mean);
+        lower.push_back(post[i].mean - 1.644854 * post[i].sd);
+        upper.push_back(post[i].mean + 1.644854 * post[i].sd);
+    }
+    auto fit = RPlot::create().segments(lower, group, upper, group, {36, 105, 172}, 2)
+        .points(observed, group, "sample mean", {70, 70, 70}, 6)
+        .points(fitted, group, "posterior mean", {36, 105, 172}, 3)
+        .title("Fit by group").x_label("Response mean").y_label("Group");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(contrasts).add(fit)
+        .save_svg("build/two_samples.svg");
+}
+```
+// result_begin: markdown
+Group 2 minus group 1: 1.04 [ 0.38, 1.70 ], P(positive) = 0.995.
+
+\image(figures/two_samples.svg)
+// result_end
+\caption(Posterior contrasts and observed group means alongside fitted means and their 90% credible intervals.)
+\alttext(Posterior contrasts and observed group means alongside fitted means and their 90% credible intervals.)

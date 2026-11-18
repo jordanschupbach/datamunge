@@ -34,22 +34,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/rounding_functions_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/rounding_functions.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -85,22 +69,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/rounding_functions_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/rounding_functions.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -214,22 +182,6 @@ Original positive ties 60, actual half-even mean 0, half-up mean 0.5.
 
 ```{cpp, results="markdown", file="figures/rounding_functions_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/rounding_functions.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -284,22 +236,6 @@ Nonfinite summary observation rejected: true; scalar infinity propagates: inf.
 
 ```{cpp, results="markdown", file="figures/rounding_functions_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/rounding_functions.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

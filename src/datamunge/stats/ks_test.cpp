@@ -79,6 +79,24 @@ ks_one_sample(const std::vector<double>& x, Cdf cdf, Alternative alternative, co
 
 } // namespace
 
+HypothesisTestResult ks_test_one_sample(
+    const std::vector<double>& sample,
+    const std::function<double(double)>& cdf,
+    Alternative alternative) {
+  if (!cdf)
+    throw std::invalid_argument("KS: missing reference CDF");
+  double previous = 0;
+  /// @brief Checks the CDF in sorted observation order as the shared KS routine evaluates it.
+  const auto checked = [&](double x) {
+    const double value = cdf(x);
+    if (!(value >= previous && value <= 1))
+      throw std::invalid_argument("KS: reference CDF must be nondecreasing and in [0, 1]");
+    previous = value;
+    return value;
+  };
+  return ks_one_sample(sample, checked, alternative, "ks_test_one_sample");
+}
+
 HypothesisTestResult ks_test_one_sample_normal(
     const std::vector<double>& x,
     double                     mean,

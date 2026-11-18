@@ -33,16 +33,6 @@ The following diagram reads actual snapshots from one execution, without replay.
 
 ```{cpp, results="markdown", file="figures/gabow_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gabow_scc.hpp>
-#include <datamunge/algorithms/graph_connectivity.hpp>
-#include <datamunge/algorithms/depth_first_search.hpp>
-#include <datamunge/algorithms/brute_force_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -155,16 +145,6 @@ labeling is a valid SCC decomposition.
 
 ```{cpp, results="markdown", file="figures/gabow_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gabow_scc.hpp>
-#include <datamunge/algorithms/graph_connectivity.hpp>
-#include <datamunge/algorithms/depth_first_search.hpp>
-#include <datamunge/algorithms/brute_force_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -222,16 +202,6 @@ presentation tool, not a second SCC algorithm or an independent correctness orac
 
 ```{cpp, results="markdown", file="figures/gabow_labels.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gabow_scc.hpp>
-#include <datamunge/algorithms/graph_connectivity.hpp>
-#include <datamunge/algorithms/depth_first_search.hpp>
-#include <datamunge/algorithms/brute_force_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -293,16 +263,6 @@ SCC traversal quadratic in the number of stored adjacency entries.
 
 ```{cpp, results="markdown", file="figures/gabow_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gabow_scc.hpp>
-#include <datamunge/algorithms/graph_connectivity.hpp>
-#include <datamunge/algorithms/depth_first_search.hpp>
-#include <datamunge/algorithms/brute_force_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -401,16 +361,6 @@ its full snapshot history is rejected before traversal under the default quota.
 
 ```{cpp, results="markdown", file="figures/gabow_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gabow_scc.hpp>
-#include <datamunge/algorithms/graph_connectivity.hpp>
-#include <datamunge/algorithms/depth_first_search.hpp>
-#include <datamunge/algorithms/brute_force_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

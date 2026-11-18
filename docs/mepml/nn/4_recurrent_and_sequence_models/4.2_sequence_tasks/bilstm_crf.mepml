@@ -85,12 +85,6 @@ Original epoch/batch budgets, random streams, source guard tests and weak outcom
 // Options: epochs=3 data=PATH out=PATH tf=PATH (tflow's output/models/bilstm_crf).
 // Output: output/nn/models/bilstm_crf/.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <numeric>
 
 // Editable workflow support: bilstm_crf.hpp
 // End-to-end BiLSTM-CRF conditional sequence likelihood (port of tflow's
@@ -100,13 +94,7 @@ Original epoch/batch budgets, random streams, source guard tests and weak outcom
 // context and a linear-chain CRF with transition[from, to], start and end
 // scores. Sentences are 24 tokens, padded.
 
-#include <cstdint>
-#include <string>
-#include <utility>
-#include <vector>
 
-#include <datamunge/nn/nn.hpp>
-#include <datamunge/nn/sequence.hpp>
 
 namespace bilstm_crf {
 
@@ -165,17 +153,9 @@ inline void Build(nn::ParameterStore& p) {
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -241,12 +221,8 @@ inline void Header(const std::string& title) {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable workflow support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
 
 namespace paths {
@@ -274,13 +250,7 @@ inline std::filesystem::path OutputDir(const std::string& relative) {
 // excluded by valid lengths (port of tflow's common/ml/tagging_metrics.h).
 // Tags are IOB2 with 0 = O, odd = B-type, even = I-type, type = (tag + 1) / 2.
 
-#include <algorithm>
-#include <cstdint>
-#include <set>
-#include <tuple>
-#include <vector>
 
-#include <datamunge/nn/tensor.hpp>
 
 namespace tagging {
 

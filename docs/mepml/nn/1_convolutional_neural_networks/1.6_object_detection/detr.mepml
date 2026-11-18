@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/detr_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -125,8 +123,6 @@ matrix and its selected assignment. Empty truth requires no assignment.
 ```{cpp, results="markdown", file="figures/detr_assignment.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
-#include <random>
 int main() {
   namespace n = dm::nn;
   std::mt19937 generator(17);
@@ -214,7 +210,6 @@ central differences, including masked unmatched boxes.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto type = n::DType::Float64;
@@ -283,7 +278,6 @@ dropout uses the parameter-store RNG; the compact demonstration disables it.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -333,7 +327,6 @@ Actual input scenes and boxes appear below.
 ```{cpp, results="markdown", file="figures/detr_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -391,7 +384,6 @@ there are no anchors, box NMS or additional100 cap. Query count bounds output.
 ```{cpp, results="markdown", file="figures/detr_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

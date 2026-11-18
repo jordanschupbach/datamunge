@@ -28,15 +28,6 @@ through the same native quotient used by the hash builder.
 
 ```{cpp, results="markdown", file="figures/gh_frame.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/geometric_hashing.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -98,15 +89,6 @@ records captured during the executing build and recognition, not recomputed hist
 
 ```{cpp, results="markdown", file="figures/gh_votes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/geometric_hashing.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -166,15 +148,6 @@ clutter from the recovered model’s alignment; the zoom changes only view limit
 
 ```{cpp, results="markdown", file="figures/gh_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/geometric_hashing.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -212,15 +185,6 @@ acceptance rule. This native variant does not retry lower-vote candidates.
 
 ```{cpp, results="markdown", file="figures/gh_quantization.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/geometric_hashing.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -269,15 +233,6 @@ it is outside the orientation-preserving model used here.
 
 ```{cpp, results="markdown", file="figures/gh_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/geometric_hashing.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -332,15 +287,6 @@ the cubic number of frame attempts visible without implying universal clutter su
 
 ```{cpp, results="markdown", file="figures/gh_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/geometric_hashing.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -397,15 +343,6 @@ returns an invalid frame rather than dividing by a degenerate basis.
 
 ```{cpp, results="markdown", file="figures/gh_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/geometric_hashing.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

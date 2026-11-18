@@ -29,10 +29,6 @@ second dictionary for display.
 
 ```{cpp, results="markdown", file="figures/lzw_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lzw.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::lzw_encode_trace("AAA");
@@ -84,11 +80,6 @@ wire format. These exact synthetic fixtures need no external dataset.
 
 ```{cpp, results="markdown", file="figures/lzw_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lzw.hpp>
-#include <datamunge/algorithms/lz77.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto classic = dm::algorithms::lzw_classic_text();
@@ -153,10 +144,6 @@ another version of this exception.
 
 ```{cpp, results="markdown", file="figures/lzw_special.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lzw.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::lzw_decode_trace({65, 256, 257, 258});
@@ -223,10 +210,6 @@ decoding constructs no dictionary and reports zero stored dictionary bytes.
 
 ```{cpp, results="markdown", file="figures/lzw_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lzw.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y, z;

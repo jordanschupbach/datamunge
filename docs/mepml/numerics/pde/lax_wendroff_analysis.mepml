@@ -35,10 +35,6 @@ Native records expose the exact contributing old values and both terms.
 
 ```{cpp, results="markdown", file="figures/lax_impulse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lax_wendroff.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::lax_wendroff_trace({0, 0, 1, 0, 0}, 1, 1, .5, 1);
@@ -87,11 +83,6 @@ its original and every actual state, not repeated prefix runs.
 
 ```{cpp, results="markdown", file="figures/lax_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lax_wendroff.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const int n = 200;
@@ -157,12 +148,6 @@ every plotted norm comes from the actual stored states.
 
 ```{cpp, results="markdown", file="figures/lax_fourier.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lax_wendroff.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <numbers>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> u(32);
@@ -248,12 +233,6 @@ labelled as a reference.
 
 ```{cpp, results="markdown", file="figures/lax_refinement.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lax_wendroff.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <numbers>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y, reference;

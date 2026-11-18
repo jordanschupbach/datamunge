@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/point_models_checks_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -119,7 +117,6 @@ triangles;occlusion/depth is not reconstructed by these simple scatter plots.
 ```{cpp, results="markdown", file="figures/point_models_checks_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -218,7 +215,6 @@ follows BOTH hidden layers. Inference freezes all moving arrays.
 ```{cpp, results="markdown", file="figures/point_models_checks_graphs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -311,7 +307,6 @@ native suite independently checks all nine entries against literal host algebra.
 ```{cpp, results="markdown", file="figures/point_models_checks_penalty.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -355,7 +350,6 @@ No labels or object identities enter either forward.
 ```{cpp, results="markdown", file="figures/point_models_checks_permutation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

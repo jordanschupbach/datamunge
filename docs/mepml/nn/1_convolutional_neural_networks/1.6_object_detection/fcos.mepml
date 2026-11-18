@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/fcos_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -123,7 +121,6 @@ grey points mark background. All assignment arithmetic is tensor based.
 ```{cpp, results="markdown", file="figures/fcos_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -200,7 +197,6 @@ but has exact zero regression and centerness gradients.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto type = n::DType::Float64;
@@ -259,7 +255,6 @@ without pretraining or a trained COCO claim.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -300,7 +295,6 @@ detection reports. No test scene selects epochs.
 ```{cpp, results="markdown", file="figures/fcos_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -357,7 +351,6 @@ unspecified. The native tests check threshold order and the global cap.
 ```{cpp, results="markdown", file="figures/fcos_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

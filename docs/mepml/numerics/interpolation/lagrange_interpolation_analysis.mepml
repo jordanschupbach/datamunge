@@ -46,10 +46,6 @@ producing products and sums, not a separate basis reconstruction.
 
 ```{cpp, results="markdown", file="figures/lagrange_terms.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lagrange.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::lagrange_trace({-1, 0, 1}, {2, 1, 2}, .5);
@@ -102,11 +98,6 @@ is over that finite grid, not a certified continuous supremum.
 
 ```{cpp, results="markdown", file="figures/lagrange_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lagrange.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     auto f = [](double x) { return 1 / (1 + 25 * x * x); };
@@ -171,12 +162,6 @@ more efficiently/stably.
 
 ```{cpp, results="markdown", file="figures/lagrange_nodes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lagrange.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numbers>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto f = [](double x) { return 1 / (1 + 25 * x * x); };
@@ -229,13 +214,6 @@ no precomputed barycentric weights are used.
 
 ```{cpp, results="markdown", file="figures/lagrange_degree.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lagrange.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numbers>
-#include <cmath>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
     auto f = [](double x) { return 1 / (1 + 25 * x * x); };

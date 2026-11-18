@@ -57,8 +57,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/vanilla_saliency_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -112,7 +110,6 @@ first occurrence of each digit for the gradient comparison gallery.
 ```{cpp, results="markdown", file="figures/vanilla_saliency_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -166,7 +163,6 @@ guided gates are different quantities;none enters vanilla saliency here.
 ```{cpp, results="markdown", file="figures/vanilla_saliency_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -210,7 +206,6 @@ Save both initial and selected arrays for fixed-weight explanation controls.
 ```{cpp, results="markdown", file="figures/vanilla_saliency_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -337,7 +332,6 @@ its descriptor and pairwise distances use Double tensors. Report every class
 recall and complete confusion counts,not only aggregate accuracy.
 ```{cpp, results="markdown", file="figures/vanilla_saliency_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -455,7 +449,6 @@ finite difference at the largest-magnitude first-image gradient coordinate.
 ```{cpp, results="markdown", file="figures/vanilla_saliency_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

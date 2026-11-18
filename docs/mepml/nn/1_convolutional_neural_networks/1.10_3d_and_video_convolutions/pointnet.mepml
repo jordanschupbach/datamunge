@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/pointnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -119,7 +117,6 @@ observed256point of one fitting chair,sofa and table in XY/XZprojections.
 ```{cpp, results="markdown", file="figures/pointnet_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -210,7 +207,6 @@ not a per-record mean. Show the penalty directly in every optimizer update.
 ```{cpp, results="markdown", file="figures/pointnet_mechanism.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -290,7 +286,6 @@ leaf counts;zeros are allowed for mathematically inactive initialized paths.
 ```{cpp, results="markdown", file="figures/pointnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -433,7 +428,6 @@ PointNet permutation invariance is checked within2e-6.
 ```{cpp, results="markdown", file="figures/pointnet_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -625,8 +619,6 @@ count range. Source class meanings remain those declared for the dataset above.
 
 ```{cpp, results="markdown", file="figures/pointnet_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::filesystem::create_directories("build");

@@ -77,7 +77,6 @@ optimizer. Dropping rows is explicit here; it changes what an epoch's metric cov
 
 ```{cpp, results="markdown", file="figures/training_batches.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 int main() {
   using namespace dm::nn;
   dm::dstruct::DataFrame   table;
@@ -153,7 +152,6 @@ the online curve a measurement of the final model or a held-out performance esti
 
 ```{cpp, results="markdown", file="figures/training_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 int main() {
   using namespace dm::nn;
   set_num_threads(2);
@@ -264,7 +262,6 @@ early-stopping/checkpoint report, rather than restoring only row order.
 
 ```{cpp, results="markdown", file="figures/training_resume.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 int main() {
   using namespace dm::nn;
   BatchOrder original(11, 4, 7), restored(11, 4, 999);

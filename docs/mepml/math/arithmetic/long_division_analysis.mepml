@@ -28,10 +28,6 @@ that subtracts.
 
 ```{cpp, results="markdown", file="figures/long_division_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/long_division.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::long_division_trace(220, 13);
@@ -63,10 +59,6 @@ loop.
 
 ```{cpp, results="markdown", file="figures/long_division_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/long_division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;
@@ -109,10 +101,6 @@ significant.
 
 ```{cpp, results="markdown", file="figures/long_division_steps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/long_division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::long_division_trace(220, 13);
@@ -171,11 +159,6 @@ exact unsigned arithmetic.
 
 ```{cpp, results="markdown", file="figures/long_division_width.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/long_division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto m = std::numeric_limits<std::uint64_t>::max();

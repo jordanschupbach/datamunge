@@ -31,11 +31,6 @@ and smooth factorization produce x=2, checked by exponentiation.
 
 ```{cpp, results="markdown", file="figures/index_calculus_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/index_calculus_analysis.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -166,11 +161,6 @@ do not establish a timing law, a success probability or a runtime crossover.
 
 ```{cpp, results="markdown", file="figures/index_calculus_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/index_calculus_analysis.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -247,11 +237,6 @@ exponent checks.
 
 ```{cpp, results="markdown", file="figures/index_calculus_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/index_calculus_analysis.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -350,11 +335,6 @@ No unrelated dataset is needed for the arithmetic and relation controls.
 
 ```{cpp, results="markdown", file="figures/index_calculus_models.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/index_calculus_analysis.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

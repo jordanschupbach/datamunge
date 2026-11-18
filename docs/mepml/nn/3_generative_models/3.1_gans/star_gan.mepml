@@ -375,10 +375,7 @@ outside the game and serve only MSE diagnostics. The balanced gallery includes
 all ten digits in every source domain without filtering generated results.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 namespace m  = nn::models;
 using nn::Tensor;

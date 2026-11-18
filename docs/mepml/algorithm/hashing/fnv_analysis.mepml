@@ -28,7 +28,6 @@ through a floating-point number.
 
 ```{cpp, results="markdown", file="figures/fnv_states.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fnv_analysis.hpp>
 int main() {
     dm::mkdir("build");
     const auto trace = dm::algorithms::fnv1a_trace("ab", 32);
@@ -97,7 +96,6 @@ fixed fixture, not an independent random sample.
 
 ```{cpp, results="markdown", file="figures/fnv_words.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fnv_analysis.hpp>
 int main() {
     dm::mkdir("build");
     std::print("Empty 32-bit hash {:08X}; ASCII a {:08X}.\n\n",
@@ -176,7 +174,6 @@ properties of these controlled input sets; neither implies universal balance.
 
 ```{cpp, results="markdown", file="figures/fnv_low_bits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fnv_analysis.hpp>
 int main() {
     dm::mkdir("build");
     const auto all =
@@ -236,7 +233,6 @@ the full-hash collision census.
 
 ```{cpp, results="markdown", file="figures/fnv_titanic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fnv_analysis.hpp>
 int main() {
     dm::mkdir("build");
     const auto data = dm::datasets::titanic();
@@ -293,7 +289,6 @@ records.
 
 ```{cpp, results="markdown", file="figures/fnv_sensitivity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fnv_analysis.hpp>
 int main() {
     dm::mkdir("build");
     const auto flips = dm::algorithms::fnv_bit_flips("hello");

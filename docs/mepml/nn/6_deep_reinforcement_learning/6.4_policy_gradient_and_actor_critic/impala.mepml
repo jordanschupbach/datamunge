@@ -88,32 +88,15 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // TF) and partial episode. The weights use nn's generator, so results match
 // TF statistically. The vsim video is replaced by PlayBestOfSeeds.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <datamunge/nn/nn.hpp>
-#include <deque>
-#include <memory>
-#include <random>
-#include <string>
-#include <vector>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -171,7 +154,6 @@ inline void Header(const std::string& title) {
 }
 
 // Editable workflow support: rl/classic_control.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::kPi;
 using datamunge::rl::environments::Clamp;
@@ -194,14 +176,6 @@ using datamunge::rl::environments::Acrobot;
 // tensor (eager) instead of adding graph nodes, ObsMatrix/IntVector return
 // nn::Tensor (actions as int64), and TF hardware options are ignored.
 
-#include <cmath>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <datamunge/nn/nn.hpp>
-#include <random>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/dqn_common.hpp
 // datamunge::nn port of tflow_examples src/common/rl/dqn_common.h.
@@ -216,19 +190,8 @@ using datamunge::rl::environments::Acrobot;
 // nodes; the noisy-network head (nn::NoisyDense) is not included, because
 // datamunge::nn has no noisy layer yet.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <datamunge/nn/nn.hpp>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Obs;
 using datamunge::rl::environments::Action;
@@ -245,13 +208,6 @@ using datamunge::rl::environments::TabularEnv;
 // Small helpers shared by the RL examples: episode statistics, random and
 // greedy rollouts, and printing.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 
 namespace rl {
@@ -427,7 +383,6 @@ inline nn::Tensor Row(const Obs& o) { return nn::from_vector(o, {1, static_cast<
 
 
 // Editable workflow support: rl/vec_env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::VecStep;
 using datamunge::rl::environments::VecEnv;
@@ -588,11 +543,6 @@ class RolloutCollector {
 // episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
 // (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
 
-#include <cstdint>
-#include <cstdio>
-#include <limits>
-#include <string>
-#include <utility>
 
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
@@ -605,11 +555,6 @@ class RolloutCollector {
 // (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
 // the 6.1 examples film, the episode ends before the film is full.
 
-#include <cstdint>
-#include <cstdio>
-#include <string>
-#include <type_traits>
-#include <utility>
 
 
 // Editable workflow support: rl/hud.hpp
@@ -634,13 +579,6 @@ class RolloutCollector {
 // with one estimate attached (a continuous torque with its critic value, a
 // planner's first action with the planned return).
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <numeric>
-#include <string>
-#include <utility>
-#include <vector>
 
 
 namespace rl {

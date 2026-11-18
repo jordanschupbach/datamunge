@@ -57,30 +57,15 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // videos of the greedy policy are omitted; the port adds one check, that
 // policy and value iteration agree.
 
-#include <cmath>
-#include <cstdio>
-#include <datamunge/nn/einsum.hpp>
-#include <datamunge/nn/linalg.hpp>
-#include <datamunge/nn/nn.hpp>
-#include <iostream>
-#include <vector>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -138,7 +123,6 @@ inline void Header(const std::string& title) {
 }
 
 // Editable workflow support: rl/grid_world.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::GridBase;
 using datamunge::rl::environments::GridWorld;
@@ -146,23 +130,14 @@ using datamunge::rl::environments::CliffWalking;
 }
 
 // Editable workflow support: rl/tabular.hpp
-#include <datamunge/rl/tabular.hpp>
 
 // Editable workflow support: rl/utils.hpp
 // datamunge::nn port: copied from tflow_examples src/common/rl/utils.h (TF-free code, unchanged).
 // Small helpers shared by the RL examples: episode statistics, random and
 // greedy rollouts, and printing.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Obs;
 using datamunge::rl::environments::Action;

@@ -58,7 +58,6 @@ Two 2 by 3 images contain bytes increasing and decreasing by 51; both normalised
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/array_io.hpp>
 int main(){
  namespace n=dm::nn;
  std::filesystem::create_directories("build");

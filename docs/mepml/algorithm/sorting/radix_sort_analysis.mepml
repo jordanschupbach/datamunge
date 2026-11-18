@@ -37,33 +37,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/radix_sort_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/radix_sort.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -106,33 +79,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/radix_sort_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/radix_sort.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -193,33 +139,6 @@ Original signed example: [-128, -42, -1, -1, 0, 3, 42, 127].
 
 ```{cpp, results="markdown", file="figures/radix_sort_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/radix_sort.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -266,33 +185,6 @@ Empty pass count 0, singleton pass count 0.
 
 ```{cpp, results="markdown", file="figures/radix_sort_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/radix_sort.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

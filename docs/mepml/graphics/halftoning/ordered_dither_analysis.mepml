@@ -35,10 +35,6 @@ executed pixel records; it does not recompute a substitute quantizer.
 
 ```{cpp, results="markdown", file="figures/ordered_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ordered_dither.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::ordered_dither_trace({{127.5, 127.5}});
@@ -80,10 +76,6 @@ required for this controlled threshold-method example.
 
 ```{cpp, results="markdown", file="figures/ordered_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ordered_dither.hpp>
-#include <datamunge/algorithms/floyd_steinberg.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto input = dm::algorithms::dither_gradient(40, 64);
@@ -133,11 +125,6 @@ every32levels plus255 for readability.
 
 ```{cpp, results="markdown", file="figures/ordered_tone.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ordered_dither.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <numeric>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> tones(256), means;
@@ -198,11 +185,6 @@ image is mutated or retained by reference.
 
 ```{cpp, results="markdown", file="figures/ordered_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ordered_dither.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     double threshold = dm::algorithms::bayer4_threshold(0, 0);

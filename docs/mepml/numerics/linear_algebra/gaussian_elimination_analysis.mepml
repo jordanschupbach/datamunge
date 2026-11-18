@@ -29,13 +29,6 @@ coordinates are zero placeholders.
 
 ```{cpp, results="markdown", file="figures/gaussian_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gaussian_elimination.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -105,13 +98,6 @@ integer, which would hide entries such as 0.2 and 0.667.
 
 ```{cpp, results="markdown", file="figures/gaussian_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gaussian_elimination.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -177,13 +163,6 @@ are O(n⁴). The following plot measures counts, not elapsed time.
 
 ```{cpp, results="markdown", file="figures/gaussian_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gaussian_elimination.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -240,13 +219,6 @@ when coefficient growth is large.
 
 ```{cpp, results="markdown", file="figures/gaussian_growth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gaussian_elimination.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -301,13 +273,6 @@ linalg::backward_error(), which uses Frobenius/2-norm units.
 
 ```{cpp, results="markdown", file="figures/gaussian_residual.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gaussian_elimination.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -367,13 +332,6 @@ quota discount. Shape/finite/control validation precedes admission.
 
 ```{cpp, results="markdown", file="figures/gaussian_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gaussian_elimination.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

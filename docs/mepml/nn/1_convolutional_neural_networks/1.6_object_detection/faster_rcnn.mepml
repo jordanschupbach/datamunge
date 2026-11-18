@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/faster_rcnn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -115,7 +113,6 @@ at every cell for a target exactly equal to that known anchor.
 ```{cpp, results="markdown", file="figures/faster_rcnn_anchors.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto anchors = n::anchor_grid(16, 16, 4, {12, 20, 30}, {.5, 1, 2});
@@ -170,7 +167,6 @@ component proposals nor test targets enter the learned proposal model.
 ```{cpp, results="markdown", file="figures/faster_rcnn_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -244,7 +240,6 @@ losses. Validation/test proposals use only the RPN, with no appended targets.
 ```{cpp, results="markdown", file="figures/faster_rcnn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

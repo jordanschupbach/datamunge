@@ -27,14 +27,6 @@ even in this deliberately one-update run.
 
 ```{cpp, results="markdown", file="figures/golden_reuse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golden_section_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -135,14 +127,6 @@ the probes.
 
 ```{cpp, results="markdown", file="figures/golden_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golden_section_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -231,14 +215,6 @@ it does not skip evaluating the objective.
 
 ```{cpp, results="markdown", file="figures/golden_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golden_section_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -295,14 +271,6 @@ is false.
 
 ```{cpp, results="markdown", file="figures/golden_accuracy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golden_section_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -384,14 +352,6 @@ noisy-optimization claim is made here.
 
 ```{cpp, results="markdown", file="figures/golden_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golden_section_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -467,14 +427,6 @@ state referenced by the original callable. No callback is retained in the trace.
 
 ```{cpp, results="markdown", file="figures/golden_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golden_section_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

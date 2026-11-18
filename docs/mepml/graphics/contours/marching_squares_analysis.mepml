@@ -30,10 +30,6 @@ denominator; the new producer interpolates only genuinely crossed edges.
 
 ```{cpp, results="markdown", file="figures/marching_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/marching_squares.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::marching_squares_trace({{1, 0}, {0, 0}}, .5);
@@ -74,10 +70,6 @@ This synthetic field has a known exact reference and needs no external dataset.
 
 ```{cpp, results="markdown", file="figures/marching_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/marching_squares.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::marching_radial_study();
@@ -173,10 +165,6 @@ is derived solely from the actual segment coordinates and corner values.
 
 ```{cpp, results="markdown", file="figures/marching_saddles.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/marching_squares.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::graphics::Diagram d;
@@ -263,11 +251,6 @@ observations, with mean/max zero explicitly serving only as placeholders.
 
 ```{cpp, results="markdown", file="figures/marching_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/marching_squares.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const double m = std::numeric_limits<double>::max();

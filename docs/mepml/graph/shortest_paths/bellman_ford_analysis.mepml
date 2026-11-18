@@ -142,7 +142,6 @@ negative: the battery holds more on arrival than at the start.
 ```{cpp, results="markdown", file="figures/bellman_ford_energy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 

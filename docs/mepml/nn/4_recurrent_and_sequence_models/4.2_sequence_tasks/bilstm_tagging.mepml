@@ -87,11 +87,6 @@ Original epoch/batch budgets, random streams, source guard tests and weak outcom
 // Options: epochs=3 data=PATH out=PATH tf=PATH.
 // Output: output/nn/models/bilstm_tagging/.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-#include <numeric>
 
 // Editable workflow support: bilstm_tagging.hpp
 namespace bilstm_tagging {using namespace dm::nn::models::bilstm_tagging;}
@@ -101,17 +96,9 @@ namespace bilstm_tagging {using namespace dm::nn::models::bilstm_tagging;}
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -177,12 +164,8 @@ inline void Header(const std::string& title) {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable workflow support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
 
 namespace paths {
@@ -210,13 +193,7 @@ inline std::filesystem::path OutputDir(const std::string& relative) {
 // excluded by valid lengths (port of tflow's common/ml/tagging_metrics.h).
 // Tags are IOB2 with 0 = O, odd = B-type, even = I-type, type = (tag + 1) / 2.
 
-#include <algorithm>
-#include <cstdint>
-#include <set>
-#include <tuple>
-#include <vector>
 
-#include <datamunge/nn/tensor.hpp>
 
 namespace tagging {
 
@@ -302,16 +279,7 @@ inline nn::Tensor TaggingArgmax(const nn::Tensor& logits, const nn::Tensor& leng
 // (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
 // numerically, independently of the random initialisation.
 
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
-#include <datamunge/nn/nn.hpp>
 
 
 

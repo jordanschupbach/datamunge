@@ -67,27 +67,15 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // then only reports where the ROMs are. The vsim demo (a ball knocking over a
 // crate stack, stepped at 120 Hz) and both videos are omitted.
 
-#include <cstdio>
-#include <filesystem>
-#include <iostream>
-#include <random>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -179,16 +167,8 @@ inline void Header(const std::string& title) {
 #endif
 #endif
 
-#include <algorithm>
-#include <cstdlib>
-#include <deque>
-#include <filesystem>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Obs;
 using datamunge::rl::environments::Action;

@@ -45,10 +45,6 @@ remain in the table but do not change the circle.
 
 ```{cpp, results="markdown", file="figures/circle_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/min_enclosing_circle.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::geometry::min_enclosing_circle_trace({{0, 0}, {4, 0}, {0, 3}});
@@ -105,10 +101,6 @@ necessary for this geometric kernel.
 
 ```{cpp, results="markdown", file="figures/circle_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/min_enclosing_circle.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto points = dm::geometry::enclosing_circle_demo();
@@ -154,10 +146,6 @@ it numerically; it need not be an essential determining point.
 
 ```{cpp, results="markdown", file="figures/circle_residuals.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/min_enclosing_circle.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto points = dm::geometry::enclosing_circle_demo();
@@ -283,10 +271,6 @@ singletons and collinearity are accepted.
 
 ```{cpp, results="markdown", file="figures/circle_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/min_enclosing_circle.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<dm::geometry::Point2D>> cases{

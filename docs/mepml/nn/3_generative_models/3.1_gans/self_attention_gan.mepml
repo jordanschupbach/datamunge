@@ -336,11 +336,7 @@ Every preparation, fitting, cache advance, gradient selection and optimizer writ
 editable in this complete native program.
 
 ```{cpp, results="markdown", file="figures/self_attention_gan_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace m  = nn::models;

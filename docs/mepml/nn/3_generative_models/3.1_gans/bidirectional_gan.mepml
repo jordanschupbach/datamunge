@@ -282,11 +282,7 @@ original group prefixes0/G,1/E,2/D. Native annotated scatter plots replace the o
 rasterized PNG presentation; the arrays, fixed [-3,3] windows and outside counts are preserved.
 
 ```{cpp, results="markdown", file="figures/bigan_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace m  = nn::models;

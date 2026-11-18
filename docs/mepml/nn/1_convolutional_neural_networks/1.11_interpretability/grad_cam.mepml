@@ -73,8 +73,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/grad_cam_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -126,7 +124,6 @@ nonlinear heads satisfy the same derivative identities.
 ```{cpp, results="markdown", file="figures/grad_cam_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n           = dm::nn;
   namespace m           = n::models;
@@ -180,7 +177,6 @@ hidden pre-activations stay away from ReLU boundaries at the evaluation point.
 ```{cpp, results="markdown", file="figures/grad_cam_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -378,7 +374,6 @@ though they use the same raw-score first derivatives and frozen classifier.
 ```{cpp, results="markdown", file="figures/grad_cam_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

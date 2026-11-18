@@ -27,13 +27,6 @@ remainder change.
 
 ```{cpp, results="markdown", file="figures/golomb_flow.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golomb_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -126,13 +119,6 @@ expensive in the tail.
 
 ```{cpp, results="markdown", file="figures/golomb_lengths.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golomb_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -242,13 +228,6 @@ a proof of optimality for arbitrary sources.
 
 ```{cpp, results="markdown", file="figures/golomb_geometric.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golomb_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -307,13 +286,6 @@ excluding preflight, copying, allocation and machine costs.
 
 ```{cpp, results="markdown", file="figures/golomb_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/golomb_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

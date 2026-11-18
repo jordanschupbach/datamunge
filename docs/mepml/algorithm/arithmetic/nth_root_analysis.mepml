@@ -38,10 +38,6 @@ simulation.
 
 ```{cpp, results="markdown", file="figures/nth_root_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nth_root.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::nth_root_trace(50, 3);
@@ -78,10 +74,6 @@ answer for every input.
 
 ```{cpp, results="markdown", file="figures/nth_root_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nth_root.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::pair<double, int>> pairs{{2, 2}, {27, 3}, {1024, 10},
@@ -130,10 +122,6 @@ from the same canonical producer rather than a second handwritten Newton loop.
 
 ```{cpp, results="markdown", file="figures/nth_root_fixed.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nth_root.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::nth_root_demo_study({8, 0, 1000});
@@ -187,11 +175,6 @@ count alone cannot measure their total computational cost.
 
 ```{cpp, results="markdown", file="figures/nth_root_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nth_root.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     double tiny =

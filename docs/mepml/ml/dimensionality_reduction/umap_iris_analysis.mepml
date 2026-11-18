@@ -28,23 +28,6 @@ make the calibration target unattainable.
 
 ```{cpp, results="markdown", file="figures/umap_iris_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/stats/embedding_diagnostics.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -107,23 +90,6 @@ At x7 the two nearest distances both equal4: actual sum 2, requested log2(3) 1.5
 
 ```{cpp, results="markdown", file="figures/umap_iris_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/stats/embedding_diagnostics.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -184,23 +150,6 @@ Mean calibrated sigma: 0.1436
 
 ```{cpp, results="markdown", file="figures/umap_iris_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/stats/embedding_diagnostics.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -260,23 +209,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/umap_iris_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/stats/embedding_diagnostics.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

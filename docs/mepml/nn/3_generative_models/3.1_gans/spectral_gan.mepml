@@ -265,11 +265,7 @@ never select weights, settings or epochs. Coarse MMD is explicitly added in eval
 outside gradient fitting. Every fitting statement remains editable below.
 
 ```{cpp, results="markdown", file="figures/spectral_gan_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace m  = nn::models;

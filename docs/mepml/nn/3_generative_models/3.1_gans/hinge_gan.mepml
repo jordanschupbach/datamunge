@@ -182,11 +182,7 @@ inside every gradient computation. The final third epoch is fixed before the run
 The unconditional native API also permits unequal positive real/noise pools; this experiment keeps equal minibatch sizes.
 
 ```{cpp, results="markdown", file="figures/hinge_gan_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace m  = nn::models;

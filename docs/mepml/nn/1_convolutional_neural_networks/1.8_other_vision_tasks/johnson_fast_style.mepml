@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/johnson_fast_style_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -97,7 +95,6 @@ exact crop-only input adjoint when the residual convolutions are zero.
 ```{cpp, results="markdown", file="figures/johnson_fast_style_reflect.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -148,7 +145,6 @@ differently. The transpose initializer uses true fan-in9*Cin,not9*Cout.
 ```{cpp, results="markdown", file="figures/johnson_fast_style_stride.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -194,7 +190,6 @@ once from the initial training-mode output.
 ```{cpp, results="markdown", file="figures/johnson_fast_style_tv.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -251,7 +246,6 @@ perform their own image preprocessing and optimizer updates.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -320,7 +314,6 @@ The painting and its source attribution are retained in the shared asset manifes
 ```{cpp, results="markdown", file="figures/johnson_fast_style_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -416,8 +409,6 @@ and measured small-image CPU latency without a real-time claim.
 ```{cpp, results="markdown", file="figures/johnson_fast_style_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

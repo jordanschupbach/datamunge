@@ -1,0 +1,91 @@
+//? Title: Right-censored survival times
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An exponential model has event rate λ with Gamma(2, 1) prior. Three events are
+observed in the synthetic follow-up records below, and two units are still event-free
+when follow-up ends.
+The censored units contribute survival probabilities exp(−λt). The resulting posterior
+is Gamma(5, 10), an independent check on the quadrature.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/right_censoring.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    struct FollowUp {
+        double time;
+        bool event;
+    };
+    // Sorted by time, with events before censoring at tied times.
+    const FollowUp data[]{{0.4, true}, {1.2, true}, {2.4, true}, {2.5, false}, {2.5, false}};
+    int events = 0;
+    double time_at_risk = 0;
+    for (const auto& row : data) {
+        events += row.event;
+        time_at_risk += row.time;
+    }
+    b::LogDensity target([&](const auto& q) {
+        const double rate = q[0];
+        double lp = b::gamma_lpdf(rate, 2, 1);
+        for (const auto& row : data)
+            lp += row.event ? b::exponential_lpdf(row.time, rate) : -rate * row.time;
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {0}, {4}, 1000);
+    std::print("Observed {} events over {:.1f} units at risk. Exact posterior mean {:.3f}.\n\n",
+               events, time_at_risk, (2 + events) / (1 + time_at_risk));
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Event rate").y_label("Density");
+    std::vector<double> times, survival;
+    for (int i = 0; i <= 100; ++i) {
+        const double t = 2.5 * i / 100;
+        times.push_back(t);
+        survival.push_back(std::pow((1 + time_at_risk) / (1 + time_at_risk + t), 2 + events));
+    }
+    std::vector<double> km_t{0}, km_s{1}, censored_t, censored_s;
+    double remaining = 1;
+    for (std::size_t i = 0; i < std::size(data); ++i) {
+        if (data[i].event) {
+            km_t.insert(km_t.end(), 2, data[i].time);
+            km_s.push_back(remaining);
+            remaining *= 1 - 1. / (std::size(data) - i);
+            km_s.push_back(remaining);
+        } else {
+            censored_t.push_back(data[i].time);
+            censored_s.push_back(remaining);
+        }
+    }
+    km_t.push_back(times.back());
+    km_s.push_back(remaining);
+    auto fit = RPlot::create().lines(times, survival, "posterior predictive", {36, 105, 172})
+        .lines(km_t, km_s, "Kaplan–Meier", {70, 70, 70})
+        .points(censored_t, censored_s, "censored", {182, 83, 29})
+        .title("Survival fit").x_label("Follow-up time").y_label("Survival probability");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/right_censoring.svg");
+}
+```
+// result_begin: markdown
+Observed 3 events over 9.0 units at risk. Exact posterior mean 0.500.
+
+Posterior mean 0.500, posterior SD 0.224, edge mass 2.61e-10.
+\image(figures/right_censoring.svg)
+// result_end
+\caption(Event-rate posterior and fitted posterior predictive survival against the Kaplan–Meier estimate.)
+\alttext(Event-rate posterior and fitted posterior predictive survival against the Kaplan–Meier estimate.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 4.3.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

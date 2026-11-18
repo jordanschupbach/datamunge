@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/efficientdet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -117,7 +115,6 @@ no optimizer invocation needed to verify the formula.
 ```{cpp, results="markdown", file="figures/efficientdet_fusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto type = n::DType::Float64;
@@ -200,7 +197,6 @@ geometry has49,104 anchors. It does not fit a full-resolution COCO benchmark.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -280,7 +276,6 @@ reports. Full D0 architecture validation and this compact fit are distinct.
 ```{cpp, results="markdown", file="figures/efficientdet_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -337,7 +332,6 @@ constant shift. A zero derivative there does not imply a disconnected graph.
 ```{cpp, results="markdown", file="figures/efficientdet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

@@ -1,0 +1,100 @@
+//? Title: Beta-binomial updating
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Generate eight groups of ten binary trials at a fixed success probability. Fit a
+shared probability p with a Beta(2, 2) prior by adding the observed successes and
+failures to its shapes. Independently integrate the prior times the likelihood of
+all observed groups and compare the posterior means. Two future successes have
+posterior predictive probability E[p²].
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/beta_binomial.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    constexpr double a = 2, b0 = 2;
+    constexpr int trials = 10;
+    constexpr double true_p = 0.65;
+    std::mt19937 rng(42);
+    std::binomial_distribution<int> simulate(trials, true_p);
+    std::vector<int> counts(8);
+    int successes = 0;
+    for (int& count : counts) {
+        count = simulate(rng);
+        successes += count;
+    }
+    const int total_trials = trials * static_cast<int>(counts.size());
+    const double updated_a = a + successes, updated_b = b0 + total_trials - successes;
+    std::print("| Group | Observed successes | Trials |\n| ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < counts.size(); ++i)
+        std::print("| {} | {} | {} |\n", i + 1, counts[i], trials);
+
+    b::LogDensity target([&](const auto& q) {
+        const double p = q[0];
+        const double log_odds = std::log(p) - std::log1p(-p);
+        double lp = b::beta_lpdf(p, a, b0);
+        for (int count : counts) lp += b::binomial_logit_lpmf(count, trials, log_odds);
+        return lp;
+    });
+    const auto numerical = b::grid_posterior(target, {0}, {1}, 1000);
+    const double mean = updated_a / (updated_a + updated_b);
+    if (std::abs(mean - numerical.mean[0]) > 1e-6)
+        throw std::runtime_error("Conjugate and binomial likelihood fits disagree");
+    std::print("\nSimulated probability {:.2f}. Observed {}/{}. Grid posterior mean {:.3f}.\n\n",
+               true_p, successes, total_trials, numerical.mean[0]);
+    std::vector<double> x, prior, posterior;
+    for (int i = 1; i < 200; ++i) {
+        const double value = i / 200.0;
+        x.push_back(value);
+        prior.push_back(std::exp(b::beta_lpdf(value, a, b0)));
+        posterior.push_back(std::exp(b::beta_lpdf(value, updated_a, updated_b)));
+    }
+
+    const double total = updated_a + updated_b;
+    std::print("Posterior mean {:.3f}. Predictive probability of two successes {:.3f}.\n",
+               updated_a / total, updated_a * (updated_a + 1) / (total * (total + 1)));
+
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(x, prior, "prior", {140, 140, 140})
+        .lines(x, posterior, "posterior", {36, 105, 172})
+        .title("Prior and posterior").x_label("Success probability").y_label("Density");
+    std::vector<double> group, observed;
+    for (std::size_t i = 0; i < counts.size(); ++i) {
+        group.push_back(i + 1);
+        observed.push_back(counts[i]);
+    }
+    auto fit = RPlot::create().points(group, observed, "observed", {70, 70, 70})
+        .lines({group.front(), group.back()}, {trials * mean, trials * mean},
+               "posterior expected count", {36, 105, 172})
+        .title("Binomial fit by group").x_label("Group").y_label("Successes");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/beta_binomial.svg");
+}
+```
+// result_begin: markdown
+| Group | Observed successes | Trials |
+| ---: | ---: | ---: |
+| 1 | 7 | 10 |
+| 2 | 5 | 10 |
+| 3 | 8 | 10 |
+| 4 | 9 | 10 |
+| 5 | 5 | 10 |
+| 6 | 8 | 10 |
+| 7 | 7 | 10 |
+| 8 | 7 | 10 |
+
+Simulated probability 0.65. Observed 56/80. Grid posterior mean 0.690.
+
+Posterior mean 0.690. Predictive probability of two successes 0.479.
+\image(figures/beta_binomial.svg)
+// result_end
+\caption(Prior and posterior for the success probability, with observed successes and fitted expected counts by group.)
+\alttext(Prior and posterior for the success probability, with observed successes and fitted expected counts by group.)

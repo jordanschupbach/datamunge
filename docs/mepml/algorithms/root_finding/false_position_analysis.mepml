@@ -35,7 +35,6 @@ from the native solve, without a second explanatory iteration loop.
 
 ```{cpp, results="markdown", file="figures/false_position_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cfenv>
 int main(){
   std::filesystem::create_directories("build");
   dm::algorithms::FalsePositionOptions options;options.residual_tolerance=0;options.max_iterations=3;const auto t=dm::algorithms::false_position_trace([](double x){return x*x-2;},1,2,options);
@@ -106,7 +105,6 @@ certificate of an exactly represented logarithm.
 
 ```{cpp, results="markdown", file="figures/false_position_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cfenv>
 int main(){
   std::filesystem::create_directories("build");
   auto f=[](double x){return std::exp(x)-2;};const auto legacy=dm::algorithms::false_position(f,0,1);std::print("Original default: root {:.12f}; ln(2) {:.12f}; trials {}; actual residual {:.9g}.\n",legacy.root,std::log(2.),legacy.iterations,legacy.residual);auto plot=dm::graphics::RPlot::create();
@@ -149,7 +147,6 @@ roots. We do not estimate a convergence order from these few plotted points.
 
 ```{cpp, results="markdown", file="figures/false_position_stall.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cfenv>
 int main(){
   std::filesystem::create_directories("build");
   std::print("| power p | policy | trials | callback calls | halvings | actual residual | stop |\n| ---: | :--- | ---: | ---: | ---: | ---: | :--- |\n");auto counts=dm::graphics::RPlot::create(),endpoints=dm::graphics::RPlot::create();std::vector<double> powers,plain,illinois;
@@ -203,7 +200,6 @@ stagnation is reported explicitly instead of called convergence.
 
 ```{cpp, results="markdown", file="figures/false_position_units.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cfenv>
 int main(){
   std::filesystem::create_directories("build");
   auto error=dm::graphics::RPlot::create(),radius=dm::graphics::RPlot::create();std::vector<double>x;std::vector<std::vector<double>>errors(3),radii(3);const double truth=std::sqrt(2.);
@@ -265,7 +261,6 @@ trace, and returned record copies own their values.
 
 ```{cpp, results="markdown", file="figures/false_position_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cfenv>
 int main(){
   std::filesystem::create_directories("build");
   volatile double maximum=std::numeric_limits<double>::max();const double M=maximum;std::print("| finite stress case | root | actual residual | trials | guarded trials | overflow or invalid flag |\n| :--- | ---: | ---: | ---: | ---: | :--- |\n");for(int which=0;which<2;++which){auto f=[=](double x){return which?(M*.75)*(x-.25):x/M-.25;};std::feclearexcept(FE_ALL_EXCEPT);const auto r=dm::algorithms::false_position_work(f,which?-1:-M,which?1:M);const bool bad=std::fetestexcept(FE_OVERFLOW|FE_INVALID);std::print("| {} | {:.9g} | {:.9g} | {} | {} | {} |\n",which?"huge callback values":"huge coordinates",r.result.root,r.result.residual,r.result.iterations,r.guarded_interpolations,bad);if(!r.result.converged||bad||r.guarded_interpolations!=1)throw std::runtime_error("finite guard failed");}

@@ -45,10 +45,6 @@ reconstructing an optimization history.
 
 ```{cpp, results="markdown", file="figures/lbg_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linde_buzo_gray.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::linde_buzo_gray_trace({{1}, {3}}, 2);
@@ -101,10 +97,6 @@ and the actual final16 codewords; no reference class labels are fitted.
 
 ```{cpp, results="markdown", file="figures/lbg_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linde_buzo_gray.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto data = dm::algorithms::lbg_demo_mixture();
@@ -168,10 +160,6 @@ retains each duplicate identity.
 
 ```{cpp, results="markdown", file="figures/lbg_zero.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linde_buzo_gray.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::linde_buzo_gray_trace({{-1}, {1}}, 3);
@@ -225,10 +213,6 @@ history.
 
 ```{cpp, results="markdown", file="figures/lbg_consistency.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linde_buzo_gray.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =

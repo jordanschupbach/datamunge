@@ -40,10 +40,6 @@ recurrence.
 
 ```{cpp, results="markdown", file="figures/lcg_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/linear_congruential_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::random::LinearCongruential64 g(1, 5, 3);
@@ -91,11 +87,6 @@ low-bit pattern is presented as independent randomness.
 
 ```{cpp, results="markdown", file="figures/lcg_low_bit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/linear_congruential_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto m = std::numeric_limits<std::uint64_t>::max();
@@ -163,10 +154,6 @@ draw.
 
 ```{cpp, results="markdown", file="figures/lcg_jump.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/linear_congruential_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::random::LinearCongruential64 g(1, 5, 3);
@@ -222,10 +209,6 @@ empirical period claim is inferred.
 
 ```{cpp, results="markdown", file="figures/lcg_orbits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/linear_congruential_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

@@ -43,10 +43,6 @@ to rediscover matching values.
 
 ```{cpp, results="markdown", file="figures/lis_frontier.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::lis_trace({2, 3, 1});
@@ -99,10 +95,6 @@ construct the result through repeated-prefix calls.
 
 ```{cpp, results="markdown", file="figures/lis_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<int> a{0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
@@ -163,10 +155,6 @@ strict witnesses show source identities as well as lengths.
 
 ```{cpp, results="markdown", file="figures/lis_strict.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<int>> controls{{1, 1}, {1, 1, 2, 2, 3, 3},
@@ -217,12 +205,6 @@ producing binary-search counter.
 
 ```{cpp, results="markdown", file="figures/lis_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numeric>
-#include <algorithm>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, increasing, decreasing;

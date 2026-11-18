@@ -228,9 +228,6 @@ protocol. This summary choice does not alter the fitted Float32 gradients.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <random>
-#include <numeric>
 namespace n=dm::nn;namespace m=n::models;
 using T=n::Tensor;using A=std::map<std::string,T>;namespace fs=std::filesystem;
 void Save(const fs::path& file,const A& fields){

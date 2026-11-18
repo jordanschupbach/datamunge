@@ -1,0 +1,74 @@
+//? Title: Cochran Q, McNemar, Fisher exact and Mantel–Haenszel
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The first experiment simulates binary outcomes from three methods applied
+to each subject, with a common subject-specific success tendency. The second
+experiment supplies two synthetic site tables with independent subjects.
+The inference follows the sampling design of each experiment.
+)
+
+> Data and analysis
+
+```{cpp, results="markdown", file="figures/categorical_tables.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(29);
+    std::vector<std::vector<int>> blocks;
+    std::vector<int> first, last;
+    for (double risk : dm::runif(0.12, 0.6, 70)) {
+        const auto uniforms = dm::runif(0, 1, 3);
+        blocks.push_back({uniforms[0] < risk, uniforms[1] < risk + 0.1, uniforms[2] < risk + 0.23});
+        first.push_back(blocks.back().front());
+        last.push_back(blocks.back().back());
+    }
+    const auto q = sp::cochran_q_test(blocks);
+    const auto paired = sp::mcnemar_test(last, first);
+    const std::vector<std::array<std::size_t, 4>> sites{{22, 14, 15, 21}, {14, 22, 9, 27}};
+    const auto fisher = sp::fisher_exact_test_2x2(22, 14, 15, 21);
+    const auto adjusted = sp::mantel_haenszel_test(sites);
+    std::print("| Test | Statistic | p-value |\n| --- | ---: | ---: |\n");
+    for (const auto* test : {&q, &paired, &fisher, &adjusted})
+        std::print("| {} | {:.3f} | {:.4g} |\n", test->method, test->statistic, test->p_value);
+    std::print("\nSite-adjusted common odds ratio {:.3f}.\n", adjusted.estimate1);
+
+    std::vector<double> proportions(3);
+    for (const auto& row : blocks)
+        for (std::size_t j = 0; j < row.size(); ++j) proportions[j] += double(row[j]) / blocks.size();
+    std::filesystem::create_directories("build");
+    RPlot::barplot(proportions, {"First", "Second", "Last"}).title("Matched experiment")
+        .y_label("Observed success proportion").save_svg("build/categorical_tables.svg");
+}
+```
+// result_begin: markdown
+| Test | Statistic | p-value |
+| --- | ---: | ---: |
+| Cochran Q test | 14.816 | 0.0006063 |
+| Exact McNemar test | 30.000 | 0.000472 |
+| Fisher's Exact Test for Count Data | 22.000 | 0.1567 |
+| Cochran-Mantel-Haenszel test with continuity correction | 3.547 | 0.05965 |
+
+Site-adjusted common odds ratio 2.059.
+\image(figures/categorical_tables.svg)
+// result_end
+\caption(Observed success proportions for the three conditions in the matched experiment.)
+\alttext(Observed success proportions for the three conditions in the matched experiment.)
+
+> Interpretation
+
+Cochran Q compares all three conditions. The specified McNemar contrast
+uses only discordant first-versus-last pairs. In the site experiment Fisher
+conditions on the margins of site one, while Mantel–Haenszel combines
+within-site information and reports a common odds-ratio estimate. The plot
+shows marginal matched rates; the tests still use each subject's pairing.
+
+> References
+
+- [R McNemar test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/mcnemar.test.html]
+- [R Fisher exact test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html]
+- [R Mantel–Haenszel test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/mantelhaen.test.html]

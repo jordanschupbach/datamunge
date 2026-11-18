@@ -33,22 +33,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/round_robin_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/round_robin.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -87,22 +71,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/round_robin_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/round_robin.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -151,22 +119,6 @@ Actual mean waiting 5.5, turnaround 8.25, dispatches 7, preemptions 3, busy tick
 
 ```{cpp, results="markdown", file="figures/round_robin_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/round_robin.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -220,22 +172,6 @@ Actual idle jumps 1, busy ticks 3, invalid controls rejected 3.
 
 ```{cpp, results="markdown", file="figures/round_robin_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/algorithms/round_robin.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

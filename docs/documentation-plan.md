@@ -9,6 +9,46 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-17 — Gaussian Bayesian additive regression trees. The API and
+  implementation document 71/71 definitions. Six API examples compile and
+  run, and five tests pass, including exact small-tree posterior checks.
+  The nonlinear regression report runs two C++ blocks and exports its two
+  figures to HTML and Org.
+
+- 2026-11-17 — Generalized additive regression and random-intercept additive
+  mixed models. The affected additive API, implementation, and shared GLM
+  code document 77/77 definitions. All seven additive API examples compile
+  and run, 29 focused GAM and GLM tests pass, and three reports export to
+  HTML and Org with four figures.
+
+- 2026-11-17 — Classical scale, blocked, categorical, survival and
+  studentized bootstrap methods. The affected headers and implementations
+  document 70/70 definitions. All 25 API examples compile and run, 85 focused
+  tests pass, and five mepml reports export to HTML and Org with five figures.
+
+- 2026-11-17 — Classical nonparametric inference. The nonparametric and KS
+  headers and sources document 33/33 definitions. Fifteen API examples
+  compile and run, and 74 focused hypothesis tests pass. Five executable
+  reports export five native figures to HTML and Org.
+
+- 2026-11-17 — Statistical process control charts. The control-chart header
+  and implementation document 64/64 definitions. All 23 public examples
+  compile and run through the C++ umbrella header. Nine focused tests cover
+  the 19 chart builders, input validation, reference baselines and rendering.
+
+- 2026-11-17 — Shape-first C++ `runif` returns a row-major Float64 tensor
+  using the shared seeded stream. The vector header and implementation audit
+  documents 188/188 definitions. Both new examples compile and run, and 46
+  focused vector and tensor tests pass.
+
+- 2026-11-17 — Bayesian likelihoods and transformed NUTS draws. Doxygen
+  documents 45/45 definitions across `bayes/distributions.hpp` and
+  `bayes/diagnostics.hpp`. All 10 header examples compile and run, and 36
+  focused Bayesian tests pass, including analytic likelihood checks and
+  finite-difference comparisons. The Bayesian report collection runs 33 C++
+  blocks and exports 33 figures. Its index and 32 analyses export to HTML and
+  Org, and the website exporter resolves report links and copies the figures.
+
 - 2026-11-16: Common NN header consolidation adds40/40 documented definitions
   in `nn/classical_components.hpp`, with15 compiled/running examples, three
   passing definition hovers and an installed-header linked consumer. Seven
@@ -14238,3 +14278,12 @@ This ten-report batch passes 89 CTest cases, 20 ASan/UBSan cases with all ten pr
   examples, seven clangd hovers, twelve native/sanitizer cases and an installed
   consumer. Explicit dropout/time/BPTT controls and differentiable memory paths;
   receipts in `build/nn-report-conversion/batch-148-157/`.
+
+### Causal inference and discrete Bayesian networks
+
+- [x] Document the DAG, effect estimation, observed Gaussian SEM, Gaussian
+  PC-stable discovery, and discrete Bayesian network APIs and implementations.
+- [x] Check all 123 scoped Doxygen definitions and compile and run 15 public
+  examples through the `dm` umbrella.
+- [x] Run the eight focused CTest cases against the rebuilt core. Execute all
+  eight C++ programs in the five literate reports with simulated data.

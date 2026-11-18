@@ -39,10 +39,6 @@ value.
 
 ```{cpp, results="markdown", file="figures/modpow_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::mod_pow_trace(5, 6, 23);
@@ -84,10 +80,6 @@ zero and a composite modulus.
 
 ```{cpp, results="markdown", file="figures/modpow_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::mod_pow_trace(7, 13, 1000);
@@ -140,10 +132,6 @@ checks alone is not a primality certificate for an arbitrary modulus.
 
 ```{cpp, results="markdown", file="figures/modpow_cycle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;
@@ -224,11 +212,6 @@ greater than1 returns one without a loop.
 
 ```{cpp, results="markdown", file="figures/modpow_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, squares, folds;

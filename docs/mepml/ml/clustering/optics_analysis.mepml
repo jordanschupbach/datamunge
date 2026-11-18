@@ -42,10 +42,6 @@ history.
 
 ```{cpp, results="markdown", file="figures/optics_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/optics.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::optics_trace({{0.}, {.5}, {1.}, {4.}}, .75, 2);
@@ -102,11 +98,6 @@ do not prove recovery of the generating labels.
 
 ```{cpp, results="markdown", file="figures/optics_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/optics.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -172,10 +163,6 @@ distances in report code.
 
 ```{cpp, results="markdown", file="figures/optics_cuts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/optics.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto run =
@@ -241,10 +228,6 @@ references or global mutable state remain.
 
 ```{cpp, results="markdown", file="figures/optics_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/optics.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<std::vector<double>> > data{{}, {{0.}, {0.}},

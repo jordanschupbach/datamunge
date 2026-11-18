@@ -35,10 +35,6 @@ make damaged streams error-correcting.
 
 ```{cpp, results="markdown", file="figures/levcode_blocks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein_coding.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto e = dm::algorithms::levenshtein_encode_trace({10});
@@ -87,10 +83,6 @@ are ordinary short textual codewords, not image data.
 
 ```{cpp, results="markdown", file="figures/levcode_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein_coding.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::levenshtein_encode_trace({0, 1, 2, 4, 7, 16, 100});
@@ -154,12 +146,6 @@ optimal-compression claim.
 
 ```{cpp, results="markdown", file="figures/levcode_lengths.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein_coding.hpp>
-#include <datamunge/algorithms/exp_golomb.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, l, g;
@@ -213,10 +199,6 @@ reports observed rejection statuses, not simulated decoder behavior.
 
 ```{cpp, results="markdown", file="figures/levcode_guards.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein_coding.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto bits = dm::algorithms::levenshtein_encode({10});

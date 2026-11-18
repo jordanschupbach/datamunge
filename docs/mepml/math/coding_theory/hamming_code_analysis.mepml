@@ -29,13 +29,6 @@ exactly three XOR updates per check.
 
 ```{cpp, results="markdown", file="figures/hamming_checks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hamming_code_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const std::array<int, 4> data{1, 0, 1, 1};
@@ -137,13 +130,6 @@ dataset or sampled estimate is needed for this small finite problem.
 
 ```{cpp, results="markdown", file="figures/hamming_single.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hamming_code_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const std::array<int, 4> data{1, 0, 1, 1};
@@ -206,13 +192,6 @@ classifier hidden in a three-bit syndrome.
 
 ```{cpp, results="markdown", file="figures/hamming_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hamming_code_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const std::array<int, 4> data{1, 0, 1, 1};
@@ -275,13 +254,6 @@ neighbours.
 
 ```{cpp, results="markdown", file="figures/hamming_channel.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hamming_code_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const std::array<int, 4> data{1, 0, 1, 1};

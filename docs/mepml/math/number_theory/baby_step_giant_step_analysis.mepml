@@ -182,7 +182,6 @@ The block solves 400 random logarithms modulo \(p=1{,}000{,}003\) (\(n=p-1\),
 ```{cpp, results="markdown", file="figures/baby_step_giant_step_tradeoff.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -297,8 +296,6 @@ secrets per prime, timing each. Trying exponents one by one is timed up to
 ```{cpp, results="markdown", file="figures/baby_step_giant_step_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -429,7 +426,6 @@ compares searching with \(n=p-1\) and with \(n=q\).
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 

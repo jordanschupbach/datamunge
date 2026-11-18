@@ -188,7 +188,6 @@ a runtime benchmark or a random independent-trial experiment.
 
 ```{cpp, results="markdown", file="figures/cipolla_candidates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
 int main() {
   std::filesystem::create_directories("build");std::vector<std::size_t> frequency;
   std::print("| prime | nonzero square inputs | mean actual trials | maximum trials | pair products per successful call | scalar products inside pairs |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");

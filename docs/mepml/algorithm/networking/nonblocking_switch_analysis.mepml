@@ -44,10 +44,6 @@ constraints without insisting on the producer’s specific color orientation.
 
 ```{cpp, results="markdown", file="figures/switch_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nonblocking_switch.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::pair<std::size_t, std::size_t>> calls{{0, 0}, {1, 0},
@@ -99,10 +95,6 @@ shared network links.
 
 ```{cpp, results="markdown", file="figures/switch_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nonblocking_switch.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto calls = dm::algorithms::nonblocking_switch_demo_calls();
@@ -169,10 +161,6 @@ checks.
 
 ```{cpp, results="markdown", file="figures/switch_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nonblocking_switch.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> calls, reads, bound;
@@ -220,10 +208,6 @@ switch counts.
 
 ```{cpp, results="markdown", file="figures/switch_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nonblocking_switch.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     using Calls = std::vector<std::pair<std::size_t, std::size_t>>;

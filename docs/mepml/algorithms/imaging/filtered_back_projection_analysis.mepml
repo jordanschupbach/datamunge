@@ -40,21 +40,7 @@ real arithmetic. The dot-product check below tests that paired relationship
 on the actual tiny input. A transpose is not an inverse.
 
 ```{cpp, results="markdown", file="figures/fbp_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/filtered_back_projection.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <climits>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -99,21 +85,7 @@ row. Its nonzero response shows that a finite zero-extended constant row
 is not an infinite DC signal annihilated by an ideal ramp.
 
 ```{cpp, results="markdown", file="figures/fbp_filter.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/filtered_back_projection.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <climits>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -165,21 +137,7 @@ does not change the native row-major image. The sinogram's axes are centered
 detector coordinate and actual angle in degrees.
 
 ```{cpp, results="markdown", file="figures/fbp_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/filtered_back_projection.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <climits>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -220,21 +178,7 @@ changes substantially. This is an executed control for interpreting the
 original correlation claim.
 
 ```{cpp, results="markdown", file="figures/fbp_sampling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/filtered_back_projection.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <climits>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -291,21 +235,7 @@ history. There is no capture-record quota, byte-serialization format or
 physical calibration implied by the numeric arrays.
 
 ```{cpp, results="markdown", file="figures/fbp_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/filtered_back_projection.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <climits>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

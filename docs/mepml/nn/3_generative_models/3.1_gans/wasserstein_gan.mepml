@@ -277,11 +277,7 @@ the penalty trial. Native API calls calculate the symbolic input derivative with
 create_graph=true for training and false under no-grad for evaluation.
 
 ```{cpp, results="markdown", file="figures/wgan_gap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace m  = nn::models;

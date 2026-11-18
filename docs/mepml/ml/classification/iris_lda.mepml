@@ -165,7 +165,6 @@ measurement in which ~setosa~ is the largest.
 
 ```{cpp, results="output", file="figures/iris_boxplots.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
 
 int main() {
     std::filesystem::create_directories("build");

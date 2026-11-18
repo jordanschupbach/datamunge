@@ -39,10 +39,6 @@ report never rebuilds a binary-search history.
 
 ```{cpp, results="markdown", file="figures/linear_interp_bracket.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linear_interpolation.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const dm::algorithms::LinearInterpolator f({0, 1, 3, 6}, {1, 4, 10, 19});
@@ -85,10 +81,6 @@ value comes from the actual native query API.
 
 ```{cpp, results="markdown", file="figures/linear_interp_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linear_interpolation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::linear_interpolation_sine_study(7, 300);
@@ -120,11 +112,6 @@ finite coarse refinement must quarter a rounded grid maximum exactly.
 
 ```{cpp, results="markdown", file="figures/linear_interp_refinement.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linear_interpolation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y, reference;
@@ -179,11 +166,6 @@ one native interpolator, with original nodes retained.
 
 ```{cpp, results="markdown", file="figures/linear_interp_extrapolation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/linear_interpolation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const dm::algorithms::LinearInterpolator f({0, 1, 3}, {0, 2, 3});

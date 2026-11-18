@@ -37,9 +37,6 @@ down was discovered first.
 
 ```{cpp, results="markdown", file="figures/flood_fill_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/label_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -83,9 +80,6 @@ uses a shared categorical palette, so value 9 means the same color in both panel
 
 ```{cpp, results="markdown", file="figures/flood_fill_connectivity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/label_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -123,9 +117,6 @@ statistics independently measure the two binary foreground areas before painting
 
 ```{cpp, results="markdown", file="figures/flood_fill_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/label_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -190,9 +181,6 @@ depends on geometry and discovery order, even for equal region sizes.
 
 ```{cpp, results="markdown", file="figures/flood_fill_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/label_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -248,9 +236,6 @@ without allocating an impossible grid or multiplying those dimensions.
 
 ```{cpp, results="markdown", file="figures/flood_fill_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/label_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

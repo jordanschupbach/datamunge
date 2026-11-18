@@ -1,0 +1,61 @@
+//? Title: Sign and Wilcoxon signed-rank tests for paired measurements
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate measurements before and after an intervention on the same subjects.
+An improvement increases the recorded response. Both tests use the pairing
+and ask whether changes tend to be positive. The plot marks equality.
+)
+
+> Simulate, test and plot
+
+```{cpp, results="markdown", file="figures/paired_location.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(19);
+    const auto before = dm::rnorm(12, 2.5, 28);
+    const dm::Vector<> after = before + dm::rnorm(0.8, 1.3, before.size());
+    const auto sign = sp::paired_sign_test(after, before, sp::Alternative::Greater);
+    const auto ranks = sp::wilcoxon_paired_test(after, before, sp::Alternative::Greater);
+    std::print("| Method | Statistic | p-value |\n| --- | ---: | ---: |\n");
+    for (const auto* test : {&sign, &ranks})
+        std::print("| {} | {:.1f} | {:.4g} |\n", test->method, test->statistic, test->p_value);
+    std::print("\nPositive changes: {:.0f} of {:.0f} nonzero differences.\n",
+               sign.statistic, sign.parameter1);
+
+    std::filesystem::create_directories("build");
+    RPlot::create().points(before, after, "subjects", {36, 105, 172})
+        .abline(0, 1).title("Paired measurements").x_label("Before").y_label("After")
+        .save_svg("build/paired_location.svg");
+}
+```
+// result_begin: markdown
+| Method | Statistic | p-value |
+| --- | ---: | ---: |
+| Paired exact sign test | 20.0 | 0.01785 |
+| Wilcoxon signed rank test (exact conditional sign flips) | 289.0 | 0.02525 |
+
+Positive changes: 20 of 28 nonzero differences.
+\image(figures/paired_location.svg)
+// result_end
+\caption(Each point is one subject. Points above the identity line improved.)
+\alttext(Each point is one subject. Points above the identity line improved.)
+
+> Interpretation
+
+The sign test uses only the direction of each nonzero difference and has
+an exact binomial reference. The signed-rank test also uses the ranks of their
+absolute sizes. Its location interpretation assumes symmetric differences,
+and this sample uses the exact conditional sign-flip reference. The paired API
+switches to the tie- and continuity-corrected normal approximation above 100
+nonzero differences.
+
+> References
+
+- [R Wilcoxon rank tests|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html]
+- [R exact binomial test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html]

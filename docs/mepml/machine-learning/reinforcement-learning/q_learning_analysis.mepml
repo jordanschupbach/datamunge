@@ -26,29 +26,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/q_learning_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/algorithms/q_learning.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -96,29 +73,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/q_learning_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/algorithms/q_learning.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -673,29 +627,6 @@ Actual start Q row [-6.033239929761336, -5.298162187499997, -5.298162187499997, 
 
 ```{cpp, results="markdown", file="figures/q_learning_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/algorithms/q_learning.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -750,29 +681,6 @@ Even terminal callback state ids are validated: true.
 
 ```{cpp, results="markdown", file="figures/q_learning_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/algorithms/q_learning.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

@@ -46,10 +46,6 @@ projection; the table retains its full64-bit operands and outputs.
 
 ```{cpp, results="markdown", file="figures/lagged_fibonacci_update.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/lagged_fibonacci_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::random::LaggedFibonacci64 g(2026, 2, 5);
@@ -102,10 +98,6 @@ deterministic reproducibility, not randomness or independence.
 
 ```{cpp, results="markdown", file="figures/lagged_fibonacci_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/lagged_fibonacci_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::random::LaggedFibonacci64 a(2026, 2, 5), b(2026, 2, 5);
@@ -161,12 +153,6 @@ does not establish the full word period or acceptable simulation quality.
 
 ```{cpp, results="markdown", file="figures/lagged_fibonacci_parity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/lagged_fibonacci_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <map>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
     std::map<std::uint64_t, std::pair<std::uint64_t, std::size_t>> periods;
@@ -244,10 +230,6 @@ engine’s full period.
 
 ```{cpp, results="markdown", file="figures/lagged_fibonacci_lags.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/random/lagged_fibonacci_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

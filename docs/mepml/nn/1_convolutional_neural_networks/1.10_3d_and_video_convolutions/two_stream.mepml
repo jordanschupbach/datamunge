@@ -55,8 +55,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/two_stream_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -163,7 +161,6 @@ Show all six genuine middle RGB observations and every ten-field magnitude map.
 ```{cpp, results="markdown", file="figures/two_stream_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -243,7 +240,6 @@ no learned flow model or hidden solver is used.
 ```{cpp, results="markdown", file="figures/two_stream_flow_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -336,7 +332,6 @@ cross-entropies;validation uses log of the fused probabilities with1e-8floor.
 ```{cpp, results="markdown", file="figures/two_stream_gradients.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -440,7 +435,6 @@ Select all32parameters together by validation fused NLL,then restore.
 ```{cpp, results="markdown", file="figures/two_stream_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -589,7 +583,6 @@ reversed stack order are inference controls,not retrained ablation studies.
 ```{cpp, results="markdown", file="figures/two_stream_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -758,8 +751,6 @@ count range. Source class meanings remain those declared for the dataset above.
 
 ```{cpp, results="markdown", file="figures/two_stream_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::filesystem::create_directories("build");

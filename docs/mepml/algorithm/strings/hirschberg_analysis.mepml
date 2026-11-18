@@ -33,17 +33,6 @@ report-local DP implementation.
 
 ```{cpp, results="markdown", file="figures/hirschberg_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hirschberg.hpp>
-#include <datamunge/algorithms/sequence_alignment.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -141,17 +130,6 @@ call; equal scores do not require identical gapped rows.
 
 ```{cpp, results="markdown", file="figures/hirschberg_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hirschberg.hpp>
-#include <datamunge/algorithms/sequence_alignment.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -228,17 +206,6 @@ rolling/base work on balanced generated inputs, without timing claims.
 
 ```{cpp, results="markdown", file="figures/hirschberg_space.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hirschberg.hpp>
-#include <datamunge/algorithms/sequence_alignment.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -336,17 +303,6 @@ admitted inputs.
 
 ```{cpp, results="markdown", file="figures/hirschberg_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hirschberg.hpp>
-#include <datamunge/algorithms/sequence_alignment.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 

@@ -55,8 +55,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/dncnn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -102,7 +100,6 @@ Clipping appears only in the declared display/clipped-PSNR comparison.
 ```{cpp, results="markdown", file="figures/dncnn_residual.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -149,7 +146,6 @@ check every reflected value and every input derivative on several geometries.
 ```{cpp, results="markdown", file="figures/dncnn_filter.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -185,7 +181,6 @@ fitting seeds change each epoch. No noisy-input clipping is applied.
 ```{cpp, results="markdown", file="figures/dncnn_noise.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -236,7 +231,6 @@ saved moving variance uses the unbiased correction.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -286,8 +280,6 @@ uses fresh5300+epoch corruption. The existing official CIFAR cache follows
 ```{cpp, results="markdown", file="figures/dncnn_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <numeric>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -352,8 +344,6 @@ Mean per-image raw/clipped PSNR and pooled MSE are reported separately.
 ```{cpp, results="markdown", file="figures/dncnn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <numeric>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

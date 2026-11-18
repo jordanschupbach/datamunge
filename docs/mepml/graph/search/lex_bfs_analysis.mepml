@@ -41,10 +41,6 @@ history.
 
 ```{cpp, results="markdown", file="figures/lex_bfs_split.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lex_bfs.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::lex_bfs_trace(4, {{1, 2, 3}, {0}, {0}, {0}});
@@ -98,10 +94,6 @@ labels each original identity and its real selection rank.
 
 ```{cpp, results="markdown", file="figures/lex_bfs_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lex_bfs.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<int>> g{{1, 2}, {0, 2, 3}, {0, 1, 3}, {1, 2, 4, 5},
@@ -165,11 +157,6 @@ no simulated chordality classifier is introduced.
 
 ```{cpp, results="markdown", file="figures/lex_bfs_peo.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lex_bfs.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <algorithm>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<int>> cycle{{1, 3}, {0, 2}, {1, 3}, {0, 2}}, chorded = cycle;
@@ -220,10 +207,6 @@ operations, not CPU instructions, elapsed time or RAM measurements.
 
 ```{cpp, results="markdown", file="figures/lex_bfs_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lex_bfs.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, cells, tests;

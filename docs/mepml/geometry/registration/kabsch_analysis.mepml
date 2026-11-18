@@ -25,12 +25,6 @@ trace of Jacobi iteration steps or a second fit.
 
 ```{cpp, results="markdown", file="figures/kabsch_stages.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kabsch_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<dm::algorithms::Point3> s = {{0, 0, 0}, {1, 0, 0},
@@ -112,12 +106,6 @@ The figure uses equal xy coordinate scales; it can hide errors in z.
 
 ```{cpp, results="markdown", file="figures/kabsch_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kabsch_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto s =
@@ -172,12 +160,6 @@ reflection would fit perfectly.
 
 ```{cpp, results="markdown", file="figures/kabsch_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kabsch_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<dm::algorithms::Point3> s = {{1, 1, 1}, {1, -1, -1},
@@ -244,12 +226,6 @@ constructed perturbation.
 
 ```{cpp, results="markdown", file="figures/kabsch_profile.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kabsch_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, fit, known;

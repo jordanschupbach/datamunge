@@ -269,10 +269,7 @@ fixed-noise repeatability, target-free decoding, single/batch parity, ancestral 
 parameter/state immutability. Helpers contain only I/O, native forwards and metric aggregation.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 void Require(bool condition, const std::string& why) {
   if (!condition)

@@ -55,8 +55,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/context_encoder_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -102,7 +100,6 @@ the stable softplus implementation also handles large signed logits.
 ```{cpp, results="markdown", file="figures/context_encoder_bce.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -152,7 +149,6 @@ The mask/count are detached;empty windows suppress the bias too.
 ```{cpp, results="markdown", file="figures/context_encoder_partial.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -197,7 +193,6 @@ mean hole MSE .025 and mean hole PSNR16.9897dB. Perfect-image PSNR is infinite.
 ```{cpp, results="markdown", file="figures/context_encoder_hole.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -242,7 +237,6 @@ output tanh;BN follows all but the first down and final output.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -298,8 +292,6 @@ it computes each image’s visible-context mean independently.
 ```{cpp, results="markdown", file="figures/context_encoder_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <numeric>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -362,8 +354,6 @@ agreement,and compares all32 held-out images with the visible-mean reference.
 ```{cpp, results="markdown", file="figures/context_encoder_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <numeric>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

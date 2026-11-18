@@ -1,0 +1,91 @@
+//? Title: Binomial GAMM with partially pooled site intercepts
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate binary responses at four sites with a shared nonlinear dose
+curve and Gaussian site effects. Fit a common smooth and partially pooled
+site intercepts at the known link-scale SD used for simulation. Plot the
+site-specific fitted probabilities and the zero-effect reference curve.
+)
+
+> Simulate, fit and predict
+
+```{cpp, results="markdown", file="figures/binomial_gamm.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace st = dm::stats;
+using dm::graphics::RLayout;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(57);
+    const std::vector<std::string> sites{"A", "B", "C", "D"};
+    const auto offsets = dm::rnorm(0, 0.85, sites.size());
+    std::vector<double> dose, y;
+    std::vector<std::string> group;
+    for (std::size_t j = 0; j < sites.size(); ++j) {
+        const auto x = dm::runif(-2, 2, j == 3 ? 24 : 85);
+        const auto u = dm::runif(0, 1, x.size());
+        for (std::size_t i = 0; i < x.size(); ++i) {
+            const double eta = -0.2 + 1.4 * std::sin(1.6 * x[i]) + offsets[j];
+            dose.push_back(x[i]);
+            y.push_back(u[i] < 1 / (1 + std::exp(-eta)));
+            group.push_back(sites[j]);
+        }
+    }
+    st::GAMMOptions options;
+    options.gam.family = st::GLMFamily::Binomial;
+    options.gam.smooths = {{.basis_size = 10, .lambda = 1.5}};
+    options.random_intercept_sd = 0.85;
+    const auto fit = st::fit_gamm(y, {dose}, group, options);
+    if (!fit.converged()) throw std::runtime_error("Binomial GAMM did not converge");
+    const auto predicted_effects = fit.random_intercepts();
+    std::print("| Site | Simulated intercept shift | Fitted shift |\n| --- | ---: | ---: |\n");
+    for (std::size_t j = 0; j < sites.size(); ++j)
+        std::print("| {} | {:.3f} | {:.3f} |\n", sites[j], offsets[j], predicted_effects[j]);
+
+    const auto grid = dm::seql(-2, 2, 120);
+    auto layout = RLayout::create(2, 2).size(1050, 705);
+    const auto reference = fit.predict({grid.values()});
+    for (const auto& site : sites) {
+        std::vector<double> x, outcome;
+        for (std::size_t i = 0; i < y.size(); ++i)
+            if (group[i] == site) {
+                x.push_back(dose[i]);
+                outcome.push_back(y[i]);
+            }
+        const auto conditional = fit.predict({grid.values()}, std::vector<std::string>(grid.size(), site));
+        layout.add(RPlot::create().points(x, outcome, "Observed", {100, 100, 100}, 2)
+            .lines(grid, reference, "Zero group effect", {182, 83, 29})
+            .lines(grid, conditional, "Site fit", {36, 105, 172})
+            .title("Site " + site).x_label("Dose").y_label("Success probability"));
+    }
+    std::filesystem::create_directories("build");
+    layout.save_svg("build/binomial_gamm.svg");
+}
+```
+// result_begin: markdown
+| Site | Simulated intercept shift | Fitted shift |
+| --- | ---: | ---: |
+| A | -1.396 | -1.450 |
+| B | 0.546 | 0.635 |
+| C | -0.250 | 0.275 |
+| D | 0.142 | 0.539 |
+\image(figures/binomial_gamm.svg)
+// result_end
+\caption(Observed binary outcomes and fitted probabilities by site, with the common zero-effect reference.)
+\alttext(Observed binary outcomes and fitted probabilities by site, with the common zero-effect reference.)
+
+> Interpretation
+
+The random-effect penalty shrinks each site intercept toward zero while
+the smooth is shared. The fit uses supplied smoothing penalties and a
+supplied random-intercept SD. The zero-effect curve evaluates the response
+at group effect zero. It does not average the inverse logit over the
+random-effect distribution.
+
+> References
+
+- [Eilers and Marx, Flexible smoothing with B-splines and penalties|https://doi.org/10.1214/ss/1038425655]
+- [mgcv random-effects documentation|https://stat.ethz.ch/R-manual/R-devel/library/mgcv/html/random.effects.html]

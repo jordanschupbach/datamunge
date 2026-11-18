@@ -42,38 +42,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <datamunge/algorithms/qr_algorithm.hpp>
-#include <datamunge/stats/lm.hpp>
-#include <datamunge/algorithms/arithmetic_coding.hpp>
-#include <datamunge/nn/rbf.hpp>
-#include <datamunge/nn/model_plot.hpp>
-#include <bit>
-#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -115,38 +83,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <datamunge/algorithms/qr_algorithm.hpp>
-#include <datamunge/stats/lm.hpp>
-#include <datamunge/algorithms/arithmetic_coding.hpp>
-#include <datamunge/nn/rbf.hpp>
-#include <datamunge/nn/model_plot.hpp>
-#include <bit>
-#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -195,38 +131,6 @@ Actual final pair: value 3.0001999933312216, direction [-0.6667388794443558, 0.3
 
 ```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <datamunge/algorithms/qr_algorithm.hpp>
-#include <datamunge/stats/lm.hpp>
-#include <datamunge/algorithms/arithmetic_coding.hpp>
-#include <datamunge/nn/rbf.hpp>
-#include <datamunge/nn/model_plot.hpp>
-#include <bit>
-#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -281,38 +185,6 @@ Exact singular shift before convergence is explicitly rejected: true.
 
 ```{cpp, results="markdown", file="figures/rayleigh_quotient_iteration_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <datamunge/algorithms/qr_algorithm.hpp>
-#include <datamunge/stats/lm.hpp>
-#include <datamunge/algorithms/arithmetic_coding.hpp>
-#include <datamunge/nn/rbf.hpp>
-#include <datamunge/nn/model_plot.hpp>
-#include <bit>
-#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

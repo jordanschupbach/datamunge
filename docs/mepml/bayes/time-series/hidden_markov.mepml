@@ -1,0 +1,81 @@
+//? Title: Bayesian inference in a two-state hidden Markov model
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A binary sensor reports a signal with probability 0.2 in state 0 and 0.8 in state 1.
+The chain starts with equal state probabilities and stays in its current state with an
+unknown probability s. A Beta(2, 2) prior on s is updated using the forward recursion,
+which sums over paths without enumerating them. A backward pass incorporates later
+observations into the state probabilities. The plot averages these smoothed
+probabilities over the full-data posterior of s.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/hidden_markov.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const int y[]{0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+    const auto forward = [&](double stay, std::vector<double>* filtered = nullptr) {
+        double state0 = 0.5, state1 = 0.5, lp = 0;
+        for (int signal : y) {
+            const double emission0 = signal ? 0.2 : 0.8;
+            const double emission1 = signal ? 0.8 : 0.2;
+            const double next0 = emission0 * (stay * state0 + (1 - stay) * state1);
+            const double next1 = emission1 * ((1 - stay) * state0 + stay * state1);
+            const double total = next0 + next1;
+            lp += std::log(total);
+            state0 = next0 / total;
+            state1 = next1 / total;
+            if (filtered) filtered->push_back(state1);
+        }
+        return lp;
+    };
+    b::LogDensity target([&](const auto& q) { return b::beta_lpdf(q[0], 2, 2) + forward(q[0]); });
+    constexpr int cells = 600;
+    const auto post = b::grid_posterior(target, {0}, {1}, cells);
+    std::vector<double> time(std::size(y)), state(std::size(y)), response(std::begin(y), std::end(y));
+    std::iota(time.begin(), time.end(), 1.);
+    for (int i = 0; i < cells; ++i) {
+        std::vector<double> filtered;
+        const double stay = post.marginal_grid[0][i];
+        forward(stay, &filtered);
+        double future0 = 1, future1 = 1;
+        for (std::size_t t = state.size(); t-- > 0;) {
+            const double right = filtered[t] * future1;
+            const double left = (1 - filtered[t]) * future0;
+            state[t] += right / (left + right) * post.marginal_density[0][i] / cells;
+            const double from0 = future0 * (y[t] ? 0.2 : 0.8);
+            const double from1 = future1 * (y[t] ? 0.8 : 0.2);
+            future0 = (stay * from0 + (1 - stay) * from1) / (from0 + from1);
+            future1 = ((1 - stay) * from0 + stay * from1) / (from0 + from1);
+        }
+    }
+    std::print("Mean stay probability {:.3f}.\n", post.mean[0]);
+    std::vector<double> fitted;
+    for (double p : state) fitted.push_back(0.2 + 0.6 * p);
+    std::filesystem::create_directories("build");
+    RPlot::create().points(time, response, "observed signal", {70, 70, 70})
+        .lines(time, state, "smoothed state 1", {36, 105, 172})
+        .lines(time, fitted, "fitted signal probability", {182, 83, 29})
+        .title("Two-state hidden Markov model").x_label("Time").y_label("Signal or probability")
+        .save_svg("build/hidden_markov.svg");
+}
+```
+// result_begin: markdown
+Mean stay probability 0.509.
+\image(figures/hidden_markov.svg)
+// result_end
+\caption(Observed binary signals, smoothed state-1 probabilities and fitted probabilities for a replicate signal at each time.)
+\alttext(Observed binary signals, smoothed state-1 probabilities and fitted probabilities for a replicate signal at each time.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 2.6.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

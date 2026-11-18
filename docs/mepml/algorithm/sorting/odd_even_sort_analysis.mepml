@@ -40,10 +40,6 @@ diagram and table read the actual snapshots and carried identities.
 
 ```{cpp, results="markdown", file="figures/odd_even_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odd_even_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::odd_even_sort_trace({3, 1, 2});
@@ -85,10 +81,6 @@ that the plotted prefix is a universal fixed sorting network.
 
 ```{cpp, results="markdown", file="figures/odd_even_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odd_even_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -144,11 +136,6 @@ sort.
 
 ```{cpp, results="markdown", file="figures/odd_even_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odd_even_sort.hpp>
-#include <datamunge/algorithms/gnome_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, ascending, descending;
@@ -202,11 +189,6 @@ failure returns no partial trace and never mutates an lvalue caller’s array.
 
 ```{cpp, results="markdown", file="figures/odd_even_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odd_even_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<int>> inputs{{}, {7}, {2, 1, 2, 1}, {4, 3, 2, 1},

@@ -43,10 +43,6 @@ simulated priority queue.
 
 ```{cpp, results="markdown", file="figures/k_way_merge_fronts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::k_way_merge_trace({{1, 1, 4}, {1, 2}, {}});
@@ -99,10 +95,6 @@ first two runs is also retained, with multiplicity and first-run ties preserved.
 
 ```{cpp, results="markdown", file="figures/k_way_merge_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::vector<int>> runs = {{1, 4, 7, 10}, {2, 3, 11},
@@ -173,10 +165,6 @@ separate mode experiment rather than replaying a prefix.
 
 ```{cpp, results="markdown", file="figures/k_way_merge_union.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::vector<int>> runs = {{1, 1, 4}, {1, 2}, {}, {2, 4, 4}};
@@ -236,11 +224,6 @@ work.
 
 ```{cpp, results="markdown", file="figures/k_way_merge_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     constexpr std::size_t N = 3000;

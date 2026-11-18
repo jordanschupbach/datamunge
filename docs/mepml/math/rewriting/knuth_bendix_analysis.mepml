@@ -21,10 +21,6 @@ The rule ba→ab sorts an a past a preceding b. Reducing bbaa takes four swaps w
 
 ```{cpp, results="markdown", file="figures/knuth_bendix_shortlex.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/knuth_bendix.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   std::filesystem::create_directories("build");
   const auto            t = dm::algorithms::kb_rewrite_trace("bbaa", {{"ba", "ab"}});
@@ -68,10 +64,6 @@ Keep equations aa=e, bbb=e and abab=e, where e is the empty word. They present t
 
 ```{cpp, results="markdown", file="figures/knuth_bendix_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/knuth_bendix.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   std::filesystem::create_directories("build");
   const auto c = dm::algorithms::knuth_bendix({{"aa", ""}, {"bbb", ""}, {"abab", ""}});
@@ -136,14 +128,6 @@ The report enumerates every word through length10 and compares its native normal
 
 ```{cpp, results="markdown", file="figures/knuth_bendix_census.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/knuth_bendix.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <array>
-#include <map>
-#include <set>
-#include <print>
-#include <stdexcept>
 int main() {
   std::filesystem::create_directories("build");
   const auto c      = dm::algorithms::knuth_bendix({{"aa", ""}, {"bbb", ""}, {"abab", ""}});
@@ -220,10 +204,6 @@ The controls compare several complete rule ceilings on the original presentation
 
 ```{cpp, results="markdown", file="figures/knuth_bendix_caps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/knuth_bendix.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   std::filesystem::create_directories("build");
   std::vector<double> x, y;

@@ -26,12 +26,6 @@ reads that recorded trial; no report-only implementation recomputes it.
 
 ```{cpp, results="markdown", file="figures/itp_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/itp_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <cmath>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -153,12 +147,6 @@ iteration units.
 
 ```{cpp, results="markdown", file="figures/itp_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/itp_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <cmath>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -213,12 +201,6 @@ proof; that role belongs to the projection argument above.
 
 ```{cpp, results="markdown", file="figures/itp_width.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/itp_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <cmath>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -290,12 +272,6 @@ using matched position-only controls for both solvers.
 
 ```{cpp, results="markdown", file="figures/itp_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/itp_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <cmath>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

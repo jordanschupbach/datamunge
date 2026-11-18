@@ -1,0 +1,67 @@
+//? Title: Bayesian data analysis examples
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Executable C++ examples of Bayesian modelling in datamunge, from exact
+conjugate updates through generalized linear models, hierarchical models
+and marginalization.
+)
+
+> Start here
+
+- [Two samples|../group-comparisons/two_samples.mepml] and [k samples|../group-comparisons/k_samples.mepml] derive posterior contrasts for a continuous response grouped by a categorical predictor.
+- [Simple regression|../linear-regression/simple_regression.mepml] and [multiple regression|../linear-regression/multiple_regression.mepml] compare Gaussian posterior coefficient estimates with ordinary least squares.
+- [Beta-binomial|../conjugacy/beta_binomial.mepml] and [Gamma-Poisson|../conjugacy/gamma_poisson.mepml] derive exact posterior updates and predictive probabilities.
+- [Eight schools|../hierarchical/eight_schools.mepml] compares noncentered NUTS and hierarchical Normal quadrature. [Hierarchical logistic regression|../hierarchical/logistic_pooling.mepml] shows partial pooling for binary outcomes.
+
+- [Bayesian additive regression trees|../regression-trees/bart_regression.mepml] fits a nonlinear interaction and compares mean and observation intervals.
+
+> Generalized linear and count models
+
+- [Grouped binomial|../glm/binomial.mepml] fits a logit link to counts with known numbers of trials.
+- [Poisson|../glm/poisson.mepml] and [negative binomial|../glm/negative_binomial.mepml] fit log means under different variance assumptions.
+- [Gamma|../glm/gamma.mepml] fits positive continuous outcomes with a log mean.
+- [Zero-inflated Poisson|../glm/zero_inflated_poisson.mepml] and [Poisson hurdle|../glm/poisson_hurdle.mepml] model excess zeros in different ways.
+- [Categorical links|../glm/categorical_links.mepml] works through binary probit, ordered logit and multinomial logit.
+- [Poisson replication|../predictive-checks/poisson_replication.mepml] uses posterior predictive checks to assess excess zeros and an extreme maximum.
+
+> Stan 2.19 chapter coverage
+
+The chapter numbers follow [Part 1 of the Stan User’s Guide 2.19|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf].
+Each chapter has a worked datamunge example. Several chapters contain variants
+beyond the examples linked here.
+
+1. Regression. [Gaussian linear regression|../linear-regression/multiple_regression.mepml], [Student-t errors|../linear-regression/robust_regression.mepml] [categorical links|../glm/categorical_links.mepml], [hierarchical logistic regression|../hierarchical/logistic_pooling.mepml] and [posterior predictive checking|../predictive-checks/poisson_replication.mepml].
+2. Time series. [AR(1)|../time-series/ar1.mepml] and a [hidden Markov model|../time-series/hidden_markov.mepml].
+3. Missing data. [Ignorable missing responses|../data-quality/missing_responses.mepml].
+4. Truncated or censored data. [Left truncation|../data-quality/left_truncation.mepml] and [right censoring|../data-quality/right_censoring.mepml].
+5. Finite mixtures. [Gaussian mixtures|../mixtures/gaussian_clustering.mepml], [zero inflation|../glm/zero_inflated_poisson.mepml] and [hurdles|../glm/poisson_hurdle.mepml].
+6. Measurement error and meta-analysis. [Predictor measurement error|../data-quality/measurement_error.mepml] and [eight schools|../hierarchical/eight_schools.mepml].
+7. Latent discrete parameters. [Poisson change point|../latent-variables/poisson_changepoint.mepml] and [mark–recapture|../latent-variables/mark_recapture.mepml].
+8. Sparse and ragged data. [Ragged groups|../data-structures/ragged_groups.mepml].
+9. Clustering. [Gaussian mixture assignments|../mixtures/gaussian_clustering.mepml].
+10. Gaussian processes. [Posterior smoothing|../gaussian-processes/gp_smoothing.mepml].
+11. Directions and rotations. [Circular location|../directional/circular_location.mepml].
+12. Algebraic equations. [Implicit equilibrium|../mechanistic/implicit_equilibrium.mepml].
+13. Ordinary differential equations. [Numerical decay model|../mechanistic/exponential_decay.mepml].
+14. One-dimensional integration. [Integrated Poisson exposure|../mechanistic/integrated_exposure.mepml].
+
+> Data and fitted values
+
+[Eight schools|../hierarchical/eight_schools.mepml] uses published treatment
+effect estimates and reported standard errors. The conjugate reports generate
+their own observations with fixed seeds and check the exact updates against
+the likelihood evaluated on those observations. The other introductory
+analyses use small synthetic datasets embedded in the programs. Fit panels show
+posterior expected responses, predictive distributions, or latent quantities
+alongside the observations. [Nested sampling|../evidence/nested_sampling_analysis.mepml]
+also fits a set of synthetic calibration readings.
+
+> Run the reports
+
+Use a report toolchain that provides C++23, mep-mepml and the datamunge
+pkg-config entry. From the repository root, run an individual report with
+`just docs-mepml-run docs/mepml/bayes/glm/poisson.mepml`. Each program
+writes an SVG into its report’s local `build/` directory. The runner
+copies that figure to the path referenced by the report.

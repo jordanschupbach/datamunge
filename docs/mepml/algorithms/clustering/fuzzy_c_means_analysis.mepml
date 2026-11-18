@@ -29,12 +29,6 @@ Initial centers are zero, as in the seeded API.
 
 ```{cpp, results="markdown", file="figures/fcm_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fuzzy_c_means.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -143,12 +137,6 @@ center update. The reported objective uses that exact returned pair.
 
 ```{cpp, results="markdown", file="figures/fcm_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fuzzy_c_means.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -220,12 +208,6 @@ Comparing their raw values across different c or m requires care.
 
 ```{cpp, results="markdown", file="figures/fcm_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fuzzy_c_means.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -296,12 +278,6 @@ these numerical failures rather than presenting them as a successful fit.
 
 ```{cpp, results="markdown", file="figures/fcm_softness.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fuzzy_c_means.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -370,12 +346,6 @@ objective can overflow even if an ordinary fitted final objective is representab
 
 ```{cpp, results="markdown", file="figures/fcm_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fuzzy_c_means.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

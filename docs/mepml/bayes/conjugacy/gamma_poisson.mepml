@@ -1,0 +1,94 @@
+//? Title: Gamma-Poisson updating
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate counts over windows of different lengths at a common event rate. Fit a
+Poisson model whose expected count is rate times window length. A Gamma(2, 1)
+shape-rate prior updates by the total observed count and exposure. Quadrature of
+the individual Poisson likelihood terms checks the exact fit. Integrating the
+rate out gives a negative binomial prediction for a new window.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/gamma_poisson.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    constexpr double a = 2, b0 = 1;
+    constexpr double true_rate = 2.4;
+    const std::vector<double> exposure{0.5, 1, 2, 0.75, 1.25, 3};
+    std::mt19937 rng(42);
+    std::vector<int> counts;
+    int total_events = 0;
+    double total_exposure = 0;
+    std::print("| Window | Exposure | Observed count |\n| ---: | ---: | ---: |\n");
+    for (const double time : exposure) {
+        const int count = std::poisson_distribution<int>(true_rate * time)(rng);
+        counts.push_back(count);
+        total_events += count;
+        total_exposure += time;
+        std::print("| {} | {:.2f} | {} |\n", counts.size(), time, count);
+    }
+    const double updated_a = a + total_events, updated_b = b0 + total_exposure;
+
+    b::LogDensity target([&](const auto& q) {
+        const double rate = q[0];
+        double lp = b::gamma_lpdf(rate, a, b0);
+        for (std::size_t i = 0; i < counts.size(); ++i)
+            lp += b::poisson_log_lpmf(counts[i], std::log(rate * exposure[i]));
+        return lp;
+    });
+    const double mean = updated_a / updated_b;
+    const double upper = mean + 20 * std::sqrt(updated_a) / updated_b;
+    const auto numerical = b::grid_posterior(target, {0}, {upper}, 2000);
+    if (std::abs(mean - numerical.mean[0]) > 1e-6)
+        throw std::runtime_error("Conjugate and Poisson likelihood fits disagree");
+    std::print("\nSimulated rate {:.2f} per unit. Observed {} events over {:.2f} units. "
+               "Grid posterior mean {:.3f}.\n\n", true_rate, total_events, total_exposure, numerical.mean[0]);
+    std::vector<double> x, prior, posterior;
+    for (int i = 1; i < 200; ++i) {
+        const double value = i * upper / 200;
+        x.push_back(value);
+        prior.push_back(std::exp(b::gamma_lpdf(value, a, b0)));
+        posterior.push_back(std::exp(b::gamma_lpdf(value, updated_a, updated_b)));
+    }
+
+    std::print("Posterior rate mean {:.3f}. Predictive probability of an empty unit exposure {:.3f}.\n",
+               updated_a / updated_b, std::pow(updated_b / (1 + updated_b), updated_a));
+
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(x, prior, "prior", {140, 140, 140})
+        .lines(x, posterior, "posterior", {36, 105, 172})
+        .title("Prior and posterior").x_label("Poisson rate").y_label("Density");
+    const double max_exposure = *std::max_element(exposure.begin(), exposure.end());
+    auto fit = RPlot::create()
+        .points(exposure, std::vector<double>(counts.begin(), counts.end()), "observed", {70, 70, 70})
+        .lines({0, max_exposure}, {0, max_exposure * mean}, "posterior expected count", {36, 105, 172})
+        .title("Poisson fit by exposure").x_label("Exposure").y_label("Count");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/gamma_poisson.svg");
+}
+```
+// result_begin: markdown
+| Window | Exposure | Observed count |
+| ---: | ---: | ---: |
+| 1 | 0.50 | 1 |
+| 2 | 1.00 | 3 |
+| 3 | 2.00 | 4 |
+| 4 | 0.75 | 2 |
+| 5 | 1.25 | 3 |
+| 6 | 3.00 | 3 |
+
+Simulated rate 2.40 per unit. Observed 16 events over 8.50 units. Grid posterior mean 1.895.
+
+Posterior rate mean 1.895. Predictive probability of an empty unit exposure 0.165.
+\image(figures/gamma_poisson.svg)
+// result_end
+\caption(Prior and posterior for the event rate, with observed counts and fitted expected counts by exposure.)
+\alttext(Prior and posterior for the event rate, with observed counts and fitted expected counts by exposure.)

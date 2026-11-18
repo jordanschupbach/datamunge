@@ -37,6 +37,59 @@
 #include <datamunge/cad/cad.hpp>
 #include <datamunge/fda/adaptive_pspline.hpp>
 
+// Public analysis APIs used by the literate reports.
+#include <datamunge/algorithms/dfa_minimization_analysis.hpp>
+#include <datamunge/algorithms/fnv_analysis.hpp>
+#include <datamunge/algorithms/golomb_analysis.hpp>
+#include <datamunge/algorithms/gram_schmidt_analysis.hpp>
+#include <datamunge/algorithms/graph_coloring_analysis.hpp>
+#include <datamunge/algorithms/grasp_analysis.hpp>
+#include <datamunge/algorithms/grover_analysis.hpp>
+#include <datamunge/algorithms/hamming_code_analysis.hpp>
+#include <datamunge/algorithms/heapsort.hpp>
+#include <datamunge/algorithms/histogram_equalization_analysis.hpp>
+#include <datamunge/algorithms/hmac_analysis.hpp>
+#include <datamunge/algorithms/hopcroft_karp_analysis.hpp>
+#include <datamunge/algorithms/hopfield_analysis.hpp>
+#include <datamunge/algorithms/huffman_analysis.hpp>
+#include <datamunge/algorithms/hungarian_analysis.hpp>
+#include <datamunge/algorithms/index_calculus_analysis.hpp>
+#include <datamunge/algorithms/interpolation_search_analysis.hpp>
+#include <datamunge/algorithms/inverse_iteration_analysis.hpp>
+#include <datamunge/algorithms/iterative_deepening_analysis.hpp>
+#include <datamunge/algorithms/itp_analysis.hpp>
+#include <datamunge/algorithms/jaro_winkler_analysis.hpp>
+#include <datamunge/algorithms/johnson_analysis.hpp>
+#include <datamunge/algorithms/kabsch_analysis.hpp>
+#include <datamunge/algorithms/lanczos_analysis.hpp>
+#include <datamunge/algorithms/logitboost_study.hpp>
+#include <datamunge/algorithms/lsh_study.hpp>
+#include <datamunge/algorithms/merge_sort.hpp>
+#include <datamunge/algorithms/quickselect.hpp>
+#include <datamunge/algorithms/quicksort.hpp>
+#include <datamunge/algorithms/radix_sort.hpp>
+#include <datamunge/algorithms/rice_coding.hpp>
+#include <datamunge/algorithms/structured_svm_analysis.hpp>
+#include <datamunge/algorithms/union_merge_analysis.hpp>
+#include <datamunge/filter/kalman_analysis.hpp>
+#include <datamunge/geometry/gjk.hpp>
+#include <datamunge/geometry/graham_analysis.hpp>
+#include <datamunge/geometry/icp_analysis.hpp>
+#include <datamunge/geometry/jarvis_analysis.hpp>
+#include <datamunge/geometry/jump_walk_analysis.hpp>
+#include <datamunge/geometry/kdtree_analysis.hpp>
+#include <datamunge/geometry/laplacian_analysis.hpp>
+#include <datamunge/nn/cifar10_study.hpp>
+#include <datamunge/nn/classification_analysis.hpp>
+#include <datamunge/nn/image_overlap.hpp>
+#include <datamunge/nn/tabular_classification.hpp>
+#include <datamunge/plot/grayscale_images.hpp>
+#include <datamunge/random/lagged_fibonacci_analysis.hpp>
+#include <datamunge/random/linear_congruential_analysis.hpp>
+#include <datamunge/random/sfc64_analysis.hpp>
+#include <datamunge/stats/embedding_diagnostics.hpp>
+#include <datamunge/stats/jackknife_analysis.hpp>
+
 // Standard headers an analysis script almost always needs, so `#include <dm/dm.hpp>` is the only
 // include a short program or report block has to write.
 #include <cmath>
@@ -58,6 +111,7 @@
 #include <version>
 #endif
 #if defined(__cpp_lib_format_ranges)
+#include <datamunge/algorithms/insertion_sort_analysis.hpp>
 #include <datamunge/format.hpp>
 #endif
 

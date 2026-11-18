@@ -33,15 +33,6 @@ order is an implementation result, not a prescribed left-to-right drawing order.
 
 ```{cpp, results="markdown", file="figures/hopfield_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopfield_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto net = dm::algorithms::hopfield_train_checked({{1, -1, 1}});
@@ -156,15 +147,6 @@ sweep changes each memory.
 
 ```{cpp, results="markdown", file="figures/hopfield_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopfield_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto e = dm::algorithms::hopfield_original_experiment();
@@ -240,15 +222,6 @@ unstored attractor.
 
 ```{cpp, results="markdown", file="figures/hopfield_noise.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopfield_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto e = dm::algorithms::hopfield_original_experiment();
@@ -304,15 +277,6 @@ case supplies a different limitation: a sign changes while energy stays zero.
 
 ```{cpp, results="markdown", file="figures/hopfield_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopfield_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto tie_net = dm::algorithms::hopfield_train({{-1}});
@@ -413,15 +377,6 @@ and are not interchangeable memory budgets.
 
 ```{cpp, results="markdown", file="figures/hopfield_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopfield_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto net = dm::algorithms::hopfield_train({{-1}});

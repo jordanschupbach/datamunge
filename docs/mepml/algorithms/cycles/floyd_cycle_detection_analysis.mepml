@@ -34,9 +34,6 @@ The ordinary Floyd and Brent results agree on tail length three and period four.
 
 ```{cpp, results="markdown", file="figures/floyd_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -84,9 +81,6 @@ be the entry, and its gap need not be the least period.
 
 ```{cpp, results="markdown", file="figures/floyd_phases.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -165,9 +159,6 @@ call count remains exact. The native work summaries supply the counts directly.
 
 ```{cpp, results="markdown", file="figures/floyd_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -222,9 +213,6 @@ are consecutive controlled integer inputs, not a fitted probabilistic trend.
 
 ```{cpp, results="markdown", file="figures/floyd_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -272,9 +260,6 @@ costs four calls in total: three for detection and one to measure period one.
 
 ```{cpp, results="markdown", file="figures/floyd_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

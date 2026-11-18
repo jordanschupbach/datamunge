@@ -1,0 +1,59 @@
+//? Title: Regression with predictor measurement error
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The latent predictor has a standard Normal prior per row. Its observed proxy has
+additive Normal measurement SD 0.6. Conditional on the proxy, the latent predictor
+remains Normal by conjugacy. Integrating it out changes both mean and variance of the
+response, which has residual SD 0.4 and an unknown slope with Normal(0, 2) prior. The
+intercept is fixed at zero.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/measurement_error.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const double x[]{-1.8, -1.3, -0.8, -0.3, 0.7, 1.0, 1.5, 2.1};
+    const double y[]{-1.6, -1.2, -0.5, -0.7, 0.5, 0.8, 1.6, 2.2};
+    b::LogDensity target([&](const auto& q) {
+        const double beta = q[0];
+        const double weight = 1. / 1.36;
+        const double sd = std::hypot(0.4, beta * 0.6 / std::sqrt(1.36));
+        double lp = b::normal_lpdf(beta, 0., 2.);
+        for (std::size_t i = 0; i < std::size(x); ++i)
+            lp += b::normal_lpdf(y[i], beta * weight * x[i], sd);
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {-5}, {6}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Slope").y_label("Density");
+    std::vector<double> proxy(std::begin(x), std::end(x)), fitted;
+    for (double value : proxy) fitted.push_back(post.mean[0] * value / 1.36);
+    auto fit = RPlot::create().points(proxy, {std::begin(y), std::end(y)}, "observed", {70, 70, 70})
+        .lines(proxy, fitted, "posterior expected response", {36, 105, 172})
+        .title("Measurement-error regression fit").x_label("Observed proxy").y_label("Response");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/measurement_error.svg");
+}
+```
+// result_begin: markdown
+Posterior mean 1.122, posterior SD 0.219, edge mass 6.82e-13.
+\image(figures/measurement_error.svg)
+// result_end
+\caption(Slope posterior and observed responses against the fitted mean conditional on the observed proxy.)
+\alttext(Slope posterior and observed responses against the fitted mean conditional on the observed proxy.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 6.1.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

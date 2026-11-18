@@ -73,8 +73,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/integrated_gradients_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -118,7 +116,6 @@ has[.5,-2,0],summing-1.5. Equivalent ReLU implementations and callback batches
 ```{cpp, results="markdown", file="figures/integrated_gradients_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n      = dm::nn;
   namespace m      = n::models;
@@ -188,7 +185,6 @@ improve every individual residual monotonically at ReLU boundaries.
 ```{cpp, results="markdown", file="figures/integrated_gradients_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -374,7 +370,6 @@ dependencies of this classifier rather than a universal explanation.
 
 ```{cpp, results="markdown", file="figures/integrated_gradients_completeness.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

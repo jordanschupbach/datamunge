@@ -265,3 +265,58 @@ TEST(BayesNUTS, RecoversCorrelatedBivariateNormalCovariance) {
     EXPECT_NEAR(var_x, 1.0, 0.2);
     EXPECT_NEAR(var_y, 1.0, 0.2);
 }
+
+TEST(BayesDistributions, LinkScaleMassesAndDensityMatchKnownValues) {
+    using namespace datamunge::bayes;
+    EXPECT_NEAR(softplus(1000.), 1000., 1e-12);
+    EXPECT_NEAR(log_add_exp(1000., 1000.), 1000. + std::log(2.), 1e-12);
+    EXPECT_NEAR(bernoulli_logit_lpmf(1, 1000.), 0., 1e-12);
+    EXPECT_NEAR(binomial_logit_lpmf(1, 2, 0.), std::log(0.5), 1e-12);
+    EXPECT_NEAR(binomial_logit_lpmf(2, 2, 1000.), 0., 1e-12);
+    EXPECT_NEAR(neg_binomial_2_log_lpmf(0, 0., 1.), std::log(0.5), 1e-12);
+    EXPECT_NEAR(neg_binomial_2_log_lpmf(2, 0., 1.), std::log(0.125), 1e-12);
+    EXPECT_NEAR(gamma_log_mean_lpdf(1, 0., 1.), -1., 1e-12);
+    EXPECT_NEAR(zero_inflated_poisson_log_lpmf(0, 0., 0.), std::log((1. + std::exp(-1.)) / 2.), 1e-12);
+    EXPECT_NEAR(zero_inflated_poisson_log_lpmf(1, 0., 0.), -1. - std::log(2.), 1e-12);
+}
+
+TEST(BayesDistributions, LinkScaleAutodiffMatchesFiniteDifferences) {
+    using namespace datamunge::bayes;
+    const auto log_density = []<class Real>(const Real& eta, const Real& zero_logit) {
+        return binomial_logit_lpmf(2, 5, eta) + neg_binomial_2_log_lpmf(3, eta, 2.)
+             + gamma_log_mean_lpdf(2, eta, 4.) + zero_inflated_poisson_log_lpmf(0, eta, zero_logit);
+    };
+    for (const double predictor : {-1., 0., 1.}) {
+        constexpr double z = 0.3, step = 1e-5;
+        Tape tape;
+        const Var eta(tape, predictor), zero_logit(tape, z);
+        const auto value = log_density(eta, zero_logit);
+        const auto gradient = tape.backward(value.index());
+        EXPECT_NEAR(value.value(), log_density(predictor, z), 1e-12);
+        EXPECT_NEAR(gradient[eta.index()],
+                    (log_density(predictor + step, z) - log_density(predictor - step, z)) / (2 * step), 1e-8);
+        EXPECT_NEAR(gradient[zero_logit.index()],
+                    (log_density(predictor, z + step) - log_density(predictor, z - step)) / (2 * step), 1e-8);
+    }
+    Tape tape;
+    const Var extreme(tape, -1000.);
+    const auto unlikely = bernoulli_logit_lpmf(1, extreme);
+    EXPECT_NEAR(unlikely.value(), -1000., 1e-12);
+    EXPECT_NEAR(tape.backward(unlikely.index())[extreme.index()], 1., 1e-12);
+    const Var large_rate(tape, 1000.), zero_logit(tape, 0.);
+    const auto zip_zero = zero_inflated_poisson_log_lpmf(0, large_rate, zero_logit);
+    const auto gradient = tape.backward(zip_zero.index());
+    EXPECT_NEAR(zip_zero.value(), -std::log(2.), 1e-12);
+    EXPECT_EQ(gradient[large_rate.index()], 0.);
+    EXPECT_NEAR(gradient[zero_logit.index()], 0.5, 1e-12);
+}
+
+TEST(BayesDiagnostics, DerivedDrawsKeepChainOrderAndEmptyChains) {
+    using namespace datamunge::bayes;
+    const std::vector<NUTSResult> chains{
+        {.samples = {{1., 2.}, {3., 5.}}}, {}, {.samples = {{-1., 4.}}}
+    };
+    const auto difference = chains_of(chains, [](const auto& q) { return q[1] - q[0]; });
+    EXPECT_EQ(difference, (std::vector<std::vector<double>>{{1., 2.}, {}, {5.}}));
+    EXPECT_EQ(chains_of(chains, 0), (std::vector<std::vector<double>>{{1., 3.}, {}, {-1.}}));
+}

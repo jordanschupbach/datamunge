@@ -45,7 +45,6 @@ One valid step with zero projections, initial memory .4 and zero highway gives c
 
 ```{cpp, results="markdown", file="figures/sru_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 namespace n = dm::nn;
 namespace m = n::models;
 void Zero(n::ParameterStore& p) {
@@ -147,8 +146,6 @@ The report owns its parameter store, objective, minibatches and Adam writes. Inf
 //   f = sigmoid(f~ + bf), o = sigmoid(o~ + bo)
 //   c' = f c + (1 - f) z,  h' = o tanh(c') + (1 - o) skip
 
-#include <cmath>
-#include <memory>
 
 // Report-local workflow and diagnostics: recurrent_model.hpp
 // Generic eager harness for tflow's small explicit-unroll recurrent models
@@ -169,33 +166,15 @@ The report owns its parameter store, objective, minibatches and Adam writes. Inf
 // gradient per initial state (named by `initial_gradient_names`) and any
 // probe gradients, exactly like tflow's Evaluate fetches.
 
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <functional>
-#include <map>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
 
 // Report-local workflow and diagnostics: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Report-local workflow and diagnostics: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -536,9 +515,6 @@ class RecurrentModel {
 // datamunge::nn::rnn_step / gru_step / lstm_step or are written out in the
 // per-cell headers when an example needs intermediate gate values.
 
-#include <datamunge/nn/nn.hpp>
-#include <string>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -614,7 +590,6 @@ inline std::unique_ptr<RecurrentModel> SruModel(bool training = true) {
 
 } // namespace rnn_cells
 
-#include <cmath>
 
 // Report-local workflow and diagnostics: marked_sequence_demo.hpp
 // The three-epoch marked-token memory experiment shared by tflow's 4.1
@@ -638,15 +613,6 @@ inline std::unique_ptr<RecurrentModel> SruModel(bool training = true) {
 // run, and when the tflow run directory (`tf=`) has the same files the port
 // prints and checks the differences.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Report-local workflow and diagnostics: marked_sequence_data.hpp
 // Synthetic variable-length single-marker memory task; padding is never a
@@ -657,14 +623,6 @@ inline std::unique_ptr<RecurrentModel> SruModel(bool training = true) {
 // The generator is std::mt19937 exactly as in tflow, so every split is
 // bit-identical to tflow's data.npz.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <numeric>
-#include <random>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -761,12 +719,8 @@ inline void Heatmap(const std::filesystem::path& file, const Tensor& x, bool gra
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Report-local workflow and diagnostics: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot() {
   return datamunge::datasets::data_home();
@@ -1328,9 +1282,6 @@ All three validation epochs are shown. The test observations do not select an ad
 
 ```{cpp, results="markdown", file="figures/sru_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/sru/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("All three source epochs required");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").title("SRU: validation history").size(950,520).save_svg("build/sru_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
 
 ```
@@ -1345,8 +1296,6 @@ int main(){std::filesystem::create_directories("build");std::ifstream input("bui
 
 ```{cpp, results="markdown", file="figures/sru_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <iostream>
 int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/sru/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/sru/data.npz"))data.emplace(key,value);auto truth=data.at("test_labels"),pred=n::argmax(output.at("logits"),1); n::ConfusionMatrix cm(2);cm.add(truth,pred);cm.save_svg("build/sru_confusion.svg",{.title="SRU: held-out confusion"});n::save_npz("build/sru_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<truth.numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
 
 ```

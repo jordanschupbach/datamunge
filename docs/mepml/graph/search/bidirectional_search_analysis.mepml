@@ -111,7 +111,6 @@ and bidirectional BFS between 400 random pairs.
 ```{cpp, results="markdown", file="figures/bidir_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -253,7 +252,6 @@ a planar graph, so \(D=2\) and the predicted saving is about 2.
 ```{cpp, results="markdown", file="figures/bidir_volcano.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 

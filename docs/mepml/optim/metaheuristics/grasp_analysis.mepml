@@ -29,12 +29,6 @@ the optimum.
 
 ```{cpp, results="markdown", file="figures/grasp_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grasp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -183,12 +177,6 @@ not a claim that the preceding triangle run visited that partition.
 
 ```{cpp, results="markdown", file="figures/grasp_local_trap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grasp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -242,12 +230,6 @@ may mean the first restart already found the optimum.
 
 ```{cpp, results="markdown", file="figures/grasp_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grasp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -361,12 +343,6 @@ optional history.
 
 ```{cpp, results="markdown", file="figures/grasp_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grasp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

@@ -25,13 +25,6 @@ step.
 
 ```{cpp, results="markdown", file="figures/kahan_correction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kahan.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
-#include <limits>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::kahan_trace({1e16, 1, 1, -1e16});
@@ -92,13 +85,6 @@ loop provides the baseline.
 
 ```{cpp, results="markdown", file="figures/kahan_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kahan.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
-#include <limits>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::KahanAccumulator a;
@@ -143,13 +129,6 @@ become NaN.
 
 ```{cpp, results="markdown", file="figures/kahan_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kahan.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
-#include <limits>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| control | actual Kahan sum | exact finite target |\n| --- | ---: | ---: |\n");
@@ -210,13 +189,6 @@ zero.
 
 ```{cpp, results="markdown", file="figures/kahan_repeats.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kahan.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
-#include <limits>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, naive_error, kahan_error;

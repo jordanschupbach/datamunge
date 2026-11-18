@@ -150,8 +150,6 @@ only separate the displayed curves and do not enter either cost.
 
 ```{cpp, results="markdown", file="figures/dtw_sine.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
-#include <numeric>
 int main(){
   std::filesystem::create_directories("build");
   const auto u=dm::seql(0,29,30)/29;
@@ -192,8 +190,6 @@ not estimate classification accuracy or establish actor independence.
 
 ```{cpp, results="markdown", file="figures/dtw_gunpoint.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/time_series_data.hpp>
-#include <numeric>
 int main(){
   std::filesystem::create_directories("build");
   const auto base=dm::datasets::prepare_example_data("signals",dm::datasets::data_home());
@@ -247,7 +243,6 @@ the inputs. No panel measures execution time.
 
 ```{cpp, results="markdown", file="figures/dtw_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
 int main(){
   std::filesystem::create_directories("build");
   std::vector<double>x,cells,old_slots,new_slots;

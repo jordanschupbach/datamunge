@@ -257,9 +257,6 @@ here by the fixed documented default run.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <chrono>
-#include <fstream>
-#include <memory>
 
 namespace n = dm::nn;
 namespace m = n::models;

@@ -22,23 +22,6 @@ The table and native concept diagram read the same producing execution. Every bl
 
 ```{cpp, results="markdown", file="figures/self_organizing_map_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/nn/self_organizing_map.hpp>
 int main() {
   namespace a = dm::algorithms;
   namespace g = dm::graphics;
@@ -83,23 +66,6 @@ Actual codebook after one explicit Sgd step at0.5: `[0.5, 1.6967346701436834]`.
 
 ```{cpp, results="markdown", file="figures/self_organizing_map_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/nn/self_organizing_map.hpp>
 int main() {
   namespace a = dm::algorithms;
   namespace g = dm::graphics;
@@ -177,23 +143,6 @@ Original generating-center actual tensor unit ids `[1, 21, 9]`; final tensor qua
 
 ```{cpp, results="markdown", file="figures/self_organizing_map_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/nn/self_organizing_map.hpp>
 int main() {
   namespace a = dm::algorithms;
   namespace g = dm::graphics;
@@ -245,23 +194,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/self_organizing_map_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <bit>
-#include <datamunge/random/quality.hpp>
-#include <datamunge/nn/self_organizing_map.hpp>
 int main() {
   namespace a = dm::algorithms;
   namespace g = dm::graphics;

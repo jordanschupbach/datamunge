@@ -43,10 +43,6 @@ nontrivial for most other moduli.
 
 ```{cpp, results="markdown", file="figures/montgomery_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/montgomery.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::MontgomeryContext c(17);
@@ -95,10 +91,6 @@ inferred from these abstract operations.
 
 ```{cpp, results="markdown", file="figures/montgomery_setup.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/montgomery.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::MontgomeryContext c(3233);
@@ -147,10 +139,6 @@ secure encryption scheme.
 
 ```{cpp, results="markdown", file="figures/montgomery_rsa.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/montgomery.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::MontgomeryContext c(3233);
@@ -202,11 +190,6 @@ runtime comparison against division-based arithmetic.
 
 ```{cpp, results="markdown", file="figures/montgomery_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/montgomery.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto n = std::numeric_limits<std::uint64_t>::max();

@@ -57,7 +57,6 @@ This report defines detection matching and average-precision evaluation rather t
 ```{cpp, results="markdown", file="figures/detection_evaluation_precision.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -149,7 +148,6 @@ area ranges, segmentation AP or the full official COCO summary.
 ```{cpp, results="markdown", file="figures/detection_evaluation_thresholds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -228,7 +226,6 @@ and tested explicitly rather than silently changing the original fixture.
 ```{cpp, results="markdown", file="figures/detection_evaluation_cap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -305,11 +302,10 @@ COCO JSON `[x,y,w,h]` boxes become `[y,x,y+h,x+w]`. Category IDs remain the
 original COCO IDs. All numerical evaluation now forwards to the tensor library.
 No optimizer is appropriate: the inputs are fixed predictions, not fitted leaves.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) -I../../../../../examples/nn"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) -I../../../../../prebindings/nn/include"}
 #include <dm/dm.hpp>
 
 #include "common/detection_evaluation.hpp"
-#include <print>
 int main() {
   namespace m = dm::nn::models;
   namespace io = detection_evaluation;

@@ -27,10 +27,6 @@ and contributions. It does not repeat the checksum in the report.
 
 ```{cpp, results="markdown", file="figures/luhn_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/luhn.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::luhn_trace("125");
@@ -78,10 +74,6 @@ before the first arithmetic step.
 
 ```{cpp, results="markdown", file="figures/luhn_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/luhn.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto payload =
@@ -147,10 +139,6 @@ probabilities. The table below preserves every actual missed case.
 
 ```{cpp, results="markdown", file="figures/luhn_detection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/luhn.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::luhn_error_study("1230904560907");
@@ -221,10 +209,6 @@ copies. Captures own their strings and do not replay earlier prefixes.
 
 ```{cpp, results="markdown", file="figures/luhn_parity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/luhn.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const std::string payload = "7992739871";

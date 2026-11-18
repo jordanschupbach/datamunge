@@ -202,7 +202,6 @@ are observations from this build under ordinary floating evaluation.
 
 ```{cpp, results="markdown", file="figures/dda_rounding.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <climits>
 int main() {
   std::filesystem::create_directories("build");
   const auto t=dm::algorithms::dda_line_trace(0,0,12,1),f=dm::algorithms::dda_line_trace(0,0,10,7),r=dm::algorithms::dda_line_trace(10,7,0,0);
@@ -285,7 +284,6 @@ geometric and arithmetic controls.
 
 ```{cpp, results="markdown", file="figures/dda_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <climits>
 int main() {
   std::filesystem::create_directories("build");
   std::vector<double> sizes,points,operations,theory;

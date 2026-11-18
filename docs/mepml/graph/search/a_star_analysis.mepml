@@ -214,7 +214,6 @@ count the cells with \(g^*+h<C^*\) and with \(g^*+h\le C^*\).
 ```{cpp, results="markdown", file="figures/a_star_expansions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 

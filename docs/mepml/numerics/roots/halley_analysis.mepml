@@ -27,15 +27,6 @@ budget is one, while two calls to f are needed to check the final result.
 
 ```{cpp, results="markdown", file="figures/halley_step.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cmath>
-#include <datamunge/algorithms/halley.hpp>
-#include <datamunge/algorithms/root_finding.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     auto f = [](double x) { return x * x - 2.; };
@@ -132,15 +123,6 @@ and near a simple root it approximates coordinate error multiplied by |f′(α)|
 
 ```{cpp, results="markdown", file="figures/halley_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cmath>
-#include <datamunge/algorithms/halley.hpp>
-#include <datamunge/algorithms/root_finding.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     auto f = [](double x) { return x * x - 2.; };
@@ -215,15 +197,6 @@ rather than an empirical general convergence theorem.
 
 ```{cpp, results="markdown", file="figures/halley_multiple.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cmath>
-#include <datamunge/algorithms/halley.hpp>
-#include <datamunge/algorithms/root_finding.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     auto f = [](double x) { return x * x - 2.; };
@@ -284,15 +257,6 @@ nonzero denominator that produces zero corrections repeatedly.
 
 ```{cpp, results="markdown", file="figures/halley_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <cmath>
-#include <datamunge/algorithms/halley.hpp>
-#include <datamunge/algorithms/root_finding.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     auto f = [](double x) { return x * x - 2.; };

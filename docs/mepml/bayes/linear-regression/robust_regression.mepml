@@ -1,0 +1,60 @@
+//? Title: Robust Student-t regression
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An outlying response pulls a Gaussian regression toward it. A Student-t likelihood
+with three degrees of freedom gives large residuals less influence. Both models use
+the same known residual scale and independent Normal(0, 3) priors for intercept and
+slope. The two-dimensional quadrature lets us compare the effect of changing only the
+likelihood.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/robust_regression.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<double> x{-3, -2, -1, 0, 1, 2, 3};
+    const std::vector<double> y{-2.3, -1.1, 0.1, 0.9, 1.7, 3.1, 9.5};
+    const auto fit = [&](bool robust) {
+        b::LogDensity target([&](const auto& q) {
+            double lp = b::normal_lpdf(q[0], 0., 3.) + b::normal_lpdf(q[1], 0., 3.);
+            for (std::size_t i = 0; i < x.size(); ++i) {
+                const double mean = q[0] + q[1] * x[i];
+                lp += robust ? b::student_t_lpdf(y[i], 3., mean, 0.6)
+                             : b::normal_lpdf(y[i], mean, 0.6);
+            }
+            return lp;
+        });
+        return b::grid_posterior(target, {-3, -2}, {6, 5}, 220).mean;
+    };
+    const auto normal = fit(false), robust = fit(true);
+    std::print("Gaussian slope {:.2f}. Student-t slope {:.2f}.\n", normal[1], robust[1]);
+    const auto endpoints = [&](const auto& beta) {
+        return std::vector<double>{beta[0] + beta[1] * x.front(), beta[0] + beta[1] * x.back()};
+    };
+    std::filesystem::create_directories("build");
+    RPlot::create().points(x, y, "observed", {70, 70, 70})
+        .lines({x.front(), x.back()}, endpoints(normal), "Gaussian fit", {182, 83, 29})
+        .lines({x.front(), x.back()}, endpoints(robust), "Student-t fit", {36, 105, 172})
+        .title("Regression with an outlier").x_label("Predictor").y_label("Response")
+        .save_svg("build/robust_regression.svg");
+}
+```
+// result_begin: markdown
+Gaussian slope 1.62. Student-t slope 1.09.
+\image(figures/robust_regression.svg)
+// result_end
+\caption(Posterior mean fits from Gaussian and Student-t likelihoods on the same data.)
+\alttext(Posterior mean fits from Gaussian and Student-t likelihoods on the same data.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 1.4.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

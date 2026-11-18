@@ -26,13 +26,6 @@ the first actual native record, including the correction used by the kernel.
 
 ```{cpp, results="markdown", file="figures/legendre_first.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_legendre_pi.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -108,13 +101,6 @@ replaces zero with a made-up floor.
 
 ```{cpp, results="markdown", file="figures/legendre_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_legendre_pi.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -166,13 +152,6 @@ separates the used correction from the rounded difference t_before-t_after.
 
 ```{cpp, results="markdown", file="figures/legendre_states.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_legendre_pi.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -223,13 +202,6 @@ The following plot counts actual square-root evaluations, not elapsed time.
 
 ```{cpp, results="markdown", file="figures/legendre_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_legendre_pi.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -288,13 +260,6 @@ partial returned trace. A zero-stage trace still contains its one initial record
 
 ```{cpp, results="markdown", file="figures/legendre_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_legendre_pi.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <numbers>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

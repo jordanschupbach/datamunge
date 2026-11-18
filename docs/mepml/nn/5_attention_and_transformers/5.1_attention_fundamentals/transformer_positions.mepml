@@ -94,9 +94,6 @@ All mathematical components run natively. Optional TensorFlow recordings are abs
 // Options: out=DIR (default output/nn/transformer_positions), tf=DIR,
 // init=auto|tf|nn, verbose=1.
 
-#include <cstdio>
-#include <iostream>
-#include <string>
 
 // Editable experiment support: attention.hpp
 // Attention helpers for the 5.x example ports (port of the parts of tflow's
@@ -116,20 +113,7 @@ All mathematical components run natively. Optional TensorFlow recordings are abs
 //          bottom-right instead of taking an explicit query offset, and its
 //          padding_keep_mask masks keys only).
 
-#include <datamunge/nn/attention.hpp>
-#include <datamunge/nn/io.hpp>
-#include <datamunge/nn/nn.hpp>
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <filesystem>
-#include <functional>
-#include <random>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 namespace attn {
 
@@ -346,17 +330,9 @@ inline Options ParseOptions(int argc, char** argv, const std::string& name,
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable experiment support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -422,12 +398,8 @@ inline void Header(const std::string& title) {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable experiment support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot(){return dm::datasets::data_home();}
 inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}
@@ -470,14 +442,7 @@ inline std::filesystem::path OutputDir(const std::string& relative) {
 //     query offset (the library's relative_position_bias owns a zero-initialised
 //     table and aligns queries bottom-right).
 
-#include <datamunge/nn/attention.hpp>
-#include <datamunge/nn/nn.hpp>
 
-#include <cmath>
-#include <cstdint>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 namespace positional {
 namespace nn=datamunge::nn;

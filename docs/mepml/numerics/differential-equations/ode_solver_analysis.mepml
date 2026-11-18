@@ -48,11 +48,6 @@ code.
 
 ```{cpp, results="markdown", file="figures/ode_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/ode/ode.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 class ExponentialDecay : public dm::ode::RHS {
 public:
     std::vector<double> evaluate(double, const std::vector<double> &state) override{return {-state[0]};}
@@ -143,11 +138,6 @@ rejected trials. Its count comes from actual trial records.
 
 ```{cpp, results="markdown", file="figures/ode_decay.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/ode/ode.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto comparison = dm::ode::ode_decay_comparison();
@@ -230,11 +220,6 @@ establish long-time stability or universal conservation.
 
 ```{cpp, results="markdown", file="figures/ode_oscillator.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/ode/ode.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::ode::ode_harmonic_study();
@@ -316,10 +301,6 @@ caller references are introduced.
 
 ```{cpp, results="markdown", file="figures/ode_lorenz.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/ode/ode.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::ode::ode_lorenz_study();

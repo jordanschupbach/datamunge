@@ -91,8 +91,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/revnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -311,7 +309,6 @@ The warmed baseline and counted buffers are explicit.
 ```{cpp, results="markdown", file="figures/revnet_memory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <datamunge/nn/memory.hpp>
 double peak(const dm::nn::models::RevNetConfig &cfg, dm::nn::models::RevNetMode mode) {
   namespace n = dm::nn;
   n::ParameterStore p(17), state(17);

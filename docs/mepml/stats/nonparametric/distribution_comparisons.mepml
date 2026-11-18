@@ -1,0 +1,61 @@
+//? Title: Kolmogorov–Smirnov tests and empirical CDFs
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate two sensor populations centered at zero, with different spreads.
+The two-sample KS test compares their full distributions. One-sample calls
+compare the first sample to a prespecified reference Normal distribution
+through both the convenience API and the general CDF API.
+)
+
+> Simulate, test and plot
+
+```{cpp, results="markdown", file="figures/distribution_comparisons.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(51);
+    const auto x = dm::rnorm(0, 1, 160);
+    const auto y = dm::rnorm(0, 2.4, 160);
+    const auto two_sample = sp::ks_test_two_sample(x, y);
+    const auto reference = sp::ks_test_one_sample_normal(x);
+    const auto supplied_cdf = sp::ks_test_one_sample(x, [](double value) {
+        return dm::random::normal_cdf(value);
+    });
+    std::print("| Comparison | D | p-value |\n| --- | ---: | ---: |\n"
+               "| Two independent samples | {:.3f} | {:.4g} |\n"
+               "| First sample vs N(0, 1) | {:.3f} | {:.4g} |\n"
+               "| Same null via CDF callback | {:.3f} | {:.4g} |\n",
+               two_sample.statistic, two_sample.p_value,
+               reference.statistic, reference.p_value, supplied_cdf.statistic, supplied_cdf.p_value);
+
+    std::filesystem::create_directories("build");
+    sp::empirical_cdf_plot(x, y, "SD 1", "SD 2.4").save_svg("build/distribution_comparisons.svg");
+}
+```
+// result_begin: markdown
+| Comparison | D | p-value |
+| --- | ---: | ---: |
+| Two independent samples | 0.244 | 0.0001121 |
+| First sample vs N(0, 1) | 0.033 | 0.994 |
+| Same null via CDF callback | 0.033 | 0.994 |
+\image(figures/distribution_comparisons.svg)
+// result_end
+\caption(Empirical CDFs of the simulated populations show divergence in both tails.)
+\alttext(Empirical CDFs of the simulated populations show divergence in both tails.)
+
+> Interpretation
+
+KS measures the largest vertical separation between CDFs. The samples are
+generated with the same population location, so a distributional difference
+can reflect spread alone. One-sample KS calibration requires fixing the
+reference distribution independently of the data. The p-values here use
+asymptotic references.
+
+> References
+
+- [R Kolmogorov–Smirnov tests|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html]

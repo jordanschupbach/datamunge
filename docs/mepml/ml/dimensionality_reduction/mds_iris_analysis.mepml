@@ -353,7 +353,6 @@ compare sorted spectra, so eigenvector non-uniqueness cannot disguise a failure.
 
 ```{cpp, results="markdown", file="figures/mds_cycle_sweep.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <algorithm>
 int main() {
     std::vector<double> t, positive, changing, floor, error;
     double max_eigen_error = 0, max_floor_error = 0;

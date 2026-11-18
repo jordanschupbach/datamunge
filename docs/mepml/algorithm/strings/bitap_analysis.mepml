@@ -57,7 +57,6 @@ Thus a complete occurrence and a fresh possible occurrence coexist.
 
 ```{cpp, results="markdown", file="figures/bitap_states.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bitset>
 int main() {
   std::filesystem::create_directories("build");
   const auto trace=dm::algorithms::bitap_trace("AABA","ABA",1);
@@ -210,7 +209,6 @@ sampled from this model, so its counts are not a significance calculation.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <climits>
 int main() {
   std::print("| pattern bytes | legacy exact start | legacy fuzzy end | modern exact windows |\n"
              "| ---: | ---: | ---: | :--- |\n");

@@ -453,11 +453,7 @@ are created only after the fixed final checkpoint, for diagnostics. Restoration
 initializes independent stores(seed1/2/3/4) and verifies all4102 values exactly.
 
 ```{cpp, results="markdown", file="figures/cycle_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace n  = nn;

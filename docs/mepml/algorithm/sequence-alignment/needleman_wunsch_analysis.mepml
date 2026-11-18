@@ -33,10 +33,6 @@ report.
 
 ```{cpp, results="markdown", file="figures/nw_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/needleman_wunsch.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::needleman_wunsch_trace("AA", "A", {1, -1, -1});
@@ -74,10 +70,6 @@ distance.
 
 ```{cpp, results="markdown", file="figures/nw_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/needleman_wunsch.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::needleman_wunsch_trace("AAAC", "AGC", {1, -1, -1});
@@ -129,10 +121,6 @@ a similarity ranking would need a separate model.
 
 ```{cpp, results="markdown", file="figures/nw_pairs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/needleman_wunsch.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::string> labels;
@@ -182,11 +170,6 @@ demonstrating why the scoring model matters.
 
 ```{cpp, results="markdown", file="figures/nw_storage.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/needleman_wunsch.hpp>
-#include <datamunge/algorithms/hirschberg.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, full, rolling;

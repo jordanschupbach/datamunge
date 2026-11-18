@@ -1,0 +1,62 @@
+//? Title: Mann–Whitney, Siegel–Tukey and Ansari–Bradley
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two simulated groups have the same center and different spread. Each
+test sees the same observations. The scale tests score observations from
+the outside of the pooled sample inward.
+)
+
+> Data and analysis
+
+```{cpp, results="markdown", file="figures/rank_scale_tests.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(17);
+    const auto wide = dm::rnorm(0, 2.6, 48);
+    const auto narrow = dm::rnorm(0, 0.75, 48);
+    const auto u = sp::mann_whitney_test(wide, narrow);
+    const auto siegel = sp::siegel_tukey_test(wide, narrow, sp::Alternative::Greater);
+    const auto ansari = sp::ansari_bradley_test(wide, narrow, sp::Alternative::Greater);
+    std::print("| Method | Statistic | p-value |\n| --- | ---: | ---: |\n");
+    for (const auto* test : {&u, &siegel, &ansari})
+        std::print("| {} | {:.1f} | {:.4g} |\n", test->method, test->statistic, test->p_value);
+    std::print("\nEstimated probability of superiority for the wide group: {:.3f}.\n", u.estimate1);
+    std::filesystem::create_directories("build");
+    RPlot::boxplot({wide.values(), narrow.values()}, {"Wide", "Narrow"})
+        .title("Same population center, different spread").y_label("Response")
+        .save_svg("build/rank_scale_tests.svg");
+}
+```
+// result_begin: markdown
+| Method | Statistic | p-value |
+| --- | ---: | ---: |
+| Wilcoxon rank sum test with continuity correction | 1167.0 | 0.9154 |
+| Siegel-Tukey scale test (normal approximation) | 1605.0 | 5.858e-08 |
+| Ansari-Bradley scale test (normal approximation) | 815.0 | 6.069e-08 |
+
+Estimated probability of superiority for the wide group: 0.507.
+\image(figures/rank_scale_tests.svg)
+// result_end
+\caption(Observed spreads and centers of the two simulated groups.)
+\alttext(Observed spreads and centers of the two simulated groups.)
+
+> Interpretation
+
+Mann–Whitney U estimates the chance that a wide-group draw exceeds a
+narrow-group draw, counting a tie as one-half. The two scale tests focus
+on whether one sample occupies more of the extremes. A scale interpretation
+assumes a common center and similar shapes. Here both scale tests use normal
+approximations; the scale direction in the API is the direction of spread,
+even though the wide group's scores tend to be smaller.
+
+> References
+
+- [R Wilcoxon rank-sum test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html]
+- [R Ansari–Bradley test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ansari.test.html]
+- [NIST Siegel–Tukey test|https://itl.nist.gov/div898/software/dataplot/refman1/auxillar/siegel.htm]

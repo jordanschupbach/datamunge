@@ -236,6 +236,37 @@ TEST(Vector, RunifSharesUnifValidationAndSeededSequence) {
     EXPECT_THROW(dm::runif(0, std::numeric_limits<double>::infinity(), 1), std::invalid_argument);
 }
 
+TEST(Vector, ShapeFirstRunifReturnsTensorAndSharesTheSeededStream) {
+    dm::set_seed(42);
+    const auto expected = dm::runif(0, 1, 107);
+    dm::set_seed(42);
+    const auto vector = dm::runif({100}, 0, 1);
+    const auto matrix = dm::runif({2, 3}, 0, 1);
+    EXPECT_EQ(vector.shape(), (std::vector<std::size_t>{100}));
+    EXPECT_EQ(matrix.shape(), (std::vector<std::size_t>{2, 3}));
+    EXPECT_EQ(matrix.dtype(), dm::linalg::TensorDType::Float64);
+    for (std::size_t i = 0; i < vector.size(); ++i) {
+        EXPECT_DOUBLE_EQ(vector.at_flat(i), expected[i]);
+    }
+    for (std::size_t row = 0; row < 2; ++row) {
+        for (std::size_t col = 0; col < 3; ++col) {
+            EXPECT_DOUBLE_EQ(matrix.at({row, col}), expected[100 + 3 * row + col]);
+        }
+    }
+    const auto scalar = dm::runif({}, 0, 1);
+    EXPECT_EQ(scalar.ndim(), 0);
+    EXPECT_DOUBLE_EQ(scalar.at({}), expected.values().back());
+}
+
+TEST(Vector, ShapeFirstRunifHandlesDynamicAndEmptyShapesAndRejectsOverflow) {
+    const std::vector<std::size_t> shape{2, 0, 3};
+    const auto empty = dm::runif(shape, 1, 0);
+    EXPECT_EQ(empty.shape(), shape);
+    EXPECT_EQ(empty.size(), 0);
+    EXPECT_THROW(dm::runif({1}, 1, 0), std::invalid_argument);
+    EXPECT_THROW(dm::runif({2, std::numeric_limits<std::size_t>::max()}, 0, 1), std::length_error);
+}
+
 TEST(Vector, PlotsDirectly) {
     dm::Vector x = dm::seql(0.0, 1.0, 10);
     dm::Plot   plot = dm::Plot().points(x, dm::sin(x), "samples", {37, 99, 235}, 6.0);

@@ -50,11 +50,6 @@ The array is [0,1,2]; insertion sort has nothing to shift.
 
 ```{cpp, results="markdown", file="figures/flash_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <climits>
-#include <limits>
-#include <numeric>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -94,11 +89,6 @@ insertion, but the preceding nonadjacent cycle exchanges give no stability guara
 
 ```{cpp, results="markdown", file="figures/flash_tail.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <climits>
-#include <limits>
-#include <numeric>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -171,11 +161,6 @@ consecutive ranges of 43 actual class counts. All 2,000 observations are retaine
 
 ```{cpp, results="markdown", file="figures/flash_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <climits>
-#include <limits>
-#include <numeric>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -248,11 +233,6 @@ work are in the core; report loops only call those APIs and display the results.
 
 ```{cpp, results="markdown", file="figures/flash_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <climits>
-#include <limits>
-#include <numeric>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -314,11 +294,6 @@ and work counters do not allocate history or impose that optional quota.
 
 ```{cpp, results="markdown", file="figures/flash_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <climits>
-#include <limits>
-#include <numeric>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

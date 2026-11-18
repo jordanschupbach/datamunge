@@ -264,7 +264,6 @@ Even the largest shown logical arena, 2^30 bytes, allocates only host metadata.
 
 ```{cpp, results="markdown", file="figures/buddy_allocator_order_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <climits>
 int main() {
   std::filesystem::create_directories("build");
   std::vector<double> heights,searches,splits;

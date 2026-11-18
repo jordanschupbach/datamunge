@@ -303,7 +303,6 @@ cost under 300 bits, or 0.003 bits per pixel, and we leave them out below.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 

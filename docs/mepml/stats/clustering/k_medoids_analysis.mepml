@@ -47,10 +47,6 @@ proposal and final result; it does not infer an unobserved path.
 
 ```{cpp, results="markdown", file="figures/k_medoids_proposals.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/k_medoids.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::k_medoids_trace({{0}, {2}, {10}}, 1, 100, 0);
@@ -93,11 +89,6 @@ medoids; their mere absorption is no proof of invariance.
 
 ```{cpp, results="markdown", file="figures/k_medoids_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/k_medoids.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <random>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::mt19937_64 rng(4);
@@ -177,10 +168,6 @@ Full-budget seeds need not find the same global optimum on arbitrary data.
 
 ```{cpp, results="markdown", file="figures/k_medoids_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/k_medoids.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::vector<double>> data = {{0}, {1}, {2}, {8}, {9}, {10}};
@@ -224,11 +211,6 @@ not the faster cached nearest/second-nearest PAM implementation.
 
 ```{cpp, results="markdown", file="figures/k_medoids_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/k_medoids.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

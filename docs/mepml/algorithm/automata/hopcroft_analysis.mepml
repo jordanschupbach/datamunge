@@ -32,16 +32,6 @@ reconstruction from the final answer.
 
 ```{cpp, results="markdown", file="figures/hopcroft_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/dfa_minimization_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <map>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto input = dm::algorithms::dfa_unary_threshold(2);
@@ -140,16 +130,6 @@ additional state-count comparison.
 
 ```{cpp, results="markdown", file="figures/hopcroft_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/dfa_minimization_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <map>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto input = dm::algorithms::hopcroft_example_dfa();
@@ -251,16 +231,6 @@ checked for the same minimal state count only.
 
 ```{cpp, results="markdown", file="figures/hopcroft_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/dfa_minimization_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <map>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> sizes, scans, inverse, scan_ratio, inverse_ratio;
@@ -339,16 +309,6 @@ no symbol passes.
 
 ```{cpp, results="markdown", file="figures/hopcroft_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/dfa_minimization_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <map>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     using DFA = dm::algorithms::DFA;

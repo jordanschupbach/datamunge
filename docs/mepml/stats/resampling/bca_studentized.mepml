@@ -1,0 +1,67 @@
+//? Title: Bootstrap percentile, BCa and t-pivot intervals
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate positive, right-skewed service times. Compare three bootstrap
+confidence intervals for the same mean. The studentized method receives the
+mean's sample standard-error estimator as a callback and recomputes it
+within each resample.
+)
+
+> Data and analysis
+
+```{cpp, results="markdown", file="figures/bca_studentized.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(18);
+    const dm::Vector<> sample = dm::exp(dm::rnorm(0, 1, 36));
+    const sp::Bootstrap bootstrap({4000, 0.95, 42});
+    const auto statistic = [](const auto& x) { return dm::mean(x); };
+    const auto se = [](const auto& x) { return dm::sd(x) / std::sqrt(x.size()); };
+    const auto ordinary = bootstrap.run(sample, statistic);
+    const auto studentized = bootstrap.run_studentized(sample, statistic, se);
+
+    std::print("Observed mean {:.3f}. Discarded zero-SE resamples: {}.\n\n"
+               "| Interval | Lower | Upper |\n| --- | ---: | ---: |\n",
+               ordinary.estimate, studentized.discarded);
+    std::print("| Percentile | {:.3f} | {:.3f} |\n", ordinary.percentile_interval.first,
+               ordinary.percentile_interval.second);
+    std::print("| BCa | {:.3f} | {:.3f} |\n", ordinary.bca_interval.first, ordinary.bca_interval.second);
+    std::print("| Bootstrap-t | {:.3f} | {:.3f} |\n", studentized.interval.first, studentized.interval.second);
+    auto estimates = RPlot::hist(ordinary.replicates, 30).title("Bootstrap means").abline_v(ordinary.estimate);
+    auto pivots = RPlot::hist(studentized.pivots, 30).title("Studentized pivots").abline_v(0);
+    std::filesystem::create_directories("build");
+    dm::graphics::RLayout::create(1, 2).size(1050, 425).add(estimates).add(pivots)
+        .save_svg("build/bca_studentized.svg");
+}
+```
+// result_begin: markdown
+Observed mean 1.535. Discarded zero-SE resamples: 0.
+
+| Interval | Lower | Upper |
+| --- | ---: | ---: |
+| Percentile | 0.945 | 2.304 |
+| BCa | 1.035 | 2.511 |
+| Bootstrap-t | 0.977 | 3.310 |
+\image(figures/bca_studentized.svg)
+// result_end
+\caption(Bootstrap replicate means and their t pivots, with reference lines at the observed mean and at zero.)
+\alttext(Bootstrap replicate means and their t pivots, with reference lines at the observed mean and at zero.)
+
+> Interpretation
+
+BCa changes the percentile positions using an empirical bias correction
+and leave-one-out acceleration. Bootstrap-t estimates the quantiles of the
+studentized pivot and inverts them on the original mean scale. Both intervals
+can be asymmetric. Their widths differ even though both runs start with the
+same seed and observe the same sample.
+
+> References
+
+- [Efron, Better Bootstrap Confidence Intervals|https://doi.org/10.1080/01621459.1987.10478410]
+- [R boot confidence intervals|https://cran.r-project.org/web/packages/boot/refman/boot.html]

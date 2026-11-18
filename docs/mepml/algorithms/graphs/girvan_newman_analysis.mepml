@@ -29,15 +29,6 @@ source directions, producing twice these conventional values.
 
 ```{cpp, results="markdown", file="figures/gn_bridge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -92,15 +83,6 @@ below come from the actual executing BFS and reverse accumulation.
 
 ```{cpp, results="markdown", file="figures/gn_diamond.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -164,15 +146,6 @@ meet its target without any betweenness computation.
 
 ```{cpp, results="markdown", file="figures/gn_batch.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -225,15 +198,6 @@ The layout is a separate seeded native drawing, not an input to community detect
 
 ```{cpp, results="markdown", file="figures/gn_karate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -282,15 +246,6 @@ worse late partitions.
 
 ```{cpp, results="markdown", file="figures/gn_modularity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -375,15 +330,6 @@ allocation, sorting comparisons, validation and arithmetic FLOPs; they are not t
 
 ```{cpp, results="markdown", file="figures/gn_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -425,15 +371,6 @@ double order and does not silently switch to exact arithmetic or long double.
 
 ```{cpp, results="markdown", file="figures/gn_numeric.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -485,15 +422,6 @@ source/node/edge ingress; the verified dataset accessor does not invent missing 
 
 ```{cpp, results="markdown", file="figures/gn_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/girvan_newman.hpp>
-#include <datamunge/datasets/network_data.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

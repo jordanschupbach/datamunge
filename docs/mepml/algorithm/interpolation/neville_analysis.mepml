@@ -37,10 +37,6 @@ three actual update records explain the complete computation.
 
 ```{cpp, results="markdown", file="figures/neville_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/neville.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::neville_trace({-1, 0, 1}, {1, 0, 1}, .5);
@@ -87,10 +83,6 @@ of digits.
 
 ```{cpp, results="markdown", file="figures/neville_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/neville.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::neville_cosine_study();
@@ -140,10 +132,6 @@ ill-conditioned.
 
 ```{cpp, results="markdown", file="figures/neville_counterexample.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/neville.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::neville_zero_sample_study();
@@ -197,11 +185,6 @@ guards representation, not conditioning or mathematical error.
 
 ```{cpp, results="markdown", file="figures/neville_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/neville.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numeric>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> nodes, actual, formula;

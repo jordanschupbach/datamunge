@@ -88,7 +88,6 @@ For -7 times 6, the active terms are +14 and -56, giving -42.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <limits>
 int main() {
   const auto minimum=std::numeric_limits<std::int32_t>::min();
   std::print("| M | Q | native product | widened built-in product | additions | subtractions |\n"
@@ -143,8 +142,6 @@ measure execution time or establish a hardware speedup.
 
 ```{cpp, results="markdown", file="figures/booth_runs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
-#include <limits>
 int main() {
   std::filesystem::create_directories("build");
   std::vector<double> length,booth,binary;
@@ -198,7 +195,6 @@ binomial coefficients \(\binom8j\), with mean four active digits.
 
 ```{cpp, results="markdown", file="figures/booth_distribution.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <array>
 int main() {
   std::filesystem::create_directories("build");
   std::array<unsigned,9> observed{};

@@ -51,10 +51,6 @@ flips.
 
 ```{cpp, results="markdown", file="figures/memetic_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/memetic.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::MemeticGraph graph{{{1, 1}, {2, 1}}, {{0, 1}, {2, 1}},
@@ -108,10 +104,6 @@ strong candidate.
 
 ```{cpp, results="markdown", file="figures/memetic_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/memetic.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto graph = dm::algorithms::memetic_demo_graph();
@@ -208,10 +200,6 @@ replications or uncertainty intervals.
 
 ```{cpp, results="markdown", file="figures/memetic_diversity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/memetic.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -323,10 +311,6 @@ prefix.
 
 ```{cpp, results="markdown", file="figures/memetic_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/memetic.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::MemeticGraph graph{{{1, 1}, {2, 1}}, {{0, 1}, {2, 1}},

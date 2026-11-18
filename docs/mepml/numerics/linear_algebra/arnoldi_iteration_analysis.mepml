@@ -180,7 +180,6 @@ to rounding. The table shows the top-left corner of \(H_{120}\).
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -273,7 +272,6 @@ values against the twelve largest eigenvalues.
 ```{cpp, results="markdown", file="figures/arnoldi_iteration_convergence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -431,7 +429,6 @@ position with the `dm` pipe verbs.
 ```{cpp, results="markdown", file="figures/arnoldi_iteration_modes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 namespace agg = dm::agg;
@@ -547,8 +544,6 @@ memory.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <random>
 
 namespace alg = dm::algorithms;
 

@@ -85,17 +85,8 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // The numeric identity and edge-case checks run before every experiment.
 // Reference: Bellemare et al. (2016), https://arxiv.org/abs/1606.01868.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <iostream>
-#include <limits>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/count_bonus.hpp
-#include <datamunge/rl/count_exploration.hpp>
 namespace rl {using dm::rl::foundations::PseudoCount;using dm::rl::foundations::CountBonus;using dm::rl::foundations::FactorizedDensity;}
 
 // Editable workflow support: rl/dqn_common.hpp
@@ -123,16 +114,8 @@ namespace rl {inline bool IsHardwareOption(const std::string& s){return s=="devi
 // with one estimate attached (a continuous torque with its critic value, a
 // planner's first action with the planned return).
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <numeric>
-#include <string>
-#include <utility>
-#include <vector>
 
 // Editable workflow support: rl/env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Obs;
 using datamunge::rl::environments::Action;
@@ -298,11 +281,6 @@ struct Hud {
 // (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
 // the 6.1 examples film, the episode ends before the film is full.
 
-#include <cstdint>
-#include <cstdio>
-#include <string>
-#include <type_traits>
-#include <utility>
 
 
 
@@ -352,9 +330,7 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
 }  // namespace rl
 
 // Editable workflow support: rl/tabular.hpp
-#include <datamunge/rl/tabular.hpp>
 // Editable workflow support: rl/grid_world.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::GridBase;
 using datamunge::rl::environments::GridWorld;
@@ -366,13 +342,6 @@ using datamunge::rl::environments::CliffWalking;
 // Small helpers shared by the RL examples: episode statistics, random and
 // greedy rollouts, and printing.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 
 namespace rl {

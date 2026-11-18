@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/fast_rcnn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -109,7 +107,6 @@ Core sampling differentiates the feature map, while RoI coordinates are constant
 ```{cpp, results="markdown", file="figures/fast_rcnn_pooling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto yy = n::arange(0, 16).reshape({16, 1}) * n::ones({16, 16}),
@@ -172,7 +169,6 @@ The repeated images below show the actual truth/proposal geometry.
 ```{cpp, results="markdown", file="figures/fast_rcnn_proposals.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -231,7 +227,6 @@ inspection. The model instead pools their shared features as shown above.
 ```{cpp, results="markdown", file="figures/fast_rcnn_sampled_rois.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -298,7 +293,6 @@ classical proposal and no appended truth or random sampling.
 ```{cpp, results="markdown", file="figures/fast_rcnn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

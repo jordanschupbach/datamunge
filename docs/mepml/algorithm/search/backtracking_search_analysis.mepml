@@ -110,7 +110,6 @@ vertex. The block counts both families with `count_simple_paths()`.
 ```{cpp, results="markdown", file="figures/backtracking_search_growth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 
@@ -228,7 +227,6 @@ from the corner.
 ```{cpp, results="markdown", file="figures/backtracking_search_tour.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 

@@ -110,7 +110,6 @@ classification of the digit.
 ```{cpp, results="markdown", file="figures/best_bin_first_budget.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace geo = dm::geometry;
 

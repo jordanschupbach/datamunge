@@ -32,13 +32,6 @@ the reusable native rooted-tree drawing method, rather than a hand-coded layout.
 
 ```{cpp, results="markdown", file="figures/fp_growth_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fp_growth.hpp>
-#include <datamunge/algorithms/eclat.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <numeric>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -126,13 +119,6 @@ from those native records.
 
 ```{cpp, results="markdown", file="figures/fp_growth_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fp_growth.hpp>
-#include <datamunge/algorithms/eclat.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <numeric>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -198,13 +184,6 @@ with no separately supplied data file.
 
 ```{cpp, results="markdown", file="figures/fp_growth_titanic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fp_growth.hpp>
-#include <datamunge/algorithms/eclat.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <numeric>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -263,13 +242,6 @@ axis explicitly shows log2 of the untransformed result counts.
 
 ```{cpp, results="markdown", file="figures/fp_growth_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fp_growth.hpp>
-#include <datamunge/algorithms/eclat.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <numeric>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -339,13 +311,6 @@ Their complete-output equivalence claim requires a positive threshold.
 
 ```{cpp, results="markdown", file="figures/fp_growth_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/fp_growth.hpp>
-#include <datamunge/algorithms/eclat.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <numeric>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

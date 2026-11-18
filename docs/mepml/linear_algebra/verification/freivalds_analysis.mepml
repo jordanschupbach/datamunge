@@ -35,12 +35,6 @@ Every round computes three products: Br, A(Br), and Cr.
 
 ```{cpp, results="markdown", file="figures/freivalds_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/freivalds.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -130,12 +124,6 @@ IID sampling design or confidence intervals.
 
 ```{cpp, results="markdown", file="figures/freivalds_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/freivalds.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -227,12 +215,6 @@ floating test and are not independent exact-arithmetic oracles.
 
 ```{cpp, results="markdown", file="figures/freivalds_numerical.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/freivalds.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -299,12 +281,6 @@ after all three matvecs for its round have been computed.
 
 ```{cpp, results="markdown", file="figures/freivalds_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/freivalds.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -369,12 +345,6 @@ perform the requested number of empty rounds with no random draws.
 
 ```{cpp, results="markdown", file="figures/freivalds_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/freivalds.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

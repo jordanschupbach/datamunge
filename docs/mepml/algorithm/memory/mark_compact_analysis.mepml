@@ -30,10 +30,6 @@ collector run.
 
 ```{cpp, results="markdown", file="figures/mark_compact_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/mark_compact.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::ObjectGraph g{4, {{2}, {}, {3}, {}}, {0}, {}};
@@ -85,10 +81,6 @@ physically relocated in memory.
 
 ```{cpp, results="markdown", file="figures/mark_compact_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/mark_compact.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto a =
@@ -162,10 +154,6 @@ from new0 to new1 rather than suggesting distinct target objects.
 
 ```{cpp, results="markdown", file="figures/mark_compact_aliases.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/mark_compact.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::ObjectGraph g{6, {{2, 2}, {}, {4}, {5}, {2}, {}}, {0, 0, 4},
@@ -238,10 +226,6 @@ controls.
 
 ```{cpp, results="markdown", file="figures/mark_compact_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/mark_compact.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto g = dm::algorithms::mark_compact_demo_graph();

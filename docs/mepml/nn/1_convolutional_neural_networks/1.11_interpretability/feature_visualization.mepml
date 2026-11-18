@@ -74,8 +74,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/feature_visualization_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -119,7 +117,6 @@ an explicit1/Bfactor. Uniform inputs use raw mt19937draws and Doubletensor
 ```{cpp, results="markdown", file="figures/feature_visualization_noise.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n      = dm::nn;
   namespace m      = n::models;
@@ -164,7 +161,6 @@ selected response and objective gain rather than hiding weak or confusing cases.
 ```{cpp, results="markdown", file="figures/feature_visualization_images.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -420,7 +416,6 @@ becomes exclusive or defines the entire visible pattern.
 ```{cpp, results="markdown", file="figures/feature_visualization_responses.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

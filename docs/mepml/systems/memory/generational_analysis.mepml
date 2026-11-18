@@ -27,13 +27,6 @@ API nevertheless pays for old-field discovery and a separate full comparison.
 
 ```{cpp, results="markdown", file="figures/generation_first.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/generational.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -109,13 +102,6 @@ never pops it.
 
 ```{cpp, results="markdown", file="figures/generation_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/generational.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -173,13 +159,6 @@ source’s root reachability. Minor retention can consequently exceed full liven
 
 ```{cpp, results="markdown", file="figures/generation_floating.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/generational.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -222,13 +201,6 @@ ages would require rebuilding or updating the boundary index under a separate AP
 
 ```{cpp, results="markdown", file="figures/generation_barrier.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/generational.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -285,13 +257,6 @@ collection expensive even with few young objects.
 
 ```{cpp, results="markdown", file="figures/generation_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/generational.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -345,13 +310,6 @@ allocation; one original seven-object example requires cap 7 and rejects 6.
 
 ```{cpp, results="markdown", file="figures/generation_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/generational.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

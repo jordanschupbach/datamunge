@@ -1,0 +1,43 @@
+//? Title: Gaussian-process regression
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A squared-exponential covariance ties nearby latent responses together. The model
+estimates the overall level and signal scale from the data. The length scale and
+noise-to-signal ratio are supplied, so the displayed latent-function intervals
+condition on those settings and on the fitted level and scale.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/gp_smoothing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    using DF = dm::dstruct::DataFrame;
+    const DF data{
+        {"x", DF::numeric_column_type(dm::c(-2., -1.5, -1., -0.4, 0.3, 0.8, 1.4, 2.))},
+        {"y", DF::numeric_column_type(dm::c(-0.25, -0.95, -1.2, -0.55, 0.4, 1.05, 0.75, 0.2))}
+    };
+    const dm::stats::GaussianProcessRegression gp(data, "y ~ x",
+        {.length_scale = 0.65, .noise_ratio = 0.06, .standardize = false});
+    const DF query{{"x", DF::numeric_column_type(dm::c(0., 2.5))}};
+    const auto prediction = gp.predict_detail(query, 0.9);
+    std::print("Latent means at x=0 and x=2.5: {:.2f}, {:.2f}.\n",
+               prediction.fit[0], prediction.fit[1]);
+    std::filesystem::create_directories("build");
+    gp.plot_fit(data, 200, 0.9).save_svg("build/gp_smoothing.svg");
+}
+```
+// result_begin: markdown
+Latent means at x=0 and x=2.5: -0.00, -0.01.
+\image(figures/gp_smoothing.svg)
+// result_end
+\caption(Observed responses and the Gaussian-process latent mean with pointwise 90% posterior limits.)
+\alttext(Observed responses and the Gaussian-process latent mean with pointwise 90% posterior limits.)
+
+> Reference
+
+Stan User’s Guide 2.19, chapter 10.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

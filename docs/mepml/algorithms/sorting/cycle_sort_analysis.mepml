@@ -178,7 +178,6 @@ explicit; no platform-specific shuffle or real data preparation is involved.
 
 ```{cpp, results="markdown", file="figures/cycle_sort.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <random>
 int main() {
   std::filesystem::create_directories("build");
   const auto first=dm::algorithms::cycle_sort_trace({5,3,8,1,9,2,7});
@@ -323,7 +322,6 @@ zero cells. The input structure and chosen kernel both matter.
 
 ```{cpp, results="markdown", file="figures/cycle_sort_cost.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numeric>
 int main() {
   std::filesystem::create_directories("build");
   std::vector<int> sorted(200);std::iota(sorted.begin(),sorted.end(),0);auto reversed=sorted;std::reverse(reversed.begin(),reversed.end());

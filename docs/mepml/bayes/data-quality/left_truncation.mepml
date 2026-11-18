@@ -1,0 +1,72 @@
+//? Title: Regression with left-truncated measurements
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A sensor retains only positive measurements. Before selection, each measurement is
+Gaussian with unknown mean and SD one. The retained-data likelihood divides each
+density by the probability of a positive reading. The mean has a Normal(0, 2) prior.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/left_truncation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const double y[]{0.05, 0.2, 0.3, 0.7, 0.9, 1.1};
+    b::LogDensity target([&](const auto& q) {
+        const double log_retention = std::log(0.5 * std::erfc(-q[0] / std::sqrt(2.)));
+        double lp = b::normal_lpdf(q[0], 0., 2.);
+        for (double value : y) lp += b::normal_lpdf(value, q[0], 1.) - log_retention;
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {-8}, {5}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Untruncated mean").y_label("Density");
+    std::vector<double> x, predicted;
+    for (int i = 0; i <= 100; ++i) {
+        const double value = 3. * i / 100;
+        double probability = 0;
+        for (std::size_t j = 0; j < post.marginal_grid[0].size(); ++j) {
+            const double mu = post.marginal_grid[0][j];
+            const double tail_ratio = std::erfc((value - mu) / std::sqrt(2.))
+                                    / std::erfc(-mu / std::sqrt(2.));
+            probability += (1 - tail_ratio) * post.marginal_density[0][j] * 13 / 1000;
+        }
+        x.push_back(value);
+        predicted.push_back(probability);
+    }
+    std::vector<double> empirical_x{0}, empirical_p{0};
+    for (std::size_t i = 0; i < std::size(y); ++i) {
+        empirical_x.insert(empirical_x.end(), 2, y[i]);
+        empirical_p.push_back(i / double(std::size(y)));
+        empirical_p.push_back((i + 1) / double(std::size(y)));
+    }
+    empirical_x.push_back(x.back());
+    empirical_p.push_back(1);
+    auto fit = RPlot::create().lines(empirical_x, empirical_p, "empirical CDF", {70, 70, 70})
+        .lines(x, predicted, "posterior predictive CDF", {36, 105, 172})
+        .title("Fit to retained measurements").x_label("Positive reading").y_label("Cumulative probability");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/left_truncation.svg");
+}
+```
+// result_begin: markdown
+Posterior mean -0.924, posterior SD 0.806, edge mass 7.40e-12.
+\image(figures/left_truncation.svg)
+// result_end
+\caption(Untruncated mean posterior and fitted versus empirical cumulative distributions for retained measurements.)
+\alttext(Untruncated mean posterior and fitted versus empirical cumulative distributions for retained measurements.)
+
+> Reference
+
+Stan User’s Guide 2.19, sections 4.1–4.2.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

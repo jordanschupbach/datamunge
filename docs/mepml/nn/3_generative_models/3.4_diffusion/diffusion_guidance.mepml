@@ -33,7 +33,6 @@ Classifier-free guidance computes epsilon_null+w*(epsilon_class-epsilon_null). W
 
 ```{cpp, results="markdown", file="figures/diffusion_guidance_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 namespace n=dm::nn;namespace m=n::models;using T=n::Tensor;
 int main(){std::filesystem::create_directories("build");
 std::vector<T> out;for(int k=0;k<3;++k)out.push_back(m::ClassifierFreeEpsilon(n::full({1,2},.8),n::full({1,2},.2),n::scalar(k)));T left=n::from_vector(std::vector<float>{0,1,2},{3}),right=n::select(n::concat(out,0),1,0),extra=n::full({3},.8);
@@ -121,15 +120,6 @@ The following program is the editable experiment, including its held-out checks,
 // names match tflow's ("hidden1/W", ...), so TF's initial_arrays.npz /
 // model_arrays.npz load directly (init=auto replays TF's run).
 
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <string>
-#include <vector>
 
 // Report-local workflow adapters: binary_pixels.hpp
 // Shared harness of the binary 8x8 MNIST autoregressive density ports
@@ -150,18 +140,6 @@ The following program is the editable experiment, including its held-out checks,
 // match. Independently of the trajectory, TF's FINAL weights (model_arrays.npz)
 // are loaded into a fresh model which must reproduce TF's test outputs.
 
-#include <algorithm>
-#include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Report-local workflow adapters: autoencoder.hpp
 // Shared support for the autoencoder ports: a port of the parts of tflow's
@@ -176,35 +154,15 @@ The following program is the editable experiment, including its held-out checks,
 // generator, so trajectories match tflow only statistically; batch orders and
 // Gaussian noise banks are bit-identical to tflow's.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <memory>
-#include <ostream>
-#include <random>
-#include <set>
-#include <string>
-#include <vector>
 
 // Report-local workflow adapters: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Report-local workflow adapters: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -270,12 +228,8 @@ inline void Header(const std::string& title) {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Report-local workflow adapters: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot(){return std::filesystem::absolute("build/datasets").string();}
 inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}
@@ -809,16 +763,7 @@ inline void Mosaic3(const std::filesystem::path& path, const nn::Tensor& values,
 // (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
 // numerically, independently of the random initialisation.
 
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
-#include <datamunge/nn/nn.hpp>
 
 
 
@@ -2306,7 +2251,6 @@ The matrix uses all 200 test rows and their declared source noise levels, rather
 
 ```{cpp, results="markdown", file="figures/diffusion_guidance_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 int main(){namespace n=dm::nn;auto load=[](const std::string& file,const std::string& key){for(const auto& [name,value]:n::load_npz(file))if(name==key)return value;throw std::runtime_error("Missing classifier field "+key);};
  auto logits=load("build/diffusion-models/models/diffusion_guidance/classifier/outputs.npz","prediction"),labels=load("build/diffusion-models/models/diffusion_guidance/data.npz","test_labels");
  n::ConfusionMatrix matrix(10);matrix.add(labels,n::argmax(logits,1));matrix.save_svg("build/diffusion_guidance_confusion.svg",{.title="All 200 held-out noisy MNIST queries"});n::save_npz("build/diffusion_guidance_confusion.npz",{{"counts",matrix.to_tensor()}});std::cout<<"| Test rows | Accuracy |\n|---:|---:|\n|"<<labels.numel()<<"|"<<matrix.accuracy()<<"|\n";
@@ -2325,9 +2269,6 @@ All three recorded validation rows are shown. This figure preserves the source b
 
 ```{cpp, results="markdown", file="figures/diffusion_guidance_classifier_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/diffusion-models/models/diffusion_guidance/classifier/history.tsv");if(!input)throw std::runtime_error("Missing preserved training history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Source three-epoch history");
  dm::graphics::RPlot::create().lines(epoch,loss,"All source validation epochs",{37,99,235}).points(epoch,loss,"Recorded values",{234,88,12},5).x_label("Epoch").y_label("Cross entropy").title("Noisy-classifier validation objective").size(900,500).save_svg("build/diffusion_guidance_classifier_history.svg");std::cout<<"| Epoch | Cross entropy |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";
 }
@@ -2347,9 +2288,6 @@ All three recorded validation rows are shown. This figure preserves the source b
 
 ```{cpp, results="markdown", file="figures/diffusion_guidance_conditional_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/diffusion-models/models/diffusion_guidance/conditional/history.tsv");if(!input)throw std::runtime_error("Missing preserved training history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Source three-epoch history");
  dm::graphics::RPlot::create().lines(epoch,loss,"All source validation epochs",{37,99,235}).points(epoch,loss,"Recorded values",{234,88,12},5).x_label("Epoch").y_label("Epsilon MSE").title("Conditional validation noise error").size(900,500).save_svg("build/diffusion_guidance_conditional_history.svg");std::cout<<"| Epoch | Epsilon MSE |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";
 }

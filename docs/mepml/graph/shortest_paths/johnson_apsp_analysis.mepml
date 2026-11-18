@@ -26,12 +26,6 @@ not additional graph edges.
 
 ```{cpp, results="markdown", file="figures/johnson_reweight.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/johnson_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -129,12 +123,6 @@ means unreachable.
 
 ```{cpp, results="markdown", file="figures/johnson_heap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/johnson_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<dm::algorithms::WeightedEdge> edges = {{0, 1, 10},
@@ -214,12 +202,6 @@ continue optimizing an unbounded objective.
 
 ```{cpp, results="markdown", file="figures/johnson_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/johnson_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     using E = dm::algorithms::WeightedEdge;
@@ -313,12 +295,6 @@ measures these operations rather than wall-clock time.
 
 ```{cpp, results="markdown", file="figures/johnson_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/johnson_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, asc, rev, search;

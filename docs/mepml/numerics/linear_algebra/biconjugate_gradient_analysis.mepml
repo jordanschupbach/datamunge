@@ -301,7 +301,6 @@ in products with \(A\) or \(A^\top\).
 ```{cpp, results="markdown", file="figures/bicg_convergence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 
@@ -490,7 +489,6 @@ eigenvalues of \(A\) close to zero. We count the products needed to reach
 ```{cpp, results="markdown", file="figures/bicg_damping.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <random>
 
 namespace alg = dm::algorithms;
 

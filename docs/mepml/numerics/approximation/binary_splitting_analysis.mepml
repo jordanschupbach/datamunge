@@ -86,7 +86,6 @@ int main() {
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numeric>
 int main() {
   std::print("| terms | raw numerator | raw denominator | reduced fraction | double value |\n"
              "| ---: | ---: | ---: | :--- | ---: |\n");
@@ -205,7 +204,6 @@ nodes. The exact fractions need not be reduced at intermediate stages.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
 int main() {
   std::print("| effective terms | recorded nodes | exact node count | merges |\n"
              "| ---: | ---: | ---: | ---: |\n");

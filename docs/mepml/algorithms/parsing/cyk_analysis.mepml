@@ -262,7 +262,6 @@ counts while leaving the language and distinct chart memberships unchanged.
 
 ```{cpp, results="markdown", file="figures/cyk_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <climits>
 int main() {
   std::filesystem::create_directories("build");
   dm::algorithms::CNFGrammar g;g.unary['a']={0};g.binary={{0,0,0}};

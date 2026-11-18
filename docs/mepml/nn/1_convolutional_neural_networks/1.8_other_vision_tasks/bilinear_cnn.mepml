@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/bilinear_cnn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -105,7 +103,6 @@ matrix entry and both stream Jacobians on signed multi-image features.
 ```{cpp, results="markdown", file="figures/bilinear_cnn_outer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   auto a = n::tensor({1., 2., 3., 4.}, {1, 1, 2, 2}).requires_grad_(),
@@ -158,7 +155,6 @@ cover negative,zero,tiny and positive coordinates plus stable extreme-logit CE.
 ```{cpp, results="markdown", file="figures/bilinear_cnn_root.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   auto x = n::linspace(-2, 2, 401).requires_grad_();
@@ -204,7 +200,6 @@ recorded stages. There is no pretrained state,BN or dropout.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -271,7 +266,6 @@ Set `DATAMUNGE_FLOWERS_DIR` to use a prepared directory elsewhere.
 ```{cpp, results="markdown", file="figures/bilinear_cnn_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
 
@@ -320,7 +314,6 @@ distance divided by.02 gives a reference probability vector.
 ```{cpp, results="markdown", file="figures/bilinear_cnn_colour.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -398,7 +391,6 @@ Brier is the six-class squared-error **sum**,averaged across images.
 
 ```{cpp, results="markdown", file="figures/bilinear_cnn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <print>
 int main() {
   int rendered_confusions = 0;
   namespace n             = dm::nn;

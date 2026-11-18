@@ -25,11 +25,6 @@ All vertices read the same positions during force accumulation and move afterwar
 
 ```{cpp, results="markdown", file="figures/force_directed_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/force_directed_layout.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <print>
-#include <iostream>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -105,11 +100,6 @@ The figure uses undirected paths, so its links carry no arrowheads.
 
 ```{cpp, results="markdown", file="figures/force_directed_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/force_directed_layout.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <print>
-#include <iostream>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -176,11 +166,6 @@ uses only raw states, before final normalization changes the fixed-k potential.
 
 ```{cpp, results="markdown", file="figures/force_directed_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/force_directed_layout.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <print>
-#include <iostream>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -216,11 +201,6 @@ from the capped motion. Three attractive records can reverse the net direction.
 
 ```{cpp, results="markdown", file="figures/force_directed_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/force_directed_layout.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <print>
-#include <iostream>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -271,11 +251,6 @@ executed visits, not wall-clock time or cross-library performance.
 
 ```{cpp, results="markdown", file="figures/force_directed_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/force_directed_layout.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <print>
-#include <iostream>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

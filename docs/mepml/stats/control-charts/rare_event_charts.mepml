@@ -1,0 +1,64 @@
+//? Title: Rare-event g and t charts
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two synthetic event logs track the same kind of process in different units.
+The g-chart records the count of event-free opportunities between events. The
+t-chart records positive time intervals. Eight initial gaps fit each baseline,
+then the logs contain an unusually long gap followed by closely spaced events.
+)
+
+> Fit, monitor and plot
+
+```{cpp, results="markdown", file="figures/rare_event_charts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace spc = datamunge::stats;
+using datamunge::graphics::RLayout;
+
+void show_signals(const spc::ControlChart& chart) {
+    for (const auto& p : chart.points)
+        if (p.outside)
+            std::print("| {} | {} | {:.3f} | {:.3f} | {:.3f} |\n",
+                       chart.title, p.index, p.value, p.lower, p.upper);
+}
+
+int main() {
+    const std::vector<std::size_t> between{12, 20, 18, 9, 25, 13, 17, 24, 16, 145, 0, 18};
+    const std::vector<double> hours{5, 7, 6, 4, 8, 3, 6, 5, 7, 48, 0.001, 6};
+    const spc::ControlChartOptions baseline{.baseline_size = 8};
+    const auto g = spc::g_chart(between, baseline);
+    const auto t = spc::t_chart(hours, baseline);
+    std::print("| Chart | Gap | Statistic | Lower | Upper |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    show_signals(g);
+    show_signals(t);
+    std::filesystem::create_directories("build");
+    RLayout::create(1, 2).size(1100, 400).add(g.plot()).add(t.plot())
+        .save_svg("build/rare_event_charts.svg");
+}
+```
+// result_begin: markdown
+| Chart | Gap | Statistic | Lower | Upper |
+| --- | ---: | ---: | ---: | ---: |
+| g-chart | 10 | 145.000 | 0.000 | 117.000 |
+| t-chart | 10 | 48.000 | 0.007 | 36.342 |
+| t-chart | 11 | 0.001 | 0.007 | 36.342 |
+\image(figures/rare_event_charts.svg)
+// result_end
+\caption(Observed gaps against geometric and exponential limits fitted from the first eight intervals.)
+\alttext(The discrete gap chart flags a long gap. The continuous gap chart displays both very long and very short intervals against its limits.)
+
+> Interpret the chart
+
+Each center line is the fitted median. The limits use the fitted geometric
+or exponential tails, rather than a symmetric band around the center. The
+integer lower limit can land at zero, so a zero gap on this g-chart is on the
+limit and does not signal under the strict outside-limit rule. The continuous
+t-chart can flag unusually small positive gaps.
+
+> References
+
+- [Benneyan, Number-between g-type statistical quality control charts|https://doi.org/10.1023/A:1011846412909]

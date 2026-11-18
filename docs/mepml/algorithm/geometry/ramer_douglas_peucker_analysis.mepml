@@ -41,33 +41,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/ramer_douglas_peucker_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/ramer_douglas_peucker.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -105,33 +78,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/ramer_douglas_peucker_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/ramer_douglas_peucker.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -180,33 +126,6 @@ Actual epsilon0.2 retained original indices: [0, 13, 30, 47, 73, 91, 108, 133, 1
 
 ```{cpp, results="markdown", file="figures/ramer_douglas_peucker_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/ramer_douglas_peucker.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -259,33 +178,6 @@ Negative epsilon rejected even for empty input: true.
 
 ```{cpp, results="markdown", file="figures/ramer_douglas_peucker_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/algorithms/ramer_douglas_peucker.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

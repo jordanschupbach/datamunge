@@ -1,0 +1,62 @@
+//? Title: Bayesian inference with an implicit equilibrium
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An equilibrium x satisfies x³ + x = θ. Observations are Normal around x with known SD
+0.25. A Normal prior on θ is updated by evaluating the likelihood at the physical
+equilibrium for each proposed θ. The equation is strictly monotone, so each grid point
+has a unique root.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/implicit_equilibrium.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const double y[]{0.6, 0.9, 0.8, 1.1, 0.7};
+    const auto equilibrium = [](double theta) {
+        return datamunge::algorithms::bisection(
+            [theta](double x) { return x * x * x + x - theta; }, -4, 4).root;
+    };
+    b::LogDensity target([&](const auto& q) {
+        const double theta = q[0];
+        const double state = equilibrium(theta);
+        double lp = b::normal_lpdf(theta, 0., 2.);
+        for (double value : y) lp += b::normal_lpdf(value, state, 0.25);
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {-6}, {9}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Forcing parameter").y_label("Density");
+    double fitted = 0;
+    const auto& grid = post.marginal_grid[0];
+    for (std::size_t j = 0; j < grid.size(); ++j)
+        fitted += equilibrium(grid[j]) * post.marginal_density[0][j] * 15 / 1000;
+    const std::vector<double> index{1, 2, 3, 4, 5};
+    auto fit = RPlot::create().points(index, {std::begin(y), std::end(y)}, "observed", {70, 70, 70})
+        .lines({1, 5}, {fitted, fitted}, "posterior expected state", {36, 105, 172})
+        .title("Equilibrium fit").x_label("Measurement").y_label("State");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/implicit_equilibrium.svg");
+}
+```
+// result_begin: markdown
+Posterior mean 1.419, posterior SD 0.337, edge mass 9.33e-28.
+\image(figures/implicit_equilibrium.svg)
+// result_end
+\caption(Forcing parameter posterior and fitted mean equilibrium against the observed states.)
+\alttext(Forcing parameter posterior and fitted mean equilibrium against the observed states.)
+
+> Reference
+
+Stan User’s Guide 2.19, chapter 12.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

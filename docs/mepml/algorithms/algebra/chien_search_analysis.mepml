@@ -91,7 +91,6 @@ native tests rather than treating two shared-library calls as independent proof.
 
 ```{cpp, results="markdown", file="figures/chien_search.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <set>
 int main() {
   std::filesystem::create_directories("build");
   const dm::algorithms::GFPoly f{4,3,2,1};const std::int64_t p=13;

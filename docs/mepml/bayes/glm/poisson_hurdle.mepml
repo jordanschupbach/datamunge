@@ -1,0 +1,74 @@
+//? Title: Poisson hurdle model
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two mechanisms govern the responses. A Bernoulli variable determines whether a count
+is positive, and positive counts follow a Poisson distribution conditioned to exceed
+zero. The likelihood factors, so a Beta(2, 2) prior for the positive probability gives
+an independent exact update. The log rate has a Normal(0, 1.5) prior; quadrature
+integrates it out. At zero, only the Bernoulli term contributes, while a zero-inflated
+process also allows zeros from the count component.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/poisson_hurdle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<double> y{0, 0, 1, 3, 0, 1, 2, 0, 5, 1, 0, 3};
+    const double positives = std::count_if(y.begin(), y.end(), [](double value) { return value > 0; });
+    const double positive_probability = (2 + positives) / (4 + y.size());
+    const auto log_positive = [](double eta) { return std::log(-std::expm1(-std::exp(eta))); };
+    b::LogDensity target([&](const auto& q) {
+        double lp = b::normal_lpdf(q[0], 0., 1.5);
+        for (const auto value : y)
+            if (value > 0) lp += b::poisson_log_lpmf(value, q[0]) - log_positive(q[0]);
+        return lp;
+    });
+    constexpr int cells = 1000;
+    constexpr double lower = -8, upper = 5;
+    const auto post = b::grid_posterior(target, {lower}, {upper}, cells);
+    std::vector<double> counts{0}, predictive{1 - positive_probability};
+    for (int k = 1; k <= 9; ++k) {
+        double mass = 0;
+        for (int j = 0; j < cells; ++j) {
+            const double eta = post.marginal_grid[0][j];
+            const double pmf = std::exp(b::poisson_log_lpmf(k, eta) - log_positive(eta));
+            mass += pmf * post.marginal_density[0][j] * ((upper - lower) / cells);
+        }
+        counts.push_back(k);
+        predictive.push_back(positive_probability * mass);
+    }
+    std::print("Predictive zero probability {:.3f}. Probability above 9 {:.4f}.\n",
+               predictive.front(), 1 - std::accumulate(predictive.begin(), predictive.end(), 0.));
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().segments(counts, std::vector<double>(counts.size()), counts, predictive, {36, 105, 172}, 2)
+        .points(counts, predictive, "posterior predictive", {36, 105, 172})
+        .title("Predictive count distribution").x_label("New count").y_label("Probability");
+    std::vector<double> frequency(counts.size());
+    for (const double value : y)
+        if (value < frequency.size()) frequency[static_cast<std::size_t>(value)] += 1. / y.size();
+    auto fit = RPlot::create().points(counts, frequency, "observed proportion", {70, 70, 70})
+        .lines(counts, predictive, "posterior predictive mass", {36, 105, 172})
+        .title("Observed versus fitted counts").x_label("Count").y_label("Probability");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/poisson_hurdle.svg");
+}
+```
+// result_begin: markdown
+Predictive zero probability 0.438. Probability above 9 0.0001.
+\image(figures/poisson_hurdle.svg)
+// result_end
+\caption(Posterior predictive masses and a comparison with the observed count frequencies.)
+\alttext(Posterior predictive masses and a comparison with the observed count frequencies.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 5.6.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

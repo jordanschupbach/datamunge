@@ -1,0 +1,70 @@
+//? Title: Fitting and querying a discrete Bayesian network
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate a binary treatment and outcome with a shared cause. Fit conditional
+probability tables using a Dirichlet prior and compare observational
+conditioning to an intervention. Fit a Chow–Liu tree to the same data to
+explore an alternative probabilistic factorization.
+)
+
+> Specify the network factorization
+
+```{cpp, results="markdown", file="figures/discrete_network_dag.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    std::filesystem::create_directories("build");
+    const datamunge::causal::DAG graph(3, {{0, 1}, {0, 2}, {1, 2}});
+    graph.diagram({{5, 3}, {0, 0}, {10, 0}}, {"Shared cause", "Treatment", "Outcome"})
+        .save_svg("build/discrete_network_dag.svg");
+}
+```
+// result_begin: markdown
+\image(figures/discrete_network_dag.svg)
+// result_end
+
+> Fit probabilities and compare conditioning with intervention
+
+```{cpp, results="markdown", file="figures/discrete_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace dm = datamunge;
+
+int main() {
+    const dm::causal::DAG graph(3, {{0, 1}, {0, 2}, {1, 2}});
+    const dm::bayes::DiscreteBayesianNetwork truth(graph, {2, 2, 2},
+        {{.5, .5}, {.8, .2, .2, .8}, {.9, .1, .7, .3, .5, .5, .3, .7}});
+    const auto data = truth.sample(3000, 119);
+    const auto fit = dm::bayes::fit_discrete_network(graph, {2, 2, 2}, data);
+    const auto tree = dm::bayes::fit_chow_liu(data, {2, 2, 2});
+    std::vector<double> conditional, interventional, generating;
+    for (const std::size_t treatment : {0, 1}) {
+        conditional.push_back(fit.marginal(2, {{1, treatment}})[1]);
+        interventional.push_back(fit.marginal(2, {}, {{1, treatment}})[1]);
+        generating.push_back(truth.marginal(2, {}, {{1, treatment}})[1]);
+    }
+    std::cout << "Fitted intervention contrast: " << interventional[1] - interventional[0]
+              << ". Chow–Liu predictive outcome probability: " << tree.marginal(2)[1] << ".\n";
+    std::filesystem::create_directories("build");
+    dm::graphics::RPlot::create()
+        .lines({0, 1}, conditional, "Observed treatment group", {207, 82, 57})
+        .lines({0, 1}, interventional, "Fitted intervention", {36, 105, 172})
+        .points({0, 1}, generating, "Generating intervention")
+        .title("Outcome probability by treatment").x_label("Treatment state")
+        .x_ticks({0, 1}, {"0", "1"})
+        .y_label("Probability of outcome = 1").save_svg("build/discrete_network.svg");
+}
+```
+// result_begin: markdown
+Fitted intervention contrast: 0.189647. Chow–Liu predictive outcome probability: 0.394143.
+\image(figures/discrete_network.svg)
+// result_end
+
+Conditioning on treatment changes the distribution of the shared cause.
+Fixing treatment by intervention preserves the shared cause's marginal
+distribution and replaces the treatment mechanism. The generating contrast
+under intervention is 0.2. The Chow–Liu tree chooses edges by empirical
+mutual information and orients them from a chosen root for factorization.
+The causal interpretation in this example comes from the supplied DAG.

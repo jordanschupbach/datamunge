@@ -29,7 +29,6 @@ Predictions0,4 and targets2,6 give squared errors4,4. With fitting-scale SD2, no
 
 ```{cpp, results="markdown", file="figures/lstm_forecast_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
 int main(){namespace n=dm::nn;double computed=n::mean(n::square((n::tensor({0.,4.})-n::tensor({2.,6.}))/2.)).item(),analytic=1.;if(std::abs(computed-analytic)>2e-6)throw std::runtime_error("hand calculation differs from native primitives");std::print("| native calculation | analytic reference |\n|---:|---:|\n| {:.9f} | {:.9f} |\n",computed,analytic);dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,analytic},"worked reference",{37,99,235}).ylim(0,std::max(.5,std::max(computed,analytic)*1.2)).x_label("0 = native calculation;1 = analytic reference").y_label("Toy objective or diagnostic value").title("lstm forecast hand calculation").size(1000,550).save_svg("build/lstm_forecast_worked.svg");}
 ```
 // result_begin: markdown
@@ -91,27 +90,15 @@ inline std::filesystem::path Model(const std::string&name){auto p=std::filesyste
 // Options: epochs=3 data=PATH tf=PATH.
 // Output: output/nn/models/lstm_forecast/.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <iostream>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -184,12 +171,8 @@ inline Tensor NormalizedMse(const Tensor& prediction, const Tensor& target, doub
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable workflow support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
 
 namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}
@@ -230,16 +213,7 @@ inline std::filesystem::path OutputDir(const std::string& relative) {
 // (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
 // numerically, independently of the random initialisation.
 
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
-#include <datamunge/nn/nn.hpp>
 
 
 

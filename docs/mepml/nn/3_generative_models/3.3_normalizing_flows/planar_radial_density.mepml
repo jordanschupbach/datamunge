@@ -321,7 +321,6 @@ every fit, evaluation, restore and reporting step.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 namespace n=dm::nn;namespace m=n::models;namespace fs=std::filesystem;
 using T=n::Tensor;using A=std::map<std::string,T>;
 void Require(bool ok,const std::string& what){if(!ok)throw std::runtime_error(what);}
@@ -752,7 +751,6 @@ int main(){
 
 ```{cpp, results="markdown", file="figures/pr_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 int main(){
  namespace n=dm::nn;using T=n::Tensor;std::map<std::string,T> v;
  for(auto& [k,x]:n::load_npz("build/planar_radial_density/planar/plot_values.npz"))v[k]=x;

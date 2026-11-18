@@ -1,0 +1,59 @@
+//? Title: Poisson GAM for a nonlinear count response
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate count data with a curved log mean. Fit a single smooth with
+a log link and compare its response-scale predictions with simulated
+counts and the generating mean.
+)
+
+> Simulate, fit and predict
+
+```{cpp, results="markdown", file="figures/poisson_gam.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace st = dm::stats;
+using dm::graphics::RLayout;
+using dm::graphics::RPlot;
+
+
+int main() {
+    const auto x = dm::seql(-2, 2, 180);
+    const dm::Vector<> truth = dm::exp(0.75 + 0.9 * dm::sin(1.7 * x));
+    std::mt19937 rng(19);
+    std::vector<double> y;
+    for (double rate : truth) y.push_back(std::poisson_distribution<int>(rate)(rng));
+    const auto model = st::fit_gam(y, {x.values()},
+        {.family = st::GLMFamily::Poisson, .smooths = {{.basis_size = 10, .lambda = 1.2}}});
+    if (!model.converged()) throw std::runtime_error("Poisson GAM did not converge");
+    const auto fitted = model.predict({x.values()});
+
+    auto response = RPlot::create().points(x, y, "Observed counts", {95, 95, 95}, 3)
+        .lines(x, fitted, "Fitted mean", {36, 105, 172})
+        .lines(x, truth, "Generating mean", {182, 83, 29})
+        .title("Poisson count fit").x_label("Predictor").y_label("Count");
+    auto smooth = model.plot_smooth(0).title("Centered log-mean component");
+    std::print("Converged in {} updates. Conditional deviance {:.2f} for {} counts.\n",
+               model.iterations(), model.deviance(), y.size());
+    std::filesystem::create_directories("build");
+    RLayout::create(1, 2).size(1100, 410).add(response).add(smooth).save_svg("build/poisson_gam.svg");
+}
+```
+// result_begin: markdown
+Converged in 6 updates. Conditional deviance 209.34 for 180 counts.
+\image(figures/poisson_gam.svg)
+// result_end
+\caption(Observed counts and fitted and generating means, alongside the log-scale additive component.)
+\alttext(Observed counts and fitted and generating means, alongside the log-scale additive component.)
+
+> Interpretation
+
+Penalized IRLS refits the spline using the current Poisson working
+weights. The identified component is on the log scale. The response-scale
+fit adds the intercept and exponentiates the result.
+
+> References
+
+- [Eilers and Marx, Flexible smoothing with B-splines and penalties|https://doi.org/10.1214/ss/1038425655]
+- [mgcv GAM documentation|https://stat.ethz.ch/R-manual/R-devel/library/mgcv/help/gam.html]

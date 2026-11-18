@@ -1,0 +1,76 @@
+//? Title: Estimating treatment effects from observational data
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate a study where a baseline covariate influences both treatment and
+outcome. Use an assumed DAG to select an adjustment covariate, then compare
+g-computation, inverse probability weighting and augmented weighting.
+)
+
+> Read the adjustment problem from the DAG
+
+```{cpp, results="markdown", file="figures/backdoor_dag.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    std::filesystem::create_directories("build");
+    const datamunge::causal::DAG graph(3, {{0, 1}, {0, 2}, {1, 2}});
+    graph.diagram({{5, 3}, {0, 0}, {10, 0}}, {"Baseline", "Treatment", "Outcome"})
+        .save_svg("build/backdoor_dag.svg");
+}
+```
+// result_begin: markdown
+\image(figures/backdoor_dag.svg)
+// result_end
+
+> Identify an adjustment set and estimate the effect
+
+```{cpp, results="markdown", file="figures/treatment_effects.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace dm = datamunge;
+
+int main() {
+    const dm::causal::DAG graph(3, {{0, 1}, {0, 2}, {1, 2}});
+    const auto adjustment = graph.backdoor_adjustment(1, 2).value();
+    constexpr std::size_t n = 500;
+    dm::linalg::DenseMatrix<double> covariates(n, adjustment.size());
+    std::vector<int> treatment(n);
+    std::vector<double> outcome(n);
+    std::mt19937_64 rng(128);
+    std::normal_distribution<double> normal;
+    std::uniform_real_distribution<double> uniform;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double baseline = normal(rng);
+        covariates(i, 0) = baseline;
+        treatment[i] = uniform(rng) < 1 / (1 + std::exp(-baseline));
+        outcome[i] = 1 + 2 * treatment[i] + 1.5 * baseline + normal(rng);
+    }
+
+    const auto fit = dm::causal::fit_binary_ate(outcome, treatment, covariates);
+    std::cout << "Adjustment node " << adjustment[0] << ". Estimated propensity range "
+              << fit.min_propensity << " to " << fit.max_propensity << ".\n\n"
+              << "Raw " << fit.difference_in_means << ", g-computation " << fit.g_computation
+              << ", IPW " << fit.ipw << ", AIPW " << fit.aipw << ".\n";
+    std::filesystem::create_directories("build");
+    dm::graphics::RPlot::create()
+        .bars({1, 2, 3, 4}, {fit.difference_in_means, fit.g_computation, fit.ipw, fit.aipw})
+        .abline_h(2).title("Estimated treatment effects").y_label("Mean outcome difference")
+        .x_ticks({1, 2, 3, 4}, {"Raw", "G-computation", "IPW", "AIPW"})
+        .save_svg("build/treatment_effects.svg");
+}
+```
+// result_begin: markdown
+Adjustment node 0. Estimated propensity range 0.0443045 to 0.960241.
+
+Raw 3.35464, g-computation 2.09618, IPW 2.07535, AIPW 2.03982.
+\image(figures/treatment_effects.svg)
+// result_end
+
+The horizontal line marks the generating effect of 2. G-computation averages
+outcome predictions for both treatment states over the same covariates. IPW
+balances the groups by their fitted treatment probabilities and AIPW combines
+a propensity model with the outcome predictions. These are point estimates
+under consistency, positivity and no unmeasured confounding. Extreme fitted
+propensities are a warning that some comparisons have little support.

@@ -42,10 +42,6 @@ bottom-to-top.
 
 ```{cpp, results="markdown", file="figures/ll1_stack.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ll1_parser.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const dm::algorithms::LL1Parser p({{{"S", {"a", "S", "b"}}, {"S", {}}}, "S"});
@@ -109,10 +105,6 @@ not measured parsing speed or language-size estimates.
 
 ```{cpp, results="markdown", file="figures/ll1_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ll1_parser.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const dm::algorithms::LL1Parser p(dm::algorithms::ll1_expression_grammar());
@@ -194,10 +186,6 @@ or successful parse is invented for the conflicted model.
 
 ```{cpp, results="markdown", file="figures/ll1_conflict.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ll1_parser.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const dm::algorithms::LL1Parser p(dm::algorithms::ll1_expression_grammar(
@@ -258,10 +246,6 @@ mismatch syntax rejection. There is no lexer, error recovery or backtracking.
 
 ```{cpp, results="markdown", file="figures/ll1_budget.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/ll1_parser.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const dm::algorithms::LL1Parser p({{{"S", {"a", "S", "b"}}, {"S", {}}}, "S"});

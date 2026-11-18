@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/wavenet_stack_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -124,7 +122,6 @@ and all scored fitting code counts;this is next-audio prediction,not digit class
 ```{cpp, results="markdown", file="figures/wavenet_stack_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -203,7 +200,6 @@ shows initialized gates and a legal future-suffix intervention.
 ```{cpp, results="markdown", file="figures/wavenet_stack_gates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -284,7 +280,6 @@ Test prediction uses unchanged fitted counts and observed input codes only.
 ```{cpp, results="markdown", file="figures/wavenet_stack_reference.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -363,7 +358,6 @@ needed for restored inference. The full fitting loss is a separate probe.
 ```{cpp, results="markdown", file="figures/wavenet_stack_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -485,7 +479,6 @@ These are teacher-forced metrics,not sampled audio quality.
 ```{cpp, results="markdown", file="figures/wavenet_stack_metrics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -629,8 +622,6 @@ are not intelligible speech,voice cloning or a conditioned vocoder benchmark.
 ```{cpp, results="markdown", file="figures/wavenet_stack_generation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
-#include <random>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

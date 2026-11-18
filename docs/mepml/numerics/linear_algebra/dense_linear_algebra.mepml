@@ -839,8 +839,6 @@ times are for this machine and vary between runs.
 ```{cpp, results="markdown", file="figures/dense_linear_algebra_timing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <random>
 
 namespace la = dm::linalg;
 

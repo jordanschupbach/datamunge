@@ -342,8 +342,6 @@ and diagnostic JSON values are retained.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <map>
 namespace n = dm::nn;
 namespace m = n::models;
 void Require(bool condition, const std::string& message) {

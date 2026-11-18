@@ -33,23 +33,6 @@ captured values from that same run.
 
 ```{cpp, results="markdown", file="figures/pollard_rho_log_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <datamunge/algorithms/discrete_log.hpp>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -96,23 +79,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/pollard_rho_log_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <datamunge/algorithms/discrete_log.hpp>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -158,23 +124,6 @@ Original6^x=97237 mod104729: actual returned exponent31337, foundtrue. The decla
 
 ```{cpp, results="markdown", file="figures/pollard_rho_log_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <datamunge/algorithms/discrete_log.hpp>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -223,23 +172,6 @@ Native exact base order5512.
 
 ```{cpp, results="markdown", file="figures/pollard_rho_log_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <datamunge/algorithms/discrete_log.hpp>
 int main() {
     std::filesystem::create_directories("build");
 

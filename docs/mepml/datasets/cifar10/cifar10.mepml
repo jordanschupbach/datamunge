@@ -85,10 +85,6 @@ these moments.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <fstream>
-#include <map>
 int main() {
     namespace n = dm::nn;
     namespace s = n::study;
@@ -152,9 +148,6 @@ sha256sum -c "$study_report_dir/artifacts/dataset.sha256"
 
 ```{cpp, results="markdown", file="figures/training_examples.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     namespace s = n::study;
@@ -186,9 +179,6 @@ Five fitting images per class; rows follow original class IDs 0 through 9.
 
 ```{cpp, results="markdown", file="figures/class_means.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     namespace s = n::study;
@@ -281,9 +271,6 @@ absence of overfitting.
 
 ```{cpp, results="markdown", file="figures/architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     namespace s = n::study;
@@ -344,12 +331,6 @@ evaluation and explanation computation.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <chrono>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 
 int main() {
     namespace n = dm::nn;
@@ -582,11 +563,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/tuning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <fstream>
-#include <map>
-#include <sstream>
 int main() {
     std::filesystem::create_directories("build");
     auto plot = dm::graphics::RPlot::create();
@@ -619,11 +595,6 @@ Both candidates use all fitting rows and the same random seeds.
 
 ```{cpp, results="markdown", file="figures/convergence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <fstream>
-#include <map>
-#include <sstream>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> epoch, train, val;
@@ -675,10 +646,6 @@ score has been computed before this decision.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <fstream>
-#include <iomanip>
 int main() {
     namespace n = dm::nn;
     namespace st = n::study;
@@ -780,11 +747,6 @@ and expected random-choice accuracy 0.1; a deterministic tied argmax also scores
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
 
 int main() {
     namespace n = dm::nn;
@@ -926,11 +888,6 @@ duplicates.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <datamunge/nn/image_overlap.hpp>
-#include <fstream>
-#include <map>
 int main() {
     namespace n = dm::nn;
     namespace st = n::study;
@@ -997,11 +954,6 @@ they do not refit or select the model.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <fstream>
-#include <map>
-#include <sstream>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1042,9 +994,6 @@ Test macro F1: 0.90209; Wilson 95% accuracy interval: [0.89612, 0.90777].
 
 ```{cpp, results="markdown", file="figures/confusion_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1071,9 +1020,6 @@ All 10000 official test decisions; no ignored labels.
 
 ```{cpp, results="markdown", file="figures/confusion_recall.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1100,9 +1046,6 @@ All 10000 official test decisions; no ignored labels.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1159,11 +1102,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/reliability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
-#include <fstream>
-#include <iomanip>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1206,9 +1144,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/risk_coverage.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1272,9 +1207,6 @@ IDs and labels appear below each panel and in
 
 ```{cpp, results="markdown", file="figures/correct_examples.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1321,9 +1253,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/confident_errors.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1370,9 +1299,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/uncertain_examples.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1471,11 +1397,6 @@ interventions may move inputs off the natural-image distribution.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <map>
 
 int main() {
     namespace n = dm::nn;
@@ -1640,9 +1561,6 @@ Computed Grad-CAM, IG at 128/256/512 nodes, two IG baselines, 49 occlusions per 
 
 ```{cpp, results="markdown", file="figures/explanations_correct.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1682,9 +1600,6 @@ Rows are the selected correct cases. Columns: original; Grad-CAM overlay; signed
 
 ```{cpp, results="markdown", file="figures/explanations_errors.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1724,9 +1639,6 @@ Rows are the selected confident errors. Columns: original; Grad-CAM overlay; sig
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     std::map<std::string, n::Tensor> a;
@@ -1776,9 +1688,6 @@ Mean absolute pixel-channel attribution change, fitting-mean versus black baseli
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/cifar10_study.hpp>
-#include <datamunge/nn/classification_analysis.hpp>
-#include <map>
 int main() {
     namespace n = dm::nn;
     namespace st = n::study;

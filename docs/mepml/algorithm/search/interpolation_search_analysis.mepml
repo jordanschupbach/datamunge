@@ -24,11 +24,6 @@ The diagram uses the actual recorded interval and candidate from the search.
 
 ```{cpp, results="markdown", file="figures/interpolation_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/interpolation_search_analysis.hpp>
-#include <datamunge/algorithms/binary_search.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -96,11 +91,6 @@ cost. The plotting helper separately validates the complete displayed array.
 
 ```{cpp, results="markdown", file="figures/interpolation_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/interpolation_search_analysis.hpp>
-#include <datamunge/algorithms/binary_search.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -139,11 +129,6 @@ binary probes. These are different measured queries, not a universal comparison.
 
 ```{cpp, results="markdown", file="figures/interpolation_skew.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/interpolation_search_analysis.hpp>
-#include <datamunge/algorithms/binary_search.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -208,11 +193,6 @@ capacity and byte/peak RAM are excluded from the record cap.
 
 ```{cpp, results="markdown", file="figures/interpolation_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/interpolation_search_analysis.hpp>
-#include <datamunge/algorithms/binary_search.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

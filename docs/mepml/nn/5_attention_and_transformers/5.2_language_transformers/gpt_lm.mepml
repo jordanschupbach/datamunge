@@ -99,22 +99,7 @@ Original epoch/batch budgets, random streams, source guard tests and weak outcom
 // checkpoints -> .npz files of the parameter store. Weights initialise from nn's
 // generator (seed 9001) unless TF's saved arrays are replayed (LoadArrays).
 
-#include <datamunge/nn/nn.hpp>
 
-#include <algorithm>
-#include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <iterator>
-#include <map>
-#include <memory>
-#include <random>
-#include <string>
-#include <vector>
 
 // Editable workflow support: attention.hpp
 // Attention helpers for the 5.x example ports (port of the parts of tflow's
@@ -134,20 +119,7 @@ Original epoch/batch budgets, random streams, source guard tests and weak outcom
 //          bottom-right instead of taking an explicit query offset, and its
 //          padding_keep_mask masks keys only).
 
-#include <datamunge/nn/attention.hpp>
-#include <datamunge/nn/io.hpp>
-#include <datamunge/nn/nn.hpp>
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <filesystem>
-#include <functional>
-#include <random>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 namespace attn {
 
@@ -377,17 +349,9 @@ inline Options ParseOptions(int argc, char** argv, const std::string& name,
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -456,12 +420,8 @@ namespace lm {namespace nn=datamunge::nn;using nn::Tensor;using dm::nn::models::
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable workflow support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
 
 namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}

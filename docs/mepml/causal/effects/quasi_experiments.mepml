@@ -1,0 +1,55 @@
+//? Title: Instrumental variables and difference-in-differences
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit two quasi-experimental estimators to simulated data. A randomized
+encouragement shifts a confounded exposure, and a panel intervention shifts
+the treated group after the baseline period.
+)
+
+> Fit 2SLS and a two-period panel estimate
+
+```{cpp, results="markdown", file="figures/quasi_experiments.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace dm = datamunge;
+
+int main() {
+    constexpr std::size_t n = 500;
+    dm::linalg::DenseMatrix<double> instrument(n, 1);
+    std::vector<double> exposure(n), outcome(n), before(n), after(n);
+    std::vector<int> group(n);
+    std::mt19937_64 rng(717);
+    std::normal_distribution<double> normal;
+    std::bernoulli_distribution coin;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double confounder = normal(rng);
+        instrument(i, 0) = coin(rng);
+        exposure[i] = 1.6 * instrument(i, 0) + confounder + normal(rng);
+        outcome[i] = 2 * exposure[i] + 2 * confounder + normal(rng);
+        group[i] = coin(rng);
+        before[i] = 4 * group[i] + confounder;
+        after[i] = before[i] + 1 + 3 * group[i] + normal(rng);
+    }
+    const auto iv = dm::causal::two_stage_least_squares(outcome, exposure, instrument);
+    const double did = dm::causal::difference_in_differences(before, after, group);
+    std::cout << "First-stage F = " << iv.first_stage_f
+              << ". 2SLS = " << iv.effect << ". Panel DiD = " << did << ".\n";
+    std::filesystem::create_directories("build");
+    dm::graphics::RPlot::create().bars({1, 2}, {iv.effect, did})
+        .points({1, 2}, {2, 3}, "Generating effects").title("Quasi-experimental estimates")
+        .x_ticks({1, 2}, {"Two-stage least squares", "Difference-in-differences"})
+        .y_label("Effect").save_svg("build/quasi_experiments.svg");
+}
+```
+// result_begin: markdown
+First-stage F = 156.461. 2SLS = 2.08942. Panel DiD = 2.99883.
+\image(figures/quasi_experiments.svg)
+// result_end
+
+The instrument is independent of the confounder and affects the outcome
+through exposure alone. The first-stage partial F measures relevance in the
+sample. The panel simulation has parallel trends under no treatment, with a
+baseline level gap between groups. With two periods, parallel trends is an
+assumption about the unobserved post-treatment counterfactual.

@@ -45,10 +45,6 @@ edge and one changed edge. The table shows every real postorder write.
 
 ```{cpp, results="markdown", file="figures/parsimony_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/maximum_parsimony.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::ParsimonyTree tree{2, {{-1, -1}, {-1, -1}, {0, 1}}};
@@ -98,10 +94,6 @@ not a claimed empirical DNA alignment.
 
 ```{cpp, results="markdown", file="figures/parsimony_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/maximum_parsimony.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto cols = dm::algorithms::parsimony_demo_columns();
@@ -150,11 +142,6 @@ optimum.
 
 ```{cpp, results="markdown", file="figures/parsimony_witness.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/maximum_parsimony.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto tree = dm::algorithms::parsimony_four_taxon_tree(0, 1, 2, 3);
@@ -219,11 +206,6 @@ copying/evaluation.
 
 ```{cpp, results="markdown", file="figures/parsimony_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/maximum_parsimony.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <array>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto tree = dm::algorithms::parsimony_four_taxon_tree(0, 1, 2, 3);

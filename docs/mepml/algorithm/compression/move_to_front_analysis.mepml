@@ -40,10 +40,6 @@ from the producer, and the table records actual equality tests and shifts.
 
 ```{cpp, results="markdown", file="figures/mtf_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/move_to_front.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::mtf_encode_trace("ABBA");
@@ -95,11 +91,6 @@ implement a complete bzip2 stream.
 
 ```{cpp, results="markdown", file="figures/mtf_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/move_to_front.hpp>
-#include <datamunge/algorithms/burrows_wheeler.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto text = dm::algorithms::mtf_demo_text();
@@ -142,11 +133,6 @@ ordering or compression guarantee.
 
 ```{cpp, results="markdown", file="figures/mtf_order.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/move_to_front.hpp>
-#include <datamunge/algorithms/burrows_wheeler.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto text = dm::algorithms::mtf_demo_text();
@@ -202,10 +188,6 @@ or indexing, correcting the old unchecked invalid-index behavior.
 
 ```{cpp, results="markdown", file="figures/mtf_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/move_to_front.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::string> labels{"empty", "repeat", "mixed", "binary"}, inputs{"", "AAAA", "ABBA", std::string("\0\xff\0\xff", 4)};

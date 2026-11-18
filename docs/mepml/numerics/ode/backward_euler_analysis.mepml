@@ -238,7 +238,6 @@ initial condition \(u_0=\sin\pi x+\sin5\pi x\) has the exact solution
 ```{cpp, results="markdown", file="figures/backward_euler_heat.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 
@@ -387,7 +386,6 @@ relative tolerance of \(10^{-12}\).
 ```{cpp, results="markdown", file="figures/backward_euler_robertson.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 

@@ -42,10 +42,6 @@ including the unchanged midpoint4.
 
 ```{cpp, results="markdown", file="figures/library_sort_shift.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/library_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::library_sort_trace({4, 3, 2});
@@ -99,10 +95,6 @@ and shelf history.
 
 ```{cpp, results="markdown", file="figures/library_sort_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/library_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto input = dm::algorithms::library_sort_demo_input();
@@ -196,12 +188,6 @@ runs rather than a timing proxy or repeated-prefix history.
 
 ```{cpp, results="markdown", file="figures/library_sort_quadratic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/library_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numeric>
-#include <algorithm>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y, reference;
@@ -258,12 +244,6 @@ rebalance or left-shift events are invented.
 
 ```{cpp, results="markdown", file="figures/library_sort_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/library_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numeric>
-#include <algorithm>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<int> ascending(64);

@@ -95,8 +95,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/squeezenet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -357,7 +355,6 @@ One original cached training image per class, IDs 0..4 then 5..9.
 
 ```{cpp, results="markdown", file="figures/squeezenet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <chrono>
 
 int main() {
   int rendered_confusions = 0;

@@ -40,10 +40,6 @@ sequential order; no report-side Newton loop is used.
 
 ```{cpp, results="markdown", file="figures/newton_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newton_raphson.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::newton_raphson_square_study();
@@ -88,10 +84,6 @@ zero-budget call at x0.
 
 ```{cpp, results="markdown", file="figures/newton_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newton_raphson.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::newton_raphson_square_study();
@@ -135,10 +127,6 @@ a measured extra iteration.
 
 ```{cpp, results="markdown", file="figures/newton_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newton_raphson.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto simple = dm::algorithms::newton_raphson_square_study(2, 1e-14, 100);
@@ -191,10 +179,6 @@ asymptotic rate claim.
 
 ```{cpp, results="markdown", file="figures/newton_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newton_raphson.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     using F = std::function<double(double)>;

@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/gatys_style_transfer_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -107,7 +105,6 @@ preprocessing matches the imported weights;it is not a learned optimizer step.
 ```{cpp, results="markdown", file="figures/gatys_style_transfer_preprocess.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -156,7 +153,6 @@ does not specify where a painted structure should appear. No batch images mix.
 ```{cpp, results="markdown", file="figures/gatys_style_transfer_gram.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -201,7 +197,6 @@ their actual tensor derivatives;it does not fit a surrogate model.
 ```{cpp, results="markdown", file="figures/gatys_style_transfer_losses.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -270,7 +265,6 @@ Wassily Kandinsky’s Composition VII(1913),from the tutorial’s source mirror.
 ```{cpp, results="markdown", file="figures/gatys_style_transfer_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -353,7 +347,6 @@ The preview shows channelwise feature RMS,not learned attention or saliency.
 ```{cpp, results="markdown", file="figures/gatys_style_transfer_features.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -435,8 +428,6 @@ not a feed-forward model trained for target-free stylization of new content.
 ```{cpp, results="markdown", file="figures/gatys_style_transfer_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
-#include <random>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

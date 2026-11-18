@@ -22,12 +22,7 @@ replay.
 
 ```{cpp, results="markdown", nix-shell="git+file:../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
 #include <dm/dm.hpp>
-#include <algorithm>
 #include <charconv>
-#include <cstdlib>
-#include <fstream>
-#include <random>
-#include <stdexcept>
 
 // The URDF loader bakes link placements into mesh coordinates. Place the arm
 // on the end pedestal facing back along the conveyor (a half-turn about Z).
@@ -231,15 +226,6 @@ include every failure.
 
 ```{cpp, results="markdown", nix-shell="git+file:../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
 #include <dm/dm.hpp>
-#include <algorithm>
-#include <array>
-#include <chrono>
-#include <cstdlib>
-#include <fstream>
-#include <numeric>
-#include <optional>
-#include <random>
-#include <stdexcept>
 
 int main() {
     namespace fs = std::filesystem;
@@ -525,14 +511,6 @@ successful examples of each class.
 
 ```{cpp, results="markdown", nix-shell="git+file:../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/parallel.hpp>
-#include <algorithm>
-#include <array>
-#include <cstdlib>
-#include <fstream>
-#include <optional>
-#include <iostream>
-#include <stdexcept>
 namespace n = dm::nn;
 namespace s = dm::sim;
 

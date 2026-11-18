@@ -64,31 +64,15 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // but the games are still played (same moves, same RNG draws) and their
 // outcomes printed. The port adds checks (exit 1 on failure).
 
-#include <algorithm>
-#include <array>
-#include <cstdio>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <string>
-#include <vector>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -146,7 +130,6 @@ inline void Header(const std::string& title) {
 }
 
 // Editable workflow support: rl/board_games.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Game;
 using datamunge::rl::environments::GridGame;

@@ -27,10 +27,6 @@ scores are−1,+1. The diagram and table use the real captured round.
 
 ```{cpp, results="markdown", file="figures/logitboost_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/logitboost.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::logitboost_trace({{-1}, {1}}, {0, 1}, 1);
@@ -79,10 +75,6 @@ and predicted-class columns.
 
 ```{cpp, results="markdown", file="figures/logitboost_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/logitboost_study.hpp>
-#include <datamunge/nn/metrics.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::logitboost_iris_study();
@@ -151,11 +143,6 @@ well.
 
 ```{cpp, results="markdown", file="figures/logitboost_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/logitboost.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <datamunge/algorithms/logitboost_study.hpp>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto data = dm::algorithms::logitboost_diagonal_data();
@@ -208,10 +195,6 @@ input; it does not reconstruct an earlier trajectory.
 
 ```{cpp, results="markdown", file="figures/logitboost_clipping.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/logitboost.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;
@@ -274,11 +257,6 @@ Repeatable receipts are retained in `build/mepml-conversion/batch-204-213/`.
 
 ```{cpp, results="markdown", file="figures/logitboost_finite.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/logitboost.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     double m = std::numeric_limits<double>::max();

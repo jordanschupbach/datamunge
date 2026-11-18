@@ -289,9 +289,7 @@ An independent selected-state gradient review on two test images is saved **afte
 without updating anything; it is a diagnostic, not another training/selection phase.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
 namespace nn = dm::nn;
 struct NoiseBank {
   nn::Tensor standard, epsilon;

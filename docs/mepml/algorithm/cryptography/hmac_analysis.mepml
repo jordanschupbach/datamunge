@@ -33,16 +33,6 @@ trace owns key-derived material and does not erase it securely.
 
 ```{cpp, results="markdown", file="figures/hmac_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hmac_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::hmac_sha256_trace("K", "A");
@@ -126,16 +116,6 @@ returns a full 256-bit tag.
 
 ```{cpp, results="markdown", file="figures/hmac_rfc.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hmac_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto cases = dm::algorithms::hmac_rfc4231_cases();
@@ -214,16 +194,6 @@ binomial.
 
 ```{cpp, results="markdown", file="figures/hmac_avalanche.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hmac_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const std::string key =
@@ -357,16 +327,6 @@ checks still apply.
 
 ```{cpp, results="markdown", file="figures/hmac_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hmac_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, short_blocks, long_blocks;

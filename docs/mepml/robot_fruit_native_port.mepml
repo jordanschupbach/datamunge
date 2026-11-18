@@ -68,10 +68,6 @@ is not run when this page is rebuilt (`eval="no"`). Run it with
 
 ```{cpp, eval="no"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <fstream>
-#include <iostream>
 namespace s = dm::sim;
 namespace r = dm::rl;
 // usage: train METHOD(0 DQN,1 DDQN,2 dueling DDQN,3 PPO) REWARD(A|B) WINDOWS SEED OUTDIR
@@ -162,14 +158,8 @@ selection), with synthetic 98%-accurate labels so that only control differs.
 Each stream runs in its own environment on its own thread.
 
 ```{cpp, results="markdown", nix-shell="git+file:../..#cpp", cmd="export PKG_CONFIG_PATH=$(printenv DATAMUNGE_CAD_PKG_CONFIG_PATH || printenv PKG_CONFIG_PATH); c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && DATAMUNGE_LINKED_CORE=$(pkg-config --variable=prefix datamunge) OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
-#include <algorithm>
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
 #include <future>
-#include <iostream>
-#include <print>
-#include <thread>
 namespace s = dm::sim;
 namespace r = dm::rl;
 // One scheduler on one skill configuration, scored on held-out native streams.
@@ -298,13 +288,7 @@ training, it is not run when this page is rebuilt (`eval="no"`). Run it from
 this directory with `vision 28 8 120 25 build/fruit_native_vision`.
 
 ```{cpp, eval="no"}
-#include <algorithm>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <fstream>
-#include <iostream>
 #include <sys/wait.h>
 #include <unistd.h>
 namespace s = dm::sim;
@@ -582,14 +566,7 @@ beside the foreground box; labels are drawn after inference and do not enter the
 model or controller.
 
 ```{cpp, results="markdown", nix-shell="git+file:../..#cpp", cmd="export PKG_CONFIG_PATH=$(printenv DATAMUNGE_CAD_PKG_CONFIG_PATH || printenv PKG_CONFIG_PATH); c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && DATAMUNGE_LINKED_CORE=$(pkg-config --variable=prefix datamunge) OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
-#include <algorithm>
-#include <chrono>
-#include <cstdlib>
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <format>
-#include <fstream>
-#include <iostream>
 namespace s = dm::sim;
 namespace c = dm::cad;
 namespace n = dm::nn;

@@ -32,20 +32,7 @@ interpolation gives 1/16, while the exact quadratic is 3/32: the error is
 1/32. This distinction is central to interpreting every later error table.
 
 ```{cpp, results="markdown", file="figures/fem_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/fem/fem.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/interpolation_extra.hpp>
-#include <datamunge/algorithms/cubic_spline.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -122,20 +109,7 @@ pointwise or nodal second-order bound. The rates below describe this particular
 smooth problem, mesh sequence, quadrature and solver accuracy.
 
 ```{cpp, results="markdown", file="figures/fem_interval.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/fem/fem.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/interpolation_extra.hpp>
-#include <datamunge/algorithms/cubic_spline.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -181,20 +155,7 @@ nullspace of pure Neumann diffusion. Nonnegative reaction/Robin coefficients
 and appropriate constraints are relevant to the coercive stability model.
 
 ```{cpp, results="markdown", file="figures/fem_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/fem/fem.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/interpolation_extra.hpp>
-#include <datamunge/algorithms/cubic_spline.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -247,20 +208,7 @@ arithmetic or linear-solver limitations. Forward Euler instead needs
 h² is a scaling guide rather than a universal numerical step threshold.
 
 ```{cpp, results="markdown", file="figures/fem_transient.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/fem/fem.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/interpolation_extra.hpp>
-#include <datamunge/algorithms/cubic_spline.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -305,20 +253,7 @@ structured sequence does not establish a general max-norm theorem on arbitrary
 meshes. The final y=0.5 slice is extracted from the actual finest result.
 
 ```{cpp, results="markdown", file="figures/fem_triangles.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/fem/fem.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/interpolation_extra.hpp>
-#include <datamunge/algorithms/cubic_spline.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -367,20 +302,7 @@ with the closed backward-Euler mode 1/(1+12*dt), an independently derived
 small-system reference rather than another finite-element implementation.
 
 ```{cpp, results="markdown", file="figures/fem_time_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/fem/fem.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/interpolation_extra.hpp>
-#include <datamunge/algorithms/cubic_spline.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

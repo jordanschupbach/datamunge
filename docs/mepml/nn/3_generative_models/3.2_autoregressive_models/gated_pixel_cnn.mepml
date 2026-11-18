@@ -228,7 +228,6 @@ across all ten class groups. No hidden model method performs fitting or sampling
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 namespace n=dm::nn;namespace m=n::models;
 using T=n::Tensor;using A=std::map<std::string,T>;namespace fs=std::filesystem;
 void Save(const fs::path& file,const A& fields){

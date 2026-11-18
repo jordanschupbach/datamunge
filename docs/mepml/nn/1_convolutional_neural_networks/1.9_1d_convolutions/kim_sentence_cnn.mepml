@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -123,8 +121,6 @@ word frequencies. String dictionaries/rank labels are presentation metadata.
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <fstream>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -251,7 +247,6 @@ observed length has exact zero effect. PAD0's full-table input adjoint is0.
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_features.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -328,7 +323,6 @@ both head column norms against an independent literal Adadelta oracle.
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_adadelta.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -412,8 +406,6 @@ The count objective is declared separately from the neural CE objective.
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_reference.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <fstream>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -558,7 +550,6 @@ labels or dropout generator enter inference.
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -723,9 +714,6 @@ escaping is presentation only;the model still receives original prepared IDs.
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <fstream>
-#include <print>
-#include <sstream>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -956,8 +944,6 @@ count range. Source class meanings remain those declared for the dataset above.
 
 ```{cpp, results="markdown", file="figures/kim_sentence_cnn_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::filesystem::create_directories("build");

@@ -43,9 +43,6 @@ image XML, data URIs or model bytes are printed into the results.
 
 ```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}", file="figures/rebot_arm.png"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 
 int main() {
     // Download missing source files and verify the complete cache on every run.

@@ -257,7 +257,6 @@ sorting the same 272 waits measured in minutes, in seconds, and in milliseconds.
 ```{cpp, results="markdown", file="figures/bead_cost.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace alg = dm::algorithms;
 

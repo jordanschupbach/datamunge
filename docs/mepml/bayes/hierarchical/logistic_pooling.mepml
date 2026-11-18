@@ -1,0 +1,81 @@
+//? Title: Hierarchical logistic regression
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Four clinics report successes at two treatment levels. The log-odds combine a clinic-
+specific intercept and a common treatment effect. The clinic intercepts are
+noncentered as population mean + population SD × standard Normal offset. The log of
+the population SD has a Normal(−0.5, 0.7) prior. Posterior clinic probabilities show
+how the sparsely observed clinic borrows information from the other clinics.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/logistic_pooling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const double control[]{1, 4, 7, 0}, treatment[]{5, 7, 9, 1};
+    const double trials[]{10, 10, 10, 2};
+    b::AutodiffModel model([&](auto&, const auto& q) {
+        const auto tau = exp(q[1]);
+        auto lp = b::normal_lpdf(q[0], 0, 1.5) + b::normal_lpdf(q[1], -0.5, 0.7)
+            + b::normal_lpdf(q[2], 0, 1);
+        for (std::size_t j = 0; j < std::size(trials); ++j) {
+            const auto eta = q[0] + tau * q[j + 3];
+            lp = lp + b::normal_lpdf(q[j + 3], 0, 1)
+                + b::binomial_logit_lpmf(control[j], trials[j], eta)
+                + b::binomial_logit_lpmf(treatment[j], trials[j], eta + q[2]);
+        }
+        return lp;
+    });
+    const auto chains = b::NUTS({.target_accept_rate = 0.95})
+        .sample_chains(model, std::vector<double>(7, 0), 4);
+    const auto treatment_or = b::summarize_draws(b::chains_of(chains, [](const auto& q) {
+        return std::exp(q[2]);
+    }));
+    std::print("Treatment odds ratio {:.2f}, 90% interval [{:.2f}, {:.2f}], split R-hat {:.3f}, ESS {:.0f}.\n",
+               treatment_or.mean, treatment_or.q05, treatment_or.q95, treatment_or.rhat, treatment_or.ess);
+
+    std::size_t divergences = 0;
+    for (const auto& chain : chains)
+        divergences += std::accumulate(chain.divergent.begin(), chain.divergent.end(), 0);
+    std::print("Post-warmup divergences: {}.\n", divergences);
+
+    std::vector<double> clinic, observed, mean, lo, hi;
+    for (std::size_t j = 0; j < std::size(trials); ++j) {
+        const auto probability = b::summarize_draws(b::chains_of(chains, [j](const auto& q) {
+            return std::exp(-b::softplus(-(q[0] + std::exp(q[1]) * q[j + 3])));
+        }));
+        clinic.push_back(j + 1);
+        observed.push_back(control[j] / trials[j]);
+        mean.push_back(probability.mean);
+        lo.push_back(probability.q05);
+        hi.push_back(probability.q95);
+    }
+    std::filesystem::create_directories("build");
+    RPlot::create().segments(lo, clinic, hi, clinic, {36, 105, 172}, 2)
+        .points(observed, clinic, "observed control rate", {182, 83, 29})
+        .points(mean, clinic, "posterior control probability", {36, 105, 172})
+        .title("Partial pooling of clinic control probabilities")
+        .x_label("Control probability").y_label("Clinic")
+        .save_svg("build/logistic_pooling.svg");
+}
+```
+// result_begin: markdown
+Treatment odds ratio 3.49, 90% interval [1.41, 7.01], split R-hat 1.000, ESS 3688.
+Post-warmup divergences: 0.
+\image(figures/logistic_pooling.svg)
+// result_end
+\caption(Raw control proportions and partially pooled posterior probabilities with 90% credible limits.)
+\alttext(Raw control proportions and partially pooled posterior probabilities with 90% credible limits.)
+
+> Reference
+
+Stan User’s Guide 2.19, sections 1.9–1.10.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

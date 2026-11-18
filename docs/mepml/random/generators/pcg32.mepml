@@ -36,18 +36,6 @@ their values; the report does not reconstruct the algorithm.
 
 ```{cpp, results="markdown", file="figures/pcg32_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/random/random.hpp>
 int main() {
     std::filesystem::create_directories("build");
     dm::random::Pcg32 rng(42, 54);
@@ -81,22 +69,6 @@ random call schedule.
 
 ```{cpp, results="markdown", file="figures/pcg32_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/random/random.hpp>
-#include <datamunge/random/random.hpp>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 int main() {
     std::ostringstream original_output;
     auto *original_cout = std::cout.rdbuf(original_output.rdbuf());
@@ -145,18 +117,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/pcg32_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/random/random.hpp>
 int main() {
     std::filesystem::create_directories("build");
     dm::random::Pcg32 a(42, 54), alias(42, 54ULL + (1ULL << 63)), other(42, 55);
@@ -199,18 +159,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/pcg32_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/random/random.hpp>
 int main() {
     std::filesystem::create_directories("build");
     dm::random::Pcg32 r(42, 54);

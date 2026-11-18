@@ -52,10 +52,6 @@ record.
 
 ```{cpp, results="markdown", file="figures/odds_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odds_algorithm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::odds_algorithm_trace({.5, .5, .5});
@@ -98,10 +94,6 @@ falsely presented as visits made by the early-stopping producer.
 
 ```{cpp, results="markdown", file="figures/odds_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odds_algorithm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto inputs = dm::algorithms::odds_algorithm_demo_probabilities();
@@ -161,11 +153,6 @@ with the asymptotic constant, without reporting asymptotic equality at finite n.
 
 ```{cpp, results="markdown", file="figures/odds_secretary.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odds_algorithm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;
@@ -222,10 +209,6 @@ independent-event model.
 
 ```{cpp, results="markdown", file="figures/odds_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/odds_algorithm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<double>> inputs{{}, {0., 0.}, {1.}, {1., 1.},

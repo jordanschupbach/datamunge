@@ -5,7 +5,10 @@
 
 #include <datamunge/autodiff/tape.hpp>
 
+#include <algorithm>
 #include <cmath>
+#include <limits>
+#include <type_traits>
 
 // A small log-density/log-mass-function library for building Bayesian models: every
 // distribution has a plain `double` overload (direct evaluation) and an
@@ -20,6 +23,11 @@
 namespace datamunge::bayes {
 
 namespace detail {
+/// @brief A scalar supported by the log-density functions.
+/// @tparam Real Candidate scalar type.
+template <class Real>
+concept LogDensityScalar = std::is_same_v<Real, double> || std::is_same_v<Real, autodiff::Var>;
+
 constexpr double kPi = 3.14159265358979323846; ///< pi, for the log densities.
 } // namespace detail
 
@@ -190,21 +198,86 @@ inline autodiff::Var student_t_lpdf(const autodiff::Var& x, double nu, double mu
     return autodiff::log(inner) * (-(nu + 1.0) / 2.0) + const_term;
 }
 
-// ---- Bernoulli, logit-parameterized (y observed in {0, 1}, logit_p the linear predictor) ----
-
-/// @brief Bernoulli log mass with logit-scale probability: \f$y\eta-\log(1+e^\eta)\f$.
-/// @param y Outcome, 0 or 1.
-/// @param logit_p Log-odds \f$\eta\f$.
-/// @return The log probability.
-inline double bernoulli_logit_lpmf(double y, double logit_p) {
-    return y * logit_p - std::log(1.0 + std::exp(logit_p));
+/// @brief Computes log(1 + exp(x)) without overflowing the exponential.
+///
+/// @param x Real argument.
+/// @return The softplus of @p x.
+/// @par Example
+/// @code
+/// const double y = dm::bayes::softplus(1000.0); // 1000
+/// @endcode
+/// @par References
+/// - https://mc-stan.org/docs/functions-reference/real-valued_basic_functions.html
+/// @see bernoulli_logit_lpmf()
+inline double softplus(double x) {
+    return std::max(x, 0.0) + std::log1p(std::exp(-std::abs(x)));
 }
-/// @brief Bernoulli log mass with a parameter-valued linear predictor, as in logistic regression.
+
+/// @brief Differentiable softplus (same value as the scalar overload).
+/// @param x Real argument on a reverse-mode tape.
+/// @return Softplus with the inverse-logit local derivative.
+/// @par Example
+/// @code
+/// dm::autodiff::Tape tape;
+/// const auto y = dm::bayes::softplus(dm::autodiff::Var(tape, 1000)); // value 1000
+/// @endcode
+/// @see softplus(double)
+inline autodiff::Var softplus(const autodiff::Var& x) {
+    const double value = softplus(x.value());
+    const double t = std::exp(-std::abs(x.value()));
+    const double slope = (x.value() >= 0.0 ? 1.0 : t) / (1.0 + t);
+    auto& tape = x.tape();
+    return {tape, tape.record_unary(value, x.index(), slope), value};
+}
+
+/// @brief Adds two finite log weights and returns the natural log of their sum.
+/// @tparam Real double or autodiff::Var.
+/// @param a First finite log weight.
+/// @param b Second finite log weight, on the same tape for Vars.
+/// @return The log of exp(a) + exp(b), without exponentiating large positive weights.
+/// @par Example
+/// @code
+/// const double z = dm::bayes::log_add_exp(1000.0, 1000.0); // 1000 + log(2)
+/// @endcode
+/// @par References
+/// - https://mc-stan.org/docs/functions-reference/real-valued_basic_functions.html
+/// @see softplus()
+template <detail::LogDensityScalar Real>
+Real log_add_exp(const Real& a, const Real& b) {
+    if constexpr (std::is_same_v<Real, autodiff::Var>) {
+        return a.value() >= b.value() ? a + softplus(b - a) : b + softplus(a - b);
+    } else {
+        return std::max(a, b) + softplus(-std::abs(a - b));
+    }
+}
+
+/// @brief Bernoulli log mass for a finite log-odds predictor.
 /// @param y Outcome, 0 or 1.
 /// @param logit_p Log-odds.
-/// @return The log probability as a differentiable Var.
+/// @return The normalized log probability.
+/// @par Example
+/// @code
+/// const double lp = dm::bayes::bernoulli_logit_lpmf(1, 1000.0); // 0
+/// @endcode
+/// @par References
+/// - https://mc-stan.org/docs/functions-reference/binary_distributions.html
+/// @see binomial_logit_lpmf()
+inline double bernoulli_logit_lpmf(double y, double logit_p) {
+    return -y * softplus(-logit_p) - (1.0 - y) * softplus(logit_p);
+}
+
+/// @brief Differentiable Bernoulli log mass with a finite log-odds predictor.
+/// @param y Outcome, 0 or 1.
+/// @param logit_p Log-odds on a reverse-mode tape.
+/// @return The normalized log probability.
+/// @par Example
+/// @code
+/// dm::autodiff::Tape tape;
+/// const auto lp = dm::bayes::bernoulli_logit_lpmf(0, dm::autodiff::Var(tape, -1000)); // value 0
+/// @endcode
+/// @see softplus()
 inline autodiff::Var bernoulli_logit_lpmf(double y, const autodiff::Var& logit_p) {
-    return logit_p * y - autodiff::log(autodiff::exp(logit_p) + 1.0);
+    return -y * softplus(-logit_p) - (1.0 - y) * softplus(logit_p);
 }
 
 // ---- Poisson, log-rate-parameterized (y observed non-negative count, log_rate the linear predictor) ----
@@ -223,6 +296,100 @@ inline double poisson_log_lpmf(double y, double log_rate) {
 inline autodiff::Var poisson_log_lpmf(double y, const autodiff::Var& log_rate) {
     const double const_term = -std::lgamma(y + 1.0);
     return log_rate * y - autodiff::exp(log_rate) + const_term;
+}
+
+/// @brief Binomial log mass parameterized by log-odds.
+/// @tparam Real double or autodiff::Var.
+/// @param successes Integer count from zero through @p trials.
+/// @param trials Non-negative integer number of trials.
+/// @param logit_p Finite log-odds.
+/// @return The normalized log mass. Counts are assumed valid.
+/// @par Example
+/// @code
+/// const auto lp = dm::bayes::binomial_logit_lpmf(1, 2, 0.0); // log(0.5)
+/// @endcode
+/// @par References
+/// - https://mc-stan.org/docs/functions-reference/bounded_discrete_distributions.html
+/// @see bernoulli_logit_lpmf()
+template <detail::LogDensityScalar Real>
+Real binomial_logit_lpmf(double successes, double trials, const Real& logit_p) {
+    const double failures = trials - successes;
+    const double log_choose = std::lgamma(trials + 1.0) - std::lgamma(successes + 1.0) -
+                              std::lgamma(failures + 1.0);
+    return log_choose - successes * softplus(-logit_p) - failures * softplus(logit_p);
+}
+
+/// @brief Negative binomial (NB2) log mass with variance mean + mean squared / precision.
+/// @tparam Real double or autodiff::Var.
+/// @param y Non-negative integer count.
+/// @param log_mean Finite log mean.
+/// @param precision Positive finite shape (inverse overdispersion), fixed data.
+/// @return The normalized log mass. Inputs are assumed valid.
+/// @par Example
+/// @code
+/// const auto lp = dm::bayes::neg_binomial_2_log_lpmf(0, 0.0, 1.0); // log(0.5)
+/// @endcode
+/// @par References
+/// - https://mc-stan.org/docs/functions-reference/unbounded_discrete_distributions.html
+/// @see poisson_log_lpmf()
+template <detail::LogDensityScalar Real>
+Real neg_binomial_2_log_lpmf(double y, const Real& log_mean, double precision) {
+    const auto log_ratio = log_mean - std::log(precision);
+    const double log_coefficient = std::lgamma(y + precision) - std::lgamma(precision) -
+                                   std::lgamma(y + 1.0);
+    return log_coefficient - precision * softplus(log_ratio) - y * softplus(-log_ratio);
+}
+
+/// @brief Gamma log density parameterized by log mean and fixed shape.
+/// @tparam Real double or autodiff::Var.
+/// @param y Positive finite observation.
+/// @param log_mean Finite log mean.
+/// @param shape Positive finite shape, fixed data.
+/// @return The normalized log density, with rate shape / mean. Inputs are assumed valid.
+/// @par Example
+/// @code
+/// const auto lp = dm::bayes::gamma_log_mean_lpdf(1, 0.0, 1.0); // -1
+/// @endcode
+/// @par References
+/// - https://mc-stan.org/docs/functions-reference/positive_continuous_distributions.html
+/// @see gamma_lpdf()
+template <detail::LogDensityScalar Real>
+Real gamma_log_mean_lpdf(double y, const Real& log_mean, double shape) {
+    using std::exp;
+    const auto log_scaled_y = std::log(y) - log_mean + std::log(shape);
+    return shape * log_scaled_y - exp(log_scaled_y) - std::lgamma(shape) - std::log(y);
+}
+
+/// @brief Zero-inflated Poisson log mass, marginalizing the structural-zero indicator.
+/// @tparam Real double or autodiff::Var.
+/// @param y Non-negative integer count.
+/// @param log_rate Finite log rate in the Poisson component.
+/// @param zero_logit Finite log-odds of a structural zero, on the same tape as @p log_rate for Vars.
+/// @return The normalized log mass. Inputs are assumed valid.
+/// @par Example
+/// @code
+/// const auto lp = dm::bayes::zero_inflated_poisson_log_lpmf(1, 0.0, 0.0); // -1 - log(2)
+/// @endcode
+/// @par References
+/// - https://mc-stan.org/docs/stan-users-guide/finite-mixtures.html
+/// @see poisson_log_lpmf()
+template <detail::LogDensityScalar Real>
+Real zero_inflated_poisson_log_lpmf(double y, const Real& log_rate, const Real& zero_logit) {
+    if (y != 0.0) {
+        return bernoulli_logit_lpmf(0, zero_logit) + poisson_log_lpmf(y, log_rate);
+    }
+    const double eta = [&] {
+        if constexpr (std::is_same_v<Real, autodiff::Var>) return log_rate.value();
+        else return log_rate;
+    }();
+    const auto structural = bernoulli_logit_lpmf(1, zero_logit);
+    // If the Poisson rate overflows, its zero log mass rounds to negative infinity.
+    // Avoid recording a path with an infinite local derivative.
+    if (eta > std::log(std::numeric_limits<double>::max())) {
+        return structural;
+    }
+    const auto ordinary = bernoulli_logit_lpmf(0, zero_logit) + poisson_log_lpmf(0, log_rate);
+    return log_add_exp(structural, ordinary);
 }
 
 } // namespace datamunge::bayes

@@ -1,0 +1,78 @@
+//? Title: Gaussian mixture clustering
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two equally weighted Gaussian components have SD 0.75 and means −m and +m. The
+symmetry constraint distinguishes the two components by location. Each observation
+contributes a sum over its possible component labels. A Uniform(0, 5) prior on m
+leaves a one-dimensional posterior. Conditional cluster probabilities are averaged
+over that posterior to quantify uncertainty about each assignment.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/gaussian_clustering.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<double> y{-2.5, -1.9, -1.2, -0.5, 0.2, 1.1, 1.7, 2.3};
+    b::LogDensity target([&](const auto& q) {
+        double lp = 0;
+        for (const double value : y)
+            lp += b::log_add_exp(b::normal_lpdf(value, -q[0], 0.75),
+                                 b::normal_lpdf(value, q[0], 0.75)) - std::log(2.);
+        return lp;
+    });
+    constexpr int cells = 1000;
+    const auto post = b::grid_posterior(target, {0}, {5}, cells);
+    std::vector<double> probability;
+    for (const double value : y) {
+        double average = 0;
+        for (int i = 0; i < cells; ++i) {
+            const double m = post.marginal_grid[0][i];
+            const double logit = 2 * value * m / (0.75 * 0.75);
+            average += std::exp(-b::softplus(-logit)) * post.marginal_density[0][i] * (5. / cells);
+        }
+        probability.push_back(average);
+    }
+    std::print("Posterior mean half-separation {:.2f}. P(right component | y = 0.2) = {:.3f}.\n",
+               post.mean[0], probability[4]);
+    std::filesystem::create_directories("build");
+    auto membership = RPlot::create().points(y, probability, "observations", {36, 105, 172})
+        .title("Posterior cluster membership").x_label("Observed response").y_label("Probability of right component");
+    std::vector<double> response, density;
+    for (int i = -80; i <= 80; ++i) {
+        const double value = i / 20.;
+        double expected = 0;
+        for (int j = 0; j < cells; ++j) {
+            const double m = post.marginal_grid[0][j];
+            const double component_sum = std::exp(b::normal_lpdf(value, -m, 0.75))
+                                       + std::exp(b::normal_lpdf(value, m, 0.75));
+            expected += 0.5 * component_sum * post.marginal_density[0][j] * (5. / cells);
+        }
+        response.push_back(value);
+        density.push_back(expected);
+    }
+    auto fit = RPlot::create().lines(response, density, "posterior predictive", {36, 105, 172})
+        .points(y, std::vector<double>(y.size()), "observed", {70, 70, 70})
+        .title("Mixture fit").x_label("Response").y_label("Density");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(membership).add(fit)
+        .save_svg("build/gaussian_clustering.svg");
+}
+```
+// result_begin: markdown
+Posterior mean half-separation 1.40. P(right component | y = 0.2) = 0.728.
+\image(figures/gaussian_clustering.svg)
+// result_end
+\caption(Posterior cluster probabilities and the fitted mixture density with observations along the baseline.)
+\alttext(Posterior cluster probabilities and the fitted mixture density with observations along the baseline.)
+
+> Reference
+
+Stan User’s Guide 2.19, chapters 5 and 9.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

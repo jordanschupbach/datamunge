@@ -41,10 +41,6 @@ formatter, never by converting them to floating values.
 
 ```{cpp, results="markdown", file="figures/integer_newton_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::integer_newton_division_trace(100, 7);
@@ -91,10 +87,6 @@ work rather than a single assumed cleanup step.
 
 ```{cpp, results="markdown", file="figures/integer_newton_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::string> labels{"100/7", "1e6/999", "123456789/12345",
@@ -147,10 +139,6 @@ iterations are invented when floating states stop changing.
 
 ```{cpp, results="markdown", file="figures/integer_newton_diagnostic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::newton_reciprocal_trace(7, 1. / 14., 6);
@@ -202,11 +190,6 @@ division result.
 
 ```{cpp, results="markdown", file="figures/integer_newton_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto max = std::numeric_limits<std::uint64_t>::max();

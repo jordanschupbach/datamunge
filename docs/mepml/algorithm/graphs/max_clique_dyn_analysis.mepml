@@ -47,10 +47,6 @@ greedy order/bounds.
 
 ```{cpp, results="markdown", file="figures/max_clique_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/max_clique.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -93,12 +89,6 @@ lexicographically smallest maximum clique in arbitrary tie cases.
 
 ```{cpp, results="markdown", file="figures/max_clique_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/max_clique.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <array>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto input = dm::algorithms::max_clique_demo_graph();
@@ -160,10 +150,6 @@ scalability guarantee for arbitrary dense graphs.
 
 ```{cpp, results="markdown", file="figures/max_clique_density.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/max_clique.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto rows = dm::algorithms::max_clique_density_study();
@@ -230,10 +216,6 @@ Capture size can grow exponentially with visited search history.
 
 ```{cpp, results="markdown", file="figures/max_clique_budgets.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/max_clique.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto graph = dm::algorithms::max_clique_demo_graph();

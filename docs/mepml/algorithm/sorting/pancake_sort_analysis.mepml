@@ -30,18 +30,6 @@ their values; the report does not reconstruct the algorithm.
 
 ```{cpp, results="markdown", file="figures/pancake_sort_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/exchange_sorts.hpp>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::pancake_sort_trace({3, 1, 2});
@@ -77,27 +65,7 @@ random call schedule.
 
 ```{cpp, results="markdown", file="figures/pancake_sort_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/exchange_sorts.hpp>
-#include <filesystem>
-#include <datamunge/algorithms/exchange_sorts.hpp>
-#include <datamunge/plot/plot.hpp>
 
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
 
 using namespace datamunge::algorithms;
 using namespace datamunge::graphics;
@@ -168,18 +136,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/pancake_sort_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/exchange_sorts.hpp>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<int>> cases{{}, {1}, {1, 2, 3}, {3, 2, 1}, {2, 2, 2}};
@@ -217,18 +173,6 @@ reversal stays visible alongside quadratic search work.
 
 ```{cpp, results="markdown", file="figures/pancake_sort_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/exchange_sorts.hpp>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y, z;

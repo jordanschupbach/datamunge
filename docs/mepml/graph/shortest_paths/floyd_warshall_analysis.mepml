@@ -29,9 +29,6 @@ Stage0 is the seeded matrix; stage k+1 has completed the sweep admitting vertex 
 
 ```{cpp, results="markdown", file="figures/floyd_warshall_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -97,9 +94,6 @@ labels make the original highlighted graph unambiguous.
 
 ```{cpp, results="markdown", file="figures/floyd_warshall_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -146,9 +140,6 @@ The next table and plots query that evidence for the original0-to2 pair.
 
 ```{cpp, results="markdown", file="figures/floyd_warshall_stages.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -194,9 +185,6 @@ to destinations1,2,3. The diagonal routes0-to0,3-to3 and4-to4 remain finite, whi
 
 ```{cpp, results="markdown", file="figures/floyd_warshall_negative.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -251,9 +239,6 @@ control, with a constant cost attached to each generated arc.
 
 ```{cpp, results="markdown", file="figures/floyd_warshall_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

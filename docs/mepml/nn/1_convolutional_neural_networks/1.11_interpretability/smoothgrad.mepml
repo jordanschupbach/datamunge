@@ -73,8 +73,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/smoothgrad_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -118,7 +116,6 @@ All these facts are tested with fixed explicit noise and different callback batc
 ```{cpp, results="markdown", file="figures/smoothgrad_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -179,7 +176,6 @@ finite-bank effects remain visible alongside the image gallery.
 ```{cpp, results="markdown", file="figures/smoothgrad_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -358,7 +354,6 @@ bank comparison improves;independent-seed and clipping controls remain visible.
 ```{cpp, results="markdown", file="figures/smoothgrad_diagnostics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

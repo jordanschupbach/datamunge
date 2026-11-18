@@ -3,6 +3,7 @@
 #include <datamunge/algebra/algebra.hpp>
 #include <datamunge/autodiff/autodiff.hpp>
 #include <datamunge/bayes/bayes.hpp>
+#include <datamunge/causal/causal.hpp>
 #include <datamunge/cv/cv.hpp>
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/dstruct/dstruct.hpp>

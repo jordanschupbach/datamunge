@@ -27,11 +27,6 @@ the report does not implement a second inference algorithm.
 
 ```{cpp, results="markdown", file="figures/forward_backward_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/forward_backward.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <print>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -139,11 +134,6 @@ come from future observations.
 
 ```{cpp, results="markdown", file="figures/forward_backward_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/forward_backward.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <print>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -206,11 +196,6 @@ through the same native joint-probability API.
 
 ```{cpp, results="markdown", file="figures/forward_backward_modes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/forward_backward.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <print>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -250,11 +235,6 @@ double probability underflows to zero. The table separates those two operations.
 
 ```{cpp, results="markdown", file="figures/forward_backward_numerics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/forward_backward.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <print>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -316,11 +296,6 @@ counts are forecasts, not executed enumerations or elapsed-time measurements.
 
 ```{cpp, results="markdown", file="figures/forward_backward_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/forward_backward.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <print>
-#include <limits>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

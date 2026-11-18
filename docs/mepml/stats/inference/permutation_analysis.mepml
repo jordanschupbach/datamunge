@@ -43,18 +43,6 @@ their values; the report does not reconstruct the algorithm.
 
 ```{cpp, results="markdown", file="figures/permutation_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/stats/permutation_test.hpp>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -100,32 +88,7 @@ random call schedule.
 
 ```{cpp, results="markdown", file="figures/permutation_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/stats/permutation_test.hpp>
-#include <filesystem>
-#include <datamunge/datasets/datasets.hpp>
-#include <datamunge/dstruct/dataframe.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/stats/permutation_test.hpp>
-#include <datamunge/stats/t_test.hpp>
 
-#include <algorithm>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <numeric>
-#include <vector>
 
 using namespace datamunge::stats;
 using namespace datamunge::graphics;
@@ -243,18 +206,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/permutation_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/stats/permutation_test.hpp>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> v;
@@ -292,18 +243,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/permutation_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/stats/permutation_test.hpp>
 int main() {
     std::filesystem::create_directories("build");
     auto t =

@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/stacked_hourglass_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -100,7 +98,6 @@ The border fixture preserves truncation rather than renormalizing kernel mass.
 ```{cpp, results="markdown", file="figures/stacked_hourglass_gaussian.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n        = dm::nn;
   namespace m        = n::models;
@@ -141,7 +138,6 @@ channel with error3,and a third empty image:loss=(4+9)/2=6.5.
 ```{cpp, results="markdown", file="figures/stacked_hourglass_masked_loss.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n       = dm::nn;
   namespace m       = n::models;
@@ -194,7 +190,6 @@ final-head derivative with respect to the first head.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -275,7 +270,6 @@ The distance sweep exposes the inclusive boundary without fitting a threshold.
 ```{cpp, results="markdown", file="figures/stacked_hourglass_pck.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n        = dm::nn;
   namespace m        = n::models;
@@ -348,7 +342,6 @@ Save the visibly fitted prior;the training example later loads it unchanged.
 ```{cpp, results="markdown", file="figures/stacked_hourglass_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -470,7 +463,6 @@ independent test photographs. Display all14 actual held-out crops and skeletons.
 ```{cpp, results="markdown", file="figures/stacked_hourglass_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

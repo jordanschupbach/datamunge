@@ -33,14 +33,6 @@ equal scales and actual values; its exact-arithmetic geometry is derived next.
 
 ```{cpp, results="markdown", file="figures/grover_reflections.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grover_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -154,14 +146,6 @@ high probabilities.
 
 ```{cpp, results="markdown", file="figures/grover_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grover_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -255,14 +239,6 @@ storage.
 
 ```{cpp, results="markdown", file="figures/grover_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grover_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -321,14 +297,6 @@ success.
 
 ```{cpp, results="markdown", file="figures/grover_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/grover_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

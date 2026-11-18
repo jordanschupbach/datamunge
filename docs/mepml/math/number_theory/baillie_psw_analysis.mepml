@@ -258,7 +258,6 @@ divides \(n\mp1\).
 ```{cpp, results="markdown", file="figures/baillie_psw_structure.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <numeric>
 
 namespace alg = dm::algorithms;
 
@@ -331,8 +330,6 @@ numbers and on 100,000 64-bit primes.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <random>
 
 namespace alg = dm::algorithms;
 

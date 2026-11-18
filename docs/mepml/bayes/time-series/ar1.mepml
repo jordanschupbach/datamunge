@@ -1,0 +1,57 @@
+//? Title: Bayesian autoregression
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Condition on the first observation and assume a zero-mean stationary AR(1) with
+innovation SD 0.5. The coefficient has a Uniform(−1, 1) prior. The one-step
+conditional mean is the previous observation times the coefficient.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/ar1.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<double> y{0.3, 0.6, 0.7, 0.1, -0.4, -0.9, -0.7, -0.2, 0.5, 0.6, 0.9, 0.2};
+    b::LogDensity target([&](const auto& q) {
+        double lp = 0;
+        for (std::size_t t = 1; t < y.size(); ++t)
+            lp += b::normal_lpdf(y[t], q[0] * y[t - 1], 0.5);
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {-1}, {1}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Lag-one coefficient").y_label("Density");
+    std::vector<double> time, observed, fitted;
+    for (std::size_t i = 1; i < y.size(); ++i) {
+        time.push_back(i + 1);
+        observed.push_back(y[i]);
+        fitted.push_back(post.mean[0] * y[i - 1]);
+    }
+    auto fit = RPlot::create().points(time, observed, "observed", {70, 70, 70})
+        .lines(time, fitted, "fitted conditional mean", {36, 105, 172})
+        .title("AR(1) fit given preceding observations").x_label("Time").y_label("Response");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/ar1.svg");
+}
+```
+// result_begin: markdown
+Posterior mean 0.638, posterior SD 0.211, edge mass 1.71e-03.
+\image(figures/ar1.svg)
+// result_end
+\caption(Lag coefficient posterior and fitted conditional means for observations after the first.)
+\alttext(Lag coefficient posterior and fitted conditional means for observations after the first.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 2.1.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

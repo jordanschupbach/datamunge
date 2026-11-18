@@ -35,10 +35,6 @@ rather than a reconstructed event.
 
 ```{cpp, results="markdown", file="figures/leaky_transition.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/leaky_bucket.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::leaky_bucket_trace(5, 1, {{0, 5}, {2, 4}});
@@ -80,10 +76,6 @@ event states, with repeated times retained and event order printed.
 
 ```{cpp, results="markdown", file="figures/leaky_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/leaky_bucket.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<dm::algorithms::LeakyBucketArrival> a(8, {0, 1});
@@ -148,11 +140,6 @@ arithmetic.
 
 ```{cpp, results="markdown", file="figures/leaky_duality.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/leaky_bucket.hpp>
-#include <datamunge/algorithms/token_bucket.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<dm::algorithms::LeakyBucketArrival> a{{0, 3}, {0, 3}, {.5, 1},
@@ -206,10 +193,6 @@ discrepancies at thresholds.
 
 ```{cpp, results="markdown", file="figures/leaky_envelope.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/leaky_bucket.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<dm::algorithms::LeakyBucketArrival> a;

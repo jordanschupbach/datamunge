@@ -26,13 +26,6 @@ results; pseudo-values are algebraic transforms, not independent new data.
 
 ```{cpp, results="markdown", file="figures/jackknife_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/stats/jackknife_analysis.hpp>
-#include <datamunge/stats/bootstrap.hpp>
-#include <filesystem>
-#include <algorithm>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -124,13 +117,6 @@ values would still represent different deletion sets.
 
 ```{cpp, results="markdown", file="figures/jackknife_exact.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/stats/jackknife_analysis.hpp>
-#include <datamunge/stats/bootstrap.hpp>
-#include <filesystem>
-#include <algorithm>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -194,13 +180,6 @@ original report's description of a U-shape had the curvature reversed.
 
 ```{cpp, results="markdown", file="figures/jackknife_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/stats/jackknife_analysis.hpp>
-#include <datamunge/stats/bootstrap.hpp>
-#include <filesystem>
-#include <algorithm>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -264,13 +243,6 @@ valid.
 
 ```{cpp, results="markdown", file="figures/jackknife_median.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/stats/jackknife_analysis.hpp>
-#include <datamunge/stats/bootstrap.hpp>
-#include <filesystem>
-#include <algorithm>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -347,13 +319,6 @@ historical difference.
 
 ```{cpp, results="markdown", file="figures/jackknife_sensitivity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/stats/jackknife_analysis.hpp>
-#include <datamunge/stats/bootstrap.hpp>
-#include <filesystem>
-#include <algorithm>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

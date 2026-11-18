@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/volumetric_segmentation_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -107,7 +105,6 @@ checks independently verify every derivative,including all-void cases.
 ```{cpp, results="markdown", file="figures/volumetric_segmentation_sparse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   auto logits = n::zeros({1, 1, 1, 3, 3}).requires_grad_();
@@ -155,7 +152,6 @@ every probability derivative.
 ```{cpp, results="markdown", file="figures/volumetric_segmentation_dice.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   auto probability = n::tensor({.2, .5, .9, .7, .1, .4}, {2, 1, 1, 3}).requires_grad_();
@@ -210,7 +206,6 @@ all compact stage gradients.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -267,7 +262,6 @@ and exclude all unannotated voxels;validation/test labels never enter them.
 ```{cpp, results="markdown", file="figures/volumetric_segmentation_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -317,7 +311,6 @@ the metric helper.
 
 ```{cpp, results="markdown", file="figures/volumetric_segmentation_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <print>
 int main() {
   int rendered_confusions = 0;
   namespace n             = dm::nn;

@@ -1,0 +1,67 @@
+//? Title: Circular Bayesian location
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Wind directions near 359° and 1° belong to the same cluster. A von Mises observation
+model uses cos(observation − direction) with fixed concentration eight. The uniform
+directional prior and periodic likelihood give a posterior over one full turn. The
+density is shown in radians.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/circular_location.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const double degrees[]{350, 10, 12, 355, 5, 330};
+    b::LogDensity target([&](const auto& q) {
+        double lp = 0;
+        for (const double d : degrees)
+            lp += 8 * std::cos(d * std::numbers::pi / 180 - q[0]);
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {-3.141592653589793}, {3.141592653589793}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Direction (radians)").y_label("Density");
+    constexpr double pi = std::numbers::pi;
+    const auto& grid = post.marginal_grid[0];
+    const double weight = 2 * pi / grid.size();
+    const double normalizer = 2 * pi * std::cyl_bessel_i(0., 8.);
+    std::vector<double> angle, density, observed;
+    for (double value : degrees) observed.push_back(std::remainder(value * pi / 180, 2 * pi));
+    for (int i = 0; i <= 160; ++i) {
+        const double value = -pi + 2 * pi * i / 160;
+        double mean = 0;
+        for (std::size_t j = 0; j < grid.size(); ++j)
+            mean += std::exp(8 * std::cos(value - grid[j])) / normalizer
+                  * post.marginal_density[0][j] * weight;
+        angle.push_back(value);
+        density.push_back(mean);
+    }
+    auto fit = RPlot::create().lines(angle, density, "posterior predictive", {36, 105, 172})
+        .points(observed, std::vector<double>(observed.size()), "observed", {70, 70, 70})
+        .title("Fit to observed directions").x_label("Direction (radians)").y_label("Density");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/circular_location.svg");
+}
+```
+// result_begin: markdown
+Posterior mean -0.050, posterior SD 0.147, edge mass 1.45e-42.
+\image(figures/circular_location.svg)
+// result_end
+\caption(Directional location posterior and predictive density with the observed angles shown along the baseline.)
+\alttext(Directional location posterior and predictive density with the observed angles shown along the baseline.)
+
+> Reference
+
+Stan User’s Guide 2.19, chapter 11.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

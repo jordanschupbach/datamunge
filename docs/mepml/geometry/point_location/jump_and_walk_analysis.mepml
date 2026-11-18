@@ -27,12 +27,6 @@ decision flow rather than a geometric segment route.
 
 ```{cpp, results="markdown", file="figures/jump_walk_crossing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jump_walk_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<dm::geometry::Point2D> p = {{0, 0}, {4, 0}, {4, 4}, {0, 4}};
@@ -128,12 +122,6 @@ centroid descent in this original run.
 
 ```{cpp, results="markdown", file="figures/jump_walk_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jump_walk_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto p = dm::geometry::jump_walk_demo_points();
@@ -207,12 +195,6 @@ returning an exterior answer.
 
 ```{cpp, results="markdown", file="figures/jump_walk_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jump_walk_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<dm::geometry::Point2D> p = {{0, 0}, {4, 0}, {4, 4}, {0, 4}};
@@ -298,12 +280,6 @@ of an asymptotic distributional bound.
 
 ```{cpp, results="markdown", file="figures/jump_walk_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jump_walk_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, samples, tests;

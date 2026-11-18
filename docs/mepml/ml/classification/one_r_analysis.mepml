@@ -40,10 +40,6 @@ produced during fitting.
 
 ```{cpp, results="markdown", file="figures/one_r_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/one_r.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -95,10 +91,6 @@ role in the Titanic study below.
 
 ```{cpp, results="markdown", file="figures/one_r_weather.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/one_r.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto data = dm::algorithms::one_r_weather_data();
@@ -160,13 +152,6 @@ shows correct counts by actual true class, so class imbalance remains visible.
 
 ```{cpp, results="markdown", file="figures/one_r_titanic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/one_r.hpp>
-#include <datamunge/algorithms/zero_r.hpp>
-#include <datamunge/datasets/datasets.hpp>
-#include <datamunge/stats/train_test_split.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto[train, test] =
@@ -251,10 +236,6 @@ values; no training data or caller references remain in the model.
 
 ```{cpp, results="markdown", file="figures/one_r_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/one_r.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto model = dm::algorithms::one_r_train({{0}, {1}}, {0, 1});

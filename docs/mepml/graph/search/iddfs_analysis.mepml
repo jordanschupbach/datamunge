@@ -27,10 +27,6 @@ one adjacency entry was examined. A goal is checked before the cutoff rule.
 
 ```{cpp, results="markdown", file="figures/iddfs_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/iterative_deepening_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -92,10 +88,6 @@ active; there are no invented leave events after the goal.
 
 ```{cpp, results="markdown", file="figures/iddfs_tree.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/iterative_deepening_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -172,10 +164,6 @@ assumptions, not merely a finite stored graph.
 
 ```{cpp, results="markdown", file="figures/iddfs_overhead.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/iterative_deepening_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -261,10 +249,6 @@ own their values.
 
 ```{cpp, results="markdown", file="figures/iddfs_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/iterative_deepening_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

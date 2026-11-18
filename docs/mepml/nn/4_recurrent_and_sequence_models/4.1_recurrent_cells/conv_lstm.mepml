@@ -47,7 +47,6 @@ With zero input/recurrent kernels, unit forget bias and one valid frame, each me
 
 ```{cpp, results="markdown", file="figures/conv_lstm_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 namespace n = dm::nn;
 namespace m = n::models;
 using T     = n::Tensor;
@@ -171,8 +170,6 @@ int main() {
 // common/ml/conv_lstm.h (model: 227 parameters, Adam .01, Params seed 37003,
 // positive-weighted (x15) sigmoid cross-entropy on the next frame).
 
-#include <cmath>
-#include <memory>
 
 // Report-local workflow and diagnostics: recurrent_model.hpp
 // Generic eager harness for tflow's small explicit-unroll recurrent models
@@ -193,33 +190,15 @@ int main() {
 // gradient per initial state (named by `initial_gradient_names`) and any
 // probe gradients, exactly like tflow's Evaluate fetches.
 
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <functional>
-#include <map>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
 
 // Report-local workflow and diagnostics: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Report-local workflow and diagnostics: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -560,9 +539,6 @@ class RecurrentModel {
 // datamunge::nn::rnn_step / gru_step / lstm_step or are written out in the
 // per-cell headers when an example needs intermediate gate values.
 
-#include <datamunge/nn/nn.hpp>
-#include <string>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -651,12 +627,6 @@ inline std::unique_ptr<RecurrentModel> ConvLstmModel(bool training = true) {
 
 } // namespace rnn_cells
 
-#include <algorithm>
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-#include <numeric>
 
 // Report-local workflow and diagnostics: marked_sequence_demo.hpp
 // The three-epoch marked-token memory experiment shared by tflow's 4.1
@@ -680,15 +650,6 @@ inline std::unique_ptr<RecurrentModel> ConvLstmModel(bool training = true) {
 // run, and when the tflow run directory (`tf=`) has the same files the port
 // prints and checks the differences.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Report-local workflow and diagnostics: marked_sequence_data.hpp
 // Synthetic variable-length single-marker memory task; padding is never a
@@ -699,14 +660,6 @@ inline std::unique_ptr<RecurrentModel> ConvLstmModel(bool training = true) {
 // The generator is std::mt19937 exactly as in tflow, so every split is
 // bit-identical to tflow's data.npz.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <numeric>
-#include <random>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -803,12 +756,8 @@ inline void Heatmap(const std::filesystem::path& file, const Tensor& x, bool gra
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Report-local workflow and diagnostics: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot() {
   return datamunge::datasets::data_home();
@@ -1000,11 +949,6 @@ inline void CompareWithTflow(
 // target never enters inference. Port of tflow's common/ml/moving_dot_data.h
 // (std::mt19937 recipe, so every split is bit-identical to tflow's data.npz).
 
-#include <cstdint>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <random>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -1429,9 +1373,6 @@ All three validation epochs are plotted; the test pool does not select the check
 
 ```{cpp, results="markdown", file="figures/conv_lstm_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/conv_lstm/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Expected all three source epochs");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").y_ticks({1.2978,1.2984,1.2990,1.2996},{"1.2978","1.2984","1.2990","1.2996"}).title("ConvLSTM: validation history").size(950,520).save_svg("build/conv_lstm_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
 
 ```
@@ -1446,8 +1387,6 @@ int main(){std::filesystem::create_directories("build");std::ifstream input("bui
 
 ```{cpp, results="markdown", file="figures/conv_lstm_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <iostream>
 int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/conv_lstm/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/conv_lstm/data.npz"))data.emplace(key,value);n::ConfusionMatrix cm(2);cm.add(n::reshape(n::cast(data.at("test_labels"),n::DType::Int64),{256}),n::reshape(n::cast(n::greater_equal(output.at("probability"),n::scalar(.5f)),n::DType::Int64),{256}));cm.save_svg("build/conv_lstm_confusion.svg",{.title="ConvLSTM: held-out confusion",.labels={"Empty","Occupied"}});n::save_npz("build/conv_lstm_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<(n::reshape(n::cast(data.at("test_labels"),n::DType::Int64),{256})).numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
 
 ```

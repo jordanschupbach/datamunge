@@ -23,13 +23,6 @@ not packet transmissions or elapsed network time.
 
 ```{cpp, results="markdown", file="figures/karn_events.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karn.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::KarnEstimator k;
@@ -96,13 +89,6 @@ packet-level causal chronology.
 
 ```{cpp, results="markdown", file="figures/karn_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karn.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::KarnEstimator k(1);
@@ -164,13 +150,6 @@ than simulated packet-loss outcomes.
 
 ```{cpp, results="markdown", file="figures/karn_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karn.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::KarnEstimator k;
@@ -241,13 +220,6 @@ asymptote in this teaching model.
 
 ```{cpp, results="markdown", file="figures/karn_profile.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karn.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::KarnEstimator k;

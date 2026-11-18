@@ -27,13 +27,6 @@ there is no local reimplementation of its recurrence.
 
 ```{cpp, results="markdown", file="figures/seidel_first.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_seidel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -127,13 +120,6 @@ executed result exactly.
 
 ```{cpp, results="markdown", file="figures/seidel_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_seidel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -205,13 +191,6 @@ The Jacobi column is the derived exact spectral radius; no Jacobi solver is run.
 
 ```{cpp, results="markdown", file="figures/seidel_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_seidel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -258,13 +237,6 @@ same transformation and may introduce a zero diagonal.
 
 ```{cpp, results="markdown", file="figures/seidel_transient.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_seidel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -328,13 +300,6 @@ its separate online cap on actual residual entries, including the initial one.
 
 ```{cpp, results="markdown", file="figures/seidel_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gauss_seidel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <array>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

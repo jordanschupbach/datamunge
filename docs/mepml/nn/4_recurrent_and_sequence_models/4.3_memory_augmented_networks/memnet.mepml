@@ -45,7 +45,6 @@ Zero embeddings and three valid facts give equal1/3 attention at both hops; inva
 
 ```{cpp, results="markdown", file="figures/memnet_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 namespace n = dm::nn;
 namespace m = n::models;
 void Zero(n::ParameterStore& p) {
@@ -157,12 +156,8 @@ The report owns its parameter store, objective, minibatches and Adam writes. Inf
 // Same task dimensions/protocol as the external assets, with an explicitly
 // independent local selection. All languages call this C++ generator.
 
-#include <filesystem>
-#include <fstream>
-#include <random>
 
 // Report-local workflow and diagnostics: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot() {
   return datamunge::datasets::data_home();
@@ -192,33 +187,15 @@ inline void EnsureSaliency(const std::string& directory) {
 // `init=PATH` (tflow's initial_arrays.npz) replays tflow's run; with the tflow
 // run directory present (`tf=`) every replayed record is compared.
 
-#include <chrono>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
 
 // Report-local workflow and diagnostics: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Report-local workflow and diagnostics: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -302,15 +279,6 @@ inline void Header(const std::string& title) {
 // run, and when the tflow run directory (`tf=`) has the same files the port
 // prints and checks the differences.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Report-local workflow and diagnostics: marked_sequence_data.hpp
 // Synthetic variable-length single-marker memory task; padding is never a
@@ -321,14 +289,6 @@ inline void Header(const std::string& title) {
 // The generator is std::mt19937 exactly as in tflow, so every split is
 // bit-identical to tflow's data.npz.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <numeric>
-#include <random>
-#include <vector>
 
 // Report-local workflow and diagnostics: recurrent_model.hpp
 // Generic eager harness for tflow's small explicit-unroll recurrent models
@@ -349,16 +309,6 @@ inline void Header(const std::string& title) {
 // gradient per initial state (named by `initial_gradient_names`) and any
 // probe gradients, exactly like tflow's Evaluate fetches.
 
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <functional>
-#include <map>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -728,9 +678,6 @@ inline void Heatmap(const std::filesystem::path& file, const Tensor& x, bool gra
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 namespace paths {
 
@@ -1143,10 +1090,6 @@ inline void Prepare(const std::string& directory, bool overwrite = false) {
 // Facts [B, 6, 2] and queries [B] are token ids < 13; lengths [B] count the
 // valid facts; targets [B] are one of 4 answers.
 
-#include <memory>
-#include <sstream>
-#include <utility>
-#include <vector>
 
 namespace memory_nets {
 
@@ -1490,9 +1433,6 @@ All three validation epochs are shown. The test observations do not select an ad
 
 ```{cpp, results="markdown", file="figures/memnet_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/memnet/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("All three source epochs required");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").title("MemNet: validation history").size(950,520).save_svg("build/memnet_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
 
 ```
@@ -1507,8 +1447,6 @@ int main(){std::filesystem::create_directories("build");std::ifstream input("bui
 
 ```{cpp, results="markdown", file="figures/memnet_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <iostream>
 int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/memnet/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/memnet/data.npz"))data.emplace(key,value);auto truth=data.at("test_target"),pred=n::argmax(output.at("logits"),1); n::ConfusionMatrix cm(4);cm.add(truth,pred);cm.save_svg("build/memnet_confusion.svg",{.title="MemNet: held-out confusion"});n::save_npz("build/memnet_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<truth.numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
 
 ```

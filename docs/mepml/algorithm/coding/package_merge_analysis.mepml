@@ -23,10 +23,6 @@ At cap2, the two lightest singleton coins form an actual package of cost2. Selec
 
 ```{cpp, results="markdown", file="figures/package_merge_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/package_merge.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   std::filesystem::create_directories("build");
   auto                  t       = dm::algorithms::package_merge_trace({1, 1, 2}, 2);
@@ -95,10 +91,6 @@ The exact decimal cost column is authoritative. The plotted double values are pr
 
 ```{cpp, results="markdown", file="figures/package_merge_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/package_merge.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   std::filesystem::create_directories("build");
   auto weights       = dm::algorithms::package_merge_demo_weights();
@@ -162,10 +154,6 @@ For a power-of-two number N=2^b of equal weights and cap b, the only complete fe
 
 ```{cpp, results="markdown", file="figures/package_merge_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/package_merge.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   std::filesystem::create_directories("build");
   std::vector<double> x, copies;
@@ -219,11 +207,6 @@ The default complete symbol cap is1000000 and the cumulative actual working-memb
 
 ```{cpp, results="markdown", file="figures/package_merge_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/package_merge.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
   std::filesystem::create_directories("build");
   std::vector<std::vector<std::uint64_t>> inputs{

@@ -32,19 +32,7 @@ of sides a−b and a+b. Its area agrees with the factor certificate below.
 The three boxes are actual captured solver rows, rather than a local search.
 
 ```{cpp, results="markdown", file="figures/fermat_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -116,19 +104,7 @@ The continuous guide below uses the stable rational expression above.
 It is explicitly separate from the measured integer test counts.
 
 ```{cpp, results="markdown", file="figures/fermat_gaps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -180,19 +156,7 @@ four cannot be a difference of integer squares; the even shortcut is a
 separate operation. Odd squares succeed immediately with b=0.
 
 ```{cpp, results="markdown", file="figures/fermat_stops.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -252,19 +216,7 @@ exact wide API also handles arbitrary differences beyond Fermat's input
 range, as shown by the final 2^128−1 root check.
 
 ```{cpp, results="markdown", file="figures/fermat_width.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -318,19 +270,7 @@ records. Factor-gap plots are measured work on selected inputs, not timing
 benchmarks or a claim that this beats general factorization methods.
 
 ```{cpp, results="markdown", file="figures/fermat_capture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

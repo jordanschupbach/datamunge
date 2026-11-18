@@ -25,12 +25,6 @@ identities.
 
 ```{cpp, results="markdown", file="figures/jarvis_candidate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jarvis_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -108,12 +102,6 @@ hull. The table exposes the earliest original row for each selected vertex.
 
 ```{cpp, results="markdown", file="figures/jarvis_cloud.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jarvis_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto points = dm::geometry::jarvis_demo_points();
@@ -164,12 +152,6 @@ control is drawn here.
 
 ```{cpp, results="markdown", file="figures/jarvis_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jarvis_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     using P = dm::geometry::Point2D;
@@ -256,12 +238,6 @@ measured counts.
 
 ```{cpp, results="markdown", file="figures/jarvis_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/jarvis_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <limits>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, small, full;

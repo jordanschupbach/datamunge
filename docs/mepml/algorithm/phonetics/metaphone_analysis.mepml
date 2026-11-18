@@ -46,10 +46,6 @@ real single iteration.
 
 ```{cpp, results="markdown", file="figures/metaphone_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/metaphone.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::metaphone_trace("ph");
@@ -90,10 +86,6 @@ so length reduction is not a measure of recognition accuracy.
 
 ```{cpp, results="markdown", file="figures/metaphone_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/metaphone.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto words = dm::algorithms::metaphone_demo_words();
@@ -149,10 +141,6 @@ exact sentinel comparisons.
 
 ```{cpp, results="markdown", file="figures/metaphone_steps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/metaphone.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::metaphone_trace("Knight");
@@ -213,10 +201,6 @@ known; the quota is not a runtime bound. Failure returns no partial trace.
 
 ```{cpp, results="markdown", file="figures/metaphone_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/metaphone.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::string> inputs{"bb", "cc", "b-b", "mb", "m-b", "Catherine",

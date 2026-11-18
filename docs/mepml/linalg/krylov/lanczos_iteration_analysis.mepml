@@ -47,10 +47,6 @@ is zero. The actual projected eigenvalues are3 and1.
 
 ```{cpp, results="markdown", file="figures/lanczos_stages.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lanczos_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::vector<double>> A = {{2, 1}, {1, 2}};
@@ -128,12 +124,6 @@ logarithmic curve, never replaced by an invented floor.
 
 ```{cpp, results="markdown", file="figures/lanczos_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lanczos_analysis.hpp>
-#include <datamunge/linalg/eigen.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto A = dm::algorithms::lanczos_demo_matrix();
@@ -211,10 +201,6 @@ than exact-real bounds with certified rounding error.
 
 ```{cpp, results="markdown", file="figures/lanczos_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lanczos_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;
@@ -275,10 +261,6 @@ every requested step was executed.
 
 ```{cpp, results="markdown", file="figures/lanczos_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lanczos_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     constexpr std::size_t n = 64;

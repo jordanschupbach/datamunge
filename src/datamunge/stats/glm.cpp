@@ -11,6 +11,8 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "glm_family.hpp"
+
 namespace datamunge::stats {
 
 /// @brief Internal GLM family arithmetic, validation and text formatting.
@@ -129,111 +131,6 @@ const char* link_name(GLMFamily f) {
   return "unknown";
 }
 
-/// @brief Maps a valid mean to its fixed link scale.
-/// @param f Response family.
-/// @param mu Response-scale mean.
-/// @return Linear predictor.
-double glm_link(GLMFamily f, double mu) {
-  switch (f) {
-    case GLMFamily::Gaussian:
-      return mu;
-    case GLMFamily::Binomial:
-      return std::log(mu / (1.0 - mu));
-    case GLMFamily::Poisson:
-      return std::log(mu);
-    case GLMFamily::Gamma:
-      return 1.0 / mu;
-  }
-  return mu;
-}
-
-/// @brief Inverse fixed link, with epsilon-bounded binomial probabilities.
-/// @param f Response family.
-/// @param eta Linear predictor.
-/// @return Response-scale mean.
-double glm_inverse_link(GLMFamily f, double eta) {
-  switch (f) {
-    case GLMFamily::Gaussian:
-      return eta;
-    case GLMFamily::Binomial: {
-      const double e = std::exp(-std::fabs(eta));
-      const double p = eta >= 0 ? 1.0 / (1.0 + e) : e / (1.0 + e);
-      return std::clamp(
-          p, std::numeric_limits<double>::epsilon(), 1.0 - std::numeric_limits<double>::epsilon());
-    }
-    case GLMFamily::Poisson:
-      return std::exp(eta);
-    case GLMFamily::Gamma:
-      return 1.0 / eta;
-  }
-  return eta;
-}
-
-// d(eta)/d(mu) = g'(mu)
-/// @brief Evaluates d eta/d mu.
-/// @param f Response family.
-/// @param mu Valid mean.
-/// @return Link derivative.
-double glm_link_derivative(GLMFamily f, double mu) {
-  switch (f) {
-    case GLMFamily::Gaussian:
-      return 1.0;
-    case GLMFamily::Binomial:
-      return 1.0 / (mu * (1.0 - mu));
-    case GLMFamily::Poisson:
-      return 1.0 / mu;
-    case GLMFamily::Gamma:
-      return -1.0 / (mu * mu);
-  }
-  return 1.0;
-}
-
-/// @brief Unscaled exponential-family variance function V(mu).
-/// @param f Response family.
-/// @param mu Valid mean.
-/// @return Unscaled variance.
-double glm_variance(GLMFamily f, double mu) {
-  switch (f) {
-    case GLMFamily::Gaussian:
-      return 1.0;
-    case GLMFamily::Binomial:
-      return mu * (1.0 - mu);
-    case GLMFamily::Poisson:
-      return mu;
-    case GLMFamily::Gamma:
-      return mu * mu;
-  }
-  return 1.0;
-}
-
-/// @brief Unweighted observation contribution to deviance.
-/// @param f Response family.
-/// @param y Observed response.
-/// @param mu Mean in the family domain.
-/// @return Unit deviance, possibly infinity at a null-model boundary.
-double glm_unit_deviance(GLMFamily f, double y, double mu) {
-  switch (f) {
-    case GLMFamily::Gaussian: {
-      const double d = y - mu;
-      return d * d;
-    }
-    case GLMFamily::Binomial: {
-      const double a = (y > 0.0) ? y * std::log(y / mu) : 0.0;
-      const double b = (y < 1.0) ? (1.0 - y) * std::log((1.0 - y) / (1.0 - mu)) : 0.0;
-      return 2.0 * (a + b);
-    }
-    case GLMFamily::Poisson: {
-      const double a = (y > 0.0) ? y * std::log(y / mu) : 0.0;
-      return 2.0 * (a - (y - mu));
-    }
-    case GLMFamily::Gamma:
-      if (std::isinf(mu))
-        return std::numeric_limits<double>::infinity();
-      return 2.0 * (-std::log(y / mu) + (y - mu) / mu);
-  }
-  return 0.0;
-}
-
 /// @brief Initial per-row means following R family conventions.
 /// @param f Response family.
 /// @param y Observed response.
@@ -251,34 +148,6 @@ double glm_initial_mu(GLMFamily f, double y, double prior_weight) {
       return y;
   }
   return y;
-}
-
-/// @brief Rejects nonfinite or out-of-family responses.
-/// @param f Response family.
-/// @param y Response value.
-void glm_validate_response(GLMFamily f, double y) {
-  if (!std::isfinite(y))
-    throw std::invalid_argument("GLM: response must be finite");
-  switch (f) {
-    case GLMFamily::Gaussian:
-      return;
-    case GLMFamily::Binomial:
-      if (y != 0.0 && y != 1.0)
-        throw std::invalid_argument(
-            "GLM: binomial family requires a response of exactly 0 or 1, found " +
-            std::to_string(y));
-      return;
-    case GLMFamily::Poisson:
-      if (y < 0.0)
-        throw std::invalid_argument(
-            "GLM: poisson family requires a non-negative response, found " + std::to_string(y));
-      return;
-    case GLMFamily::Gamma:
-      if (y <= 0.0)
-        throw std::invalid_argument(
-            "GLM: Gamma family requires a strictly positive response, found " + std::to_string(y));
-      return;
-  }
 }
 
 /// @brief Determines whether dispersion is fixed at one.
@@ -388,7 +257,7 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   design_matrix_ = raw.X;
   response_      = raw.y;
   for (const double y : response_)
-    glm_validate_response(options_.family, y);
+    detail::glm_validate_response(options_.family, y);
 
   prior_weights_.clear();
   if (options_.weights_column) {
@@ -412,14 +281,14 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   std::vector<double> mu(n), eta(n);
   for (std::size_t i = 0; i < n; ++i) {
     mu[i]  = glm_initial_mu(options_.family, response_[i], prior_weight_at(i));
-    eta[i] = glm_link(options_.family, mu[i]);
+    eta[i] = detail::glm_link(options_.family, mu[i]);
   }
 
   std::vector<double> beta(p, 0.0);
   std::vector<double> final_w(n, 1.0);
   double              deviance = 0.0;
   for (std::size_t i = 0; i < n; ++i)
-    deviance += prior_weight_at(i) * glm_unit_deviance(options_.family, response_[i], mu[i]);
+    deviance += prior_weight_at(i) * detail::glm_unit_deviance(options_.family, response_[i], mu[i]);
   iteration_coefficients_.clear();
   iteration_deviance_.clear();
   iteration_change_.clear();
@@ -430,9 +299,9 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   for (std::size_t iter = 0; iter < options_.max_iter; ++iter) {
     std::vector<double> z(n), w(n);
     for (std::size_t i = 0; i < n; ++i) {
-      const double gprime = glm_link_derivative(options_.family, mu[i]);
+      const double gprime = detail::glm_link_derivative(options_.family, mu[i]);
       z[i]                = eta[i] + (response_[i] - mu[i]) * gprime;
-      const double v      = glm_variance(options_.family, mu[i]);
+      const double v      = detail::glm_variance(options_.family, mu[i]);
       w[i]                = prior_weight_at(i) / (gprime * gprime * v);
     }
 
@@ -460,12 +329,12 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
         for (std::size_t j = 0; j < p; ++j)
           v += design_matrix_(i, j) * beta[j];
         new_eta[i] = v;
-        new_mu[i]  = glm_inverse_link(options_.family, v);
+        new_mu[i]  = detail::glm_inverse_link(options_.family, v);
         valid      = valid && std::isfinite(v) && std::isfinite(new_mu[i]) &&
                 (options_.family == GLMFamily::Gaussian || new_mu[i] > 0.0) &&
                 (options_.family != GLMFamily::Gamma || v > 0.0);
         new_deviance +=
-            prior_weight_at(i) * glm_unit_deviance(options_.family, response_[i], new_mu[i]);
+            prior_weight_at(i) * detail::glm_unit_deviance(options_.family, response_[i], new_mu[i]);
       }
       valid = valid && std::isfinite(new_deviance);
       if (valid && (iter == 0 || new_deviance <= deviance + 1e-12 * (1.0 + std::fabs(deviance))))
@@ -490,8 +359,8 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   // Information and leverage must use the weights at the returned coefficients,
   // including when max_iter is reached, rather than the preceding working state.
   for (std::size_t i = 0; i < n; ++i) {
-    const double gp = glm_link_derivative(options_.family, mu[i]);
-    final_w[i]      = prior_weight_at(i) / (gp * gp * glm_variance(options_.family, mu[i]));
+    const double gp = detail::glm_link_derivative(options_.family, mu[i]);
+    final_w[i]      = prior_weight_at(i) / (gp * gp * detail::glm_variance(options_.family, mu[i]));
     if (!(final_w[i] > 0.0) || !std::isfinite(final_w[i]))
       throw std::runtime_error("GLM: nonfinite or zero final working weight");
     if (options_.family == GLMFamily::Binomial && (mu[i] < 1e-8 || mu[i] > 1.0 - 1e-8))
@@ -513,11 +382,11 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
       ysum += prior_weight_at(i) * response_[i];
     }
     const double y_bar =
-        design_.has_intercept ? ysum / wsum : glm_inverse_link(options_.family, 0.0);
+        design_.has_intercept ? ysum / wsum : detail::glm_inverse_link(options_.family, 0.0);
     null_deviance_ = 0.0;
     for (std::size_t i = 0; i < n; ++i)
       null_deviance_ +=
-          prior_weight_at(i) * glm_unit_deviance(options_.family, response_[i], y_bar);
+          prior_weight_at(i) * detail::glm_unit_deviance(options_.family, response_[i], y_bar);
   }
 
   if (glm_uses_fixed_dispersion(options_.family)) {
@@ -525,7 +394,7 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   } else {
     double pearson_chisq = 0.0;
     for (std::size_t i = 0; i < n; ++i) {
-      const double v = glm_variance(options_.family, mu[i]);
+      const double v = detail::glm_variance(options_.family, mu[i]);
       const double d = response_[i] - mu[i];
       pearson_chisq += prior_weight_at(i) * d * d / v;
     }
@@ -572,11 +441,11 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   pearson_residuals_.resize(n);
   standardized_residuals_.resize(n);
   for (std::size_t i = 0; i < n; ++i) {
-    const double d         = glm_unit_deviance(options_.family, response_[i], mu[i]);
+    const double d         = detail::glm_unit_deviance(options_.family, response_[i], mu[i]);
     const double sign      = (response_[i] >= mu[i]) ? 1.0 : -1.0;
     deviance_residuals_[i] = sign * std::sqrt(std::max(0.0, prior_weight_at(i) * d));
 
-    const double v        = glm_variance(options_.family, mu[i]);
+    const double v        = detail::glm_variance(options_.family, mu[i]);
     pearson_residuals_[i] = std::sqrt(prior_weight_at(i)) * (response_[i] - mu[i]) / std::sqrt(v);
 
     standardized_residuals_[i] =
@@ -691,7 +560,7 @@ GLMPrediction GLM::predict(
     if (!std::isfinite(s) || (options_.family == GLMFamily::Gamma && s <= 0.0))
       throw std::invalid_argument("GLM: query outside the finite link domain");
     compact_eta[i] = s;
-    compact_fit[i] = glm_inverse_link(options_.family, s);
+    compact_fit[i] = detail::glm_inverse_link(options_.family, s);
     if (!std::isfinite(compact_fit[i]))
       throw std::invalid_argument("GLM: query mean overflow");
   }
@@ -747,8 +616,8 @@ GLMPrediction GLM::predict(
         dmu_deta = 1.0;
     }
     compact_se[i] = std::fabs(dmu_deta) * se_eta;
-    compact_lo[i] = glm_inverse_link(options_.family, lo_eta);
-    compact_hi[i] = glm_inverse_link(options_.family, hi_eta);
+    compact_lo[i] = detail::glm_inverse_link(options_.family, lo_eta);
+    compact_hi[i] = detail::glm_inverse_link(options_.family, hi_eta);
     if (options_.family == GLMFamily::Gamma) {
       compact_lo[i] = 1.0 / hi_eta;
       compact_hi[i] = lo_eta > 0.0 ? 1.0 / lo_eta : std::numeric_limits<double>::infinity();
@@ -806,15 +675,15 @@ dstruct::DataFrame GLM::working_data(std::size_t iteration) const {
     const double prior = prior_weights_.empty() ? 1.0 : prior_weights_[i];
     if (iteration == 0) {
       mu[i]  = glm_initial_mu(options_.family, response_[i], prior);
-      eta[i] = glm_link(options_.family, mu[i]);
+      eta[i] = detail::glm_link(options_.family, mu[i]);
     } else {
       eta[i] = 0.0;
       for (std::size_t j = 0; j < rank(); ++j)
         eta[i] += design_matrix_(i, j) * iteration_coefficients_[iteration - 1][j];
-      mu[i] = glm_inverse_link(options_.family, eta[i]);
+      mu[i] = detail::glm_inverse_link(options_.family, eta[i]);
     }
-    const double gp = glm_link_derivative(options_.family, mu[i]);
-    w[i]            = prior / (gp * gp * glm_variance(options_.family, mu[i]));
+    const double gp = detail::glm_link_derivative(options_.family, mu[i]);
+    w[i]            = prior / (gp * gp * detail::glm_variance(options_.family, mu[i]));
     z[i]            = eta[i] + (response_[i] - mu[i]) * gp;
   }
   dstruct::DataFrame out;
@@ -892,7 +761,7 @@ dstruct::DataFrame GLM::binomial_score(const dstruct::DataFrame& data, double th
   const auto pred    = predict(data);
   double     correct = 0.0, brier = 0.0, loss = 0.0;
   for (std::size_t i = 0; i < raw.y.size(); ++i) {
-    glm_validate_response(GLMFamily::Binomial, raw.y[i]);
+    detail::glm_validate_response(GLMFamily::Binomial, raw.y[i]);
     const double y = raw.y[i], p = pred[raw.used_row_indices[i]];
     correct += static_cast<double>((p >= threshold) == (y == 1.0));
     brier += (p - y) * (p - y);

@@ -31,7 +31,6 @@ internal union-find roots.
 
 ```{cpp, results="markdown", file="figures/boruvka_four_vertices.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <set>
 int main() {
   std::filesystem::create_directories("build");
   const std::vector<dm::algorithms::WeightedEdge> edges{{0,1,1},{1,2,2},{2,3,1},{0,3,9}};

@@ -56,10 +56,6 @@ pass.
 
 ```{cpp, results="markdown", file="figures/laplacian_centroid.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/laplacian_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -108,10 +104,6 @@ every prefix. Equal coordinate scales keep the geometric curve honest.
 
 ```{cpp, results="markdown", file="figures/laplacian_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/laplacian_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto d = dm::geometry::laplacian_demo_curve();
@@ -164,10 +156,6 @@ actual native trajectories.
 
 ```{cpp, results="markdown", file="figures/laplacian_oscillation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/laplacian_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -228,11 +216,6 @@ state/update and energy adds real memory and diagnostic work.
 
 ```{cpp, results="markdown", file="figures/laplacian_oversmoothing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/laplacian_analysis.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto d = dm::geometry::laplacian_demo_curve();

@@ -39,33 +39,6 @@ block below is a complete editable C++ program.
 
 ```{cpp, results="markdown", file="figures/random_generation_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/random/sampling_analysis.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -111,33 +84,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/random_generation_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/random/sampling_analysis.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -176,33 +122,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/random_generation_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/random/sampling_analysis.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;
@@ -258,33 +177,6 @@ Adjacent-double half-open result equals lower: true; extreme-span final draw fin
 
 ```{cpp, results="markdown", file="figures/random_generation_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/integer_arithmetic.hpp>
-#include <filesystem>
-#include <print>
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <climits>
-#include <datamunge/algorithms/number_theory.hpp>
-#include <numeric>
-#include <numbers>
-#include <random>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <array>
-#include <tuple>
-#include <datamunge/algorithms/prufer.hpp>
-#include <datamunge/algorithms/flow_diagram.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/random/sampling_analysis.hpp>
-#include <iomanip>
-#include <bit>
-#include <datamunge/random/sampling_analysis.hpp>
 int main() {
     namespace a = dm::algorithms;
     namespace g = dm::graphics;

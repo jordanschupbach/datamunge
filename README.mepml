@@ -272,7 +272,6 @@ MEP embeds the saved SVG through the block's `file=` option.
 
 ```{cpp, nix-shell=".#report-cpp", results="output", file="build/iris-mlp-cpp.svg", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
 #include <dm/dm.hpp>
-#include <iostream>
 
 int main() {
   dm::mkdir("build");

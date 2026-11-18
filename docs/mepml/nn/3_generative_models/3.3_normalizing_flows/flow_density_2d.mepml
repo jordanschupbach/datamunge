@@ -252,7 +252,6 @@ return detached values, while model density paths remain differentiable.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 namespace n=dm::nn;namespace m=n::models;namespace fs=std::filesystem;
 using T=n::Tensor;using A=std::map<std::string,T>;
 void Require(bool ok,const std::string& what){if(!ok)throw std::runtime_error(what);}
@@ -450,7 +449,6 @@ int main(){
 
 ```{cpp, results="markdown", file="figures/study_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 int main(){
  namespace n=dm::nn;auto layout=dm::graphics::RLayout::create(1,3);int kind=0;
  std::print("| Family | Final model | Full Gaussian | Diagonal Gaussian | Identity | Truth |\n|---|---:|---:|---:|---:|---:|\n");

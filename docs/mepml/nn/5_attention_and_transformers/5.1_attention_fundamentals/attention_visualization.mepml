@@ -66,9 +66,6 @@ The source seed45901,2 heads,4 queries and5 keys are retained for distinct and e
 //
 // Options: out=DIR (default output/nn/attention_visualization), tf=DIR, verbose=1.
 
-#include <cstdio>
-#include <iostream>
-#include <string>
 
 // Editable workflow support: attention.hpp
 // Attention helpers for the 5.x example ports (port of the parts of tflow's
@@ -88,20 +85,7 @@ The source seed45901,2 heads,4 queries and5 keys are retained for distinct and e
 //          bottom-right instead of taking an explicit query offset, and its
 //          padding_keep_mask masks keys only).
 
-#include <datamunge/nn/attention.hpp>
-#include <datamunge/nn/io.hpp>
-#include <datamunge/nn/nn.hpp>
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <filesystem>
-#include <functional>
-#include <random>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 namespace attn {
 
@@ -331,17 +315,9 @@ inline Options ParseOptions(int argc, char** argv, const std::string& name,
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -407,12 +383,8 @@ inline void Header(const std::string& title) {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable workflow support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
 
 namespace paths {

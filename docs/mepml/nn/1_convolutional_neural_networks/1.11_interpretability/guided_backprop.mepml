@@ -72,8 +72,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/guided_backprop_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -119,7 +117,6 @@ and expose the difference;they do not certify guided propagation as a derivative
 ```{cpp, results="markdown", file="figures/guided_backprop_gates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -187,7 +184,6 @@ Show the same first actual held-out observation of each true digit as before.
 ```{cpp, results="markdown", file="figures/guided_backprop_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -284,7 +280,6 @@ gallery alone does not demonstrate dependence on the learned class head.
 ```{cpp, results="markdown", file="figures/guided_backprop_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

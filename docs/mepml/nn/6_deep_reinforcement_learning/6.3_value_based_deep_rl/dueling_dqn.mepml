@@ -76,31 +76,15 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // TF; the weights use nn's initialiser, so the results match TF
 // statistically. The vsim video is omitted. Options: the rl::DqnConfig keys.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <datamunge/nn/nn.hpp>
-#include <iostream>
-#include <random>
-#include <string>
-#include <vector>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -158,7 +142,6 @@ inline void Header(const std::string& title) {
 }
 
 // Editable workflow support: rl/classic_control.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::kPi;
 using datamunge::rl::environments::Clamp;
@@ -183,19 +166,8 @@ using datamunge::rl::environments::Acrobot;
 // nodes; the noisy-network head (nn::NoisyDense) is not included, because
 // datamunge::nn has no noisy layer yet.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <datamunge/nn/nn.hpp>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Obs;
 using datamunge::rl::environments::Action;
@@ -212,13 +184,6 @@ using datamunge::rl::environments::TabularEnv;
 // Small helpers shared by the RL examples: episode statistics, random and
 // greedy rollouts, and printing.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 
 namespace rl {
@@ -391,7 +356,6 @@ inline nn::Tensor Row(const Obs& o) { return nn::from_vector(o, {1, static_cast<
 }  // namespace rl
 
 // Editable workflow support: rl/replay.hpp
-#include <datamunge/rl/replay.hpp>
 namespace rl {using dm::rl::replay::Experience;using dm::rl::replay::Batch;using dm::rl::replay::ReplayBuffer;using dm::rl::replay::PrioritizedReplay;using dm::rl::replay::NStepBuffer;}
 
 

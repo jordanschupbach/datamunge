@@ -122,7 +122,6 @@ same original bytes; mutations do not accumulate across the census.
 
 ```{cpp, results="markdown", file="figures/crc32_avalanche.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <set>
 int main() {
   std::filesystem::create_directories("build");
   const std::string message="The quick brown fox";

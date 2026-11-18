@@ -6,12 +6,15 @@
 #include <datamunge/stats/agglomerative_clustering.hpp>
 #include <datamunge/stats/anova_test.hpp>
 #include <datamunge/stats/arima.hpp>
+#include <datamunge/stats/bart.hpp>
 #include <datamunge/stats/time_series.hpp>
 #include <datamunge/stats/knn_graph.hpp>
 #include <datamunge/stats/chi_squared_test.hpp>
+#include <datamunge/stats/classical_tests.hpp>
 #include <datamunge/stats/clustering_diagnostics.hpp>
 #include <datamunge/stats/cnn_classifier.hpp>
 #include <datamunge/stats/conformal.hpp>
+#include <datamunge/stats/control_chart.hpp>
 #include <datamunge/stats/correlation_test.hpp>
 #include <datamunge/stats/dbscan.hpp>
 #include <datamunge/stats/decision_tree_classifier.hpp>
@@ -26,6 +29,7 @@
 #include <datamunge/stats/gaussian_process_regression.hpp>
 #include <datamunge/stats/gbm_classifier.hpp>
 #include <datamunge/stats/gbm_regressor.hpp>
+#include <datamunge/stats/gam.hpp>
 #include <datamunge/stats/glm.hpp>
 #include <datamunge/stats/glmm.hpp>
 #include <datamunge/stats/ica.hpp>
@@ -49,6 +53,7 @@
 #include <datamunge/stats/lowess.hpp>
 #include <datamunge/stats/lmm.hpp>
 #include <datamunge/stats/bootstrap.hpp>
+#include <datamunge/stats/survival.hpp>
 #include <datamunge/stats/jackknife.hpp>
 #include <datamunge/stats/mds.hpp>
 #include <datamunge/stats/mlp_classifier.hpp>
@@ -61,6 +66,7 @@
 #include <datamunge/stats/u_statistic.hpp>
 #include <datamunge/stats/v_statistic.hpp>
 #include <datamunge/stats/normality_test.hpp>
+#include <datamunge/stats/nonparametric.hpp>
 #include <datamunge/stats/p_adjust.hpp>
 #include <datamunge/stats/pairwise_test.hpp>
 #include <datamunge/stats/proportion_test.hpp>

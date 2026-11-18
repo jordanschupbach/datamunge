@@ -1,0 +1,55 @@
+//? Title: Friedman test for repeated measurements
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate three treatments on each of fourteen subjects. A random subject
+intercept creates strong between-subject variation. The Friedman API accepts
+one row per subject and ranks treatments within each row.
+)
+
+> Simulate, test and plot
+
+```{cpp, results="markdown", file="figures/blocked_design.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(31);
+    std::vector<std::vector<double>> blocks;
+    for (double subject : dm::rnorm(10, 3, 14))
+        blocks.push_back({subject + dm::rnorm(0, 0.65, 1)[0],
+                          subject + dm::rnorm(0.5, 0.65, 1)[0],
+                          subject + dm::rnorm(1.1, 0.65, 1)[0]});
+    const auto result = sp::friedman_test(blocks);
+    std::print("Friedman Q = {:.3f}. Approximate chi-square p = {:.4g} with {:.0f} df and {:.0f} blocks.\n",
+               result.statistic, result.p_value, result.parameter1, result.parameter2);
+
+    auto plot = RPlot::create().title("Three treatments within each subject")
+        .x_label("Treatment").y_label("Response").x_ticks({1, 2, 3}, {"A", "B", "C"});
+    for (const auto& block : blocks)
+        plot.lines({1, 2, 3}, block, dm::graphics::RGBA{86, 118, 155}, 1);
+
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/blocked_design.svg");
+}
+```
+// result_begin: markdown
+Friedman Q = 13.286. Approximate chi-square p = 0.001303 with 2 df and 14 blocks.
+\image(figures/blocked_design.svg)
+// result_end
+\caption(Each line connects the three observations from one simulated subject.)
+\alttext(Each line connects the three observations from one simulated subject.)
+
+> Interpretation
+
+Comparing observations within subjects removes the subject intercept from
+the ranks. The chi-square reference is approximate and uses two degrees of
+freedom for three treatments. A small p-value supports a treatment difference
+somewhere among the three levels.
+
+> References
+
+- [R Friedman test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/friedman.test.html]

@@ -82,8 +82,6 @@ All mathematical components run natively. Optional TensorFlow recordings are abs
 // persistent starts are checked bit-identical. Deviations: final.npz instead of a
 // SaveV2 bundle; no independent_audit.json. Options: epochs=3 out=DIR
 // init=auto|tf|nn|PATH tf=DIR threads=4. Output: output/nn/models/energy_langevin.
-#include <array>
-#include <chrono>
 
 // Editable experiment support: energy_langevin.hpp
 // Port of tflow's common/nn/energy_langevin.h and common/ml/energy_langevin.h: a
@@ -108,16 +106,6 @@ All mathematical components run natively. Optional TensorFlow recordings are abs
 // Langevin innovations bit for bit; only the weight initialisation differs
 // (nn's generator), which init=auto removes by replaying TF's initial arrays.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <random>
-#include <string>
-#include <vector>
 
 // Editable experiment support: binary_pixels.hpp
 // Shared harness of the binary 8x8 MNIST autoregressive density ports
@@ -138,18 +126,6 @@ All mathematical components run natively. Optional TensorFlow recordings are abs
 // match. Independently of the trajectory, TF's FINAL weights (model_arrays.npz)
 // are loaded into a fresh model which must reproduce TF's test outputs.
 
-#include <algorithm>
-#include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Editable experiment support: autoencoder.hpp
 // Shared support for the autoencoder ports: a port of the parts of tflow's
@@ -164,35 +140,15 @@ All mathematical components run natively. Optional TensorFlow recordings are abs
 // generator, so trajectories match tflow only statistically; batch orders and
 // Gaussian noise banks are bit-identical to tflow's.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <memory>
-#include <ostream>
-#include <random>
-#include <set>
-#include <string>
-#include <vector>
 
 // Editable experiment support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable experiment support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -258,12 +214,8 @@ inline void Header(const std::string& title) {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable experiment support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot(){return dm::datasets::data_home();}
 inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}
@@ -337,16 +289,7 @@ inline nn::Tensor GaussianNoise(const nn::Shape& shape,std::int64_t samples,std:
 // (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
 // numerically, independently of the random initialisation.
 
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
-#include <datamunge/nn/nn.hpp>
 
 
 

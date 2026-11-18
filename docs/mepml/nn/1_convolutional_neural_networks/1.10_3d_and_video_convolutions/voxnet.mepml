@@ -55,8 +55,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/voxnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -125,7 +123,6 @@ occupancy counts. Max projections visualize surface occupancy,not photographs.
 ```{cpp, results="markdown", file="figures/voxnet_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -209,7 +206,6 @@ four turns close exactly. Only host index metadata controls the transformations.
 ```{cpp, results="markdown", file="figures/voxnet_rotation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -265,7 +261,6 @@ sum-of-squares penalty,not decoupled optimizer decay or mean weight-square loss.
 ```{cpp, results="markdown", file="figures/voxnet_gradients.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -373,8 +368,6 @@ computing NLL;averaging softmax probabilities would be a different rule.
 ```{cpp, results="markdown", file="figures/voxnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
-#include <random>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -530,7 +523,6 @@ population standardization and pairwise distances are tensor operations.
 ```{cpp, results="markdown", file="figures/voxnet_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -688,8 +680,6 @@ count range. Source class meanings remain those declared for the dataset above.
 
 ```{cpp, results="markdown", file="figures/voxnet_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::filesystem::create_directories("build");

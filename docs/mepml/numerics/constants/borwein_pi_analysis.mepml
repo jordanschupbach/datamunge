@@ -98,7 +98,6 @@ all decimal digits or exact equality to pi.
 
 ```{cpp, results="markdown", file="figures/borwein_pi.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
 int main() {
   std::filesystem::create_directories("build");
   const auto values=dm::algorithms::borwein_pi_sequence(4);
@@ -173,7 +172,6 @@ arithmetic or a certified numerical enclosure.
 
 ```{cpp, results="markdown", file="figures/borwein_exact_model.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
 int main() {
   std::filesystem::create_directories("build");
   const auto values=dm::algorithms::borwein_pi_sequence(4);
@@ -238,7 +236,6 @@ rounding in a. The table contains only actual completed updates.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
 int main() {
   const double reference=std::numbers::pi;
   const double ulp=std::nextafter(reference,std::numeric_limits<double>::infinity())-reference;

@@ -41,10 +41,6 @@ separately simulated automaton.
 
 ```{cpp, results="markdown", file="figures/kmp_fallback.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kmp.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -93,10 +89,6 @@ the same table on a nonempty valid search.
 
 ```{cpp, results="markdown", file="figures/kmp_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kmp.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const std::string pattern = "ababaca";
@@ -155,10 +147,6 @@ deliberate no-match convention.
 
 ```{cpp, results="markdown", file="figures/kmp_comparisons.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kmp.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::kmp_search_trace("aaaaac", "aaab");
@@ -233,11 +221,6 @@ proved comparison bound, not a fabricated measured growth curve.
 
 ```{cpp, results="markdown", file="figures/kmp_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/kmp.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <cmath>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y, b;

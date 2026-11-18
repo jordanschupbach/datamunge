@@ -25,15 +25,6 @@ The final two are 20 and 10, so the raw power is 400+100−400=100, matching
 
 ```{cpp, results="markdown", file="figures/goertzel_states.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goertzel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -122,15 +113,6 @@ immediately before the half-bin boundaries make the snapping steps visible.
 
 ```{cpp, results="markdown", file="figures/goertzel_selection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goertzel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -215,15 +197,6 @@ are preserved; the two selectors need not produce equal powers.
 
 ```{cpp, results="markdown", file="figures/goertzel_dtmf.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goertzel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -278,15 +251,6 @@ as incomplete. The following are controlled counterexamples, not conformance tes
 
 ```{cpp, results="markdown", file="figures/goertzel_candidates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goertzel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -336,15 +300,6 @@ trace records are separate from ordinary constant working state.
 
 ```{cpp, results="markdown", file="figures/goertzel_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goertzel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -431,15 +386,6 @@ unsigned-bin semantics remain explicit rather than silently reducing the index.
 
 ```{cpp, results="markdown", file="figures/goertzel_numeric.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goertzel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -510,15 +456,6 @@ updates, despite similarly named numeric limits.
 
 ```{cpp, results="markdown", file="figures/goertzel_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/goertzel.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <numbers>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

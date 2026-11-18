@@ -48,10 +48,6 @@ destination addition; diagram states are rounded to four decimals for display.
 
 ```{cpp, results="markdown", file="figures/page_rank_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/page_rank.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -100,11 +96,6 @@ independently checked against the actual canonical result below.
 
 ```{cpp, results="markdown", file="figures/page_rank_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/page_rank.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numeric>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -151,11 +142,6 @@ iteration counts alone.
 
 ```{cpp, results="markdown", file="figures/page_rank_convergence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/page_rank.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto p = dm::graphics::RPlot::create();
@@ -222,12 +208,6 @@ This is not a byte or peak-memory bound, and failure returns no partial trace.
 
 ```{cpp, results="markdown", file="figures/page_rank_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/page_rank.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <numeric>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::string> labels{"zero budget", "one update", "all dangling",

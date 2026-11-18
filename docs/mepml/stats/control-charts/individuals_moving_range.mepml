@@ -1,0 +1,70 @@
+//? Title: Individuals and moving-range charts
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A synthetic production line records one fill weight per batch. The first ten
+weights establish the baseline. Later batches contain a level shift. An
+individuals chart tracks fill weight, and the moving-range chart tracks
+absolute differences between successive batches.
+)
+
+> Fit, monitor and plot
+
+```{cpp, results="markdown", file="figures/individuals_moving_range.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace spc = datamunge::stats;
+using datamunge::graphics::RLayout;
+
+void show_signals(const spc::ControlChart& chart) {
+    for (const auto& p : chart.points)
+        if (p.outside)
+            std::print("| {} | {} | {:.3f} | {:.3f} | {:.3f} |\n",
+                       chart.title, p.index, p.value, p.lower, p.upper);
+}
+
+int main() {
+    const std::vector<double> grams{
+        499.8, 500.4, 499.5, 500.1, 500.6, 499.9, 500.2, 499.6,
+        500.1, 499.8, 500.2, 499.9, 502.5, 502.3, 502.7, 502.6
+    };
+    const spc::ControlChartOptions baseline{.baseline_size = 10};
+    const auto individuals = spc::individuals_chart(grams, baseline);
+    const auto ranges = spc::moving_range_chart(grams, baseline);
+
+    std::print("| Chart | Batch | Statistic (g) | Lower (g) | Upper (g) |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    show_signals(individuals);
+    show_signals(ranges);
+    std::filesystem::create_directories("build");
+    RLayout::create(1, 2).size(1100, 400).add(individuals.plot()).add(ranges.plot())
+        .save_svg("build/individuals_moving_range.svg");
+}
+```
+// result_begin: markdown
+| Chart | Batch | Statistic (g) | Lower (g) | Upper (g) |
+| --- | ---: | ---: | ---: | ---: |
+| Individuals chart | 13 | 502.500 | 498.523 | 501.477 |
+| Individuals chart | 14 | 502.300 | 498.523 | 501.477 |
+| Individuals chart | 15 | 502.700 | 498.523 | 501.477 |
+| Individuals chart | 16 | 502.600 | 498.523 | 501.477 |
+| Moving-range chart | 13 | 2.600 | 0.000 | 1.815 |
+\image(figures/individuals_moving_range.svg)
+// result_end
+\caption(Individual fill weights and adjacent moving ranges, with limits estimated from batches one through ten.)
+\alttext(The individuals chart shows a sustained level shift. The moving-range chart emphasizes the jump into that level.)
+
+> Interpret the chart
+
+The individuals chart uses the baseline mean and estimates process standard
+deviation from the mean baseline moving range divided by the normal range
+factor for pairs. A moving range is indexed by the second observation in its
+pair, so its first point is batch two. A lasting level shift can leave the
+individuals chart outside its limits even after the adjacent ranges return to
+their baseline scale.
+
+> References
+
+- [NIST individuals control charts|https://www.itl.nist.gov/div898/handbook/pmc/section3/pmc322.htm]

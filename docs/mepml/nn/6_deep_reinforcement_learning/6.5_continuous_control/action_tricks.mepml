@@ -80,29 +80,15 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // ParameterStore; its task draws and samples use the same stream as TF but
 // the weights use nn's generator, so the learning curve matches statistically.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <datamunge/nn/nn.hpp>
-#include <random>
-#include <vector>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -173,16 +159,6 @@ inline void Header(const std::string& title) {
 // nn::Tensor, and the TF hardware options are accepted and ignored except
 // threads=N, which sets nn's thread count.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <datamunge/nn/nn.hpp>
-#include <functional>
-#include <random>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/dqn_common.hpp
 // datamunge::nn port of tflow_examples src/common/rl/dqn_common.h.
@@ -197,19 +173,8 @@ inline void Header(const std::string& title) {
 // nodes; the noisy-network head (nn::NoisyDense) is not included, because
 // datamunge::nn has no noisy layer yet.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <datamunge/nn/nn.hpp>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 // Editable workflow support: rl/env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Obs;
 using datamunge::rl::environments::Action;
@@ -226,13 +191,6 @@ using datamunge::rl::environments::TabularEnv;
 // Small helpers shared by the RL examples: episode statistics, random and
 // greedy rollouts, and printing.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 
 namespace rl {
@@ -407,7 +365,6 @@ inline nn::Tensor Row(const Obs& o) { return nn::from_vector(o, {1, static_cast<
 
 
 // Editable workflow support: rl/replay.hpp
-#include <datamunge/rl/replay.hpp>
 namespace rl {using dm::rl::replay::Experience;using dm::rl::replay::Batch;using dm::rl::replay::ReplayBuffer;using dm::rl::replay::PrioritizedReplay;using dm::rl::replay::NStepBuffer;using dm::rl::replay::SeqBatch;using dm::rl::replay::SequenceReplay;}
 
 namespace rl {
@@ -509,20 +466,11 @@ inline float EvaluateC(Env& env, const std::function<std::vector<float>(const Ob
 // tensor (eager) instead of adding graph nodes, ObsMatrix/IntVector return
 // nn::Tensor (actions as int64), and TF hardware options are ignored.
 
-#include <cmath>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <datamunge/nn/nn.hpp>
-#include <random>
-#include <string>
-#include <vector>
 
 
 
 
 // Editable workflow support: rl/vec_env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::VecStep;
 using datamunge::rl::environments::VecEnv;

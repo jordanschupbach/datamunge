@@ -32,18 +32,6 @@ their values; the report does not reconstruct the algorithm.
 
 ```{cpp, results="markdown", file="figures/painters_algorithm_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/painters_algorithm.hpp>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -81,25 +69,7 @@ random call schedule.
 
 ```{cpp, results="markdown", file="figures/painters_algorithm_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/painters_algorithm.hpp>
-#include <filesystem>
-#include <datamunge/algorithms/painters_algorithm.hpp>
-#include <datamunge/plot/plot.hpp>
 
-#include <iostream>
-#include <sstream>
-#include <vector>
 
 using namespace datamunge::algorithms;
 using namespace datamunge::graphics;
@@ -178,18 +148,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/painters_algorithm_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/painters_algorithm.hpp>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<dm::algorithms::DepthRect> r{{-2, 0, 1, 0, 1, 4},
@@ -217,18 +175,6 @@ Equal depths and background erasure: `[4, 0, 0]`; actual writes 4.
 
 ```{cpp, results="markdown", file="figures/painters_algorithm_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/painters_algorithm.hpp>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<dm::algorithms::DepthRect> r{{0, 0, 7, 7, 10, 1},

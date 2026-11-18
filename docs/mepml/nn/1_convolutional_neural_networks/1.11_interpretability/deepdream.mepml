@@ -75,8 +75,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/deepdream_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -121,7 +119,6 @@ interpolation convention,including rectangular sizes and identity resize.
 ```{cpp, results="markdown", file="figures/deepdream_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n   = dm::nn;
   namespace m   = n::models;
@@ -174,7 +171,6 @@ is retained. All image transformations and numerical updates use tensors.
 ```{cpp, results="markdown", file="figures/deepdream_images.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -428,7 +424,6 @@ backtracking counts remain in the local archive for replay.
 ```{cpp, results="markdown", file="figures/deepdream_scores.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

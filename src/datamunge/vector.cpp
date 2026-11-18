@@ -257,6 +257,26 @@ Vector<> unif(double lower, double upper, std::size_t n) {
 
 Vector<> runif(double lower, double upper, std::size_t n) { return unif(lower, upper, n); }
 
+linalg::Tensor runif(std::vector<std::size_t> shape, double lower, double upper) {
+  // Validate the suffix products used to build row-major strides.
+  std::size_t stride = 1;
+  for (auto it = shape.rbegin(); it != shape.rend(); ++it) {
+    if (*it != 0 && stride > std::numeric_limits<std::size_t>::max() / *it) {
+      throw std::length_error("runif: tensor shape overflows");
+    }
+    stride *= *it;
+  }
+  linalg::Tensor result(std::move(shape));
+  for (std::size_t i = 0; i < result.size(); ++i) {
+    result.set_flat(i, generator().uniform(lower, upper));
+  }
+  return result;
+}
+
+linalg::Tensor runif(std::initializer_list<std::size_t> shape, double lower, double upper) {
+  return runif(std::vector<std::size_t>(shape), lower, upper);
+}
+
 Vector<> rnorm(double mean, double sd, std::size_t n) {
   Vector<> v(n);
   for (double& x : v) x = generator().normal(mean, sd);

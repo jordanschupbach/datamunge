@@ -1,0 +1,75 @@
+//? Title: Bayesian inference for an ODE decay rate
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The state satisfies dy/dt = −k y with y(0) = 1. Measurements have Normal error with SD
+0.08. A Gamma(2, 1) prior constrains k to be positive. The likelihood integrates the
+ODE numerically with fourth-order Runge–Kutta. The analytic trajectory exp(−kt)
+independently checks the numerical state at every observation time.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/exponential_decay.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const double t[]{0.3, 0.7, 1.1, 1.8, 2.4};
+    const double y[]{0.78, 0.60, 0.49, 0.26, 0.15};
+    b::LogDensity target([&](const auto& q) {
+        const double k = q[0];
+        double lp = b::gamma_lpdf(k, 2., 1.);
+        const datamunge::algorithms::OdeSystem rhs = [k](double, const auto& state) {
+            return std::vector<double>{-k * state[0]};
+        };
+        double time = 0;
+        std::vector<double> state{1};
+        for (std::size_t i = 0; i < std::size(y); ++i) {
+            const auto trajectory = datamunge::algorithms::runge_kutta4(rhs, state, time, t[i], 24);
+            state = trajectory.y.back();
+            time = t[i];
+            if (std::abs(state[0] - std::exp(-k * time)) > 1e-6)
+                throw std::runtime_error("ODE solution differs from reference");
+            lp += b::normal_lpdf(y[i], state[0], 0.08);
+        }
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {0}, {4}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Decay rate").y_label("Density");
+    std::vector<double> time, fitted;
+    for (int i = 0; i <= 50; ++i) {
+        const double value = 2.4 * i / 50;
+        time.push_back(value);
+        double mean = 0;
+        for (std::size_t j = 0; j < post.marginal_grid[0].size(); ++j)
+            mean += std::exp(-value * post.marginal_grid[0][j]) * post.marginal_density[0][j] * 4 / 1000;
+        fitted.push_back(mean);
+    }
+    auto fit = RPlot::create().points({std::begin(t), std::end(t)}, {std::begin(y), std::end(y)},
+                                     "observed", {70, 70, 70})
+        .lines(time, fitted, "posterior mean trajectory", {36, 105, 172})
+        .title("Decay fit").x_label("Time").y_label("State");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/exponential_decay.svg");
+}
+```
+// result_begin: markdown
+Posterior mean 0.747, posterior SD 0.087, edge mass 1.87e-31.
+\image(figures/exponential_decay.svg)
+// result_end
+\caption(Decay-rate posterior and posterior mean decay trajectory overlaid on the observations.)
+\alttext(Decay-rate posterior and posterior mean decay trajectory overlaid on the observations.)
+
+> Reference
+
+Stan User’s Guide 2.19, chapter 13.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

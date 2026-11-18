@@ -32,20 +32,7 @@ The result is an index in the original sorted array, unlike the separate
 Eytzinger layout's index convention.
 
 ```{cpp, results="markdown", file="figures/fibonacci_search_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/sorted_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -102,20 +89,7 @@ four positions happen to coincide. The next section shows paths with
 different behavior. No equivalence of their general search trees is claimed.
 
 ```{cpp, results="markdown", file="figures/fibonacci_search_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/sorted_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -164,20 +138,7 @@ Sortedness remains an unchecked precondition, so these statements require
 a nondecreasing input that stays unmodified during the search.
 
 ```{cpp, results="markdown", file="figures/fibonacci_search_edges.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/sorted_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -227,20 +188,7 @@ and any cache behavior are outside these read counts. A lower count on a
 selected family does not imply a universal runtime advantage.
 
 ```{cpp, results="markdown", file="figures/fibonacci_search_census.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/sorted_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -296,20 +244,7 @@ mutation. Ordinary/work calls keep constant auxiliary storage and no
 history quota; capture errors expose no partial trace.
 
 ```{cpp, results="markdown", file="figures/fibonacci_search_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/sorted_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

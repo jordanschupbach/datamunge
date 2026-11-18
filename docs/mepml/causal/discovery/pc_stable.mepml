@@ -1,0 +1,50 @@
+//? Title: Discovering a Gaussian graph with PC-stable
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Simulate two independent causes of a shared downstream variable. Fit a
+partially directed graph and use conditional independence tests to see
+how a collider changes the relationship between its parents.
+)
+
+> Recover the collider from observations
+
+```{cpp, results="markdown", file="figures/pc_stable.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    namespace causal = datamunge::causal;
+    datamunge::linalg::DenseMatrix<double> data(3500, 5);
+    std::mt19937_64 rng(41);
+    std::normal_distribution<double> normal;
+    for (std::size_t i = 0; i < data.rows(); ++i) {
+        data(i, 0) = normal(rng);
+        data(i, 1) = normal(rng);
+        data(i, 2) = data(i, 0) + data(i, 1) + normal(rng);
+        data(i, 3) = data(i, 2) + normal(rng);
+        data(i, 4) = .9 * data(i, 0) + normal(rng);
+    }
+    const auto fit = causal::pc_stable(data, {.alpha = .001});
+    const auto marginal = causal::gaussian_ci_test(data, 0, 1);
+    const auto conditional = causal::gaussian_ci_test(data, 0, 1, {2});
+    std::cout << "Partial correlations before and after conditioning: "
+              << marginal.correlation << " and " << conditional.correlation
+              << ". Independence tests: " << fit.tests << ".\n";
+    std::filesystem::create_directories("build");
+    fit.diagram({{0, 3}, {0, -3}, {5, 0}, {10, 0}, {5, 5}},
+                {"Cause A", "Cause B", "Collider", "Downstream", "A's neighbor"})
+        .save_svg("build/pc_stable.svg");
+}
+```
+// result_begin: markdown
+Partial correlations before and after conditioning: -0.0145577 and -0.515408. Independence tests: 36.
+\image(figures/pc_stable.svg)
+// result_end
+
+The simulated arrows are A and B into Collider, Collider into Downstream,
+and A into its neighbor. The last edge can stay undirected in the learned
+graph because its direction is ambiguous within the observational
+equivalence class. The search assumes independent Gaussian observations,
+causal sufficiency, acyclicity and faithfulness. The test cutoff and
+conditioning depth can affect the recovered graph.

@@ -32,19 +32,7 @@ exp_golomb_bit_string but simply prints any vector<bool>; it performs no
 coding or decoding.
 
 ```{cpp, results="markdown", file="figures/fibonacci_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/fibonacci_coding.hpp>
-#include <datamunge/algorithms/exp_golomb.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -104,19 +92,7 @@ The plot uses log2(n) only as a display coordinate; every length is an
 exact native count.
 
 ```{cpp, results="markdown", file="figures/fibonacci_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/fibonacci_coding.hpp>
-#include <datamunge/algorithms/exp_golomb.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -178,19 +154,7 @@ The old zero encoder produced a lone1, which decoded to no value. The
 following program shows valid maximum-width round trips and explicit errors.
 
 ```{cpp, results="markdown", file="figures/fibonacci_width.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/fibonacci_coding.hpp>
-#include <datamunge/algorithms/exp_golomb.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -236,19 +200,7 @@ unconditional original-boundary certificate is unsafe. The original blanket
 “at most two codewords” statement is not part of this API's contract.
 
 ```{cpp, results="markdown", file="figures/fibonacci_corruption.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/fibonacci_coding.hpp>
-#include <datamunge/algorithms/exp_golomb.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -291,19 +243,7 @@ optional history and have no history quota. The packed-bool container does
 not specify byte serialization, endianness, padding or outer framing.
 
 ```{cpp, results="markdown", file="figures/fibonacci_capture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/fibonacci_coding.hpp>
-#include <datamunge/algorithms/exp_golomb.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

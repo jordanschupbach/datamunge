@@ -27,10 +27,6 @@ final availability probes, including the first free slot.
 
 ```{cpp, results="markdown", file="figures/coloring_cycle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/graph_coloring_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -146,10 +142,6 @@ establish optimality for these particular examples.
 
 ```{cpp, results="markdown", file="figures/coloring_clique.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/graph_coloring_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -204,10 +196,6 @@ result.
 
 ```{cpp, results="markdown", file="figures/coloring_crown.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/graph_coloring_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -277,10 +265,6 @@ the palette is plotted.
 
 ```{cpp, results="markdown", file="figures/coloring_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/graph_coloring_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -342,10 +326,6 @@ making its graph model explicit.
 
 ```{cpp, results="markdown", file="figures/coloring_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/graph_coloring_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

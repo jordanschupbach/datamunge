@@ -38,10 +38,6 @@ selected diagonal path cost.
 
 ```{cpp, results="markdown", file="figures/levenshtein_substitution.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::levenshtein_trace("a", "b");
@@ -80,10 +76,6 @@ orientation and need not be that same forward textual script.
 
 ```{cpp, results="markdown", file="figures/levenshtein_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| original first bytes | original second bytes | actual scalar distance |\n| --- | --- | " "---: |\n");
@@ -163,10 +155,6 @@ perceived text similarity.
 
 ```{cpp, results="markdown", file="figures/levenshtein_bytes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::pair<std::string, std::string>> pairs{
@@ -213,10 +201,6 @@ aligned matches or edit-script length.
 
 ```{cpp, results="markdown", file="figures/levenshtein_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/levenshtein.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, cells, slots;

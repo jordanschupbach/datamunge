@@ -138,9 +138,6 @@ period two, and 48 of period four.
 
 ```{cpp, results="markdown", file="figures/bbs_periods.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <numeric>
-#include <set>
 int main() {
   std::filesystem::create_directories("build");
   std::map<std::size_t,std::size_t> frequency;std::set<std::uint64_t> initial;

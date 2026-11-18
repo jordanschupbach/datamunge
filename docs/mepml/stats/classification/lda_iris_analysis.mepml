@@ -39,10 +39,6 @@ probability below comes from the native fitted model.
 
 ```{cpp, results="markdown", file="figures/lda_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/stats/lda.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::dstruct::DataFrame d;
@@ -93,10 +89,6 @@ introduced.
 
 ```{cpp, results="markdown", file="figures/lda_boxplots.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/datasets/datasets.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto d = dm::datasets::iris();
@@ -152,10 +144,6 @@ two-original-predictor decision plot.
 
 ```{cpp, results="markdown", file="figures/lda_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/datasets/datasets.hpp>
-#include <datamunge/stats/lda.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::stats::LDA model(dm::datasets::iris(),
@@ -221,11 +209,6 @@ hand-entered probabilities or calibration claim is introduced.
 
 ```{cpp, results="markdown", file="figures/lda_queries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/datasets/datasets.hpp>
-#include <datamunge/stats/lda.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::stats::LDA m(dm::datasets::iris(),
@@ -292,12 +275,6 @@ precise estimate of generalization or a universal ranking of feature choices.
 
 ```{cpp, results="markdown", file="figures/lda_petals.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/datasets/datasets.hpp>
-#include <datamunge/stats/lda.hpp>
-#include <datamunge/stats/train_test_split.hpp>
-#include <datamunge/nn/metrics.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto[train, test] =

@@ -30,15 +30,6 @@ that terminal record, not a zero-length augmentation.
 
 ```{cpp, results="markdown", file="figures/hopcroft_karp_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopcroft_karp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -145,15 +136,6 @@ the actual terminal BFS, with no additional edge traversal.
 
 ```{cpp, results="markdown", file="figures/hopcroft_karp_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopcroft_karp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto g = dm::algorithms::hopcroft_karp_example_graph();
@@ -213,15 +195,6 @@ are displayed as unseen.
 
 ```{cpp, results="markdown", file="figures/hopcroft_karp_cutoff.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopcroft_karp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto g = dm::algorithms::hopcroft_karp_cutoff_graph();
@@ -297,15 +270,6 @@ stack.
 
 ```{cpp, results="markdown", file="figures/hopcroft_karp_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopcroft_karp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, bfs, dfs, writes;
@@ -377,15 +341,6 @@ plot series.
 
 ```{cpp, results="markdown", file="figures/hopcroft_karp_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hopcroft_karp_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     using Graph = dm::algorithms::HopcroftKarpGraph;

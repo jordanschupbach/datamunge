@@ -25,12 +25,6 @@ route summary, not a recorded queue history.
 
 ```{cpp, results="markdown", file="figures/jump_point_junction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_point_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::vector<bool>> g = {{true, false, true},
@@ -97,12 +91,6 @@ true means blocked, and the native renderer places rows downward.
 
 ```{cpp, results="markdown", file="figures/jump_point_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_point_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::vector<bool>> g = {{false, false}, {false, false}};
@@ -141,12 +129,6 @@ routes own their coordinates.
 
 ```{cpp, results="markdown", file="figures/jump_point_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_point_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<std::vector<bool>> junction = {{true, false, true},
@@ -216,12 +198,6 @@ rather than applying JPS symmetry pruning.
 
 ```{cpp, results="markdown", file="figures/jump_point_output.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_point_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

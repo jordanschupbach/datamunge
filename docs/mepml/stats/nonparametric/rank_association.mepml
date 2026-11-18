@@ -1,0 +1,69 @@
+//? Title: Spearman, Kendall and quadrant association
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A simulated sensor response follows a monotonic nonlinear calibration curve
+with random error. Rounding the second readout creates ties. Compare three
+measures of association on the same paired data. Median lines in the plot show
+which observations enter each quadrant.
+)
+
+> Simulate, test and plot
+
+```{cpp, results="markdown", file="figures/rank_association.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(42);
+    const auto x = dm::runif(-2, 2, 32);
+    const auto noise = dm::rnorm(0, 0.7, 32);
+    dm::Vector<> y(x.size());
+    for (std::size_t i = 0; i < x.size(); ++i)
+        y[i] = std::round(2 * (x[i] + 0.22 * std::pow(x[i], 3) + noise[i])) / 2;
+
+    const auto spearman = sp::spearman_correlation_test(x, y);
+    const auto kendall = sp::kendall_correlation_test(x, y);
+    const auto quadrant = sp::quadrant_test(x, y);
+    std::print("| Method | Association | p-value |\n| --- | ---: | ---: |\n");
+    for (const auto* test : {&spearman, &kendall, &quadrant})
+        std::print("| {} | {:.3f} | {:.4g} |\n", test->method, test->estimate1, test->p_value);
+    std::print("\nQuadrant test retained {:.0f} of {} pairs.\n", quadrant.parameter1, x.size());
+
+    std::filesystem::create_directories("build");
+    RPlot::create().points(x, y, "simulated pair", {36, 105, 172})
+        .abline_v(dm::median(x)).abline_h(dm::median(y))
+        .title("Monotonic calibration with rounded readouts")
+        .x_label("Reference measurement").y_label("Rounded readout")
+        .save_svg("build/rank_association.svg");
+}
+```
+// result_begin: markdown
+| Method | Association | p-value |
+| --- | ---: | ---: |
+| Spearman's rank correlation rho | 0.945 | 4.576e-16 |
+| Kendall rank correlation (tie-corrected normal approximation) | 0.837 | 6.039e-11 |
+| Median quadrant association (conditional Fisher exact) | 0.931 | 2.063e-07 |
+
+Quadrant test retained 29 of 32 pairs.
+\image(figures/rank_association.svg)
+// result_end
+\caption(Paired observations with median lines that define the four quadrants.)
+\alttext(Paired observations with median lines that define the four quadrants.)
+
+> Interpretation
+
+Spearman uses average ranks and a t approximation. Kendall tau-b counts
+concordant and discordant pairs while adjusting for ties. These rounded data
+use Kendall's tie-corrected normal calibration. An untied sample of at most
+50 pairs instead gets an exact reference. The quadrant test discards points
+on either median line and applies a conditional Fisher exact test to the signs
+of the retained pairs.
+
+> References
+
+- [R correlation tests|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html]
+- [Blomqvist, On a Measure of Dependence Between Two Random Variables|https://doi.org/10.1214/aoms/1177729754]

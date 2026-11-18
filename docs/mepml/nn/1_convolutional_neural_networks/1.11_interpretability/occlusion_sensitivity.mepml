@@ -73,8 +73,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/occlusion_sensitivity_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -118,7 +116,6 @@ additive decomposition of the score into individual pixel contributions.
 ```{cpp, results="markdown", file="figures/occlusion_sensitivity_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -173,7 +170,6 @@ substitutes for the actual counterfactual inputs.
 ```{cpp, results="markdown", file="figures/occlusion_sensitivity_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -352,7 +348,6 @@ dependence of the experiment;they do not establish causal pixel importance.
 ```{cpp, results="markdown", file="figures/occlusion_sensitivity_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

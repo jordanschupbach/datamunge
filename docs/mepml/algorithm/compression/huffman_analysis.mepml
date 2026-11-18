@@ -30,16 +30,6 @@ actual left-to-right tree order, which differs from input symbol order.
 
 ```{cpp, results="markdown", file="figures/huffman_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/huffman_analysis.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::huffman_counts_trace({5, 2, 1});
@@ -134,16 +124,6 @@ termination rule. Those costs are not included here.
 
 ```{cpp, results="markdown", file="figures/huffman_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/huffman_analysis.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto text = dm::algorithms::huffman_example_text();
@@ -215,16 +195,6 @@ diagram uses that same producing topology.
 
 ```{cpp, results="markdown", file="figures/huffman_classic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/huffman_analysis.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::huffman_counts_trace({45, 13, 12, 16, 9, 5});
@@ -279,16 +249,6 @@ partially on failure.
 
 ```{cpp, results="markdown", file="figures/huffman_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/huffman_analysis.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     const auto maximum = std::numeric_limits<std::uint64_t>::max();
@@ -396,16 +356,6 @@ plot nor these counters are elapsed-time measurements.
 
 ```{cpp, results="markdown", file="figures/huffman_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/huffman_analysis.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, heap, visits, records;

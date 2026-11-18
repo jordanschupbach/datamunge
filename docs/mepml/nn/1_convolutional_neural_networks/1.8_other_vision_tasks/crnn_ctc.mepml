@@ -54,8 +54,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/crnn_ctc_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -108,7 +106,6 @@ zero gradients,batch-mean reduction and finite differences.
 ```{cpp, results="markdown", file="figures/crnn_ctc_repeats.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto logits = n::tensor({.2, -.3, .4, -.1, .5, .1, .7, -.2, .3}, {3, 1, 3});
@@ -158,7 +155,6 @@ therefore answer different questions.
 ```{cpp, results="markdown", file="figures/crnn_ctc_marginal.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto p = n::arange(.01, .9901, .01, n::DType::Float64);
@@ -210,7 +206,6 @@ The reference divisor1,H256 is also executed forward/backward.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -286,7 +281,6 @@ this oracle-crop recognition,not text detection. Python handles metadata only.
 ```{cpp, results="markdown", file="figures/crnn_ctc_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -372,7 +366,6 @@ programming. Empty greedy predictions are printed explicitly.
 ```{cpp, results="markdown", file="figures/crnn_ctc_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

@@ -503,7 +503,6 @@ Least squares estimates only the middle line, with slope 2.
 
 ```{cpp, results="markdown", file="figures/qr_fan.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <random>
 
 int main() {
     std::filesystem::create_directories("build");
@@ -666,7 +665,6 @@ and the largest entry of \(X^\top\hat a\), and checks the bounds
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <random>
 
 int main() {
     std::mt19937_64 gen(1);
@@ -768,7 +766,6 @@ iterations. The gap is ADMM's loss above the simplex's, relative to it.
 
 ```{cpp, results="markdown", file="figures/qr_admm.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <random>
 
 dm::dstruct::DataFrame fan(std::size_t n) {
     std::mt19937_64 gen(1);
@@ -905,7 +902,6 @@ over \(x\sim U(0,10)\) computed numerically.
 
 ```{cpp, results="markdown", file="figures/qr_coverage.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <random>
 
 int main() {
     std::filesystem::create_directories("build");

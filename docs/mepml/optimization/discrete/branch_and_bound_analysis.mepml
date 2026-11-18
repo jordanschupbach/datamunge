@@ -225,7 +225,6 @@ optimum has already been found. The following table shows the resulting growth.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <limits>
 int main() {
   std::print("| n | capacity | optimum | theoretical root upper | actual visits | unrestricted tree |\n"
              "| ---: | ---: | ---: | ---: | ---: | ---: |\n");

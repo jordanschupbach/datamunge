@@ -26,10 +26,6 @@ positive delta. A zero delta can expose an already-tight edge; it is not a stop.
 
 ```{cpp, results="markdown", file="figures/hungarian_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hungarian_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -112,10 +108,6 @@ every original cost and highlights the selected cells.
 
 ```{cpp, results="markdown", file="figures/hungarian_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hungarian_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -188,10 +180,6 @@ history cap. Trace data own their values and do not borrow the source matrix.
 
 ```{cpp, results="markdown", file="figures/hungarian_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hungarian_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -262,10 +250,6 @@ final summation and trace observation; they are not CPU instruction totals.
 
 ```{cpp, results="markdown", file="figures/hungarian_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hungarian_analysis.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

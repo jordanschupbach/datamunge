@@ -30,16 +30,6 @@ diagram plots the actual segment with its endpoint tangent directions.
 
 ```{cpp, results="markdown", file="figures/hermite_terms.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hermite.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -143,16 +133,6 @@ native floating diagnostics.
 
 ```{cpp, results="markdown", file="figures/hermite_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hermite.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -222,16 +202,6 @@ clamping zero differences.
 
 ```{cpp, results="markdown", file="figures/hermite_error.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hermite.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -289,16 +259,6 @@ limits.
 
 ```{cpp, results="markdown", file="figures/hermite_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/hermite.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 

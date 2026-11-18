@@ -9,6 +9,7 @@
 
 #include <datamunge/bayes/autodiff_model.hpp>
 #include <datamunge/bayes/diagnostics.hpp>
+#include <datamunge/bayes/discrete_network.hpp>
 #include <datamunge/bayes/distributions.hpp>
 #include <datamunge/bayes/gibbs.hpp>
 #include <datamunge/bayes/grid_posterior.hpp>

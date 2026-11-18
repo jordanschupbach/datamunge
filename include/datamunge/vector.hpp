@@ -28,6 +28,7 @@
 /// const std::string svg = dm::Plot().points(x, y).to_svg();   // or dm::Plot(x, y)
 /// @endcode
 
+#include <datamunge/linalg/tensor.hpp>
 #include <datamunge/plot/plot.hpp>
 
 #include <algorithm>
@@ -1539,6 +1540,46 @@ Vector<> unif(double lower, double upper, std::size_t n);
 /// @endcode
 /// @see dm::unif(), dm::rnorm(), dm::set_seed()
 Vector<> runif(double lower, double upper, std::size_t n);
+
+/// @brief Draws a row-major Float64 tensor from a uniform distribution.
+///
+/// Uses the generator shared with the count overload. An empty shape produces a
+/// rank-zero scalar. A shape containing a zero dimension produces an empty tensor
+/// and skips bound validation and sampling.
+/// @param shape Tensor extents, in axis order.
+/// @param lower Inclusive lower bound.
+/// @param upper Exclusive upper bound.
+/// @return An owned tensor of the requested shape with draws in row-major order.
+/// @throws std::invalid_argument If bounds are non-finite or unordered for a nonempty result.
+/// @throws std::length_error If a shape product overflows or storage exceeds capacity.
+/// @throws std::bad_alloc If allocation fails.
+/// @par Example
+/// @code
+/// const std::vector<std::size_t> shape{2, 3};
+/// const auto x = dm::runif(shape, 0, 1);
+/// std::print("{}\n", x.size()); // 6
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Uniform.html
+/// @see dm::unif(), dm::set_seed()
+linalg::Tensor runif(std::vector<std::size_t> shape, double lower, double upper);
+
+/// @brief Draws a Float64 tensor with a shape specified by a brace list.
+/// @param shape Tensor extents, including {} for a scalar or any zero extent for an empty tensor.
+/// @param lower Inclusive lower bound.
+/// @param upper Exclusive upper bound.
+/// @return An owned row-major tensor, using the same generator as the count overload.
+/// @throws std::invalid_argument If bounds are non-finite or unordered for a nonempty result.
+/// @throws std::length_error If a shape product overflows or storage exceeds capacity.
+/// @throws std::bad_alloc If allocation fails.
+/// @par Example
+/// @code
+/// const auto vector = dm::runif({100}, 0, 1);
+/// const auto matrix = dm::runif({100, 100}, 0, 1);
+/// std::print("{} {}\n", vector.ndim(), matrix.ndim()); // 1 2
+/// @endcode
+/// @see runif(std::vector<std::size_t>, double, double), dm::set_seed()
+linalg::Tensor runif(std::initializer_list<std::size_t> shape, double lower, double upper);
 
 /// @brief @p n draws from Normal(@p mean, @p sd), like R's `rnorm(n, mean, sd)`.
 ///

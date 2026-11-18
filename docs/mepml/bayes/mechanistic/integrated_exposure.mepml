@@ -1,0 +1,94 @@
+//? Title: A Poisson likelihood with integrated exposure
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Synthetic event counts in four disjoint observation windows have Poisson means
+equal to the time integral of exp(θt) over each window. Integrating the intensity accounts for the changing event rate
+across the window. Here a midpoint rule estimates the integral inside the likelihood
+and an expm1 expression gives its analytic value. The log-intensity trend has a
+standard Normal prior.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/integrated_exposure.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    struct Window {
+        double start, end;
+        int count;
+    };
+    const Window data[]{{0, 0.5, 0}, {0.5, 1, 1}, {1, 1.5, 2}, {1.5, 2, 4}};
+    const auto window_mean = [](double theta, const Window& window) {
+        const double duration = window.end - window.start;
+        return theta == 0 ? duration
+            : std::exp(theta * window.start) * std::expm1(theta * duration) / theta;
+    };
+    b::LogDensity target([&](const auto& q) {
+        const double theta = q[0];
+        double lp = b::normal_lpdf(theta, 0., 1.);
+        for (const auto& window : data) {
+            const double duration = window.end - window.start;
+            const double step = duration / 128;
+            double expected_count = 0;
+            for (int i = 0; i < 128; ++i)
+                expected_count += step * std::exp(theta * (window.start + (i + 0.5) * step));
+            const double exact = window_mean(theta, window);
+            if (std::abs(expected_count / exact - 1) > 1e-4)
+                throw std::runtime_error("Exposure quadrature error");
+            lp += b::poisson_log_lpmf(window.count, std::log(expected_count));
+        }
+        return lp;
+    });
+    std::print("| Start | End | Observed count |\n| ---: | ---: | ---: |\n");
+    for (const auto& window : data)
+        std::print("| {} | {} | {} |\n", window.start, window.end, window.count);
+    std::println("");
+    const auto post = b::grid_posterior(target, {-6}, {6}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Log-intensity trend").y_label("Density");
+    std::vector<double> time, observed, fitted;
+    for (const auto& window : data) {
+        time.push_back((window.start + window.end) / 2);
+        observed.push_back(window.count);
+        double expected = 0;
+        for (std::size_t j = 0; j < post.marginal_grid[0].size(); ++j) {
+            const double theta = post.marginal_grid[0][j];
+            expected += window_mean(theta, window) * post.marginal_density[0][j] * 12 / 1000;
+        }
+        fitted.push_back(expected);
+    }
+    auto fit = RPlot::create().points(time, observed, "observed", {70, 70, 70})
+        .lines(time, fitted, "posterior expected count", {36, 105, 172})
+        .title("Count fit by observation window").x_label("Window midpoint").y_label("Count");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/integrated_exposure.svg");
+}
+```
+// result_begin: markdown
+| Start | End | Observed count |
+| ---: | ---: | ---: |
+| 0 | 0.5 | 0 |
+| 0.5 | 1 | 1 |
+| 1 | 1.5 | 2 |
+| 1.5 | 2 | 4 |
+
+Posterior mean 1.018, posterior SD 0.266, edge mass 1.84e-37.
+\image(figures/integrated_exposure.svg)
+// result_end
+\caption(Trend posterior and observed versus fitted counts across the observation windows.)
+\alttext(Trend posterior and observed versus fitted counts across the observation windows.)
+
+> Reference
+
+Stan User’s Guide 2.19, chapter 14.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

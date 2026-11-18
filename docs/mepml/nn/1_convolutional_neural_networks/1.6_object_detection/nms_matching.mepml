@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/nms_matching_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -104,7 +102,6 @@ API directly. Selection is discrete and has no fitted parameters.
 ```{cpp, results="markdown", file="figures/nms_matching_suppression.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -203,7 +200,6 @@ The round-trip check keeps scales inside that clipping region.
 ```{cpp, results="markdown", file="figures/nms_matching_assignment.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto anchors = n::tensor(
@@ -279,7 +275,6 @@ absolute error one, with bounded slope.
 ```{cpp, results="markdown", file="figures/nms_matching_loss.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::ParameterStore p(17, n::DType::Float64);
@@ -330,7 +325,6 @@ Adam moments intentionally start fresh. Source and output prefixes must differ.
 ```{cpp, results="markdown", file="figures/nms_matching_checkpoint.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::filesystem::create_directories("build/nms_checkpoints");

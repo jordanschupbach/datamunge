@@ -37,10 +37,6 @@ center can be costly.
 
 ```{cpp, results="markdown", file="figures/degree_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/minimum_degree.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto a = dm::algorithms::minimum_degree_arrow(4);
@@ -92,10 +88,6 @@ numerical flops or measured storage bytes.
 
 ```{cpp, results="markdown", file="figures/degree_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/minimum_degree.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto a = dm::algorithms::minimum_degree_arrow();
@@ -138,10 +130,6 @@ more precisely than calling all neighbor pairs fill.
 
 ```{cpp, results="markdown", file="figures/degree_steps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/minimum_degree.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -209,10 +197,6 @@ before exceeding the cap and returns no partial trace.
 
 ```{cpp, results="markdown", file="figures/degree_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/minimum_degree.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, natural, greedy;

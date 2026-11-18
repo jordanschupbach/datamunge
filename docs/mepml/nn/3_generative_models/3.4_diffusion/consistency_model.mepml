@@ -34,7 +34,6 @@ At t=Float32(.01), shift=t-.01f is exactly zero, c_skip=1 and c_out=0. The consi
 
 ```{cpp, results="markdown", file="figures/consistency_model_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 namespace n=dm::nn;namespace m=n::models;using T=n::Tensor;
 int main(){std::filesystem::create_directories("build");
 n::ParameterStore p(19003);m::InitializeDiffusionMlp(p,10,2);auto x=n::from_vector(std::vector<float>{-.5f,0,.5f,1},{2,2});auto out=m::ConsistencyMap(p,x,n::full({2},double(.01f)));T left=x,right=out.value,extra=out.raw;
@@ -123,15 +122,6 @@ The following program is the editable experiment, including its held-out checks,
 // names match tflow's ("hidden1/W", ...), so TF's initial_arrays.npz /
 // model_arrays.npz load directly (init=auto replays TF's run).
 
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <string>
-#include <vector>
 
 // Report-local workflow adapters: binary_pixels.hpp
 // Shared harness of the binary 8x8 MNIST autoregressive density ports
@@ -152,18 +142,6 @@ The following program is the editable experiment, including its held-out checks,
 // match. Independently of the trajectory, TF's FINAL weights (model_arrays.npz)
 // are loaded into a fresh model which must reproduce TF's test outputs.
 
-#include <algorithm>
-#include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Report-local workflow adapters: autoencoder.hpp
 // Shared support for the autoencoder ports: a port of the parts of tflow's
@@ -178,35 +156,15 @@ The following program is the editable experiment, including its held-out checks,
 // generator, so trajectories match tflow only statistically; batch orders and
 // Gaussian noise banks are bit-identical to tflow's.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <memory>
-#include <ostream>
-#include <random>
-#include <set>
-#include <string>
-#include <vector>
 
 // Report-local workflow adapters: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Report-local workflow adapters: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -272,12 +230,8 @@ inline void Header(const std::string& title) {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Report-local workflow adapters: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot(){return std::filesystem::absolute("build/datasets").string();}
 inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}
@@ -811,16 +765,7 @@ inline void Mosaic3(const std::filesystem::path& path, const nn::Tensor& values,
 // (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
 // numerically, independently of the random initialisation.
 
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
-#include <datamunge/nn/nn.hpp>
 
 
 
@@ -2116,9 +2061,6 @@ All three recorded validation rows are shown. This figure preserves the source b
 
 ```{cpp, results="markdown", file="figures/consistency_model_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/diffusion-models/models/consistency_model/history.tsv");if(!input)throw std::runtime_error("Missing preserved training history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Source three-epoch history");
  dm::graphics::RPlot::create().lines(epoch,loss,"All source validation epochs",{37,99,235}).points(epoch,loss,"Recorded values",{234,88,12},5).x_label("Epoch").y_label("Consistency MSE").y_limits(.00024,.00052).y_ticks({.00025,.00030,.00035,.00040,.00045,.00050},{"0.00025","0.00030","0.00035","0.00040","0.00045","0.00050"}).title("Stopped-target validation objective").size(900,500).save_svg("build/consistency_model_history.svg");std::cout<<"| Epoch | Consistency MSE |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";
 }

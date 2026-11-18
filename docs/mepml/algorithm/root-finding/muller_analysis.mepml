@@ -52,10 +52,6 @@ loop is used.
 
 ```{cpp, results="markdown", file="figures/muller_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/muller.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::muller_trace([](double x) {
@@ -104,11 +100,6 @@ the legacy iteration count is one but no update occurs.
 
 ```{cpp, results="markdown", file="figures/muller_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/muller.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto cubic = [](double x) { return x * x * x - x - 2; };
@@ -162,11 +153,6 @@ another callback or parabola.
 
 ```{cpp, results="markdown", file="figures/muller_strict.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/muller.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::muller_trace([](double x) {
@@ -224,10 +210,6 @@ no partial returned history.
 
 ```{cpp, results="markdown", file="figures/muller_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/muller.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::string> labels{"no real root", "constant", "zero cap",

@@ -51,10 +51,6 @@ fabricated optimization history.
 
 ```{cpp, results="markdown", file="figures/moead_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/moead.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::optim::MOEADOptions o;
@@ -107,10 +103,6 @@ preference and are neither continuous global minimizers nor a solver population.
 
 ```{cpp, results="markdown", file="figures/moead_weights.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/moead.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto rows = dm::optim::moead_original_choices();
@@ -160,10 +152,6 @@ this checkout rather than the old frozen claim of a particular gap.
 
 ```{cpp, results="markdown", file="figures/moead_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/moead.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::optim::MOEADOptions o;
@@ -219,10 +207,6 @@ updates would omit setup, variation and output filtering.
 
 ```{cpp, results="markdown", file="figures/moead_prefixes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/moead.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

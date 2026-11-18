@@ -70,8 +70,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/filter_activations_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -125,7 +123,6 @@ are metadata and are never re-ranked to choose attractive maps.
 ```{cpp, results="markdown", file="figures/filter_activations_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -166,7 +163,6 @@ convolution corner/center probes across both images and all 64 first-layer chann
 ```{cpp, results="markdown", file="figures/filter_activations_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -230,7 +226,6 @@ input or attribution map.
 ```{cpp, results="markdown", file="figures/filter_activations_filters.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -383,7 +378,6 @@ values and every layer are also checked against an independent TensorFlow model.
 ```{cpp, results="markdown", file="figures/filter_activations_statistics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

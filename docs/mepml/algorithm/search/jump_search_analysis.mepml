@@ -24,13 +24,6 @@ probe is not necessarily a distinct array position.
 
 ```{cpp, results="markdown", file="figures/jump_search_repeat.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto t = dm::algorithms::jump_search_trace({1, 3, 5, 7}, 3);
@@ -87,13 +80,6 @@ reconstructs its choices.
 
 ```{cpp, results="markdown", file="figures/jump_search_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::vector<int> a = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
@@ -160,13 +146,6 @@ peak RAM. Untraced calls allocate no history.
 
 ```{cpp, results="markdown", file="figures/jump_search_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| control | found | index | probes | block reads | scan reads | scan greater tests |\n| --- " "| --- | ---: | ---: | ---: | ---: | ---: |\n");
@@ -236,13 +215,6 @@ dataset is needed for these controlled search questions.
 
 ```{cpp, results="markdown", file="figures/jump_search_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jump_search.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, worst, above;

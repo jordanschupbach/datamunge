@@ -43,14 +43,6 @@ below shows the initial support, next support and actual retained features.
 
 ```{cpp, results="markdown", file="figures/gjk_squares.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/gjk.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -140,14 +132,6 @@ Johnson subalgorithm and backup procedure.
 
 ```{cpp, results="markdown", file="figures/gjk_triangle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/gjk.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -213,14 +197,6 @@ which is sqrt(dx²+0.4²). The four original distance calls and the complete
 
 ```{cpp, results="markdown", file="figures/gjk_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/gjk.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -306,14 +282,6 @@ log10(s); no artificial floor is applied to a returned gap or error.
 
 ```{cpp, results="markdown", file="figures/gjk_scales.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/gjk.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -387,14 +355,6 @@ operations, not timings, FLOPs or the complete cost of validation and allocation
 
 ```{cpp, results="markdown", file="figures/gjk_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/gjk.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -454,14 +414,6 @@ handling; a late invalid point cannot be hidden behind a cheap early exit.
 
 ```{cpp, results="markdown", file="figures/gjk_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/gjk.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

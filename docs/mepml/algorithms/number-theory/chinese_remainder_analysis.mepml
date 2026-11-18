@@ -126,7 +126,6 @@ Every cell calls the native solver for its displayed pair of remainders.
 
 ```{cpp, results="markdown", file="figures/chinese_remainder_grid.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <set>
 int main() {
   std::filesystem::create_directories("build");
   const std::vector<std::vector<std::int64_t>> residues{{2,3,2},{2,8},{1,0}};
@@ -193,7 +192,6 @@ There is no natural observational dataset for these arithmetic identities.
 
 ```{cpp, results="markdown", file="figures/crt_compatibility.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numeric>
 int main() {
   std::filesystem::create_directories("build");
   const std::array<std::pair<std::int64_t,std::int64_t>,5> pairs{{{3,5},{4,6},{6,12},{8,12},{12,18}}};

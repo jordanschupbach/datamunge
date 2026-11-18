@@ -253,7 +253,6 @@ remain. These caps do not bound input width, temporary unions, bytes or time.
 
 ```{cpp, results="markdown", file="figures/davis_contract.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <climits>
 int main() {
   std::filesystem::create_directories("build");
   const std::vector<std::vector<int>> f{{1,2},{1,-2},{-1,2},{-1,-2}};

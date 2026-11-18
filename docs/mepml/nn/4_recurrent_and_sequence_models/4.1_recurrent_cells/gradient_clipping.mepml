@@ -49,7 +49,6 @@ For raw gradient(3,4), the norm is 5. Global limit.05 multiplies every coordinat
 
 ```{cpp, results="markdown", file="figures/gradient_clipping_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 namespace n = dm::nn;
 namespace m = n::models;
 using T     = n::Tensor;
@@ -167,7 +166,6 @@ int main() {
 // policy (none / global norm .05 / coordinate value .01). Port of tflow's
 // common/ml/gradient_clipping.h (Params seed 41003, 206 parameters).
 
-#include <memory>
 
 // Report-local workflow and diagnostics: gradient_control.hpp
 // Explicit gradient policies: one global scale preserves direction; coordinate
@@ -176,8 +174,6 @@ int main() {
 // from nn::clip_by_global_norm so the float32 arithmetic follows tflow's
 // (scale = min(1, limit / max(norm, 1e-30))).
 
-#include <datamunge/nn/nn.hpp>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -222,33 +218,15 @@ inline ControlledGradients ControlGradients(
 // gradient per initial state (named by `initial_gradient_names`) and any
 // probe gradients, exactly like tflow's Evaluate fetches.
 
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <functional>
-#include <map>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
 
 // Report-local workflow and diagnostics: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Report-local workflow and diagnostics: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -587,7 +565,6 @@ class RecurrentModel {
 // Explicit twelve-step shared-weight tanh recurrence and valid-length state
 // masking. Port of tflow's common/nn/unrolled_rnn.h (206 parameters).
 
-#include <memory>
 
 // Report-local workflow and diagnostics: rnn.hpp
 // Helpers shared by the explicit-unroll recurrent cells (tflow's common/nn/rnn.h
@@ -595,9 +572,6 @@ class RecurrentModel {
 // datamunge::nn::rnn_step / gru_step / lstm_step or are written out in the
 // per-cell headers when an example needs intermediate gate values.
 
-#include <datamunge/nn/nn.hpp>
-#include <string>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -695,9 +669,6 @@ AppliedGradients(const RecurrentModel& model, const std::vector<Tensor>& raw, in
 
 } // namespace rnn_cells
 
-#include <cmath>
-#include <cstdio>
-#include <fstream>
 
 // Report-local workflow and diagnostics: marked_sequence_demo.hpp
 // The three-epoch marked-token memory experiment shared by tflow's 4.1
@@ -721,15 +692,6 @@ AppliedGradients(const RecurrentModel& model, const std::vector<Tensor>& raw, in
 // run, and when the tflow run directory (`tf=`) has the same files the port
 // prints and checks the differences.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Report-local workflow and diagnostics: marked_sequence_data.hpp
 // Synthetic variable-length single-marker memory task; padding is never a
@@ -740,14 +702,6 @@ AppliedGradients(const RecurrentModel& model, const std::vector<Tensor>& raw, in
 // The generator is std::mt19937 exactly as in tflow, so every split is
 // bit-identical to tflow's data.npz.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <numeric>
-#include <random>
-#include <vector>
 
 namespace rnn_cells {
 
@@ -844,12 +798,8 @@ inline void Heatmap(const std::filesystem::path& file, const Tensor& x, bool gra
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Report-local workflow and diagnostics: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot() {
   return datamunge::datasets::data_home();
@@ -1581,9 +1531,6 @@ All three validation epochs are plotted; the test pool does not select the check
 
 ```{cpp, results="markdown", file="figures/gradient_clipping_none_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/gradient_clipping/none/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Expected all three source epochs");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").title("Gradient clipping / none: validation history").size(950,520).save_svg("build/gradient_clipping_none_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
 
 ```
@@ -1598,8 +1545,6 @@ int main(){std::filesystem::create_directories("build");std::ifstream input("bui
 
 ```{cpp, results="markdown", file="figures/gradient_clipping_none_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <iostream>
 int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/gradient_clipping/none/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/gradient_clipping/none/data.npz"))data.emplace(key,value);n::ConfusionMatrix cm(2);cm.add(data.at("test_labels"),n::argmax(output.at("logits"),1));cm.save_svg("build/gradient_clipping_none_confusion.svg",{.title="Gradient clipping / none: held-out confusion",.labels={"Negative cue","Positive cue"}});n::save_npz("build/gradient_clipping_none_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<(data.at("test_labels")).numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
 
 ```
@@ -1618,9 +1563,6 @@ All three validation epochs are plotted; the test pool does not select the check
 
 ```{cpp, results="markdown", file="figures/gradient_clipping_global_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/gradient_clipping/global/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Expected all three source epochs");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").title("Gradient clipping / global: validation history").size(950,520).save_svg("build/gradient_clipping_global_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
 
 ```
@@ -1635,8 +1577,6 @@ int main(){std::filesystem::create_directories("build");std::ifstream input("bui
 
 ```{cpp, results="markdown", file="figures/gradient_clipping_global_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <iostream>
 int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/gradient_clipping/global/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/gradient_clipping/global/data.npz"))data.emplace(key,value);n::ConfusionMatrix cm(2);cm.add(data.at("test_labels"),n::argmax(output.at("logits"),1));cm.save_svg("build/gradient_clipping_global_confusion.svg",{.title="Gradient clipping / global: held-out confusion",.labels={"Negative cue","Positive cue"}});n::save_npz("build/gradient_clipping_global_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<(data.at("test_labels")).numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
 
 ```
@@ -1655,9 +1595,6 @@ All three validation epochs are plotted; the test pool does not select the check
 
 ```{cpp, results="markdown", file="figures/gradient_clipping_coordinate_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 int main(){std::filesystem::create_directories("build");std::ifstream input("build/recurrent-models/models/gradient_clipping/coordinate/history.tsv");if(!input)throw std::runtime_error("Missing source history");std::string line;std::getline(input,line);std::vector<double> epoch,loss;while(std::getline(input,line)){std::istringstream row(line);double x,y;if(!(row>>x>>y))throw std::runtime_error("Invalid history row");epoch.push_back(x);loss.push_back(y);}if(epoch.size()!=3)throw std::runtime_error("Expected all three source epochs");dm::graphics::RPlot::create().lines(epoch,loss,"Validation objective",{37,99,235}).points(epoch,loss,"All recorded epochs",{234,88,12},5).x_label("Epoch").y_label("Validation cross-entropy").title("Gradient clipping / coordinate: validation history").size(950,520).save_svg("build/gradient_clipping_coordinate_history.svg");std::cout<<"| Epoch | Validation objective |\n|---:|---:|\n";for(std::size_t i=0;i<epoch.size();++i)std::cout<<"|"<<epoch[i]<<"|"<<loss[i]<<"|\n";}
 
 ```
@@ -1672,8 +1609,6 @@ int main(){std::filesystem::create_directories("build");std::ifstream input("bui
 
 ```{cpp, results="markdown", file="figures/gradient_clipping_coordinate_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <iostream>
 int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/recurrent-models/models/gradient_clipping/coordinate/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/recurrent-models/models/gradient_clipping/coordinate/data.npz"))data.emplace(key,value);n::ConfusionMatrix cm(2);cm.add(data.at("test_labels"),n::argmax(output.at("logits"),1));cm.save_svg("build/gradient_clipping_coordinate_confusion.svg",{.title="Gradient clipping / coordinate: held-out confusion",.labels={"Negative cue","Positive cue"}});n::save_npz("build/gradient_clipping_coordinate_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<(data.at("test_labels")).numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
 
 ```

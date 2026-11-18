@@ -47,10 +47,6 @@ result.
 
 ```{cpp, results="markdown", file="figures/median_filter_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/median_filter.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -108,11 +104,6 @@ image-processing implementation in the report.
 
 ```{cpp, results="markdown", file="figures/median_filter_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/median_filter.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numeric>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto d = dm::algorithms::median_filter_demo();
@@ -172,10 +163,6 @@ be confused with a global reconstruction guarantee.
 
 ```{cpp, results="markdown", file="figures/median_filter_errors.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/median_filter.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto d = dm::algorithms::median_filter_demo();
@@ -240,10 +227,6 @@ precedes copying/evaluation. It is not a byte budget or a timing guarantee.
 
 ```{cpp, results="markdown", file="figures/median_filter_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/median_filter.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::vector<int>> step(5, std::vector<int>(5)), thin = step;

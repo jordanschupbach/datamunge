@@ -1,12 +1,35 @@
 #pragma once
 
 /// @file ks_test.hpp
-/// @brief Kolmogorov-Smirnov goodness-of-fit tests (one-sample normal or uniform, two-sample).
+/// @brief Kolmogorov-Smirnov goodness-of-fit tests (one-sample specified CDF, two-sample).
 
 #include <datamunge/stats/hypothesis_test_result.hpp>
+#include <functional>
 #include <vector>
 
 namespace datamunge::stats {
+
+/// @brief One-sample Kolmogorov–Smirnov test against a supplied continuous CDF.
+///
+/// Uses the same asymptotic reference as the normal and uniform convenience tests.
+/// The CDF must be fully specified independently of the observations. Values are
+/// checked for range and monotonicity only at the sorted sample points.
+/// @param sample At least two finite observations.
+/// @param cdf Nonempty continuous-null CDF callable, returning values in [0,1].
+/// @param alternative TwoSided (default), Less if the empirical CDF is below the reference, or Greater if above.
+/// @return KS discrepancy, sample size in parameter1, and approximate p-value. Exceptions from the CDF propagate.
+/// @throws std::invalid_argument If inputs violate the stated constraints.
+/// @throws std::bad_alloc If allocation fails.
+/// @par Example
+/// @code
+/// const auto d = dm::stats::ks_test_one_sample({0.2, 0.6}, [](double x) { return x; });
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+/// @see ks_test_one_sample_normal(), ks_test_two_sample()
+HypothesisTestResult ks_test_one_sample(const std::vector<double>& sample,
+                                        const std::function<double(double)>& cdf,
+                                        Alternative alternative = Alternative::TwoSided);
 
 /// @brief One-sample KS test against a fully specified continuous normal CDF.
 ///

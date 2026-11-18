@@ -219,11 +219,7 @@ per-case terms accumulate in Float64, draw then row, retaining source reduction 
 Fresh model-only restore reproduces the selected score; optimizer-resume state is not saved.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
-#include <map>
 namespace nn = dm::nn;
 namespace ae {
 using nn::models::SequenceDataArrays;

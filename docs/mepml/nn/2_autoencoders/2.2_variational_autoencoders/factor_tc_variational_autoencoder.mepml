@@ -140,7 +140,6 @@ The following algebra archive includes all sample/reference derivatives and an e
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <iostream>
 namespace nn = dm::nn;
 void Require(bool c, const std::string& s) {
   if (!c)
@@ -287,10 +286,7 @@ The complete program below leaves both optimizer steps visible. Helpers provide 
 forward calls and metric aggregation; they contain no training loop.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 void Require(bool condition, const std::string& why) {
   if (!condition)

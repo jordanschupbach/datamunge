@@ -38,10 +38,6 @@ OnlineVariance::add().
 
 ```{cpp, results="markdown", file="figures/online_variance_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::online_variance_trace({2, 4});
@@ -92,11 +88,6 @@ two-pass; the extra column makes its limitations inspectable.
 
 ```{cpp, results="markdown", file="figures/online_variance_offsets.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto data = dm::algorithms::online_variance_demo_data();
@@ -163,10 +154,6 @@ that the empirical correlation must equal its population value.
 
 ```{cpp, results="markdown", file="figures/online_variance_covariance.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto data = dm::algorithms::online_variance_demo_data();
@@ -242,11 +229,6 @@ diagnostic methods.
 
 ```{cpp, results="markdown", file="figures/online_variance_rounding.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/online_statistics.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto data = dm::algorithms::online_variance_demo_data();

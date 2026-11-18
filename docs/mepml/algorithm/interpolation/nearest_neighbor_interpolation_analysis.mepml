@@ -41,10 +41,6 @@ are recorded separately; the report does not replay binary search.
 
 ```{cpp, results="markdown", file="figures/nearest_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::NearestNeighborInterpolant model({0, 2, 5}, {10, 20, 30});
@@ -96,10 +92,6 @@ unknown function exactly.
 
 ```{cpp, results="markdown", file="figures/nearest_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto s = dm::algorithms::nearest_neighbor_demo_study();
@@ -156,10 +148,6 @@ domain-wide exact-arithmetic statement.
 
 ```{cpp, results="markdown", file="figures/nearest_error.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, error, bound;
@@ -210,10 +198,6 @@ query-driver storage.
 
 ```{cpp, results="markdown", file="figures/nearest_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::NearestNeighborInterpolant model({0, 2}, {10, 20});

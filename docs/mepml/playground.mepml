@@ -77,24 +77,9 @@ never accepted as native training evidence.
 
 ```{cpp, results="markdown", nix-shell="git+file:../..#cpp", cmd="export PKG_CONFIG_PATH=$(printenv DATAMUNGE_CAD_PKG_CONFIG_PATH || printenv PKG_CONFIG_PATH); c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && DATAMUNGE_LINKED_CORE=$(pkg-config --variable=prefix datamunge) OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/parallel.hpp>
-#include <algorithm>
-#include <array>
-#include <cstdlib>
-#include <chrono>
 #include <charconv>
-#include <iomanip>
-#include <map>
-#include <thread>
-#include <type_traits>
-#include <datamunge/algorithms/sha256.hpp>
-#include <fstream>
 #include <future>
 #include <syncstream>
-#include <iostream>
-#include <numeric>
-#include <sstream>
-#include <stdexcept>
 namespace s = dm::sim;
 namespace n = dm::nn;
 namespace c = dm::cad;

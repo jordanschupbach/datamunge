@@ -1,0 +1,105 @@
+//? Title: Attribute control charts for defects and defective units
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+These synthetic inspections distinguish a defect count, where a unit can have
+more than one defect, from a count of defective units, where each inspected
+unit contributes at most one. The first eight observations fit each baseline.
+The last four are shown against those limits. c and np use constant opportunity,
+while u and p allow the denominators to vary.
+)
+
+> From reference inspection to monitoring
+
+```{cpp, results="markdown", file="figures/control_chart_workflow.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    std::filesystem::create_directories("build");
+    datamunge::graphics::Diagram()
+        .node("reference", {0, 0}, "Historical inspections")
+        .node("limits", {4, 0}, "Fit the baseline")
+        .node("monitor", {8, 0}, "Set limits for each exposure")
+        .node("signal", {12, 0}, "Compare observed statistic")
+        .edge("reference", "limits")
+        .edge("limits", "monitor")
+        .edge("monitor", "signal")
+        .save_svg("build/control_chart_workflow.svg");
+}
+```
+// result_begin: markdown
+\image(figures/control_chart_workflow.svg)
+// result_end
+\caption(Historical inspections establish a baseline, and each later statistic is compared with its applicable limits.)
+\alttext(Four boxes lead from historical inspections to a fitted baseline, exposure-specific limits and comparison with observations.)
+
+> Fit, monitor and plot
+
+```{cpp, results="markdown", file="figures/attribute_charts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace spc = datamunge::stats;
+using datamunge::graphics::RLayout;
+
+void show_signals(const spc::ControlChart& chart) {
+    for (const auto& p : chart.points)
+        if (p.outside)
+            std::print("| {} | {} | {:.3f} | {:.3f} | {:.3f} |\n",
+                       chart.title, p.index, p.value, p.lower, p.upper);
+}
+
+int main() {
+    const spc::ControlChartOptions baseline{.baseline_size = 8};
+    const std::vector<std::size_t> defects{7, 6, 8, 6, 9, 5, 7, 8, 7, 10, 19, 8};
+    const std::vector<std::size_t> varying_defects{4, 15, 5, 16, 4, 15, 6, 13, 7, 14, 38, 6};
+    const std::vector<double> exposure{0.8, 1.5, 1, 1.5, 0.8, 1.7, 1, 1.7, 1, 1.8, 1.5, 0.9};
+    const std::vector<std::size_t> defective{8, 10, 6, 8, 10, 7, 8, 9, 8, 10, 29, 6};
+    const std::vector<std::size_t> inspected{80, 120, 90, 100, 110, 80, 95, 110, 90, 120, 100, 80};
+    const auto c = spc::c_chart(defects, baseline);
+    const auto u = spc::u_chart(varying_defects, exposure, baseline);
+    const auto p = spc::p_chart(defective, inspected, baseline);
+    const auto np = spc::np_chart(defective, 100, baseline);
+    const auto laney_p = spc::laney_p_chart(defective, inspected, baseline);
+    const auto laney_u = spc::laney_u_chart(varying_defects, exposure, baseline);
+
+    std::print("| Chart | Inspection | Statistic | Lower | Upper |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    for (const auto* chart : {&c, &u, &p, &np, &laney_p, &laney_u})
+        show_signals(*chart);
+
+    std::filesystem::create_directories("build");
+    RLayout::create(2, 3).size(1440, 850).add(c.plot()).add(u.plot()).add(np.plot())
+        .add(p.plot()).add(laney_p.plot()).add(laney_u.plot()).save_svg("build/attribute_charts.svg");
+}
+```
+// result_begin: markdown
+| Chart | Inspection | Statistic | Lower | Upper |
+| --- | ---: | ---: | ---: | ---: |
+| c-chart | 11 | 19.000 | 0.000 | 14.937 |
+| u-chart | 11 | 25.333 | 0.959 | 14.641 |
+| p-chart | 11 | 0.290 | 0.001 | 0.167 |
+| np-chart | 11 | 29.000 | 0.000 | 16.504 |
+| Laney p′ chart | 11 | 0.290 | 0.060 | 0.108 |
+| Laney u′ chart | 11 | 25.333 | 0.000 | 17.598 |
+\image(figures/attribute_charts.svg)
+// result_end
+\caption(Six charts display inspection statistics and fixed-baseline limits. Variable-denominator charts have a limit for each inspection.)
+\alttext(Panels show the c, u, np, p, Laney p-prime and Laney u-prime charts, with limit violations marked in red.)
+
+> Interpret the chart
+
+The u-chart divides the defect count by exposure, allowing fractional exposure
+such as inspected area. The p-chart divides the defective count by units
+inspected. The p and np panels treat the same defective count sequence as two
+inspection designs, one with recorded varying sample sizes and one with exactly
+100 units each. The p and u centers pool baseline numerators and denominators.
+Compare the regular and Laney limits. The Laney scale comes from adjacent
+standardized baseline residuals, so its limits can widen or narrow relative to
+the usual model. The red points apply the single-point limit rule.
+
+> References
+
+- [NIST Dataplot control-chart reference|https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/contchar.htm]
+- [Laney, Improved Control Charts for Attributes|https://doi.org/10.1081/QEN-120003555]

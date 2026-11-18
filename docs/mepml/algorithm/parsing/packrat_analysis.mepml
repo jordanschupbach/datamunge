@@ -40,10 +40,6 @@ parser in the report.
 
 ```{cpp, results="markdown", file="figures/packrat_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/packrat_parser.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::PackratParser parser(dm::algorithms::packrat_reuse_rules(),
@@ -104,10 +100,6 @@ rule and structural expression counters are retained below.
 
 ```{cpp, results="markdown", file="figures/packrat_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/packrat_parser.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::PackratParser balanced(dm::algorithms::packrat_anbn_rules(),
@@ -188,11 +180,6 @@ interpreter, not a claim that efficient general packrat parsing is impossible.
 
 ```{cpp, results="markdown", file="figures/packrat_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/packrat_parser.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <cmath>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::PackratParser parser(dm::algorithms::packrat_quadratic_rules(),
@@ -262,10 +249,6 @@ actual expressions, keys and history rather than an unqualified linear bound.
 
 ```{cpp, results="markdown", file="figures/packrat_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/packrat_parser.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     using namespace dm::algorithms;

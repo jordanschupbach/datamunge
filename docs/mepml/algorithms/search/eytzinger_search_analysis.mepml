@@ -31,8 +31,6 @@ they do not replay the search. Gray nodes were not read by this query.
 
 ```{cpp, results="markdown", file="figures/eytzinger_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
-#include <set>
 int main(){
   std::filesystem::create_directories("build");
   const auto built=dm::algorithms::eytzinger_layout_trace({1,3,5,7,9,11,13});const auto walk=dm::algorithms::eytzinger_search_trace(built.layout,5);
@@ -107,8 +105,6 @@ This corrects the old report's median claim without changing the layout.
 
 ```{cpp, results="markdown", file="figures/eytzinger_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
-#include <set>
 int main(){
   std::filesystem::create_directories("build");
   const std::vector<int> sorted{1,3,5,7,9,11,13,15,17,19};const auto built=dm::algorithms::eytzinger_layout_trace(sorted);
@@ -179,8 +175,6 @@ runtime, nor does changing the layout guarantee a reduction in reads.
 
 ```{cpp, results="markdown", file="figures/eytzinger_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
-#include <set>
 int main(){
   std::filesystem::create_directories("build");
   auto per_key=dm::graphics::RPlot::create(),averages=dm::graphics::RPlot::create();const std::vector<int> a{1,3,5,7,9,11,13,15,17,19};const auto layout=dm::algorithms::eytzinger_layout(a);std::vector<double> keys,ep,bp;
@@ -241,8 +235,6 @@ O(N); retain and reuse it across queries when evaluating that setup tradeoff.
 
 ```{cpp, results="markdown", file="figures/eytzinger_packing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
-#include <set>
 int main(){
   std::filesystem::create_directories("build");
   std::vector<int> sorted(15);std::iota(sorted.begin(),sorted.end(),1);const auto l=dm::algorithms::eytzinger_layout(sorted);std::set<std::size_t> ei,bi,eb,bb;
@@ -282,8 +274,6 @@ so later input changes cannot alter the historical record.
 
 ```{cpp, results="markdown", file="figures/eytzinger_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <bit>
-#include <set>
 int main(){
   std::filesystem::create_directories("build");
   const auto minimum=std::numeric_limits<int>::min(),maximum=std::numeric_limits<int>::max();const std::vector<int>a{minimum,minimum,-1,0,1,maximum};const auto built=dm::algorithms::eytzinger_layout_trace(a);

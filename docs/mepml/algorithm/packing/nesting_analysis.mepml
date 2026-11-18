@@ -52,10 +52,6 @@ load. The diagram reads those real placements.
 
 ```{cpp, results="markdown", file="figures/nesting_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nesting.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::nesting_trace({.6, .4, .3}, 1);
@@ -105,10 +101,6 @@ is forced into this synthetic packing example.
 
 ```{cpp, results="markdown", file="figures/nesting_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nesting.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto sizes = dm::algorithms::nesting_demo_sizes();
@@ -171,10 +163,6 @@ stated optimum and failure of exact optimality.
 
 ```{cpp, results="markdown", file="figures/nesting_counterexample.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nesting.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> s{.4, .4, .3, .3, .3, .3};
@@ -221,11 +209,6 @@ type.
 
 ```{cpp, results="markdown", file="figures/nesting_precision.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nesting.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto tiny = std::numeric_limits<double>::denorm_min();

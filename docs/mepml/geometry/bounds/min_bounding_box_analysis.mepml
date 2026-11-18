@@ -43,10 +43,6 @@ producer's own hull order.
 
 ```{cpp, results="markdown", file="figures/rectangle_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/minimum_bounding_rectangle.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -84,11 +80,6 @@ rectangle algorithm live in the library.
 
 ```{cpp, results="markdown", file="figures/rectangle_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/minimum_bounding_rectangle.hpp>
-#include <datamunge/geometry/bounding_box.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto points = dm::geometry::bounding_rectangle_demo();
@@ -136,10 +127,6 @@ selected candidate is the final answer.
 
 ```{cpp, results="markdown", file="figures/rectangle_candidates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/minimum_bounding_rectangle.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -187,12 +174,6 @@ unrepresentable projection geometry, area or corners also throws.
 
 ```{cpp, results="markdown", file="figures/rectangle_rotation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/minimum_bounding_rectangle.hpp>
-#include <datamunge/geometry/bounding_box.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <numbers>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, oriented, aligned;

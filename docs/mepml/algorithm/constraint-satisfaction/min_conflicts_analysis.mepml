@@ -41,10 +41,6 @@ initialization from repair and reports actual attacking-pair counts.
 
 ```{cpp, results="markdown", file="figures/queens_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/min_conflicts.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::min_conflicts_nqueens_trace(4, 30, 7);
@@ -118,10 +114,6 @@ finds a solution.
 
 ```{cpp, results="markdown", file="figures/queens_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/min_conflicts.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto r = dm::algorithms::min_conflicts_nqueens(8, 1000, 42);
@@ -168,10 +160,6 @@ implementation, even if the observed repair counts happen to grow slowly.
 
 ```{cpp, results="markdown", file="figures/queens_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/min_conflicts.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;
@@ -225,10 +213,6 @@ ordinary asymptotic bounds; it changes neither RNG scheduling nor choices.
 
 ```{cpp, results="markdown", file="figures/queens_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/min_conflicts.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto layout = dm::graphics::RLayout::create(3, 1);

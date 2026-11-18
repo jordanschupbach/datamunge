@@ -42,11 +42,6 @@ moved payloads.
 
 ```{cpp, results="markdown", file="figures/merge_sort_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -91,10 +86,6 @@ writes are not inferred from a separate simulation.
 
 ```{cpp, results="markdown", file="figures/merge_sort_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -153,10 +144,6 @@ payload numerically.
 
 ```{cpp, results="markdown", file="figures/merge_sort_stability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -226,12 +213,6 @@ prefix.
 
 ```{cpp, results="markdown", file="figures/merge_sort_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/merge_sort.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <numeric>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, observed, bound;

@@ -179,7 +179,6 @@ algorithm, which counts crossings without finding them.
 ```{cpp, results="markdown", file="figures/bentley_ottmann_pairs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
 
 namespace geo = dm::geometry;
 
@@ -337,9 +336,6 @@ With \(\ell=1/\sqrt n\) the crossings grow linearly, so the sweep should take
 ```{cpp, results="markdown", file="figures/bentley_ottmann_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <numbers>
-#include <random>
 
 namespace geo = dm::geometry;
 

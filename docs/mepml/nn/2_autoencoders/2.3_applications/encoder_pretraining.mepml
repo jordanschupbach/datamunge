@@ -286,9 +286,7 @@ resume. The programs below retain all first-batch endpoints, all 330 head deriva
 shifted-label derivative control and all 26 original numeric archives.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
 namespace nn = dm::nn;
 void Require(bool value, const std::string& message) {
   if (!value)
@@ -557,7 +555,6 @@ there are no repeated seeds, uncertainty estimates or matched-total-compute clai
 
 ```{cpp, results="markdown", file="figures/pretraining_nll.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 int main() {
   std::filesystem::create_directories("build");
   auto plot   = dm::graphics::RPlot::create();
@@ -593,7 +590,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/pretraining_accuracy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 int main() {
   std::filesystem::create_directories("build");
   auto plot   = dm::graphics::RPlot::create();

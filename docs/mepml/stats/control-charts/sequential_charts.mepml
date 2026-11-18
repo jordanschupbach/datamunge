@@ -1,0 +1,83 @@
+//? Title: EWMA, moving statistics and two-sided CUSUM
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The synthetic measurement series has a modest sustained rise, followed by a
+decline. The instrument reference supplies a target of zero and an individual
+standard deviation of one. Each chart uses the same measurements and known
+reference parameters.
+)
+
+> Fit, monitor and plot
+
+```{cpp, results="markdown", file="figures/sequential_charts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace spc = datamunge::stats;
+using datamunge::graphics::RLayout;
+
+void show_signals(const spc::ControlChart& chart) {
+    for (const auto& p : chart.points)
+        if (p.outside)
+            std::print("| {} | {} | {:.3f} | {:.3f} | {:.3f} |\n",
+                       chart.title, p.index, p.value, p.lower, p.upper);
+}
+
+int main() {
+    const std::vector<double> observations{
+        -0.7, 0.3, -0.4, 0.8, 0.1, 1.0, 0.8, 1.4, 0.9, 1.2, 1.4, 1.2,
+        1.5, 1.1, 1.4, -1.6, -1.3, -1.7, -1.4, -1.6, -1.5, -1.7
+    };
+    constexpr double target = 0, sigma = 1;
+    const auto raw = spc::moving_average_chart(observations, 1, target, sigma);
+    const auto ewma = spc::ewma_chart(observations, target, sigma, 0.2);
+    const auto mean = spc::moving_average_chart(observations, 6, target, sigma);
+    const auto sd = spc::moving_sd_chart(observations, 4, sigma);
+    const auto [up, down] = spc::cusum_chart(observations, target, sigma);
+    std::print("| Chart | Observation | Statistic | Lower | Upper |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    for (const auto* chart : {&raw, &ewma, &mean, &sd, &up, &down}) show_signals(*chart);
+
+    auto raw_plot = raw.plot().title("Raw observations");
+    std::filesystem::create_directories("build");
+    RLayout::create(2, 3).size(1440, 850).add(raw_plot).add(ewma.plot()).add(mean.plot())
+        .add(sd.plot()).add(up.plot()).add(down.plot()).save_svg("build/sequential_charts.svg");
+}
+```
+// result_begin: markdown
+| Chart | Observation | Statistic | Lower | Upper |
+| --- | ---: | ---: | ---: | ---: |
+| EWMA chart | 13 | 1.055 | -0.998 | 0.998 |
+| EWMA chart | 14 | 1.064 | -0.999 | 0.999 |
+| EWMA chart | 15 | 1.131 | -0.999 | 0.999 |
+| Moving average chart | 13 | 1.267 | -1.225 | 1.225 |
+| Moving average chart | 15 | 1.300 | -1.225 | 1.225 |
+| Moving average chart | 21 | -1.517 | -1.225 | 1.225 |
+| Moving average chart | 22 | -1.533 | -1.225 | 1.225 |
+| Upward CUSUM | 13 | 5.400 | 0.000 | 5.000 |
+| Upward CUSUM | 14 | 6.000 | 0.000 | 5.000 |
+| Upward CUSUM | 15 | 6.900 | 0.000 | 5.000 |
+| Downward CUSUM | 20 | 5.100 | 0.000 | 5.000 |
+| Downward CUSUM | 21 | 6.100 | 0.000 | 5.000 |
+| Downward CUSUM | 22 | 7.300 | 0.000 | 5.000 |
+\image(figures/sequential_charts.svg)
+// result_end
+\caption(Raw measurements, EWMA and trailing means, trailing SD, and the two directional CUSUMs.)
+\alttext(Six panels compare the raw measurement series with smoothed location, dispersion and upward and downward shift statistics.)
+
+> Interpret the chart
+
+The raw series stays within its individual limits. EWMA starts from the
+target and its limits widen as observations accumulate. The moving mean and
+SD use complete trailing windows. CUSUM accumulates standardized deviations
+beyond an allowance of 0.5. Its directional sums can signal sustained shifts
+and continue across an alarm in this example. The plotted charts use different
+memory and limit settings, so their alarm positions need not agree.
+
+> References
+
+- [NIST EWMA control charts|https://www.itl.nist.gov/div898/handbook/pmc/section3/pmc324.htm]
+- [NIST tabular CUSUM|https://www.itl.nist.gov/div898/handbook/pmc/section3/pmc323.htm]
+- [NIST Dataplot moving-statistic control charts|https://itl.nist.gov/div898/software/dataplot/refman1/auxillar/movecont.htm]

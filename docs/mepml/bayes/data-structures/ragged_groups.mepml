@@ -1,0 +1,65 @@
+//? Title: Partial pooling for ragged groups
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Groups have different observation counts. A flat response array and cumulative offsets
+identify their rows. Each latent group mean has a Normal population prior with SD one.
+Integrating out the group means yields a Gaussian likelihood for each group average
+with variance 1 + 1/n, giving greater influence to more precise groups. The population
+mean has a Normal(0, 3) prior.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/ragged_groups.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<double> y{2.0, 1.1, 1.4, 1.7, 2.4, 2.0, 2.3, 2.7, 3.1};
+    const std::size_t offset[]{0, 1, 4, 9};
+    b::LogDensity target([&](const auto& q) {
+        double lp = b::normal_lpdf(q[0], 0., 3.);
+        for (std::size_t j = 1; j < std::size(offset); ++j) {
+            const auto n = offset[j] - offset[j - 1];
+            const double sum = std::accumulate(y.begin() + offset[j - 1], y.begin() + offset[j], 0.);
+            lp += b::normal_lpdf(sum / n, q[0], std::sqrt(1. + 1. / n));
+        }
+        return lp;
+    });
+    const auto post = b::grid_posterior(target, {-5}, {8}, 1000);
+    std::print("Posterior mean {:.3f}, posterior SD {:.3f}, edge mass {:.2e}.\n",
+               post.mean[0], post.sd[0], post.edge_mass);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(post.marginal_grid[0], post.marginal_density[0], "posterior", {36, 105, 172})
+        .title("Marginal posterior").x_label("Population mean").y_label("Density");
+    std::vector<double> group, observed, fitted;
+    for (std::size_t j = 1; j < std::size(offset); ++j) {
+        const auto n = offset[j] - offset[j - 1];
+        const double sum = std::accumulate(y.begin() + offset[j - 1], y.begin() + offset[j], 0.);
+        group.push_back(j);
+        observed.push_back(sum / n);
+        fitted.push_back((sum + post.mean[0]) / (1 + n));
+    }
+    auto fit = RPlot::create().points(group, observed, "observed mean", {70, 70, 70})
+        .points(group, fitted, "partially pooled mean", {36, 105, 172})
+        .title("Fit by group").x_label("Group").y_label("Response mean");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/ragged_groups.svg");
+}
+```
+// result_begin: markdown
+Posterior mean 1.884, posterior SD 0.675, edge mass 1.25e-20.
+\image(figures/ragged_groups.svg)
+// result_end
+\caption(Population mean posterior and partially pooled means compared with the observed group averages.)
+\alttext(Population mean posterior and partially pooled means compared with the observed group averages.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 8.2.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

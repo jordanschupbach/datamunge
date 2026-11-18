@@ -34,13 +34,6 @@ product is exactly zero.
 
 ```{cpp, results="markdown", file="figures/gram_projection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gram_schmidt_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -155,13 +148,6 @@ floor.
 
 ```{cpp, results="markdown", file="figures/gram_conditioning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gram_schmidt_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -260,13 +246,6 @@ output.
 
 ```{cpp, results="markdown", file="figures/gram_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gram_schmidt_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -373,13 +352,6 @@ columns can change the picture.
 
 ```{cpp, results="markdown", file="figures/gram_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gram_schmidt_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

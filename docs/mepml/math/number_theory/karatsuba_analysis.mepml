@@ -25,13 +25,6 @@ recorded widths describe actual vectors rather than inferred magnitudes.
 
 ```{cpp, results="markdown", file="figures/karatsuba_split.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karatsuba.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto t =
@@ -97,13 +90,6 @@ batch checks additionally verified exact products with Python integers.
 
 ```{cpp, results="markdown", file="figures/karatsuba_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karatsuba.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const std::string x =
@@ -152,13 +138,6 @@ executes a real schoolbook leaf rather than a fabricated zero-work result.
 
 ```{cpp, results="markdown", file="figures/karatsuba_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karatsuba.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| left input | right input | actual product | calls | leaves | digit products |\n| --- | " "--- | --- | ---: | ---: | ---: |\n");
@@ -228,13 +207,6 @@ establish elapsed speed.
 
 ```{cpp, results="markdown", file="figures/karatsuba_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/karatsuba.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, ones, nines, schoolbook;

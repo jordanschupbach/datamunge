@@ -59,7 +59,6 @@ A two-pixel grayscale ramp 0,255 enlarged to four columns becomes 0,.25,.75,1. T
 
 ```{cpp, results="markdown", file="figures/image_folder_loader_resize.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/image/png.hpp>
 int main(){
  namespace n=dm::nn;namespace im=dm::image;
  std::filesystem::create_directories("build/images/ant");std::filesystem::create_directories("build/images/zebra");

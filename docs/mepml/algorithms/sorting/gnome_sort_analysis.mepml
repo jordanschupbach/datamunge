@@ -30,12 +30,6 @@ The complete table also retains the boundary and ordered forward visits.
 
 ```{cpp, results="markdown", file="figures/gnome_pairs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gnome_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -130,12 +124,6 @@ boundary visit at zero and the last visit before reaching the end.
 
 ```{cpp, results="markdown", file="figures/gnome_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gnome_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -210,12 +198,6 @@ connects each input identity to its actual final slot.
 
 ```{cpp, results="markdown", file="figures/gnome_stability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gnome_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -269,12 +251,6 @@ FLOPs or the complete cost of copying, identity initialization and allocation.
 
 ```{cpp, results="markdown", file="figures/gnome_families.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gnome_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -360,12 +336,6 @@ its four visits include one boundary step and three comparisons.
 
 ```{cpp, results="markdown", file="figures/gnome_comparisons.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gnome_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");
@@ -417,12 +387,6 @@ different meanings even when their numeric limits happen to coincide.
 
 ```{cpp, results="markdown", file="figures/gnome_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/gnome_sort.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
 namespace dm=datamunge;
 int main(){
  std::filesystem::create_directories("build");

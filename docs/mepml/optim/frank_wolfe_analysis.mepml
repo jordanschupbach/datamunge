@@ -279,7 +279,6 @@ variant run to a gap of \(10^{-13}\).
 
 ```{cpp, results="markdown", file="figures/frank_wolfe_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <random>
 
 namespace alg = dm::algorithms;
 

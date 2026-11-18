@@ -24,9 +24,6 @@ appropriate controlled fixture; no external dataset is introduced.
 
 ```{cpp, results="markdown", file="figures/plot_pipeline.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     dm::set_seed(42);
     const auto x = dm::runif(0, 1, 1000);

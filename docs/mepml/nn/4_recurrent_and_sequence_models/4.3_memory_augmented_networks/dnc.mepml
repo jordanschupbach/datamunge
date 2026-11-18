@@ -86,12 +86,8 @@ All mathematical components run natively. Optional TensorFlow recordings are abs
 // Same task dimensions/protocol as the external assets, with an explicitly
 // independent local selection. All languages call this C++ generator.
 
-#include <filesystem>
-#include <fstream>
-#include <random>
 
 // Editable experiment support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets {
 inline std::string DataRoot(){return dm::datasets::data_home();}
 inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}
@@ -117,33 +113,15 @@ inline dm::nn::ImageDataset LoadCifar10(const std::string& directory,const std::
 // `init=PATH` (tflow's initial_arrays.npz) replays tflow's run; with the tflow
 // run directory present (`tf=`) every replayed record is compared.
 
-#include <chrono>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
 
 // Editable experiment support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable experiment support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -222,15 +200,6 @@ inline void Header(const std::string& title) {
 // run, and when the tflow run directory (`tf=`) has the same files the port
 // prints and checks the differences.
 
-#include <chrono>
-#include <cmath>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
 
 
 // Editable experiment support: marked_sequence_data.hpp
@@ -242,14 +211,6 @@ inline void Header(const std::string& title) {
 // The generator is std::mt19937 exactly as in tflow, so every split is
 // bit-identical to tflow's data.npz.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <numeric>
-#include <random>
-#include <vector>
 
 // Editable experiment support: recurrent_model.hpp
 // Generic eager harness for tflow's small explicit-unroll recurrent models
@@ -270,16 +231,6 @@ inline void Header(const std::string& title) {
 // gradient per initial state (named by `initial_gradient_names`) and any
 // probe gradients, exactly like tflow's Evaluate fetches.
 
-#include <cstring>
-#include <datamunge/nn/nn.hpp>
-#include <filesystem>
-#include <functional>
-#include <map>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
 
 
 namespace rnn_cells {
@@ -593,9 +544,6 @@ nn::save_png(nn::models::MarkedSequenceHeatmap(x,gradients),file.string(),0,255)
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 
 namespace paths {
@@ -981,16 +929,12 @@ inline void Prepare(const std::string& directory, bool overwrite = false) {
 // controller, one write head with allocation + content addressing, one read
 // head mixing backward / forward temporal links and content; 799 parameters).
 
-#include <memory>
-#include <string>
-#include <vector>
 
 // Editable experiment support: ntm.hpp
 // Neural Turing Machine content/location addressing and differentiable
 // erase/add memory. Port of tflow's common/nn/ntm.h (4 slots x 4 wide memory,
 // LSTM(8) controller, one read and one write head; 851 parameters).
 
-#include <memory>
 
 
 namespace memory_nets {
@@ -1114,16 +1058,12 @@ inline std::unique_ptr<MemoryModel> DncModel(bool training, const Batch& example
 
 }  // namespace memory_nets
 
-#include <algorithm>
-#include <cmath>
-#include <sstream>
 
 using namespace memory_nets;
 
 // Editable experiment support: memory_validation.hpp
 // Canonical numerical fixtures shared by C++, R and Python. No fitting loop.
 
-#include <cmath>
 
 
 
@@ -1568,8 +1508,6 @@ Only recall steps contribute. This matrix uses current saved test logits and tar
 
 ```{cpp, results="markdown", file="figures/dnc_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
-#include <iostream>
 int main(){namespace n=dm::nn;std::filesystem::create_directories("build");std::map<std::string,n::Tensor> output,data;for(auto& [key,value]:n::load_npz("build/generative-models/models/dnc/outputs.npz"))output.emplace(key,value);for(auto& [key,value]:n::load_npz("build/generative-models/models/dnc/data.npz"))data.emplace(key,value);std::vector<n::Tensor> targets,predictions;auto lengths=data.at("test_lengths").to_vector<std::int32_t>();for(std::size_t row=0;row<lengths.size();++row){auto start=lengths[row]+1,end=2*lengths[row]+1;targets.push_back(n::reshape(n::cast(n::greater(n::slice_axis(n::select(data.at("test_target"),0,row),0,start,end),0.),n::DType::Int64),{-1}));predictions.push_back(n::reshape(n::cast(n::greater(n::slice_axis(n::select(output.at("logits"),0,row),0,start,end),0.),n::DType::Int64),{-1}));}auto truth=n::concat(targets,0),pred=n::concat(predictions,0); n::ConfusionMatrix cm(2);cm.add(truth,pred);cm.save_svg("build/dnc_confusion.svg",{.title="Differentiable Neural Computer: held-out confusion"});n::save_npz("build/dnc_confusion.npz",{{"counts",cm.to_tensor()}});std::cout<<"Truth rows, prediction columns; "<<truth.numel()<<" held-out observations\n";for(const auto& row:cm.cells()){for(auto count:row)std::cout<<count<<" ";std::cout<<"\n";}}
 
 ```

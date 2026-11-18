@@ -120,6 +120,44 @@ BootstrapResult Bootstrap::run(const std::vector<double>& sample,const SampleSta
   const auto pick=[&]{return static_cast<std::size_t>(generator.uniform_u64(0,sample.size()-1));};
   return run_with_picker(sample,statistic,pick);
 }
+
+StudentizedBootstrapResult Bootstrap::run_studentized(const std::vector<double>& sample,
+    const SampleStatistic& statistic, const SampleStatistic& standard_error) const {
+  if (sample.empty() || options_.num_resamples < 2)
+    throw std::invalid_argument("Bootstrap-t: need a nonempty sample and at least two resamples");
+  StudentizedBootstrapResult result;
+  result.estimate = finite_statistic(statistic(sample));
+  result.standard_error = standard_error(sample);
+  if (!(result.standard_error > 0) || !std::isfinite(result.standard_error))
+    throw std::domain_error("Bootstrap-t: original standard error must be positive and finite");
+  std::mt19937_64 rng(options_.seed);
+  std::uniform_int_distribution<std::size_t> index(0, sample.size() - 1);
+  std::vector<double> resample(sample.size());
+  result.pivots.reserve(options_.num_resamples);
+  for (std::size_t i = 0; i < options_.num_resamples; ++i) {
+    for (auto& value : resample) value = sample[index(rng)];
+    const double estimate = finite_statistic(statistic(resample));
+    const double se = standard_error(resample);
+    if (!std::isfinite(se) || se < 0)
+      throw std::domain_error("Bootstrap-t: replicate standard error must be nonnegative and finite");
+    if (se == 0) {
+      ++result.discarded;
+      continue;
+    }
+    result.pivots.push_back(checked_double((static_cast<long double>(estimate) - result.estimate) / se));
+  }
+  if (result.pivots.size() < 2) throw std::domain_error("Bootstrap-t: fewer than two retained pivots");
+  auto sorted = result.pivots;
+  std::ranges::sort(sorted);
+  const auto tail = (1 - options_.confidence_level) / 2;
+  const long double scale = result.standard_error;
+  result.interval = {
+      checked_double(result.estimate - scale * quantile_sorted(sorted, 1 - tail)),
+      checked_double(result.estimate - scale * quantile_sorted(sorted, tail))
+  };
+  return result;
+}
+
 BootstrapResult Bootstrap::run_with_picker(const std::vector<double>& sample,const SampleStatistic& statistic,
     const std::function<std::size_t()>& pick) const {
   const auto n=sample.size();const double estimate=finite_statistic(statistic(sample));

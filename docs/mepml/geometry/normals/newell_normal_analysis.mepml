@@ -41,10 +41,6 @@ it does not reconstruct a second Newell loop.
 
 ```{cpp, results="markdown", file="figures/newell_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newell_normal.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto f = dm::algorithms::newell_demo_polygons();
@@ -94,10 +90,6 @@ tilted planar control rather than evidence of behavior on warped input.
 
 ```{cpp, results="markdown", file="figures/newell_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newell_normal.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto fixtures = dm::algorithms::newell_demo_polygons();
@@ -151,10 +143,6 @@ magnitude throughout the warped experiment.
 
 ```{cpp, results="markdown", file="figures/newell_warped.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newell_normal.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto fixtures = dm::algorithms::newell_demo_polygons();
@@ -202,11 +190,6 @@ norm is nonzero; undefined-plane distances are zero placeholders.
 
 ```{cpp, results="markdown", file="figures/newell_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/newell_normal.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     using dm::algorithms::Point3D;

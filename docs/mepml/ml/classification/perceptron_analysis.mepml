@@ -36,18 +36,6 @@ their values; the report does not reconstruct the algorithm.
 
 ```{cpp, results="markdown", file="figures/perceptron_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/perceptron.hpp>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::perceptron_trace({{1}, {-1}}, {1, -1}, 5);
@@ -87,26 +75,7 @@ random call schedule.
 
 ```{cpp, results="markdown", file="figures/perceptron_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/perceptron.hpp>
-#include <filesystem>
-#include <datamunge/algorithms/online_linear_classifiers.hpp>
-#include <datamunge/plot/plot.hpp>
 
-#include <cstddef>
-#include <iostream>
-#include <sstream>
-#include <vector>
 
 using namespace datamunge::algorithms;
 using namespace datamunge::graphics;
@@ -203,18 +172,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/perceptron_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/perceptron.hpp>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> v;
@@ -249,18 +206,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/perceptron_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <vector>
-#include <string>
-#include <datamunge/algorithms/perceptron.hpp>
 int main() {
     std::filesystem::create_directories("build");
     auto t =

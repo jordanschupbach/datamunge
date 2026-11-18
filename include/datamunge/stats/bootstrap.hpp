@@ -88,6 +88,21 @@ struct BootstrapResult {
 BootstrapResult bootstrap_summary(double estimate,std::vector<double> replicates,
     const std::vector<double>& jackknife_values={},double confidence_level=0.95);
 
+/// @brief Owned estimate, standard error, pivots and interval from a studentized bootstrap.
+/// @par Example
+/// @code
+/// const dm::stats::StudentizedBootstrapResult result;
+/// std::print("{}", result.pivots.size()); // 0
+/// @endcode
+/// @see Bootstrap::run_studentized()
+struct StudentizedBootstrapResult {
+  double estimate{0.0}; ///< Original-sample statistic.
+  double standard_error{0.0}; ///< Original-sample standard error supplied by the callback.
+  std::vector<double> pivots; ///< Retained studentized replicate statistics in draw order.
+  std::size_t discarded{0}; ///< Replicates excluded because their standard error was zero.
+  std::pair<double, double> interval{0.0, 0.0}; ///< Ordered bootstrap-t confidence bounds.
+};
+
 /// @brief Nonparametric resampling with replacement, as in R's boot with ordinary resampling.
 ///
 /// Resamples n observations B times and evaluates a deterministic statistic.
@@ -170,6 +185,35 @@ class Bootstrap {
       const std::vector<double>& sample,
       const SampleStatistic&     statistic,
       random::RandomGenerator&   generator) const;
+
+  /// @brief Computes a bootstrap-t confidence interval using a sample-level SE callback.
+  ///
+  /// Each resample supplies a statistic and its own error estimate. The method
+  /// inverts the type-7 quantiles of (replicate minus estimate) divided by its
+  /// standard error using the original standard error. Discards zero-SE
+  /// resamples, requires at least two retained pivots, and uses the default
+  /// local engine and seed from options().
+  /// @param sample Nonempty sample passed unchanged to the callbacks.
+  /// @param statistic Deterministic scalar statistic on the sample and resamples.
+  /// @param standard_error Deterministic SE estimator on the same samples.
+  /// @return Original statistic and SE, pivots, discarded count and ordered interval.
+  /// @throws std::invalid_argument Empty sample or fewer than two requested resamples.
+  /// @throws std::domain_error Nonfinite statistics, invalid SEs, or fewer than two retained pivots.
+  /// @throws std::bad_function_call If a callback is empty. Other callback exceptions propagate.
+  /// @throws std::overflow_error If a pivot or interval endpoint is outside finite double range.
+  /// @par Example
+  /// @code
+  /// const auto fit = dm::stats::Bootstrap({100, 0.95, 42}).run_studentized(
+  ///     {1, 2, 3, 4, 5}, [](const auto& x) { return dm::mean(x); },
+  ///     [](const auto& x) { return dm::sd(x) / std::sqrt(x.size()); });
+  /// std::print("{}", fit.estimate); // 3
+  /// @endcode
+  /// @par References
+  /// - https://cran.r-project.org/web/packages/boot/refman/boot.html
+  /// @see run(), bootstrap_summary()
+  [[nodiscard]] StudentizedBootstrapResult run_studentized(
+      const std::vector<double>& sample, const SampleStatistic& statistic,
+      const SampleStatistic& standard_error) const;
 
   /// @brief Borrow the validated options held by this instance.
   /// @return Read-only reference, valid for this object's lifetime.

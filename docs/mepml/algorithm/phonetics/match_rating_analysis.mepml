@@ -40,10 +40,6 @@ actual phase strings.
 
 ```{cpp, results="markdown", file="figures/match_rating_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/match_rating.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::match_rating_codex_trace("Ashcraft");
@@ -95,10 +91,6 @@ but omitted from the score plot.
 
 ```{cpp, results="markdown", file="figures/match_rating_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/match_rating.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto pairs = dm::algorithms::match_rating_demo_pairs();
@@ -157,10 +149,6 @@ output.
 
 ```{cpp, results="markdown", file="figures/match_rating_cancellation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/match_rating.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::match_rating_trace("Byrne", "Boern");
@@ -228,10 +216,6 @@ record/string contribution, and failure returns no prefix.
 
 ```{cpp, results="markdown", file="figures/match_rating_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/match_rating.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::pair<std::string, std::string>> pairs{{"AB", "AC"},

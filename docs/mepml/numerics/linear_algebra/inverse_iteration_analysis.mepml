@@ -26,11 +26,6 @@ actual first transition from the single producing run.
 
 ```{cpp, results="markdown", file="figures/inverse_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/inverse_iteration_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -123,11 +118,6 @@ iteration caps.
 
 ```{cpp, results="markdown", file="figures/inverse_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/inverse_iteration_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -168,11 +158,6 @@ need not equal these asymptotic directional factors.
 
 ```{cpp, results="markdown", file="figures/inverse_shifts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/inverse_iteration_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -216,11 +201,6 @@ condition-number estimator or a certificate of mathematical nonsingularity.
 
 ```{cpp, results="markdown", file="figures/inverse_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/inverse_iteration_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

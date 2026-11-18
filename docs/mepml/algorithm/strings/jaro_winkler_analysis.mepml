@@ -25,13 +25,6 @@ diagram edges and both tables below come from the single producing trace.
 
 ```{cpp, results="markdown", file="figures/jaro_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jaro_winkler_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <limits>
-#include <tuple>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -132,13 +125,6 @@ table rather than implying a calibrated relationship between different pairs.
 
 ```{cpp, results="markdown", file="figures/jaro_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jaro_winkler_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <limits>
-#include <tuple>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -197,13 +183,6 @@ identity.
 
 ```{cpp, results="markdown", file="figures/jaro_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jaro_winkler_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <limits>
-#include <tuple>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -323,13 +302,6 @@ is useful because the history can be quadratic too.
 
 ```{cpp, results="markdown", file="figures/jaro_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jaro_winkler_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <limits>
-#include <tuple>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -393,13 +365,6 @@ handling, case folding, tokenization or probabilistic calibration is fitted.
 
 ```{cpp, results="markdown", file="figures/jaro_titanic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/jaro_winkler_analysis.hpp>
-#include <filesystem>
-#include <format>
-#include <print>
-#include <limits>
-#include <tuple>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

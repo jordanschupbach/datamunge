@@ -1992,3 +1992,8 @@ target_link_libraries(run_nn_binding_compatibility_tests datamunge::datamunge GT
 target_include_directories(run_nn_binding_compatibility_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../prebindings/nn/include)
 set_target_properties(run_nn_binding_compatibility_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_nn_binding_compatibility_tests TEST_PREFIX "nn-binding-compatibility.")
+
+add_executable(run_causal_inference_tests cpp/causal_inference_tests.cpp)
+target_link_libraries(run_causal_inference_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_inference_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_inference_tests TEST_PREFIX "causal.")

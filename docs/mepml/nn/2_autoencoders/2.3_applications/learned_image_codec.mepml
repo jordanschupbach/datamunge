@@ -159,9 +159,7 @@ checkpoint; held-out images do not select parameters or quantizer ranges. The fo
 shows the full preparation and optimizer loop and writes its initial and selected checkpoints.
 
 ```{cpp, results="markdown", file="figures/codec_prerequisite.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
 namespace n = dm::nn;
 double Score(const n::Tensor& prediction, const n::Tensor& target) {
   return n::mean(
@@ -286,8 +284,6 @@ to this blurry lossy decoder. The complete file is larger than this observed PNG
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iterator>
 namespace n = dm::nn;
 namespace m = n::models;
 void Require(bool condition, const std::string& message) {
@@ -503,8 +499,6 @@ an encoder nor accesses the dataset cache.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iterator>
 int main() {
   namespace n = dm::nn;
   std::ifstream input("build/codec/test.tflcodec", std::ios::binary);
@@ -575,8 +569,6 @@ no imaginary corpus or payload-only rate replaces the full file. A coordinate co
 
 ```{cpp, results="markdown", file="figures/codec_byte_categories.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iterator>
 int main() {
   std::ifstream in("build/codec/test.tflcodec", std::ios::binary | std::ios::ate);
   if (!in)
@@ -608,8 +600,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/codec_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iterator>
 int main() {
   namespace n = dm::nn;
   std::ifstream in("build/codec/test.tflcodec", std::ios::binary);
@@ -650,7 +640,6 @@ retained in the archived diagnostics. No quality-success selection is applied.
 
 ```{cpp, results="markdown", file="figures/codec_distortion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -687,7 +676,6 @@ traceable. Labels do not choose cases, fit ranges, enter the file or select the 
 
 ```{cpp, results="markdown", file="figures/codec_cases.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;
@@ -736,7 +724,6 @@ int main() {
 
 ```{cpp, results="markdown", file="figures/codec_all_case_errors.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <map>
 int main() {
   namespace n = dm::nn;
   std::map<std::string, n::Tensor> a;

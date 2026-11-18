@@ -42,10 +42,6 @@ remainder1, giving quotient4.
 
 ```{cpp, results="markdown", file="figures/nonrestoring_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::non_restoring_division_trace(13, 3);
@@ -97,10 +93,6 @@ decimal formatter.
 
 ```{cpp, results="markdown", file="figures/nonrestoring_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| dividend | divisor | actual quotient | actual remainder | built-in quotient | built-in " "remainder |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
@@ -159,11 +151,6 @@ CPU instruction cost conclusion follows.
 
 ```{cpp, results="markdown", file="figures/nonrestoring_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <bit>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, r_actual, n_actual, hypothetical;
@@ -219,11 +206,6 @@ existing callers and tests is retained.
 
 ```{cpp, results="markdown", file="figures/nonrestoring_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/division.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <limits>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto max = std::numeric_limits<std::uint64_t>::max();

@@ -41,10 +41,6 @@ retains every point.
 
 ```{cpp, results="markdown", file="figures/nsga_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/nsga2.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::optim::nsga2_rank_trace(dm::optim::nsga2_demo_points());
@@ -110,10 +106,6 @@ equal-crowding ties follow the standard library’s unspecified sort ordering.
 
 ```{cpp, results="markdown", file="figures/nsga_truncation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/nsga2.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -177,11 +169,6 @@ avoids retaining a quadratic detailed history of every generation.
 
 ```{cpp, results="markdown", file="figures/nsga_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/nsga2.hpp>
-#include <datamunge/optim/moead.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::optim::ZDT1Objective objective(30);
@@ -258,11 +245,6 @@ records remain available for the processed stages.
 
 ```{cpp, results="markdown", file="figures/nsga_generation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/optim/nsga2.hpp>
-#include <datamunge/optim/moead.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::optim::ZDT1Objective objective(2);

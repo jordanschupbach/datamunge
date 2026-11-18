@@ -1,0 +1,77 @@
+//? Title: Zero-inflated Poisson regression
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An observation can be a structural zero or come from a Poisson count process. Both
+paths can produce zero, so their probabilities add for a zero observation. The zero
+log-odds have a Normal(0, 1.5) prior. The figure averages over the latent indicator
+and uses (1 − zero probability) × Poisson mean.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/zero_inflated_poisson.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<double> x{-2,-2,-2,-1,-1,-1,0,0,0,1,1,1,2,2,2};
+    const std::vector<double> y{0,0,2,0,1,3,0,4,0,0,5,6,0,0,9};
+    b::AutodiffModel model([&](auto&, const auto& q) {
+        auto lp = b::normal_lpdf(q[0], 0, 1.5) + b::normal_lpdf(q[1], 0, 1);
+        lp = lp + b::normal_lpdf(q[2], 0, 1.5);
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            const auto eta = q[0] + q[1] * x[i];
+            lp = lp + b::zero_inflated_poisson_log_lpmf(y[i], eta, q[2]);
+        }
+        return lp;
+    });
+    const auto chains = b::NUTS({.target_accept_rate = 0.9}).sample_chains(model, {0., 0., 0.}, 4);
+    const auto slope = b::summarize_draws(b::chains_of(chains, 1));
+    std::print("Slope {:.2f}, 90% interval [{:.2f}, {:.2f}], split R-hat {:.3f}, ESS {:.0f}.\n",
+               slope.mean, slope.q05, slope.q95, slope.rhat, slope.ess);
+
+    std::size_t divergences = 0;
+    for (const auto& chain : chains)
+        divergences += std::accumulate(chain.divergent.begin(), chain.divergent.end(), 0);
+    std::print("Post-warmup divergences: {}.\n", divergences);
+
+    std::vector<double> grid, fitted, lo, hi, observed;
+    for (std::size_t i = 0; i < y.size(); ++i) observed.push_back(y[i]);
+    for (int i = -20; i <= 20; ++i) {
+        const double xi = i / 10.0;
+        const auto means = b::chains_of(chains, [xi](const auto& q) {
+            const double eta = q[0] + q[1] * xi;
+            return std::exp(eta) / (1 + std::exp(q[2]));
+        });
+        const auto interval = b::summarize_draws(means);
+        grid.push_back(xi);
+        fitted.push_back(interval.mean);
+        lo.push_back(interval.q05);
+        hi.push_back(interval.q95);
+    }
+    std::filesystem::create_directories("build");
+    RPlot::create().points(x, observed, "observed", {70, 70, 70})
+        .lines(grid, fitted, "posterior mean", {36, 105, 172})
+        .lines(grid, lo, "90% interval limits", {114, 166, 216})
+        .lines(grid, hi, datamunge::graphics::RGBA{114, 166, 216})
+        .title("Response versus predictor").x_label("Predictor").y_label("Response")
+        .save_svg("build/zero_inflated_poisson.svg");
+}
+```
+// result_begin: markdown
+Slope 0.50, 90% interval [0.24, 0.77], split R-hat 1.000, ESS 3258.
+Post-warmup divergences: 0.
+\image(figures/zero_inflated_poisson.svg)
+// result_end
+\caption(Observed outcomes and posterior expected response with pointwise 90% credible limits.)
+\alttext(Observed outcomes and posterior expected response with pointwise 90% credible limits.)
+
+> Reference
+
+Stan User’s Guide 2.19, chapters 1 and 5.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

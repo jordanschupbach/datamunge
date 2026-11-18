@@ -25,14 +25,6 @@ search.
 
 ```{cpp, results="markdown", file="figures/kdtree_prune.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/kdtree_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <numbers>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const dm::geometry::KDTree2D tree({{0, 0}, {2, 0}, {1, 3}, {4, 2}, {-2, 1}});
@@ -107,14 +99,6 @@ that every stored point was inspected.
 
 ```{cpp, results="markdown", file="figures/kdtree_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/kdtree_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <numbers>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     const auto points = dm::geometry::kd_demo_points();
@@ -174,14 +158,6 @@ duplicate-tie cloud is drawn.
 
 ```{cpp, results="markdown", file="figures/kdtree_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/kdtree_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <numbers>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::print("| control | actual nearest original id | stored count |\n| --- | ---: | ---: |\n");
@@ -251,14 +227,6 @@ comparisons.
 
 ```{cpp, results="markdown", file="figures/kdtree_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/kdtree_analysis.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
-#include <stdexcept>
-#include <limits>
-#include <numbers>
-#include <cmath>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, mean, scan;

@@ -54,8 +54,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/image_colorization_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -101,7 +99,6 @@ visible in the table. The model sees L/50-1 and predicts(a,b)/128.
 ```{cpp, results="markdown", file="figures/image_colorization_colors.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -151,7 +148,6 @@ cast once to Float32. Native independent fixtures test both branches and knees.
 ```{cpp, results="markdown", file="figures/image_colorization_transfers.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -197,7 +193,6 @@ regression can therefore desaturate colors even when fitting succeeds.
 ```{cpp, results="markdown", file="figures/image_colorization_ambiguity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -246,7 +241,6 @@ preserves odd rectangular inputs too;there is no BN state or color shortcut.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -313,8 +307,6 @@ fitted tensor is later used unchanged on validation and test images.
 ```{cpp, results="markdown", file="figures/image_colorization_prior.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <numeric>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -412,8 +404,6 @@ Gray has no fitted parameters;the other baseline loads the earlier SGD result.
 ```{cpp, results="markdown", file="figures/image_colorization_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <numeric>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

@@ -91,16 +91,6 @@ stepping forever; only recording stops at one minute.
 
 ```{cpp, results="markdown", nix-shell="git+file:../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
 #include <dm/dm.hpp>
-#include <datamunge/nn/parallel.hpp>
-#include <algorithm>
-#include <array>
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <iomanip>
-#include <numeric>
-#include <sstream>
-#include <stdexcept>
 namespace s = dm::sim;
 namespace n = dm::nn;
 namespace c = dm::cad;

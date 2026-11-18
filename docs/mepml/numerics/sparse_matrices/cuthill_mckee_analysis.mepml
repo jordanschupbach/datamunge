@@ -143,8 +143,6 @@ every platform.
 
 ```{cpp, results="markdown", file="figures/cuthill_mckee.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numeric>
-#include <random>
 int main() {
   std::filesystem::create_directories("build");
   std::mt19937 rng(7);std::vector<int> labels(40),identity(40);
@@ -287,8 +285,6 @@ sorting and normalization still belong in the full cost described above.
 
 ```{cpp, results="markdown", file="figures/cuthill_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numeric>
-#include <random>
 int main() {
   std::filesystem::create_directories("build");
   auto plot=dm::graphics::RPlot::create();const std::vector<dm::graphics::RGB> colours{{22,163,74},{37,99,235},{234,88,12}};

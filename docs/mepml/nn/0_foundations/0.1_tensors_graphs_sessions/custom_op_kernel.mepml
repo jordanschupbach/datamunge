@@ -416,7 +416,6 @@ library operations, and once by a fused kernel. Its forward is the stable \(\max
 
 ```{cpp, results="markdown", file="figures/custom_op_kernel_tapes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
 
 namespace nn = dm::nn;
 using nn::Tensor;

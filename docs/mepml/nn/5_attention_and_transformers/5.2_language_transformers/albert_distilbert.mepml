@@ -29,7 +29,6 @@ A uniform distribution over70 target classes gives probability1/70 and negative 
 
 ```{cpp, results="markdown", file="figures/albert_distilbert_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <numbers>
 int main(){namespace n=dm::nn;double computed=-n::log_softmax(n::zeros({1,70},n::DType::Float64),1).to_vector<double>()[0],analytic=std::log(70.);if(std::abs(computed-analytic)>2e-6)throw std::runtime_error("hand calculation differs from native primitives");std::print("| native calculation | analytic reference |\n|---:|---:|\n| {:.9f} | {:.9f} |\n",computed,analytic);dm::graphics::RPlot::create().bars(std::vector<double>{0,1},std::vector<double>{computed,analytic},"worked reference",{37,99,235}).ylim(0,std::max(.5,std::max(computed,analytic)*1.2)).x_label("0 = native calculation;1 = analytic reference").y_label("Toy objective or diagnostic value").title("albert distilbert hand calculation").size(1000,550).save_svg("build/albert_distilbert_worked.svg");}
 ```
 // result_begin: markdown
@@ -77,7 +76,6 @@ inline std::filesystem::path Model(const std::string&name){auto p=std::filesyste
 // CMD: just run-nn albert_distilbert
 // Eager port preserving factorization, sharing, triple loss, source batch
 // order and all padding/teacher-free/gradient/restoration controls.
-#include <fstream>
 
 // Editable workflow support: compact_bert.hpp
 // Editable workflow support: bert_mlm.hpp
@@ -99,20 +97,7 @@ inline std::filesystem::path Model(const std::string&name){auto p=std::filesyste
 //          bottom-right instead of taking an explicit query offset, and its
 //          padding_keep_mask masks keys only).
 
-#include <datamunge/nn/attention.hpp>
-#include <datamunge/nn/io.hpp>
-#include <datamunge/nn/nn.hpp>
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <filesystem>
-#include <functional>
-#include <random>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 namespace attn {
 
@@ -342,17 +327,9 @@ inline Options ParseOptions(int argc, char** argv, const std::string& name,
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -508,16 +485,7 @@ class BertMlmModel {
 // (nn::BatchOrder reproduces tflow's) and the same optimizer checks the port
 // numerically, independently of the random initialisation.
 
-#include <cstring>
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
-#include <datamunge/nn/nn.hpp>
 
 
 // Editable workflow support: paths.hpp
@@ -529,12 +497,8 @@ class BertMlmModel {
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
 
 // Editable workflow support: dataset_assets.hpp
-#include <datamunge/datasets/assets.hpp>
 namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
 
 namespace dataset_assets {inline void EnsureSaliency(const std::string& directory){dm::datasets::prepare_example_data("mnist-assets",std::filesystem::path(directory).parent_path().string());}}

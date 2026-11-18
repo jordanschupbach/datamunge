@@ -152,8 +152,6 @@ leading coefficient non-zero).
 ```{cpp, results="markdown", file="figures/berlekamp_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <random>
 
 namespace alg = dm::algebra;
 
@@ -351,8 +349,6 @@ polynomials over GF(17) of degree 16 to 256.
 ```{cpp, results="markdown", file="figures/berlekamp_cost.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <chrono>
-#include <random>
 
 int main() {
     std::filesystem::create_directories("build");

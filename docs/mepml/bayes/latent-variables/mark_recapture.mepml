@@ -1,0 +1,77 @@
+//? Title: Bayesian two-visit mark–recapture
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+On the first visit 18 animals are captured, marked, and released. On the second visit
+15 are caught, including six marked animals. Conditional on population size N, the
+overlap is hypergeometric when every subset of 15 animals is equally likely. A
+discrete uniform prior ranges from 1 to 200. Sizes below the observed number of
+distinct tags have zero likelihood. Enumerating the remaining sizes gives the posterior.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/mark_recapture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    // Synthetic tag IDs from two visits, with repeated IDs identifying recaptures.
+    const std::vector<int> first{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+    const std::vector<int> second{2, 4, 7, 8, 12, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27};
+    const int marked = static_cast<int>(first.size()), captured = static_cast<int>(second.size());
+    const int overlap = std::count_if(second.begin(), second.end(), [&](int tag) {
+        return std::binary_search(first.begin(), first.end(), tag);
+    });
+    const int distinct = marked + captured - overlap;
+    const auto log_choose = [](int n, int k) {
+        return std::lgamma(n + 1.) - std::lgamma(k + 1.) - std::lgamma(n - k + 1.);
+    };
+    std::vector<double> size, mass;
+    for (int n = distinct; n <= 200; ++n) {
+        size.push_back(n);
+        mass.push_back(std::exp(log_choose(marked, overlap)
+            + log_choose(n - marked, captured - overlap) - log_choose(n, captured)));
+    }
+    const double normalizer = std::accumulate(mass.begin(), mass.end(), 0.);
+    for (double& probability : mass) probability /= normalizer;
+    const double mean = std::inner_product(size.begin(), size.end(), mass.begin(), 0.);
+    std::print("Posterior population mean {:.1f}.\n", mean);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().lines(size, mass, "posterior mass", {36, 105, 172})
+        .title("Population size posterior").x_label("Population size").y_label("Probability");
+    std::vector<double> recovered, predictive;
+    for (int k = 0; k <= std::min(marked, captured); ++k) {
+        double probability = 0;
+        for (std::size_t j = 0; j < size.size(); ++j) {
+            const int n = static_cast<int>(size[j]);
+            if (captured - k <= n - marked)
+                probability += mass[j] * std::exp(log_choose(marked, k)
+                    + log_choose(n - marked, captured - k) - log_choose(n, captured));
+        }
+        recovered.push_back(k);
+        predictive.push_back(probability);
+    }
+    auto fit = RPlot::create()
+        .segments(recovered, std::vector<double>(recovered.size()), recovered, predictive, {36, 105, 172}, 2)
+        .points({double(overlap)}, {predictive[overlap]}, "observed overlap", {182, 83, 29}, 5)
+        .title("Fit to the recapture overlap").x_label("Marked animals recaptured").y_label("Predictive mass");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/mark_recapture.svg");
+}
+```
+// result_begin: markdown
+Posterior population mean 58.9.
+\image(figures/mark_recapture.svg)
+// result_end
+\caption(Population size posterior and fitted distribution of recaptures, with the observed overlap highlighted.)
+\alttext(Population size posterior and fitted distribution of recaptures, with the observed overlap highlighted.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 7.3.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

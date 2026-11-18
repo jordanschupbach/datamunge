@@ -8,12 +8,14 @@
 /// draws of a single scalar parameter per chain. draws_of() extracts that layout from the
 /// row-per-draw `samples` returned by HMC, NUTS and the other samplers.
 
+#include <datamunge/bayes/nuts.hpp>
+
+#include <concepts>
 #include <cstddef>
+#include <functional>
 #include <vector>
 
 namespace datamunge::bayes {
-
-struct NUTSResult;
 
 /// @brief Column @p index of row-per-draw samples (one row per draw, one column per parameter).
 /// @param samples Draws as returned in NUTSResult::samples and similar.
@@ -40,6 +42,36 @@ std::vector<std::vector<double>> draws_covariance(const std::vector<std::vector<
 /// @param index Parameter index.
 /// @return One vector of draws per chain.
 std::vector<std::vector<double>> chains_of(const std::vector<NUTSResult>& chains, std::size_t index);
+
+/// @brief Evaluates a scalar derived quantity at every retained NUTS draw.
+/// @tparam Transform Callable returning a value convertible to double.
+/// @param chains Results of NUTS::sample_chains().
+/// @param transform Mapping called once per draw, with a const parameter vector.
+/// @return One vector per chain, preserving chain and within-chain order, including empty chains.
+/// @throws std::bad_alloc If output allocation fails. Exceptions from the callable propagate.
+/// @par Example
+/// @code
+/// const std::vector<dm::bayes::NUTSResult> chains{{.samples = {{1, 2}, {3, 5}}}};
+/// const auto delta = dm::bayes::chains_of(chains, [](const auto& q) { return q[1] - q[0]; });
+/// std::print("{}", delta[0][1]); // 2
+/// @endcode
+/// @see summarize_draws(), draws_of()
+template <class Transform>
+    requires requires(Transform& transform, const std::vector<double>& draw) {
+        { std::invoke(transform, draw) } -> std::convertible_to<double>;
+    }
+std::vector<std::vector<double>> chains_of(const std::vector<NUTSResult>& chains, Transform&& transform) {
+    std::vector<std::vector<double>> result;
+    result.reserve(chains.size());
+    for (const auto& chain : chains) {
+        auto& values = result.emplace_back();
+        values.reserve(chain.samples.size());
+        for (const auto& draw : chain.samples) {
+            values.push_back(std::invoke(transform, draw));
+        }
+    }
+    return result;
+}
 
 /// @brief Multi-chain effective sample size (Geyer's initial monotone sequence estimator, as
 ///        in Stan and Gelman et al. 2013, BDA3 §11.5).

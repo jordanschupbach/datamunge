@@ -397,10 +397,7 @@ the original RGB preview. Its extra per-image metric arrays use the same native
 metric policy as the source; no model selection is based on test results.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn   = dm::nn;
 namespace m    = nn::models;
 namespace sr   = m;

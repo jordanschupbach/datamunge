@@ -27,14 +27,6 @@ scan.
 
 ```{cpp, results="markdown", file="figures/graham_turn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/graham_analysis.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -155,14 +147,6 @@ predicate; independent supporting-line tests provide separate verification.
 
 ```{cpp, results="markdown", file="figures/graham_cloud.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/graham_analysis.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -234,14 +218,6 @@ can vary across toolchains, so the bound checks concern the producing run.
 
 ```{cpp, results="markdown", file="figures/graham_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/graham_analysis.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -321,14 +297,6 @@ hull correctness.
 
 ```{cpp, results="markdown", file="figures/graham_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/geometry/graham_analysis.hpp>
-#include <datamunge/geometry/hull_algorithms.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <filesystem>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
 

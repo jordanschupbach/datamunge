@@ -50,8 +50,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/detection_baselines_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -101,7 +99,6 @@ Cropping keeps tensor gradients; it does not train the classifier.
 ```{cpp, results="markdown", file="figures/detection_baselines_crop.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   const auto image = n::arange(0, 25).to(n::DType::Float64).reshape({1, 5, 5, 1}) / 24.;
@@ -150,7 +147,6 @@ is a difficulty for connected-component proposals.
 ```{cpp, results="markdown", file="figures/detection_baselines_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -201,7 +197,6 @@ There is no fitting inside the sampler. Class 10 is background.
 ```{cpp, results="markdown", file="figures/detection_baselines_patches.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -255,7 +250,6 @@ training NLL, validation NLL and the selected validation patch confusion matrix.
 ```{cpp, results="markdown", file="figures/detection_baselines_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
@@ -422,7 +416,6 @@ or real VOC/COCO benchmarks.
 ```{cpp, results="markdown", file="figures/detection_baselines_detections.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

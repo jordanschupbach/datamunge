@@ -168,9 +168,7 @@ for this run and is inherently variable. No external model placement or Python p
 needed. The projection application that follows adds zero optimizer updates.
 
 ```{cpp, results="markdown", file="figures/visualization_prerequisite.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
 namespace n = dm::nn;
 double Score(const n::Tensor& prediction, const n::Tensor& target) {
   return n::mean(
@@ -318,8 +316,6 @@ The retained source IDs and full neighbor tables make that separation inspectabl
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <fstream>
-#include <map>
 namespace n = dm::nn;
 namespace m = n::models;
 void Require(bool condition, const std::string& message) {

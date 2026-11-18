@@ -339,10 +339,7 @@ restores independent stores and performs every source inference control.
 No old example model class, hidden training helper or opposite checkout is used.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 namespace m  = nn::models;
 using nn::Tensor;
@@ -843,7 +840,6 @@ A Read(const std::string& path) {
     a.emplace(key, value);
   return a;
 }
-#include <fstream>
 int main() {
   auto p = dm::graphics::RPlot::create();
   p.y_limits(0, 1.4);

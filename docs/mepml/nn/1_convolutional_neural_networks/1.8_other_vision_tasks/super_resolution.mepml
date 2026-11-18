@@ -52,8 +52,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/super_resolution_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -99,7 +97,6 @@ Negative lobes and overshoot remain in the raw interpolation.
 ```{cpp, results="markdown", file="figures/super_resolution_bicubic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n  = dm::nn;
   namespace m  = n::models;
@@ -149,7 +146,6 @@ before the permutation predicts these packed spatial samples.
 ```{cpp, results="markdown", file="figures/super_resolution_shuffle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n  = dm::nn;
   namespace m  = n::models;
@@ -186,7 +182,6 @@ The spatial mean remains differentiable:it is not an estimated host statistic.
 ```{cpp, results="markdown", file="figures/super_resolution_attention.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -237,7 +232,6 @@ Its final residual kernel starts at normal(.001),as in this source experiment.
 ```{cpp, results="markdown", file="figures/super_resolution_clipping.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n        = dm::nn;
   namespace m        = n::models;
@@ -294,7 +288,6 @@ and stage;inactive attention ReLU branches can legitimately have zero gradients.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -358,7 +351,6 @@ error of bicubic;all numeric preprocessing and plot data use tensors.
 ```{cpp, results="markdown", file="figures/super_resolution_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -470,7 +462,6 @@ These small source-specific crops are not published SR benchmarks.
 ```{cpp, results="markdown", file="figures/super_resolution_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

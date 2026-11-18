@@ -1,0 +1,72 @@
+//? Title: A marginalized Poisson change point
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Counts before and after an unknown day have separate Poisson rates with independent
+Gamma(2, 1) priors. A uniform prior gives each split from 1 to n−1 equal weight. For
+each segment, Gamma-Poisson conjugacy integrates out the rate. Prefix counts make the
+marginal likelihood of each split inexpensive. Log-sum-exp normalizes the split
+probabilities.
+)
+
+> Reproducible analysis
+
+```{cpp, results="markdown", file="figures/poisson_changepoint.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+
+namespace b = datamunge::bayes;
+using datamunge::graphics::RPlot;
+
+int main() {
+    const std::vector<double> y{1, 0, 2, 1, 0, 1, 4, 5, 3, 6, 4, 5};
+    std::vector<double> sums(y.size() + 1);
+    std::partial_sum(y.begin(), y.end(), sums.begin() + 1);
+    const auto log_marginal = [](double count, double days) {
+        return std::lgamma(2 + count) - (2 + count) * std::log(1 + days);
+    };
+    std::vector<double> split, log_mass;
+    for (std::size_t j = 1; j < y.size(); ++j) {
+        split.push_back(j);
+        log_mass.push_back(log_marginal(sums[j], j)
+            + log_marginal(sums.back() - sums[j], y.size() - j));
+    }
+    const double log_z = std::accumulate(log_mass.begin() + 1, log_mass.end(), log_mass.front(),
+        [](double a, double b0) { return b::log_add_exp(a, b0); });
+    std::vector<double> mass;
+    for (const double value : log_mass) mass.push_back(std::exp(value - log_z));
+    std::print("Posterior mass after day 6: {:.3f}.\n", mass[5]);
+    std::filesystem::create_directories("build");
+    auto posterior_plot = RPlot::create().segments(split, std::vector<double>(split.size()), split, mass, {36, 105, 172}, 2)
+        .points(split, mass, "posterior mass", {36, 105, 172})
+        .title("Change-point posterior").x_label("Last day of first regime").y_label("Probability");
+    std::vector<double> day, fitted;
+    for (std::size_t i = 0; i < y.size(); ++i) {
+        double expected = 0;
+        for (std::size_t j = 1; j < y.size(); ++j) {
+            const double rate = i < j ? (2 + sums[j]) / (1 + j)
+                : (2 + sums.back() - sums[j]) / (1 + y.size() - j);
+            expected += mass[j - 1] * rate;
+        }
+        day.push_back(i + 1);
+        fitted.push_back(expected);
+    }
+    auto fit = RPlot::create().points(day, y, "observed", {70, 70, 70})
+        .lines(day, fitted, "posterior expected count", {36, 105, 172})
+        .title("Fitted daily counts").x_label("Day").y_label("Count");
+    datamunge::graphics::RLayout::create(1, 2).size(1100, 390).add(posterior_plot).add(fit)
+        .save_svg("build/poisson_changepoint.svg");
+}
+```
+// result_begin: markdown
+Posterior mass after day 6: 0.717.
+\image(figures/poisson_changepoint.svg)
+// result_end
+\caption(Change-point posterior and fitted daily counts averaged over possible splits.)
+\alttext(Change-point posterior and fitted daily counts averaged over possible splits.)
+
+> Reference
+
+Stan User’s Guide 2.19, section 7.2.
+[Stan User’s Guide 2.19 PDF|https://mc-stan.org/docs/2_19/stan-users-guide-2_19.pdf]

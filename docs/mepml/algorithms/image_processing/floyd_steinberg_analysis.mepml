@@ -44,9 +44,6 @@ The table follows every actual raster quantization, including incoming errors.
 
 ```{cpp, results="markdown", file="figures/floyd_steinberg_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/grayscale_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -96,9 +93,6 @@ unchanged when rounded to six decimals.
 
 ```{cpp, results="markdown", file="figures/floyd_steinberg_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/grayscale_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -142,9 +136,6 @@ that patch, not a universal ranking across images, devices or viewing conditions
 
 ```{cpp, results="markdown", file="figures/floyd_steinberg_comparison.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/grayscale_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -198,9 +189,6 @@ only valid destinations cause an update.
 
 ```{cpp, results="markdown", file="figures/floyd_steinberg_balance.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/grayscale_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -254,9 +242,6 @@ its own display domain0..255; that does not change the numerical kernel's input 
 
 ```{cpp, results="markdown", file="figures/floyd_steinberg_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/plot/grayscale_images.hpp>
-#include <limits>
-#include <print>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

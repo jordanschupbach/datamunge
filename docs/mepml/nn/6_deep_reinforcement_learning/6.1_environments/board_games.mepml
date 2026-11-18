@@ -53,28 +53,15 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // matches tflow. The port adds checks on the random-play statistics, the
 // observation perspective and Clone().
 
-#include <cctype>
-#include <cstdio>
-#include <iostream>
-#include <memory>
-#include <vector>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -132,7 +119,6 @@ inline void Header(const std::string& title) {
 }
 
 // Editable workflow support: rl/board_games.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Game;
 using datamunge::rl::environments::GridGame;

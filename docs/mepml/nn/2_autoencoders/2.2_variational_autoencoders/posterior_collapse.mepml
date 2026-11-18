@@ -251,11 +251,7 @@ Optimizer state is deliberately not part of these checkpoints. The visible forwa
 and Adam step are inside the editable program; evaluation guards do not hide fitting.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
-#include <map>
 namespace nn = dm::nn;
 namespace ae {
 using nn::models::CollapseBeta;

@@ -1,0 +1,56 @@
+//? Title: Friedman, Kendall’s W and Page’s ordered test
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Three known dose levels are applied to each simulated subject. A shared
+subject intercept produces large between-subject variation. The tests use
+one row per subject. Dose order is fixed before observing the outcomes.
+)
+
+> Data and analysis
+
+```{cpp, results="markdown", file="figures/ordered_blocked_tests.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace sp = dm::stats;
+using dm::graphics::RPlot;
+
+int main() {
+    dm::set_seed(82);
+    std::vector<std::vector<double>> blocks;
+    auto plot = RPlot::create().title("Dose response by subject").x_label("Prespecified dose")
+        .y_label("Response").x_ticks({1, 2, 3}, {"Low", "Medium", "High"});
+    for (const double offset : dm::rnorm(10, 2.5, 24)) {
+        const dm::Vector<> row = dm::c(0, 0.4, 0.8) + offset + dm::rnorm(0, 1.15, 3);
+        blocks.push_back(row.values());
+        plot.lines({1, 2, 3}, row, dm::graphics::RGBA{86, 118, 155}, 1);
+    }
+    const auto friedman = sp::friedman_test(blocks);
+    const auto w = sp::kendall_w_test(blocks);
+    const auto page = sp::page_trend_test(blocks);
+    std::print("Friedman Q {:.3f}, p {:.4g}. Kendall W {:.3f}. Page L {:.1f}, one-sided p {:.4g}.\n",
+               friedman.statistic, friedman.p_value, w.estimate1, page.statistic, page.p_value);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/ordered_blocked_tests.svg");
+}
+```
+// result_begin: markdown
+Friedman Q 3.583, p 0.1667. Kendall W 0.075. Page L 293.0, one-sided p 0.2352.
+\image(figures/ordered_blocked_tests.svg)
+// result_end
+\caption(Each line joins all three dose measurements from a single simulated subject.)
+\alttext(Each line joins all three dose measurements from a single simulated subject.)
+
+> Interpretation
+
+Friedman detects differences of any ordering. Kendall's W expresses the
+same rank-sum variation as concordance on a zero-to-one scale. Page instead
+gives greater weight to higher doses and tests the prespecified increasing
+trend. The references here are chi-square for Friedman and normal for Page.
+[Kendall tau|rank_association.mepml] addresses paired association as a separate question.
+
+> References
+
+- [R Friedman rank test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/friedman.test.html]
+- [Page, Ordered Hypotheses for Multiple Treatments|https://doi.org/10.1080/01621459.1963.10500843]

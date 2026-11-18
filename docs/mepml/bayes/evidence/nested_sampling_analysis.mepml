@@ -43,10 +43,6 @@ change the mass-accounting identity.
 
 ```{cpp, results="markdown", file="figures/nested_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nested_sampling.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::nested_sampling_trace([](const auto &) {
@@ -107,10 +103,6 @@ coverage or convergence.
 
 ```{cpp, results="markdown", file="figures/nested_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nested_sampling.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto r =
@@ -168,10 +160,6 @@ remaining_fraction disables it for a fixed-budget diagnostic.
 
 ```{cpp, results="markdown", file="figures/nested_walk.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nested_sampling.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -232,10 +220,6 @@ side effects remain. Ordinary production has no trace quota.
 
 ```{cpp, results="markdown", file="figures/nested_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/nested_sampling.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<std::string> labels;
@@ -274,6 +258,53 @@ All-zero likelihood: zero-evidence status true, log Z -inf.
 // result_end
 \caption(Computed constant-likelihood evidence at zero and positive replacement budgets.)
 \alttext(The exact reference is one; the separate all-zero control explicitly has no normalized posterior.)
+
+> Fit a shared mean to calibration data
+
+These eight synthetic readings have known observation SD 0.5. The model
+uses a Uniform(−4, 4) prior on a common mean. Each reading contributes a
+normalized Normal log likelihood. The nested posterior draws are weighted
+when computing the fitted mean. Grid quadrature fits the same observations
+and checks that mean and the evidence on the same prior support.
+
+```{cpp, results="markdown", file="figures/nested_calibration.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace b = datamunge::bayes;
+
+int main() {
+    const std::vector<double> readings{0.7, 1.4, 1.1, 1.6, 0.9, 1.5, 0.8, 1.2};
+    const auto likelihood = [&](const std::vector<double>& q) {
+        double lp = 0;
+        for (double value : readings) lp += b::normal_lpdf(value, q[0], 0.5);
+        return lp;
+    };
+    const auto nested = datamunge::algorithms::nested_sampling(likelihood, {-4.}, {4.}, 300, 4500, 7, 24);
+    double fitted = 0;
+    for (std::size_t i = 0; i < nested.posterior_samples.size(); ++i)
+        fitted += std::exp(nested.posterior_log_weights[i]) * nested.posterior_samples[i][0];
+    b::LogDensity target([&](const auto& q) { return likelihood(q) - std::log(8.); });
+    const auto reference = b::grid_posterior(target, {-4.}, {4.}, 1000);
+    if (std::abs(fitted - reference.mean[0]) > 0.08)
+        throw std::runtime_error("Nested fit differs from grid reference");
+    std::print("Fitted mean {:.3f} (grid {:.3f}). Log evidence {:.3f} (grid {:.3f}).\n",
+               fitted, reference.mean[0], nested.log_evidence, reference.log_evidence);
+
+    std::vector<double> index(readings.size());
+    std::iota(index.begin(), index.end(), 1.);
+    std::filesystem::create_directories("build");
+    datamunge::graphics::RPlot::create().points(index, readings, "observed", {70, 70, 70})
+        .lines({index.front(), index.back()}, {fitted, fitted}, "posterior expected reading", {36, 105, 172})
+        .title("Calibration fit").x_label("Measurement").y_label("Reading")
+        .save_svg("build/nested_calibration.svg");
+}
+```
+// result_begin: markdown
+Fitted mean 1.144 (grid 1.150). Log evidence -6.316 (grid -6.260).
+\image(figures/nested_calibration.svg)
+// result_end
+\caption(Observed calibration readings overlaid on the fitted mean from weighted nested posterior draws.)
+\alttext(Eight points show the observed calibration readings. A horizontal line shows the fitted mean.)
 
 > Cost and interpretation
 

@@ -145,10 +145,7 @@ Calibration checks hard counts within six binomial standard deviations. This is 
 sampling sanity check, not a formal proof or a learned-model quality test.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 void Require(bool condition, const std::string& why) {
   if (!condition)
@@ -481,10 +478,7 @@ a fresh store and checks fixed/changed noise, simplex sums, invalid codes, singl
 and inference immutability. Helpers contain I/O and metric aggregation, with no fitting loop.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 namespace nn = dm::nn;
 void Require(bool condition, const std::string& why) {
   if (!condition)

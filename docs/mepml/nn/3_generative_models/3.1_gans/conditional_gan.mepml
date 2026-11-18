@@ -246,11 +246,7 @@ inside every gradient computation. The final third epoch is fixed before the run
 One discrete label vector conditions the matching real and generated rows; continuous data/noise remain differentiable.
 
 ```{cpp, results="markdown", file="figures/conditional_gan_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace m  = nn::models;

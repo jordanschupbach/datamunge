@@ -31,16 +31,6 @@ owns every row.
 
 ```{cpp, results="markdown", file="figures/heap_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heap_permutations.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -130,16 +120,6 @@ directly from the same producing execution.
 
 ```{cpp, results="markdown", file="figures/heap_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heap_permutations.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -232,16 +212,6 @@ printed but omitted from that log curve. There are no timing claims.
 
 ```{cpp, results="markdown", file="figures/heap_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heap_permutations.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 
@@ -309,16 +279,6 @@ limits before generation.
 
 ```{cpp, results="markdown", file="figures/heap_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/heap_permutations.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <cmath>
-#include <filesystem>
-#include <format>
-#include <numeric>
-#include <print>
-#include <set>
-#include <stdexcept>
-#include <vector>
 int main() {
     std::filesystem::create_directories("build");
 

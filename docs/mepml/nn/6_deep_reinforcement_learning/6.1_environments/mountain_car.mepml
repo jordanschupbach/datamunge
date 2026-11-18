@@ -52,28 +52,15 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // TF-free). The vsim videos are omitted: the filmed episodes are played
 // without a video (common/rl/playback.hpp) and checks are added.
 
-#include <algorithm>
-#include <cstdio>
-#include <functional>
-#include <iostream>
-#include <string>
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
 // Release builds and make the example exit nonzero on failure, so `just
 // run-all-nn` doubles as a regression test against the recorded TF numbers.
 
-#include <cmath>
-#include <iostream>
-#include <stdexcept>
-#include <string>
 // Editable workflow support: runtime.hpp
 // Bounded demonstrations by default; opt into convergence experiments explicitly.
 
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <string>
 
 namespace example_runtime {
 
@@ -131,7 +118,6 @@ inline void Header(const std::string& title) {
 }
 
 // Editable workflow support: rl/classic_control.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::kPi;
 using datamunge::rl::environments::Clamp;
@@ -165,16 +151,8 @@ using datamunge::rl::environments::Acrobot;
 // with one estimate attached (a continuous torque with its critic value, a
 // planner's first action with the planned return).
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <numeric>
-#include <string>
-#include <utility>
-#include <vector>
 
 // Editable workflow support: rl/env.hpp
-#include <datamunge/rl/environments.hpp>
 namespace rl {
 using datamunge::rl::environments::Obs;
 using datamunge::rl::environments::Action;
@@ -340,11 +318,6 @@ struct Hud {
 // (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
 // the 6.1 examples film, the episode ends before the film is full.
 
-#include <cstdint>
-#include <cstdio>
-#include <string>
-#include <type_traits>
-#include <utility>
 
 
 
@@ -398,13 +371,6 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
 // Small helpers shared by the RL examples: episode statistics, random and
 // greedy rollouts, and printing.
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <vector>
 
 
 namespace rl {

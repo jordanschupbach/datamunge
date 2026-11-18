@@ -45,10 +45,6 @@ occurred.
 
 ```{cpp, results="markdown", file="figures/lamport_receive.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lamport_clock.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::LamportClock c;
@@ -79,10 +75,6 @@ physical seconds.
 
 ```{cpp, results="markdown", file="figures/lamport_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lamport_clock.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::LamportClock p0, p1;
@@ -137,10 +129,6 @@ cross-process arrow is invented from timestamp order.
 
 ```{cpp, results="markdown", file="figures/lamport_concurrent.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lamport_clock.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     dm::algorithms::LamportClock a, b;
@@ -184,13 +172,6 @@ atomically.
 
 ```{cpp, results="markdown", file="figures/lamport_chains.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/lamport_clock.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <array>
-#include <limits>
-#include <print>
-#include <stdexcept>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

@@ -60,8 +60,6 @@ wide diagrams scroll at native size on the website.
 
 ```{cpp, results="markdown", file="figures/pwcnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <filesystem>
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -110,7 +108,6 @@ receive gradients;native tests check every coordinate at radius4 too.
 ```{cpp, results="markdown", file="figures/pwcnet_cost.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -158,7 +155,6 @@ input/20 values;it does not multiply displacement by2 when changing the grid.
 ```{cpp, results="markdown", file="figures/pwcnet_units.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n               = dm::nn;
   namespace m               = n::models;
@@ -225,7 +221,6 @@ input/kernel derivatives through rates1,2,4,8 and16.
 ```{cpp, results="markdown", file="figures/pwcnet_context.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n       = dm::nn;
   const auto kernel = n::ones({3, 3, 1, 1}).requires_grad_();
@@ -268,7 +263,6 @@ published-quality equivalence is implied by retaining its connectivity.
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -367,7 +361,6 @@ This baseline is fitted only on training families;zero flow has no parameters.
 ```{cpp, results="markdown", file="figures/pwcnet_prior.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;
@@ -477,7 +470,6 @@ Fl-all also requires>5% of true magnitude. Report source-pair errors separately.
 ```{cpp, results="markdown", file="figures/pwcnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
-#include <print>
 int main() {
   namespace n = dm::nn;
   namespace m = n::models;

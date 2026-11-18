@@ -43,10 +43,6 @@ come from the producer rather than a reconstructed illustration.
 
 ```{cpp, results="markdown", file="figures/matrix_chain_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/matrix_chain.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t = dm::algorithms::matrix_chain_trace({10, 30, 5, 60});
@@ -85,10 +81,6 @@ heuristics. The plotted costs have the same units.
 
 ```{cpp, results="markdown", file="figures/matrix_chain_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/matrix_chain.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto dims = dm::algorithms::matrix_chain_demo_dimensions();
@@ -144,10 +136,6 @@ throw before evaluation.
 
 ```{cpp, results="markdown", file="figures/matrix_chain_cells.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/matrix_chain.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     auto t =
@@ -212,10 +200,6 @@ integer cost interpretation explicit.
 
 ```{cpp, results="markdown", file="figures/matrix_chain_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-#include <datamunge/algorithms/matrix_chain.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <filesystem>
-#include <print>
 int main() {
     std::filesystem::create_directories("build");
     std::vector<double> x, y;

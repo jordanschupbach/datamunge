@@ -32,21 +32,7 @@ and the actual gcd. The diagram and table use its returned records. The
 explicit-base range is [1,n); the seeded sampler later uses [2,n−2].
 
 ```{cpp, results="markdown", file="figures/fermat_primality_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/primality.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/miller_rabin.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -84,21 +70,7 @@ It does not depict the probability that the native sampler passes a round.
 No census or modular exponentiation is reimplemented in the report.
 
 ```{cpp, results="markdown", file="figures/fermat_primality_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/primality.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/miller_rabin.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -150,21 +122,7 @@ rigorous error bound for the actual seeded API. They describe specified
 populations and, later, an explicitly hypothetical iid sampling model.
 
 ```{cpp, results="markdown", file="figures/fermat_primality_population.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/primality.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/miller_rabin.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -211,21 +169,7 @@ actual executed prefix, including a failing final row when one occurs.
 The diagram uses at most the first four captured rows, explicitly labelled.
 
 ```{cpp, results="markdown", file="figures/fermat_primality_rounds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/primality.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/miller_rabin.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");
@@ -295,21 +239,7 @@ branches and values and are educational numerical APIs, not constant-time
 cryptographic primitives.
 
 ```{cpp, results="markdown", file="figures/fermat_primality_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <datamunge/algorithms/primality.hpp>
-#include <datamunge/algorithms/modular_exponentiation.hpp>
-#include <datamunge/algorithms/number_theory_extra.hpp>
-#include <datamunge/algorithms/miller_rabin.hpp>
-#include <datamunge/plot/diagram.hpp>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <filesystem>
-#include <format>
-#include <limits>
-#include <print>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <dm/dm.hpp>
 namespace dm=datamunge;
 int main(){
   std::filesystem::create_directories("build");

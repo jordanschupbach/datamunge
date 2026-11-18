@@ -244,11 +244,7 @@ creates independent stores and verifies every tensor. Three validation rows log
 diagnostics; no validation/test score selects a checkpoint, seed or epoch.
 
 ```{cpp, results="markdown", file="figures/dcgan_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <chrono>
-#include <cmath>
 #include <dm/dm.hpp>
-#include <fstream>
-#include <iostream>
 
 namespace nn = dm::nn;
 namespace m  = nn::models;
