@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="288.786" viewBox="0 0 180 288.786" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Recurrent dropout / variational: held-out confusion</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Recurrent dropout /</text>
+<text x="14" y="38" font-size="12" font-weight="bold">variational: held-</text>
+<text x="14" y="56" font-size="12" font-weight="bold">out confusion</text>
+<text x="97.8" y="88" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 150) rotate(-90)" text-anchor="middle">True class</text>
+<text x="41.8" y="129.6" text-anchor="end">0</text>
+<text transform="translate(73.8 210) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="43" data-value="43"><title>0 → 0: 43</title>
+<rect x="49.8" y="102" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="73.8" y="129.6" font-size="12" text-anchor="middle" fill="white">43</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="21" data-value="21"><title>0 → 1: 21</title>
+<rect x="97.8" y="102" width="48" height="48" fill="rgb(141,174,242)" stroke="white"/>
+<text x="121.8" y="129.6" font-size="12" text-anchor="middle" fill="#172033">21</text>
+</g>
+<text x="41.8" y="177.6" text-anchor="end">1</text>
+<text transform="translate(121.8 210) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="28" data-value="28"><title>1 → 0: 28</title>
+<rect x="49.8" y="150" width="48" height="48" fill="rgb(108,150,240)" stroke="white"/>
+<text x="73.8" y="177.6" font-size="12" text-anchor="middle" fill="#172033">28</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="36" data-value="36"><title>1 → 1: 36</title>
+<rect x="97.8" y="150" width="48" height="48" fill="rgb(70,123,237)" stroke="white"/>
+<text x="121.8" y="177.6" font-size="12" text-anchor="middle" fill="white">36</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="49.8" y="240.786" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="49.8" y="265.786">0</text><text x="145.8" y="265.786" text-anchor="end">43</text>
+</g></svg>

@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1282.2" height="531.1" viewBox="0 0 1282.2 531.1" role="img" data-model-layout="left-to-right" data-model-style="Graph" data-model-detail="layers" aria-labelledby="model-title model-description">
+<title id="model-title">CIFAR-10 CNN</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">CIFAR-10 CNN</text>
+<text x="24" y="51" font-size="12">9 nodes | 545098 unique learned values | Graph / layers</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#748BCB"/><text x="302" y="69" font-size="11">Dense</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#5ABF9A"/><text x="432" y="69" font-size="11">Pooling</text>
+<rect x="544" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="562" y="69" font-size="11">Output</text>
+<rect x="674" y="59" width="12" height="12" rx="2" fill="#94A3B8"/><text x="692" y="69" font-size="11">Operation</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path data-from="0" data-to="1" d="M 171 227.5 C 195 227.5 195 242 219 242" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="1" data-to="2" d="M 395 242 C 419 242 419 206 443 206" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="3" d="M 547 206 C 571 206 571 222 595 222" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="3" data-to="4" d="M 731 222 C 755 222 755 204 779 204" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="4" data-to="5" d="M 879 204 C 909.95 204 909.95 226.5 940.9 226.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="5" data-to="6" d="M 959.9 226.5 C 997.8 226.5 997.8 156.75 1035.7 156.75" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.306 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 154.917 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 155.528 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 156.139 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.361 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 157.972 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 158.583 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 154.111" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 154.333" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 154.556" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 154.778" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 155.222" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 155.444" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 155.667" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path class="neuron-connection" d="M 1054.7 159.194 L 1130.5 155.889" fill="none" stroke="#64748B" stroke-width="0.7" stroke-opacity="0.55"/>
+<path data-from="6" data-to="7" d="M 1054.7 156.75 C 1092.6 156.75 1092.6 155 1130.5 155" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="7" data-to="8" d="M 1149.5 155 C 1187.4 155 1187.4 155 1225.3 155" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 32 x 32 x 3]</title>
+<g id="model-glyph-0" data-left="24" data-right="171" data-face-width="144" data-face-height="144" data-depth="3" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="24" y="154" width="147" height="147" rx="14" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(97.5 391.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>conv1 [1 x 32 x 32 x 32]</title>
+<g id="model-glyph-1" data-left="219" data-right="395" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="219" y="154" width="176" height="176" rx="14" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(307 424.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">conv1</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 32]</text>
+</g></g>
+<g data-node="2" data-category="Pooling"><title>MaxPool [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-2" data-left="443" data-right="547" data-face-width="72" data-face-height="72" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="443" y="154" width="104" height="104" rx="14" fill="#5ABF9A"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(495 352.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>conv2 [1 x 16 x 16 x 64]</title>
+<g id="model-glyph-3" data-left="595" data-right="731" data-face-width="72" data-face-height="72" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="595" y="154" width="136" height="136" rx="14" fill="#64B5CD"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(663 384.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">conv2</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 64]</text>
+</g></g>
+<g data-node="4" data-category="Pooling"><title>MaxPool [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-4" data-left="779" data-right="879" data-face-width="36" data-face-height="36" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="779" y="154" width="100" height="100" rx="14" fill="#5ABF9A"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(829 340.1) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="5" data-category="Operation"><title>Reshape [1 x 4096]</title>
+<g id="model-glyph-5" data-left="940.9" data-right="959.9" data-face-width="18" data-face-height="144" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="940.9" y="154" width="19" height="145" rx="4.75" fill="#94A3B8"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(950.4 359.75) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Reshape</text>
+<text x="0" y="12.35" font-size="13">[1 x 4096]</text>
+</g></g>
+<g data-node="6" data-category="Dense"><title>dense [1 x 128]</title>
+<g id="model-glyph-6" data-left="1035.7" data-right="1054.7" data-face-width="18" data-face-height="4.5" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<circle data-unit="0" cx="1045.2" cy="154.306" r="0.305556" fill="#748BCB"/>
+<circle data-unit="1" cx="1045.2" cy="154.917" r="0.305556" fill="#748BCB"/>
+<circle data-unit="2" cx="1045.2" cy="155.528" r="0.305556" fill="#748BCB"/>
+<circle data-unit="3" cx="1045.2" cy="156.139" r="0.305556" fill="#748BCB"/>
+<circle cx="1045.2" cy="156.582" r="0.0519444" stroke="none" fill="#172033"/>
+<circle cx="1045.2" cy="156.75" r="0.0519444" stroke="none" fill="#172033"/>
+<circle cx="1045.2" cy="156.918" r="0.0519444" stroke="none" fill="#172033"/>
+<circle data-unit="124" cx="1045.2" cy="157.361" r="0.305556" fill="#748BCB"/>
+<circle data-unit="125" cx="1045.2" cy="157.972" r="0.305556" fill="#748BCB"/>
+<circle data-unit="126" cx="1045.2" cy="158.583" r="0.305556" fill="#748BCB"/>
+<circle data-unit="127" cx="1045.2" cy="159.194" r="0.305556" fill="#748BCB"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(1045.2 216.025) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">dense</text>
+<text x="0" y="12.35" font-size="13">[1 x 128]</text>
+</g></g>
+<g data-node="7" data-category="Dense"><title>output [1 x 10]</title>
+<g id="model-glyph-7" data-left="1130.5" data-right="1149.5" data-face-width="18" data-face-height="1" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<circle data-unit="0" cx="1140" cy="154.111" r="0.111111" fill="#748BCB"/>
+<circle data-unit="1" cx="1140" cy="154.333" r="0.111111" fill="#748BCB"/>
+<circle data-unit="2" cx="1140" cy="154.556" r="0.111111" fill="#748BCB"/>
+<circle data-unit="3" cx="1140" cy="154.778" r="0.111111" fill="#748BCB"/>
+<circle cx="1140" cy="154.939" r="0.0188889" stroke="none" fill="#172033"/>
+<circle cx="1140" cy="155" r="0.0188889" stroke="none" fill="#172033"/>
+<circle cx="1140" cy="155.061" r="0.0188889" stroke="none" fill="#172033"/>
+<circle data-unit="6" cx="1140" cy="155.222" r="0.111111" fill="#748BCB"/>
+<circle data-unit="7" cx="1140" cy="155.444" r="0.111111" fill="#748BCB"/>
+<circle data-unit="8" cx="1140" cy="155.667" r="0.111111" fill="#748BCB"/>
+<circle data-unit="9" cx="1140" cy="155.889" r="0.111111" fill="#748BCB"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(1140 208.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+<g data-node="8" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-8" data-left="1225.3" data-right="1244.3" data-face-width="18" data-face-height="1" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1225.3" y="154" width="19" height="2" rx="0.5" fill="#6C8194"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(1234.8 208.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

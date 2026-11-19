@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Examples by language · datamunge</title>
+
+<link rel="stylesheet" href="../static/site.css">
+<link rel="icon" href="../assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "../";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="../static/site.js"></script>
+</head>
+<body class="section-guides has-sidebar">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-btn nav-toggle" type="button" aria-label="Show navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="../index.html">
+    <img src="../assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="../guides/index.html" aria-current="page">Guides</a>
+    <a href="../reports/index.html">Reports</a>
+    <a href="../api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Section navigation"><div class="sidebar-inner"><a class="side-top" href="index.html">All guides</a><div class="side-heading">Guides</div><ul><li><a class=current href="examples.html">Examples by language</a></li><li><a href="bindings.html">SWIG bindings</a></li><li><a href="mepml-reports.html">Writing mepml reports</a></li><li><a href="optimization-roadmap.html">Optimization roadmap</a></li></ul></div></aside>
+  <div class="scrim" hidden></div>
+  <main id="content" class="content">
+    <article class="prose"><h1 id="org-markdown-with-babel">Org → Markdown (with Babel)</h1>
+<p>This page is authored in Org mode and exported to Markdown via `docs/org-to-md.el`.
+During export, all Babel code blocks are executed and their results are embedded
+into the generated Markdown in `docs/pages/`.</p>
+<h1 id="examples-by-language">Examples (by language)</h1>
+<p>Each section below contains the canonical `datamunge<sub>ex</sub>.*` example for that language.
+During `just prebuild-docs-pages`, hidden shell blocks execute these examples
+best-effort (printing `SKIP` when the relevant runtime/binding is unavailable).</p>
+<h2 id="sanity-executed">Sanity (executed)</h2>
+<pre><code>(+ 40 2)
+
+echo &quot;Org Babel is executing blocks.&quot;
+</code></pre>
+<h2 id="c">C++</h2>
+<pre><code>#include &lt;datamunge/datamunge.hpp&gt;
+
+int main(void) {
+  datamunge::hello();
+  return 0;
+}
+
+Hello datamunge
+</code></pre>
+<h2 id="python">Python</h2>
+<pre><code>from pydatamunge import datamunge
+
+# dir(datamunge)
+
+datamunge.hello()
+
+dp = datamunge.DPair(1, 2)
+
+s = datamunge.SVector(3)
+s[0] = &quot;1&quot;
+s[1] = &quot;2&quot;
+s[2] = &quot;3&quot;
+# s[3] = &quot;4&quot;  # &lt;- Gets index out of bounds error
+
+
+class TimesTwo(datamunge.Callback):
+    def call(self, x):
+        return x * 2.0
+
+
+class TimesThree(datamunge.Callback):
+    def call(self, x):
+        return x * 3.0
+
+
+# cb = TimesTwo()
+cb = TimesThree()
+print(&quot;call_with_callback(3.0) =&quot;, datamunge.call_with_callback(3.0, cb))
+v = datamunge.make_dvector(1.0, 2.0, 3.0)
+v2 = datamunge.map_dvector_with_callback(v, cb)
+print(&quot;sum_dvector(map_dvector_with_callback(1,2,3)) =&quot;, datamunge.sum_dvector(v2))
+
+Hello datamunge
+call_with_callback(3.0) = 9.0
+sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
+</code></pre>
+<h2 id="javascript-node">JavaScript (Node)</h2>
+<pre><code>// Local dev: build first (`just build-javascript`), then run this example.
+const datamunge = require(&quot;../../index.js&quot;);
+
+datamunge.hello();
+
+// Note: SWIG's Node/JavaScript backend does not support directors/virtual-method
+// overrides the same way as Python/Ruby/Perl. `Callback` can still be passed,
+// but the default implementation is identity.
+const cb = new datamunge.Callback();
+console.log(&quot;call_with_callback(3.0) =&quot;, datamunge.call_with_callback(3.0, cb));
+const v2 = datamunge.map_dvector_with_callback(datamunge.make_dvector(1.0, 2.0, 3.0), cb);
+console.log(&quot;sum_dvector(map_dvector_with_callback) =&quot;, datamunge.sum_dvector(v2));
+
+// Bridging: pass a JS function into native code (via C callback trampoline).
+console.log(&quot;call_with_function(3.0) =&quot;, datamunge.call_with_function(3.0, (x) =&gt; x * 2.0));
+const out = datamunge.map_array_with_function([1.0, 2.0, 3.0], (x) =&gt; x * 2.0);
+console.log(&quot;map_array_with_function([1,2,3]) =&quot;, out);
+
+Hello datamunge
+call_with_callback(3.0) = 3
+sum_dvector(map_dvector_with_callback) = 6
+call_with_function(3.0) = 6
+map_array_with_function([1,2,3]) = [ 2, 4, 6 ]
+</code></pre>
+<h2 id="r">R</h2>
+<pre><code>library(datamunger)
+
+datamunger::hello()
+
+# Can only coerce (can't use methods directly without a wrapper)
+v &lt;- datamunger::DVector(c(0.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 1.0, 0.0,
+    0.0, 1.0, 0.0))
+
+# This works as expected
+p &lt;- datamunger::DPair(1.1, 2.2)
+p$first
+p$second
+
+# This works as expected
+p &lt;- datamunger::IPair(1.1, 2.2) # converts to integer
+p$first
+p$second
+
+Hello datamunge
+NULL
+[1] 1.1
+[1] 2.2
+[1] 1
+[1] 2
+</code></pre>
+<h2 id="ruby">Ruby</h2>
+<pre><code>require &quot;datamunge&quot;
+
+Datamunge.hello
+
+pair = Datamunge.make_dpair(1.0, 2.0)  # std::pair&lt;double, double&gt; is a two-element Array
+puts &quot;make_dpair: #{pair.inspect}, sum_dpair = #{Datamunge.sum_dpair(pair)}&quot;
+
+# A Ruby subclass overrides the C++ Callback's virtual call().
+class TimesTwo &lt; Datamunge::Callback
+  def call(x) = x * 2.0
+end
+
+cb = TimesTwo.new
+puts &quot;call_with_callback(3.0) = #{Datamunge.call_with_callback(3.0, cb)}&quot;
+v = Datamunge.make_dvector(1.0, 2.0, 3.0)
+v2 = Datamunge.map_dvector_with_callback(v, cb)
+puts &quot;sum_dvector(map_dvector_with_callback(1,2,3)) = #{Datamunge.sum_dvector(v2)}&quot;
+
+Hello datamunge
+make_dpair: [1.0, 2.0], sum_dpair = 3.0
+call_with_callback(3.0) = 6.0
+sum_dvector(map_dvector_with_callback(1,2,3)) = 12.0
+</code></pre>
+<h2 id="perl">Perl</h2>
+<pre><code>use strict;
+use warnings;
+
+use Datamunge;
+
+Datamunge::hello();
+
+my $dp = Datamunge::DPair-&gt;new(1.0, 2.0);
+print &quot;DPair: First=&quot; . $dp-&gt;swig_first_get() . &quot;, Second=&quot; . $dp-&gt;swig_second_get() . &quot;\n&quot;;
+
+{
+  package TimesTwo;
+  our @ISA = ('Datamunge::Callback');
+
+  sub call {
+    my ($self, $x) = @_;
+    return $x * 2.0;
+  }
+}
+
+my $cb = TimesTwo-&gt;new();
+print &quot;call_with_callback(3.0) = &quot;, Datamunge::call_with_callback(3.0, $cb), &quot;\n&quot;;
+my $v = Datamunge::make_dvector(1.0, 2.0, 3.0);
+my $v2 = Datamunge::map_dvector_with_callback($v, $cb);
+print &quot;sum_dvector(map_dvector_with_callback(1,2,3)) = &quot;, Datamunge::sum_dvector($v2), &quot;\n&quot;;
+
+Hello datamunge
+DPair: First=1, Second=2
+call_with_callback(3.0) = 6
+sum_dvector(map_dvector_with_callback(1,2,3)) = 12
+</code></pre>
+<h2 id="php">PHP</h2>
+<pre><code>&lt;?php
+
+
+$n = 100;
+$v = new DVector($n);
+for($i = 0; $i &lt; 10; $i += 1) {
+    $v-&gt;set($i, $i * 1.5);
+}
+for($i = 0; $i &lt; 10; $i += 1) {
+    print($v-&gt;get($i) . &quot;\n&quot;);
+}
+
+$v2 = new IVector($n);
+for($i = 0; $i &lt; 10; $i += 1) {
+    $v2-&gt;set($i, $i * 1.5); // NOTE: Type coercion happens implicitly
+}
+
+for($i = 0; $i &lt; 10; $i += 1) {
+    print($v2-&gt;get($i) . &quot;\n&quot;);
+}
+
+hello()
+
+?&gt;
+
+Hello datamunge
+sum_dvector: 6
+sum_dpair: 4
+call_with_callback(3.0): 3
+sum_dvector(map_dvector_with_callback(1,2,3)): 6
+</code></pre>
+<h2 id="lua">Lua</h2>
+<pre><code>local datamunge = require(&quot;datamunge&quot;)
+datamunge.hello()
+
+local v = datamunge.make_dvector(1.0, 2.0, 3.0)
+print(&quot;sum_dvector:&quot;, datamunge.sum_dvector(v))
+
+local p = datamunge.make_dpair(1.25, 2.75)
+print(&quot;sum_dpair:&quot;, datamunge.sum_dpair(p))
+
+local cb = datamunge.Callback()
+print(&quot;call_with_callback(3.0):&quot;, datamunge.call_with_callback(3.0, cb))
+local v2 = datamunge.map_dvector_with_callback(datamunge.make_dvector(1.0, 2.0, 3.0), cb)
+print(&quot;sum_dvector(map_dvector_with_callback(1,2,3)):&quot;, datamunge.sum_dvector(v2))
+
+Hello datamunge
+sum_dvector:	6.0
+sum_dpair:	4.0
+call_with_callback(3.0):	3.0
+sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+</code></pre>
+<h2 id="tcl">Tcl</h2>
+<pre><code>package require datamunge
+
+datamunge::hello
+
+set v [datamunge::make_dvector 1.0 2.0 3.0]
+puts &quot;sum_dvector:\t[datamunge::sum_dvector $v]&quot;
+
+set p [datamunge::make_dpair 1.25 2.75]
+puts &quot;sum_dpair:\t[datamunge::sum_dpair $p]&quot;
+
+set cb [datamunge::Callback new]
+puts &quot;call_with_callback(3.0):\t[datamunge::call_with_callback 3.0 $cb]&quot;
+set v2 [datamunge::map_dvector_with_callback [datamunge::make_dvector 1.0 2.0 3.0] $cb]
+puts &quot;sum_dvector(map_dvector_with_callback(1,2,3)):\t[datamunge::sum_dvector $v2]&quot;
+$cb destroy
+
+Hello datamunge
+sum_dvector:	6.0
+sum_dpair:	4.0
+call_with_callback(3.0):	3.0
+sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+</code></pre>
+<h2 id="octave">Octave</h2>
+<pre><code>datamunge.hello ();
+
+v = datamunge.make_dvector (1.0, 2.0, 3.0);
+printf ('sum_dvector:\t%.1f\n', datamunge.sum_dvector (v));
+
+p = datamunge.make_dpair (1.25, 2.75);
+printf ('sum_dpair:\t%.1f\n', datamunge.sum_dpair (p));
+
+cb = datamunge.Callback ();
+printf ('call_with_callback(3.0):\t%.1f\n', datamunge.call_with_callback (3.0, cb));
+v2 = datamunge.map_dvector_with_callback (datamunge.make_dvector (1.0, 2.0, 3.0), cb);
+printf ('sum_dvector(map_dvector_with_callback(1,2,3)):\t%.1f\n', datamunge.sum_dvector (v2));
+
+Hello datamunge
+sum_dvector:	6.0
+sum_dpair:	4.0
+call_with_callback(3.0):	3.0
+sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+</code></pre>
+<h2 id="guile">Guile</h2>
+<pre><code>(use-modules (oop goops) (datamunge))
+
+(hello)
+(format #t &quot;sum-dvector = ~a\n&quot; (sum-dvector (make-dvector 10.0 20.0 30.0)))  ; vectors are lists
+(format #t &quot;sum-dpair = ~a\n&quot; (sum-dpair (make-dpair 4.0 5.0)))               ; pairs are pairs
+(define-class &lt;twice&gt; (&lt;callback&gt;))                                             ; override a C++ virtual
+(define-method (call (self &lt;twice&gt;) x) (* 2 x))
+(format #t &quot;call-with-callback = ~a\n&quot; (call-with-callback 3.0 (make &lt;twice&gt;)))
+
+Hello datamunge
+sum-dvector = 60.0
+sum-dpair = 9.0
+call-with-callback = 6.0
+</code></pre>
+<h2 id="ocaml">OCaml</h2>
+<pre><code>open Datamunge
+
+let () =
+  hello ();
+  let v = make_dvector 1.0 2.0 3.0 in
+  Printf.printf &quot;sum_dvector:\t%g\n&quot; (sum_dvector v);
+  let p = make_dpair 1.25 2.75 in
+  Printf.printf &quot;sum_dpair:\t%g\n&quot; (sum_dpair p);
+  (* An OCaml subclass overrides the C++ Callback's virtual call(). *)
+  let cb = Callback.extend ~call:(fun _ x -&gt; 2.0 *. x) () in
+  Printf.printf &quot;call_with_callback(3.0):\t%g\n&quot; (call_with_callback 3.0 cb);
+  let v2 = map_dvector_with_callback (make_dvector 1.0 2.0 3.0) cb in
+  Printf.printf &quot;sum_dvector(map_dvector_with_callback(1,2,3)):\t%g\n&quot; (sum_dvector v2)
+
+Hello datamunge
+sum_dvector:	6
+sum_dpair:	4
+call_with_callback(3.0):	6
+sum_dvector(map_dvector_with_callback(1,2,3)):	12
+</code></pre>
+<h2 id="go">Go</h2>
+<pre><code>package main
+
+import (
+        &quot;datamunge&quot;
+        &quot;fmt&quot;
+)
+
+func main() {
+        if err := datamunge.Hello(); err != nil {
+                panic(err)
+        }
+
+        v := datamunge.Must(datamunge.MakeDvector(1.0, 2.0, 3.0))
+        fmt.Printf(&quot;sum_dvector:\t%v\n&quot;, datamunge.Must(datamunge.SumDvector(v)))
+
+        p := datamunge.Must(datamunge.MakeDpair(1.25, 2.75))
+        fmt.Printf(&quot;sum_dpair:\t%v\n&quot;, datamunge.Must(datamunge.SumDpair(p)))
+
+        cb := datamunge.Must(datamunge.NewCallback())
+        defer cb.Close()
+        fmt.Printf(&quot;call_with_callback(3.0):\t%v\n&quot;, datamunge.Must(datamunge.CallWithCallback(3.0, cb)))
+}
+
+Hello datamunge
+sum_dvector:	6
+sum_dpair:	4
+call_with_callback(3.0):	3
+</code></pre>
+<h1 id="using-datamunge">Using Datamunge</h1>
+<p>See `README.md` for language bindings and build/test commands.</p>
+</article><p class="report-meta"><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/pages/examples.md">source</a></p>
+  </main>
+  <aside class="pagetoc" aria-label="On this page"><div class="pagetoc-inner"></div></aside>
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

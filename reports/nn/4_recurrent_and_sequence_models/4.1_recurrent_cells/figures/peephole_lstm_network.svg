@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="578" height="567.8" viewBox="0 0 578 567.8" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">peephole_lstm:782 source parameter values</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">peephole_lstm:782 source parameter values</text>
+<text x="24" y="51" font-size="12">4 nodes | 782 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="69" font-size="11">Block</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons</text>
+<text x="24" y="115" font-size="11">sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="232,170 300.3,170 300.3,316 232,246" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 232 208 C 266.15 208 266.15 243 300.3 243" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="320.3,170 418.9,170 418.9,196 320.3,316" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 320.3 243 C 369.6 243 369.6 183 418.9 183" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="438.9,170 520.6,170 520.6,196 438.9,196" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 438.9 183 C 479.75 183 479.75 183 520.6 183" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 12 x 2]</title>
+<g id="model-glyph-0" data-left="24" data-right="232" data-face-width="144" data-face-height="12" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="24,234 88,170 232,170 168,234" fill="#E69F00"/>
+<polygon class="volume-side" points="168,234 232,170 232,182 168,246" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="234" width="144" height="12" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(128 315.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 2]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>Masked source recurrence [1 x 12]</title>
+<g id="model-glyph-1" data-left="300.3" data-right="320.3" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="300.3,172 302.3,170 320.3,170 318.3,172" fill="#8B80C9"/>
+<polygon class="volume-side" points="318.3,172 320.3,170 320.3,314 318.3,316" fill="#8B80C9"/>
+<rect class="volume-front" x="300.3" y="172" width="18" height="144" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(310.3 435.9) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Masked source recurrence</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 12]</text>
+<text x="0" y="29.25" font-size="13">756 learned values</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>Source prediction head [1 x 2]</title>
+<g id="model-glyph-2" data-left="418.9" data-right="438.9" data-face-width="18" data-face-height="24" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="418.9,172 420.9,170 438.9,170 436.9,172" fill="#8B80C9"/>
+<polygon class="volume-side" points="436.9,172 438.9,170 438.9,194 436.9,196" fill="#8B80C9"/>
+<rect class="volume-front" x="418.9" y="172" width="18" height="24" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(428.9 307.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Source prediction head</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+<text x="0" y="29.25" font-size="13">26 learned values</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 2]</title>
+<g id="model-glyph-3" data-left="520.6" data-right="540.6" data-face-width="18" data-face-height="24" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="520.6,172 522.6,170 540.6,170 538.6,172" fill="#6C8194"/>
+<polygon class="volume-side" points="538.6,172 540.6,170 540.6,194 538.6,196" fill="#6C8194"/>
+<rect class="volume-front" x="520.6" y="172" width="18" height="24" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(530.6 244.075) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+</g></g>
+</g></svg>

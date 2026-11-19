@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="416.8" height="590" viewBox="0 0 416.8 590" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">word rnn lm source graph</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">word rnn lm source graph</text>
+<text x="24" y="51" font-size="12">4 nodes | 170136 unique learned values | Flow /</text>
+<text x="24" y="69" font-size="12">blocks</text>
+<rect x="24" y="77" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="87" font-size="11">Input</text>
+<rect x="154" y="77" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="87" font-size="11">Block</text>
+<rect x="24" y="99" width="12" height="12" rx="2" fill="#6C8194"/><text x="42" y="109" font-size="11">Output</text>
+<text x="24" y="139" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor</text>
+<text x="24" y="155" font-size="11">2 px. Sheets/neurons sampled; exact shapes in</text>
+<text x="24" y="171" font-size="11">labels/tooltips.</text>
+<polygon class="flow-funnel" points="57.4,226 139.1,226 139.1,230 57.4,372" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 57.4 299 C 98.25 299 98.25 228 139.1 228" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="159.1,226 257.7,226 257.7,372 159.1,230" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 159.1 228 C 208.4 228 208.4 299 257.7 299" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="277.7,226 359.4,226 359.4,372 277.7,372" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 277.7 299 C 318.55 299 318.55 299 359.4 299" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 10000]</title>
+<g id="model-glyph-0" data-left="37.4" data-right="57.4" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="37.4,228 39.4,226 57.4,226 55.4,228" fill="#E69F00"/>
+<polygon class="volume-side" points="55.4,228 57.4,226 57.4,370 55.4,372" fill="#E69F00"/>
+<rect class="volume-front" x="37.4" y="228" width="18" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(47.4 436.975) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 10000]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>Embedded RNN transition [1 x 8]</title>
+<g id="model-glyph-1" data-left="139.1" data-right="159.1" data-face-width="18" data-face-height="2" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="139.1,228 141.1,226 159.1,226 157.1,228" fill="#8B80C9"/>
+<polygon class="volume-side" points="157.1,228 159.1,226 159.1,228 157.1,230" fill="#8B80C9"/>
+<rect class="volume-front" x="139.1" y="228" width="18" height="2" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(149.1 345.675) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Embedded RNN transition</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 8]</text>
+<text x="0" y="29.25" font-size="13">80136 learned values</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>10000-class head [1 x 10000]</title>
+<g id="model-glyph-2" data-left="257.7" data-right="277.7" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="257.7,228 259.7,226 277.7,226 275.7,228" fill="#8B80C9"/>
+<polygon class="volume-side" points="275.7,228 277.7,226 277.7,370 275.7,372" fill="#8B80C9"/>
+<rect class="volume-front" x="257.7" y="228" width="18" height="144" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(267.7 475) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">10000-class head</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 10000]</text>
+<text x="0" y="29.25" font-size="13">90000 learned values</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 10000]</title>
+<g id="model-glyph-3" data-left="359.4" data-right="379.4" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="359.4,228 361.4,226 379.4,226 377.4,228" fill="#6C8194"/>
+<polygon class="volume-side" points="377.4,228 379.4,226 379.4,370 377.4,372" fill="#6C8194"/>
+<rect class="volume-front" x="359.4" y="228" width="18" height="144" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(369.4 436.975) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10000]</text>
+</g></g>
+</g></svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260.1" height="345.432" viewBox="0 0 260.1 345.432" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Gradient clipping / global: held-out confusion</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Gradient clipping / global:</text>
+<text x="14" y="38" font-size="12" font-weight="bold">held-out confusion</text>
+<text x="183.6" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 132) rotate(-90)" text-anchor="middle">True class</text>
+<text x="127.6" y="111.6" text-anchor="end">Negative cue</text>
+<text transform="translate(159.6 192) rotate(-60)" text-anchor="end">Negative cue</text>
+<g data-true="0" data-predicted="0" data-count="31" data-value="31"><title>Negative cue → Negative cue: 31</title>
+<rect x="135.6" y="84" width="48" height="48" fill="rgb(75,126,238)" stroke="white"/>
+<text x="159.6" y="111.6" font-size="12" text-anchor="middle" fill="white">31</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="33" data-value="33"><title>Negative cue → Positive cue: 33</title>
+<rect x="183.6" y="84" width="48" height="48" fill="rgb(64,118,237)" stroke="white"/>
+<text x="207.6" y="111.6" font-size="12" text-anchor="middle" fill="white">33</text>
+</g>
+<text x="127.6" y="159.6" text-anchor="end">Positive cue</text>
+<text transform="translate(207.6 192) rotate(-60)" text-anchor="end">Positive cue</text>
+<g data-true="1" data-predicted="0" data-count="26" data-value="26"><title>Positive cue → Negative cue: 26</title>
+<rect x="135.6" y="132" width="48" height="48" fill="rgb(101,145,239)" stroke="white"/>
+<text x="159.6" y="159.6" font-size="12" text-anchor="middle" fill="white">26</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="38" data-value="38"><title>Positive cue → Positive cue: 38</title>
+<rect x="183.6" y="132" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="207.6" y="159.6" font-size="12" text-anchor="middle" fill="white">38</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="135.6" y="297.432" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="135.6" y="322.432">0</text><text x="231.6" y="322.432" text-anchor="end">38</text>
+</g></svg>

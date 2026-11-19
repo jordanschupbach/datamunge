@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="751.200" height="520.800" viewBox="0 0 751.200 520.800" role="img"><title>Method diagram</title>
+<defs>
+<path id="dm-g-0" d=""/>
+<path id="dm-g-8" d="M99 250 C99 172 110 51 165 -62 C225 -185 311 -250 321 -250 C327 -250 331 -247 331 -240 C331 -237 331 -235 314 -218 C189 -92 157 97 157 250 C157 424 195 598 318 723 C331 735 331 737 331 740 C331 747 327 750 321 750 C311 750 221 682 162 555 C111 445 99 334 99 250 Z"/>
+<path id="dm-g-9" d="M57 -240 C57 -246 61 -250 67 -250 C77 -250 167 -182 226 -55 C277 55 289 166 289 250 C289 328 278 449 223 562 C163 685 77 750 67 750 C61 750 57 746 57 740 C57 737 57 735 76 717 C174 618 231 459 231 250 C231 79 194 -97 70 -223 C57 -235 57 -237 57 -240 Z"/>
+<path id="dm-g-13" d="M10 186 L276 186 L276 245 L10 245 Z"/>
+<path id="dm-g-14" d="M85 53 C85 26 107 0 138 0 C164 0 190 22 190 53 C190 84 166 105 138 105 C107 105 85 80 85 53 Z"/>
+<path id="dm-g-16" d="M39 320 C39 245 43 155 84 79 C127 -2 200 -22 249 -22 C303 -22 379 -1 423 94 C455 163 460 241 460 320 C460 400 455 480 420 554 C374 650 292 666 250 666 C190 666 117 640 76 547 C44 478 39 400 39 320 ZM122 332 C122 396 122 462 130 516 C149 635 224 644 249 644 C282 644 348 626 367 527 C377 471 377 395 377 332 C377 257 377 189 366 125 C351 30 294 0 249 0 C210 0 151 25 133 121 C122 181 122 273 122 332 Z"/>
+<path id="dm-g-17" d="M89 571 C109 571 168 571 220 597 L220 79 C220 43 217 31 127 31 L95 31 L95 0 C130 3 217 3 257 3 C297 3 384 3 419 0 L419 31 L387 31 C297 31 294 42 294 79 L294 640 C294 664 294 666 271 666 C209 602 121 602 89 602 Z"/>
+<path id="dm-g-18" d="M50 0 L421 0 L449 174 L424 174 C419 144 412 100 402 85 C395 77 329 77 307 77 L127 77 L233 180 C389 318 449 372 449 472 C449 586 359 666 237 666 C124 666 50 574 50 485 C50 429 100 429 103 429 C120 429 155 441 155 482 C155 508 137 534 102 534 C94 534 92 534 89 533 C112 598 166 635 224 635 C315 635 358 554 358 472 C358 392 308 313 253 251 L61 37 C50 26 50 24 50 0 Z"/>
+<path id="dm-g-21" d="M50 161 C50 75 119 -22 231 -22 C347 -22 449 74 449 201 C449 320 367 420 259 420 C211 420 168 404 132 369 L132 564 C152 558 185 551 217 551 C340 551 410 642 410 655 C410 661 407 666 400 666 C399 666 397 666 392 663 C372 654 323 634 256 634 C216 634 170 641 123 662 C115 665 113 665 111 665 C101 665 101 657 101 641 L101 345 C101 327 101 319 115 319 C122 319 124 322 128 328 C139 344 176 398 257 398 C309 398 334 352 342 334 C358 297 360 258 360 208 C360 173 360 113 336 71 C312 32 275 6 229 6 C156 6 99 59 82 118 C85 117 88 116 99 116 C132 116 149 141 149 165 C149 189 132 214 99 214 C85 214 50 207 50 161 Z"/>
+<path id="dm-g-29" d="M57 152 C57 142 72 141 84 141 L692 141 C703 141 719 142 719 153 C719 165 703 164 690 164 L77 164 C67 164 58 164 57 152 ZM57 347 C57 337 69 336 77 336 L694 336 C705 336 719 336 719 347 C719 360 702 359 689 359 L78 359 C60 359 57 352 57 347 Z"/>
+<path id="dm-g-33" d="M32 0 C55 1 98 3 134 3 C165 3 217 1 249 0 L249 31 C199 31 174 56 174 82 C174 85 175 95 176 97 L222 228 L469 228 L522 75 C523 71 525 65 525 61 C525 31 469 31 442 31 L442 0 C478 3 548 3 586 3 C629 3 675 2 717 0 L717 31 L699 31 C639 31 625 38 614 71 L398 696 C393 709 391 716 375 716 C359 716 356 710 351 696 L144 98 C126 47 86 32 32 31 ZM233 259 L345 584 L458 259 Z"/>
+<path id="dm-g-48" d="M35 0 C70 3 144 3 182 3 C220 3 295 3 330 0 L330 31 L306 31 C229 31 227 42 227 78 L227 316 L396 316 C516 316 624 397 624 497 C624 595 525 683 388 683 L35 683 L35 652 L59 652 C136 652 138 641 138 605 L138 78 C138 42 136 31 59 31 L35 31 ZM224 342 L224 612 C224 645 226 652 273 652 L362 652 C521 652 521 546 521 497 C521 450 521 342 362 342 Z"/>
+<path id="dm-g-65" d="M42 95 C42 14 139 -11 202 -11 C268 -11 314 29 333 76 C337 36 364 -6 411 -6 C432 -6 493 8 493 89 L493 145 L468 145 L468 89 C468 31 443 25 432 25 C399 25 395 70 395 75 L395 275 C395 317 395 356 359 393 C320 432 270 448 222 448 C140 448 71 401 71 335 C71 305 91 288 117 288 C145 288 163 308 163 334 C163 346 158 379 112 380 C139 415 188 426 220 426 C269 426 326 387 326 298 L326 261 C275 258 205 255 142 225 C67 191 42 139 42 95 ZM119 96 C119 151 161 234 326 240 L326 140 C326 45 254 11 209 11 C160 11 119 46 119 96 Z"/>
+<path id="dm-g-67" d="M34 216 C34 88 133 -11 249 -11 C383 -11 415 109 415 119 C415 129 405 129 402 129 C393 129 391 125 389 119 C360 26 295 14 258 14 C205 14 117 57 117 218 C117 381 199 423 252 423 C261 423 324 422 359 386 C318 383 312 353 312 340 C312 314 330 294 358 294 C384 294 404 311 404 341 C404 409 328 448 251 448 C126 448 34 340 34 216 Z"/>
+<path id="dm-g-68" d="M34 215 C34 88 132 -11 246 -11 C310 -11 355 23 380 55 L380 -11 L527 0 L527 31 C457 31 449 38 449 87 L449 694 L305 683 L305 652 C375 652 383 645 383 596 L383 380 C354 416 311 442 257 442 C139 442 34 344 34 215 ZM117 214 C117 251 119 311 148 356 C169 387 207 420 261 420 C296 420 338 405 369 360 C380 343 380 341 380 323 L380 118 C380 100 380 98 369 81 C339 33 294 11 251 11 C206 11 170 37 146 75 C120 116 117 173 117 214 Z"/>
+<path id="dm-g-69" d="M28 220 C28 86 133 -11 248 -11 C370 -11 415 100 415 119 C415 129 407 131 402 131 C393 131 391 125 389 117 C354 14 264 14 254 14 C204 14 164 44 141 81 C111 129 111 195 111 231 L390 231 C412 231 415 231 415 252 C415 351 361 448 236 448 C120 448 28 345 28 220 ZM112 252 C118 401 202 426 236 426 C339 426 349 291 349 252 Z"/>
+<path id="dm-g-71" d="M28 -79 C28 -151 127 -206 249 -206 C367 -206 471 -155 471 -77 C471 -42 457 9 406 37 C353 65 295 65 234 65 C209 65 166 65 159 66 C127 70 106 101 106 133 C106 137 106 160 123 180 C162 152 203 149 222 149 C315 149 384 218 384 295 C384 332 368 369 343 392 C379 426 415 431 433 431 C435 431 440 431 443 430 C432 426 427 415 427 403 C427 386 440 374 456 374 C466 374 485 381 485 404 C485 421 473 453 434 453 C414 453 370 447 328 406 C286 439 244 442 222 442 C129 442 60 373 60 296 C60 252 82 214 107 193 C94 178 76 145 76 110 C76 79 89 41 120 21 C60 4 28 -39 28 -79 ZM80 -79 C80 -33 118 4 162 7 L221 7 C307 7 419 7 419 -79 C419 -133 348 -183 250 -183 C149 -183 80 -132 80 -79 ZM135 295 C135 322 136 354 151 379 C159 391 182 419 222 419 C309 419 309 319 309 296 C309 269 308 237 293 212 C285 200 262 172 222 172 C135 172 135 272 135 295 Z"/>
+<path id="dm-g-76" d="M33 0 C66 1 119 3 144 3 C169 3 218 1 255 0 L255 31 C188 31 177 31 177 76 L177 694 L33 683 L33 652 C103 652 111 645 111 596 L111 76 C111 31 100 31 33 31 Z"/>
+<path id="dm-g-82" d="M28 0 C67 1 114 3 142 3 C182 3 229 3 269 0 L269 31 L248 31 C174 31 172 42 172 78 L172 232 C172 331 214 420 290 420 C297 420 299 420 301 419 C298 418 278 406 278 380 C278 352 299 337 321 337 C339 337 364 349 364 381 C364 413 333 442 290 442 C217 442 181 375 167 332 L167 442 L28 431 L28 400 C98 400 106 393 106 344 L106 76 C106 31 95 31 28 31 Z"/>
+<path id="dm-g-84" d="M19 400 L104 400 L104 124 C104 1 197 -11 233 -11 C304 -11 332 60 332 124 L332 181 L307 181 L307 126 C307 52 277 14 240 14 C173 14 173 105 173 122 L173 400 L316 400 L316 431 L173 431 L173 615 L148 615 C147 533 117 426 19 422 Z"/>
+<path id="dm-g-85" d="M32 400 C110 400 110 397 110 308 L110 158 C110 80 110 -11 262 -11 C318 -11 362 17 391 79 L391 -11 L535 0 L535 31 C465 31 457 38 457 87 L457 442 L310 431 L310 400 C380 400 388 393 388 344 L388 166 C388 79 340 11 267 11 C183 11 179 58 179 110 L179 442 L32 431 Z"/>
+</defs>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="30.000" y="30.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="151.600" y="62.460" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">Actual P(1..2) = 0.5</text>
+<g role="img" aria-label="Actual P(1..2) = 0.5" fill="rgb(15,23,42)" fill-opacity="1.000"><title>Actual P(1..2) = 0.5</title>
+<use href="#dm-g-33" transform="translate(70.771 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-67" transform="translate(84.271 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-84" transform="translate(92.263 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-85" transform="translate(99.247 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(109.237 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-76" transform="translate(118.237 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(123.223 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-48" transform="translate(129.217 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-8" transform="translate(141.457 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-17" transform="translate(148.441 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(157.441 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(162.445 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-18" transform="translate(167.449 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-9" transform="translate(176.449 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(183.433 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-29" transform="translate(189.427 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(203.431 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-16" transform="translate(209.425 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(218.425 62.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-21" transform="translate(223.429 62.460) scale(0.018000 -0.018000)"/>
+</g>
+<text aria-hidden="true" opacity="0" x="151.600" y="85.860" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">degree 1</text>
+<g role="img" aria-label="degree 1" fill="rgb(15,23,42)" fill-opacity="1.000"><title>degree 1</title>
+<use href="#dm-g-68" transform="translate(119.101 85.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(129.091 85.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-71" transform="translate(137.083 85.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-82" transform="translate(146.083 85.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(153.121 85.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(161.113 85.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(169.105 85.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-17" transform="translate(175.099 85.860) scale(0.018000 -0.018000)"/>
+</g>
+<rect x="30.000" y="414.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="151.600" y="446.460" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">Actual P(0..1) = -0.5</text>
+<g role="img" aria-label="Actual P(0..1) = -0.5" fill="rgb(15,23,42)" fill-opacity="1.000"><title>Actual P(0..1) = -0.5</title>
+<use href="#dm-g-33" transform="translate(67.774 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-67" transform="translate(81.274 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-84" transform="translate(89.266 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-85" transform="translate(96.250 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(106.240 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-76" transform="translate(115.240 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(120.226 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-48" transform="translate(126.220 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-8" transform="translate(138.460 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-16" transform="translate(145.444 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(154.444 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(159.448 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-17" transform="translate(164.452 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-9" transform="translate(173.452 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(180.436 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-29" transform="translate(186.430 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(200.434 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-13" transform="translate(206.428 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-16" transform="translate(212.422 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(221.422 446.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-21" transform="translate(226.426 446.460) scale(0.018000 -0.018000)"/>
+</g>
+<text aria-hidden="true" opacity="0" x="151.600" y="469.860" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">degree 1</text>
+<g role="img" aria-label="degree 1" fill="rgb(15,23,42)" fill-opacity="1.000"><title>degree 1</title>
+<use href="#dm-g-68" transform="translate(119.101 469.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(129.091 469.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-71" transform="translate(137.083 469.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-82" transform="translate(146.083 469.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(153.121 469.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(161.113 469.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(169.105 469.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-17" transform="translate(175.099 469.860) scale(0.018000 -0.018000)"/>
+</g>
+<rect x="478.000" y="222.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="599.600" y="254.460" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">Actual P(0..2) = 0.25</text>
+<g role="img" aria-label="Actual P(0..2) = 0.25" fill="rgb(15,23,42)" fill-opacity="1.000"><title>Actual P(0..2) = 0.25</title>
+<use href="#dm-g-33" transform="translate(514.271 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-67" transform="translate(527.771 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-84" transform="translate(535.763 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-85" transform="translate(542.747 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(552.737 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-76" transform="translate(561.737 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(566.723 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-48" transform="translate(572.717 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-8" transform="translate(584.957 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-16" transform="translate(591.941 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(600.941 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(605.945 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-18" transform="translate(610.949 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-9" transform="translate(619.949 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(626.933 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-29" transform="translate(632.927 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(646.931 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-16" transform="translate(652.925 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-14" transform="translate(661.925 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-18" transform="translate(666.929 254.460) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-21" transform="translate(675.929 254.460) scale(0.018000 -0.018000)"/>
+</g>
+<text aria-hidden="true" opacity="0" x="599.600" y="277.860" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">degree 2</text>
+<g role="img" aria-label="degree 2" fill="rgb(15,23,42)" fill-opacity="1.000"><title>degree 2</title>
+<use href="#dm-g-68" transform="translate(567.101 277.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(577.091 277.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-71" transform="translate(585.083 277.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-82" transform="translate(594.083 277.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(601.121 277.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-69" transform="translate(609.113 277.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-0" transform="translate(617.105 277.860) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-18" transform="translate(623.099 277.860) scale(0.018000 -0.018000)"/>
+</g>
+<polyline points="241.200,106.800 510.000,222.000 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polygon points="510.000,222.000 500.956,212.640 496.985,221.905" fill="rgb(51,65,85)" fill-opacity="1.000"/>
+<polyline points="241.200,414.000 510.000,298.800 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polygon points="510.000,298.800 496.985,298.895 500.956,308.160" fill="rgb(51,65,85)" fill-opacity="1.000"/>
+</svg>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rare-event g and t charts · datamunge</title>
+
+<link rel="stylesheet" href="../../../static/site.css">
+<link rel="icon" href="../../../assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "../../../";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="../../../static/site.js"></script>
+</head>
+<body class="section-reports has-sidebar">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-btn nav-toggle" type="button" aria-label="Show navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="../../../index.html">
+    <img src="../../../assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="../../../guides/index.html">Guides</a>
+    <a href="../../../reports/index.html" aria-current="page">Reports</a>
+    <a href="../../../api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Section navigation"><div class="sidebar-inner"><a class="side-top" href="../../index.html">All reports</a><a class="side-top" href="../../status.html">Build status</a><div class="side-heading">Topics</div><a class="side-top" href="../../index.html#topic-general">General</a><a class="side-top" href="../../index.html#topic-algebra">Algebra</a><a class="side-top" href="../../index.html#topic-algorithm">Algorithm</a><a class="side-top" href="../../index.html#topic-algorithms">Algorithms</a><a class="side-top" href="../../index.html#topic-automata">Automata</a><a class="side-top" href="../../index.html#topic-bayes">Bayes</a><a class="side-top" href="../../index.html#topic-bio">Bio</a><a class="side-top" href="../../index.html#topic-bioinformatics">Bioinformatics</a><a class="side-top" href="../../index.html#topic-cad">Cad</a><a class="side-top" href="../../index.html#topic-causal">Causal</a><a class="side-top" href="../../index.html#topic-compression">Compression</a><a class="side-top" href="../../index.html#topic-cryptography">Cryptography</a><a class="side-top" href="../../index.html#topic-datasets">Datasets</a><a class="side-top" href="../../index.html#topic-datastructures">Datastructures</a><a class="side-top" href="../../index.html#topic-distributed">Distributed</a><a class="side-top" href="../../index.html#topic-geometry">Geometry</a><a class="side-top" href="../../index.html#topic-graph">Graph</a><a class="side-top" href="../../index.html#topic-graphics">Graphics</a><a class="side-top" href="../../index.html#topic-linalg">Linalg</a><a class="side-top" href="../../index.html#topic-linear_algebra">Linear algebra</a><a class="side-top" href="../../index.html#topic-machine-learning">Machine-learning</a><a class="side-top" href="../../index.html#topic-math">Math</a><a class="side-top" href="../../index.html#topic-ml">Ml</a><a class="side-top" href="../../index.html#topic-nn">Neural networks</a><a class="side-top" href="../../index.html#topic-numeric">Numeric</a><a class="side-top" href="../../index.html#topic-numerical">Numerical</a><a class="side-top" href="../../index.html#topic-numerics">Numerics</a><a class="side-top" href="../../index.html#topic-optim">Optim</a><a class="side-top" href="../../index.html#topic-optimisation">Optimisation</a><a class="side-top" href="../../index.html#topic-optimization">Optimization</a><a class="side-top" href="../../index.html#topic-overview">Overview</a><a class="side-top" href="../../index.html#topic-physics">Physics</a><a class="side-top" href="../../index.html#topic-probability">Probability</a><a class="side-top" href="../../index.html#topic-random">Random</a><a class="side-top" href="../../index.html#topic-statistics">Statistics</a><details class="side-topic" open><summary>Stats</summary><ul><li><a href="../../index.html#group-stats-additive-models">Stats / Additive-models</a></li><li><a href="../../index.html#group-stats-bayes">Stats / Bayes</a></li><li><a href="../../index.html#group-stats-classification">Stats / Classification</a></li><li><a href="../../index.html#group-stats-clustering">Stats / Clustering</a></li><li><a href="attribute_charts.html">Attribute control charts for defects and defective units</a></li><li><a href="sequential_charts.html">EWMA, moving statistics and two-sided CUSUM</a></li><li><a href="hotelling_chart.html">Hotelling T² for correlated measurements</a></li><li><a href="individuals_moving_range.html">Individuals and moving-range charts</a></li><li><a class="current" aria-current="page" href="rare_event_charts.html">Rare-event g and t charts</a></li><li><a href="subgroup_charts.html">X-bar, R and S charts for rational subgroups</a></li><li><a href="../../index.html#group-stats-estimators">Stats / Estimators</a></li><li><a href="../../index.html#group-stats-inference">Stats / Inference</a></li><li><a href="../../index.html#group-stats-nonparametric">Stats / Nonparametric</a></li><li><a href="../../index.html#group-stats-regression">Stats / Regression</a></li><li><a href="../../index.html#group-stats-resampling">Stats / Resampling</a></li><li><a href="../../index.html#group-stats-state_estimation">Stats / State estimation</a></li><li><a href="../../index.html#group-stats-survival">Stats / Survival</a></li><li><a href="../../index.html#group-stats-time_series">Stats / Time series</a></li></ul></details><a class="side-top" href="../../index.html#topic-systems">Systems</a><a class="side-top" href="../../index.html#topic-text">Text</a></div></aside>
+  <div class="scrim" hidden></div>
+  <main id="content" class="content">
+    <div class="banner banner-info">mep has not run this report's code yet; its results are the ones stored in the report.</div><article class="report"><h1 class="title">Rare-event g and t charts</h1>
+<section data-line="5" data-line-end="10" class="abstract"><p class="abstract-title">Abstract</p><p>Two synthetic event logs track the same kind of process in different units.
+The g-chart records the count of event-free opportunities between events. The
+t-chart records positive time intervals. Eight initial gaps fit each baseline,
+then the logs contain an unusually long gap followed by closely spaced events.</p></section>
+<h1 data-line="12" id="fit-monitor-and-plot">Fit, monitor and plot</h1>
+<figure data-line="14" data-line-end="43" class="code"><figcaption class="lang">cpp</figcaption><pre class="hl"><code><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;dm/dm.hpp&gt;</span>
+
+
+<span class="k">namespace</span> <span class="nn">spc</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/stats/index.html"><span class="nn">datamunge</span><span class="o">::</span><span class="nn">stats</span></a><span class="p">;</span>
+<span class="k">using</span> <a class="sym" href="../../../api/datamunge/graphics/class.RLayout.html"><span class="n">datamunge</span><span class="o">::</span><span class="n">graphics</span><span class="o">::</span><span class="n">RLayout</span></a><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">show_signals</span><span class="p">(</span><span class="k">const</span> <span class="n">spc</span><span class="o">::</span><span class="n">ControlChart</span><span class="o">&amp;</span> <span class="n">chart</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">p</span> <span class="o">:</span> <span class="n">chart</span><span class="p">.</span><span class="n">points</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">outside</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| {} | {} | {:.3f} | {:.3f} | {:.3f} |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+                       <span class="n">chart</span><span class="p">.</span><span class="n">title</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">value</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">upper</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span> <span class="n">between</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">145</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">18</span><span class="p">}</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">hours</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">spc</span><span class="o">::</span><span class="n">ControlChartOptions</span> <span class="n">baseline</span><span class="p">{</span><span class="p">.</span><span class="n">baseline_size</span> <span class="o">=</span> <span class="mi">8</span><span class="p">}</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">g</span> <span class="o">=</span> <span class="n">spc</span><span class="o">::</span><span class="n">g_chart</span><span class="p">(</span><span class="n">between</span><span class="p">,</span> <span class="n">baseline</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">t</span> <span class="o">=</span> <span class="n">spc</span><span class="o">::</span><span class="n">t_chart</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">baseline</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| Chart | Gap | Statistic | Lower | Upper |</span><span class="se">\n</span><span class="s">&quot;</span>
+               <span class="s">&quot;</span><span class="s">| --- | ---: | ---: | ---: | ---: |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">show_signals</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">show_signals</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">RLayout</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1100</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">save_svg</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build/rare_event_charts.svg</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+<div data-line="44" data-line-end="48" class="table-wrap"><table><tr><th scope="col">Chart</th><th scope="col" style="text-align:right">Gap</th><th scope="col" style="text-align:right">Statistic</th><th scope="col" style="text-align:right">Lower</th><th scope="col" style="text-align:right">Upper</th></tr><tr><td>g-chart</td><td style="text-align:right">10</td><td style="text-align:right">145.000</td><td style="text-align:right">0.000</td><td style="text-align:right">117.000</td></tr><tr><td>t-chart</td><td style="text-align:right">10</td><td style="text-align:right">48.000</td><td style="text-align:right">0.007</td><td style="text-align:right">36.342</td></tr><tr><td>t-chart</td><td style="text-align:right">11</td><td style="text-align:right">0.001</td><td style="text-align:right">0.007</td><td style="text-align:right">36.342</td></tr></table></div>
+<figure data-line="49" data-line-end="52"><img src="figures/rare_event_charts.svg" alt="The discrete gap chart flags a long gap. The continuous gap chart displays both very long and very short intervals against its limits."><figcaption>Figure 1: Observed gaps against geometric and exponential limits fitted from the first eight intervals.</figcaption></figure>
+<h1 data-line="54" id="interpret-the-chart">Interpret the chart</h1>
+<p data-line="56" data-line-end="60">Each center line is the fitted median. The limits use the fitted geometric
+or exponential tails, rather than a symmetric band around the center. The
+integer lower limit can land at zero, so a zero gap on this g-chart is on the
+limit and does not signal under the strict outside-limit rule. The continuous
+t-chart can flag unusually small positive gaps.</p>
+<h1 data-line="62" id="references">References</h1>
+<ul data-line="64"><li><a href="https://doi.org/10.1023/A:1011846412909">Benneyan, Number-between g-type statistical quality control charts</a></li></ul></article><h2 id="api-used">API used here</h2><div class="chips"><a class="chip" href="../../../api/datamunge/stats/index.html"><code>datamunge::stats</code></a><a class="chip" href="../../../api/datamunge/graphics/class.RLayout.html"><code>RLayout</code></a></div><p class="report-meta"><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/stats/control-charts/rare_event_charts.mepml">source</a></p>
+  </main>
+  <aside class="pagetoc" aria-label="On this page"><div class="pagetoc-inner"></div></aside>
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

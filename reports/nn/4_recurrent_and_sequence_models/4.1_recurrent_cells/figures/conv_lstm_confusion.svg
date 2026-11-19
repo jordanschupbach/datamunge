@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="228.9" height="318.288" viewBox="0 0 228.9 318.288" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">ConvLSTM: held-out confusion</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">ConvLSTM: held-out</text>
+<text x="14" y="38" font-size="12" font-weight="bold">confusion</text>
+<text x="152.4" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 132) rotate(-90)" text-anchor="middle">True class</text>
+<text x="96.4" y="111.6" text-anchor="end">Empty</text>
+<text transform="translate(128.4 192) rotate(-60)" text-anchor="end">Empty</text>
+<g data-true="0" data-predicted="0" data-count="156" data-value="156"><title>Empty → Empty: 156</title>
+<rect x="104.4" y="84" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="128.4" y="111.6" font-size="12" text-anchor="middle" fill="white">156</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="84" data-value="84"><title>Empty → Occupied: 84</title>
+<rect x="152.4" y="84" width="48" height="48" fill="rgb(131,166,241)" stroke="white"/>
+<text x="176.4" y="111.6" font-size="12" text-anchor="middle" fill="#172033">84</text>
+</g>
+<text x="96.4" y="159.6" text-anchor="end">Occupied</text>
+<text transform="translate(176.4 192) rotate(-60)" text-anchor="end">Occupied</text>
+<g data-true="1" data-predicted="0" data-count="1" data-value="1"><title>Occupied → Empty: 1</title>
+<rect x="104.4" y="132" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="128.4" y="159.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="15" data-value="15"><title>Occupied → Occupied: 15</title>
+<rect x="152.4" y="132" width="48" height="48" fill="rgb(221,231,248)" stroke="white"/>
+<text x="176.4" y="159.6" font-size="12" text-anchor="middle" fill="#172033">15</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="104.4" y="270.288" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="104.4" y="295.288">0</text><text x="200.4" y="295.288" text-anchor="end">156</text>
+</g></svg>

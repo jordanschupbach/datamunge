@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="550" height="627.1" viewBox="0 0 550 627.1" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Held-out Iris: 30 rows, depth fixed at three</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="20">
+<text x="14" y="20" font-size="16" font-weight="bold">Held-out Iris: 30 rows, depth fixed at three</text>
+<text x="352" y="56" text-anchor="middle">Predicted class</text>
+<text transform="translate(20 250) rotate(-90)" text-anchor="middle">True class</text>
+<text x="164" y="136" text-anchor="end">setosa</text>
+<text transform="translate(232 442) rotate(-60)" text-anchor="end">setosa</text>
+<g data-true="0" data-predicted="0" data-count="10" data-value="10"><title>setosa → setosa: 10</title>
+<rect x="172" y="70" width="120" height="120" fill="rgb(37,99,235)" stroke="white"/>
+<text x="232" y="136" font-size="20" text-anchor="middle" fill="white">10</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="0" data-value="0"><title>setosa → versicolor: 0</title>
+<rect x="292" y="70" width="120" height="120" fill="rgb(241,245,249)" stroke="white"/>
+<text x="352" y="136" font-size="20" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="2" data-count="0" data-value="0"><title>setosa → virginica: 0</title>
+<rect x="412" y="70" width="120" height="120" fill="rgb(241,245,249)" stroke="white"/>
+<text x="472" y="136" font-size="20" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="164" y="256" text-anchor="end">versicolor</text>
+<text transform="translate(352 442) rotate(-60)" text-anchor="end">versicolor</text>
+<g data-true="1" data-predicted="0" data-count="0" data-value="0"><title>versicolor → setosa: 0</title>
+<rect x="172" y="190" width="120" height="120" fill="rgb(241,245,249)" stroke="white"/>
+<text x="232" y="256" font-size="20" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="9" data-value="9"><title>versicolor → versicolor: 9</title>
+<rect x="292" y="190" width="120" height="120" fill="rgb(57,114,236)" stroke="white"/>
+<text x="352" y="256" font-size="20" text-anchor="middle" fill="white">9</text>
+</g>
+<g data-true="1" data-predicted="2" data-count="1" data-value="1"><title>versicolor → virginica: 1</title>
+<rect x="412" y="190" width="120" height="120" fill="rgb(221,230,248)" stroke="white"/>
+<text x="472" y="256" font-size="20" text-anchor="middle" fill="#172033">1</text>
+</g>
+<text x="164" y="376" text-anchor="end">virginica</text>
+<text transform="translate(472 442) rotate(-60)" text-anchor="end">virginica</text>
+<g data-true="2" data-predicted="0" data-count="0" data-value="0"><title>virginica → setosa: 0</title>
+<rect x="172" y="310" width="120" height="120" fill="rgb(241,245,249)" stroke="white"/>
+<text x="232" y="376" font-size="20" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="1" data-count="1" data-value="1"><title>virginica → versicolor: 1</title>
+<rect x="292" y="310" width="120" height="120" fill="rgb(221,230,248)" stroke="white"/>
+<text x="352" y="376" font-size="20" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="2" data-predicted="2" data-count="9" data-value="9"><title>virginica → virginica: 9</title>
+<rect x="412" y="310" width="120" height="120" fill="rgb(57,114,236)" stroke="white"/>
+<text x="472" y="376" font-size="20" text-anchor="middle" fill="white">9</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="172" y="579.1" width="360" height="10" fill="url(#cm-scale)"/>
+<text x="172" y="604.1">0</text><text x="532" y="604.1" text-anchor="end">10</text>
+</g></svg>

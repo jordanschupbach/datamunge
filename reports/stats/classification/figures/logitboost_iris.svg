@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="244.5" height="313.86" viewBox="0 0 244.5 313.86" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Confusion matrix</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Confusion matrix</text>
+<text x="168" y="52" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 114) rotate(-90)" text-anchor="middle">True class</text>
+<text x="112" y="93.6" text-anchor="end">versicolor</text>
+<text transform="translate(144 174) rotate(-60)" text-anchor="end">versicolor</text>
+<g data-true="0" data-predicted="0" data-count="9" data-value="9"><title>versicolor → versicolor: 9</title>
+<rect x="120" y="66" width="48" height="48" fill="rgb(57,114,236)" stroke="white"/>
+<text x="144" y="93.6" font-size="12" text-anchor="middle" fill="white">9</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="1" data-value="1"><title>versicolor → virginica: 1</title>
+<rect x="168" y="66" width="48" height="48" fill="rgb(221,230,248)" stroke="white"/>
+<text x="192" y="93.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<text x="112" y="141.6" text-anchor="end">virginica</text>
+<text transform="translate(192 174) rotate(-60)" text-anchor="end">virginica</text>
+<g data-true="1" data-predicted="0" data-count="0" data-value="0"><title>virginica → versicolor: 0</title>
+<rect x="120" y="114" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="141.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="10" data-value="10"><title>virginica → virginica: 10</title>
+<rect x="168" y="114" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="192" y="141.6" font-size="12" text-anchor="middle" fill="white">10</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="120" y="265.86" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="120" y="290.86">0</text><text x="216" y="290.86" text-anchor="end">10</text>
+</g></svg>

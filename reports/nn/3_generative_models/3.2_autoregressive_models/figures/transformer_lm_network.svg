@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1143.51" height="457.604" viewBox="0 0 1143.51 457.604" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">transformer lm source graph</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">transformer lm source graph</text>
+<text x="24" y="51" font-size="12">5 nodes | 5425 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="69" font-size="11">Block</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="232,154 270,154 270,172.004 232,220.25" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 232 187.125 C 251 187.125 251 163.002 270 163.002" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="429.754,154 467.754,154 467.754,172.004 429.754,172.004" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 429.754 163.002 C 448.754 163.002 448.754 163.002 467.754 163.002" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="627.508,154 665.508,154 665.508,220.25 627.508,172.004" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 627.508 163.002 C 646.508 163.002 646.508 187.125 665.508 187.125" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="873.508,154 911.508,154 911.508,220.25 873.508,220.25" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="3" data-to="4" d="M 873.508 187.125 C 892.508 187.125 892.508 187.125 911.508 187.125" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 64 x 65]</title>
+<g id="model-glyph-0" data-left="24" data-right="232" data-face-width="144" data-face-height="2.25" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="24,218 88,154 232,154 168,218" fill="#E69F00"/>
+<polygon class="volume-side" points="168,218 232,154 232,156.25 168,220.25" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="218" width="144" height="2.25" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(128 293.675) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 64 x 65]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>Token and position embedding [1 x 64 x 16]</title>
+<g id="model-glyph-1" data-left="270" data-right="429.754" data-face-width="144" data-face-height="2.25" data-depth="15.7538" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="270,169.754 285.754,154 429.754,154 414,169.754" fill="#8B80C9"/>
+<polygon class="volume-side" points="414,169.754 429.754,154 429.754,156.25 414,172.004" fill="#8B80C9"/>
+<rect class="volume-front" x="270" y="169.754" width="144" height="2.25" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(349.877 308.804) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Token and position embedding</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 64 x 16]</text>
+<text x="0" y="29.25" font-size="13">2064 learned values</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>Causal attention and feed-forward block [1 x 64 x 16]</title>
+<g id="model-glyph-2" data-left="467.754" data-right="627.508" data-face-width="144" data-face-height="2.25" data-depth="15.7538" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="467.754,169.754 483.508,154 627.508,154 611.754,169.754" fill="#8B80C9"/>
+<polygon class="volume-side" points="611.754,169.754 627.508,154 627.508,156.25 611.754,172.004" fill="#8B80C9"/>
+<rect class="volume-front" x="467.754" y="169.754" width="144" height="2.25" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(547.631 275.004) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-29.9" font-size="13" font-weight="600">Causal attention and</text>
+<text x="0" y="-13" font-size="13">feed-forward block</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 64 x 16]</text>
+<text x="0" y="37.7" font-size="13">2256 learned values</text>
+</g></g>
+<g data-node="3" data-category="Block"><title>Vocabulary head [1 x 64 x 65]</title>
+<g id="model-glyph-3" data-left="665.508" data-right="873.508" data-face-width="144" data-face-height="2.25" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="665.508,218 729.508,154 873.508,154 809.508,218" fill="#8B80C9"/>
+<polygon class="volume-side" points="809.508,218 873.508,154 873.508,156.25 809.508,220.25" fill="#8B80C9"/>
+<rect class="volume-front" x="665.508" y="218" width="144" height="2.25" fill="#8B80C9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(769.508 319.025) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Vocabulary head</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 64 x 65]</text>
+<text x="0" y="29.25" font-size="13">1105 learned values</text>
+</g></g>
+<g data-node="4" data-category="Output"><title>Output [1 x 64 x 65]</title>
+<g id="model-glyph-4" data-left="911.508" data-right="1119.51" data-face-width="144" data-face-height="2.25" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="911.508,218 975.508,154 1119.51,154 1055.51,218" fill="#6C8194"/>
+<polygon class="volume-side" points="1055.51,218 1119.51,154 1119.51,156.25 1055.51,220.25" fill="#6C8194"/>
+<rect class="volume-front" x="911.508" y="218" width="144" height="2.25" fill="#6C8194"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(1015.51 293.675) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 64 x 65]</text>
+</g></g>
+</g></svg>

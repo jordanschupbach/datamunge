@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="603.924" height="320.400" viewBox="0 0 603.924 320.400" role="img"><title>Method diagram</title>
+<defs>
+<path id="dm-g-0" d=""/>
+<path id="dm-g-17" d="M89 571 C109 571 168 571 220 597 L220 79 C220 43 217 31 127 31 L95 31 L95 0 C130 3 217 3 257 3 C297 3 384 3 419 0 L419 31 L387 31 C297 31 294 42 294 79 L294 640 C294 664 294 666 271 666 C209 602 121 602 89 602 Z"/>
+<path id="dm-g-18" d="M50 0 L421 0 L449 174 L424 174 C419 144 412 100 402 85 C395 77 329 77 307 77 L127 77 L233 180 C389 318 449 372 449 472 C449 586 359 666 237 666 C124 666 50 574 50 485 C50 429 100 429 103 429 C120 429 155 441 155 482 C155 508 137 534 102 534 C94 534 92 534 89 533 C112 598 166 635 224 635 C315 635 358 554 358 472 C358 392 308 313 253 251 L61 37 C50 26 50 24 50 0 Z"/>
+<path id="dm-g-19" d="M42 135 C42 44 135 -22 244 -22 C366 -22 457 69 457 171 C457 253 394 331 290 352 C372 379 430 449 430 528 C430 610 342 666 246 666 C145 666 69 606 69 530 C69 497 91 478 120 478 C151 478 171 500 171 529 C171 579 124 579 109 579 C140 628 206 641 242 641 C283 641 338 619 338 529 C338 517 336 459 310 415 C280 367 246 364 221 363 C213 362 189 360 182 360 C174 359 167 358 167 348 C167 337 174 337 191 337 L235 337 C317 337 354 269 354 171 C354 35 285 6 241 6 C198 6 123 23 88 82 C123 77 154 99 154 137 C154 173 127 193 98 193 C74 193 42 179 42 135 Z"/>
+<path id="dm-g-20" d="M28 165 L294 165 L294 78 C294 42 292 31 218 31 L197 31 L197 0 C238 3 290 3 332 3 C374 3 427 3 468 0 L468 31 L447 31 C373 31 371 42 371 78 L371 165 L471 165 L471 196 L371 196 L371 651 C371 671 371 677 355 677 C346 677 343 677 335 665 L28 196 ZM56 196 L300 569 L300 196 Z"/>
+<path id="dm-g-21" d="M50 161 C50 75 119 -22 231 -22 C347 -22 449 74 449 201 C449 320 367 420 259 420 C211 420 168 404 132 369 L132 564 C152 558 185 551 217 551 C340 551 410 642 410 655 C410 661 407 666 400 666 C399 666 397 666 392 663 C372 654 323 634 256 634 C216 634 170 641 123 662 C115 665 113 665 111 665 C101 665 101 657 101 641 L101 345 C101 327 101 319 115 319 C122 319 124 322 128 328 C139 344 176 398 257 398 C309 398 334 352 342 334 C358 297 360 258 360 208 C360 173 360 113 336 71 C312 32 275 6 229 6 C156 6 99 59 82 118 C85 117 88 116 99 116 C132 116 149 141 149 165 C149 189 132 214 99 214 C85 214 50 207 50 161 Z"/>
+<path id="dm-g-22" d="M42 316 C42 49 158 -22 251 -22 C362 -22 457 72 457 204 C457 331 368 427 257 427 C189 427 152 376 132 328 L132 352 C132 605 256 641 307 641 C331 641 373 635 395 601 C380 601 340 601 340 556 C340 525 364 510 386 510 C402 510 432 519 432 558 C432 618 388 666 305 666 C177 666 42 537 42 316 ZM134 226 C134 304 166 404 256 404 C272 404 318 404 349 342 C367 305 367 254 367 205 C367 157 367 107 350 71 C320 11 274 6 251 6 C188 6 158 66 152 81 C134 128 134 208 134 226 Z"/>
+<path id="dm-g-33" d="M32 0 C55 1 98 3 134 3 C165 3 217 1 249 0 L249 31 C199 31 174 56 174 82 C174 85 175 95 176 97 L222 228 L469 228 L522 75 C523 71 525 65 525 61 C525 31 469 31 442 31 L442 0 C478 3 548 3 586 3 C629 3 675 2 717 0 L717 31 L699 31 C639 31 625 38 614 71 L398 696 C393 709 391 716 375 716 C359 716 356 710 351 696 L144 98 C126 47 86 32 32 31 ZM233 259 L345 584 L458 259 Z"/>
+<path id="dm-g-48" d="M35 0 C70 3 144 3 182 3 C220 3 295 3 330 0 L330 31 L306 31 C229 31 227 42 227 78 L227 316 L396 316 C516 316 624 397 624 497 C624 595 525 683 388 683 L35 683 L35 652 L59 652 C136 652 138 641 138 605 L138 78 C138 42 136 31 59 31 L35 31 ZM224 342 L224 612 C224 645 226 652 273 652 L362 652 C521 652 521 546 521 497 C521 450 521 342 362 342 Z"/>
+<path id="dm-g-49" d="M56 339 C56 137 207 -22 389 -22 C420 -22 455 -16 484 -7 C499 -102 513 -194 606 -194 C708 -194 727 -61 727 -10 C727 0 727 11 716 11 C707 11 706 3 705 -7 C699 -61 657 -91 614 -91 C567 -91 542 -57 518 7 C636 60 721 188 721 339 C721 543 570 705 388 705 C209 705 56 545 56 339 ZM156 339 C156 599 296 680 388 680 C485 680 621 594 621 339 C621 261 609 120 503 42 C481 98 449 148 390 148 C339 148 308 105 308 64 C308 37 321 18 322 16 C268 36 156 109 156 339 ZM330 64 C330 93 351 126 390 126 C444 126 466 84 477 26 C443 7 411 3 389 3 C338 3 330 49 330 64 Z"/>
+<path id="dm-g-65" d="M42 95 C42 14 139 -11 202 -11 C268 -11 314 29 333 76 C337 36 364 -6 411 -6 C432 -6 493 8 493 89 L493 145 L468 145 L468 89 C468 31 443 25 432 25 C399 25 395 70 395 75 L395 275 C395 317 395 356 359 393 C320 432 270 448 222 448 C140 448 71 401 71 335 C71 305 91 288 117 288 C145 288 163 308 163 334 C163 346 158 379 112 380 C139 415 188 426 220 426 C269 426 326 387 326 298 L326 261 C275 258 205 255 142 225 C67 191 42 139 42 95 ZM119 96 C119 151 161 234 326 240 L326 140 C326 45 254 11 209 11 C160 11 119 46 119 96 Z"/>
+<path id="dm-g-67" d="M34 216 C34 88 133 -11 249 -11 C383 -11 415 109 415 119 C415 129 405 129 402 129 C393 129 391 125 389 119 C360 26 295 14 258 14 C205 14 117 57 117 218 C117 381 199 423 252 423 C261 423 324 422 359 386 C318 383 312 353 312 340 C312 314 330 294 358 294 C384 294 404 311 404 341 C404 409 328 448 251 448 C126 448 34 340 34 216 Z"/>
+<path id="dm-g-76" d="M33 0 C66 1 119 3 144 3 C169 3 218 1 255 0 L255 31 C188 31 177 31 177 76 L177 694 L33 683 L33 652 C103 652 111 645 111 596 L111 76 C111 31 100 31 33 31 Z"/>
+<path id="dm-g-84" d="M19 400 L104 400 L104 124 C104 1 197 -11 233 -11 C304 -11 332 60 332 124 L332 181 L307 181 L307 126 C307 52 277 14 240 14 C173 14 173 105 173 122 L173 400 L316 400 L316 431 L173 431 L173 615 L148 615 C147 533 117 426 19 422 Z"/>
+<path id="dm-g-85" d="M32 400 C110 400 110 397 110 308 L110 158 C110 80 110 -11 262 -11 C318 -11 362 17 391 79 L391 -11 L535 0 L535 31 C465 31 457 38 457 87 L457 442 L310 431 L310 400 C380 400 388 393 388 344 L388 166 C388 79 340 11 267 11 C183 11 179 58 179 110 L179 442 L32 431 Z"/>
+</defs>
+<rect width="100%" height="100%" fill="white"/>
+<text aria-hidden="true" opacity="0" x="77.124" y="53.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">Actual P</text>
+<g role="img" aria-label="Actual P" fill="rgb(15,23,42)" fill-opacity="1.000"><title>Actual P</title>
+<use href="#dm-g-33" transform="translate(30.000 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-67" transform="translate(48.000 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-84" transform="translate(58.656 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-85" transform="translate(67.968 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-65" transform="translate(81.288 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-76" transform="translate(93.288 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-0" transform="translate(99.936 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-48" transform="translate(107.928 53.280) scale(0.024000 -0.024000)"/>
+</g>
+<text aria-hidden="true" opacity="0" x="415.524" y="53.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">Actual Q</text>
+<g role="img" aria-label="Actual Q" fill="rgb(15,23,42)" fill-opacity="1.000"><title>Actual Q</title>
+<use href="#dm-g-33" transform="translate(367.236 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-67" transform="translate(385.236 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-84" transform="translate(395.892 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-85" transform="translate(405.204 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-65" transform="translate(418.524 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-76" transform="translate(430.524 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-0" transform="translate(437.172 53.280) scale(0.024000 -0.024000)"/>
+<use href="#dm-g-49" transform="translate(445.164 53.280) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="48.324" y="103.200" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="77.124" y="138.400" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">1</text>
+<g role="img" aria-label="1" fill="rgb(15,23,42)" fill-opacity="1.000"><title>1</title>
+<use href="#dm-g-17" transform="translate(72.124 138.400) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="386.724" y="103.200" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="415.524" y="138.400" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">1</text>
+<g role="img" aria-label="1" fill="rgb(15,23,42)" fill-opacity="1.000"><title>1</title>
+<use href="#dm-g-17" transform="translate(410.524 138.400) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="113.124" y="103.200" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="141.924" y="138.400" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">2</text>
+<g role="img" aria-label="2" fill="rgb(15,23,42)" fill-opacity="1.000"><title>2</title>
+<use href="#dm-g-18" transform="translate(136.924 138.400) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="451.524" y="103.200" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="480.324" y="138.400" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">3</text>
+<g role="img" aria-label="3" fill="rgb(15,23,42)" fill-opacity="1.000"><title>3</title>
+<use href="#dm-g-19" transform="translate(475.324 138.400) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="177.924" y="103.200" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="206.724" y="138.400" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">5</text>
+<g role="img" aria-label="5" fill="rgb(15,23,42)" fill-opacity="1.000"><title>5</title>
+<use href="#dm-g-21" transform="translate(201.724 138.400) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="516.324" y="103.200" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="545.124" y="138.400" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">4</text>
+<g role="img" aria-label="4" fill="rgb(15,23,42)" fill-opacity="1.000"><title>4</title>
+<use href="#dm-g-20" transform="translate(540.124 138.400) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="48.324" y="168.000" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="77.124" y="203.200" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">3</text>
+<g role="img" aria-label="3" fill="rgb(15,23,42)" fill-opacity="1.000"><title>3</title>
+<use href="#dm-g-19" transform="translate(72.124 203.200) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="386.724" y="168.000" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="415.524" y="203.200" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">2</text>
+<g role="img" aria-label="2" fill="rgb(15,23,42)" fill-opacity="1.000"><title>2</title>
+<use href="#dm-g-18" transform="translate(410.524 203.200) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="113.124" y="168.000" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="141.924" y="203.200" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">6</text>
+<g role="img" aria-label="6" fill="rgb(15,23,42)" fill-opacity="1.000"><title>6</title>
+<use href="#dm-g-22" transform="translate(136.924 203.200) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="451.524" y="168.000" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="480.324" y="203.200" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">6</text>
+<g role="img" aria-label="6" fill="rgb(15,23,42)" fill-opacity="1.000"><title>6</title>
+<use href="#dm-g-22" transform="translate(475.324 203.200) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="48.324" y="232.800" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="77.124" y="268.000" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">4</text>
+<g role="img" aria-label="4" fill="rgb(15,23,42)" fill-opacity="1.000"><title>4</title>
+<use href="#dm-g-20" transform="translate(72.124 268.000) scale(0.020000 -0.020000)"/>
+</g>
+<rect x="386.724" y="232.800" width="57.600" height="57.600" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="415.524" y="268.000" text-anchor="middle" font-size="20.000" fill="rgb(15,23,42)" fill-opacity="1.000">5</text>
+<g role="img" aria-label="5" fill="rgb(15,23,42)" fill-opacity="1.000"><title>5</title>
+<use href="#dm-g-21" transform="translate(410.524 268.000) scale(0.020000 -0.020000)"/>
+</g>
+</svg>

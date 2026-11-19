@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>datamunge</title>
+
+<link rel="stylesheet" href="static/site.css">
+<link rel="icon" href="assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="static/site.js"></script>
+</head>
+<body class="section-home wide">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  
+  <a class="brand" href="index.html">
+    <img src="assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="guides/index.html">Guides</a>
+    <a href="reports/index.html">Reports</a>
+    <a href="api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  
+  <main id="content" class="content">
+    <section class="hero"><img class="hero-logo" src="assets/assets/datamunge.png" alt=""><div><h1>datamunge</h1><p class="lead">One C++ core, many languages: data structures, statistics, plots and more, with bindings everywhere.</p></div></section><div class="cards cards-3"><a class="card" href="api/index.html"><div class="card-title">API reference</div><div class="card-text">89 namespaces, 3795 classes and 5415 functions, from the headers&#x27; documentation.</div></a><a class="card" href="reports/index.html"><div class="card-title">Reports</div><div class="card-text">1312 literate reports: methods, their mathematics and worked examples, run by mep.</div></a><a class="card" href="guides/index.html"><div class="card-title">Guides</div><div class="card-text">Examples by language, SWIG bindings, Writing mepml reports, Optimization roadmap.</div></a></div><article class="prose"><blockquote>
+<p>One C to rule them all, one C to find them, one C to bring them all and in the darkness...</p>
+</blockquote>
+<hr />
+<p>Datamunge is a C/C++ project that has (nearly) automatically generated bindings for a
+variety of languages, including Python, R, JavaScript, Lua, PHP, Java, C#, D
+and Go. It is merely meant to be used as a kickstart template for similar
+projects that need to provide bindings to multiple languages. As such, it is
+permissively licensed under the Unlicense.</p>
+<p>It uses CMake as the build system, and Just as a task runner. The project
+maintains a nix flake for easy development and testing.</p>
+<p>To demonstrate nontrivial examples, it provides simple implementations of some
+common datastructures (e.g. dynamic array) written in C and bound to all
+targeted binding languages. It is meant to be installable from any of the
+supported languages' package managers (e.g. PyPI for Python, CRAN for R, npm
+for JavaScript, etc). Thus, it also provides build configurations for these
+package managers along with necessary packaging files for each language. While
+this makes the project more complex, it also means that there is a single source
+of truth for the core implementation, and that any bug fixes or improvements
+can be made in one place and propagated to all bindings.</p>
+<h2 id="test-drive">🚗 Test drive</h2>
+<h3 id="nixos">❄️ NixOS</h3>
+<p>The easiest way to test drive the project is to use the provided Nix flake. You can
+use the following command to enter a development shell with all dependencies:</p>
+<pre class="hl"><code>nix develop</code></pre>
+<p>If Zsh completion mixes Homebrew and Nix versions of <code>just</code>, source
+<code>scripts/just-completion.zsh</code> after <code>compinit</code> in your Zsh startup configuration.
+It selects the active executable's completion protocol again whenever direnv
+changes <code>PATH</code>. This prevents newer dynamic completion loaders from executing
+an older <code>just</code>'s default recipe when you press Tab.</p>
+<p>To build the project</p>
+<pre class="hl"><code>just build</code></pre>
+<p><code>just build</code> and <code>just build-cpp</code> build the core in Release mode. Standalone CMake builds
+also default to Release when no build type is selected; use
+<code>-DCMAKE_BUILD_TYPE=Debug</code> for an explicit debug build. The TensorFlow comparison
+uses a separate Release build of both the core and benchmark driver; see
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/benchmarks/TENSORFLOW.md">the comparison workflow</a>.
+All performance plans and TensorFlow/native comparison tables live in
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/PERFORMANCE.md">PERFORMANCE.md</a>.</p>
+<p>to run tests:</p>
+<pre class="hl"><code>just test</code></pre>
+<p>to build examples:</p>
+<pre class="hl"><code>just examples</code></pre>
+<p>to run TARGET example:</p>
+<pre class="hl"><code>just run <span class="nv">TARGET</span><span class="o">=</span>example_name</code></pre>
+<h2 id="renaming-this-template">Renaming this template</h2>
+<p>This repo is intended to be cloned and renamed. All occurrences of the project name are expected to be <code>datamunge</code> (lowercase) unless casing is required by a particular ecosystem.</p>
+<ul>
+<li>Rename everything (file contents + paths): <code>./rename_datamunge &lt;new_project_name&gt;</code>
+<ul>
+<li><code>&lt;new_project_name&gt;</code> must be lowercase (a-z, 0-9, <code>_</code> or <code>-</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="bindings">Bindings</h2>
+<p>The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/cad.md">CAD and 3D modelling guide</a> covers <code>dm::cad</code> solids, the
+ported mep kernel, model formats and offline rendering. The
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/cad/seeed_devarm.mepml">Seeed DevArm report</a> includes C++/Python/R examples
+using the real Seeed DevArm CAD and visual mesh files.</p>
+<p>The native CPU game/simulation library and batched physical RL tasks are described
+in <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/simulation/README.md">the simulation guide</a>. GPU compute dispatch is
+optional, with native scene import, Courier behaviors and offscreen Vulkan
+rendering available. Full NN/GPU physics integration remains in progress.</p>
+<p>See <a href="guides/bindings.html">the binding workflow and audit</a> for source packages, regeneration, and the current language coverage.</p>
+<h3 id="test-drive-2">Test Drive</h3>
+<h4 id="python">Python</h4>
+<pre class="hl"><code>just build-python
+just test-python
+just repl-python</code></pre>
+<h4 id="r">R</h4>
+<pre class="hl"><code>just build-r
+just test-r
+just repl-r</code></pre>
+<h4 id="javascript">Javascript</h4>
+<pre class="hl"><code>just build-javascript
+just test-javascript
+just repl-javascript</code></pre>
+<h4 id="lua">Lua</h4>
+<pre class="hl"><code>just run-lua
+just repl-lua
+just test-lua</code></pre>
+<h4 id="rust">Rust</h4>
+<pre class="hl"><code>just run-rust
+just repl-rust
+just test-rust</code></pre>
+<p>Binding support is (to be) provided for the following languages:</p>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Name</th>
+<th>Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>APL (GNU)</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>C#</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Common Lisp</td>
+<td>datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>D</td>
+<td>DDatamunge</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Fortran</td>
+<td>datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Go</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Guile</td>
+<td>datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Julia</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Javascript</td>
+<td>DatamungeJS</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Lua</td>
+<td>Ldatamunge</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>OCaml</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Octave</td>
+<td>datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>PHP</td>
+<td>DatamungePHP</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Perl</td>
+<td>Pdatamunge</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>PyDatamunge</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>R</td>
+<td>DatamungeR</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Ruby</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Rust</td>
+<td>RustDatamunge</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Tcl</td>
+<td>Datamunge (Rosetta)</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>Each binding lives under <code>src/</code> (e.g. <code>src/rustdatamunge/</code>, <code>src/datamungego/</code>, <code>src/datamungeguile/</code>),
+with SWIG generator inputs kept alongside each binding (typically <code>src/&lt;binding&gt;/swig/</code>).
+The APL, C#, Common Lisp, Fortran, Go, Java, Julia, OCaml, Octave, Ruby and Tcl bindings are generated by Rosetta instead, from the
+Clang AST (<code>src/datamunge&lt;lang&gt;/rosetta/</code>); their docstrings (<code>⍝</code> comments in the APL script, XML doc comments in C#,
+FORD <code>!&gt;</code> comments in Fortran, godoc comments in Go, Javadoc in Java, <code>.m</code> help text in Octave, YARD comments in Ruby, commented <code>proc</code>/<code>oo::class</code>
+stubs in Tcl) come from the
+Doxygen comments.
+The tensor/NN facade is currently exposed in Python and R; the other bindings
+cover their existing core APIs. The C/C++ core remains the single
+source of truth; bindings are (re)generated via the <code>just prebuild-*</code> /
+<code>just build-*</code> workflows.</p>
+<p>CNN and autoencoder examples (sections 1 and 2) are available in
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/examples/cpp/source/nn/README.md">C++</a> and through <a href="https://github.com/jordanschupbach/datamunge/blob/main/examples/python/nn/README.md">Python/SWIG</a>.</p>
+<p>The NN language rewrite covers 414 canonical C++ examples across foundations,
+CNNs, autoencoders, generative models, recurrent networks, attention and RL.
+Actual implementations use the functional SWIG API (<code>pydatamunge.nn</code> /
+<code>datamungerNN::nn</code>) with models and loops written in each language. Track completed
+ports and validation in <a href="https://github.com/jordanschupbach/datamunge/blob/main/prebindings/nn/language_status.json">the migration ledger</a>
+with <code>just nn-language-status</code>; compiled reference wrappers do not count as ports.</p>
+<p>Run a completed port with <code>just python-example NAME epochs=5</code> or
+<code>just r-example NAME epochs=5</code>. Both commands reject unported examples; use
+<code>just run-nn NAME</code> for the canonical C++ report. Classification ports print a
+confusion matrix. See <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/nn-language-migration.md">migration notes</a> and the
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/examples/python/nn/README.md">Python</a> / <a href="https://github.com/jordanschupbach/datamunge/blob/main/examples/r/nn/README.md">R</a> example docs.</p>
+</article>
+  </main>
+  
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

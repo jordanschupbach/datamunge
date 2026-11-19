@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="244.5" height="349.86" viewBox="0 0 244.5 349.86" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">dense baseline: actual shifted-position predictions</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">dense baseline: actual</text>
+<text x="14" y="38" font-size="12" font-weight="bold">shifted-position</text>
+<text x="14" y="56" font-size="12" font-weight="bold">predictions</text>
+<text x="168" y="88" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 150) rotate(-90)" text-anchor="middle">True class</text>
+<text x="112" y="129.6" text-anchor="end">horizontal</text>
+<text transform="translate(144 210) rotate(-60)" text-anchor="end">horizontal</text>
+<g data-true="0" data-predicted="0" data-count="0" data-value="0"><title>horizontal → horizontal: 0</title>
+<rect x="120" y="102" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="129.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="250" data-value="250"><title>horizontal → vertical: 250</title>
+<rect x="168" y="102" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="192" y="129.6" font-size="12" text-anchor="middle" fill="white">250</text>
+</g>
+<text x="112" y="177.6" text-anchor="end">vertical</text>
+<text transform="translate(192 210) rotate(-60)" text-anchor="end">vertical</text>
+<g data-true="1" data-predicted="0" data-count="250" data-value="250"><title>vertical → horizontal: 250</title>
+<rect x="120" y="150" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="144" y="177.6" font-size="12" text-anchor="middle" fill="white">250</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="0" data-value="0"><title>vertical → vertical: 0</title>
+<rect x="168" y="150" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="192" y="177.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="120" y="301.86" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="120" y="326.86">0</text><text x="216" y="326.86" text-anchor="end">250</text>
+</g></svg>

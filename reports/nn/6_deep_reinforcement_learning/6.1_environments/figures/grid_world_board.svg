@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="454.208" height="396.800" viewBox="0 0 454.208 396.800" role="img"><title>Method diagram</title>
+<defs>
+<path id="dm-g-3" d="M57 153 C57 142 71 141 82 141 L255 141 L175 -150 C173 -158 168 -171 168 -180 C168 -187 171 -192 178 -192 C189 -192 193 -169 197 -155 L278 141 L493 141 L413 -150 C411 -158 407 -171 407 -180 C407 -187 409 -192 416 -192 C427 -192 431 -169 435 -155 L517 141 L751 141 C762 141 775 142 775 153 C775 163 762 164 751 164 L524 164 L570 336 L749 336 C760 336 774 336 775 347 C775 358 761 359 750 359 L577 359 L657 650 C659 658 664 671 664 680 C664 687 661 692 654 692 C642 692 639 669 635 655 L554 359 L339 359 L419 650 C421 658 425 671 425 680 C425 687 423 692 416 692 C404 692 400 669 396 655 L315 359 L87 359 C73 359 57 358 57 347 C57 337 69 336 80 336 L308 336 L261 164 L83 164 C73 164 57 164 57 153 ZM285 164 L332 336 L547 336 L500 164 Z"/>
+<path id="dm-g-14" d="M85 53 C85 26 107 0 138 0 C164 0 190 22 190 53 C190 84 166 105 138 105 C107 105 85 80 85 53 Z"/>
+<path id="dm-g-39" d="M56 342 C56 137 216 -22 406 -22 C479 -22 559 4 593 63 C606 41 646 1 657 1 C666 1 666 9 666 24 L666 198 C666 237 670 242 735 242 L735 273 C698 272 643 270 613 270 C573 270 488 270 452 273 L452 242 L484 242 C574 242 577 231 577 194 L577 130 C577 18 450 9 422 9 C357 9 159 44 159 342 C159 641 356 674 416 674 C523 674 614 584 634 437 C636 423 636 420 650 420 C666 420 666 423 666 444 L666 681 C666 698 666 705 655 705 C651 705 647 705 639 693 L589 619 C557 651 503 705 404 705 C218 705 56 547 56 342 Z"/>
+<path id="dm-g-51" d="M56 2 C56 -15 56 -22 67 -22 C74 -22 75 -20 82 -9 C82 -8 85 -5 118 48 C149 14 213 -22 302 -22 C419 -22 499 76 499 186 C499 286 433 368 349 388 L221 419 C159 434 120 488 120 546 C120 616 174 677 252 677 C419 677 441 513 447 468 C448 462 448 456 459 456 C472 456 472 461 472 480 L472 681 C472 698 472 705 461 705 C454 705 453 704 446 692 L411 635 C381 664 340 705 251 705 C140 705 56 617 56 511 C56 428 109 355 187 328 C198 324 249 312 319 295 C346 288 376 281 404 244 C425 218 435 185 435 152 C435 81 385 9 301 9 C272 9 196 14 143 63 C85 117 82 181 81 217 C80 227 72 227 69 227 C56 227 56 220 56 202 Z"/>
+</defs>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="30.000" y="30.000" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="50.800" y="65.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">S</text>
+<g role="img" aria-label="S" fill="rgb(15,23,42)" fill-opacity="1.000"><title>S</title>
+<use href="#dm-g-51" transform="translate(44.140 65.280) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="100.400" y="30.000" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="121.200" y="65.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(117.864 65.280) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="170.800" y="30.000" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="191.600" y="65.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(188.264 65.280) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="240.004" y="30.000" width="43.992" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="262.000" y="65.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">#</text>
+<g role="img" aria-label="#" fill="rgb(15,23,42)" fill-opacity="1.000"><title>#</title>
+<use href="#dm-g-3" transform="translate(252.004 65.280) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="311.600" y="30.000" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="332.400" y="65.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(329.064 65.280) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="382.000" y="30.000" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="402.800" y="65.280" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(399.464 65.280) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="30.000" y="100.400" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="50.800" y="135.680" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(47.464 135.680) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="100.400" y="100.400" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="121.200" y="135.680" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(117.864 135.680) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="170.800" y="100.400" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="191.600" y="135.680" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(188.264 135.680) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="240.004" y="100.400" width="43.992" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="262.000" y="135.680" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">#</text>
+<g role="img" aria-label="#" fill="rgb(15,23,42)" fill-opacity="1.000"><title>#</title>
+<use href="#dm-g-3" transform="translate(252.004 135.680) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="311.600" y="100.400" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="332.400" y="135.680" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(329.064 135.680) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="382.000" y="100.400" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="402.800" y="135.680" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(399.464 135.680) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="30.000" y="170.800" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="50.800" y="206.080" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(47.464 206.080) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="100.400" y="170.800" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="121.200" y="206.080" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(117.864 206.080) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="170.800" y="170.800" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="191.600" y="206.080" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(188.264 206.080) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="240.004" y="170.800" width="43.992" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="262.000" y="206.080" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">#</text>
+<g role="img" aria-label="#" fill="rgb(15,23,42)" fill-opacity="1.000"><title>#</title>
+<use href="#dm-g-3" transform="translate(252.004 206.080) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="311.600" y="170.800" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="332.400" y="206.080" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(329.064 206.080) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="382.000" y="170.800" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="402.800" y="206.080" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(399.464 206.080) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="30.000" y="241.200" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="50.800" y="276.480" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(47.464 276.480) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="100.400" y="241.200" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="121.200" y="276.480" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(117.864 276.480) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="170.800" y="241.200" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="191.600" y="276.480" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(188.264 276.480) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="240.004" y="241.200" width="43.992" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="262.000" y="276.480" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">#</text>
+<g role="img" aria-label="#" fill="rgb(15,23,42)" fill-opacity="1.000"><title>#</title>
+<use href="#dm-g-3" transform="translate(252.004 276.480) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="311.600" y="241.200" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="332.400" y="276.480" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(329.064 276.480) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="382.000" y="241.200" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="402.800" y="276.480" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(399.464 276.480) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="30.000" y="311.600" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="50.800" y="346.880" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(47.464 346.880) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="100.400" y="311.600" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="121.200" y="346.880" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(117.864 346.880) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="170.800" y="311.600" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="191.600" y="346.880" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(188.264 346.880) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="241.200" y="311.600" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="262.000" y="346.880" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(258.664 346.880) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="311.600" y="311.600" width="41.600" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="332.400" y="346.880" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">.</text>
+<g role="img" aria-label="." fill="rgb(15,23,42)" fill-opacity="1.000"><title>.</title>
+<use href="#dm-g-14" transform="translate(329.064 346.880) scale(0.024000 -0.024000)"/>
+</g>
+<rect x="381.392" y="311.600" width="42.816" height="55.200" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="402.800" y="346.880" text-anchor="middle" font-size="24.000" fill="rgb(15,23,42)" fill-opacity="1.000">G</text>
+<g role="img" aria-label="G" fill="rgb(15,23,42)" fill-opacity="1.000"><title>G</title>
+<use href="#dm-g-39" transform="translate(393.392 346.880) scale(0.024000 -0.024000)"/>
+</g>
+</svg>

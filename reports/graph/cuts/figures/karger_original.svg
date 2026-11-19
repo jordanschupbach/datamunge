@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="719.200" height="463.200" viewBox="0 0 719.200 463.200" role="img"><title>Method diagram</title>
+<defs>
+<path id="dm-g-16" d="M39 320 C39 245 43 155 84 79 C127 -2 200 -22 249 -22 C303 -22 379 -1 423 94 C455 163 460 241 460 320 C460 400 455 480 420 554 C374 650 292 666 250 666 C190 666 117 640 76 547 C44 478 39 400 39 320 ZM122 332 C122 396 122 462 130 516 C149 635 224 644 249 644 C282 644 348 626 367 527 C377 471 377 395 377 332 C377 257 377 189 366 125 C351 30 294 0 249 0 C210 0 151 25 133 121 C122 181 122 273 122 332 Z"/>
+<path id="dm-g-17" d="M89 571 C109 571 168 571 220 597 L220 79 C220 43 217 31 127 31 L95 31 L95 0 C130 3 217 3 257 3 C297 3 384 3 419 0 L419 31 L387 31 C297 31 294 42 294 79 L294 640 C294 664 294 666 271 666 C209 602 121 602 89 602 Z"/>
+<path id="dm-g-18" d="M50 0 L421 0 L449 174 L424 174 C419 144 412 100 402 85 C395 77 329 77 307 77 L127 77 L233 180 C389 318 449 372 449 472 C449 586 359 666 237 666 C124 666 50 574 50 485 C50 429 100 429 103 429 C120 429 155 441 155 482 C155 508 137 534 102 534 C94 534 92 534 89 533 C112 598 166 635 224 635 C315 635 358 554 358 472 C358 392 308 313 253 251 L61 37 C50 26 50 24 50 0 Z"/>
+<path id="dm-g-19" d="M42 135 C42 44 135 -22 244 -22 C366 -22 457 69 457 171 C457 253 394 331 290 352 C372 379 430 449 430 528 C430 610 342 666 246 666 C145 666 69 606 69 530 C69 497 91 478 120 478 C151 478 171 500 171 529 C171 579 124 579 109 579 C140 628 206 641 242 641 C283 641 338 619 338 529 C338 517 336 459 310 415 C280 367 246 364 221 363 C213 362 189 360 182 360 C174 359 167 358 167 348 C167 337 174 337 191 337 L235 337 C317 337 354 269 354 171 C354 35 285 6 241 6 C198 6 123 23 88 82 C123 77 154 99 154 137 C154 173 127 193 98 193 C74 193 42 179 42 135 Z"/>
+<path id="dm-g-67" d="M34 216 C34 88 133 -11 249 -11 C383 -11 415 109 415 119 C415 129 405 129 402 129 C393 129 391 125 389 119 C360 26 295 14 258 14 C205 14 117 57 117 218 C117 381 199 423 252 423 C261 423 324 422 359 386 C318 383 312 353 312 340 C312 314 330 294 358 294 C384 294 404 311 404 341 C404 409 328 448 251 448 C126 448 34 340 34 216 Z"/>
+<path id="dm-g-84" d="M19 400 L104 400 L104 124 C104 1 197 -11 233 -11 C304 -11 332 60 332 124 L332 181 L307 181 L307 126 C307 52 277 14 240 14 C173 14 173 105 173 122 L173 400 L316 400 L316 431 L173 431 L173 615 L148 615 C147 533 117 426 19 422 Z"/>
+<path id="dm-g-85" d="M32 400 C110 400 110 397 110 308 L110 158 C110 80 110 -11 262 -11 C318 -11 362 17 391 79 L391 -11 L535 0 L535 31 C465 31 457 38 457 87 L457 442 L310 431 L310 400 C380 400 388 393 388 344 L388 166 C388 79 340 11 267 11 C183 11 179 58 179 110 L179 442 L32 431 Z"/>
+</defs>
+<rect width="100%" height="100%" fill="white"/>
+<ellipse cx="71.600" cy="391.600" rx="41.600" ry="41.600" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="71.600" y="397.360" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">0</text>
+<g role="img" aria-label="0" fill="rgb(15,23,42)" fill-opacity="1.000"><title>0</title>
+<use href="#dm-g-16" transform="translate(67.100 397.360) scale(0.018000 -0.018000)"/>
+</g>
+<ellipse cx="455.600" cy="391.600" rx="41.600" ry="41.600" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="455.600" y="397.360" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">1</text>
+<g role="img" aria-label="1" fill="rgb(15,23,42)" fill-opacity="1.000"><title>1</title>
+<use href="#dm-g-17" transform="translate(451.100 397.360) scale(0.018000 -0.018000)"/>
+</g>
+<ellipse cx="263.600" cy="71.600" rx="41.600" ry="41.600" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="263.600" y="77.360" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">2</text>
+<g role="img" aria-label="2" fill="rgb(15,23,42)" fill-opacity="1.000"><title>2</title>
+<use href="#dm-g-18" transform="translate(259.100 77.360) scale(0.018000 -0.018000)"/>
+</g>
+<ellipse cx="647.600" cy="71.600" rx="41.600" ry="41.600" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="647.600" y="77.360" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">3</text>
+<g role="img" aria-label="3" fill="rgb(15,23,42)" fill-opacity="1.000"><title>3</title>
+<use href="#dm-g-19" transform="translate(643.100 77.360) scale(0.018000 -0.018000)"/>
+</g>
+<polyline points="113.200,391.600 414.000,391.600 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(100,116,139)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polyline points="434.197,355.928 285.003,107.272 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(100,116,139)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polyline points="242.197,107.272 93.003,355.928 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(100,116,139)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polyline points="305.200,71.600 606.000,71.600 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(220,38,38)" stroke-opacity="1.000" stroke-width="4.000" stroke-linejoin="round"/>
+<rect x="440.504" y="36.440" width="30.192" height="26.800" fill="white"/>
+<text aria-hidden="true" opacity="0" x="455.600" y="54.960" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">cut</text>
+<g role="img" aria-label="cut" fill="rgb(15,23,42)" fill-opacity="1.000"><title>cut</title>
+<use href="#dm-g-67" transform="translate(444.504 54.960) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-85" transform="translate(451.608 54.960) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(460.488 54.960) scale(0.016000 -0.016000)"/>
+</g>
+</svg>

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B-spline regression · datamunge</title>
+
+<link rel="stylesheet" href="../../../static/site.css">
+<link rel="icon" href="../../../assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "../../../";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="../../../static/site.js"></script>
+</head>
+<body class="section-reports has-sidebar">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-btn nav-toggle" type="button" aria-label="Show navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="../../../index.html">
+    <img src="../../../assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="../../../guides/index.html">Guides</a>
+    <a href="../../../reports/index.html" aria-current="page">Reports</a>
+    <a href="../../../api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Section navigation"><div class="sidebar-inner"><a class="side-top" href="../../index.html">All reports</a><a class="side-top" href="../../status.html">Build status</a><div class="side-heading">Topics</div><a class="side-top" href="../../index.html#topic-general">General</a><a class="side-top" href="../../index.html#topic-algebra">Algebra</a><a class="side-top" href="../../index.html#topic-algorithm">Algorithm</a><a class="side-top" href="../../index.html#topic-algorithms">Algorithms</a><a class="side-top" href="../../index.html#topic-automata">Automata</a><a class="side-top" href="../../index.html#topic-bayes">Bayes</a><a class="side-top" href="../../index.html#topic-bio">Bio</a><a class="side-top" href="../../index.html#topic-bioinformatics">Bioinformatics</a><a class="side-top" href="../../index.html#topic-cad">Cad</a><a class="side-top" href="../../index.html#topic-causal">Causal</a><a class="side-top" href="../../index.html#topic-compression">Compression</a><a class="side-top" href="../../index.html#topic-cryptography">Cryptography</a><a class="side-top" href="../../index.html#topic-datasets">Datasets</a><a class="side-top" href="../../index.html#topic-datastructures">Datastructures</a><a class="side-top" href="../../index.html#topic-distributed">Distributed</a><a class="side-top" href="../../index.html#topic-geometry">Geometry</a><a class="side-top" href="../../index.html#topic-graph">Graph</a><a class="side-top" href="../../index.html#topic-graphics">Graphics</a><a class="side-top" href="../../index.html#topic-linalg">Linalg</a><a class="side-top" href="../../index.html#topic-linear_algebra">Linear algebra</a><a class="side-top" href="../../index.html#topic-machine-learning">Machine-learning</a><a class="side-top" href="../../index.html#topic-math">Math</a><a class="side-top" href="../../index.html#topic-ml">Ml</a><a class="side-top" href="../../index.html#topic-nn">Neural networks</a><a class="side-top" href="../../index.html#topic-numeric">Numeric</a><a class="side-top" href="../../index.html#topic-numerical">Numerical</a><a class="side-top" href="../../index.html#topic-numerics">Numerics</a><a class="side-top" href="../../index.html#topic-optim">Optim</a><a class="side-top" href="../../index.html#topic-optimisation">Optimisation</a><a class="side-top" href="../../index.html#topic-optimization">Optimization</a><a class="side-top" href="../../index.html#topic-overview">Overview</a><a class="side-top" href="../../index.html#topic-physics">Physics</a><a class="side-top" href="../../index.html#topic-probability">Probability</a><a class="side-top" href="../../index.html#topic-random">Random</a><a class="side-top" href="../../index.html#topic-statistics">Statistics</a><details class="side-topic" open><summary>Stats</summary><ul><li><a href="../../index.html#group-stats-additive-models">Stats / Additive-models</a></li><li><a href="../../index.html#group-stats-bayes">Stats / Bayes</a></li><li><a href="../../index.html#group-stats-classification">Stats / Classification</a></li><li><a href="../../index.html#group-stats-clustering">Stats / Clustering</a></li><li><a href="../../index.html#group-stats-control-charts">Stats / Control-charts</a></li><li><a href="../../index.html#group-stats-estimators">Stats / Estimators</a></li><li><a href="../../index.html#group-stats-inference">Stats / Inference</a></li><li><a href="../../index.html#group-stats-nonparametric">Stats / Nonparametric</a></li><li><a class="current" aria-current="page" href="bspline_regression.html">B-spline regression</a></li><li><a href="hierarchical_splines.html">B-splines, P-splines and hierarchical spline fits</a></li><li><a href="elastic_net_iris.html">Elastic Net: Thresholding, Grouping and Cross-Validation</a></li><li><a href="glmm.html">Generalized Linear Mixed Models: Working Fits and Partial Pooling</a></li><li><a href="glm_iris.html">Generalized Linear Models: Working Responses and Iris Probabilities</a></li><li><a href="kernel_regression_iris.html">Kernel Regression: Local Weights, Bandwidth and Coverage</a></li><li><a href="kernel_ridge.html">Kernel Ridge Regression: Centring, Shrinkage and Validation</a></li><li><a href="lmm.html">Linear Mixed Models: Partial Pooling for Grouped Data</a></li><li><a href="lm_penguins.html">Linear Regression: Penguin Body Mass</a></li><li><a href="pspline.html">P-splines: A Rich Basis and a Difference Penalty</a></li><li><a href="quantile_regression.html">Quantile Regression: Modelling the Whole Conditional Distribution</a></li><li><a href="../../index.html#group-stats-resampling">Stats / Resampling</a></li><li><a href="../../index.html#group-stats-state_estimation">Stats / State estimation</a></li><li><a href="../../index.html#group-stats-survival">Stats / Survival</a></li><li><a href="../../index.html#group-stats-time_series">Stats / Time series</a></li></ul></details><a class="side-top" href="../../index.html#topic-systems">Systems</a><a class="side-top" href="../../index.html#topic-text">Text</a></div></aside>
+  <div class="scrim" hidden></div>
+  <main id="content" class="content">
+    <div class="banner banner-fail">1 of 3 code blocks failed the last time mep ran this report; their results are from an earlier run. <a href="../../status.html#stats-regression-bspline_regression-mepml">Details</a></div><article class="report"><h1 class="title">B-spline regression</h1>
+<p data-line="6" data-line-end="9">Choose a language tab for each example. Code and its results stay together. Run
+each tab independently. Python uses the local package in
+<code>build/venv/pydatamunge-run</code>; R uses <code>build/r/library</code>. Build these once with
+<code>just build-python</code> and <code>just build-r</code>, and rebuild after binding changes.</p>
+<h1 data-line="11" id="b-spline-regression">B-spline regression</h1>
+<p data-line="13" data-line-end="35">Fit a cubic B-spline basis to noisy observations. This is least-squares
+regression: the fitted curve need not pass through each observation.
+<code>bs(lower, upper, knots)</code> returns an owned <code>Bspline</code> for training and
+prediction; its default omits the first basis column so <code>LM</code> can add an
+intercept. The 100 breakpoints include both endpoints and produce 101 predictor
+columns. <code>speval()</code> creates the design directly in CSR storage. <code>lm(y, X)</code>
+returns an owned <code>LM</code> and adds an intercept by default and chooses dense QR or
+sparse PCG from the matrix storage; matrix prediction uses the same predictor
+order and adds the intercept itself. The Doppler function accepts the whole
+vector: its arithmetic, sine and noise addition form a lazy expression. The
+forwarding parameter keeps named vectors borrowed and temporary vectors owned.
+<code>rnorm()</code> draws once when the expression is formed; model fitting and plotting
+evaluate using those same noise values. Use <code>y.eval()</code> or <code>dm::Vector&lt;&gt; y = ...</code>
+to keep a computed snapshot. <code>apply()</code> remains an eager mapping operation for
+arbitrary scalar callbacks. Sparse fitting retains compressed designs, while
+inference uses dense coefficient-sized covariance matrices. The sparse solver
+uses normal equations, which square the design's condition number. With so many
+unpenalised coefficients, the curve can follow noise as well as signal.
+<code>dm::plot()</code> starts an empty plot, and <code>.xlim()</code> / <code>.ylim()</code> set the axis ranges
+while retaining fluent chaining. The block selects the C++ Nix shell through an
+explicit local Git reference so mep uses matching installed headers and library.
+Line colors accept literals or <code>std::string</code> hex RGBA text; the final byte is
+opacity divided by 255.</p>
+<p data-line="37" data-line-end="40">All three tabs seed the native generator with 42 and use the same 100
+breakpoints. C++ demonstrates an explicit sparse design and <code>LM</code>; Python and R
+use the bound <code>BSplineRegression</code> convenience API for the same least-squares
+spline space. Each tab saves its own plot.</p>
+<div data-line="42" class="mtabs">
+<input data-line="43" type="radio" class="mtab-radio" name="mtabs-1" id="mtabs-1-1" checked><label class="mtab-label" for="mtabs-1-1">C++</label>
+<div class="mtab" data-title="C++">
+<figure data-line="45" data-line-end="71" class="code"><figcaption class="lang">cpp</figcaption><pre class="hl"><code><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;dm/dm.hpp&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <a class="sym" href="../../../api/datamunge/fn.set_seed.html"><span class="n">dm</span><span class="o">::</span><span class="n">set_seed</span></a><span class="p">(</span><span class="mi">42</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">doppler</span> <span class="o">=</span> <span class="p">[</span><span class="p">]</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <a class="sym" href="../../../api/datamunge/fn.sin.html"><span class="n">dm</span><span class="o">::</span><span class="n">sin</span></a><span class="p">(</span><span class="mi">20</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.25</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">x</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/fn.runif.html"><span class="n">dm</span><span class="o">::</span><span class="n">runif</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">y</span> <span class="o">=</span> <span class="n">doppler</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <a class="sym" href="../../../api/datamunge/fn.rnorm.html"><span class="n">dm</span><span class="o">::</span><span class="n">rnorm</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">k</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/fn.seql.html"><span class="n">dm</span><span class="o">::</span><span class="n">seql</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">basis</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/fn.bs.html"><span class="n">dm</span><span class="o">::</span><span class="n">bs</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">xmat</span> <span class="o">=</span> <span class="n">basis</span><span class="p">.</span><span class="n">speval</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">lm1</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/fn.lm.html"><span class="n">dm</span><span class="o">::</span><span class="n">lm</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">xmat</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">seqx</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/fn.seql.html"><span class="n">dm</span><span class="o">::</span><span class="n">seql</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">yhat</span> <span class="o">=</span> <span class="n">lm1</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">basis</span><span class="p">.</span><span class="n">speval</span><span class="p">(</span><span class="n">seqx</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">plt</span> <span class="o">=</span>
+        <a class="sym" href="../../../api/datamunge/fn.plot.html"><span class="n">dm</span><span class="o">::</span><span class="n">plot</span></a><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;</span><span class="s">Cubic B-spline regression</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">subtitle</span><span class="p">(</span>
+        <span class="s">&quot;</span><span class="s">1,000 observations; 100 breakpoints; unpenalised least squares</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">Sampled Data</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">#2233ddaa</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">lines</span><span class="p">(</span><span class="n">seqx</span><span class="p">,</span> <span class="n">yhat</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">B-spline Fits</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">#ff66aa</span><span class="s">&quot;</span><span class="p">,</span> <span class="mf">5.</span><span class="p">)</span><span class="p">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">-4.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">)</span><span class="p">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span><span class="p">.</span><span class="n">x_label</span><span class="p">(</span><span class="s">&quot;</span><span class="s">x</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">y_label</span><span class="p">(</span><span class="s">&quot;</span><span class="s">y</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/fn.mkdir.html"><span class="n">dm</span><span class="o">::</span><span class="n">mkdir</span></a><span class="p">(</span><span class="s">&quot;</span><span class="s">build/figs</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build/figs/bspline_fit.svg</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+<figure class="result-images"><img src="figures/bspline_fit.svg"></figure>
+</div>
+<input data-line="74" type="radio" class="mtab-radio" name="mtabs-1" id="mtabs-1-2"><label class="mtab-label" for="mtabs-1-2">Python</label>
+<div class="mtab" data-title="Python">
+<p data-line="76" data-line-end="77"><code>BSplineRegression</code> fits the same cubic spline space directly from vectors and
+breakpoints. Plotting also uses the native library.</p>
+<figure data-line="79" data-line-end="109" class="code"><figcaption class="lang">python</figcaption><pre class="hl"><code><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">pydatamunge</span> <span class="kn">import</span> <span class="n">datamunge</span> <span class="k">as</span> <span class="n">dm</span>
+
+<span class="n">dm</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">runif</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">rnorm</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">20</span> <span class="o">/</span> <span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="mf">0.25</span><span class="p">)</span><span class="p">)</span> <span class="o">+</span> <span class="n">error</span> <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">error</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">noise</span><span class="p">)</span><span class="p">]</span>
+<span class="n">knots</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">seql</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">BSplineRegression</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">knots</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">seqx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">seql</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span><span class="p">)</span>
+<span class="n">yhat</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">seqx</span><span class="p">)</span><span class="p">)</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">RPlot</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Sampled Data</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dm</span><span class="o">.</span><span class="n">RGB</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">#2233ddaa</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">seqx</span><span class="p">,</span> <span class="n">yhat</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">B-spline Fits</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dm</span><span class="o">.</span><span class="n">RGB</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">#ff66aa</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Cubic B-spline regression</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_subtitle</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="s2">1,000 observations; 100 breakpoints; unpenalised least squares</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_xlab</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">x</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_ylab</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">y</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+<span class="n">Path</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">build/figs</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">save_svg</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">build/figs/bspline_fit_python.svg</span><span class="s2">&quot;</span><span class="p">)</span></code></pre></figure>
+<figure class="result-images"><img src="figures/bspline_fit_python.svg"></figure>
+</div>
+<input data-line="112" type="radio" class="mtab-radio" name="mtabs-1" id="mtabs-1-3"><label class="mtab-label" for="mtabs-1-3">R</label>
+<div class="mtab" data-title="R">
+<p data-line="114" data-line-end="115"><code>BSplineRegression$new()</code> fits the same spline space. <code>native_rnorm(mean, sd, n)</code>
+uses the shared C++ generator; <code>stats::rnorm(n, mean, sd)</code> remains available.</p>
+<figure data-line="117" data-line-end="147" class="code"><figcaption class="lang">r</figcaption><pre class="hl"><code><span class="nf">suppressPackageStartupMessages</span><span class="p">(</span><span class="nf">library</span><span class="p">(</span><span class="n">datamunger</span><span class="p">)</span><span class="p">)</span>
+
+<span class="nf">invisible</span><span class="p">(</span><span class="nf">set_seed</span><span class="p">(</span><span class="m">42L</span><span class="p">)</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="nf">unif</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1000L</span><span class="p">)</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">&lt;-</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="nf">native_rnorm</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1000L</span><span class="p">)</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">&lt;-</span> <span class="nf">sin</span><span class="p">(</span><span class="m">20</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="m">0.25</span><span class="p">)</span><span class="p">)</span> <span class="o">+</span> <span class="n">noise</span>
+<span class="n">knots</span> <span class="o">&lt;-</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="nf">seql</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">100L</span><span class="p">)</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">&lt;-</span> <span class="n">BSplineRegression</span><span class="o">$</span><span class="nf">new</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">knots</span><span class="p">,</span> <span class="m">3L</span><span class="p">)</span>
+<span class="n">seqx</span> <span class="o">&lt;-</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="nf">seql</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1000L</span><span class="p">)</span><span class="p">)</span>
+<span class="n">yhat</span> <span class="o">&lt;-</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="n">model</span><span class="o">$</span><span class="nf">predict</span><span class="p">(</span><span class="n">seqx</span><span class="p">)</span><span class="p">)</span>
+<span class="n">plot</span> <span class="o">&lt;-</span> <span class="n">RPlot</span><span class="o">$</span><span class="nf">new</span><span class="p">(</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">Sampled Data&quot;</span><span class="p">,</span> <span class="n">RGB</span><span class="o">$</span><span class="nf">new</span><span class="p">(</span><span class="m">34</span><span class="p">,</span> <span class="m">51</span><span class="p">,</span> <span class="m">221</span><span class="p">,</span> <span class="m">2</span> <span class="o">/</span> <span class="m">3</span><span class="p">)</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">lines</span><span class="p">(</span><span class="n">seqx</span><span class="p">,</span> <span class="n">yhat</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">B-spline Fits&quot;</span><span class="p">,</span> <span class="n">RGB</span><span class="o">$</span><span class="nf">new</span><span class="p">(</span><span class="m">255</span><span class="p">,</span> <span class="m">102</span><span class="p">,</span> <span class="m">170</span><span class="p">)</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">set_title</span><span class="p">(</span><span class="s">&quot;</span><span class="s">Cubic B-spline regression&quot;</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span>
+  <span class="n">plot</span><span class="o">$</span><span class="nf">set_subtitle</span><span class="p">(</span>
+    <span class="s">&quot;</span><span class="s">1,000 observations; 100 breakpoints; unpenalised least squares&quot;</span>
+  <span class="p">)</span>
+<span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">xlim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">ylim</span><span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">set_xlab</span><span class="p">(</span><span class="s">&quot;</span><span class="s">x&quot;</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">set_ylab</span><span class="p">(</span><span class="s">&quot;</span><span class="s">y&quot;</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">size</span><span class="p">(</span><span class="m">1000L</span><span class="p">,</span> <span class="m">600L</span><span class="p">)</span><span class="p">)</span>
+<span class="nf">dir.create</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build/figs&quot;</span><span class="p">,</span> <span class="n">recursive</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">showWarnings</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+<span class="nf">invisible</span><span class="p">(</span><span class="n">plot</span><span class="o">$</span><span class="nf">save</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build/figs/bspline_fit_r.svg&quot;</span><span class="p">)</span><span class="p">)</span></code></pre></figure>
+<figure class="result-images"><span class="muted">Figure unavailable in this build: <code>figures/bspline_fit_r.svg</code></span></figure>
+</div>
+</div></article><h2 id="api-used">API used here</h2><div class="chips"><a class="chip" href="../../../api/datamunge/fn.bs.html"><code>bs</code></a><a class="chip" href="../../../api/datamunge/fn.lm.html"><code>lm</code></a><a class="chip" href="../../../api/datamunge/fn.mkdir.html"><code>mkdir</code></a><a class="chip" href="../../../api/datamunge/fn.plot.html"><code>plot</code></a><a class="chip" href="../../../api/datamunge/fn.rnorm.html"><code>rnorm</code></a><a class="chip" href="../../../api/datamunge/fn.runif.html"><code>runif</code></a><a class="chip" href="../../../api/datamunge/fn.seql.html"><code>seql</code></a><a class="chip" href="../../../api/datamunge/fn.set_seed.html"><code>set_seed</code></a><a class="chip" href="../../../api/datamunge/fn.sin.html"><code>sin</code></a></div><p class="report-meta">2 of 3 code blocks ran on 2026-11-17 · <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/stats/regression/bspline_regression.mepml">source</a></p>
+  </main>
+  <aside class="pagetoc" aria-label="On this page"><div class="pagetoc-inner"></div></aside>
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

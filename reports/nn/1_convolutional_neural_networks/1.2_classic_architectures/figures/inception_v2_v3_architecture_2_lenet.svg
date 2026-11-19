@@ -1,0 +1,311 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1494.02" height="443.65" viewBox="0 0 1494.02 443.65" role="img" data-model-layout="left-to-right" data-model-style="LeNet" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Inception v2 / report configuration</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Inception v2 / report configuration</text>
+<text x="24" y="51" font-size="12">20 nodes | 639825 unique learned values | LeNet / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#748BCB"/><text x="172" y="69" font-size="11">Dense</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#5ABF9A"/><text x="302" y="69" font-size="11">Pooling</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#8B80C9"/><text x="432" y="69" font-size="11">Block</text>
+<rect x="544" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="562" y="69" font-size="11">Output</text>
+<rect x="674" y="59" width="12" height="12" rx="2" fill="#94A3B8"/><text x="692" y="69" font-size="11">Operation</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path class="feature-connector" d="M 121 154 L 145 154 M 121 251 L 145 204.625" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="0" data-to="1" d="M 121 202.5 C 133 202.5 133 179.312 145 179.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 195.625 154 L 229.713 154 M 195.625 204.625 L 229.713 180.625" stroke="#5ABF9A" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="1" data-to="2" d="M 195.625 179.312 C 212.669 179.312 212.669 167.312 229.713 167.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 256.337 154 L 300.512 154 M 256.337 180.625 L 300.512 180.625" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="2" data-to="3" d="M 256.337 167.312 C 278.425 167.312 278.425 167.312 300.512 167.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 327.137 154 L 368.688 154 M 327.137 180.625 L 368.688 185.875" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="3" data-to="4" d="M 327.137 167.312 C 347.913 167.312 347.913 169.938 368.688 169.938" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 400.562 154 L 445.488 154 M 400.562 185.875 L 445.488 173.875" stroke="#5ABF9A" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="4" data-to="5" d="M 400.562 169.938 C 423.025 169.938 423.025 163.938 445.488 163.938" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 465.363 154 L 514.975 154 M 465.363 173.875 L 514.975 176.5" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="5" data-to="6" d="M 465.363 163.938 C 490.169 163.938 490.169 165.25 514.975 165.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 537.475 154 L 584.462 154 M 537.475 176.5 L 584.462 179.125" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="6" data-to="7" d="M 537.475 165.25 C 560.969 165.25 560.969 166.562 584.462 166.562" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 609.587 154 L 653.012 154 M 609.587 179.125 L 653.012 183.625" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="7" data-to="8" d="M 609.587 166.562 C 631.3 166.562 631.3 168.812 653.012 168.812" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 682.637 154 L 723.812 154 M 682.637 183.625 L 723.812 183.625" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="8" data-to="9" d="M 682.637 168.812 C 703.225 168.812 703.225 168.812 723.812 168.812" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 753.437 154 L 794.612 154 M 753.437 183.625 L 794.612 183.625" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="9" data-to="10" d="M 753.437 168.812 C 774.025 168.812 774.025 168.812 794.612 168.812" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 824.237 154 L 865.412 154 M 824.237 183.625 L 865.412 183.625" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="10" data-to="11" d="M 824.237 168.812 C 844.825 168.812 844.825 168.812 865.412 168.812" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 895.037 154 L 936.212 154 M 895.037 183.625 L 936.212 183.625" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="11" data-to="12" d="M 895.037 168.812 C 915.625 168.812 915.625 168.812 936.212 168.812" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 965.837 154 L 999.325 154 M 965.837 183.625 L 999.325 199" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="12" data-to="13" d="M 965.837 168.812 C 982.581 168.812 982.581 176.5 999.325 176.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1044.32 154 L 1070.12 154 M 1044.32 199 L 1070.12 199" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="13" data-to="14" d="M 1044.32 176.5 C 1057.22 176.5 1057.22 176.5 1070.12 176.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1115.12 154 L 1140.92 154 M 1115.12 199 L 1140.92 199" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="14" data-to="15" d="M 1115.12 176.5 C 1128.02 176.5 1128.02 176.5 1140.92 176.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1185.92 154 L 1224.72 154 M 1185.92 199 L 1224.72 251" stroke="#94A3B8" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="15" data-to="16" d="M 1185.92 176.5 C 1205.32 176.5 1205.32 202.5 1224.72 202.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1243.72 154 L 1295.52 154 M 1243.72 251 L 1295.52 251" stroke="#94A3B8" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="16" data-to="17" d="M 1243.72 202.5 C 1269.62 202.5 1269.62 202.5 1295.52 202.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1314.52 154 L 1366.32 154 M 1314.52 251 L 1366.32 158.75" stroke="#748BCB" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="17" data-to="18" d="M 1314.52 202.5 C 1340.42 202.5 1340.42 156.375 1366.32 156.375" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1385.32 154 L 1437.12 154 M 1385.32 158.75 L 1437.12 158.75" stroke="#6C8194" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="18" data-to="19" d="M 1385.32 156.375 C 1411.22 156.375 1411.22 156.375 1437.12 156.375" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 64 x 64 x 3]</title>
+<g id="model-glyph-0" data-left="24" data-right="121" data-face-width="96" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 24 155 L 25 154" fill="none"/>
+<rect class="feature-plane" data-plane="2" x="25" y="154" width="96" height="96" fill="#E69F00"/>
+<rect class="feature-plane" data-plane="1" x="24.5" y="154.5" width="96" height="96" fill="#E69F00"/>
+<rect class="feature-plane" data-plane="0" x="24" y="155" width="96" height="96" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(72.5 341.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 64 x 64 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>stem7 [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-1" data-left="145" data-right="195.625" data-face-width="48" data-face-height="48" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 145 156.625 L 147.625 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="147.625" y="154" width="48" height="48" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="147.1" y="154.525" width="48" height="48" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="146.575" y="155.05" width="48" height="48" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="146.05" y="155.575" width="48" height="48" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="145.525" y="156.1" width="48" height="48" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="145" y="156.625" width="48" height="48" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(170.312 299.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem7</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="2" data-category="Pooling"><title>pool1 [1 x 16 x 16 x 16]</title>
+<g id="model-glyph-2" data-left="229.713" data-right="256.337" data-face-width="24" data-face-height="24" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 229.713 156.625 L 232.338 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="232.338" y="154" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="4" x="231.812" y="154.525" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="3" x="231.287" y="155.05" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="2" x="230.763" y="155.575" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="1" x="230.238" y="156.1" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="0" x="229.713" y="156.625" width="24" height="24" fill="#5ABF9A"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(243.025 275.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">pool1</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 16]</text>
+</g></g>
+<g data-node="3" data-category="Block"><title>stem1 [1 x 16 x 16 x 16]</title>
+<g id="model-glyph-3" data-left="300.512" data-right="327.137" data-face-width="24" data-face-height="24" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 300.512 156.625 L 303.137 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="303.137" y="154" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="302.613" y="154.525" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="302.087" y="155.05" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="301.562" y="155.575" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="301.037" y="156.1" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="300.512" y="156.625" width="24" height="24" fill="#8B80C9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(313.825 275.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem1</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 16]</text>
+</g></g>
+<g data-node="4" data-category="Block"><title>stem3 [1 x 16 x 16 x 48]</title>
+<g id="model-glyph-4" data-left="368.688" data-right="400.562" data-face-width="24" data-face-height="24" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 368.688 161.875 L 376.562 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="376.562" y="154" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="374.988" y="155.575" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="373.413" y="157.15" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="371.837" y="158.725" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="370.262" y="160.3" width="24" height="24" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="368.688" y="161.875" width="24" height="24" fill="#8B80C9"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(384.625 280.425) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem3</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 48]</text>
+</g></g>
+<g data-node="5" data-category="Pooling"><title>pool2 [1 x 8 x 8 x 48]</title>
+<g id="model-glyph-5" data-left="445.488" data-right="465.363" data-face-width="12" data-face-height="12" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 445.488 161.875 L 453.363 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="453.363" y="154" width="12" height="12" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="4" x="451.788" y="155.575" width="12" height="12" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="3" x="450.213" y="157.15" width="12" height="12" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="2" x="448.637" y="158.725" width="12" height="12" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="1" x="447.062" y="160.3" width="12" height="12" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="0" x="445.488" y="161.875" width="12" height="12" fill="#5ABF9A"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(455.425 259.975) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">pool2</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 48]</text>
+</g></g>
+<g data-node="6" data-category="Block"><title>3b [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-6" data-left="514.975" data-right="537.475" data-face-width="12" data-face-height="12" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 514.975 164.5 L 525.475 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="525.475" y="154" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="523.375" y="156.1" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="521.275" y="158.2" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="519.175" y="160.3" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="517.075" y="162.4" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="514.975" y="164.5" width="12" height="12" fill="#8B80C9"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(526.225 262.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">3b</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="7" data-category="Block"><title>3c [1 x 8 x 8 x 80]</title>
+<g id="model-glyph-7" data-left="584.462" data-right="609.587" data-face-width="12" data-face-height="12" data-depth="13.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 584.462 167.125 L 597.587 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="597.587" y="154" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="594.962" y="156.625" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="592.337" y="159.25" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="589.712" y="161.875" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="587.087" y="164.5" width="12" height="12" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="584.462" y="167.125" width="12" height="12" fill="#8B80C9"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(597.025 265.225) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">3c</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 80]</text>
+</g></g>
+<g data-node="8" data-category="Block"><title>4a [1 x 4 x 4 x 144]</title>
+<g id="model-glyph-8" data-left="653.012" data-right="682.637" data-face-width="6" data-face-height="6" data-depth="23.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 653.012 177.625 L 676.637 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="676.637" y="154" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="671.912" y="158.725" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="667.187" y="163.45" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="662.462" y="168.175" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="657.737" y="172.9" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="653.012" y="177.625" width="6" height="6" fill="#8B80C9"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(667.825 273.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">4a</text>
+<text x="0" y="12.35" font-size="13">[1 x 4 x 4 x 144]</text>
+</g></g>
+<g data-node="9" data-category="Block"><title>4b [1 x 4 x 4 x 144]</title>
+<g id="model-glyph-9" data-left="723.812" data-right="753.437" data-face-width="6" data-face-height="6" data-depth="23.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 723.812 177.625 L 747.437 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="747.437" y="154" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="742.712" y="158.725" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="737.987" y="163.45" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="733.262" y="168.175" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="728.537" y="172.9" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="723.812" y="177.625" width="6" height="6" fill="#8B80C9"/>
+</g>
+<g id="model-label-9" data-node-label="9" transform="translate(738.625 273.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">4b</text>
+<text x="0" y="12.35" font-size="13">[1 x 4 x 4 x 144]</text>
+</g></g>
+<g data-node="10" data-category="Block"><title>4c [1 x 4 x 4 x 144]</title>
+<g id="model-glyph-10" data-left="794.612" data-right="824.237" data-face-width="6" data-face-height="6" data-depth="23.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 794.612 177.625 L 818.237 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="818.237" y="154" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="813.512" y="158.725" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="808.787" y="163.45" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="804.062" y="168.175" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="799.337" y="172.9" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="794.612" y="177.625" width="6" height="6" fill="#8B80C9"/>
+</g>
+<g id="model-label-10" data-node-label="10" transform="translate(809.425 273.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">4c</text>
+<text x="0" y="12.35" font-size="13">[1 x 4 x 4 x 144]</text>
+</g></g>
+<g data-node="11" data-category="Block"><title>4d [1 x 4 x 4 x 144]</title>
+<g id="model-glyph-11" data-left="865.412" data-right="895.037" data-face-width="6" data-face-height="6" data-depth="23.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 865.412 177.625 L 889.037 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="889.037" y="154" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="884.312" y="158.725" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="879.587" y="163.45" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="874.862" y="168.175" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="870.137" y="172.9" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="865.412" y="177.625" width="6" height="6" fill="#8B80C9"/>
+</g>
+<g id="model-label-11" data-node-label="11" transform="translate(880.225 273.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">4d</text>
+<text x="0" y="12.35" font-size="13">[1 x 4 x 4 x 144]</text>
+</g></g>
+<g data-node="12" data-category="Block"><title>4e [1 x 4 x 4 x 144]</title>
+<g id="model-glyph-12" data-left="936.212" data-right="965.837" data-face-width="6" data-face-height="6" data-depth="23.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 936.212 177.625 L 959.837 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="959.837" y="154" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="955.112" y="158.725" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="950.387" y="163.45" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="945.662" y="168.175" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="940.937" y="172.9" width="6" height="6" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="936.212" y="177.625" width="6" height="6" fill="#8B80C9"/>
+</g>
+<g id="model-label-12" data-node-label="12" transform="translate(951.025 273.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">4e</text>
+<text x="0" y="12.35" font-size="13">[1 x 4 x 4 x 144]</text>
+</g></g>
+<g data-node="13" data-category="Block"><title>5a [1 x 2 x 2 x 256]</title>
+<g id="model-glyph-13" data-left="999.325" data-right="1044.32" data-face-width="3" data-face-height="3" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 999.325 196 L 1041.32 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="1041.32" y="154" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="1032.92" y="162.4" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="1024.52" y="170.8" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="1016.12" y="179.2" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="1007.72" y="187.6" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="999.325" y="196" width="3" height="3" fill="#8B80C9"/>
+</g>
+<g id="model-label-13" data-node-label="13" transform="translate(1021.82 289.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">5a</text>
+<text x="0" y="12.35" font-size="13">[1 x 2 x 2 x 256]</text>
+</g></g>
+<g data-node="14" data-category="Block"><title>5b [1 x 2 x 2 x 256]</title>
+<g id="model-glyph-14" data-left="1070.12" data-right="1115.12" data-face-width="3" data-face-height="3" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1070.12 196 L 1112.12 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="1112.12" y="154" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="1103.72" y="162.4" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="1095.32" y="170.8" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="1086.92" y="179.2" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="1078.52" y="187.6" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="1070.12" y="196" width="3" height="3" fill="#8B80C9"/>
+</g>
+<g id="model-label-14" data-node-label="14" transform="translate(1092.62 289.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">5b</text>
+<text x="0" y="12.35" font-size="13">[1 x 2 x 2 x 256]</text>
+</g></g>
+<g data-node="15" data-category="Block"><title>5c [1 x 2 x 2 x 256]</title>
+<g id="model-glyph-15" data-left="1140.92" data-right="1185.92" data-face-width="3" data-face-height="3" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1140.92 196 L 1182.92 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="1182.92" y="154" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="1174.52" y="162.4" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="1166.12" y="170.8" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="1157.72" y="179.2" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="1149.32" y="187.6" width="3" height="3" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="1140.92" y="196" width="3" height="3" fill="#8B80C9"/>
+</g>
+<g id="model-label-15" data-node-label="15" transform="translate(1163.42 289.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">5c</text>
+<text x="0" y="12.35" font-size="13">[1 x 2 x 2 x 256]</text>
+</g></g>
+<g data-node="16" data-category="Operation"><title>Sum [1 x 256]</title>
+<g id="model-glyph-16" data-left="1224.72" data-right="1243.72" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1224.72 155 L 1225.72 154" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="1224.72" y="155" width="18" height="96" fill="#94A3B8"/>
+</g>
+<g id="model-label-16" data-node-label="16" transform="translate(1234.22 307.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Sum</text>
+<text x="0" y="12.35" font-size="13">[1 x 256]</text>
+</g></g>
+<g data-node="17" data-category="Operation"><title>Div [1 x 256]</title>
+<g id="model-glyph-17" data-left="1295.52" data-right="1314.52" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1295.52 155 L 1296.52 154" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="1295.52" y="155" width="18" height="96" fill="#94A3B8"/>
+</g>
+<g id="model-label-17" data-node-label="17" transform="translate(1305.02 307.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Div</text>
+<text x="0" y="12.35" font-size="13">[1 x 256]</text>
+</g></g>
+<g data-node="18" data-category="Dense"><title>output [1 x 10]</title>
+<g id="model-glyph-18" data-left="1366.32" data-right="1385.32" data-face-width="18" data-face-height="3.75" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1366.32 155 L 1367.32 154" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="1366.32" y="155" width="18" height="3.75" fill="#748BCB"/>
+</g>
+<g id="model-label-18" data-node-label="18" transform="translate(1375.82 211.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+<g data-node="19" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-19" data-left="1437.12" data-right="1456.12" data-face-width="18" data-face-height="3.75" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1437.12 155 L 1438.12 154" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="1437.12" y="155" width="18" height="3.75" fill="#6C8194"/>
+</g>
+<g id="model-label-19" data-node-label="19" transform="translate(1446.62 211.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

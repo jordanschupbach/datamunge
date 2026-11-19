@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="433.7" height="611.8" viewBox="0 0 433.7 611.8" role="img" data-model-layout="left-to-right" data-model-style="Graph" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Tied ReLU/sigmoid autoencoder: 784–32–784</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Tied ReLU/sigmoid autoencoder:</text>
+<text x="24" y="46" font-size="20" font-weight="600">784–32–784</text>
+<text x="24" y="73" font-size="12">4 nodes | 25904 unique learned values | Graph / blocks</text>
+<rect x="24" y="81" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="91" font-size="11">Input</text>
+<rect x="154" y="81" width="12" height="12" rx="2" fill="#F0E442"/><text x="172" y="91" font-size="11">Activation</text>
+<rect x="24" y="103" width="12" height="12" rx="2" fill="#6C8194"/><text x="42" y="113" font-size="11">Output</text>
+<text x="24" y="143" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2</text>
+<text x="24" y="159" font-size="11">px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path data-from="0" data-to="1" d="M 57.4 287 C 98.25 287 98.25 217.939 139.1 217.939" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="1" data-to="2" d="M 159.1 217.939 C 212.625 217.939 212.625 287 266.15 287" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="3" d="M 286.15 287 C 331.225 287 331.225 287 376.3 287" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 784]</title>
+<g id="model-glyph-0" data-left="37.4" data-right="57.4" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<circle data-unit="0" cx="47.4" cy="222.111" r="7" fill="#E69F00"/>
+<circle data-unit="1" cx="47.4" cy="238.333" r="7" fill="#E69F00"/>
+<circle data-unit="2" cx="47.4" cy="254.556" r="7" fill="#E69F00"/>
+<circle data-unit="3" cx="47.4" cy="270.778" r="7" fill="#E69F00"/>
+<circle cx="47.4" cy="283.15" r="1.19" stroke="none" fill="#172033"/>
+<circle cx="47.4" cy="287" r="1.19" stroke="none" fill="#172033"/>
+<circle cx="47.4" cy="290.85" r="1.19" stroke="none" fill="#172033"/>
+<circle data-unit="780" cx="47.4" cy="303.222" r="7" fill="#E69F00"/>
+<circle data-unit="781" cx="47.4" cy="319.444" r="7" fill="#E69F00"/>
+<circle data-unit="782" cx="47.4" cy="335.667" r="7" fill="#E69F00"/>
+<circle data-unit="783" cx="47.4" cy="351.889" r="7" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(47.4 416.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 784]</text>
+</g></g>
+<g data-node="1" data-category="Activation"><title>ReLU encoder / shared W [1 x 32]</title>
+<g id="model-glyph-1" data-left="139.1" data-right="159.1" data-face-width="18" data-face-height="5.87755" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="139.1" y="214" width="20" height="7.87755" rx="1.96939" fill="#F0E442"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(149.1 337.553) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">ReLU encoder / shared W</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 32]</text>
+<text x="0" y="29.25" font-size="13">25120 learned values</text>
+</g></g>
+<g data-node="2" data-category="Activation"><title>Sigmoid decoder / live W transpose [1 x 784]</title>
+<g id="model-glyph-2" data-left="266.15" data-right="286.15" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="266.15" y="214" width="20" height="146" rx="5" fill="#F0E442"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(276.15 479.9) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-29.9" font-size="13" font-weight="600">Sigmoid decoder / live W</text>
+<text x="0" y="-13" font-size="13">transpose</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 784]</text>
+<text x="0" y="37.7" font-size="13">25872 learned values</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 784]</title>
+<g id="model-glyph-3" data-left="376.3" data-right="396.3" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="376.3" y="214" width="20" height="146" rx="5" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(386.3 416.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 784]</text>
+</g></g>
+</g></svg>

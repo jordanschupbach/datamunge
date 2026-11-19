@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1038.4" height="433.5" viewBox="0 0 1038.4 433.5" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">dnc: native operation</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">dnc: native operation</text>
+<text x="24" y="51" font-size="12">5 nodes | 799 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="69" font-size="11">Block</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="185.6,154 223.6,154 223.6,232.4 185.6,200.4" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 185.6 177.2 C 204.6 177.2 204.6 193.2 223.6 193.2" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="431.6,154 469.6,154 469.6,200.4 431.6,232.4" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 431.6 193.2 C 450.6 193.2 450.6 177.2 469.6 177.2" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="631.2,154 669.2,154 669.2,192.4 631.2,200.4" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 631.2 177.2 C 650.2 177.2 650.2 173.2 669.2 173.2" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="822.8,154 860.8,154 860.8,192.4 822.8,192.4" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="3" data-to="4" d="M 822.8 173.2 C 841.8 173.2 841.8 173.2 860.8 173.2" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 9 x 4]</title>
+<g id="model-glyph-0" data-left="24" data-right="185.6" data-face-width="129.6" data-face-height="14.4" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="24,186 56,154 185.6,154 153.6,186" fill="#E69F00"/>
+<polygon class="volume-side" points="153.6,186 185.6,154 185.6,168.4 153.6,200.4" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="186" width="129.6" height="14.4" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(104.8 265.375) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 4]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>LSTM8 controller [1 x 10 x 8]</title>
+<g id="model-glyph-1" data-left="223.6" data-right="431.6" data-face-width="144" data-face-height="14.4" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="223.6,218 287.6,154 431.6,154 367.6,218" fill="#8B80C9"/>
+<polygon class="volume-side" points="367.6,218 431.6,154 431.6,168.4 367.6,232.4" fill="#8B80C9"/>
+<rect class="volume-front" x="223.6" y="218" width="144" height="14.4" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(327.6 326.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">LSTM8 controller</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 10 x 8]</text>
+<text x="0" y="29.25" font-size="13">760 learned values</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>Four-slot allocation [1 x 9 x 4]</title>
+<g id="model-glyph-2" data-left="469.6" data-right="631.2" data-face-width="129.6" data-face-height="14.4" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="469.6,186 501.6,154 631.2,154 599.2,186" fill="#8B80C9"/>
+<polygon class="volume-side" points="599.2,186 631.2,154 631.2,168.4 599.2,200.4" fill="#8B80C9"/>
+<rect class="volume-front" x="469.6" y="186" width="129.6" height="14.4" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(550.4 303.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Four-slot allocation</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 4]</text>
+<text x="0" y="29.25" font-size="13">796 learned values</text>
+</g></g>
+<g data-node="3" data-category="Block"><title>Copy logits:3 [1 x 9 x 3]</title>
+<g id="model-glyph-3" data-left="669.2" data-right="822.8" data-face-width="129.6" data-face-height="14.4" data-depth="24" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="669.2,178 693.2,154 822.8,154 798.8,178" fill="#8B80C9"/>
+<polygon class="volume-side" points="798.8,178 822.8,154 822.8,168.4 798.8,192.4" fill="#8B80C9"/>
+<rect class="volume-front" x="669.2" y="178" width="129.6" height="14.4" fill="#8B80C9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(746 286.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Copy logits:3</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 3]</text>
+<text x="0" y="29.25" font-size="13">835 learned values</text>
+</g></g>
+<g data-node="4" data-category="Output"><title>Output [1 x 9 x 3]</title>
+<g id="model-glyph-4" data-left="860.8" data-right="1014.4" data-face-width="129.6" data-face-height="14.4" data-depth="24" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="860.8,178 884.8,154 1014.4,154 990.4,178" fill="#6C8194"/>
+<polygon class="volume-side" points="990.4,178 1014.4,154 1014.4,168.4 990.4,192.4" fill="#6C8194"/>
+<rect class="volume-front" x="860.8" y="178" width="129.6" height="14.4" fill="#6C8194"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(937.6 257.375) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 3]</text>
+</g></g>
+</g></svg>

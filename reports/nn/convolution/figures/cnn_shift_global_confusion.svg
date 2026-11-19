@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="244.5" height="331.86" viewBox="0 0 244.5 331.86" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">global CNN: actual shifted-position predictions</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">global CNN: actual shifted-</text>
+<text x="14" y="38" font-size="12" font-weight="bold">position predictions</text>
+<text x="168" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 132) rotate(-90)" text-anchor="middle">True class</text>
+<text x="112" y="111.6" text-anchor="end">horizontal</text>
+<text transform="translate(144 192) rotate(-60)" text-anchor="end">horizontal</text>
+<g data-true="0" data-predicted="0" data-count="174" data-value="174"><title>horizontal → horizontal: 174</title>
+<rect x="120" y="84" width="48" height="48" fill="rgb(98,143,239)" stroke="white"/>
+<text x="144" y="111.6" font-size="12" text-anchor="middle" fill="white">174</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="76" data-value="76"><title>horizontal → vertical: 76</title>
+<rect x="168" y="84" width="48" height="48" fill="rgb(179,200,245)" stroke="white"/>
+<text x="192" y="111.6" font-size="12" text-anchor="middle" fill="#172033">76</text>
+</g>
+<text x="112" y="159.6" text-anchor="end">vertical</text>
+<text transform="translate(192 192) rotate(-60)" text-anchor="end">vertical</text>
+<g data-true="1" data-predicted="0" data-count="1" data-value="1"><title>vertical → horizontal: 1</title>
+<rect x="120" y="132" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="144" y="159.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="249" data-value="249"><title>vertical → vertical: 249</title>
+<rect x="168" y="132" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="192" y="159.6" font-size="12" text-anchor="middle" fill="white">249</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="120" y="283.86" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="120" y="308.86">0</text><text x="216" y="308.86" text-anchor="end">249</text>
+</g></svg>

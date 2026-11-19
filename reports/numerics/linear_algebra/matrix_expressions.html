@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matrix expressions and least squares · datamunge</title>
+
+<link rel="stylesheet" href="../../../static/site.css">
+<link rel="icon" href="../../../assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "../../../";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="../../../static/site.js"></script>
+</head>
+<body class="section-reports has-sidebar">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-btn nav-toggle" type="button" aria-label="Show navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="../../../index.html">
+    <img src="../../../assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="../../../guides/index.html">Guides</a>
+    <a href="../../../reports/index.html" aria-current="page">Reports</a>
+    <a href="../../../api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Section navigation"><div class="sidebar-inner"><a class="side-top" href="../../index.html">All reports</a><a class="side-top" href="../../status.html">Build status</a><div class="side-heading">Topics</div><a class="side-top" href="../../index.html#topic-general">General</a><a class="side-top" href="../../index.html#topic-algebra">Algebra</a><a class="side-top" href="../../index.html#topic-algorithm">Algorithm</a><a class="side-top" href="../../index.html#topic-algorithms">Algorithms</a><a class="side-top" href="../../index.html#topic-automata">Automata</a><a class="side-top" href="../../index.html#topic-bayes">Bayes</a><a class="side-top" href="../../index.html#topic-bio">Bio</a><a class="side-top" href="../../index.html#topic-bioinformatics">Bioinformatics</a><a class="side-top" href="../../index.html#topic-cad">Cad</a><a class="side-top" href="../../index.html#topic-causal">Causal</a><a class="side-top" href="../../index.html#topic-compression">Compression</a><a class="side-top" href="../../index.html#topic-cryptography">Cryptography</a><a class="side-top" href="../../index.html#topic-datasets">Datasets</a><a class="side-top" href="../../index.html#topic-datastructures">Datastructures</a><a class="side-top" href="../../index.html#topic-distributed">Distributed</a><a class="side-top" href="../../index.html#topic-geometry">Geometry</a><a class="side-top" href="../../index.html#topic-graph">Graph</a><a class="side-top" href="../../index.html#topic-graphics">Graphics</a><a class="side-top" href="../../index.html#topic-linalg">Linalg</a><a class="side-top" href="../../index.html#topic-linear_algebra">Linear algebra</a><a class="side-top" href="../../index.html#topic-machine-learning">Machine-learning</a><a class="side-top" href="../../index.html#topic-math">Math</a><a class="side-top" href="../../index.html#topic-ml">Ml</a><a class="side-top" href="../../index.html#topic-nn">Neural networks</a><a class="side-top" href="../../index.html#topic-numeric">Numeric</a><a class="side-top" href="../../index.html#topic-numerical">Numerical</a><details class="side-topic" open><summary>Numerics</summary><ul><li><a href="../../index.html#group-numerics-approximation">Numerics / Approximation</a></li><li><a href="../../index.html#group-numerics-arithmetic">Numerics / Arithmetic</a></li><li><a href="../../index.html#group-numerics-constants">Numerics / Constants</a></li><li><a href="../../index.html#group-numerics-differential-equations">Numerics / Differential-equations</a></li><li><a href="../../index.html#group-numerics-elementary_functions">Numerics / Elementary functions</a></li><li><a href="../../index.html#group-numerics-interpolation">Numerics / Interpolation</a></li><li><a href="arnoldi_iteration.html">Arnoldi Iteration: Eigenvalues From Matrix-Vector Products</a></li><li><a href="conjugate_gradient.html">Conjugate Gradient: Directions, Residuals and Reliable Stopping</a></li><li><a href="dense_linear_algebra.html">Dense Linear Algebra: Factorizations, Conditioning and Least Squares</a></li><li><a href="gaussian_elimination.html">Gaussian elimination: actual row reduction and numerical limits</a></li><li><a href="gauss_jordan.html">Gauss–Jordan elimination: actual inverse construction and its cost</a></li><li><a href="gauss_seidel.html">Gauss–Seidel: use each new coordinate immediately</a></li><li><a href="gram_schmidt.html">Gram–Schmidt: subtract overlap, measure what remains</a></li><li><a href="inverse_iteration.html">Inverse Iteration: One Factorization, Actual Eigenvector Histories</a></li><li><a class="current" aria-current="page" href="matrix_expressions.html">Matrix expressions and least squares</a></li><li><a href="biconjugate_gradient.html">The Biconjugate Gradient Method</a></li><li><a href="../../index.html#group-numerics-ode">Numerics / Ode</a></li><li><a href="../../index.html#group-numerics-pde">Numerics / Pde</a></li><li><a href="../../index.html#group-numerics-resampling">Numerics / Resampling</a></li><li><a href="../../index.html#group-numerics-root_finding">Numerics / Root finding</a></li><li><a href="../../index.html#group-numerics-roots">Numerics / Roots</a></li><li><a href="../../index.html#group-numerics-sparse_matrices">Numerics / Sparse matrices</a></li><li><a href="../../index.html#group-numerics-summation">Numerics / Summation</a></li><li><a href="../../index.html#group-numerics-transforms">Numerics / Transforms</a></li></ul></details><a class="side-top" href="../../index.html#topic-optim">Optim</a><a class="side-top" href="../../index.html#topic-optimisation">Optimisation</a><a class="side-top" href="../../index.html#topic-optimization">Optimization</a><a class="side-top" href="../../index.html#topic-overview">Overview</a><a class="side-top" href="../../index.html#topic-physics">Physics</a><a class="side-top" href="../../index.html#topic-probability">Probability</a><a class="side-top" href="../../index.html#topic-random">Random</a><a class="side-top" href="../../index.html#topic-statistics">Statistics</a><a class="side-top" href="../../index.html#topic-stats">Stats</a><a class="side-top" href="../../index.html#topic-systems">Systems</a><a class="side-top" href="../../index.html#topic-text">Text</a></div></aside>
+  <div class="scrim" hidden></div>
+  <main id="content" class="content">
+    <div class="banner banner-info">mep has not run this report's code yet; its results are the ones stored in the report.</div><article class="report"><h1 class="title">Matrix expressions and least squares</h1>
+<p data-line="6" data-line-end="9">Choose a language tab for each example. Code and its results stay together. Run
+each tab independently. Python uses the local package in
+<code>build/venv/pydatamunge-run</code>; R uses <code>build/r/library</code>. Build these once with
+<code>just build-python</code> and <code>just build-r</code>, and rebuild after binding changes.</p>
+<h1 data-line="11" id="linear-algebra">Linear algebra</h1>
+<p data-line="13" data-line-end="19">Given a model
+\(\boldsymbol{y} = \boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{\epsilon}\), we
+want to solve for \(\beta\) given our data \(y\) and our design matrix
+\(\boldsymbol{X}\). The best \(\beta\) is one that minimizes the squared errors:
+\(\hat{\boldsymbol{\beta}} = \text{argmin}_{\beta} ||(\boldsymbol{y} - \hat{\boldsymbol{y}})||_2\)
+where fitted values are
+\(\hat{\boldsymbol{y}} = \boldsymbol{X}\hat{\boldsymbol{\beta}}\).</p>
+<p data-line="21" data-line-end="22">Checking the first condition by setting the derivative of our objective equal to
+0 yields the normal equations:</p>
+<div data-line="24" class="mtabs">
+<input data-line="25" type="radio" class="mtab-radio" name="mtabs-1" id="mtabs-1-1" checked><label class="mtab-label" for="mtabs-1-1">C++</label>
+<div class="mtab" data-title="C++">
+<figure data-line="27" data-line-end="45" class="code"><figcaption class="lang">cpp</figcaption><pre class="hl"><code><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;dm/dm.hpp&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">using</span> <a class="sym" href="../../../api/datamunge/fn.t.html"><span class="n">dm</span><span class="o">::</span><span class="n">t</span></a><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/index.html#type.Mat"><span class="n">dm</span><span class="o">::</span><span class="n">Mat</span></a><span class="o">&lt;</span><span class="o">&gt;</span> <span class="n">X</span> <span class="o">=</span> <span class="p">{</span><span class="p">{</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">}</span><span class="p">,</span> <span class="p">{</span><span class="mf">3.3</span><span class="p">,</span> <span class="mf">4.4</span><span class="p">}</span><span class="p">,</span> <span class="p">{</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">6.6</span><span class="p">}</span><span class="p">}</span><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/index.html#type.Mat"><span class="n">dm</span><span class="o">::</span><span class="n">Mat</span></a><span class="o">&lt;</span><span class="o">&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="p">{</span><span class="p">{</span><span class="mf">1.2</span><span class="p">}</span><span class="p">,</span> <span class="p">{</span><span class="mf">3.3</span><span class="p">}</span><span class="p">,</span> <span class="p">{</span><span class="mf">4.4</span><span class="p">}</span><span class="p">}</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">beta</span> <span class="o">=</span> <span class="p">(</span><span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="n">X</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="mi">-1</span><span class="p">)</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">equation</span> <span class="o">=</span>
+        <a class="sym" href="../../../api/datamunge/class.Tex.html"><span class="n">dm</span><span class="o">::</span><span class="n">Tex</span></a><span class="p">(</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">beta = </span><span class="s">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="p">.</span><span class="n">to_tex</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">underbrace</span><span class="p">(</span><span class="s">&quot;</span><span class="s">X^T</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">+</span>
+                                <span class="n">X</span><span class="p">.</span><span class="n">to_tex</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">underbrace</span><span class="p">(</span><span class="s">&quot;</span><span class="s">X</span><span class="s">&quot;</span><span class="p">)</span><span class="p">)</span><span class="p">.</span><span class="n">delimit</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">superscript</span><span class="p">(</span><span class="s">&quot;</span><span class="s">-1</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">t</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="p">.</span><span class="n">to_tex</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">underbrace</span><span class="p">(</span><span class="s">&quot;</span><span class="s">X^T</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">.</span><span class="n">to_tex</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">underbrace</span><span class="p">(</span><span class="s">&quot;</span><span class="s">y</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">+</span>
+        <a class="sym" href="../../../api/datamunge/class.Tex.html"><span class="n">dm</span><span class="o">::</span><span class="n">Tex</span></a><span class="p">(</span><span class="s">&quot;</span><span class="s"> = </span><span class="s">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta</span><span class="p">.</span><span class="n">to_tex</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">underbrace</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">beta</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">Solving for $</span><span class="se">\\</span><span class="s">beta$, in (1) yields </span><span class="se">\n</span><span class="se">\n</span><span class="s">{}</span><span class="se">\n</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+               <span class="n">equation</span><span class="p">.</span><span class="n">display</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+<p data-line="46">Solving for \(\beta\), in (1) yields </p>
+<div data-line="48" data-line-end="67" class="math-display">\[\beta = {\left( \underbrace{\begin{bmatrix}
+1.1 &amp; 3.3 &amp; 5.5 \\
+2.2 &amp; 4.4 &amp; 6.6
+\end{bmatrix}}_{X^T}\underbrace{\begin{bmatrix}
+1.1 &amp; 2.2 \\
+3.3 &amp; 4.4 \\
+5.5 &amp; 6.6
+\end{bmatrix}}_{X} \right)}^{-1}\underbrace{\begin{bmatrix}
+1.1 &amp; 3.3 &amp; 5.5 \\
+2.2 &amp; 4.4 &amp; 6.6
+\end{bmatrix}}_{X^T}\underbrace{\begin{bmatrix}
+1.2 \\
+3.3 \\
+4.4
+\end{bmatrix}}_{y} = \underbrace{\begin{bmatrix}
+0.2121212 \\
+0.5151515
+\end{bmatrix}}_{\beta}\]</div>
+</div>
+<input data-line="71" type="radio" class="mtab-radio" name="mtabs-1" id="mtabs-1-2"><label class="mtab-label" for="mtabs-1-2">Python</label>
+<div class="mtab" data-title="Python">
+<p data-line="73" data-line-end="74"><code>Mat</code> / <code>SpMat</code> accept nested rows. <code>@</code>, <code>.t()</code> and <code>solve()</code> use the native
+deferred matrix operations; <code>.eval()</code> retains an owned snapshot.</p>
+<figure data-line="76" data-line-end="88" class="code"><figcaption class="lang">python</figcaption><pre class="hl"><code><span class="kn">import</span> <span class="nn">pydatamunge</span> <span class="k">as</span> <span class="nn">dm</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">| Storage | beta[0] | beta[1] |</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">|---|---:|---:|</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="p">[</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Dense</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dm</span><span class="o">.</span><span class="n">Mat</span><span class="p">)</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;</span><span class="s2">CSR</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dm</span><span class="o">.</span><span class="n">SpMat</span><span class="p">)</span><span class="p">]</span><span class="p">:</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="p">[</span><span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">]</span><span class="p">,</span> <span class="p">[</span><span class="mf">3.3</span><span class="p">,</span> <span class="mf">4.4</span><span class="p">]</span><span class="p">,</span> <span class="p">[</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">6.6</span><span class="p">]</span><span class="p">]</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="p">[</span><span class="p">[</span><span class="mf">1.2</span><span class="p">]</span><span class="p">,</span> <span class="p">[</span><span class="mf">3.3</span><span class="p">]</span><span class="p">,</span> <span class="p">[</span><span class="mf">4.4</span><span class="p">]</span><span class="p">]</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="p">)</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="p">)</span> <span class="o">@</span> <span class="n">y</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">beta</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">(</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">| </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.9f</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.9f</span><span class="si">}</span><span class="s2"> |</span><span class="s2">&quot;</span><span class="p">)</span></code></pre></figure>
+<div data-line="89" data-line-end="92" class="table-wrap"><table><tr><th scope="col">Storage</th><th scope="col" style="text-align:right">beta[0]</th><th scope="col" style="text-align:right">beta[1]</th></tr><tr><td>Dense</td><td style="text-align:right">0.212121212</td><td style="text-align:right">0.515151515</td></tr><tr><td>CSR</td><td style="text-align:right">0.212121212</td><td style="text-align:right">0.515151515</td></tr></table></div>
+</div>
+<input data-line="96" type="radio" class="mtab-radio" name="mtabs-1" id="mtabs-1-3"><label class="mtab-label" for="mtabs-1-3">R</label>
+<div class="mtab" data-title="R">
+<p data-line="98" data-line-end="99"><code>Mat()</code> / <code>SpMat()</code> accept ordinary R matrices. <code>t()</code>, <code>%*%</code> and <code>solve()</code>
+dispatch to native operations; <code>eval_mat()</code> keeps a snapshot.</p>
+<figure data-line="101" data-line-end="117" class="code"><figcaption class="lang">r</figcaption><pre class="hl"><code><span class="nf">suppressPackageStartupMessages</span><span class="p">(</span><span class="nf">library</span><span class="p">(</span><span class="n">datamunger</span><span class="p">)</span><span class="p">)</span>
+
+<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| Storage | beta[0] | beta[1] |\n&quot;</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;</span><span class="s">|---|---:|---:|\n&quot;</span><span class="p">)</span>
+<span class="kr">for</span> <span class="p">(</span><span class="n">name</span> <span class="kr">in</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;</span><span class="s">Dense&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">CSR&quot;</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">constructor</span> <span class="o">&lt;-</span> <span class="kr">if</span> <span class="p">(</span><span class="n">name</span> <span class="o">==</span> <span class="s">&quot;</span><span class="s">Dense&quot;</span><span class="p">)</span> <span class="n">Mat</span> <span class="kr">else</span> <span class="n">SpMat</span>
+  <span class="n">X</span> <span class="o">&lt;-</span> <span class="nf">constructor</span><span class="p">(</span>
+    <span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span> <span class="m">2.2</span><span class="p">,</span> <span class="m">3.3</span><span class="p">,</span> <span class="m">4.4</span><span class="p">,</span> <span class="m">5.5</span><span class="p">,</span> <span class="m">6.6</span><span class="p">)</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">byrow</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+  <span class="p">)</span>
+  <span class="n">y</span> <span class="o">&lt;-</span> <span class="nf">constructor</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1.2</span><span class="p">,</span> <span class="m">3.3</span><span class="p">,</span> <span class="m">4.4</span><span class="p">)</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span><span class="p">)</span>
+  <span class="n">beta</span> <span class="o">&lt;-</span> <span class="nf">solve</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">%*%</span> <span class="n">X</span><span class="p">)</span> <span class="o">%*%</span> <span class="nf">t</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">%*%</span> <span class="n">y</span>
+  <span class="n">values</span> <span class="o">&lt;-</span> <span class="nf">as.matrix</span><span class="p">(</span><span class="nf">eval_mat</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span><span class="p">)</span>
+  <span class="nf">cat</span><span class="p">(</span><span class="nf">sprintf</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| %s | %.9f | %.9f |\n&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">]</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="m">2</span><span class="p">,</span> <span class="m">1</span><span class="p">]</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+<div data-line="118" data-line-end="121" class="table-wrap"><table><tr><th scope="col">Storage</th><th scope="col" style="text-align:right">beta[0]</th><th scope="col" style="text-align:right">beta[1]</th></tr><tr><td>Dense</td><td style="text-align:right">0.212121212</td><td style="text-align:right">0.515151515</td></tr><tr><td>CSR</td><td style="text-align:right">0.212121212</td><td style="text-align:right">0.515151515</td></tr></table></div>
+</div>
+</div></article><h2 id="api-used">API used here</h2><div class="chips"><a class="chip" href="../../../api/datamunge/index.html"><code>datamunge</code></a><a class="chip" href="../../../api/datamunge/fn.t.html"><code>t</code></a><a class="chip" href="../../../api/datamunge/class.Tex.html"><code>Tex</code></a></div><p class="report-meta"><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/numerics/linear_algebra/matrix_expressions.mepml">source</a></p>
+  </main>
+  <aside class="pagetoc" aria-label="On this page"><div class="pagetoc-inner"></div></aside>
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

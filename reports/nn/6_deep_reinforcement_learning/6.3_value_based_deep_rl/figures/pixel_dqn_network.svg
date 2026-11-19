@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360.5" height="596.9" viewBox="0 0 1360.5 596.9" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">pixel dqn source model</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">pixel dqn source model</text>
+<text x="24" y="51" font-size="12">9 nodes | 153188 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#56B4E9"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#0072B2"/><text x="302" y="69" font-size="11">Dense</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="432" y="69" font-size="11">Output</text>
+<rect x="544" y="59" width="12" height="12" rx="2" fill="#94A3B8"/><text x="562" y="69" font-size="11">Operation</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="57.4,154 108.8,154 108.8,238 57.4,169.5" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 57.4 161.75 C 83.1 161.75 83.1 196 108.8 196" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="264.8,154 302.8,154 302.8,304 264.8,238" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 264.8 196 C 283.8 196 283.8 229 302.8 229" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="452.8,154 490.8,154 490.8,330 452.8,304" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 452.8 229 C 471.8 229 471.8 242 490.8 242" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="666.8,154 704.8,154 704.8,362 666.8,330" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="3" data-to="4" d="M 666.8 242 C 685.8 242 685.8 258 704.8 258" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="912.8,154 972.65,154 972.65,300 912.8,362" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="4" data-to="5" d="M 912.8 258 C 942.725 258 942.725 227 972.65 227" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="992.65,154 1082.8,154 1082.8,172 992.65,300" fill="#0072B2" fill-opacity="0.09"/>
+<path data-from="5" data-to="6" d="M 992.65 227 C 1037.72 227 1037.72 163 1082.8 163" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1102.8,154 1201.4,154 1201.4,158 1102.8,172" fill="#0072B2" fill-opacity="0.09"/>
+<path data-from="6" data-to="7" d="M 1102.8 163 C 1152.1 163 1152.1 156 1201.4 156" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1221.4,154 1303.1,154 1303.1,158 1221.4,158" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="7" data-to="8" d="M 1221.4 156 C 1262.25 156 1262.25 156 1303.1 156" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 108]</title>
+<g id="model-glyph-0" data-left="37.4" data-right="57.4" data-face-width="18" data-face-height="13.5" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="37.4,156 39.4,154 57.4,154 55.4,156" fill="#E69F00"/>
+<polygon class="volume-side" points="55.4,156 57.4,154 57.4,167.5 55.4,169.5" fill="#E69F00"/>
+<rect class="volume-front" x="37.4" y="156" width="18" height="13.5" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(47.4 226.025) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 108]</text>
+</g></g>
+<g data-node="1" data-category="Operation"><title>Reshape [1 x 3 x 6 x 6]</title>
+<g id="model-glyph-1" data-left="108.8" data-right="264.8" data-face-width="144" data-face-height="72" data-depth="12" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="108.8,166 120.8,154 264.8,154 252.8,166" fill="#94A3B8"/>
+<polygon class="volume-side" points="252.8,166 264.8,154 264.8,226 252.8,238" fill="#94A3B8"/>
+<rect class="volume-front" x="108.8" y="166" width="144" height="72" fill="#94A3B8"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(186.8 319.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Reshape</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 3 x 6 x 6]</text>
+</g></g>
+<g data-node="2" data-category="Operation"><title>Transpose [1 x 6 x 6 x 3]</title>
+<g id="model-glyph-2" data-left="302.8" data-right="452.8" data-face-width="144" data-face-height="144" data-depth="6" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="302.8,160 308.8,154 452.8,154 446.8,160" fill="#94A3B8"/>
+<polygon class="volume-side" points="446.8,160 452.8,154 452.8,298 446.8,304" fill="#94A3B8"/>
+<rect class="volume-front" x="302.8" y="160" width="144" height="144" fill="#94A3B8"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(377.8 385.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Transpose</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 6 x 6 x 3]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>conv1 [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-3" data-left="490.8" data-right="666.8" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="490.8,186 522.8,154 666.8,154 634.8,186" fill="#56B4E9"/>
+<polygon class="volume-side" points="634.8,186 666.8,154 666.8,298 634.8,330" fill="#56B4E9"/>
+<rect class="volume-front" x="490.8" y="186" width="144" height="144" fill="#56B4E9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(578.8 441.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">conv1</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k3 s1 d1 / relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+<text x="0" y="29.25" font-size="13">448 learned values</text>
+</g></g>
+<g data-node="4" data-category="Convolution"><title>conv2 [1 x 6 x 6 x 32]</title>
+<g id="model-glyph-4" data-left="704.8" data-right="912.8" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="704.8,218 768.8,154 912.8,154 848.8,218" fill="#56B4E9"/>
+<polygon class="volume-side" points="848.8,218 912.8,154 912.8,298 848.8,362" fill="#56B4E9"/>
+<rect class="volume-front" x="704.8" y="218" width="144" height="144" fill="#56B4E9"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(808.8 473.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">conv2</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k3 s1 d1 / relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 32]</text>
+<text x="0" y="29.25" font-size="13">4640 learned values</text>
+</g></g>
+<g data-node="5" data-category="Operation"><title>Reshape [1 x 1152]</title>
+<g id="model-glyph-5" data-left="972.65" data-right="992.65" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="972.65,156 974.65,154 992.65,154 990.65,156" fill="#94A3B8"/>
+<polygon class="volume-side" points="990.65,156 992.65,154 992.65,298 990.65,300" fill="#94A3B8"/>
+<rect class="volume-front" x="972.65" y="156" width="18" height="144" fill="#94A3B8"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(982.65 360.75) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Reshape</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 1152]</text>
+</g></g>
+<g data-node="6" data-category="Dense"><title>fc [1 x 128]</title>
+<g id="model-glyph-6" data-left="1082.8" data-right="1102.8" data-face-width="18" data-face-height="16" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="1082.8,156 1084.8,154 1102.8,154 1100.8,156" fill="#0072B2"/>
+<polygon class="volume-side" points="1100.8,156 1102.8,154 1102.8,170 1100.8,172" fill="#0072B2"/>
+<rect class="volume-front" x="1082.8" y="156" width="18" height="16" fill="#0072B2"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(1092.8 279.225) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">fc</text>
+<text x="0" y="-4.55" font-size="13">Dense / relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 128]</text>
+<text x="0" y="29.25" font-size="13">147584 learned values</text>
+</g></g>
+<g data-node="7" data-category="Dense"><title>q [1 x 4]</title>
+<g id="model-glyph-7" data-left="1201.4" data-right="1221.4" data-face-width="18" data-face-height="2" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="1201.4,156 1203.4,154 1221.4,154 1219.4,156" fill="#0072B2"/>
+<polygon class="volume-side" points="1219.4,156 1221.4,154 1221.4,156 1219.4,158" fill="#0072B2"/>
+<rect class="volume-front" x="1201.4" y="156" width="18" height="2" fill="#0072B2"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(1211.4 252.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">q</text>
+<text x="0" y="-4.55" font-size="13">Dense / identity</text>
+<text x="0" y="12.35" font-size="13">[1 x 4]</text>
+<text x="0" y="29.25" font-size="13">516 learned values</text>
+</g></g>
+<g data-node="8" data-category="Output"><title>Output [1 x 4]</title>
+<g id="model-glyph-8" data-left="1303.1" data-right="1323.1" data-face-width="18" data-face-height="2" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="1303.1,156 1305.1,154 1323.1,154 1321.1,156" fill="#6C8194"/>
+<polygon class="volume-side" points="1321.1,156 1323.1,154 1323.1,156 1321.1,158" fill="#6C8194"/>
+<rect class="volume-front" x="1303.1" y="156" width="18" height="2" fill="#6C8194"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(1313.1 206.075) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 4]</text>
+</g></g>
+</g></svg>

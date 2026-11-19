@@ -1,0 +1,430 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="547.8" height="640.786" viewBox="0 0 547.8 640.786" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">squeezenet / selected-checkpoint test counts</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="16" font-weight="bold">squeezenet / selected-checkpoint test counts</text>
+<text x="289.8" y="56" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 310) rotate(-90)" text-anchor="middle">True class</text>
+<text x="41.8" y="97.6" text-anchor="end">0</text>
+<text transform="translate(73.8 562) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="516" data-value="516"><title>0 → 0: 516</title>
+<rect x="49.8" y="70" width="48" height="48" fill="rgb(60,116,237)" stroke="white"/>
+<text x="73.8" y="97.6" font-size="12" text-anchor="middle" fill="white">516</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="41" data-value="41"><title>0 → 1: 41</title>
+<rect x="97.8" y="70" width="48" height="48" fill="rgb(227,235,248)" stroke="white"/>
+<text x="121.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">41</text>
+</g>
+<g data-true="0" data-predicted="2" data-count="77" data-value="77"><title>0 → 2: 77</title>
+<rect x="145.8" y="70" width="48" height="48" fill="rgb(214,226,247)" stroke="white"/>
+<text x="169.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">77</text>
+</g>
+<g data-true="0" data-predicted="3" data-count="37" data-value="37"><title>0 → 3: 37</title>
+<rect x="193.8" y="70" width="48" height="48" fill="rgb(228,236,248)" stroke="white"/>
+<text x="217.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">37</text>
+</g>
+<g data-true="0" data-predicted="4" data-count="25" data-value="25"><title>0 → 4: 25</title>
+<rect x="241.8" y="70" width="48" height="48" fill="rgb(232,239,248)" stroke="white"/>
+<text x="265.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">25</text>
+</g>
+<g data-true="0" data-predicted="5" data-count="9" data-value="9"><title>0 → 5: 9</title>
+<rect x="289.8" y="70" width="48" height="48" fill="rgb(238,243,249)" stroke="white"/>
+<text x="313.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">9</text>
+</g>
+<g data-true="0" data-predicted="6" data-count="3" data-value="3"><title>0 → 6: 3</title>
+<rect x="337.8" y="70" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="361.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">3</text>
+</g>
+<g data-true="0" data-predicted="7" data-count="34" data-value="34"><title>0 → 7: 34</title>
+<rect x="385.8" y="70" width="48" height="48" fill="rgb(229,236,248)" stroke="white"/>
+<text x="409.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">34</text>
+</g>
+<g data-true="0" data-predicted="8" data-count="222" data-value="222"><title>0 → 8: 222</title>
+<rect x="433.8" y="70" width="48" height="48" fill="rgb(163,189,244)" stroke="white"/>
+<text x="457.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">222</text>
+</g>
+<g data-true="0" data-predicted="9" data-count="36" data-value="36"><title>0 → 9: 36</title>
+<rect x="481.8" y="70" width="48" height="48" fill="rgb(228,236,248)" stroke="white"/>
+<text x="505.8" y="97.6" font-size="12" text-anchor="middle" fill="#172033">36</text>
+</g>
+<text x="41.8" y="145.6" text-anchor="end">1</text>
+<text transform="translate(121.8 562) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="83" data-value="83"><title>1 → 0: 83</title>
+<rect x="49.8" y="118" width="48" height="48" fill="rgb(212,224,247)" stroke="white"/>
+<text x="73.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">83</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="583" data-value="583"><title>1 → 1: 583</title>
+<rect x="97.8" y="118" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="121.8" y="145.6" font-size="12" text-anchor="middle" fill="white">583</text>
+</g>
+<g data-true="1" data-predicted="2" data-count="4" data-value="4"><title>1 → 2: 4</title>
+<rect x="145.8" y="118" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="169.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">4</text>
+</g>
+<g data-true="1" data-predicted="3" data-count="15" data-value="15"><title>1 → 3: 15</title>
+<rect x="193.8" y="118" width="48" height="48" fill="rgb(236,241,249)" stroke="white"/>
+<text x="217.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">15</text>
+</g>
+<g data-true="1" data-predicted="4" data-count="7" data-value="7"><title>1 → 4: 7</title>
+<rect x="241.8" y="118" width="48" height="48" fill="rgb(239,243,249)" stroke="white"/>
+<text x="265.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">7</text>
+</g>
+<g data-true="1" data-predicted="5" data-count="5" data-value="5"><title>1 → 5: 5</title>
+<rect x="289.8" y="118" width="48" height="48" fill="rgb(239,244,249)" stroke="white"/>
+<text x="313.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">5</text>
+</g>
+<g data-true="1" data-predicted="6" data-count="9" data-value="9"><title>1 → 6: 9</title>
+<rect x="337.8" y="118" width="48" height="48" fill="rgb(238,243,249)" stroke="white"/>
+<text x="361.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">9</text>
+</g>
+<g data-true="1" data-predicted="7" data-count="27" data-value="27"><title>1 → 7: 27</title>
+<rect x="385.8" y="118" width="48" height="48" fill="rgb(232,238,248)" stroke="white"/>
+<text x="409.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">27</text>
+</g>
+<g data-true="1" data-predicted="8" data-count="67" data-value="67"><title>1 → 8: 67</title>
+<rect x="433.8" y="118" width="48" height="48" fill="rgb(218,228,247)" stroke="white"/>
+<text x="457.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">67</text>
+</g>
+<g data-true="1" data-predicted="9" data-count="200" data-value="200"><title>1 → 9: 200</title>
+<rect x="481.8" y="118" width="48" height="48" fill="rgb(171,195,244)" stroke="white"/>
+<text x="505.8" y="145.6" font-size="12" text-anchor="middle" fill="#172033">200</text>
+</g>
+<text x="41.8" y="193.6" text-anchor="end">2</text>
+<text transform="translate(169.8 562) rotate(-60)" text-anchor="end">2</text>
+<g data-true="2" data-predicted="0" data-count="91" data-value="91"><title>2 → 0: 91</title>
+<rect x="49.8" y="166" width="48" height="48" fill="rgb(209,222,247)" stroke="white"/>
+<text x="73.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">91</text>
+</g>
+<g data-true="2" data-predicted="1" data-count="14" data-value="14"><title>2 → 1: 14</title>
+<rect x="97.8" y="166" width="48" height="48" fill="rgb(236,241,249)" stroke="white"/>
+<text x="121.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">14</text>
+</g>
+<g data-true="2" data-predicted="2" data-count="229" data-value="229"><title>2 → 2: 229</title>
+<rect x="145.8" y="166" width="48" height="48" fill="rgb(161,188,244)" stroke="white"/>
+<text x="169.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">229</text>
+</g>
+<g data-true="2" data-predicted="3" data-count="111" data-value="111"><title>2 → 3: 111</title>
+<rect x="193.8" y="166" width="48" height="48" fill="rgb(202,217,246)" stroke="white"/>
+<text x="217.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">111</text>
+</g>
+<g data-true="2" data-predicted="4" data-count="160" data-value="160"><title>2 → 4: 160</title>
+<rect x="241.8" y="166" width="48" height="48" fill="rgb(185,205,245)" stroke="white"/>
+<text x="265.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">160</text>
+</g>
+<g data-true="2" data-predicted="5" data-count="122" data-value="122"><title>2 → 5: 122</title>
+<rect x="289.8" y="166" width="48" height="48" fill="rgb(198,214,246)" stroke="white"/>
+<text x="313.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">122</text>
+</g>
+<g data-true="2" data-predicted="6" data-count="170" data-value="170"><title>2 → 6: 170</title>
+<rect x="337.8" y="166" width="48" height="48" fill="rgb(182,202,245)" stroke="white"/>
+<text x="361.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">170</text>
+</g>
+<g data-true="2" data-predicted="7" data-count="67" data-value="67"><title>2 → 7: 67</title>
+<rect x="385.8" y="166" width="48" height="48" fill="rgb(218,228,247)" stroke="white"/>
+<text x="409.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">67</text>
+</g>
+<g data-true="2" data-predicted="8" data-count="16" data-value="16"><title>2 → 8: 16</title>
+<rect x="433.8" y="166" width="48" height="48" fill="rgb(235,241,249)" stroke="white"/>
+<text x="457.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">16</text>
+</g>
+<g data-true="2" data-predicted="9" data-count="20" data-value="20"><title>2 → 9: 20</title>
+<rect x="481.8" y="166" width="48" height="48" fill="rgb(234,240,249)" stroke="white"/>
+<text x="505.8" y="193.6" font-size="12" text-anchor="middle" fill="#172033">20</text>
+</g>
+<text x="41.8" y="241.6" text-anchor="end">3</text>
+<text transform="translate(217.8 562) rotate(-60)" text-anchor="end">3</text>
+<g data-true="3" data-predicted="0" data-count="63" data-value="63"><title>3 → 0: 63</title>
+<rect x="49.8" y="214" width="48" height="48" fill="rgb(219,229,247)" stroke="white"/>
+<text x="73.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">63</text>
+</g>
+<g data-true="3" data-predicted="1" data-count="13" data-value="13"><title>3 → 1: 13</title>
+<rect x="97.8" y="214" width="48" height="48" fill="rgb(236,242,249)" stroke="white"/>
+<text x="121.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">13</text>
+</g>
+<g data-true="3" data-predicted="2" data-count="108" data-value="108"><title>3 → 2: 108</title>
+<rect x="145.8" y="214" width="48" height="48" fill="rgb(203,218,246)" stroke="white"/>
+<text x="169.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">108</text>
+</g>
+<g data-true="3" data-predicted="3" data-count="269" data-value="269"><title>3 → 3: 269</title>
+<rect x="193.8" y="214" width="48" height="48" fill="rgb(147,178,243)" stroke="white"/>
+<text x="217.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">269</text>
+</g>
+<g data-true="3" data-predicted="4" data-count="29" data-value="29"><title>3 → 4: 29</title>
+<rect x="241.8" y="214" width="48" height="48" fill="rgb(231,238,248)" stroke="white"/>
+<text x="265.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">29</text>
+</g>
+<g data-true="3" data-predicted="5" data-count="294" data-value="294"><title>3 → 5: 294</title>
+<rect x="289.8" y="214" width="48" height="48" fill="rgb(138,171,242)" stroke="white"/>
+<text x="313.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">294</text>
+</g>
+<g data-true="3" data-predicted="6" data-count="121" data-value="121"><title>3 → 6: 121</title>
+<rect x="337.8" y="214" width="48" height="48" fill="rgb(199,215,246)" stroke="white"/>
+<text x="361.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">121</text>
+</g>
+<g data-true="3" data-predicted="7" data-count="52" data-value="52"><title>3 → 7: 52</title>
+<rect x="385.8" y="214" width="48" height="48" fill="rgb(223,232,248)" stroke="white"/>
+<text x="409.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">52</text>
+</g>
+<g data-true="3" data-predicted="8" data-count="10" data-value="10"><title>3 → 8: 10</title>
+<rect x="433.8" y="214" width="48" height="48" fill="rgb(238,242,249)" stroke="white"/>
+<text x="457.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">10</text>
+</g>
+<g data-true="3" data-predicted="9" data-count="41" data-value="41"><title>3 → 9: 41</title>
+<rect x="481.8" y="214" width="48" height="48" fill="rgb(227,235,248)" stroke="white"/>
+<text x="505.8" y="241.6" font-size="12" text-anchor="middle" fill="#172033">41</text>
+</g>
+<text x="41.8" y="289.6" text-anchor="end">4</text>
+<text transform="translate(265.8 562) rotate(-60)" text-anchor="end">4</text>
+<g data-true="4" data-predicted="0" data-count="62" data-value="62"><title>4 → 0: 62</title>
+<rect x="49.8" y="262" width="48" height="48" fill="rgb(219,229,248)" stroke="white"/>
+<text x="73.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">62</text>
+</g>
+<g data-true="4" data-predicted="1" data-count="4" data-value="4"><title>4 → 1: 4</title>
+<rect x="97.8" y="262" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="121.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">4</text>
+</g>
+<g data-true="4" data-predicted="2" data-count="120" data-value="120"><title>4 → 2: 120</title>
+<rect x="145.8" y="262" width="48" height="48" fill="rgb(199,215,246)" stroke="white"/>
+<text x="169.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">120</text>
+</g>
+<g data-true="4" data-predicted="3" data-count="71" data-value="71"><title>4 → 3: 71</title>
+<rect x="193.8" y="262" width="48" height="48" fill="rgb(216,227,247)" stroke="white"/>
+<text x="217.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">71</text>
+</g>
+<g data-true="4" data-predicted="4" data-count="249" data-value="249"><title>4 → 4: 249</title>
+<rect x="241.8" y="262" width="48" height="48" fill="rgb(154,183,243)" stroke="white"/>
+<text x="265.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">249</text>
+</g>
+<g data-true="4" data-predicted="5" data-count="63" data-value="63"><title>4 → 5: 63</title>
+<rect x="289.8" y="262" width="48" height="48" fill="rgb(219,229,247)" stroke="white"/>
+<text x="313.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">63</text>
+</g>
+<g data-true="4" data-predicted="6" data-count="264" data-value="264"><title>4 → 6: 264</title>
+<rect x="337.8" y="262" width="48" height="48" fill="rgb(149,179,243)" stroke="white"/>
+<text x="361.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">264</text>
+</g>
+<g data-true="4" data-predicted="7" data-count="140" data-value="140"><title>4 → 7: 140</title>
+<rect x="385.8" y="262" width="48" height="48" fill="rgb(192,210,246)" stroke="white"/>
+<text x="409.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">140</text>
+</g>
+<g data-true="4" data-predicted="8" data-count="9" data-value="9"><title>4 → 8: 9</title>
+<rect x="433.8" y="262" width="48" height="48" fill="rgb(238,243,249)" stroke="white"/>
+<text x="457.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">9</text>
+</g>
+<g data-true="4" data-predicted="9" data-count="18" data-value="18"><title>4 → 9: 18</title>
+<rect x="481.8" y="262" width="48" height="48" fill="rgb(235,240,249)" stroke="white"/>
+<text x="505.8" y="289.6" font-size="12" text-anchor="middle" fill="#172033">18</text>
+</g>
+<text x="41.8" y="337.6" text-anchor="end">5</text>
+<text transform="translate(313.8 562) rotate(-60)" text-anchor="end">5</text>
+<g data-true="5" data-predicted="0" data-count="38" data-value="38"><title>5 → 0: 38</title>
+<rect x="49.8" y="310" width="48" height="48" fill="rgb(228,235,248)" stroke="white"/>
+<text x="73.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">38</text>
+</g>
+<g data-true="5" data-predicted="1" data-count="7" data-value="7"><title>5 → 1: 7</title>
+<rect x="97.8" y="310" width="48" height="48" fill="rgb(239,243,249)" stroke="white"/>
+<text x="121.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">7</text>
+</g>
+<g data-true="5" data-predicted="2" data-count="109" data-value="109"><title>5 → 2: 109</title>
+<rect x="145.8" y="310" width="48" height="48" fill="rgb(203,218,246)" stroke="white"/>
+<text x="169.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">109</text>
+</g>
+<g data-true="5" data-predicted="3" data-count="184" data-value="184"><title>5 → 3: 184</title>
+<rect x="193.8" y="310" width="48" height="48" fill="rgb(177,199,245)" stroke="white"/>
+<text x="217.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">184</text>
+</g>
+<g data-true="5" data-predicted="4" data-count="54" data-value="54"><title>5 → 4: 54</title>
+<rect x="241.8" y="310" width="48" height="48" fill="rgb(222,231,248)" stroke="white"/>
+<text x="265.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">54</text>
+</g>
+<g data-true="5" data-predicted="5" data-count="447" data-value="447"><title>5 → 5: 447</title>
+<rect x="289.8" y="310" width="48" height="48" fill="rgb(85,133,238)" stroke="white"/>
+<text x="313.8" y="337.6" font-size="12" text-anchor="middle" fill="white">447</text>
+</g>
+<g data-true="5" data-predicted="6" data-count="60" data-value="60"><title>5 → 6: 60</title>
+<rect x="337.8" y="310" width="48" height="48" fill="rgb(220,230,248)" stroke="white"/>
+<text x="361.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">60</text>
+</g>
+<g data-true="5" data-predicted="7" data-count="68" data-value="68"><title>5 → 7: 68</title>
+<rect x="385.8" y="310" width="48" height="48" fill="rgb(217,228,247)" stroke="white"/>
+<text x="409.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">68</text>
+</g>
+<g data-true="5" data-predicted="8" data-count="8" data-value="8"><title>5 → 8: 8</title>
+<rect x="433.8" y="310" width="48" height="48" fill="rgb(238,243,249)" stroke="white"/>
+<text x="457.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">8</text>
+</g>
+<g data-true="5" data-predicted="9" data-count="25" data-value="25"><title>5 → 9: 25</title>
+<rect x="481.8" y="310" width="48" height="48" fill="rgb(232,239,248)" stroke="white"/>
+<text x="505.8" y="337.6" font-size="12" text-anchor="middle" fill="#172033">25</text>
+</g>
+<text x="41.8" y="385.6" text-anchor="end">6</text>
+<text transform="translate(361.8 562) rotate(-60)" text-anchor="end">6</text>
+<g data-true="6" data-predicted="0" data-count="20" data-value="20"><title>6 → 0: 20</title>
+<rect x="49.8" y="358" width="48" height="48" fill="rgb(234,240,249)" stroke="white"/>
+<text x="73.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">20</text>
+</g>
+<g data-true="6" data-predicted="1" data-count="5" data-value="5"><title>6 → 1: 5</title>
+<rect x="97.8" y="358" width="48" height="48" fill="rgb(239,244,249)" stroke="white"/>
+<text x="121.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">5</text>
+</g>
+<g data-true="6" data-predicted="2" data-count="81" data-value="81"><title>6 → 2: 81</title>
+<rect x="145.8" y="358" width="48" height="48" fill="rgb(213,225,247)" stroke="white"/>
+<text x="169.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">81</text>
+</g>
+<g data-true="6" data-predicted="3" data-count="144" data-value="144"><title>6 → 3: 144</title>
+<rect x="193.8" y="358" width="48" height="48" fill="rgb(191,209,246)" stroke="white"/>
+<text x="217.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">144</text>
+</g>
+<g data-true="6" data-predicted="4" data-count="151" data-value="151"><title>6 → 4: 151</title>
+<rect x="241.8" y="358" width="48" height="48" fill="rgb(188,207,245)" stroke="white"/>
+<text x="265.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">151</text>
+</g>
+<g data-true="6" data-predicted="5" data-count="54" data-value="54"><title>6 → 5: 54</title>
+<rect x="289.8" y="358" width="48" height="48" fill="rgb(222,231,248)" stroke="white"/>
+<text x="313.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">54</text>
+</g>
+<g data-true="6" data-predicted="6" data-count="472" data-value="472"><title>6 → 6: 472</title>
+<rect x="337.8" y="358" width="48" height="48" fill="rgb(76,127,238)" stroke="white"/>
+<text x="361.8" y="385.6" font-size="12" text-anchor="middle" fill="white">472</text>
+</g>
+<g data-true="6" data-predicted="7" data-count="53" data-value="53"><title>6 → 7: 53</title>
+<rect x="385.8" y="358" width="48" height="48" fill="rgb(222,232,248)" stroke="white"/>
+<text x="409.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">53</text>
+</g>
+<g data-true="6" data-predicted="8" data-count="1" data-value="1"><title>6 → 8: 1</title>
+<rect x="433.8" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="457.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="6" data-predicted="9" data-count="19" data-value="19"><title>6 → 9: 19</title>
+<rect x="481.8" y="358" width="48" height="48" fill="rgb(234,240,249)" stroke="white"/>
+<text x="505.8" y="385.6" font-size="12" text-anchor="middle" fill="#172033">19</text>
+</g>
+<text x="41.8" y="433.6" text-anchor="end">7</text>
+<text transform="translate(409.8 562) rotate(-60)" text-anchor="end">7</text>
+<g data-true="7" data-predicted="0" data-count="46" data-value="46"><title>7 → 0: 46</title>
+<rect x="49.8" y="406" width="48" height="48" fill="rgb(225,233,248)" stroke="white"/>
+<text x="73.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">46</text>
+</g>
+<g data-true="7" data-predicted="1" data-count="13" data-value="13"><title>7 → 1: 13</title>
+<rect x="97.8" y="406" width="48" height="48" fill="rgb(236,242,249)" stroke="white"/>
+<text x="121.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">13</text>
+</g>
+<g data-true="7" data-predicted="2" data-count="59" data-value="59"><title>7 → 2: 59</title>
+<rect x="145.8" y="406" width="48" height="48" fill="rgb(220,230,248)" stroke="white"/>
+<text x="169.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">59</text>
+</g>
+<g data-true="7" data-predicted="3" data-count="62" data-value="62"><title>7 → 3: 62</title>
+<rect x="193.8" y="406" width="48" height="48" fill="rgb(219,229,248)" stroke="white"/>
+<text x="217.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">62</text>
+</g>
+<g data-true="7" data-predicted="4" data-count="58" data-value="58"><title>7 → 4: 58</title>
+<rect x="241.8" y="406" width="48" height="48" fill="rgb(221,230,248)" stroke="white"/>
+<text x="265.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">58</text>
+</g>
+<g data-true="7" data-predicted="5" data-count="120" data-value="120"><title>7 → 5: 120</title>
+<rect x="289.8" y="406" width="48" height="48" fill="rgb(199,215,246)" stroke="white"/>
+<text x="313.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">120</text>
+</g>
+<g data-true="7" data-predicted="6" data-count="35" data-value="35"><title>7 → 6: 35</title>
+<rect x="337.8" y="406" width="48" height="48" fill="rgb(229,236,248)" stroke="white"/>
+<text x="361.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">35</text>
+</g>
+<g data-true="7" data-predicted="7" data-count="546" data-value="546"><title>7 → 7: 546</title>
+<rect x="385.8" y="406" width="48" height="48" fill="rgb(50,108,236)" stroke="white"/>
+<text x="409.8" y="433.6" font-size="12" text-anchor="middle" fill="white">546</text>
+</g>
+<g data-true="7" data-predicted="8" data-count="4" data-value="4"><title>7 → 8: 4</title>
+<rect x="433.8" y="406" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="457.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">4</text>
+</g>
+<g data-true="7" data-predicted="9" data-count="57" data-value="57"><title>7 → 9: 57</title>
+<rect x="481.8" y="406" width="48" height="48" fill="rgb(221,231,248)" stroke="white"/>
+<text x="505.8" y="433.6" font-size="12" text-anchor="middle" fill="#172033">57</text>
+</g>
+<text x="41.8" y="481.6" text-anchor="end">8</text>
+<text transform="translate(457.8 562) rotate(-60)" text-anchor="end">8</text>
+<g data-true="8" data-predicted="0" data-count="257" data-value="257"><title>8 → 0: 257</title>
+<rect x="49.8" y="454" width="48" height="48" fill="rgb(151,181,243)" stroke="white"/>
+<text x="73.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">257</text>
+</g>
+<g data-true="8" data-predicted="1" data-count="52" data-value="52"><title>8 → 1: 52</title>
+<rect x="97.8" y="454" width="48" height="48" fill="rgb(223,232,248)" stroke="white"/>
+<text x="121.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">52</text>
+</g>
+<g data-true="8" data-predicted="2" data-count="37" data-value="37"><title>8 → 2: 37</title>
+<rect x="145.8" y="454" width="48" height="48" fill="rgb(228,236,248)" stroke="white"/>
+<text x="169.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">37</text>
+</g>
+<g data-true="8" data-predicted="3" data-count="19" data-value="19"><title>8 → 3: 19</title>
+<rect x="193.8" y="454" width="48" height="48" fill="rgb(234,240,249)" stroke="white"/>
+<text x="217.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">19</text>
+</g>
+<g data-true="8" data-predicted="4" data-count="2" data-value="2"><title>8 → 4: 2</title>
+<rect x="241.8" y="454" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="265.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">2</text>
+</g>
+<g data-true="8" data-predicted="5" data-count="7" data-value="7"><title>8 → 5: 7</title>
+<rect x="289.8" y="454" width="48" height="48" fill="rgb(239,243,249)" stroke="white"/>
+<text x="313.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">7</text>
+</g>
+<g data-true="8" data-predicted="6" data-count="8" data-value="8"><title>8 → 6: 8</title>
+<rect x="337.8" y="454" width="48" height="48" fill="rgb(238,243,249)" stroke="white"/>
+<text x="361.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">8</text>
+</g>
+<g data-true="8" data-predicted="7" data-count="10" data-value="10"><title>8 → 7: 10</title>
+<rect x="385.8" y="454" width="48" height="48" fill="rgb(238,242,249)" stroke="white"/>
+<text x="409.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">10</text>
+</g>
+<g data-true="8" data-predicted="8" data-count="535" data-value="535"><title>8 → 8: 535</title>
+<rect x="433.8" y="454" width="48" height="48" fill="rgb(54,111,236)" stroke="white"/>
+<text x="457.8" y="481.6" font-size="12" text-anchor="middle" fill="white">535</text>
+</g>
+<g data-true="8" data-predicted="9" data-count="73" data-value="73"><title>8 → 9: 73</title>
+<rect x="481.8" y="454" width="48" height="48" fill="rgb(215,227,247)" stroke="white"/>
+<text x="505.8" y="481.6" font-size="12" text-anchor="middle" fill="#172033">73</text>
+</g>
+<text x="41.8" y="529.6" text-anchor="end">9</text>
+<text transform="translate(505.8 562) rotate(-60)" text-anchor="end">9</text>
+<g data-true="9" data-predicted="0" data-count="94" data-value="94"><title>9 → 0: 94</title>
+<rect x="49.8" y="502" width="48" height="48" fill="rgb(208,221,247)" stroke="white"/>
+<text x="73.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">94</text>
+</g>
+<g data-true="9" data-predicted="1" data-count="157" data-value="157"><title>9 → 1: 157</title>
+<rect x="97.8" y="502" width="48" height="48" fill="rgb(186,206,245)" stroke="white"/>
+<text x="121.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">157</text>
+</g>
+<g data-true="9" data-predicted="2" data-count="7" data-value="7"><title>9 → 2: 7</title>
+<rect x="145.8" y="502" width="48" height="48" fill="rgb(239,243,249)" stroke="white"/>
+<text x="169.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">7</text>
+</g>
+<g data-true="9" data-predicted="3" data-count="20" data-value="20"><title>9 → 3: 20</title>
+<rect x="193.8" y="502" width="48" height="48" fill="rgb(234,240,249)" stroke="white"/>
+<text x="217.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">20</text>
+</g>
+<g data-true="9" data-predicted="4" data-count="6" data-value="6"><title>9 → 4: 6</title>
+<rect x="241.8" y="502" width="48" height="48" fill="rgb(239,243,249)" stroke="white"/>
+<text x="265.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">6</text>
+</g>
+<g data-true="9" data-predicted="5" data-count="14" data-value="14"><title>9 → 5: 14</title>
+<rect x="289.8" y="502" width="48" height="48" fill="rgb(236,241,249)" stroke="white"/>
+<text x="313.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">14</text>
+</g>
+<g data-true="9" data-predicted="6" data-count="12" data-value="12"><title>9 → 6: 12</title>
+<rect x="337.8" y="502" width="48" height="48" fill="rgb(237,242,249)" stroke="white"/>
+<text x="361.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">12</text>
+</g>
+<g data-true="9" data-predicted="7" data-count="49" data-value="49"><title>9 → 7: 49</title>
+<rect x="385.8" y="502" width="48" height="48" fill="rgb(224,233,248)" stroke="white"/>
+<text x="409.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">49</text>
+</g>
+<g data-true="9" data-predicted="8" data-count="62" data-value="62"><title>9 → 8: 62</title>
+<rect x="433.8" y="502" width="48" height="48" fill="rgb(219,229,248)" stroke="white"/>
+<text x="457.8" y="529.6" font-size="12" text-anchor="middle" fill="#172033">62</text>
+</g>
+<g data-true="9" data-predicted="9" data-count="579" data-value="579"><title>9 → 9: 579</title>
+<rect x="481.8" y="502" width="48" height="48" fill="rgb(38,100,235)" stroke="white"/>
+<text x="505.8" y="529.6" font-size="12" text-anchor="middle" fill="white">579</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="49.8" y="592.786" width="480" height="10" fill="url(#cm-scale)"/>
+<text x="49.8" y="617.786">0</text><text x="529.8" y="617.786" text-anchor="end">583</text>
+</g></svg>

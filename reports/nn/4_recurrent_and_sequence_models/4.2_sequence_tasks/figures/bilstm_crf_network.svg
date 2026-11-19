@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="594.9" height="601.6" viewBox="0 0 594.9 601.6" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">imdb lstm source graph</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">imdb lstm source graph</text>
+<text x="24" y="51" font-size="12">4 nodes | 2610 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="69" font-size="11">Block</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons sampled;</text>
+<text x="24" y="115" font-size="11">exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="232,170 308.75,170 308.75,316 232,237" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 232 203.5 C 270.375 203.5 270.375 243 308.75 243" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="328.75,170 435.8,170 435.8,208 328.75,316" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 328.75 243 C 382.275 243 382.275 189 435.8 189" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="455.8,170 537.5,170 537.5,208 455.8,208" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 455.8 189 C 496.65 189 496.65 189 537.5 189" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 48 x 256]</title>
+<g id="model-glyph-0" data-left="24" data-right="232" data-face-width="144" data-face-height="3" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="24,234 88,170 232,170 168,234" fill="#E69F00"/>
+<polygon class="volume-side" points="168,234 232,170 232,173 168,237" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="234" width="144" height="3" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(128 314.65) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 48 x 256]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>Embedding and masked 48-step LSTM [1 x 8]</title>
+<g id="model-glyph-1" data-left="308.75" data-right="328.75" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="308.75,172 310.75,170 328.75,170 326.75,172" fill="#8B80C9"/>
+<polygon class="volume-side" points="326.75,172 328.75,170 328.75,314 326.75,316" fill="#8B80C9"/>
+<rect class="volume-front" x="308.75" y="172" width="18" height="144" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(318.75 452.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-29.9" font-size="13" font-weight="600">Embedding and masked 48-step</text>
+<text x="0" y="-13" font-size="13">LSTM</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 8]</text>
+<text x="0" y="37.7" font-size="13">2592 learned values</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>Sentiment head [1 x 2]</title>
+<g id="model-glyph-2" data-left="435.8" data-right="455.8" data-face-width="18" data-face-height="36" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="435.8,172 437.8,170 455.8,170 453.8,172" fill="#8B80C9"/>
+<polygon class="volume-side" points="453.8,172 455.8,170 455.8,206 453.8,208" fill="#8B80C9"/>
+<rect class="volume-front" x="435.8" y="172" width="18" height="36" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(445.8 298.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Sentiment head</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+<text x="0" y="29.25" font-size="13">18 learned values</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 2]</title>
+<g id="model-glyph-3" data-left="537.5" data-right="557.5" data-face-width="18" data-face-height="36" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="537.5,172 539.5,170 557.5,170 555.5,172" fill="#6C8194"/>
+<polygon class="volume-side" points="555.5,172 557.5,170 557.5,206 555.5,208" fill="#6C8194"/>
+<rect class="volume-front" x="537.5" y="172" width="18" height="36" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(547.5 256.075) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+</g></g>
+</g></svg>

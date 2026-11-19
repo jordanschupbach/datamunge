@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="488.100" height="406.400" viewBox="0 0 488.100 406.400" role="img"><title>Method diagram</title>
+<defs>
+<path id="dm-g-0" d=""/>
+<path id="dm-g-16" d="M39 320 C39 245 43 155 84 79 C127 -2 200 -22 249 -22 C303 -22 379 -1 423 94 C455 163 460 241 460 320 C460 400 455 480 420 554 C374 650 292 666 250 666 C190 666 117 640 76 547 C44 478 39 400 39 320 ZM122 332 C122 396 122 462 130 516 C149 635 224 644 249 644 C282 644 348 626 367 527 C377 471 377 395 377 332 C377 257 377 189 366 125 C351 30 294 0 249 0 C210 0 151 25 133 121 C122 181 122 273 122 332 Z"/>
+<path id="dm-g-17" d="M89 571 C109 571 168 571 220 597 L220 79 C220 43 217 31 127 31 L95 31 L95 0 C130 3 217 3 257 3 C297 3 384 3 419 0 L419 31 L387 31 C297 31 294 42 294 79 L294 640 C294 664 294 666 271 666 C209 602 121 602 89 602 Z"/>
+<path id="dm-g-18" d="M50 0 L421 0 L449 174 L424 174 C419 144 412 100 402 85 C395 77 329 77 307 77 L127 77 L233 180 C389 318 449 372 449 472 C449 586 359 666 237 666 C124 666 50 574 50 485 C50 429 100 429 103 429 C120 429 155 441 155 482 C155 508 137 534 102 534 C94 534 92 534 89 533 C112 598 166 635 224 635 C315 635 358 554 358 472 C358 392 308 313 253 251 L61 37 C50 26 50 24 50 0 Z"/>
+<path id="dm-g-19" d="M42 135 C42 44 135 -22 244 -22 C366 -22 457 69 457 171 C457 253 394 331 290 352 C372 379 430 449 430 528 C430 610 342 666 246 666 C145 666 69 606 69 530 C69 497 91 478 120 478 C151 478 171 500 171 529 C171 579 124 579 109 579 C140 628 206 641 242 641 C283 641 338 619 338 529 C338 517 336 459 310 415 C280 367 246 364 221 363 C213 362 189 360 182 360 C174 359 167 358 167 348 C167 337 174 337 191 337 L235 337 C317 337 354 269 354 171 C354 35 285 6 241 6 C198 6 123 23 88 82 C123 77 154 99 154 137 C154 173 127 193 98 193 C74 193 42 179 42 135 Z"/>
+<path id="dm-g-20" d="M28 165 L294 165 L294 78 C294 42 292 31 218 31 L197 31 L197 0 C238 3 290 3 332 3 C374 3 427 3 468 0 L468 31 L447 31 C373 31 371 42 371 78 L371 165 L471 165 L471 196 L371 196 L371 651 C371 671 371 677 355 677 C346 677 343 677 335 665 L28 196 ZM56 196 L300 569 L300 196 Z"/>
+<path id="dm-g-21" d="M50 161 C50 75 119 -22 231 -22 C347 -22 449 74 449 201 C449 320 367 420 259 420 C211 420 168 404 132 369 L132 564 C152 558 185 551 217 551 C340 551 410 642 410 655 C410 661 407 666 400 666 C399 666 397 666 392 663 C372 654 323 634 256 634 C216 634 170 641 123 662 C115 665 113 665 111 665 C101 665 101 657 101 641 L101 345 C101 327 101 319 115 319 C122 319 124 322 128 328 C139 344 176 398 257 398 C309 398 334 352 342 334 C358 297 360 258 360 208 C360 173 360 113 336 71 C312 32 275 6 229 6 C156 6 99 59 82 118 C85 117 88 116 99 116 C132 116 149 141 149 165 C149 189 132 214 99 214 C85 214 50 207 50 161 Z"/>
+<path id="dm-g-22" d="M42 316 C42 49 158 -22 251 -22 C362 -22 457 72 457 204 C457 331 368 427 257 427 C189 427 152 376 132 328 L132 352 C132 605 256 641 307 641 C331 641 373 635 395 601 C380 601 340 601 340 556 C340 525 364 510 386 510 C402 510 432 519 432 558 C432 618 388 666 305 666 C177 666 42 537 42 316 ZM134 226 C134 304 166 404 256 404 C272 404 318 404 349 342 C367 305 367 254 367 205 C367 157 367 107 350 71 C320 11 274 6 251 6 C188 6 158 66 152 81 C134 128 134 208 134 226 Z"/>
+<path id="dm-g-23" d="M56 470 L81 470 C84 486 93 549 106 561 C113 567 191 567 204 567 L411 567 C400 551 321 442 299 409 C209 274 176 135 176 33 C176 23 176 -22 222 -22 C268 -22 268 23 268 33 L268 84 C268 139 271 194 279 248 C283 271 297 357 341 419 L476 609 C485 621 485 623 485 644 L242 644 C120 644 118 657 114 676 L89 676 Z"/>
+<path id="dm-g-26" d="M86 378 C86 349 110 325 139 325 C168 325 192 349 192 378 C192 407 168 431 139 431 C110 431 86 407 86 378 ZM86 53 C86 24 110 0 139 0 C168 0 192 24 192 53 C192 82 168 106 139 106 C110 106 86 82 86 53 Z"/>
+<path id="dm-g-44" d="M33 0 L554 0 L582 258 L557 258 C546 156 532 31 356 31 L274 31 C227 31 225 38 225 71 L225 604 C225 638 225 652 320 652 L353 652 L353 683 C317 680 226 680 185 680 C146 680 68 680 33 683 L33 652 L57 652 C134 652 136 641 136 605 L136 78 C136 42 134 31 57 31 L33 31 Z"/>
+<path id="dm-g-65" d="M42 95 C42 14 139 -11 202 -11 C268 -11 314 29 333 76 C337 36 364 -6 411 -6 C432 -6 493 8 493 89 L493 145 L468 145 L468 89 C468 31 443 25 432 25 C399 25 395 70 395 75 L395 275 C395 317 395 356 359 393 C320 432 270 448 222 448 C140 448 71 401 71 335 C71 305 91 288 117 288 C145 288 163 308 163 334 C163 346 158 379 112 380 C139 415 188 426 220 426 C269 426 326 387 326 298 L326 261 C275 258 205 255 142 225 C67 191 42 139 42 95 ZM119 96 C119 151 161 234 326 240 L326 140 C326 45 254 11 209 11 C160 11 119 46 119 96 Z"/>
+<path id="dm-g-67" d="M34 216 C34 88 133 -11 249 -11 C383 -11 415 109 415 119 C415 129 405 129 402 129 C393 129 391 125 389 119 C360 26 295 14 258 14 C205 14 117 57 117 218 C117 381 199 423 252 423 C261 423 324 422 359 386 C318 383 312 353 312 340 C312 314 330 294 358 294 C384 294 404 311 404 341 C404 409 328 448 251 448 C126 448 34 340 34 216 Z"/>
+<path id="dm-g-68" d="M34 215 C34 88 132 -11 246 -11 C310 -11 355 23 380 55 L380 -11 L527 0 L527 31 C457 31 449 38 449 87 L449 694 L305 683 L305 652 C375 652 383 645 383 596 L383 380 C354 416 311 442 257 442 C139 442 34 344 34 215 ZM117 214 C117 251 119 311 148 356 C169 387 207 420 261 420 C296 420 338 405 369 360 C380 343 380 341 380 323 L380 118 C380 100 380 98 369 81 C339 33 294 11 251 11 C206 11 170 37 146 75 C120 116 117 173 117 214 Z"/>
+<path id="dm-g-69" d="M28 220 C28 86 133 -11 248 -11 C370 -11 415 100 415 119 C415 129 407 131 402 131 C393 131 391 125 389 117 C354 14 264 14 254 14 C204 14 164 44 141 81 C111 129 111 195 111 231 L390 231 C412 231 415 231 415 252 C415 351 361 448 236 448 C120 448 28 345 28 220 ZM112 252 C118 401 202 426 236 426 C339 426 349 291 349 252 Z"/>
+<path id="dm-g-70" d="M33 400 L112 400 L112 76 C112 31 101 31 34 31 L34 0 C73 1 120 3 148 3 C188 3 235 3 275 0 L275 31 L254 31 C180 31 178 42 178 78 L178 400 L292 400 L292 431 L175 431 L175 547 C175 635 223 683 267 683 C270 683 285 683 300 676 C288 672 270 659 270 634 C270 611 286 591 313 591 C342 591 357 611 357 635 C357 672 320 705 267 705 C197 705 112 652 112 546 L112 431 L33 431 Z"/>
+<path id="dm-g-71" d="M28 -79 C28 -151 127 -206 249 -206 C367 -206 471 -155 471 -77 C471 -42 457 9 406 37 C353 65 295 65 234 65 C209 65 166 65 159 66 C127 70 106 101 106 133 C106 137 106 160 123 180 C162 152 203 149 222 149 C315 149 384 218 384 295 C384 332 368 369 343 392 C379 426 415 431 433 431 C435 431 440 431 443 430 C432 426 427 415 427 403 C427 386 440 374 456 374 C466 374 485 381 485 404 C485 421 473 453 434 453 C414 453 370 447 328 406 C286 439 244 442 222 442 C129 442 60 373 60 296 C60 252 82 214 107 193 C94 178 76 145 76 110 C76 79 89 41 120 21 C60 4 28 -39 28 -79 ZM80 -79 C80 -33 118 4 162 7 L221 7 C307 7 419 7 419 -79 C419 -133 348 -183 250 -183 C149 -183 80 -132 80 -79 ZM135 295 C135 322 136 354 151 379 C159 391 182 419 222 419 C309 419 309 319 309 296 C309 269 308 237 293 212 C285 200 262 172 222 172 C135 172 135 272 135 295 Z"/>
+<path id="dm-g-72" d="M32 0 C67 1 118 3 145 3 C171 3 223 1 257 0 L257 31 C190 31 179 31 179 76 L179 260 C179 364 250 420 314 420 C377 420 388 366 388 309 L388 76 C388 31 377 31 310 31 L310 0 C345 1 396 3 423 3 C449 3 501 1 535 0 L535 31 C483 31 458 31 457 61 L457 252 C457 338 457 369 426 405 C412 422 379 442 321 442 C237 442 193 382 177 346 L176 346 L176 694 L32 683 L32 652 C102 652 110 645 110 596 L110 76 C110 31 99 31 32 31 Z"/>
+<path id="dm-g-73" d="M75 616 C75 589 97 563 128 563 C156 563 181 584 181 616 C181 648 156 669 128 669 C97 669 75 642 75 616 ZM33 0 C65 1 119 3 143 3 C178 3 213 1 247 0 L247 31 C181 31 177 36 177 75 L177 442 L37 431 L37 400 C102 400 111 394 111 345 L111 76 C111 31 100 31 33 31 Z"/>
+<path id="dm-g-75" d="M28 0 C61 1 108 3 137 3 C167 3 207 2 247 0 L247 31 C180 31 169 31 169 76 L169 179 L233 234 C310 128 352 72 352 54 C352 35 335 31 316 31 L316 0 C344 1 403 3 424 3 C453 3 482 2 511 0 L511 31 C474 31 452 31 414 84 L287 263 C286 265 281 271 281 274 C281 278 352 338 362 346 C425 397 467 399 488 400 L488 431 C459 428 446 428 418 428 C382 428 320 430 306 431 L306 400 C325 399 335 388 335 375 C335 355 321 343 313 336 L172 214 L172 694 L28 683 L28 652 C98 652 106 645 106 596 L106 76 C106 31 95 31 28 31 Z"/>
+<path id="dm-g-76" d="M33 0 C66 1 119 3 144 3 C169 3 218 1 255 0 L255 31 C188 31 177 31 177 76 L177 694 L33 683 L33 652 C103 652 111 645 111 596 L111 76 C111 31 100 31 33 31 Z"/>
+<path id="dm-g-78" d="M32 0 C67 1 118 3 145 3 C171 3 223 1 257 0 L257 31 C190 31 179 31 179 76 L179 260 C179 364 250 420 314 420 C377 420 388 366 388 309 L388 76 C388 31 377 31 310 31 L310 0 C345 1 396 3 423 3 C449 3 501 1 535 0 L535 31 C483 31 458 31 457 61 L457 252 C457 338 457 369 426 405 C412 422 379 442 321 442 C248 442 201 399 173 337 L173 442 L32 431 L32 400 C102 400 110 393 110 344 L110 76 C110 31 99 31 32 31 Z"/>
+<path id="dm-g-79" d="M28 214 C28 85 132 -11 249 -11 C370 -11 471 87 471 214 C471 342 371 448 250 448 C125 448 28 339 28 214 ZM111 222 C111 261 111 315 135 359 C162 405 209 426 249 426 C293 426 336 404 362 361 C388 318 388 260 388 222 C388 186 388 132 366 88 C344 43 300 14 250 14 C207 14 163 35 136 81 C111 125 111 186 111 222 Z"/>
+<path id="dm-g-82" d="M28 0 C67 1 114 3 142 3 C182 3 229 3 269 0 L269 31 L248 31 C174 31 172 42 172 78 L172 232 C172 331 214 420 290 420 C297 420 299 420 301 419 C298 418 278 406 278 380 C278 352 299 337 321 337 C339 337 364 349 364 381 C364 413 333 442 290 442 C217 442 181 375 167 332 L167 442 L28 431 L28 400 C98 400 106 393 106 344 L106 76 C106 31 95 31 28 31 Z"/>
+<path id="dm-g-83" d="M33 13 C33 -4 33 -11 44 -11 C49 -11 50 -10 69 9 C71 11 71 13 89 32 C133 -10 178 -11 199 -11 C314 -11 360 56 360 128 C360 181 330 211 318 223 C285 255 246 263 204 271 C148 282 81 295 81 353 C81 388 107 429 193 429 C303 429 308 339 310 308 C311 299 320 299 322 299 C335 299 335 304 335 323 L335 424 C335 441 335 448 324 448 C319 448 317 448 304 436 C301 432 291 423 287 420 C249 448 208 448 193 448 C71 448 33 381 33 325 C33 290 49 262 76 240 C108 214 136 208 208 194 C230 190 312 174 312 102 C312 51 277 11 199 11 C115 11 79 68 60 153 C57 166 56 170 46 170 C33 170 33 163 33 145 Z"/>
+<path id="dm-g-84" d="M19 400 L104 400 L104 124 C104 1 197 -11 233 -11 C304 -11 332 60 332 124 L332 181 L307 181 L307 126 C307 52 277 14 240 14 C173 14 173 105 173 122 L173 400 L316 400 L316 431 L173 431 L173 615 L148 615 C147 533 117 426 19 422 Z"/>
+<path id="dm-g-85" d="M32 400 C110 400 110 397 110 308 L110 158 C110 80 110 -11 262 -11 C318 -11 362 17 391 79 L391 -11 L535 0 L535 31 C465 31 457 38 457 87 L457 442 L310 431 L310 400 C380 400 388 393 388 344 L388 166 C388 79 340 11 267 11 C183 11 179 58 179 110 L179 442 L32 431 Z"/>
+</defs>
+<rect width="100%" height="100%" fill="white"/>
+<text aria-hidden="true" opacity="0" x="64.050" y="113.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 0</text>
+<g role="img" aria-label="filter 0" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 0</title>
+<use href="#dm-g-70" transform="translate(40.730 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(45.610 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(50.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(54.474 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(60.682 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(67.786 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(74.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-16" transform="translate(79.370 113.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="28.050,138.350 52.050,138.350 52.050,162.350 28.050,162.350 " fill="rgb(100,100,100)" fill-opacity="1.000" stroke="rgb(100,100,100)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="52.050,138.350 76.050,138.350 76.050,162.350 52.050,162.350 " fill="rgb(221,221,221)" fill-opacity="1.000" stroke="rgb(221,221,221)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="76.050,138.350 100.050,138.350 100.050,162.350 76.050,162.350 " fill="rgb(146,146,146)" fill-opacity="1.000" stroke="rgb(146,146,146)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="28.050,162.350 52.050,162.350 52.050,186.350 28.050,186.350 " fill="rgb(47,47,47)" fill-opacity="1.000" stroke="rgb(47,47,47)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="52.050,162.350 76.050,162.350 76.050,186.350 52.050,186.350 " fill="rgb(196,196,196)" fill-opacity="1.000" stroke="rgb(196,196,196)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="76.050,162.350 100.050,162.350 100.050,186.350 76.050,186.350 " fill="rgb(161,161,161)" fill-opacity="1.000" stroke="rgb(161,161,161)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="28.050,186.350 52.050,186.350 52.050,210.350 28.050,210.350 " fill="rgb(143,143,143)" fill-opacity="1.000" stroke="rgb(143,143,143)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="52.050,186.350 76.050,186.350 76.050,210.350 52.050,210.350 " fill="rgb(214,214,214)" fill-opacity="1.000" stroke="rgb(214,214,214)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="76.050,186.350 100.050,186.350 100.050,210.350 76.050,210.350 " fill="rgb(161,161,161)" fill-opacity="1.000" stroke="rgb(161,161,161)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="184.050" y="113.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 1</text>
+<g role="img" aria-label="filter 1" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 1</title>
+<use href="#dm-g-70" transform="translate(160.730 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(165.610 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(170.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(174.474 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(180.682 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(187.786 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(194.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-17" transform="translate(199.370 113.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="148.050,138.350 172.050,138.350 172.050,162.350 148.050,162.350 " fill="rgb(58,58,58)" fill-opacity="1.000" stroke="rgb(58,58,58)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="172.050,138.350 196.050,138.350 196.050,162.350 172.050,162.350 " fill="rgb(108,108,108)" fill-opacity="1.000" stroke="rgb(108,108,108)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="196.050,138.350 220.050,138.350 220.050,162.350 196.050,162.350 " fill="rgb(186,186,186)" fill-opacity="1.000" stroke="rgb(186,186,186)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="148.050,162.350 172.050,162.350 172.050,186.350 148.050,186.350 " fill="rgb(87,87,87)" fill-opacity="1.000" stroke="rgb(87,87,87)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="172.050,162.350 196.050,162.350 196.050,186.350 172.050,186.350 " fill="rgb(134,134,134)" fill-opacity="1.000" stroke="rgb(134,134,134)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="196.050,162.350 220.050,162.350 220.050,186.350 196.050,186.350 " fill="rgb(79,79,79)" fill-opacity="1.000" stroke="rgb(79,79,79)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="148.050,186.350 172.050,186.350 172.050,210.350 148.050,210.350 " fill="rgb(160,160,160)" fill-opacity="1.000" stroke="rgb(160,160,160)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="172.050,186.350 196.050,186.350 196.050,210.350 172.050,210.350 " fill="rgb(211,211,211)" fill-opacity="1.000" stroke="rgb(211,211,211)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="196.050,186.350 220.050,186.350 220.050,210.350 196.050,210.350 " fill="rgb(58,58,58)" fill-opacity="1.000" stroke="rgb(58,58,58)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="304.050" y="113.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 2</text>
+<g role="img" aria-label="filter 2" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 2</title>
+<use href="#dm-g-70" transform="translate(280.730 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(285.610 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(290.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(294.474 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(300.682 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(307.786 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(314.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-18" transform="translate(319.370 113.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="268.050,138.350 292.050,138.350 292.050,162.350 268.050,162.350 " fill="rgb(122,122,122)" fill-opacity="1.000" stroke="rgb(122,122,122)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="292.050,138.350 316.050,138.350 316.050,162.350 292.050,162.350 " fill="rgb(199,199,199)" fill-opacity="1.000" stroke="rgb(199,199,199)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="316.050,138.350 340.050,138.350 340.050,162.350 316.050,162.350 " fill="rgb(46,46,46)" fill-opacity="1.000" stroke="rgb(46,46,46)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="268.050,162.350 292.050,162.350 292.050,186.350 268.050,186.350 " fill="rgb(42,42,42)" fill-opacity="1.000" stroke="rgb(42,42,42)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="292.050,162.350 316.050,162.350 316.050,186.350 292.050,186.350 " fill="rgb(156,156,156)" fill-opacity="1.000" stroke="rgb(156,156,156)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="316.050,162.350 340.050,162.350 340.050,186.350 316.050,186.350 " fill="rgb(220,220,220)" fill-opacity="1.000" stroke="rgb(220,220,220)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="268.050,186.350 292.050,186.350 292.050,210.350 268.050,210.350 " fill="rgb(145,145,145)" fill-opacity="1.000" stroke="rgb(145,145,145)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="292.050,186.350 316.050,186.350 316.050,210.350 292.050,210.350 " fill="rgb(31,31,31)" fill-opacity="1.000" stroke="rgb(31,31,31)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="316.050,186.350 340.050,186.350 340.050,210.350 316.050,210.350 " fill="rgb(39,39,39)" fill-opacity="1.000" stroke="rgb(39,39,39)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="424.050" y="113.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 3</text>
+<g role="img" aria-label="filter 3" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 3</title>
+<use href="#dm-g-70" transform="translate(400.730 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(405.610 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(410.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(414.474 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(420.682 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(427.786 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(434.042 113.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-19" transform="translate(439.370 113.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="388.050,138.350 412.050,138.350 412.050,162.350 388.050,162.350 " fill="rgb(204,204,204)" fill-opacity="1.000" stroke="rgb(204,204,204)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="412.050,138.350 436.050,138.350 436.050,162.350 412.050,162.350 " fill="rgb(122,122,122)" fill-opacity="1.000" stroke="rgb(122,122,122)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="436.050,138.350 460.050,138.350 460.050,162.350 436.050,162.350 " fill="rgb(108,108,108)" fill-opacity="1.000" stroke="rgb(108,108,108)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="388.050,162.350 412.050,162.350 412.050,186.350 388.050,186.350 " fill="rgb(167,167,167)" fill-opacity="1.000" stroke="rgb(167,167,167)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="412.050,162.350 436.050,162.350 436.050,186.350 412.050,186.350 " fill="rgb(100,100,100)" fill-opacity="1.000" stroke="rgb(100,100,100)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="436.050,162.350 460.050,162.350 460.050,186.350 436.050,186.350 " fill="rgb(124,124,124)" fill-opacity="1.000" stroke="rgb(124,124,124)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="388.050,186.350 412.050,186.350 412.050,210.350 388.050,210.350 " fill="rgb(173,173,173)" fill-opacity="1.000" stroke="rgb(173,173,173)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="412.050,186.350 436.050,186.350 436.050,210.350 412.050,210.350 " fill="rgb(217,217,217)" fill-opacity="1.000" stroke="rgb(217,217,217)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="436.050,186.350 460.050,186.350 460.050,210.350 436.050,210.350 " fill="rgb(65,65,65)" fill-opacity="1.000" stroke="rgb(65,65,65)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="64.050" y="281.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 4</text>
+<g role="img" aria-label="filter 4" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 4</title>
+<use href="#dm-g-70" transform="translate(40.730 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(45.610 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(50.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(54.474 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(60.682 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(67.786 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(74.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-20" transform="translate(79.370 281.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="28.050,306.350 52.050,306.350 52.050,330.350 28.050,330.350 " fill="rgb(38,38,38)" fill-opacity="1.000" stroke="rgb(38,38,38)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="52.050,306.350 76.050,306.350 76.050,330.350 52.050,330.350 " fill="rgb(48,48,48)" fill-opacity="1.000" stroke="rgb(48,48,48)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="76.050,306.350 100.050,306.350 100.050,330.350 76.050,330.350 " fill="rgb(154,154,154)" fill-opacity="1.000" stroke="rgb(154,154,154)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="28.050,330.350 52.050,330.350 52.050,354.350 28.050,354.350 " fill="rgb(117,117,117)" fill-opacity="1.000" stroke="rgb(117,117,117)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="52.050,330.350 76.050,330.350 76.050,354.350 52.050,354.350 " fill="rgb(241,241,241)" fill-opacity="1.000" stroke="rgb(241,241,241)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="76.050,330.350 100.050,330.350 100.050,354.350 76.050,354.350 " fill="rgb(127,127,127)" fill-opacity="1.000" stroke="rgb(127,127,127)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="28.050,354.350 52.050,354.350 52.050,378.350 28.050,378.350 " fill="rgb(169,169,169)" fill-opacity="1.000" stroke="rgb(169,169,169)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="52.050,354.350 76.050,354.350 76.050,378.350 52.050,378.350 " fill="rgb(190,190,190)" fill-opacity="1.000" stroke="rgb(190,190,190)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="76.050,354.350 100.050,354.350 100.050,378.350 76.050,378.350 " fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(255,255,255)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="184.050" y="281.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 5</text>
+<g role="img" aria-label="filter 5" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 5</title>
+<use href="#dm-g-70" transform="translate(160.730 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(165.610 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(170.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(174.474 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(180.682 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(187.786 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(194.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-21" transform="translate(199.370 281.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="148.050,306.350 172.050,306.350 172.050,330.350 148.050,330.350 " fill="rgb(106,106,106)" fill-opacity="1.000" stroke="rgb(106,106,106)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="172.050,306.350 196.050,306.350 196.050,330.350 172.050,330.350 " fill="rgb(75,75,75)" fill-opacity="1.000" stroke="rgb(75,75,75)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="196.050,306.350 220.050,306.350 220.050,330.350 196.050,330.350 " fill="rgb(136,136,136)" fill-opacity="1.000" stroke="rgb(136,136,136)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="148.050,330.350 172.050,330.350 172.050,354.350 148.050,354.350 " fill="rgb(112,112,112)" fill-opacity="1.000" stroke="rgb(112,112,112)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="172.050,330.350 196.050,330.350 196.050,354.350 172.050,354.350 " fill="rgb(116,116,116)" fill-opacity="1.000" stroke="rgb(116,116,116)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="196.050,330.350 220.050,330.350 220.050,354.350 196.050,354.350 " fill="rgb(220,220,220)" fill-opacity="1.000" stroke="rgb(220,220,220)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="148.050,354.350 172.050,354.350 172.050,378.350 148.050,378.350 " fill="rgb(17,17,17)" fill-opacity="1.000" stroke="rgb(17,17,17)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="172.050,354.350 196.050,354.350 196.050,378.350 172.050,378.350 " fill="rgb(133,133,133)" fill-opacity="1.000" stroke="rgb(133,133,133)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="196.050,354.350 220.050,354.350 220.050,378.350 196.050,378.350 " fill="rgb(237,237,237)" fill-opacity="1.000" stroke="rgb(237,237,237)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="304.050" y="281.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 6</text>
+<g role="img" aria-label="filter 6" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 6</title>
+<use href="#dm-g-70" transform="translate(280.730 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(285.610 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(290.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(294.474 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(300.682 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(307.786 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(314.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-22" transform="translate(319.370 281.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="268.050,306.350 292.050,306.350 292.050,330.350 268.050,330.350 " fill="rgb(138,138,138)" fill-opacity="1.000" stroke="rgb(138,138,138)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="292.050,306.350 316.050,306.350 316.050,330.350 292.050,330.350 " fill="rgb(170,170,170)" fill-opacity="1.000" stroke="rgb(170,170,170)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="316.050,306.350 340.050,306.350 340.050,330.350 316.050,330.350 " fill="rgb(196,196,196)" fill-opacity="1.000" stroke="rgb(196,196,196)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="268.050,330.350 292.050,330.350 292.050,354.350 268.050,354.350 " fill="rgb(234,234,234)" fill-opacity="1.000" stroke="rgb(234,234,234)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="292.050,330.350 316.050,330.350 316.050,354.350 292.050,354.350 " fill="rgb(209,209,209)" fill-opacity="1.000" stroke="rgb(209,209,209)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="316.050,330.350 340.050,330.350 340.050,354.350 316.050,354.350 " fill="rgb(75,75,75)" fill-opacity="1.000" stroke="rgb(75,75,75)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="268.050,354.350 292.050,354.350 292.050,378.350 268.050,378.350 " fill="rgb(85,85,85)" fill-opacity="1.000" stroke="rgb(85,85,85)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="292.050,354.350 316.050,354.350 316.050,378.350 292.050,378.350 " fill="rgb(188,188,188)" fill-opacity="1.000" stroke="rgb(188,188,188)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="316.050,354.350 340.050,354.350 340.050,378.350 316.050,378.350 " fill="rgb(151,151,151)" fill-opacity="1.000" stroke="rgb(151,151,151)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="424.050" y="281.470" text-anchor="middle" font-size="16.000" fill="rgb(15,23,42)" fill-opacity="1.000">filter 7</text>
+<g role="img" aria-label="filter 7" fill="rgb(15,23,42)" fill-opacity="1.000"><title>filter 7</title>
+<use href="#dm-g-70" transform="translate(400.730 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-73" transform="translate(405.610 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-76" transform="translate(410.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-84" transform="translate(414.474 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-69" transform="translate(420.682 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-82" transform="translate(427.786 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-0" transform="translate(434.042 281.470) scale(0.016000 -0.016000)"/>
+<use href="#dm-g-23" transform="translate(439.370 281.470) scale(0.016000 -0.016000)"/>
+</g>
+<polygon points="388.050,306.350 412.050,306.350 412.050,330.350 388.050,330.350 " fill="rgb(235,235,235)" fill-opacity="1.000" stroke="rgb(235,235,235)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="412.050,306.350 436.050,306.350 436.050,330.350 412.050,330.350 " fill="rgb(168,168,168)" fill-opacity="1.000" stroke="rgb(168,168,168)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="436.050,306.350 460.050,306.350 460.050,330.350 436.050,330.350 " fill="rgb(203,203,203)" fill-opacity="1.000" stroke="rgb(203,203,203)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="388.050,330.350 412.050,330.350 412.050,354.350 388.050,354.350 " fill="rgb(187,187,187)" fill-opacity="1.000" stroke="rgb(187,187,187)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="412.050,330.350 436.050,330.350 436.050,354.350 412.050,354.350 " fill="rgb(49,49,49)" fill-opacity="1.000" stroke="rgb(49,49,49)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="436.050,330.350 460.050,330.350 460.050,354.350 436.050,354.350 " fill="rgb(56,56,56)" fill-opacity="1.000" stroke="rgb(56,56,56)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="388.050,354.350 412.050,354.350 412.050,378.350 388.050,378.350 " fill="rgb(116,116,116)" fill-opacity="1.000" stroke="rgb(116,116,116)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="412.050,354.350 436.050,354.350 436.050,378.350 412.050,378.350 " fill="rgb(71,71,71)" fill-opacity="1.000" stroke="rgb(71,71,71)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<polygon points="436.050,354.350 460.050,354.350 460.050,378.350 436.050,378.350 " fill="rgb(155,155,155)" fill-opacity="1.000" stroke="rgb(155,155,155)" stroke-opacity="1.000" stroke-width="0.050" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="244.050" y="48.430" text-anchor="middle" font-size="19.000" fill="rgb(15,23,42)" fill-opacity="1.000">Learned kernels: one shared signed colour scale</text>
+<g role="img" aria-label="Learned kernels: one shared signed colour scale" fill="rgb(15,23,42)" fill-opacity="1.000"><title>Learned kernels: one shared signed colour scale</title>
+<use href="#dm-g-44" transform="translate(48.255 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(60.130 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-65" transform="translate(68.566 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-82" transform="translate(78.066 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-78" transform="translate(85.495 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(96.040 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-68" transform="translate(104.476 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-0" transform="translate(115.021 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-75" transform="translate(121.348 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(131.361 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-82" transform="translate(139.797 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-78" transform="translate(147.226 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(157.771 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-76" transform="translate(166.207 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-83" transform="translate(171.470 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-26" transform="translate(178.956 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-0" transform="translate(184.219 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-79" transform="translate(190.546 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-78" transform="translate(200.046 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(210.591 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-0" transform="translate(219.027 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-83" transform="translate(225.354 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-72" transform="translate(232.840 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-65" transform="translate(243.385 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-82" transform="translate(252.885 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(260.314 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-68" transform="translate(268.750 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-0" transform="translate(279.295 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-83" transform="translate(285.622 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-73" transform="translate(293.108 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-71" transform="translate(298.371 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-78" transform="translate(307.871 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(318.416 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-68" transform="translate(326.852 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-0" transform="translate(337.397 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-67" transform="translate(343.724 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-79" transform="translate(352.160 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-76" transform="translate(361.660 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-79" transform="translate(366.923 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-85" transform="translate(376.423 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-82" transform="translate(386.968 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-0" transform="translate(394.397 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-83" transform="translate(400.724 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-67" transform="translate(408.210 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-65" transform="translate(416.646 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-76" transform="translate(426.146 48.430) scale(0.019000 -0.019000)"/>
+<use href="#dm-g-69" transform="translate(431.409 48.430) scale(0.019000 -0.019000)"/>
+</g>
+</svg>

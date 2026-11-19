@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOEA/D decomposition · datamunge</title>
+
+<link rel="stylesheet" href="../../../static/site.css">
+<link rel="icon" href="../../../assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "../../../";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="../../../static/site.js"></script>
+</head>
+<body class="section-reports has-sidebar">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-btn nav-toggle" type="button" aria-label="Show navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="../../../index.html">
+    <img src="../../../assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="../../../guides/index.html">Guides</a>
+    <a href="../../../reports/index.html" aria-current="page">Reports</a>
+    <a href="../../../api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Section navigation"><div class="sidebar-inner"><a class="side-top" href="../../index.html">All reports</a><a class="side-top" href="../../status.html">Build status</a><div class="side-heading">Topics</div><a class="side-top" href="../../index.html#topic-general">General</a><a class="side-top" href="../../index.html#topic-algebra">Algebra</a><a class="side-top" href="../../index.html#topic-algorithm">Algorithm</a><a class="side-top" href="../../index.html#topic-algorithms">Algorithms</a><a class="side-top" href="../../index.html#topic-automata">Automata</a><a class="side-top" href="../../index.html#topic-bayes">Bayes</a><a class="side-top" href="../../index.html#topic-bio">Bio</a><a class="side-top" href="../../index.html#topic-bioinformatics">Bioinformatics</a><a class="side-top" href="../../index.html#topic-cad">Cad</a><a class="side-top" href="../../index.html#topic-causal">Causal</a><a class="side-top" href="../../index.html#topic-compression">Compression</a><a class="side-top" href="../../index.html#topic-cryptography">Cryptography</a><a class="side-top" href="../../index.html#topic-datasets">Datasets</a><a class="side-top" href="../../index.html#topic-datastructures">Datastructures</a><a class="side-top" href="../../index.html#topic-distributed">Distributed</a><a class="side-top" href="../../index.html#topic-geometry">Geometry</a><a class="side-top" href="../../index.html#topic-graph">Graph</a><a class="side-top" href="../../index.html#topic-graphics">Graphics</a><a class="side-top" href="../../index.html#topic-linalg">Linalg</a><a class="side-top" href="../../index.html#topic-linear_algebra">Linear algebra</a><a class="side-top" href="../../index.html#topic-machine-learning">Machine-learning</a><a class="side-top" href="../../index.html#topic-math">Math</a><a class="side-top" href="../../index.html#topic-ml">Ml</a><a class="side-top" href="../../index.html#topic-nn">Neural networks</a><a class="side-top" href="../../index.html#topic-numeric">Numeric</a><a class="side-top" href="../../index.html#topic-numerical">Numerical</a><a class="side-top" href="../../index.html#topic-numerics">Numerics</a><a class="side-top" href="../../index.html#topic-optim">Optim</a><a class="side-top" href="../../index.html#topic-optimisation">Optimisation</a><details class="side-topic" open><summary>Optimization</summary><ul><li><a href="../../index.html#group-optimization-discrete">Optimization / Discrete</a></li><li><a class="current" aria-current="page" href="moead.html">MOEA/D decomposition</a></li><li><a href="nsga2.html">NSGA-II: ranks, crowding and finite survival</a></li></ul></details><a class="side-top" href="../../index.html#topic-overview">Overview</a><a class="side-top" href="../../index.html#topic-physics">Physics</a><a class="side-top" href="../../index.html#topic-probability">Probability</a><a class="side-top" href="../../index.html#topic-random">Random</a><a class="side-top" href="../../index.html#topic-statistics">Statistics</a><a class="side-top" href="../../index.html#topic-stats">Stats</a><a class="side-top" href="../../index.html#topic-systems">Systems</a><a class="side-top" href="../../index.html#topic-text">Text</a></div></aside>
+  <div class="scrim" hidden></div>
+  <main id="content" class="content">
+    <article class="report"><h1 class="title">MOEA/D decomposition</h1>
+<section data-line="6" data-line-end="13" class="abstract"><p class="abstract-title">Abstract</p><p>Minimizing several conflicting objectives produces a set of tradeoffs rather
+than a single best answer. MOEA/D approximates that set through neighboring
+scalar subproblems. We derive its scalarizations, inspect actual child
+replacements, retain the original discrete weight illustration and
+thirty-variable ZDT1 experiment, and qualify front-gap and computational-cost
+claims using the implementation’s real setup and output filtering.</p></section>
+
+<h1 data-line="17" id="decompose-a-vector-objective">Decompose a vector objective</h1>
+<p data-line="19" data-line-end="23">A feasible point dominates another when every minimized objective is no larger
+and at least one is strictly smaller. MOEA/D assigns each population slot a
+simplex weight, then optimizes nearby weights together. The native Tchebycheff
+score anchors to the current ideal point z, the componentwise minimum seen after
+initialization. It uses a positive floor on zero weights.</p>
+<div data-line="25" data-line-end="28" class="math-display" role="math" aria-label="Tchebycheff uses the largest weighted deviation from the ideal; weighted sum adds weighted deviations.">\[g_{te}(f\mid w,z)=\max_k\{\max(w_k,10^{-6})|f_k-z_k|\},\qquad g_{ws}(f\mid w,z)=\sum_k w_k(f_k-z_k).\]</div>
+<p data-line="30" data-line-end="35">Weights come from the Das-Dennis simplex lattice, with H divisions and
+binomial(H+m−1,m−1) rows. The code chooses the largest lattice fitting
+max(requested population,m), exactly the requested count for two objectives.
+Each slot's neighborhood consists of its closest weights in Euclidean distance,
+including itself. Equal-distance ordering follows the native standard sort
+rather than a promised portable tie rule.</p>
+<p data-line="37" data-line-end="42">At each sequential subproblem visit, two parents are sampled with replacement
+from its neighborhood and can coincide. Shared SBX crossover produces two
+children; only the first is mutated and evaluated. The ideal is updated before
+scalar comparisons. The child replaces every visited neighbor whose score it
+ties or improves, using that neighbor's weight. Updates take effect immediately,
+so later visits can use already replaced parents. There is no external archive.</p>
+<h1 data-line="44" id="read-an-actual-child-and-its-neighbor-decisions">Read an actual child and its neighbor decisions</h1>
+<p data-line="46" data-line-end="50">A five-slot, two-variable ZDT1 run with two generations is small enough to
+inspect. Its first child and three neighbor comparisons come directly from the
+producer. Both candidate and incumbent scores use the same already updated
+ideal. The diagram labels each actual replacement decision, avoiding a
+fabricated optimization history.</p>
+<figure data-line="52" data-line-end="82" class="code"><figcaption class="lang">cpp</figcaption><pre class="hl"><code><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;dm/dm.hpp&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/optim/struct.MOEADOptions.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">MOEADOptions</span></a> <span class="n">o</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">population_size</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">neighborhood_size</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">max_generations</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/optim/class.ZDT1Objective.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">ZDT1Objective</span></a> <span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">t</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/optim/class.MOEAD.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">MOEAD</span></a><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="p">.</span><span class="n">trace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">}</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="o">&amp;</span><span class="n">s</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">steps</span><span class="p">.</span><span class="n">front</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/graphics/class.Diagram.html"><span class="n">dm</span><span class="o">::</span><span class="n">graphics</span><span class="o">::</span><span class="n">Diagram</span></a> <span class="n">d</span><span class="p">;</span>
+    <span class="n">d</span><span class="p">.</span><span class="n">node</span><span class="p">(</span><span class="s">&quot;</span><span class="s">child</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span><span class="p">,</span>
+           <span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;</span><span class="s">Actual first child</span><span class="se">\n</span><span class="s">f=({:.4f}, {:.4f})</span><span class="s">&quot;</span><span class="p">,</span>
+                       <span class="n">s</span><span class="p">.</span><span class="n">child</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">child</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">Actual parents: {}, {}. Actual callback count: {}.</span><span class="se">\n</span><span class="se">\n</span><span class="s">| neighbor slot | incumbent score | </span><span class="s">&quot;</span> <span class="s">&quot;</span><span class="s">child score | replaced |</span><span class="se">\n</span><span class="s">| ---: | ---: | ---: | --- |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+               <span class="n">s</span><span class="p">.</span><span class="n">parent_a</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">parent_b</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">evaluations</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">replacements</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="o">+</span><span class="o">+</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">replacements</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| {} | {} | {} | {} |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">incumbent_score</span><span class="p">,</span>
+                   <span class="n">r</span><span class="p">.</span><span class="n">child_score</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">replaced</span><span class="p">)</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="n">id</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">d</span><span class="p">.</span><span class="n">node</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="p">{</span><span class="mi">8</span><span class="p">,</span> <span class="kt">double</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">}</span><span class="p">,</span>
+               <span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;</span><span class="s">Actual neighbor {}</span><span class="se">\n</span><span class="s">replacement {}</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">neighbor</span><span class="p">,</span>
+                           <span class="n">r</span><span class="p">.</span><span class="n">replaced</span><span class="p">)</span><span class="p">)</span><span class="p">.</span><span class="n">edge</span><span class="p">(</span><span class="s">&quot;</span><span class="s">child</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">id</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">d</span><span class="p">.</span><span class="n">save_svg</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build/moead_tiny.svg</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+<p data-line="83">Actual parents: 2, 0. Actual callback count: 16.</p>
+<div data-line="85" data-line-end="89" class="table-wrap"><table><tr><th scope="col" style="text-align:right">neighbor slot</th><th scope="col" style="text-align:right">incumbent score</th><th scope="col" style="text-align:right">child score</th><th scope="col">replaced</th></tr><tr><td style="text-align:right">0</td><td style="text-align:right">3.617617101998836e-07</td><td style="text-align:right">0.22424786794452406</td><td>false</td></tr><tr><td style="text-align:right">1</td><td style="text-align:right">5.211431796698579</td><td style="text-align:right">0.16818590095839303</td><td>true</td></tr><tr><td style="text-align:right">2</td><td style="text-align:right">0.19064946942278893</td><td style="text-align:right">0.18100446919338256</td><td>true</td></tr></table></div>
+<figure data-line="90" data-line-end="93"><img src="figures/moead_tiny.svg" alt="Each branch reports a real visited slot and observed score comparison from the small run."><figcaption>Figure 1: Actual first offspring and its neighbor replacement decisions.</figcaption></figure>
+<h1 data-line="95" id="retain-the-original-discrete-weight-illustration">Retain the original discrete weight illustration</h1>
+<p data-line="97" data-line-end="102">The original five candidate objective pairs
+are(0,1),(0.25,0.5),(0.5,0.293),(0.75,0.134),(1,0). Two values are rounded
+approximations to the ZDT1 curve. The five original weights and the fixed
+ideal(0,0) are retained in the native demonstration helper. It selects the first
+strict minimum over this discrete list. These choices illustrate scalar
+preference and are neither continuous global minimizers nor a solver population.</p>
+<figure data-line="104" data-line-end="124" class="code"><figcaption class="lang">cpp</figcaption><pre class="hl"><code><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;dm/dm.hpp&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">rows</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/optim/fn.moead_original_choices.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">moead_original_choices</span></a><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| weight1 | weight2 | chosen f1 | chosen rounded f2 | actual score |</span><span class="se">\n</span><span class="s">| ---: | ---: | ---: </span><span class="s">&quot;</span> <span class="s">&quot;</span><span class="s">| ---: | ---: |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">:</span> <span class="n">rows</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">y</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| {} | {} | {} | {} | {} |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">weight</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">,</span>
+                   <span class="n">r</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">score</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/graphics/class.RPlot.html#create"><span class="n">dm</span><span class="o">::</span><span class="n">graphics</span><span class="o">::</span><span class="n">RPlot</span><span class="o">::</span><span class="n">create</span></a><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">discrete choices</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mi">37</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">235</span><span class="p">}</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span><span class="p">.</span><span class="n">title</span><span class="p">(</span>
+        <span class="s">&quot;</span><span class="s">Original weights: discrete candidate choices</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">x_label</span><span class="p">(</span>
+        <span class="s">&quot;</span><span class="s">chosen objective1</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">y_label</span><span class="p">(</span><span class="s">&quot;</span><span class="s">chosen objective2</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">save_svg</span><span class="p">(</span>
+        <span class="s">&quot;</span><span class="s">build/moead_weights.svg</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+<div data-line="125" data-line-end="131" class="table-wrap"><table><tr><th scope="col" style="text-align:right">weight1</th><th scope="col" style="text-align:right">weight2</th><th scope="col" style="text-align:right">chosen f1</th><th scope="col" style="text-align:right">chosen rounded f2</th><th scope="col" style="text-align:right">actual score</th></tr><tr><td style="text-align:right">1</td><td style="text-align:right">0</td><td style="text-align:right">0</td><td style="text-align:right">1</td><td style="text-align:right">1e-06</td></tr><tr><td style="text-align:right">0.7</td><td style="text-align:right">0.3</td><td style="text-align:right">0.25</td><td style="text-align:right">0.5</td><td style="text-align:right">0.175</td></tr><tr><td style="text-align:right">0.5</td><td style="text-align:right">0.5</td><td style="text-align:right">0.25</td><td style="text-align:right">0.5</td><td style="text-align:right">0.25</td></tr><tr><td style="text-align:right">0.3</td><td style="text-align:right">0.7</td><td style="text-align:right">0.5</td><td style="text-align:right">0.293</td><td style="text-align:right">0.20509999999999998</td></tr><tr><td style="text-align:right">0</td><td style="text-align:right">1</td><td style="text-align:right">1</td><td style="text-align:right">0</td><td style="text-align:right">1e-06</td></tr></table></div>
+<figure data-line="132" data-line-end="135"><img src="figures/moead_weights.svg" alt="Different weights choose different rounded objective pairs; duplicate choices can overlap visually."><figcaption>Figure 2: The original discrete candidate choices, computed natively.</figcaption></figure>
+<h1 data-line="137" id="retain-the-original-thirty-variable-zdt1-experiment">Retain the original thirty-variable ZDT1 experiment</h1>
+<p data-line="139" data-line-end="143">ZDT1 uses f1=x0, g=1+9 times the mean of the remaining coordinates, and f2=g
+times(1−sqrt(f1/g)) on the unit box. Its analytic front has all remaining
+coordinates zero, hence g=1 and f2=1−sqrt(f1). The native benchmark validates
+dimensions and unit-box inputs, and the analytic front helper provides the
+reference curve.</p>
+<p data-line="145" data-line-end="151">The original run uses30 variables,100 requested weights, neighborhood20,250
+generations, default variation settings, Tchebycheff decomposition and seed1.
+The returned set is the non-dominated subset of the final population, with
+identical non-dominated duplicates retained. Its vertical gap is
+f2−(1−sqrt(f1)); the mean does not measure front coverage or hypervolume. The
+table reports first-objective coverage separately. All values below come from
+this checkout rather than the old frozen claim of a particular gap.</p>
+<figure data-line="153" data-line-end="181" class="code"><figcaption class="lang">cpp</figcaption><pre class="hl"><code><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;dm/dm.hpp&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/optim/struct.MOEADOptions.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">MOEADOptions</span></a> <span class="n">o</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <a class="sym" href="../../../api/datamunge/optim/class.ZDT1Objective.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">ZDT1Objective</span></a> <span class="n">f</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">front</span> <span class="o">=</span>
+        <a class="sym" href="../../../api/datamunge/optim/class.MOEAD.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">MOEAD</span></a><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="p">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="p">,</span>
+                                     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/optim/fn.zdt1_front_summary.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">zdt1_front_summary</span></a><span class="p">(</span><span class="n">front</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">p</span> <span class="o">:</span> <span class="n">front</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">y</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">p</span> <span class="o">:</span> <a class="sym" href="../../../api/datamunge/optim/fn.zdt1_front.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">zdt1_front</span></a><span class="p">(</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tx</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">ty</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">objectives</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| returned points incl duplicates | min f1 | max f1 | mean vertical gap | max vertical gap </span><span class="s">&quot;</span> <span class="s">&quot;</span><span class="s">|</span><span class="se">\n</span><span class="s">| ---: | ---: | ---: | ---: | ---: |</span><span class="se">\n</span><span class="s">| {} | {} | {} | {} | {} |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+               <span class="n">s</span><span class="p">.</span><span class="n">points</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">min_f1</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">max_f1</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">mean_gap</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">max_gap</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/graphics/class.RPlot.html#create"><span class="n">dm</span><span class="o">::</span><span class="n">graphics</span><span class="o">::</span><span class="n">RPlot</span><span class="o">::</span><span class="n">create</span></a><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">analytic ZDT1 front</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mi">220</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">38</span><span class="p">}</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="p">.</span><span class="n">points</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">actual native approximation</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mi">37</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">235</span><span class="p">}</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="p">.</span><span class="n">title</span><span class="p">(</span>
+        <span class="s">&quot;</span><span class="s">Original ZDT1: native final approximation</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">x_label</span><span class="p">(</span><span class="s">&quot;</span><span class="s">objective1</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">y_label</span><span class="p">(</span><span class="s">&quot;</span><span class="s">objective2</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">save_svg</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build/moead_original.svg</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+<div data-line="182" data-line-end="184" class="table-wrap"><table><tr><th scope="col" style="text-align:right">returned points incl duplicates</th><th scope="col" style="text-align:right">min f1</th><th scope="col" style="text-align:right">max f1</th><th scope="col" style="text-align:right">mean vertical gap</th><th scope="col" style="text-align:right">max vertical gap</th></tr><tr><td style="text-align:right">99</td><td style="text-align:right">6.779751231235365e-06</td><td style="text-align:right">0.9924684813020673</td><td style="text-align:right">0.0003317414522604452</td><td style="text-align:right">0.0025252547274442344</td></tr></table></div>
+<figure data-line="185" data-line-end="188"><img src="figures/moead_original.svg" alt="Returned objective pairs are plotted against1 minus the square root of objective1; coverage and gaps appear separately in the table."><figcaption>Figure 3: The actual original-configuration approximation and analytic front.</figcaption></figure>
+<h1 data-line="190" id="finite-prefixes-and-complete-cost-accounting">Finite prefixes and complete cost accounting</h1>
+<p data-line="192" data-line-end="196">Repeated runs with the same seed and options, changing only the generation cap,
+share the same trajectory prefix on this toolchain. Their returned fronts can
+change in size and coverage, and their mean gap need not improve monotonically.
+The finite sweep below compares those actual end states without claiming
+convergence from a visual trend.</p>
+<p data-line="198" data-line-end="206">The implementation first evaluates one random probe solely to discover objective
+count. It discards that point and does not include it in the ideal.
+Initialization then evaluates N points and each generation evaluates N more:
+exactly1+N+G*N successful callbacks. This extra probe matters for stateful or
+expensive objectives. Neighbor setup compares weight distances while sorting all
+N candidates per slot, with O(m*N squared log N) coarse work, and final
+non-dominated extraction costs O(m*N squared). A generation uses O(N*(n+T*m))
+work excluding callback and variation details; describing only neighborhood
+updates would omit setup, variation and output filtering.</p>
+<figure data-line="208" data-line-end="234" class="code"><figcaption class="lang">cpp</figcaption><pre class="hl"><code><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;dm/dm.hpp&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| generations | callbacks by exact schedule | returned points | min f1 | max f1 | actual </span><span class="s">&quot;</span> <span class="s">&quot;</span><span class="s">mean gap |</span><span class="se">\n</span><span class="s">| ---: | ---: | ---: | ---: | ---: | ---: |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">g</span> <span class="o">:</span> <span class="p">{</span><span class="mi">0U</span><span class="p">,</span> <span class="mi">5U</span><span class="p">,</span> <span class="mi">25U</span><span class="p">,</span> <span class="mi">100U</span><span class="p">,</span> <span class="mi">250U</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+        <a class="sym" href="../../../api/datamunge/optim/struct.MOEADOptions.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">MOEADOptions</span></a> <span class="n">o</span><span class="p">;</span>
+        <span class="n">o</span><span class="p">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">o</span><span class="p">.</span><span class="n">max_generations</span> <span class="o">=</span> <span class="n">g</span><span class="p">;</span>
+        <a class="sym" href="../../../api/datamunge/optim/class.ZDT1Objective.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">ZDT1Objective</span></a> <span class="n">f</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="n">front</span> <span class="o">=</span>
+            <a class="sym" href="../../../api/datamunge/optim/class.MOEAD.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">MOEAD</span></a><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="p">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="p">,</span>
+                                         <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/optim/fn.zdt1_front_summary.html"><span class="n">dm</span><span class="o">::</span><span class="n">optim</span><span class="o">::</span><span class="n">zdt1_front_summary</span></a><span class="p">(</span><span class="n">front</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">y</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">mean_gap</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="s">| {} | {} | {} | {} | {} | {} |</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">g</span><span class="p">,</span>
+                   <span class="n">s</span><span class="p">.</span><span class="n">points</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">min_f1</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">max_f1</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">mean_gap</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <a class="sym" href="../../../api/datamunge/graphics/class.RPlot.html#create"><span class="n">dm</span><span class="o">::</span><span class="n">graphics</span><span class="o">::</span><span class="n">RPlot</span><span class="o">::</span><span class="n">create</span></a><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">mean vertical gap</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mi">37</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">235</span><span class="p">}</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span><span class="p">.</span><span class="n">title</span><span class="p">(</span>
+        <span class="s">&quot;</span><span class="s">ZDT1: actual fixed-seed generation prefixes</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">x_label</span><span class="p">(</span>
+        <span class="s">&quot;</span><span class="s">completed generations</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">y_label</span><span class="p">(</span><span class="s">&quot;</span><span class="s">mean vertical gap of returned front</span><span class="s">&quot;</span><span class="p">)</span><span class="p">.</span><span class="n">save_svg</span><span class="p">(</span><span class="s">&quot;</span><span class="s">build/moead_prefixes.svg</span><span class="s">&quot;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+<div data-line="235" data-line-end="241" class="table-wrap"><table><tr><th scope="col" style="text-align:right">generations</th><th scope="col" style="text-align:right">callbacks by exact schedule</th><th scope="col" style="text-align:right">returned points</th><th scope="col" style="text-align:right">min f1</th><th scope="col" style="text-align:right">max f1</th><th scope="col" style="text-align:right">actual mean gap</th></tr><tr><td style="text-align:right">0</td><td style="text-align:right">101</td><td style="text-align:right">10</td><td style="text-align:right">0.005038092987687461</td><td style="text-align:right">0.7660951498806624</td><td style="text-align:right">3.41473873566786</td></tr><tr><td style="text-align:right">5</td><td style="text-align:right">601</td><td style="text-align:right">38</td><td style="text-align:right">0.11121099289175684</td><td style="text-align:right">0.9158585757505726</td><td style="text-align:right">2.1235248888798384</td></tr><tr><td style="text-align:right">25</td><td style="text-align:right">2601</td><td style="text-align:right">79</td><td style="text-align:right">0.01414773523956955</td><td style="text-align:right">0.6014611168145959</td><td style="text-align:right">0.6147194051024196</td></tr><tr><td style="text-align:right">100</td><td style="text-align:right">10101</td><td style="text-align:right">97</td><td style="text-align:right">3.60652632726572e-05</td><td style="text-align:right">0.616666569539016</td><td style="text-align:right">0.006169416485486112</td></tr><tr><td style="text-align:right">250</td><td style="text-align:right">25101</td><td style="text-align:right">99</td><td style="text-align:right">6.779751231235365e-06</td><td style="text-align:right">0.9924684813020673</td><td style="text-align:right">0.0003317414522604452</td></tr></table></div>
+<figure data-line="242" data-line-end="245"><img src="figures/moead_prefixes.svg" alt="Each point is a complete native run with the original settings and a different generation cap; it is not a convergence bound."><figcaption>Figure 4: Observed mean vertical gaps at five fixed-seed trajectory prefixes.</figcaption></figure>
+<h1 data-line="247" id="contracts-conclusion-and-references">Contracts, conclusion and references</h1>
+<p data-line="249" data-line-end="255">Bounds must be nonempty, finite, matching and strictly ordered with
+representable widths. Probabilities, distribution indices and decomposition
+names are validated before callbacks. Requested population is2..1000000;
+objective count must be fixed, finite and at least two, checked after its actual
+evaluation. Invalid shapes, nonfinite values, unrepresentable scalar arithmetic
+and count geometry throw; earlier callback effects remain. Parent sampling with
+replacement and the discarded probe preserve valid legacy scheduling.</p>
+<p data-line="257" data-line-end="263">The optional trace owns options, bounds, probe, weights, neighborhoods,
+initial/final populations, ideal points and all actual offspring/replacement
+records. Its quota counts stored vector rows and elements, point records and
+coordinates/objectives, ideal scalars and decision records; default1000000, zero
+disables. It is an online storage limit, not a transactional callback budget:
+earlier evaluations may have happened when it fails. No partial trace is
+returned.</p>
+<p data-line="265" data-line-end="268">The actual scalar decisions explain the mechanism, while the original experiment
+measures finite coverage and error. Neither a small mean gap nor a decomposition
+argument establishes a global Pareto-set guarantee or a universal advantage over
+other evolutionary methods.</p>
+<p data-line="270" data-line-end="275"><a href="https://doi.org/10.1109/TEVC.2007.892759">Zhang and Li, MOEA/D: A multiobjective evolutionary algorithm based on decomposition (2007)</a>
+introduces the framework.
+<a href="https://doi.org/10.1137/S1052623496307510">Das and Dennis, Normal-boundary intersection (1998)</a>
+describes the simplex-lattice context.
+<a href="https://doi.org/10.1162/106365600568202">Zitzler, Deb and Thiele, Comparison of multiobjective evolutionary algorithms: Empirical results (2000)</a>
+defines the benchmark family.</p>
+<h1 data-line="277" id="verification">Verification</h1>
+<p data-line="279" data-line-end="293">The ten-report batch passes95 CTest cases,31 directly instrumented ASan/UBSan
+cases,83 compiled and executed public examples,363/363 scoped documentation
+definitions and ten representative hovers. Independent Python integer
+arithmetic, MT19937-64/variation replay, graph sets, analytic interpolation,
+circle boundary enumeration and actual-sample integration reconstruction agree
+on915459 captured records. All six original RMS summaries are separately checked
+using96 native MISER estimates and1600000 independently reproduced
+plain-comparator points. Frozen valid-input comparisons include the original
+seeded solver paths and full MOEA/D fronts. Ten checkout headers and ten
+identically installed development headers compile independently, and an
+installed-header native consumer links and runs. Each report has four executed
+complete programs, four reviewed native figures and both HTML/Markdown exports
+with computed-result and image-byte checks. This is a scoped native API audit,
+not an installation claim for every language binding. Receipts:
+<code>build/mepml-conversion/batch-234-243/</code>.</p></article><h2 id="api-used">API used here</h2><div class="chips"><a class="chip" href="../../../api/datamunge/graphics/class.Diagram.html"><code>Diagram</code></a><a class="chip" href="../../../api/datamunge/optim/class.MOEAD.html"><code>MOEAD</code></a><a class="chip" href="../../../api/datamunge/optim/fn.moead_original_choices.html"><code>moead_original_choices</code></a><a class="chip" href="../../../api/datamunge/optim/struct.MOEADOptions.html"><code>MOEADOptions</code></a><a class="chip" href="../../../api/datamunge/graphics/class.RPlot.html"><code>RPlot</code></a><a class="chip" href="../../../api/datamunge/optim/fn.zdt1_front.html"><code>zdt1_front</code></a><a class="chip" href="../../../api/datamunge/optim/fn.zdt1_front_summary.html"><code>zdt1_front_summary</code></a><a class="chip" href="../../../api/datamunge/optim/class.ZDT1Objective.html"><code>ZDT1Objective</code></a></div><p class="report-meta">4 of 4 code blocks ran on 2026-11-17 · <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/optimization/multi-objective/moead.mepml">source</a></p>
+  </main>
+  <aside class="pagetoc" aria-label="On this page"><div class="pagetoc-inner"></div></aside>
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

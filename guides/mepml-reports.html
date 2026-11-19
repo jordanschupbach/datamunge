@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing mepml reports · datamunge</title>
+
+<link rel="stylesheet" href="../static/site.css">
+<link rel="icon" href="../assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "../";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="../static/site.js"></script>
+</head>
+<body class="section-guides has-sidebar">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-btn nav-toggle" type="button" aria-label="Show navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="../index.html">
+    <img src="../assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="../guides/index.html" aria-current="page">Guides</a>
+    <a href="../reports/index.html">Reports</a>
+    <a href="../api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Section navigation"><div class="sidebar-inner"><a class="side-top" href="index.html">All guides</a><div class="side-heading">Guides</div><ul><li><a href="examples.html">Examples by language</a></li><li><a href="bindings.html">SWIG bindings</a></li><li><a class=current href="mepml-reports.html">Writing mepml reports</a></li><li><a href="optimization-roadmap.html">Optimization roadmap</a></li></ul></div></aside>
+  <div class="scrim" hidden></div>
+  <main id="content" class="content">
+    <article class="prose"><h1 id="mepml-reports-in-the-docs">mepml reports in the docs</h1>
+<p>All literate reports live directly in this directory, grouped by subject and
+topic. Neural-network reports are under <a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/nn"><code>nn/</code></a>. Each report contains its
+editable programs, saved results and local figures.</p>
+<p>The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/overview/index.mepml">source catalogue</a> is generated from the current files.
+<code>just docs-report-catalogue</code> refreshes it without a JSON inventory or conversion
+ledger. The website and <code>just docs-mepml-run</code> discover <code>docs/mepml/**/*.mepml</code>.</p>
+<p>The documentation website (<code>just docs</code>, <code>scripts/website/</code>) shows every report
+under <strong>Reports</strong>, links C++ names to the API reference, and lists each API's
+example reports. Run a report with <code>just docs-mepml-run PATH.mepml</code>, or select a
+neural-network report by name with <code>just run-nn NAME</code>.</p>
+<p>Reports are organized by subject and, where useful, a more specific topic:</p>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>Topics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/optim"><code>optim/</code></a></td>
+<td>Optimization methods and worked comparisons</td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/stats"><code>stats/</code></a></td>
+<td><code>bayes</code>, <code>regression</code>, <code>inference</code>, <code>time_series</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/ml"><code>ml/</code></a></td>
+<td><code>classification</code>, <code>associative_memory</code>, <code>ensembles</code>, <code>trees</code>, <code>dimensionality_reduction</code>, <code>clustering</code>, <code>association_rules</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/random"><code>random/</code></a></td>
+<td><code>generators</code>, <code>sampling</code>, <code>estimation</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/math"><code>math/</code></a></td>
+<td><code>number_theory</code>, <code>coding_theory</code>, <code>geometry</code>, <code>calendar</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/algorithm"><code>algorithm/</code></a></td>
+<td><code>strings</code>, <code>automata</code>, <code>hashing</code>, <code>cryptography</code>, <code>compression</code>, <code>concurrency</code>, <code>distributed</code>, <code>search</code>, <code>sorting</code>, <code>graphics</code>, <code>quantum</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/geometry"><code>geometry/</code></a></td>
+<td><code>hulls</code>, <code>point_location</code>, <code>registration</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/graph"><code>graph/</code></a></td>
+<td><code>search</code>, <code>shortest_paths</code>, <code>tours</code>, <code>link_analysis</code>, <code>matching</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/numerics"><code>numerics/</code></a></td>
+<td><code>linear_algebra</code>, <code>root_finding</code>, <code>interpolation</code>, <code>ode</code>, <code>transforms</code>, <code>approximation</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/nn"><code>nn/</code></a></td>
+<td>Existing neural-network chapter structure</td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/cad"><code>cad/</code></a></td>
+<td>Code-driven CAD import, robot posing, export and rendering</td>
+</tr>
+<tr>
+<td><a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/datasets"><code>datasets/</code></a></td>
+<td>Complete dataset studies: fitting, convergence, held-out errors and interpretability</td>
+</tr>
+</tbody>
+</table>
+<p>Examples with independent C++, Python and R tabs:</p>
+<ul>
+<li><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/numerics/linear_algebra/matrix_expressions.mepml">Matrix expressions and least squares</a></li>
+<li><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/math/computer_algebra.mepml">Computer algebra</a></li>
+<li><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/stats/regression/bspline_regression.mepml">B-spline regression</a></li>
+<li><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/stats/regression/hierarchical_splines.mepml">B-splines, P-splines and HB/HP refinement meshes</a></li>
+<li><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/cad/seeed_devarm.mepml">Seeed DevArm CAD: download, import, pose, export and render</a></li>
+</ul>
+<p>The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/playground.mepml">playground</a> currently compares native robot-arm
+RL pipelines (Q(λ), Double DQN, dueling Double DQN and PPO), selects on independent
+actual-RGB validation streams, then evaluates and renders the selected controller.
+The current experiment trains and evaluates with optional MuJoCo articulated
+contact dynamics, physical finger grasps and measured-pose rendering. The
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/robot-physics-audit.md">physics audit</a> records assumptions and calibration
+limits; earlier proxy-task results remain historical evidence.
+<code>just playground</code> trains the comparison; <code>just playground-preview</code> replays frozen
+checkpoints and <code>just playground-gpu</code> renders that replay with CUDA. Standalone
+research manuscripts keep their own source,
+figures, outcome archives and Nix/just build files separately from the library
+examples.</p>
+<p>Neural-network programs and their fitting loops are editable in the <a href="https://github.com/jordanschupbach/datamunge/tree/main/docs/mepml/nn"><code>nn/</code></a>
+reports. List them with <code>python scripts/run_nn_examples.py --list</code>.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.4_diffusion/ddpm.mepml">diffusion reports</a> preserve
+the original short fits, frozen-model samplers, baseline shortfalls and complete
+editable C++ training loops, using shared native tensor components.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/auxiliary_classifier_gan.mepml">auxiliary-classifier GAN report</a>
+shows native conditional generation, image-only discrimination and all alternating
+updates, including the short run's weak samples and explicit diagnostic limits.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/bidirectional_gan.mepml">bidirectional GAN report</a>
+keeps joint pairs, three independent optimizer states and unfitted cycle diagnostics
+explicit, including its failed short-run reconstruction.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/vanilla_gan.mepml">vanilla GAN</a>,
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/lsgan.mepml">least-squares GAN</a>,
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/hinge_gan.mepml">hinge GAN</a> and
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/conditional_gan.mepml">conditional GAN</a>
+reports keep the shared dense networks, distinct source objectives and both-network
+class conditions explicit, including complete loops and weak generated images.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/infogan.mepml">InfoGAN report</a>
+keeps generated codes, separate image-only recognition and all three optimizer
+phases explicit, including weak images and the negative empirical information score.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/spectral_gan.mepml">Spectral GAN report</a>
+keeps cached spectral directions, differentiable weight normalization and every
+state/D/G phase explicit, including the measured approximation error and weak images.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/self_attention_gan.mepml">Self-Attention GAN report</a>
+keeps spatial patch mixing, zero residual gates, two spectral caches and every
+state/D/state/G phase explicit, including weak samples and measured nonlocal controls.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/big_gan.mepml">BigGAN report</a>
+keeps hierarchical noise, conditional BN captures, projection scores, rejection
+proposals and every spectral/Adam/moving-statistic write explicit, including weak
+samples and the original batch-statistics loss convention.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/dcgan.mepml">DCGAN report</a>
+keeps learned transposed maps, joint real/fake BN for D, fresh G through saved-BN
+D and all four state/Adam write owners explicit, including checkerboard-like
+samples and the favorable coarse score of a constant fitting-mean baseline.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/wasserstein_gan.mepml">Wasserstein GAN report</a>
+keeps clipped RMSProp and gradient-penalty Adam trials separate, with actual input
+Jacobians, stopped interpolation paths and every three-critic/fresh-G write explicit.
+It preserves the weak diagonal samples and unconverged signed gaps.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/progressive_gan.mepml">Progressive GAN report</a>
+shows both real fade paths, eight caller-owned Adam states and all-active-gradient
+capture before selected writes. Its fixed-weight fade gallery is separate from
+its three weak epoch galleries.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/pix2pix.mepml">Pix2Pix report</a>
+keeps quantized binary conditions, both U-Net skips and D-then-fresh-G writes
+explicit. Its preserved weak result is compared with the stronger fitting-only
+mean image, with original and ten-class galleries and blank-condition controls.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/cycle_gan.mepml">CycleGAN report</a>
+keeps the domains disjoint and both generator captures before either write. Its
+original and ten-class galleries, wrong-snapshot control and stronger fitting-only
+mean references qualify the weak fixed-final result.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/style_gan.mepml">StyleGAN report</a>
+compares native AdaIN and modulated/demodulated paths with supplied spatial noise,
+visible optimizer steps and all original weak-result galleries. Its additional
+fixed-style control distinguishes truncation from shared-noise conditions.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/star_gan.mepml">StarGAN report</a>
+keeps the target code, dual critic heads, shared-generator round trip and every
+optimizer write explicit. Its original and all-digit galleries plus fitting-only
+means qualify the weak requested-domain result.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/srgan_esrgan.mepml">SRGAN/ESRGAN report</a>
+keeps frozen VGG content losses, warm-up/cold Adam reset, live relativistic means
+and same-capture BN commits explicit. Original RGB previews and all32 per-image
+PSNR/SSIM gains qualify the small improvements over bicubic.
+The <a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/nn/3_generative_models/3.1_gans/singan.mepml">SinGAN report</a>
+keeps frozen lower-scale draws, explicit shared-RGB noise, fixed amplitudes,
+both warm-start groups and cold per-scale Adam clocks visible. Its original
+weak samples and training reconstruction remain unchanged.
+The website serializes reports sharing a directory so their local figures and
+fixtures cannot overwrite one another; separate directories can run concurrently.</p>
+<p>Keep each report's <code>figures/</code> beside the report in its topic directory; its
+complete C++ diagram blocks are the editable sources. The website uses these directories to group its Reports index
+and navigation. The <code>nn/</code> hierarchy is maintained separately.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>just playground [FORMATS]</code></td>
+<td>Runs the playground manuscript's blocks, prints their captured results, and exports HTML and TeX with local figures to <code>build/playground/</code>. Optional arguments select export formats.</td>
+</tr>
+<tr>
+<td><code>just docs-mepml-run [FILES]</code></td>
+<td>Runs every code block of every report (or FILES) with mep (<code>mep-mepml run</code>, the editor's <code>C-c C-c</code> without a window) and writes their results and <code>file=</code> figures back into the report. Prints each block's outcome and fails if one failed; a failed block keeps its earlier results. The C++ blocks build against datamunge found by <code>pkg-config</code>.</td>
+</tr>
+<tr>
+<td><code>just view-docs</code></td>
+<td>Opens the unified API and report website in your browser. If the site is missing, it first runs <code>just docs-preview</code>, which exports stored results.</td>
+</tr>
+<tr>
+<td><code>just docs</code></td>
+<td>Runs the reports that changed since their last run (and any that failed), exports every report with mep (<code>mep-mepml convert</code>) and builds the website in <code>build/debug/docs/site/</code>, with a <strong>Report build status</strong> page. Fails if a code block failed. <code>just docs-serve</code> serves it; it also works opened from disk.</td>
+</tr>
+</tbody>
+</table>
+<p>The docs build runs a report only when its <code>.mepml</code> is newer than its last run
+record (<code>build/debug/docs/mepml-status/&lt;page&gt;.json</code>), so the first build runs
+every report and later ones only the edited ones (and those that failed last
+time, since the fix may be in the library). The results and figures it
+writes go into the report itself, so commit them with it. CMake options
+(<code>just docs -DOPTION=...</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DOCS_MEPML_RUN</code></td>
+<td><code>ON</code></td>
+<td>Run changed reports before exporting. <code>OFF</code> exports the stored results only.</td>
+</tr>
+<tr>
+<td><code>DOCS_MEPML_FORCE</code></td>
+<td><code>OFF</code></td>
+<td>Rerun every report, changed or not (e.g. after changing the library).</td>
+</tr>
+<tr>
+<td><code>DOCS_MEPML_ALLOW_FAILURES</code></td>
+<td><code>OFF</code></td>
+<td>Build the site even when a block failed (the status page and a warning on the report's page still say so).</td>
+</tr>
+<tr>
+<td><code>DOCS_MEPML_TIMEOUT</code></td>
+<td><code>1800</code></td>
+<td>Seconds a block may run before it is stopped and counted as failed.</td>
+</tr>
+<tr>
+<td><code>DOCS_MEPML_PKG_CONFIG_PATH</code></td>
+<td>empty</td>
+<td><code>PKG_CONFIG_PATH</code> for the blocks. <code>just</code> passes <code>$DATAMUNGE_MEPML_PKG_CONFIG_PATH</code>; set it to <code>$PWD/build/mepml-pc</code> to build against the working tree.</td>
+</tr>
+</tbody>
+</table>
+<p>mep's command line works on any report from any directory:</p>
+<pre class="hl"><code>mep-mepml run docs/mepml/math/calendar/zeller.mepml          <span class="c1"># run its blocks in place
+</span>mep-mepml run --report out.json --timeout <span class="m">600</span> a.mepml b.mepml    <span class="c1"># per-block outcomes as JSON
+</span>mep-mepml build --run docs/mepml/math/calendar/zeller.mepml md html -d /tmp/zeller
+mep-mepml convert --run x.mepml /anywhere/x.pdf                  # run, <span class="k">then</span> <span class="nb">export</span> one file</code></pre>
+<p>mep comes from the flake, pinned to a commit of its main branch;
+<code>just update-mep</code> moves it to the latest one. Run reports inside
+<code>nix develop .#cpp</code>: it supplies both mep and matching installed datamunge headers
+and library. <code>just docs</code> and <code>just docs-mepml-run</code> select this shell automatically,
+building its library when necessary. <code>cpp-tools</code> supplies tools for local builds
+and documentation audits, without installing datamunge.</p>
+<p>Before executing C++ reports, both commands check <code>pkg-config</code>, then compile,
+link and run a small <code>&lt;dm/dm.hpp&gt;</code> program. A setup failure stops the build before
+report results or statuses are overwritten, including when PCH is disabled.
+For a missing-header error, check <code>pkg-config --cflags --libs datamunge</code> inside
+the selected shell and any package-path override. Custom builds can still use
+<code>DATAMUNGE_MEPML_PKG_CONFIG_PATH</code> or <code>DOCS_MEPML_PKG_CONFIG_PATH</code>; their <code>.pc</code> file
+must describe matching headers and library. <code>just docs</code> refreshes mep discovery
+on each configure. Pass <code>-DMEP_MEPML_EXECUTABLE=/absolute/path</code> to select another
+executable explicitly.</p>
+<p>Code blocks execute from their report's directory. Dataset-preparation blocks
+locate and enter the source-tree root before running repository helpers; diagram
+and figure blocks continue using paths relative to their report. Keep cached
+source archives rather than downloading them again on each documentation build.
+The installed-library shell also supplies HDF5 C++ and a versioned Python 3.12
+for isolated style-reference fixtures. On NixOS its reference-library path is
+applied only to that Python subprocess, so pip wheels can find their native
+runtime without changing mep's loader environment.</p>
+<p>Binding examples can select a language shell per block. In
+<a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/numerics/linear_algebra/matrix_expressions.mepml"><code>numerics/linear_algebra/matrix_expressions.mepml</code></a>, the Python fence uses
+<code>nix-shell=&quot;git+file:../../../../..#python&quot;</code> and
+<code>cmd=&quot;env -u PYTHONPATH ../../../../../build/venv/pydatamunge-run/bin/python {file}&quot;</code>;
+the R fence uses <code>nix-shell=&quot;git+file:../../../../..#r&quot;</code>. Shell and interpreter paths are
+relative to the report's directory. The explicit <code>git+file:</code> scheme selects the
+local Git checkout, including tracked working-tree edits, rather than an indirect
+registry or GitHub reference, and avoids copying ignored build artifacts into the
+Nix store. A remote shell reference instead uses <code>github:owner/repo#shell</code>.
+Use <code>cmd</code> to select the Python interpreter
+in mepml; the pinned runner does not apply Org's <code>python</code> interpreter option
+or its <code>dir</code> option. Python imports <code>pydatamunge</code> from the local virtualenv;
+the R shell hook exposes <code>datamunger</code> from <code>build/r/library</code>.
+Prepare these installations with <code>just build-python</code>
+and <code>just build-r</code>. Executing blocks reuses them; rebuild the affected binding
+explicitly when its native code or interface changes. The development shells
+provide tools and the core without adding Nix-built binding packages.</p>
+<p>To add a report, put <code>NAME.mepml</code> in the appropriate <code>&lt;subject&gt;/&lt;topic&gt;/</code>
+directory (or directly in a subject directory for an overview). Its path under
+`` becomes its website path: <code>stats/bayes/NAME.mepml</code> becomes
+<code>reports/stats/bayes/NAME.html</code>, listed on the Reports index. Each runnable block is a complete
+program, because mepml has no noweb. A block with <code>file=&quot;figures/X.svg&quot;</code>
+shows the newest <code>.svg</code> its program writes under this directory. Programs here
+write figures to <code>build/</code>, which is ignored by git. <code>ml/classification/iris_lda.mepml</code>
+is a worked example.</p>
+<p>Use an introductory native concept diagram when it helps explain the method.
+<code>dm::graphics::Diagram</code> draws labelled boxes and circles, boundary-anchored arrows,
+multiline UTF-8 labels, polygons, ellipses and paths with fitted SVG bounds and
+the plotting library's embedded font. Keep a complete C++ program in the report;
+extend the C++ graphics library when another reusable primitive is needed.
+Diagram generation uses the same datamunge compiler/linker setup as the numerical
+examples. Save all rendered images into the report's ignored <code>build/</code> directory,
+then copy/reference them with <code>file=&quot;figures/...&quot;</code> and <code>\image(...)</code>. Keep SVG as
+a standalone local file: never print SVG XML, inline data URIs or base64 images
+into result blocks. Keep reusable algorithms, data preparation and graphics in the canonical library.</p>
+<p>Report data preparation runs in C++. Missing sources are downloaded with pinned
+size/checksum verification, then extracted and prepared through the library;
+reports do not require Python data scripts, NumPy, SciPy, pip or a reference venv.
+The shared cache is <code>DATAMUNGE_DATA_DIR</code>, then the normal XDG/home dataset cache.
+Per-report <code>DATAMUNGE_*_DIR</code> overrides still select caller-supplied prepared data.</p>
+<p>For example, inside <code>nix develop .#cpp</code>:</p>
+<pre class="hl"><code>datamunge-prepare-data signals <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/build/datasets</span><span class="s2">&quot;</span>
+datamunge-prepare-data flowers <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/build/datasets/flowers102</span><span class="s2">&quot;</span></code></pre>
+<p>The same operations are available as
+<code>dm::datasets::prepare_example_data(&quot;signals&quot;, directory)</code> and
+<code>dm::datasets::prepare_example_data(&quot;flowers&quot;, directory)</code>. Signals and text use
+a parent directory containing their individual caches. OCR and VQA automatically
+prepare the sibling COCO128 cache; two-stream video prepares its KTH source
+cache; voxel occupancy prepares the original ModelNet meshes first. Video uses
+FFmpeg for codec decoding, and downloads use curl; the flake supplies both.
+<code>DATAMUNGE_DATA_OFFLINE=1</code> prohibits downloads, and
+<code>DATAMUNGE_DATA_MIRROR/&lt;dataset&gt;/&lt;filename&gt;</code> can supply checksum-identical files.
+A failed transfer or extraction never publishes an incomplete file. Original
+source identities, split policies and attribution remain in JSON/TSV manifests.
+Independent framework oracle scripts are optional development checks and are
+not part of report data preparation.</p>
+<p>CMake builds enable these adapters with <code>DATAMUNGE_ENABLE_DATA_ASSETS=ON</code>
+(default), requiring libarchive, OpenSSL Crypto, nlohmann-json and HDF5 C++.
+Minimal consumers can disable the option; data APIs then throw an explicit
+feature-unavailable error. Numeric NPY/NPZ reading and writing remain native
+and do not depend on this option or a Python installation.</p>
+<p>Reports sharing a checkpoint declare its producer with
+<code>//? Requires: vanilla_saliency.mepml</code> (a path relative to the report).
+The website includes prerequisites once, runs them before their dependents,
+and skips dependent execution if a prerequisite fails. This lets a fresh
+<code>just docs</code> build create shared checkpoints through their original C++ reports.
+For direct <code>mep-mepml run</code> use, run the declared prerequisite reports first.</p>
+<p>The native array writers also support explicit Fortran-order/big-endian NPY,
+DEFLATE NPZ archives and IDX output through <code>&lt;datamunge/nn/array_io.hpp&gt;</code> (also
+included by <code>&lt;dm/dm.hpp&gt;</code>). This keeps the small format fixtures and fitted-weight
+exports in the foundational reports native as well.</p>
+<h2 id="publish-the-documentation-site">Publish the documentation site</h2>
+<p>Run <code>just docs-publish</code> from the source checkout. It builds the API reference
+and exports the saved report results and locally available figures, then pushes
+the generated site to <code>origin/gh-pages</code>. The publishing command keeps the
+current branch and index in place. It uses your normal Git credentials.</p>
+<p>Generate missing figures locally with <code>just docs-mepml-run PATH.mepml</code> before
+publishing the affected reports. Keep the generated images, videos and audio
+in your local checkout and on the published branch. A fresh source checkout
+can preview the saved text and results, with placeholders for missing figures.</p>
+<p>After the first push, set <strong>Settings → Pages → Source</strong> to <strong>Deploy from a
+branch</strong>, and select <strong>gh-pages</strong> and <strong>/(root)</strong>. The branch contains the
+finished HTML and media. GitHub serves those files as-is. You can also fetch
+the branch and open its <code>index.html</code> from a local checkout.</p>
+</article><p class="report-meta"><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/mepml/README.md">source</a></p>
+  </main>
+  <aside class="pagetoc" aria-label="On this page"><div class="pagetoc-inner"></div></aside>
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

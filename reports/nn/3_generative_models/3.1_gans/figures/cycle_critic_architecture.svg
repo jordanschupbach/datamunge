@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="963.4" height="526.7" viewBox="0 0 963.4 526.7" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="layers" aria-labelledby="model-title model-description">
+<title id="model-title">CycleGAN D_a: unconditional local raw patch scores</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">CycleGAN D_a: unconditional local raw patch scores</text>
+<text x="24" y="51" font-size="12">7 nodes | 661 unique learned values | Flow / layers</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#56B4E9"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#F0E442"/><text x="302" y="69" font-size="11">Activation</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="432" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="176,154 214,154 214,258 176,306" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 176 230 C 195 230 195 206 214 206" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="318,154 356,154 356,258 318,258" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 318 206 C 337 206 337 206 356 206" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="460,154 498,154 498,254 460,258" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 460 206 C 479 206 479 204 498 204" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="598,154 636,154 636,254 598,254" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="3" data-to="4" d="M 598 204 C 617 204 617 204 636 204" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="736,154 792.3,154 792.3,198 736,254" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="4" data-to="5" d="M 736 204 C 764.15 204 764.15 176 792.3 176" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="836.3,154 894,154 894,198 836.3,198" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="5" data-to="6" d="M 836.3 176 C 865.15 176 865.15 176 894 176" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 28 x 28 x 1]</title>
+<g id="model-glyph-0" data-left="24" data-right="176" data-face-width="144" data-face-height="144" data-depth="8" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="24,162 32,154 176,154 168,162" fill="#E69F00"/>
+<polygon class="volume-side" points="168,162 176,154 176,298 168,306" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="162" width="144" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(100 396.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 28 x 28 x 1]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>down14 [1 x 14 x 14 x 4]</title>
+<g id="model-glyph-1" data-left="214" data-right="318" data-face-width="72" data-face-height="72" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="214,186 246,154 318,154 286,186" fill="#56B4E9"/>
+<polygon class="volume-side" points="286,186 318,154 318,226 286,258" fill="#56B4E9"/>
+<rect class="volume-front" x="214" y="186" width="72" height="72" fill="#56B4E9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(266 386.35) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">down14</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k4 s2 d1 / identity</text>
+<text x="0" y="12.35" font-size="13">[1 x 14 x 14 x 4]</text>
+<text x="0" y="29.25" font-size="13">68 learned values</text>
+</g></g>
+<g data-node="2" data-category="Activation"><title>LeakyRelu [1 x 14 x 14 x 4]</title>
+<g id="model-glyph-2" data-left="356" data-right="460" data-face-width="72" data-face-height="72" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="356,186 388,154 460,154 428,186" fill="#F0E442"/>
+<polygon class="volume-side" points="428,186 460,154 460,226 428,258" fill="#F0E442"/>
+<rect class="volume-front" x="356" y="186" width="72" height="72" fill="#F0E442"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(408 348.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">LeakyRelu</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 14 x 14 x 4]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>down7 [1 x 7 x 7 x 8]</title>
+<g id="model-glyph-3" data-left="498" data-right="598" data-face-width="36" data-face-height="36" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="498,218 562,154 598,154 534,218" fill="#56B4E9"/>
+<polygon class="volume-side" points="534,218 598,154 598,190 534,254" fill="#56B4E9"/>
+<rect class="volume-front" x="498" y="218" width="36" height="36" fill="#56B4E9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(548 382.35) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">down7</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k4 s2 d1 / identity</text>
+<text x="0" y="12.35" font-size="13">[1 x 7 x 7 x 8]</text>
+<text x="0" y="29.25" font-size="13">520 learned values</text>
+</g></g>
+<g data-node="4" data-category="Activation"><title>LeakyRelu [1 x 7 x 7 x 8]</title>
+<g id="model-glyph-4" data-left="636" data-right="736" data-face-width="36" data-face-height="36" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="636,218 700,154 736,154 672,218" fill="#F0E442"/>
+<polygon class="volume-side" points="672,218 736,154 736,190 672,254" fill="#F0E442"/>
+<rect class="volume-front" x="636" y="218" width="36" height="36" fill="#F0E442"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(686 335.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">LeakyRelu</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 7 x 7 x 8]</text>
+</g></g>
+<g data-node="5" data-category="Convolution"><title>output [1 x 7 x 7 x 1]</title>
+<g id="model-glyph-5" data-left="792.3" data-right="836.3" data-face-width="36" data-face-height="36" data-depth="8" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="792.3,162 800.3,154 836.3,154 828.3,162" fill="#56B4E9"/>
+<polygon class="volume-side" points="828.3,162 836.3,154 836.3,190 828.3,198" fill="#56B4E9"/>
+<rect class="volume-front" x="792.3" y="162" width="36" height="36" fill="#56B4E9"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(814.3 326.35) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">output</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k3 s1 d1 / identity</text>
+<text x="0" y="12.35" font-size="13">[1 x 7 x 7 x 1]</text>
+<text x="0" y="29.25" font-size="13">73 learned values</text>
+</g></g>
+<g data-node="6" data-category="Output"><title>Output [1 x 7 x 7 x 1]</title>
+<g id="model-glyph-6" data-left="894" data-right="938" data-face-width="36" data-face-height="36" data-depth="8" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="894,162 902,154 938,154 930,162" fill="#6C8194"/>
+<polygon class="volume-side" points="930,162 938,154 938,190 930,198" fill="#6C8194"/>
+<rect class="volume-front" x="894" y="162" width="36" height="36" fill="#6C8194"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(916 279.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 7 x 7 x 1]</text>
+</g></g>
+</g></svg>

@@ -1,0 +1,1108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="6136.92" height="816.6" viewBox="0 0 6136.92 816.6" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Independent multi-label learning on actual COCO photographs</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="20" y="20" font-size="20" font-weight="600">Independent multi-label learning on actual COCO photographs</text>
+<text x="20" y="47" font-size="12">90 nodes | 180952 unique learned values | Flow / blocks</text>
+<rect x="20" y="55" width="12" height="12" rx="2" fill="#E69F00"/><text x="38" y="65" font-size="11">Input</text>
+<rect x="150" y="55" width="12" height="12" rx="2" fill="#56B4E9"/><text x="168" y="65" font-size="11">Convolution</text>
+<rect x="280" y="55" width="12" height="12" rx="2" fill="#0072B2"/><text x="298" y="65" font-size="11">Dense</text>
+<rect x="410" y="55" width="12" height="12" rx="2" fill="#F0E442"/><text x="428" y="65" font-size="11">Activation</text>
+<rect x="540" y="55" width="12" height="12" rx="2" fill="#CC79A7"/><text x="558" y="65" font-size="11">Normalization</text>
+<rect x="670" y="55" width="12" height="12" rx="2" fill="#D55E00"/><text x="688" y="65" font-size="11">Merge</text>
+<rect x="800" y="55" width="12" height="12" rx="2" fill="#6C8194"/><text x="818" y="65" font-size="11">Output</text>
+<rect x="20" y="77" width="12" height="12" rx="2" fill="#94A3B8"/><text x="38" y="87" font-size="11">Operation</text>
+<rect x="150" y="77" width="12" height="12" rx="2" fill="#B88644"/><text x="168" y="87" font-size="11">Parameter</text>
+<text x="20" y="117" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="117.969,172 141.969,172 141.969,273.25 117.969,269.969" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="0" data-to="2" d="M 117.969 220.984 C 129.969 220.984 129.969 222.625 141.969 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="73.8594,434.569 141.969,172 141.969,273.25 73.8594,444.319" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 73.8594 439.444 C 107.914 439.444 107.914 222.625 141.969 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="243.219,172 267.219,172 267.219,273.25 243.219,273.25" fill="#CC79A7" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 243.219 222.625 C 255.219 222.625 255.219 222.625 267.219 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="368.469,172 392.469,330.75 392.469,432 368.469,273.25" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="3" data-to="4" d="M 368.469 222.625 C 380.469 222.625 380.469 381.375 392.469 381.375" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="493.719,330.75 517.719,172 517.719,273.25 493.719,432" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="4" data-to="6" d="M 493.719 381.375 C 505.719 381.375 505.719 222.625 517.719 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="451.719,172 517.719,172 517.719,273.25 451.719,181.75" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="5" data-to="6" d="M 451.719 176.875 C 484.719 176.875 484.719 222.625 517.719 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="618.969,172 642.969,172 642.969,273.25 618.969,273.25" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="6" data-to="7" d="M 618.969 222.625 C 630.969 222.625 630.969 222.625 642.969 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="744.219,172 768.219,330.75 768.219,432 744.219,273.25" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="7" data-to="8" d="M 744.219 222.625 C 756.219 222.625 756.219 381.375 768.219 381.375" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="869.469,330.75 893.469,172 893.469,273.25 869.469,432" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="8" data-to="10" d="M 869.469 381.375 C 881.469 381.375 881.469 222.625 893.469 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="827.469,172 893.469,172 893.469,273.25 827.469,181.75" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="9" data-to="10" d="M 827.469 176.875 C 860.469 176.875 860.469 222.625 893.469 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="994.719,172 1018.72,172 1018.72,273.25 994.719,273.25" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="10" data-to="11" d="M 994.719 222.625 C 1006.72 222.625 1006.72 222.625 1018.72 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1119.97,172 1143.97,172 1143.97,273.25 1119.97,273.25" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="11" data-to="12" d="M 1119.97 222.625 C 1131.97 222.625 1131.97 222.625 1143.97 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="4" data-to="12" d="M 493.719 381.375 C 509.719 381.375 509.719 160 525.719 160 L 1111.97 160 C 1127.97 160 1127.97 222.625 1143.97 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1245.22,172 1269.22,330.75 1269.22,432 1245.22,273.25" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="12" data-to="13" d="M 1245.22 222.625 C 1257.22 222.625 1257.22 381.375 1269.22 381.375" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1370.47,330.75 1394.47,172 1394.47,273.25 1370.47,432" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="13" data-to="15" d="M 1370.47 381.375 C 1382.47 381.375 1382.47 222.625 1394.47 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1328.47,172 1394.47,172 1394.47,273.25 1328.47,181.75" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="14" data-to="15" d="M 1328.47 176.875 C 1361.47 176.875 1361.47 222.625 1394.47 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1495.72,172 1519.72,172 1519.72,273.25 1495.72,273.25" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="15" data-to="16" d="M 1495.72 222.625 C 1507.72 222.625 1507.72 222.625 1519.72 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1620.97,172 1644.97,330.75 1644.97,432 1620.97,273.25" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="16" data-to="17" d="M 1620.97 222.625 C 1632.97 222.625 1632.97 381.375 1644.97 381.375" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1746.22,330.75 1770.22,172 1770.22,273.25 1746.22,432" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="17" data-to="19" d="M 1746.22 381.375 C 1758.22 381.375 1758.22 222.625 1770.22 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1704.22,172 1770.22,172 1770.22,273.25 1704.22,181.75" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="18" data-to="19" d="M 1704.22 176.875 C 1737.22 176.875 1737.22 222.625 1770.22 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1871.47,172 1895.47,172 1895.47,273.25 1871.47,273.25" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="19" data-to="20" d="M 1871.47 222.625 C 1883.47 222.625 1883.47 222.625 1895.47 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1996.72,172 2020.72,172 2020.72,273.25 1996.72,273.25" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="20" data-to="21" d="M 1996.72 222.625 C 2008.72 222.625 2008.72 222.625 2020.72 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="13" data-to="21" d="M 1370.47 381.375 C 1386.47 381.375 1386.47 160 1402.47 160 L 1988.72 160 C 2004.72 160 2004.72 222.625 2020.72 222.625" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2121.97,172 2145.97,512.6 2145.97,613.85 2121.97,273.25" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="21" data-to="22" d="M 2121.97 222.625 C 2133.97 222.625 2133.97 563.225 2145.97 563.225" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2247.22,512.6 2271.22,172 2271.22,230.5 2247.22,613.85" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="22" data-to="24" d="M 2247.22 563.225 C 2259.22 563.225 2259.22 201.25 2271.22 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2207.84,172 2271.22,172 2271.22,230.5 2207.84,187" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="23" data-to="24" d="M 2207.84 179.5 C 2239.53 179.5 2239.53 201.25 2271.22 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2329.72,172 2353.87,172 2353.87,230.5 2329.72,230.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="24" data-to="25" d="M 2329.72 201.25 C 2341.79 201.25 2341.79 201.25 2353.87 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2412.37,172 2436.52,351.6 2436.52,410.1 2412.37,230.5" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="25" data-to="26" d="M 2412.37 201.25 C 2424.44 201.25 2424.44 380.85 2436.52 380.85" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2495.02,351.6 2519.02,172 2519.02,230.5 2495.02,410.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="26" data-to="28" d="M 2495.02 380.85 C 2507.02 380.85 2507.02 201.25 2519.02 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2483.02,172 2519.02,172 2519.02,230.5 2483.02,187" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="27" data-to="28" d="M 2483.02 179.5 C 2501.02 179.5 2501.02 201.25 2519.02 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2577.52,172 2601.52,172 2601.52,230.5 2577.52,230.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="28" data-to="29" d="M 2577.52 201.25 C 2589.52 201.25 2589.52 201.25 2601.52 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2247.22,512.6 2271.22,402.9 2271.22,461.4 2247.22,613.85" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="22" data-to="31" d="M 2247.22 563.225 C 2259.22 563.225 2259.22 432.15 2271.22 432.15" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2207.84,343.8 2271.22,402.9 2271.22,461.4 2207.84,355.8" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="30" data-to="31" d="M 2207.84 349.8 C 2239.53 349.8 2239.53 432.15 2271.22 432.15" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2329.72,402.9 2353.87,434.1 2353.87,492.6 2329.72,461.4" fill="#CC79A7" fill-opacity="0.09"/>
+<path data-from="31" data-to="32" d="M 2329.72 432.15 C 2341.79 432.15 2341.79 463.35 2353.87 463.35" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2660.02,172 2684.02,172 2684.02,230.5 2660.02,230.5" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="29" data-to="33" d="M 2660.02 201.25 C 2672.02 201.25 2672.02 201.25 2684.02 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="32" data-to="33" d="M 2412.37 463.35 C 2428.37 463.35 2428.37 168 2444.37 168 L 2652.02 168 C 2668.02 168 2668.02 201.25 2684.02 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2742.52,172 2766.52,351.6 2766.52,410.1 2742.52,230.5" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="33" data-to="34" d="M 2742.52 201.25 C 2754.52 201.25 2754.52 380.85 2766.52 380.85" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2825.02,351.6 2849.02,172 2849.02,230.5 2825.02,410.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="34" data-to="36" d="M 2825.02 380.85 C 2837.02 380.85 2837.02 201.25 2849.02 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2813.02,172 2849.02,172 2849.02,230.5 2813.02,187" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="35" data-to="36" d="M 2813.02 179.5 C 2831.02 179.5 2831.02 201.25 2849.02 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2907.52,172 2931.52,172 2931.52,230.5 2907.52,230.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="36" data-to="37" d="M 2907.52 201.25 C 2919.52 201.25 2919.52 201.25 2931.52 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="2990.02,172 3014.02,351.6 3014.02,410.1 2990.02,230.5" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="37" data-to="38" d="M 2990.02 201.25 C 3002.02 201.25 3002.02 380.85 3014.02 380.85" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3072.52,351.6 3096.52,172 3096.52,230.5 3072.52,410.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="38" data-to="40" d="M 3072.52 380.85 C 3084.52 380.85 3084.52 201.25 3096.52 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3060.52,172 3096.52,172 3096.52,230.5 3060.52,187" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="39" data-to="40" d="M 3060.52 179.5 C 3078.52 179.5 3078.52 201.25 3096.52 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3155.02,172 3179.02,172 3179.02,230.5 3155.02,230.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="40" data-to="41" d="M 3155.02 201.25 C 3167.02 201.25 3167.02 201.25 3179.02 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3237.52,172 3261.52,172 3261.52,230.5 3237.52,230.5" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="41" data-to="42" d="M 3237.52 201.25 C 3249.52 201.25 3249.52 201.25 3261.52 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="34" data-to="42" d="M 2825.02 380.85 C 2841.02 380.85 2841.02 160 2857.02 160 L 3229.52 160 C 3245.52 160 3245.52 201.25 3261.52 201.25" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3320.02,172 3344.02,549.2 3344.02,607.7 3320.02,230.5" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="42" data-to="43" d="M 3320.02 201.25 C 3332.02 201.25 3332.02 578.45 3344.02 578.45" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3402.52,549.2 3426.52,172 3426.52,217 3402.52,607.7" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="43" data-to="45" d="M 3402.52 578.45 C 3414.52 578.45 3414.52 194.5 3426.52 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3395.77,172 3426.52,172 3426.52,217 3395.77,197.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="44" data-to="45" d="M 3395.77 184.75 C 3411.14 184.75 3411.14 194.5 3426.52 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3471.52,172 3502.42,172 3502.42,217 3471.52,217" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="45" data-to="46" d="M 3471.52 194.5 C 3486.97 194.5 3486.97 194.5 3502.42 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3547.42,172 3590.32,362.1 3590.32,407.1 3547.42,217" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="46" data-to="47" d="M 3547.42 194.5 C 3568.87 194.5 3568.87 384.6 3590.32 384.6" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3635.32,362.1 3671.32,172 3671.32,217 3635.32,407.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="47" data-to="49" d="M 3635.32 384.6 C 3653.32 384.6 3653.32 194.5 3671.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3647.32,172 3671.32,172 3671.32,217 3647.32,197.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="48" data-to="49" d="M 3647.32 184.75 C 3659.32 184.75 3659.32 194.5 3671.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3716.32,172 3740.32,172 3740.32,217 3716.32,217" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="49" data-to="50" d="M 3716.32 194.5 C 3728.32 194.5 3728.32 194.5 3740.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3402.52,549.2 3426.52,389.4 3426.52,434.4 3402.52,607.7" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="43" data-to="52" d="M 3402.52 578.45 C 3414.52 578.45 3414.52 411.9 3426.52 411.9" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3395.77,362.1 3426.52,389.4 3426.52,434.4 3395.77,384.6" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="51" data-to="52" d="M 3395.77 373.35 C 3411.14 373.35 3411.14 411.9 3426.52 411.9" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3471.52,389.4 3502.42,420.6 3502.42,465.6 3471.52,434.4" fill="#CC79A7" fill-opacity="0.09"/>
+<path data-from="52" data-to="53" d="M 3471.52 411.9 C 3486.97 411.9 3486.97 443.1 3502.42 443.1" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3785.32,172 3809.32,172 3809.32,217 3785.32,217" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="50" data-to="54" d="M 3785.32 194.5 C 3797.32 194.5 3797.32 194.5 3809.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="53" data-to="54" d="M 3547.42 443.1 C 3563.42 443.1 3563.42 168 3579.42 168 L 3777.32 168 C 3793.32 168 3793.32 194.5 3809.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3854.32,172 3890.32,362.1 3890.32,407.1 3854.32,217" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="54" data-to="55" d="M 3854.32 194.5 C 3872.32 194.5 3872.32 384.6 3890.32 384.6" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3935.32,362.1 3971.32,172 3971.32,217 3935.32,407.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="55" data-to="57" d="M 3935.32 384.6 C 3953.32 384.6 3953.32 194.5 3971.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="3947.32,172 3971.32,172 3971.32,217 3947.32,197.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="56" data-to="57" d="M 3947.32 184.75 C 3959.32 184.75 3959.32 194.5 3971.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4016.32,172 4040.32,172 4040.32,217 4016.32,217" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="57" data-to="58" d="M 4016.32 194.5 C 4028.32 194.5 4028.32 194.5 4040.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4085.32,172 4121.32,362.1 4121.32,407.1 4085.32,217" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="58" data-to="59" d="M 4085.32 194.5 C 4103.32 194.5 4103.32 384.6 4121.32 384.6" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4166.32,362.1 4202.32,172 4202.32,217 4166.32,407.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="59" data-to="61" d="M 4166.32 384.6 C 4184.32 384.6 4184.32 194.5 4202.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4178.32,172 4202.32,172 4202.32,217 4178.32,197.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="60" data-to="61" d="M 4178.32 184.75 C 4190.32 184.75 4190.32 194.5 4202.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4247.32,172 4271.32,172 4271.32,217 4247.32,217" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="61" data-to="62" d="M 4247.32 194.5 C 4259.32 194.5 4259.32 194.5 4271.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4316.32,172 4340.32,172 4340.32,217 4316.32,217" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="62" data-to="63" d="M 4316.32 194.5 C 4328.32 194.5 4328.32 194.5 4340.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="55" data-to="63" d="M 3935.32 384.6 C 3951.32 384.6 3951.32 160 3967.32 160 L 4308.32 160 C 4324.32 160 4324.32 194.5 4340.32 194.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4385.32,172 4431.82,591.2 4431.82,636.2 4385.32,217" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="63" data-to="64" d="M 4385.32 194.5 C 4408.57 194.5 4408.57 613.7 4431.82 613.7" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4476.82,591.2 4523.32,172 4523.32,226 4476.82,636.2" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="64" data-to="66" d="M 4476.82 613.7 C 4500.07 613.7 4500.07 199 4523.32 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4499.32,172 4523.32,172 4523.32,226 4499.32,218.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="65" data-to="66" d="M 4499.32 195.25 C 4511.32 195.25 4511.32 199 4523.32 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4577.32,172 4603.72,172 4603.72,226 4577.32,226" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="66" data-to="67" d="M 4577.32 199 C 4590.52 199 4590.52 199 4603.72 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4657.72,172 4726.12,383.1 4726.12,437.1 4657.72,226" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="67" data-to="68" d="M 4657.72 199 C 4691.92 199 4691.92 410.1 4726.12 410.1" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4780.12,383.1 4846.12,172 4846.12,226 4780.12,437.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="68" data-to="70" d="M 4780.12 410.1 C 4813.12 410.1 4813.12 199 4846.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4822.12,172 4846.12,172 4846.12,226 4822.12,218.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="69" data-to="70" d="M 4822.12 195.25 C 4834.12 195.25 4834.12 199 4846.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4900.12,172 4924.12,172 4924.12,226 4900.12,226" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="70" data-to="71" d="M 4900.12 199 C 4912.12 199 4912.12 199 4924.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4476.82,591.2 4523.32,382.8 4523.32,436.8 4476.82,636.2" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="64" data-to="73" d="M 4476.82 613.7 C 4500.07 613.7 4500.07 409.8 4523.32 409.8" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4499.32,383.1 4523.32,382.8 4523.32,436.8 4499.32,426.6" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="72" data-to="73" d="M 4499.32 404.85 C 4511.32 404.85 4511.32 409.8 4523.32 409.8" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4577.32,382.8 4603.72,429.6 4603.72,483.6 4577.32,436.8" fill="#CC79A7" fill-opacity="0.09"/>
+<path data-from="73" data-to="74" d="M 4577.32 409.8 C 4590.52 409.8 4590.52 456.6 4603.72 456.6" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="4978.12,172 5002.12,172 5002.12,226 4978.12,226" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="71" data-to="75" d="M 4978.12 199 C 4990.12 199 4990.12 199 5002.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="74" data-to="75" d="M 4657.72 456.6 C 4673.72 456.6 4673.72 168 4689.72 168 L 4970.12 168 C 4986.12 168 4986.12 199 5002.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5056.12,172 5122.12,383.1 5122.12,437.1 5056.12,226" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="75" data-to="76" d="M 5056.12 199 C 5089.12 199 5089.12 410.1 5122.12 410.1" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5176.12,383.1 5242.12,172 5242.12,226 5176.12,437.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="76" data-to="78" d="M 5176.12 410.1 C 5209.12 410.1 5209.12 199 5242.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5218.12,172 5242.12,172 5242.12,226 5218.12,218.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="77" data-to="78" d="M 5218.12 195.25 C 5230.12 195.25 5230.12 199 5242.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5296.12,172 5320.12,172 5320.12,226 5296.12,226" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="78" data-to="79" d="M 5296.12 199 C 5308.12 199 5308.12 199 5320.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5374.12,172 5440.12,383.1 5440.12,437.1 5374.12,226" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="79" data-to="80" d="M 5374.12 199 C 5407.12 199 5407.12 410.1 5440.12 410.1" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5494.12,383.1 5560.12,172 5560.12,226 5494.12,437.1" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="80" data-to="82" d="M 5494.12 410.1 C 5527.12 410.1 5527.12 199 5560.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5536.12,172 5560.12,172 5560.12,226 5536.12,218.5" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="81" data-to="82" d="M 5536.12 195.25 C 5548.12 195.25 5548.12 199 5560.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5614.12,172 5638.12,172 5638.12,226 5614.12,226" fill="#56B4E9" fill-opacity="0.09"/>
+<path data-from="82" data-to="83" d="M 5614.12 199 C 5626.12 199 5626.12 199 5638.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5692.12,172 5716.12,172 5716.12,226 5692.12,226" fill="#D55E00" fill-opacity="0.09"/>
+<path data-from="83" data-to="84" d="M 5692.12 199 C 5704.12 199 5704.12 199 5716.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="76" data-to="84" d="M 5176.12 410.1 C 5192.12 410.1 5192.12 160 5208.12 160 L 5684.12 160 C 5700.12 160 5700.12 199 5716.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5770.12,172 5794.12,172 5794.12,226 5770.12,226" fill="#F0E442" fill-opacity="0.09"/>
+<path data-from="84" data-to="85" d="M 5770.12 199 C 5782.12 199 5782.12 199 5794.12 199" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5848.12,172 5884.22,172 5884.22,249.8 5848.12,226" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="85" data-to="86" d="M 5848.12 199 C 5866.17 199 5866.17 210.9 5884.22 210.9" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5903.22,172 5951.42,172 5951.42,249.8 5903.22,249.8" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="86" data-to="87" d="M 5903.22 210.9 C 5927.32 210.9 5927.32 210.9 5951.42 210.9" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="5970.42,172 6018.62,172 6018.62,269 5970.42,249.8" fill="#0072B2" fill-opacity="0.09"/>
+<path data-from="87" data-to="88" d="M 5970.42 210.9 C 5994.52 210.9 5994.52 220.5 6018.62 220.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="6037.62,172 6085.82,172 6085.82,269 6037.62,269" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="88" data-to="89" d="M 6037.62 220.5 C 6061.72 220.5 6061.72 220.5 6085.82 220.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 64 x 64 x 3]</title>
+<g id="model-glyph-0" data-left="20" data-right="117.969" data-face-width="96" data-face-height="96" data-depth="1.96875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="20,173.969 21.9688,172 117.969,172 116,173.969" fill="#E69F00"/>
+<polygon class="volume-side" points="116,173.969 117.969,172 117.969,268 116,269.969" fill="#E69F00"/>
+<rect class="volume-front" x="20" y="173.969" width="96" height="96" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(68.9844 350.269) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Input</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Parameter"><title>Parameter [3 x 3 x 3 x 8]</title>
+<g id="model-glyph-1" data-left="64.1094" data-right="73.8594" data-face-width="4.5" data-face-height="4.5" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="64.1094,439.819 69.3594,434.569 73.8594,434.569 68.6094,439.819" fill="#B88644"/>
+<polygon class="volume-side" points="68.6094,439.819 73.8594,434.569 73.8594,439.069 68.6094,444.319" fill="#B88644"/>
+<rect class="volume-front" x="64.1094" y="439.819" width="4.5" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(68.9844 516.819) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 3 x 8]</text>
+</g></g>
+<g data-node="2" data-category="Convolution"><title>Conv2D [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-2" data-left="141.969" data-right="243.219" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="141.969,177.25 147.219,172 243.219,172 237.969,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="237.969,177.25 243.219,172 243.219,268 237.969,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="141.969" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(192.594 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="3" data-category="Normalization"><title>stem/bn [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-3" data-left="267.219" data-right="368.469" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="267.219,177.25 272.469,172 368.469,172 363.219,177.25" fill="#CC79A7"/>
+<polygon class="volume-side" points="363.219,177.25 368.469,172 368.469,268 363.219,273.25" fill="#CC79A7"/>
+<rect class="volume-front" x="267.219" y="177.25" width="96" height="96" fill="#CC79A7"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(317.844 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stem/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="4" data-category="Activation"><title>Relu [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-4" data-left="392.469" data-right="493.719" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="392.469,336 397.719,330.75 493.719,330.75 488.469,336" fill="#F0E442"/>
+<polygon class="volume-side" points="488.469,336 493.719,330.75 493.719,426.75 488.469,432" fill="#F0E442"/>
+<rect class="volume-front" x="392.469" y="336" width="96" height="96" fill="#F0E442"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(443.094 512.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="5" data-category="Parameter"><title>Parameter [3 x 3 x 8 x 8]</title>
+<g id="model-glyph-5" data-left="434.469" data-right="451.719" data-face-width="12" data-face-height="4.5" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="434.469,177.25 439.719,172 451.719,172 446.469,177.25" fill="#B88644"/>
+<polygon class="volume-side" points="446.469,177.25 451.719,172 451.719,176.5 446.469,181.75" fill="#B88644"/>
+<rect class="volume-front" x="434.469" y="177.25" width="12" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(443.094 254.25) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 8 x 8]</text>
+</g></g>
+<g data-node="6" data-category="Convolution"><title>Conv2D [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-6" data-left="517.719" data-right="618.969" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="517.719,177.25 522.969,172 618.969,172 613.719,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="613.719,177.25 618.969,172 618.969,268 613.719,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="517.719" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(568.344 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="7" data-category="Convolution"><title>stage1/block1/conv1/bn [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-7" data-left="642.969" data-right="744.219" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="642.969,177.25 648.219,172 744.219,172 738.969,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="738.969,177.25 744.219,172 744.219,268 738.969,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="642.969" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(693.594 373.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage1/block1/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="8" data-category="Activation"><title>Relu [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-8" data-left="768.219" data-right="869.469" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="768.219,336 773.469,330.75 869.469,330.75 864.219,336" fill="#F0E442"/>
+<polygon class="volume-side" points="864.219,336 869.469,330.75 869.469,426.75 864.219,432" fill="#F0E442"/>
+<rect class="volume-front" x="768.219" y="336" width="96" height="96" fill="#F0E442"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(818.844 512.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="9" data-category="Parameter"><title>Parameter [3 x 3 x 8 x 8]</title>
+<g id="model-glyph-9" data-left="810.219" data-right="827.469" data-face-width="12" data-face-height="4.5" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="810.219,177.25 815.469,172 827.469,172 822.219,177.25" fill="#B88644"/>
+<polygon class="volume-side" points="822.219,177.25 827.469,172 827.469,176.5 822.219,181.75" fill="#B88644"/>
+<rect class="volume-front" x="810.219" y="177.25" width="12" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-9" data-node-label="9" transform="translate(818.844 254.25) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 8 x 8]</text>
+</g></g>
+<g data-node="10" data-category="Convolution"><title>Conv2D [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-10" data-left="893.469" data-right="994.719" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="893.469,177.25 898.719,172 994.719,172 989.469,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="989.469,177.25 994.719,172 994.719,268 989.469,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="893.469" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-10" data-node-label="10" transform="translate(944.094 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="11" data-category="Convolution"><title>stage1/block1/conv2/bn [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-11" data-left="1018.72" data-right="1119.97" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1018.72,177.25 1023.97,172 1119.97,172 1114.72,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="1114.72,177.25 1119.97,172 1119.97,268 1114.72,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="1018.72" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-11" data-node-label="11" transform="translate(1069.34 373.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage1/block1/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="12" data-category="Merge"><title>Add [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-12" data-left="1143.97" data-right="1245.22" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1143.97,177.25 1149.22,172 1245.22,172 1239.97,177.25" fill="#D55E00"/>
+<polygon class="volume-side" points="1239.97,177.25 1245.22,172 1245.22,268 1239.97,273.25" fill="#D55E00"/>
+<rect class="volume-front" x="1143.97" y="177.25" width="96" height="96" fill="#D55E00"/>
+</g>
+<g id="model-label-12" data-node-label="12" transform="translate(1194.59 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="13" data-category="Activation"><title>Relu [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-13" data-left="1269.22" data-right="1370.47" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1269.22,336 1274.47,330.75 1370.47,330.75 1365.22,336" fill="#F0E442"/>
+<polygon class="volume-side" points="1365.22,336 1370.47,330.75 1370.47,426.75 1365.22,432" fill="#F0E442"/>
+<rect class="volume-front" x="1269.22" y="336" width="96" height="96" fill="#F0E442"/>
+</g>
+<g id="model-label-13" data-node-label="13" transform="translate(1319.84 512.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="14" data-category="Parameter"><title>Parameter [3 x 3 x 8 x 8]</title>
+<g id="model-glyph-14" data-left="1311.22" data-right="1328.47" data-face-width="12" data-face-height="4.5" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1311.22,177.25 1316.47,172 1328.47,172 1323.22,177.25" fill="#B88644"/>
+<polygon class="volume-side" points="1323.22,177.25 1328.47,172 1328.47,176.5 1323.22,181.75" fill="#B88644"/>
+<rect class="volume-front" x="1311.22" y="177.25" width="12" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-14" data-node-label="14" transform="translate(1319.84 254.25) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 8 x 8]</text>
+</g></g>
+<g data-node="15" data-category="Convolution"><title>Conv2D [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-15" data-left="1394.47" data-right="1495.72" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1394.47,177.25 1399.72,172 1495.72,172 1490.47,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="1490.47,177.25 1495.72,172 1495.72,268 1490.47,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="1394.47" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-15" data-node-label="15" transform="translate(1445.09 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="16" data-category="Convolution"><title>stage1/block2/conv1/bn [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-16" data-left="1519.72" data-right="1620.97" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1519.72,177.25 1524.97,172 1620.97,172 1615.72,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="1615.72,177.25 1620.97,172 1620.97,268 1615.72,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="1519.72" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-16" data-node-label="16" transform="translate(1570.34 373.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage1/block2/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="17" data-category="Activation"><title>Relu [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-17" data-left="1644.97" data-right="1746.22" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1644.97,336 1650.22,330.75 1746.22,330.75 1740.97,336" fill="#F0E442"/>
+<polygon class="volume-side" points="1740.97,336 1746.22,330.75 1746.22,426.75 1740.97,432" fill="#F0E442"/>
+<rect class="volume-front" x="1644.97" y="336" width="96" height="96" fill="#F0E442"/>
+</g>
+<g id="model-label-17" data-node-label="17" transform="translate(1695.59 512.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="18" data-category="Parameter"><title>Parameter [3 x 3 x 8 x 8]</title>
+<g id="model-glyph-18" data-left="1686.97" data-right="1704.22" data-face-width="12" data-face-height="4.5" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1686.97,177.25 1692.22,172 1704.22,172 1698.97,177.25" fill="#B88644"/>
+<polygon class="volume-side" points="1698.97,177.25 1704.22,172 1704.22,176.5 1698.97,181.75" fill="#B88644"/>
+<rect class="volume-front" x="1686.97" y="177.25" width="12" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-18" data-node-label="18" transform="translate(1695.59 254.25) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 8 x 8]</text>
+</g></g>
+<g data-node="19" data-category="Convolution"><title>Conv2D [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-19" data-left="1770.22" data-right="1871.47" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1770.22,177.25 1775.47,172 1871.47,172 1866.22,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="1866.22,177.25 1871.47,172 1871.47,268 1866.22,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="1770.22" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-19" data-node-label="19" transform="translate(1820.84 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="20" data-category="Convolution"><title>stage1/block2/conv2/bn [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-20" data-left="1895.47" data-right="1996.72" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1895.47,177.25 1900.72,172 1996.72,172 1991.47,177.25" fill="#56B4E9"/>
+<polygon class="volume-side" points="1991.47,177.25 1996.72,172 1996.72,268 1991.47,273.25" fill="#56B4E9"/>
+<rect class="volume-front" x="1895.47" y="177.25" width="96" height="96" fill="#56B4E9"/>
+</g>
+<g id="model-label-20" data-node-label="20" transform="translate(1946.09 373.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage1/block2/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="21" data-category="Merge"><title>Add [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-21" data-left="2020.72" data-right="2121.97" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2020.72,177.25 2025.97,172 2121.97,172 2116.72,177.25" fill="#D55E00"/>
+<polygon class="volume-side" points="2116.72,177.25 2121.97,172 2121.97,268 2116.72,273.25" fill="#D55E00"/>
+<rect class="volume-front" x="2020.72" y="177.25" width="96" height="96" fill="#D55E00"/>
+</g>
+<g id="model-label-21" data-node-label="21" transform="translate(2071.34 353.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="22" data-category="Activation"><title>Relu [1 x 64 x 64 x 8]</title>
+<g id="model-glyph-22" data-left="2145.97" data-right="2247.22" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2145.97,517.85 2151.22,512.6 2247.22,512.6 2241.97,517.85" fill="#F0E442"/>
+<polygon class="volume-side" points="2241.97,517.85 2247.22,512.6 2247.22,608.6 2241.97,613.85" fill="#F0E442"/>
+<rect class="volume-front" x="2145.97" y="517.85" width="96" height="96" fill="#F0E442"/>
+</g>
+<g id="model-label-22" data-node-label="22" transform="translate(2196.59 694.15) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 64 x 64 x 8]</text>
+</g></g>
+<g data-node="23" data-category="Parameter"><title>Parameter [3 x 3 x 8 x 16]</title>
+<g id="model-glyph-23" data-left="2185.34" data-right="2207.84" data-face-width="12" data-face-height="4.5" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2185.34,182.5 2195.84,172 2207.84,172 2197.34,182.5" fill="#B88644"/>
+<polygon class="volume-side" points="2197.34,182.5 2207.84,172 2207.84,176.5 2197.34,187" fill="#B88644"/>
+<rect class="volume-front" x="2185.34" y="182.5" width="12" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-23" data-node-label="23" transform="translate(2196.59 263.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 8 x 16]</text>
+</g></g>
+<g data-node="24" data-category="Convolution"><title>Conv2D [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-24" data-left="2271.22" data-right="2329.72" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2271.22,182.5 2281.72,172 2329.72,172 2319.22,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="2319.22,182.5 2329.72,172 2329.72,220 2319.22,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="2271.22" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-24" data-node-label="24" transform="translate(2300.47 314.7) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="25" data-category="Convolution"><title>stage2/block1/conv1/bn [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-25" data-left="2353.87" data-right="2412.37" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2353.87,182.5 2364.37,172 2412.37,172 2401.87,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="2401.87,182.5 2412.37,172 2412.37,220 2401.87,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="2353.87" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-25" data-node-label="25" transform="translate(2383.12 330.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage2/block1/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="26" data-category="Activation"><title>Relu [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-26" data-left="2436.52" data-right="2495.02" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2436.52,362.1 2447.02,351.6 2495.02,351.6 2484.52,362.1" fill="#F0E442"/>
+<polygon class="volume-side" points="2484.52,362.1 2495.02,351.6 2495.02,399.6 2484.52,410.1" fill="#F0E442"/>
+<rect class="volume-front" x="2436.52" y="362.1" width="48" height="48" fill="#F0E442"/>
+</g>
+<g id="model-label-26" data-node-label="26" transform="translate(2465.77 494.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="27" data-category="Parameter"><title>Parameter [3 x 3 x 16 x 16]</title>
+<g id="model-glyph-27" data-left="2448.52" data-right="2483.02" data-face-width="24" data-face-height="4.5" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2448.52,182.5 2459.02,172 2483.02,172 2472.52,182.5" fill="#B88644"/>
+<polygon class="volume-side" points="2472.52,182.5 2483.02,172 2483.02,176.5 2472.52,187" fill="#B88644"/>
+<rect class="volume-front" x="2448.52" y="182.5" width="24" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-27" data-node-label="27" transform="translate(2465.77 267.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 16 x 16]</text>
+</g></g>
+<g data-node="28" data-category="Convolution"><title>Conv2D [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-28" data-left="2519.02" data-right="2577.52" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2519.02,182.5 2529.52,172 2577.52,172 2567.02,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="2567.02,182.5 2577.52,172 2577.52,220 2567.02,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="2519.02" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-28" data-node-label="28" transform="translate(2548.27 314.7) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="29" data-category="Convolution"><title>stage2/block1/conv2/bn [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-29" data-left="2601.52" data-right="2660.02" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2601.52,182.5 2612.02,172 2660.02,172 2649.52,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="2649.52,182.5 2660.02,172 2660.02,220 2649.52,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="2601.52" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-29" data-node-label="29" transform="translate(2630.77 330.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage2/block1/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="30" data-category="Parameter"><title>Parameter [1 x 1 x 8 x 16]</title>
+<g id="model-glyph-30" data-left="2185.34" data-right="2207.84" data-face-width="12" data-face-height="1.5" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2185.34,354.3 2195.84,343.8 2207.84,343.8 2197.34,354.3" fill="#B88644"/>
+<polygon class="volume-side" points="2197.34,354.3 2207.84,343.8 2207.84,345.3 2197.34,355.8" fill="#B88644"/>
+<rect class="volume-front" x="2185.34" y="354.3" width="12" height="1.5" fill="#B88644"/>
+</g>
+<g id="model-label-30" data-node-label="30" transform="translate(2196.59 432.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[1 x 1 x 8 x 16]</text>
+</g></g>
+<g data-node="31" data-category="Convolution"><title>Conv2D [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-31" data-left="2271.22" data-right="2329.72" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2271.22,413.4 2281.72,402.9 2329.72,402.9 2319.22,413.4" fill="#56B4E9"/>
+<polygon class="volume-side" points="2319.22,413.4 2329.72,402.9 2329.72,450.9 2319.22,461.4" fill="#56B4E9"/>
+<rect class="volume-front" x="2271.22" y="413.4" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-31" data-node-label="31" transform="translate(2300.47 545.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="32" data-category="Normalization"><title>stage2/block1/shortcut/bn [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-32" data-left="2353.87" data-right="2412.37" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2353.87,444.6 2364.37,434.1 2412.37,434.1 2401.87,444.6" fill="#CC79A7"/>
+<polygon class="volume-side" points="2401.87,444.6 2412.37,434.1 2412.37,482.1 2401.87,492.6" fill="#CC79A7"/>
+<rect class="volume-front" x="2353.87" y="444.6" width="48" height="48" fill="#CC79A7"/>
+</g>
+<g id="model-label-32" data-node-label="32" transform="translate(2383.12 600.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-12" font-size="12" font-weight="600">stage2/block1/shortcut/b</text>
+<text x="0" y="3.6" font-size="12">n</text>
+<text x="0" y="19.2" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="33" data-category="Merge"><title>Add [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-33" data-left="2684.02" data-right="2742.52" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2684.02,182.5 2694.52,172 2742.52,172 2732.02,182.5" fill="#D55E00"/>
+<polygon class="volume-side" points="2732.02,182.5 2742.52,172 2742.52,220 2732.02,230.5" fill="#D55E00"/>
+<rect class="volume-front" x="2684.02" y="182.5" width="48" height="48" fill="#D55E00"/>
+</g>
+<g id="model-label-33" data-node-label="33" transform="translate(2713.27 314.7) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="34" data-category="Activation"><title>Relu [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-34" data-left="2766.52" data-right="2825.02" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2766.52,362.1 2777.02,351.6 2825.02,351.6 2814.52,362.1" fill="#F0E442"/>
+<polygon class="volume-side" points="2814.52,362.1 2825.02,351.6 2825.02,399.6 2814.52,410.1" fill="#F0E442"/>
+<rect class="volume-front" x="2766.52" y="362.1" width="48" height="48" fill="#F0E442"/>
+</g>
+<g id="model-label-34" data-node-label="34" transform="translate(2795.77 494.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="35" data-category="Parameter"><title>Parameter [3 x 3 x 16 x 16]</title>
+<g id="model-glyph-35" data-left="2778.52" data-right="2813.02" data-face-width="24" data-face-height="4.5" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2778.52,182.5 2789.02,172 2813.02,172 2802.52,182.5" fill="#B88644"/>
+<polygon class="volume-side" points="2802.52,182.5 2813.02,172 2813.02,176.5 2802.52,187" fill="#B88644"/>
+<rect class="volume-front" x="2778.52" y="182.5" width="24" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-35" data-node-label="35" transform="translate(2795.77 267.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 16 x 16]</text>
+</g></g>
+<g data-node="36" data-category="Convolution"><title>Conv2D [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-36" data-left="2849.02" data-right="2907.52" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2849.02,182.5 2859.52,172 2907.52,172 2897.02,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="2897.02,182.5 2907.52,172 2907.52,220 2897.02,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="2849.02" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-36" data-node-label="36" transform="translate(2878.27 314.7) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="37" data-category="Convolution"><title>stage2/block2/conv1/bn [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-37" data-left="2931.52" data-right="2990.02" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="2931.52,182.5 2942.02,172 2990.02,172 2979.52,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="2979.52,182.5 2990.02,172 2990.02,220 2979.52,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="2931.52" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-37" data-node-label="37" transform="translate(2960.77 330.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage2/block2/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="38" data-category="Activation"><title>Relu [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-38" data-left="3014.02" data-right="3072.52" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3014.02,362.1 3024.52,351.6 3072.52,351.6 3062.02,362.1" fill="#F0E442"/>
+<polygon class="volume-side" points="3062.02,362.1 3072.52,351.6 3072.52,399.6 3062.02,410.1" fill="#F0E442"/>
+<rect class="volume-front" x="3014.02" y="362.1" width="48" height="48" fill="#F0E442"/>
+</g>
+<g id="model-label-38" data-node-label="38" transform="translate(3043.27 494.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="39" data-category="Parameter"><title>Parameter [3 x 3 x 16 x 16]</title>
+<g id="model-glyph-39" data-left="3026.02" data-right="3060.52" data-face-width="24" data-face-height="4.5" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3026.02,182.5 3036.52,172 3060.52,172 3050.02,182.5" fill="#B88644"/>
+<polygon class="volume-side" points="3050.02,182.5 3060.52,172 3060.52,176.5 3050.02,187" fill="#B88644"/>
+<rect class="volume-front" x="3026.02" y="182.5" width="24" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-39" data-node-label="39" transform="translate(3043.27 267.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 16 x 16]</text>
+</g></g>
+<g data-node="40" data-category="Convolution"><title>Conv2D [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-40" data-left="3096.52" data-right="3155.02" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3096.52,182.5 3107.02,172 3155.02,172 3144.52,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="3144.52,182.5 3155.02,172 3155.02,220 3144.52,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="3096.52" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-40" data-node-label="40" transform="translate(3125.77 314.7) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="41" data-category="Convolution"><title>stage2/block2/conv2/bn [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-41" data-left="3179.02" data-right="3237.52" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3179.02,182.5 3189.52,172 3237.52,172 3227.02,182.5" fill="#56B4E9"/>
+<polygon class="volume-side" points="3227.02,182.5 3237.52,172 3237.52,220 3227.02,230.5" fill="#56B4E9"/>
+<rect class="volume-front" x="3179.02" y="182.5" width="48" height="48" fill="#56B4E9"/>
+</g>
+<g id="model-label-41" data-node-label="41" transform="translate(3208.27 330.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage2/block2/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="42" data-category="Merge"><title>Add [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-42" data-left="3261.52" data-right="3320.02" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3261.52,182.5 3272.02,172 3320.02,172 3309.52,182.5" fill="#D55E00"/>
+<polygon class="volume-side" points="3309.52,182.5 3320.02,172 3320.02,220 3309.52,230.5" fill="#D55E00"/>
+<rect class="volume-front" x="3261.52" y="182.5" width="48" height="48" fill="#D55E00"/>
+</g>
+<g id="model-label-42" data-node-label="42" transform="translate(3290.77 314.7) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="43" data-category="Activation"><title>Relu [1 x 32 x 32 x 16]</title>
+<g id="model-glyph-43" data-left="3344.02" data-right="3402.52" data-face-width="48" data-face-height="48" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3344.02,559.7 3354.52,549.2 3402.52,549.2 3392.02,559.7" fill="#F0E442"/>
+<polygon class="volume-side" points="3392.02,559.7 3402.52,549.2 3402.52,597.2 3392.02,607.7" fill="#F0E442"/>
+<rect class="volume-front" x="3344.02" y="559.7" width="48" height="48" fill="#F0E442"/>
+</g>
+<g id="model-label-43" data-node-label="43" transform="translate(3373.27 691.9) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 32 x 32 x 16]</text>
+</g></g>
+<g data-node="44" data-category="Parameter"><title>Parameter [3 x 3 x 16 x 32]</title>
+<g id="model-glyph-44" data-left="3350.77" data-right="3395.77" data-face-width="24" data-face-height="4.5" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3350.77,193 3371.77,172 3395.77,172 3374.77,193" fill="#B88644"/>
+<polygon class="volume-side" points="3374.77,193 3395.77,172 3395.77,176.5 3374.77,197.5" fill="#B88644"/>
+<rect class="volume-front" x="3350.77" y="193" width="24" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-44" data-node-label="44" transform="translate(3373.27 277.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 16 x 32]</text>
+</g></g>
+<g data-node="45" data-category="Convolution"><title>Conv2D [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-45" data-left="3426.52" data-right="3471.52" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3426.52,193 3447.52,172 3471.52,172 3450.52,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="3450.52,193 3471.52,172 3471.52,196 3450.52,217" fill="#56B4E9"/>
+<rect class="volume-front" x="3426.52" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-45" data-node-label="45" transform="translate(3449.02 301.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="46" data-category="Convolution"><title>stage3/block1/conv1/bn [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-46" data-left="3502.42" data-right="3547.42" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3502.42,193 3523.42,172 3547.42,172 3526.42,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="3526.42,193 3547.42,172 3547.42,196 3526.42,217" fill="#56B4E9"/>
+<rect class="volume-front" x="3502.42" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-46" data-node-label="46" transform="translate(3524.92 316.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage3/block1/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="47" data-category="Activation"><title>Relu [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-47" data-left="3590.32" data-right="3635.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3590.32,383.1 3611.32,362.1 3635.32,362.1 3614.32,383.1" fill="#F0E442"/>
+<polygon class="volume-side" points="3614.32,383.1 3635.32,362.1 3635.32,386.1 3614.32,407.1" fill="#F0E442"/>
+<rect class="volume-front" x="3590.32" y="383.1" width="24" height="24" fill="#F0E442"/>
+</g>
+<g id="model-label-47" data-node-label="47" transform="translate(3612.82 491.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="48" data-category="Parameter"><title>Parameter [3 x 3 x 32 x 32]</title>
+<g id="model-glyph-48" data-left="3578.32" data-right="3647.32" data-face-width="48" data-face-height="4.5" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3578.32,193 3599.32,172 3647.32,172 3626.32,193" fill="#B88644"/>
+<polygon class="volume-side" points="3626.32,193 3647.32,172 3647.32,176.5 3626.32,197.5" fill="#B88644"/>
+<rect class="volume-front" x="3578.32" y="193" width="48" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-48" data-node-label="48" transform="translate(3612.82 277.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 32 x 32]</text>
+</g></g>
+<g data-node="49" data-category="Convolution"><title>Conv2D [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-49" data-left="3671.32" data-right="3716.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3671.32,193 3692.32,172 3716.32,172 3695.32,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="3695.32,193 3716.32,172 3716.32,196 3695.32,217" fill="#56B4E9"/>
+<rect class="volume-front" x="3671.32" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-49" data-node-label="49" transform="translate(3693.82 301.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="50" data-category="Convolution"><title>stage3/block1/conv2/bn [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-50" data-left="3740.32" data-right="3785.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3740.32,193 3761.32,172 3785.32,172 3764.32,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="3764.32,193 3785.32,172 3785.32,196 3764.32,217" fill="#56B4E9"/>
+<rect class="volume-front" x="3740.32" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-50" data-node-label="50" transform="translate(3762.82 316.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage3/block1/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="51" data-category="Parameter"><title>Parameter [1 x 1 x 16 x 32]</title>
+<g id="model-glyph-51" data-left="3350.77" data-right="3395.77" data-face-width="24" data-face-height="1.5" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3350.77,383.1 3371.77,362.1 3395.77,362.1 3374.77,383.1" fill="#B88644"/>
+<polygon class="volume-side" points="3374.77,383.1 3395.77,362.1 3395.77,363.6 3374.77,384.6" fill="#B88644"/>
+<rect class="volume-front" x="3350.77" y="383.1" width="24" height="1.5" fill="#B88644"/>
+</g>
+<g id="model-label-51" data-node-label="51" transform="translate(3373.27 464.9) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[1 x 1 x 16 x 32]</text>
+</g></g>
+<g data-node="52" data-category="Convolution"><title>Conv2D [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-52" data-left="3426.52" data-right="3471.52" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3426.52,410.4 3447.52,389.4 3471.52,389.4 3450.52,410.4" fill="#56B4E9"/>
+<polygon class="volume-side" points="3450.52,410.4 3471.52,389.4 3471.52,413.4 3450.52,434.4" fill="#56B4E9"/>
+<rect class="volume-front" x="3426.52" y="410.4" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-52" data-node-label="52" transform="translate(3449.02 518.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="53" data-category="Normalization"><title>stage3/block1/shortcut/bn [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-53" data-left="3502.42" data-right="3547.42" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3502.42,441.6 3523.42,420.6 3547.42,420.6 3526.42,441.6" fill="#CC79A7"/>
+<polygon class="volume-side" points="3526.42,441.6 3547.42,420.6 3547.42,444.6 3526.42,465.6" fill="#CC79A7"/>
+<rect class="volume-front" x="3502.42" y="441.6" width="24" height="24" fill="#CC79A7"/>
+</g>
+<g id="model-label-53" data-node-label="53" transform="translate(3524.92 573.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-12" font-size="12" font-weight="600">stage3/block1/shortcut/b</text>
+<text x="0" y="3.6" font-size="12">n</text>
+<text x="0" y="19.2" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="54" data-category="Merge"><title>Add [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-54" data-left="3809.32" data-right="3854.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3809.32,193 3830.32,172 3854.32,172 3833.32,193" fill="#D55E00"/>
+<polygon class="volume-side" points="3833.32,193 3854.32,172 3854.32,196 3833.32,217" fill="#D55E00"/>
+<rect class="volume-front" x="3809.32" y="193" width="24" height="24" fill="#D55E00"/>
+</g>
+<g id="model-label-54" data-node-label="54" transform="translate(3831.82 301.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="55" data-category="Activation"><title>Relu [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-55" data-left="3890.32" data-right="3935.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3890.32,383.1 3911.32,362.1 3935.32,362.1 3914.32,383.1" fill="#F0E442"/>
+<polygon class="volume-side" points="3914.32,383.1 3935.32,362.1 3935.32,386.1 3914.32,407.1" fill="#F0E442"/>
+<rect class="volume-front" x="3890.32" y="383.1" width="24" height="24" fill="#F0E442"/>
+</g>
+<g id="model-label-55" data-node-label="55" transform="translate(3912.82 491.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="56" data-category="Parameter"><title>Parameter [3 x 3 x 32 x 32]</title>
+<g id="model-glyph-56" data-left="3878.32" data-right="3947.32" data-face-width="48" data-face-height="4.5" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3878.32,193 3899.32,172 3947.32,172 3926.32,193" fill="#B88644"/>
+<polygon class="volume-side" points="3926.32,193 3947.32,172 3947.32,176.5 3926.32,197.5" fill="#B88644"/>
+<rect class="volume-front" x="3878.32" y="193" width="48" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-56" data-node-label="56" transform="translate(3912.82 277.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 32 x 32]</text>
+</g></g>
+<g data-node="57" data-category="Convolution"><title>Conv2D [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-57" data-left="3971.32" data-right="4016.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="3971.32,193 3992.32,172 4016.32,172 3995.32,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="3995.32,193 4016.32,172 4016.32,196 3995.32,217" fill="#56B4E9"/>
+<rect class="volume-front" x="3971.32" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-57" data-node-label="57" transform="translate(3993.82 301.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="58" data-category="Convolution"><title>stage3/block2/conv1/bn [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-58" data-left="4040.32" data-right="4085.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4040.32,193 4061.32,172 4085.32,172 4064.32,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="4064.32,193 4085.32,172 4085.32,196 4064.32,217" fill="#56B4E9"/>
+<rect class="volume-front" x="4040.32" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-58" data-node-label="58" transform="translate(4062.82 316.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage3/block2/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="59" data-category="Activation"><title>Relu [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-59" data-left="4121.32" data-right="4166.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4121.32,383.1 4142.32,362.1 4166.32,362.1 4145.32,383.1" fill="#F0E442"/>
+<polygon class="volume-side" points="4145.32,383.1 4166.32,362.1 4166.32,386.1 4145.32,407.1" fill="#F0E442"/>
+<rect class="volume-front" x="4121.32" y="383.1" width="24" height="24" fill="#F0E442"/>
+</g>
+<g id="model-label-59" data-node-label="59" transform="translate(4143.82 491.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="60" data-category="Parameter"><title>Parameter [3 x 3 x 32 x 32]</title>
+<g id="model-glyph-60" data-left="4109.32" data-right="4178.32" data-face-width="48" data-face-height="4.5" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4109.32,193 4130.32,172 4178.32,172 4157.32,193" fill="#B88644"/>
+<polygon class="volume-side" points="4157.32,193 4178.32,172 4178.32,176.5 4157.32,197.5" fill="#B88644"/>
+<rect class="volume-front" x="4109.32" y="193" width="48" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-60" data-node-label="60" transform="translate(4143.82 277.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 32 x 32]</text>
+</g></g>
+<g data-node="61" data-category="Convolution"><title>Conv2D [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-61" data-left="4202.32" data-right="4247.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4202.32,193 4223.32,172 4247.32,172 4226.32,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="4226.32,193 4247.32,172 4247.32,196 4226.32,217" fill="#56B4E9"/>
+<rect class="volume-front" x="4202.32" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-61" data-node-label="61" transform="translate(4224.82 301.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="62" data-category="Convolution"><title>stage3/block2/conv2/bn [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-62" data-left="4271.32" data-right="4316.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4271.32,193 4292.32,172 4316.32,172 4295.32,193" fill="#56B4E9"/>
+<polygon class="volume-side" points="4295.32,193 4316.32,172 4316.32,196 4295.32,217" fill="#56B4E9"/>
+<rect class="volume-front" x="4271.32" y="193" width="24" height="24" fill="#56B4E9"/>
+</g>
+<g id="model-label-62" data-node-label="62" transform="translate(4293.82 316.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage3/block2/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="63" data-category="Merge"><title>Add [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-63" data-left="4340.32" data-right="4385.32" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4340.32,193 4361.32,172 4385.32,172 4364.32,193" fill="#D55E00"/>
+<polygon class="volume-side" points="4364.32,193 4385.32,172 4385.32,196 4364.32,217" fill="#D55E00"/>
+<rect class="volume-front" x="4340.32" y="193" width="24" height="24" fill="#D55E00"/>
+</g>
+<g id="model-label-63" data-node-label="63" transform="translate(4362.82 301.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="64" data-category="Activation"><title>Relu [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-64" data-left="4431.82" data-right="4476.82" data-face-width="24" data-face-height="24" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4431.82,612.2 4452.82,591.2 4476.82,591.2 4455.82,612.2" fill="#F0E442"/>
+<polygon class="volume-side" points="4455.82,612.2 4476.82,591.2 4476.82,615.2 4455.82,636.2" fill="#F0E442"/>
+<rect class="volume-front" x="4431.82" y="612.2" width="24" height="24" fill="#F0E442"/>
+</g>
+<g id="model-label-64" data-node-label="64" transform="translate(4454.32 720.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="65" data-category="Parameter"><title>Parameter [3 x 3 x 32 x 64]</title>
+<g id="model-glyph-65" data-left="4409.32" data-right="4499.32" data-face-width="48" data-face-height="4.5" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4409.32,214 4451.32,172 4499.32,172 4457.32,214" fill="#B88644"/>
+<polygon class="volume-side" points="4457.32,214 4499.32,172 4499.32,176.5 4457.32,218.5" fill="#B88644"/>
+<rect class="volume-front" x="4409.32" y="214" width="48" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-65" data-node-label="65" transform="translate(4454.32 298.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 32 x 64]</text>
+</g></g>
+<g data-node="66" data-category="Convolution"><title>Conv2D [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-66" data-left="4523.32" data-right="4577.32" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4523.32,214 4565.32,172 4577.32,172 4535.32,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="4535.32,214 4577.32,172 4577.32,184 4535.32,226" fill="#56B4E9"/>
+<rect class="volume-front" x="4523.32" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-66" data-node-label="66" transform="translate(4550.32 302.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="67" data-category="Convolution"><title>stage4/block1/conv1/bn [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-67" data-left="4603.72" data-right="4657.72" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4603.72,214 4645.72,172 4657.72,172 4615.72,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="4615.72,214 4657.72,172 4657.72,184 4615.72,226" fill="#56B4E9"/>
+<rect class="volume-front" x="4603.72" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-67" data-node-label="67" transform="translate(4630.72 325.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage4/block1/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="68" data-category="Activation"><title>Relu [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-68" data-left="4726.12" data-right="4780.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4726.12,425.1 4768.12,383.1 4780.12,383.1 4738.12,425.1" fill="#F0E442"/>
+<polygon class="volume-side" points="4738.12,425.1 4780.12,383.1 4780.12,395.1 4738.12,437.1" fill="#F0E442"/>
+<rect class="volume-front" x="4726.12" y="425.1" width="12" height="12" fill="#F0E442"/>
+</g>
+<g id="model-label-68" data-node-label="68" transform="translate(4753.12 513.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="69" data-category="Parameter"><title>Parameter [3 x 3 x 64 x 64]</title>
+<g id="model-glyph-69" data-left="4684.12" data-right="4822.12" data-face-width="96" data-face-height="4.5" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4684.12,214 4726.12,172 4822.12,172 4780.12,214" fill="#B88644"/>
+<polygon class="volume-side" points="4780.12,214 4822.12,172 4822.12,176.5 4780.12,218.5" fill="#B88644"/>
+<rect class="volume-front" x="4684.12" y="214" width="96" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-69" data-node-label="69" transform="translate(4753.12 298.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 64 x 64]</text>
+</g></g>
+<g data-node="70" data-category="Convolution"><title>Conv2D [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-70" data-left="4846.12" data-right="4900.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4846.12,214 4888.12,172 4900.12,172 4858.12,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="4858.12,214 4900.12,172 4900.12,184 4858.12,226" fill="#56B4E9"/>
+<rect class="volume-front" x="4846.12" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-70" data-node-label="70" transform="translate(4873.12 302.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="71" data-category="Convolution"><title>stage4/block1/conv2/bn [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-71" data-left="4924.12" data-right="4978.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4924.12,214 4966.12,172 4978.12,172 4936.12,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="4936.12,214 4978.12,172 4978.12,184 4936.12,226" fill="#56B4E9"/>
+<rect class="volume-front" x="4924.12" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-71" data-node-label="71" transform="translate(4951.12 325.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage4/block1/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="72" data-category="Parameter"><title>Parameter [1 x 1 x 32 x 64]</title>
+<g id="model-glyph-72" data-left="4409.32" data-right="4499.32" data-face-width="48" data-face-height="1.5" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4409.32,425.1 4451.32,383.1 4499.32,383.1 4457.32,425.1" fill="#B88644"/>
+<polygon class="volume-side" points="4457.32,425.1 4499.32,383.1 4499.32,384.6 4457.32,426.6" fill="#B88644"/>
+<rect class="volume-front" x="4409.32" y="425.1" width="48" height="1.5" fill="#B88644"/>
+</g>
+<g id="model-label-72" data-node-label="72" transform="translate(4454.32 506.9) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[1 x 1 x 32 x 64]</text>
+</g></g>
+<g data-node="73" data-category="Convolution"><title>Conv2D [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-73" data-left="4523.32" data-right="4577.32" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4523.32,424.8 4565.32,382.8 4577.32,382.8 4535.32,424.8" fill="#56B4E9"/>
+<polygon class="volume-side" points="4535.32,424.8 4577.32,382.8 4577.32,394.8 4535.32,436.8" fill="#56B4E9"/>
+<rect class="volume-front" x="4523.32" y="424.8" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-73" data-node-label="73" transform="translate(4550.32 513.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="74" data-category="Normalization"><title>stage4/block1/shortcut/bn [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-74" data-left="4603.72" data-right="4657.72" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="4603.72,471.6 4645.72,429.6 4657.72,429.6 4615.72,471.6" fill="#CC79A7"/>
+<polygon class="volume-side" points="4615.72,471.6 4657.72,429.6 4657.72,441.6 4615.72,483.6" fill="#CC79A7"/>
+<rect class="volume-front" x="4603.72" y="471.6" width="12" height="12" fill="#CC79A7"/>
+</g>
+<g id="model-label-74" data-node-label="74" transform="translate(4630.72 591.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-12" font-size="12" font-weight="600">stage4/block1/shortcut/b</text>
+<text x="0" y="3.6" font-size="12">n</text>
+<text x="0" y="19.2" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="75" data-category="Merge"><title>Add [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-75" data-left="5002.12" data-right="5056.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5002.12,214 5044.12,172 5056.12,172 5014.12,214" fill="#D55E00"/>
+<polygon class="volume-side" points="5014.12,214 5056.12,172 5056.12,184 5014.12,226" fill="#D55E00"/>
+<rect class="volume-front" x="5002.12" y="214" width="12" height="12" fill="#D55E00"/>
+</g>
+<g id="model-label-75" data-node-label="75" transform="translate(5029.12 302.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="76" data-category="Activation"><title>Relu [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-76" data-left="5122.12" data-right="5176.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5122.12,425.1 5164.12,383.1 5176.12,383.1 5134.12,425.1" fill="#F0E442"/>
+<polygon class="volume-side" points="5134.12,425.1 5176.12,383.1 5176.12,395.1 5134.12,437.1" fill="#F0E442"/>
+<rect class="volume-front" x="5122.12" y="425.1" width="12" height="12" fill="#F0E442"/>
+</g>
+<g id="model-label-76" data-node-label="76" transform="translate(5149.12 513.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="77" data-category="Parameter"><title>Parameter [3 x 3 x 64 x 64]</title>
+<g id="model-glyph-77" data-left="5080.12" data-right="5218.12" data-face-width="96" data-face-height="4.5" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5080.12,214 5122.12,172 5218.12,172 5176.12,214" fill="#B88644"/>
+<polygon class="volume-side" points="5176.12,214 5218.12,172 5218.12,176.5 5176.12,218.5" fill="#B88644"/>
+<rect class="volume-front" x="5080.12" y="214" width="96" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-77" data-node-label="77" transform="translate(5149.12 298.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 64 x 64]</text>
+</g></g>
+<g data-node="78" data-category="Convolution"><title>Conv2D [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-78" data-left="5242.12" data-right="5296.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5242.12,214 5284.12,172 5296.12,172 5254.12,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="5254.12,214 5296.12,172 5296.12,184 5254.12,226" fill="#56B4E9"/>
+<rect class="volume-front" x="5242.12" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-78" data-node-label="78" transform="translate(5269.12 302.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="79" data-category="Convolution"><title>stage4/block2/conv1/bn [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-79" data-left="5320.12" data-right="5374.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5320.12,214 5362.12,172 5374.12,172 5332.12,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="5332.12,214 5374.12,172 5374.12,184 5332.12,226" fill="#56B4E9"/>
+<rect class="volume-front" x="5320.12" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-79" data-node-label="79" transform="translate(5347.12 325.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage4/block2/conv1/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="80" data-category="Activation"><title>Relu [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-80" data-left="5440.12" data-right="5494.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5440.12,425.1 5482.12,383.1 5494.12,383.1 5452.12,425.1" fill="#F0E442"/>
+<polygon class="volume-side" points="5452.12,425.1 5494.12,383.1 5494.12,395.1 5452.12,437.1" fill="#F0E442"/>
+<rect class="volume-front" x="5440.12" y="425.1" width="12" height="12" fill="#F0E442"/>
+</g>
+<g id="model-label-80" data-node-label="80" transform="translate(5467.12 513.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="81" data-category="Parameter"><title>Parameter [3 x 3 x 64 x 64]</title>
+<g id="model-glyph-81" data-left="5398.12" data-right="5536.12" data-face-width="96" data-face-height="4.5" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5398.12,214 5440.12,172 5536.12,172 5494.12,214" fill="#B88644"/>
+<polygon class="volume-side" points="5494.12,214 5536.12,172 5536.12,176.5 5494.12,218.5" fill="#B88644"/>
+<rect class="volume-front" x="5398.12" y="214" width="96" height="4.5" fill="#B88644"/>
+</g>
+<g id="model-label-81" data-node-label="81" transform="translate(5467.12 298.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Parameter</text>
+<text x="0" y="11.4" font-size="12">[3 x 3 x 64 x 64]</text>
+</g></g>
+<g data-node="82" data-category="Convolution"><title>Conv2D [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-82" data-left="5560.12" data-right="5614.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5560.12,214 5602.12,172 5614.12,172 5572.12,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="5572.12,214 5614.12,172 5614.12,184 5572.12,226" fill="#56B4E9"/>
+<rect class="volume-front" x="5560.12" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-82" data-node-label="82" transform="translate(5587.12 302.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Conv2D</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="83" data-category="Convolution"><title>stage4/block2/conv2/bn [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-83" data-left="5638.12" data-right="5692.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5638.12,214 5680.12,172 5692.12,172 5650.12,214" fill="#56B4E9"/>
+<polygon class="volume-side" points="5650.12,214 5692.12,172 5692.12,184 5650.12,226" fill="#56B4E9"/>
+<rect class="volume-front" x="5638.12" y="214" width="12" height="12" fill="#56B4E9"/>
+</g>
+<g id="model-label-83" data-node-label="83" transform="translate(5665.12 325.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">stage4/block2/conv2/bn</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="84" data-category="Merge"><title>Add [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-84" data-left="5716.12" data-right="5770.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5716.12,214 5758.12,172 5770.12,172 5728.12,214" fill="#D55E00"/>
+<polygon class="volume-side" points="5728.12,214 5770.12,172 5770.12,184 5728.12,226" fill="#D55E00"/>
+<rect class="volume-front" x="5716.12" y="214" width="12" height="12" fill="#D55E00"/>
+</g>
+<g id="model-label-84" data-node-label="84" transform="translate(5743.12 302.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Add</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="85" data-category="Activation"><title>Relu [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-85" data-left="5794.12" data-right="5848.12" data-face-width="12" data-face-height="12" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5794.12,214 5836.12,172 5848.12,172 5806.12,214" fill="#F0E442"/>
+<polygon class="volume-side" points="5806.12,214 5848.12,172 5848.12,184 5806.12,226" fill="#F0E442"/>
+<rect class="volume-front" x="5794.12" y="214" width="12" height="12" fill="#F0E442"/>
+</g>
+<g id="model-label-85" data-node-label="85" transform="translate(5821.12 302.4) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Relu</text>
+<text x="0" y="11.4" font-size="12">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="86" data-category="Operation"><title>Sum [1 x 64]</title>
+<g id="model-glyph-86" data-left="5884.22" data-right="5903.22" data-face-width="18" data-face-height="76.8" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5884.22,173 5885.22,172 5903.22,172 5902.22,173" fill="#94A3B8"/>
+<polygon class="volume-side" points="5902.22,173 5903.22,172 5903.22,248.8 5902.22,249.8" fill="#94A3B8"/>
+<rect class="volume-front" x="5884.22" y="173" width="18" height="76.8" fill="#94A3B8"/>
+</g>
+<g id="model-label-86" data-node-label="86" transform="translate(5893.72 295) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Sum</text>
+<text x="0" y="11.4" font-size="12">[1 x 64]</text>
+</g></g>
+<g data-node="87" data-category="Operation"><title>Div [1 x 64]</title>
+<g id="model-glyph-87" data-left="5951.42" data-right="5970.42" data-face-width="18" data-face-height="76.8" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="5951.42,173 5952.42,172 5970.42,172 5969.42,173" fill="#94A3B8"/>
+<polygon class="volume-side" points="5969.42,173 5970.42,172 5970.42,248.8 5969.42,249.8" fill="#94A3B8"/>
+<rect class="volume-front" x="5951.42" y="173" width="18" height="76.8" fill="#94A3B8"/>
+</g>
+<g id="model-label-87" data-node-label="87" transform="translate(5960.92 295) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Div</text>
+<text x="0" y="11.4" font-size="12">[1 x 64]</text>
+</g></g>
+<g data-node="88" data-category="Dense"><title>output [1 x 80]</title>
+<g id="model-glyph-88" data-left="6018.62" data-right="6037.62" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="6018.62,173 6019.62,172 6037.62,172 6036.62,173" fill="#0072B2"/>
+<polygon class="volume-side" points="6036.62,173 6037.62,172 6037.62,268 6036.62,269" fill="#0072B2"/>
+<rect class="volume-front" x="6018.62" y="173" width="18" height="96" fill="#0072B2"/>
+</g>
+<g id="model-label-88" data-node-label="88" transform="translate(6028.12 314.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">output</text>
+<text x="0" y="11.4" font-size="12">[1 x 80]</text>
+</g></g>
+<g data-node="89" data-category="Output"><title>Output [1 x 80]</title>
+<g id="model-glyph-89" data-left="6085.82" data-right="6104.82" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="6085.82,173 6086.82,172 6104.82,172 6103.82,173" fill="#6C8194"/>
+<polygon class="volume-side" points="6103.82,173 6104.82,172 6104.82,268 6103.82,269" fill="#6C8194"/>
+<rect class="volume-front" x="6085.82" y="173" width="18" height="96" fill="#6C8194"/>
+</g>
+<g id="model-label-89" data-node-label="89" transform="translate(6095.32 314.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Output</text>
+<text x="0" y="11.4" font-size="12">[1 x 80]</text>
+</g></g>
+</g></svg>

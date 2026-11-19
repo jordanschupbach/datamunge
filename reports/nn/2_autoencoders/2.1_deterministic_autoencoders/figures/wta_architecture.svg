@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620.2" height="615.15" viewBox="0 0 620.2 615.15" role="img" data-model-layout="left-to-right" data-model-style="Graph" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Lifetime WTA training graph: four batch winners per feature</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Lifetime WTA training graph: four batch</text>
+<text x="24" y="46" font-size="20" font-weight="600">winners per feature</text>
+<text x="24" y="73" font-size="12">6 nodes | 101200 unique learned values | Graph / blocks</text>
+<rect x="24" y="81" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="91" font-size="11">Input</text>
+<rect x="154" y="81" width="12" height="12" rx="2" fill="#F0E442"/><text x="172" y="91" font-size="11">Activation</text>
+<rect x="284" y="81" width="12" height="12" rx="2" fill="#8B80C9"/><text x="302" y="91" font-size="11">Block</text>
+<rect x="414" y="81" width="12" height="12" rx="2" fill="#6C8194"/><text x="432" y="91" font-size="11">Output</text>
+<text x="24" y="121" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons sampled;</text>
+<text x="24" y="137" font-size="11">exact shapes in labels/tooltips.</text>
+<path data-from="0" data-to="1" d="M 57.4 265 C 98.25 265 98.25 198.878 139.1 198.878" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="1" data-to="2" d="M 159.1 198.878 C 204.175 198.878 204.175 198.878 249.25 198.878" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="1" data-to="3" d="M 159.1 198.878 C 175.1 198.878 175.1 180 191.1 180 L 318.95 180 C 334.95 180 334.95 198.878 350.95 198.878" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="3" d="M 269.25 198.878 C 310.1 198.878 310.1 198.878 350.95 198.878" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="3" data-to="4" d="M 370.95 198.878 C 416.025 198.878 416.025 265 461.1 265" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="4" data-to="5" d="M 481.1 265 C 521.95 265 521.95 265 562.8 265" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [32 x 784]</title>
+<g id="model-glyph-0" data-left="37.4" data-right="57.4" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<circle data-unit="0" cx="47.4" cy="200.111" r="7" fill="#E69F00"/>
+<circle data-unit="1" cx="47.4" cy="216.333" r="7" fill="#E69F00"/>
+<circle data-unit="2" cx="47.4" cy="232.556" r="7" fill="#E69F00"/>
+<circle data-unit="3" cx="47.4" cy="248.778" r="7" fill="#E69F00"/>
+<circle cx="47.4" cy="261.15" r="1.19" stroke="none" fill="#172033"/>
+<circle cx="47.4" cy="265" r="1.19" stroke="none" fill="#172033"/>
+<circle cx="47.4" cy="268.85" r="1.19" stroke="none" fill="#172033"/>
+<circle data-unit="780" cx="47.4" cy="281.222" r="7" fill="#E69F00"/>
+<circle data-unit="781" cx="47.4" cy="297.444" r="7" fill="#E69F00"/>
+<circle data-unit="782" cx="47.4" cy="313.667" r="7" fill="#E69F00"/>
+<circle data-unit="783" cx="47.4" cy="329.889" r="7" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(47.4 398.75) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[32 x 784]</text>
+</g></g>
+<g data-node="1" data-category="Activation"><title>ReLU encoder 784→64 [32 x 64]</title>
+<g id="model-glyph-1" data-left="139.1" data-right="159.1" data-face-width="18" data-face-height="11.7551" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="139.1" y="192" width="20" height="13.7551" rx="3.43878" fill="#F0E442"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(149.1 308.755) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">ReLU encoder 784→64</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[32 x 64]</text>
+<text x="0" y="29.25" font-size="13">50240 learned values</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>Lifetime rank / ceil(B/8) rows [32 x 64]</title>
+<g id="model-glyph-2" data-left="249.25" data-right="269.25" data-face-width="18" data-face-height="11.7551" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="249.25" y="192" width="20" height="13.7551" rx="3.43878" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(259.25 351.005) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Lifetime rank / ceil(B/8) rows</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[32 x 64]</text>
+</g></g>
+<g data-node="3" data-category="Block"><title>Winner multiplication [32 x 64]</title>
+<g id="model-glyph-3" data-left="350.95" data-right="370.95" data-face-width="18" data-face-height="11.7551" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="350.95" y="192" width="20" height="13.7551" rx="3.43878" fill="#8B80C9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(360.95 312.98) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Winner multiplication</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[32 x 64]</text>
+</g></g>
+<g data-node="4" data-category="Activation"><title>Independent sigmoid decoder [32 x 784]</title>
+<g id="model-glyph-4" data-left="461.1" data-right="481.1" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="461.1" y="192" width="20" height="146" rx="5" fill="#F0E442"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(471.1 470.575) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">Independent sigmoid decoder</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[32 x 784]</text>
+<text x="0" y="29.25" font-size="13">50960 learned values</text>
+</g></g>
+<g data-node="5" data-category="Output"><title>Output [32 x 784]</title>
+<g id="model-glyph-5" data-left="562.8" data-right="582.8" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<rect x="562.8" y="192" width="20" height="146" rx="5" fill="#6C8194"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(572.8 398.75) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[32 x 784]</text>
+</g></g>
+</g></svg>

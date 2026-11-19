@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="228.9" height="318.288" viewBox="0 0 228.9 318.288" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">lora adapters head held-out counts</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">lora adapters head held-</text>
+<text x="14" y="38" font-size="12" font-weight="bold">out counts</text>
+<text x="152.4" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 132) rotate(-90)" text-anchor="middle">True class</text>
+<text x="96.4" y="111.6" text-anchor="end">negative</text>
+<text transform="translate(128.4 192) rotate(-60)" text-anchor="end">negative</text>
+<g data-true="0" data-predicted="0" data-count="0" data-value="0"><title>negative → negative: 0</title>
+<rect x="104.4" y="84" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="128.4" y="111.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="10" data-value="10"><title>negative → positive: 10</title>
+<rect x="152.4" y="84" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="176.4" y="111.6" font-size="12" text-anchor="middle" fill="white">10</text>
+</g>
+<text x="96.4" y="159.6" text-anchor="end">positive</text>
+<text transform="translate(176.4 192) rotate(-60)" text-anchor="end">positive</text>
+<g data-true="1" data-predicted="0" data-count="0" data-value="0"><title>positive → negative: 0</title>
+<rect x="104.4" y="132" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="128.4" y="159.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="6" data-value="6"><title>positive → positive: 6</title>
+<rect x="152.4" y="132" width="48" height="48" fill="rgb(119,157,241)" stroke="white"/>
+<text x="176.4" y="159.6" font-size="12" text-anchor="middle" fill="#172033">6</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="104.4" y="270.288" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="104.4" y="295.288">0</text><text x="200.4" y="295.288" text-anchor="end">10</text>
+</g></svg>

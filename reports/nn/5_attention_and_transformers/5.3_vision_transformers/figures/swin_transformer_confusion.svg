@@ -1,0 +1,430 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="618" height="701.86" viewBox="0 0 618 701.86" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">swin transformer  held-out counts</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="16" font-weight="bold">swin transformer  held-out counts</text>
+<text x="360" y="56" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 310) rotate(-90)" text-anchor="middle">True class</text>
+<text x="112" y="97.6" text-anchor="end">airplane</text>
+<text transform="translate(144 562) rotate(-60)" text-anchor="end">airplane</text>
+<g data-true="0" data-predicted="0" data-count="0" data-value="0"><title>airplane → airplane: 0</title>
+<rect x="120" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="0" data-value="0"><title>airplane → automobile: 0</title>
+<rect x="168" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="192" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="2" data-count="2" data-value="2"><title>airplane → bird: 2</title>
+<rect x="216" y="70" width="48" height="48" fill="rgb(159,187,243)" stroke="white"/>
+<text x="240" y="97.6" font-size="12" text-anchor="middle" fill="#172033">2</text>
+</g>
+<g data-true="0" data-predicted="3" data-count="0" data-value="0"><title>airplane → cat: 0</title>
+<rect x="264" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="4" data-count="0" data-value="0"><title>airplane → deer: 0</title>
+<rect x="312" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="5" data-count="0" data-value="0"><title>airplane → dog: 0</title>
+<rect x="360" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="6" data-count="0" data-value="0"><title>airplane → frog: 0</title>
+<rect x="408" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="7" data-count="0" data-value="0"><title>airplane → horse: 0</title>
+<rect x="456" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="8" data-count="0" data-value="0"><title>airplane → ship: 0</title>
+<rect x="504" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="9" data-count="0" data-value="0"><title>airplane → truck: 0</title>
+<rect x="552" y="70" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="97.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="145.6" text-anchor="end">automobile</text>
+<text transform="translate(192 562) rotate(-60)" text-anchor="end">automobile</text>
+<g data-true="1" data-predicted="0" data-count="0" data-value="0"><title>automobile → airplane: 0</title>
+<rect x="120" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="0" data-value="0"><title>automobile → automobile: 0</title>
+<rect x="168" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="192" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="2" data-count="3" data-value="3"><title>automobile → bird: 3</title>
+<rect x="216" y="118" width="48" height="48" fill="rgb(119,157,241)" stroke="white"/>
+<text x="240" y="145.6" font-size="12" text-anchor="middle" fill="#172033">3</text>
+</g>
+<g data-true="1" data-predicted="3" data-count="0" data-value="0"><title>automobile → cat: 0</title>
+<rect x="264" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="4" data-count="0" data-value="0"><title>automobile → deer: 0</title>
+<rect x="312" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="5" data-count="0" data-value="0"><title>automobile → dog: 0</title>
+<rect x="360" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="6" data-count="0" data-value="0"><title>automobile → frog: 0</title>
+<rect x="408" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="7" data-count="0" data-value="0"><title>automobile → horse: 0</title>
+<rect x="456" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="8" data-count="0" data-value="0"><title>automobile → ship: 0</title>
+<rect x="504" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="9" data-count="0" data-value="0"><title>automobile → truck: 0</title>
+<rect x="552" y="118" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="145.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="193.6" text-anchor="end">bird</text>
+<text transform="translate(240 562) rotate(-60)" text-anchor="end">bird</text>
+<g data-true="2" data-predicted="0" data-count="0" data-value="0"><title>bird → airplane: 0</title>
+<rect x="120" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="1" data-count="1" data-value="1"><title>bird → automobile: 1</title>
+<rect x="168" y="166" width="48" height="48" fill="rgb(200,216,246)" stroke="white"/>
+<text x="192" y="193.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="2" data-predicted="2" data-count="5" data-value="5"><title>bird → bird: 5</title>
+<rect x="216" y="166" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="240" y="193.6" font-size="12" text-anchor="middle" fill="white">5</text>
+</g>
+<g data-true="2" data-predicted="3" data-count="0" data-value="0"><title>bird → cat: 0</title>
+<rect x="264" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="4" data-count="0" data-value="0"><title>bird → deer: 0</title>
+<rect x="312" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="5" data-count="0" data-value="0"><title>bird → dog: 0</title>
+<rect x="360" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="6" data-count="0" data-value="0"><title>bird → frog: 0</title>
+<rect x="408" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="7" data-count="0" data-value="0"><title>bird → horse: 0</title>
+<rect x="456" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="8" data-count="0" data-value="0"><title>bird → ship: 0</title>
+<rect x="504" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="9" data-count="0" data-value="0"><title>bird → truck: 0</title>
+<rect x="552" y="166" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="193.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="241.6" text-anchor="end">cat</text>
+<text transform="translate(288 562) rotate(-60)" text-anchor="end">cat</text>
+<g data-true="3" data-predicted="0" data-count="0" data-value="0"><title>cat → airplane: 0</title>
+<rect x="120" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="1" data-count="1" data-value="1"><title>cat → automobile: 1</title>
+<rect x="168" y="214" width="48" height="48" fill="rgb(200,216,246)" stroke="white"/>
+<text x="192" y="241.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="3" data-predicted="2" data-count="3" data-value="3"><title>cat → bird: 3</title>
+<rect x="216" y="214" width="48" height="48" fill="rgb(119,157,241)" stroke="white"/>
+<text x="240" y="241.6" font-size="12" text-anchor="middle" fill="#172033">3</text>
+</g>
+<g data-true="3" data-predicted="3" data-count="0" data-value="0"><title>cat → cat: 0</title>
+<rect x="264" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="4" data-count="0" data-value="0"><title>cat → deer: 0</title>
+<rect x="312" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="5" data-count="0" data-value="0"><title>cat → dog: 0</title>
+<rect x="360" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="6" data-count="0" data-value="0"><title>cat → frog: 0</title>
+<rect x="408" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="7" data-count="0" data-value="0"><title>cat → horse: 0</title>
+<rect x="456" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="8" data-count="0" data-value="0"><title>cat → ship: 0</title>
+<rect x="504" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="9" data-count="0" data-value="0"><title>cat → truck: 0</title>
+<rect x="552" y="214" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="241.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="289.6" text-anchor="end">deer</text>
+<text transform="translate(336 562) rotate(-60)" text-anchor="end">deer</text>
+<g data-true="4" data-predicted="0" data-count="0" data-value="0"><title>deer → airplane: 0</title>
+<rect x="120" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="1" data-count="0" data-value="0"><title>deer → automobile: 0</title>
+<rect x="168" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="192" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="2" data-count="1" data-value="1"><title>deer → bird: 1</title>
+<rect x="216" y="262" width="48" height="48" fill="rgb(200,216,246)" stroke="white"/>
+<text x="240" y="289.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="4" data-predicted="3" data-count="0" data-value="0"><title>deer → cat: 0</title>
+<rect x="264" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="4" data-count="0" data-value="0"><title>deer → deer: 0</title>
+<rect x="312" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="5" data-count="0" data-value="0"><title>deer → dog: 0</title>
+<rect x="360" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="6" data-count="0" data-value="0"><title>deer → frog: 0</title>
+<rect x="408" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="7" data-count="0" data-value="0"><title>deer → horse: 0</title>
+<rect x="456" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="8" data-count="0" data-value="0"><title>deer → ship: 0</title>
+<rect x="504" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="4" data-predicted="9" data-count="0" data-value="0"><title>deer → truck: 0</title>
+<rect x="552" y="262" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="289.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="337.6" text-anchor="end">dog</text>
+<text transform="translate(384 562) rotate(-60)" text-anchor="end">dog</text>
+<g data-true="5" data-predicted="0" data-count="0" data-value="0"><title>dog → airplane: 0</title>
+<rect x="120" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="1" data-count="0" data-value="0"><title>dog → automobile: 0</title>
+<rect x="168" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="192" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="2" data-count="1" data-value="1"><title>dog → bird: 1</title>
+<rect x="216" y="310" width="48" height="48" fill="rgb(200,216,246)" stroke="white"/>
+<text x="240" y="337.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="5" data-predicted="3" data-count="0" data-value="0"><title>dog → cat: 0</title>
+<rect x="264" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="4" data-count="0" data-value="0"><title>dog → deer: 0</title>
+<rect x="312" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="5" data-count="0" data-value="0"><title>dog → dog: 0</title>
+<rect x="360" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="6" data-count="0" data-value="0"><title>dog → frog: 0</title>
+<rect x="408" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="7" data-count="0" data-value="0"><title>dog → horse: 0</title>
+<rect x="456" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="8" data-count="0" data-value="0"><title>dog → ship: 0</title>
+<rect x="504" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="5" data-predicted="9" data-count="0" data-value="0"><title>dog → truck: 0</title>
+<rect x="552" y="310" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="337.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="385.6" text-anchor="end">frog</text>
+<text transform="translate(432 562) rotate(-60)" text-anchor="end">frog</text>
+<g data-true="6" data-predicted="0" data-count="0" data-value="0"><title>frog → airplane: 0</title>
+<rect x="120" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="6" data-predicted="1" data-count="1" data-value="1"><title>frog → automobile: 1</title>
+<rect x="168" y="358" width="48" height="48" fill="rgb(200,216,246)" stroke="white"/>
+<text x="192" y="385.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="6" data-predicted="2" data-count="3" data-value="3"><title>frog → bird: 3</title>
+<rect x="216" y="358" width="48" height="48" fill="rgb(119,157,241)" stroke="white"/>
+<text x="240" y="385.6" font-size="12" text-anchor="middle" fill="#172033">3</text>
+</g>
+<g data-true="6" data-predicted="3" data-count="0" data-value="0"><title>frog → cat: 0</title>
+<rect x="264" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="6" data-predicted="4" data-count="0" data-value="0"><title>frog → deer: 0</title>
+<rect x="312" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="6" data-predicted="5" data-count="0" data-value="0"><title>frog → dog: 0</title>
+<rect x="360" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="6" data-predicted="6" data-count="0" data-value="0"><title>frog → frog: 0</title>
+<rect x="408" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="6" data-predicted="7" data-count="0" data-value="0"><title>frog → horse: 0</title>
+<rect x="456" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="6" data-predicted="8" data-count="0" data-value="0"><title>frog → ship: 0</title>
+<rect x="504" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="6" data-predicted="9" data-count="0" data-value="0"><title>frog → truck: 0</title>
+<rect x="552" y="358" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="385.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="433.6" text-anchor="end">horse</text>
+<text transform="translate(480 562) rotate(-60)" text-anchor="end">horse</text>
+<g data-true="7" data-predicted="0" data-count="0" data-value="0"><title>horse → airplane: 0</title>
+<rect x="120" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="1" data-count="0" data-value="0"><title>horse → automobile: 0</title>
+<rect x="168" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="192" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="2" data-count="3" data-value="3"><title>horse → bird: 3</title>
+<rect x="216" y="406" width="48" height="48" fill="rgb(119,157,241)" stroke="white"/>
+<text x="240" y="433.6" font-size="12" text-anchor="middle" fill="#172033">3</text>
+</g>
+<g data-true="7" data-predicted="3" data-count="0" data-value="0"><title>horse → cat: 0</title>
+<rect x="264" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="4" data-count="0" data-value="0"><title>horse → deer: 0</title>
+<rect x="312" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="5" data-count="0" data-value="0"><title>horse → dog: 0</title>
+<rect x="360" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="6" data-count="0" data-value="0"><title>horse → frog: 0</title>
+<rect x="408" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="7" data-count="0" data-value="0"><title>horse → horse: 0</title>
+<rect x="456" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="8" data-count="0" data-value="0"><title>horse → ship: 0</title>
+<rect x="504" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="7" data-predicted="9" data-count="0" data-value="0"><title>horse → truck: 0</title>
+<rect x="552" y="406" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="433.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<text x="112" y="481.6" text-anchor="end">ship</text>
+<text transform="translate(528 562) rotate(-60)" text-anchor="end">ship</text>
+<g data-true="8" data-predicted="0" data-count="0" data-value="0"><title>ship → airplane: 0</title>
+<rect x="120" y="454" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="481.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="8" data-predicted="1" data-count="2" data-value="2"><title>ship → automobile: 2</title>
+<rect x="168" y="454" width="48" height="48" fill="rgb(159,187,243)" stroke="white"/>
+<text x="192" y="481.6" font-size="12" text-anchor="middle" fill="#172033">2</text>
+</g>
+<g data-true="8" data-predicted="2" data-count="3" data-value="3"><title>ship → bird: 3</title>
+<rect x="216" y="454" width="48" height="48" fill="rgb(119,157,241)" stroke="white"/>
+<text x="240" y="481.6" font-size="12" text-anchor="middle" fill="#172033">3</text>
+</g>
+<g data-true="8" data-predicted="3" data-count="0" data-value="0"><title>ship → cat: 0</title>
+<rect x="264" y="454" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="481.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="8" data-predicted="4" data-count="0" data-value="0"><title>ship → deer: 0</title>
+<rect x="312" y="454" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="481.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="8" data-predicted="5" data-count="0" data-value="0"><title>ship → dog: 0</title>
+<rect x="360" y="454" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="481.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="8" data-predicted="6" data-count="0" data-value="0"><title>ship → frog: 0</title>
+<rect x="408" y="454" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="481.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="8" data-predicted="7" data-count="0" data-value="0"><title>ship → horse: 0</title>
+<rect x="456" y="454" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="481.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="8" data-predicted="8" data-count="0" data-value="0"><title>ship → ship: 0</title>
+<rect x="504" y="454" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="481.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="8" data-predicted="9" data-count="1" data-value="1"><title>ship → truck: 1</title>
+<rect x="552" y="454" width="48" height="48" fill="rgb(200,216,246)" stroke="white"/>
+<text x="576" y="481.6" font-size="12" text-anchor="middle" fill="#172033">1</text>
+</g>
+<text x="112" y="529.6" text-anchor="end">truck</text>
+<text transform="translate(576 562) rotate(-60)" text-anchor="end">truck</text>
+<g data-true="9" data-predicted="0" data-count="0" data-value="0"><title>truck → airplane: 0</title>
+<rect x="120" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="144" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="1" data-count="0" data-value="0"><title>truck → automobile: 0</title>
+<rect x="168" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="192" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="2" data-count="2" data-value="2"><title>truck → bird: 2</title>
+<rect x="216" y="502" width="48" height="48" fill="rgb(159,187,243)" stroke="white"/>
+<text x="240" y="529.6" font-size="12" text-anchor="middle" fill="#172033">2</text>
+</g>
+<g data-true="9" data-predicted="3" data-count="0" data-value="0"><title>truck → cat: 0</title>
+<rect x="264" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="288" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="4" data-count="0" data-value="0"><title>truck → deer: 0</title>
+<rect x="312" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="336" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="5" data-count="0" data-value="0"><title>truck → dog: 0</title>
+<rect x="360" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="384" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="6" data-count="0" data-value="0"><title>truck → frog: 0</title>
+<rect x="408" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="432" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="7" data-count="0" data-value="0"><title>truck → horse: 0</title>
+<rect x="456" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="480" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="8" data-count="0" data-value="0"><title>truck → ship: 0</title>
+<rect x="504" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="528" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="9" data-predicted="9" data-count="0" data-value="0"><title>truck → truck: 0</title>
+<rect x="552" y="502" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="576" y="529.6" font-size="12" text-anchor="middle" fill="#172033">0</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="120" y="653.86" width="480" height="10" fill="url(#cm-scale)"/>
+<text x="120" y="678.86">0</text><text x="600" y="678.86" text-anchor="end">5</text>
+</g></svg>

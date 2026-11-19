@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SWIG bindings · datamunge</title>
+
+<link rel="stylesheet" href="../static/site.css">
+<link rel="icon" href="../assets/assets/datamunge.png">
+<script>
+  // The chosen theme, before the page paints (light/dark/system).
+  try { var t = localStorage.getItem("site-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  if (!document.documentElement.dataset.theme)
+    document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  window.SITE_BASE = "../";
+</script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+    chtml: { displayOverflow: "scroll" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+<script defer src="../static/site.js"></script>
+</head>
+<body class="section-guides has-sidebar">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-btn nav-toggle" type="button" aria-label="Show navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="../index.html">
+    <img src="../assets/assets/datamunge.png" alt="" width="28" height="28">
+    <span class="brand-name">datamunge</span><span class="version">0.0.1</span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="../guides/index.html" aria-current="page">Guides</a>
+    <a href="../reports/index.html">Reports</a>
+    <a href="../api/index.html">API</a>
+  </nav>
+  <div class="search" role="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="search" type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search the documentation" aria-controls="search-results">
+    <kbd class="search-key">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+  <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark">
+    <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="icon-btn" href="https://github.com/jordanschupbach/datamunge" aria-label="Source repository" title="Source repository">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Section navigation"><div class="sidebar-inner"><a class="side-top" href="index.html">All guides</a><div class="side-heading">Guides</div><ul><li><a href="examples.html">Examples by language</a></li><li><a class=current href="bindings.html">SWIG bindings</a></li><li><a href="mepml-reports.html">Writing mepml reports</a></li><li><a href="optimization-roadmap.html">Optimization roadmap</a></li></ul></div></aside>
+  <div class="scrim" hidden></div>
+  <main id="content" class="content">
+    <article class="prose"><h1 id="swig-bindings">SWIG bindings</h1>
+<p>The layout follows the pattern in <code>~/projects/charm</code>: a C++ core, per-language
+SWIG interfaces, generated native wrappers and proxy classes, and packages built
+with the language's standard tools. Existing public module names are preserved.
+Python and R wrap <code>NnTensor</code> and <code>NnModel</code> from <code>include/datamunge/nn/api.hpp</code>;
+this facade keeps tensor computation, automatic differentiation, and training in
+C++. Values cross the boundary as copied numeric vectors in row-major order.
+These are not zero-copy NumPy or R-array views.</p>
+<h2 id="python">Python</h2>
+<pre class="hl"><code>just prebuild-python  <span class="c1"># SWIG -&gt; src/datamunge_python_wrap.* and src/pydatamunge/datamunge.py
+</span>just build-python    <span class="c1"># build/install a wheel in build/venv/pydatamunge-run
+</span>just test-python     <span class="c1"># pytest against that installed wheel
+</span>just repl-python</code></pre>
+<pre class="hl"><code><span class="kn">from</span> <span class="nn">pydatamunge</span> <span class="kn">import</span> <span class="n">NnTensor</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">NnTensor</span><span class="p">(</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">float64</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">set_requires_grad</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">)</span>  <span class="c1"># [2, 4, 6]</span></code></pre>
+<p>Outside Nix, install a C++23 compiler, Python &gt;=3.9, SWIG, setuptools and wheel.
+Generate once with <code>python scripts/prebuild_bindings.py python</code>, then use
+<code>python -m pip install .</code>. To distribute, run <code>python -m build</code>; install <code>build</code>
+first. The source archive includes the generated wrapper, all core sources and
+headers, so installing the archive does not require SWIG. The default package
+compiles its core into the extension and needs no separately installed dylib.
+Build parallelism defaults to four jobs; override with
+<code>CMAKE_BUILD_PARALLEL_LEVEL</code>. macOS uses Accelerate; other platforms currently
+use the portable numeric kernels in self-contained builds.</p>
+<h2 id="r">R</h2>
+<pre class="hl"><code>just prebuild-r       <span class="c1"># SWIG -&gt; src/datamunge_r_wrap.* and R/datamunger.R
+</span>just build-r          <span class="c1"># R CMD INSTALL into build/r/library
+</span>just test-r           <span class="c1"># testthat against that installed package
+</span>just repl-r</code></pre>
+<pre class="hl"><code><span class="nf">library</span><span class="p">(</span><span class="n">datamunger</span><span class="p">,</span> <span class="n">lib.loc</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">build/r/library&quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">NnTensor</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span><span class="p">,</span> <span class="nf">as.integer</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="p">,</span> <span class="s">&quot;</span><span class="s">float64&quot;</span><span class="p">)</span>
+<span class="n">x</span><span class="o">$</span><span class="nf">set_requires_grad</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">x</span><span class="o">$</span><span class="nf">square</span><span class="p">(</span><span class="p">)</span><span class="o">$</span><span class="nf">sum</span><span class="p">(</span><span class="p">)</span><span class="o">$</span><span class="nf">backward</span><span class="p">(</span><span class="p">)</span>
+<span class="nf">as.numeric</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="nf">grad</span><span class="p">(</span><span class="p">)</span><span class="o">$</span><span class="nf">values</span><span class="p">(</span><span class="p">)</span><span class="p">)</span> <span class="c1"># 2 4 6</span></code></pre>
+<p>Outside Nix, install R with its development tools, a C++23 compiler, Python 3
+(for regeneration only), SWIG and testthat. Generate with
+<code>python3 scripts/prebuild_bindings.py r</code>, then run <code>R CMD INSTALL .</code>.
+<code>just package-r</code> (or <code>python3 scripts/build_r_source.py</code>) stages only the R
+package inputs and invokes <code>R CMD build</code> to create <code>dist/datamunger_*.tar.gz</code>;
+this avoids following the development checkout’s cyclic Node/direnv symlinks.
+The archive contains generated wrappers; recipients do not need SWIG or Python.
+<code>src/Makevars</code> uses R's normal compile/link rules rather than recursively calling
+<code>R CMD SHLIB</code>. <code>src/Makevars.win</code> supplies the corresponding Rtools build rules.
+Self-contained builds avoid mandatory X11; plotting to files remains available.
+macOS uses Accelerate; other systems use portable kernels.</p>
+<h2 id="shared-core-builds-and-regeneration">Shared core builds and regeneration</h2>
+<p>Both packages support explicit <code>DATAMUNGE_USE_SYSTEM_LIB=1</code> builds using
+<code>pkg-config datamunge</code>. Nix packages use this to compile the core once, including
+its detected BLAS/LAPACK, Arrow and display support. Those packages depend on the
+installed core; the default source packages are self-contained. Unix system-core
+builds include an rpath to the reported library directory. System-core builds on
+Windows are not covered by this workflow.</p>
+<p>Edit the <code>.i</code> files and C++ headers, never the generated proxy/wrapper files.
+The regeneration script stages output before replacing it, so a SWIG failure
+preserves the previous generated files. The repository pins its SWIG fork in
+<code>flake.lock</code>; the Python/R shells include it. Linux source-package CI uses the system SWIG package. Regenerate with the same SWIG version for reproducible
+output. C++ tensor exceptions become Python/R errors; SWIG owns returned tensor
+and model objects and releases them when collected.</p>
+<h2 id="audit-and-remaining-scope">Audit and remaining scope</h2>
+<p>The existing <code>lib_sources.txt</code> correctly listed the core sources. The Python
+source-distribution manifest omitted <code>src/datamunge</code>, so archives could not
+reliably build independently. It now includes that tree, while setuptools
+collects the same canonical source directory as CMake. R's old build hard-coded
+X11 and called <code>R CMD SHLIB</code> recursively. The installed-package workflows now
+avoid source-tree imports and <code>testthat::test_local</code>, which could mask packaging
+problems or load a stale installed library. Tests cover imports, operations,
+training, gradients, serialization and object lifetimes.</p>
+<p>Other language packages and their existing <code>just prebuild-*</code>, <code>build-*</code> and
+<code>test-*</code> commands are preserved. The README's existing implemented markers do
+not imply tensor facade parity: only Python and R currently expose <code>nn/api.hpp</code>.
+Extending that facade to other languages, zero-copy array typemaps, public wheel
+publishing, and CRAN submission checks remain separate work. The packages have
+not been certified for CRAN or tested locally on Windows/Linux in this pass;
+Linux CI now builds both from their source archives.</p>
+<h2 id="validation-for-this-pass">Validation for this pass</h2>
+<p>On macOS arm64 with Python 3.13.11, R 4.5.2 and SWIG 4.6.0:</p>
+<ul>
+<li>Built the self-contained Python wheel; installed it into a separate virtual
+environment and passed all 28 pytest tests, including the installed-package checks.</li>
+<li>Built and installed the self-contained R source archive; passed all 91
+testthat assertions with no test warnings or skips.</li>
+<li>Installed both source archives with <code>DATAMUNGE_USE_SYSTEM_LIB=1</code> against the
+Nix-built core; the same 28 Python tests and 91 R assertions passed.</li>
+<li>Both source archives contain all 271 core C++ translation units. The R source
+archive contains no compiled libraries or object files.</li>
+<li>Repeated generation preserves both generated bytes and file timestamps;
+unchanged wrappers no longer force an expensive recompilation.</li>
+</ul>
+<p>Linux source-archive CI jobs were added but have not run locally. Windows build
+rules are supplied but remain unverified. These checks do not constitute a CRAN
+submission review or a published PyPI wheel release.</p>
+<h2 id="nn-example-catalogue">NN example catalogue</h2>
+<p>The optional <a href="https://github.com/jordanschupbach/datamunge/blob/main/examples/python/nn/README.md">Python NN example extension</a> wraps
+all 165 canonical C++ experiments from sections 1 and 2. Build it with
+<code>just build-nn-python</code>. It is separate from the core tensor/model binding and
+shares the C++ architecture and training implementations.</p>
+<h3 id="optional-r-neural-network-examples">Optional R neural network examples</h3>
+<p><code>just build-nn-r</code> installs the standard <code>datamungerNN</code> companion package in
+<code>build/r/library</code>. It mirrors all 165 Python CNN and autoencoder experiments
+through the same C++/SWIG entry points. Use <code>just test-nn-r</code>,
+<code>just run-nn-r NAME</code>, <code>just run-all-nn-r</code>, and <code>just package-nn-r</code>.
+See <a href="https://github.com/jordanschupbach/datamunge/blob/main/examples/r/nn/README.md">the R NN examples</a> for options and validation.</p>
+<h3 id="functional-nn-api-and-language-migration">Functional NN API and language migration</h3>
+<p>Python now exposes the C++ functional API as <code>pydatamunge.nn</code>; R exposes it as
+<code>datamungerNN::nn</code>. Bindings are generated from <code>prebindings/nn/src/nn.i</code> using
+<code>scripts/prebuild_nn_api.py</code>. They include named parameter stores, layers,
+optimizers, differentiation, batching, tensor I/O and dataset loading. Python
+ships this API in its normal core wheel, independently of the optional compiled
+reference extension. R's companion package can be built without the reference
+bridge using <code>python3 scripts/build_nn_r_core.py</code>, or with the separate legacy
+reference tooling. <code>just build-nn-r</code> now prepares the native package using R/SWIG
+and installs it with <code>R CMD INSTALL</code>.</p>
+<p>Three native-language ports are currently complete: CNN MNIST, explicit im2col
+convolution, and the undercomplete autoencoder. Other catalogue entries remain
+compiled references; they have not yet been rewritten. Callback-based custom
+functions, gradient checkpointing and reversible callbacks are not exposed by
+this initial functional interface.</p>
+<p>The standard NN R commands now use an R-only toolchain: <code>just prebuild-nn-r</code>
+runs <code>scripts/prebuild_nn_r.R</code>, <code>build-nn-r</code> uses <code>R CMD INSTALL</code>, and
+<code>run-nn-r</code> invokes <code>Rscript</code> and <code>datamungerNN::nn_example_run</code> directly in the
+Nix R shell. Only genuine R implementations are listed; legacy compiled
+experiment wrappers and the Python R runner are outside this workflow.</p>
+<h2 id="rust-b-spline-regression">Rust B-spline regression</h2>
+<p>The Rust crate uses the canonical C++ <code>BSplineRegression</code> through a private C ABI
+bridge. The public facade borrows slices for the call and returns owned predictions:</p>
+<pre class="hl"><code><span class="kd">let</span> <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span><span class="p">;</span>
+<span class="kd">let</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">rustdatamunge</span><span class="p">::</span><span class="n">bspline_predict</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">&amp;</span><span class="p">[</span><span class="mf">0.5</span><span class="p">]</span><span class="p">)</span><span class="p">.</span><span class="n">unwrap</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="fm">assert!</span><span class="p">(</span><span class="p">(</span><span class="n">predicted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span><span class="p">.</span><span class="n">abs</span><span class="p">(</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">)</span><span class="p">;</span></code></pre>
+<p>This fits an ordinary least-squares cubic spline. The basis count must be at least
+four. Empty/mismatched training inputs, nonfinite values, rank-deficient fits and
+native failures return <code>Err</code>; C++ exceptions never cross into Rust. An empty query
+is valid, and queries outside the training domain use constant boundary extrapolation.
+No input storage is retained and every returned vector owns its allocation.</p>
+<p>Build with <code>just build-rust</code> and test with <code>just test-rust</code>. The crate's <code>cc</code> build
+dependency compiles only its small bridge; <code>pkg-config datamunge</code> selects the
+installed core and headers. A C++23 compiler and Rust/Cargo are required. The
+Linux playground package passed both new unit tests, both existing binding
+integration tests, and the executable Rustdoc example. Its noisy Doppler B-spline
+example also passed finite-output and recovery-error checks.</p>
+</article><p class="report-meta"><a href="https://github.com/jordanschupbach/datamunge/blob/main/docs/bindings.md">source</a></p>
+  </main>
+  <aside class="pagetoc" aria-label="On this page"><div class="pagetoc-inner"></div></aside>
+</div>
+<footer class="footer">
+  <span>datamunge 0.0.1</span>
+  <span>Built 2026-11-19 from the repository's headers (Doxygen), reports (mep) and Markdown.</span>
+</footer>
+</body>
+</html>

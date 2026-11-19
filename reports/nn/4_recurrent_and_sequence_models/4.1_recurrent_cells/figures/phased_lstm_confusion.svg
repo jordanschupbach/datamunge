@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="270.786" viewBox="0 0 180 270.786" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Phased LSTM: held-out confusion</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Phased LSTM: held-</text>
+<text x="14" y="38" font-size="12" font-weight="bold">out confusion</text>
+<text x="97.8" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 132) rotate(-90)" text-anchor="middle">True class</text>
+<text x="41.8" y="111.6" text-anchor="end">0</text>
+<text transform="translate(73.8 192) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="55" data-value="55"><title>0 → 0: 55</title>
+<rect x="49.8" y="84" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="73.8" y="111.6" font-size="12" text-anchor="middle" fill="white">55</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="9" data-value="9"><title>0 → 1: 9</title>
+<rect x="97.8" y="84" width="48" height="48" fill="rgb(208,221,247)" stroke="white"/>
+<text x="121.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">9</text>
+</g>
+<text x="41.8" y="159.6" text-anchor="end">1</text>
+<text transform="translate(121.8 192) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="25" data-value="25"><title>1 → 0: 25</title>
+<rect x="49.8" y="132" width="48" height="48" fill="rgb(148,179,243)" stroke="white"/>
+<text x="73.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">25</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="39" data-value="39"><title>1 → 1: 39</title>
+<rect x="97.8" y="132" width="48" height="48" fill="rgb(96,141,239)" stroke="white"/>
+<text x="121.8" y="159.6" font-size="12" text-anchor="middle" fill="white">39</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="49.8" y="222.786" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="49.8" y="247.786">0</text><text x="145.8" y="247.786" text-anchor="end">55</text>
+</g></svg>

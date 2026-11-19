@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="288.786" viewBox="0 0 180 288.786" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Truncated BPTT / full: held-out confusion</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Truncated BPTT /</text>
+<text x="14" y="38" font-size="12" font-weight="bold">full: held-out</text>
+<text x="14" y="56" font-size="12" font-weight="bold">confusion</text>
+<text x="97.8" y="88" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 150) rotate(-90)" text-anchor="middle">True class</text>
+<text x="41.8" y="129.6" text-anchor="end">0</text>
+<text transform="translate(73.8 210) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="52" data-value="52"><title>0 → 0: 52</title>
+<rect x="49.8" y="102" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="73.8" y="129.6" font-size="12" text-anchor="middle" fill="white">52</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="12" data-value="12"><title>0 → 1: 12</title>
+<rect x="97.8" y="102" width="48" height="48" fill="rgb(194,211,246)" stroke="white"/>
+<text x="121.8" y="129.6" font-size="12" text-anchor="middle" fill="#172033">12</text>
+</g>
+<text x="41.8" y="177.6" text-anchor="end">1</text>
+<text transform="translate(121.8 210) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="38" data-value="38"><title>1 → 0: 38</title>
+<rect x="49.8" y="150" width="48" height="48" fill="rgb(92,138,239)" stroke="white"/>
+<text x="73.8" y="177.6" font-size="12" text-anchor="middle" fill="white">38</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="26" data-value="26"><title>1 → 1: 26</title>
+<rect x="97.8" y="150" width="48" height="48" fill="rgb(139,172,242)" stroke="white"/>
+<text x="121.8" y="177.6" font-size="12" text-anchor="middle" fill="#172033">26</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="49.8" y="240.786" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="49.8" y="265.786">0</text><text x="145.8" y="265.786" text-anchor="end">52</text>
+</g></svg>

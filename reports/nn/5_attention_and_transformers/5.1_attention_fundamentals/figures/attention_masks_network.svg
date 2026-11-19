@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="904.4" height="541.8" viewBox="0 0 904.4 541.8" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">attention masks: native operation</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">attention masks: native operation</text>
+<text x="24" y="51" font-size="12">4 nodes | 0 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="69" font-size="11">Block</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="219.2,154 257.2,154 257.2,290 219.2,277.2" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 219.2 215.6 C 238.2 215.6 238.2 222 257.2 222" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="465.2,154 503.2,154 503.2,251.6 465.2,290" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 465.2 222 C 484.2 222 484.2 202.8 503.2 202.8" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="672.8,154 710.8,154 710.8,251.6 672.8,251.6" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 672.8 202.8 C 691.8 202.8 691.8 202.8 710.8 202.8" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 2 x 4]</title>
+<g id="model-glyph-0" data-left="24" data-right="219.2" data-face-width="144" data-face-height="72" data-depth="51.2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="24,205.2 75.2,154 219.2,154 168,205.2" fill="#E69F00"/>
+<polygon class="volume-side" points="168,205.2 219.2,154 219.2,226 168,277.2" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="205.2" width="144" height="72" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(121.6 342.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 2 x 4]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>Padding plus causal keep [1 x 2 x 5]</title>
+<g id="model-glyph-1" data-left="257.2" data-right="465.2" data-face-width="144" data-face-height="72" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="257.2,218 321.2,154 465.2,154 401.2,218" fill="#8B80C9"/>
+<polygon class="volume-side" points="401.2,218 465.2,154 465.2,226 401.2,290" fill="#8B80C9"/>
+<rect class="volume-front" x="257.2" y="218" width="144" height="72" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(361.2 409.9) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Padding plus causal keep</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 2 x 5]</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>Masked value mixture [1 x 2 x 2]</title>
+<g id="model-glyph-2" data-left="503.2" data-right="672.8" data-face-width="144" data-face-height="72" data-depth="25.6" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="503.2,179.6 528.8,154 672.8,154 647.2,179.6" fill="#8B80C9"/>
+<polygon class="volume-side" points="647.2,179.6 672.8,154 672.8,226 647.2,251.6" fill="#8B80C9"/>
+<rect class="volume-front" x="503.2" y="179.6" width="144" height="72" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(588 354.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Masked value mixture</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 2 x 2]</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 2 x 2]</title>
+<g id="model-glyph-3" data-left="710.8" data-right="880.4" data-face-width="144" data-face-height="72" data-depth="25.6" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="710.8,179.6 736.4,154 880.4,154 854.8,179.6" fill="#6C8194"/>
+<polygon class="volume-side" points="854.8,179.6 880.4,154 880.4,226 854.8,251.6" fill="#6C8194"/>
+<rect class="volume-front" x="710.8" y="179.6" width="144" height="72" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(795.6 316.575) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 2 x 2]</text>
+</g></g>
+</g></svg>

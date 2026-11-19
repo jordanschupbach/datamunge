@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="587.2" height="578.8" viewBox="0 0 587.2 578.8" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Point geometry:tensor distances and frozen neighborhood derivatives</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="20" y="20" font-size="20" font-weight="600">Point geometry:tensor distances and frozen</text>
+<text x="20" y="42" font-size="20" font-weight="600">neighborhood derivatives</text>
+<text x="20" y="69" font-size="12">8 nodes | 0 unique learned values | Flow / blocks</text>
+<rect x="20" y="77" width="12" height="12" rx="2" fill="#E69F00"/><text x="38" y="87" font-size="11">Input</text>
+<rect x="150" y="77" width="12" height="12" rx="2" fill="#6C8194"/><text x="168" y="87" font-size="11">Output</text>
+<rect x="280" y="77" width="12" height="12" rx="2" fill="#94A3B8"/><text x="298" y="87" font-size="11">Operation</text>
+<text x="20" y="117" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled;</text>
+<text x="20" y="133" font-size="11">exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="158,188 194.1,188 194.1,285 158,236" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 158 212 C 176.05 212 176.05 236.5 194.1 236.5" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="213.1,188 249.2,188 249.2,254 213.1,285" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 213.1 236.5 C 231.15 236.5 231.15 221 249.2 221" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="158,188 194.1,379.4 194.1,476.4 158,236" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="0" data-to="3" d="M 158 212 C 176.05 212 176.05 427.9 194.1 427.9" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="213.1,379.4 249.2,403 249.2,451 213.1,476.4" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="3" data-to="4" d="M 213.1 427.9 C 231.15 427.9 231.15 427 249.2 427" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="315.2,403 339.2,188 339.2,254 315.2,451" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="4" data-to="5" d="M 315.2 427 C 327.2 427 327.2 221 339.2 221" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="6" d="M 315.2 221 C 331.2 221 331.2 184 347.2 184 L 379.2 184 C 395.2 184 395.2 221 411.2 221" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="387.2,188 411.2,188 411.2,254 387.2,254" fill="#94A3B8" fill-opacity="0.09"/>
+<path data-from="5" data-to="6" d="M 387.2 221 C 399.2 221 399.2 221 411.2 221" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="477.2,188 501.2,188 501.2,254 477.2,254" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="6" data-to="7" d="M 477.2 221 C 489.2 221 489.2 221 501.2 221" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 16 x 3]</title>
+<g id="model-glyph-0" data-left="20" data-right="158" data-face-width="96" data-face-height="6" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="20,230 62,188 158,188 116,230" fill="#E69F00"/>
+<polygon class="volume-side" points="116,230 158,188 158,194 116,236" fill="#E69F00"/>
+<rect class="volume-front" x="20" y="230" width="96" height="6" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(89 296.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Input</text>
+<text x="0" y="11.4" font-size="12">[1 x 16 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Operation"><title>Reshape [16 x 3]</title>
+<g id="model-glyph-1" data-left="194.1" data-right="213.1" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="194.1,189 195.1,188 213.1,188 212.1,189" fill="#94A3B8"/>
+<polygon class="volume-side" points="212.1,189 213.1,188 213.1,284 212.1,285" fill="#94A3B8"/>
+<rect class="volume-front" x="194.1" y="189" width="18" height="96" fill="#94A3B8"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(203.6 330.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Reshape</text>
+<text x="0" y="11.4" font-size="12">[16 x 3]</text>
+</g></g>
+<g data-node="2" data-category="Operation"><title>GatherV2 [1 x 4 x 4 x 3]</title>
+<g id="model-glyph-2" data-left="249.2" data-right="315.2" data-face-width="24" data-face-height="24" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="249.2,230 291.2,188 315.2,188 273.2,230" fill="#94A3B8"/>
+<polygon class="volume-side" points="273.2,230 315.2,188 315.2,212 273.2,254" fill="#94A3B8"/>
+<rect class="volume-front" x="249.2" y="230" width="24" height="24" fill="#94A3B8"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(282.2 326.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">GatherV2</text>
+<text x="0" y="11.4" font-size="12">[1 x 4 x 4 x 3]</text>
+</g></g>
+<g data-node="3" data-category="Operation"><title>Reshape [16 x 3]</title>
+<g id="model-glyph-3" data-left="194.1" data-right="213.1" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="194.1,380.4 195.1,379.4 213.1,379.4 212.1,380.4" fill="#94A3B8"/>
+<polygon class="volume-side" points="212.1,380.4 213.1,379.4 213.1,475.4 212.1,476.4" fill="#94A3B8"/>
+<rect class="volume-front" x="194.1" y="380.4" width="18" height="96" fill="#94A3B8"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(203.6 521.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Reshape</text>
+<text x="0" y="11.4" font-size="12">[16 x 3]</text>
+</g></g>
+<g data-node="4" data-category="Operation"><title>GatherV2 [1 x 4 x 3]</title>
+<g id="model-glyph-4" data-left="249.2" data-right="315.2" data-face-width="24" data-face-height="6" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="249.2,445 291.2,403 315.2,403 273.2,445" fill="#94A3B8"/>
+<polygon class="volume-side" points="273.2,445 315.2,403 315.2,409 273.2,451" fill="#94A3B8"/>
+<rect class="volume-front" x="249.2" y="445" width="24" height="6" fill="#94A3B8"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(282.2 507.9) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">GatherV2</text>
+<text x="0" y="11.4" font-size="12">[1 x 4 x 3]</text>
+</g></g>
+<g data-node="5" data-category="Operation"><title>Reshape [1 x 4 x 1 x 3]</title>
+<g id="model-glyph-5" data-left="339.2" data-right="387.2" data-face-width="6" data-face-height="24" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="339.2,230 381.2,188 387.2,188 345.2,230" fill="#94A3B8"/>
+<polygon class="volume-side" points="345.2,230 387.2,188 387.2,212 345.2,254" fill="#94A3B8"/>
+<rect class="volume-front" x="339.2" y="230" width="6" height="24" fill="#94A3B8"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(363.2 326.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Reshape</text>
+<text x="0" y="11.4" font-size="12">[1 x 4 x 1 x 3]</text>
+</g></g>
+<g data-node="6" data-category="Operation"><title>Sub [1 x 4 x 4 x 3]</title>
+<g id="model-glyph-6" data-left="411.2" data-right="477.2" data-face-width="24" data-face-height="24" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="411.2,230 453.2,188 477.2,188 435.2,230" fill="#94A3B8"/>
+<polygon class="volume-side" points="435.2,230 477.2,188 477.2,212 435.2,254" fill="#94A3B8"/>
+<rect class="volume-front" x="411.2" y="230" width="24" height="24" fill="#94A3B8"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(444.2 326.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Sub</text>
+<text x="0" y="11.4" font-size="12">[1 x 4 x 4 x 3]</text>
+</g></g>
+<g data-node="7" data-category="Output"><title>Output [1 x 4 x 4 x 3]</title>
+<g id="model-glyph-7" data-left="501.2" data-right="567.2" data-face-width="24" data-face-height="24" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="501.2,230 543.2,188 567.2,188 525.2,230" fill="#6C8194"/>
+<polygon class="volume-side" points="525.2,230 567.2,188 567.2,212 525.2,254" fill="#6C8194"/>
+<rect class="volume-front" x="501.2" y="230" width="24" height="24" fill="#6C8194"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(534.2 326.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Output</text>
+<text x="0" y="11.4" font-size="12">[1 x 4 x 4 x 3]</text>
+</g></g>
+</g></svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="476.3" height="459.267" viewBox="0 0 476.3 459.267" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">ctc handwriting native component graph</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">ctc handwriting native component</text>
+<text x="24" y="46" font-size="20" font-weight="600">graph</text>
+<text x="24" y="73" font-size="12">3 nodes | 1043 unique learned values | Flow / blocks</text>
+<rect x="24" y="81" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="91" font-size="11">Input</text>
+<rect x="154" y="81" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="91" font-size="11">Block</text>
+<rect x="284" y="81" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="91" font-size="11">Output</text>
+<text x="24" y="121" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 2 px.</text>
+<text x="24" y="137" font-size="11">Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="232,192 302.566,192 302.566,224.367 232,274" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 232 233 C 267.283 233 267.283 208.184 302.566 208.184" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="334.934,192 412.716,192 412.716,224.367 334.934,224.367" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 334.934 208.184 C 373.825 208.184 373.825 208.184 412.716 208.184" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 8 x 49]</title>
+<g id="model-glyph-0" data-left="24" data-right="232" data-face-width="144" data-face-height="18" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="24,256 88,192 232,192 168,256" fill="#E69F00"/>
+<polygon class="volume-side" points="168,256 232,192 232,210 168,274" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="256" width="144" height="18" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(128 343.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 49]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>ctc handwriting native component [8 x 1 x 11]</title>
+<g id="model-glyph-1" data-left="302.566" data-right="334.934" data-face-width="18" data-face-height="18" data-depth="14.3673" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="302.566,206.367 316.934,192 334.934,192 320.566,206.367" fill="#8B80C9"/>
+<polygon class="volume-side" points="320.566,206.367 334.934,192 334.934,210 320.566,224.367" fill="#8B80C9"/>
+<rect class="volume-front" x="302.566" y="206.367" width="18" height="18" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(318.75 335.817) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-29.9" font-size="13" font-weight="600">ctc handwriting native</text>
+<text x="0" y="-13" font-size="13">component</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[8 x 1 x 11]</text>
+<text x="0" y="37.7" font-size="13">1043 learned values</text>
+</g></g>
+<g data-node="2" data-category="Output"><title>Output [8 x 1 x 11]</title>
+<g id="model-glyph-2" data-left="412.716" data-right="445.084" data-face-width="18" data-face-height="18" data-depth="14.3673" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="412.716,206.367 427.084,192 445.084,192 430.716,206.367" fill="#6C8194"/>
+<polygon class="volume-side" points="430.716,206.367 445.084,192 445.084,210 430.716,224.367" fill="#6C8194"/>
+<rect class="volume-front" x="412.716" y="206.367" width="18" height="18" fill="#6C8194"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(428.9 293.567) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[8 x 1 x 11]</text>
+</g></g>
+</g></svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100.000" height="95.048" viewBox="0 0 1583.200 136.800" role="img"><title>Method diagram</title>
+<defs>
+<path id="dm-g-65" d="M42 95 C42 14 139 -11 202 -11 C268 -11 314 29 333 76 C337 36 364 -6 411 -6 C432 -6 493 8 493 89 L493 145 L468 145 L468 89 C468 31 443 25 432 25 C399 25 395 70 395 75 L395 275 C395 317 395 356 359 393 C320 432 270 448 222 448 C140 448 71 401 71 335 C71 305 91 288 117 288 C145 288 163 308 163 334 C163 346 158 379 112 380 C139 415 188 426 220 426 C269 426 326 387 326 298 L326 261 C275 258 205 255 142 225 C67 191 42 139 42 95 ZM119 96 C119 151 161 234 326 240 L326 140 C326 45 254 11 209 11 C160 11 119 46 119 96 Z"/>
+<path id="dm-g-66" d="M28 652 C98 652 106 645 106 596 L106 0 L131 0 C132 1 140 15 167 62 C182 39 224 -11 298 -11 C417 -11 521 87 521 216 C521 343 423 442 309 442 C231 442 188 395 172 377 L172 694 L28 683 ZM175 114 L175 320 C175 339 175 340 186 356 C225 412 280 420 304 420 C349 420 385 394 409 356 C435 315 438 258 438 217 C438 180 436 120 407 75 C386 44 348 11 294 11 C249 11 213 35 189 72 C175 93 175 96 175 114 Z"/>
+</defs>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="30.000" y="30.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="151.600" y="74.160" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">bbaa</text>
+<g role="img" aria-label="bbaa" fill="rgb(15,23,42)" fill-opacity="1.000"><title>bbaa</title>
+<use href="#dm-g-66" transform="translate(132.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(142.600 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(152.590 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(161.590 74.160) scale(0.018000 -0.018000)"/>
+</g>
+<rect x="350.000" y="30.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="471.600" y="74.160" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">baba</text>
+<g role="img" aria-label="baba" fill="rgb(15,23,42)" fill-opacity="1.000"><title>baba</title>
+<use href="#dm-g-66" transform="translate(452.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(462.600 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(471.600 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(481.590 74.160) scale(0.018000 -0.018000)"/>
+</g>
+<polyline points="273.200,68.400 350.000,68.400 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polygon points="350.000,68.400 338.000,63.360 338.000,73.440" fill="rgb(51,65,85)" fill-opacity="1.000"/>
+<rect x="670.000" y="30.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="791.600" y="74.160" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">abba</text>
+<g role="img" aria-label="abba" fill="rgb(15,23,42)" fill-opacity="1.000"><title>abba</title>
+<use href="#dm-g-65" transform="translate(772.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(781.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(791.600 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(801.590 74.160) scale(0.018000 -0.018000)"/>
+</g>
+<polyline points="593.200,68.400 670.000,68.400 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polygon points="670.000,68.400 658.000,63.360 658.000,73.440" fill="rgb(51,65,85)" fill-opacity="1.000"/>
+<rect x="990.000" y="30.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="1111.600" y="74.160" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">abab</text>
+<g role="img" aria-label="abab" fill="rgb(15,23,42)" fill-opacity="1.000"><title>abab</title>
+<use href="#dm-g-65" transform="translate(1092.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(1101.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(1111.600 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(1120.600 74.160) scale(0.018000 -0.018000)"/>
+</g>
+<polyline points="913.200,68.400 990.000,68.400 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polygon points="990.000,68.400 978.000,63.360 978.000,73.440" fill="rgb(51,65,85)" fill-opacity="1.000"/>
+<rect x="1310.000" y="30.000" width="243.200" height="76.800" rx="9.000" fill="rgb(239,246,255)" fill-opacity="1.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<text aria-hidden="true" opacity="0" x="1431.600" y="74.160" text-anchor="middle" font-size="18.000" fill="rgb(15,23,42)" fill-opacity="1.000">aabb</text>
+<g role="img" aria-label="aabb" fill="rgb(15,23,42)" fill-opacity="1.000"><title>aabb</title>
+<use href="#dm-g-65" transform="translate(1412.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-65" transform="translate(1421.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(1430.610 74.160) scale(0.018000 -0.018000)"/>
+<use href="#dm-g-66" transform="translate(1440.600 74.160) scale(0.018000 -0.018000)"/>
+</g>
+<polyline points="1233.200,68.400 1310.000,68.400 " fill="rgb(255,255,255)" fill-opacity="0.000" stroke="rgb(51,65,85)" stroke-opacity="1.000" stroke-width="2.000" stroke-linejoin="round"/>
+<polygon points="1310.000,68.400 1298.000,63.360 1298.000,73.440" fill="rgb(51,65,85)" fill-opacity="1.000"/>
+</svg>

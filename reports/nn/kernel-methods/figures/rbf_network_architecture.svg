@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="399.9" height="700.5" viewBox="0 0 399.9 700.5" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">RBF tensor model: fixed centers and visible learned readout</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">RBF tensor model: fixed</text>
+<text x="24" y="46" font-size="20" font-weight="600">centers and visible learned</text>
+<text x="24" y="68" font-size="20" font-weight="600">readout</text>
+<text x="24" y="95" font-size="12">4 nodes | 16 unique learned values | Flow / blocks</text>
+<rect x="24" y="103" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="113" font-size="11">Input</text>
+<rect x="154" y="103" width="12" height="12" rx="2" fill="#8B80C9"/><text x="172" y="113" font-size="11">Block</text>
+<rect x="24" y="125" width="12" height="12" rx="2" fill="#6C8194"/><text x="42" y="135" font-size="11">Output</text>
+<text x="24" y="165" font-size="11">Shape scale: spatial linear; channels/vectors linear;</text>
+<text x="24" y="181" font-size="11">floor 2 px. Sheets/neurons sampled; exact shapes in</text>
+<text x="24" y="197" font-size="11">labels/tooltips.</text>
+<polygon class="flow-funnel" points="57.4,252 130.65,252 130.65,398 57.4,263.6" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 57.4 257.8 C 94.025 257.8 94.025 325 130.65 325" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="150.65,252 240.8,252 240.8,263.6 150.65,398" fill="#8B80C9" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 150.65 325 C 195.725 325 195.725 257.8 240.8 257.8" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="260.8,252 342.5,252 342.5,263.6 260.8,263.6" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 260.8 257.8 C 301.65 257.8 301.65 257.8 342.5 257.8" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 1]</title>
+<g id="model-glyph-0" data-left="37.4" data-right="57.4" data-face-width="18" data-face-height="9.6" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="37.4,254 39.4,252 57.4,252 55.4,254" fill="#E69F00"/>
+<polygon class="volume-side" points="55.4,254 57.4,252 57.4,261.6 55.4,263.6" fill="#E69F00"/>
+<rect class="volume-front" x="37.4" y="254" width="18" height="9.6" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(47.4 311.675) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 1]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>15 fixed-center Gaussian units [1 x 15]</title>
+<g id="model-glyph-1" data-left="130.65" data-right="150.65" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="130.65,254 132.65,252 150.65,252 148.65,254" fill="#8B80C9"/>
+<polygon class="volume-side" points="148.65,254 150.65,252 150.65,396 148.65,398" fill="#8B80C9"/>
+<rect class="volume-front" x="130.65" y="254" width="18" height="144" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(140.65 543.25) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">15 fixed-center Gaussian units</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 15]</text>
+</g></g>
+<g data-node="2" data-category="Block"><title>16 learned readout scalars [1 x 1]</title>
+<g id="model-glyph-2" data-left="240.8" data-right="260.8" data-face-width="18" data-face-height="9.6" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="240.8,254 242.8,252 260.8,252 258.8,254" fill="#8B80C9"/>
+<polygon class="volume-side" points="258.8,254 260.8,252 260.8,261.6 258.8,263.6" fill="#8B80C9"/>
+<rect class="volume-front" x="240.8" y="254" width="18" height="9.6" fill="#8B80C9"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(250.8 391.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">16 learned readout scalars</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 1]</text>
+<text x="0" y="29.25" font-size="13">16 learned values</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 1]</title>
+<g id="model-glyph-3" data-left="342.5" data-right="362.5" data-face-width="18" data-face-height="9.6" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="342.5,254 344.5,252 362.5,252 360.5,254" fill="#6C8194"/>
+<polygon class="volume-side" points="360.5,254 362.5,252 362.5,261.6 360.5,263.6" fill="#6C8194"/>
+<rect class="volume-front" x="342.5" y="254" width="18" height="9.6" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(352.5 311.675) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 1]</text>
+</g></g>
+</g></svg>

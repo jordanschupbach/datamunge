@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="334.8" height="534.2" viewBox="0 0 334.8 534.2" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">AutoRec: 256 observed ratings to32 sigmoid units to256 predictions</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">AutoRec: 256 observed</text>
+<text x="24" y="46" font-size="20" font-weight="600">ratings to32 sigmoid</text>
+<text x="24" y="68" font-size="20" font-weight="600">units to256 predictions</text>
+<text x="24" y="95" font-size="12">4 nodes | 16672 unique learned values |</text>
+<text x="24" y="113" font-size="12">Flow / blocks</text>
+<rect x="24" y="121" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="131" font-size="11">Input</text>
+<rect x="154" y="121" width="12" height="12" rx="2" fill="#0072B2"/><text x="172" y="131" font-size="11">Dense</text>
+<rect x="24" y="143" width="12" height="12" rx="2" fill="#6C8194"/><text x="42" y="153" font-size="11">Output</text>
+<text x="24" y="183" font-size="11">Shape scale: spatial linear; channels/vectors</text>
+<text x="24" y="199" font-size="11">linear; floor 2 px. Sheets/neurons sampled;</text>
+<text x="24" y="215" font-size="11">exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="55.6,270 116.8,270 116.8,290 55.6,416" fill="#0072B2" fill-opacity="0.09"/>
+<path data-from="0" data-to="1" d="M 55.6 343 C 86.2 343 86.2 280 116.8 280" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="136.8,270 198,270 198,416 136.8,290" fill="#0072B2" fill-opacity="0.09"/>
+<path data-from="1" data-to="2" d="M 136.8 280 C 167.4 280 167.4 343 198 343" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="218,270 279.2,270 279.2,416 218,416" fill="#6C8194" fill-opacity="0.09"/>
+<path data-from="2" data-to="3" d="M 218 343 C 248.6 343 248.6 343 279.2 343" fill="none" stroke="#64748B" stroke-opacity="0.65" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 256]</title>
+<g id="model-glyph-0" data-left="35.6" data-right="55.6" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="35.6,272 37.6,270 55.6,270 53.6,272" fill="#E69F00"/>
+<polygon class="volume-side" points="53.6,272 55.6,270 55.6,414 53.6,416" fill="#E69F00"/>
+<rect class="volume-front" x="35.6" y="272" width="18" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(45.6 469.1) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Input</text>
+<text x="0" y="11.4" font-size="12">[1 x 256]</text>
+</g></g>
+<g data-node="1" data-category="Dense"><title>encoder [1 x 32]</title>
+<g id="model-glyph-1" data-left="116.8" data-right="136.8" data-face-width="18" data-face-height="18" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="116.8,272 118.8,270 136.8,270 134.8,272" fill="#0072B2"/>
+<polygon class="volume-side" points="134.8,272 136.8,270 136.8,288 134.8,290" fill="#0072B2"/>
+<rect class="volume-front" x="116.8" y="272" width="18" height="18" fill="#0072B2"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(126.8 339.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">encoder</text>
+<text x="0" y="11.4" font-size="12">[1 x 32]</text>
+</g></g>
+<g data-node="2" data-category="Dense"><title>decoder [1 x 256]</title>
+<g id="model-glyph-2" data-left="198" data-right="218" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="198,272 200,270 218,270 216,272" fill="#0072B2"/>
+<polygon class="volume-side" points="216,272 218,270 218,414 216,416" fill="#0072B2"/>
+<rect class="volume-front" x="198" y="272" width="18" height="144" fill="#0072B2"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(208 469.1) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">decoder</text>
+<text x="0" y="11.4" font-size="12">[1 x 256]</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 256]</title>
+<g id="model-glyph-3" data-left="279.2" data-right="299.2" data-face-width="18" data-face-height="144" data-depth="2" stroke="#475569" stroke-width="1.25" fill-opacity="0.85">
+<polygon class="volume-top" points="279.2,272 281.2,270 299.2,270 297.2,272" fill="#6C8194"/>
+<polygon class="volume-side" points="297.2,272 299.2,270 299.2,414 297.2,416" fill="#6C8194"/>
+<rect class="volume-front" x="279.2" y="272" width="18" height="144" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(289.2 469.1) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.2" font-size="12" font-weight="600">Output</text>
+<text x="0" y="11.4" font-size="12">[1 x 256]</text>
+</g></g>
+</g></svg>

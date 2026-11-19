@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="259.8" height="366.786" viewBox="0 0 259.8 366.786" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Selected-checkpoint pixel recall</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. true-row proportions; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Selected-checkpoint pixel</text>
+<text x="14" y="38" font-size="12" font-weight="bold">recall</text>
+<text x="145.8" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 180) rotate(-90)" text-anchor="middle">True class</text>
+<text x="41.8" y="111.6" text-anchor="end">0</text>
+<text transform="translate(73.8 288) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="100278" data-value="0.894166"><title>0 → 0: 100278</title>
+<rect x="49.8" y="84" width="48" height="48" fill="rgb(59,114,236)" stroke="white"/>
+<text x="73.8" y="111.6" font-size="12" text-anchor="middle" fill="white">89.4%</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="2958" data-value="0.0263761"><title>0 → 1: 2958</title>
+<rect x="97.8" y="84" width="48" height="48" fill="rgb(236,241,249)" stroke="white"/>
+<text x="121.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">2.6%</text>
+</g>
+<g data-true="0" data-predicted="2" data-count="5775" data-value="0.0514949"><title>0 → 2: 5775</title>
+<rect x="145.8" y="84" width="48" height="48" fill="rgb(230,237,248)" stroke="white"/>
+<text x="169.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">5.1%</text>
+</g>
+<g data-true="0" data-predicted="3" data-count="3136" data-value="0.0279633"><title>0 → 3: 3136</title>
+<rect x="193.8" y="84" width="48" height="48" fill="rgb(235,241,249)" stroke="white"/>
+<text x="217.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">2.8%</text>
+</g>
+<text x="41.8" y="159.6" text-anchor="end">1</text>
+<text transform="translate(121.8 288) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="340" data-value="0.0330354"><title>1 → 0: 340</title>
+<rect x="49.8" y="132" width="48" height="48" fill="rgb(234,240,249)" stroke="white"/>
+<text x="73.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">3.3%</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="5973" data-value="0.580354"><title>1 → 1: 5973</title>
+<rect x="97.8" y="132" width="48" height="48" fill="rgb(123,160,241)" stroke="white"/>
+<text x="121.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">58.0%</text>
+</g>
+<g data-true="1" data-predicted="2" data-count="3737" data-value="0.363098"><title>1 → 2: 3737</title>
+<rect x="145.8" y="132" width="48" height="48" fill="rgb(167,192,244)" stroke="white"/>
+<text x="169.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">36.3%</text>
+</g>
+<g data-true="1" data-predicted="3" data-count="242" data-value="0.0235134"><title>1 → 3: 242</title>
+<rect x="193.8" y="132" width="48" height="48" fill="rgb(236,242,249)" stroke="white"/>
+<text x="217.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">2.4%</text>
+</g>
+<text x="41.8" y="207.6" text-anchor="end">2</text>
+<text transform="translate(169.8 288) rotate(-60)" text-anchor="end">2</text>
+<g data-true="2" data-predicted="0" data-count="2468" data-value="0.121895"><title>2 → 0: 2468</title>
+<rect x="49.8" y="180" width="48" height="48" fill="rgb(216,227,247)" stroke="white"/>
+<text x="73.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">12.2%</text>
+</g>
+<g data-true="2" data-predicted="1" data-count="5303" data-value="0.261915"><title>2 → 1: 5303</title>
+<rect x="97.8" y="180" width="48" height="48" fill="rgb(188,207,245)" stroke="white"/>
+<text x="121.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">26.2%</text>
+</g>
+<g data-true="2" data-predicted="2" data-count="12364" data-value="0.610658"><title>2 → 2: 12364</title>
+<rect x="145.8" y="180" width="48" height="48" fill="rgb(116,156,240)" stroke="white"/>
+<text x="169.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">61.1%</text>
+</g>
+<g data-true="2" data-predicted="3" data-count="112" data-value="0.00553168"><title>2 → 3: 112</title>
+<rect x="193.8" y="180" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="217.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">0.6%</text>
+</g>
+<text x="41.8" y="255.6" text-anchor="end">3</text>
+<text transform="translate(217.8 288) rotate(-60)" text-anchor="end">3</text>
+<g data-true="3" data-predicted="0" data-count="282" data-value="0.0591195"><title>3 → 0: 282</title>
+<rect x="49.8" y="228" width="48" height="48" fill="rgb(229,236,248)" stroke="white"/>
+<text x="73.8" y="255.6" font-size="12" text-anchor="middle" fill="#172033">5.9%</text>
+</g>
+<g data-true="3" data-predicted="1" data-count="312" data-value="0.0654088"><title>3 → 1: 312</title>
+<rect x="97.8" y="228" width="48" height="48" fill="rgb(228,235,248)" stroke="white"/>
+<text x="121.8" y="255.6" font-size="12" text-anchor="middle" fill="#172033">6.5%</text>
+</g>
+<g data-true="3" data-predicted="2" data-count="517" data-value="0.108386"><title>3 → 2: 517</title>
+<rect x="145.8" y="228" width="48" height="48" fill="rgb(219,229,247)" stroke="white"/>
+<text x="169.8" y="255.6" font-size="12" text-anchor="middle" fill="#172033">10.8%</text>
+</g>
+<g data-true="3" data-predicted="3" data-count="3659" data-value="0.767086"><title>3 → 3: 3659</title>
+<rect x="193.8" y="228" width="48" height="48" fill="rgb(85,133,238)" stroke="white"/>
+<text x="217.8" y="255.6" font-size="12" text-anchor="middle" fill="white">76.7%</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="49.8" y="318.786" width="192" height="10" fill="url(#cm-scale)"/>
+<text x="49.8" y="343.786">0</text><text x="241.8" y="343.786" text-anchor="end">100%</text>
+</g></svg>
