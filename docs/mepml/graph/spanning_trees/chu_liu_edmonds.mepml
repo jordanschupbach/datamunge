@@ -268,7 +268,7 @@ make that cycle reachable from the root. The returned legacy failure is
 {total_weight=0, exists=false}; recovered parent/edge arrays are empty.
 The trace still retains the actual failed round and any earlier reduced baseline.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<std::vector<dm::algorithms::WeightedEdge>> graphs{
@@ -321,7 +321,7 @@ baseline total is retained separately; floating roundoff can make it differ
 from the sum of the recovered original edges. This is numerical optimisation,
 not an exact-real optimality certificate or arbitrary-precision arithmetic.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<dm::algorithms::WeightedEdge> edges{{0,1,5},{0,2,6},{1,2,1},{2,1,1}};

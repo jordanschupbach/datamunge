@@ -238,7 +238,7 @@ Bilinear resizing broadcasts this context back into spatial fusion. Two
 skip-connected decoder levels recover the original image size and a final
 biased1x1/tanh predicts two chroma channels. Half-pixel bilinear geometry
 preserves odd rectangular inputs too;there is no BN state or color shortcut.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

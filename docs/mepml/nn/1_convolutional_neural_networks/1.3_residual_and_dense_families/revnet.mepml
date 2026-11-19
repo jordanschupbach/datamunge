@@ -211,7 +211,7 @@ bottleneck / training BN: changed input by 3.526057, inversion max absolute erro
 
 Every learned tensor is compared with ordinary backpropagation, with reconstruction drift reported separately.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 double relative(const dm::nn::Tensor &a, const dm::nn::Tensor &b) {

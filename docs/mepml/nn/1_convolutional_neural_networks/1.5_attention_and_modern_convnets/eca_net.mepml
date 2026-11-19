@@ -204,7 +204,7 @@ int main() {
 
 > Complete network counts and backward
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -264,7 +264,7 @@ Full-width eca_net groups 1: 25557118 learned / 53120 moving scalars; sixteen bl
 Every 177 parameter-tensor gradient finite; norm range [0.006531255320,18.061244965], moving state frozen.
 // result_end
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

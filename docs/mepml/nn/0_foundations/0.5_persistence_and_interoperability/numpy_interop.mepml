@@ -88,7 +88,7 @@ Fortran shape [2, 3]; big-endian dtype int32; C++ transpose saved as [3,2].
 
 > Checking the theory
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main(){
  namespace n=dm::nn;

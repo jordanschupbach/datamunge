@@ -237,7 +237,7 @@ through updated D using the same source/original/target batch. Separate Adam
 states own the two stores. A stale pre-D G capture changes the method; the saved
 first-batch control quantifies it later. No API hides captures or optimizer writes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n = dm::nn;

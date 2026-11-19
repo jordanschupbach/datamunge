@@ -40,7 +40,7 @@ The pairs are compared lexicographically: a smaller ticket goes first, and equal
 threads can read the same maximum at the same time) are broken by id. The service order this
 induces, for tickets already drawn, is what `bakery_service_order()` computes:
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -112,7 +112,7 @@ draws above a bound are cut off; every interleaving that stays within the bound 
 The block checks two and three processes with and without the flag, and prints the shortest
 violating schedule found.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 
@@ -268,7 +268,7 @@ write after its reads of other tickets, and the proof would no longer apply. The
 \(T\) threads increment a plain shared `long` 200,000 times inside the lock, and compares with
 `std::mutex` and with no lock at all.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 
@@ -314,9 +314,9 @@ Hardware threads: 32.
 
 | threads | expected count | bakery count | bakery ns per increment | largest ticket | std::mutex count | mutex ns | no lock count |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 200000 | 200000 | 81 | 1 | 200000 | 31 | 200000 |
-| 2 | 400000 | 400000 | 193 | 30 | 400000 | 40 | 400000 |
-| 4 | 800000 | 800000 | 1008 | 102125 | 800000 | 50 | 800000 |
+| 1 | 200000 | 200000 | 55 | 1 | 200000 | 31 | 200000 |
+| 2 | 400000 | 400000 | 585 | 21 | 400000 | 53 | 400000 |
+| 4 | 800000 | 800000 | 1500 | 25511 | 800000 | 45 | 298359 |
 // result_end
 
 With the bakery lock every increment survived: the counter equals \(T\times200{,}000\) for one,

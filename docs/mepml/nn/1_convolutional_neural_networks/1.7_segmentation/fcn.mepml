@@ -154,7 +154,7 @@ below on an8x8 RGB image with released padding/crops; this checks the graph
 and does not train a full benchmark model. Compact counts are271,916/272,176/
 272,308 with every learned gradient nonzero in the96-pixel native probe.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

@@ -320,7 +320,7 @@ the in-range pair (ab,0) decodes deterministically to aa; transforming aa
 produces a different last column. A stricter validator would need additional
 semantic checks and is not silently implied by range validation.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::string binary;for (unsigned int value:{0,128,255,0,255}) binary.push_back(static_cast<char>(value));

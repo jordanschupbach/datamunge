@@ -326,7 +326,7 @@ The table shows the equilibrium of the three output units for a few test
 flowers, with the number of sweeps each needed. The prediction is the largest
 output.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

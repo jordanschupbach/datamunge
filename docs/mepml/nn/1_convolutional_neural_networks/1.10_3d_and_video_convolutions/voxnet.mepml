@@ -106,7 +106,7 @@ solid filling,triangle/voxel intersection or the published benchmark preparation
 Every face draw,uniform pair,center/radius and original object identity is saved
 for independent reconstruction. No test label influences voxelization.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

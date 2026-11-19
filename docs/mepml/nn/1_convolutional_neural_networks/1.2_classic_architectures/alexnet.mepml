@@ -232,7 +232,7 @@ Value error 0.000000000000; input derivative 0.437555193, finite difference 0.43
 
 A zero input verifies full-width geometry and parameter count without a backward graph. A separate compact random-input graph checks gradients and dropout modes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -318,7 +318,7 @@ Compact topology: all parameter gradients finite; inference repeats exactly and 
 A one-weight control gives opposite derivatives for the regularized training
 and inference objectives. An Adam step follows the training derivative.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

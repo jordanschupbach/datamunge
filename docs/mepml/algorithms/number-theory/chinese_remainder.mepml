@@ -240,7 +240,7 @@ candidate and the last representable prefix in that case. Its status is
 Overflow and its optional solution is absent. The ordinary API throws
 std::overflow_error. Neither response means that the congruences conflict.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   using dm::algorithms::CrtStatus;
@@ -313,7 +313,7 @@ attempted merges and extended-gcd quotient/remainder steps across the whole
 call. The initial zero quotient when M<m counts as a Euclidean step.
 A cap failure throws std::length_error and returns no partial trace.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   dm::algorithms::CrtOptions exact;exact.max_merges=3;exact.max_euclidean_steps=8;

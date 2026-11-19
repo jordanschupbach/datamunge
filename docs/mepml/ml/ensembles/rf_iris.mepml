@@ -219,7 +219,7 @@ completely. The table shows how many times each row was drawn into each tree's
 bootstrap sample, the votes it gets from the trees that did not draw it, and its
 out-of-bag prediction.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -553,7 +553,7 @@ forests, of the number of trees for which a row is out of bag, against the
 binomial \(10q_n\) and \(10q_n(1-q_n)\). Splitting them into 100 forests of 5,
 it gives the share of rows never out of bag, against \((1-q_n)^5\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

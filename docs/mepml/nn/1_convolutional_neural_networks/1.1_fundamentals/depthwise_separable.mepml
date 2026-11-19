@@ -233,7 +233,7 @@ int main() {
 
 A rank-two spatial/output target cannot be represented with multiplier one. Its second singular value gives the best possible rank-one residual in Frobenius norm.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -283,7 +283,7 @@ up both code paths. The ratio of multiply-accumulates describes their
 arithmetic cost, while elapsed time depends on the implementation and
 machine.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n=dm::nn;

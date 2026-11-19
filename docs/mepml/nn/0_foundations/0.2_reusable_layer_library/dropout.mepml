@@ -85,7 +85,7 @@ smoother predictive distribution than one pass with dropout off.
 
 The program repeats the original example's statistics on 100000 units of \(x=1\) for five rates, and checks that inference mode is the identity. It then measures the moments of the variants at rate 0.2, and checks that the spatial and drop-path masks are shared as intended.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;

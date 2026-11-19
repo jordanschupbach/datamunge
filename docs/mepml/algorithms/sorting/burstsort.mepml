@@ -271,7 +271,7 @@ terminates at the root; a terminates at prefix a before aa and ab are
 collected. Embedded zero and high-bit bytes remain ordinary data. Sorting
 is byte-lexicographic, without Unicode normalization or language collation.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   dm::algorithms::BurstSortOptions small;small.bucket_capacity=1;

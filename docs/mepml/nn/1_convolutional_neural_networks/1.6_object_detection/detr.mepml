@@ -207,7 +207,7 @@ Float64 costs; source host Float32 corner rounding may differ near exact ties.
 The independent fixture checks analytic class derivatives and disjoint-box
 central differences, including masked unmatched boxes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -275,7 +275,7 @@ initial derivatives from zero-content self-attention and invariant key biases.
 Backbone BN is trainable/moving, rather than pretrained frozen BN. Training
 dropout uses the parameter-store RNG; the compact demonstration disables it.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

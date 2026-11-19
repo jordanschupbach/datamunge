@@ -27,7 +27,7 @@ writes a frame as a Markdown table, like knitr's `kable()`: numbers are
 right-aligned, and each numeric column gets the fewest decimals (at most three
 by default) that show all of its values exactly.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -61,7 +61,7 @@ the \(n-1\) denominator), minimum, median and maximum, and `to_md()` ends the
 pipeline with the table. The `dm::agg` helpers name the aggregations as dplyr
 does, with the output column name second.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 namespace agg = dm::agg;
@@ -91,7 +91,7 @@ Grouping by species shows where the differences lie. `agg::n()` counts each
 group's rows, and `agg::across()` applies one aggregation to several columns,
 like dplyr's `summarise(n = n(), across(cols, mean))`.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 namespace agg = dm::agg;
@@ -229,7 +229,7 @@ priors, the group means, the coefficients of each discriminant axis, and the
 proportion of trace, which says how much of the separation each axis carries.
 (`print_summary()` gives the same report as plain text.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -310,7 +310,7 @@ estimate is five-fold cross-validation: each flower goes into one of five folds
 (every fifth row, so each fold holds ten flowers of each species), the model is
 fitted to the other four folds, and the held-out fold is predicted.
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-08, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

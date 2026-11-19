@@ -221,7 +221,8 @@ class Site:
                 rep.validate_cpp_toolchain([p for p, _ in stale])
                 env = {} if a.no_pch else rep.toolchain(os.path.join(os.path.dirname(status_dir), "mepml-pch"), files,
                                                          a.mep_mepml)
-                rep.run_reports(a.mep_mepml, stale, timeout=a.timeout, jobs=a.jobs or rep.default_jobs(), env=env)
+                rep.run_reports(a.mep_mepml, stale, timeout=a.timeout, jobs=a.jobs or rep.default_jobs(),
+                                env=env, refresh_cache=a.force)
         for path in files:
             r = rep.Report(path, rep.report_rel(path, examples))
             r.status = rep.load_status(last_status_path(path))

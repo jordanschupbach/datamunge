@@ -31,7 +31,7 @@ int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(
 
 The native adapter follows the recovered upstream preparation script, including source checksums, source row identities, fitting-only vocabulary/palette selection and held-out boundaries. Runtime preparation calls no Python or another checkout. Native byte-valued image arrays are stored as Int32 with identical numeric values. Optional external TensorFlow recordings are separate; their absence does not establish external parity.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main(){auto path=dm::datasets::prepare_example_data("character_rnn");std::print("Prepared original character_rnn protocol at {}\n",path);}
 ```

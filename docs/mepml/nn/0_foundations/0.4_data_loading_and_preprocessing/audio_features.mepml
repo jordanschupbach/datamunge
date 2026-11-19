@@ -140,7 +140,7 @@ coefficients summarizes the smooth spectral envelope. The example first
 checks the cosine sum on a single frame, then checks that a signal too
 short for a complete analysis window yields zero MFCC frames.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n=dm::nn;

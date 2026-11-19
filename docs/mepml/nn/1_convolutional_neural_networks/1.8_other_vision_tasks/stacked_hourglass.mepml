@@ -187,7 +187,7 @@ two stacks and17 linear output channels. Native checks execute full backward,
 all396 learned tensors,RGB gradients and the feedback derivative. The
 following compact graph prints all14 retained stages and checks the actual
 final-head derivative with respect to the first head.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -319,7 +319,7 @@ These are **ground-truth person crops**,not detections. Fitting-only width
 reversal also swaps anatomical left/right identities and maps labeled x to127-x.
 The manifest retains all original files,person IDs,crop bounds and mirrors.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

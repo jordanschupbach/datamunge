@@ -83,7 +83,7 @@ For three observations the distinction is visible. The finite-B estimate is
 the sample standard deviation of the replicates and fluctuates around the
 conditional reference. No random seed can make it an exact identity.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<double> sample{1,2,4};

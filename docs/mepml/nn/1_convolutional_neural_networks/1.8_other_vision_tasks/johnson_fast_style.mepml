@@ -243,7 +243,7 @@ and every batched input gradient. Preparation reuses the pinned official
 sources and dm::datasets::prepare_example_data("style"),with the separate CPU reference
 requirements in scripts/cnn_style_reference_requirements.txt. Tensor reports
 perform their own image preprocessing and optimizer updates.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

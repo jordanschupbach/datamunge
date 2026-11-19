@@ -158,7 +158,7 @@ four-position example has sum(noise)=10. The full model tests check the same
 property through both styled generators, and show that nonzero strengths restore
 noise-input derivatives. Noise is never sampled secretly inside synthesis.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n   = dm::nn;
@@ -191,7 +191,7 @@ may have different row counts; means stay separate. During fitting each critic
 capture/write precedes a fresh generator forward through the updated critic,
 using the same latent/noise batch. Each optimizer owns one store alone.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n = dm::nn;

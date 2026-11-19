@@ -242,7 +242,7 @@ both feature and mask skips;BN and LeakyReLU.2 apply except at final linear
 RGB. BN is absent from the first encoder. Predictions remain raw/unbounded.
 Native tests execute full256px backward and every odd-rectangle compact
 feature/mask stage,all learned gradients,and empty/all-known identities.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

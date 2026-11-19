@@ -25,7 +25,7 @@ and `Mrs.` provide frequent exact queries, while `William` and `Anna` also
 illustrate matches within other parts of a name. These are byte-substring
 searches, not a parser for titles or given names.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto passengers = dm::datasets::titanic();

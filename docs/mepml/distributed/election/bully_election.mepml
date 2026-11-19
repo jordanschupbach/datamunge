@@ -264,7 +264,7 @@ for an all-down or empty prefix. A dead initiator cannot legitimately detect
 a failure and run a protocol; the former unchecked indexing and fake activity
 are replaced by explicit input errors.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   struct Example {std::string name;std::vector<char> alive;int initiator;};

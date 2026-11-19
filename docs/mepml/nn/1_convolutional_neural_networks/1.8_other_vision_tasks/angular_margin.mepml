@@ -222,7 +222,7 @@ NN1 plus a128x1000 head has140,153,664 scalars. Both ArcFace and CosFace full
 parameter gradient is nonzero. NN1 keeps eleven convolutions,two LRN stages,
 four pools,two maxouts and a linear128D projection. There is no BN state.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

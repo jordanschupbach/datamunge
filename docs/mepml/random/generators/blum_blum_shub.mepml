@@ -97,7 +97,7 @@ same modular state and every raw word is identical. A mathematically defined
 generator need not provide useful simulation output for every admissible seed
 and small parameter choice.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   dm::random::BlumBlumShub rng(3,7,11);
@@ -190,7 +190,7 @@ Its state path 4,16,46,16 has a transient of length one. This explains why the
 pure-period theorem requires prime factors; the engine does not establish that
 precondition on the caller's behalf.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| control | seed | p | q | transition budget | closed | transient | period | observed states |\n"

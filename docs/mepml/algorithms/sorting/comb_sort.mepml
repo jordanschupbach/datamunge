@@ -299,7 +299,7 @@ product is at most 120. This is exact size_t arithmetic, with no floating-point
 shrink factor or larger integer type in the library. The helper also accepts
 zero and returns one, though empty/singleton sorts skip their pass loops.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto maximum=std::numeric_limits<std::size_t>::max();

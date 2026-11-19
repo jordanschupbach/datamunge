@@ -146,7 +146,5 @@ Held-out TOP1 loss 0.999530 to 0.577276.
 | 4 | 9.4% | 100.0% |
 | 5 | 10.4% | 93.8% |
 | 6 | 9.4% | 96.9% |
-
-Upstream replay maximum logit error 9.537e-07.
 \image(figures/gru4rec.svg)
 // result_end

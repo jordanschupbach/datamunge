@@ -305,7 +305,7 @@ objectness*marginal(label), then supervise that path and
 all seven detection derivatives and all34 classification-only derivatives,
 including selection reversal and weak-objectness derivative-.032.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -377,7 +377,7 @@ Compact width-divisor8 grayscale models skip the first two pools, giving
 stride8 grids8/10/12 at64/80/96 input pixels. Five-prior flat count is801,447;
 three-prior12-node joint count is798,351; each has2,584 state scalars.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

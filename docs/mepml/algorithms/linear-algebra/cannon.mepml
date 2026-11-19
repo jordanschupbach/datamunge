@@ -229,7 +229,7 @@ one-cell and three-by-three-cell runs realize these two orders.
 
 > Cancellation, budgets and checked dimensions
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<double> A{1e16,-1e16,1,0,0,0,0,0,0},B{0,1,0,0,1,0,0,1,0};

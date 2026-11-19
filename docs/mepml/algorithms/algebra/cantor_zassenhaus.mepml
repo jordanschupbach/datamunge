@@ -255,7 +255,7 @@ where p*p is far beyond uint64. The program factors it with bounded work and
 checks both factors and reconstruction. Coefficient sums/products are also
 widened before reduction, fixing separate signed-overflow paths.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   constexpr std::int64_t p=9223372036854775783LL;
@@ -310,7 +310,7 @@ arithmetic/irreducibility helpers work, but the odd-field randomized splitter
 rejects p=2. The [FLINT documentation](https://flintlib.org/doc/fq_poly_factor.html)
 describes a fuller finite-field factorization interface with those extra stages.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto nonmonic=dm::algorithms::cantor_zassenhaus_trace({3,0,2},5);

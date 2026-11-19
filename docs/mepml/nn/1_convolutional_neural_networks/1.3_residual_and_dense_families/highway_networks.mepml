@@ -306,7 +306,7 @@ Bias -3: response 9.073053250520e-02, input derivative 9.073053250520e-02; exact
 
 The first plain projection counts as one of twenty hidden layers. A changed initializer must preserve existing learned biases.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

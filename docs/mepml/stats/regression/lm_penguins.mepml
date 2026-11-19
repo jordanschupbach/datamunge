@@ -550,7 +550,7 @@ and Fraser (2014), as in the `palmerpenguins` R package: 344 penguins of three
 species, with bill length and depth, flipper length, body mass, sex, island and
 year. Two birds have no measurements and eleven have no recorded sex.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -611,7 +611,7 @@ level (first alphabetically), so the two species coefficients are differences
 from an Adelie penguin with the same measurements. We also fit two smaller
 models: flipper length alone, and the three measurements without species.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -847,7 +847,7 @@ only interpretable relative to the other terms in the model.
 
 >> The analysis of variance
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -1073,7 +1073,7 @@ Finally, we predict the mass of a typical penguin of each species, with the
 species' mean measurements, using the model without sex (so that a bird of
 unknown sex can be predicted).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-10, cache=yes}
 #include <dm/dm.hpp>
 
 using DF = dm::dstruct::DataFrame;

@@ -103,7 +103,7 @@ The best order in the conversion is usually below \(\alpha^*\), so \(\alpha^*\) 
 The program repeats the original example's four parts in float64. It applies three layers to a \(4\times3\) input and checks them against hand computations, then applies one named layer three times and to a sequence. It measures
 the root mean square of the pre-activations through 24 layers of width 256 for a batch of 512 Gaussian inputs, alongside the mean-field prediction. Finally it compares the gradient of a squared loss from autograd with the closed form and with central differences.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;

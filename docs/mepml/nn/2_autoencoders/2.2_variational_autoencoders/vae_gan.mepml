@@ -178,7 +178,7 @@ radius; squares use inclusive Chebyshev radius. Residue (x+2y+size+3shape) mod 7
 test=0, validation=1 and fit=2–6, giving 210/42/42 disjoint factor combinations. These are
 small structured teaching data. Factor labels never enter the networks or checkpoint criterion.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n      = dm::nn;
@@ -726,7 +726,7 @@ int main() {
 \caption(The source's three validation candidates decrease to epoch 3. This criterion is separate from each group's fitted objective.)
 \alttext(Validation MC pixel MSE decreases over epochs one, two and three, selecting the last completed epoch.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n = dm::nn;

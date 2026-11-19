@@ -162,7 +162,7 @@ Compare inertia immediately after initialization and after Lloyd updates.
 For the best fit, match each learned center to its nearest generating
 center before checking assignments, since cluster IDs can be permuted.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n=dm::nn;

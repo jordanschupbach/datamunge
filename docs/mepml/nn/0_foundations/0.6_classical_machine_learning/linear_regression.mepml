@@ -144,7 +144,7 @@ After 30 steps, maximum coefficient error 0.000000000; half MSE 0.040000000.
 
 The built-in mtcars table has 32 cars. This descriptive fit relates mpg to weight; it does not identify a causal effect or estimate held-out error.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -187,7 +187,7 @@ harmonic as residual noise. Both direct solvers recover the coefficients,
 and a half-step shift supplies a separate evaluation grid. Making two
 columns nearly equal exposes the precision lost by forming the Gram matrix.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n=dm::nn;

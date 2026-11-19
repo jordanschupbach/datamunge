@@ -34,13 +34,8 @@
     # mep (editor and `mep-mepml`), from its main branch: the docs build runs and
     # exports the mepml reports with it. `just update-mep` bumps the lock to the
     # latest main. Only its package is used; its own nixpkgs pin is kept (that is
-    # what mep is built and tested against). mep's flake has a datamunge input of
-    # its own (for its dev shell, which nothing here evaluates): it follows this
-    # flake ("" is the root) rather than locking a second, older datamunge.
-    mep = {
-      url = "github:jordanschupbach/mep";
-      inputs.datamunge.follows = "";
-    };
+    # what mep is built and tested against).
+    mep.url = "github:jordanschupbach/mep";
   };
   outputs =
     {

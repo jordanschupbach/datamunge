@@ -465,7 +465,7 @@ population model; the balanced species design is not an i.i.d. random sample
 from an unspecified iris population. We display jackknife standard errors as
 method diagnostics, without claiming calibrated biological confidence intervals.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto iris = dm::datasets::iris();

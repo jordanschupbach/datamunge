@@ -148,3 +148,6 @@ docs/mepml/**/figures/**/*.mp3
 # Editor discovery links written by `just build-python` / `just build-r`.
 .venv
 .Renviron
+
+# Local MEpML code chunk results.
+*.mep-cache/

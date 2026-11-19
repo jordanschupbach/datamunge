@@ -534,7 +534,7 @@ raw Euclidean baseline explicit. Species is withheld from graph construction,
 fitting and diagnostics; it colours the final map only. No classification
 accuracy or prediction on new flowers is estimated.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto d = dm::datasets::iris();

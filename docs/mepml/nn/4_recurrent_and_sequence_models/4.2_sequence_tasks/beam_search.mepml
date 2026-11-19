@@ -18,7 +18,7 @@ paths in three steps. Width one keeps only the current best prefix, while
 width two can retain the competing prefix that ends sooner with higher
 joint probability. A wide beam can be compared with every path.
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 #include <array>
 #include <print>
@@ -112,7 +112,7 @@ int main(){namespace n=dm::nn;double computed=n::exp(n::log(n::scalar(.4,n::DTyp
 
 Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
 ```
@@ -1716,7 +1716,7 @@ int main(int argc, char** argv) {
 // result_begin:
 // translation weights: /mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/nn-completion/models/translation/english_french/final.npz
 // realWidth1=greedy, width3 scored per-hypothesis states;expansions=128 (width3 beats greedy on 0/32 sentences);fixture greedy -1.42712 vs beam -1.10112;15exhaustiveFixturePaths/beamBeatsGreedy/EOSonce/cap/restore/immutable PASS
-// wall 0.0227625 s
+// wall 0.0609233 s
 // result_end
 
 > Inspect the actual saved results

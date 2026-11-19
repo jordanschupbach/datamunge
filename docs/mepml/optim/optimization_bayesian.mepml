@@ -176,7 +176,7 @@ $$
 With incumbent \(f^\star=-1\), \(u=-1/0.5933=-1.6855\), and
 \(\operatorname{EI}(1)=-\Phi(-1.6855)+0.5933\,\varphi(1.6855)=-0.04594+0.05717=0.01123\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -407,7 +407,7 @@ from the prior with \(\ell=0.1\), \(s=1\), \(m=0\) on a 300-point grid on
 \(n\)). The posterior is computed twice: with the true hyperparameters, and with
 normalisation and fitted \(\ell\), as the optimizer uses it.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

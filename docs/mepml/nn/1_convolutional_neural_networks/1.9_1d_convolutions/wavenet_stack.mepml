@@ -101,7 +101,7 @@ Fit18clips/four speakers,validate3clips/theo,test6clips/yweweler.
 This custom speaker-disjoint teaching split differs from official take-based
 FSDD evaluation. Windows from a clip are dependent,not separate speakers.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

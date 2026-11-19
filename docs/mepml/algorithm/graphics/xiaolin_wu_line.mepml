@@ -151,7 +151,7 @@ projected length, not Euclidean arclength. For slope magnitude at most one, the
 latter is \(D\sqrt{1+m^2}\). Constant ink per major-axis step does not imply
 constant total ink per Euclidean length across all orientations.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     std::print("| segment | policy | major length | total ink | contributions |\n| :--- | :--- | ---: | ---: | ---: |\n");

@@ -26,7 +26,7 @@ buffer capacities. Datamunge keeps the compiled model and both buffers
 across invocations, and each returned tensor owns a copy of the result.
 This example keeps the initial batch size of one.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 #include <algorithm>
 #include <array>
@@ -177,7 +177,7 @@ Public buffers: 8 input bytes, 4 output bytes; addresses unchanged.
 
 > Checking the theory
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main(){
  namespace n=dm::nn;int bad=0;const auto w=n::tensor({.75,-1.5},{2,1});

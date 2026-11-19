@@ -262,7 +262,7 @@ finite recurrence factors would keep producing zero. A huge requested count
 therefore creates no huge trace reservation on the ordinary binary64 platform.
 This stopping reason is a floating range observation, not a real-error test.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| current k | next/current signed ratio | -log10 ratio magnitude |\n| ---: | ---: | ---: |\n");
@@ -318,7 +318,7 @@ The following boundary checks exercise public input contracts and reproduce
 the scalar/trace agreement for a count that previously overflowed factorials.
 Calls have no shared mutable state; copied records remain independent.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   int rejected=0;

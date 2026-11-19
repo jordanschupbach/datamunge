@@ -232,7 +232,7 @@ modular products here are not binary-extension-field gate counts.
 
 > Zero polynomials, multiplicities and field representations
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto zero=dm::algorithms::chien_search_trace({},13);
@@ -278,7 +278,7 @@ It demonstrates the root-finding recurrence on prime-field examples.
 
 > Complete-call limits and the direct-linear path
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   dm::algorithms::ChienOptions options;options.max_points=7;options.max_term_products=18;options.max_generator_steps=4;

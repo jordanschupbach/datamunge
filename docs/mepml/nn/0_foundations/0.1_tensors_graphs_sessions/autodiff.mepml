@@ -275,7 +275,7 @@ J=\begin{pmatrix}x_1&x_0\\1&1\\\cos x_0&0\end{pmatrix}=\begin{pmatrix}3&2\\1&1\\
 $$
 \alttext(J has rows x 1, x 0; 1, 1; and cos x 0, 0. At x equals 2, 3 this is 3, 2; 1, 1; and cos 2, 0, where cos 2 is minus 0.416147.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;
@@ -446,7 +446,7 @@ against central differences, the Hessian against that formula, and the HVP again
 It then times one forward evaluation of \(f(x)=\sum_i(\sin x_i\,e^{x_i}+x_i^2)\) against forward plus gradient, for \(n\) inputs.
 These are median wall-clock times on the machine that built this report.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;

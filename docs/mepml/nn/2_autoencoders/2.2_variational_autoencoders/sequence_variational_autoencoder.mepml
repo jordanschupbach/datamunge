@@ -170,7 +170,7 @@ EOS-inclusive target lengths are right-padded to seven. Residue
 data, not a language benchmark. The loader regenerates every token, previous-target input,
 length, factor and source ID. Factors/IDs are audit metadata, never network inputs.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto root  = dm::datasets::prepare_example_data("sequence-vae-assets");
@@ -882,7 +882,7 @@ true prefixes and z=mu. Free greedy(mu) uses no target prefixes; free posterior 
 one matched posterior draw. Neither free greedy output is a posterior predictive mean.
 Repetition, missing roles and special tokens remain visible.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::ifstream f("build/sequence_vae/examples.tsv");

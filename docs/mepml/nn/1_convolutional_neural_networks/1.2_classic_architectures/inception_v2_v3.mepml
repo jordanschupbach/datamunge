@@ -253,7 +253,7 @@ VALID geometry uses 11x5x7 + 5x5x7 = 560 factored MACs versus 5x5x49 = 1225 dens
 
 The batch-state fixture and three-step logit optimization isolate two mechanisms that would otherwise be hidden inside a larger network.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -319,7 +319,7 @@ Three explicit Adam updates reduce the overconfident true-class logit from 10 to
 
 Both canonical models check every forward stage and learned-tensor gradient. The compact controls also verify that inference preserves moving statistics.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

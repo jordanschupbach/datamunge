@@ -184,7 +184,7 @@ two bottlenecks,two basic blocks per branch and one module per stage. It
 retains all four resolutions with382,580 learned scalars. Native96/97px
 checks require every compact derivative finite and nonzero.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

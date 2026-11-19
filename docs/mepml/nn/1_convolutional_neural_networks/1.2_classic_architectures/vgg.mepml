@@ -320,7 +320,7 @@ VGG-19 verifies 38 parameter tensors and shared-head max error 0.00000125.
 
 A larger feature map produces six sliding classifier outputs. Every output is checked against the dense head applied to its corresponding 2×2 feature window.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

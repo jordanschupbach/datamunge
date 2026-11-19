@@ -165,7 +165,7 @@ reported entry comes directly from cycle recovery, without mu extra calls.
 The classifier performs its own constant-storage detection; its calls are
 separate from the displayed work summary.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| input | first digit-square sum | mu | lambda | cycle entry | happy | Brent calls |\n"

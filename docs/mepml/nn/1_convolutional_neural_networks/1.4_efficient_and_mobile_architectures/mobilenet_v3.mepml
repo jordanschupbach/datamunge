@@ -231,7 +231,7 @@ SE biases -4..3 give exact channelwise hard-sigmoid scaling and input derivative
 
 Both released tables, counts and every parameter gradient are checked.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -259,7 +259,7 @@ MobileNet-v3 Large: 5483032 learned / 24400 moving scalars, 216589760 convolutio
 MobileNet-v3 Small: 2542856 learned / 12112 moving scalars, 56510400 convolution/SE/dense MACs/image. Complete 11-block table retained.
 // result_end
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

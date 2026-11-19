@@ -73,7 +73,7 @@ int main() {
 \caption(Every logical bit and arrow address comes from the core inspection API. Blue cells are set; key 22's three arrows all reach blue cells despite its absence from the inserted set.)
 \alttext(Sixteen cells show ones at positions one, eight, ten, eleven and twelve. A query for uninserted key twenty-two points to positions ten, eleven and twelve and returns possibly present.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   dm::algorithms::BloomFilter filter(16,3);filter.add(10);filter.add(20);
@@ -256,7 +256,7 @@ every probe of every absent key addresses that same set bit, so the false-positi
 probability is one. The independent-hash approximation is below one for finite
 n=1. Repeated insertion of that same key changes neither the state nor the load.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| one-bit probe count | set bits after 100 copies of key 42 | absent key 99 tests positive | model at one distinct key |\n"

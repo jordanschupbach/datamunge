@@ -135,7 +135,7 @@ accumulation, rather than that enormous number of explicit steps. The following
 table starts from the authors' state order \((1,2,3,4)\). The regression suite
 checks these states and output words against compiled upstream reference C code.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     std::print("| position | s0 | s1 | s2 | s3 | next output |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n");

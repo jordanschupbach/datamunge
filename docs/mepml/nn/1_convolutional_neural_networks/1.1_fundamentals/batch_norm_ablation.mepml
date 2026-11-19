@@ -177,7 +177,7 @@ Flow / blocks: 23 nodes, 211828 distinct learned values.
 \alttext(LeNet view of batch norm ablation. Stacked feature-map sheets represent grouped blocks. Face dimensions and stack depth follow shared linear shape scales, with a one-pixel visibility floor. At most six representative sheets are drawn; exact dimensions remain in the rotated labels.)
 
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

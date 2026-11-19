@@ -71,7 +71,7 @@ int main() {
 \caption(The unequal physical cell widths and heights share one coordinate scale. Crossing lines locate the query, three quarters of the way up and one quarter across.)
 \alttext(A two-by-four rectangular cell has corner values zero, two, four and ten. A red dot at x one half and y three marks the interpolation query.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| query x | query y | interpolated value |\n| ---: | ---: | ---: |\n");

@@ -551,7 +551,7 @@ Agreement of \(z\) with \(x_3\): 0.7509.
 | 3 | 8388608 | 108 | 107 | 1 | 0.80 |
 
 Pairs from the two top-50 lists consistent with all 144 bits: 1. Register 2 scan on the 79 bits where \(x_1\ne x_3\): best 79 (all of them), runner-up 61.
-Recovered key equals the secret key: yes. Decrypted file equals the original: yes. The attack took 10.61 s on this machine.
+Recovered key equals the secret key: yes. Decrypted file equals the original: yes. The attack took 10.05 s on this machine.
 \image(figures/berlekamp_massey_geffe.svg)
 // result_end
 

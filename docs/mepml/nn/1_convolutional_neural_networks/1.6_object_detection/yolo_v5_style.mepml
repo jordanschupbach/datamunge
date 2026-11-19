@@ -269,7 +269,7 @@ state scalars and all177 tensor gradients. This graph check uses initialized
 weights. The fitted10-class grayscale/divisor4 model retains every stage with
 451,735 learned and4,752 state scalars. No pretrained weights are used.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

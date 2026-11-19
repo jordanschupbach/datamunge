@@ -40,7 +40,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The native CAD renderer records the four deterministic policy replays at the end of the report.
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 // CMD: just run-nn grid_world
 // Grid world and cliff walking.

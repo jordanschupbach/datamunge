@@ -963,7 +963,7 @@ The native evaluation above reopens the frozen checkpoint and recomputes the
 logits. The following tables and figures consume the saved per-image results;
 they do not refit or select the model.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-13, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     namespace n = dm::nn;
@@ -1055,7 +1055,7 @@ All 10000 official test decisions; no ignored labels.
 \caption(Official test: row-normalised percentages. True classes are rows, predictions are columns. Each true class has support 1,000. Positive temperature scaling leaves this matrix unchanged.)
 \alttext(Annotated ten-by-ten confusion matrix with true classes vertically and predicted classes horizontally.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-16, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     namespace n = dm::nn;
@@ -1648,7 +1648,7 @@ Rows are the selected confident errors. Columns: original; Grad-CAM overlay; sig
 \caption(Explanations for confident errors. Columns are original, Grad-CAM, signed IG and signed occlusion. Grad-CAM runs from blue (low) to red (high). In IG/occlusion, red is positive target evidence or score drop, blue negative, white zero. Each map is scaled separately, so colour intensity is not comparable across cases or methods. Case order is given in the numerical table below.)
 \alttext(Four rows compare original images with coarse Grad-CAM overlays, signed integrated gradients and finite occlusion maps.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-25, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     namespace n = dm::nn;
@@ -1697,7 +1697,7 @@ Mean absolute pixel-channel attribution change, fitting-mean versus black baseli
 
 > Results, interpretation and limitations
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-26, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     namespace n = dm::nn;

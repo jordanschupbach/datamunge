@@ -175,9 +175,5 @@ int main() {
 | DCN | Unseen | 0.69174 | 0.79680 | 108/192 |
 | DCN-v2 | Seen | 0.68399 | 0.54227 | 164/224 |
 | DCN-v2 | Unseen | 0.68194 | 0.64296 | 121/192 |
-
-DCN upstream checkpoint replay maximum absolute error 7.153e-07.
-
-DCN-v2 upstream checkpoint replay maximum absolute error 7.153e-07.
 \image(figures/deep_cross_clicks.svg)
 // result_end

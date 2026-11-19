@@ -197,7 +197,7 @@ Fifty equal-width zero-residual units: bitwise-equal signed values and derivativ
 
 Dimension-changing shortcuts are tested separately from raw identity paths. The finite-difference fixture uses positive activations to avoid a ReLU boundary.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -258,7 +258,7 @@ Nonzero branch centre-input derivative: autograd 1.287995680, finite difference 
 
 Full-width forward counts/shapes and full-depth compact gradients establish separate claims.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

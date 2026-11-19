@@ -210,7 +210,7 @@ def test_parallel_reports_wait_for_native_checkpoint_producer(tmp_path, monkeypa
     child.write_text("//? Requires: parent.mepml\n")
     calls = []
 
-    def run(executable, path, status, timeout, env):
+    def run(executable, path, status, timeout, env, *, refresh_cache):
         name = Path(path).stem
         if name == "child":
             assert calls == ["parent"]
@@ -240,7 +240,7 @@ def test_sibling_reports_cannot_capture_each_others_newest_figure(tmp_path, monk
     overlap = threading.Barrier(2)
     captured = {}
 
-    def run(executable, path, status, timeout, env):
+    def run(executable, path, status, timeout, env, *, refresh_cache):
         path = Path(path)
         newest = path.parent / "newest.svg"
         newest.write_text(path.stem)

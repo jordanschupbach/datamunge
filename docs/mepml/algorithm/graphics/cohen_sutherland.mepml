@@ -284,7 +284,7 @@ otherwise an unrepresentable widened difference throws overflow_error, even
 though the original double endpoints are finite. The trace owns at most five
 records; the output-only call needs no heap allocation or shared mutable state.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::array<double,3> heights{std::nextafter(2.,0.),2.,std::nextafter(2.,3.)};

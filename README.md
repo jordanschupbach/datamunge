@@ -10,7 +10,7 @@ provide development environments. It is released under the Unlicense.
 
 [Documentation website](https://jordanschupbach.github.io/datamunge/)
 
-```cpp {nix-shell=".#report-cpp", cmd="c++ {file} -o {bin} -std=c++23 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+```cpp {nix-shell=".#report-cpp", cmd="c++ {file} -o {bin} -std=c++23 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}", id="chunk-01", cache="yes"}
 #include <dm/dm.hpp>
 
 int main() {

@@ -167,7 +167,7 @@ Compact ResNet18/divisor8 uses head32,rates1/2/3,decoder32/low8,no dropout:
 all compact gradients nonzero and verify five branches concatenate160 channels.
 Stride8 doubles base atrous rates and preserves learned parameter shapes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

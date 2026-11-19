@@ -105,7 +105,7 @@ The original stored bounded result was stale: the current common sampler uses
 high-product rejection and returns 6 here. The raw value and six-place uniform
 value remain unchanged; this conversion does not alter the shared sampler.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::array<std::uint32_t,8> key{0x11111111,0x22222222,0x33333333,0x44444444,
@@ -215,7 +215,7 @@ The new native seed-key helper exposes that existing packing without duplicating
 it in the report. Expansion does not increase entropy: at most 2^64 keys are
 reachable from a 64-bit seed, despite the 256-bit destination array.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto zero=dm::random::chacha20_seed_key(0);

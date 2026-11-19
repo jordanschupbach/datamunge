@@ -230,7 +230,7 @@ pretrained model,whitening,augmentation,BN or dropout. Full widths produce
 produce32D descriptors with232,617 scalars/28 leaves. Both retain19 recorded
 stages. The learned rho and projection are warmed before optimizer creation.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

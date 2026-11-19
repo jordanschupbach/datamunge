@@ -317,14 +317,14 @@ Fastest eigenvalue: -9990.1; forward Euler limit h < 2.0020e-04.
 
 | method | \(h\) | steps | \(h\lvert\lambda_{49}\rvert\) | max error at \(t=0.1\) | ms |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| forward Euler | 0.0001 | 1000 | 0.999 | 6.052e-05 | 0.5 |
+| forward Euler | 0.0001 | 1000 | 0.999 | 6.052e-05 | 0.6 |
 | forward Euler | 0.0002 | 500 | 1.998 | 2.422e-04 | 0.2 |
-| forward Euler | 0.000204 | 490 | 2.039 | 2.496e-04 | 0.2 |
+| forward Euler | 0.000204 | 490 | 2.039 | 2.496e-04 | 1.7 |
 | forward Euler | 0.000208 | 480 | 2.081 | 3.624e-01 | 0.2 |
 | forward Euler | 0.00025 | 400 | 2.498 | 3.848e+53 | 0.2 |
-| backward Euler | 0.0001 | 1000 | 0.999 | 3.024e-04 | 73.6 |
-| backward Euler | 0.001 | 100 | 9.990 | 1.928e-03 | 7.3 |
-| backward Euler | 0.01 | 10 | 99.901 | 1.756e-02 | 1.1 |
+| backward Euler | 0.0001 | 1000 | 0.999 | 3.024e-04 | 103.9 |
+| backward Euler | 0.001 | 100 | 9.990 | 1.928e-03 | 10.4 |
+| backward Euler | 0.01 | 10 | 99.901 | 1.756e-02 | 2.2 |
 \image(figures/backward_euler_heat.svg)
 // result_end
 
@@ -460,9 +460,9 @@ int main() {
 // result_begin: markdown
 | rtol | accepted | rejected | \(f\) calls | Newton iterations | ms | \(y_1\) rel. error at 0.4 | at 400 | at \(4\times10^5\) | at \(4\times10^{10}\) | \(\max\lvert\sum y-1\rvert\) |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 0.01 | 254 | 3 | 15939 | 2111 | 2.8 | -1.4e-04 | 1.5e-02 | 6.1e-02 | 6.4e-02 | 6.7e-16 |
-| 0.001 | 738 | 4 | 39057 | 5075 | 6.3 | 3.8e-05 | 5.3e-03 | 1.9e-02 | 2.0e-02 | 2.2e-15 |
-| 0.0001 | 2207 | 4 | 98819 | 12427 | 16.5 | 1.4e-05 | 1.7e-03 | 6.1e-03 | 6.4e-03 | 2.1e-15 |
+| 0.01 | 254 | 3 | 15939 | 2111 | 2.5 | -1.4e-04 | 1.5e-02 | 6.1e-02 | 6.4e-02 | 6.7e-16 |
+| 0.001 | 738 | 4 | 39057 | 5075 | 9.2 | 3.8e-05 | 5.3e-03 | 1.9e-02 | 2.0e-02 | 2.2e-15 |
+| 0.0001 | 2207 | 4 | 98819 | 12427 | 27.2 | 1.4e-05 | 1.7e-03 | 6.1e-03 | 6.4e-03 | 2.1e-15 |
 \image(figures/backward_euler_robertson.svg)
 // result_end
 

@@ -929,7 +929,7 @@ remains visible. The13-array archive also retains fitting mean/std, variance, pe
 fit/test correlations, coefficients, selected axes and both heldout predictions.
 These are descriptive probes, not MIG/DCI, paper benchmark scores or proof of disentanglement.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-10, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n = dm::nn;

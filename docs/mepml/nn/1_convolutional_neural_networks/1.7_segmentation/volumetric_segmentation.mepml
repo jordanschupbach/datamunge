@@ -203,7 +203,7 @@ checks independently cover every3D convolution/transpose input/filter/bias
 derivative,centred crop Jacobians,PReLU/shortcut behavior,volumetric BN and
 all compact stage gradients.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

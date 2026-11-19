@@ -104,7 +104,7 @@ and/255 produce model inputs. The original AVI/annotation mirror is pinned
 to7076149bdbeff8d70003a68d6291fd080db44683 because the KTH server is unavailable.
 All source hashes,frame identities and segment/person boundaries are retained.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

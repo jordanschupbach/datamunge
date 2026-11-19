@@ -204,7 +204,7 @@ output:108,040 learned scalars/28 leaves. Initializers,compact widths,LRN
 constants,padding and Adam are teaching choices;there are no pretrained face
 weights,BN moving moments or claimed face-recognition benchmarks.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

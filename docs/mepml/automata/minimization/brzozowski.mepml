@@ -170,7 +170,7 @@ or minimising it produces one explicit rejecting state. This safely defined
 default preserves aggregate field order and types; its formatted start value
 is now -1. NFA transitions remain epsilon-free.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const dm::algorithms::DFA unreachable{2,1,{{0},{0}},0,{0,1}};

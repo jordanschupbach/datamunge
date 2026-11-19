@@ -44,7 +44,7 @@ in powers.
 \tabs(
 \tab(C++,
 
-```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -117,7 +117,7 @@ $$
 )
 \tab(Python,
 
-```{python, results="markdown", nix-shell="git+file:../../..#python", cmd="env -u PYTHONPATH ../../../build/venv/pydatamunge-run/bin/python {file}"}
+```{python, results="markdown", nix-shell="git+file:../../..#python", cmd="env -u PYTHONPATH ../../../build/venv/pydatamunge-run/bin/python {file}", id=chunk-02, cache=yes}
 from pydatamunge import datamunge as dm
 
 x = dm.Expr.variable("x")
@@ -178,7 +178,7 @@ Antiderivative difference: 2.000000; quadrature: 2.000000.
 )
 \tab(R,
 
-```{r, results="markdown", nix-shell="git+file:../../..#report-r"}
+```{r, results="markdown", nix-shell="git+file:../../..#report-r", id=chunk-03, cache=yes}
 suppressPackageStartupMessages(library(datamunger))
 datamunger::hello()
 
@@ -283,7 +283,7 @@ expression near the expansion point.
 \tabs(
 \tab(C++,
 
-```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -353,7 +353,7 @@ $$
 )
 \tab(Python,
 
-```{python, results="markdown", nix-shell="git+file:../../..#python", cmd="env -u PYTHONPATH ../../../build/venv/pydatamunge-run/bin/python {file}"}
+```{python, results="markdown", nix-shell="git+file:../../..#python", cmd="env -u PYTHONPATH ../../../build/venv/pydatamunge-run/bin/python {file}", id=chunk-05, cache=yes}
 from pydatamunge import datamunge as dm
 
 p = dm.Polynomial([-1, 0, 1])
@@ -422,7 +422,7 @@ $$
 )
 \tab(R,
 
-```{r, results="markdown", nix-shell="git+file:../../..#report-r"}
+```{r, results="markdown", nix-shell="git+file:../../..#report-r", id=chunk-06, cache=yes}
 suppressPackageStartupMessages(library(datamunger))
 
 p <- Polynomial$new(c(-1, 0, 1))

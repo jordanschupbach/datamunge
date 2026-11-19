@@ -253,7 +253,7 @@ pattern index two. The rightmost pattern B is at index three, hence bad=-1.
 The strong good-suffix rule supplies four, ensuring safe forward progress.
 The sentinel for a full-match mismatch index is m, not a valid pattern index.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   struct Example {std::string name,text,pattern;};

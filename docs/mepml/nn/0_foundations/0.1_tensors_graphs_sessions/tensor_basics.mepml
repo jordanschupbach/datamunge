@@ -517,7 +517,7 @@ tensor operators, since raw pointer writes bypass the version tracking
 used by autograd. It checks reductions, broadcast arithmetic and matrix
 contraction on the same host values as the upstream example.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 #include <span>
 

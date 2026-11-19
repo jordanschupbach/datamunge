@@ -42,7 +42,7 @@ int main(){namespace n=dm::nn;double computed=-n::log(n::scalar(1./(4*std::numbe
 
 Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
 ```

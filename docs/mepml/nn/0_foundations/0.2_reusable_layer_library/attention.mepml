@@ -509,13 +509,13 @@ One pair, 2^20 features: estimate 1.12256, exp(q·k/√d) = 1.12227.
 
 | T | plain softmax (ms) | fused softmax (ms) | kernel attention (ms) | plain / kernel |
 | ---: | ---: | ---: | ---: | ---: |
-| 256 | 0.17 | 0.10 | 0.20 | 0.9 |
-| 512 | 0.26 | 0.19 | 0.46 | 0.6 |
-| 1024 | 0.60 | 0.53 | 0.51 | 1.2 |
-| 2048 | 5.58 | 1.94 | 0.80 | 7.0 |
-| 4096 | 30.51 | 10.40 | 1.22 | 25.0 |
+| 256 | 0.53 | 0.23 | 0.75 | 0.7 |
+| 512 | 1.18 | 1.19 | 1.50 | 0.8 |
+| 1024 | 3.88 | 1.55 | 2.55 | 1.5 |
+| 2048 | 20.91 | 7.75 | 2.04 | 10.3 |
+| 4096 | 65.04 | 31.10 | 3.59 | 18.1 |
 
-Log-log slopes between T = 2048 and 4096: plain 2.45, fused 2.42, kernel 0.62.
+Log-log slopes between T = 2048 and 4096: plain 1.64, fused 2.00, kernel 0.82.
 \image(figures/attention_theory.svg)
 // result_end
 

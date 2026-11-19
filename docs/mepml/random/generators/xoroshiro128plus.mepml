@@ -123,7 +123,7 @@ XOR accumulation over 128 transitions. They apply to the 24/16/37 version
 specifically. The reference states below are checked against the authors'
 compiled C implementation, including eight outputs after each starting point.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     std::print("| position | s0 | s1 | next output |\n| :--- | :--- | :--- | :--- |\n");
@@ -243,7 +243,7 @@ Approximate reference distributions, discrete statistics, multiple testing and
 related deterministic seed choices limit interpretation. All seven results are
 retained, without selecting a favourable seed.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto tests =

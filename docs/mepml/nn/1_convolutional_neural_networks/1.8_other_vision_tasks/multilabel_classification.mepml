@@ -226,7 +226,7 @@ moment tensors. The following block executes full and compact forward/backward
 passes at64px;the compact check requires every learned tensor and RGB gradient
 to be nonzero. BN uses old-value retention.9. There is no pretraining or dropout.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -270,7 +270,7 @@ The source archive fingerprint,selected IDs and category sets are recorded in
 `manifest.json`;the preparation command may select different rows from an old
 external `multilabel.npz`.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

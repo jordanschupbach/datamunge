@@ -306,7 +306,7 @@ overflow/underflow. On platforms without a wider working exponent range, extreme
 differences can throw overflow_error. Angles and cutoff decisions remain rounded;
 the implementation does not provide exact geometric predicates or hidden tolerances.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<dm::geometry::Point2D> triangle{{0,0},{1,0},{0,1}};

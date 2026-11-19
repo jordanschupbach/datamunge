@@ -25,7 +25,7 @@ rather than its class, is the object to identify. Remove `digit` before
 encoding: otherwise two identical images with different labels would hash
 differently. The remaining column order is row-major pixel order.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto digits = dm::datasets::digits();
@@ -46,7 +46,7 @@ int main() {
 // result_end
 \caption(The first six records, showing the beginning of each image and its label. Hashing uses all 64 pixels.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto digits = dm::datasets::digits();
@@ -140,7 +140,7 @@ validates integer categories instead of silently rounding them.
 recomputes each intermediate board's hash. Hashes are hexadecimal strings:
 putting a 64-bit integer into a double would lose precision.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     auto pixels = dm::datasets::digits();
@@ -313,7 +313,7 @@ collision proof. It does rule out treating every collection of configurations as
 fully independent, and makes Zobrist hashing unsuitable as an adversarial
 integrity check.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto t = dm::algorithms::zobrist_init(2, 3, 2024);

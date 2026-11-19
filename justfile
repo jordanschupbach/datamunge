@@ -1336,8 +1336,11 @@ docs-md-file INPUT OUTPUT:
 # stored results, -DDOCS_MEPML_ALLOW_FAILURES=ON builds the site anyway.
 docs *ARGS:
     @echo "Building docs"
-    {{ NIX_DEVELOP }} .#cpp --command cmake -U MEP_MEPML_EXECUTABLE -S docs -B build/debug/docs -DDOCS_MEPML_PKG_CONFIG_PATH="{{ MEPML_PKG_CONFIG_PATH }}" -DDOCS_MEPML_RUN=ON -DDOCS_MEPML_ALLOW_FAILURES=OFF {{ ARGS }}
+    {{ NIX_DEVELOP }} .#cpp --command cmake -U MEP_MEPML_EXECUTABLE -S docs -B build/debug/docs -DDOCS_MEPML_PKG_CONFIG_PATH="{{ MEPML_PKG_CONFIG_PATH }}" -DDOCS_MEPML_RUN=ON -DDOCS_MEPML_ALLOW_FAILURES=OFF -DDOCS_MEPML_FORCE=OFF {{ ARGS }}
     {{ NIX_DEVELOP }} .#cpp --command cmake --build build/debug/docs --target Website
+
+# Rerun every report and refresh its cached code chunk results.
+docs-force *ARGS: (docs ARGS + " -DDOCS_MEPML_FORCE=ON")
 
 # Export stored report results and the API reference without running experiments.
 docs-preview:

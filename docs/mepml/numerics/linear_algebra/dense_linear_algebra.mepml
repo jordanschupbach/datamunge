@@ -37,7 +37,7 @@ problem, because the predictors measure overlapping things: engine displacement
 `disp`, cylinder count `cyl`, horsepower `hp` and weight `wt` all describe how
 big the car is.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace agg = dm::agg;
@@ -171,7 +171,7 @@ The second inequality holds because \(\sigma_1^2\) is the largest eigenvalue of
 On the mtcars design (intercept plus ten predictors) these bounds are far from
 tight, because `disp` and `hp` dominate every norm:
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -439,7 +439,7 @@ The first fit regresses `mpg` on all ten predictors plus an intercept.
 `least_squares()` runs each method, and `stats::LM` (R's `lm`, which now also
 uses QR) gives the reference coefficients.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 namespace la = dm::linalg;
@@ -713,7 +713,7 @@ never forms \(X^\top X\). The check below compares `LM`'s standard errors for
 `mpg ~ poly(wt, d)` with \(\hat\sigma\lVert\Sigma^{-1}V^\top e_j\rVert\) from
 the SVD.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-08, cache=yes}
 #include <dm/dm.hpp>
 
 namespace la = dm::linalg;
@@ -759,7 +759,7 @@ litres, \(\texttt{disp}/61.0237\). The design now has an exact linear dependence
 identified, so any split of the displacement effect between the two columns fits
 equally well.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-09, cache=yes}
 #include <dm/dm.hpp>
 
 namespace la = dm::linalg;

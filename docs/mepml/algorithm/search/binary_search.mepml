@@ -128,7 +128,7 @@ can hide a present key. An empty vector returns `found=false`, `index=-1`, and
 zero probes; a singleton needs one probe. Integer values are compared directly,
 without subtracting them, so the minimum and maximum int values are supported.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const int low=std::numeric_limits<int>::min(),high=std::numeric_limits<int>::max();

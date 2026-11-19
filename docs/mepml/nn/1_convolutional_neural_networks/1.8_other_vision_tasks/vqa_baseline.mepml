@@ -219,7 +219,7 @@ recurrent steps. The native suite runs full and compact backward,all24
 joint learned leaves and both modality gradients. Question-only and image-only
 models omit the unused encoder and train independent stores. They are not
 zero-input evaluations of a jointly trained graph.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -289,7 +289,7 @@ all10 mapped human answers;UNK consensus is forced0. RGB/255 followed by
 legacy bilinear64px resizing uses tensors. The manifest retains archive SHA256,
 source photos,all selected questions,ten original mapped answers and split IDs.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

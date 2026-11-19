@@ -86,7 +86,7 @@ controls. Operation names refer to the signed recoding digit. When M is
 negative, subtracting a scaled M makes a positive numeric contribution.
 For -7 times 6, the active terms are +14 and -56, giving -42.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto minimum=std::numeric_limits<std::int32_t>::min();

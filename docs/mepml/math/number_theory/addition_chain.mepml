@@ -35,7 +35,7 @@ multiplication of powers already computed. A chain of length \(L\) ending at
 `mod_pow_chain()` evaluates \(x^e \bmod m\) along any chain, and `chain_steps()`
 lists which two earlier terms form each new one.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -138,7 +138,7 @@ The first is the smallest \(e\) with \(\ell(e)=r\), OEIS A003064. The second is
 the Scholz-Brauer inequality \(\ell(2^n-1)\le n-1+\ell(n)\), which has been
 verified for all small \(n\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;

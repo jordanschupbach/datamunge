@@ -268,9 +268,9 @@ Summit at (190 m, 300 m), 195 m high. 5307 cells, 41572 directed steps, 15934 wi
 
 | method | rounds | edges examined | negative cycle | time (ms) |
 | --- | ---: | ---: | --- | ---: |
-| Bellman–Ford, passes | 31 | 1288732 | no | 3.03 |
-| Bellman–Ford, queue | 68 | 42750 | no | 1.66 |
-| Dijkstra on reweighted costs | – | 41572 | – | 2.62 |
+| Bellman–Ford, passes | 31 | 1288732 | no | 3.04 |
+| Bellman–Ford, queue | 68 | 42750 | no | 1.77 |
+| Dijkstra on reweighted costs | – | 41572 | – | 7.07 |
 
 Largest difference from the Johnson check: 3.6e-12 (queue form: 0.0e+00). The deepest shortest path has 73 steps; the bound n − 1 is 5306. 5306 cells (100%) end with more energy than at the summit.
 \image(figures/bellman_ford_energy.svg)

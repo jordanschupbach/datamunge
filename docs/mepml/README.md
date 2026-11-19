@@ -131,17 +131,28 @@ and navigation. The `nn/` hierarchy is maintained separately.
 | `just view-docs` | Opens the unified API and report website in your browser. If the site is missing, it first runs `just docs-preview`, which exports stored results. |
 | `just docs` | Runs the reports that changed since their last run (and any that failed), exports every report with mep (`mep-mepml convert`) and builds the website in `build/debug/docs/site/`, with a **Report build status** page. Fails if a code block failed. `just docs-serve` serves it; it also works opened from disk. |
 
-The docs build runs a report only when its `.mepml` is newer than its last run
-record (`build/debug/docs/mepml-status/<page>.json`), so the first build runs
-every report and later ones only the edited ones (and those that failed last
-time, since the fix may be in the library). The results and figures it
-writes go into the report itself, so commit them with it. CMake options
-(`just docs -DOPTION=...`):
+The docs build schedules new or edited reports, reports with missing figures,
+and reports whose last run failed. The last run record is
+`build/debug/docs/mepml-status/<page>.json`. Commit the results written into
+the report and keep generated figures locally.
+
+For a batch chunk whose only required result is its document output, add
+`id=descriptive-name, cache=yes` to the code fence. Keep the ID unique within
+the report and retain it when moving or editing the chunk. MEpML reuses
+successful results when the chunk's source and options match and stores them
+in an ignored `*.mep-cache/` directory beside the report. Figure chunks with
+`file=`, interactive chunks, and chunks that produce required artifacts run
+without a result cache.
+
+After changing an external input such as datamunge, prepared data, or an
+environment option, use `mep-mepml run --refresh-cache PATH.mepml`,
+`:MepmlRefreshCache` in the editor, or change the chunk's `cache-key=`.
+To refresh the entire collection, run `just docs-force`.
 
 | Option | Default | Effect |
 | --- | --- | --- |
 | `DOCS_MEPML_RUN` | `ON` | Run changed reports before exporting. `OFF` exports the stored results only. |
-| `DOCS_MEPML_FORCE` | `OFF` | Rerun every report, changed or not (e.g. after changing the library). |
+| `DOCS_MEPML_FORCE` | `OFF` | Rerun every report and refresh cached chunk results. |
 | `DOCS_MEPML_ALLOW_FAILURES` | `OFF` | Build the site even when a block failed (the status page and a warning on the report's page still say so). |
 | `DOCS_MEPML_TIMEOUT` | `1800` | Seconds a block may run before it is stopped and counted as failed. |
 | `DOCS_MEPML_PKG_CONFIG_PATH` | empty | `PKG_CONFIG_PATH` for the blocks. `just` passes `$DATAMUNGE_MEPML_PKG_CONFIG_PATH`; set it to `$PWD/build/mepml-pc` to build against the working tree. |

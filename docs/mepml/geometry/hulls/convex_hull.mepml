@@ -329,7 +329,7 @@ For a visible cancellation control, set M=2^52, a=(0,0), b=(M,M−1), c=(M+1,M).
 The exact determinant is M²−(M−1)(M+1)=1, although separately rounded double
 products can cancel to zero. All three points must remain hull vertices.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   using P=dm::geometry::Point2D;

@@ -254,7 +254,7 @@ the weighted loss to host calculations, checks the effect of an auxiliary-only p
 on the training objective, and verifies that auxiliary cross entropy updates its bias when
 kernel regularization is enabled.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

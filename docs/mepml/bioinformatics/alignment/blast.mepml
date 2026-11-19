@@ -84,7 +84,7 @@ int main() {
 \caption(The orange branch stops after two inspected mismatches and returns the seed. The green branch crosses that loss and recovers at the next two matches.)
 \alttext(A seed with score six extends through running scores minus one and minus two. At the second mismatch, X equals one stops with score six, while X equals two continues to running score two and total score eight.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::string query="AAACCAA",db="AAATTAA";
@@ -221,7 +221,7 @@ E=\sum_{i,j=0}^{m-1}(m-1-|i-j|)
 $$
 \alttext(Repetitive inputs create m squared exact seeds and m times m minus one times two m minus one over three extension pair inspections.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| input length n | emitted seeds | predicted seeds | inspected flank pairs | predicted pairs |\n"

@@ -3,27 +3,42 @@
 //? Lang: en
 
 \abstract(
-Calibrate a prediction interval around a nonlinear regressor using
-independent residuals. Evaluate marginal coverage and compare
-coverage across the two sides of the predictor range.
+Fit a nonlinear mean and a separate error scale, then use split conformal
+calibration to produce prediction intervals that widen as noise increases.
+Compare constant-width and adaptive coverage across eight ranges of x.
 )
 \toc
 
-> Separate fitting, calibration and test
+> Fit the mean and the local error scale
 
 The data follow sin(3x) with Gaussian noise whose scale increases with x.
-Train a 24-feature tanh model by squared error on 1,024 observations.
-After fitting, hold the predictor fixed. Use the 360th smallest
-absolute residual among 399 calibration rows as the radius for 90%
-nominal coverage. In general the rank is the ceiling of
-(n + 1) × (1 − alpha). An unattainable rank yields an unbounded interval.
+Train a 24-feature tanh model by squared error on 1,024 observations. Freeze
+the mean model and fit a line to its absolute residuals on 4,096 fresh
+observations. The line estimates the typical error at each x using observed
+responses. A small positive floor keeps the estimated scale usable in a
+denominator.
 
-Under exchangeability the guarantee is marginal. The band has a
-constant width, so the lower- and higher-noise regions can have
-different coverage. The 2,048 test rows are used only for evaluation.
+> Calibrate both bands at 95%
+
+On 3,999 independent calibration rows, score each response by its absolute
+residual for the constant band and by its absolute residual divided by the
+fitted scale for the adaptive band. Both methods use rank
+ceil((n + 1) × (1 − alpha)) = 3,800. An unattainable rank yields an unbounded
+interval. At a new x, multiply the adaptive score threshold by the fitted
+scale to obtain the half-width.
+
+[Lei et al. (2018), Distribution-Free Predictive Inference for Regression|https://arxiv.org/abs/1604.04173]
+describe this locally weighted split-conformal method. Under exchangeability,
+both intervals have a finite-sample marginal coverage guarantee. Coverage
+within each x range is an empirical diagnostic. The 16,384 test responses
+are used only for that evaluation, with eight equal-width ranges fixed
+before looking at their outcomes.
 
 ```{cpp, results="markdown", file="figures/conformal_prediction_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
 #include <filesystem>
 #include <print>
 #include <random>
@@ -44,8 +59,9 @@ std::pair<n::Tensor, n::Tensor> simulate(int count, unsigned seed) {
 
 int main() {
   const auto [x_fit, y_fit] = simulate(1024, 117521);
-  const auto [x_cal, y_cal] = simulate(399, 117522);
-  const auto [x_test, y_test] = simulate(2048, 117523);
+  const auto [x_scale, y_scale] = simulate(4096, 117525);
+  const auto [x_cal, y_cal] = simulate(3999, 117522);
+  const auto [x_test, y_test] = simulate(16384, 117523);
   n::ParameterStore parameters(41380);
   const auto predict = [&](const n::Tensor& x) {
     return n::dense(parameters, "mean", n::dense(parameters, "hidden", x, 24, n::Activation::Tanh), 1);
@@ -55,7 +71,7 @@ int main() {
   config.kind = n::OptimizerKind::Adam;
   n::Optimizer optimizer(parameters, .01, config);
   n::BatchOrder order(x_fit.size(0), 16, 117524);
-  for (int epoch = 0; epoch < 3; ++epoch) {
+  for (int epoch = 0; epoch < 50; ++epoch) {
     order.begin_epoch();
     for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
       const auto prediction = predict(n::take_rows(x_fit, rows));
@@ -71,35 +87,98 @@ int main() {
   std::filesystem::create_directories("figures");
   const auto query = n::linspace(-1, 1, 201).reshape({201, 1});
   const auto t = query.to_vector<double>();
-  const auto calibration = predict(x_cal);
-  const double width = n::SplitConformalRadius(calibration, y_cal, .1);
-  if (!std::isinf(n::SplitConformalRadius(calibration, y_cal, .001)))
-    throw std::runtime_error("unattainable calibration rank");
-  const auto test = n::cast(predict(x_test), n::DType::Float64);
-  const auto hit = n::cast(n::less_equal(n::abs(test - y_test), width), n::DType::Float64);
-  const auto right = n::cast(n::greater(x_test, 0), n::DType::Float64), left = 1.0 - right;
-  std::println("| Test population | Coverage |\n| --- | ---: |");
-  std::println("| All test rows | {:.4f} |", n::mean(hit).item());
-  std::println("| x ≤ 0 | {:.4f} |", (n::sum(hit * left) / n::sum(left)).item());
-  std::println("| x > 0 | {:.4f} |", (n::sum(hit * right) / n::sum(right)).item());
-  std::println("\nCalibration rank 360 gives an interval width of {:.6f}.", 2 * width);
-  n::save_npz(root + "intervals.npz", {{"calibration_x", x_cal}, {"calibration_y", y_cal},
-                                  {"calibration_prediction", calibration}, {"x", x_test}, {"y", y_test},
-                                  {"prediction", test}, {"hit", hit}, {"radius", n::scalar(width, n::DType::Float64)},
-                                  {"intervals", n::concat({test - width, test + width}, 1)}});
-  const auto curve = n::cast(predict(query), n::DType::Float64);
+  const auto scale_x = n::cast(x_scale, n::DType::Float64);
+  const auto scale_error = n::abs(n::cast(predict(x_scale), n::DType::Float64) - y_scale);
+  const double x_mean = n::mean(scale_x).item();
+  const auto centered = scale_x - x_mean;
+  const double slope = n::sum(centered * scale_error).item() / n::sum(n::square(centered)).item();
+  const double intercept = n::mean(scale_error).item() - slope * x_mean;
+  const auto scale_at = [=](const std::vector<double>& x) {
+    std::vector<double> scale;
+    scale.reserve(x.size());
+    for (const double value : x)
+      scale.push_back(std::max(.01, intercept + slope * value));
+    return scale;
+  };
 
-  const auto upper = (curve + width).to_vector<double>();
-  auto band = (curve - width).to_vector<double>();
+  namespace s = dm::stats;
+  constexpr double alpha = .05;
+  const auto calibration = predict(x_cal).to_vector<double>();
+  const auto observed_cal = y_cal.to_vector<double>();
+  const auto calibration_scale = scale_at(x_cal.to_vector<double>());
+  const s::SplitConformalRegressor constant(calibration, observed_cal, {.alpha = alpha});
+  const auto adaptive = s::SplitConformalRegressor::normalized(
+      calibration, calibration_scale, observed_cal, {.alpha = alpha});
+  if (!std::isinf(s::conformal_quantile(adaptive.calibration_scores(), .0001)))
+    throw std::runtime_error("unattainable calibration rank");
+
+  const auto test_x = x_test.to_vector<double>();
+  const auto test_y = y_test.to_vector<double>();
+  const auto test_mean = predict(x_test).to_vector<double>();
+  const auto test_scale = scale_at(test_x);
+  const auto constant_eval = constant.evaluate(test_mean, test_y);
+  const auto adaptive_eval = adaptive.evaluate(test_mean, test_mean, test_scale, test_y);
+  struct Summary {
+    std::size_t count{}, constant_hits{}, adaptive_hits{};
+    double adaptive_width{};
+  };
+  std::array<Summary, 8> bins{};
+  for (std::size_t i = 0; i < test_x.size(); ++i) {
+    const auto bin = std::min(bins.size() - 1, static_cast<std::size_t>(4 * (test_x[i] + 1)));
+    auto& summary = bins[bin];
+    ++summary.count;
+    summary.constant_hits += constant_eval.covered[i];
+    summary.adaptive_hits += adaptive_eval.covered[i];
+    summary.adaptive_width += adaptive_eval.widths[i];
+  }
+  std::println("| Test x range | Rows | Constant coverage | Adaptive coverage | Mean adaptive width |");
+  std::println("| --- | ---: | ---: | ---: | ---: |");
+  for (std::size_t i = 0; i < bins.size(); ++i) {
+    const auto& bin = bins[i];
+    const double count = bin.count;
+    std::println("| [{:.2f}, {:.2f}{} | {} | {:.2f}% | {:.2f}% | {:.3f} |",
+        -1.0 + .25 * i, -.75 + .25 * i, i + 1 == bins.size() ? "]" : ")", bin.count,
+        100 * bin.constant_hits / count, 100 * bin.adaptive_hits / count, bin.adaptive_width / count);
+  }
+  std::println("| All | {} | {:.2f}% | {:.2f}% | {:.3f} |", test_x.size(),
+      100 * constant_eval.coverage, 100 * adaptive_eval.coverage, adaptive_eval.average_width);
+  std::println("\nThe constant band has width {:.3f}. The fitted scale is max(0.01, {:.3f} + {:.3f} x).",
+      constant_eval.average_width, intercept, slope);
+
+  const auto column = [](const std::vector<double>& values) {
+    return n::from_vector(values, {static_cast<std::int64_t>(values.size()), 1});
+  };
+  const auto mean = column(test_mean);
+  const auto radius = constant.quantile();
+  const auto adaptive_radius = column(test_scale) * adaptive.quantile();
+  n::save_npz(root + "intervals.npz", {
+      {"calibration_x", x_cal}, {"calibration_y", y_cal},
+      {"calibration_prediction", column(calibration)}, {"calibration_scale", column(calibration_scale)},
+      {"x", x_test}, {"y", y_test}, {"prediction", mean},
+      {"hit", column(std::vector<double>(constant_eval.covered.begin(), constant_eval.covered.end()))},
+      {"radius", n::scalar(radius, n::DType::Float64)},
+      {"intervals", n::concat({mean - radius, mean + radius}, 1)},
+      {"adaptive_scale", column(test_scale)},
+      {"adaptive_hit", column(std::vector<double>(adaptive_eval.covered.begin(), adaptive_eval.covered.end()))},
+      {"adaptive_quantile", n::scalar(adaptive.quantile(), n::DType::Float64)},
+      {"adaptive_intervals", n::concat({mean - adaptive_radius, mean + adaptive_radius}, 1)}});
+
+  const auto curve = n::cast(predict(query), n::DType::Float64);
+  const auto query_radius = column(scale_at(t)) * adaptive.quantile();
+  const auto upper = (curve + query_radius).to_vector<double>();
+  auto band = (curve - query_radius).to_vector<double>();
   auto band_x = t;
   band.insert(band.end(), upper.rbegin(), upper.rend());
   band_x.insert(band_x.end(), t.rbegin(), t.rend());
   auto plot = dm::graphics::RPlot::create();
-  plot.polygon(band_x, band, {37, 99, 235, .16})
-      .points(x_test.to_vector<double>(), y_test.to_vector<double>(), "Held-out observations",
-              {100, 116, 139, .35}, 2)
+  plot.polygon(band_x, band, {37, 99, 235, .23})
+      .points(std::vector<double>(test_x.begin(), test_x.begin() + 512),
+              std::vector<double>(test_y.begin(), test_y.begin() + 512),
+              "Held-out sample", {100, 116, 139, .35}, 2)
+      .lines(t, (curve + radius).to_vector<double>(), "Constant interval limits", {180, 80, 44})
+      .lines(t, (curve - radius).to_vector<double>(), "", {180, 80, 44})
       .lines(t, curve.to_vector<double>(), "Fitted mean", {37, 99, 235})
-      .title("90% split-conformal prediction band").x_label("x").y_label("Response")
+      .title("Adaptive 95% split-conformal prediction band").x_label("x").y_label("Response")
       .save_svg(root + "fit.svg");
   std::filesystem::copy_file(root + "fit.svg", "figures/conformal_prediction_fit.svg",
                              std::filesystem::copy_options::overwrite_existing);
@@ -107,12 +186,18 @@ int main() {
 }
 ```
 // result_begin: markdown
-| Test population | Coverage |
-| --- | ---: |
-| All test rows | 0.8955 |
-| x ≤ 0 | 0.9374 |
-| x > 0 | 0.8537 |
+| Test x range | Rows | Constant coverage | Adaptive coverage | Mean adaptive width |
+| --- | ---: | ---: | ---: | ---: |
+| [-1.00, -0.75) | 2023 | 99.95% | 96.89% | 0.587 |
+| [-0.75, -0.50) | 2015 | 99.75% | 93.40% | 0.715 |
+| [-0.50, -0.25) | 2046 | 99.51% | 96.87% | 0.846 |
+| [-0.25, 0.00) | 2009 | 98.26% | 95.87% | 0.975 |
+| [0.00, 0.25) | 2060 | 96.80% | 96.89% | 1.105 |
+| [0.25, 0.50) | 2075 | 92.82% | 95.28% | 1.237 |
+| [0.50, 0.75) | 2116 | 88.42% | 93.81% | 1.364 |
+| [0.75, 1.00] | 2040 | 87.25% | 95.05% | 1.496 |
+| All | 16384 | 95.29% | 95.50% | 1.044 |
 
-Calibration rank 360 gives an interval width of 1.462916.
+The constant band has width 1.126. The fitted scale is max(0.01, 0.213 + 0.106 x).
 \image(figures/conformal_prediction_fit.svg)
 // result_end

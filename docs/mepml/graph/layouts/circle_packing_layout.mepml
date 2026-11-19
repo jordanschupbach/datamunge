@@ -305,7 +305,7 @@ the entire endpoint input and option values have been validated. Failed caps,
 range checks and allocations expose no partial result. Numeric updates that
 cannot fit finite coordinates throw, rather than exporting infinities or NaNs.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   dm::algorithms::CirclePackingOptions options;

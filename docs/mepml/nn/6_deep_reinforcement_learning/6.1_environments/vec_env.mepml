@@ -39,7 +39,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The benchmark compares the same three workloads at four thread counts. Throughput depends on the machine and its load.
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 // CMD: just run-nn vec_env
 // Vectorized environments for parallel rollouts.

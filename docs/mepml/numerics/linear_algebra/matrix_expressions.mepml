@@ -24,7 +24,7 @@ Checking the first condition by setting the derivative of our objective equal to
 \tabs(
 \tab(C++,
 
-```{cpp, results="markdown", nix-shell="git+file:../../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+```{cpp, results="markdown", nix-shell="git+file:../../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -73,7 +73,7 @@ $$
 `Mat` / `SpMat` accept nested rows. `@`, `.t()` and `solve()` use the native
 deferred matrix operations; `.eval()` retains an owned snapshot.
 
-```{python, results="markdown", nix-shell="git+file:../../../..#python", cmd="env -u PYTHONPATH ../../../../build/venv/pydatamunge-run/bin/python {file}"}
+```{python, results="markdown", nix-shell="git+file:../../../..#python", cmd="env -u PYTHONPATH ../../../../build/venv/pydatamunge-run/bin/python {file}", id=chunk-02, cache=yes}
 import pydatamunge as dm
 
 print("| Storage | beta[0] | beta[1] |")
@@ -98,7 +98,7 @@ for name, matrix in [("Dense", dm.Mat), ("CSR", dm.SpMat)]:
 `Mat()` / `SpMat()` accept ordinary R matrices. `t()`, `%*%` and `solve()`
 dispatch to native operations; `eval_mat()` keeps a snapshot.
 
-```{r, results="markdown", nix-shell="git+file:../../../..#r", cmd="env R_LIBS_USER=../../../../build/r/library Rscript {file}"}
+```{r, results="markdown", nix-shell="git+file:../../../..#r", cmd="env R_LIBS_USER=../../../../build/r/library Rscript {file}", id=chunk-03, cache=yes}
 suppressPackageStartupMessages(library(datamunger))
 
 cat("| Storage | beta[0] | beta[1] |\n")

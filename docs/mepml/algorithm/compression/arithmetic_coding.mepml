@@ -300,7 +300,7 @@ length of `dm::algorithms::arithmetic_encode()` using the counts as the model. A
 model also has to send its table to the decoder. Seventeen counts of at most 17 bits each
 cost under 300 bits, or 0.003 bits per pixel, and we leave them out below.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 
@@ -351,7 +351,7 @@ int main() {
 | ideal \(-\log_2 P\) (entropy) | 342341 | 2.97667 | 42793 |
 | arithmetic coder | 342341 | 2.97667 | 42793 |
 
-Arithmetic code minus ideal: 0.36 bits for the whole stream. Round trip exact: true. Encode 9.1 ms, decode 9.1 ms.
+Arithmetic code minus ideal: 0.36 bits for the whole stream. Round trip exact: true. Encode 9.8 ms, decode 8.0 ms.
 // result_end
 
 The arithmetic coder lands on the ideal length: 342,341 bits against an ideal of 342,340.6.

@@ -31,7 +31,7 @@ of the word below it. Unsigned overflow in C\+\+ is exactly reduction modulo
 from SplitMix64 and makes \(Y_0\) odd. The vector constructor takes a state
 directly, which is useful for checking by hand:
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -79,7 +79,7 @@ by tracking powers of two separately from odd factors and inverting the odd
 denominators modulo \(2^{64}\). It then takes the triangular sum, at \(O(k^2)\)
 cost for any \(n\).
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -100,7 +100,7 @@ int main() {
 ```
 // result_begin:
 // after 1e5 steps, stepping and discard() agree: true
-// jumping 1e18 steps took 1.1 microseconds; next output 0xa16ebf41e865e5c2
+// jumping 1e18 steps took 1.0 microseconds; next output 0xa16ebf41e865e5c2
 // result_end
 
 Jump-ahead gives independent parallel streams cheaply: stream \(s\) starts
@@ -276,7 +276,7 @@ the battery on 40 seeds, so that each test yields 40 p-values. If the generator
 is good, those p-values are a sample from \(U(0,1)\), which the
 Kolmogorov-Smirnov test checks.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -372,7 +372,7 @@ Wikramaratna recommends orders of at least 10, and the default order of
 eruption length and the waiting time to the next eruption, in minutes. The
 waiting times are bimodal, with short waits after short eruptions.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-08, cache=yes}
 #include <dm/dm.hpp>
 
 namespace agg = dm::agg;

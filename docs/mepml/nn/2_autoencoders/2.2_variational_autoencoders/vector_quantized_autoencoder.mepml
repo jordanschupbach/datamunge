@@ -165,7 +165,7 @@ Residue (x+2y+size+3shape) mod 7 assigns test=0, validation=1 and fit=2–6, giv
 210/42/42 factor combinations. These small procedural images are not a downloaded benchmark.
 Factor labels never enter the model, optimizer or checkpoint criterion.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n      = dm::nn;

@@ -323,7 +323,7 @@ tensor. It validates initialized architecture and gradients; it does not fit a
 VOC detector or load pretrained weights. The actual optimizer demonstration
 below fits the complete compact source architecture on digit scenes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

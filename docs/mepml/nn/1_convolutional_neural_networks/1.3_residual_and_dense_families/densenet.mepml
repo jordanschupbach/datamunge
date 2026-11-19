@@ -277,7 +277,7 @@ Pooled values [6.125, 9.625, 20.125, 23.625]; input derivatives .25/4=.0625 and 
 
 Full BC-121/BC-100 forward checks use reference shapes. Growth-four backward graphs retain the same layer counts while bounding memory.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

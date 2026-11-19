@@ -152,7 +152,7 @@ twice. It then checks it with `gradcheck` and `gradgradcheck`, and flips the sig
 catches the error. A last line shows what happens without any custom gradient. `nn::ceil` records no history, so
 a gradient through it is reported as an error, not returned as zero.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;
@@ -245,7 +245,7 @@ node, `Erfc`, between the leaf and the `Square` that uses it.
 The program evaluates \(\log(1+e^x)\) and its gradient in float32, composed naively, as a custom function with the stable forms above,
 and with the built-in `nn::softplus`.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;
@@ -677,7 +677,7 @@ that squares this output therefore sends twice the rounded output back
 to the input. The zero at the last element is a forward value, so its
 loss gradient is also zero.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

@@ -111,7 +111,7 @@ uses target1 on positives and a detached ignore mask. Class BCE sums all class
 channels on positives. All three heads sum before division by total batch
 positives, floored at one. Empty scenes still train background objectness.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -302,7 +302,7 @@ benchmark accuracy is implied. The complete compact10-class, width-divisor8,
 grayscale model has976,795 learned/6,576 state scalars and supports64/96/128px
 multiscale inputs without changing learned shapes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

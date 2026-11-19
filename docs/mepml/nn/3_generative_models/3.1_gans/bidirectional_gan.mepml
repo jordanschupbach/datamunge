@@ -597,7 +597,7 @@ int main() {
 epoch 1: D=1.45763, EG=1.41376
 epoch 2: D=1.45435, EG=1.40616
 epoch 3: D=1.45116, EG=1.3995
-fixed final=3, D/EG=1.4325/1.41495, untrained reconstruction MSE=2.13312 vs mean=2.00977, latent cycle MSE=1.2355; joint paths/D then E then G/restore/immutable PASS (training 0.0192425 s)
+fixed final=3, D/EG=1.4325/1.41495, untrained reconstruction MSE=2.13312 vs mean=2.00977, latent cycle MSE=1.2355; joint paths/D then E then G/restore/immutable PASS (training 0.0444383 s)
 Artifacts: build/bigan
 All bidirectional_gan checks passed.
 \image(figures/bigan_learning.svg)

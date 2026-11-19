@@ -423,7 +423,7 @@ The block builds a 12-digit prime \(p=kq+1\) around the prime
 \(q=1{,}000{,}003\), takes \(g_q=g^{(p-1)/q}\), which has order \(q\), and
 compares searching with \(n=p-1\) and with \(n=q\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 

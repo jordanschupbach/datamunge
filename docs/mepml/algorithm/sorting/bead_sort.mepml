@@ -312,9 +312,9 @@ int main() {
 // result_begin: markdown
 | unit | largest value | beads \(\sum a_i\) | bead_sort (ms) | std::sort (ms) |
 | --- | ---: | ---: | ---: | ---: |
-| minutes | 96 | 19284 | 0.0022 | 0.0040 |
-| seconds | 5760 | 1157040 | 0.0146 | 0.0026 |
-| milliseconds | 5760000 | 1157040000 | 38.0476 | 0.0037 |
+| minutes | 96 | 19284 | 0.0019 | 0.0033 |
+| seconds | 5760 | 1157040 | 0.0144 | 0.0028 |
+| milliseconds | 5760000 | 1157040000 | 41.3358 | 0.0045 |
 \image(figures/bead_cost.svg)
 // result_end
 

@@ -240,7 +240,7 @@ Output error 0.000000000000, input-gradient error 0.000000000000; extra-ReLU out
 The canonical model checks all sixteen stage shapes and each parameter gradient.
 The compact fixture checks that inference leaves every moving statistic unchanged.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

@@ -245,7 +245,7 @@ and 53,120 BN-state scalars, with 76,725 anchors at 640 pixels. The source's
 128-pixel full-weight backward check below computes all 195 learned tensor
 derivatives. It is an initialized graph check, without pretraining or fitting.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

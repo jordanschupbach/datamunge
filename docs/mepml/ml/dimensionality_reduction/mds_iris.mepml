@@ -420,7 +420,7 @@ the constructor drops rows with a null selected feature; `kept_row_indices()`
 must then be used to align external labels. The species means below describe the
 input but are never supplied to MDS as predictors.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto iris = dm::datasets::iris();
@@ -522,7 +522,7 @@ positive-inertia proportion and normalised strain differ because one weights
 eigenvalues and the other their squares. Actual distance errors add a third,
 directly interpretable check.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const dm::stats::MDS model(dm::datasets::iris(),
@@ -576,7 +576,7 @@ reconstructed Gram matrices should agree as well; this check tolerates sign
 flips and rotations in repeated-eigenvalue subspaces. A default standardised PCA
 fit would instead analyse a different set of distances.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-09, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto iris = dm::datasets::iris();

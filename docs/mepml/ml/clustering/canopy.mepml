@@ -297,7 +297,7 @@ it can remove an earlier useful seed and expose several later ones. The final
 program gives a concrete two-to-three increase, alongside exact budgets and
 numeric-boundary checks. Input-order dependence is a property of this seed rule.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<std::vector<double>> points{{0,0},{2,0},{2.5,1.5},{2.5,-1.5}};

@@ -592,7 +592,7 @@ the mean, and silent about the fan. The share of points below each fit is
 Twenty-one points close to the line \(y=5+1.5x\), \(x=0,\dots,20\). The last
 point is then moved, first vertically and then far to the right.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -663,7 +663,7 @@ and above the fitted line, evaluates the dual objective \(\sum_i\hat a_iy_i\)
 and the largest entry of \(X^\top\hat a\), and checks the bounds
 \(N_-\le n\tau\le N_-+N_0\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

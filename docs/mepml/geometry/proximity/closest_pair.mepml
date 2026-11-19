@@ -263,7 +263,7 @@ trace merely because many pairs exist. Zero caps mean unlimited. Any failure
 returns no partial result or trace. Records and selected point copies own their
 storage independently of the input.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<dm::geometry::Point2D> points{{0,0},{3,4},{0,1},{0.25,1}};

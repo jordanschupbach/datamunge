@@ -266,7 +266,7 @@ Split/packed grouped values and every input/filter/optional-bias derivative agre
 
 Full weight counts and exact target-resolution arithmetic are distinguished explicitly.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int64_t target_macs(const dm::nn::models::MobileNetOutputs &out) {
@@ -356,7 +356,7 @@ Fourteen full-weight models use 64-pixel count-only forwards. Convolution output
 
 All Y-400MF blocks and learned tensors participate in the probe.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

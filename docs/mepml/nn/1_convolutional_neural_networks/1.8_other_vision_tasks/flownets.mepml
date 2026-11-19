@@ -260,7 +260,7 @@ learned feature transposes,learned bias-free flow transposes,encoder skips
 and new flow predictions. Glorot kernels,zero biases and LeakyReLU(.1) follow
 the teaching source. There is no BN or target input. FlowNetS directly
 concatenates images;the local correlation primitive is used by PWC-Net later.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -318,7 +318,7 @@ page into `build/cnn-datasets/optical_flow`. The pinned SHA256 values are
 `e967b729cc47a493b3226515e0172224e503f7b14a54f97660f8d5f745632ab9`.
 From the repository root,run:
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

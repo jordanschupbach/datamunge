@@ -148,7 +148,7 @@ Maximum smoothed closed-form check error 0.000000000000.
 
 > Checking the theory
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -199,7 +199,7 @@ Adam Gaussian means [-1.5, 4, 1.5, 4]; variance entries [0.25000000000000006, 0.
 A constant feature exercises the variance floor. Fit on 600 rows, then
 compare held-out scores with the sum of independent Gaussian log densities.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n=dm::nn;

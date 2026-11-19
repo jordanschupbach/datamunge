@@ -311,7 +311,7 @@ and before candidate allocation. A positive decision cap limits tracing only;
 zero caps mean unlimited. No partial result escapes a cap, range or allocation
 failure. These safeguards do not accelerate cubic lookup.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<std::pair<double,double>> points{{0,0},{1,0},{2,0},{3,0},{4,0}};

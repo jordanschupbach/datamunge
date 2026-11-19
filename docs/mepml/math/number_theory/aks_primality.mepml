@@ -117,7 +117,7 @@ Both \(r\) and \(\ell\le\sqrt r\log_2 n\) are therefore polynomial in
 The first table expands \((x+1)^n\) with no reduction, so \(r>n\). The second
 applies the reduced test with the \(r\) AKS would choose.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -167,7 +167,7 @@ int main() {
 few numbers through the test. The second tallies the deciding step for every
 \(n\) from 2 to 1000.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;

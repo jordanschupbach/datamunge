@@ -31,7 +31,7 @@ pixel, `cv::sobel_gradient` estimates the horizontal and vertical derivatives
 This is where alpha max plus beta min was born: hardware that had to compute a
 magnitude per pixel or per radar sample, with no fast square root.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -394,7 +394,7 @@ CPU has one, so it is worth measuring. The block times 100 passes over all the
 gradient vectors with each method. Times vary from run to run and between
 machines, so the numbers are indicative only.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -445,10 +445,10 @@ int main() {
 // result_begin: markdown
 | method | ns per vector |
 | :--- | ---: |
-| std::hypot | 23.07 |
-| std::sqrt(x*x + y*y) | 4.23 |
-| alpha max beta min | 6.57 |
-| 2-line polygon | 8.14 |
+| std::hypot | 24.44 |
+| std::sqrt(x*x + y*y) | 4.31 |
+| alpha max beta min | 6.64 |
+| 2-line polygon | 8.44 |
 // result_end
 
 On the machine that built this report, the estimate was *slower* than

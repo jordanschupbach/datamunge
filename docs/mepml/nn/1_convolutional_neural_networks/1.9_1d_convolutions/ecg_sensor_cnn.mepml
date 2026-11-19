@@ -106,7 +106,7 @@ archive formats**—TXT for ECG/GunPoint and six separate ARFF channels for
 BasicMotions—and verifies every value,label and ID against prepared TS ingress.
 This separate source oracle is never used for report fitting or preprocessing.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();
@@ -303,7 +303,7 @@ Full base64 and compact8 both retain20 learned leaves and two per-channel
 normalization arrays. No BN,dropout or hidden optimizer is present.
 Native checks execute both full graphs and every learned derivative,plus
 independent finite differences for all171 tiny strided multichannel coordinates.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

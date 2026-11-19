@@ -168,7 +168,7 @@ with true classes and probabilities as in the first table below. LAC scores are
 \(1-\hat p_y\), and APS scores add the probabilities of the classes at least as
 likely as the true one.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 using DF = dm::dstruct::DataFrame;
@@ -523,7 +523,7 @@ For continuous scores the theory gives coverage exactly \(k/(n+1)\), between
 normal residuals, with a fresh calibration set and test point in each of 100000
 replicates.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

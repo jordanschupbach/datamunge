@@ -32,7 +32,7 @@ the form `column=value`. Age is grouped into child (under 18), adult and unknown
 travelled with any sibling, spouse, parent or child.
 `algorithms::encode_transactions` turns the chosen columns into item sets.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;

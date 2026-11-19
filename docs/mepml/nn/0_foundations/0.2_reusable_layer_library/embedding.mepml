@@ -90,7 +90,7 @@ need not mean anything on their own.
 The program builds a table with 10 rows of size 4 and looks up ids \([[3,7,3],[0,9,7]]\). It compares the result with the one-hot product, and the gradient of \(L=\sum e\odot r\) with the hand sum. It then pools two padded sequences (pad id 0) with a masked mean and with
 `nn::embedding_bag` on the unpadded ids.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;

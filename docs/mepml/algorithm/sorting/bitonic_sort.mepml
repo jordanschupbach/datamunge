@@ -74,7 +74,7 @@ int main() {
 \caption(A dot identifies a comparator endpoint; a line crossing without a dot adds no connection. Comparators within a stage are slightly staggered to keep crossings unambiguous.)
 \alttext(Four horizontal wires carry input three, one, four, two through six comparators in three stages to output one, two, three, four. The first left comparator is descending; the others are ascending.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto trace=dm::algorithms::bitonic_sort_trace({3,1,4,2});
@@ -188,7 +188,7 @@ every totally ordered input of that length. The following exhaustive check
 uses that principle for small lengths, rather than assuming random tests alone
 prove correctness.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| wires | binary inputs checked | failures |\n| ---: | ---: | ---: |\n");

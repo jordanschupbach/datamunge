@@ -54,7 +54,7 @@ The table checks the library against reference values computed with Python's
 `zlib.adler32`. It also checks the closed form directly, and includes the first
 undetected change, which is explained below.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -104,7 +104,7 @@ The largest \(n\) satisfying this is zlib's NMAX. `algorithms::adler32_update`
 uses it, and its tests check it against byte-by-byte reduction on all-0xFF
 input, the worst case.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -165,7 +165,7 @@ every window). rsync relies on this.
 The block below checks the three identities on a text stream: the 891 Titanic
 passenger names from `dm::datasets::titanic()`, one per line.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -296,7 +296,7 @@ The experiment uses the 115 008-byte stream of all 1797 digit images, which is
 longer than \(p\). It applies 300 corruptions of each kind and checks the whole
 stream each time.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -602,7 +602,7 @@ sums have a meaning:
 The values are small (\(B<p\) always), so nothing wraps. The checksum therefore
 reduces to two image features, and similar digits have similar features.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;

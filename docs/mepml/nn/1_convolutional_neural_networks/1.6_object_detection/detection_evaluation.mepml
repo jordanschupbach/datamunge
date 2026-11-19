@@ -318,7 +318,7 @@ COCO JSON `[x,y,w,h]` boxes become `[y,x,y+h,x+w]`. Category IDs remain the
 original COCO IDs. All numerical evaluation now forwards to the tensor library.
 No optimizer is appropriate: the inputs are fixed predictions, not fitted leaves.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) -I../../../../../prebindings/nn/include"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) -I../../../../../prebindings/nn/include", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 #include "common/detection_evaluation.hpp"

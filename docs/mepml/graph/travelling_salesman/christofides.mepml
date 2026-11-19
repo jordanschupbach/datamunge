@@ -268,7 +268,7 @@ shortcut can replace the cheap path 1,0,3 by the direct edge of cost 100.
 The resulting tour costs 103. Its ratio to the proven optimum is 25.75,
 which is not constrained by the metric theorem.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<std::vector<double>> nonmetric{{0,1,1,1},{1,0,1,100},{1,1,0,1},{1,100,1,0}};
@@ -309,7 +309,7 @@ allocated 2^k slots before that allocation; zero disables this table cap.
 The tree must already exist to determine k. These controls do not cap matrix,
 complete-edge-list or tree storage, nor do they return partial results on failure.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto d=dm::algorithms::hub_tsp_distances(4);

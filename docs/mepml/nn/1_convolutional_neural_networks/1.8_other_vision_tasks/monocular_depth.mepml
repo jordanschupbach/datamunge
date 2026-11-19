@@ -247,7 +247,7 @@ predict a residual,then positive heads emit coarse and refined metric depth.
 There are16 learned tensors,231745 scalars,11 exposed stages and no BN.
 The total objective is refined log loss+.1 valid-neighbor loss+.2 coarse log
 loss,with lambda.5 in both log terms. RGB is the only forward image input.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -311,7 +311,7 @@ The report supplies a reproducible replacement for the old external archive.
 Place official `nyu_depth_v2_labeled.mat` in
 `build/cnn-datasets/monocular_depth` and run from the repository root:
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

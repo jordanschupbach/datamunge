@@ -25,7 +25,7 @@ Build Datamunge with `-DDATAMUNGE_ENABLE_TENSORFLOW=ON` and point
 libraries. On a build with the backend disabled, this block reports its
 availability. The native weight-only exercise below still runs.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 #include <cmath>
 #include <fstream>
@@ -166,7 +166,7 @@ Batch shapes: [4, 1] and [1, 1]; predictions: [0.25, 1, -1.25, 6.25].
 
 > Checking the theory
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main(){
  namespace n=dm::nn;int bad=0;const auto w=n::tensor({.75,-1.5},{2,1}),b=n::tensor({.25});

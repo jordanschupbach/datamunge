@@ -220,7 +220,7 @@ Stride-two projection gives a 3x3x4 map; value/gradient error versus tensor subs
 
 Both canonical models check full-width forward stages and parameter gradients. The compact fixtures also verify inference state immutability.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

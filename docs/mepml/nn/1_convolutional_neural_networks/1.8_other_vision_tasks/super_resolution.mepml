@@ -285,7 +285,7 @@ RCAN16 channels/2 groups/3 blocks/reduction4. Full EDSR is256 channels/32
 blocks;full RCAN is64 channels/10 groups/20 blocks/reduction16. Native
 checks execute full backward passes and verify every declared parameter
 and stage;inactive attention ReLU branches can legitimately have zero gradients.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

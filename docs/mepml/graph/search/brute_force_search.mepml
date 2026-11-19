@@ -169,7 +169,7 @@ their original order and can cause repeated visits to the same labelled prefix.
 All terminals and arc endpoints are validated before adjacency allocation,
 even when start equals goal. An empty graph has no valid terminals.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   struct Example {std::string name;std::size_t n;std::vector<std::pair<std::size_t,std::size_t>> edges;std::size_t start,goal;};

@@ -246,7 +246,7 @@ SHA256 fingerprints,then decodes all16 convolution pairs without modifying
 weights. The separate pinned TensorFlow CPU environment is used only to make
 independent Keras feature/objective/every-image-gradient test fixtures.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

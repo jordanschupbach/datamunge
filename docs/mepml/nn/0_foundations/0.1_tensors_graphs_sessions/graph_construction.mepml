@@ -108,7 +108,7 @@ The program creates three parameters ("a", "encoder/w" and "block/k", the last a
 \(y=\sum\bigl[(h_2k)\cdot\mathbf 1_{1\times2}\bigr]w\) with \(h_2=a+2+3\) and \(w=I\). It then prints the tape and the gradients, runs the counter of TensorFlow's
 control-dependency example, and triggers a shape error.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;

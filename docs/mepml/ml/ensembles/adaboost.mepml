@@ -28,7 +28,7 @@ points, symmetry and fractal dimension. Each appears as its mean, its standard
 error and its "worst" (mean of the three largest) value. The response is
 `diagnosis`, either `benign` or `malignant`.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace agg = dm::agg;
@@ -95,7 +95,7 @@ with some overlap near a perimeter of 100 to 120.
 We hold out 30% of the tumours for testing. `stats::train_test_split()`
 stratifies by diagnosis, so both parts keep the class proportions.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -194,7 +194,7 @@ stump's feature, threshold and polarity, its weighted error \(\varepsilon_t\),
 vote \(\alpha_t\), \(Z_t\), the running bound \(\prod_s Z_s\) and the training
 error.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -234,7 +234,7 @@ its public outputs. The weights \(D_{t+1}\) are recomputed from the decision
 function \(F_t\), and the stump \(h_t\) is recovered as
 \(\operatorname{sign}(F_t-F_{t-1})\).
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -432,7 +432,7 @@ A single stump has a test error of 11%. A linear discriminant analysis on all 30
 features, which models the classes as Gaussians with a common covariance, is a
 strong baseline for this data.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-08, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

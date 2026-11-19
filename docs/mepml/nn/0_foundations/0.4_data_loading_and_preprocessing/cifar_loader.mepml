@@ -91,7 +91,7 @@ int main() {
 
 A varying byte pattern tests all 6144 image coordinates, not just three means. We then damage one property at a time.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
  namespace d=dm::nn::data; namespace n=dm::nn;

@@ -204,7 +204,7 @@ The full network has52,311,446 learned scalars;divisor8 compact widths retain
 retained activations. No BN,pretrained weights or person-box forward inputs.
 The native suite executes full128px backward as well as compact backward.
 This compact probe also checks final loss reaches both initial fields.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -301,7 +301,7 @@ The test set has14 annotated people and116 labeled non-neck joints.
 The same source photograph never crosses splits. Boxes are used only for
 missing-label masks and the declared evaluation rule.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

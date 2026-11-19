@@ -103,17 +103,16 @@
     "mep": {
       "inputs": {
         "crepl": "crepl_2",
-        "datamunge": [],
         "flake-utils": "flake-utils_2",
         "nixpkgs": "nixpkgs_2",
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1793315762,
-        "narHash": "sha256-gZSIVMQm2vE2MpGY9rjy8YpIBgmg4jgbfd8v2IrfrwU=",
+        "lastModified": 1795068701,
+        "narHash": "sha256-HQkQru6/0kefaGVQKnqg+yqmX044MzP3meu4V+u/taA=",
         "owner": "jordanschupbach",
         "repo": "mep",
-        "rev": "f3652a63aebac546cae6b04a452c10c5179a6e88",
+        "rev": "bba2be2f37b03602ea7bc45c01a21b289b4f19ef",
         "type": "github"
       },
       "original": {

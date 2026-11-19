@@ -260,7 +260,7 @@ initialization uses9*Cin for3x3 and16*Cin for transposes,including their
 [4,4,Cout,Cin] layout. Compact channels retain all67 exposed stages and126
 learned tensors. The full teaching graph is executed too;no pretrained or
 published-quality equivalence is implied by retaining its connectivity.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -329,7 +329,7 @@ Use the same reproducible Middlebury preparation as FlowNetS. Place the
 official frame-pair and GT ZIP files in `build/cnn-datasets/optical_flow`,then
 run from the repository root:
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

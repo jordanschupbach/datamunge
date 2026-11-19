@@ -207,7 +207,7 @@ sampled from this model, so its counts are not a significance calculation.
 
 > API boundaries and exact work counts
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| pattern bytes | legacy exact start | legacy fuzzy end | modern exact windows |\n"

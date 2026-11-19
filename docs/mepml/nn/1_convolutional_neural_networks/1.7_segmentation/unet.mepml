@@ -148,7 +148,7 @@ weights,not a biomedical training result. Native checks also require every
 compact learned gradient to be nonzero and verify96/112/128-pixel alignment.
 The compact SAME model retains all four encoder/decoder levels.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

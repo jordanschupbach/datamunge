@@ -194,7 +194,7 @@ target centerness and divided by total centerness (floor 1e-6). The **plus one**
 is area smoothing, not an epsilon. An all-background batch keeps focal learning
 but has exact zero regression and centerness gradients.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -252,7 +252,7 @@ positive. The full source graph below checks all 218 learned tensor derivatives
 at 128 pixels, and counts 8525 predictions at 640. It is initialized validation,
 without pretraining or a trained COCO claim.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

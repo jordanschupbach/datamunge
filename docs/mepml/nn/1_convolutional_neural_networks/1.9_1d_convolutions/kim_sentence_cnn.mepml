@@ -105,7 +105,7 @@ embeddings. Unknown held-out words use1,right padding0. Both the token matrix
 and the original source text/labels remain in the manifest and reviews.tsv.
 Word and later raw-character examples share exactly these original source rows.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

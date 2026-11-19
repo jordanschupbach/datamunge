@@ -93,7 +93,7 @@ meshes fit,next2validate,and first4official test meshes test:24/6/12objects.
 Original OFF bytes/member names/hashes remain local. Object IDs are disjoint;
 near-duplicate CAD shapes across original records are not certified absent.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

@@ -110,7 +110,7 @@ This is estimated small-motion flow,not ground truth,Farneback,TV-L1 or the
 paper's flow preprocessing. No warping,pyramid or large-motion accuracy claim.
 Preparation retains every resized original frame and initial/final energy.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

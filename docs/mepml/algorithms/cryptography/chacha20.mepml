@@ -154,7 +154,7 @@ one encrypt the original 114-byte sunscreen message. We compare the full
 ciphertext, not just its first sixteen bytes. The second block uses fifty
 bytes and discards fourteen unused bytes in this one-shot API.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::array<std::uint8_t,32> key{};std::iota(key.begin(),key.end(),std::uint8_t{0});
@@ -291,7 +291,7 @@ Each call starts at the first byte of its chosen counter. Splitting at byte
 arbitrary incremental reads needs a stateful stream abstraction. This report
 keeps the existing one-shot API and makes its behavior explicit.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   constexpr auto last=std::numeric_limits<std::uint32_t>::max();

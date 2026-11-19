@@ -122,7 +122,7 @@ behind spectral clustering and diffusion maps. The 10 digit classes should show
 up as a crowd of eigenvalues near 1. That crowd is a hard case for Arnoldi,
 which separates eigenvalues by their gaps.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -177,7 +177,7 @@ matrix-free product, and check the two promises of the construction. The basis
 should be orthonormal and the Arnoldi relation should hold, column by column, up
 to rounding. The table shows the top-left corner of \(H_{120}\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 
 
@@ -541,7 +541,7 @@ the Gram-Schmidt work, \(O(nm)\) per step and \(O(nm^2)\) in total. A dense
 eigensolver needs \(O(n^3)\) operations and the whole \(n\times n\) matrix in
 memory.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 
@@ -599,10 +599,10 @@ int main() {
 // result_begin: markdown
 | step | time (ms) | memory for the matrix or basis |
 | --- | ---: | ---: |
-| build the 10-NN graph (brute force) | 182 | 221 kB (sparse \(P\)) |
-| Arnoldi, \(m=120\) (120 products with \(P\)) | 23 | 1699 kB (basis \(V\)) |
-| Ritz pairs from \(H_{120}\) | 84 | 112 kB |
-| dense symmetric eigensolver on \(S\) | 432 | 25228 kB (dense \(S\)) |
+| build the 10-NN graph (brute force) | 173 | 221 kB (sparse \(P\)) |
+| Arnoldi, \(m=120\) (120 products with \(P\)) | 16 | 1699 kB (basis \(V\)) |
+| Ritz pairs from \(H_{120}\) | 67 | 112 kB |
+| dense symmetric eigensolver on \(S\) | 519 | 25228 kB (dense \(S\)) |
 
 1797 eigenvalues from the dense solver, 120 Ritz values.
 // result_end

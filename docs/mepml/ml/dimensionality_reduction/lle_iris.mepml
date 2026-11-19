@@ -457,7 +457,7 @@ vectors of \(M\), and the embedding spans exactly \(\{u-\bar u,\ v-\bar v\}\).
 The check: 500 points uniform on a \(10\times6\) rectangle, mapped into
 \(\mathbb R^3\) by an affine map of rank 2, embedded with \(k=10\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 using DF = dm::dstruct::DataFrame;
@@ -611,7 +611,7 @@ squeezes the height into a thin band, the classical look of LLE on this example
 (scikit-learn's gallery shows the same shape). The tables below vary \(k\) and
 \(r\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 using DF = dm::dstruct::DataFrame;
@@ -713,7 +713,7 @@ coordinates \(s\), \(h\) and of the raw coordinates \(x\), \(z\) (each centred
 and scaled to unit length), and how much of the embedding is a linear function
 of the raw coordinates.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 using DF = dm::dstruct::DataFrame;
@@ -808,7 +808,7 @@ coordinates and regress each on \(s\), on the harmonics \(\cos(m\pi u)\) with
 \(u=(s-s_{\min})/(s_{\max}-s_{\min})\), and on \(h\). Then we stretch the roll's
 height to make the sheet less elongated.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 
 using DF = dm::dstruct::DataFrame;

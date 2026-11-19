@@ -139,7 +139,5 @@ int main() {
 ```
 // result_begin: markdown
 Test NLL 1.603500 to 0.013190. Accuracy 128/128.
-
-Upstream replay errors 1.109e-05 for mel, 4.530e-06 for patches, and 4.500e-06 for logits.
 \image(figures/audio_spectrogram_transformer.svg)
 // result_end

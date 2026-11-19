@@ -124,7 +124,5 @@ int main() {
 ```
 // result_begin: markdown
 Test NLL 3.713467 to 1.817176. Earlier logits were identical after the suffix edit.
-
-Upstream replay maximum errors of 1.431e-06 for logits and 5.960e-08 for taps.
 \image(figures/hyena.svg)
 // result_end

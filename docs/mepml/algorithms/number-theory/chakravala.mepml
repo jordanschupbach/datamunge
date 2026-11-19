@@ -110,7 +110,7 @@ The first candidates 1 and 5 both have squared error 12, so the tie rule
 selects 1. At (18,5,−1), all positive multipliers are admissible: 4 has error
 3, versus 3's error 4. The old special case incorrectly forced the floor root.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto trace=dm::algorithms::chakravala_trace(13);
@@ -276,7 +276,7 @@ or sums; no wrapped pair is returned as a purported solution.
 
 > Explicit failures, endpoint coefficients and reproducibility
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   bool overflow=false,budget=false,zero_budget=false;

@@ -65,7 +65,7 @@ The conditions are \(p(-1)=-2\), \(p''(-1)=-18\), \(p(1)=10\), and
 curvature equations gives \(c_2=3\), \(c_3=4\). The value equations then
 give \(c_0=1\), \(c_1=2\). Thus \(p(x)=1+2x+3x^2+4x^3\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::vector<dm::algorithms::BirkhoffConstraint> conditions{
@@ -243,7 +243,7 @@ units. For example, the valid line through \((0,1)\) and \((10^{-16},2)\)
 has coefficients \((1,10^{16})\): column scaling resolves it even though the
 unscaled slope column is tiny.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto c=dm::algorithms::birkhoff_polynomial({{0,0,1},{1e-16,0,2}});

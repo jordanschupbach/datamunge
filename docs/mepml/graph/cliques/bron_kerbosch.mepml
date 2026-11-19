@@ -248,7 +248,7 @@ The new validation checks that n is nonnegative, enough rows are supplied,
 and every used endpoint is in [0,n), before allocating the matrix. Inputs are
 borrowed for the call and never modified. Isolates are maximal singletons.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   struct Example {std::string name;int n;std::vector<std::vector<int>> adjacency;};

@@ -103,7 +103,7 @@ zero, one and two. Vertex three has already been discovered at depth two and
 remains queued. Vertex four is still undiscovered because the goal's outgoing
 edge is not expanded, even though four is reachable in the full graph.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto original=dm::algorithms::breadth_first_search(3,{{0,1},{1,2}},0,2);

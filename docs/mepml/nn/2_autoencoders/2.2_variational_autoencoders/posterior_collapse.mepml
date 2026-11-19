@@ -205,7 +205,7 @@ producing 288/72/72 disjoint combinations. Native preparation orders source IDs 
 the loader preserves any valid supplied ordering and regenerates every sentence, prefix,
 factor and identity. This is exhaustive procedural teaching data, not a language benchmark.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto root  = dm::datasets::prepare_example_data("sequence-vae-assets");
@@ -929,7 +929,7 @@ greedy decoding is a plug-in reconstruction, not a posterior predictive mean. Th
 are all ten prespecified held-out rows floor(k*71/9), for both schedules, without filtering
 failed grammar, repetition or missing EOS.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-09, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   for (const std::string name : {"constant", "warmup"}) {

@@ -105,7 +105,7 @@ decoding. Original AVI/annotation bytes come from mirror revision
 7076149bdbeff8d70003a68d6291fd080db44683 while the KTH server is unavailable.
 All source hashes,frame identities,people and segments remain in the manifest.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

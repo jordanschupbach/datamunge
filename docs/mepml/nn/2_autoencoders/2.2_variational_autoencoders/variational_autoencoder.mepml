@@ -171,7 +171,7 @@ normalized intensity >=0.5, equivalent to raw uint8 >=128. These tiny pools and 
 threshold do not constitute the official binarized-MNIST benchmark protocol. Labels only
 choose diagnostic gallery rows and colour the latent scatter; they never enter fitting.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n                       = dm::nn;

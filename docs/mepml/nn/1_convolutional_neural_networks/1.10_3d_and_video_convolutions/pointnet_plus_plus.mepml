@@ -99,7 +99,7 @@ scale by maximum sampled norm,roundFloat32. Compact observations keepfirst256.
 Independent original-OFF/NumPy/xoshiro replay matches every129024pointcoordinate,
 43008area-weighted face choice and86016barycentric uniform exactly.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

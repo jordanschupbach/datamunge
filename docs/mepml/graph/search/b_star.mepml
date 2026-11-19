@@ -71,7 +71,7 @@ int main() {
 \caption(A hand-checkable directed graph. Both destinations are allowed, and only the route through vertex 3 costs 2.)
 \alttext(Start 0 points to vertex 1 with weight 1 and goal 3 with weight 2. Vertex 1 points to goal 2 with weight 5.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto trace = dm::algorithms::b_star_search_trace(
@@ -130,7 +130,7 @@ int main() {
 \caption(A later improvement to vertex 1 must propagate to goal 3. An unreachable extra goal does not prevent finding a reachable one.)
 \alttext(A direct edge to vertex 1 costs 3; reaching it through vertex 2 costs only 2. Vertex 1 then leads to goal 3 at additional cost 3.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto trace = dm::algorithms::b_star_search_trace(
@@ -161,7 +161,7 @@ is 4. Values through 4 are admissible; sufficiently larger values delay vertex 2
 until after the cost-6 goal is removed. The library checks dimensions and finite
 values, but cannot establish admissibility without solving the path problem.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| h(2) | admissible | cost | expansions |\n| ---: | :--- | ---: | ---: |\n");

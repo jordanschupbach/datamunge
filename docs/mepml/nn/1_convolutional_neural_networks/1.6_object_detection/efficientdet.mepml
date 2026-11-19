@@ -194,7 +194,7 @@ The initialized full D0 probe executes all493 learned tensor gradients using
 128-pixel input: 3,874,217 learned/47,136 state scalars. Its default512-pixel
 geometry has49,104 anchors. It does not fit a full-resolution COCO benchmark.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

@@ -106,7 +106,7 @@ The program prints the output lengths for an input of length 7 and kernel 3 from
 reference. The 2-D, 1-D, depthwise, separable and dilated layers are compared with `nn::conv2d_matrix`, applied by a matrix product. The 3-D layer is compared with loops, and the transposed convolution with the
 autograd input gradient and with \(M^\top\). Last come the parameter counts from the layers' stores. Everything runs in float64.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace nn = dm::nn;

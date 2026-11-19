@@ -25,7 +25,7 @@ ZeroR uses only this response, so missing ages, cabins or other predictors do
 not remove training or evaluation rows. Numeric storage does not make the
 response a regression target in this report.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto passengers = dm::datasets::titanic();
@@ -125,7 +125,7 @@ only; the separate evaluation helpers do not recompute the majority from `test`.
 A change in test prevalence can therefore change accuracy even though the
 prediction stays fixed.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto[train, test] =

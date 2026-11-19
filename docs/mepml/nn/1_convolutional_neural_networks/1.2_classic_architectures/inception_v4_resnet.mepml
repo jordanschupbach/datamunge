@@ -292,7 +292,7 @@ Block C: exact zero-scale identity; output, parameter and input-gradient errors 
 
 Both canonical models check every learned-tensor gradient. Compact fixtures also verify that inference preserves moving statistics.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

@@ -197,7 +197,7 @@ a512x512 bilinear matrix and102-way head. Compact widths4/8/16/32/32 feed a
 32x32 matrix and six-way head. Both variants have54 parameter tensors and37
 recorded stages. There is no pretrained state,BN or dropout.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -243,7 +243,7 @@ It keeps48 fitting/48 validation/48 test images with144 distinct original IDs.
 The report uses local class labels0–5. This explicit selection may differ from
 a previously prepared external `flowers.npz`.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();

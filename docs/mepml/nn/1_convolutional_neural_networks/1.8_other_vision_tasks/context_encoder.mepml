@@ -234,7 +234,7 @@ bottleneck and learned transpose-convolution decoder. The compact32-to16
 graph retains three encoder downs,the bottleneck and three decoder stages.
 There are no skip links. Encoder/adversary use LeakyReLU(.2),decoder ReLU,
 output tanh;BN follows all but the first down and final output.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

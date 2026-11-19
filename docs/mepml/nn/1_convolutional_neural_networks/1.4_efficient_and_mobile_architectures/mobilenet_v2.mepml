@@ -245,7 +245,7 @@ Expansion 4->24; linear projection 24->4; exact signed identity and weighted inp
 
 Parameter counts include BN; arithmetic excludes BN and elementwise work.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -292,7 +292,7 @@ alpha 1, resolution 96: 3504872 learned / 34112 moving scalars, 56289152 MACs/im
 Channel alignment: 9->16 due to 10% safeguard; 17->16. Final 1280-channel width does not shrink below alpha one.
 // result_end
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

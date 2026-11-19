@@ -230,7 +230,7 @@ Compact V1 divides VGG widths by8,fc128/rate4 and disables dropout; it has
 learned/1,200 state scalars. All compact tensor derivatives are nonzero in
 native96-pixel checks. No pretrained weights or VOC accuracy is claimed.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

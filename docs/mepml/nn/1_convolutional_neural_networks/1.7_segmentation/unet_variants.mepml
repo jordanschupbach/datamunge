@@ -180,7 +180,7 @@ base8/four-class models retain every nested node/head or every attention gate.
 Native checks require every compact gradient to be nonzero and verify dense
 concatenation widths,odd nested alignment and rounded attention geometry.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

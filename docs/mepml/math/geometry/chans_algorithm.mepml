@@ -450,7 +450,7 @@ but changes the cost of a step from \(r\log m\) to the total size of the group
 hulls. On the parabola every point is a vertex of its group's hull, so a step
 costs \(n\) tests and a failed round \(nm\).
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 namespace geo = dm::geometry;
@@ -502,7 +502,7 @@ Counting tests ignores memory traffic and the bookkeeping of groups. We time the
 three \(O(n\log n)\) or better algorithms at \(n=2^{20}\), taking the median of
 three runs.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 namespace geo = dm::geometry;

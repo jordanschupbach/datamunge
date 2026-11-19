@@ -189,7 +189,7 @@ retained centres floored at one. L1 applies only at retained cells; background
 images still train heatmap negatives. The independent fixture checks every
 derivative, including the Gaussian .5 shoulder's factor of1/16.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -246,7 +246,7 @@ and dy/dx. Head kernels use normal standard deviation .001, heatmap bias -2.19;
 encoder/deconvolutions use their source initialization. No pretrained weights
 are loaded. This full128-pixel backward verifies all81 learned tensor derivatives.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

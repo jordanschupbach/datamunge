@@ -83,7 +83,7 @@ single division of the final MSE by255. ESRGAN divides both pre-activation
 features by255, then computes mean L1. The following supplied two-coordinate
 fixture makes the distinction explicit, without pretending to be pretrained data.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n    = dm::nn;

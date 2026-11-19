@@ -92,7 +92,7 @@ slot 2, whose packed offset is 5. It does not move to byte address 2. The
 API preserves every root/reference slot, including duplicates; sizes are
 positive units selected by the caller, with no alignment or header padding.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const dm::algorithms::ObjectGraph graph{6,{{2},{3},{0},{4},{1,3},{}},{4,4},{2,3,1,4,2,5}};
@@ -267,7 +267,7 @@ moved. No observational dataset is needed for these controlled graph invariants.
 
 > Capacity, malformed garbage and whole-call trace limits
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const dm::algorithms::ObjectGraph graph{6,{{2},{3},{0},{4},{1,3},{}},{4,4},{2,3,1,4,2,5}};

@@ -149,7 +149,7 @@ has not moved. At the initial midpoint 1, however, the residual is
 \(2.5\times10^{-21}\), already below the historical tolerance \(10^{-10}\),
 even though the coordinate error is 1/4.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto f=[](double x){return 1e-20*(x-.75);};
@@ -184,7 +184,7 @@ that returns -1 below 0.3 and +1 elsewhere never returns zero, yet its brackets
 shrink to the jump. The interval stopping criterion can pass with residual one.
 Continuity is an assumption; the numerical routine cannot establish it.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const double adjacent=std::nextafter(1.,2.);

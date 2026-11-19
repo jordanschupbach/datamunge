@@ -165,7 +165,7 @@ ResNet18/divisor8,pool16/head32/aux16,four classes and no dropout. Native
 checks require every compact gradient nonzero and exact96/97-pixel main/aux
 alignment;all five concatenated context sources contribute.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

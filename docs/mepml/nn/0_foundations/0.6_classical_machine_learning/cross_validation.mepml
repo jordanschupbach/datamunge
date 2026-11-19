@@ -107,7 +107,7 @@ Sample-weighted mean: 1.857142857; unweighted mean: 2.
 
 Here the candidates are an intercept-only predictor and an affine fit to 17 deterministic development rows. The final 31-row test uses new locations and is evaluated only after selecting.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {
@@ -186,7 +186,7 @@ squared-error rows with zero targets, leaving the intercept unpenalized.
 After selecting the degree and penalty, refit on the full development set
 and evaluate once on an independently perturbed grid.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   namespace n=dm::nn;

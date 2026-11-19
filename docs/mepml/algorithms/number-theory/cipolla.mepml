@@ -257,7 +257,7 @@ uses the other root when necessary. The unsigned-result API retains the
 actual raw root, its complementary root and the selected legacy representative.
 The original small-prime choices remain intact.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto small=dm::algorithms::cipolla_sqrt_trace(1,3);
@@ -311,7 +311,7 @@ already contains a root. Prime validation, scalar Euler tests and final
 verification are separate from the extension-product cap. Nonresidues and
 valid zero/binary shortcuts do not consume unused candidate or extension work.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   dm::algorithms::CipollaOptions exact;exact.max_candidates=2;exact.max_extension_products=6;

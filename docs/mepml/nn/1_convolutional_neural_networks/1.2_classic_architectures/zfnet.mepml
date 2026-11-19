@@ -231,7 +231,7 @@ Switch unpooling agrees exactly. Ordinary ReLU derivative [0, -4]; deconvnet bac
 
 The canonical model checks every stage shape and parameter gradient. A compact fixture checks the backprojection grid.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

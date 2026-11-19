@@ -535,12 +535,7 @@ int main(int argc, char** argv) {
 
 ```
 // result_begin:
-// == available ROMs: tetris   (pass game=<name> to pick one)
-// == Atari(tetris): Discrete(5), 5 actions: NOOP FIRE RIGHT LEFT DOWN
-//   random policy, 5 episodes        return mean     0.00  min     0.00  max     0.00   length mean  512.6
-//   throughput: 2337 agent steps/s = 9347 emulator frames/s (with preprocessing)
-//   Recorded 400 frames at 15 fps
-//   frame stack difference (newest - oldest, mean |diff| over pixels): 0.0012 -> motion is visible to the network
+// == available ROMs:   (pass game=<name> to pick one)
 // == Synthetic flicker diagnostic: an 8x8 sprite moves 3 pixels per frame
 //   obs: 28224 floats = 4 frames of 84x84, values in [0.078, 0.902]
 //   brightest pixel of the last frame alone: 0.078, after max-pooling the last two frames: 0.902 -> flicker removed

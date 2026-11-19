@@ -32,7 +32,7 @@ far more miles per gallon than a straight line through the rest predicts. A
 *median* regression, which minimises absolute rather than squared residuals, is
 less swayed by such points.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace agg = dm::agg;
@@ -460,7 +460,7 @@ was made, has a closed form: \(g_0=-\sum_k\operatorname{sign}(r_k)\) and
 \(g_1=-\sum_k\operatorname{sign}(r_k)\,\text{wt}_k\). We compare the two over
 the whole run and over its first 2 000 steps, the descent phase.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

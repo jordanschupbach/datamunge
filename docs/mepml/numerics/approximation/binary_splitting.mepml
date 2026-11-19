@@ -84,7 +84,7 @@ int main() {
 \caption(Leaves and merges for four terms. The rightmost leaf is normalised as 1/3; the root, rather than each leaf, represents the original factorial series.)
 \alttext(Four leaves with fractions one over one, one over one, one over two and one over three merge into two over one and four over six, then into sixteen over six.)
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| terms | raw numerator | raw denominator | reduced fraction | double value |\n"
@@ -202,7 +202,7 @@ and an addition. The implementation therefore performs \(O(N)\) word work,
 uses \(O(\log(N+1))\) recursion-stack space, and optionally records \(O(N)\)
 nodes. The exact fractions need not be reduced at intermediate stages.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   std::print("| effective terms | recorded nodes | exact node count | merges |\n"

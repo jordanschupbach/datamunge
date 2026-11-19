@@ -26,7 +26,7 @@ month: February has fewer days than January even in a leap year. Calendar
 normalisation is therefore useful before comparing levels. It does not by itself
 remove growth or seasonal demand.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto air = dm::datasets::air_passengers();
@@ -113,7 +113,7 @@ Year zero denotes 1 BCE, using astronomical year numbering. The calculation is
 proleptic Gregorian: it does not apply a historical cutover to the Julian
 calendar.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto air = dm::datasets::air_passengers();
@@ -145,7 +145,7 @@ days; only the final \(r<7\) dates need their weekday checked. The helper
 therefore needs at most six remainder checks per record. A weekend here means
 Saturday or Sunday; this is not a holiday or airline working-calendar model.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto air =

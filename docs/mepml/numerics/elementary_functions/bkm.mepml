@@ -82,7 +82,7 @@ from the original report. Standard-library discrepancies are numerical checks,
 not certificates of exact error; the independent development oracle below uses
 100-digit decimal arithmetic as a further control.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto domain=dm::algorithms::bkm_domain();
@@ -205,7 +205,7 @@ logarithm absolute discrepancy and exponential relative discrepancy with the
 derived envelope, allowing 1e-14 for accumulated double and reference rounding.
 That allowance is a numerical test tolerance, separate from the exact bound.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const auto domain=dm::algorithms::bkm_domain();

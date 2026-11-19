@@ -99,7 +99,7 @@ The first block shows the parameters and the two tests on a few numbers: three
 primes, the smallest strong pseudoprime to base 2, a Carmichael number, and the
 two smallest strong Lucas pseudoprimes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 
 namespace alg = dm::algorithms;
@@ -327,7 +327,7 @@ times both, Baillie–PSW, and `is_probable_prime()` (deterministic Miller–Rab
 with a fixed set of bases for 64-bit numbers) on a million random odd 64-bit
 numbers and on 100,000 64-bit primes.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 

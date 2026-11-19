@@ -26,7 +26,7 @@ is case-sensitive on bytes; no linguistic tokenisation or Unicode normalisation
 is implied. Each name is searched separately, so a match cannot run from the end
 of one passenger's name into the next.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-01, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto passengers = dm::datasets::titanic();
@@ -84,7 +84,7 @@ Any pair ending in `M` permits prefix overlap at shift 4. Most remaining pairs
 permit shift 5, including `s.`: a candidate with the same terminal pair still
 has to move by a positive distance.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-02, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     std::print("{}\n",
@@ -279,7 +279,7 @@ The worst-case construction needs no random generator. For pattern `aaaa` in
 the period-one good-suffix shift advances by one. This diagnostic is a
 theoretical counterexample, separate from the dataset analysis.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto result = dm::algorithms::ZhuTakaoka("aaaa").scan("aaaaaaaa");

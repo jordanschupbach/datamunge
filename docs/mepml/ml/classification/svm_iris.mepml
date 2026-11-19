@@ -470,7 +470,7 @@ measurements in centimetres. Unlike the artificial examples, all predictors are
 now standardised. The summary is descriptive; model means and scales are
 estimated only from training rows.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-05, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto iris = dm::datasets::iris();
@@ -503,7 +503,7 @@ estimate of that selection. No hyperparameter search is performed. A 45-flower
 holdout has resolution only \(1/45\), so a difference of one flower is weak
 evidence about generalisation.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-06, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto[train, test] =
@@ -567,7 +567,7 @@ binary problems. The equality residual checks feasibility separately from the
 primal–dual gap. The residuals quantify numerical precision; classification
 accuracy alone cannot establish an optimal fit.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 int main() {
     const auto[train, test] =

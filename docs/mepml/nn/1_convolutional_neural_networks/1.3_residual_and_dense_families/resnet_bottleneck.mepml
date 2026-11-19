@@ -205,7 +205,7 @@ Stride in 1x1 gives zero; stride in 3x3 gives four on a 2x2 patch in each of eig
 
 Full reference counts and stage dimensions use a zero-input inference pass without backward storage. Separate compact graphs verify finite derivatives through every learned tensor with complete depth.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-04, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

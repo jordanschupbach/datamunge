@@ -102,7 +102,7 @@ or per-record feature processing. Fitting Double population mean/std round
 once to Float32 and become detached scalar checkpoint state. Held-out values
 never estimate this normalization. All200 original signals are shown below.
 
-```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-03, cache=yes}
 #include <dm/dm.hpp>
 int main() {
   const std::filesystem::path cache = dm::datasets::data_home();
@@ -321,7 +321,7 @@ The native suite executes full backward and checks all14 learned derivatives,
 plus independent host finite differences for all40 tiny-model coordinates.
 Pre-BN biases can have near-zero batch-statistic derivatives because a constant
 bias shift cancels in BN;finite zero gradients there are not a broken graph.
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)", id=chunk-07, cache=yes}
 #include <dm/dm.hpp>
 
 int main() {

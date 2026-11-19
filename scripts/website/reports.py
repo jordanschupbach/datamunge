@@ -373,12 +373,14 @@ def is_stale(path, status_path, force=False):
         return True
 
 
-def run_report(mep_mepml, path, status_path, timeout=0, env=None):
+def run_report(mep_mepml, path, status_path, timeout=0, env=None, *, refresh_cache=False):
     """Run the report's code blocks with mep, recording how they went in `status_path`.
 
     Returns (seconds, mep's output)."""
     os.makedirs(os.path.dirname(status_path), exist_ok=True)
     cmd = [mep_mepml, "run", "--quiet", "--report", status_path, path]
+    if refresh_cache:
+        cmd.append("--refresh-cache")
     if timeout:
         cmd += ["--timeout", str(timeout)]
     t0 = time.time()
@@ -427,7 +429,7 @@ def with_prerequisites(jobs_list, status_path):
     return ordered
 
 
-def run_reports(mep_mepml, jobs_list, timeout=0, jobs=1, env=None):
+def run_reports(mep_mepml, jobs_list, timeout=0, jobs=1, env=None, *, refresh_cache=False):
     """Run each (path, status_path) in `jobs_list`, `jobs` reports at a time."""
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -480,7 +482,10 @@ def run_reports(mep_mepml, jobs_list, timeout=0, jobs=1, env=None):
             else:
                 runnable.append((original, status))
         with ThreadPoolExecutor(max_workers=max(1, jobs)) as pool:
-            futs = {pool.submit(run_report, mep_mepml, p, s, timeout, env): (p, s) for p, s in runnable}
+            futs = {
+                pool.submit(run_report, mep_mepml, p, s, timeout, env, refresh_cache=refresh_cache): (p, s)
+                for p, s in runnable
+            }
             for fut in as_completed(futs):
                 secs, out = fut.result()
                 path, status = futs[fut]
