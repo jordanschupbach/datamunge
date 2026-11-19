@@ -1456,11 +1456,9 @@ docs-bindings: prebuild-swig
 docs-all: docs docs-bindings
     @echo "Core + binding docs are up to date."
 
-# README.mepml is the source of README.org: export it with mep's mepml tool
-# (build/README.org, which the document's //? Post: copies back to the top).
-# Edit README.mepml, not README.org.
+# Regenerate README.md from its editable MepML source.
 readme MEP_MEPML="mep-mepml":
-    {{ MEP_MEPML }} build README.mepml org
+    {{ MEP_MEPML }} build README.mepml md
 
 # }}} docs commands
 
