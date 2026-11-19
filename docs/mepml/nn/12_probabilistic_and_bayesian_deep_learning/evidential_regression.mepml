@@ -1,0 +1,123 @@
+//? Title: Evidential regression with a normal-inverse-gamma output
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a regression network whose four outputs define a
+normal-inverse-gamma distribution. Its marginal predictive distribution
+is Student-t. Compare the fitted mean with held-out observations and
+plot the two variance components implied by the model.
+)
+\toc
+
+> Learn the location, spread and evidence
+
+The generating mean is sin(2.5x), and observation noise increases with x.
+The 24 tanh features feed four outputs. The location is unconstrained.
+Softplus makes the other three outputs positive, and an offset keeps
+the inverse-gamma shape above one.
+
+Integrate the Gaussian location and variance under the model to obtain
+a Student-t likelihood. Add an evidence penalty proportional to the
+absolute residual and to 2ν + α. The split has 1,024 fitting and 512
+test observations, with a three-epoch Adam fit. Evaluate Student-t NLL
+without the penalty as well as the regularized objective.
+
+```{cpp, results="markdown", file="figures/evidential_regression_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+
+std::pair<n::Tensor, n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f, 1.f);
+  std::normal_distribution<float> normal;
+  std::vector<float> x(count), y(count);
+  for (int i = 0; i < count; ++i) {
+    x[i] = uniform(rng);
+    y[i] = std::sin(2.5f * x[i]) + (.13f + .2f * (x[i] + 1.f)) * normal(rng);
+  }
+  return {n::from_vector(x, {count, 1}), n::from_vector(y, {count, 1})};
+}
+
+int main() {
+  const auto [x_fit, y_fit] = simulate(1024, 102141);
+  const auto [x_test, y_test] = simulate(512, 102142);
+  n::ParameterStore parameters(41380);
+  const auto predict = [&](const n::Tensor& x) {
+    const auto hidden = n::dense(parameters, "hidden", x, 24, n::Activation::Tanh);
+    return n::EvidentialRegressionHead(n::dense(parameters, "head", hidden, 4));
+  };
+  predict(n::zeros({1, 1}));
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(x_fit.size(0), 16, 102143);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto output = predict(n::take_rows(x_fit, rows));
+      const auto loss = n::EvidentialRegressionLoss(output, n::take_rows(y_fit, rows), .02);
+      optimizer.step(n::grad(loss, parameters.parameters()));
+    }
+  }
+
+  n::NoGradGuard frozen;
+  const auto test = predict(x_test);
+  const auto variance = n::VarianceComponents(test);
+  const auto nll = n::EvidentialRegressionLoss(test, y_test).item();
+  const auto regularized = n::EvidentialRegressionLoss(test, y_test, .02).item();
+  const auto rmse = n::sqrt(n::mean(n::square(y_test - test.mean))).item();
+  std::println("| Held-out statistic | Value |\n| --- | ---: |");
+  std::println("| Student-t NLL | {:.6f} |\n| Regularized loss | {:.6f} |\n| RMSE | {:.6f} |",
+               nll, regularized, rmse);
+  const std::string folder = "build/evidential_regression/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "predictions.npz",
+               {{"x", x_test}, {"y", y_test}, {"mean", test.mean}, {"nu", test.nu},
+                {"alpha", test.alpha}, {"beta", test.beta}, {"nll", n::scalar(nll)},
+                {"loss", n::scalar(regularized)},
+                {"variance_observation", variance.observation}, {"variance_mean", variance.mean}});
+  parameters.save(folder + "weights.npz");
+
+  const auto query = n::linspace(-1, 1, 201).reshape({201, 1});
+  const auto values = predict(query);
+  const auto pieces = n::VarianceComponents(values);
+  const auto t = query.to_vector<double>();
+  const auto width = n::sqrt(pieces.observation + pieces.mean);
+  const auto upper = (values.mean + width).to_vector<double>();
+  auto band = (values.mean - width).to_vector<double>();
+  auto order_x = t;
+  order_x.insert(order_x.end(), t.rbegin(), t.rend());
+  band.insert(band.end(), upper.rbegin(), upper.rend());
+  auto fit = dm::graphics::RPlot::create(), split = dm::graphics::RPlot::create();
+  fit.polygon(order_x, band, {37, 99, 235, .16})
+      .points(x_test.to_vector<double>(), y_test.to_vector<double>(), "Held-out observations",
+              {100, 116, 139, .35}, 2)
+      .lines(t, values.mean.to_vector<double>(), "Fitted mean", {37, 99, 235})
+      .title("Mean ± one predictive SD").x_label("x").y_label("Response");
+  split.lines(t, pieces.observation.to_vector<double>(), "Expected observation variance", {22, 120, 68})
+       .lines(t, pieces.mean.to_vector<double>(), "Variance of the mean", {234, 88, 12})
+       .title("Model-implied predictive variance").x_label("x").y_label("Variance");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(fit).add(split).size(1280, 510).fit_panels().save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/evidential_regression_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Held-out statistic | Value |
+| --- | ---: |
+| Student-t NLL | 0.719751 |
+| Regularized loss | 0.753361 |
+| RMSE | 0.464244 |
+\image(figures/evidential_regression_fit.svg)
+// result_end
+
+The two components depend on the learned parameterization and
+evidence penalty. The band displays one predictive standard deviation
+around the fitted mean.

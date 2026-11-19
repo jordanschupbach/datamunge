@@ -1,0 +1,99 @@
+//? Title: WaveGlow conditional waveform flow
+//? Lang: en
+
+> WaveGlow conditional waveform flow
+
+The flow groups adjacent waveform samples into two channels. Each step
+mixes the channels with a learned invertible matrix and then changes
+the second channel through an affine coupling. A gated causal network
+predicts the scale and shift from the first channel and aligned log-mel
+frames. The triangular coupling makes the Jacobian determinant a sum
+of log scales. The channel mixer contributes its own log determinant.
+
+Training maximizes the conditional likelihood under a standard Gaussian
+latent density. Synthesis reverses the operation order within each step
+and traverses the steps backwards. The report checks the inverse and
+plots both a reconstruction and a new draw from a cooler Gaussian
+with standard deviation 0.6.
+
+```{cpp, results="markdown", file="figures/waveglow.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int samples = 128;
+  const auto fixture = [](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(0.f,1.f);
+    std::vector<float> values(count*samples);
+    for (int row=0; row<count; ++row) {
+      const double frequency = 280+620*uniform(rng);
+      const double phase = 2*std::numbers::pi*uniform(rng);
+      for (int t=0; t<samples; ++t) {
+        const double angle = 2*std::numbers::pi*frequency*t/8000+phase;
+        values[row*samples+t] = .5*std::sin(angle)+.15*std::sin(2*angle);
+      }
+    }
+    auto wave = n::from_vector(values,{count,samples,1});
+    return std::pair{n::squeeze(wave,{2}),n::hifigan_log_mel(wave)};
+  };
+  const auto [fit,fit_mel] = fixture(192,71321);
+  const auto [test,test_mel] = fixture(16,71322);
+  n::ParameterStore model(41380);
+  const auto initial = n::waveglow_nll(n::waveglow_transform(model,fit,fit_mel)).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(192,16,71323);
+  for (int epoch=0; epoch<3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto encoded = n::waveglow_transform(model,n::take_rows(fit,rows),n::take_rows(fit_mel,rows));
+      optimizer.minimize(n::waveglow_nll(encoded));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto fit_loss = n::waveglow_nll(n::waveglow_transform(model,fit,fit_mel)).item();
+  const auto encoded = n::waveglow_transform(model,test,test_mel);
+  const auto reconstruction = n::waveglow_transform(model,encoded.values,test_mel,true);
+  const auto error = n::max(n::abs(reconstruction.values-test)).item();
+  const auto det_error = n::max(n::abs(reconstruction.log_det+encoded.log_det)).item();
+  const auto loss = n::waveglow_nll(encoded);
+  if (!(fit_loss<initial) || error>1e-5 || det_error>1e-4 || !std::isfinite(loss.item())) return 1;
+  std::mt19937 rng(71324);
+  std::normal_distribution<float> gaussian(0,.6f);
+  std::vector<float> noise(16*samples);
+  for (auto& value : noise) value=gaussian(rng);
+  const auto latent = n::from_vector(noise,test.shape());
+  const auto generated = n::waveglow_transform(model,latent,test_mel,true).values;
+  std::print("| Initial fit NLL | Final fit NLL | Held-out NLL | Round-trip error | Log-det cancellation error |\n");
+  std::print("|---:|---:|---:|---:|---:|\n| {:.5f} | {:.5f} | {:.5f} | {:.3g} | {:.3g} |\n",
+      initial,fit_loss,loss.item(),error,det_error);
+
+  const auto first = n::select(test,0,0).to_vector<float>();
+  std::vector<float> perturb;
+  for (int j=0;j<2*samples;++j) {
+    perturb.insert(perturb.end(),first.begin(),first.end());
+    perturb[j*samples+j/2] += j%2 ? -1e-3f : 1e-3f;
+  }
+  const auto probes = n::from_vector(perturb,{2*samples,samples});
+  const auto condition = n::repeat(n::take_rows(test_mel,{0}),2*samples,0);
+  const auto sensitivity = n::waveglow_transform(model,probes,condition);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/waveglow.npz",{{"reference",test},{"condition",test_mel},{"latent",encoded.values},
+      {"log_det",encoded.log_det},{"roundtrip",reconstruction.values},{"noise",latent},
+      {"generated",generated},{"loss",loss},{"probes",probes},{"sensitivity",sensitivity.values}});
+  std::vector<double> ms(samples);
+  for (int t=0;t<samples;++t) ms[t]=t/8.;
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(ms,n::select(test,0,0).to_vector<double>(),"Reference",{31,41,55})
+      .lines(ms,n::select(reconstruction.values,0,0).to_vector<double>(),"Reconstruction",{37,99,235})
+      .lines(ms,n::select(generated,0,0).to_vector<double>(),"Conditional draw",{234,88,12})
+      .title("Held-out waveform and conditional synthesis").x_label("Time (ms)").y_label("Amplitude");
+  plot.size(900,430).save_svg("build/waveglow.svg");
+}
+```
+// result_begin: markdown
+| Initial fit NLL | Final fit NLL | Held-out NLL | Round-trip error | Log-det cancellation error |
+|---:|---:|---:|---:|---:|
+| 1.87546 | -0.16466 | -0.14042 | 1.79e-07 | 1.53e-05 |
+\image(figures/waveglow.svg)
+// result_end

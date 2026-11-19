@@ -179,6 +179,82 @@ Selected degree 1; final separate-grid MSE 0.004447564.
 // result_end
 
 
+> Select degree and ridge penalty
+
+Center and scale each fold using its training rows. Ridge enters as
+squared-error rows with zero targets, leaving the intercept unpenalized.
+After selecting the degree and penalty, refit on the full development set
+and evaluate once on an independently perturbed grid.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  namespace m=n::ml;
+  constexpr auto type=n::DType::Float64;
+  const auto folds=m::KFold(67,5,127), repeat=m::KFold(67,5,127);
+  std::vector<int> coverage(67);
+  for(int i=0;i<5;++i) {
+    if(folds[i].validation!=repeat[i].validation || folds[i].training!=repeat[i].training ||
+       folds[i].validation.size()!=(i<2?14:13)) throw std::runtime_error("Fold size or replay differs");
+    for(auto row:folds[i].validation) {
+      if(std::ranges::find(folds[i].training,row)!=folds[i].training.end())
+        throw std::runtime_error("Train and validation overlap");
+      ++coverage[row];
+    }
+  }
+  if(!std::ranges::all_of(coverage,[](int count){return count==1;}))
+    throw std::runtime_error("Validation does not cover each row once");
+  const std::vector<int> labels{0,0,0,0,0,0,1,1,1,1,1,1};
+  for(const auto& fold:m::StratifiedKFold(labels,3,127)) {
+    int count=0;
+    for(auto row:fold.validation) count+=labels[row];
+    if(fold.validation.size()!=4 || count!=2) throw std::runtime_error("Stratification differs");
+  }
+  std::mt19937 rng(137);
+  std::uniform_real_distribution<double> uniform(-1,1);
+  std::normal_distribution<double> noise(0,.15);
+  std::vector<double> x,y;
+  for(int i=0;i<67;++i) {
+    x.push_back(uniform(rng));
+    y.push_back(std::sin(std::numbers::pi*x.back())+noise(rng));
+  }
+  const auto input=n::from_vector(x,{67,1}), output=n::from_vector(y,{67,1});
+  auto predict=[&](const n::Tensor& train,const n::Tensor& target,const n::Tensor& query,int degree,double ridge) {
+    const auto mean=n::mean(train);
+    const double radius=std::max(n::max(n::abs(train-mean)).item(),1e-12);
+    const auto design=m::PolynomialFeatures((train-mean)/radius,degree);
+    std::vector<double> penalty((degree+1)*(degree+1));
+    for(int j=1;j<=degree;++j) penalty[j*(degree+2)]=std::sqrt(ridge);
+    const auto augmented=n::concat({design,n::from_vector(penalty,{degree+1,degree+1})},0);
+    const auto weights=m::LeastSquaresQr(augmented,n::concat({target,n::zeros({degree+1,1},type)},0));
+    return n::matmul(m::PolynomialFeatures((query-mean)/radius,degree),weights);
+  };
+  int selected=0;
+  double best=1e100,lambda=0,linear=0;
+  for(int degree:{1,3,5,9}) for(double ridge:{0.,.01,1.}) {
+    auto rows=[](const n::Tensor& v,const auto& indices) {
+      return n::take_rows(v,std::vector<std::int64_t>(indices.begin(),indices.end()));
+    };
+    const double score=m::CrossValidate(folds,[&](const auto& tr,const auto& va) {
+      return n::mse(predict(rows(input,tr),rows(output,tr),rows(input,va),degree,ridge),rows(output,va)).item();
+    }).mean;
+    if(degree==1&&ridge==0) linear=score;
+    if(score<best) { best=score; selected=degree; lambda=ridge; }
+  }
+  const auto query=n::linspace(-1,1,401,type).reshape({401,1});
+  std::vector<double> test;
+  for(double v:query.to_vector<double>()) test.push_back(std::sin(std::numbers::pi*v)+noise(rng));
+  const double mse=n::mse(predict(input,output,query,selected,lambda),n::from_vector(test,{401,1})).item();
+  if(selected<=1||best>=.4*linear||mse>=.06) throw std::runtime_error("Selected model failed reference error thresholds");
+  std::print("Selected degree {}, ridge {}. CV MSE {:.5f}, linear baseline {:.5f}, held-out MSE {:.5f}.\n",
+             selected,lambda,best,linear,mse);
+}
+```
+// result_begin: markdown
+Selected degree 5, ridge 0.01. CV MSE 0.02858, linear baseline 0.15921, held-out MSE 0.02431.
+// result_end
+
 > Conclusion
 
 Coverage and weighted aggregation agree with exact counts. Each callback creates a fresh fit;

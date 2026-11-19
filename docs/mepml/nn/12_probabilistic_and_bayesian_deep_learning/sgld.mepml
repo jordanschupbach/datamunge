@@ -1,0 +1,128 @@
+//? Title: Stochastic-gradient Langevin dynamics for regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Sample two regression coefficients with stochastic-gradient Langevin
+dynamics. Use the exact Gaussian posterior on the same dataset to
+check the retained samples and parameter variation.
+)
+\toc
+
+> Estimate a posterior gradient from a minibatch
+
+The response depends linearly on x with Gaussian observation variance
+0.36 and independent standard Gaussian priors on the intercept and
+slope. The negative log posterior combines squared residuals and
+the coefficient prior. Each of the 32 chains samples eight observation
+indices with replacement and scales its minibatch likelihood by
+16/8. Differentiate the resulting potential by automatic differentiation.
+
+Each update subtracts half the step size times the potential gradient
+and adds Gaussian noise scaled by the square root of the step size.
+The step size decays over 1,800 updates. Retain draws from iteration
+600 onwards. The conjugate calculation gives the exact posterior
+moments for this dataset. The finite-step sampler approximates them.
+
+```{cpp, results="markdown", file="figures/sgld_chains.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <random>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int rows = 16, chains = 32, batch = 8, iterations = 1800, burn = 600;
+  constexpr double observation_variance = .36;
+  constexpr auto f64 = n::DType::Float64;
+  std::mt19937 random(78321);
+  std::normal_distribution<double> normal;
+  std::uniform_int_distribution<int> row(0, rows - 1);
+  std::vector<double> design, response;
+  for (int i = 0; i < rows; ++i) {
+    const double t = -1. + 2. * i / (rows - 1);
+    design.insert(design.end(), {1., t});
+    response.push_back(.45 - 1.1 * t + std::sqrt(observation_variance) * normal(random));
+  }
+  const auto x = n::from_vector(design, {rows, 2});
+  const auto y = n::from_vector(response, {rows, 1});
+  const auto exact = n::ml::FitBayesianLinear(x, y, observation_variance);
+  auto position = n::zeros({chains, 2}, f64);
+  std::vector<n::Tensor> states{position};
+  std::vector<std::int32_t> minibatches;
+  std::vector<double> innovations, schedule;
+  for (int t = 0; t < iterations; ++t) {
+    std::vector<std::int32_t> indices(chains * batch);
+    std::vector<double> noise(chains * 2);
+    for (auto& index : indices)
+      index = row(random);
+    for (auto& value : noise)
+      value = normal(random);
+    const double epsilon = .014 * std::pow(1. + t / 120., -.65);
+    const auto ids = n::from_vector(indices, {chains, batch});
+    const auto bx = n::gather(x, ids);
+    const auto by = n::gather(y.reshape({rows}), ids);
+    auto state = position.detach();
+    state.requires_grad_(true);
+    const auto pred = n::sum(bx * n::expand_dims(state, 1), {2});
+    const auto potential = .5 * n::sum(n::square(state)) +
+        (double(rows) / (2 * batch * observation_variance)) * n::sum(n::square(pred - by));
+    const auto gradient = n::grad(potential, {state}).front();
+    position = n::stochastic_gradient_langevin_step(
+        state, gradient, n::from_vector(noise, {chains, 2}), epsilon).detach();
+    states.push_back(position);
+    minibatches.insert(minibatches.end(), indices.begin(), indices.end());
+    innovations.insert(innovations.end(), noise.begin(), noise.end());
+    schedule.push_back(epsilon);
+  }
+
+  const auto trace = n::stack(states, 0);
+  const auto sample = n::slice_axis(trace, 0, burn, iterations + 1).reshape({-1, 2});
+  const auto center = n::mean(sample, {0});
+  const auto variance = n::mean(n::square(sample - center), {0});
+  const auto means = center.to_vector<double>(), vars = variance.to_vector<double>();
+  const auto exact_mean = exact.mean.to_vector<double>();
+  const auto exact_variance = n::matrix_diag_part(exact.covariance).to_vector<double>();
+  std::println("| Weight | Sample mean | Exact mean | Sample variance | Exact variance |");
+  std::println("| --- | ---: | ---: | ---: | ---: |");
+  for (int j = 0; j < 2; ++j)
+    std::println("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |",
+                 j == 0 ? "Intercept" : "Slope", means[j], exact_mean[j], vars[j], exact_variance[j]);
+
+  const std::string folder = "build/sgld/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "chains.npz",
+               {{"x", x}, {"y", y}, {"states", trace},
+                {"minibatches", n::from_vector(minibatches, {iterations, chains, batch})},
+                {"innovations", n::from_vector(innovations, {iterations, chains, 2})},
+                {"schedule", n::from_vector(schedule, {iterations})}});
+  const auto angles = n::linspace(0., 2 * std::numbers::pi, 181, f64);
+  const auto keep = n::slice_axis(sample, 0, 0, sample.size(0), 16);
+  const double radius = std::sqrt(-2 * std::log(.05));
+  const auto ellipse_x = exact_mean[0] + radius * std::sqrt(exact_variance[0]) * n::cos(angles);
+  const auto ellipse_y = exact_mean[1] + radius * std::sqrt(exact_variance[1]) * n::sin(angles);
+  auto posterior = dm::graphics::RPlot::create(), chain = dm::graphics::RPlot::create();
+  posterior.points(n::select(keep, 1, 0).to_vector<double>(), n::select(keep, 1, 1).to_vector<double>(),
+                   "Retained draws", {37, 99, 235, .2}, 2)
+           .lines(ellipse_x.to_vector<double>(), ellipse_y.to_vector<double>(),
+                  "Exact 95% posterior ellipse", {234, 88, 12})
+           .title("Sampled and conjugate coefficients").x_label("Intercept").y_label("Slope");
+  const auto time = n::arange(0, iterations + 1).to_vector<double>();
+  chain.lines(time, n::select(n::select(trace, 1, 0), 1, 0).to_vector<double>(), "Chain 1", {37, 99, 235})
+       .lines(time, n::select(n::select(trace, 1, 1), 1, 0).to_vector<double>(), "Chain 2", {234, 88, 12})
+       .title("Two intercept traces").x_label("Iteration").y_label("Intercept");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(posterior).add(chain).size(1280, 510).fit_panels().save_svg(folder + "chains.svg");
+  std::filesystem::copy_file(folder + "chains.svg", "figures/sgld_chains.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Weight | Sample mean | Exact mean | Sample variance | Exact variance |
+| --- | ---: | ---: | ---: | ---: |
+| Intercept | 0.453810 | 0.460427 | 0.023859 | 0.022005 |
+| Slope | -0.944496 | -0.952003 | 0.057983 | 0.056211 |
+\image(figures/sgld_chains.svg)
+// result_end

@@ -5,6 +5,11 @@
 ///        rate on a Gaussian target.
 
 #include <datamunge/optim/function_types.hpp>
+#include <datamunge/bayes/detail/leapfrog.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
 
 #include <cstddef>
 #include <cstdint>
@@ -61,6 +66,48 @@ public:
 private:
     HMCOptions options_; ///< Sampler settings.
 };
+
+/// @brief A fixed HMC proposal and its log acceptance diagnostic.
+struct HMCProposal {
+    std::vector<double> position; ///< End of the leapfrog trajectory.
+    std::vector<double> momentum; ///< Momentum at the end of the trajectory, before any flip.
+    double energy_change;         ///< Final minus initial Hamiltonian energy.
+};
+
+/// @brief Integrate one HMC proposal with fixed step size and caller-provided momentum.
+/// The mass matrix is the identity. The caller can apply the Metropolis
+/// correction by accepting when log(uniform) is less than -energy_change.
+/// @param log_posterior Differentiable log density, up to an additive constant.
+/// @param position Finite initial position on the unconstrained scale.
+/// @param momentum Finite initial momentum with the same dimension.
+/// @param step_size Positive finite leapfrog step size.
+/// @param num_steps Positive number of leapfrog steps.
+/// @return Proposed position and momentum and their signed energy change.
+/// Nonfinite proposed energy is reported as computed for divergence diagnostics.
+/// @throws std::invalid_argument Invalid dimensions, inputs or step size.
+/// @code
+/// dm::bayes::AutodiffModel density([](auto&, const auto& q) { return -.5 * q[0] * q[0]; });
+/// auto proposal = dm::bayes::hmc_proposal(density, {1.0}, {0.0}, .1, 10);
+/// @endcode
+/// @see HMC, leapfrog_gaussian_acceptance()
+inline HMCProposal hmc_proposal(
+    optim::DifferentiableFunction& log_posterior,
+    const std::vector<double>& position, const std::vector<double>& momentum,
+    double step_size, std::size_t num_steps) {
+    const auto finite = [](double x) { return std::isfinite(x); };
+    if (position.empty() || position.size() != momentum.size() ||
+        !std::isfinite(step_size) || step_size <= 0 || num_steps == 0 ||
+        !std::all_of(position.begin(), position.end(), finite) ||
+        !std::all_of(momentum.begin(), momentum.end(), finite)) {
+        throw std::invalid_argument("HMC proposal requires finite position, momentum and step size");
+    }
+    const double initial_energy = detail::hamiltonian(log_posterior, position, momentum);
+    detail::LeapfrogState state{position, momentum};
+    for (std::size_t step = 0; step < num_steps; ++step)
+        state = detail::leapfrog_step(log_posterior, state, step_size);
+    const double delta = detail::hamiltonian(log_posterior, state.q, state.p) - initial_energy;
+    return {std::move(state.q), std::move(state.p), delta};
+}
 
 /// @brief Exact expected Metropolis acceptance of one HMC proposal (fixed step size and
 ///        number of leapfrog steps, unit mass) on a one-dimensional \f$N(m,s^2)\f$ target, started

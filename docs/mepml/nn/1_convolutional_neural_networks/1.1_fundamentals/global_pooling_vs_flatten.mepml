@@ -240,8 +240,22 @@ int main() {
       const double score = n::accuracy(n::matmul(query, w) + b, vy);
  std::filesystem::create_directories("build");const auto scores=n::matmul(query,w)+b;const std::string confusion_file=std::string("build/global_pooling_vs_flatten_")+(location?"location":"appearance")+(gap?"_gap":"_flatten")+"_confusion";n::ConfusionMatrix cm(2);cm.add(vy,n::argmax(scores,1));cm.save_svg(confusion_file+".svg",{.title=std::string(location?"Location":"Appearance")+(gap?" / GAP":" / flatten")});n::save_npz(confusion_file+".npz",{{"truth",vy},{"logits",scores},{"counts",cm.to_tensor()}});
       const double expected = location ? (gap ? .5 : 1.) : (gap ? 1. : .5);
-      if (score != expected)
-        return 1;
+      if (score != expected || w.numel()+b.numel()!=(gap?6:258))
+        throw std::runtime_error("Unexpected generalization or head parameter count");
+      if (location && gap) {
+        if(std::abs(n::sparse_softmax_cross_entropy(scores,vy).item()-std::log(2.))>1e-6)
+          throw std::runtime_error("Location-only GAP should have the balanced-class loss");
+      } else if (n::accuracy(n::matmul(input,w)+b,ty)!=1.) {
+        throw std::runtime_error("Learnable head did not fit training examples");
+      }
+      if(!location && !gap) {
+        for(int y=0;y<8;++y) for(int x=0;x<8;++x) {
+          if((x+y)%2==0) continue;
+          for(int j=0;j<2;++j) for(int label=0;label<2;++label)
+            if(w.at({(y*8+x)*2+j,label})!=0.)
+              throw std::runtime_error("An unseen flatten coordinate changed");
+        }
+      }
       task.push_back(location ? "location" : "appearance");
       head.push_back(gap ? "GAP" : "flatten");
       accuracy.push_back(score);
@@ -270,49 +284,79 @@ int main() {
 
 The views below are regenerated from the executed programs above. Confusion matrices use the selected checkpoint and original held-out rows. Paired ablations retain each seed and policy separately; they do not pool the same test observations into one artificial sample.
 
-```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_architecture_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/global_pooling_vs_flatten_architecture_graph.svg","build/export_global_pooling_vs_flatten_architecture_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_architecture_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/global_pooling_vs_flatten_architecture_graph.svg", "build/export_global_pooling_vs_flatten_architecture_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/global_pooling_vs_flatten_architecture_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_architecture_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/global_pooling_vs_flatten_architecture_lenet.svg","build/export_global_pooling_vs_flatten_architecture_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_architecture_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/global_pooling_vs_flatten_architecture_lenet.svg", "build/export_global_pooling_vs_flatten_architecture_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/global_pooling_vs_flatten_architecture_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_appearance_flatten_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/global_pooling_vs_flatten_appearance_flatten_confusion.svg","build/export_global_pooling_vs_flatten_appearance_flatten_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_appearance_flatten_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/global_pooling_vs_flatten_appearance_flatten_confusion.svg", "build/export_global_pooling_vs_flatten_appearance_flatten_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/global_pooling_vs_flatten_appearance_flatten_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_appearance_gap_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/global_pooling_vs_flatten_appearance_gap_confusion.svg","build/export_global_pooling_vs_flatten_appearance_gap_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_appearance_gap_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/global_pooling_vs_flatten_appearance_gap_confusion.svg", "build/export_global_pooling_vs_flatten_appearance_gap_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/global_pooling_vs_flatten_appearance_gap_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_location_flatten_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/global_pooling_vs_flatten_location_flatten_confusion.svg","build/export_global_pooling_vs_flatten_location_flatten_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_location_flatten_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/global_pooling_vs_flatten_location_flatten_confusion.svg", "build/export_global_pooling_vs_flatten_location_flatten_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/global_pooling_vs_flatten_location_flatten_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_location_gap_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/global_pooling_vs_flatten_location_gap_confusion.svg","build/export_global_pooling_vs_flatten_location_gap_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/global_pooling_vs_flatten_location_gap_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/global_pooling_vs_flatten_location_gap_confusion.svg", "build/export_global_pooling_vs_flatten_location_gap_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/global_pooling_vs_flatten_location_gap_confusion.svg)

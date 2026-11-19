@@ -121,6 +121,16 @@ int main() {
     std::print("\n");
   }
 
+  // The same normalization applies separately at every sequence position.
+  nn::Generator sequence_gen(9);
+  const Tensor sequence = nn::normal({2, 4, 6}, 0.0, 1.0, sequence_gen, F64);
+  const Tensor sequence_ln = nn::layer_norm(p, "ln", sequence, eps);
+  const Tensor flat_ln = nn::layer_norm(p, "ln", nn::reshape(sequence, {8, 6}), eps);
+  const double sequence_error = max_diff(sequence_ln, nn::reshape(flat_ln, {2, 4, 6}));
+  if (sequence_ln.shape() != sequence.shape() || !(sequence_error < 1e-12))
+    throw std::runtime_error("Layer norm must preserve shape and normalize each position separately");
+  std::print("\nLayer norm on [2, 4, 6] matches normalization of the eight rows to {:.1e}.\n", sequence_error);
+
   // 2. Batch independence: replace row 1 and compare row 0, for layer norm and for batch norm in training mode.
   std::vector<double> xv = x.to_vector<double>();
   for (std::int64_t j = 0; j < 6; ++j) xv[6 + j] = 100.0 * (j - 2);
@@ -231,6 +241,8 @@ x [3, 6]: max |layer_norm − hand| = 4.4e-16, max |rms_norm − hand| = 1.1e-16
 | x | -0.498 | 1.677 | -0.452 | 3.994 | 3.580 | 3.999 |
 | layer norm | -1.307 | -0.191 | -1.283 | 0.997 | 0.784 | 1.000 |
 | RMSNorm | -0.176 | 0.593 | -0.160 | 1.412 | 1.265 | 1.414 |
+
+Layer norm on [2, 4, 6] matches normalization of the eight rows to 0.0e+00.
 
 Replacing row 1 changes row 0's output by 0.0e+00 under layer norm and by 2.058 under batch norm (training mode).
 On rows with mean zero, RMSNorm and layer norm agree to 1.1e-16.
@@ -486,9 +498,9 @@ int main() {
 ```
 // result_begin: markdown
 Jacobians at x ∈ R^16: max |closed form − autodiff| = 1.1e-16 (layer norm), 1.1e-16 (RMSNorm).
-Layer norm: σ = 1.6055; singular values: 0.622849 (×14) then 2.416e-06 and 6.1e-18; predicted 1/σ = 0.622849 and ε/σ³ = 2.416e-06.
+Layer norm: σ = 1.6055; singular values: 0.622849 (×14) then 2.416e-06 and 3.0e-17; predicted 1/σ = 0.622849 and ε/σ³ = 2.416e-06.
 RMSNorm: r = 1.7079; singular values: 0.585528 (×15) then 2.007e-06; predicted 1/r = 0.585528 and ε/r³ = 2.007e-06.
-Largest deviation of the repeated singular values from 1/σ, 1/r: 5.6e-16, 8.9e-16.
+Largest deviation of the repeated singular values from 1/σ, 1/r: 7.8e-16, 8.9e-16.
 
 Upstream gradient of L = Σ r ⊙ LN(h) for 32 rows: max |Σ_j ∂L/∂h_j| = 6.7e-16; max cosine with the centred row = 7.2e-06.
 Weight W [10, 8] feeding layer norm (ε = 0): cos(∇W, W) = -2.7e-17; L(3W) − L(W) = 5.3e-15; max |∇L(3W) − ∇L(W)/3| = 1.1e-15.

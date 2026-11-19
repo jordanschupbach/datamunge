@@ -1,0 +1,121 @@
+//? Title: Efficient neural architecture search with shared weights
+//? Lang: en
+
+> Efficient neural architecture search with shared weights
+
+Two layers share their learned affine weights across four candidate
+networks. The controller chooses tanh or ReLU for each layer. Its
+second choice is conditioned on its first.
+
+Each iteration trains the shared weights on a sampled architecture
+and scores another sample on validation data. The negative validation
+MSE provides the reward. REINFORCE updates the selected policy path
+using reward minus a moving baseline.
+
+After the search, score all four candidates with the shared weights.
+Train the validation winner from scratch and evaluate it on the test
+split. The plot shows how the controller's probabilities changed.
+
+```{cpp, results="markdown", file="figures/enas.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1,1);
+    std::normal_distribution<float> noise(0,.12f);
+    std::vector<float> x(count*3),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=0;j<3;++j) x[3*i+j]=uniform(rng);
+      y[i]=std::sin(3.f*x[3*i])+x[3*i+1]*x[3*i+2]+noise(rng);
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(y,{count,1})};
+  };
+  const auto [fit,target]=draw(384,39301);
+  const auto [validation,valid_y]=draw(128,39302);
+  const auto [test,test_y]=draw(256,39303);
+  const auto predict=[](n::ParameterStore& model,n::Tensor x,std::array<int,2> choice) {
+    for (int i=0;i<2;++i)
+      x=n::dense(model,"shared_"+std::to_string(i),x,16,
+                 choice[i]?n::Activation::Relu:n::Activation::Tanh);
+    return n::dense(model,"head",x,1);
+  };
+  const auto mse=[](const auto& a,const auto& b) {
+    return n::mean(n::square(a.to(n::DType::Float64)-b.to(n::DType::Float64))).item();
+  };
+  n::ParameterStore shared(41380);
+  (void)predict(shared,n::take_rows(fit,{0}),{0,0});
+  n::Optimizer optimizer(shared,.01,{.kind=n::OptimizerKind::Adam});
+  n::EnasController policy;
+  std::mt19937 rng(39304);
+  std::uniform_real_distribution<double> uniform;
+  const auto sample=[&]() {
+    const int first=uniform(rng)<n::enas_probability(policy.logits[0]);
+    const int second=uniform(rng)<n::enas_probability(policy.logits[1+first]);
+    return std::array{first,second};
+  };
+  n::BatchOrder order(384,32,39305);
+  std::vector<double> history,steps,p1,p2,p3;
+  for (int i=0;i<144;++i) {
+    if (i%12==0) order.begin_epoch();
+    const auto rows=order.next();
+    optimizer.minimize(n::mean(n::square(predict(shared,n::take_rows(fit,rows),sample())-
+                                         n::take_rows(target,rows))));
+    const auto choice=sample();
+    n::NoGradGuard guard;
+    const auto reward=-mse(predict(shared,validation,choice),valid_y);
+    const auto baseline=policy.baseline;
+    n::enas_policy_update(policy,choice,reward,.8,.9);
+    history.insert(history.end(),{double(choice[0]),double(choice[1]),reward,baseline,
+        policy.logits[0],policy.logits[1],policy.logits[2],policy.baseline,double(i)});
+    steps.push_back(i+1);
+    p1.push_back(n::enas_probability(policy.logits[0]));
+    p2.push_back(n::enas_probability(policy.logits[1]));
+    p3.push_back(n::enas_probability(policy.logits[2]));
+  }
+  std::vector<double> selection;
+  std::vector<n::Tensor> scores;
+  {
+    n::NoGradGuard guard;
+    for (int id=0;id<4;++id) {
+      const auto pred=predict(shared,validation,{id/2,id%2});
+      selection.push_back(mse(pred,valid_y));
+      scores.push_back(pred.reshape({128}));
+    }
+  }
+  const auto best=std::min_element(selection.begin(),selection.end());
+  const int winner=best-selection.begin();
+  const std::array chosen{winner/2,winner%2};
+  n::ParameterStore child(41380);
+  (void)predict(child,n::take_rows(fit,{0}),chosen);
+  n::Optimizer fit_child(child,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder final_order(384,32,39305);
+  for (int epoch=0;epoch<3;++epoch) {
+    final_order.begin_epoch();
+    for (auto rows=final_order.next();!rows.empty();rows=final_order.next())
+      fit_child.minimize(n::mean(n::square(predict(child,n::take_rows(fit,rows),chosen)-
+                                           n::take_rows(target,rows))));
+  }
+  n::NoGradGuard guard;
+  const auto prediction=predict(child,test,chosen);
+  const auto error=mse(prediction,test_y);
+  if (!std::isfinite(error)) return 1;
+  std::print("Selected activations {} and {} (0 tanh, 1 ReLU). Validation MSE {:.5f}, retrained test MSE {:.5f}.\n",
+      chosen[0],chosen[1],*best,error);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,p1,"First operation",{37,99,235})
+      .lines(steps,p2,"Second after tanh",{234,88,12})
+      .lines(steps,p3,"Second after ReLU",{22,163,74})
+      .title("Controller probability of choosing ReLU").x_label("Policy update").y_label("Probability").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/enas.svg");
+  n::save_npz("build/enas.npz",{{"controller",n::from_vector(history,{144,9})},{"validation_y",valid_y},
+      {"validation_scores",n::stack(scores)},{"validation_mse",n::from_vector(selection)},
+      {"winner",n::scalar(winner)},{"test_predictions",prediction},{"test_y",test_y}});
+}
+```
+// result_begin: markdown
+Selected activations 1 and 0 (0 tanh, 1 ReLU). Validation MSE 0.09665, retrained test MSE 0.16536.
+\image(figures/enas.svg)
+// result_end

@@ -1361,7 +1361,7 @@ epoch3 validationCE=0.576211 accuracy=0.726562
   confusion (truth rows):
     39 25
     21 43
-testCE=0.626735 accuracy=0.640625 cueFlip=0.679688 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0620823 s)
+testCE=0.626735 accuracy=0.640625 cueFlip=0.679688 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.138658 s)
 Artifacts:"build/recurrent-models/models/recurrent_dropout/per_step/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/recurrent_dropout/per_step" not found; skipping the comparison
 == variational
@@ -1371,7 +1371,7 @@ epoch3 validationCE=0.590974 accuracy=0.703125
   confusion (truth rows):
     43 21
     28 36
-testCE=0.639327 accuracy=0.617188 cueFlip=0.65625 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0533353 s)
+testCE=0.639327 accuracy=0.617188 cueFlip=0.65625 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.141248 s)
 Artifacts:"build/recurrent-models/models/recurrent_dropout/variational/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/recurrent_dropout/variational" not found; skipping the comparison
 // result_end

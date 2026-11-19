@@ -36,7 +36,7 @@ int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("
 
 > Complete preserved experiment
 
-The source compares500 episodes over20 runs per method with alpha.5, epsilon.1 and gamma1. Online rewards and greedy evaluations remain distinct: a shortest greedy path can incur costly cliff falls during exploration. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+The source compares500 episodes over20 runs per method with alpha.5, epsilon.1 and gamma1. Online rewards and greedy evaluations remain distinct: a shortest greedy path can incur costly cliff falls during exploration. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. The seeded greedy rollouts are recorded with the native grid renderer.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -57,8 +57,7 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // comparison shows the on-policy effect: because exploration sometimes steps
 // off the cliff, SARSA learns the safer path along the top, while Q-learning
 // (shown for reference) learns the optimal but risky path along the edge.
-// The vsim videos of each greedy policy are omitted: the same seeded episode
-// is played and reported instead. The port adds checks (exit 1 on failure).
+// Each seeded greedy episode is recorded.
 
 
 // Editable workflow support: checks.hpp
@@ -134,8 +133,7 @@ using datamunge::rl::environments::CliffWalking;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy decisions and action values.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -313,13 +311,7 @@ struct Hud {
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// The native recorder saves the states from the original seeded episode.
 
 
 
@@ -347,18 +339,27 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<int> states{env.state()};
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
     const StepResult r = env.step(pb.hud.decision.action);
     pb.hud.Observe(r);
+    states.push_back(env.state());
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  const auto filename = name + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::rl::environments::save_grid_replay(env, states, "build/" + filename);
+  report_capture::Save("replay_" + filename.substr(0, filename.size() - 4), states);
+  std::filesystem::copy_file("build/" + filename, "figures/" + filename,
+                             std::filesystem::copy_options::overwrite_existing);
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -560,7 +561,7 @@ int main() {
       const rl::QTable& Q = tables.back();
       rl::PlayEpisode(
           env, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); },
-          std::string("sarsa_greedy_") + kNames[m], 0);
+          std::array{"sarsa_greedy_sarsa", "sarsa_greedy_expected_sarsa", "sarsa_greedy_q_learning"}[m], 0);
     }
     std::cout << "\n  SARSA and expected SARSA earn more *while learning* (safer path); Q-learning's greedy\n"
                  "  policy is optimal (-13) but its epsilon-greedy behaviour keeps falling off the cliff.\n";
@@ -574,7 +575,7 @@ int main() {
     for (Method m : {kSarsa, kExpectedSarsa})
       check::Require(greedy_return[m] < -13 && greedy_return[m] >= -21,
                      std::string(kNames[m]) + "'s greedy policy should take a safer, longer path");
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -594,7 +595,7 @@ int main() {
 //       ^ ^ ^ < ^ ^ ^ > > > > v 
 //       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
 //     greedy policy, 100 episodes    return mean   -17.00  min   -17.00  max   -17.00   length mean   17.0
-//   played sarsa_greedy_SARSA (video omitted): 17 steps, return -17.0
+//   recorded sarsa_greedy_sarsa: 17 steps, return -17.0
 //   Expected SARSA     -90.1   -23.3   -21.1   -21.0   -22.2   -20.8   -21.2   -21.5   -21.1   -20.3
 //     greedy policy after training (last run):
 //       < > > > > > > > > > > v 
@@ -602,7 +603,7 @@ int main() {
 //       ^ ^ ^ ^ ^ ^ ^ ^ ^ > > v 
 //       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
 //     greedy policy, 100 episodes    return mean   -15.00  min   -15.00  max   -15.00   length mean   15.0
-//   played sarsa_greedy_Expected SARSA (video omitted): 15 steps, return -15.0
+//   recorded sarsa_greedy_expected_sarsa: 15 steps, return -15.0
 //   Q-learning        -114.9   -49.9   -49.4   -50.6   -52.2   -52.8   -47.0   -50.7   -50.0   -48.4
 //     greedy policy after training (last run):
 //       < > > > > > ^ > < > v v 
@@ -610,12 +611,12 @@ int main() {
 //       > > > > > > > > > > > v 
 //       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
 //     greedy policy, 100 episodes    return mean   -13.00  min   -13.00  max   -13.00   length mean   13.0
-//   played sarsa_greedy_Q-learning (video omitted): 13 steps, return -13.0
+//   recorded sarsa_greedy_q_learning: 13 steps, return -13.0
 //
 //   SARSA and expected SARSA earn more *while learning* (safer path); Q-learning's greedy
 //   policy is optimal (-13) but its epsilon-greedy behaviour keeps falling off the cliff.
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > Inspect the actual experiment results
@@ -633,3 +634,13 @@ int main(){auto archive=dm::nn::load_npz("build/sarsa_source.npz");auto get=[&](
 > Interpretation and provenance
 
 Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.
+
+> Greedy policy replays
+
+The native grid renderer records the visited states of each seeded greedy episode.
+
+\video(figures/sarsa_greedy_sarsa.mp4)
+
+\video(figures/sarsa_greedy_expected_sarsa.mp4)
+
+\video(figures/sarsa_greedy_q_learning.mp4)

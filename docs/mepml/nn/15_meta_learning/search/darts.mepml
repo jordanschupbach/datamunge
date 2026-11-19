@@ -1,0 +1,95 @@
+//? Title: First-order differentiable architecture search
+//? Lang: en
+
+> First-order differentiable architecture search
+
+A two-layer supernetwork mixes tanh and ReLU operations at each layer.
+The mixture weights are softmax probabilities over trainable logits.
+Alternate a training minibatch update to operation weights with a
+validation update to the architecture logits. This first-order variant
+takes the validation derivative at the current operation weights.
+
+After search, select the highest-probability operation in each layer.
+Train that discrete child from a new initialization on the training
+set, then evaluate on held-out test data. The plot compares its fit
+against the test targets.
+
+```{cpp, results="markdown", file="figures/darts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1,1);
+    std::normal_distribution<float> noise(0,.12f);
+    std::vector<float> x(count*3),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=0;j<3;++j) x[3*i+j]=uniform(rng);
+      y[i]=std::sin(3.f*x[3*i])+x[3*i+1]*x[3*i+2]+noise(rng);
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(y,{count,1})};
+  };
+  const auto [fit,target]=draw(384,40901);
+  const auto [validation,valid_y]=draw(128,40902);
+  const auto [test,test_y]=draw(256,40903);
+  n::ParameterStore weights(40904),architecture(40905);
+  const auto alpha=architecture.get("alpha",{2,2},n::init::zeros());
+  (void)n::darts_regression(weights,n::take_rows(fit,{0}),alpha);
+  n::Optimizer net(weights,.008,{.kind=n::OptimizerKind::Adam});
+  n::Optimizer arch(architecture,.015,{.kind=n::OptimizerKind::Adam});
+  const auto loss=[](const auto& y,const auto& target) { return n::mean(n::square(y-target)); };
+  const auto run=[](const auto& step) {
+    n::BatchOrder order(384,32,40906);
+    for (int e=0;e<3;++e) {
+      order.begin_epoch();
+      for (auto rows=order.next();!rows.empty();rows=order.next()) step(rows);
+    }
+  };
+  run([&](const auto& rows) {
+    net.minimize(loss(n::darts_regression(weights,n::take_rows(fit,rows),alpha.detach()),
+                      n::take_rows(target,rows)));
+    arch.minimize(loss(n::darts_regression(weights,validation,alpha),valid_y));
+  });
+  const auto val=n::darts_regression(weights,validation,alpha);
+  const auto validation_loss=loss(val,valid_y);
+  const auto derivative=n::grad(validation_loss,{alpha})[0];
+  const auto selected=n::argmax(alpha).to_vector<int>();
+  const std::array choice{selected[0],selected[1]};
+  n::ParameterStore child(41380);
+  const auto predict=[&](const auto& x) { return n::darts_regression(child,x,n::Tensor(),choice); };
+  (void)predict(n::take_rows(fit,{0}));
+  n::Optimizer fit_child(child,.01,{.kind=n::OptimizerKind::Adam});
+  run([&](const auto& rows) {
+    fit_child.minimize(loss(predict(n::take_rows(fit,rows)),n::take_rows(target,rows)));
+  });
+  n::NoGradGuard guard;
+  const auto prediction=predict(test);
+  const auto test_loss=loss(prediction,test_y).item();
+  if (!std::isfinite(test_loss)) return 1;
+  std::print("Selected activations {} and {} (0 tanh, 1 ReLU). Mixed validation MSE {:.5f}, retrained child test MSE {:.5f}.\n",
+      choice[0],choice[1],validation_loss.item(),test_loss);
+  const auto actual=test_y.to_vector<double>(), fitted=prediction.to_vector<double>();
+  const auto [lo,hi]=std::minmax_element(actual.begin(),actual.end());
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(actual,fitted,"Held-out predictions",{37,99,235})
+      .lines({*lo,*hi},{*lo,*hi},"Reference",{148,163,184})
+      .title("Discrete child fitted from scratch").x_label("Test target").y_label("Prediction");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/darts.svg");
+  n::NamedTensors saved{{"alpha",alpha},{"probability",n::softmax(alpha)},{"validation_prediction",val},
+      {"validation_loss",validation_loss},{"alpha_gradient",derivative},{"validation_x",validation},
+      {"validation_y",valid_y},{"test_y",test_y},{"chosen",n::from_vector(selected)},
+      {"test_prediction",prediction}};
+  for (const auto& name:weights.names()) {
+    auto key=name;
+    std::replace(key.begin(),key.end(),'/','_');
+    saved.emplace_back(key,weights.at(name));
+  }
+  n::save_npz("build/darts.npz",saved);
+}
+```
+// result_begin: markdown
+Selected activations 0 and 1 (0 tanh, 1 ReLU). Mixed validation MSE 0.18034, retrained child test MSE 0.18453.
+\image(figures/darts.svg)
+// result_end

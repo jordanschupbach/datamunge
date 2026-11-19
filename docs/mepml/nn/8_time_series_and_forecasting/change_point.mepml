@@ -1,0 +1,135 @@
+//? Title: Locate persistent level changes in noisy series
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train an offline neural detector to localize one abrupt change or
+classify the series as unchanged.
+)
+\toc
+
+The detector examines all boundaries with at least eight observations
+on either side. It subtracts the pre-boundary mean from each window and
+passes it through a shared 16-unit MLP. A separate affine head reads the
+largest boundary score and learns when to favor the no-change class.
+A softmax puts the candidate scores and the no-change score on a common
+scale. Training minimizes squared probability error against one-hot
+labels, as in the upstream example.
+
+The simulation mixes upward shifts, downward shifts, and unchanged
+series. Training and testing use independent draws. The initial
+weights reproduce the upstream TensorFlow Glorot draws. The window
+after each candidate is observed, which makes this an offline detector.
+
+```{cpp, results="markdown", file="figures/change_point.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int length = 48, radius = 8, candidates = length - 2 * radius + 1;
+  const auto simulate = [](int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_int_distribution<int> boundary(radius, length - radius);
+    std::uniform_real_distribution<float> shift(1.3f, 2.3f), offset(-.8f, .8f);
+    std::normal_distribution<float> noise(0, .28f);
+    std::vector<float> values(count * length), target(count * (candidates + 1));
+    for (int row = 0; row < count; ++row) {
+      const int split = row % 3 == 0 ? length : boundary(rng);
+      const float jump = (row % 3 == 1 ? -1 : 1) * shift(rng);
+      const float level = offset(rng);
+      target[row * (candidates + 1) + (split == length ? candidates : split - radius)] = 1;
+      for (int t = 0; t < length; ++t)
+        values[row * length + t] = level + (t >= split ? jump : 0) + noise(rng);
+    }
+    return std::pair{n::from_vector(values, {count, length}),
+                     n::from_vector(target, {count, candidates + 1})};
+  };
+  const auto [fit, target] = simulate(768, 781);
+  const auto [test, truth] = simulate(240, 782);
+  n::ParameterStore parameters;
+  const auto logits = [&](const n::Tensor& input) {
+    return n::change_point_logits(parameters, "detector", input, radius);
+  };
+  (void)logits(fit);
+  parameters.load("fixtures/change_point_init.npz", true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(fit.size(0), 32, 783);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto predicted = n::softmax(logits(n::take_rows(fit, rows)), 1);
+      const auto loss = n::mean(n::square(predicted - n::take_rows(target, rows)));
+      optimizer.step(n::grad(loss, parameters.parameters()));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto scores = logits(test);
+  const auto probability = n::softmax(scores, 1);
+  const auto actual = n::argmax(truth, 1).to_vector<int>();
+  const auto chosen = n::argmax(probability, 1).to_vector<int>();
+  int localized = 0, missed = 0, false_alarms = 0;
+  for (std::size_t i = 0; i < actual.size(); ++i) {
+    if (actual[i] == candidates) false_alarms += chosen[i] != candidates;
+    else {
+      missed += chosen[i] == candidates;
+      localized += chosen[i] != candidates && std::abs(actual[i] - chosen[i]) <= 2;
+    }
+  }
+  std::println("Localized within two samples: **{} / 160**. Missed changes: **{} / 160**. "
+               "False alarms: **{} / 80**.", localized, missed, false_alarms);
+
+  const std::string folder = "build/change_point/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "boundaries.npz", {{"input", test.reshape({-1, length, 1})},
+      {"label", truth}, {"logits", scores}, {"probability", probability},
+      {"hidden_W", parameters.at("detector/hidden/W")}, {"hidden_b", parameters.at("detector/hidden/b")},
+      {"boundary_W", parameters.at("detector/boundary/W")}, {"boundary_b", parameters.at("detector/boundary/b")},
+      {"null_W", parameters.at("detector/null/W")}, {"null_b", parameters.at("detector/null/b")}});
+  std::vector<double> time(length), boundary_axis(candidates);
+  std::iota(time.begin(), time.end(), 0);
+  std::iota(boundary_axis.begin(), boundary_axis.end(), radius);
+  auto series = dm::graphics::RPlot::create();
+  auto evidence = dm::graphics::RPlot::create();
+  series.title("Held-out series").x_label("Sample index").y_label("Level");
+  evidence.title("Boundary probabilities").x_label("Candidate boundary").y_label("Probability");
+  const std::vector<std::string> names{"Unchanged", "Downward", "Upward"};
+  const std::vector<dm::graphics::RGB> colors{{93,68,169}, {37,99,235}, {191,88,34}};
+  for (int row = 0; row < 3; ++row) {
+    series.lines(time, n::select(test, 0, row).to_vector<double>(), names[row], colors[row]);
+    const auto probs = n::select(probability, 0, row).to_vector<double>();
+    evidence.lines(boundary_axis, std::vector<double>(probs.begin(), probs.end() - 1),
+                   names[row], colors[row]);
+    if (actual[row] != candidates) {
+      evidence.points({double(actual[row] + radius)}, {probs[actual[row]]},
+                      names[row] + " true boundary", colors[row], 4);
+    }
+    std::println("\n{} series no-change probability: {:.4f}.", names[row], probs.back());
+  }
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 430);
+  layout.add(series).add(evidence).save_svg(folder + "boundaries.svg");
+  std::filesystem::copy_file(folder + "boundaries.svg", "figures/change_point.svg",
+                            std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Localized within two samples: **160 / 160**. Missed changes: **0 / 160**. False alarms: **0 / 80**.
+
+Unchanged series no-change probability: 0.9127.
+
+Downward series no-change probability: 0.0004.
+
+Upward series no-change probability: 0.0002.
+\image(figures/change_point.svg)
+// result_end
+
+The boundary plot marks the true split for the two changed examples.
+The no-change probabilities appear beneath the localization summary.

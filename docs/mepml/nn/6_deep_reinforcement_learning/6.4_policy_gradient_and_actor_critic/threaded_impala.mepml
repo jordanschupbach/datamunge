@@ -1,0 +1,268 @@
+//? Title: Threaded IMPALA with V-trace on CartPole
+//? Lang: en
+
+> Threaded IMPALA with V-trace on CartPole
+
+Four independent actors collect 20-step trajectories and submit them
+to a shared queue that holds up to 64. A learner takes eight
+trajectories per update. Actors refresh their policy from the learner
+every four updates and keep the behavior log probability of each
+sampled action. An actor can continue collecting while the learner
+updates. A full queue drops new trajectories.
+
+V-trace corrects for differences between the current policy and the
+policy that generated each trajectory. Both trace and temporal
+difference coefficients clip the ratio at one. Terminal flags break
+the trace across episode boundaries. The learner uses V-trace returns
+for the value loss and V-trace advantages for the policy gradient.
+
+The report trains for 100,000 environment steps and drains the final
+queue. The plots track greedy evaluation and the mean unclipped
+importance ratio in consumed batches. Independent initialization
+and thread scheduling can change the outcome.
+
+```{cpp, results="markdown", file="figures/threaded_impala.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -pthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <atomic>
+#include <condition_variable>
+#include <deque>
+#include <exception>
+#include <mutex>
+#include <thread>
+
+namespace n=dm::nn;
+namespace e=dm::rl::environments;
+
+struct Trajectory {
+  std::vector<float> states, rewards, terminal, behavior;
+  std::vector<int> actions;
+  int version=0;
+};
+
+int main() {
+  constexpr int budget=100000, actors=4, horizon=20, batch_size=8, capacity=64;
+  const std::array<float,3> rewards{1,2,3}, terminal{0,1,0}, behavior{-.7f,-.7f,-.7f};
+  const std::array<float,4> value{.5f,1.f,-1.f,4.f};
+  const std::array<float,3> tiny{-40,-40,-40};
+  const auto on=dm::rl::off_policy::VTrace(behavior,value,rewards,terminal,behavior,.9f);
+  const auto off=dm::rl::off_policy::VTrace(tiny,value,rewards,terminal,behavior,.9f);
+  const std::array<float,3> expected{2.8f,2.f,6.6f};
+  for (int t=0;t<3;++t)
+    if (std::abs(on.values[t]-expected[t])>1e-5f || std::abs(off.values[t]-value[t])>1e-5f)
+      throw std::runtime_error("V-trace control failed");
+  n::set_num_threads(1);
+  const auto model=[](n::ParameterStore& parameters,const n::Tensor& x) {
+    return n::models::BuildActorCritic(parameters,x,2,64);
+  };
+  const auto initialize=[&](n::ParameterStore& parameters) {
+    n::NoGradGuard guard;
+    model(parameters,n::zeros({1,4}));
+  };
+  const auto infer=[&](n::ParameterStore& parameters,const e::Obs& state) {
+    n::NoGradGuard guard;
+    return model(parameters,n::from_vector(state,{1,4}));
+  };
+  n::ParameterStore learner(0), published(1);
+  initialize(learner);
+  initialize(published);
+  published.copy_from(learner,1.);
+  n::Optimizer adam(learner,.0005,{.kind=n::OptimizerKind::Adam});
+  const auto evaluate=[&](int seed,int runs) {
+    double total=0;
+    for (int j=0;j<runs;++j) {
+      e::CartPole env;
+      auto state=env.reset(seed+j);
+      while (true) {
+        const int action=n::argmax(infer(learner,state).probs,-1).item<int>();
+        auto result=env.step(e::Action(action));
+        total+=result.reward;
+        if (result.done()) break;
+        state=std::move(result.obs);
+      }
+    }
+    return total/runs;
+  };
+  std::vector<double> eval_steps{0}, scores{evaluate(1000,5)}, learner_steps, ratios;
+  std::atomic<int> assigned{0};
+  std::atomic<bool> stop{false};
+  std::mutex mutex;
+  std::condition_variable ready;
+  std::deque<Trajectory> queue;
+  std::exception_ptr failure;
+  int active=actors, published_version=0, produced=0, dropped=0, high_water=0;
+  std::array<int,actors> actor_steps{};
+  const auto act=[&](int id) {
+    try {
+      e::CartPole env;
+      std::mt19937_64 rng(id);
+      auto state=env.reset(id);
+      n::ParameterStore behavior(id);
+      initialize(behavior);
+      int version=-1;
+      while (!stop.load() && assigned.fetch_add(horizon)<budget) {
+        {
+          const std::lock_guard guard(mutex);
+          if (version!=published_version) {
+            behavior.copy_from(published,1.);
+            version=published_version;
+          }
+        }
+        Trajectory trace;
+        trace.version=version;
+        for (int t=0;t<horizon;++t) {
+          const auto probabilities=infer(behavior,state).probs.to_vector<float>();
+          const int action=std::uniform_real_distribution<float>(0,1)(rng)<probabilities[0]?0:1;
+          auto result=env.step(e::Action(action));
+          trace.states.insert(trace.states.end(),state.begin(),state.end());
+          trace.actions.push_back(action);
+          trace.rewards.push_back(result.reward);
+          trace.terminal.push_back(result.terminated?1.f:0.f);
+          trace.behavior.push_back(std::log(std::max(probabilities[action],1e-8f)));
+          state=result.done()?env.reset():std::move(result.obs);
+        }
+        trace.states.insert(trace.states.end(),state.begin(),state.end());
+        {
+          const std::lock_guard guard(mutex);
+          ++produced;
+          actor_steps[id]+=horizon;
+          if (queue.size()<capacity) queue.push_back(std::move(trace));
+          else ++dropped;
+          high_water=std::max(high_water,static_cast<int>(queue.size()));
+        }
+        ready.notify_one();
+      }
+    } catch (...) {
+      const std::lock_guard guard(mutex);
+      if (!failure) failure=std::current_exception();
+      stop.store(true);
+    }
+    {
+      const std::lock_guard guard(mutex);
+      --active;
+    }
+    ready.notify_all();
+  };
+  std::vector<std::jthread> threads;
+  for (int id=0;id<actors;++id) threads.emplace_back(act,id);
+  int updates=0, consumed=0, stale=0, next_eval=10000;
+  try {
+    while (true) {
+      std::vector<Trajectory> group;
+      int transitions;
+      {
+        std::unique_lock lock(mutex);
+        ready.wait(lock,[&]{return stop.load() || !active || queue.size()>=batch_size;});
+        if (failure) std::rethrow_exception(failure);
+        if (queue.empty()) break;
+        while (group.size()<batch_size && !queue.empty()) {
+          group.push_back(std::move(queue.front()));
+          queue.pop_front();
+        }
+        transitions=produced*horizon;
+      }
+      std::vector<float> inputs;
+      std::vector<int> actions, train_rows;
+      for (const auto& trace:group) {
+        const int base=actions.size();
+        inputs.insert(inputs.end(),trace.states.begin(),trace.states.end());
+        actions.insert(actions.end(),trace.actions.begin(),trace.actions.end());
+        actions.push_back(0);
+        for (int t=0;t<horizon;++t) train_rows.push_back(base+t);
+      }
+      const auto output=model(learner,n::from_vector(inputs,{static_cast<int>(actions.size()),4}));
+      const auto selected=n::sum(output.logp*n::one_hot(n::from_vector(actions),2),{1});
+      const auto logp=selected.to_vector<float>();
+      const auto values=output.value.to_vector<float>();
+      std::vector<float> targets, advantages;
+      double ratio=0;
+      for (std::size_t j=0;j<group.size();++j) {
+        const auto& trace=group[j];
+        const auto base=j*(horizon+1);
+        const auto corrected=dm::rl::off_policy::VTrace(
+            std::span(logp).subspan(base,horizon),std::span(values).subspan(base,horizon+1),
+            trace.rewards,trace.terminal,trace.behavior,.99f);
+        targets.insert(targets.end(),corrected.values.begin(),corrected.values.begin()+horizon);
+        advantages.insert(advantages.end(),corrected.advantages.begin(),corrected.advantages.end());
+        for (int t=0;t<horizon;++t) ratio+=std::exp(logp[base+t]-trace.behavior[t]);
+        stale+=trace.version<updates;
+      }
+      const auto rows=n::from_vector(train_rows);
+      const auto loss=-n::mean(n::gather(selected,rows)*n::from_vector(advantages))+
+          .5f*n::mean(n::square(n::from_vector(targets)-n::gather(output.value,rows)))-
+          .01f*n::mean(n::gather(output.entropy,rows));
+      const auto gradient=n::clip_by_global_norm(n::grad(loss,learner.parameters()),.5);
+      if (!std::isfinite(loss.item()) || !std::isfinite(gradient.second))
+        throw std::runtime_error("nonfinite IMPALA update");
+      adam.step(gradient.first);
+      ++updates;
+      consumed+=group.size();
+      learner_steps.push_back(updates);
+      ratios.push_back(ratio/train_rows.size());
+      if (updates%4==0) {
+        const std::lock_guard guard(mutex);
+        published.copy_from(learner,1.);
+        published_version=updates;
+      }
+      if (transitions>=next_eval) {
+        eval_steps.push_back(transitions);
+        scores.push_back(evaluate(1000+next_eval,5));
+        next_eval=(transitions/10000+1)*10000;
+      }
+    }
+  } catch (...) {
+    stop.store(true);
+    ready.notify_all();
+    throw;
+  }
+  for (auto& t:threads) t.join();
+  if (failure) std::rethrow_exception(failure);
+  if (produced*horizon!=budget || produced!=consumed+dropped || stale==0 || updates<4 ||
+      std::any_of(actor_steps.begin(),actor_steps.end(),[](int n){return n<=0;}))
+    throw std::runtime_error("incomplete asynchronous actor/learner run");
+  const auto final=evaluate(777,20);
+  if (eval_steps.back()==budget) scores.back()=final;
+  else { eval_steps.push_back(budget); scores.push_back(final); }
+  std::print("| Transitions | Learner updates | Trajectories consumed | Dropped | Stale | Peak queue | Final return |\n");
+  std::print("|---:|---:|---:|---:|---:|---:|---:|\n");
+  std::print("| {} | {} | {} | {} | {} | {} | {:.1f} |\n",budget,updates,consumed,dropped,stale,high_water,final);
+  std::filesystem::create_directories("build");
+  auto reward=dm::graphics::RPlot::create();
+  reward.line(eval_steps,scores).title("Greedy evaluation").x_label("Actor transitions").y_label("Mean return");
+  auto diagnostic=dm::graphics::RPlot::create();
+  diagnostic.line(learner_steps,ratios).title("Off-policy correction").x_label("Learner update")
+      .y_label("Mean unclipped importance ratio");
+  dm::graphics::RLayout::create(1,2).add(reward).add(diagnostic).size(1100,430).fit_panels()
+      .save_svg("build/threaded_impala.svg");
+  int seed=4242;
+  double best=-1;
+  for (int trial=4242;trial<4245;++trial)
+    if (const auto value=evaluate(trial,1);value>best) {best=value;seed=trial;}
+  e::CartPole env;
+  auto state=env.reset(seed);
+  std::vector<std::array<float,3>> poses;
+  while (true) {
+    poses.push_back({state[0],state[2],0});
+    auto result=env.step(e::Action(n::argmax(infer(learner,state).probs,-1).item<int>()));
+    if (result.done()) break;
+    state=std::move(result.obs);
+  }
+  const std::string file="threaded_impala_cartpole.mp4";
+  e::save_linkage_replay(e::LinkageReplay::CartPole,poses,"build/"+file,50);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/"+file,"figures/"+file,std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Transitions | Learner updates | Trajectories consumed | Dropped | Stale | Peak queue | Final return |
+|---:|---:|---:|---:|---:|---:|---:|
+| 100000 | 287 | 2293 | 2707 | 2255 | 64 | 401.9 |
+\image(figures/threaded_impala.svg)
+// result_end
+\caption(Greedy evaluation and the mean unclipped ratio of learner to actor action probabilities.)
+
+\video(figures/threaded_impala_cartpole.mp4)
+\caption(Greedy CartPole rollout after threaded IMPALA training.)
+
+> Reference
+
+- [Espeholt et al. (2018), IMPALA](https://proceedings.mlr.press/v80/espeholt18a.html).

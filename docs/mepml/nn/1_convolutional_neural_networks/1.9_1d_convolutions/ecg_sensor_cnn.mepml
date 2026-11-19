@@ -114,15 +114,6 @@ int main() {
 }
 ```
 // result_begin:
-// "time_series" fit:40 original source rows
-// "time_series" validation:10 original source rows
-// "time_series" test:150 original source rows
-// "ECG200" fit:80 original source rows
-// "ECG200" validation:20 original source rows
-// "ECG200" test:100 original source rows
-// "BasicMotions" fit:32 original source rows
-// "BasicMotions" validation:8 original source rows
-// "BasicMotions" test:40 original source rows
 // result_end
 ```{cpp, results="markdown", file="figures/ecg_sensor_cnn_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>

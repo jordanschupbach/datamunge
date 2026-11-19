@@ -1336,8 +1336,23 @@ docs-md-file INPUT OUTPUT:
 # stored results, -DDOCS_MEPML_ALLOW_FAILURES=ON builds the site anyway.
 docs *ARGS:
     @echo "Building docs"
-    {{ NIX_DEVELOP }} .#cpp --command cmake -U MEP_MEPML_EXECUTABLE -S docs -B build/debug/docs -DDOCS_MEPML_PKG_CONFIG_PATH="{{ MEPML_PKG_CONFIG_PATH }}" {{ ARGS }}
+    {{ NIX_DEVELOP }} .#cpp --command cmake -U MEP_MEPML_EXECUTABLE -S docs -B build/debug/docs -DDOCS_MEPML_PKG_CONFIG_PATH="{{ MEPML_PKG_CONFIG_PATH }}" -DDOCS_MEPML_RUN=ON -DDOCS_MEPML_ALLOW_FAILURES=OFF {{ ARGS }}
     {{ NIX_DEVELOP }} .#cpp --command cmake --build build/debug/docs --target Website
+
+# Export stored report results and the API reference without running experiments.
+docs-preview:
+    @bash -c 'set -euo pipefail; \
+      tools=(); \
+      if ! command -v doxygen >/dev/null || ! command -v mep-mepml >/dev/null || \
+         ! python3 -c "import jinja2, markdown_it, pygments" 2>/dev/null; then \
+        tools=({{ NIX_DEVELOP }} .#cpp-tools --command); \
+      fi; \
+      "${tools[@]}" cmake -U MEP_MEPML_EXECUTABLE -S docs -B build/debug/docs -DDOCS_MEPML_RUN=OFF -DDOCS_MEPML_ALLOW_FAILURES=ON; \
+      "${tools[@]}" cmake --build build/debug/docs --target Website'
+
+# Publish a local export of the saved report results and figures.
+docs-publish: docs-preview
+    bash scripts/publish_docs_branch.sh build/debug/docs/site
 
 # Serve the built website at http://localhost:PORT (it also works opened from disk).
 docs-serve PORT="8000":
@@ -1513,8 +1528,14 @@ view-flamechart:
     $(BROWSER) ./flamegraph.svg
 
 view-docs:
-    @echo "Opening docs"
-    qutebrowser ./build/debug/docs/site/index.html
+    @bash -c 'set -euo pipefail; \
+      page="$PWD/build/debug/docs/site/index.html"; \
+      if [[ ! -f "$page" ]]; then just docs-preview; fi; \
+      if [[ -n "${BROWSER:-}" ]]; then exec "$BROWSER" "$page"; fi; \
+      for opener in xdg-open open; do \
+        if command -v "$opener" >/dev/null 2>&1; then exec "$opener" "$page"; fi; \
+      done; \
+      echo "Set BROWSER or open $page manually." >&2; exit 1'
 
 # }}} view commands
 

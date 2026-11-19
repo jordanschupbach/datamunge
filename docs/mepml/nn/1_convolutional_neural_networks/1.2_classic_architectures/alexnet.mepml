@@ -44,9 +44,9 @@ He/Glorot initializers and the compact demonstration's Adam differ from the orig
 
 The dataset experiment retains all five convolutions, three pools, groups, LRN and dropout,
 but uses 67-pixel bilinear resizing, quarter convolution widths and 256-unit dense layers.
-Its 128 fitting, 64 validation and 64 official-test images are a bounded teaching experiment.
-It runs 20 epochs, independent padded crops/flips, Adam(.001), and kernel L2=.0001/2.
-Validation selects the checkpoint before a test pass. Cached CIFAR-10 is required.
+It fits 12,000 CIFAR-10 images for ten epochs with independent padded crops and flips,
+Adam(.001) and a .0001/2 kernel penalty. The minimum NLL on 5,000 separate validation
+images selects the checkpoint for evaluation on all 10,000 official test images.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -261,16 +261,27 @@ int main() {
       "Split/fused grouped derivative error {:.12f}; disconnected-input derivative {:.1f}.\n",
       gradient_error, disconnected);
   {
-    n::NoGradGuard guard;
     n::ParameterStore full(17);
-    const auto net = n::models::AlexNet(full, n::zeros({1, 227, 227, 3}));
+    const auto net = n::models::AlexNet(full, n::normal({1, 227, 227, 3}, 0., .2, rng));
     const std::array<int64_t, 5> spatial{55, 27, 13, 13, 13}, widths{96, 256, 384, 384, 256};
     for (int i = 0; i < 5; ++i)
       if (net.convolution[i].shape() != n::Shape{1, spatial[i], spatial[i], widths[i]})
         return 1;
-    if (full.count() != 60965224 || net.pooling[2].shape() != n::Shape{1, 6, 6, 256} ||
+    if (full.count() != 60965224 ||
+        net.pooling[0].shape() != n::Shape{1, 27, 27, 96} ||
+        net.pooling[1].shape() != n::Shape{1, 13, 13, 256} ||
+        net.pooling[2].shape() != n::Shape{1, 6, 6, 256} ||
+        net.fc6.shape() != n::Shape{1, 4096} || net.fc7.shape() != n::Shape{1, 4096} ||
         net.logits.shape() != n::Shape{1, 1000})
       return 1;
+    const auto gradients = n::grad(n::mean(n::square(net.logits)), full.parameters());
+    for (std::size_t i = 0; i < gradients.size(); ++i) {
+      const double norm = n::max(n::abs(gradients[i])).item();
+      if (!std::isfinite(norm) || norm <= 0.)
+        throw std::runtime_error("Full AlexNet gradient is zero or nonfinite");
+    }
+    std::println("Checked finite nonzero gradients through {} canonical parameter tensors.",
+                 gradients.size());
     std::print("Full model: {} learned scalars; five convolution stages and final 6x6x256 "
                "geometry verified.\n",
                full.count());
@@ -299,8 +310,41 @@ int main() {
 ```
 // result_begin: markdown
 Split/fused grouped derivative error 0.000000000000; disconnected-input derivative 0.0.
+Checked finite nonzero gradients through 22 canonical parameter tensors.
 Full model: 60965224 learned scalars; five convolution stages and final 6x6x256 geometry verified.
 Compact topology: all parameter gradients finite; inference repeats exactly and training dropout changes logits.
+// result_end
+
+A one-weight control gives opposite derivatives for the regularized training
+and inference objectives. An Adam step follows the training derivative.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::ParameterStore params(17, n::DType::Float64);
+  const auto weight = params.get("w", {1, 1}, n::init::ones());
+  const auto target = n::from_vector<std::int64_t>({0});
+  const auto objective = [&](bool training) {
+    const auto signed_weight = training ? -weight : weight;
+    const auto scores = n::concat({signed_weight, -signed_weight}, 1);
+    return n::sparse_softmax_cross_entropy(scores, target) + .05 * n::sum(n::square(weight));
+  };
+  if (n::grad(objective(true), {weight})[0].item() <= 0. ||
+      n::grad(objective(false), {weight})[0].item() >= 0.)
+    throw std::runtime_error("Expected opposite regularized training and inference updates");
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params, .01, config);
+  optimizer.minimize(objective(true));
+  if (weight.item() >= 1.)
+    throw std::runtime_error("Adam failed to follow the training-path derivative");
+  std::println("Regularized training-path Adam moves the unit weight to {:.6f}.", weight.item());
+}
+```
+// result_begin: markdown
+Regularized training-path Adam moves the unit weight to 0.990000.
 // result_end
 
 > Dataset example
@@ -359,36 +403,49 @@ The optimizer captures all lazily created leaves. Crop/flip transforms and resiz
 
 int main() {
   int rendered_confusions = 0;
-  namespace n             = dm::nn;
+  namespace n = dm::nn;
   n::set_num_threads(2);
 
   std::filesystem::path cache;
-  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
     cache = p;
-  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
     cache = std::filesystem::path(p) / "datamunge/datasets";
   else
     cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
   dm::datasets::fetch("cifar10", (cache / "cifar10").string());
 
-  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
-  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
-  const auto labels = n::cast(raw.labels, n::DType::Int64);
-  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
-  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
-             vy       = n::slice_axis(labels, 0, 128, 192);
-  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
-  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
-             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  const auto development = n::load_cifar10((cache / "cifar10").string(), "train");
+  if (development.images.shape() != n::Shape{50000, 32, 32, 3})
+    throw std::runtime_error("Expected all CIFAR-10 development rows");
+  std::vector<std::int64_t> order(50000);
+  std::iota(order.begin(), order.end(), 0);
+  std::mt19937_64 split(2026);
+  std::shuffle(order.begin(), order.end(), split);
+  const std::vector<std::int64_t> fitting(order.begin(), order.begin() + 12000);
+  const std::vector<std::int64_t> held_out(order.begin() + 45000, order.end());
+  const auto tx = n::take_rows(development.images, fitting);
+  const auto ty = n::take_rows(development.labels, fitting);
+  const auto vx = n::take_rows(development.images, held_out);
+  const auto vy = n::take_rows(development.labels, held_out);
   n::models::AlexNetConfig cfg;
-  cfg.image_size    = 67;
-  cfg.classes       = 10;
+  cfg.image_size = 67;
+  cfg.classes = 10;
   cfg.width_divisor = 4;
-  cfg.dense_width   = 256;
+  cfg.dense_width = 256;
   n::ParameterStore p(17);
-  auto              output = [&](const n::Tensor& image, bool training) {
+  auto output = [&](const n::Tensor &image, bool training) {
     const auto resized = n::resize_bilinear(image, {cfg.image_size, cfg.image_size});
     return n::models::AlexNet(p, resized, cfg, training);
+  };
+  const auto predict = [&](const n::Tensor &images) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> result;
+    for (std::int64_t at = 0; at < images.size(0); at += 128) {
+      const auto rows = n::slice_axis(images, 0, at, std::min(at + 128, images.size(0)));
+      result.push_back(output(2 * rows - 1, false).logits);
+    }
+    return n::concat(result, 0);
   };
   // Materialise every learned leaf before capturing optimizer parameters.
   {
@@ -397,64 +454,64 @@ int main() {
   }
   n::OptimizerConfig config;
   config.kind = n::OptimizerKind::Adam;
-  n::Optimizer  optimizer(p, .001, config);
-  n::BatchOrder batches(128, 8, 2026);
-  n::Generator  augmentation(151);
+  n::Optimizer optimizer(p, .001, config);
+  n::BatchOrder batches(12000, 128, 29);
+  n::Generator augmentation(151);
   std::filesystem::create_directories("build");
-  const std::string   checkpoint = "build/alexnet_best.npz";
-  double              best       = std::numeric_limits<double>::infinity();
-  int                 best_epoch = 0;
+  const std::string checkpoint = "build/alexnet_best.npz";
+  double best = std::numeric_limits<double>::infinity();
+  int best_epoch = 0;
   std::vector<double> epochs, train, validation;
-  for (int epoch = 1; epoch <= 20; ++epoch) {
+  for (int epoch = 1; epoch <= 10; ++epoch) {
     batches.begin_epoch();
     n::WeightedMean average;
     for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
-      std::vector<n::Tensor> transformed;
-      for (int64_t row = 0; row < batch.size(0); ++row) {
-        auto image =
-            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
-        image = n::augment::random_crop(image, 32, 32, augmentation);
-        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
-      }
-      const auto net       = output(2 * n::concat(transformed, 0) - 1, true);
-      const auto primary   = n::sparse_softmax_cross_entropy(net.logits, target);
-      auto       objective = primary;
+      const auto batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      const auto net = output(2 * n::study::augment_cifar10(batch, augmentation) - 1, true);
+      const auto primary = n::sparse_softmax_cross_entropy(net.logits, target);
+      auto objective = primary;
 
       // L2 coefficient .0001/2, kernels only; coupled penalty is explicit in the objective.
-      for (const auto& w : p.parameters())
+      for (const auto &w : p.parameters())
         if (w.dim() >= 2)
           objective = objective + .00005 * n::sum(n::square(w));
       optimizer.minimize(objective);
       average.add(primary.item(), rows.size());
     }
-    n::NoGradGuard guard;
-    const double   val = n::sparse_softmax_cross_entropy(output(vx, false).logits, vy).item();
+    if (average.count() != fitting.size())
+      throw std::runtime_error("Incomplete fitting epoch");
+    const double val = n::sparse_softmax_cross_entropy(predict(vx), vy).item();
     if (!std::isfinite(val))
       return 1;
     epochs.push_back(epoch);
     train.push_back(average.value());
     validation.push_back(val);
     if (val < best) {
-      best       = val;
+      best = val;
       best_epoch = epoch;
       p.save(checkpoint);
     }
   }
   p.load(checkpoint);
-  n::NoGradGuard     guard;
-  const auto         test = output(qx, false).logits;
+  n::NoGradGuard guard;
+  const double restored = n::sparse_softmax_cross_entropy(predict(vx), vy).item();
+  if (!std::isfinite(restored) || std::abs(restored - best) > 1e-6)
+    throw std::runtime_error("Restored validation NLL differs");
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  if (official.images.shape() != n::Shape{10000, 32, 32, 3})
+    throw std::runtime_error("Expected all official CIFAR-10 test rows");
+  const auto test = predict(official.images), qy = official.labels;
   n::ConfusionMatrix native_confusion(10);
   native_confusion.add(qy, n::argmax(test, 1));
- n::save_npz("build/alexnet_heldout_"+std::to_string(rendered_confusions)+".npz",{{"truth",qy},{"logits",test},{"counts",native_confusion.to_tensor()}});
-  native_confusion.save_svg(
-      "build/alexnet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
-      {.title = "alexnet / selected-checkpoint test counts"});
+  n::save_npz("build/alexnet_heldout_" + std::to_string(rendered_confusions) + ".npz",
+              {{"truth", qy}, {"logits", test}, {"counts", native_confusion.to_tensor()}});
+  native_confusion.save_svg("build/alexnet_confusion_api_" + std::to_string(rendered_confusions++) +
+                                ".svg",
+                            {.title = "alexnet / selected-checkpoint test counts"});
 
-  const double train_nll =
-      n::sparse_softmax_cross_entropy(output(2 * tx - 1, false).logits, ty).item();
+  const double train_nll = n::sparse_softmax_cross_entropy(predict(tx), ty).item();
   const double test_nll = n::sparse_softmax_cross_entropy(test, qy).item();
-  if (!std::isfinite(test_nll))
+  if (!std::isfinite(test_nll) || n::accuracy(test, qy) < .35)
     return 1;
   auto plot = dm::graphics::RPlot::create();
   plot.lines(epochs, train, "training", {37, 99, 235})
@@ -464,34 +521,25 @@ int main() {
       .y_label("mean NLL")
       .size(1000, 470)
       .save_svg("build/alexnet_training.svg");
-  std::print(
-      "128 fit / 64 validation / 64 official-test rows; {} learned scalars; {} Adam "
-      "updates.\nBest validation epoch {}; NLL {:.6f}.\nSelected inference training "
-      "NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
-      p.count(),
-      optimizer.iterations(),
-      best_epoch,
-      best,
-      train_nll,
-      test_nll,
-      n::accuracy(test, qy));
+  std::print("12000 fit / 5000 validation / 10000 official-test rows; {} learned scalars; {} Adam "
+             "updates.\nBest validation epoch {}; NLL {:.6f}.\nSelected inference training "
+             "NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+             p.count(), optimizer.iterations(), best_epoch, best, train_nll, test_nll,
+             n::accuracy(test, qy));
 }
 ```
 // result_begin: markdown
-128 fit / 64 validation / 64 official-test rows; 237674 learned scalars; 320 Adam updates.
-Best validation epoch 15; NLL 2.169600.
-Selected inference training NLL 1.861279; test NLL 2.122767; test accuracy 0.281250.
+12000 fit / 5000 validation / 10000 official-test rows; 237674 learned scalars; 940 Adam updates.
+Best validation epoch 10; NLL 1.299016.
+Selected inference training NLL 1.239128; test NLL 1.292304; test accuracy 0.537000.
 \image(figures/alexnet_training.svg)
 // result_end
-\caption(Primary cross entropy from the visible Adam loop. Training uses augmentation and dropout; validation is deterministic. Both use fixed, small subsets.)
-\alttext(Primary cross entropy from the visible Adam loop. Training uses augmentation and dropout; validation is deterministic. Both use fixed, small subsets.)
+\caption(Primary cross entropy from the visible Adam loop. Training uses augmentation and dropout; validation is deterministic. Selection uses the unaugmented validation split.)
+\alttext(Primary cross entropy from the visible Adam loop. Training uses augmentation and dropout; validation is deterministic. Selection uses the unaugmented validation split.)
 
-The executed results above report the current selected checkpoint. These fixed small
-subsets and source budgets do not establish a ranking of architectures. Assess
-training, validation and test NLL together with the complete held-out confusion.
-Augmented or batch-moment training objectives and saved-state inference can differ;
-weak or below-chance outcomes remain part of the result. The independent geometry,
-parameter-count and derivative checks establish separate implementation claims.
+The executed results above report the current selected checkpoint. The report measures training NLL under stochastic augmentation and dropout,
+then recomputes fitting-set NLL with both disabled. Validation and test NLL
+also use deterministic inference.
 
 > Native confusion matrices
 
@@ -508,25 +556,40 @@ running from top to bottom and predicted classes from left to right.
 
 Each alternate architecture or held-out confusion below is copied from this run's local build directory.
 
-```{cpp, results="markdown", file="figures/alexnet_architecture_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/alexnet_architecture_graph.svg","build/export_alexnet_architecture_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/alexnet_architecture_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/alexnet_architecture_graph.svg", "build/export_alexnet_architecture_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/alexnet_architecture_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/alexnet_architecture_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/alexnet_architecture_lenet.svg","build/export_alexnet_architecture_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/alexnet_architecture_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/alexnet_architecture_lenet.svg", "build/export_alexnet_architecture_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/alexnet_architecture_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/alexnet_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/alexnet_confusion_api_0.svg","build/export_alexnet_confusion_api_0.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/alexnet_confusion_api_0.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/alexnet_confusion_api_0.svg", "build/export_alexnet_confusion_api_0.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/alexnet_confusion_api_0.svg)
@@ -535,9 +598,8 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 > Conclusion
 
 Grouped convolution restricts channel dependencies; LRN couples neighbouring channel energies;
-dropout changes training evaluations while preserving deterministic inference. Exact geometry,
-parameter counting, gradient checks and the small CIFAR-10 run test different claims. The subset
-fit demonstrates the training workflow, not reproduction of the original ImageNet benchmark.
+dropout changes training evaluations while preserving deterministic inference. The canonical checks exercise every stage and learned tensor. The compact
+CIFAR-10 run measures how its validation-selected checkpoint classifies unseen images.
 
 > References
 

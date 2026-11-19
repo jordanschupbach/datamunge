@@ -1996,7 +1996,7 @@ weights from nn's generator (statistical parity with TF only)
 epoch1 velocityMSE=2.891
 epoch2 velocityMSE=2.69804
 epoch3 velocityMSE=2.57196
-testVelocityMSE=2.93637 fitGaussian=2.417 exactConditional=2.09633;endpoints/timeControl/deterministicODE/restore/immutable PASS (training 0.00569854 s)
+testVelocityMSE=2.93637 fitGaussian=2.417 exactConditional=2.09633;endpoints/timeControl/deterministicODE/restore/immutable PASS (training 0.0131997 s)
 no TF record at /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.4_diffusion/build/models/flow_matching; parity checks skipped
 Artifacts: build/diffusion-models/models/flow_matching
 // result_end

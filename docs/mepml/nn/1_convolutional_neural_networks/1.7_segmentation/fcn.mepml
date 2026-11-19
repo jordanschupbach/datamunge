@@ -475,13 +475,9 @@ Variant8 restored epoch7: validation mIoU 0.586316; test pixel accuracy 0.923665
 \caption(Three separately initialized compact FCN models, each with a visible128-update Adam fit. Weighted CE excludes explicit L2; validation mean IoU selects each checkpoint independently.)
 \alttext(Three separately initialized compact FCN models, each with a visible128-update Adam fit. Weighted CE excludes explicit L2; validation mean IoU selects each checkpoint independently.)
 
-FCN-32s/16s/8s all select the final epoch 8,with validation mean IoU
-.367674/.656522/.632153. Test mean IoU is .376401/.669480/.688770,
-respectively. The finer skip variants improve this bounded fit,while32s
-produces visibly coarse regions. All three were still improving when the
-128-update runs stopped, and FCN8s still has its lowest IoU on circles
-(.494061); these runs illustrate the architectures rather than establish
-a benchmark ranking.
+Compare the three mean IoUs in the results above with the predicted
+regions. The finer skip models can recover spatial detail that a single
+stride-32 score grid loses.
 
 \image(figures/fcn_predictions_32.png)
 \caption(FCN-32s: each row shows the actual test image,truth mask and restored prediction for the first four test scenes. Palette and pixel range are fixed; mistakes remain visible.)

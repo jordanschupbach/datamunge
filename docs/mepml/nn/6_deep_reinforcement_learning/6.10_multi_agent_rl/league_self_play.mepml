@@ -1,0 +1,161 @@
+//? Title: League self-play with frozen tic-tac-toe opponents
+//? Lang: en
+
+> League self-play with frozen tic-tac-toe opponents
+
+Two learners use the same [board value policy architecture|board_policy.mepml]
+with independent parameters. At each round both play every archived
+policy, alternating seats. Only the learner's moves become training
+examples. Learners explore with probability one third. Their opponents
+use frozen parameters throughout the round.
+
+Both learners add a snapshot after each round, growing the league
+from two policies to eight. The final round robin tries every opening
+move with each pair in both seat orders. A win earns two points and
+a draw earns one. The plot compares snapshot scores against the entire
+league. Native initialization can change the learned matchups.
+
+```{cpp, results="markdown", file="figures/league_self_play.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  using Player=dm::rl::BoardValuePolicy;
+  using Game=dm::rl::environments::TicTacToe;
+  using Label=std::array<int,12>;
+  constexpr int columns=13;
+  std::mt19937 rng(46503);
+  const auto match=[&](Player& first,Player& second,int first_id,int second_id,
+                        int learner_seat,int opening,std::vector<Label>& replay) {
+    Game game;
+    const auto begin=replay.size();
+    std::array<int,columns> row;
+    row.fill(-1);
+    row[10]=first_id;
+    row[11]=second_id;
+    row[12]=0;
+    int step=0;
+    while (!game.Terminal()) {
+      const int seat=game.CurrentPlayer();
+      const bool forced=step==0 && opening>=0;
+      const bool explore=forced || (seat==learner_seat && rng()%3==0);
+      auto& player=seat==1?first:second;
+      int action;
+      if (forced) action=opening;
+      else if (explore) {
+        const auto legal=game.LegalActions();
+        action=legal[rng()%legal.size()];
+      } else action=player.greedy(game);
+      if (explore) row[12]|=1<<step;
+      if (seat==learner_seat) {
+        Label label{};
+        const auto board=game.Observation();
+        std::copy(board.begin(),board.end(),label.begin());
+        label[9]=seat;
+        label[10]=action;
+        replay.push_back(label);
+      }
+      row[step++]=action;
+      game.Apply(action);
+    }
+    const int winner=game.Winner();
+    row[9]=winner;
+    for (auto i=begin;i<replay.size();++i) replay[i][11]=winner==0?0:winner==learner_seat?1:-1;
+    return row;
+  };
+  const auto matrix=[]<std::size_t width>(const std::vector<std::array<int,width>>& rows) {
+    std::vector<int> values;
+    for (const auto& row:rows) values.insert(values.end(),row.begin(),row.end());
+    return n::from_vector(values,{std::ssize(rows),static_cast<std::int64_t>(width)});
+  };
+  const auto train=[](Player& policy,const std::vector<Label>& replay,unsigned seed) {
+    std::vector<float> boards,outcomes;
+    std::vector<int> actions;
+    for (const auto& row:replay) {
+      boards.insert(boards.end(),row.begin(),row.begin()+9);
+      actions.push_back(row[10]);
+      outcomes.push_back(row[11]);
+    }
+    const auto x=n::from_vector(boards,{std::ssize(replay),9});
+    const auto a=n::from_vector(actions),y=n::from_vector(outcomes);
+    n::BatchOrder batches(replay.size(),64,seed);
+    batches.begin_epoch();
+    for (auto ids=batches.next();!ids.empty();ids=batches.next()) {
+      policy.train(n::take_rows(x,ids),n::take_rows(a,ids),n::take_rows(y,ids));
+    }
+  };
+  std::array learners{Player(46501),Player(46502)};
+  Player opponent,evaluator;
+  std::vector<n::ParameterStore> archive;
+  for (const auto& learner:learners) archive.push_back(learner.snapshot());
+  const auto root=std::filesystem::path("build/league_self_play");
+  std::filesystem::create_directories(root);
+  std::print("| Round | Training games | Archived policies |\n|---:|---:|---:|\n");
+  for (int round=1;round<=3;++round) {
+    const int available=archive.size();
+    std::vector<std::array<int,columns>> games;
+    for (int member=0;member<2;++member) {
+      auto& learner=learners[member];
+      const int learner_id=available-2+member;
+      std::vector<Label> replay;
+      for (int rival=0;rival<available;++rival) {
+        opponent.load_snapshot(archive[rival]);
+        for (int game=0;game<12;++game) {
+          const bool starts=game%2==0;
+          games.push_back(match(starts?learner:opponent,starts?opponent:learner,
+              starts?learner_id:rival,starts?rival:learner_id,starts?1:2,-1,replay));
+        }
+      }
+      n::save_npz((root/std::format("round{}_learner{}.npz",round,member)).string(),{{"labels",matrix(replay)}});
+      train(learner,replay,46510+2*round+member);
+    }
+    for (const auto& learner:learners) archive.push_back(learner.snapshot());
+    n::save_npz((root/std::format("round{}.npz",round)).string(),{{"games",matrix(games)}});
+    std::print("| {} | {} | {} |\n",round,games.size(),archive.size());
+  }
+  const int count=archive.size();
+  std::vector<int> points(count*count);
+  std::vector<Label> unused;
+  std::vector<std::array<int,columns>> evaluation;
+  for (int a=0;a<count;++a) {
+    opponent.load_snapshot(archive[a]);
+    for (int b=a+1;b<count;++b) {
+      evaluator.load_snapshot(archive[b]);
+      for (int opening=0;opening<9;++opening) {
+        for (int swap=0;swap<2;++swap) {
+          const auto game=match(swap?evaluator:opponent,swap?opponent:evaluator,
+                                swap?b:a,swap?a:b,0,opening,unused);
+          points[a*count+b]+=game[9]==0?1:game[9]==1+swap?2:0;
+          points[b*count+a]+=game[9]==0?1:game[9]==2-swap?2:0;
+          evaluation.push_back(game);
+        }
+      }
+    }
+  }
+  n::save_npz((root/"evaluation.npz").string(),{{"games",matrix(evaluation)},
+      {"points",n::from_vector(points,{count,count})}});
+  std::vector<double> ids,totals;
+  for (int id=0;id<count;++id) {
+    const auto p=archive[id].parameters();
+    n::save_npz((root/std::format("snapshot{}.npz",id)).string(),
+        {{"w1",p[0]},{"b1",p[1]},{"w2",p[2]},{"b2",p[3]}});
+    ids.push_back(id);
+    totals.push_back(std::accumulate(points.begin()+id*count,points.begin()+(id+1)*count,0));
+  }
+  std::print("\nThe round robin replayed {} matches across {} snapshots.\n",evaluation.size(),count);
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars(ids,totals,"Round-robin points",{37,99,235})
+      .title("Frozen policy round robin").x_label("Snapshot ID").y_label("Points")
+      .size(800,460).save_svg("build/league_self_play.svg");
+}
+```
+// result_begin: markdown
+| Round | Training games | Archived policies |
+|---:|---:|---:|
+| 1 | 48 | 4 |
+| 2 | 96 | 6 |
+| 3 | 144 | 8 |
+
+The round robin replayed 504 matches across 8 snapshots.
+\image(figures/league_self_play.svg)
+// result_end

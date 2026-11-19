@@ -1,0 +1,132 @@
+//? Title: Continual learning with EWC, synaptic intelligence and replay
+//? Lang: en
+
+> Continual learning with EWC, synaptic intelligence and replay
+
+Two logistic classification tasks use different coefficients on the
+same inputs. Training on task B alone can change the parameters needed
+for task A. Every method starts task B from the same fitted checkpoint.
+
+Elastic weight consolidation penalizes displacement from that checkpoint
+using the diagonal empirical Fisher on task A. Synaptic intelligence
+uses each parameter's accumulated gradient work divided by its squared
+net displacement plus a damping constant. Replay keeps a uniform
+reservoir of task-A rows and mixes draws from it into task-B minibatches.
+A matched task-B-only minibatch run isolates the effect of replay.
+
+```{cpp, results="markdown", file="figures/elastic_weight_consolidation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed,bool second) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise;
+    std::uniform_real_distribution<float> uniform;
+    std::vector<float> x(count*4,1),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=1;j<4;++j) x[4*i+j]=noise(rng);
+      const float logit=(second?-1.4f:2.f)*x[4*i+1]+(second?2.f:.9f)*x[4*i+2];
+      y[i]=uniform(rng)<1.f/(1.f+std::exp(-logit));
+    }
+    return std::pair{n::from_vector(x,{count,4}),n::from_vector(y,{count,1})};
+  };
+  const auto [a,ay]=draw(384,31251,false);
+  const auto [b,by]=draw(384,31252,true);
+  const auto [at,aty]=draw(256,31253,false);
+  const auto [bt,bty]=draw(256,31254,true);
+  const auto gradient=[](const n::Tensor& x,const n::Tensor& y,const n::Tensor& w) {
+    return n::matmul(n::transpose(x),n::sigmoid(n::matmul(x,w))-y)/x.size(0);
+  };
+  constexpr int updates=144;
+  auto anchor=n::zeros({4,1});
+  std::vector<n::Tensor> path{anchor.reshape({4})},grads;
+  for (int i=0;i<updates;++i) {
+    const auto g=gradient(a,ay,anchor);
+    anchor=anchor-.18*g;
+    grads.push_back(g.reshape({4}));
+    path.push_back(anchor.reshape({4}));
+  }
+  const auto trajectory=n::stack(path), path_grads=n::stack(grads);
+  const auto fisher=n::logistic_empirical_fisher(a,ay,anchor);
+  const auto si=n::synaptic_importance(trajectory,path_grads).reshape({4,1});
+  n::NamedTensors saved{{"fit_a_x",a},{"fit_a_y",ay},{"fit_b_x",b},{"fit_b_y",by},
+      {"a_x",at},{"a_y",aty},{"b_x",bt},{"b_y",bty},{"anchor",anchor},{"fisher",fisher},
+      {"si_importance",si},{"path",trajectory},{"path_gradients",path_grads}};
+  std::vector<double> methods,correct_a,correct_b;
+  const auto report=[&](const std::string& name,const n::Tensor& w) {
+    const auto sa=n::matmul(at,w),sb=n::matmul(bt,w);
+    const auto count=[](const auto& logits,const auto& y) {
+      return n::sum(n::equal(n::greater_equal(logits,0).to(n::DType::Float32),y).to(n::DType::Int32)).item();
+    };
+    methods.push_back(methods.size());
+    correct_a.push_back(count(sa,aty)/256);
+    correct_b.push_back(count(sb,bty)/256);
+    std::print("| {} | {:.0f}/256 | {:.0f}/256 |\n",name,256*correct_a.back(),256*correct_b.back());
+    saved.emplace_back(name+"_weights",w);
+  };
+  std::print("| Method | Task A | Task B |\n|---|---:|---:|\n");
+  report("after_a",anchor);
+  for (const std::string name:{"sequential","ewc","si"}) {
+    const auto importance=name=="si"?si:fisher;
+    auto w=anchor.clone();
+    w.requires_grad_(true);
+    for (int i=0;i<updates;++i) {
+      const auto objective=n::sigmoid_cross_entropy(n::matmul(b,w),by);
+      const auto loss=name=="sequential" ? objective : objective+n::consolidation_penalty(w,anchor,importance,3);
+      w=(w-.18*n::grad(loss,{w})[0]).detach();
+      w.requires_grad_(true);
+    }
+    report(name,w.detach());
+  }
+  const auto reservoir=n::reservoir_indices(384,32,31255);
+  std::mt19937 rng(31256);
+  std::uniform_int_distribution<int> slot(0,31);
+  auto fresh_only=anchor,replay=anchor;
+  std::vector<std::int64_t> fresh_ids,replay_ids;
+  n::BatchOrder order(384,32,31257);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      std::vector<std::int64_t> past(16);
+      for (auto& row:past) row=reservoir[slot(rng)];
+      fresh_ids.insert(fresh_ids.end(),rows.begin(),rows.end());
+      replay_ids.insert(replay_ids.end(),past.begin(),past.end());
+      const auto x=n::take_rows(b,rows), y=n::take_rows(by,rows);
+      fresh_only=fresh_only-.18*gradient(x,y,fresh_only);
+      replay=replay-.18*gradient(n::concat({x,n::take_rows(a,past)},0),
+                                 n::concat({y,n::take_rows(ay,past)},0),replay);
+    }
+  }
+  report("fresh_only",fresh_only);
+  report("replay",replay);
+  if (!(correct_a[2]>correct_a[1] && correct_a[3]>correct_a[1] &&
+        correct_a[5]>correct_a[4])) return 1;
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(methods,correct_a,"Task A",{37,99,235})
+      .points(methods,correct_b,"Task B",{234,88,12})
+      .title("Retention and adaptation across continual learners")
+      .x_label("0 A only · 1 sequential · 2 EWC · 3 SI · 4 fresh · 5 replay").y_label("Accuracy").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(950,430).save_svg("build/elastic_weight_consolidation.svg");
+  saved.emplace_back("reservoir",n::from_vector(reservoir));
+  saved.emplace_back("fresh_rows",n::from_vector(fresh_ids,{36,32}));
+  saved.emplace_back("replay_rows",n::from_vector(replay_ids,{36,16}));
+  n::save_npz("build/elastic_weight_consolidation.npz",saved);
+}
+```
+// result_begin: markdown
+| Method | Task A | Task B |
+|---|---:|---:|
+| after_a | 198/256 | 108/256 |
+| sequential | 125/256 | 200/256 |
+| ewc | 187/256 | 147/256 |
+| si | 183/256 | 156/256 |
+| fresh_only | 150/256 | 184/256 |
+| replay | 179/256 | 153/256 |
+\image(figures/elastic_weight_consolidation.svg)
+// result_end
+
+Each retention method improves task-A accuracy over its corresponding
+task-B-only control. The same comparison shows lower task-B accuracy,
+so the experiment exposes the trade-off at these penalty and replay settings.

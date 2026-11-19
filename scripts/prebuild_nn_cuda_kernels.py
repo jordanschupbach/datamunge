@@ -21,6 +21,8 @@ COMMON_FLAGS = ['-ptx', f'-arch={ARCH}', '-O3', '-Wno-deprecated-gpu-targets']
 
 # (source, output header, namespace, variable name, description, extra nvcc flags)
 KERNELS = [
+    (ROOT/'shaders/nn/chunked_attention.cu', ROOT/'include/datamunge/nn/detail/chunked_attention_ptx.hpp',
+     'datamunge::nn::detail', 'chunked_attention_ptx', 'CUDA chunked attention PTX', []),
     (ROOT/'shaders/cad/render.cu', ROOT/'src/datamunge/cad/detail/render_ptx.hpp',
      'datamunge::cad::detail', 'render_ptx', 'CAD CUDA ray tracing PTX', ['-fmad=false']),
     # Floating-point contraction disabled to stay close to the CPU kernels.

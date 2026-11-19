@@ -1,0 +1,143 @@
+//? Title: Neural additive regression with learned shape functions
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit four independent univariate neural networks and sum their effects.
+Center each effect on the training data to expose a feature-level
+decomposition of held-out predictions.
+)
+\toc
+
+An additive model sums an intercept and one function of each feature.
+Each function here uses a 24-unit tanh layer, a scalar tanh layer, and a
+linear output. The simulator uses a sinusoid, a quadratic, and a linear
+term. The fourth input has no effect on the simulated response.
+
+Subtract each shape function's mean on the training rows and add the
+removed means to the intercept. The decomposition then gives each
+feature an average contribution of zero on the training data, while
+leaving the predictions unchanged. The test set is used to assess
+prediction error. Datamunge initializes its own weights and follows
+the upstream training schedule.
+
+```{cpp, results="markdown", file="figures/neural_additive_curves.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <fstream>
+#include <format>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+
+std::pair<n::Tensor,n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> sample(-1.f,1.f);
+  std::normal_distribution<float> noise(0.f,.04f);
+  std::vector<float> x(count*4), y(count);
+  for (int i = 0; i < count; ++i) {
+    auto* row = x.data()+4*i;
+    for (int j = 0; j < 4; ++j) row[j] = sample(rng);
+    y[i] = .7f + std::sin(3.f*row[0]) + .9f*row[1]*row[1] - .6f*row[2] + noise(rng);
+  }
+  return {n::from_vector(x,{count,4}), n::from_vector(y,{count,1})};
+}
+
+int main() {
+  const auto [x,y] = simulate(2048,23371);
+  const auto [test,observed] = simulate(512,23372);
+  n::ParameterStore parameters(41380);
+  const auto components = [&](const n::Tensor& input) {
+    return n::neural_additive_effects(parameters,"model",input);
+  };
+  const auto bias = parameters.get("intercept",{},n::init::zeros());
+  const auto predict = [&](const n::Tensor& input) { return bias+n::sum(components(input),{1},true); };
+  double initial;
+  {
+    n::NoGradGuard guard;
+    initial = n::sqrt(n::mean(n::square(predict(test)-observed))).item();
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters,.01,config);
+  n::BatchOrder order(2048,32,23373);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids = order.next(); !ids.empty(); ids = order.next())
+      optimizer.minimize(n::mean(n::square(predict(n::take_rows(x,ids))-n::take_rows(y,ids))));
+  }
+
+  n::NoGradGuard guard;
+  const auto raw_fit = components(x), raw_test = components(test);
+  const auto prediction = bias+n::sum(raw_test,{1},true);
+  const auto loss = n::mean(n::square(prediction-observed));
+  const auto [effects, intercept] = n::center_additive_effects(raw_fit,raw_test,bias);
+  const auto reconstructed = intercept+n::sum(effects,{1},true);
+  const auto reconstruction_error = n::max(n::abs(prediction-reconstructed)).item();
+  if (optimizer.iterations() != 192 || !std::isfinite(loss.item()) ||
+      loss.item() >= initial*initial || reconstruction_error > 1e-6)
+    throw std::runtime_error("invalid fit or centered decomposition");
+  const auto axis = -1.f+2.f*n::arange(0,101)/100.f;
+  const auto grid = n::broadcast_to(axis.reshape({101,1}),{101,4});
+  const auto curves = components(grid);
+  const auto centered = n::center_additive_effects(raw_fit,curves,bias).first;
+
+  std::println("| Diagnostic | Value |\n| --- | ---: |");
+  std::println("| Initial held-out RMSE | {:.5f} |\n| Fitted held-out RMSE | {:.5f} |",
+               initial,std::sqrt(loss.item()));
+  std::println("| Centered intercept | {:.5f} |\n| Maximum reconstruction error | {:.2e} |",
+               intercept.item(),reconstruction_error);
+  const std::string folder = "build/neural_additive_model/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  parameters.save(folder+"weights.npz");
+  n::save_npz(folder+"effects.npz",
+      {{"x",test.reshape({512,4,1})},{"fit_x",x},{"y",observed},{"raw_fit",raw_fit},{"raw_test",raw_test},
+       {"raw_bias",bias},{"effects",effects},{"intercept",intercept},{"grid",grid.reshape({101,4,1})},
+       {"curves",curves},{"prediction",prediction},{"loss",loss}});
+
+  auto shape = dm::graphics::RPlot::create();
+  const auto coords = axis.to_vector<double>();
+  const auto grid_values = centered.to_vector<double>();
+  std::ofstream csv(folder+"shape_functions.csv");
+  csv << "x,field_0,field_1,field_2,field_3\n";
+  for (int i = 0; i < 101; ++i)
+    csv << std::format("{:.8g},{:.8g},{:.8g},{:.8g},{:.8g}\n",coords[i],grid_values[4*i],
+                 grid_values[4*i+1],grid_values[4*i+2],grid_values[4*i+3]);
+  csv.close();
+  if (!csv) throw std::runtime_error("could not write centered shape functions");
+  const std::array<dm::RGBA,4> colors{{{37,99,235},{191,88,34},{19,130,125},{125,77,168}}};
+  for (int i = 0; i < 4; ++i)
+    shape.lines(coords,n::slice(centered,{0,i},{101,1}).to_vector<double>(),
+                "Feature "+std::to_string(i),colors[i]);
+  shape.title("Centered additive effects").x_label("Feature value").y_label("Contribution to prediction")
+       .save_svg(folder+"curves.svg");
+  const double lo=n::min(observed).item(), hi=n::max(observed).item();
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(observed.to_vector<double>(),prediction.to_vector<double>(),"Held-out rows",{37,99,235},3)
+      .lines({lo,hi},{lo,hi},"Perfect prediction",{100,116,139})
+      .title("Neural additive regression").x_label("Observed response").y_label("Predicted response")
+      .save_svg(folder+"fit.svg");
+  std::filesystem::copy_file(folder+"curves.svg","figures/neural_additive_curves.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"fit.svg","figures/neural_additive_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Diagnostic | Value |
+| --- | ---: |
+| Initial held-out RMSE | 1.19418 |
+| Fitted held-out RMSE | 0.33435 |
+| Centered intercept | 1.00411 |
+| Maximum reconstruction error | 1.71e-07 |
+\image(figures/neural_additive_curves.svg)
+// result_end
+
+\image(figures/neural_additive_fit.svg)
+
+> Reference
+
+Agarwal et al. (2021).
+[Neural Additive Models|https://arxiv.org/abs/2004.13912].

@@ -251,7 +251,6 @@ int main() {
 }
 ```
 // result_begin:
-// Validated48/48/48 officially disjoint flower images after tensor resizing.
 // result_end
 
 Run preparation from the repository root after building the library(or use its
@@ -632,12 +631,12 @@ protocol. They do not establish full102-class fine-grained performance or
 paper accuracy. Compare the printed color and untrained references before
 attributing success to learned local feature interactions.
 
-The restored model selects epoch3 and correctly classifies16/48 held-out
-images(33.33%),versus18/48(37.5%) for the fitting-only color reference and
-8/48(16.67%) for its untrained initialization. Its NLL1.780632 is lower than
-the color reference2.289061,so accuracy and probability quality tell different
-stories. These36 updates do not establish an accuracy advantage over mean RGB;
-the all-image gallery makes the remaining errors visible.
+Validation NLL selects epoch 3. The restored model correctly classifies 10 of
+48 held-out images (20.83%). The fitting-only color reference classifies 18
+(37.50%) and the untrained initialization classifies 8 (16.67%). The restored
+model assigns higher probability to the true classes on average than the
+color reference in log-loss terms (1.782941 versus 2.289061). The image gallery
+shows where the restored model still makes errors.
 
 > Native confusion matrices
 

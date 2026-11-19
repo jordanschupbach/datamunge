@@ -1,0 +1,109 @@
+//? Title: Recurrent neural network transducer
+//? Lang: en
+
+> RNN transducer on spoken digit pairs
+
+A causal GRU summarizes pairs of log-mel frames. A separate GRU
+summarizes the emitted labels, beginning with a start token. The
+joint network uses both states to score digits and a blank.
+
+The transducer sums all paths that produce the reference transcript
+in order. At each lattice cell a blank advances the audio time,
+while a label updates the transcript position at the same time.
+The terminal transition is a blank at the last frame after all
+reference tokens have been emitted. Greedy decoding runs from audio
+alone and caps the number of emitted labels at four.
+
+The plot shows blank probabilities for each reference prefix of a
+held-out utterance. These probabilities come from the training lattice.
+The exact-match count instead comes from free-running greedy decoding.
+
+Prepare the spoken-digit fixture with `python3 scripts/prepare_xvector.py`
+in the TensorFlow examples checkout. For another checkout location, set
+`DATAMUNGE_XVECTOR_DIR` to its prepared dataset directory.
+
+```{cpp, results="markdown", file="figures/rnn_transducer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int clip = 3200, length = 6800;
+  const auto* configured = std::getenv("DATAMUNGE_XVECTOR_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_XVECTOR_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/xvector";
+  const auto mel = n::linear_to_mel_weight_matrix(24,129,8000,60,3800);
+  const auto read = [&](const char* role, int count, int per_digit, int speakers, unsigned seed) {
+    const auto arrays = n::load_npz((root/(std::string(role)+".npz")).string());
+    const auto entry = std::ranges::find(arrays,"waveform",&n::NamedTensors::value_type::first);
+    if (entry == arrays.end() || entry->second.shape() != n::Shape{speakers*10*per_digit,clip})
+      throw std::runtime_error("Unexpected spoken-digit fixture shape");
+    const auto wave = entry->second.to_vector<float>();
+    std::vector<float> joined(count*length);
+    std::vector<std::int32_t> labels(count*2);
+    std::mt19937 rng(seed);
+    for (int row=0; row<count; ++row) {
+      const int speaker = rng()%speakers;
+      for (int segment=0; segment<2; ++segment) {
+        const int digit = rng()%10;
+        labels[2*row+segment] = digit;
+        const auto source = (speaker*10+digit)*per_digit+rng()%per_digit;
+        std::copy_n(wave.begin()+source*clip,clip,joined.begin()+row*length+segment*(length-clip));
+      }
+    }
+    const auto power = n::power_spectrogram(n::stft(n::from_vector(joined,{count,length}),200,240,256));
+    return std::pair{n::log_mel_spectrogram(power,mel),n::from_vector(labels,{count,2})};
+  };
+  const auto [fit,target] = read("fit",768,6,4,61721);
+  const auto [test,truth] = read("verify",192,3,2,61722);
+  n::ParameterStore weights(67231);
+  n::DigitTransducer model(weights);
+  const auto initial=n::rnnt_loss(model.lattice(test,truth),truth,10).item();
+  n::Optimizer optimizer(weights,.008,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(768,24,61723);
+  double short_fit_loss=0;
+  for (int epoch=0;epoch<12;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto labels=n::take_rows(target,rows);
+      optimizer.minimize(n::rnnt_loss(model.lattice(n::take_rows(fit,rows),labels),labels,10));
+    }
+    if (epoch==2) {
+      n::NoGradGuard guard;
+      short_fit_loss=n::rnnt_loss(model.lattice(test,truth),truth,10).item();
+    }
+  }
+  n::NoGradGuard guard;
+  const auto lattice=model.lattice(test,truth);
+  const auto loss=n::rnnt_loss(lattice,truth,10);
+  const auto decoded=model.decode(test);
+  const auto labels=truth.to_vector<int>(), tokens=decoded.to_vector<int>();
+  int exact=0;
+  for (std::int64_t i=0;i<truth.size(0);++i)
+    exact+=tokens[4*i]==labels[2*i] && tokens[4*i+1]==labels[2*i+1] && tokens[4*i+2]==-1;
+  if (!(loss.item()<initial)) return 1;
+  std::print("Held-out RNN-T loss {:.5f} → {:.5f} at epoch 3 → {:.5f} at epoch 12. Greedy exact pairs {}/{}.\n",
+      initial,short_fit_loss,loss.item(),exact,truth.size(0));
+  const auto blank=n::exp(n::select(n::select(lattice,0,0),2,10));
+  std::vector<double> frames(blank.size(0));
+  std::iota(frames.begin(),frames.end(),0.);
+  auto plot=dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB,3> colors{{{37,99,235},{234,88,12},{22,163,74}}};
+  for (int u=0;u<3;++u)
+    plot.lines(frames,n::select(blank,1,u).to_vector<double>(),std::format("{} labels emitted",u),colors[u]);
+  plot.title("Held-out reference lattice").x_label("Acoustic frame").y_label("Blank probability").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/rnn_transducer.svg");
+  n::save_npz("build/rnn_transducer.npz",{{"loss",loss},{"log_probs",lattice},{"labels",truth},{"decode",decoded}});
+}
+```
+// result_begin: markdown
+Held-out RNN-T loss 32.70189 → 4.70529 at epoch 3 → 5.34467 at epoch 12. Greedy exact pairs 18/192.
+\image(figures/rnn_transducer.svg)
+// result_end
+
+At the upstream three-epoch checkpoint, the native model emits no
+exact held-out pairs. The extended run recovers 18 pairs, while its
+held-out alignment loss rises relative to epoch three. The two metrics
+measure different outcomes because greedy decoding selects a single path.

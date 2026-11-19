@@ -212,7 +212,7 @@ int main() {
   namespace n = dm::nn;
   n::Generator rng(37);
   const auto type = n::DType::Float64;
-  double worst = 0;
+  double worst = 0, finite_error = 0;
   for (auto padding : {n::Padding::Valid, n::Padding::Same})
     for (int d : {1, 2, 3}) {
       auto x = n::normal({1, 9, 10, 2}, 0, .3, rng, type).requires_grad_();
@@ -220,20 +220,38 @@ int main() {
       const auto native = n::conv2d(x, k, n::conv_options(1, padding, d));
       const auto expanded =
           n::conv2d(x, n::expand_dilated_kernel(k, d), n::conv_options(1, padding));
-      const auto a = n::grad(n::sum(native), {x, k}), b = n::grad(n::sum(expanded), {x, k});
+      const auto a = n::grad(n::mean(n::square(native)), {x, k}),
+                 b = n::grad(n::mean(n::square(expanded)), {x, k});
+      const auto input=x.detach(),filter=k.detach();
+      auto loss=[&](const n::Tensor& pixels,const n::Tensor& weights) {
+        return n::mean(n::square(n::conv2d(pixels,n::expand_dilated_kernel(weights,d),
+                                          n::conv_options(1,padding)))).item();
+      };
+      for(int which=0;which<2;++which) {
+        const auto source=which==0?input:filter;
+        for(const auto index:{std::int64_t{0},source.numel()/2,source.numel()-1}) {
+          auto delta=n::zeros(source.shape(),type);
+          delta.data_ptr<double>()[index]=1e-4;
+          const double hi=which==0?loss(input+delta,filter):loss(input,filter+delta);
+          const double lo=which==0?loss(input-delta,filter):loss(input,filter-delta);
+          finite_error=std::max(finite_error,std::abs((hi-lo)/2e-4-b[which].reshape({-1}).at({index})));
+        }
+      }
       worst =
           std::max({worst, n::max(n::abs(native - expanded)).item(),
                     n::max(n::abs(a[0] - b[0])).item(), n::max(n::abs(a[1] - b[1])).item()});
     }
-  if (worst > 1e-10)
+  if (worst > 1e-10 || finite_error > 1e-8)
     return 1;
   std::print(
       "Six native/expanded geometries; maximum forward or derivative discrepancy {:.12f}.\n",
       worst);
+  std::print("Maximum central-difference error {:.2e}.\n",finite_error);
 }
 ```
 // result_begin: markdown
 Six native/expanded geometries; maximum forward or derivative discrepancy 0.000000000000.
+Maximum central-difference error 1.88e-13.
 // result_end
 
 > A controlled prediction example
@@ -268,6 +286,8 @@ int main() {
         n::conv2d(test, kernel, n::conv_options(1, n::Padding::Same, dilation));
     rate.push_back(dilation);
     mse.push_back(n::mean(n::square(prediction - test_y)).item());
+    if (dilation==2 && n::max(n::abs(kernel-truth)).item()>1e-4)
+      throw std::runtime_error("Rate-two student did not recover the generating coefficients");
   }
   if (mse[1] > 1e-7 || mse[0] < .1)
     return 1;

@@ -1,3 +1,4 @@
+//? Requires: cnn_mnist.mepml
 //? Title: Receptive Fields: Enclosing Boxes and Actual Derivatives
 //? Subtitle: Tensor computations, explicit checks and reproducible local figures
 //? Exports: both
@@ -270,6 +271,106 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 // result_begin: markdown
 \image(figures/receptive_fields_architecture_lenet.svg)
 // result_end
+
+> Trained receptive field on official MNIST
+
+Run the [CNN training report|cnn_mnist.mepml] first to create the selected
+checkpoint. This program restores it and verifies accuracy on the full
+official test split. It then takes the first test example of each digit.
+On the digit zero, select the strongest active channel at the centre of
+the second pooling layer and differentiate that scalar with respect to
+its input pixels.
+
+```{cpp, results="markdown", file="figures/receptive_fields_trained.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  n::set_num_threads(4);
+  const auto data=n::load_mnist(dm::datasets::fetch("mnist"),"test");
+  if(data.images.shape()!=n::Shape{10000,28,28,1}||data.labels.shape()!=n::Shape{10000})
+    throw std::runtime_error("Expected the original MNIST test split");
+  n::ParameterStore store(17);
+  auto network=[&](const n::Tensor& images){return n::models::MnistCnn(store,images);};
+  const auto checkpoint="build/cnn_mnist_best.npz";
+  if(!std::filesystem::exists(checkpoint))
+    throw std::runtime_error("Run cnn_mnist.mepml to generate the checkpoint");
+  std::array<std::int64_t,10> first;
+  first.fill(-1);
+  n::models::MnistCnnOutputs stage;
+  double accuracy=0.;
+  {
+    n::NoGradGuard guard;
+    (void)network(n::zeros({1,28,28,1}));
+    store.load(checkpoint);
+    n::WeightedMean metric;
+    for(int start=0;start<10000;start+=512) {
+      const int end=std::min(10000,start+512);
+      const auto labels=n::slice_axis(data.labels,0,start,end);
+      const auto images=n::slice_axis(data.images,0,start,end);
+      metric.add(n::accuracy(network(images).logits,labels),end-start);
+    }
+    accuracy=metric.value();
+    if(accuracy<.98) throw std::runtime_error("Restored CNN did not reach 98% accuracy");
+    const auto labels=data.labels.to_vector<int>();
+    for(std::size_t i=0;i<labels.size();++i)
+      if(first.at(labels[i])<0) first.at(labels[i])=i;
+    stage=network(n::take_rows(data.images,{first.begin(),first.end()}));
+  }
+  const auto centre=n::slice(stage.pool2,{0,3,3,0},{1,1,1,32});
+  const int channel=n::argmax(centre.reshape({32}),0).item<int>();
+  auto image=n::take_rows(data.images,{first[0]}).requires_grad_();
+  auto feature=[&](const n::Tensor& input) {
+    return n::slice(network(input).pool2,{0,3,3,channel},{1,1,1,1}).reshape({});
+  };
+  const auto value=feature(image);
+  if(value.item()<=0) throw std::runtime_error("The selected feature is inactive");
+  const auto gradient=n::grad(value,{image}).front();
+  int active=0,strongest=0;
+  auto measured=gradient.to_vector<double>();
+  std::vector<double> support(28*28);
+  for(int y=0;y<28;++y) for(int x=0;x<28;++x) {
+    const int index=28*y+x;
+    const bool inside=y>=9&&y<19&&x>=9&&x<19;
+    support[index]=inside;
+    if(!inside&&measured[index]!=0) throw std::runtime_error("Gradient escaped theoretical support");
+    active+=measured[index]!=0;
+    if(std::abs(measured[index])>std::abs(measured[strongest])) strongest=index;
+  }
+  n::NoGradGuard guard;
+  auto perturb=[&](int index,float amount) {
+    auto changed=image.detach().clone();
+    changed.data_ptr<float>()[index]+=amount;
+    return feature(changed).item();
+  };
+  const double difference=(perturb(strongest,.001f)-perturb(strongest,-.001f))/.002;
+  const double error=std::abs(difference-measured[strongest]);
+  if(active==0||perturb(0,.5f)!=value.item()||error>.001)
+    throw std::runtime_error("Active or outside-support finite-difference check failed");
+
+  const auto box=n::from_vector(support,{28,28});
+  auto input=n::plot_tensor_map(image.reshape({28,28}),0,1).title("Official test digit 0");
+  auto bounds=n::plot_tensor_map(box,0,1).title("Theoretical 10 × 10 support");
+  auto derivative=n::plot_tensor_map(n::abs(gradient).reshape({28,28})).title("Absolute input gradient");
+  const auto pool=n::select(n::select(stage.pool2,0,0),2,channel);
+  auto features=n::plot_tensor_map(pool).title("Selected pooled feature map");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(2,2).add(input).add(bounds).add(derivative).add(features)
+      .size(1000,840).fit_panels().save_svg("build/receptive_fields_trained.svg");
+  n::save_npz("build/receptive_fields_trained.npz",
+              {{"images",stage.image},{"conv1",stage.conv1},{"conv2",stage.conv2},
+               {"pool2",stage.pool2},{"labels",n::take_rows(data.labels,{first.begin(),first.end()})},
+               {"predictions",n::argmax(stage.logits,1)},{"gradient",gradient},{"support",box}});
+  std::print("Restored CNN accuracy {:.2f}% on 10,000 test images. Channel {}, feature {:.5f}, {} active pixels, finite-difference error {:.2e}.\n",
+             100*accuracy,channel,value.item(),active,error);
+}
+```
+// result_begin: markdown
+Restored CNN accuracy 98.72% on 10,000 test images. Channel 8, feature 1.71787, 62 active pixels, finite-difference error 9.11e-05.
+\image(figures/receptive_fields_trained.svg)
+// result_end
+\caption(The trained feature's input gradient lies within the theoretical support. The pooled activation and the original digit are shown alongside it.)
+\alttext(Four panels show the digit zero, the central ten-by-ten support box, its input gradient magnitudes, and a seven-by-seven pooled feature map.)
 
 > Conclusion
 

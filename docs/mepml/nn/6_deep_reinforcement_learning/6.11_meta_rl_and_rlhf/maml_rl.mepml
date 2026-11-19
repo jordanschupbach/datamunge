@@ -1,0 +1,76 @@
+//? Title: MAML for contextual bandits
+//? Lang: en
+
+> MAML for contextual bandits
+
+Model-agnostic meta-learning fits an initial policy that can adapt to a
+new task with a small amount of experience. Here a task specifies the
+Bernoulli reward probability for each of two contexts and two actions.
+The same logistic policy starts every task. A single support pull updates
+its weights by the gradient of the chosen action's log probability,
+scaled by the observed reward minus a baseline of 0.5.
+
+Each task has eight possible support outcomes. The outer objective
+weights the expected query reward after each update by the probability
+of its support outcome. This integrates over stochastic support
+experience exactly. The meta-gradient accounts for how the starting
+weights change both the support action probability and the gradient of
+the inner update. The plot compares expected held-out reward before and
+after adaptation as the initialization is trained.
+
+```{cpp, results="markdown", file="figures/maml_rl.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto tasks = [](float high, float low) {
+    return n::from_vector(std::vector<float>{low,high,high,low,low,high,high,low,high,low,low,high},
+                          {3,2,2});
+  };
+  const std::array train{tasks(.95f,.05f),tasks(.85f,.15f),tasks(.75f,.25f),tasks(.65f,.35f)};
+  const auto test = n::from_vector(std::vector<float>{.12,.92,.90,.20,.22,.79,.89,.12,.88,.20,.15,.81},
+                                   {3,2,2});
+  const auto features = n::from_vector(std::vector<float>{1,-1,1,1}, {2,2});
+  n::ParameterStore params(46701);
+  const auto weights = params.get("policy", {2}, n::init::zeros());
+  n::Optimizer optimizer(params, .06, {.kind=n::OptimizerKind::Adam});
+  std::vector<float> history;
+  std::vector<double> before, after;
+  std::print("| Epoch | Before adaptation | After adaptation |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      const n::NoGradGuard guard;
+      const auto fit = dm::rl::maml_bandit(weights, features, test);
+      before.push_back(fit.pre_update.item());
+      after.push_back(fit.post_update.item());
+      history.push_back(before.back());
+      history.push_back(after.back());
+    }
+    std::print("| {} | {:.6f} | {:.6f} |\n", epoch, before.back(), after.back());
+    if (epoch == 3) break;
+    for (const auto& batch : train) {
+      const auto fit = dm::rl::maml_bandit(weights, features, batch);
+      optimizer.step(n::grad(-fit.post_update, optimizer.parameters()));
+    }
+  }
+  const auto fit = dm::rl::maml_bandit(weights, features, test);
+  const auto gradient = n::grad(-fit.post_update, optimizer.parameters()).at(0);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/maml_rl_evaluation.npz", {{"tasks",test},{"history",n::from_vector(history,{4,2})},
+      {"theta",weights},{"adapted",fit.adapted},{"mass",fit.mass},{"base",fit.base},
+      {"after",fit.after},{"gradient",gradient}});
+  dm::graphics::RPlot::create().lines({0,1,2,3},before,"Before adaptation",{217,96,26})
+      .lines({0,1,2,3},after,"After adaptation",{37,99,235})
+      .title("One-step MAML on held-out bandits").x_label("Meta-training epoch")
+      .y_label("Expected query reward").size(800,460).save_svg("build/maml_rl.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Before adaptation | After adaptation |
+|---:|---:|---:|
+| 0 | 0.516667 | 0.573388 |
+| 1 | 0.530832 | 0.584770 |
+| 2 | 0.544049 | 0.593294 |
+| 3 | 0.555833 | 0.599403 |
+\image(figures/maml_rl.svg)
+// result_end

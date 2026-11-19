@@ -1,0 +1,103 @@
+//? Title: DeiT hard distillation on MNIST
+//? Lang: en
+
+> DeiT hard distillation on MNIST
+
+A convolutional teacher trains on the fitting split and then freezes.
+The student processes the image patches alongside a class token and a
+distillation token. The class head learns the true labels. The
+distillation head learns the frozen teacher's argmax labels. Both
+cross-entropies receive equal weight. At inference the student averages
+the two logit vectors, so it can classify images without the teacher.
+
+The validation curve tracks the class head's cross-entropy, following
+the upstream training report. Test accuracy uses the averaged logits.
+
+```{cpp, results="markdown", file="figures/deit_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto root=std::filesystem::path(dm::datasets::prepare_example_data("mnist-assets"))/"mnist";
+  const auto train=n::load_mnist(root.string(),"train");
+  const auto test=n::load_mnist(root.string(),"test");
+  std::vector<int> train_ids(60000),test_ids(10000);
+  std::iota(train_ids.begin(),train_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 rng(41434);
+  std::shuffle(train_ids.begin(),train_ids.end(),rng);
+  std::shuffle(test_ids.begin(),test_ids.end(),rng);
+  const auto ids=[](const std::vector<int>& order,int from,int count) {
+    return n::from_vector(std::vector<int>(order.begin()+from,order.begin()+from+count));
+  };
+  const auto fit=ids(train_ids,0,1024),valid=ids(train_ids,1024,256),held=ids(test_ids,0,256);
+  const auto x=n::gather(train.images,fit),y=n::gather(train.labels,fit);
+  const auto vx=n::gather(train.images,valid),vy=n::gather(train.labels,valid);
+  const auto tx=n::gather(test.images,held),ty=n::gather(test.labels,held);
+  n::ParameterStore teacher(41433),student(41433);
+  const auto teach=[&](const n::Tensor& input) {
+    const auto first=n::conv2d(teacher,"conv1",input,12,3,{.activation=n::Activation::Relu});
+    const auto second=n::conv2d(teacher,"conv2",n::max_pool2d(first,2,2),20,3,
+                               {.activation=n::Activation::Relu});
+    return n::dense(teacher,"teacher_head",n::max_pool2d(second,2,2).reshape({-1,980}),10);
+  };
+  const auto fit_model=[&](n::ParameterStore& params,unsigned seed,const auto& objective,
+                           const auto& after_epoch) {
+    n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder batches(1024,32,seed);
+    for (int epoch=0;epoch<3;++epoch) {
+      batches.begin_epoch();
+      for (auto rows=batches.next();!rows.empty();rows=batches.next()) {
+        const auto batch=n::from_vector(rows);
+        optimizer.step(n::grad(objective(n::gather(x,batch),n::gather(y,batch)),optimizer.parameters()));
+      }
+      const n::NoGradGuard guard;
+      after_epoch();
+    }
+  };
+  (void)teach(n::slice_axis(x,0,0,1));
+  fit_model(teacher,41436,[&](const auto& input,const auto& labels) {
+    return n::sparse_softmax_cross_entropy(teach(input),labels);
+  },[]{});
+  const auto teacher_before=[&] { const n::NoGradGuard guard; return teach(tx); }();
+  (void)n::mnist_deit(student,n::slice_axis(x,0,0,1));
+  std::vector<double> curve;
+  fit_model(student,41435,[&](const auto& input,const auto& labels) {
+    const auto hard=[&] { const n::NoGradGuard guard; return n::argmax(teach(input),1); }();
+    const auto scores=n::mnist_deit(student,input);
+    return .5*(n::sparse_softmax_cross_entropy(scores.classification.logits,labels)+
+               n::sparse_softmax_cross_entropy(scores.distillation,hard));
+  },[&] {
+    curve.push_back(n::sparse_softmax_cross_entropy(n::mnist_deit(student,vx).classification.logits,vy).item());
+  });
+  const n::NoGradGuard guard;
+  const auto teacher_logits=teach(tx);
+  if (teacher_logits.to_vector<float>()!=teacher_before.to_vector<float>())
+    throw std::runtime_error("the frozen teacher changed during student training");
+  const auto hard=n::argmax(teacher_logits,1);
+  const auto result=n::mnist_deit(student,tx);
+  const auto& cls=result.classification;
+  const auto nll=n::sparse_softmax_cross_entropy(cls.logits,ty);
+  const auto hits=[](const n::Tensor& logits,const n::Tensor& labels) {
+    return n::sum(n::equal(n::argmax(logits,1),labels).to(n::DType::Int32)).item<int>();
+  };
+  std::print("Student: {}/256 correct. Teacher: {}/256. Distillation head agrees with "
+             "the teacher on {}/256 images. Class-head test NLL {:.6f}.\n",
+             hits(result.logits,ty),hits(teacher_logits,ty),hits(result.distillation,hard),nll.item());
+  const std::filesystem::path out="build/deit_digits";
+  std::filesystem::create_directories(out);
+  student.save((out/"weights.npz").string());
+  n::save_npz((out/"audit.npz").string(),{{"fit_ids",fit},{"validation_ids",valid},{"test_ids",held},
+      {"pixels",tx},{"labels",ty},{"patches",cls.patches},{"embedded",cls.embedded},{"logits",result.logits},
+      {"nll",nll},{"attention0",cls.attention[0]},{"attention1",cls.attention[1]}});
+  n::save_npz((out/"distillation.npz").string(),{{"class_logits",cls.logits},
+      {"distillation_logits",result.distillation},{"teacher_logits",teacher_logits},{"teacher_labels",hard}});
+  dm::graphics::RPlot::create().lines({1,2,3},curve,"Class head",{37,99,235})
+      .points({1,2,3},curve,"Epochs",{37,99,235},5).title("DeiT validation loss on MNIST")
+      .x_label("Epoch").y_label("Nats per image").size(800,460).save_svg("build/deit_digits.svg");
+}
+```
+// result_begin: markdown
+Student: 166/256 correct. Teacher: 236/256. Distillation head agrees with the teacher on 163/256 images. Class-head test NLL 1.070077.
+\image(figures/deit_digits.svg)
+// result_end

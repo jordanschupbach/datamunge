@@ -509,11 +509,9 @@ Variant1 restored epoch24: validation mIoU 0.474582; test pixel accuracy 0.87122
 \caption(Two explicit512-update whole-model Adam fits. Curves show unregularized weighted CE and validation mean IoU; paired learned/BN restoration precedes all test predictions.)
 \alttext(Two explicit512-update whole-model Adam fits. Curves show unregularized weighted CE and validation mean IoU; paired learned/BN restoration precedes all test predictions.)
 
-V3/v3+ select epochs16/14,with validation mean IoU.381906/.504644.
-Test pixel accuracies are.822856/.849108,but mean IoU is only.403804/
-.446050. Circle IoU remains.154771/.194559. The low-resolution examples
-still confuse classes despite falling fitting loss;the decoder does not
-remove these limitations in this bounded fit.
+The fitted masks show which low-resolution class and boundary errors
+remain after training. Compare mean IoU with pixel accuracy to see how
+background frequency affects the aggregate scores.
 
 \image(figures/deeplab_v3_plus_predictions_0.png)
 \caption(DeepLab v3: each row shows an actual test image,truth mask and restored prediction. The fixed palette and retained errors make localization/class confusions visible.)

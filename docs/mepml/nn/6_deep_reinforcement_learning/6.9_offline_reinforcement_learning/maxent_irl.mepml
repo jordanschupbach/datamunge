@@ -1,0 +1,103 @@
+//? Title: Maximum-entropy inverse reinforcement learning
+//? Lang: en
+
+> Maximum-entropy inverse reinforcement learning
+
+A maximum-entropy trajectory model assigns probability proportional
+to the exponential of cumulative reward. On the five-cell chain,
+the reward is a learned linear combination of first goal arrival
+and moving left before reaching the goal. The demonstrations are
+sampled from a known reward to make fitting and held-out evaluation
+reproducible.
+
+The backward recursion computes the log partition over all action
+sequences of length eight. Its gradient equals the model's expected
+feature count. Subtracting the mean demonstrated reward from the
+log partition gives the negative log-likelihood, whose gradient
+compares model and demonstrated feature counts.
+
+The plot tracks NLL on 512 independently sampled trajectories over
+three training epochs. The code enumerates trajectories for sampling
+and auditing the small example. Training uses the dynamic program
+for its normalizer.
+
+[Ziebart et al. (2008)|https://cdn.aaai.org/AAAI/2008/AAAI08-227.pdf]
+
+```{cpp, results="markdown", file="figures/maxent_irl.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int states=5,actions=2,horizon=8;
+  std::vector<int> next;
+  std::vector<float> step_features;
+  for (int state=0;state<states;++state) {
+    for (int action=0;action<actions;++action) {
+      const int successor=state==4?4:std::clamp(state+(action?1:-1),0,4);
+      next.push_back(successor);
+      step_features.insert(step_features.end(),{float(state!=4 && successor==4),float(state!=4 && action==0)});
+    }
+  }
+  std::vector<float> counts;
+  std::vector<double> mass;
+  for (int id=0;id<(1<<horizon);++id) {
+    std::array<float,2> feature{};
+    int state=0;
+    for (int t=0;t<horizon;++t) {
+      const int index=state*actions+((id>>t)&1);
+      feature[0]+=step_features[2*index];
+      feature[1]+=step_features[2*index+1];
+      state=next[index];
+    }
+    counts.insert(counts.end(),feature.begin(),feature.end());
+    mass.push_back(std::exp(1.7*feature[0]-.9*feature[1]));
+  }
+  const auto sample=[&](int size,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::discrete_distribution<int> draw(mass.begin(),mass.end());
+    std::vector<int> ids(size);
+    for (auto& id:ids) id=draw(rng);
+    return n::from_vector(ids);
+  };
+  const auto features=n::from_vector(counts,{1<<horizon,2});
+  const auto fit_ids=sample(1536,44701),test_ids=sample(512,44702);
+  const auto train=n::gather(features,fit_ids),test=n::gather(features,test_ids);
+  const auto edges=n::from_vector(next,{states,actions});
+  const auto design=n::from_vector(step_features,{states*actions,2});
+  n::ParameterStore params;
+  const auto weights=params.get("reward",{2,1},n::init::zeros());
+  n::Optimizer optimizer(params,.035,{.kind=n::OptimizerKind::Adam});
+  const auto score=[&](const n::Tensor& examples) {
+    const auto reward=n::matmul(design,weights).reshape({states,actions});
+    const auto partition=n::gather(dm::rl::trajectory_log_partition(reward,edges,horizon),n::from_scalar(0));
+    return std::pair{partition-n::mean(n::matmul(examples,weights)),partition};
+  };
+  std::vector<double> history{score(test).first.item()};
+  n::BatchOrder order(1536,32,44703);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto batch=order.next();!batch.empty();batch=order.next()) {
+      optimizer.step(n::grad(score(n::take_rows(train,batch)).first,{weights}));
+    }
+    history.push_back(score(test).first.item());
+  }
+  const auto [loss,partition]=score(test);
+  const auto gradient=n::grad(loss,{weights})[0];
+  if (!(history.back()<history.front())) throw std::runtime_error("Held-out likelihood did not improve");
+  const auto fitted=weights.to_vector<float>();
+  std::print("Held-out NLL fell from {:.6f} to {:.6f}. Learned goal-arrival and left-move weights were {:.6f} and {:.6f}.\n",
+             history.front(),history.back(),fitted[0],fitted[1]);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/maxent_irl_audit.npz",{{"features",features},{"fit_ids",fit_ids},
+      {"test_ids",test_ids},{"weight",weights},{"log_partition",partition},{"nll",loss},{"gradient",gradient}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Held-out NLL",{37,99,235})
+      .points({0,1,2,3},history,dm::RGBA{37,99,235})
+      .title("Maximum-entropy reward fitting").x_label("Epoch").y_label("Trajectory NLL")
+      .size(800,460).save_svg("build/maxent_irl.svg");
+}
+```
+// result_begin: markdown
+Held-out NLL fell from 5.545177 to 4.110981. Learned goal-arrival and left-move weights were 1.291005 and -0.970396.
+\image(figures/maxent_irl.svg)
+// result_end

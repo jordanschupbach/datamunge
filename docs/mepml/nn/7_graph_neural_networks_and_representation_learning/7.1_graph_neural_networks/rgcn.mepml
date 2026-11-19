@@ -1,0 +1,140 @@
+//? Title: Relational graph convolution
+//? Lang: en
+
+> Relational graph convolution
+
+Four query nodes each receive messages from keys along three types of
+directed edges. The label is the binary payload of the relation-zero
+key. The other relations carry distractors, and relation two sometimes
+has no neighbor. The model must use edge type to learn the lookup rule.
+
+An R-GCN layer normalizes incoming weights within each relation. Learned
+coefficients mix two shared bases into separate message transforms for
+the three relations. A separate self transform contributes the current
+node's features. The model stacks two such layers and predicts labels
+only at the query nodes.
+
+```{cpp, results="markdown", file="figures/rgcn_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto simulate = [](int count, std::mt19937 &rng) {
+    std::vector<float> edges(count * 3 * 8 * 8), features(count * 8 * 2);
+    std::vector<int> labels;
+    for (int graph = 0; graph < count; ++graph) {
+      std::array<int, 4> payload{};
+      for (int key = 0; key < 4; ++key) {
+        payload[key] = rng() % 2;
+        features[(graph * 8 + 4 + key) * 2] = 2 * payload[key] - 1;
+      }
+      for (int query = 0; query < 4; ++query) {
+        std::array keys{0, 1, 2, 3};
+        std::shuffle(keys.begin(), keys.end(), rng);
+        features[(graph * 8 + query) * 2 + 1] = 1;
+        const auto link = [&](int relation, int key) {
+          edges[((graph * 3 + relation) * 8 + query) * 8 + 4 + key] = 1;
+        };
+        link(0, keys[0]);
+        link(1, keys[1]);
+        link(1, keys[2]);
+        if (rng() % 2)
+          link(2, keys[3]);
+        labels.push_back(payload[keys[0]]);
+      }
+    }
+    return std::array{n::from_vector(edges, {count, 3, 8, 8}),
+                      n::from_vector(features, {count, 8, 2}), n::from_vector(labels)};
+  };
+  std::mt19937 fit_rng(48702), test_rng(48703);
+  std::vector<std::array<n::Tensor, 3>> fit;
+  for (int i = 0; i < 8; ++i)
+    fit.push_back(simulate(16, fit_rng));
+  const auto [edges, features, labels] = simulate(64, test_rng);
+
+  n::ParameterStore model(48701);
+  const auto forward = [&](const n::Tensor &adjacency, const n::Tensor &x) {
+    const auto first = n::relu(n::rgcn_layer(model, "layer0", x, adjacency, 10, 2));
+    const auto second = n::rgcn_layer(model, "layer1", first, adjacency, 2, 2);
+    return std::array{first, second};
+  };
+  const auto queries = [](const n::Tensor &output) {
+    return n::slice_axis(output, 1, 0, 4).reshape({-1, 2});
+  };
+  const auto count_correct = [&](const n::Tensor &logits) {
+    return n::count_nonzero(n::equal(n::argmax(logits, 1), labels)).item<int>();
+  };
+  forward(edges, features);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .025, config);
+  std::vector<double> epochs, losses, accuracy;
+  std::print("| epoch | held-out NLL | correct |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto logits = queries(forward(edges, features)[1]);
+      const auto correct = count_correct(logits);
+      epochs.push_back(epoch);
+      losses.push_back(n::sparse_softmax_cross_entropy(logits, labels).item());
+      accuracy.push_back(correct / 256.);
+      std::print("| {} | {:.6f} | {}/256 |\n", epoch, losses.back(), correct);
+    }
+    if (epoch < 3)
+      for (const auto &[a, x, y] : fit)
+        adam.minimize(n::sparse_softmax_cross_entropy(queries(forward(a, x)[1]), y));
+  }
+
+  n::NoGradGuard guard;
+  const auto [first, second] = forward(edges, features);
+  const auto swapped = n::gather(edges, n::from_vector(std::vector<int>{1, 0, 2}), 1);
+  const auto swapped_logits = queries(forward(swapped, features)[1]);
+  const auto correct_swapped = count_correct(swapped_logits);
+  const auto order = n::from_vector(std::vector<int>{6, 1, 5, 3, 0, 4, 7, 2});
+  const auto remapped = n::gather(n::gather(edges, order, 2), order, 3);
+  const auto reordered = forward(remapped, n::gather(features, order, 1))[1];
+  const auto error = n::max(n::abs(reordered - n::gather(second, order, 1))).item();
+  if (error > 2e-6)
+    throw std::runtime_error("R-GCN permutation check failed");
+  std::print("Relation swap: {}/256 correct. Node permutation error {:.3g}.\n", correct_swapped, error);
+
+  n::NamedTensors evidence{{"edges", edges}, {"input", features}, {"label", labels},
+                           {"state0", first}, {"state1", second}, {"logits", queries(second)},
+                           {"swapped_logits", swapped_logits}, {"test_nll", n::from_vector(losses)}};
+  for (const auto &key : model.names())
+    evidence.emplace_back(key, model.at(key));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/rgcn_fit.npz", evidence);
+
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines(epochs, losses, "Held-out fitting diagnostic", {37, 99, 235})
+      .title("Typed message lookup").x_label("Epoch").y_label("Held-out NLL");
+  auto score = dm::graphics::RPlot::create();
+  score.bars({0., 1.}, {accuracy.back(), correct_swapped / 256.}, "Held-out accuracy", {22, 120, 97})
+      .title("Effect of swapping relation IDs").x_label("0 original, 1 swapped")
+      .y_label("Fraction correct").y_limits(0, 1.05);
+  dm::graphics::RLayout::create(1, 2).add(loss).add(score).size(1050, 430)
+      .fit_panels().save_svg("build/rgcn_fit.svg");
+}
+```
+// result_begin: markdown
+| epoch | held-out NLL | correct |
+|---:|---:|---:|
+| 0 | 0.904098 | 128/256 |
+| 1 | 0.314574 | 253/256 |
+| 2 | 0.026132 | 256/256 |
+| 3 | 0.001378 | 256/256 |
+Relation swap: 92/256 correct. Node permutation error 0.
+\image(figures/rgcn_fit.svg)
+// result_end
+\caption(Held-out loss during fitting and the final accuracy before and after swapping the target and first distractor relations.)
+\alttext(A loss curve and a two-bar comparison of original and relation-swapped accuracy.)
+
+The swap changes only relation identities. The original labels and node
+features are held fixed. The permutation check instead relabels nodes
+and their edges together, which should preserve the predictions.
+
+> Reference
+
+- [Schlichtkrull et al. (2018), Modeling Relational Data with Graph Convolutional Networks](https://arxiv.org/abs/1703.06103).

@@ -570,10 +570,9 @@ int main() {
 \caption(All three unregularized training objectives and the validation box AP50 selection trace. The code visibly optimizes every learned branch and restores the selected checkpoint before mask evaluation.)
 \alttext(All three unregularized training objectives and the validation box AP50 selection trace. The code visibly optimizes every learned branch and restores the selected checkpoint before mask evaluation.)
 
-The selected epoch30 has validation box AP50.868659. Test box AP50.806614
-and integral mask AP50.806614 fall to mask AP75.370370,showing that many
-recognized objects still have inaccurate support boundaries. Eight test scenes
-contain only26 digits,so these bounded results do not estimate benchmark accuracy.
+Compare mask AP50 and AP75 to see how tighter overlap requirements
+affect the score. The eight test scenes contain 26 digits, so these subset
+results illustrate the evaluation procedure.
 
 \image(figures/mask_rcnn_predictions.png)
 \caption(First four actual held-out image/truth/prediction triples. Truth and predicted supports use the same digit palette;higher-scored predictions overlay lower-scored supports. Missing,extra and incorrectly labelled instances remain visible.)

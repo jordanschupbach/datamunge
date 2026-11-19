@@ -31,10 +31,11 @@ inline Tensor DncContent(const Tensor& memory, const Tensor& key, const Tensor& 
 
 /// @brief Allocate to least-used slots with stable ties and differentiable usage values.
 ///
-/// The compact preset uses four slots of width four and Float32 CPU tensors.
+/// Accepts any positive number of slots.
 /// All returned handles own storage and retain applicable derivatives. No optimizer or training.
-/// @param usage Float32 CPU[N,4] finite usage in[0,1].
-/// @return Live CPU[N,4] allocation; sorted ranks are stopped, usage is mapped to1e-6+(1-1e-6)u.
+/// @param usage Float32 CPU[N,S] finite usage in[0,1].
+/// @param smooth Apply 1e-6 + (1 - 1e-6) * usage before allocation, default true.
+/// @return Live CPU[N,S] allocation with sorted ranks detached.
 /// @throws std::invalid_argument Invalid explicit bounds or incompatible tensor geometry/dtype.
 /// @par Example
 /// @code
@@ -44,33 +45,34 @@ inline Tensor DncContent(const Tensor& memory, const Tensor& key, const Tensor& 
 /// - Graves et al. (2016), Hybrid computing using a neural network with dynamic external memory,
 /// https://doi.org/10.1038/nature20101 . This is the compact four-slot teaching preset.
 /// @see DncSequence(), DncAllocation()
-inline Tensor DncAllocation(const Tensor& usage) {
+inline Tensor DncAllocation(const Tensor& usage, bool smooth = true) {
   recurrent_component_detail::Floating(usage);
-  if (usage.dim() != 2 || usage.size(1) != 4 || usage.dtype() != DType::Float32)
-    throw std::invalid_argument("DNC usage requires Float32[N,4]");
+  if (usage.dim() != 2 || usage.size(1) < 1 || usage.dtype() != DType::Float32)
+    throw std::invalid_argument("DNC usage requires Float32[N,S]");
   for (float v : usage.to_vector<float>())
     if (v < 0 || v > 1)
       throw std::invalid_argument("DNC usage outside [0,1]");
-  const Tensor        u       = add(mul(usage, 1.0 - 1e-6), 1e-6);
+  const auto slots = usage.size(1);
+  const Tensor u = smooth ? add(mul(usage, 1.0 - 1e-6), 1e-6) : usage;
   const Tensor        stopped = stop_gradient(u);
   std::vector<Tensor> rows;
-  for (int i = 0; i < 4; ++i) {
+  for (std::int64_t i = 0; i < slots; ++i) {
     const Tensor current = memory_network_detail::Cols(stopped, i, 1);
     Tensor       rank    = zeros_like(current);
-    for (int j = 0; j < 4; ++j) {
+    for (std::int64_t j = 0; j < slots; ++j) {
       const Tensor other  = memory_network_detail::Cols(stopped, j, 1);
       Tensor       before = less(other, current);
       if (j < i)
         before = logical_or(before, equal(other, current));
       rank = add(rank, cast(before, DType::Float32));
     }
-    rows.push_back(reshape(one_hot(cast(rank, DType::Int32), 4), {-1, 4}));
+    rows.push_back(reshape(one_hot(cast(rank, DType::Int32), slots), {-1, slots}));
   }
   const Tensor        permutation = stack(rows, 1); // [B, slot, rank]
   const Tensor        sorted      = sum(mul(expand_dims(u, 2), permutation), {1});
   Tensor              product     = add(mul(memory_network_detail::Cols(sorted, 0, 1), 0.0), 1.0);
   std::vector<Tensor> values;
-  for (int j = 0; j < 4; ++j) {
+  for (std::int64_t j = 0; j < slots; ++j) {
     const Tensor value = memory_network_detail::Cols(sorted, j, 1);
     values.push_back(mul(sub(1.0, value), product));
     product = mul(product, value);
@@ -98,9 +100,9 @@ struct DncLink {
 ///
 /// The compact preset uses four slots of width four and Float32 CPU tensors.
 /// All returned handles own storage and retain applicable derivatives. No optimizer or training.
-/// @param previous_links Float32 CPU[N,4,4] previous links.
-/// @param previous_precedence Float32 CPU[N,4] prior precedence.
-/// @param write Float32 CPU[N,4] write weights.
+/// @param previous_links Float32 CPU[N,S,S] previous links.
+/// @param previous_precedence Float32 CPU[N,S] prior precedence.
+/// @param write Float32 CPU[N,S] write weights.
 /// @return Live new links and precedence.
 /// @throws std::invalid_argument Invalid explicit bounds or incompatible tensor geometry/dtype.
 /// @par Example
@@ -117,8 +119,7 @@ DncTemporal(const Tensor& previous_links, const Tensor& previous_precedence, con
   const Tensor wi = expand_dims(write, 2), wj = expand_dims(write, 1);
   const Tensor links =
       add(mul(sub(sub(1.0, wi), wj), previous_links), mul(wi, expand_dims(previous_precedence, 1)));
-  const Tensor no_diagonal =
-      from_vector(std::vector<float>{0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0}, {1, 4, 4});
+  const Tensor no_diagonal = 1. - eye(write.size(1), write.dtype());
   const Tensor precedence = add(mul(sub(1.0, sum(write, {1}, true)), previous_precedence), write);
   return {mul(links, no_diagonal), precedence};
 }
@@ -404,6 +405,80 @@ DncSequence(ParameterStore& p, const Tensor& input, const Tensor& lengths) {
   for (int j = 0; j < 9; ++j)
     path[DncNames()[j]] = stack(traces[j], 1);
   return path;
+}
+
+
+/// @brief Unroll the seven-step DNC bit-copy experiment with an explicit delimiter.
+///
+/// The controller is a 16-unit LSTM. The six five-wide memory slots support
+/// usage allocation and three read modes in backward, content, forward order.
+/// The sequence starts with zero usage and links and a memory filled with 0.01.
+///
+/// @param model Owns the controller, interface and readout parameters.
+/// @param input Float32 observations [N,7,5], with N positive.
+/// @return Logits, memory, reads, read weights, write weights, raw controls,
+/// usage, allocation, links and precedence in that order. Logits are [N,3,4].
+/// Other outputs have seven time steps along axis one.
+/// @throws std::invalid_argument For incompatible input geometry or store dtype.
+/// @par Example
+/// @code
+/// dm::nn::ParameterStore model(7);
+/// const auto traces = dm::nn::models::DncBitCopy(model, dm::nn::zeros({2,7,5}));
+/// @endcode
+/// @par References
+/// - Graves et al. (2016), https://doi.org/10.1038/nature20101
+/// @see DncAllocation(), DncTemporal(), NtmBitCopy()
+inline std::array<Tensor, 10> DncBitCopy(ParameterStore &model, const Tensor &input) {
+  if (input.dim() != 3 || input.shape()[0] < 1 || input.shape()[1] != 7 ||
+      input.shape()[2] != 5 || input.dtype() != DType::Float32 ||
+      model.dtype() != DType::Float32)
+    throw std::invalid_argument("DncBitCopy: expected Float32 [N,7,5]");
+  const auto batch = input.shape()[0];
+  auto controller = lstm_zero_state(batch, 16);
+  auto memory = full({batch,6,5}, .01);
+  auto read = full({batch,5}, .01);
+  auto links = zeros({batch,6,6});
+  auto usage = zeros({batch,6});
+  auto precedence = usage, read_weights = usage, write_weights = usage;
+  std::array<std::vector<Tensor>, 10> trace;
+  for (int t = 0; t < 7; ++t) {
+    controller = lstm_step(model, "copy/controller", concat({select(input,1,t),read},1), controller);
+    const auto raw = dense(model, "copy/interface", controller.h, 28);
+    const auto col = [&](int lo, int hi) { return slice_axis(raw, 1, lo, hi); };
+    const auto content = [&](const Tensor &mem, const Tensor &key, const Tensor &strength) {
+      const auto dot = sum(mem * expand_dims(key,1), {2});
+      const auto denom = sqrt((sum(square(mem),{2}) + 1e-6) *
+                              (sum(square(key),{1},true) + 1e-6));
+      return softmax((1. + softplus(strength)) * dot / denom, 1);
+    };
+    usage = (1. - sigmoid(col(22,23)) * read_weights) * (usage + write_weights * (1. - usage));
+    const auto allocation = DncAllocation(usage, false);
+    const auto gate = sigmoid(col(23,24));
+    write_weights = sigmoid(col(24,25)) *
+        (gate * allocation + (1. - gate) * content(memory, col(0,5), col(5,6)));
+    const auto write = expand_dims(write_weights,2);
+    memory = memory * (1. - write * expand_dims(sigmoid(col(12,17)),1)) +
+             write * expand_dims(tanh(col(17,22)),1);
+    const auto temporal = DncTemporal(links, precedence, write_weights);
+    links = temporal.links;
+    precedence = temporal.precedence;
+    const auto forward = sum(links * expand_dims(read_weights,1), {2});
+    const auto backward = sum(links * expand_dims(read_weights,2), {1});
+    const auto modes = softmax(col(25,28), 1);
+    read_weights = slice_axis(modes,1,0,1) * backward +
+                   slice_axis(modes,1,1,2) * content(memory, col(6,11), col(11,12)) +
+                   slice_axis(modes,1,2,3) * forward;
+    read = sum(memory * expand_dims(read_weights,2), {1});
+    if (t > 3)
+      trace[0].push_back(dense(model, "copy/output", concat({controller.h,read},1), 4));
+    const std::array steps{memory,read,read_weights,write_weights,raw,usage,allocation,links,precedence};
+    for (std::size_t i = 0; i < steps.size(); ++i)
+      trace[i+1].push_back(steps[i]);
+  }
+  std::array<Tensor, 10> out;
+  for (std::size_t i = 0; i < out.size(); ++i)
+    out[i] = stack(trace[i],1);
+  return out;
 }
 
 } // namespace datamunge::nn::models

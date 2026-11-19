@@ -65,8 +65,16 @@ int main(){
  std::filesystem::create_directories("build/validation/zebra");
  im::Image ramp(2,1,im::ImageMode::Grayscale);ramp.data()[0]=0;ramp.data()[1]=255;
  im::write_png(ramp,"build/images/ant/ramp.png");im::write_png(ramp,"build/images/zebra/ramp.png");im::write_png(ramp,"build/validation/zebra/ramp.png");
+ std::filesystem::copy_file("../../../../../tests/cpp/data/jpeg/rgb.jpg","build/images/zebra/color.jpg",
+                            std::filesystem::copy_options::overwrite_existing);
  const auto folder=n::scan_image_folder("build/images"),val=n::scan_image_folder("build/validation",folder.class_names);
- const auto x=n::load_image_batch(folder.images,{1,0},1,4);
+ const auto x=n::load_image_batch(folder.images,{2,0,1},1,4);
+ if(folder.class_names!=std::vector<std::string>{"ant","zebra"} || folder.images.size()!=3 ||
+    std::filesystem::path(folder.images[1].path).extension()!=".jpg" || x.images.shape()!=n::Shape{3,1,4,3} ||
+    x.labels.at({1})!=0 || x.labels.at({2})!=1 ||
+    n::min(x.images).item()<0 || n::max(x.images).item()>1)
+   throw std::runtime_error("PNG and JPEG batch shape, labels or pixel range differ");
+ std::print("PNG and JPEG decoded in the same reordered RGB batch.\n\n");
  std::vector<double> red;for(int i=0;i<4;++i)red.push_back(x.images.at({0,0,i,0}));
  auto p=dm::graphics::RPlot::create();p.lines({0,1,2,3},red,"resized grayscale")
  .title("Half-pixel interpolation with clamped borders").x_label("output column").y_label("normalised value");
@@ -77,6 +85,8 @@ int main(){
 }
 ```
 // result_begin: markdown
+PNG and JPEG decoded in the same reordered RGB batch.
+
 | column | R_equals_G_equals_B |
 | ---: | ---: |
 | 0 | 0.000 |
@@ -118,7 +128,7 @@ Unknown class and corrupt image rejected: 2.
 
 Training and validation use the same class IDs despite a missing validation class. The ramp checks
 the exact resize convention; grayscale expansion does not invent colour information. The fixture
-covers lossless PNG loading. JPEG uses the same public batch API but has its own lossy decoding error.
+covers PNG and JPEG in the same public batch API. The exact interpolation check uses a lossless PNG ramp.
 
 > References
 

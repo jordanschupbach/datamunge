@@ -1,0 +1,110 @@
+//? Title: Temperature Scaling and Reliability
+//? Subtitle: Calibrating three-class probabilities on a separate validation sample
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Inflate the logits of a known categorical generator to make its probabilities
+overconfident. Fit a single temperature on validation observations, then
+measure log loss and reliability on independent test observations.
+)
+\toc
+
+> One temperature for all classes
+
+Temperature scaling replaces logits $z$ by $z/T$ before softmax. The
+validation negative log likelihood is convex as a function of inverse
+temperature $\beta=1/T$. Its derivative averages the difference between the
+predicted expectation of the original logit and the logit of the observed
+class. The native fit locates a zero of this derivative by bisection.
+Positive $\beta$ preserves each row's class ranking.
+
+A top-label reliability plot divides confidence into ten equal-width bins.
+It compares observed top-label accuracy with mean confidence within each
+nonempty bin. Expected calibration error (ECE) weights the absolute gap in
+each bin by its sample proportion. ECE depends on the chosen bins and the
+finite test sample.
+
+> Fit on validation rows and evaluate once on test rows
+
+The generator samples three latent logits from a normal distribution with
+standard deviation 1.4, then draws the label from their softmax probabilities.
+The supplied scores are 2.6 times the latent logits, so the population
+temperature is 2.6. The report uses 2,048 independent validation observations
+for fitting and 4,096 test observations for comparison.
+
+```{cpp, results="markdown", file="figures/temperature_scaling_reliability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto sample = [](int rows, unsigned seed) {
+    std::mt19937 generator(seed);
+    std::normal_distribution<double> normal(0., 1.4);
+    std::vector<double> logits;
+    std::vector<std::int64_t> labels;
+    for (int row = 0; row < rows; ++row) {
+      std::array<double, 3> mass;
+      for (double &weight : mass) {
+        const double latent = normal(generator);
+        logits.push_back(2.6 * latent);
+        weight = std::exp(latent);
+      }
+      labels.push_back(std::discrete_distribution<int>(mass.begin(), mass.end())(generator));
+    }
+    return std::pair{n::from_vector(logits, {rows, 3}), n::from_vector(labels)};
+  };
+  const auto [validation_logits, validation_labels] = sample(2048, 112341);
+  const auto [test_logits, test_labels] = sample(4096, 112342);
+  const double beta = n::fit_inverse_temperature(validation_logits, validation_labels);
+  if (beta <= 0. || beta >= 4.)
+    throw std::runtime_error("Expected an interior calibration optimum");
+  const auto before_p = n::softmax(test_logits, 1);
+  const auto after_p = n::softmax(test_logits * beta, 1);
+  const auto before = n::top_label_reliability(before_p, test_labels);
+  const auto after = n::top_label_reliability(after_p, test_labels);
+  const double before_nll = n::sparse_softmax_cross_entropy(test_logits, test_labels).item();
+  const double after_nll = n::sparse_softmax_cross_entropy(test_logits * beta, test_labels).item();
+  if (before.predictions.to_vector<std::int64_t>() != after.predictions.to_vector<std::int64_t>() ||
+      after.ece >= before.ece || after_nll >= before_nll)
+    throw std::runtime_error("Expected same labels and lower held-out calibration error");
+
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({0., 1.}, {0., 1.}, "perfect calibration", {156, 163, 175});
+  const auto add = [&](const n::TopLabelReliability &result, std::string label, dm::RGB color) {
+    std::vector<double> confidence, accuracy;
+    for (int bin = 0; bin < 10; ++bin) {
+      if (result.bins.at({bin, 0}) == 0.)
+        continue;
+      confidence.push_back(result.bins.at({bin, 1}));
+      accuracy.push_back(result.bins.at({bin, 2}));
+    }
+    plot.points(confidence, accuracy, label, color);
+  };
+  add(before, "unscaled", {185, 28, 28});
+  add(after, "temperature scaled", {37, 99, 235});
+  plot.title("Top-label reliability on independent test rows")
+      .x_label("mean confidence").y_label("empirical accuracy")
+      .x_limits(0., 1.).y_limits(0., 1.).size(760, 520);
+  std::filesystem::create_directories("build");
+  plot.save_svg("build/temperature_scaling_reliability.svg");
+  const auto one_hot = [](const n::Tensor &labels) { return n::one_hot(labels, 3).to(n::DType::Float64); };
+  n::save_npz("build/temperature_scaling_calibration.npz", {
+      {"validation_logits", validation_logits}, {"validation_labels", one_hot(validation_labels)},
+      {"test_logits", test_logits}, {"test_labels", one_hot(test_labels)},
+      {"inverse_temperature", n::full({}, beta, n::DType::Float64)},
+      {"before_p", before_p}, {"after_p", after_p}, {"before_bins", before.bins},
+      {"after_bins", after.bins}});
+  std::println("Temperature {:.6f}. Test NLL {:.6f} → {:.6f}. Test ECE {:.6f} → {:.6f}.",
+               1. / beta, before_nll, after_nll, before.ece, after.ece);
+}
+```
+// result_begin: markdown
+Temperature 2.699606. Test NLL 1.015993 → 0.747173. Test ECE 0.182347 → 0.009467.
+\image(figures/temperature_scaling_reliability.svg)
+// result_end
+\alttext(After scaling, the reliability points are closer to the diagonal of equal confidence and accuracy.)
+
+> References
+
+- [Guo et al. (2017), On Calibration of Modern Neural Networks](https://proceedings.mlr.press/v70/guo17a.html).

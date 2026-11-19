@@ -1,0 +1,109 @@
+//? Title: Monte Carlo self-play in tic-tac-toe
+//? Lang: en
+
+> Monte Carlo self-play in tic-tac-toe
+
+A [single value policy|board_policy.mepml] plays both seats and learns
+from the final outcome of each game. A recorded board is relative to
+the mover, so a win labels that player's actions +1 and the other
+player's actions −1. A draw labels both zero. One third of actions
+are sampled uniformly from legal moves during training.
+
+Each round collects 192 games and fits one epoch on the accumulated
+positions. The plot records the mean batch loss across rounds; the
+included dataset grows as the policy changes. Evaluation plays 128
+games against a random opponent, alternating the learned policy's
+seat. The policy uses Datamunge's native initialization.
+
+```{cpp, results="markdown", file="figures/board_self_play.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  using Game=dm::rl::environments::TicTacToe;
+  dm::rl::BoardValuePolicy player;
+  constexpr int games=192;
+  const auto random_action=[](const Game& game,std::mt19937& rng) {
+    const auto legal=game.LegalActions();
+    return legal[rng()%legal.size()];
+  };
+  std::mt19937 rng(45302);
+  std::vector<int> labels,action;
+  std::vector<float> boards,outcomes;
+  std::vector<double> losses;
+  std::filesystem::create_directories("build/board_self_play");
+  std::print("| Round | Cumulative positions | Mean training MSE |\n|---:|---:|---:|\n");
+  for (int round=1;round<=3;++round) {
+    std::vector<int> trace(games*10,-1);
+    for (int match=0;match<games;++match) {
+      Game game;
+      const auto first=action.size();
+      int step=0;
+      while (!game.Terminal()) {
+        const int move=rng()%3==0?random_action(game,rng):player.greedy(game);
+        const auto view=game.Observation();
+        boards.insert(boards.end(),view.begin(),view.end());
+        action.push_back(move);
+        labels.insert(labels.end(),view.begin(),view.end());
+        labels.insert(labels.end(),{game.CurrentPlayer(),move,0});
+        trace[match*10+step++]=move;
+        game.Apply(move);
+      }
+      const int winner=game.Winner();
+      trace[match*10+9]=winner;
+      for (auto index=first;index<action.size();++index) {
+        const int seat=labels[12*index+9];
+        const int outcome=winner==0?0:winner==seat?1:-1;
+        outcomes.push_back(outcome);
+        labels[12*index+11]=outcome;
+      }
+    }
+    const auto x=n::from_vector(boards,{std::ssize(action),9});
+    const auto a=n::from_vector(action),y=n::from_vector(outcomes);
+    n::BatchOrder batches(action.size(),64,45302+round);
+    n::WeightedMean average;
+    batches.begin_epoch();
+    for (auto rows=batches.next();!rows.empty();rows=batches.next()) {
+      average.add(player.train(n::take_rows(x,rows),n::take_rows(a,rows),n::take_rows(y,rows)),rows.size());
+    }
+    losses.push_back(average.value());
+    std::print("| {} | {} | {:.6f} |\n",round,action.size(),losses.back());
+    n::save_npz(std::format("build/board_self_play/round{}.npz",round),{
+        {"games",n::from_vector(trace,{games,10})},{"labels",n::from_vector(labels,{std::ssize(action),12})}});
+  }
+  std::mt19937 evaluation(45306);
+  std::vector<int> traces(128*11,-1);
+  std::array<int,3> results{};
+  for (int match=0;match<128;++match) {
+    Game game;
+    const int seat=1+match%2;
+    int step=0;
+    while (!game.Terminal()) {
+      const int move=game.CurrentPlayer()==seat?player.greedy(game):random_action(game,evaluation);
+      traces[match*11+step++]=move;
+      game.Apply(move);
+    }
+    const int winner=game.Winner();
+    traces[match*11+9]=winner;
+    traces[match*11+10]=seat;
+    ++results[winner==0?1:winner==seat?0:2];
+  }
+  n::save_npz("build/board_self_play/evaluation.npz",{{"games",n::from_vector(traces,{128,11})}});
+  std::print("\nAgainst random play: {} wins, {} draws and {} losses.\n",results[0],results[1],results[2]);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({1,2,3},losses,"Replay fit",{37,99,235})
+      .points({1,2,3},losses,dm::RGBA{37,99,235})
+      .title("Learning from self-play outcomes").x_label("Self-play round").y_label("Mean squared outcome error")
+      .size(800,460).save_svg("build/board_self_play.svg");
+}
+```
+// result_begin: markdown
+| Round | Cumulative positions | Mean training MSE |
+|---:|---:|---:|
+| 1 | 1384 | 0.696694 |
+| 2 | 2823 | 0.736817 |
+| 3 | 4187 | 0.803586 |
+
+Against random play: 90 wins, 3 draws and 35 losses.
+\image(figures/board_self_play.svg)
+// result_end

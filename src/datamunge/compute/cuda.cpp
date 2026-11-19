@@ -177,6 +177,15 @@ struct Driver {
         std::to_string(result) + ")");
   }
 };
+
+/// @brief Initialize the driver and return its count of visible device ordinals.
+std::uint32_t visible_devices(Driver& driver) {
+  driver.check(driver.init(0), "cuInit");
+  int count = 0;
+  driver.check(driver.device_count(&count), "cuDeviceGetCount");
+  return static_cast<std::uint32_t>(count);
+}
+
 /// @brief Push a context on this thread and restore the caller's previous context on exit.
 struct Scope {
   Driver& driver; ///< Borrowed live driver.
@@ -459,10 +468,7 @@ class CudaDevice final : public GpuDevice {
  public:
   /// @brief Initialize the selected physical GPU and restore the caller's prior thread context.
   explicit CudaDevice(std::uint32_t index) {
-    driver_.check(driver_.init(0), "cuInit");
-    int count = 0;
-    driver_.check(driver_.device_count(&count), "cuDeviceGetCount");
-    if (index >= static_cast<std::uint32_t>(count))
+    if (index >= visible_devices(driver_))
       throw std::runtime_error("CUDA device index unavailable");
     int device = 0;
     driver_.check(driver_.device_get(&device, int(index)), "cuDeviceGet");
@@ -679,12 +685,19 @@ class CudaDevice final : public GpuDevice {
   }
 };
 } // namespace
+std::uint32_t cuda_device_count() {
+  Driver driver;
+  return visible_devices(driver);
+}
 std::shared_ptr<GpuDevice> make_cuda(std::uint32_t index) {
   return std::make_shared<CudaDevice>(index);
 }
 } // namespace datamunge::compute::detail
 #else
 namespace datamunge::compute::detail {
+std::uint32_t cuda_device_count() {
+  throw std::runtime_error("CUDA backend currently requires a POSIX driver loader");
+}
 std::shared_ptr<GpuDevice> make_cuda(std::uint32_t) {
   throw std::runtime_error("CUDA backend currently requires a POSIX driver loader");
 }
@@ -692,6 +705,9 @@ std::shared_ptr<GpuDevice> make_cuda(std::uint32_t) {
 #endif
 #else
 namespace datamunge::compute::detail {
+std::uint32_t cuda_device_count() {
+  throw std::runtime_error("CUDA backend was not enabled at build time");
+}
 std::shared_ptr<GpuDevice> make_cuda(std::uint32_t) {
   throw std::runtime_error("CUDA backend was not enabled at build time");
 }

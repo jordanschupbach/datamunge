@@ -1,0 +1,117 @@
+//? Title: RL² with recurrent memory across bandit episodes
+//? Lang: en
+
+> RL² with recurrent memory across bandit episodes
+
+A recurrent policy plays two two-pull episodes on a bandit whose
+arm probabilities are hidden. Each input records the previous action,
+previous reward and episode boundary. Across training tasks the GRU
+learns how to turn those observations into an internal state that
+guides its next action.
+
+The outer-loop objective enumerates all 256 action–reward paths per
+task. It weights each path's reward by its policy and environment
+probabilities. This gives an exact differentiable expected reward.
+The plot tracks expected reward on four held-out bandits, then
+compares retaining memory against resetting it at the episode boundary.
+The reset condition still receives the previous action and reward input.
+The recurrent policy uses Datamunge's native seeded initializer.
+
+[Duan et al. (2016)|https://arxiv.org/abs/1611.02779]
+
+```{cpp, results="markdown", file="figures/rl_squared.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  using Task=std::array<float,2>;
+  constexpr int paths=256,steps=4;
+  const auto enumerate=[](std::initializer_list<Task> tasks) {
+    std::vector<float> input,environment,returns,probabilities;
+    std::vector<int> actions,rewards;
+    for (const auto& task:tasks) {
+      probabilities.insert(probabilities.end(),task.begin(),task.end());
+      for (int path=0;path<paths;++path) {
+        float mass=1;
+        int total=0,previous_arm=0,previous_reward=0;
+        for (int step=0;step<steps;++step) {
+          const int arm=(path>>(2*step))&1,reward=(path>>(2*step+1))&1;
+          input.insert(input.end(),{float(step>0 && previous_arm==0),float(step>0 && previous_arm==1),
+            float(previous_reward),float(step==2)});
+          actions.push_back(arm);
+          rewards.push_back(reward);
+          mass*=reward?task[arm]:1.f-task[arm];
+          total+=reward;
+          previous_arm=arm;
+          previous_reward=reward;
+        }
+        environment.push_back(mass);
+        returns.push_back(total);
+      }
+    }
+    const auto rows=std::ssize(returns);
+    return std::array{n::from_vector(input,{rows,steps,4}),n::from_vector(actions,{rows,steps}),
+        n::from_vector(rewards,{rows,steps}),n::from_vector(environment),n::from_vector(returns),
+        n::from_vector(probabilities,{std::ssize(tasks),2})};
+  };
+  const auto test=enumerate({{.92f,.08f},{.08f,.92f},{.72f,.28f},{.28f,.72f}});
+  const std::array training{enumerate({{.95f,.05f},{.05f,.95f}}),enumerate({{.85f,.15f},{.15f,.85f}}),
+      enumerate({{.75f,.25f},{.25f,.75f}}),enumerate({{.65f,.35f},{.35f,.65f}})};
+  n::ParameterStore params(46601);
+  const auto evaluate=[&](const auto& batch,bool carry) {
+    const auto [logp,hidden]=dm::rl::rl_squared_policy(params,batch[0],24,2,2,carry);
+    const auto selected=n::sum(logp*n::one_hot(batch[1],2),{2});
+    const auto mass=batch[3]*n::exp(n::sum(selected,{1}));
+    const auto reward=n::mean(n::sum((mass*batch[4]).reshape({-1,paths}),{1}));
+    return std::tuple{reward,logp,hidden,mass};
+  };
+  (void)evaluate(test,true);
+  n::Optimizer optimizer(params,.02,{.kind=n::OptimizerKind::Adam});
+  std::vector<float> history;
+  std::print("| Epoch | Expected held-out reward |\n|---:|---:|\n");
+  for (int epoch=0;epoch<=3;++epoch) {
+    {
+      const n::NoGradGuard guard;
+      history.push_back(std::get<0>(evaluate(test,true)).item());
+    }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if (epoch==3) break;
+    for (const auto& batch:training) {
+      optimizer.step(n::grad(-std::get<0>(evaluate(batch,true)),optimizer.parameters()));
+    }
+  }
+  const n::NoGradGuard guard;
+  n::NamedTensors report{{"input",test[0]},{"actions",test[1]},{"rewards",test[2]},
+      {"environment",test[3]},{"tasks",test[5]},{"history",n::from_vector(history)}};
+  double reset=0;
+  for (bool carry:{true,false}) {
+    const auto [reward,logp,hidden,mass]=evaluate(test,carry);
+    const std::string prefix=carry?"carry":"reset";
+    report.emplace_back(prefix+"_return",reward);
+    report.emplace_back(prefix+"_logp",logp);
+    report.emplace_back(prefix+"_states",hidden);
+    report.emplace_back(prefix+"_mass",mass);
+    if (!carry) reset=reward.item();
+  }
+  for (const auto& name:params.names()) report.emplace_back(name,params.at(name));
+  std::print("\nResetting memory at the episode boundary gives expected reward {:.6f}.\n",reset);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/rl_squared_evaluation.npz",report);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},std::vector<double>(history.begin(),history.end()),"Carry memory",{37,99,235})
+      .points({3},{reset},"Reset memory",{217,96,26},7)
+      .title("RL² bandit adaptation").x_label("Epoch").y_label("Expected reward over four pulls")
+      .size(800,460).save_svg("build/rl_squared.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Expected held-out reward |
+|---:|---:|
+| 0 | 2.005293 |
+| 1 | 2.084448 |
+| 2 | 2.215487 |
+| 3 | 2.395386 |
+
+Resetting memory at the episode boundary gives expected reward 2.247523.
+\image(figures/rl_squared.svg)
+// result_end

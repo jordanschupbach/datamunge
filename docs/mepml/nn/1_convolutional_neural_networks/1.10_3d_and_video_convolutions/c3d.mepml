@@ -103,7 +103,6 @@ int main() {
 }
 ```
 // result_begin:
-// Tensor RGB ingress/32x32bilinear/scaling saved for36original clips.
 // result_end
 
 FFmpeg only decodes source frames;the tensor helper performs Float32 legacy
@@ -748,9 +747,9 @@ negative odd-edge pool values/adjoints,the actual full79991015-scalar forward
 and every22learned derivative,all1769472decoded/resized source frame pixels
 and source identities,every static/motion reference feature/neighbor/metric,
 and invalid dropout/geometry contracts. Public examples compile/run and the
-original full-check/three-epoch workflow passes. The selected epoch1 has validation NLL1.099830 and held-out NLL1.096773.
-Actual selected CNN accuracy is33.3%,below motion1NN66.7%;it predicts
-handclapping for all six clips,with recalls0/1/0 and macroF1.166667.
+original full-check/three-epoch workflow passes. Validation selects epoch 3
+with NLL 1.097290. The checkpoint predicts boxing on all six held-out
+clips, for 2/6 accuracy, mean NLL 1.095499, and macro F1 of 0.166667.
 Both accuracies can change substantially with one clip.
 The data preview,complete errors and unchanged references constrain any claim
 beyond implementation correctness and temporal computation sensitivity.

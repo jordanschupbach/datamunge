@@ -1,0 +1,159 @@
+//? Title: Bayesian Linear Regression and Model Averaging
+//? Subtitle: Exact Gaussian posteriors for nested polynomial models
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit three polynomial regressions to the same noisy observations. Their exact
+marginal likelihoods update equal prior model probabilities. Averaging the
+posterior predictions accounts for uncertainty in both the coefficients and
+the polynomial degree.
+)
+\toc
+
+> Model and evidence
+
+For design matrix $X$, the coefficients have a zero-mean Gaussian prior with
+covariance $\tau^2 I$. Observations are conditionally independent with known
+noise variance $\sigma^2$. The model includes the intercept in the prior.
+Let $P$ denote posterior precision. Cholesky solves give the conditional
+coefficient mean and covariance.
+
+$$
+P=\tau^{-2}I+\sigma^{-2}X^\top X,\qquad
+m=P^{-1}X^\top y/\sigma^2,\qquad
+\operatorname{Cov}(w\mid y)=P^{-1}.
+$$
+\alttext(Posterior precision combines the isotropic prior and the design cross-product. Solving against the precision yields the coefficient mean and covariance.)
+
+At a query row $q$, the fitted mean is $qm$ and the variance for a new
+response is $\sigma^2+qP^{-1}q^\top$. The log marginal likelihood integrates
+over the coefficients. This integral depends on both the fit and the prior,
+so it gives a different criterion from residual error at fitted coefficients.
+
+```{cpp, file="figures/bayesian_linear_regression_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("data", {0, 0}, "32 noisy observations\nthree polynomial bases");
+  diagram.node("fit", {5.2, 0}, "Gaussian conditioning\nposterior and evidence");
+  diagram.node("predict", {10.4, 0}, "Weight by model evidence\naverage predictive moments");
+  diagram.edge("data", "fit").edge("fit", "predict");
+  diagram.save_svg("build/bayesian_linear_regression_concept.svg");
+}
+```
+// result_begin:
+// \image(figures/bayesian_linear_regression_concept.svg)
+// result_end
+\alttext(Noisy observations enter three Gaussian regressions. Their evidences weight the predictive moments.)
+
+> Fit and predict
+
+Generate 32 observations at equally spaced inputs in [-1,1] with Gaussian
+noise variance .0324. Compare degrees 1, 2 and 5 under unit prior variance
+and equal prior model probabilities. The 61 query points extend to [-1.2,1.2].
+The seeded normal generator follows the source example's C++ standard-library
+draws. The bands show the mixture mean plus or minus 1.96 mixture standard
+deviations. They summarize moments of a Gaussian mixture.
+
+```{cpp, results="markdown", file="figures/bayesian_linear_regression_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr double noise_variance = .0324;
+  const auto design = [](int rows, int width, double edge) {
+    std::vector<double> columns;
+    for (int i = 0; i < rows; ++i) {
+      const double x = -edge + 2. * edge * i / (rows - 1);
+      double power = 1.;
+      for (int j = 0; j < width; ++j) {
+        columns.push_back(power);
+        power *= x;
+      }
+    }
+    return n::from_vector(columns, {rows, width});
+  };
+  const auto x = n::linspace(-1., 1., 32, n::DType::Float64);
+  const auto grid = n::linspace(-1.2, 1.2, 61, n::DType::Float64);
+  std::mt19937 generator(120781);
+  std::normal_distribution<double> normal(0., std::sqrt(noise_variance));
+  std::vector<double> observations;
+  for (double t : x.to_vector<double>())
+    observations.push_back(.2 + .55 * t - 1.25 * t * t + normal(generator));
+  const auto y = n::from_vector(observations, {32, 1});
+  std::vector<double> degrees, evidence;
+  std::vector<n::Tensor> means, variances;
+  n::NamedTensors receipt{{"y", y}};
+  for (int width : {2, 3, 6}) {
+    const auto train = design(32, width, 1.);
+    const auto query = design(61, width, 1.2);
+    const auto fit = n::ml::FitBayesianLinear(train, y, noise_variance);
+    const auto prediction = n::ml::PredictBayesianLinear(fit, query);
+    const std::string tag = std::to_string(width);
+    degrees.push_back(width - 1);
+    evidence.push_back(fit.log_evidence);
+    means.push_back(prediction.mean);
+    variances.push_back(prediction.variance);
+    receipt.insert(receipt.end(), {{"design_" + tag, train}, {"query_" + tag, query},
+        {"weights_" + tag, fit.mean}, {"covariance_" + tag, fit.covariance},
+        {"mean_" + tag, prediction.mean.reshape({61, 1})}, {"variance_" + tag, prediction.variance}});
+  }
+
+  const auto weights = n::softmax(n::from_vector(evidence));
+  const auto w = weights.reshape({3, 1});
+  const auto m = n::stack(means, 0);
+  const auto average = n::sum(w * m, {0});
+  const auto variance = n::sum(w * (n::stack(variances, 0) + n::square(m - average)), {0});
+  if (weights.at({1}) < .9 || std::abs(n::sum(weights).item() - 1.) > 1e-12 ||
+      n::min(variance).item() < noise_variance)
+    throw std::runtime_error("Unexpected evidence or mixture moments");
+  receipt.insert(receipt.end(), {{"log_evidence", n::from_vector(evidence)},
+      {"model_probability", weights}, {"mixture_mean_variance", n::stack({average, variance}, 1)}});
+
+  const auto grid_values = grid.to_vector<double>();
+  const auto margin = 1.96 * n::sqrt(variance);
+  auto lower = (average - margin).to_vector<double>(), upper = (average + margin).to_vector<double>();
+  auto band_x = grid_values;
+  band_x.insert(band_x.end(), grid_values.rbegin(), grid_values.rend());
+  lower.insert(lower.end(), upper.rbegin(), upper.rend());
+  auto predictions = dm::graphics::RPlot::create();
+  predictions.polygon(band_x, lower, dm::RGBA{37, 99, 235, .16})
+      .lines(grid_values, means[0].to_vector<double>(), "degree 1", {156, 163, 175})
+      .lines(grid_values, means[1].to_vector<double>(), "degree 2", {15, 118, 110})
+      .lines(grid_values, means[2].to_vector<double>(), "degree 5", {194, 65, 12})
+      .lines(grid_values, average.to_vector<double>(), "model average", {37, 99, 235})
+      .points(x.to_vector<double>(), observations, "fitting data", {17, 24, 39})
+      .title("Posterior predictive means and the mixture moment band")
+      .x_label("x").y_label("response");
+  auto probabilities = dm::graphics::RPlot::create();
+  probabilities.bars(degrees, weights.to_vector<double>(), "posterior", {15, 118, 110})
+      .title("Posterior mass by degree").x_label("degree").y_label("probability")
+      .y_limits(0, 1);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(predictions).add(probabilities).fit_panels()
+      .size(1200, 470).save_svg("build/bayesian_linear_regression_fit.svg");
+  n::save_npz("build/bayesian_linear_regression_posterior.npz", receipt);
+
+  dm::dstruct::DataFrame comparison;
+  comparison.add_column("degree", degrees);
+  comparison.add_column("log_evidence", evidence);
+  comparison.add_column("posterior_probability", weights.to_vector<double>());
+  std::print("{}", comparison.to_md(8));
+}
+```
+// result_begin: markdown
+| degree | log_evidence | posterior_probability |
+| ---: | ---: | ---: |
+| 1 | -69.50784317 | 0.00000000 |
+| 2 | 2.17352237 | 0.93170104 |
+| 5 | -0.43959507 | 0.06829896 |
+\image(figures/bayesian_linear_regression_fit.svg)
+// result_end
+\alttext(The fitted quadratic and averaged predictive mean follow the data. The model-probability bars favour degree two.)
+
+> References
+
+- [Rasmussen and Williams, Gaussian Processes for Machine Learning, chapter 2](https://gaussianprocess.org/gpml/chapters/RW2.pdf).

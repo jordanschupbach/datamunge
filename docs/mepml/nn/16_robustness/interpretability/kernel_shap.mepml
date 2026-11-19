@@ -1,0 +1,67 @@
+//? Title: Kernel SHAP with sampled and exhaustive coalitions
+//? Lang: en
+
+> Kernel SHAP with sampled and exhaustive coalitions
+
+For each coalition, retain the selected coordinates of the point
+and replace all other coordinates with values from a background row.
+Average the nonlinear model's predictions over the same 32 background
+rows for every coalition. This defines the value of including a set
+of features, including interactions.
+
+A weighted linear regression assigns an attribution to each feature.
+The intercept equals the empty-coalition value. Eliminating one
+coefficient enforces that all contributions sum to the difference
+between full and empty coalitions. Compare a sampled fit with the
+full enumeration on the same model and point. The sample includes
+all singleton masks to identify the regression coefficients.
+
+```{cpp, results="markdown", file="figures/kernel_shap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  std::mt19937 rng(50161);
+  std::uniform_real_distribution<double> uniform(-1,1);
+  std::vector<double> rows(32*6);
+  for (auto& x:rows) x=uniform(rng);
+  const auto background=n::from_vector(rows,{32,6});
+  const auto point=n::from_vector(std::vector<double>{.8,-.6,.3,-.2,.9,.55});
+  const auto values=n::shap_coalition_values(point,background,[](const auto& x) {
+    const auto f=[&](int i) { return n::select(x,1,i); };
+    return n::sigmoid(n::sin(f(0))+f(1)*f(2)+f(3)*(f(4)*f(5)));
+  });
+  std::vector<int> full(62);
+  std::iota(full.begin(),full.end(),1);
+  auto shuffled=full;
+  std::shuffle(shuffled.begin(),shuffled.end(),rng);
+  std::vector<int> sampled{1,2,4,8,16,32};
+  for (int id:shuffled) {
+    if (sampled.size()==32) break;
+    if (std::ranges::find(sampled,id)==sampled.end()) sampled.push_back(id);
+  }
+  const auto approximate=n::kernel_shap(values,sampled),exact=n::kernel_shap(values,full);
+  const auto change=n::select(values,0,63).item()-n::select(values,0,0).item();
+  const auto error=n::max(n::abs(approximate-exact)).item();
+  if (!std::isfinite(error) || std::abs(n::sum(exact).item()-change)>1e-12 ||
+      std::abs(n::sum(approximate).item()-change)>1e-12) return 1;
+  std::print("Full minus empty score {:.6f}. Maximum sampled attribution error {:.6f}.\n",change,error);
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({.9,1.9,2.9,3.9,4.9,5.9},approximate.to_vector<double>(),"Sampled",{234,88,12})
+      .points({1.1,2.1,3.1,4.1,5.1,6.1},exact.to_vector<double>(),"Exhaustive",{37,99,235})
+      .lines({.5,6.5},{0,0},"Zero contribution",{148,163,184})
+      .title("Feature contributions with 32 or 62 interior masks").x_label("Feature").y_label("Attribution");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/kernel_shap.svg");
+  n::save_npz("build/kernel_shap.npz",{{"background",background},{"point",point},{"coalition",values},
+      {"sample_ids",n::from_vector(sampled)},{"approximate",approximate},{"exact",exact}});
+}
+```
+// result_begin: markdown
+Full minus empty score 0.092212. Maximum sampled attribution error 0.006067.
+\image(figures/kernel_shap.svg)
+// result_end
+
+This comparison computes the full coalition table once as a reference.
+The sample reduces the regression design to 32 interior rows. The
+report evaluates attribution error at that sample size.

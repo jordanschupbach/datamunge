@@ -37,7 +37,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The seeded random CartPole replay is recorded below.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -52,10 +52,8 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 //   render()           -> text picture of the state
 //   action_space()     -> Discrete(n) or Continuous(low, high)
 // This program writes a tiny environment against that interface and then
-// drives it, and a built-in one, through the same generic loop. The vsim video
-// of a random CartPole episode is omitted; the port adds checks that seeding
-// reproduces an episode and that every corridor episode ends one of the three
-// ways.
+// drives it and a built-in environment through the same generic loop. The
+// report records a seeded CartPole episode and checks the three corridor endings.
 
 
 // Editable workflow support: checks.hpp
@@ -321,6 +319,30 @@ int main() {
     Trace(*env, 3, 3, /*show_render=*/false);
     rl::PrintStats("random policy, 20 episodes", rl::RunRandom(*env, 20, 0));
 
+    rl::CartPole cartpole;
+    std::mt19937_64 video_rng(3);
+    auto observation = cartpole.reset(3);
+    std::vector<std::array<float,3>> poses{{observation[0], observation[2], 0}};
+    std::vector<float> observations = observation, rewards;
+    do {
+      auto result = cartpole.step(cartpole.action_space().Sample(video_rng));
+      observation = result.obs;
+      poses.push_back({observation[0], observation[2], 0});
+      observations.insert(observations.end(), observation.begin(), observation.end());
+      rewards.push_back(result.reward);
+      if (result.done()) break;
+    } while (true);
+    const std::string clip = "env_interface_random_cartpole.mp4";
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    dm::rl::environments::save_linkage_replay(
+        dm::rl::environments::LinkageReplay::CartPole, poses, "build/" + clip);
+    std::filesystem::copy_file("build/" + clip, "figures/" + clip,
+                               std::filesystem::copy_options::overwrite_existing);
+    dm::nn::save_npz("build/env_interface_replay.npz",
+        {{"observations", dm::nn::from_vector(observations, {static_cast<std::int64_t>(poses.size()),4})},
+         {"reward", dm::nn::from_vector(rewards)}});
+
     std::cout << "\n-- Continuous action spaces sample vectors\n";
     rl::Pendulum pendulum;
     std::mt19937_64 rng(0);
@@ -329,7 +351,7 @@ int main() {
               << "  sample=" << rl::FormatObs(sample.continuous) << "\n";
     check::Require(sample.continuous.size() == 1 && sample.continuous[0] >= -2.f && sample.continuous[0] <= 2.f,
                    "a Pendulum action is one torque in [-2, 2]");
-    std::cout << "\nchecks passed (vsim video omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -381,7 +403,7 @@ int main() {
 // -- Continuous action spaces sample vectors
 //   Pendulum action_space=Box(1) [-2.000000..2.000000]  sample=[-1.361]
 //
-// checks passed (vsim video omitted)
+// checks passed
 // result_end
 
 > A fixed-action diagnostic trajectory
@@ -400,3 +422,12 @@ int main(){namespace e=dm::rl::environments;e::Corridor env;auto observation=env
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+
+> Seeded random CartPole episode
+
+The replay starts from seed 3 and uses a separate action generator with
+the same seed. It runs through the environment interface until the first
+terminal or truncated result.
+
+\video(figures/env_interface_random_cartpole.mp4)

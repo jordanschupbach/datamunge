@@ -30,8 +30,8 @@ $$
 The two models retain identical convolution biases, kernel L2 and dense layers. BN adds
 2(16+32)=96 trainable scalars, plus 96 moving-state scalars that Adam does not update. Three
 paired seeds provide descriptive differences rather than a general advantage claim. Each
-model fits 128 original MNIST rows for two epochs, selects on the following 64 rows, then
-uses 64 original test rows once. These short subsets differ from the original full ablation.
+model fits the same 12,000 MNIST rows for six epochs. A separate 3,000-row validation
+set selects each checkpoint by NLL, and the 10,000 official test rows evaluate it.
 Normalisation costs O(BHWC) per layer, and its training output depends on batch companions.
 Inference must neither change state nor depend on unrelated companion images.
 
@@ -275,12 +275,18 @@ int main() {
 
   const auto data = n::load_mnist((cache / "mnist").string(), "train"),
              test = n::load_mnist((cache / "mnist").string(), "test");
-  const auto tx = n::slice_axis(data.images, 0, 0, 128),
-             ty = n::slice_axis(data.labels, 0, 0, 128);
-  const auto vx = n::slice_axis(data.images, 0, 128, 192),
-             vy = n::slice_axis(data.labels, 0, 128, 192);
-  const auto qx = n::slice_axis(test.images, 0, 0, 64),
-             qy = n::slice_axis(test.labels, 0, 0, 64);
+  if (data.images.shape() != n::Shape{60000, 28, 28, 1} ||
+      test.images.shape() != n::Shape{10000, 28, 28, 1})
+    throw std::runtime_error("Expected original MNIST splits");
+  std::vector<std::int64_t> order(60000);
+  std::iota(order.begin(), order.end(), 0);
+  std::mt19937_64 split(2026);
+  std::shuffle(order.begin(), order.end(), split);
+  const std::vector<std::int64_t> fit(order.begin(), order.begin() + 12000);
+  const std::vector<std::int64_t> validation(order.begin() + 12000, order.begin() + 15000);
+  const auto tx = n::take_rows(data.images, fit), ty = n::take_rows(data.labels, fit);
+  const auto vx = n::take_rows(data.images, validation), vy = n::take_rows(data.labels, validation);
+  const auto qx = test.images, qy = test.labels;
   auto logits = [](n::ParameterStore &p, n::ParameterStore &state, const n::Tensor &x, bool bn,
                    bool training) {
     n::BatchNormOptions options;
@@ -298,14 +304,21 @@ int main() {
   };
   std::filesystem::create_directories("build");
   std::vector<double> seeds, plain_accuracy, bn_accuracy, difference;
+  const std::array<dm::graphics::RGBA, 6> colors{
+      {{37, 99, 235}, {185, 28, 28}, {15, 118, 110}, {194, 65, 12}, {109, 40, 217}, {161, 98, 7}}};
+  auto learning = dm::graphics::RPlot::create();
+  std::size_t color = 0;
   for (int seed : {11, 23, 47}) {
     n::ParameterStore plain(seed), bn(seed), plain_state(0), bn_state(0);
     {
       n::NoGradGuard guard;
       logits(plain, plain_state, n::zeros({1, 28, 28, 1}), false, false);
       logits(bn, bn_state, n::zeros({1, 28, 28, 1}), true, false);
-      for (const auto &name : plain.names())
+      for (const auto &name : plain.names()) {
         bn.at(name).copy_(plain.at(name));
+        if (n::max(n::abs(bn.at(name) - plain.at(name))).item() != 0.)
+          throw std::runtime_error("Mismatched initial paired weights");
+      }
     }
     double scores[2]{};
     for (int variant = 0; variant < 2; ++variant) {
@@ -314,13 +327,26 @@ int main() {
       n::OptimizerConfig config;
       config.kind = n::OptimizerKind::Adam;
       n::Optimizer optimizer(p, .001, config);
-      n::BatchOrder batches(128, 16, 2026);
+      n::BatchOrder batches(12000, 128, seed + 1000);
       const std::string prefix =
           "build/bn_pair_" + std::to_string(seed) + "_" + std::to_string(variant);
       double best = std::numeric_limits<double>::infinity();
-      for (int epoch = 0; epoch < 2; ++epoch) {
+      auto predict = [&](n::ParameterStore &parameters, n::ParameterStore &statistics,
+                         const n::Tensor &input) {
+        n::NoGradGuard guard;
+        std::vector<n::Tensor> parts;
+        for (std::int64_t at = 0; at < input.size(0); at += 256)
+          parts.push_back(logits(parameters, statistics,
+                                 n::slice_axis(input, 0, at, std::min(at + 256, input.size(0))),
+                                 variant, false));
+        return n::concat(parts, 0);
+      };
+      std::vector<double> nll_history;
+      for (int epoch = 0; epoch < 6; ++epoch) {
         batches.begin_epoch();
+        std::size_t used = 0;
         for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+          used += rows.size();
           const auto z = logits(p, state, n::take_rows(tx, rows), variant, true);
           auto loss = n::sparse_softmax_cross_entropy(z, n::take_rows(ty, rows));
           for (const auto &w : p.parameters())
@@ -328,23 +354,37 @@ int main() {
               loss = loss + .00005 * n::sum(n::square(w));
           optimizer.minimize(loss);
         }
-        n::NoGradGuard guard;
-        const double validation =
-            n::sparse_softmax_cross_entropy(logits(p, state, vx, variant, false), vy).item();
-        if (validation < best) {
-          best = validation;
+        if (used != fit.size())
+          throw std::runtime_error("Incomplete fitting epoch");
+        const double validation_nll =
+            n::sparse_softmax_cross_entropy(predict(p, state, vx), vy).item();
+        nll_history.push_back(validation_nll);
+        if (validation_nll < best) {
+          best = validation_nll;
           p.save(prefix + "_params.npz");
           if (variant)
             state.save(prefix + "_state.npz");
         }
       }
+      learning.lines({1, 2, 3, 4, 5, 6}, nll_history,
+                     std::format("{} {}", seed, variant ? "BN" : "plain"), colors[color++]);
       p.load(prefix + "_params.npz");
       if (variant)
         state.load(prefix + "_state.npz");
       n::NoGradGuard guard;
       const auto snapshot = state.clone();
-      const auto z = logits(p, state, qx, variant, false);
- const std::string confusion_file="build/batch_norm_ablation_"+std::to_string(seed)+(variant?"_bn":"_plain")+"_confusion";n::ConfusionMatrix cm(10);cm.add(qy,n::argmax(z,1));cm.save_svg(confusion_file+".svg",{.title="Paired MNIST seed "+std::to_string(seed)+(variant?" / BN":" / plain")});n::save_npz(confusion_file+".npz",{{"truth",qy},{"logits",z},{"counts",cm.to_tensor()}});
+      const auto restored_nll = n::sparse_softmax_cross_entropy(predict(p, state, vx), vy).item();
+      if (!std::isfinite(restored_nll) || std::abs(restored_nll - best) > 1e-6)
+        throw std::runtime_error("Restored validation NLL differs");
+      const auto z = predict(p, state, qx);
+      const std::string confusion_file = "build/batch_norm_ablation_" + std::to_string(seed) +
+                                         (variant ? "_bn" : "_plain") + "_confusion";
+      n::ConfusionMatrix cm(10);
+      cm.add(qy, n::argmax(z, 1));
+      cm.save_svg(confusion_file + ".svg", {.title = "Paired MNIST seed " + std::to_string(seed) +
+                                                     (variant ? " / BN" : " / plain")});
+      n::save_npz(confusion_file + ".npz",
+                  {{"truth", qy}, {"logits", z}, {"counts", cm.to_tensor()}});
       scores[variant] = n::accuracy(z, qy);
       const auto alone = logits(p, state, n::take_rows(qx, {0}), variant, false);
       if (n::max(n::abs(alone - n::take_rows(z, {0}))).item() > 2e-5)
@@ -357,8 +397,7 @@ int main() {
       restored.load(prefix + "_params.npz");
       if (variant)
         restored_state.load(prefix + "_state.npz");
-      if (n::max(n::abs(z - logits(restored, restored_state, qx, variant, false))).item() >
-          1e-6)
+      if (n::max(n::abs(z - predict(restored, restored_state, qx))).item() > 1e-6)
         return 1;
     }
     seeds.push_back(seed);
@@ -366,12 +405,17 @@ int main() {
     bn_accuracy.push_back(scores[1]);
     difference.push_back(scores[1] - scores[0]);
   }
+  learning.title("Validation loss for paired initializations")
+      .x_label("epoch")
+      .y_label("mean NLL")
+      .size(900, 460)
+      .save_svg("build/batch_norm_ablation_learning.svg");
   auto plot = dm::graphics::RPlot::create();
   plot.bars({.8, 1.8, 2.8}, plain_accuracy, "plain", {37, 99, 235}, .3)
       .bars({1.2, 2.2, 3.2}, bn_accuracy, "BN", {234, 88, 12}, .3)
-      .title("Short paired runs on the same original MNIST rows")
+      .title("Paired runs on the same original MNIST rows")
       .x_label("seed pair index")
-      .y_label("test subset accuracy")
+      .y_label("official test accuracy")
       .y_limits(0, 1.2);
   plot.size(850, 420).save_svg("build/batch_norm_ablation_pairs.svg");
   dm::dstruct::DataFrame table;
@@ -379,16 +423,24 @@ int main() {
   table.add_column("plain_accuracy", plain_accuracy);
   table.add_column("BN_accuracy", bn_accuracy);
   table.add_column("paired_difference", difference);
-  std::print("{}\n", table.to_md(6));
+  const double mean = std::accumulate(difference.begin(), difference.end(), 0.) / difference.size();
+  double squared = 0.;
+  for (double value : difference)
+    squared += (value - mean) * (value - mean);
+  const double sd = std::sqrt(squared / (difference.size() - 1));
+  std::println(
+      "{}\nMean paired difference {:.3f} percentage points. Sample SD {:.3f} percentage points.",
+      table.to_md(6), 100 * mean, 100 * sd);
 }
 ```
 // result_begin: markdown
 | seed | plain_accuracy | BN_accuracy | paired_difference |
 | ---: | ---: | ---: | ---: |
-| 11 | 0.390625 | 0.390625 | 0.000000 |
-| 23 | 0.546875 | 0.421875 | -0.125000 |
-| 47 | 0.578125 | 0.437500 | -0.140625 |
+| 11 | 0.9751 | 0.9780 | 0.0029 |
+| 23 | 0.9719 | 0.9758 | 0.0039 |
+| 47 | 0.9735 | 0.9803 | 0.0068 |
 
+Mean paired difference 0.453 percentage points. Sample SD 0.203 percentage points.
 \image(figures/batch_norm_ablation_pairs.svg)
 // result_end
 \caption(Each pair shares starting kernels and batch order; selected parameter and state checkpoints restore into a fresh model.)
@@ -399,65 +451,120 @@ int main() {
 
 The views below are regenerated from the executed programs above. Confusion matrices use the selected checkpoint and original held-out rows. Paired ablations retain each seed and policy separately; they do not pool the same test observations into one artificial sample.
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_architecture_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_architecture_graph.svg","build/export_batch_norm_ablation_architecture_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_learning.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_learning.svg", "build/export_batch_norm_ablation_learning.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+\image(figures/batch_norm_ablation_learning.svg)
+// result_end
+\caption(Validation NLL for each seed and normalization policy.)
+\alttext(Six curves show validation NLL over six epochs for the three paired seeds.)
+
+```{cpp, results="markdown", file="figures/batch_norm_ablation_architecture_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_architecture_graph.svg", "build/export_batch_norm_ablation_architecture_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_architecture_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_architecture_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_architecture_lenet.svg","build/export_batch_norm_ablation_architecture_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_architecture_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_architecture_lenet.svg", "build/export_batch_norm_ablation_architecture_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_architecture_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_11_plain_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_11_plain_confusion.svg","build/export_batch_norm_ablation_11_plain_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_11_plain_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_11_plain_confusion.svg", "build/export_batch_norm_ablation_11_plain_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_11_plain_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_11_bn_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_11_bn_confusion.svg","build/export_batch_norm_ablation_11_bn_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_11_bn_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_11_bn_confusion.svg", "build/export_batch_norm_ablation_11_bn_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_11_bn_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_23_plain_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_23_plain_confusion.svg","build/export_batch_norm_ablation_23_plain_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_23_plain_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_23_plain_confusion.svg", "build/export_batch_norm_ablation_23_plain_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_23_plain_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_23_bn_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_23_bn_confusion.svg","build/export_batch_norm_ablation_23_bn_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_23_bn_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_23_bn_confusion.svg", "build/export_batch_norm_ablation_23_bn_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_23_bn_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_47_plain_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_47_plain_confusion.svg","build/export_batch_norm_ablation_47_plain_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_47_plain_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_47_plain_confusion.svg", "build/export_batch_norm_ablation_47_plain_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_47_plain_confusion.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/batch_norm_ablation_47_bn_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/batch_norm_ablation_47_bn_confusion.svg","build/export_batch_norm_ablation_47_bn_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/batch_norm_ablation_47_bn_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/batch_norm_ablation_47_bn_confusion.svg", "build/export_batch_norm_ablation_47_bn_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/batch_norm_ablation_47_bn_confusion.svg)
@@ -467,7 +574,8 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 
 The one-step state update matches its analytic moments. Paired fits expose Adam updates,
 validation selection and separate moving statistics; inference is independent of batch companions
-and checkpoint restoration reproduces logits. Small paired runs do not establish a universal BN advantage.
+and checkpoint restoration reproduces logits. The paired differences describe these
+three initializations on this MNIST split.
 
 > References
 

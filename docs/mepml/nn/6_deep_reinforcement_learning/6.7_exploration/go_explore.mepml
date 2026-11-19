@@ -1,0 +1,93 @@
+//? Title: Go-Explore on a sparse grid
+//? Lang: en
+
+> Go-Explore on a sparse grid
+
+Go-Explore stores a return path to each discovered grid cell. Each round
+selects a nonterminal archived cell, favoring cells selected fewer
+times. The agent follows its deterministic return path, explores up to
+eight random actions from there, and records new cells or shorter
+paths. The plot shows how the archive grows over 256 rounds.
+
+After exploration, reverse breadth-first search on observed edges
+produces recovery labels for cells with a known route to the goal.
+A neural policy imitates those labels. An all-zero target row omits
+the action label at the goal and at any unreachable cell. The final
+test starts from the upper-left cell for 128 trials. It substitutes
+a uniformly random action at each step with probability one fifth.
+The imitation network uses Datamunge's native seeded initializer.
+
+[Ecoffet et al. (2021), First return, then explore|https://doi.org/10.1038/s41586-020-03157-9]
+
+```{cpp, results="markdown", file="figures/go_explore.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  std::mt19937 discovery(43901),noise(43903);
+  const auto result=r::go_explore(49,4,0,48,256,8,discovery,r::sparse_grid_move);
+  if (!result.paths[48]) throw std::runtime_error("The archive did not reach the goal");
+  const auto expert=r::observed_recovery_actions(result.edges,48);
+  const auto inputs=n::eye(49);
+  const auto actions=n::from_vector(expert);
+  const auto labels=n::one_hot(actions,4);
+  n::ParameterStore params(43902);
+  const auto predict=[&] {
+    return n::dense(params,"logits",n::dense(params,"hidden",inputs,32,n::Activation::Relu),4);
+  };
+  const auto loss=[](const auto& q,const auto& y) {
+    return -n::mean(n::sum(y*n::log_softmax(q,-1),{1}));
+  };
+  const double initial=loss(predict(),labels).item();
+  n::Optimizer optimizer(params,.01,{.kind=n::OptimizerKind::Adam});
+  for (int step=0;step<96;++step) {
+    optimizer.step(n::grad(loss(predict(),labels),optimizer.parameters()));
+  }
+  const n::NoGradGuard guard;
+  const auto logits=predict();
+  const double fitted=loss(logits,labels).item();
+  const auto greedy=n::argmax(logits,1).to_vector<int>();
+  constexpr int trials=128,horizon=64;
+  std::vector<int> trial_trace(trials*horizon*3,-1);
+  int successes=0;
+  for (int trial=0;trial<trials;++trial) {
+    int state=0;
+    for (int step=0;step<horizon && state!=48;++step) {
+      int action=greedy[state];
+      if (noise()%5==0) action=noise()%4;
+      const int next=r::sparse_grid_move(state,action);
+      const auto begin=trial_trace.begin()+3*(horizon*trial+step);
+      std::copy_n(std::array{state,action,next}.begin(),3,begin);
+      state=next;
+    }
+    successes+=state==48;
+  }
+  const auto tensor=[](const std::vector<std::vector<int>>& matrix) {
+    std::vector<int> values;
+    for (const auto& row:matrix) values.insert(values.end(),row.begin(),row.end());
+    return n::from_vector(values,{std::ssize(matrix),std::ssize(matrix.front())});
+  };
+  std::filesystem::create_directories("build");
+  n::save_npz("build/go_explore_audit.npz",{{"exploration",tensor(result.trace)},
+      {"edges",tensor(result.edges)},{"expert",actions},{"goal_path",n::from_vector(*result.paths[48])},
+      {"logits",logits},{"trials",n::from_vector(trial_trace,{trials,horizon,3})}});
+  std::print("Archived {} of 49 cells. First goal in round {}. Final goal path length {}.\n\n"
+             "Imitation loss decreased from {:.6f} to {:.6f}. The noisy policy succeeded in {} of {} trials.\n",
+             result.coverage.back(),result.first_goal_round+1,result.paths[48]->size(),
+             initial,fitted,successes,trials);
+  const std::vector<double> coverage(result.coverage.begin(),result.coverage.end());
+  std::vector<double> rounds(coverage.size());
+  std::iota(rounds.begin(),rounds.end(),1.);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(rounds,coverage,"Archive coverage",{37,99,235})
+      .title("Go-Explore archive growth").x_label("Round").y_label("Archived cells")
+      .ylim(0,49).size(820,460).save_svg("build/go_explore.svg");
+}
+```
+// result_begin: markdown
+Archived 49 of 49 cells. First goal in round 10. Final goal path length 16.
+
+Imitation loss decreased from 1.323688 to 0.001348. The noisy policy succeeded in 128 of 128 trials.
+\image(figures/go_explore.svg)
+// result_end

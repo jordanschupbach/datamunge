@@ -1,0 +1,131 @@
+//? Title: Measure Grappler constant folding and CPU XLA fusion
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Compare the same elementwise GraphDef in baseline, Grappler, and XLA
+sessions. Inspect the executed partition graphs and measure steady-state
+latency after warm-up.
+)
+\toc
+
+> A shared graph and three execution policies
+
+The bundled GraphDef implements the upstream elementwise workload on
+65,536 Float32 values. It computes \(s = 1.25\times0.5\),
+\(v=s x+0.15\) and \(w=\sin(v)+\cos(x)\), then returns
+\(\exp(-v^2)(w^2+0.125)\). Fetching the scalar product along with the
+vector makes its replacement by a constant visible in the partition graph.
+
+Grappler can evaluate the product of two constants before execution and
+replace that multiplication with a Const node. XLA can compile several
+elementwise operations into a single executable, reducing intermediate
+materialization. The report scans the executed graph for the folded
+node and an XLA executable. It also checks the full vector against a
+double-precision scalar reference.
+
+Build Datamunge with `-DDATAMUNGE_ENABLE_TENSORFLOW=ON` and set
+`CMAKE_PREFIX_PATH` to a TensorFlow C++ SDK with CPU XLA support. The
+program enables CPU JIT for its own process. The first timing includes
+partition inspection and any first-run compilation. Steady timings are
+the median of 30 calls after four warm-ups. Each call includes the
+Datamunge-to-TensorFlow input and output copies.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <chrono>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+  namespace n = dm::nn;
+  using Clock = std::chrono::steady_clock;
+  if (!n::saved_model_runtime_available()) {
+    std::println("Graph optimization requires DATAMUNGE_ENABLE_TENSORFLOW.");
+    return 0;
+  }
+  n::enable_tensorflow_cpu_jit();
+  constexpr int size = 65536;
+  std::vector<float> input(size);
+  for (int i = 0; i < size; ++i)
+    input[i] = (i % 509 - 254) / 120.f;
+  const n::NamedTensors feeds{{"features", n::from_vector(input)}};
+  const std::vector<std::string> fetches{"output", "static_product"};
+  constexpr std::array modes{n::GraphOptimization::Baseline, n::GraphOptimization::Grappler,
+                             n::GraphOptimization::Xla};
+  constexpr std::array labels{"Baseline", "Grappler", "XLA"};
+  std::vector<double> medians;
+  std::println("| Policy | Partition nodes | Folded | XLA | Maximum error | First run ms | Steady median µs |");
+  std::println("| :--- | ---: | :--- | :--- | ---: | ---: | ---: |");
+  for (std::size_t i = 0; i < modes.size(); ++i) {
+    const n::GraphSession session("fixtures/elementwise_graph.pb", modes[i]);
+    std::vector<std::pair<std::string, std::string>> partition;
+    const auto start = Clock::now();
+    const auto result = session.run(feeds, fetches, &partition);
+    const auto first = std::chrono::duration<double, std::milli>(Clock::now() - start).count();
+    const bool folded = std::ranges::any_of(partition, [](const auto& node) {
+      return node.first == "static_product" && node.second == "Const";
+    });
+    const bool xla = std::ranges::any_of(partition, [](const auto& node) {
+      return node.second == "_XlaRun" || node.second == "XlaLaunch";
+    });
+    if (result.size() != 2 || result[0].second.shape() != n::Shape{size} ||
+        result[1].second.item() != .625 || folded != (i > 0) || xla != (i == 2))
+      throw std::runtime_error("Unexpected partition graph or result shape");
+    const auto values = result[0].second.to_vector<float>();
+    double error = 0.;
+    for (int j = 0; j < size; ++j) {
+      const double x = input[j], v = .625*x + .15, wave = std::sin(v) + std::cos(x);
+      const double exact = std::exp(-v*v)*(wave*wave + .125);
+      if (!std::isfinite(values[j])) throw std::runtime_error("Nonfinite graph output");
+      error = std::max(error, std::abs(values[j] - exact));
+    }
+    if (error >= 3e-6) throw std::runtime_error("Graph output disagrees with the reference");
+
+    for (int j = 0; j < 4; ++j) (void)session.run(feeds, fetches);
+    std::array<double, 30> samples;
+    for (auto& sample : samples) {
+      const auto before = Clock::now();
+      (void)session.run(feeds, fetches);
+      sample = std::chrono::duration<double, std::micro>(Clock::now() - before).count();
+    }
+    std::ranges::sort(samples);
+    medians.push_back((samples[14] + samples[15]) * .5);
+    std::println("| {} | {} | {} | {} | {:.3g} | {:.1f} | {:.1f} |",
+                 labels[i], partition.size(), folded, xla, error, first, medians.back());
+  }
+
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  auto plot = dm::graphics::RPlot::create();
+  plot.points({1., 2., 3.}, medians, "Steady median", {37, 99, 235}, 6)
+      .title("Steady CPU latency after four warm-up calls")
+      .x_label("1 Baseline · 2 Grappler · 3 XLA").y_label("Microseconds")
+      .save_svg("build/graph_optimization.svg");
+  std::filesystem::copy_file("build/graph_optimization.svg", "figures/graph_optimization.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::println("");
+  std::println("\\image(figures/graph_optimization.svg)");
+}
+```
+// result_begin: markdown
+| Policy | Partition nodes | Folded | XLA | Maximum error | First run ms | Steady median µs |
+| :--- | ---: | :--- | :--- | ---: | ---: | ---: |
+| Baseline | 18 | false | false | 2.56e-07 | 17.3 | 205.9 |
+| Grappler | 16 | true | false | 2.56e-07 | 6.8 | 166.7 |
+| XLA | 6 | true | true | 2.51e-07 | 86.3 | 302.4 |
+
+\image(figures/graph_optimization.svg)
+// result_end
+
+The partition checks establish which optimization ran. Timings depend on
+the host and runtime build, and the first-run and steady-state columns
+measure different phases of execution.
+
+> References
+
+- [TensorFlow graph optimization|https://www.tensorflow.org/guide/graph_optimization].

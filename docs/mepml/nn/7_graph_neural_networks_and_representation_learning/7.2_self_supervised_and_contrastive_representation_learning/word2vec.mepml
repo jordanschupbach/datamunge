@@ -1,0 +1,103 @@
+//? Title: CBOW and skip-gram with unigram negatives
+//? Lang: en
+
+> CBOW and skip-gram with unigram negatives
+
+The synthetic corpus cycles through three disjoint topics. Each sentence
+draws eight tokens with replacement from its topic's four words, using
+relative frequencies 4, 3, 2 and 1. Training and held-out corpora use
+separate seeds.
+
+A radius-two window uses only centers with all four neighbors inside
+the sentence. CBOW averages the four context embeddings to predict the
+center. Skip-gram uses the center embedding to predict each neighbor
+individually. Each positive is paired with four negatives sampled from
+training unigram counts raised to the 0.75 power, with the positive
+excluded. The loss sums five binary logistic terms per example.
+
+```{cpp, results="markdown", file="figures/word2vec_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto train = n::synthetic_topic_corpus(192, 49402);
+  const auto test = n::synthetic_topic_corpus(48, 49403);
+  const auto counts = n::sum(n::one_hot(train, 12, 1, 0, n::DType::Float64), {0, 1});
+  const auto weights = n::pow(counts, .75);
+  std::filesystem::create_directories("build");
+  auto fit = dm::graphics::RPlot::create();
+  fit.title("Word prediction loss").x_label("Epoch").y_label("Held-out negative sampling loss");
+  std::print("| Model | Epoch | Held-out loss |\n|---|---:|---:|\n");
+  for (bool cbow : {true, false}) {
+    const std::string name = cbow ? "cbow" : "skipgram";
+    const auto held = n::sampled_word_windows(test, weights, cbow, 49404);
+    const auto fixture = n::sampled_word_windows(train, weights, cbow, 49405);
+    n::ParameterStore model(49401);
+    const auto input = model.get("input", {12, 8}, n::init::uniform(.2));
+    const auto output = model.get("output", {12, 8}, n::init::uniform(.2));
+    const auto logits = [&](const n::SampledWordWindows &data) {
+      return n::sampled_word_logits(input, output, data.source, data.candidates);
+    };
+    const auto objective = [&](const n::Tensor &scores) {
+      const auto sign = n::tensor({-1., 1., 1., 1., 1.}).to(scores.dtype());
+      return n::mean(n::sum(n::softplus(sign * scores), {1}));
+    };
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .03, config);
+    std::mt19937 shuffle(49406);
+    std::vector<double> epochs, losses;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        epochs.push_back(epoch);
+        losses.push_back(objective(logits(held)).item());
+        std::print("| {} | {} | {:.6f} |\n", name, epoch, losses.back());
+      }
+      if (epoch == 3)
+        break;
+      const auto examples = n::sampled_word_windows(train, weights, cbow, 49405 + epoch);
+      std::vector<int> order(examples.source.shape()[0]);
+      std::iota(order.begin(), order.end(), 0);
+      std::shuffle(order.begin(), order.end(), shuffle);
+      const auto indices = n::from_vector(order);
+      for (std::int64_t start = 0; start < indices.shape()[0]; start += 64) {
+        const auto ids = n::slice_axis(indices, 0, start, std::min(start + 64, indices.shape()[0]));
+        adam.minimize(objective(logits({n::gather(examples.source, ids),
+                                        n::gather(examples.candidates, ids)})));
+      }
+    }
+    n::NoGradGuard guard;
+    n::save_npz("build/word2vec_" + name + ".npz", {{"train_corpus", train}, {"test_corpus", test},
+        {"weights", weights}, {"train_source", fixture.source}, {"train_targets", fixture.candidates},
+        {"test_source", held.source}, {"test_targets", held.candidates}, {"input", input},
+        {"output", output}, {"logits", logits(held)}});
+    const dm::graphics::RGBA color = cbow ? dm::graphics::RGBA{37, 99, 235}
+                                         : dm::graphics::RGBA{22, 120, 97};
+    fit.lines(epochs, losses, name, color);
+  }
+  fit.legend({"CBOW", "Skip-gram"}, {{37, 99, 235}, {22, 120, 97}});
+  dm::graphics::RLayout::create(1, 1).add(fit).size(720, 430)
+      .fit_panels().save_svg("build/word2vec_fit.svg");
+}
+```
+// result_begin: markdown
+| Model | Epoch | Held-out loss |
+|---|---:|---:|
+| cbow | 0 | 3.465192 |
+| cbow | 1 | 2.598893 |
+| cbow | 2 | 2.253496 |
+| cbow | 3 | 1.875455 |
+| skipgram | 0 | 3.468256 |
+| skipgram | 1 | 1.552238 |
+| skipgram | 2 | 1.425351 |
+| skipgram | 3 | 1.424783 |
+\image(figures/word2vec_fit.svg)
+// result_end
+\caption(Held-out binary logistic loss for the two word prediction objectives.)
+\alttext(Two lines show held-out negative sampling loss for CBOW and skip-gram by epoch.)
+
+> Reference
+
+- [Mikolov et al. (2013), Distributed Representations of Words and Phrases and their Compositionality](https://arxiv.org/abs/1310.4546).

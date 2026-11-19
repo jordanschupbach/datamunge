@@ -704,7 +704,7 @@ Fixed content/style/TV denominators 515694.062500/126185938944.000000/0.127916.
 | initial generator | 12.357129 | 1.498519 | 8.625578 | 2.233033 |
 | restored generator | 1.774219 | 0.631208 | 0.971303 | 0.171708 |
 Generator-only RGB prediction:checkpoint parity 0,single/batch max 0,repeat exact;all62 learned/30 BN tensors immutable. All26 VGG tensors and cached feature targets unchanged.
-Distinct-content mean difference 0.127584;three-call64x64 CPU mean 7.421649ms. No real-time claim.
+Distinct-content mean difference 0.127584;three-call64x64 CPU mean 45.476968ms. No real-time claim.
 \image(figures/johnson_fast_style_training.svg)
 // result_end
 \caption(Thirty-six explicit Adam updates with separate learned/BN stores. Every validation component uses its fixed initial denominator;their sum equals validation total.)
@@ -719,12 +719,11 @@ Distinct-content mean difference 0.127584;three-call64x64 CPU mean 7.421649ms. N
 \caption(All eight actual held-out contents,two tiles per row. Each tile is observed content,fixed genuine Kandinsky painting,and one-pass restored generator RGB. No VGG,style target or optimization occurs in the prediction call.)
 \alttext(Original held-out CIFAR contents,genuine painting and actual generator-only stylized outputs.)
 
-The selected epoch3 lowers held-out combined objective from12.357131 to
-1.783372. Its fixed-scale content/style/TV contributions are
-.679889/.912451/.191033. The actual outputs remain dominated by bright
-colored texture with weak visual content preservation. The measured
-.139763 difference across contents proves input sensitivity,but does not
-establish recognizable objects or attractive style quality.
+The epoch 3 checkpoint lowers the held-out combined objective from
+12.357129 to 1.774219. Its fixed-scale content, style, and TV contributions
+are 0.631208, 0.971303, and 0.171708. Different content images yield a mean
+absolute output difference of 0.127584. The gallery shows bright textures
+and weak preservation of recognizable objects.
 
 Lower frozen-feature objective measures this stated perceptual criterion;
 it is not a subjective quality score or a guarantee that objects remain

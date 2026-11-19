@@ -1,0 +1,113 @@
+//? Title: Serving and fine-tuning a digit backbone
+//? Lang: en
+
+> Serving and fine-tuning a digit backbone
+
+First, train a CNN on upright digits and checkpoint its feature
+extractor. Restore the checkpoint into a feature-only store to serve
+32-dimensional descriptors from rotated digit images.
+
+Next, initialize two target models with the same backbone and classifier
+head. Feature extraction fits only the classifier. Full fine-tuning
+updates both the classifier and the convolutional layers. Both modes
+see the same rotated training examples in the same order. Evaluation
+uses separate rotated test digits.
+
+Run `python3 scripts/prepare_saliency.py` in the TensorFlow examples checkout.
+The prepared MNIST archive is at
+`output/datasets/saliency/saliency_data.npz`. Set
+`DATAMUNGE_SALIENCY_DATA` to that archive for another checkout location.
+
+```{cpp, results="markdown", file="figures/backbone_transfer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto* configured=std::getenv("DATAMUNGE_SALIENCY_DATA");
+  const auto* home=std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_SALIENCY_DATA");
+  const auto path=configured ? std::filesystem::path(configured) :
+      std::filesystem::path(home)/"projects/tflow_examples/output/datasets/saliency/saliency_data.npz";
+  const auto input=n::load_npz(path.string());
+  const std::map<std::string,n::Tensor> arrays(input.begin(),input.end());
+  const auto split=[&](const std::string& key,int start,int count,bool rotated) {
+    const auto images=n::slice_axis(arrays.at(key+"_images"),0,start,start+count);
+    const auto bytes=images.to_vector<std::uint8_t>();
+    std::vector<float> pixels(bytes.size());
+    for (int row=0;row<count;++row)
+      for (int y=0;y<28;++y)
+        for (int x=0;x<28;++x)
+          pixels[row*784+y*28+x]=(rotated ? bytes[row*784+(27-x)*28+y] : bytes[row*784+y*28+x])/255.f;
+    return std::tuple{n::from_vector(pixels,{count,28,28,1}),
+        n::slice_axis(arrays.at(key+"_labels"),0,start,start+count),
+        n::slice_axis(arrays.at(key+"_source_ids"),0,start,start+count)};
+  };
+  const auto [source,source_label,source_ids]=split("fit",0,768,false);
+  const auto [target,target_label,target_ids]=split("fit",768,224,true);
+  const auto [test,truth,test_ids]=split("test",0,200,true);
+  const auto train=[](const auto& forward,const n::Tensor& x,const n::Tensor& y,n::Optimizer& opt) {
+    n::BatchOrder order(x.size(0),16,29162);
+    for (int epoch=0;epoch<3;++epoch) {
+      order.begin_epoch();
+      for (auto rows=order.next();!rows.empty();rows=order.next())
+        opt.minimize(n::sparse_softmax_cross_entropy(forward(n::take_rows(x,rows)),n::take_rows(y,rows)));
+    }
+  };
+  n::ParameterStore pretrained(29161);
+  (void)n::digit_backbone(pretrained,n::take_rows(source,{0}));
+  const auto keys=pretrained.names();
+  const auto source_head=[&](const auto& x) {
+    return n::dense(pretrained,"source_head",n::digit_backbone(pretrained,x),10);
+  };
+  (void)source_head(n::take_rows(source,{0}));
+  n::Optimizer pretrain(pretrained,.003,{.kind=n::OptimizerKind::Adam});
+  train(source_head,source,source_label,pretrain);
+  std::filesystem::create_directories("build");
+  n::NamedTensors checkpoint;
+  for (const auto& name:keys) checkpoint.emplace_back(name,pretrained.at(name));
+  n::save_npz("build/digit_backbone.npz",checkpoint);
+  n::ParameterStore served(29161);
+  for (const auto& [name,value]:n::load_npz("build/digit_backbone.npz")) served.set(name,value);
+  const auto features=[&](n::ParameterStore& model,const n::Tensor& images) {
+    n::NoGradGuard guard;
+    return n::digit_backbone(model,images);
+  };
+  const auto served_features=features(served,test);
+  auto frozen=served.clone();
+  (void)n::dense(frozen,"target_head",served_features,10);
+  auto full=frozen.clone();
+  const auto same=[](const auto& a,const auto& b) {
+    return n::max(n::abs(a-b)).item()==0;
+  };
+  if (!same(features(frozen,test),served_features) || !same(features(full,test),served_features)) return 1;
+  const auto frozen_head=[&](const auto& x) { return n::dense(frozen,"target_head",x,10); };
+  const auto full_head=[&](const auto& x) { return n::dense(full,"target_head",n::digit_backbone(full,x),10); };
+  n::Optimizer frozen_opt({frozen.at("target_head/W"),frozen.at("target_head/b")},.002,
+                          {.kind=n::OptimizerKind::Adam});
+  n::Optimizer full_opt(full,.002,{.kind=n::OptimizerKind::Adam});
+  train(frozen_head,features(frozen,target),target_label,frozen_opt);
+  train(full_head,target,target_label,full_opt);
+  n::NoGradGuard guard;
+  const auto frozen_features=features(frozen,test), full_features=features(full,test);
+  const auto frozen_logits=frozen_head(frozen_features), full_logits=full_head(test);
+  const auto correct=[&](const auto& logits) {
+    return n::sum(n::equal(n::argmax(logits),truth).to(n::DType::Int32)).item();
+  };
+  const auto a=correct(frozen_logits),b=correct(full_logits);
+  for (const auto& name:keys) if (!same(served.at(name),frozen.at(name))) return 1;
+  if (same(served_features,full_features)) return 1;
+  std::print("Rotated test digits correct out of 200. Frozen {:.0f}, full fine-tuning {:.0f}.\n",a,b);
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({0},{a/200},"Frozen backbone",{37,99,235})
+      .points({1},{b/200},"Full fine-tuning",{234,88,12})
+      .title("Target accuracy on rotated MNIST").x_label("Training mode").y_label("Accuracy").y_limits(0,1);
+  plot.size(900,430).save_svg("build/backbone_transfer.svg");
+  n::save_npz("build/backbone_transfer.npz",{{"source_ids",source_ids},{"target_ids",target_ids},{"test_ids",test_ids},
+      {"test_labels",truth},{"test_pixels",test},{"served_features",served_features},{"frozen_features",frozen_features},
+      {"full_features",full_features},{"frozen_logits",frozen_logits},{"full_logits",full_logits}});
+}
+```
+// result_begin: markdown
+Rotated test digits correct out of 200. Frozen 37, full fine-tuning 114.
+\image(figures/backbone_transfer.svg)
+// result_end

@@ -1,0 +1,68 @@
+//? Title: Forward and inverse dynamics for curiosity
+//? Lang: en
+
+> Forward and inverse dynamics for curiosity
+
+A single encoder maps current and successor states into feature vectors.
+The inverse head predicts the action from both vectors, encouraging the
+encoder to retain information about controllable changes. The forward
+head uses the current features and action to predict successor features.
+Its regression target is detached from the gradient. The prediction
+error is available as an intrinsic reward.
+
+The example fits four directional transitions from an interior grid cell.
+Two models start at the same parameters. One minimizes inverse loss alone,
+and the other includes forward prediction loss with weight 0.2. The plot
+tracks inverse loss and the table shows how forward prediction responds.
+The learned encoder is also available directly for episodic novelty.
+
+[Pathak et al. (2017)|https://proceedings.mlr.press/v70/pathak17a.html]
+
+```{cpp, results="markdown", file="figures/curiosity_model.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto rows=n::from_vector<int>({24,0,17,24,1,31,24,2,23,24,3,25},{4,3});
+  const auto labels=n::from_vector<int>({0,1,2,3});
+  const auto successors=n::from_vector<int>({17,31,23,25});
+  std::array models{dm::rl::IntrinsicCuriosity(49,4,12,24,0.),
+                    dm::rl::IntrinsicCuriosity(49,4,12,24,.2)};
+  std::array<std::vector<double>,2> history;
+  std::vector<double> steps(101);
+  std::iota(steps.begin(),steps.end(),0.);
+  std::print("| Forward weight | Inverse loss before | Inverse loss after | Forward error before | Forward error after |\n"
+             "|---:|---:|---:|---:|---:|\n");
+  for (std::size_t i=0;i<models.size();++i) {
+    auto& model=models[i];
+    const double before=n::mean(model.evaluate(rows)[0]).item();
+    for (std::size_t step=0;step<steps.size();++step) {
+      const auto outputs=model.evaluate(rows);
+      history[i].push_back(n::sparse_softmax_cross_entropy(outputs[3],labels).item());
+      if (step+1<steps.size()) model.train(rows);
+    }
+    const auto final=model.evaluate(rows);
+    const double after=n::mean(final[0]).item();
+    if (!(history[i].back()<history[i].front()) ||
+        final[2].to_vector<float>()!=model.embed(successors).to_vector<float>() ||
+        (i==1 && !(after<before))) {
+      throw std::runtime_error("Curiosity model fit check failed");
+    }
+    std::print("| {:.1f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",
+               i*.2,history[i].front(),history[i].back(),before,after);
+  }
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,history[0],"Inverse only",{217,96,26})
+      .lines(steps,history[1],"Forward and inverse",{37,99,235})
+      .title("Learning action-predictive features").x_label("Adam updates").y_label("Inverse cross-entropy")
+      .size(820,460).save_svg("build/curiosity_model.svg");
+}
+```
+// result_begin: markdown
+| Forward weight | Inverse loss before | Inverse loss after | Forward error before | Forward error after |
+|---:|---:|---:|---:|---:|
+| 0.0 | 1.430509 | 0.028366 | 0.329432 | 0.979154 |
+| 0.2 | 1.430509 | 0.029386 | 0.329432 | 0.000207 |
+\image(figures/curiosity_model.svg)
+// result_end

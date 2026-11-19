@@ -744,7 +744,7 @@ int main(int argc, char** argv) {
 // epoch2 validationLoss=9.50145 entityF1=0
 // epoch3 validationLoss=8.76217 entityF1=0
 // testMeanSequenceNLL=10.5005 tokenAccuracy=0.824228 entityF1=0 greedyF1=0 wordMajorityF1=0.328358 allOAccuracy=0.824228;realCRFpartition/marginals/expectedCounts/Viterbi/empty/padding/restore/labelFree/immutable PASS
-// Artifacts:"/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/recovered-language/models/bilstm_crf" (0.157754 s)
+// Artifacts:"/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/recovered-language/models/bilstm_crf" (0.377026 s)
 // result_end
 
 > Actual source diagnostics

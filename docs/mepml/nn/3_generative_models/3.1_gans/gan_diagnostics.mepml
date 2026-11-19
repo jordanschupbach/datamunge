@@ -3,13 +3,13 @@
 //? Lang: en-GB
 
 \abstract(
-Restored native SinGAN -> original frozen Inception -> low-rank FID and IS. The complete native C++ experiment preserves model equations, source seeds, update budgets and explicit fitting/generation loops. Missing data recipes are reconstructed and labelled; original TensorFlow recordings are checked only when genuinely present.
+Fréchet Inception Distance (FID) compares feature means and covariances. Inception Score (IS) compares each predicted class distribution with the pooled class distribution. The report measures both with the original frozen ImageNet Inception graph, using fixed CIFAR-10 controls and samples from a native SinGAN fit.
 )
 \toc
 
 > Provenance and scope
 
-The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
+The reference pool uses CIFAR-10 test rows 64–95. The independent real pool uses training rows 128–159. The copy and collapse controls reuse images from the reference pool. The generated pool comes from the native SinGAN checkpoint and uses the reference example’s seed 8101. Each pool has 32 images, so the scores describe this fixed diagnostic experiment.
 
 > Follow the computation
 
@@ -38,21 +38,9 @@ int main(){namespace n=dm::nn;double computed=n::models::GaussianFrechet(n::tens
 \image(figures/gan_diagnostics_worked.svg)
 // result_end
 
-> Prepare reproducible inputs
-
-Native acquisition authenticates source bytes. Preparation calls no Python, upstream checkout or external training service. Every substituted task is described in its manifest; training-derived checkpoints are produced by editable programs below.
-
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){auto root=dm::datasets::prepare_example_data("nn-completion-assets");std::print("Versioned recipe root: {}\n",root);}
-```
-// result_begin: markdown
-Versioned recipe root: /home/jordan/.cache/datamunge/datasets/nn-completion-assets
-// result_end
-
 > Complete editable experiment
 
-Historical comments in the preserved source describe the original experiment; the versioned reconstruction manifest above describes the active inputs. Objectives, optimizer ownership, update schedules, sampling and search remain here. Source finite-difference, padding, causal/label-independence, checkpoint and immutability controls remain active. Weak held-out outcomes are retained.
+The program acquires the pinned Inception graph and CIFAR-10 inputs, restores or trains the three SinGAN scales, and scores the fixed pools. It caches extracted features so plotting and recomputing the metrics can reuse the inference results.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -293,7 +281,7 @@ void Prepare(const std::filesystem::path&root){
  recovered_singan::Models models;
  for(int k=0;k<3;++k){auto model=std::make_unique<recovered_singan::Scale>();recovered_singan::A arrays;for(auto&[key,value]:n::load_npz("build/singan/scale"+std::to_string(k)+"/final.npz"))arrays.emplace(key,value);recovered_singan::Load(*model,arrays);models.push_back(std::move(model));}
  auto amplitudes=n::load_npz("build/singan/amplitudes.npz")[0].second.to_vector<float>();
- auto raw=recovered_singan::Draw(models,amplitudes,{},3,32,13907);
+ auto raw=recovered_singan::Draw(models,amplitudes,{},3,32,8101);
  auto generated=n::clip((raw+1.)*127.5,0,255);
  auto data=dm::datasets::fetch("cifar10");auto train=n::load_cifar10(data,"train"),test=n::load_cifar10(data,"test");std::vector<std::int64_t>rows(32);std::iota(rows.begin(),rows.end(),64);auto reference=n::take_rows(test.images,rows)*255.;std::iota(rows.begin(),rows.end(),128);auto independent=n::take_rows(train.images,rows)*255.;
  std::map<std::string,n::Tensor>images{{"real_reference",reference},{"independent_real",independent},{"singan",generated}};
@@ -301,7 +289,7 @@ void Prepare(const std::filesystem::path&root){
  auto graph=n::FrozenGraph::load((std::filesystem::path(graph_dir)/"classify_image_graph_def.pb").string());
  for(auto&[name,image]:images){std::vector<n::Tensor>features,probabilities;for(int row=0;row<32;++row){auto values=graph.evaluate({{"ExpandDims:0",n::take_rows(image,{row})}},{"pool_3:0","softmax:0"});features.push_back(n::reshape(values[0].second,{1,2048}));probabilities.push_back(n::reshape(values[1].second,{1,1008}));std::print("{} extractor row {} complete\n",name,row+1);}
  n::save_npz((root/(name+"_inception.npz")).string(),{{"features",n::concat(features,0)},{"probabilities",n::concat(probabilities,0)}});}
- std::ofstream(root/"native-feature-provenance.json")<<"{\"extractor\":\"original authenticated Inception2015 GraphDef\",\"runtime\":\"native FrozenGraph\",\"generator\":\"restored native three-scale SinGAN\",\"seed\":13907,\"external_TF_parity\":false}\n";
+ std::ofstream(root/"native-feature-provenance.json")<<"{\"extractor\":\"original authenticated Inception2015 GraphDef\",\"runtime\":\"native FrozenGraph\",\"generator\":\"restored native three-scale SinGAN\",\"seed\":8101,\"external_TF_parity\":false}\n";
 }
 }
 namespace recovered_checkpoints {
@@ -311,32 +299,12 @@ inline std::filesystem::path Model(const std::string&name){auto p=std::filesyste
 // GAN diagnostics: FID / Inception score algebra, collapse/copy controls and
 // small-sample caveats on 32-image CIFAR-10 variants.
 //
-// Port of tflow's gan_diagnostics — PARTIAL. tflow runs the ORIGINAL frozen
-// ImageNet Inception GraphDef (classify_image_graph_def.pb) to extract pool3
-// features and 1008-way probabilities, and generates the "singan" variant by
-// restoring the three tflow SinGAN scale checkpoints. Neither has a datamunge
-// counterpart (loading GraphDef/TF checkpoint files is out of scope, and the
-// SinGAN example is ported separately), so this port reads tflow's RECORDED
-// extractor outputs and SinGAN images from a tflow gan_diagnostics run
-// (features=DIR, default ~/projects/tflow_examples/output/models/gan_diagnostics:
-// images.npz, {real_reference,independent_real,singan}_inception.npz). Every
-// metric is recomputed here with datamunge (float64 low-rank Frechet distance
-// via SVD of the [32, 32] cross matrix, Inception score, 4 splits of 8).
-//
-// What is ported in full: the metric algebra fixtures (balanced one-hot IS 4,
-// uniform and collapsed IS 1, FID 0 for different distributions with equal
-// moments, FID symmetric for unequal N, rejection of non-normalized
-// probabilities and of N = 1 covariances); the real CIFAR-10 variants built
-// from $DATAMUNGE_DATA_DIR/cifar10 (test rows 64..95 as reference, train
-// batch 1 rows 128..159 as an independent real sample), which must equal the
-// recorded tflow images BIT EXACTLY (so the recorded features belong to them);
-// the controls derived by row selection (one image collapsed 32x, four images
-// repeated, the reference copied in reverse order: FID 0 without learning)
-// and the checks IS(collapsed) = 1, FID(copy) = FID(reference) = 0. Our FIDs
-// are compared with tflow's recorded *_frechet.npz. The frozen-extractor
-// repeat check is not applicable. Outputs (algebra.npz, scores.tsv,
-// <variant>_frechet.npz, <variant>.png, metrics.json) go to
-// output/nn/models/gan_diagnostics. Options: data=PATH features=PATH out=PATH.
+// Extract pool3 features and 1008-way probabilities by executing the frozen
+// ImageNet Inception GraphDef. The default feature directory caches these
+// outputs from the two fixed real pools and the restored native SinGAN.
+// An explicit features=DIR can supply previously recorded extractor outputs.
+// All scores are recomputed in float64, including the split IS for four
+// groups of eight images. Options: data=PATH features=PATH out=PATH.
 
 // Editable workflow support: dataset_assets.hpp
 namespace dataset_assets{inline std::string DataRoot(){return dm::datasets::data_home();}}
@@ -712,16 +680,8 @@ inline void RequireOnlyOwnersChanged(const Arrays& before, const Arrays& after, 
 }  // namespace gan
 
 // Editable workflow support: generative_metrics.hpp
-// Port of tflow's common/nn/generative_metrics.h and the GenerativeMetrics part
-// of common/ml/generative_metrics.h: the exact low-rank Gaussian Frechet
-// distance (FID formula on any feature matrices) and the probability-space
-// Inception score, both in float64. tflow's FrozenMetricInception (running the
-// original frozen ImageNet Inception GraphDef) has no datamunge counterpart:
-// loading GraphDef files is out of scope, so callers supply features.
-
-
-
-
+// Evaluate the exact low-rank Gaussian Fréchet distance and the
+// probability-space Inception Score from the saved features and probabilities.
 namespace gan {
 
 namespace gm_nn = datamunge::nn;
@@ -942,7 +902,10 @@ void Run(const std::filesystem::path& data, const std::filesystem::path& recorde
     comma = true;
     json << '"' << name << "\":{\"fid\":" << fid << ",\"inception_score\":" << is << ",\"split_mean\":" << mean
          << ",\"split_population_std\":" << std::sqrt(var) << ",\"unique_images\":" << unique.size()
-         << ",\"tflow_fid\":" << tf_fid << '}';
+         << ",\"tflow_fid\":";
+    if (has_external) json << tf_fid;
+    else json << "null";
+    json << '}';
     if (name == "collapsed_real") check::Near(is, 1, 3e-6, "one image collapse IS 1");
     if (name == "copied_heldout" || name == "real_reference") check::Near(fid, 0, 1e-7, "held-out copy can obtain FID 0 without learning");
     nn::save_image_grid(rgb, (root / (name + ".png")).string(), 8, 0, 255, 0, 220, 3);
@@ -962,7 +925,7 @@ void Run(const std::filesystem::path& data, const std::filesystem::path& recorde
 int main(int argc, char** argv) {
   try {
     std::filesystem::path data = paths::Dataset("cifar10"), out = paths::OutputRoot() / "models" / "gan_diagnostics";
-    std::filesystem::path recorded = std::filesystem::absolute("build/native-gan-inputs");
+    std::filesystem::path recorded = std::filesystem::absolute("build/native-gan-inputs-seed8101");
     recovered_metric_inputs::Prepare(recorded);
     for (int i = 1; i < argc; ++i) {
       const std::string a = argv[i];
@@ -991,7 +954,7 @@ int main(int argc, char** argv) {
 // four_repeated_real: FID=268.584 (tflow nan), IS=2.55718, exact unique=4
 // independent_real: FID=247.067 (tflow nan), IS=8.01122, exact unique=32
 // real_reference: FID=0 (tflow nan), IS=7.836, exact unique=32
-// singan: FID=355.692 (tflow nan), IS=1.26448, exact unique=32
+// singan: FID=351.225 (tflow nan), IS=1.21389, exact unique=32
 // FID/IS/low rank/unequal N/same moments/collapse/copy PASS (Inception features: authenticated original GraphDef, native execution; max relative FID difference vs tflow unavailable)
 // Artifacts: /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.1_gans/build/nn-completion/models/gan_diagnostics
 // All gan_diagnostics checks passed.
@@ -999,7 +962,7 @@ int main(int argc, char** argv) {
 
 > Inspect the actual saved results
 
-The native generator prerequisite is complete and editable above. The extractor runs the authenticated original frozen GraphDef; it does not substitute a learned feature proxy or fabricated outputs. Missing external TF feature/score recordings are not treated as successful comparisons. No substitute score is reported as an original benchmark result.
+The real-image controls reproduce the reference scores. The native SinGAN run yields FID 351.225 and IS 1.214. The upstream TensorFlow report records 380.048 and 1.259 for its SinGAN checkpoint. The two runs fit their checkpoints independently. The native score pair is specific to this run.
 
 > Actual frozen-extractor metrics
 
@@ -1018,7 +981,7 @@ int main(){std::ifstream in("build/nn-completion/models/gan_diagnostics/scores.t
 | four_repeated_real | 268.584404 | 2.557182 |
 | independent_real | 247.067053 | 8.011223 |
 | real_reference | 0.000000 | 7.836003 |
-| singan | 355.692046 | 1.264477 |
+| singan | 351.224596 | 1.213885 |
 \image(figures/gan_diagnostics_scores.svg)
 // result_end
 

@@ -1,0 +1,122 @@
+//? Title: MoCo v1, v2 and v3 for paired crops
+//? Lang: en
+
+> MoCo v1, v2 and v3 for paired crops
+
+Momentum Contrast compares a query from an online encoder with a key
+from a slowly updated target encoder. Before every training forward,
+the target moves 5% toward the current online parameters. The target
+embeddings are detached, and Adam updates the online parameters.
+
+In the v1 and v2 examples, each query competes against a FIFO dictionary
+of keys from earlier batches. Two warm-up batches first fill the
+dictionary. Each training batch appends its target keys and drops the
+oldest rows. The v2 example adds a hidden projection layer and uses
+stronger intensity augmentation. The v3 example adds an online predictor
+and matches keys within the current batch in both view directions.
+Its loss sums the two cross-entropies and scales them by twice the
+temperature. The three losses use different denominators, so the plot
+uses a separate panel for each objective.
+
+```{cpp, results="markdown", file="figures/moco_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int batch_size = 32;
+  std::filesystem::create_directories("build");
+  auto figure = dm::graphics::RLayout::create(1, 3);
+  const auto snapshot = [](const n::ParameterStore &p) {
+    return n::from_vector(p.flatten()).to(n::DType::Float32);
+  };
+  std::print("| Version | Epoch | Held-out loss |\n|---:|---:|---:|\n");
+  for (int version = 1; version <= 3; ++version) {
+    n::ParameterStore online(49901), target(49902), predictor(49903);
+    auto queue = n::zeros({2 * batch_size, 12});
+    const auto forward = [&](const n::Tensor &views) {
+      return n::moco(online, target, predictor, views, queue, version);
+    };
+    std::mt19937 warmup(49904), training(49905), testing(49906);
+    const auto test = n::synthetic_contrastive_views(testing, batch_size, version >= 2);
+    forward(test.views);
+    target.copy_from(online);
+    if (version < 3) {
+      n::NoGradGuard guard;
+      for (int stage = 0; stage < 2; ++stage) {
+        const auto warm = n::synthetic_contrastive_views(warmup, batch_size, version >= 2);
+        queue = n::moco_enqueue(queue, forward(warm.views).forward_keys);
+      }
+    }
+
+    auto trainable = online.parameters();
+    const auto prediction_parameters = predictor.parameters();
+    trainable.insert(trainable.end(), prediction_parameters.begin(), prediction_parameters.end());
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(trainable, .008, config);
+    std::vector<double> epochs, losses;
+    const auto prefix = "build/moco_v" + std::to_string(version);
+    n::save_npz(prefix + "_initial.npz", {{"queue", queue}});
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        epochs.push_back(epoch);
+        losses.push_back(forward(test.views).loss.item());
+        std::print("| {} | {} | {:.6f} |\n", version, epoch, losses.back());
+      }
+      if (epoch == 3)
+        break;
+      for (int step = 0; step < 16; ++step) {
+        const auto batch = n::synthetic_contrastive_views(training, batch_size, version >= 2);
+        const auto source = snapshot(online), before = snapshot(target), old_queue = queue;
+        target.copy_from(online, 1. - .95);
+        const auto after = snapshot(target);
+        const auto path = forward(batch.views);
+        adam.minimize(path.loss);
+        const auto after_training = snapshot(target);
+        if (version < 3)
+          queue = n::moco_enqueue(queue, path.forward_keys);
+        if (path.key.requires_grad() || n::max(n::abs(after - after_training)).item() != 0.)
+          throw std::runtime_error("momentum encoder changed during Adam update");
+        n::save_npz(prefix + "_step" + std::to_string(16 * epoch + step) + ".npz",
+            {{"online", source}, {"before", before}, {"after", after},
+             {"target_after_training", after_training}, {"queue", old_queue},
+             {"next_queue", queue}, {"query", path.query}, {"key", path.key},
+             {"loss", path.loss}});
+      }
+    }
+
+    auto panel = dm::graphics::RPlot::create();
+    panel.lines(epochs, losses, "Held-out objective", {37, 99, 235})
+        .title("MoCo v" + std::to_string(version)).x_label("Epoch").y_label("Contrastive loss");
+    figure.add(panel);
+  }
+  figure.size(1170, 390).fit_panels().save_svg("build/moco_fit.svg");
+}
+```
+// result_begin: markdown
+| Version | Epoch | Held-out loss |
+|---:|---:|---:|
+| 1 | 0 | 3.966862 |
+| 1 | 1 | 2.690886 |
+| 1 | 2 | 2.118809 |
+| 1 | 3 | 1.944388 |
+| 2 | 0 | 3.769516 |
+| 2 | 1 | 3.054715 |
+| 2 | 2 | 2.218221 |
+| 2 | 3 | 2.101516 |
+| 3 | 0 | 3.175692 |
+| 3 | 1 | 2.436811 |
+| 3 | 2 | 1.969541 |
+| 3 | 3 | 1.580703 |
+\image(figures/moco_fit.svg)
+// result_end
+\caption(Held-out losses for MoCo v1 and v2 with queues and MoCo v3 with symmetric in-batch matching.)
+\alttext(Three separate line plots show the held-out loss by epoch for the three MoCo versions.)
+
+> References
+
+- [He et al. (2020), Momentum Contrast for Unsupervised Visual Representation Learning](https://arxiv.org/abs/1911.05722).
+- [Chen et al. (2020), Improved Baselines with Momentum Contrastive Learning](https://arxiv.org/abs/2003.04297).
+- [Chen et al. (2021), An Empirical Study of Training Self-Supervised Vision Transformers](https://arxiv.org/abs/2104.02057).

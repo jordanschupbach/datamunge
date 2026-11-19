@@ -1,0 +1,82 @@
+//? Title: Neural ODE with direct RK4 and continuous adjoint gradients
+//? Lang: en
+
+> Neural ODE with direct RK4 and continuous adjoint gradients
+
+A three-unit tanh network models the rate of a scalar state. The
+experiment learns the time-one map of a nonlinear decay process
+from 32 initial states. It fits two copies from the same parameters
+using the same batches and step sizes. Each forward solve uses 32
+fixed RK4 steps.
+
+Direct backpropagation differentiates the numerical update at each
+RK4 stage. The continuous adjoint integrates the state and the
+loss sensitivity backward, accumulating a parameter gradient along
+the path. These procedures differentiate different objects at finite
+step size. The report checks the gradient difference and how closely
+backward integration reconstructs the initial states.
+
+```{cpp, results="markdown", file="figures/neural_ode.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto truth=[](double x) {return x/std::sqrt(1.+.8*x*x);};
+  std::vector<double> x,y,test,target;
+  for(int i=0;i<32;++i) { x.push_back(-1.5+3.*i/31); y.push_back(truth(x.back())); }
+  for(int i=0;i<24;++i) { test.push_back(-1.6+3.2*(i+.5)/24); target.push_back(truth(test.back())); }
+  const auto fit_x=n::from_vector(x,{32,1}),fit_y=n::from_vector(y,{32,1});
+  const auto test_x=n::from_vector(test,{24,1}),test_y=n::from_vector(target,{24,1});
+  const std::vector<double> initial{.7,-.4,.3,.1,.2,-.1,-.2,.2,-.1,0.};
+  auto direct=n::from_vector(initial).requires_grad_(true), continuous=n::from_vector(initial);
+  const auto mse=[](const n::Tensor& p,const n::Tensor& a,const n::Tensor& b) {
+    return n::mean(n::square(n::scalar_neural_ode(a,p)-b));
+  };
+  const auto baseline=mse(direct,fit_x,fit_y).item();
+  n::BatchOrder order(32,8,73171);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto a=n::take_rows(fit_x,rows),b=n::take_rows(fit_y,rows);
+      const auto discrete=n::grad(mse(direct,a,b),{direct}).at(0);
+      const auto adjoint=n::scalar_neural_ode_adjoint(a,b,continuous);
+      direct=(direct.detach()-.25*discrete).requires_grad_(true);
+      continuous=continuous-.25*adjoint.gradient;
+      ++updates;
+    }
+  }
+  const auto loss=mse(direct,test_x,test_y);
+  const auto discrete=n::grad(loss,{direct}).at(0);
+  const auto adjoint=n::scalar_neural_ode_adjoint(test_x,test_y,direct);
+  n::NoGradGuard guard;
+  const auto a=n::scalar_neural_ode(test_x,direct), b=n::scalar_neural_ode(test_x,continuous);
+  const auto other=n::mean(n::square(b-test_y));
+  const auto difference=n::max(n::abs(discrete-adjoint.gradient)).item();
+  if (updates!=12 || !(difference<2e-6 && adjoint.reconstruction_error<2e-6))
+    throw std::runtime_error("neural ODE gradient check failed");
+  std::print("| Initial fit MSE | Held-out direct MSE | Held-out adjoint MSE | Max gradient difference |\n|---:|---:|---:|---:|\n");
+  std::print("| {:.8f} | {:.8f} | {:.8f} | {:.3g} |\n",baseline,loss.item(),other.item(),difference);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/neural_ode.npz",{{"input",n::from_vector(test)},{"target",n::from_vector(target)},
+      {"params",direct.detach()},{"adjoint_params",continuous},{"prediction",a},{"adjoint_prediction",b},
+      {"direct_gradient",discrete},{"continuous_gradient",adjoint.gradient},{"direct_loss",loss},{"adjoint_loss",other}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(test,target,"Analytic",{37,99,235})
+      .lines(test,a.to_vector<double>(),"Direct",{220,90,45})
+      .points(test,b.to_vector<double>(),"Continuous adjoint",{50,140,90},3)
+      .title("Fitted time-one flow").x_label("Initial state").y_label("Final state")
+      .size(900,510).save_svg("build/neural_ode.svg");
+}
+```
+// result_begin: markdown
+| Initial fit MSE | Held-out direct MSE | Held-out adjoint MSE | Max gradient difference |
+|---:|---:|---:|---:|
+| 0.01757545 | 0.01034082 | 0.01034082 | 3.02e-12 |
+\image(figures/neural_ode.svg)
+// result_end
+\caption(The two independently fitted gradient paths predict nearly identical time-one states.)
+
+> Reference
+
+- [Chen et al., Neural Ordinary Differential Equations](https://arxiv.org/abs/1806.07366).

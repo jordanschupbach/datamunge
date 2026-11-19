@@ -1,0 +1,146 @@
+//? Title: Matching, prototypical and relation networks on Omniglot
+//? Lang: en
+
+> Few-shot classification on Omniglot
+
+Each episode draws five characters from one alphabet, two labeled
+drawings per character, and one separate query per character.
+The support rows are shuffled. The encoder learns on the background
+split and evaluates on the official evaluation split.
+
+Matching networks attend to individual support drawings using scaled
+cosine similarity and sum the attention by class. Prototypical
+networks classify by distance to the class mean. Relation networks
+learn a separate nonlinear score for each query and class sum.
+All three models fit the same episodes with independently trained
+encoders. The plot compares their held-out query accuracies.
+
+Prepare the archive with `python3 scripts/prepare_omniglot.py` in the
+TensorFlow examples checkout. Set `DATAMUNGE_OMNIGLOT_DIR` to its
+prepared dataset directory for another checkout location.
+
+```{cpp, results="markdown", file="figures/omniglot_episodes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto* configured=std::getenv("DATAMUNGE_OMNIGLOT_DIR");
+  const auto* home=std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_OMNIGLOT_DIR");
+  const auto root=configured ? std::filesystem::path(configured) :
+      std::filesystem::path(home)/"projects/tflow_examples/output/datasets/omniglot";
+  const auto load=[&](const char* split,int classes) {
+    const auto input=n::load_npz((root/(std::string(split)+".npz")).string());
+    const std::map<std::string,n::Tensor> a(input.begin(),input.end());
+    const auto image=a.at("images");
+    const auto labels=a.at("labels").to_vector<int>(), alphabet=a.at("alphabet").to_vector<int>();
+    if (image.shape()!=n::Shape{20*classes,28,28,1} ||
+        labels.size()!=20*classes || alphabet.size()!=labels.size())
+      throw std::runtime_error("Invalid Omniglot archive");
+    std::vector<std::vector<int>> groups(classes);
+    for (int c=0;c<classes;++c) {
+      const auto id=alphabet[c*20];
+      for (int j=0;j<20;++j)
+        if (labels[c*20+j]!=c || alphabet[c*20+j]!=id)
+          throw std::runtime_error("Expected contiguous Omniglot drawings");
+      groups.at(id).push_back(c);
+    }
+    while (!groups.empty() && groups.back().empty()) groups.pop_back();
+    if (groups.empty() || std::ranges::any_of(groups,[](const auto& group){return group.size()<5;}))
+      throw std::runtime_error("Expected five characters per alphabet");
+    return std::pair{image,groups};
+  };
+  const auto [fit,background]=load("background",964);
+  const auto [test,evaluation]=load("evaluation",659);
+  const auto draw=[](const auto& groups,std::mt19937& rng) {
+    auto classes=groups[std::uniform_int_distribution<std::size_t>(0,groups.size()-1)(rng)];
+    std::shuffle(classes.begin(),classes.end(),rng);
+    std::array<int,20> drawings;
+    std::iota(drawings.begin(),drawings.end(),0);
+    std::vector<std::pair<int,int>> support;
+    std::vector<std::int64_t> query,rows;
+    std::vector<int> labels;
+    for (int c=0;c<5;++c) {
+      std::shuffle(drawings.begin(),drawings.end(),rng);
+      const int off=20*classes[c];
+      query.push_back(off+drawings[2]);
+      for (int j=0;j<2;++j) support.emplace_back(off+drawings[j],c);
+    }
+    std::shuffle(support.begin(),support.end(),rng);
+    for (const auto& [row,label]:support) { rows.push_back(row); labels.push_back(label); }
+    rows.insert(rows.end(),query.begin(),query.end());
+    return std::pair{rows,n::from_vector(labels)};
+  };
+  const auto truth=n::arange(0,5,1,n::DType::Int32);
+  const auto onehot=n::one_hot(truth,5);
+  auto plot=dm::graphics::RPlot::create();
+  std::filesystem::create_directories("build");
+  constexpr std::array methods{n::EpisodeMethod::Matching,n::EpisodeMethod::Prototype,n::EpisodeMethod::Relation};
+  constexpr std::array names{"matching_network","prototypical_network","relation_network"};
+  std::print("| Method | Query accuracy | Mean loss |\n|---|---:|---:|\n");
+  for (int m=0;m<3;++m) {
+    const auto method=methods[m];
+    n::ParameterStore model(26951);
+    const auto forward=[&](const auto& image,const auto& rows,const auto& labels) {
+      return n::episodic_classify(model,n::take_rows(image,rows).to(n::DType::Float32)/255.,labels,5,method);
+    };
+    const auto loss=[&](const auto& out) {
+      return method==n::EpisodeMethod::Relation ? n::mean(n::square(out.probability-onehot)) :
+          -n::mean(n::sum(onehot*n::log(n::maximum(out.probability,n::full({},1e-12))),{1}));
+    };
+    std::mt19937 train(26952),held(26953),warm=train;
+    const auto [rows,labels]=draw(background,warm);
+    (void)forward(fit,rows,labels);
+    n::Optimizer optimizer(model,.002,{.kind=n::OptimizerKind::Adam});
+    for (int i=0;i<384;++i) {
+      const auto [ids,y]=draw(background,train);
+      optimizer.minimize(loss(forward(fit,ids,y)));
+    }
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> ids,labels_out,embedding,probability,scores,prototype,losses;
+    int correct=0;
+    for (int i=0;i<96;++i) {
+      const auto [rows,y]=draw(evaluation,held);
+      const auto out=forward(test,rows,y);
+      ids.push_back(n::from_vector(rows));
+      labels_out.push_back(y);
+      embedding.push_back(out.embedding);
+      probability.push_back(out.probability);
+      scores.push_back(out.scores);
+      losses.push_back(loss(out));
+      if (out.prototype.defined()) prototype.push_back(out.prototype);
+      correct+=n::sum(n::equal(n::argmax(out.probability),truth).to(n::DType::Int32)).item();
+    }
+    const auto mean=n::mean(n::stack(losses)).item();
+    if (!std::isfinite(mean)) return 1;
+    std::print("| {} | {}/480 | {:.5f} |\n",names[m],correct,mean);
+    plot.points({double(m)},{correct/480.},names[m],{37,99,235});
+    n::NamedTensors saved{{"rows",n::stack(ids)},{"support_labels",n::stack(labels_out)},
+        {"embedding",n::stack(embedding)},{"probability",n::stack(probability)},{"loss",n::stack(losses)},
+        {m==0?"weights":"scores",n::stack(scores)}};
+    if (m!=0) saved.emplace_back("prototype",n::stack(prototype));
+    if (m==2)
+      for (const auto& name:model.names()) {
+        if (!name.starts_with("relation_")) continue;
+        auto key=name;
+        std::replace(key.begin(),key.end(),'/','_');
+        saved.emplace_back(key,model.at(name));
+      }
+    n::save_npz(std::string("build/")+names[m]+".npz",saved);
+  }
+  plot.title("Five-way two-shot Omniglot classification").x_label("Method").y_label("Accuracy").y_limits(0,1);
+  plot.size(900,430).save_svg("build/omniglot_episodes.svg");
+}
+```
+// result_begin: markdown
+| Method | Query accuracy | Mean loss |
+|---|---:|---:|
+| matching_network | 346/480 | 0.77938 |
+| prototypical_network | 353/480 | 0.78450 |
+| relation_network | 187/480 | 0.14941 |
+\image(figures/omniglot_episodes.svg)
+// result_end
+
+Matching and prototypical networks use multiclass log loss. The
+relation network uses squared error on independent class scores,
+so query accuracy is the common metric for this comparison.

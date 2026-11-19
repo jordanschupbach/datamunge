@@ -1,0 +1,113 @@
+//? Title: Regression with a linear spline-edge network
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit the upstream two-layer Kolmogorov–Arnold network with nine linear
+spline coefficients per edge. Check that the basis sums to one in each
+layer and evaluate the fitted network on 128 held-out inputs.
+)
+
+> Put the learned functions on edges
+
+Each input-to-output edge evaluates a univariate piecewise linear
+function, represented as a sum of hat basis functions. Output nodes
+sum their incoming edge responses. The hat weights interpolate between
+neighboring knots and sum to one, including at the endpoints. Inputs
+outside the grid use the nearest endpoint value.
+
+A single layer produces sums of univariate functions. Composing two
+layers allows interactions because the second layer applies nonlinear
+functions to sums from the first. This example uses pure linear splines
+with fixed grids of radii 1 and 2. Its target combines a sine of a
+linear combination of the inputs with a product term.
+
+> Fit and check the upstream fixture
+
+```{cpp, results="markdown", file="figures/kolmogorov_arnold_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+
+std::pair<nn::Tensor, nn::Tensor> draw(int rows, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> sample(-1., 1.);
+    std::vector<double> x(rows * 2), y(rows);
+    for (int i = 0; i < rows; ++i) {
+        const double a = sample(rng), b = sample(rng);
+        x[2 * i] = a;
+        x[2 * i + 1] = b;
+        y[i] = .65 * std::sin(1.9 * a + .7 * b) + .35 * a * b;
+    }
+    return {nn::from_vector(x, {rows, 2}), nn::from_vector(y, {rows, 1})};
+}
+
+int main() {
+    constexpr int knots = 9, hidden = 4, train = 384;
+    nn::set_num_threads(2);
+    std::mt19937 rng(43185);
+    std::uniform_real_distribution<double> noise(-.08, .08);
+    std::vector<double> first_init(2 * knots * hidden), second_init(hidden * knots);
+    for (int j = 0; j < 2 * knots; ++j)
+        for (int k = 0; k < hidden; ++k) {
+            const double knot = -1. + .25 * (j % knots);
+            const double scale = j < knots ? .35 + .18 * k : .62 - .23 * k;
+            first_init[j * hidden + k] = scale * knot + noise(rng);
+        }
+    for (int j = 0; j < hidden * knots; ++j)
+        second_init[j] = .12 * (-2. + .5 * (j % knots)) + noise(rng);
+    const auto first = nn::from_vector(first_init, {2 * knots, hidden}).requires_grad_();
+    const auto second = nn::from_vector(second_init, {hidden * knots, 1}).requires_grad_();
+    const auto predict = [&](const auto& x) {
+        auto a = nn::spline_edge_layer(x, first, knots, 1.);
+        auto b = nn::spline_edge_layer(a.output, second, knots, 2.);
+        return std::pair{a, b};
+    };
+    const auto mse = [](const auto& a, const auto& b) { return nn::mean(nn::square(a - b)); };
+    const auto [fit_x, fit_y] = draw(train, 43186);
+    const auto [test_x, test_y] = draw(128, 43187);
+    const double before = mse(predict(test_x).second.output, test_y).item();
+    const std::vector<nn::Tensor> weights{first, second};
+    nn::Optimizer sgd(weights, .16);
+    for (int epoch = 0; epoch < 3; ++epoch)
+        for (int i = 0; i < train; i += 32) {
+            const auto batch = nn::slice_axis(fit_x, 0, i, i + 32);
+            const auto loss = mse(predict(batch).second.output, nn::slice_axis(fit_y, 0, i, i + 32));
+            sgd.step(nn::grad(loss, weights));
+        }
+    const nn::NoGradGuard guard;
+    const auto [a, b] = predict(test_x);
+    const double after = mse(b.output, test_y).item();
+    const auto basis_error = [](const auto& basis) {
+        return nn::max(nn::abs(nn::sum(basis, {-1}) - 1.)).item();
+    };
+    const double error = std::max(basis_error(a.basis), basis_error(b.basis));
+    if (!(after < .8 * before) || error > 1e-12)
+        throw std::runtime_error("Spline fixture failed the upstream controls");
+
+    const auto expected = test_y.to_vector<double>();
+    const auto predicted = b.output.to_vector<double>();
+    std::filesystem::create_directories("build");
+    namespace g = dm::graphics;
+    g::RPlot::create().title("Spline network fit on held-out inputs")
+        .x_label("True response").y_label("Predicted response")
+        .points(expected, predicted, "Held-out inputs", {27, 109, 164})
+        .lines({-1., 1.}, {-1., 1.}, "Identity", {95, 104, 110})
+        .save_svg("build/kolmogorov_arnold_network.svg");
+    nn::save_npz("build/kolmogorov_arnold_network.npz", {{"first", first}, {"second", second},
+        {"prediction", b.output}, {"input_basis", a.basis}, {"hidden_basis", b.basis}});
+    std::print("Held-out MSE {:.8f} to {:.8f}. Maximum basis sum error {:.2e}.\n", before, after, error);
+}
+```
+// result_begin: markdown
+Held-out MSE 0.12857213 to 0.00961294. Maximum basis sum error 0.00e+00.
+\image(figures/kolmogorov_arnold_network.svg)
+// result_end
+
+The fitted model improves on its initialization in three epochs. The
+scatter shows the remaining prediction error on the nonlinear target.
+The basis check tests interpolation weights separately from fit quality.
+
+> Reference
+
+- [Liu et al., KAN: Kolmogorov-Arnold Networks|https://arxiv.org/abs/2404.19756].

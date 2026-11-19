@@ -1,0 +1,130 @@
+//? Title: Particle graph network with antisymmetric forces
+//? Lang: en
+
+> Particle graph network with antisymmetric forces
+
+Five particles exchange messages on a complete graph. A shared neural
+network maps squared distance to a scalar force strength, which
+multiplies the relative displacement. Reversing the particle order
+changes the sign of the displacement and preserves its squared
+length. Each pair contributes equal and opposite forces, so the
+net internal force is zero up to floating-point error.
+
+The network learns accelerations from 768 random configurations with
+nonlinear spring forces. Thirty-two held-out configurations start at
+rest. Semi-implicit Euler updates their velocities before their
+positions, using either the fitted accelerations or the reference
+force law. The report checks the net force and compares positions
+after 40 steps.
+
+```{cpp, results="markdown", file="figures/particle_gnn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n=dm::nn;
+using State=std::array<float,10>;
+
+State acceleration(const State& x) {
+  State a{};
+  for(int i=0;i<5;++i)
+    for(int j=i+1;j<5;++j) {
+      const double dx=x[2*j]-x[2*i], dy=x[2*j+1]-x[2*i+1];
+      const auto scale=.24+.12*(dx*dx+dy*dy);
+      a[2*i]+=scale*dx; a[2*i+1]+=scale*dy;
+      a[2*j]-=scale*dx; a[2*j+1]-=scale*dy;
+    }
+  return a;
+}
+
+std::pair<n::Tensor,n::Tensor> sample(int rows,unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> position(-.8f,.8f);
+  std::vector<float> input,target;
+  for(int i=0;i<rows;++i) {
+    State x;
+    for(auto& value:x) value=position(rng);
+    const auto a=acceleration(x);
+    input.insert(input.end(),x.begin(),x.end());
+    target.insert(target.end(),a.begin(),a.end());
+  }
+  return {n::from_vector(input,{rows,5,2}),n::from_vector(target,{rows,5,2})};
+}
+
+int main() {
+  const auto [fit_x,fit_y]=sample(768,17161);
+  const auto [test_x,test_y]=sample(32,17162);
+  n::ParameterStore model(41380);
+  const auto predict=[&](const n::Tensor& positions) { return n::particle_pair_acceleration(model,positions); };
+  const auto loss=[&](const n::Tensor& x,const n::Tensor& target) {
+    return n::mean(n::square(predict(x)-target));
+  };
+  const auto initial=loss(test_x,test_y).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(768,16,17163);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x,rows),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+  }
+  n::NoGradGuard guard;
+  constexpr float dt=.04f;
+  auto x=test_x.to_vector<float>(), ref=x;
+  std::vector<float> velocity(x.size()), ref_v(x.size()), path, oracle;
+  double net_force=0;
+  for(int t=0;t<=40;++t) {
+    path.insert(path.end(),x.begin(),x.end());
+    oracle.insert(oracle.end(),ref.begin(),ref.end());
+    if(t==40) break;
+    const auto force=predict(n::from_vector(x,{32,5,2})).to_vector<float>();
+    for(int row=0;row<32;++row) {
+      State state;
+      std::copy_n(ref.begin()+row*10,10,state.begin());
+      const auto truth=acceleration(state);
+      std::array<double,2> sum{};
+      for(int j=0;j<10;++j) {
+        const auto i=row*10+j;
+        sum[j%2]+=force[i];
+        velocity[i]+=dt*force[i];
+        ref_v[i]+=dt*truth[j];
+        x[i]+=dt*velocity[i];
+        ref[i]+=dt*ref_v[i];
+      }
+      net_force=std::max({net_force,std::abs(sum[0]),std::abs(sum[1])});
+    }
+  }
+  const auto mse=loss(test_x,test_y);
+  const auto end=n::from_vector(x)-n::from_vector(ref);
+  const auto rmse=n::sqrt(n::mean(n::square(end))).item();
+  if (updates!=144 || !(net_force<1e-5 && mse.item()<initial && std::isfinite(rmse)))
+    throw std::runtime_error("particle fit or force conservation check failed");
+  std::print("| Updates | Acceleration RMSE | Endpoint RMSE | Maximum net force component |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.6f} | {:.6f} | {:.3g} |\n",updates,std::sqrt(mse.item()),rmse,net_force);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/particle_gnn.npz",{{"initial",test_x.reshape({32,10,1})},
+      {"target",test_y.reshape({32,10})},{"predicted",predict(test_x).reshape({32,10})},
+      {"paths",n::from_vector(path,{41,32,10})},{"oracle",n::from_vector(oracle,{41,32,10})},{"loss",mse}});
+  auto plot=dm::graphics::RPlot::create();
+  for(int particle=0;particle<5;++particle) {
+    std::vector<double> ax,ay,bx,by;
+    for(int t=0;t<=40;++t) {
+      const auto i=t*320+2*particle;
+      ax.push_back(path[i]); ay.push_back(path[i+1]);
+      bx.push_back(oracle[i]); by.push_back(oracle[i+1]);
+    }
+    plot.lines(bx,by,particle?"":"Reference",{37,99,235})
+        .points(ax,ay,particle?"":"Fitted",{220,90,45},2);
+  }
+  plot.title("Five particle paths in one held-out configuration")
+      .x_label("Horizontal position").y_label("Vertical position")
+      .size(900,560).save_svg("build/particle_gnn.svg");
+}
+```
+// result_begin: markdown
+| Updates | Acceleration RMSE | Endpoint RMSE | Maximum net force component |
+|---:|---:|---:|---:|
+| 144 | 0.031758 | 0.025859 | 1.79e-07 |
+\image(figures/particle_gnn.svg)
+// result_end
+\caption(Predicted and reference paths of each particle in the same held-out system.)

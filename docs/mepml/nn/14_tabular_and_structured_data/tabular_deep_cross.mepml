@@ -1,0 +1,119 @@
+//? Title: Deep and cross network for tabular regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a response with cubic and pairwise interactions using two explicit
+cross layers and a parallel nonlinear tower.
+)
+\toc
+
+A full-matrix cross layer projects the current state, multiplies each
+projected coordinate by the corresponding original feature, and adds the
+result back to the current state. Each crossing can raise the polynomial
+degree by one, so two layers can represent a cubic interaction. A parallel
+tanh tower helps approximate a sinusoidal marginal effect. A linear head
+combines the two representations.
+
+The simulator uses five independent uniform features. The fit uses 1,536
+rows and three epochs. The scatter and residual plots use 512 separately
+simulated rows. The native model uses Datamunge's parameter initialization.
+
+```{cpp, results="markdown", file="figures/tabular_deep_cross_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+
+std::pair<n::Tensor,n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f,1.f);
+  std::vector<float> x(count * 5), y(count);
+  for (int i = 0; i < count; ++i) {
+    auto* row = x.data() + i * 5;
+    for (int j = 0; j < 5; ++j) row[j] = uniform(rng);
+    y[i] = 1.8f * row[0] * row[1] * row[2] + .7f * row[1] * row[3] + .6f * std::sin(3.f * row[4]);
+  }
+  return {n::from_vector(x, {count,5}), n::from_vector(y, {count,1})};
+}
+
+int main() {
+  const auto [x,y] = simulate(1536,18301);
+  const auto [test, observed] = simulate(512,18302);
+  n::ParameterStore parameters(41380);
+  const auto forward = [&](const n::Tensor& input) {
+    const auto c1 = n::cross_layer(parameters, "cross1", input, input);
+    const auto c2 = n::cross_layer(parameters, "cross2", input, c1);
+    const auto h = n::dense(parameters, "deep1", input, 16, n::Activation::Tanh);
+    const auto deep = n::dense(parameters, "deep2", h, 16, n::Activation::Tanh);
+    const auto prediction = n::dense(parameters, "head", n::concat({c2,deep},1), 1);
+    return std::array{prediction,c1,c2,deep};
+  };
+  double initial;
+  {
+    n::NoGradGuard no_grad;
+    initial = n::sqrt(n::mean(n::square(forward(test)[0]-observed))).item();
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(1536, 32, 18303);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids = order.next(); !ids.empty(); ids = order.next()) {
+      const auto prediction = forward(n::take_rows(x,ids))[0];
+      optimizer.minimize(n::mean(n::square(prediction - n::take_rows(y,ids))));
+    }
+  }
+
+  n::NoGradGuard no_grad;
+  const auto [prediction,c1,c2,deep] = forward(test);
+  const auto residual = observed - prediction;
+  const auto loss = n::mean(n::square(residual));
+  const auto rmse = n::sqrt(loss).item();
+  if (optimizer.iterations() != 144 || !std::isfinite(rmse) || rmse >= initial)
+    throw std::runtime_error("cross network fit did not improve");
+  const std::string folder = "build/tabular_deep_cross/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  parameters.save(folder + "weights.npz");
+  n::save_npz(folder + "predictions.npz",
+      {{"x", test.reshape({512,5,1})}, {"y", observed}, {"prediction", prediction},
+       {"cross1_state", c1}, {"cross2_state", c2}, {"deep_state", deep}, {"loss", loss}});
+  std::println("| Held-out RMSE | Value |\n| --- | ---: |\n| Before training | {:.5f} |\n| After training | {:.5f} |",
+               initial, rmse);
+  const double minimum = n::min(observed).item(), maximum = n::max(observed).item();
+  const auto estimates = prediction.to_vector<double>();
+  auto fit = dm::graphics::RPlot::create();
+  fit.points(observed.to_vector<double>(), estimates, "Held-out rows", {37,99,235}, 3)
+     .lines({minimum,maximum}, {minimum,maximum}, "Perfect prediction", {100,116,139})
+     .title("Deep and cross regression").x_label("Observed response").y_label("Predicted response")
+     .save_svg(folder + "fit.svg");
+  auto errors = dm::graphics::RPlot::create();
+  errors.points(estimates, residual.to_vector<double>(), "Held-out residuals", {37,99,235}, 3)
+        .lines({n::min(prediction).item(), n::max(prediction).item()}, {0.,0.},
+               "Zero residual", {100,116,139})
+        .title("Residuals against fitted response").x_label("Predicted response").y_label("Residual")
+        .save_svg(folder + "residual.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/tabular_deep_cross_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder + "residual.svg", "figures/tabular_deep_cross_residual.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Held-out RMSE | Value |
+| --- | ---: |
+| Before training | 0.69728 |
+| After training | 0.15565 |
+\image(figures/tabular_deep_cross_fit.svg)
+// result_end
+
+\image(figures/tabular_deep_cross_residual.svg)
+
+> Reference
+
+Wang et al. (2021).
+[DCN V2|https://arxiv.org/abs/2008.13535].

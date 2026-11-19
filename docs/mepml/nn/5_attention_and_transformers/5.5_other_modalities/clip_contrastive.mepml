@@ -1,0 +1,152 @@
+//? Title: CLIP-style image and text retrieval
+//? Lang: en
+
+> CLIP-style image and text retrieval
+
+A convolutional image encoder and a causal text encoder project images
+and captions into the same space. Normalize their embeddings and scale
+the cosine scores by a learned temperature. Minibatches contain one image
+for each color and shape combination. The symmetric contrastive loss
+scores the matching image for each caption and the matching caption for
+each image.
+
+After training, reload the encoders and classify independently generated
+images by comparing them with a canonical text prompt bank. There is no
+additional classifier fit. The classes occur during contrastive training;
+the zero-shot step uses only the prompts to define the classifier.
+
+[Radford et al. (2021)|https://proceedings.mlr.press/v139/radford21a.html]
+
+```{cpp, results="markdown", file="figures/clip_contrastive.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int side=16, pairs=16, width=16, words=4;
+  struct Batch { n::Tensor pixels, text, concepts; };
+  const auto prompt=[](int id) { return std::array{0,1+id/4,5+id%4,9}; };
+  const auto episode=[&](std::mt19937& rng) {
+    std::array<int,pairs> order{};
+    std::iota(order.begin(),order.end(),0);
+    std::shuffle(order.begin(),order.end(),rng);
+    std::normal_distribution<float> noise(0,.03f);
+    constexpr float colors[4][3]={{.9f,.12f,.14f},{.1f,.9f,.18f},{.12f,.2f,.9f},{.9f,.8f,.12f}};
+    std::vector<float> pixels;
+    std::vector<int> captions;
+    for (const int id:order) {
+      const int color=id/4, shape=id%4;
+      const float radius=3.5f+.25f*(rng()%7);
+      const float cx=6.f+.5f*(rng()%7), cy=6.f+.5f*(rng()%7);
+      const auto p=prompt(id);
+      captions.insert(captions.end(),p.begin(),p.end());
+      for (int y=0;y<side;++y) {
+        for (int x=0;x<side;++x) {
+          const float dx=(x-cx)/radius, dy=(y-cy)/radius;
+          bool inside;
+          if (shape==0) inside=dx*dx+dy*dy<=1;
+          else if (shape==1) inside=std::max(std::abs(dx),std::abs(dy))<=.85f;
+          else if (shape==2) inside=std::abs(dx)+std::abs(dy)<=1.2f;
+          else inside=std::abs(dx)<=.55f && std::abs(dy)<=1.2f;
+          for (int c=0;c<3;++c) pixels.push_back(std::clamp((inside?colors[color][c]:.04f)+noise(rng),0.f,1.f));
+        }
+      }
+    }
+    return Batch{n::from_vector(pixels,{pairs,side,side,3}),n::from_vector(captions,{pairs,words}),
+                 n::from_vector(std::vector<int>(order.begin(),order.end()))};
+  };
+  const auto normalize=[](const n::Tensor& x) {
+    return x/n::sqrt(n::maximum(n::sum(n::square(x),{1},true),n::from_scalar(1e-12f)));
+  };
+  const auto encode=[&](n::ParameterStore& p,const n::Tensor& pixels,const n::Tensor& ids) {
+    const auto conv=[&](const n::Tensor& x,const std::string& name,int filters) {
+      const auto w=p.get(name+"/W",{3,3,x.size(3),filters},n::init::lecun_uniform());
+      const auto b=p.get(name+"/b",{filters},n::init::zeros());
+      return n::gelu(n::conv2d(x,w)+b,true);
+    };
+    const auto first=n::max_pool2d(conv(pixels,"image/conv1",12),2,2);
+    const auto pooled=n::avg_pool2d(conv(first,"image/conv2",24),2,2);
+    const auto image=normalize(n::dense(p,"image/projection",pooled.reshape({-1,4*4*24}),width));
+    const auto table=p.get("text/embedding",{10,width},n::init::normal(.15));
+    const auto x=n::gather(table,ids)+p.get("text/position",{1,words,width},n::init::normal(.03));
+    const auto h=n::layer_norm(p,"text/ln1",x);
+    n::MultiHeadOptions opts;
+    opts.causal=true;
+    const auto residual=x+n::multi_head_attention(p,"text/attention",h,h,2,opts).output;
+    const auto hidden=n::dense(p,"text/up",n::layer_norm(p,"text/ln2",residual),2*width,n::Activation::GeluTanh);
+    const auto y=residual+n::dense(p,"text/down",hidden,width);
+    const auto eos=n::slice(y,{0,words-1,0},{ids.size(0),1,width}).reshape({-1,width});
+    const auto text=normalize(n::dense(p,"text/projection",n::layer_norm(p,"text/final",eos),width));
+    const auto log_scale=p.get("log_scale",{},n::init::constant(std::log(1.f/.07f)));
+    const auto scale=n::exp(n::minimum(log_scale,n::from_scalar(std::log(100.f))));
+    return std::array{image,text,scale*n::matmul(image,text,false,true),scale};
+  };
+  const auto loss=[](const n::Tensor& score) {
+    const auto labels=n::eye(pairs);
+    return .5*(n::softmax_cross_entropy(score,labels)+n::softmax_cross_entropy(score.transpose(),labels));
+  };
+  n::ParameterStore weights(42901);
+  std::mt19937 train(42902), valid_rng(42903), test_rng(42904), serve_rng(42905);
+  std::vector<Batch> fit;
+  for (int i=0;i<48;++i) fit.push_back(episode(train));
+  const auto valid=episode(valid_rng);
+  const auto evaluate=[&] {
+    const n::NoGradGuard no_grad;
+    return loss(encode(weights,valid.pixels,valid.text)[2]).item();
+  };
+  std::vector<double> history{evaluate()};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(weights,.002,config);
+  for (int epoch=0;epoch<3;++epoch) {
+    std::shuffle(fit.begin(),fit.end(),train);
+    for (const auto& batch:fit) optimizer.minimize(loss(encode(weights,batch.pixels,batch.text)[2]));
+    history.push_back(evaluate());
+  }
+  if (!(history.back()<history.front()) || optimizer.iterations()!=144) throw std::runtime_error("CLIP fit failed");
+  std::filesystem::create_directories("build/clip");
+  weights.save("build/clip/weights.npz");
+  const n::NoGradGuard no_grad;
+  int i2t=0,t2i=0,zero_shot=0;
+  for (int e=0;e<8;++e) {
+    const auto batch=episode(test_rng);
+    const auto [image,text,scores,scale]=encode(weights,batch.pixels,batch.text);
+    const auto captions=n::argmax(scores,1).to_vector<int>();
+    const auto pictures=n::argmax(scores,0).to_vector<int>();
+    for (int i=0;i<pairs;++i) { i2t+=captions[i]==i; t2i+=pictures[i]==i; }
+    n::save_npz(std::format("build/clip/episode{}.npz",e),{{"pixels",batch.pixels},{"words",batch.text},
+        {"concept",batch.concepts},{"image",image},{"text",text},{"scores",scores},{"loss",loss(scores)},{"scale",scale}});
+  }
+  std::vector<int> bank;
+  for (int i=0;i<pairs;++i) {
+    const auto p=prompt(i);
+    bank.insert(bank.end(),p.begin(),p.end());
+  }
+  const auto prompts=n::from_vector(bank,{pairs,words});
+  n::ParameterStore frozen(42901);
+  encode(frozen,valid.pixels,prompts);
+  frozen.load("build/clip/weights.npz");
+  for (int e=0;e<8;++e) {
+    const auto batch=episode(serve_rng);
+    const auto [image,text,scores,scale]=encode(frozen,batch.pixels,prompts);
+    if (n::max(n::abs(scores-encode(frozen,batch.pixels,prompts)[2])).item()!=0) {
+      throw std::runtime_error("Frozen predictions changed");
+    }
+    const auto predicted=n::argmax(scores,1);
+    const auto guess=predicted.to_vector<int>(), truth=batch.concepts.to_vector<int>();
+    for (int i=0;i<pairs;++i) zero_shot+=guess[i]==truth[i];
+    n::save_npz(std::format("build/clip/serve{}.npz",e),{{"prompts",prompts},{"concept",batch.concepts},
+        {"image",image},{"text",text},{"scores",scores},{"scale",scale},{"predicted",predicted}});
+  }
+  std::print("Validation NLL {:.6f} to {:.6f}. Image-to-text {}/128, text-to-image {}/128, "
+             "frozen prompt classification {}/128.\n",history.front(),history.back(),i2t,t2i,zero_shot);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Validation contrastive NLL",{37,99,235})
+      .points({0,1,2,3},history,"Epoch boundaries",{37,99,235})
+      .title("Image and text contrastive training").x_label("Epoch").y_label("Negative log-likelihood")
+      .size(880,425).save_svg("build/clip_contrastive.svg");
+}
+```
+// result_begin: markdown
+Validation NLL 3.789672 to 0.256267. Image-to-text 112/128, text-to-image 119/128, frozen prompt classification 114/128.
+\image(figures/clip_contrastive.svg)
+// result_end

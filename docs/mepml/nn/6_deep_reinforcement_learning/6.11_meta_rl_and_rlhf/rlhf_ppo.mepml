@@ -1,0 +1,163 @@
+//? Title: Token-level PPO with a learned preference reward
+//? Lang: en
+
+> Token-level PPO with a learned preference reward
+
+A logistic reward model learns which of two synthetic responses is
+preferred. It uses the same noun, verb, grammatical pattern and exact
+match features as the [bigram fixture|preference_bigram.mepml]. After
+fitting, its weights are fixed for policy training.
+
+The policy starts from the smoothed reference and samples two-token
+completions. Both tokens receive the terminal completion score as their
+value target. PPO uses the difference between that score and the
+collection-time value estimate as its advantage. The objective also
+penalizes the exact categorical KL from the current policy to the
+frozen reference at each sampled state.
+
+The plot shows the exact probability of the requested completion,
+averaged over both prompts. Enumerating all completions also gives the
+expected learned reward independently of rollout sampling.
+
+```{cpp, results="markdown", file="figures/rlhf_ppo.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto features=[](int prompt,int a,int b) {
+    return std::array{float(a==prompt),float(b==2+prompt),float(a<2 && b>=2),
+                      float(a==prompt && b==2+prompt)};
+  };
+  std::mt19937 rng(47003);
+  const auto uniform=[&]{return float((rng()+.5)/4294967296.);};
+  std::vector<float> counts(40);
+  for (int prompt=0;prompt<2;++prompt) {
+    for (int i=0;i<16;++i) {
+      const int first=i%2,second=2+(i/2)%2;
+      ++counts[4*(5*prompt+4)+first];
+      ++counts[4*(5*prompt+first)+second];
+    }
+  }
+  const auto reference=r::smoothed_bigram_logp(n::from_vector(counts,{10,4}));
+  std::vector<float> differences,labels,draws;
+  constexpr std::array oracle{1.2f,1.f,.4f,.7f};
+  for (int i=0;i<512;++i) {
+    const int a=rng()%4,b=rng()%4,c=rng()%4,d=rng()%4;
+    const auto left=features(i%2,a,b),right=features(i%2,c,d);
+    float score=0;
+    for (int j=0;j<4;++j) {
+      differences.push_back(left[j]-right[j]);
+      score+=oracle[j]*differences.back();
+    }
+    const float draw=uniform();
+    draws.push_back(draw);
+    labels.push_back(draw<1.f/(1.f+std::exp(-score)));
+  }
+  const auto pairs=n::from_vector(differences,{512,4}),label=n::from_vector(labels,{512,1});
+  n::ParameterStore reward_params(47001);
+  const auto weights=reward_params.get("weight",{4,1},n::init::zeros());
+  n::Optimizer reward_optimizer(reward_params,.08,{.kind=n::OptimizerKind::Adam});
+  const auto reward_loss=[&](const auto& x,const auto& y) {
+    const auto score=n::matmul(x,weights);
+    return n::mean(n::softplus(score)-y*score);
+  };
+  for (int epoch=0;epoch<3;++epoch) {
+    for (int i=0;i<512;i+=32) {
+      reward_optimizer.step(n::grad(reward_loss(n::slice(pairs,{i,0},{32,4}),
+          n::slice(label,{i,0},{32,1})),{weights}));
+    }
+  }
+  const auto fitted=weights.to_vector<float>();
+  const auto score=[&](int prompt,int a,int b) {
+    const auto x=features(prompt,a,b);
+    return std::inner_product(x.begin(),x.end(),fitted.begin(),0.f);
+  };
+  std::filesystem::create_directories("build/rlhf_ppo");
+  n::save_npz("build/rlhf_ppo/reward.npz",{{"pairs",pairs},{"labels",label},
+      {"draws",n::from_vector(draws)},{"weights",weights},{"loss",reward_loss(pairs,label)},{"reference",reference}});
+  n::ParameterStore policy(47002);
+  policy.set("logits",reference.clone());
+  const auto logits=policy.at("logits");
+  const auto value=policy.get("value",{10,1},n::init::zeros());
+  n::Optimizer optimizer(policy,.09,{.kind=n::OptimizerKind::Adam});
+  std::vector<double> history;
+  const auto evaluate=[&](int phase,const n::Tensor& table) {
+    const auto lp=table.to_vector<float>();
+    double reward=0,desired=0;
+    for (int prompt=0;prompt<2;++prompt) {
+      for (int a=0;a<4;++a) {
+        for (int b=0;b<4;++b) {
+          const double p=.5*std::exp(lp[4*(5*prompt+4)+a]+lp[4*(5*prompt+a)+b]);
+          reward+=p*score(prompt,a,b);
+          if (a==prompt && b==prompt+2) desired+=p;
+        }
+      }
+    }
+    history.push_back(desired);
+    std::print("| {} | {:.6f} | {:.6f} |\n",phase,reward,desired);
+  };
+  std::print("| PPO phase | Expected learned reward | Requested completion probability |\n|---:|---:|---:|\n");
+  evaluate(0,reference);
+  for (int phase=1;phase<=3;++phase) {
+    const auto before=n::log_softmax(logits.detach(),-1);
+    const auto baseline=value.detach().clone();
+    const auto lp=before.to_vector<float>(),v=baseline.to_vector<float>();
+    std::vector<int> states,tokens;
+    std::vector<float> uniforms,old,advantage,returns;
+    for (int i=0;i<256;++i) {
+      const int prompt=i%2;
+      int previous=4;
+      const auto start=states.size();
+      for (int t=0;t<2;++t) {
+        const int id=5*prompt+previous;
+        const float draw=uniform();
+        int token=0;
+        float cumulative=std::exp(lp[id*4]);
+        while (draw>=cumulative && token<3) cumulative+=std::exp(lp[id*4+(++token)]);
+        states.push_back(id);
+        tokens.push_back(token);
+        uniforms.push_back(draw);
+        old.push_back(lp[id*4+token]);
+        previous=token;
+      }
+      const float terminal=score(prompt,tokens[start],previous);
+      for (auto j=start;j<states.size();++j) {
+        returns.push_back(terminal);
+        advantage.push_back(terminal-v[states[j]]);
+      }
+    }
+    const auto ids=n::from_vector(states),selected=n::from_vector(tokens);
+    const auto prior=n::from_vector(old),adv=n::from_vector(advantage),target=n::from_vector(returns);
+    const auto ref=n::gather(reference,ids);
+    const auto objective=[&](const n::Tensor& table) {
+      return r::rlhf_ppo_loss(n::gather(table,ids),ref,selected,prior,adv,
+                             n::gather(value,ids).reshape({-1}),target,.12f);
+    };
+    for (int epoch=0;epoch<3;++epoch) {
+      optimizer.step(n::grad(objective(n::log_softmax(logits,-1))[0],optimizer.parameters()));
+    }
+    const n::NoGradGuard guard;
+    const auto after=n::log_softmax(logits,-1);
+    const auto [loss,surrogate,kl,ratio]=objective(after);
+    n::save_npz(std::format("build/rlhf_ppo/phase{}.npz",phase),{{"before",before},{"baseline",baseline},
+      {"states",ids},{"tokens",selected},{"draws",n::from_vector(uniforms)},{"old",prior},
+      {"advantage",adv},{"returns",target},{"after",after},{"ratio",ratio},{"surrogate",surrogate},
+      {"kl",kl},{"loss",loss},{"value",value}});
+    evaluate(phase,after);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Requested completion",{37,99,235})
+      .title("Preference-guided policy training").x_label("PPO phase").y_label("Completion probability")
+      .ylim(0,1).size(800,460).save_svg("build/rlhf_ppo.svg");
+}
+```
+// result_begin: markdown
+| PPO phase | Expected learned reward | Requested completion probability |
+|---:|---:|---:|
+| 0 | 1.659068 | 0.212500 |
+| 1 | 2.136288 | 0.349821 |
+| 2 | 2.606319 | 0.505987 |
+| 3 | 2.999319 | 0.649033 |
+\image(figures/rlhf_ppo.svg)
+// result_end

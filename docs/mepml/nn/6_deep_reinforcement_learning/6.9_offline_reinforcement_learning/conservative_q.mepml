@@ -1,0 +1,96 @@
+//? Title: Conservative Q-learning from a fixed chain dataset
+//? Lang: en
+
+> Conservative Q-learning from a fixed chain dataset
+
+An offline value learner receives a table of action counts on a
+five-state chain. The two left actions at states 0 and 2 are absent
+from the dataset. Both start with optimistic value 3 and receive
+no action-specific Bellman error. Nevertheless, those estimates can
+affect targets and greedy decisions.
+
+Conservative Q-learning adds the state-weighted log-sum-exp of
+all action values and subtracts the dataset-weighted mean value.
+This puts downward pressure on high values that lack support in the
+data. The control sets the penalty weight to zero. Both fits use the
+same counts, initialization, and 150 Adam updates.
+
+The plot tracks the mean estimated value of the two unobserved
+actions. A greedy rollout from each nonterminal start tests whether
+the learned action choices reach the goal.
+
+[Kumar et al. (2020)|https://arxiv.org/abs/2006.04779]
+
+```{cpp, results="markdown", file="figures/conservative_q.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto next=[](int state,int action) {
+    return state==4?4:std::clamp(state+(action?1:-1),0,4);
+  };
+  std::vector<int> indices;
+  std::vector<float> rewards,live;
+  for (int state=0;state<5;++state) {
+    for (int action=0;action<2;++action) {
+      const int successor=next(state,action);
+      indices.push_back(successor);
+      rewards.push_back(state!=4 && successor==4);
+      live.push_back(state!=4 && successor!=4);
+    }
+  }
+  const auto successor=n::from_vector(indices,{5,2});
+  const auto reward=n::from_vector(rewards,{5,2}), active=n::from_vector(live,{5,2});
+  const auto counts=n::from_vector<float>({0,30,2,30,0,30,15,30,0,0},{5,2});
+  std::array<std::vector<double>,2> history;
+  std::filesystem::create_directories("build/conservative_q");
+  std::print("| Alpha | Goal successes | Unobserved Q at 0 | Unobserved Q at 2 |\n|---:|---:|---:|---:|\n");
+  for (int mode=0;mode<2;++mode) {
+    const float alpha=mode*.5f;
+    n::ParameterStore params;
+    auto q=params.get("q",{5,2},n::init::zeros());
+    {
+      const n::NoGradGuard guard;
+      q.copy_(n::from_vector<float>({3,0,0,0,3,0,0,0,0,0},{5,2}));
+    }
+    n::Optimizer adam(params,.07,{.kind=n::OptimizerKind::Adam});
+    const auto evaluate=[&] {
+      const auto td=reward+.95f*(n::gather(n::max(q.detach(),{1}),successor)*active);
+      return std::pair{td,dm::rl::conservative_q_loss(q,td,counts,alpha)};
+    };
+    for (int step=0;step<=150;++step) {
+      const auto values=q.to_vector<float>();
+      history[mode].push_back(.5*(values[0]+values[4]));
+      if (step<150) adam.step(n::grad(evaluate().second[0],{q}));
+    }
+    const auto [td,parts]=evaluate();
+    const auto gradient=n::grad(parts[0],{q})[0];
+    const auto policy=n::argmax(q,1).to_vector<int>();
+    int solved=0;
+    for (int first=0;first<4;++first) {
+      int state=first;
+      for (int step=0;step<8 && state!=4;++step) state=next(state,policy[state]);
+      solved+=state==4;
+    }
+    const auto values=q.to_vector<float>();
+    std::print("| {:.1f} | {} / 4 | {:.6f} | {:.6f} |\n",alpha,solved,values[0],values[4]);
+    n::save_npz(std::format("build/conservative_q/{}.npz",mode?"cql":"control"),{
+        {"count",counts},{"q",q},{"td",td},{"bellman",parts[1]},{"penalty",parts[2]},
+        {"gradient",gradient}});
+  }
+  std::vector<double> steps(151);
+  std::iota(steps.begin(),steps.end(),0.);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,history[0],"Bellman only",{217,96,26})
+      .lines(steps,history[1],"Conservative Q-learning",{37,99,235})
+      .title("Estimates for unobserved actions").x_label("Adam updates").y_label("Mean Q-value")
+      .size(800,460).save_svg("build/conservative_q.svg");
+}
+```
+// result_begin: markdown
+| Alpha | Goal successes | Unobserved Q at 0 | Unobserved Q at 2 |
+|---:|---:|---:|---:|
+| 0.0 | 0 / 4 | 3.000000 | 3.000000 |
+| 0.5 | 4 / 4 | -1.796401 | -1.877383 |
+\image(figures/conservative_q.svg)
+// result_end

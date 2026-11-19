@@ -1,0 +1,72 @@
+//? Title: Minimum-cost bounded counterfactuals
+//? Lang: en
+
+> Minimum-cost bounded counterfactuals
+
+A linear classifier assigns a score to each input. A counterfactual
+asks for the smallest feasible change that reaches a given score.
+Here the first two features lie in [0, 1] and the third is immutable.
+Moving the first feature costs twice as much per squared unit as
+moving the second.
+
+For a fixed nonnegative dual multiplier, each optimal coordinate
+is its original value plus the multiplier times its score coefficient
+divided by its cost weight, clipped to its bounds. Bisection finds the
+smallest multiplier that reaches the target score. A maximizer at the
+bounds checks feasibility first. An already acceptable input stays put.
+
+The plot shows the first two coordinates separately for the feasible
+rows. The third coordinate remains fixed, so the decision boundary
+in this plane depends on the row.
+
+```{cpp, results="markdown", file="figures/counterfactual_explanations.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const std::vector<double> weight{1,-1,1},cost{2,1,4};
+  const std::vector<std::vector<double>> inputs{{.2,.7,.8},{.9,.6,.4},{.2,.4,.1},{.9,.1,.9}};
+  constexpr double bias=-1.2,target=.05;
+  const auto score=[&](const auto& row) {
+    return std::inner_product(row.begin(),row.end(),weight.begin(),bias);
+  };
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Row | Original score | Final score | Cost | Counterfactual |\n|---:|---:|---:|---:|---|\n");
+  for (std::size_t i=0;i<inputs.size();++i) {
+    const auto& x=inputs[i];
+    const auto solution=dm::nn::linear_counterfactual(x,weight,cost,{0,0,x[2]},{1,1,x[2]},bias,target);
+    if (!solution) {
+      if (i!=2) return 1;
+      std::print("| {} | {:.3f} | Infeasible | — | — |\n",i,score(x));
+      continue;
+    }
+    const auto& y=*solution;
+    if (i==2 || score(y)<target-1e-12 || y[2]!=x[2] ||
+        (i==3 && y!=x)) return 1;
+    double distance=0;
+    for (std::size_t j=0;j<y.size();++j) distance+=.5*cost[j]*std::pow(y[j]-x[j],2);
+    std::print("| {} | {:.3f} | {:.3f} | {:.6f} | ({:.4f}, {:.4f}, {:.4f}) |\n",
+        i,score(x),score(y),distance,y[0],y[1],y[2]);
+    if (i!=3) plot.lines({x[0],y[0]},{x[1],y[1]},std::format("Row {} path",i),
+                        i==0 ? dm::graphics::RGB{37,99,235} : dm::graphics::RGB{234,88,12});
+    plot.points({y[0]},{y[1]},std::format("Row {} solution",i),{31,41,55});
+  }
+  plot.title("Feasible changes in mutable coordinates").x_label("Feature 1").y_label("Feature 2")
+      .x_limits(0,1.05).y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/counterfactual_explanations.svg");
+}
+```
+// result_begin: markdown
+| Row | Original score | Final score | Cost | Counterfactual |
+|---:|---:|---:|---:|---|
+| 0 | -0.900 | 0.050 | 0.300833 | (0.5167, 0.0667, 0.8000) |
+| 1 | -0.500 | 0.050 | 0.111250 | (1.0000, 0.1500, 0.4000) |
+| 2 | -1.300 | Infeasible | — | — |
+| 3 | 0.500 | 0.500 | 0.000000 | (0.9000, 0.1000, 0.9000) |
+\image(figures/counterfactual_explanations.svg)
+// result_end
+
+For row 0, the unconstrained multiplier is 0.95/1.5, and both
+mutable coordinates stay inside the box. For row 1, the first
+coordinate hits its upper bound, leaving the second to reach 0.15.
+Row 2 can reach at most −0.1, below the requested 0.05.

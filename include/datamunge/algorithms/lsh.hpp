@@ -1,10 +1,15 @@
 #pragma once
 /// @file lsh.hpp
 /// @brief Owned checked random-hyperplane cosine index and actual producing query evidence.
+#include <algorithm>
+#include <bit>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <stdexcept>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 namespace datamunge::algorithms {
 /// @brief Actual selected query result/work; dense seen initialization remains linear in indexed row count.
@@ -136,6 +141,81 @@ class CosineLSH {
       std::size_t                             num_tables,
       std::size_t                             bits_per_table,
       std::uint64_t                           seed = 0);
+  /// @brief Rebuild one cosine LSH table using saved hyperplanes.
+  /// @param data Finite rectangular catalog, copied in insertion order.
+  /// @param planes Zero to 64 finite plane vectors in bit order, with catalog dimension.
+  /// @throws std::invalid_argument Invalid geometry or nonfinite entries.
+  ///
+  /// @par Example
+  /// @code
+  /// dm::algorithms::CosineLSH index({{1,0},{0,1}}, {{1,0}});
+  /// std::print("{}\n", index.signature({-1,0},0)); // 0
+  /// @endcode
+  /// @see hyperplanes(), query_top_k()
+  CosineLSH(const std::vector<std::vector<double>>& data,
+            const std::vector<std::vector<double>>& planes)
+      : CosineLSH(data, 0, planes.size()) {
+    for (const auto& plane : planes) {
+      if (plane.size() != dim_ ||
+          !std::all_of(plane.begin(),plane.end(),[](double x){return std::isfinite(x);})) {
+        throw std::invalid_argument("LSH: invalid saved plane");
+      }
+    }
+    tables_ = 1;
+    hyperplanes_.push_back(planes);
+    buckets_.resize(1);
+    for (std::size_t i = 0; i < data_.size(); ++i) {
+      buckets_[0][signature(data_[i],0)].push_back(i);
+    }
+  }
+
+  /// @brief Probe occupied buckets by Hamming distance and rerank their candidates by cosine.
+  ///
+  /// Equal-distance buckets use ascending signature. Entire buckets are
+  /// visited, so the number scored can exceed the requested minimum.
+  /// Equal cosine scores use ascending catalog row ID.
+  /// @param q Finite query with the catalog dimension.
+  /// @param k Number of neighbors requested.
+  /// @param minimum_candidates Desired minimum candidate count before stopping.
+  /// @param table Table to probe, default zero.
+  /// @return Neighbor IDs in rank order and actual number of cosine evaluations.
+  /// The candidate minimum is raised to k and capped at catalog size.
+  /// @throws std::invalid_argument Invalid query dimension or nonfinite coordinates.
+  /// @throws std::out_of_range Table outside the index.
+  ///
+  /// @par Example
+  /// @code
+  /// dm::algorithms::CosineLSH index({{1,0},{0,1}}, {{1,0}});
+  /// const auto [ids, scored] = index.query_top_k({0,1},1,1);
+  /// std::print("{} {}\n", ids.front(), scored); // 1 2
+  /// @endcode
+  /// @see query(), signature()
+  std::pair<std::vector<std::size_t>,std::size_t> query_top_k(
+      const std::vector<double>& q, std::size_t k, std::size_t minimum_candidates,
+      std::size_t table = 0) const {
+    const auto code = signature(q,table);
+    const auto budget = std::min(data_.size(), std::max(k,minimum_candidates));
+    if (budget == 0) return {};
+    std::vector<std::pair<int,std::uint64_t>> ordered;
+    for (const auto& entry : buckets_[table]) {
+      ordered.emplace_back(std::popcount(entry.first ^ code),entry.first);
+    }
+    std::sort(ordered.begin(),ordered.end());
+    std::vector<std::pair<double,std::size_t>> scores;
+    for (const auto& entry : ordered) {
+      for (auto id : buckets_[table].at(entry.second)) {
+        scores.emplace_back(-cosine(q,data_[id]),id);
+      }
+      if (scores.size() >= budget) break;
+    }
+    const auto count = std::min(k,scores.size());
+    std::partial_sort(scores.begin(),scores.begin()+count,scores.end());
+    std::vector<std::size_t> ids;
+    ids.reserve(count);
+    for (std::size_t rank = 0; rank < count; ++rank) ids.push_back(scores[rank].second);
+    return {std::move(ids),scores.size()};
+  }
+
   /// @brief Inspect the owned row dimension, zero for empty input.
   /// @return Immutable indexed coordinate count.
   /// @par Example

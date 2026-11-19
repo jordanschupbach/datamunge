@@ -669,6 +669,33 @@ step slows down but does not remove: with the decayed step the final model is st
 left \([-2,2]\), where the clipped STE gradient is zero, and was stuck there. The best model visited, 2.435, is within 1% of the optimum. In practice
 QAT keeps the best quantised checkpoint on validation data, or anneals the quantiser, rather than trusting the last iterate.
 
+> Straight-through ceiling with stop-gradient
+
+The expression `x + stop_gradient(ceil(x) - x)` evaluates to the
+ceiling, while its derivative with respect to the input is one. A loss
+that squares this output therefore sends twice the rounded output back
+to the input. The zero at the last element is a forward value, so its
+loss gradient is also zero.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  auto x=n::tensor({.2,1.7,-.4},{3},n::DType::Float64).requires_grad_();
+  const auto y=x+n::stop_gradient(n::ceil(x)-x);
+  const auto gradient=n::grad(n::sum(n::square(y)),{x}).front();
+  if(n::max(n::abs(y-n::ceil(x))).item()>1e-14 ||
+     n::max(n::abs(gradient-n::tensor({2,4,0},{3},n::DType::Float64))).item()>1e-14)
+    throw std::runtime_error("The ceiling or straight-through derivative differed");
+  std::print("Ceiling {}; straight-through squared-loss derivative {}.\n",
+             y.to_vector<double>(),gradient.to_vector<double>());
+}
+```
+// result_begin: markdown
+Ceiling [1, 2, 0]; straight-through squared-loss derivative [2, 4, 0].
+// result_end
+
 > Conclusion
 
 A custom gradient is a vector-Jacobian product supplied by hand. Writing it with tensor operations makes it differentiable

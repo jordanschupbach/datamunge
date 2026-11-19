@@ -1487,7 +1487,7 @@ truth/pred     0     1
   confusion (truth rows):
     39 25
     18 46
-testCE=0.638843 accuracy=0.664062 cueFlip=0.632812 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0671956 s)
+testCE=0.638843 accuracy=0.664062 cueFlip=0.632812 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.150123 s)
 Artifacts:"build/recurrent-models/models/gradient_clipping/none/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/gradient_clipping/none" not found; skipping the comparison
 == policy global
@@ -1501,7 +1501,7 @@ truth/pred     0     1
   confusion (truth rows):
     31 33
     26 38
-testCE=0.685929 accuracy=0.539062 cueFlip=0.515625 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0630751 s)
+testCE=0.685929 accuracy=0.539062 cueFlip=0.515625 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.159895 s)
 Artifacts:"build/recurrent-models/models/gradient_clipping/global/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/gradient_clipping/global" not found; skipping the comparison
 == policy coordinate
@@ -1515,7 +1515,7 @@ truth/pred     0     1
   confusion (truth rows):
     33 31
     24 40
-testCE=0.67942 accuracy=0.570312 cueFlip=0.546875 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0702874 s)
+testCE=0.67942 accuracy=0.570312 cueFlip=0.546875 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.156161 s)
 Artifacts:"build/recurrent-models/models/gradient_clipping/coordinate/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/gradient_clipping/coordinate" not found; skipping the comparison
 // result_end

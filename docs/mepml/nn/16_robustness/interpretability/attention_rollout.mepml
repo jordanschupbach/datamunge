@@ -1,0 +1,67 @@
+//? Title: Attention rollout through residual transformer blocks
+//? Lang: en
+
+> Attention rollout through residual transformer blocks
+
+An attention matrix describes how one layer reads from its inputs.
+To trace the classification token back through three residual
+self-attention blocks, average the heads at each layer, add an
+identity matrix for the skip connection, and normalize each row.
+
+The joint transition multiplies these maps in reverse layer order,
+with the last layer on the left. Each row is a distribution over
+the original input positions. The plot shows the first row after
+each block. This diagnostic summarizes attention connectivity in
+a fixed synthetic network. Value projections and their effects on
+the output are outside the rollout.
+
+```{cpp, results="markdown", file="figures/attention_rollout.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  n::NoGradGuard guard;
+  n::ParameterStore model(1904);
+  std::vector<float> values;
+  for (int i=1;i<=5;++i)
+    for (int j=1;j<=4;++j) values.push_back(std::sin(.7f*i*j));
+  auto hidden=n::from_vector(values,{1,5,4});
+  std::vector<n::Tensor> heads;
+  for (int layer=0;layer<3;++layer) {
+    const auto result=n::multi_head_attention(model,"block"+std::to_string(layer),
+        hidden,hidden,2,{.need_weights=true});
+    hidden=hidden+result.output;
+    heads.push_back(result.weights);
+  }
+  const auto trace=n::attention_rollout(heads);
+  const auto joint=n::select(trace.cumulative.back(),0,0);
+  if (n::min(joint).item()<0 || n::max(n::abs(n::sum(joint,{1})-1)).item()>1e-6) return 1;
+  auto plot=dm::graphics::RPlot::create();
+  const std::vector<double> positions{0,1,2,3,4};
+  const std::array<dm::graphics::RGB,3> colors{{{37,99,235},{234,88,12},{22,163,74}}};
+  std::print("| Token | Final rollout mass |\n|---:|---:|\n");
+  const auto final=n::select(joint,0,0).to_vector<double>();
+  for (int i=0;i<5;++i) std::print("| {} | {:.6f} |\n",i,final[i]);
+  n::NamedTensors saved{{"rollout",joint}};
+  for (int layer=0;layer<3;++layer) {
+    plot.lines(positions,n::select(n::select(trace.cumulative[layer],0,0),0,0).to_vector<double>(),
+        std::format("Through block {}",layer+1),colors[layer]);
+    saved.emplace_back("heads_"+std::to_string(layer),heads[layer]);
+    saved.emplace_back("transition_"+std::to_string(layer),n::select(trace.transitions[layer],0,0));
+  }
+  plot.title("Classification token attention rollout").x_label("Input token").y_label("Attention mass");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/attention_rollout.svg");
+  n::save_npz("build/attention_rollout.npz",saved);
+}
+```
+// result_begin: markdown
+| Token | Final rollout mass |
+|---:|---:|
+| 0 | 0.310275 |
+| 1 | 0.175371 |
+| 2 | 0.147016 |
+| 3 | 0.196059 |
+| 4 | 0.171278 |
+\image(figures/attention_rollout.svg)
+// result_end

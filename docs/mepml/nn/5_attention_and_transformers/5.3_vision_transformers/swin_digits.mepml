@@ -1,0 +1,83 @@
+//? Title: Swin Transformer on MNIST
+//? Lang: en
+
+> Swin Transformer on MNIST
+
+The image becomes a 4-by-4 grid of patch tokens. The first block
+attends within 2-by-2 windows. The second shifts the window boundaries
+by one patch, creating connections between the original windows.
+A mask blocks connections between positions brought together by
+wrapping across an image border. Learned relative-position biases
+adjust scores within the surviving neighborhoods.
+
+Patch merging concatenates each group of four adjacent tokens and
+projects it to a wider representation on a 2-by-2 grid. A final
+attention block processes this coarse grid before mean pooling.
+The plot tracks validation loss for three epochs of fitting on MNIST.
+
+```{cpp, results="markdown", file="figures/swin_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto root=std::filesystem::path(dm::datasets::prepare_example_data("mnist-assets"))/"mnist";
+  const auto train=n::load_mnist(root.string(),"train");
+  const auto test=n::load_mnist(root.string(),"test");
+  std::vector<int> train_ids(60000),test_ids(10000);
+  std::iota(train_ids.begin(),train_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 rng(41434);
+  std::shuffle(train_ids.begin(),train_ids.end(),rng);
+  std::shuffle(test_ids.begin(),test_ids.end(),rng);
+  const auto ids=[](const std::vector<int>& order,int from,int count) {
+    return n::from_vector(std::vector<int>(order.begin()+from,order.begin()+from+count));
+  };
+  const auto fit=ids(train_ids,0,1024),valid=ids(train_ids,1024,256),held=ids(test_ids,0,256);
+  const auto x=n::gather(train.images,fit),y=n::gather(train.labels,fit);
+  const auto vx=n::gather(train.images,valid),vy=n::gather(train.labels,valid);
+  const auto tx=n::gather(test.images,held),ty=n::gather(test.labels,held);
+  n::ParameterStore params(41433);
+  (void)n::swin_digit_transformer(params,n::slice_axis(x,0,0,1));
+  n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder batches(1024,32,41435);
+  std::vector<double> curve;
+  std::print("| Epoch | Validation NLL |\n|---:|---:|\n");
+  for (int epoch=0;epoch<3;++epoch) {
+    batches.begin_epoch();
+    for (auto rows=batches.next();!rows.empty();rows=batches.next()) {
+      const auto batch=n::from_vector(rows);
+      const auto logits=n::swin_digit_transformer(params,n::gather(x,batch)).logits;
+      const auto loss=n::sparse_softmax_cross_entropy(logits,n::gather(y,batch));
+      optimizer.step(n::grad(loss,optimizer.parameters()));
+    }
+    const n::NoGradGuard guard;
+    curve.push_back(n::sparse_softmax_cross_entropy(n::swin_digit_transformer(params,vx).logits,vy).item());
+    std::print("| {} | {:.6f} |\n",epoch+1,curve.back());
+  }
+  const n::NoGradGuard guard;
+  const auto result=n::swin_digit_transformer(params,tx);
+  const auto nll=n::sparse_softmax_cross_entropy(result.logits,ty);
+  const int correct=n::sum(n::equal(n::argmax(result.logits,1),ty).to(n::DType::Int32)).item<int>();
+  std::print("\nTest NLL {:.6f}. Correct predictions {}/256.\n",nll.item(),correct);
+  const std::filesystem::path out="build/swin_digits";
+  std::filesystem::create_directories(out);
+  params.save((out/"weights.npz").string());
+  n::save_npz((out/"audit.npz").string(),{{"fit_ids",fit},{"validation_ids",valid},{"test_ids",held},
+      {"pixels",tx},{"labels",ty},{"patches",result.patches},{"embedded",result.embedded},
+      {"logits",result.logits},{"nll",nll},{"attention0",result.attention[0]},{"attention1",result.attention[1]}});
+  n::save_npz((out/"coarse.npz").string(),{{"attention",result.attention[2]}});
+  dm::graphics::RPlot::create().lines({1,2,3},curve,"Validation",{37,99,235})
+      .points({1,2,3},curve,"Epochs",{37,99,235},5).title("Swin Transformer on MNIST")
+      .x_label("Epoch").y_label("Nats per image").size(800,460).save_svg("build/swin_digits.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation NLL |
+|---:|---:|
+| 1 | 1.217680 |
+| 2 | 0.647995 |
+| 3 | 0.534477 |
+
+Test NLL 0.624856. Correct predictions 201/256.
+\image(figures/swin_digits.svg)
+// result_end

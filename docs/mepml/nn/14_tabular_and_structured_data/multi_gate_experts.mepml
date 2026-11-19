@@ -1,0 +1,141 @@
+//? Title: Multi-gate mixture of experts for multitask regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit two related regression tasks using a shared-bottom model and a
+mixture with a separate expert gate for each task.
+)
+\toc
+
+Both models use a separate prediction head for each response. The
+shared-bottom model sends both heads the same representation. The
+mixture builds three shared expert representations, then learns a
+different softmax-weighted combination for each task and row. Gate
+weights are input-dependent and sum to one. Expert identities depend on
+the fit, so their indices have no intrinsic interpretation.
+
+The simulator changes the relative importance of two nonlinear signals
+with the first feature. Both models train on the same 2,048 rows and
+batch schedule, and the fit plot uses 512 independent rows. The gate plot
+varies the first input while holding the other four at zero. Training
+uses native parameter initialization.
+
+```{cpp, results="markdown", file="figures/multi_gate_experts_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+std::pair<n::Tensor,n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> draw(-1.f,1.f);
+  std::normal_distribution<float> noise(0.f,.04f);
+  std::vector<float> x(count*5), y(count*2);
+  for (int i = 0; i < count; ++i) {
+    auto* row = x.data()+i*5;
+    for (int j = 0; j < 5; ++j) row[j] = draw(rng);
+    const float a = std::sin(3.f*row[1])+.45f*row[2];
+    const float b = std::cos(3.f*row[3])-.6f*row[4];
+    const float mix = 1.f/(1.f+std::exp(-5.f*row[0]));
+    y[2*i] = mix*a+(1.f-mix)*b+noise(rng);
+    y[2*i+1] = (1.f-mix)*a-mix*b+noise(rng);
+  }
+  return {n::from_vector(x,{count,5}),n::from_vector(y,{count,2})};
+}
+
+int main() {
+  const auto [x,y] = simulate(2048,22217);
+  const auto [test,observed] = simulate(512,22218);
+  const std::string folder = "build/multi_gate_experts/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  std::array fitted{dm::graphics::RPlot::create(),dm::graphics::RPlot::create()};
+  auto routing = dm::graphics::RPlot::create();
+  std::println("| Architecture | Task 0 RMSE | Task 1 RMSE |\n| --- | ---: | ---: |");
+  for (int experts : {0,3}) {
+    const std::string model = experts ? "mmoe" : "shared_bottom";
+    n::ParameterStore parameters(41380);
+    const auto forward = [&](const n::Tensor& input) {
+      return n::multi_gate_regression(parameters,"fit",input,2,experts);
+    };
+    forward(x);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(parameters,.01,config);
+    n::BatchOrder order(2048,32,22219);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto ids = order.next(); !ids.empty(); ids = order.next())
+        optimizer.minimize(n::mean(n::square(forward(n::take_rows(x,ids)).prediction-n::take_rows(y,ids))));
+    }
+
+    n::NoGradGuard guard;
+    const auto fit = forward(test);
+    const auto squared_error = n::square(fit.prediction-observed);
+    const auto loss = n::mean(squared_error);
+    const auto scores = n::sqrt(n::mean(squared_error,{0})).to_vector<double>();
+    if (optimizer.iterations() != 192 || !std::isfinite(loss.item()))
+      throw std::runtime_error("invalid multitask fit");
+    std::println("| {} | {:.5f} | {:.5f} |",model,scores[0],scores[1]);
+    n::NamedTensors results{{"x",test.reshape({512,5,1})},{"y",observed},
+                            {"prediction",fit.prediction},{"loss",loss}};
+    if (experts) results.emplace_back("experts",fit.experts);
+    for (int task = 0; task < 2; ++task) {
+      const auto name = "task_"+std::to_string(task);
+      results.emplace_back(name+"_representation", fit.representations[task]);
+      if (experts) results.emplace_back(name+"_gate",fit.gates[task]);
+    }
+    parameters.save(folder+model+"_weights.npz");
+    n::save_npz(folder+model+".npz",results);
+    for (int task = 0; task < 2; ++task)
+      fitted[task].points(n::slice(observed,{0,task},{512,1}).to_vector<double>(),
+                          n::slice(fit.prediction,{0,task},{512,1}).to_vector<double>(),
+                          experts ? "Mixture" : "Shared bottom",
+                          experts ? dm::RGBA{37,99,235,.55} : dm::RGBA{175,75,40,.45}, 3);
+    if (experts) {
+      const auto axis = -1.+.02*n::arange(0,101);
+      const auto grid = n::concat({axis.reshape({101,1}),n::zeros({101,4})},1);
+      const auto gates = forward(grid).gates;
+      const auto coords = axis.to_vector<double>();
+      const std::array<dm::RGBA,6> colors{{{37,99,235},{26,127,153},{22,113,99},
+                                        {179,64,50},{157,104,26},{145,73,137}}};
+      for (int task = 0; task < 2; ++task)
+        for (int e = 0; e < 3; ++e)
+          routing.lines(coords,n::slice(gates[task],{0,e},{101,1}).to_vector<double>(),
+                        "Task "+std::to_string(task)+", expert "+std::to_string(e),colors[3*task+e]);
+    }
+  }
+  auto layout = dm::graphics::RLayout::create(1,2);
+  for (int task = 0; task < 2; ++task) {
+    const auto values = n::slice(observed,{0,task},{512,1});
+    const double lo = n::min(values).item(), hi = n::max(values).item();
+    fitted[task].lines({lo,hi},{lo,hi},"Perfect prediction",{100,116,139})
+        .title("Task "+std::to_string(task)+" held-out fit")
+        .x_label("Observed response").y_label("Predicted response");
+    layout.add(fitted[task]);
+  }
+  layout.fit_panels().save(folder+"fit.svg");
+  routing.title("Task-specific routing along feature 0").x_label("Feature 0").y_label("Gate probability")
+         .save_svg(folder+"routing.svg");
+  std::filesystem::copy_file(folder+"fit.svg","figures/multi_gate_experts_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"routing.svg","figures/multi_gate_experts_routing.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Architecture | Task 0 RMSE | Task 1 RMSE |
+| --- | ---: | ---: |
+| shared_bottom | 0.32204 | 0.38839 |
+| mmoe | 0.33085 | 0.26153 |
+\image(figures/multi_gate_experts_fit.svg)
+// result_end
+
+\image(figures/multi_gate_experts_routing.svg)
+
+> Reference
+
+Ma et al. (2018).
+[Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts|https://doi.org/10.1145/3219819.3220007].

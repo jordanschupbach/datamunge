@@ -1,0 +1,91 @@
+//? Title: CommNet majority coordination
+//? Lang: en
+
+> CommNet majority coordination
+
+Three agents see one private bit each. The team receives reward one
+only if all three actions equal the majority bit. CommNet shares the
+same policy parameters across agents. In each of two rounds, an agent
+receives the mean hidden state of its peers and combines it with its
+own hidden state and original encoding.
+
+The policy maximizes expected team reward over all eight bit patterns.
+Given a pattern, agents sample independently from their action
+distributions. The probability of unanimous correctness is therefore
+the product of their individual probabilities of choosing the
+majority bit.
+
+The plot compares training reward with the final policy evaluated
+with messages muted. The same trained parameters are used in both
+conditions. The network uses Datamunge's native seeded initializer.
+
+[Sukhbaatar, Szlam and Fergus (2016)|https://arxiv.org/abs/1605.07736]
+
+```{cpp, results="markdown", file="figures/commnet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  std::vector<int> patterns,majority;
+  for (int row=0;row<8;++row) {
+    int ones=0;
+    for (int agent=0;agent<3;++agent) {
+      const int bit=(row>>agent)&1;
+      patterns.push_back(bit);
+      ones+=bit;
+    }
+    majority.push_back(ones>=2);
+  }
+  const auto bits=n::from_vector(patterns,{8,3});
+  const auto inputs=n::one_hot(bits,2);
+  const auto correct=n::one_hot(n::from_vector(majority),2).reshape({8,1,2});
+  n::ParameterStore params(2546);
+  const auto evaluate=[&](const n::Tensor& x,const n::Tensor& y,float gain) {
+    const auto output=dm::rl::commnet_policy(params,x,gain*n::ones({16}),2);
+    const auto logp=n::log_softmax(output[0],-1);
+    const auto joint=n::exp(n::sum(n::sum(logp*y,{2}),{1}));
+    return std::tuple{output,n::exp(logp),n::mean(joint)};
+  };
+  (void)evaluate(inputs,correct,1);
+  n::Optimizer optimizer(params,.025,{.kind=n::OptimizerKind::Adam});
+  std::vector<double> history;
+  std::print("| Epoch | Expected team reward |\n|---:|---:|\n");
+  for (int epoch=0;epoch<=3;++epoch) {
+    {
+      const n::NoGradGuard guard;
+      history.push_back(std::get<2>(evaluate(inputs,correct,1)).item());
+    }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if (epoch==3) break;
+    for (int start:{0,4}) {
+      const auto reward=std::get<2>(evaluate(n::slice(inputs,{start,0,0},{4,3,2}),
+          n::slice(correct,{start,0,0},{4,1,2}),1));
+      optimizer.step(n::grad(-reward,optimizer.parameters()));
+    }
+  }
+  const n::NoGradGuard guard;
+  const auto [output,active,reward]=evaluate(inputs,correct,1);
+  const auto [muted_output,muted,muted_reward]=evaluate(inputs,correct,0);
+  std::print("\nFinal expected reward with messages muted: {:.6f}.\n",muted_reward.item());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/commnet_policy.npz",{{"bits",bits},{"history",n::from_vector(history)},
+      {"active",active},{"active_reward",reward},{"muted",muted},{"muted_reward",muted_reward},
+      {"hidden0",output[1]},{"message0",output[2]},{"hidden1",output[3]},{"message1",output[4]}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Messages active",{37,99,235})
+      .points({3},{muted_reward.item()},"Final policy, messages muted",{217,96,26},7)
+      .title("CommNet team reward").x_label("Training epoch").y_label("Probability of unanimous correctness")
+      .size(800,460).save_svg("build/commnet.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Expected team reward |
+|---:|---:|
+| 0 | 0.166847 |
+| 1 | 0.494362 |
+| 2 | 0.627861 |
+| 3 | 0.971735 |
+
+Final expected reward with messages muted: 0.249950.
+\image(figures/commnet.svg)
+// result_end

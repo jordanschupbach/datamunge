@@ -1,0 +1,110 @@
+//? Title: Domain-adversarial training with gradient reversal
+//? Lang: en
+
+> Domain-adversarial training with gradient reversal
+
+The source and target domains share one useful feature. A second
+feature changes both its mean and its relationship to the label.
+Train a classifier from labeled source rows. The adversarial variant
+also trains a domain discriminator on source and unlabeled target rows.
+
+Gradient reversal leaves the discriminator's forward input unchanged.
+On the backward pass it multiplies the derivative into the encoder
+by −0.6, so the discriminator learns to distinguish domains while
+the encoder learns to make that distinction harder. The gradient into
+the discriminator's own weights is unchanged. The report checks both
+derivatives and compares accuracy on separate labeled test splits.
+
+```{cpp, results="markdown", file="figures/domain_adaptation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed,bool target) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise;
+    std::uniform_int_distribution<int> bit(0,1);
+    std::vector<float> x(count*3),labels(count);
+    for (int i=0;i<count;++i) {
+      const auto y=bit(rng);
+      const float sign=2.f*y-1.f;
+      x[3*i]=.9f*sign+.7f*noise(rng);
+      x[3*i+1]=(target?-.7f:.85f)*sign+(target?1.15f:-1.15f)+.7f*noise(rng);
+      x[3*i+2]=noise(rng);
+      labels[i]=y;
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(labels,{count,1})};
+  };
+  const auto [source,labels]=draw(1024,30101,false);
+  const auto [target,unused]=draw(1024,30102,true);
+  const auto [source_test,source_truth]=draw(512,30103,false);
+  const auto [target_test,target_truth]=draw(512,30104,true);
+  const auto domain_labels=n::concat({n::zeros({32,1}),n::ones({32,1})},0);
+  auto plot=dm::graphics::RPlot::create();
+  std::filesystem::create_directories("build");
+  std::print("| Training | Source correct | Target correct |\n|---|---:|---:|\n");
+  for (bool adversarial:{false,true}) {
+    n::ParameterStore model(30105);
+    const auto encode=[&](const auto& x) { return n::dense(model,"encoder",x,12,n::Activation::Tanh); };
+    const auto classify=[&](const auto& h) { return n::dense(model,"class",h,1); };
+    const auto domain=[&](const auto& h) { return n::dense(model,"domain",h,1); };
+    const auto warm=encode(n::take_rows(source,{0}));
+    (void)classify(warm);
+    if (adversarial) (void)domain(warm);
+    n::Optimizer optimizer(model,.006,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder src(1024,32,30106),tgt(1024,32,30107);
+    for (int epoch=0;epoch<3;++epoch) {
+      src.begin_epoch();
+      tgt.begin_epoch();
+      for (auto rows=src.next();!rows.empty();rows=src.next()) {
+        const auto other=tgt.next();
+        const auto input=n::concat({n::take_rows(source,rows),n::take_rows(target,other)},0);
+        const auto features=encode(input);
+        auto loss=n::sigmoid_cross_entropy(classify(n::slice_axis(features,0,0,32)),n::take_rows(labels,rows));
+        if (adversarial)
+          loss=loss+n::sigmoid_cross_entropy(domain(n::gradient_reversal(features,.6f)),domain_labels);
+        optimizer.minimize(loss);
+      }
+    }
+    const auto evaluate=[&](const auto& x) {
+      n::NoGradGuard guard;
+      return classify(encode(x));
+    };
+    const auto a=evaluate(source_test),b=evaluate(target_test);
+    const auto correct=[](const auto& logits,const auto& y) {
+      return n::sum(n::equal(n::greater_equal(logits,0).to(n::DType::Float32),y).to(n::DType::Int32)).item();
+    };
+    const auto s=correct(a,source_truth),t=correct(b,target_truth);
+    const std::string name=adversarial?"DANN":"Source only";
+    std::print("| {} | {:.0f}/512 | {:.0f}/512 |\n",name,s,t);
+    plot.points({0,1},{s/512,t/512},name,adversarial?dm::graphics::RGB{37,99,235}:dm::graphics::RGB{234,88,12});
+    n::NamedTensors saved{{"source_x",source_test},{"source_labels",source_truth},{"source_logits",a},
+        {"target_x",target_test},{"target_labels",target_truth},{"target_logits",b}};
+    if (adversarial) {
+      const auto probe=n::concat({n::slice_axis(source_test,0,0,32),n::slice_axis(target_test,0,0,32)},0);
+      auto h=encode(probe).detach();
+      h.requires_grad_(true);
+      const auto normal=domain(h),reversed=domain(n::gradient_reversal(h,.6f));
+      const std::vector<n::Tensor> checked{h,model.at("domain/W")};
+      const auto g=n::grad(n::sigmoid_cross_entropy(normal,domain_labels),checked);
+      const auto r=n::grad(n::sigmoid_cross_entropy(reversed,domain_labels),checked);
+      if (n::max(n::abs(normal-reversed)).item()!=0 ||
+          n::max(n::abs(r[0]+.6f*g[0])).item()>1e-7 ||
+          n::max(n::abs(r[1]-g[1])).item()>1e-7) return 1;
+      saved.insert(saved.end(),{{"probe",probe},{"features",h},{"domain_score",reversed},
+          {"feature_grad",g[0]},{"domain_grad",g[1]},{"reversed_feature_grad",r[0]},{"reversed_domain_grad",r[1]}});
+    }
+    n::save_npz(adversarial?"build/domain_dann.npz":"build/domain_source_only.npz",saved);
+  }
+  plot.title("Label accuracy under domain shift").x_label("Source (0) and target (1)")
+      .y_label("Accuracy").y_limits(0,1);
+  plot.size(900,430).save_svg("build/domain_adaptation.svg");
+}
+```
+// result_begin: markdown
+| Training | Source correct | Target correct |
+|---|---:|---:|
+| Source only | 487/512 | 307/512 |
+| DANN | 481/512 | 390/512 |
+\image(figures/domain_adaptation.svg)
+// result_end

@@ -1231,7 +1231,7 @@ top weights from nn's generator (statistical parity with TF only)
 epoch1 topExactNLL=2.75399 DBNvisibleNLL=5.23221
 epoch2 topExactNLL=2.74498 DBNvisibleNLL=5.2339
 epoch3 topExactNLL=2.73736 DBNvisibleNLL=5.23505
-exactDBNtestNLL=5.26401 sourceBottom=5.26696;frozenBottom/greedyTop/hybridNormalization/recognitionOnly/restore/chainRepeat/immutable PASS (training 0.00643905 s)
+exactDBNtestNLL=5.26401 sourceBottom=5.26696;frozenBottom/greedyTop/hybridNormalization/recognitionOnly/restore/chainRepeat/immutable PASS (training 0.00938753 s)
 no TF record at /home/jordan/.cache/datamunge/models/deep_belief; parity checks skipped
 Artifacts: /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.5_energy_based_models/build/generative-models/models/deep_belief
 // result_end

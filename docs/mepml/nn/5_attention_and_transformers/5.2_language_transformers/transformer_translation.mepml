@@ -1,0 +1,229 @@
+//? Title: Transformer translation and T5-style text-to-text learning
+//? Lang: en
+
+> Transformer translation and T5-style text-to-text learning
+
+The encoder reads source tokens, and the decoder attends to both the
+source memory and its own causal prefix. Teacher forcing supplies the
+previous gold token during training. At inference the model feeds back
+its own greedy choices and stops at the end token. Source padding is
+masked in self-attention and cross-attention, and target padding is
+excluded from the loss.
+
+The translation mode trains from scratch on the upstream short
+English–Spanish pairs, using sinusoidal positions and separate word
+embeddings. The T5-style mode uses learned clipped relative biases,
+RMS normalization, and a shared embedding and vocabulary projection.
+It learns three synthetic text-to-text tasks from distinct prefixes.
+The report compares validation losses and checks both variants for
+future-token leakage. Exact-match counts measure complete decoded
+sequences. The short translation run lowers token loss but does not
+exactly reproduce any held-out sentence.
+
+Set `DM_TRANSLATION_DATA` to the upstream `translation.npz` if it is
+outside the default checkout. Set `DM_TRANSLATION_REFERENCE` to upstream
+`output/models` to replay both checkpoints. Fits use Datamunge initialization.
+
+[Vaswani et al. (2017)|https://arxiv.org/abs/1706.03762] and
+[Raffel et al. (2020)|https://jmlr.org/papers/v21/20-074.html]
+
+```{cpp, results="markdown", file="figures/transformer_translation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int time=6,width=24,heads=3,vocab=512,bos=1,eos=2;
+  struct Batch {n::Tensor source,source_length,prefix,target,target_length;};
+  const char* data=std::getenv("DM_TRANSLATION_DATA");
+  const char* home=std::getenv("HOME");
+  if (!data && !home) throw std::runtime_error("Set DM_TRANSLATION_DATA");
+  const auto path=data ? std::filesystem::path(data) :
+      std::filesystem::path(home)/"projects/tflow_examples/output/datasets/seq2seq_translation/translation.npz";
+  const auto entries=n::load_npz(path.string());
+  const std::map<std::string,n::Tensor> arrays(entries.begin(),entries.end());
+  const auto load=[&](const std::string& name) {
+    return Batch{arrays.at(name+"_input"),arrays.at(name+"_input_lengths"),arrays.at(name+"_teacher"),
+                 arrays.at(name+"_target"),arrays.at(name+"_target_lengths")};
+  };
+  std::vector<int> ids(512);
+  std::iota(ids.begin(),ids.end(),0);
+  std::mt19937 rng(41415);
+  std::shuffle(ids.begin(),ids.end(),rng);
+  const auto tasks=[&](int start,int count) {
+    std::vector<int> source,prefix,target,source_length(count,time),target_length;
+    for (int row=start;row<start+count;++row) {
+      const int task=row%3, raw=ids[row/3];
+      const int a=16+(raw&7), b=16+((raw>>3)&7), c=16+((raw>>6)&7), d=16+((a+b+c)&7);
+      std::vector<int> y;
+      if (task==0) {
+        source.insert(source.end(),{4,a,8,b,c,eos});
+        y={8,d,16+((a+c)&7),9,eos};
+      } else {
+        source.insert(source.end(),{4+task,a,b,c,d,eos});
+        y=task==1 ? std::vector<int>{d,c,b,a,eos} : std::vector<int>{(a+d)%2==0 ? 11 : 12,eos};
+      }
+      target_length.push_back(y.size());
+      for (int j=0;j<time;++j) {
+        target.push_back(j<int(y.size()) ? y[j] : 0);
+        prefix.push_back(j==0 ? bos : j<int(y.size()) ? y[j-1] : 0);
+      }
+    }
+    return Batch{n::from_vector(source,{count,time}),n::from_vector(source_length),n::from_vector(prefix,{count,time}),
+                 n::from_vector(target,{count,time}),n::from_vector(target_length)};
+  };
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Mode | Initial test NLL | Final test NLL | Greedy exact |\n|---|---:|---:|---:|\n");
+  std::vector<std::pair<std::string,double>> replays;
+  std::array<int,3> task_exact{};
+  for (bool t5:{false,true}) {
+    const std::string name=t5?"T5-style":"Translation";
+    const auto fit=t5?tasks(0,768):load("fit");
+    const auto valid=t5?tasks(768,96):load("validation");
+    const auto test=t5?tasks(864,96):load("test");
+    n::ParameterStore params(41402);
+    const auto positions=n::sinusoidal_encoding(time,width);
+    const auto model=[&](const Batch& b,bool trace=false) {
+      const auto embed=[&](const n::Tensor& ids,const std::string& key) {
+        const auto table=params.get((t5?"shared":key)+std::string("/embedding"),{vocab,width},n::init::normal(.15));
+        const auto value=n::gather(table,ids);
+        return t5?value:value+positions;
+      };
+      const auto residual=[&](const n::Tensor& x,const n::Tensor& y,const std::string& key) {
+        return t5?n::rms_norm(params,key,x+y):n::layer_norm(params,key,x+y);
+      };
+      const auto ff=[&](const n::Tensor& x,const std::string& key) {
+        const auto hidden=n::dense(params,key+"/expand",x,2*width,n::Activation::Relu);
+        return residual(x,n::dense(params,key+"/contract",hidden,width),key+"/ff_norm");
+      };
+      const auto keep=n::padding_keep_mask(b.source_length,time);
+      const auto padding=n::where(keep,n::from_scalar(0.f),n::from_scalar(-1e9f));
+      n::MultiHeadOptions encoder,decoder,cross;
+      encoder.need_weights=decoder.need_weights=cross.need_weights=trace;
+      encoder.mask=t5?padding+n::clipped_relative_position_bias(params,"encoder/relative",heads,time,time,4):padding;
+      const auto causal=n::causal_mask(time);
+      decoder.mask=t5?causal+n::clipped_relative_position_bias(params,"decoder/relative",heads,time,time,4):causal;
+      cross.mask=padding;
+      const auto source=embed(b.source,"source"), target=embed(b.prefix,"target");
+      const auto a=n::multi_head_attention(params,"encoder/self",source,source,heads,encoder);
+      const auto memory=ff(residual(source,a.output,"encoder/self_norm"),"encoder");
+      const auto s=n::multi_head_attention(params,"decoder/self",target,target,heads,decoder);
+      const auto query=residual(target,s.output,"decoder/self_norm");
+      const auto c=n::multi_head_attention(params,"decoder/cross",query,memory,heads,cross);
+      const auto output=ff(residual(query,c.output,"decoder/cross_norm"),"decoder");
+      const auto logits=t5?n::matmul(output,params.at("shared/embedding"),false,true):
+          n::dense(params,"vocabulary",output,vocab);
+      return std::array{logits,a.weights,s.weights,c.weights};
+    };
+    const auto loss=[&](const n::Tensor& logits,const Batch& b) {
+      const auto weight=n::padding_keep_mask(b.target_length,time).reshape(b.target.shape()).to(n::DType::Float32);
+      return n::sum(weight*n::sparse_softmax_cross_entropy(logits,b.target,n::Reduction::None))/n::sum(weight);
+    };
+    const auto evaluate=[&](const Batch& b) {
+      const n::NoGradGuard no_grad;
+      return loss(model(b)[0],b).item();
+    };
+    const auto initial=evaluate(test);
+    std::vector<double> history{evaluate(valid)};
+    n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder order(fit.source.size(0),t5?24:16,t5?41416:41403);
+    for (int epoch=0;epoch<3;++epoch) {
+      order.begin_epoch();
+      for (auto ids=order.next();!ids.empty();ids=order.next()) {
+        const Batch b{n::take_rows(fit.source,ids),n::take_rows(fit.source_length,ids),n::take_rows(fit.prefix,ids),
+                      n::take_rows(fit.target,ids),n::take_rows(fit.target_length,ids)};
+        optimizer.minimize(loss(model(b)[0],b));
+      }
+      history.push_back(evaluate(valid));
+    }
+    const n::NoGradGuard no_grad;
+    const auto count=test.source.size(0);
+    const auto greedy=[&](Batch b) {
+      std::vector<int> result(count*time), prefix(count*time);
+      std::vector<bool> finished(count);
+      for (std::int64_t row=0;row<count;++row) prefix[row*time]=bos;
+      for (int t=0;t<time;++t) {
+        b.prefix=n::from_vector(prefix,{count,time});
+        const auto choice=n::argmax(n::slice_axis(model(b)[0],1,t,t+1),2).to_vector<int>();
+        for (std::int64_t row=0;row<count;++row) {
+          if (finished[row]) continue;
+          result[row*time+t]=choice[row];
+          if (t+1<time) prefix[row*time+t+1]=choice[row];
+          finished[row]=choice[row]==eos;
+        }
+      }
+      return result;
+    };
+    const auto [logits,ea,sa,ca]=model(test,true);
+    const auto final=loss(logits,test);
+    auto prefix=test.prefix.to_vector<int>(), source=test.source.to_vector<int>();
+    const auto lengths=test.source_length.to_vector<int>(), target=test.target.to_vector<int>();
+    for (std::int64_t row=0;row<count;++row) {
+      for (int t=lengths[row];t<time;++t) source[row*time+t]=50;
+      for (int t=3;t<time;++t) prefix[row*time+t]=(prefix[row*time+t]+37)%vocab;
+    }
+    auto changed=test;
+    changed.prefix=n::from_vector(prefix,{count,time});
+    changed.source=n::from_vector(source,{count,time});
+    const auto diff=n::max(n::abs(n::slice_axis(logits-model(changed,true)[0],1,0,3))).item();
+    source=test.source.to_vector<int>();
+    for (std::int64_t row=0;row<count;++row) source[row*time]=(source[row*time]+57)%vocab;
+    changed=test;
+    changed.source=n::from_vector(source,{count,time});
+    const auto effect=n::sum(n::abs(logits-model(changed,true)[0])).item();
+    if (!(final.item()<initial) || !(diff<2e-6) || !(effect>1) || optimizer.iterations()!=96) {
+      throw std::runtime_error("Translation fit, causal masking, or source sensitivity failed");
+    }
+    const auto decoded=greedy(test);
+    int exact=0;
+    for (std::int64_t row=0;row<count;++row) {
+      const auto start=target.begin()+row*time;
+      bool matches=std::equal(start,start+time,decoded.begin()+row*time);
+      if (!t5) matches &= std::find(start,start+time,3)==start+time;
+      exact+=matches;
+      if (t5) task_exact[row%3]+=matches;
+    }
+    std::print("| {} | {:.6f} | {:.6f} | {}/{} |\n",name,initial,final.item(),exact,count);
+    const std::string key=t5?"t5_text_to_text":"transformer_translation";
+    n::save_npz("build/"+key+".npz",{{"source",test.source},{"source_lengths",test.source_length},
+        {"prefix",test.prefix},{"target",test.target},{"target_lengths",test.target_length},{"logits",logits},
+        {"encoder_attention",ea},{"self_attention",sa},{"cross_attention",ca},
+        {"greedy",n::from_vector(decoded,{count,time})},{"nll",final}});
+    if (const char* reference=std::getenv("DM_TRANSLATION_REFERENCE")) {
+      const auto folder=std::filesystem::path(reference)/key;
+      params.load((folder/"weights.npz").string());
+      const auto entries=n::load_npz((folder/"audit.npz").string());
+      const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+      const auto replay=model(test,true);
+      const std::array keys{"logits","encoder_attention","self_attention","cross_attention"};
+      double worst=0;
+      for (int i=0;i<4;++i) worst=std::max(worst,n::max(n::abs(replay[i]-stored.at(keys[i]))).item());
+      if (!(worst<3e-5) || greedy(test)!=stored.at("greedy").to_vector<int>()) {
+        throw std::runtime_error(std::format("{} checkpoint replay mismatch: {}",name,worst));
+      }
+      replays.emplace_back(name,worst);
+    }
+    plot.lines({0,1,2,3},history,name,t5?dm::graphics::RGBA{234,88,12}:dm::graphics::RGBA{37,99,235});
+  }
+  std::print("\nT5-style exact matches out of 32 per task. Denoising {}, reversal {}, classification {}.\n",
+             task_exact[0],task_exact[1],task_exact[2]);
+  for (const auto& [mode,error]:replays) {
+    std::print("\n{} upstream replay maximum error {:.3e}, with identical greedy output.\n",mode,error);
+  }
+  plot.title("Encoder–decoder training").x_label("Epoch").y_label("Validation negative log-likelihood")
+      .size(900,425).save_svg("build/transformer_translation.svg");
+}
+```
+// result_begin: markdown
+| Mode | Initial test NLL | Final test NLL | Greedy exact |
+|---|---:|---:|---:|
+| Translation | 6.156409 | 2.126995 | 0/64 |
+| T5-style | 6.259364 | 1.079726 | 15/96 |
+
+T5-style exact matches out of 32 per task. Denoising 0, reversal 0, classification 15.
+
+Translation upstream replay maximum error 1.669e-06, with identical greedy output.
+
+T5-style upstream replay maximum error 2.384e-06, with identical greedy output.
+\image(figures/transformer_translation.svg)
+// result_end

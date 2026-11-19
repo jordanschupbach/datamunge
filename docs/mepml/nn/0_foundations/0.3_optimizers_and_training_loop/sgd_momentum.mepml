@@ -133,6 +133,56 @@ int main() {
     plot.lines(
         t.numeric_column("step").values(), t.numeric_column("after").values(), name, colors[i]);
   }
+  namespace nn = dm::nn;
+  const auto initial = nn::tensor({1., -2., .5}, {3}, nn::DType::Float64);
+  for (const auto kind : kinds) {
+    auto w = initial.clone().requires_grad_();
+    nn::OptimizerConfig config;
+    config.kind = kind;
+    nn::Optimizer optimizer({w}, .1, config);
+    const auto initial_state = optimizer.state();
+    auto expected = initial.to_vector<double>();
+    std::vector<double> velocity(3);
+    for (int step = 0; step < 20; ++step) {
+      const double rate = step < 10 ? .1 : .03;
+      const std::vector<double> gradient{step % 3 == 0 ? -.7 : .3, .1 * (step - 8), 0.};
+      optimizer.set_learning_rate(rate);
+      optimizer.step({nn::from_vector(gradient)});
+      const auto actual = w.to_vector<double>();
+      for (std::size_t j = 0; j < gradient.size(); ++j) {
+        velocity[j] = config.momentum * velocity[j] + gradient[j];
+        double direction = gradient[j];
+        if (kind == nn::OptimizerKind::Momentum) direction = velocity[j];
+        if (kind == nn::OptimizerKind::Nesterov) direction += config.momentum * velocity[j];
+        expected[j] -= rate * direction;
+        if (!(std::abs(actual[j] - expected[j]) < 1e-12))
+          throw std::runtime_error("Optimizer diverged from the scalar update");
+      }
+      if (optimizer.iterations() != step + 1) throw std::runtime_error("Incorrect update counter");
+    }
+    {
+      nn::NoGradGuard no_grad;
+      w.copy_(initial);
+    }
+    optimizer.load_state(initial_state);
+    if (w.to_vector<double>() != initial.to_vector<double>() || optimizer.iterations() != 0 ||
+        optimizer.state().size() != initial_state.size())
+      throw std::runtime_error("Optimizer reset left parameters, slots or the counter changed");
+  }
+  auto x = nn::scalar(1., nn::DType::Float64).requires_grad_();
+  auto y = nn::scalar(2., nn::DType::Float64).requires_grad_();
+  nn::Optimizer coupled({x, y}, .1, {.kind = nn::OptimizerKind::Sgd});
+  double expected_x = 1., expected_y = 2.;
+  for (int step = 0; step < 10; ++step) {
+    coupled.minimize(x * y);
+    const double next_x = expected_x - .1 * expected_y;
+    expected_y -= .1 * expected_x;
+    expected_x = next_x;
+    if (!(std::abs(x.item() - expected_x) < 1e-12 && std::abs(y.item() - expected_y) < 1e-12))
+      throw std::runtime_error("Coupled gradients used different parameter states");
+  }
+  std::print("All three rules matched 20 scalar updates and reset cleanly. Coupled gradients matched 10 synchronous updates.\n\n");
+
   std::filesystem::create_directories("build");
   plot.title("A changing gradient is filtered by state")
       .x_label("update")
@@ -145,6 +195,8 @@ int main() {
 }
 ```
 // result_begin: markdown
+All three rules matched 20 scalar updates and reset cleanly. Coupled gradients matched 10 synchronous updates.
+
 | rule | step | rate | gradient | velocity | after |
 | :--- | ---: | ---: | ---: | ---: | ---: |
 | SGD | 1 | 0.10 | 1 | 0.000 | -0.100000 |
@@ -284,21 +336,19 @@ int main() {
 
 > An explicit minibatch training loop
 
-The small deterministic dataset y=2x+1 at x=(−2,−1,0,1,2) has a known exact fit.
-Each optimizer gets fresh parameters, the same BatchOrder seed, rate .03, 40 epochs
-and batches of at most two, retaining the last one-row batch. Each step uses the mean
-squared error of its current batch. This means the trajectory is stochastic with respect
-to its shuffled sample order, unlike the quadratic experiments. It is a demonstration
-of the loop and state, not an estimate of prediction performance on unseen data. No
-extra scaling, optimizer selection or test-set comparison is performed.
+The upstream dataset has 64 equally spaced inputs on [−1, 1] and targets
+from the line y = 3x − 0.5. Each optimizer gets fresh parameters, the same
+BatchOrder seed, rate 0.03, and 40 epochs with batches of eight. It minimizes
+the mean squared error of each batch and tracks the full training loss at the
+end of each epoch. The known slope and intercept provide the fit check.
 
 ```{cpp, results="markdown", file="figures/sgd_minibatches.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 int main() {
-  const auto x = dm::nn::from_vector(std::vector<double>{-2, -1, 0, 1, 2}),
-             y = dm::nn::from_vector(std::vector<double>{-3, -1, 1, 3, 5});
+  const auto x = dm::nn::arange(0, 64, 1, dm::nn::DType::Float64) * (2. / 63.) - 1.;
+  const auto y = 3. * x - .5;
   auto fit = dm::graphics::RPlot::create(), curve = dm::graphics::RPlot::create();
-  fit.points({-2, -1, 0, 1, 2}, {-3, -1, 1, 3, 5}, "observations", {31, 41, 55});
+  fit.points(x.to_vector<double>(), y.to_vector<double>(), "observations", {31, 41, 55});
   dm::dstruct::DataFrame                   results;
   const std::vector<dm::graphics::RGB>     colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
   const std::vector<dm::nn::OptimizerKind> kinds  = {
@@ -309,7 +359,7 @@ int main() {
     dm::nn::OptimizerConfig c;
     c.kind = kinds[k];
     dm::nn::Optimizer   opt({w, b}, .03, c);
-    dm::nn::BatchOrder  batches(5, 2, 7);
+    dm::nn::BatchOrder  batches(64, 8, 7);
     std::vector<double> epoch, loss;
     for (int e = 0; e < 40; ++e) {
       batches.begin_epoch();
@@ -323,10 +373,13 @@ int main() {
     }
     const auto name = dm::nn::optimizer_name(kinds[k]);
     fit.lines(
-        {-2, 2},
-        {-2 * w.item<double>() + b.item<double>(), 2 * w.item<double>() + b.item<double>()},
+        {-1, 1},
+        {-w.item<double>() + b.item<double>(), w.item<double>() + b.item<double>()},
         name,
         colors[k]);
+    if (!(std::abs(w.item() - 3.) < .005 && std::abs(b.item() + .5) < .005) ||
+        opt.iterations() != 320)
+      throw std::runtime_error("Minibatch regression did not recover the reference line");
     curve.lines(epoch, loss, name, colors[k]);
     dm::dstruct::DataFrame row;
     row.add_column("rule", std::vector<std::string>{name});
@@ -337,7 +390,7 @@ int main() {
         "mse", std::vector<double>{dm::nn::mean(dm::nn::square(x * w + b - y)).item<double>()});
     results = k ? results.concat_rows(row) : row;
   }
-  fit.title("A five-point linear training fit").x_label("x").y_label("y").y_limits(-4, 8);
+  fit.title("A 64-point linear training fit").x_label("x").y_label("y").y_limits(-4, 3);
   curve.title("Training loss after each full epoch")
       .x_label("epoch")
       .y_label("log10 training MSE")
@@ -353,14 +406,14 @@ int main() {
 // result_begin: markdown
 | rule | slope | intercept | updates | mse |
 | :--- | ---: | ---: | ---: | ---: |
-| SGD | 1.99997742 | 0.999557369 | 120 | 1.969420525e-07 |
-| Momentum | 1.98866251 | 0.997185719 | 120 | 2.649975593e-04 |
-| Nesterov | 1.99996459 | 1.000007162 | 120 | 2.558858980e-09 |
+| SGD | 2.996306146 | -0.500007720 | 320 | 4.692631239e-06 |
+| Momentum | 2.999999898 | -0.500000012 | 320 | 3.736990323e-15 |
+| Nesterov | 2.999999998 | -0.500000000 | 320 | 1.874826023e-18 |
 
 \image(figures/sgd_minibatches.svg)
 // result_end
 \caption(The loop gathers each batch, constructs a scalar loss and asks the optimizer to differentiate/update both parameters synchronously. The same shuffled batch stream is supplied to every rule.)
-\alttext(Fitted lines are shown with five observations; a second panel shows epoch-end training MSE on a logarithmic scale. The table lists slopes, intercepts, update counts and final training losses.)
+\alttext(Fitted lines are shown with 64 observations; a second panel shows epoch-end training MSE on a logarithmic scale. The table lists slopes, intercepts, update counts and final training losses.)
 
 > Conclusion
 
@@ -368,8 +421,9 @@ Velocity, learning rate and gradient evaluation must be stated together to defin
 optimizer. The prescribed stream reveals the convention directly; quadratic modes give
 conditional stability guarantees; and the explicit batch loop shows where gradients,
 parameters and optimizer state live. These examples do not establish a universal winner.
-The original C++ example remains a runnable target, including its coupled-gradient and
-optimizer-reset checks. Early stopping, schedules, clipping and checkpoint restoration
+The program also checks one counter increment per update and resets both the weights and
+optimizer state. With a coupled loss, it verifies that both gradients use the same
+pre-update weights. Early stopping, schedules, clipping and checkpoint restoration
 are developed in their own reports.
 
 > References

@@ -1,0 +1,121 @@
+//? Title: Classifying and tagging environmental audio
+//? Lang: en
+
+> Classifying and tagging environmental audio
+
+A log-mel spectrogram represents how acoustic power varies across time
+and frequency. Two convolution and pooling stages identify local
+patterns. Averaging across pooled time frames lets the classifier
+respond to a sound wherever it occurs in the excerpt.
+
+Each class has an independent sigmoid output trained by binary
+cross-entropy. For isolated clips we choose the highest logit. For
+mixtures we score all four labels at a fixed probability threshold of
+0.5. Micro-F1 pools the true positives, false positives and false
+negatives across all mixture–label pairs.
+
+This example uses the same four ESC-50 classes and fold split as the
+TensorFlow example. Mix waveforms before computing features and pair
+clips only within each split. Prepare the files with
+`python3 scripts/prepare_environmental_audio.py` in the TensorFlow
+examples checkout. Set `DATAMUNGE_ENVIRONMENTAL_AUDIO_DIR` to the
+resulting dataset directory for a checkout outside the default location.
+
+```{cpp, results="markdown", file="figures/environmental_audio.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int classes = 4, samples = 16000;
+  const auto* configured = std::getenv("DATAMUNGE_ENVIRONMENTAL_AUDIO_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_ENVIRONMENTAL_AUDIO_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/environmental_audio";
+  const auto mel = n::linear_to_mel_weight_matrix(32,257,16000,60,7600);
+  const auto load = [&](const char* split) {
+    const auto named = n::load_npz((root/(std::string(split)+".npz")).string());
+    const std::map<std::string,n::Tensor> arrays(named.begin(),named.end());
+    const auto& wave = arrays.at("waveform");
+    const auto& labels = arrays.at("label");
+    const auto count = labels.numel();
+    if (wave.shape()!=n::Shape{count,samples} || labels.shape()!=n::Shape{count})
+      throw std::runtime_error("Unexpected ESC-50 fixture shape");
+    const auto audio = wave.to_vector<float>();
+    const auto category = labels.to_vector<int>();
+    std::array<std::vector<std::int64_t>,classes> by_class;
+    for (std::int64_t row=0; row<count; ++row) by_class.at(category[row]).push_back(row);
+    for (const auto& group : by_class)
+      if (group.empty()) throw std::runtime_error("ESC-50 fixture missing a class");
+    auto signals = audio;
+    signals.resize(2*count*samples);
+    std::vector<float> target(2*count*classes);
+    for (std::int64_t row=0; row<count; ++row) {
+      const auto label = category[row];
+      const auto other = (label+1+row%(classes-1))%classes;
+      const auto& group = by_class[other];
+      const auto second = group[row%group.size()];
+      for (int t=0; t<samples; ++t)
+        signals[(count+row)*samples+t] = .5f*(audio[row*samples+t]+audio[second*samples+t]);
+      target[row*classes+label] = 1;
+      target[(count+row)*classes+label] = 1;
+      target[(count+row)*classes+other] = 1;
+    }
+    const auto power = n::power_spectrogram(n::stft(n::from_vector(signals,{2*count,samples}),400,320,512));
+    return std::pair{n::log_mel_spectrogram(power,mel),n::from_vector(target,{2*count,classes})};
+  };
+  const auto [fit,target] = load("fit");
+  const auto [test,truth] = load("test");
+  n::ParameterStore model(98120);
+  const auto initial = n::sigmoid_cross_entropy(n::audio_tag_logits(model,test,classes),truth).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.size(0),16,98121);
+  for (int epoch=0; epoch<3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto scores = n::audio_tag_logits(model,n::take_rows(fit,rows),classes);
+      optimizer.minimize(n::sigmoid_cross_entropy(scores,n::take_rows(target,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto logits = n::audio_tag_logits(model,test,classes);
+  const auto loss = n::sigmoid_cross_entropy(logits,truth);
+  const auto label = truth.to_vector<float>(), prediction = logits.to_vector<float>();
+  const auto count = test.size(0)/2;
+  int correct=0,tp=0,fp=0,fn=0;
+  for (std::int64_t row=0; row<count; ++row) {
+    const auto begin = prediction.begin()+row*classes;
+    correct += label[row*classes+(std::max_element(begin,begin+classes)-begin)]==1;
+    for (int c=0; c<classes; ++c) {
+      const auto i = (count+row)*classes+c;
+      const bool actual=label[i]==1, tagged=prediction[i]>=0;
+      tp+=actual&&tagged;
+      fp+=!actual&&tagged;
+      fn+=actual&&!tagged;
+    }
+  }
+  if (!(loss.item()<initial)) return 1;
+  std::print("| Initial loss | Fitted loss | Clean accuracy | Mixture micro-F1 | TP / FP / FN |\n");
+  std::print("|---:|---:|---:|---:|---:|\n| {:.4f} | {:.4f} | {}/{} | {:.4f} | {} / {} / {} |\n",
+      initial,loss.item(),correct,count,2.*tp/(2*tp+fp+fn),tp,fp,fn);
+
+  const std::array<std::string,classes> names{"Dog","Rain","Chainsaw","Clock tick"};
+  const auto mixture = n::sigmoid(n::select(logits,0,count)).to_vector<double>();
+  auto plot = dm::graphics::RPlot::create();
+  for (int c=0;c<classes;++c)
+    plot.points({double(c+1)},{mixture[c]},names[c]+(label[count*classes+c]==1?" (present)":""),
+        label[count*classes+c]==1 ? dm::graphics::RGB{37,99,235} : dm::graphics::RGB{148,163,184});
+  plot.lines({.8,4.2},{.5,.5},"Decision threshold",{234,88,12})
+      .title("Tag scores for the first held-out mixture").x_label("Class index").y_label("Probability")
+      .y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,420).save_svg("build/environmental_audio.svg");
+  n::save_npz("build/environmental_audio.npz",{{"features",test},{"labels",truth},{"logits",logits},{"loss",loss}});
+}
+```
+// result_begin: markdown
+| Initial loss | Fitted loss | Clean accuracy | Mixture micro-F1 | TP / FP / FN |
+|---:|---:|---:|---:|---:|
+| 0.8559 | 0.4642 | 22/32 | 0.6500 | 39 / 17 / 25 |
+\image(figures/environmental_audio.svg)
+// result_end

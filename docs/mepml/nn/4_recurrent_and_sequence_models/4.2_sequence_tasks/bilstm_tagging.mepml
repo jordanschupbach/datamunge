@@ -808,7 +808,7 @@ int main(int argc, char** argv) {
 // epoch3 validationLoss=1.9246 POS=0.257246 entityF1=0
 // testPOS=0.230404 entityF1=0 wordMajorityPOS=0.529691 wordMajorityF1=0.328358 allOtokenAccuracy=0.824228 (TF recorded testPOS=0.213777 entityF1=0 wordMajority 0.529691/0.328358);originalTimeBiLSTM/futureContext/masking/restore/labelFree/immutable PASS
 // Artifacts:/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/recovered-language/models/bilstm_tagging/index.html
-// wall 0.363676 s
+// wall 0.902375 s
 // result_end
 
 > Actual source diagnostics

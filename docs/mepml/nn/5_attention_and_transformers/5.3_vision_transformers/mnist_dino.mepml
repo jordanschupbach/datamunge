@@ -1,0 +1,116 @@
+//? Title: DINO self-distillation on MNIST
+//? Lang: en
+
+> DINO self-distillation on MNIST
+
+DINO trains a student to match a teacher’s prototype distribution across
+different crops of the same image. The student sees two global crops
+and one local crop. The teacher sees only the global crops. Excluding
+each identical-view pair leaves four cross-entropy terms. Centering and
+sharpening the teacher scores shape the targets. The teacher weights
+follow an exponential moving average of the updated student weights.
+
+Each crop becomes sixteen 7×7 patches. One Transformer block encodes
+the patches, which are then averaged into a 24-dimensional descriptor.
+A normalized projection head scores 32 prototypes. The fit uses only
+pixels. A five-nearest-neighbor probe uses labels afterward to measure
+how well the frozen teacher descriptors separate digits.
+
+The experiment uses 1,024 official training images and 256 official
+test images. It follows the upstream crop stream and 96-update schedule
+with native parameter initialization.
+
+```{cpp, results="markdown", file="figures/mnist_dino.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto dir=dm::datasets::fetch("mnist");
+  const auto train=n::load_mnist(dir,"train"), test=n::load_mnist(dir,"test");
+  std::vector<std::int64_t> fit_ids(train.images.size(0)), test_ids(test.images.size(0));
+  std::iota(fit_ids.begin(),fit_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 random(41504);
+  std::shuffle(fit_ids.begin(),fit_ids.end(),random);
+  std::shuffle(test_ids.begin(),test_ids.end(),random);
+  fit_ids.resize(1024);
+  test_ids.resize(256);
+  const auto fit=n::take_rows(train.images,fit_ids), held=n::take_rows(test.images,test_ids);
+  const auto fit_y=n::take_rows(train.labels,fit_ids), held_y=n::take_rows(test.labels,test_ids);
+  n::ParameterStore student(41501), teacher(41502);
+  auto center=n::zeros({32});
+  {
+    n::NoGradGuard guard;
+    const auto sample=n::slice_axis(fit,0,0,1);
+    n::mnist_dino_encode(student,sample);
+    n::mnist_dino_encode(teacher,sample);
+    teacher.copy_from(student,1.);
+  }
+  const auto features=[&](const n::Tensor& images) {
+    n::NoGradGuard guard;
+    return n::mnist_dino_encode(teacher,images).features;
+  };
+  const auto fit_before=features(fit), test_before=features(held);
+  n::Optimizer optimizer(student,.001,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit_ids.size(),32,41505);
+  std::filesystem::create_directories("build");
+  std::vector<double> epoch, history;
+  int updates=0;
+  for (int i=1;i<=3;++i) {
+    order.begin_epoch();
+    double total=0;
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto crops=n::mnist_dino_crops(n::take_rows(fit,rows),random);
+      std::array<n::Tensor,2> target;
+      {
+        n::NoGradGuard guard;
+        for(int view=0;view<2;++view) target[view]=n::mnist_dino_encode(teacher,crops[view]).logits;
+      }
+      std::array<n::Tensor,3> scores;
+      for(int view=0;view<3;++view) scores[view]=n::mnist_dino_encode(student,crops[view]).logits;
+      auto loss=n::dino_cross_view_loss(scores,target,center);
+      total+=loss.item();
+      if (updates==0)
+        n::save_npz("build/mnist_dino_first_step.npz",
+            {{"crop0",crops[0]},{"crop1",crops[1]},{"crop2",crops[2]}});
+      optimizer.minimize(loss);
+      teacher.copy_from(student,1.f-.98f);
+      center=.9f*center+(1.f-.9f)*.5f*(n::mean(target[0],{0})+n::mean(target[1],{0}));
+      ++updates;
+    }
+    epoch.push_back(i);
+    history.push_back(total/32);
+  }
+  if (updates!=96 || !std::isfinite(history.back())) throw std::runtime_error("invalid DINO training trace");
+  const auto fit_after=features(fit), test_after=features(held);
+  const auto accuracy=[&](const n::Tensor& gallery,const n::Tensor& queries) {
+    const auto prediction=n::descriptor_knn(gallery,fit_y,queries,10,5).predicted;
+    return n::mean(n::cast(n::equal(prediction,held_y),n::DType::Float64)).item();
+  };
+  const std::vector<double> probe{accuracy(fit_before,test_before),accuracy(fit_after,test_after)};
+  std::print("| Updates | Final training cross-entropy | 5-NN before | 5-NN after |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.4f} | {:.2f}% | {:.2f}% |\n",updates,history.back(),100*probe[0],100*probe[1]);
+  n::save_npz("build/mnist_dino_features.npz",{{"fit_ids",n::from_vector(fit_ids)},
+      {"test_ids",n::from_vector(test_ids)},{"fit_before",fit_before},{"test_before",test_before},
+      {"fit_after",fit_after},{"test_after",test_after},{"fit_y",fit_y},{"test_y",held_y}});
+  auto curve=dm::graphics::RPlot::create();
+  curve.line(epoch,history).title("Self-distillation").x_label("Epoch").y_label("Training cross-entropy");
+  auto outcomes=dm::graphics::RPlot::create();
+  outcomes.bars(std::vector<double>{0,1},probe,"",{37,99,235}).ylim(0,1)
+      .title("Frozen teacher descriptors").x_label("0 = before, 1 = after").y_label("Held-out 5-NN accuracy");
+  dm::graphics::RLayout::create(1,2).add(curve).add(outcomes).size(1080,420).fit_panels()
+      .save_svg("build/mnist_dino.svg");
+}
+```
+// result_begin: markdown
+| Updates | Final training cross-entropy | 5-NN before | 5-NN after |
+|---:|---:|---:|---:|
+| 96 | 2.6856 | 45.31% | 47.27% |
+\image(figures/mnist_dino.svg)
+// result_end
+\caption(Student cross-entropy during training and held-out digit classification from frozen teacher descriptors.)
+\alttext(A line chart shows training cross-entropy and a bar chart compares neighbor accuracy before and after training.)
+
+> Reference
+
+- [Caron et al. (2021), Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/abs/2104.14294).

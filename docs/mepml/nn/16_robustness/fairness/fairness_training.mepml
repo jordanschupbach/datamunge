@@ -1,0 +1,91 @@
+//? Title: Score parity and adversarial debiasing
+//? Lang: en
+
+> Score parity and adversarial debiasing
+
+Training labels depend on both latent skill and group. In the held-out
+population, labels depend on skill alone. A linear classifier sees
+noisy measurements of skill and a strong group proxy.
+
+The constrained fit projects the weights onto the hyperplane where the
+two training groups have equal mean logits. A separate adversarial fit
+trains a group classifier on the task logit, then reverses its gradient
+when updating the task weights. The ordinary fit provides a baseline.
+We compare held-out selection and conditional error gaps separately,
+since parity of mean logits alone does not imply either metric.
+
+```{cpp, results="markdown", file="figures/fairness_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr auto dtype=n::DType::Float64;
+  const auto draw=[](unsigned seed,bool confounded) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<double> normal;
+    std::vector<double> x(320*3),y(320),g(320);
+    for (int i=0;i<320;++i) {
+      const double sign=i%2 ? 1. : -1.;
+      const double skill=normal(rng),variation=normal(rng);
+      x[3*i]=1;
+      x[3*i+1]=skill+.65*normal(rng);
+      x[3*i+2]=sign+.25*variation;
+      y[i]=skill+(confounded?sign*.9:0)>0;
+      g[i]=i%2;
+    }
+    return std::tuple{n::from_vector(x,{320,3}),n::from_vector(y,{320,1}),n::from_vector(g,{320,1})};
+  };
+  const auto [fit,y,group]=draw(30502,true);
+  const auto [test,truth,test_group]=draw(30503,false);
+  const auto difference=n::mean((2*group-1)*fit,{0}).reshape({3,1})*2;
+  const auto adversary=[](const auto& logits,const auto& weight) {
+    return n::matmul(n::concat({n::ones_like(logits),logits},1),weight);
+  };
+  std::vector<n::Tensor> weights;
+  auto plot=dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB,3> colors{{{37,99,235},{234,88,12},{22,163,74}}};
+  std::print("| Method | Training mean-logit gap | Test correct | Selection gap | TPR gap | FPR gap |\n"
+             "|---|---:|---:|---:|---:|---:|\n");
+  for (int mode=0;mode<3;++mode) {
+    auto w=n::zeros({3,1},dtype),a=n::zeros({2,1},dtype);
+    for (int i=0;i<60;++i) {
+      w.requires_grad_(true);
+      const auto logits=n::matmul(fit,w);
+      auto loss=n::sigmoid_cross_entropy(logits,y);
+      if (mode==2) {
+        a.requires_grad_(true);
+        const auto group_loss=n::sigmoid_cross_entropy(adversary(logits.detach(),a),group);
+        a=(a-.5*n::grad(group_loss,{a})[0]).detach();
+        loss=loss+n::sigmoid_cross_entropy(adversary(n::gradient_reversal(logits,1.5),a),group);
+      }
+      w=(w-.35*n::grad(loss,{w})[0]).detach();
+      if (mode==1) w=w-n::sum(w*difference)*difference/n::sum(n::square(difference));
+    }
+    weights.push_back(w.reshape({3}));
+    const auto logits=n::matmul(test,w);
+    const auto result=n::group_fairness_rates(logits.to_vector<double>(),truth.to_vector<int>(),
+                                             test_group.to_vector<int>(),2,std::nextafter(0.,1.));
+    const auto gaps=n::group_fairness_gaps(result[0],result[1]);
+    const auto correct=n::sum(n::equal(n::greater(logits,0).to(dtype),truth).to(n::DType::Int32)).item();
+    const auto gap=std::abs(n::sum(difference*w).item());
+    if (mode==1 && gap>1e-12) return 1;
+    const std::string name=std::array{"Ordinary","Constraint","Adversarial"}[mode];
+    std::print("| {} | {:.6f} | {:.0f}/320 | {:.6f} | {:.6f} | {:.6f} |\n",
+        name,gap,correct,*gaps.demographic_parity,*gaps.tpr,*gaps.fpr);
+    plot.points({0,1,2},{*gaps.demographic_parity,*gaps.tpr,*gaps.fpr},name,colors[mode]);
+  }
+  plot.title("Held-out fairness gaps").x_label("Selection (0), TPR (1), FPR (2)").y_label("Absolute gap");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/fairness_training.svg");
+  n::save_npz("build/fairness_training.npz",{{"fit_x",fit},{"fit_y",y},{"fit_g",group},
+      {"test_x",test},{"test_y",truth},{"test_g",test_group},{"models",n::stack(weights)}});
+}
+```
+// result_begin: markdown
+| Method | Training mean-logit gap | Test correct | Selection gap | TPR gap | FPR gap |
+|---|---:|---:|---:|---:|---:|
+| Ordinary | 3.814592 | 194/320 | 0.706250 | 0.784932 | 0.658537 |
+| Constraint | 0.000000 | 255/320 | 0.087500 | 0.034860 | 0.059258 |
+| Adversarial | 0.958233 | 245/320 | 0.187500 | 0.205704 | 0.246651 |
+\image(figures/fairness_training.svg)
+// result_end

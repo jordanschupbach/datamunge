@@ -1,0 +1,109 @@
+//? Title: BYOL with a moving-average target encoder
+//? Lang: en
+
+> BYOL with a moving-average target encoder
+
+Bootstrap Your Own Latent trains an online encoder and predictor to
+match normalized target projections from the opposite crop. The loss
+averages squared distances in both view directions. Initialize the target
+encoder from the online encoder. After every Adam update to the online
+encoder and predictor, move the target 5% of the way toward the updated
+online parameters. The optimizer and target update use distinct steps.
+
+The compact example trains on fresh paired crops. The held-out batch
+tracks alignment, average feature spread, and whether the nearest target
+embedding belongs to the same source image.
+
+```{cpp, results="markdown", file="figures/byol_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::mt19937 training(50004), testing(50005);
+  const auto test = n::synthetic_contrastive_views(testing, 32, true);
+  n::ParameterStore online(50001), target(50002), predictor(50003);
+  const auto forward = [&](const n::Tensor &x) { return n::byol(online, target, predictor, x); };
+  forward(test.views);
+  target.copy_from(online);
+  auto trainable = online.parameters();
+  const auto predictor_parameters = predictor.parameters();
+  trainable.insert(trainable.end(), predictor_parameters.begin(), predictor_parameters.end());
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(trainable, .008, config);
+  std::filesystem::create_directories("build");
+  const auto snapshot = [](const n::ParameterStore &p) {
+    return n::from_vector(p.flatten()).to(n::DType::Float32);
+  };
+  const auto pair = n::concat({n::arange(32, 64), n::arange(0, 32)}, 0).to(n::DType::Int64);
+
+  std::vector<double> epochs, losses, spread, retrieval;
+  std::print("| Epoch | Held-out loss | Feature spread | Nearest positive |\n"
+             "|---:|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard no_grad;
+      const auto held = forward(test.views);
+      const auto centered = held.target - n::mean(held.target, {0}, true);
+      const auto nearest = n::nt_xent(held.target).nearest;
+      const auto hits = n::count_nonzero(n::equal(nearest, pair)).item<int>();
+      epochs.push_back(epoch);
+      losses.push_back(held.loss.item());
+      spread.push_back(n::mean(n::sqrt(n::mean(n::square(centered), {0}))).item());
+      retrieval.push_back(hits / 64.);
+      std::print("| {} | {:.6f} | {:.6f} | {}/64 |\n", epoch, losses.back(), spread.back(), hits);
+    }
+    if (epoch < 3)
+      for (int step = 0; step < 16; ++step) {
+        const auto batch = n::synthetic_contrastive_views(training, 32, true);
+        const auto path = forward(batch.views);
+        const auto before = snapshot(target);
+        adam.minimize(path.loss);
+        const auto after_gradient = snapshot(target);
+        const auto source = snapshot(online);
+        target.copy_from(online, 1. - .95);
+        const auto after_ema = snapshot(target);
+        if (path.target.requires_grad() || n::max(n::abs(before - after_gradient)).item() != 0. ||
+            n::max(n::abs(after_ema - (.95 * before + .05 * source))).item() > 2e-7)
+          throw std::runtime_error("BYOL target update invariant failed");
+        n::save_npz("build/byol_step" + std::to_string(16 * epoch + step) + ".npz",
+            {{"target_before", before}, {"target_after_gradient", after_gradient},
+             {"online_after_gradient", source}, {"target_after_ema", after_ema},
+             {"online", path.online}, {"target", path.target}, {"per_view", path.per_view},
+             {"loss", path.loss}});
+      }
+  }
+
+  auto loss_plot = dm::graphics::RPlot::create();
+  loss_plot.lines(epochs, losses, "Held-out loss", {37, 99, 235})
+      .title("Alignment loss").x_label("Epoch").y_label("Squared row distance");
+  auto spread_plot = dm::graphics::RPlot::create();
+  spread_plot.lines(epochs, spread, "Feature spread", {22, 120, 97})
+      .title("Target spread").x_label("Epoch").y_label("Mean feature standard deviation");
+  auto retrieval_plot = dm::graphics::RPlot::create();
+  retrieval_plot.lines(epochs, retrieval, "Nearest positive", {173, 83, 46})
+      .title("Nearest-positive retrieval").x_label("Epoch").y_label("Fraction of views").y_limits(0, 1);
+  dm::graphics::RLayout::create(1, 3).add(loss_plot).add(spread_plot).add(retrieval_plot)
+      .size(1230, 390).fit_panels().save_svg("build/byol_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out loss | Feature spread | Nearest positive |
+|---:|---:|---:|---:|
+| 0 | 2.114650 | 0.158957 | 13/64 |
+| 1 | 0.462899 | 0.154790 | 12/64 |
+| 2 | 0.236746 | 0.129368 | 15/64 |
+| 3 | 0.136598 | 0.123933 | 18/64 |
+\image(figures/byol_fit.svg)
+// result_end
+\caption(Held-out BYOL alignment, feature spread and matching-crop retrieval.)
+\alttext(Three plots show held-out squared alignment loss, target feature spread and matching-crop retrieval by epoch.)
+
+On this fixture, held-out alignment improved and the final representation
+retrieved more positive pairs than at initialization. Average feature spread
+fell modestly over the same updates.
+
+> Reference
+
+- [Grill et al. (2020), Bootstrap Your Own Latent](https://arxiv.org/abs/2006.07733).

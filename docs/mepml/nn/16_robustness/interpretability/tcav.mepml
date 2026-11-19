@@ -1,0 +1,75 @@
+//? Title: Concept activation vectors and TCAV
+//? Lang: en
+
+> Concept activation vectors and TCAV
+
+Fit a linear probe to distinguish concept-positive from
+concept-negative hidden activations. Here the concept is whether
+the first input coordinate is positive. The probe's slopes define
+a direction in activation space, and its intercept predicts the
+concept label with the slopes.
+
+For a class logit, take the dot product of its activation gradient
+with that direction. The TCAV score is the fraction of positive
+derivatives among held-out rows assigned to that class. The plot
+shows those derivatives relative to zero. This experiment measures
+local sensitivity for one fixed nonlinear classifier and one probe.
+
+```{cpp, results="markdown", file="figures/tcav.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> uniform(-1,1);
+    std::vector<double> x(count*3);
+    for (auto& value:x) value=uniform(rng);
+    return n::from_vector(x,{count,3});
+  };
+  const auto w=n::from_vector(std::vector<double>{1.4,.35,-.6,.25,.2,-1,.8,.5,-.15,.6,.3,-.9},{3,4});
+  const auto fit=draw(256,51621),test=draw(128,51622);
+  const auto fit_h=n::tanh(n::matmul(fit,w));
+  auto test_h=n::tanh(n::matmul(test,w));
+  test_h.requires_grad_(true);
+  const auto target=n::where(n::greater(n::slice_axis(fit,1,0,1),0),
+      n::ones({256,1},n::DType::Float64),-1);
+  const auto coefficients=n::fit_concept_probe(fit_h,target,.15);
+  const auto probe=n::matmul(n::concat({n::ones({128,1},n::DType::Float64),test_h},1),coefficients);
+  const auto concept_hit=n::sum(n::equal(n::greater(probe,0),
+      n::greater(n::slice_axis(test,1,0,1),0)).to(n::DType::Int32)).item();
+  const auto a=n::slice_axis(test_h,1,0,1),b=n::slice_axis(test_h,1,1,2),c=n::slice_axis(test_h,1,2,3);
+  const auto first=a+.8*(a*b),second=n::square(a)-.4*c;
+  const auto ga=n::grad(n::sum(first),{test_h},{.retain_graph=true})[0],gb=n::grad(n::sum(second),{test_h})[0];
+  const auto sensitivity=n::concat({n::concept_sensitivity(ga,coefficients),
+                                   n::concept_sensitivity(gb,coefficients)},1);
+  const auto classes=n::argmax(n::concat({first,second},1));
+  const auto labels=classes.to_vector<int>();
+  const auto derivative=sensitivity.to_vector<double>();
+  std::array<std::vector<double>,2> values;
+  std::array<int,2> positive{};
+  for (int i=0;i<128;++i) {
+    const auto id=labels[i];
+    const auto value=derivative[2*i+id];
+    values[id].push_back(value);
+    positive[id]+=value>0;
+  }
+  std::print("Held-out concept probe {:.0f}/128. Positive derivatives {}/{} for class 0 and {}/{} for class 1.\n",
+      concept_hit,positive[0],values[0].size(),positive[1],values[1].size());
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(values[0],std::vector<double>(values[0].size(),0),"Class 0",{37,99,235})
+      .points(values[1],std::vector<double>(values[1].size(),1),"Class 1",{234,88,12})
+      .lines({0,0},{-.2,1.2},"Zero sensitivity",{148,163,184})
+      .title("Directional derivative along the concept vector").x_label("Derivative")
+      .y_label("Predicted class").y_limits(-.2,1.2);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/tcav.svg");
+  n::save_npz("build/tcav.npz",{{"fit",fit},{"fit_activation",fit_h},{"fit_concept",target},
+      {"test",test},{"test_activation",test_h},{"coefficient",coefficients},
+      {"sensitivity",sensitivity},{"classes",classes}});
+}
+```
+// result_begin: markdown
+Held-out concept probe 127/128. Positive derivatives 40/40 for class 0 and 17/88 for class 1.
+\image(figures/tcav.svg)
+// result_end

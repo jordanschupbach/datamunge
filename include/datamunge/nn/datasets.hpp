@@ -9,10 +9,13 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
+#include "datamunge/nn/autograd.hpp"
 #include "datamunge/nn/tensor.hpp"
+#include "datamunge/nn/training.hpp"
 
 namespace datamunge::nn {
 
@@ -20,6 +23,70 @@ struct ImageDataset {
   Tensor images;  // float32 [N, H, W, C] in [0, 1]
   Tensor labels;  // int64 [N]
 };
+
+/// @brief A fitting and validation split with paired source row indices.
+/// @par Example
+/// @code
+/// namespace n = dm::nn;
+/// n::ImageDataset data{n::zeros({5, 4, 4, 1}), n::arange(0, 5).to(n::DType::Int64)};
+/// const auto split = n::split_image_holdout(data, 2, 7, 2);
+/// const auto count = split.fit.labels.numel(); // 2
+/// @endcode
+/// @see split_image_holdout()
+struct ImageHoldout {
+  ImageDataset fit;                          ///< Owned, detached fitting images and labels.
+  ImageDataset validation;                   ///< Owned, detached validation images and labels.
+  std::vector<std::int64_t> fit_rows;         ///< Zero-based source indices for fitting.
+  std::vector<std::int64_t> validation_rows;  ///< Zero-based source indices for validation.
+};
+
+/// @brief Shuffle labelled images and reserve a fixed number of validation rows.
+///
+/// Uses the seed and shuffle convention of BatchOrder. The validation rows are
+/// the tail of the permutation. An optional fitting cap keeps the first rows of
+/// the fitting pool, so changing the cap cannot change validation membership.
+/// Gathers images and labels in the same order without changing their dtypes or
+/// values. The split does not stratify label counts.
+/// @param data Images [N,H,W,C] and corresponding labels [N], already loaded.
+/// @param validation_rows Number of rows held out, between 1 and N-1.
+/// @param seed Seed of the row permutation. Defaults to zero.
+/// @param fit_limit Maximum fitting rows. Zero (default) uses all N-validation_rows rows.
+/// @return The two detached datasets and their source indices.
+/// @throws std::invalid_argument If tensor shapes, row counts or the fitting cap are invalid.
+/// @par Example
+/// @code
+/// namespace n = dm::nn;
+/// n::ImageDataset data{n::zeros({10, 4, 4, 1}), n::arange(0, 10).to(n::DType::Int64)};
+/// const auto split = n::split_image_holdout(data, 3, 2026);
+/// const auto count = split.fit.images.size(0); // 7
+/// @endcode
+/// @see ImageHoldout, BatchOrder, take_rows()
+inline ImageHoldout split_image_holdout(const ImageDataset& data, std::int64_t validation_rows,
+                                        std::uint64_t seed = 0, std::int64_t fit_limit = 0) {
+  if (!data.images.defined() || !data.labels.defined() || data.images.dim() != 4 ||
+      data.labels.dim() != 1 || data.images.size(0) != data.labels.size(0) ||
+      data.images.numel() == 0)
+    throw std::invalid_argument("image holdout requires nonempty [N,H,W,C] images and [N] labels");
+  const auto rows = data.images.size(0);
+  if (validation_rows < 1 || validation_rows >= rows || fit_limit < 0 ||
+      fit_limit > rows - validation_rows)
+    throw std::invalid_argument("image holdout has invalid validation size or fitting cap");
+
+  BatchOrder order(rows, rows, seed);
+  order.begin_epoch();
+  const auto permutation = order.next();
+  const auto available = rows - validation_rows;
+  const auto used = fit_limit == 0 ? available : fit_limit;
+
+  ImageHoldout split;
+  split.fit_rows.assign(permutation.begin(), permutation.begin() + used);
+  split.validation_rows.assign(permutation.begin() + available, permutation.end());
+  NoGradGuard guard;
+  split.fit = {take_rows(data.images, split.fit_rows), take_rows(data.labels, split.fit_rows)};
+  split.validation = {take_rows(data.images, split.validation_rows),
+                      take_rows(data.labels, split.validation_rows)};
+  return split;
+}
 
 /// Reads an IDX file (the MNIST format), gzip-compressed or not (".gz" is
 /// detected from the magic bytes). ubyte/byte/short data become int32,

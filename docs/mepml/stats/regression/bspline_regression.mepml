@@ -111,10 +111,10 @@ plot.save_svg("build/figs/bspline_fit_python.svg")
 )
 \tab(R,
 
-`BSplineRegression()` fits the same spline space. `native_rnorm(mean, sd, n)`
+`BSplineRegression$new()` fits the same spline space. `native_rnorm(mean, sd, n)`
 uses the shared C++ generator; `stats::rnorm(n, mean, sd)` remains available.
 
-```{r, nix-shell="git+file:../../../..#r", cmd="env R_LIBS_USER=../../../../build/r/library Rscript {file}", file="figures/bspline_fit_r.svg"}
+```{r, nix-shell="git+file:../../../..#report-r", file="figures/bspline_fit_r.svg"}
 suppressPackageStartupMessages(library(datamunger))
 
 invisible(set_seed(42L))
@@ -122,12 +122,12 @@ x <- as.numeric(unif(0, 1, 1000L))
 noise <- as.numeric(native_rnorm(0, 1, 1000L))
 y <- sin(20 / (x + 0.25)) + noise
 knots <- as.numeric(seql(0, 1, 100L))
-model <- BSplineRegression(x, y, knots, 3L)
+model <- BSplineRegression$new(x, y, knots, 3L)
 seqx <- as.numeric(seql(0, 1, 1000L))
 yhat <- as.numeric(model$predict(seqx))
-plot <- RPlot_create()
-invisible(plot$points(x, y, "Sampled Data", RGB("#2233ddaa")))
-invisible(plot$lines(seqx, yhat, "B-spline Fits", RGB("#ff66aa"), 5))
+plot <- RPlot$new()
+invisible(plot$points(x, y, "Sampled Data", RGB$new(34, 51, 221, 2 / 3)))
+invisible(plot$lines(seqx, yhat, "B-spline Fits", RGB$new(255, 102, 170), 5))
 invisible(plot$set_title("Cubic B-spline regression"))
 invisible(
   plot$set_subtitle(
@@ -140,7 +140,7 @@ invisible(plot$set_xlab("x"))
 invisible(plot$set_ylab("y"))
 invisible(plot$size(1000L, 600L))
 dir.create("build/figs", recursive = TRUE, showWarnings = FALSE)
-invisible(plot$save_svg("build/figs/bspline_fit_r.svg"))
+invisible(plot$save("build/figs/bspline_fit_r.svg"))
 ```
 // result_begin:
 // \image(figures/bspline_fit_r.svg)

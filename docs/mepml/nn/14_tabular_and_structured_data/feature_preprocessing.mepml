@@ -1,0 +1,84 @@
+//? Title: Frozen numeric standardization and categorical feature hashing
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit numeric moments on four training rows and reuse them for nine held-out
+rows. Add one-hot interval buckets and stable categorical hash buckets.
+)
+\toc
+
+Standardize by subtracting each training mean and dividing by its
+population standard deviation. Constant columns use unit scale, so
+changes in a held-out constant feature are still visible. The interval
+transform counts the boundaries less than or equal to each value.
+A value on a boundary therefore enters the higher bucket.
+
+Categorical hashing uses a deterministic FarmHash fingerprint modulo
+eight. It handles unseen strings and the empty string without fitting a
+vocabulary. Different strings may share a bucket. The result contains two
+standardized columns, four one-hot interval columns, and eight one-hot
+hash columns.
+
+```{cpp, results="markdown", file="figures/feature_preprocessing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <fstream>
+#include <print>
+
+int main() {
+  namespace n = dm::nn;
+  const auto training = n::tensor({{-4.,3.},{-1.,3.},{2.,3.},{7.,3.}});
+  const auto query = n::tensor({{-10.,3.},{-2.,3.},{-1.,2.},{0.,3.},{1.,4.},
+                                  {2.,3.},{20.,3.},{0.,3.},{0.,3.}});
+  const std::vector<std::string> categories{"oak","ash","oak","pine","unknown","elm","fir","","oak"};
+  const auto fit = n::fit_feature_standardizer(training);
+  const auto normalized = n::standardize_features(query,fit);
+  const auto field = n::slice(query,{0,0},{9,1}).reshape({9});
+  const auto buckets = n::bucketize_features(field,{-2.,0.,2.});
+  const auto hashes = n::hash_feature_buckets(categories,8);
+  const auto features = n::concat({normalized,n::one_hot(buckets,4),n::one_hot(hashes,8)},1);
+  const auto ids = hashes.to_vector<int>(), bin = buckets.to_vector<int>();
+  const auto values = normalized.to_vector<double>();
+  if (ids.front()!=ids.back() || features.shape()!=n::Shape{9,14})
+    throw std::runtime_error("unexpected encoded features");
+  std::println("| Category | Standardized numeric 0 | Standardized numeric 1 | Interval | Hash bucket |"
+               "\n| --- | ---: | ---: | ---: | ---: |");
+  for (std::size_t i=0;i<categories.size();++i)
+    std::println("| `{}` | {:.4f} | {:.4f} | {} | {} |",
+                 categories[i].empty()?"(empty)":categories[i],values[2*i],values[2*i+1],bin[i],ids[i]);
+
+  const std::string folder = "build/feature_preprocessing/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder+"features.npz",{{"fit",training},{"mean",fit.mean},{"scale",fit.scale},
+                                    {"probe",query},{"buckets",buckets},{"hashes",hashes},{"features",features}});
+  std::ofstream raw(folder+"categories.txt");
+  for (const auto& value:categories) raw << value << '\n';
+  raw.close();
+  if (!raw) throw std::runtime_error("could not save category fixture");
+
+  auto plot = dm::graphics::RPlot::create();
+  const auto rows = n::arange(1,10).to_vector<double>();
+  plot.points(rows,n::slice(normalized,{0,0},{9,1}).to_vector<double>(),"Numeric 0",{37,99,235},5)
+      .points(rows,n::slice(normalized,{0,1},{9,1}).to_vector<double>(),"Numeric 1",{191,88,34},5)
+      .title("Held-out values transformed with frozen training moments")
+      .x_label("Held-out row").y_label("Standardized value").save_svg(folder+"normalized.svg");
+  std::filesystem::copy_file(folder+"normalized.svg","figures/feature_preprocessing.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Category | Standardized numeric 0 | Standardized numeric 1 | Interval | Hash bucket |
+| --- | ---: | ---: | ---: | ---: |
+| `oak` | -2.7080 | 0.0000 | 0 | 6 |
+| `ash` | -0.7385 | 0.0000 | 1 | 4 |
+| `oak` | -0.4924 | -1.0000 | 1 | 6 |
+| `pine` | -0.2462 | 0.0000 | 2 | 6 |
+| `unknown` | 0.0000 | 1.0000 | 2 | 7 |
+| `elm` | 0.2462 | 0.0000 | 3 | 0 |
+| `fir` | 4.6775 | 0.0000 | 3 | 2 |
+| `(empty)` | -0.2462 | 0.0000 | 2 | 7 |
+| `oak` | -0.2462 | 0.0000 | 2 | 6 |
+\image(figures/feature_preprocessing.svg)
+// result_end

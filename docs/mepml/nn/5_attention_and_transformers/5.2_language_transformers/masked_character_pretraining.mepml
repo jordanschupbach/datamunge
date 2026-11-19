@@ -1,0 +1,110 @@
+//? Title: Bidirectional BERT masked-character pretraining
+//? Lang: en
+
+> Bidirectional BERT masked-character pretraining
+
+The encoder sees both sides of each masked character. Ten positions per
+64-character sequence contribute to the objective. Each selected token is
+usually replaced with MASK, sometimes replaced by a random character,
+and sometimes kept. Training resamples the selected positions. Validation
+and test use fixed corruptions from separate random streams.
+
+The encoder uses two blocks with three attention heads each. The
+prediction head shares the character embedding table, excluding the MASK
+entry. The figure shows validation loss and one held-out attention head.
+Use `DM_CHARACTER_CORPUS` to supply the upstream character archive.
+
+```{cpp, results="markdown", file="figures/masked_character_pretraining.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n=dm::nn;
+
+int main() {
+  n::set_num_threads(2);
+  const char *configured=std::getenv("DM_CHARACTER_CORPUS");
+  const auto path=configured?std::filesystem::path(configured):
+      std::filesystem::path(dm::datasets::prepare_example_data("character_rnn"))/"character_rnn.npz";
+  std::map<std::string,n::Tensor> data;
+  for(const auto &entry:n::load_npz(path.string())) data.insert(entry);
+  const auto fit=data.at("fit_input"), val=data.at("validation_input"), gold=data.at("test_input");
+  std::mt19937 training(41408), validation(41409), testing(41410);
+  const auto held=n::corrupt_mlm_characters(gold,testing);
+  const auto valid=n::corrupt_mlm_characters(val,validation);
+  n::ParameterStore model(41406);
+  const auto score=[](const n::Tensor &z,const n::Tensor &y,const n::Tensor &selected) {
+    return n::sum(selected*n::sparse_softmax_cross_entropy(z,y,n::Reduction::None))/n::sum(selected);
+  };
+  const auto loss=[&](const auto &batch,const n::Tensor &y) {
+    return score(std::get<0>(n::character_mlm(model,batch[0])),y,batch[1]);
+  };
+  loss(valid,val);
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.003,config);
+  n::BatchOrder order(fit.shape()[0],8,41411);
+  std::vector<double> history;
+  std::print("| Epoch | Validation masked NLL |\n|---:|---:|\n");
+  for(int epoch=0;epoch<=3;++epoch) {
+    { n::NoGradGuard guard; history.push_back(loss(valid,val).item()); }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if(epoch==3) break;
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto y=n::gather(fit,n::from_vector(rows));
+      adam.minimize(loss(n::corrupt_mlm_characters(y,training),y));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto [z,hidden,attention]=n::character_mlm(model,held[0]);
+  const auto nll=score(z,gold,held[1]);
+  const auto correct=n::logical_and(n::equal(n::argmax(z,2),gold),n::greater(held[1],0.));
+  std::print("Held-out masked NLL {:.6f}, {}/{} selected characters correct.\n",
+    nll.item(),n::count_nonzero(correct).item<int>(),n::count_nonzero(held[1]).item<int>());
+  const auto altered=n::where(n::greater(held[1],0.),gold,0.);
+  if(score(z,altered,held[1]).item()!=nll.item())
+    throw std::runtime_error("unselected labels affect loss");
+  const auto context=n::select(held[0],0,0).to_vector<int>();
+  const auto probe=[&](int pos){
+    auto sequence=context;
+    sequence[32]=65;
+    if(pos>=0) sequence[pos]=(sequence[pos]+1)%65;
+    return n::select(std::get<0>(n::character_mlm(model,n::from_vector(sequence,{1,64}))),1,32);
+  };
+  const auto before=probe(-1);
+  for(int pos : {0,63})
+    if(n::sum(n::abs(before-probe(pos))).item()<=1e-5)
+      throw std::runtime_error("expected bidirectional context");
+  std::filesystem::create_directories("build");
+  n::save_npz("build/masked_character_pretraining.npz",{{"input",held[0]},{"gold",gold},
+      {"selected",held[1]},{"operation",held[2]},{"logits",z},{"nll",nll},
+      {"attention0",attention[0]},{"attention1",attention[1]}});
+  model.save("build/masked_character_weights.npz");
+  auto curve=dm::graphics::RPlot::create();
+  curve.lines({0.,1.,2.,3.},history,"Validation",{37,99,235})
+      .title("Masked-character training").x_label("Epoch").y_label("Validation NLL");
+  const auto matrix=n::select(n::select(attention[1],0,0),0,0);
+  std::vector<std::vector<double>> columns;
+  for(int key=0;key<64;++key) columns.push_back(n::select(matrix,1,key).to_vector<double>());
+  const auto axis=n::arange(0,64).to_vector<double>();
+  auto heat=dm::graphics::RPlot::create();
+  heat.image(axis,axis,columns,dm::graphics::terrain_colors(32),0.,n::max(matrix).item())
+      .title("Second block, first head").x_label("Key position").y_label("Query position");
+  dm::graphics::RLayout::create(1,2).add(curve).add(heat).size(1120,480)
+      .fit_panels().save_svg("build/masked_character_pretraining.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation masked NLL |
+|---:|---:|
+| 0 | 4.164522 |
+| 1 | 3.546706 |
+| 2 | 3.431380 |
+| 3 | 3.430182 |
+Held-out masked NLL 3.459945, 53/320 selected characters correct.
+\image(figures/masked_character_pretraining.svg)
+// result_end
+\caption(Validation loss and the fitted attention weights for one held-out encoder head.)
+\alttext(A line chart shows validation loss and a heatmap shows attention between character positions.)
+
+> Reference
+
+- [Devlin et al. (2019), BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://aclanthology.org/N19-1423/).

@@ -1,0 +1,170 @@
+//? Title: Forecast 96 steps ahead with DLinear
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a direct multi-step linear model with separate projections for trend
+and seasonal variation. Compare it with persistence and seasonal naive
+at 97 chronological test origins.
+)
+\toc
+
+DLinear smooths the 96 observed samples with a centered 25-sample moving
+average. At the ends of the input window it repeats the nearest observed
+value. Subtracting the trend gives the seasonal component. Two affine
+maps independently project the components to 96 future values. Their
+sum is trained end to end by minimizing mean squared error. Each lead has
+its own weights, so the model forecasts the entire horizon in one pass.
+[Zeng et al., Are Transformers Effective for Time Series Forecasting?|https://arxiv.org/abs/2205.13504]
+
+The synthetic series mixes a modulated daily cycle, a half-day cycle,
+and a slower oscillation. Training targets end before index 768, and
+validation targets stay within indices 768–959. Scaling uses only the
+training prefix. The test starts at index 960 and rolls forward one
+observation at a time. Every method uses only pre-origin observations
+for each prediction.
+
+```{cpp, results="markdown", file="figures/dlinear_forecast.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <numbers>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int width = 96, fit_end = 768, test_begin = 960, end = 1152;
+  std::vector<double> samples(end);
+  for (int t = 0; t < end; ++t) {
+    const auto phase = 2 * std::numbers::pi * t;
+    samples[t] = (1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                 + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73);
+  }
+  const auto series = n::from_vector(samples);
+  const auto prefix = n::slice(series, {0}, {fit_end});
+  const auto center = n::mean(prefix).item();
+  const auto scale = n::sqrt(n::mean(n::square(prefix - center))).item();
+  const auto normalized = ((series - center) / scale).to(n::DType::Float32);
+  const auto origins = [](int first, int last) {
+    std::vector<std::int64_t> indices(last - width - first + 1);
+    std::iota(indices.begin(), indices.end(), first);
+    return indices;
+  };
+  const auto fit_indices = origins(width, fit_end);
+  const auto test_indices = origins(test_begin, end);
+  const auto fit = n::ForecastWindows(normalized, fit_indices, width, width);
+  const auto val = n::ForecastWindows(normalized, origins(fit_end, test_begin), width, width);
+  const auto test = n::ForecastWindows(normalized, test_indices, width, width);
+  n::ParameterStore parameters;
+  const auto predict = [&](const n::Tensor& history) {
+    return n::dlinear(parameters, "forecast", history.reshape({-1, width}), width);
+  };
+  (void)predict(fit.history);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(fit_indices.size(), 32, 41381);
+
+  std::println("| Epoch | Validation RMSE |\n| ---: | ---: |");
+  for (int epoch = 1; epoch <= 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto residual = predict(n::take_rows(fit.history, rows)).forecast
+                            - n::take_rows(fit.target, rows);
+      optimizer.step(n::grad(n::mean(n::square(residual)), parameters.parameters()));
+    }
+    n::NoGradGuard guard;
+    const auto residual = predict(val.history).forecast - val.target;
+    std::println("| {} | {:.6f} |", epoch, scale * n::sqrt(n::mean(n::square(residual))).item());
+  }
+
+  n::NoGradGuard guard;
+  const auto result = predict(test.history);
+  auto changed = samples;
+  for (int t = test_begin; t < end; ++t) changed[t] += 100;
+  const auto altered = ((n::from_vector(changed) - center) / scale).to(n::DType::Float32);
+  const auto first = n::ForecastWindows(normalized, {test_begin}, width, width);
+  const auto perturbed = n::ForecastWindows(altered, {test_begin}, width, width);
+  if (first.target.to_vector<float>() == perturbed.target.to_vector<float>() ||
+      predict(first.history).forecast.to_vector<float>() !=
+      predict(perturbed.history).forecast.to_vector<float>())
+    throw std::runtime_error("Changing future observations changed the forecast");
+
+  const auto baseline = n::forecast_baselines(series, test_indices, fit_end, 24, width, 6, 4);
+  const auto persistence = n::select(baseline.forecasts, 1, 0);
+  const auto seasonal = n::select(baseline.forecasts, 1, 1);
+  const auto forecast = result.forecast.to(n::DType::Float64) * scale + center;
+  const auto rmse = [&](const n::Tensor& value) {
+    return n::sqrt(n::mean(n::square(value - baseline.actual))).item();
+  };
+  std::println("\n{} test origins with {} leads each. Test RMSE is {:.6f} for DLinear, "
+               "{:.6f} for persistence, and {:.6f} for seasonal naive.",
+               test_indices.size(), width, rmse(forecast), rmse(persistence), rmse(seasonal));
+
+  const std::string folder = "build/dlinear_forecast/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "components.npz", {
+      {"prediction", result.forecast}, {"trend", result.trend}, {"seasonal", result.seasonal},
+      {"trend_weights", parameters.at("forecast/trend/W")},
+      {"trend_bias", parameters.at("forecast/trend/b")},
+      {"seasonal_weights", parameters.at("forecast/seasonal/W")},
+      {"seasonal_bias", parameters.at("forecast/seasonal/b")}});
+  std::ofstream table(folder + "dlinear.tsv");
+  table << std::setprecision(17)
+        << "origin\tlead\tactual\tforecast\tpersistence\tseasonal_naive\n";
+  const auto observed = baseline.actual.to_vector<double>();
+  const auto predicted = forecast.to_vector<double>();
+  const auto last = persistence.to_vector<double>();
+  const auto cycle = seasonal.to_vector<double>();
+  for (std::size_t row = 0; row < test_indices.size(); ++row) {
+    for (int lead = 0; lead < width; ++lead) {
+      const auto i = row * width + lead;
+      table << test_indices[row] << '\t' << lead + 1 << '\t' << observed[i] << '\t'
+            << predicted[i] << '\t' << last[i] << '\t' << cycle[i] << '\n';
+    }
+  }
+  table.close();
+  if (!table) throw std::runtime_error("Could not write forecast table");
+
+  std::vector<double> lead(width);
+  std::iota(lead.begin(), lead.end(), 1);
+  auto fit_plot = dm::graphics::RPlot::create();
+  fit_plot.lines(lead, n::select(baseline.actual, 0, 0).to_vector<double>(), "Observed", {30,41,59}, 2)
+      .lines(lead, n::select(forecast, 0, 0).to_vector<double>(), "DLinear", {37,99,235})
+      .lines(lead, n::select(seasonal, 0, 0).to_vector<double>(), "Seasonal naive", {191,88,34})
+      .title("Forecast at origin 960").x_label("Lead").y_label("Level");
+  auto error_plot = dm::graphics::RPlot::create();
+  const auto by_lead = [&](const n::Tensor& value) {
+    return n::sqrt(n::mean(n::square(value - baseline.actual), {0})).to_vector<double>();
+  };
+  error_plot.lines(lead, by_lead(forecast), "DLinear", {37,99,235})
+      .lines(lead, by_lead(persistence), "Persistence", {93,68,169})
+      .lines(lead, by_lead(seasonal), "Seasonal naive", {191,88,34})
+      .title("Error across all test origins").x_label("Lead").y_label("RMSE");
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 430);
+  layout.add(fit_plot).add(error_plot).save_svg(folder + "forecast.svg");
+  std::filesystem::copy_file(folder + "forecast.svg", "figures/dlinear_forecast.svg",
+                            std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Epoch | Validation RMSE |
+| ---: | ---: |
+| 1 | 0.237283 |
+| 2 | 0.117370 |
+| 3 | 0.085192 |
+
+97 test origins with 96 leads each. Test RMSE is 0.084283 for DLinear, 1.114463 for persistence, and 0.231777 for seasonal naive.
+\image(figures/dlinear_forecast.svg)
+// result_end
+
+The first panel shows one fixed forecast origin. The second shows RMSE
+separately at each lead across all test origins. On this fixture, the
+learned projections recover the oscillations more closely than repeating
+the last observation or the last 24-sample cycle.

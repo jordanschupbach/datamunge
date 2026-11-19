@@ -203,6 +203,7 @@ int main() {
   n::Generator rng(149);
   const auto type = n::DType::Float64;
   double forward = 0, input_error = 0, filter_error = 0;
+  double adjoint_error = 0, finite_error = 0;
   int checked = 0;
   for (auto padding : {n::Padding::Valid, n::Padding::Same})
     for (int stride : {1, 2})
@@ -220,16 +221,32 @@ int main() {
         forward = std::max(forward, n::max(n::abs(native - manual)).item());
         input_error = std::max(input_error, n::max(n::abs(g[0] - dx)).item());
         filter_error = std::max(filter_error, n::max(n::abs(g[1] - dw)).item());
+        const auto patch_weight=n::normal(P.shape(),0,.3,rng,type);
+        const auto image_adjoint=n::grad(n::sum(n::im2col2d(x,2,3,options)*patch_weight),{x}).front();
+        adjoint_error=std::max(adjoint_error,std::abs(n::sum(P*patch_weight).item()-
+                                                   n::sum(x*image_adjoint).item()));
+        const auto weight = W.detach();
+        for(const auto index : {std::int64_t{0},x.numel()/2,x.numel()-1}) {
+          auto delta=n::zeros(x.shape(),type);
+          delta.data_ptr<double>()[index]=1e-4;
+          auto loss=[&](const n::Tensor& image){
+            return n::sum(n::matmul(n::im2col2d(image,2,3,options),weight).reshape(native.shape())*upstream).item();
+          };
+          const double finite=(loss(x.detach()+delta)-loss(x.detach()-delta))/2e-4;
+          finite_error=std::max(finite_error,std::abs(finite-g[0].reshape({-1}).at({index})));
+        }
         ++checked;
       }
-  if (std::max({forward, input_error, filter_error}) > 1e-10)
+  if (std::max({forward,input_error,filter_error,adjoint_error})>1e-10 || finite_error>1e-8)
     return 1;
   std::print("{} geometries; maximum forward/input/filter errors {:.12f}, {:.12f}, {:.12f}.\n",
              checked, forward, input_error, filter_error);
+  std::print("Patch adjoint inner-product error {:.2e}; input finite-difference error {:.2e}.\n",adjoint_error,finite_error);
 }
 ```
 // result_begin: markdown
 8 geometries; maximum forward/input/filter errors 0.000000000000, 0.000000000000, 0.000000000000.
+Patch adjoint inner-product error 1.78e-15; input finite-difference error 2.79e-12.
 // result_end
 
 

@@ -1,0 +1,100 @@
+//? Title: Sparse variational Gaussian process with inducing points
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a Gaussian process using 12 inducing points for 192 noisy observations.
+Compute the optimal whitened posterior and visualize the latent fit and its
+uncertainty inside and outside the training interval.
+)
+\toc
+
+An exact GP factors the full observation covariance. An inducing approximation
+summarizes the process through latent function values at a small set of inputs.
+Whitening uses the Cholesky factor of the inducing prior covariance to give
+those variables an identity prior. With Gaussian observation noise, the optimal
+variational posterior in these coordinates follows from an inducing-size
+precision matrix.
+
+The collapsed evidence lower bound includes a trace correction for training
+prior variance the inducing variables do not explain. The report fixes the RBF
+length scale and inducing locations, then fits the variational posterior to
+simulated observations. The plotted pointwise intervals describe the latent
+function. To predict a future response, add the observation variance before
+computing its interval.
+
+```{cpp, results="markdown", file="figures/sparse_variational_gp_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+constexpr double noise_variance = .04, length = .38;
+
+n::Tensor grid(int count, double start, double width) {
+  return (start + width * n::arange(0, count, 1, n::DType::Float64) / (count - 1))
+      .reshape({count, 1});
+}
+
+n::Tensor kernel(const n::Tensor& a, const n::Tensor& b) {
+  return n::exp(-.5 / (length * length) * n::square(a - n::transpose(b, {1, 0})));
+}
+
+int main() {
+  const auto x = grid(192, -1.5, 3.);
+  const auto inducing = grid(12, -1.5, 3.);
+  const auto query = grid(96, -2., 4.);
+  std::mt19937 rng(91815);
+  std::normal_distribution<double> noise(0., std::sqrt(noise_variance));
+  std::vector<double> responses;
+  for (double value : x.to_vector<double>())
+    responses.push_back(std::sin(4. * value) + noise(rng));
+  const auto y = n::from_vector(responses, {192, 1});
+  const auto fit = n::fit_sparse_variational_gaussian(
+      kernel(inducing, inducing) + 1e-8 * n::eye(12, n::DType::Float64),
+      kernel(inducing, x), n::ones({192}), y, noise_variance);
+  const auto prediction = n::predict_sparse_variational_gaussian(
+      fit, kernel(inducing, query), kernel(query, query));
+  const auto variance = n::matrix_diag_part(prediction.covariance);
+  if (!n::all(n::logical_and(n::greater(variance, 0.), n::less_equal(variance, 1.))).item<bool>())
+    throw std::runtime_error("invalid latent predictive variance");
+  std::println("| Statistic | Value |\n| --- | ---: |");
+  std::println("| Collapsed ELBO (nats) | {:.5f} |", fit.elbo);
+  std::println("| Trace correction to bound (nats) | {:.5f} |", .5 * fit.trace_penalty);
+
+  const std::string folder = "build/sparse_variational_gp/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "posterior.npz",
+      {{"x", x}, {"y", y}, {"inducing", inducing}, {"query", query},
+       {"q_mean", fit.whitened_mean}, {"q_cov", fit.whitened_covariance},
+       {"mean", prediction.mean}, {"covariance", prediction.covariance},
+       {"elbo", n::full({}, fit.elbo, n::DType::Float64)},
+       {"trace_penalty", n::full({}, fit.trace_penalty, n::DType::Float64)}});
+
+  const auto locations = query.to_vector<double>();
+  const auto mean = prediction.mean.reshape({96});
+  const auto spread = 1.96 * n::sqrt(variance);
+  auto band = (mean - spread).to_vector<double>();
+  const auto upper = (mean + spread).to_vector<double>();
+  auto band_x = locations;
+  band_x.insert(band_x.end(), locations.rbegin(), locations.rend());
+  band.insert(band.end(), upper.rbegin(), upper.rend());
+  auto plot = dm::graphics::RPlot::create();
+  plot.polygon(band_x, band, {37, 99, 235, .16})
+      .lines(locations, mean.to_vector<double>(), "Posterior mean", {37, 99, 235})
+      .points(x.to_vector<double>(), responses, "Training responses", {30, 41, 59}, 2)
+      .title("Inducing-point fit with 95% latent intervals")
+      .x_label("Input").y_label("Response").save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/sparse_variational_gp_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Statistic | Value |
+| --- | ---: |
+| Collapsed ELBO (nats) | 24.70790 |
+| Trace correction to bound (nats) | 0.29863 |
+\image(figures/sparse_variational_gp_fit.svg)
+// result_end

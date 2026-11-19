@@ -1511,7 +1511,7 @@ truth/pred     0     1
   confusion (truth rows):
     64 0
     0 64
-testCE=0.109398 accuracy=1 cueFlip=0.96875 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.105192 s)
+testCE=0.109398 accuracy=1 cueFlip=0.96875 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.305855 s)
 Artifacts:"build/recurrent-models/models/gru/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/gru" not found; skipping the comparison
 // result_end

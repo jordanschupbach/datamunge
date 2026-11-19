@@ -1,0 +1,101 @@
+//? Title: Perceiver and Perceiver IO on MNIST
+//? Lang: en
+
+> Perceiver and Perceiver IO on MNIST
+
+Six learned latent vectors read sixteen positioned patch embeddings
+through cross-attention. Self-attention then mixes only the six latents.
+The model repeats both steps with shared weights.
+
+Perceiver classifies from the mean of the final latents. Perceiver IO
+instead uses one class query and sixteen coordinate queries to read
+the latents. Each coordinate predicts the mean intensity of its input
+patch. That variant adds five times the patch mean squared error to
+classification cross-entropy during fitting. The plot compares
+validation classification loss, and the report measures the patch
+predictions against the per-coordinate means of the fitting split.
+
+```{cpp, results="markdown", file="figures/perceiver_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto root=std::filesystem::path(dm::datasets::prepare_example_data("mnist-assets"))/"mnist";
+  const auto train=n::load_mnist(root.string(),"train");
+  const auto test=n::load_mnist(root.string(),"test");
+  std::vector<int> train_ids(60000),test_ids(10000);
+  std::iota(train_ids.begin(),train_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 rng(41434);
+  std::shuffle(train_ids.begin(),train_ids.end(),rng);
+  std::shuffle(test_ids.begin(),test_ids.end(),rng);
+  const auto ids=[](const std::vector<int>& order,int from,int count) {
+    return n::from_vector(std::vector<int>(order.begin()+from,order.begin()+from+count));
+  };
+  const auto fit=ids(train_ids,0,1024),valid=ids(train_ids,1024,256),held=ids(test_ids,0,256);
+  const auto x=n::gather(train.images,fit),y=n::gather(train.labels,fit);
+  const auto vx=n::gather(train.images,valid),vy=n::gather(train.labels,valid);
+  const auto tx=n::gather(test.images,held),ty=n::gather(test.labels,held);
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Model | Validation NLL, epochs 1–3 | Test NLL | Correct out of 256 |\n|---|---|---:|---:|\n");
+  for (bool io:{false,true}) {
+    const std::string name=io ? "perceiver_io" : "perceiver";
+    n::ParameterStore params(41433);
+    const auto predict=[&](const n::Tensor& image) {
+      return n::perceiver_digits(params,image,io);
+    };
+    (void)predict(n::slice_axis(x,0,0,1));
+    n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder batches(1024,32,41435);
+    std::vector<double> curve;
+    for (int epoch=0;epoch<3;++epoch) {
+      batches.begin_epoch();
+      for (auto rows=batches.next();!rows.empty();rows=batches.next()) {
+        const auto batch=n::from_vector(rows);
+        const auto result=predict(n::gather(x,batch));
+        auto loss=n::sparse_softmax_cross_entropy(result.logits,n::gather(y,batch));
+        if (io) loss=loss+5*n::mean(n::square(result.ink-n::mean(result.patches,{2})));
+        optimizer.step(n::grad(loss,optimizer.parameters()));
+      }
+      const n::NoGradGuard guard;
+      curve.push_back(n::sparse_softmax_cross_entropy(predict(vx).logits,vy).item());
+    }
+    const n::NoGradGuard guard;
+    const auto result=predict(tx);
+    const auto nll=n::sparse_softmax_cross_entropy(result.logits,ty);
+    const int correct=n::sum(n::equal(n::argmax(result.logits,1),ty).to(n::DType::Int32)).item<int>();
+    std::print("| {} | {:.6f}, {:.6f}, {:.6f} | {:.6f} | {} |\n",
+               name,curve[0],curve[1],curve[2],nll.item(),correct);
+    const std::filesystem::path out="build/perceiver_digits/"+name;
+    std::filesystem::create_directories(out);
+    params.save((out/"weights.npz").string());
+    n::NamedTensors evidence{{"fit_ids",fit},{"validation_ids",valid},{"test_ids",held},
+        {"pixels",tx},{"labels",ty},{"patches",result.patches},{"embedded",result.embedded},
+        {"logits",result.logits},{"nll",nll},
+        {"read0",result.read[0]},{"process0",result.process[0]},
+        {"read1",result.read[1]},{"process1",result.process[1]}};
+    if (io) {
+      evidence.emplace_back("decode",result.decode);
+      evidence.emplace_back("ink",result.ink);
+      const auto target=n::mean(result.patches,{2});
+      const auto baseline=n::mean(n::image_mixer_patches(x),{0,2});
+      std::print("\nPatch intensity MSE {:.6f}; fitting-set mean baseline {:.6f}.\n",
+                 n::mean(n::square(result.ink-target)).item(),n::mean(n::square(baseline-target)).item());
+    }
+    n::save_npz((out/"audit.npz").string(),evidence);
+    plot.lines({1,2,3},curve,io ? "Perceiver IO" : "Perceiver",
+        io ? dm::graphics::RGB{217,96,26} : dm::graphics::RGB{37,99,235});
+  }
+  plot.title("Perceiver and Perceiver IO on MNIST").x_label("Epoch").y_label("Nats per image")
+      .size(800,460).save_svg("build/perceiver_digits.svg");
+}
+```
+// result_begin: markdown
+| Model | Validation NLL, epochs 1–3 | Test NLL | Correct out of 256 |
+|---|---|---:|---:|
+| perceiver | 1.685063, 1.305854, 1.119585 | 1.114483 | 159 |
+| perceiver_io | 2.164686, 1.632861, 1.448952 | 1.437408 | 132 |
+
+Patch intensity MSE 0.015815; fitting-set mean baseline 0.013231.
+\image(figures/perceiver_digits.svg)
+// result_end

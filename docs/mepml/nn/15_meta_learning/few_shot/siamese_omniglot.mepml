@@ -1,0 +1,157 @@
+//? Title: Siamese one-shot classification on Omniglot
+//? Lang: en
+
+> Siamese one-shot classification on Omniglot
+
+Train a shared convolutional encoder to verify whether two drawings
+depict the same character. Each pair in a balanced batch comes from one
+alphabet, so a negative example comes from a different character in
+the same writing system. The learned head scores the absolute
+difference between the two embeddings.
+
+In each held-out episode, compare one query to five support drawings
+from different characters in an unseen alphabet. The model picks the
+highest verification logit. The baseline picks the smallest squared
+pixel distance. The plot compares accuracy over the same 128 episodes.
+
+Prepare the archives with `python3 scripts/prepare_omniglot.py` in the
+TensorFlow examples checkout. Set `DATAMUNGE_OMNIGLOT_DIR` to its prepared
+dataset directory for another checkout location.
+
+```{cpp, results="markdown", file="figures/siamese_omniglot.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto* configured=std::getenv("DATAMUNGE_OMNIGLOT_DIR");
+  const auto* home=std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_OMNIGLOT_DIR");
+  const auto root=configured ? std::filesystem::path(configured) :
+      std::filesystem::path(home)/"projects/tflow_examples/output/datasets/omniglot";
+  const auto load=[&](const char* split,int classes) {
+    const auto input=n::load_npz((root/(std::string(split)+".npz")).string());
+    const std::map<std::string,n::Tensor> a(input.begin(),input.end());
+    const auto image=a.at("images");
+    const auto labels=a.at("labels").to_vector<int>(), alphabet=a.at("alphabet").to_vector<int>();
+    if (image.shape()!=n::Shape{20*classes,28,28,1} ||
+        labels.size()!=20*classes || alphabet.size()!=labels.size())
+      throw std::runtime_error("Invalid Omniglot archive");
+    std::vector<std::vector<int>> groups(classes);
+    for (int c=0;c<classes;++c) {
+      const auto id=alphabet[c*20];
+      for (int j=0;j<20;++j)
+        if (labels[c*20+j]!=c || alphabet[c*20+j]!=id)
+          throw std::runtime_error("Expected contiguous Omniglot drawings");
+      groups.at(id).push_back(c);
+    }
+    while (!groups.empty() && groups.back().empty()) groups.pop_back();
+    if (groups.empty() || std::ranges::any_of(groups,[](const auto& group){return group.size()<5;}))
+      throw std::runtime_error("Expected five characters per alphabet");
+    return std::pair{image,groups};
+  };
+  const auto [fit,background]=load("background",964);
+  const auto [test,evaluation]=load("evaluation",659);
+  namespace m=n::models;
+  const auto index=[](auto& rng,std::size_t size) {
+    return std::uniform_int_distribution<std::size_t>(0,size-1)(rng);
+  };
+  n::ParameterStore p(17);
+  const auto config=m::SiameseConfig::Compact();
+  const auto encode=[&](const n::Tensor& x) {
+    return m::SiameseEncoder(p,n::resize_bilinear(x,{48,48}),config).embedding;
+  };
+  const auto forward=[&](const auto& left,const auto& right) {
+    const auto l=encode(left), r=encode(right);
+    return m::SiameseLogit(p,l,r,config.embedding);
+  };
+  const auto pixels=[](const auto& data,const auto& ids) {
+    return n::take_rows(data,ids).to(n::DType::Float32)/255.;
+  };
+  (void)forward(pixels(fit,std::vector<std::int64_t>{0}),pixels(fit,std::vector<std::int64_t>{1}));
+  n::Optimizer optimizer(p,.001,{.kind=n::OptimizerKind::Adam});
+  std::mt19937 train(25631),test_rng(25632);
+  std::print("| Epoch | Verification BCE |\n|---:|---:|\n");
+  for (int epoch=0;epoch<3;++epoch) {
+    double total=0;
+    for (int batch=0;batch<48;++batch) {
+      std::vector<std::tuple<std::int64_t,std::int64_t,float>> pairs;
+      for (int i=0;i<32;++i) {
+        const auto& alphabet=background[index(train,background.size())];
+        const auto a=index(train,alphabet.size());
+        const bool same=i<16;
+        const auto b=same ? a : (a+1+index(train,alphabet.size()-1))%alphabet.size();
+        const auto first=index(train,20);
+        const auto second=same ? (first+1+index(train,19))%20 : index(train,20);
+        pairs.emplace_back(alphabet[a]*20+first,alphabet[b]*20+second,float(same));
+      }
+      std::shuffle(pairs.begin(),pairs.end(),train);
+      std::vector<std::int64_t> left,right;
+      std::vector<float> labels;
+      for (const auto& [a,b,same]:pairs) {
+        left.push_back(a);
+        right.push_back(b);
+        labels.push_back(same);
+      }
+      const auto logits=forward(pixels(fit,left),pixels(fit,right));
+      const auto bce=n::mean(m::SiameseBinaryCrossEntropy(logits,n::from_vector(labels)));
+      auto penalty=n::zeros({});
+      for (const auto& w:p.parameters()) if (w.dim()>1) penalty=penalty+n::sum(n::square(w));
+      total+=bce.item();
+      optimizer.minimize(bce+.00005f*penalty);
+    }
+    std::print("| {} | {:.5f} |\n",epoch+1,total/48);
+  }
+  n::NoGradGuard guard;
+  std::vector<std::int64_t> ids,query,support;
+  std::vector<int> correct;
+  for (int i=0;i<128;++i) {
+    auto alphabet=evaluation[index(test_rng,evaluation.size())];
+    std::shuffle(alphabet.begin(),alphabet.end(),test_rng);
+    const auto target=index(test_rng,5);
+    correct.push_back(target);
+    std::int64_t q=0;
+    std::vector<std::int64_t> rows;
+    for (std::size_t j=0;j<5;++j) {
+      const auto draw=index(test_rng,20);
+      rows.push_back(alphabet[j]*20+draw);
+      if (j==target) q=alphabet[j]*20+(draw+1+index(test_rng,19))%20;
+    }
+    ids.push_back(q);
+    ids.insert(ids.end(),rows.begin(),rows.end());
+    query.insert(query.end(),5,q);
+    support.insert(support.end(),rows.begin(),rows.end());
+  }
+  std::vector<n::Tensor> batches;
+  for (std::size_t i=0;i<support.size();i+=64) {
+    const auto j=std::min(i+64,support.size());
+    batches.push_back(forward(pixels(test,std::vector(query.begin()+i,query.begin()+j)),
+                              pixels(test,std::vector(support.begin()+i,support.begin()+j))));
+  }
+  const auto scores=n::concat(batches,0).reshape({128,5});
+  const auto distance=-n::sum(n::square(pixels(test,query)-pixels(test,support)),{1,2,3}).reshape({128,5});
+  const auto prediction=n::argmax(scores), target=n::from_vector(correct);
+  const auto accuracy=[&](const auto& values) {
+    return n::sum(n::equal(n::argmax(values),target).to(n::DType::Int32)).item()/128.;
+  };
+  const auto learned=accuracy(scores),baseline=accuracy(distance);
+  std::print("\nHeld-out one-shot accuracy {:.2f}% for Siamese and {:.2f}% for pixel distance.\n",
+             100*learned,100*baseline);
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({0},{learned},"Siamese",{37,99,235}).points({1},{baseline},"Pixel distance",{234,88,12})
+      .title("Within-alphabet five-way Omniglot episodes").x_label("Method").y_label("Accuracy").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/siamese_omniglot.svg");
+  n::save_npz("build/siamese_omniglot.npz",{{"rows",n::from_vector(ids,{128,6})},{"correct",target},
+      {"scores",scores},{"prediction",prediction},{"pixel_scores",distance}});
+}
+```
+// result_begin: markdown
+| Epoch | Verification BCE |
+|---:|---:|
+| 1 | 0.67901 |
+| 2 | 0.66657 |
+| 3 | 0.66067 |
+
+Held-out one-shot accuracy 55.47% for Siamese and 33.59% for pixel distance.
+\image(figures/siamese_omniglot.svg)
+// result_end

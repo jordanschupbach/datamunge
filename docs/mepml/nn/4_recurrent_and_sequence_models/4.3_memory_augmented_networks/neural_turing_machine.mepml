@@ -1,0 +1,119 @@
+//? Title: Neural Turing Machine on a held-out bit-copy task
+//? Lang: en
+
+> Neural Turing Machine on a held-out bit-copy task
+
+A 16-unit LSTM controller writes to six memory slots and reads from
+the updated memory. Each head combines content similarity with its
+previous location, shifts that mixture around the slot ring, and
+sharpens the resulting weights. The input presents three four-bit
+vectors, a delimiter, and three blank steps. The model emits one
+four-bit prediction at each blank step.
+
+The fit, validation, and test sets contain distinct bit strings. Adam
+minimizes binary cross-entropy on the recalled bits. Validation tracks
+the learning curve, and the held-out heatmaps show one example's head
+weights before and after the delimiter.
+
+```{cpp, results="markdown", file="figures/ntm_bit_copy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::vector<int> codes(4096);
+  std::iota(codes.begin(), codes.end(), 0);
+  std::mt19937 split(41393);
+  std::shuffle(codes.begin(), codes.end(), split);
+  const auto encode = [&](int start, int count) {
+    std::vector<float> x(count * 35), y(count * 12);
+    for (int row = 0; row < count; ++row) {
+      const auto code = codes[start + row];
+      x[row * 35 + 19] = 1.f;
+      for (int t = 0; t < 3; ++t)
+        for (int bit = 0; bit < 4; ++bit)
+          x[row * 35 + t * 5 + bit] = y[row * 12 + t * 4 + bit] = (code >> (t * 4 + bit)) & 1;
+    }
+    return std::pair{n::from_vector(x, {count,7,5}), n::from_vector(y, {count,3,4})};
+  };
+  const auto [x,y] = encode(0,384);
+  const auto [valid,vy] = encode(384,64);
+  const auto [test,ty] = encode(448,64);
+  n::ParameterStore model(41392);
+  const auto predict = [&](const n::Tensor &data) { return n::models::NtmBitCopy(model,data); };
+  predict(n::slice_axis(x,0,0,1));
+  const auto loss = [&](const n::Tensor &data, const n::Tensor &target) {
+    return n::sigmoid_cross_entropy(predict(data)[0], target);
+  };
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.006,config);
+  n::BatchOrder order(384,16,41394);
+  double initial;
+  { n::NoGradGuard guard; initial = loss(test,ty).item(); }
+  const std::vector<double> epochs{0,1,2,3};
+  std::vector<double> history;
+  std::print("| Epoch | Validation BCE |\n|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    { n::NoGradGuard guard; history.push_back(loss(valid,vy).item()); }
+    std::print("| {} | {:.6f} |\n", epoch,history.back());
+    if (epoch == 3)
+      break;
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto ids=n::from_vector(rows);
+      adam.minimize(loss(n::gather(x,ids), n::gather(y,ids)));
+    }
+  }
+
+  n::NoGradGuard guard;
+  const auto [logits, memory, reads, read, write, controls] = predict(test);
+  for (const auto &head : {read,write})
+    if (n::min(head).item()<0. || n::max(n::abs(n::sum(head,{2})-1.)).item()>2e-6)
+      throw std::runtime_error("address normalization");
+  if (n::max(n::abs(logits-predict(test)[0])).item()!=0.)
+    throw std::runtime_error("repeat inference");
+  const auto ok=n::equal(n::greater_equal(logits,0.),n::greater(ty,.5));
+  std::print("Held-out BCE {:.6f} to {:.6f}, {}/768 correct bits and {}/64 exact copies.\n",
+      initial,n::sigmoid_cross_entropy(logits,ty).item(),n::count_nonzero(ok).item<int>(),
+      n::count_nonzero(n::all(ok,{1,2})).item<int>());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/ntm_bit_copy.npz", {{"ids",n::from_vector(std::vector<int>(codes.begin(),codes.begin()+512))},
+      {"input",test},{"target",ty},{"logits",logits},{"memory",memory},{"reads",reads},
+      {"read_weights",read},{"write_weights",write},{"controls",controls},
+      {"bce",n::sigmoid_cross_entropy(logits,ty)}});
+  auto validation=dm::graphics::RPlot::create();
+  validation.lines(epochs,history,"Validation", {37,99,235})
+      .title("Copy learning curve").x_label("Epoch").y_label("Validation BCE");
+  auto figure=dm::graphics::RLayout::create(1,3);
+  figure.add(validation);
+  for (const auto &[title,head] : {std::pair{"Write",write},std::pair{"Read",read}}) {
+    auto plot=dm::graphics::RPlot::create();
+    std::vector<std::vector<double>> columns;
+    const auto h=n::select(head,0,0);
+    for(int t=0;t<7;++t)
+      columns.push_back(n::select(h,0,t).to_vector<double>());
+    plot.image({0.,1.,2.,3.,4.,5.,6.},{0.,1.,2.,3.,4.,5.},columns,
+               dm::graphics::terrain_colors(32),0.,1.)
+        .title(title).x_label("Step (delimiter at 3)").y_label("Memory slot");
+    figure.add(plot);
+  }
+  figure.size(1200,420).fit_panels().save_svg("build/ntm_bit_copy.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation BCE |
+|---:|---:|
+| 0 | 0.693700 |
+| 1 | 0.634190 |
+| 2 | 0.577192 |
+| 3 | 0.532255 |
+Held-out BCE 0.696075 to 0.535830, 564/768 correct bits and 0/64 exact copies.
+\image(figures/ntm_bit_copy.svg)
+// result_end
+\caption(Validation loss and seven-step write and read traces for the first held-out string.)
+\alttext(A line plot shows validation binary cross-entropy. Two heatmaps show write and read weights for six memory slots by step.)
+
+> Reference
+
+- [Graves et al. (2014), Neural Turing Machines](https://arxiv.org/abs/1410.5401).

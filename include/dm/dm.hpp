@@ -13,14 +13,17 @@
 #include <datamunge/datamunge.hpp>
 #include <datamunge/random/sampling_analysis.hpp>
 #include <datamunge/algorithms/algorithms.hpp>
+#include <datamunge/algorithms/learned_index.hpp>
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/info.hpp>
 #include <datamunge/dir.hpp>
 #include <datamunge/pipe.hpp>
 #include <datamunge/linalg/linalg.hpp>
 #include <datamunge/nn/nn.hpp>
+#include <datamunge/midi.hpp>
 #include <datamunge/rl/discrete.hpp>
 #include <datamunge/compute/context.hpp>
+#include <datamunge/compute/nvidia_telemetry.hpp>
 #include <datamunge/sim/world.hpp>
 #include <datamunge/sim/batch.hpp>
 #include <datamunge/sim/tasks.hpp>
@@ -126,6 +129,52 @@ namespace dm = datamunge;
 #include <datamunge/rl/bandit_selection.hpp>
 #include <datamunge/rl/environments/sparse_rooms.hpp>
 #include <datamunge/rl/tensor_components.hpp>
+#include <datamunge/rl/policy_search.hpp>
+#include <datamunge/rl/map_elites.hpp>
+#include <datamunge/rl/intrinsic_exploration.hpp>
+#include <datamunge/rl/curiosity_model.hpp>
+#include <datamunge/rl/episodic_novelty.hpp>
+#include <datamunge/rl/bootstrapped_dqn.hpp>
+#include <datamunge/rl/go_explore.hpp>
+#include <datamunge/rl/hindsight_replay.hpp>
+#include <datamunge/rl/uvfa.hpp>
+#include <datamunge/rl/option_critic.hpp>
+#include <datamunge/rl/hierarchical_replay.hpp>
+#include <datamunge/rl/distral.hpp>
+#include <datamunge/rl/feudal.hpp>
+#include <datamunge/rl/imitation_policy.hpp>
+#include <datamunge/rl/dagger.hpp>
+#include <datamunge/rl/conservative_q.hpp>
+#include <datamunge/rl/discrete_bcq.hpp>
+#include <datamunge/rl/implicit_q.hpp>
+#include <datamunge/rl/policy_occupancy.hpp>
+#include <datamunge/rl/maxent_irl.hpp>
+#include <datamunge/rl/td3_bc.hpp>
+#include <datamunge/rl/decision_transformer.hpp>
+#include <datamunge/rl/trajectory_beam.hpp>
+#include <datamunge/rl/independent_q.hpp>
+#include <datamunge/rl/value_decomposition.hpp>
+#include <datamunge/rl/commnet.hpp>
+#include <datamunge/rl/board_policy.hpp>
+#include <datamunge/rl/maddpg.hpp>
+#include <datamunge/rl/mappo.hpp>
+#include <datamunge/rl/preference_objectives.hpp>
+#include <datamunge/rl/rl_squared.hpp>
+#include <datamunge/rl/maml_bandit.hpp>
+#include <datamunge/rl/pearl.hpp>
+#include <datamunge/nn/membership_audit.hpp>
+#include <datamunge/nn/feature_schema.hpp>
+#include <datamunge/nn/patch_robustness.hpp>
+#include <datamunge/nn/linear_prototypes.hpp>
+#include <datamunge/nn/projected_robustness.hpp>
+#include <datamunge/nn/decision_robustness.hpp>
+#include <datamunge/nn/attentive_seq2seq.hpp>
+#include <datamunge/nn/image_mixers.hpp>
+#include <datamunge/nn/pyramid_digit_transformer.hpp>
+#include <datamunge/nn/swin_digit_transformer.hpp>
+#include <datamunge/nn/coatnet_digits.hpp>
+#include <datamunge/nn/perceiver_digits.hpp>
+#include <datamunge/nn/cuda_pixel_q.hpp>
 
 #include <datamunge/rl/replay.hpp>
 
@@ -144,7 +193,12 @@ namespace dm = datamunge;
 #include <datamunge/rl/environments/lunar_lander.hpp>
 
 #include <datamunge/rl/environments/atari_frames.hpp>
+#include <datamunge/rl/atari_replay.hpp>
 
 #include <datamunge/rl/environments/physics_tasks.hpp>
 
 #include <datamunge/rl/bootstrapped_returns.hpp>
+
+#if defined(DATAMUNGE_ENABLE_VSIM_TASKS)
+#include <datamunge/rl/environments/vsim_tasks.hpp>
+#endif

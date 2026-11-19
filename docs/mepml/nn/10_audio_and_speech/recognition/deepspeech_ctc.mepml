@@ -1,0 +1,122 @@
+//? Title: DeepSpeech-style recognition with CTC
+//? Lang: en
+
+> Recognizing spoken digit pairs
+
+A strided convolution over log-mel frames reduces the time resolution.
+Forward and backward GRUs combine context from both directions before
+the model scores ten digits and a blank at each frame.
+
+Connectionist temporal classification (CTC) sums the probabilities of
+all monotone frame alignments that collapse to the transcript. Collapse
+merges consecutive repetitions and then removes blanks. A blank can
+separate adjacent copies of the same digit. Greedy decoding collapses
+the most probable frame path, which may differ from the most probable
+transcript after summing alignment probabilities.
+
+Each utterance concatenates two recordings from one speaker with a
+50 ms gap. Four speakers supply training data and two unseen speakers
+supply evaluation data. Prepare the fixture with
+`python3 scripts/prepare_xvector.py` in the TensorFlow examples checkout.
+Set `DATAMUNGE_XVECTOR_DIR` to its `output/datasets/xvector` directory
+for a checkout outside the default location.
+
+```{cpp, results="markdown", file="figures/deepspeech_ctc.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int clip = 3200, length = 6800, time = 14;
+  const auto* configured = std::getenv("DATAMUNGE_XVECTOR_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_XVECTOR_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/xvector";
+  const auto mel = n::linear_to_mel_weight_matrix(24,129,8000,60,3800);
+  const auto read = [&](const char* role, int count, int per_digit, int speakers, unsigned seed) {
+    const auto arrays = n::load_npz((root/(std::string(role)+".npz")).string());
+    const auto entry = std::ranges::find(arrays,"waveform",&n::NamedTensors::value_type::first);
+    if (entry == arrays.end() || entry->second.shape() != n::Shape{speakers*10*per_digit,clip})
+      throw std::runtime_error("Unexpected spoken-digit fixture shape");
+    const auto wave = entry->second.to_vector<float>();
+    std::vector<float> joined(count*length);
+    std::vector<std::int32_t> labels(count*2);
+    std::mt19937 rng(seed);
+    for (int row=0; row<count; ++row) {
+      const int speaker = rng()%speakers;
+      for (int segment=0; segment<2; ++segment) {
+        const int digit = rng()%10;
+        labels[2*row+segment] = digit;
+        const auto source = (speaker*10+digit)*per_digit+rng()%per_digit;
+        std::copy_n(wave.begin()+source*clip,clip,joined.begin()+row*length+segment*(length-clip));
+      }
+    }
+    const auto power = n::power_spectrogram(n::stft(n::from_vector(joined,{count,length}),200,240,256));
+    return std::pair{n::log_mel_spectrogram(power,mel),n::from_vector(labels,{count,2})};
+  };
+  const auto [fit,target] = read("fit",768,6,4,61721);
+  const auto [test,truth] = read("verify",192,3,2,61722);
+  n::ParameterStore model(61720);
+  const auto loss = [&](const n::Tensor& logits, const n::Tensor& labels) {
+    return n::mean(n::ctc_loss(logits,labels,n::full({labels.size(0)},2,n::DType::Int64),
+                            n::full({labels.size(0)},time,n::DType::Int64)));
+  };
+  const auto initial = loss(n::deepspeech_ctc_logits(model,test),truth).item();
+  n::Optimizer optimizer(model,.008,{.kind=n::OptimizerKind::Adam});
+  double short_fit_loss = 0;
+  n::BatchOrder order(768,24,61723);
+  for (int epoch=0; epoch<12; ++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto logits = n::deepspeech_ctc_logits(model,n::take_rows(fit,rows));
+      optimizer.minimize(loss(logits,n::take_rows(target,rows)));
+    }
+    if (epoch==2) {
+      n::NoGradGuard guard;
+      short_fit_loss = loss(n::deepspeech_ctc_logits(model,test),truth).item();
+    }
+  }
+  n::NoGradGuard guard;
+  const auto logits = n::deepspeech_ctc_logits(model,test);
+  const auto final_loss = loss(logits,truth);
+  const auto decoded = n::ctc_greedy_decode(logits);
+  const auto labels = truth.to_vector<std::int64_t>();
+  int exact=0, example=0;
+  for (int row=0; row<truth.size(0); ++row) {
+    if (decoded.sequences[row] == std::vector<std::int64_t>{labels[2*row],labels[2*row+1]}) {
+      if (exact==0) example=row;
+      ++exact;
+    }
+  }
+  if (!(final_loss.item()<initial) || exact==0) return 1;
+  std::print("| Initial CTC loss | Epoch 3 | Epoch 12 | Exact transcripts |\n|---:|---:|---:|---:|\n");
+  std::print("| {:.5f} | {:.5f} | {:.5f} | {}/{} |\n",initial,short_fit_loss,final_loss.item(),exact,truth.size(0));
+  std::print("\nPlotted transcript: {} {}.\n",labels[2*example],labels[2*example+1]);
+  const auto probs = n::softmax(n::select(logits,1,example),-1);
+  std::vector<double> frames(time);
+  std::iota(frames.begin(),frames.end(),0.);
+  auto plot = dm::graphics::RPlot::create();
+  const auto first = labels[2*example], second = labels[2*example+1];
+  plot.lines(frames,n::select(probs,1,10).to_vector<double>(),"Blank",{100,116,139})
+      .lines(frames,n::select(probs,1,first).to_vector<double>(),std::to_string(first),{37,99,235});
+  if (first!=second)
+    plot.lines(frames,n::select(probs,1,second).to_vector<double>(),std::to_string(second),{234,88,12});
+  plot.title("Held-out frame probabilities").x_label("Acoustic frame").y_label("Probability").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/deepspeech_ctc.svg");
+  n::save_npz("build/deepspeech_ctc.npz",{{"features",test},{"labels",truth},{"logits",logits},{"loss",final_loss}});
+}
+```
+// result_begin: markdown
+| Initial CTC loss | Epoch 3 | Epoch 12 | Exact transcripts |
+|---:|---:|---:|---:|
+| 21.29695 | 4.80842 | 4.20201 | 35/192 |
+
+Plotted transcript: 5 9.
+\image(figures/deepspeech_ctc.svg)
+// result_end
+
+The report continues training past the upstream three-epoch schedule.
+By epoch 12 the loss improves further, while exact recognition remains
+low on unseen speakers. The plot shows the first correctly decoded
+held-out utterance.

@@ -1,0 +1,190 @@
+//? Title: Direct six-step forecasting with an MLP, CNN, and TCN
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit three models to predict all six future observations from the same
+24-sample history. Compare forecasts and errors on rolling test origins.
+)
+\toc
+
+The MLP flattens the lag window and applies a 32-unit ReLU layer.
+The CNN uses two valid width-three convolutions with eight channels
+each, and the output head reads the complete feature grid. The TCN uses
+three residual blocks with two weight-normalized causal convolutions each.
+Dilations of 1, 2, and 4 give a theoretical receptive field of 29 samples.
+The head reads the last position, with zero padding for history before
+the 24 observed samples. Each model has six outputs, one per lead.
+[Bai, Kolter, and Koltun, Temporal convolutional networks|https://arxiv.org/abs/1803.01271]
+
+The synthetic series combines three oscillations. Scaling uses samples
+before index 768. Training, validation, and test target intervals are
+disjoint. All models use the same shuffled batches and three Adam
+epochs. The fixtures contain the upstream TensorFlow initial weights,
+so differences in held-out forecasts can be checked after fitting.
+
+```{cpp, results="markdown", file="figures/direct_forecasts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int lag = 24, horizon = 6, fit_end = 768, test_begin = 960, end = 1152;
+  std::vector<double> samples(end);
+  for (int t = 0; t < end; ++t) {
+    const auto phase = 2 * std::numbers::pi * t;
+    samples[t] = (1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                 + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73);
+  }
+  const auto series = n::from_vector(samples);
+  const auto prefix = n::slice(series, {0}, {fit_end});
+  const auto center = n::mean(prefix).item();
+  const auto scale = n::sqrt(n::mean(n::square(prefix - center))).item();
+  const auto normalize = [&](const n::Tensor& x) {
+    return ((x - center) / scale).to(n::DType::Float32);
+  };
+  const auto normalized = normalize(series);
+  const auto origins = [](int first, int last) {
+    std::vector<std::int64_t> indices(last - horizon - first + 1);
+    std::iota(indices.begin(), indices.end(), first);
+    return indices;
+  };
+  const auto fit_indices = origins(lag, fit_end);
+  const auto test_indices = origins(test_begin, end);
+  const auto fit = n::ForecastWindows(normalized, fit_indices, lag, horizon);
+  const auto val = n::ForecastWindows(normalized, origins(fit_end, test_begin), lag, horizon);
+  const auto test = n::ForecastWindows(normalized, test_indices, lag, horizon);
+  const auto first = n::ForecastWindows(normalized, {test_begin}, lag, horizon);
+  auto shifted = samples;
+  for (int t = test_begin; t < end; ++t) shifted[t] += 100;
+  const auto changed = n::ForecastWindows(normalize(n::from_vector(shifted)), {test_begin}, lag, horizon);
+  const auto baseline = n::forecast_baselines(series, test_indices, fit_end, 24, horizon, 6, 4);
+
+  const std::string folder = "build/direct_forecasts/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  const std::vector<double> leads{1, 2, 3, 4, 5, 6};
+  auto trajectory = dm::graphics::RPlot::create();
+  trajectory.lines(leads, n::select(baseline.actual, 0, 0).to_vector<double>(), "Observed", {30,41,59}, 2)
+      .title("Forecast at origin 960").x_label("Lead").y_label("Level");
+  auto errors = dm::graphics::RPlot::create();
+  errors.title("Rolling-origin accuracy").x_label("Lead").y_label("RMSE");
+  const auto error_by_lead = [&](const n::Tensor& prediction) {
+    return n::sqrt(n::mean(n::square(prediction - baseline.actual), {0})).to_vector<double>();
+  };
+  const auto persistence = n::select(baseline.forecasts, 1, 0);
+  const auto seasonal = n::select(baseline.forecasts, 1, 1);
+  errors.lines(leads, error_by_lead(persistence), "Persistence", {92,102,120})
+      .lines(leads, error_by_lead(seasonal), "Seasonal naive", {142,118,90});
+  constexpr std::array names{"mlp", "cnn", "tcn"};
+  constexpr std::array<dm::graphics::RGB, 3> colors{
+      dm::graphics::RGB{37,99,235}, {191,88,34}, {15,118,110}};
+
+  std::println("| Model | Validation MSE (epoch 3) | Initial test RMSE | Final test RMSE |");
+  std::println("| :--- | ---: | ---: | ---: |");
+  for (std::size_t model = 0; model < names.size(); ++model) {
+    const std::string name = names[model];
+    n::ParameterStore parameters;
+    n::ConvLayerOptions valid;
+    valid.padding = n::Padding::Valid;
+    const auto causal_features = [&](const n::Tensor& history) {
+      auto hidden = n::conv1d(parameters, "stem", history, 8, 1, valid);
+      for (int dilation : {1, 2, 4}) {
+        const auto block = "block" + std::to_string(dilation);
+        auto branch = n::models::TcnCausalConv(parameters, block + "/conv1", hidden, 8, 3, dilation);
+        branch = n::models::TcnCausalConv(parameters, block + "/conv2",
+                                        n::leaky_relu(branch, .1), 8, 3, dilation);
+        hidden = n::leaky_relu(hidden + .25 * branch, .1);
+      }
+      return hidden;
+    };
+    const auto predict = [&](const n::Tensor& history) {
+      if (model == 0) {
+        return n::dense(parameters, "head",
+            n::dense(parameters, "hidden", history.reshape({-1, lag}), 32, n::Activation::Relu), horizon);
+      }
+      if (model == 1) {
+        auto hidden = n::relu(n::conv1d(parameters, "conv1", history, 8, 3, valid));
+        hidden = n::relu(n::conv1d(parameters, "conv2", hidden, 8, 3, valid));
+        return n::dense(parameters, "head", hidden.reshape({history.size(0), -1}), horizon);
+      }
+      return n::dense(parameters, "head", n::select(causal_features(history), 1, lag - 1), horizon);
+    };
+
+    (void)predict(first.history);
+    parameters.load("fixtures/direct_forecast_" + name + "_init.npz", true);
+    const auto test_rmse = [&](const n::Tensor& prediction) {
+      return n::sqrt(n::mean(n::square(prediction - baseline.actual))).item();
+    };
+    const auto in_units = [&](const n::Tensor& prediction) {
+      return prediction.to(n::DType::Float64) * scale + center;
+    };
+    double initial;
+    {
+      n::NoGradGuard guard;
+      initial = test_rmse(in_units(predict(test.history)));
+    }
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(parameters, .01, config);
+    n::BatchOrder order(fit_indices.size(), 32, 41381);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        const auto residual = predict(n::take_rows(fit.history, rows)) - n::take_rows(fit.target, rows);
+        optimizer.step(n::grad(n::mean(n::square(residual)), parameters.parameters()));
+      }
+    }
+    n::NoGradGuard guard;
+    if (first.target.to_vector<float>() == changed.target.to_vector<float>() ||
+        predict(first.history).to_vector<float>() != predict(changed.history).to_vector<float>())
+      throw std::runtime_error("Unexpected fixed-origin perturbation result");
+    if (model == 2) {
+      const auto reference = causal_features(first.history);
+      const auto history = first.history.to_vector<float>();
+      double endpoint_change = 0;
+      for (int t = 0; t < lag; ++t) {
+        auto altered = history;
+        altered[t] += 2;
+        const auto delta = causal_features(n::from_vector(altered, {1, lag, 1})) - reference;
+        if (t > 0 && n::max(n::abs(n::slice(delta, {0, 0, 0}, {1, t, 8}))).item() > 1e-6)
+          throw std::runtime_error("TCN features use future positions");
+        endpoint_change += n::sum(n::abs(n::select(delta, 1, lag - 1))).item();
+      }
+      if (endpoint_change <= 1e-4) throw std::runtime_error("TCN ignores the input perturbations");
+    }
+    const auto prediction = in_units(predict(test.history));
+    const auto val_mse = n::mean(n::square(predict(val.history) - val.target)).item() * scale * scale;
+    std::println("| {} | {:.6f} | {:.6f} | {:.6f} |", name, val_mse, initial, test_rmse(prediction));
+    trajectory.lines(leads, n::select(prediction, 0, 0).to_vector<double>(), name, colors[model]);
+    errors.lines(leads, error_by_lead(prediction), name, colors[model]);
+    n::save_npz(folder + name + ".npz", {{"actual", baseline.actual}, {"prediction", prediction},
+        {"persistence", persistence}, {"seasonal_naive", seasonal}});
+  }
+
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 430);
+  layout.add(trajectory).add(errors).save_svg(folder + "forecasts.svg");
+  std::filesystem::copy_file(folder + "forecasts.svg", "figures/direct_forecasts.svg",
+                            std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Model | Validation MSE (epoch 3) | Initial test RMSE | Final test RMSE |
+| :--- | ---: | ---: | ---: |
+| mlp | 0.018683 | 0.980115 | 0.139877 |
+| cnn | 0.039661 | 0.787285 | 0.202945 |
+| tcn | 0.031726 | 0.803176 | 0.181122 |
+\image(figures/direct_forecasts.svg)
+// result_end
+
+The trajectory panel shows a single origin. The error panel pools
+the 187 held-out origins at each lead. The perturbation check changes
+each TCN input position in turn and checks every earlier hidden feature.

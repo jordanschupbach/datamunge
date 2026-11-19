@@ -200,6 +200,34 @@ int main() {
     std::print("| {} | ({:.6f}, {:.6f}) | ({:.6f}, {:.6f}) | {:.1e} |\n", name, got[0], got[1], cf[0], cf[1], std::max(std::abs(got[0] - cf[0]), std::abs(got[1] - cf[1])));
   }
 
+  // Reset two parameters and their optimizer history before zero-gradient updates.
+  for (auto kind : {Kind::Adagrad, Kind::RMSProp, Kind::Adam, Kind::AdamW,
+                    Kind::Nadam, Kind::AMSGrad, Kind::Adamax}) {
+    const auto initial = nn::tensor({1., -2.}, {2}, nn::DType::Float64);
+    auto first = initial.clone().requires_grad_(), twin = initial.clone().requires_grad_();
+    const double decay = kind == Kind::AdamW ? .1 : 0.;
+    nn::Optimizer optimizer({first, twin}, .1, {.kind = kind, .weight_decay = decay});
+    const auto initial_state = optimizer.state();
+    const auto pulse = nn::tensor({3., -4.}, {2}, nn::DType::Float64);
+    optimizer.step({pulse, pulse});
+    if (first.to_vector<double>() != twin.to_vector<double>() || optimizer.iterations() != 1)
+      throw std::runtime_error("Twin parameters or the shared optimizer counter diverged");
+    {
+      nn::NoGradGuard no_grad;
+      first.copy_(initial);
+      twin.copy_(initial);
+    }
+    optimizer.load_state(initial_state);
+    const auto zero = nn::zeros({2}, nn::DType::Float64);
+    for (int step = 0; step < 5; ++step) optimizer.step({zero, zero});
+    const double shrink = std::pow(1. - .1 * decay, 5);
+    const auto actual = first.to_vector<double>();
+    if (actual != twin.to_vector<double>() || optimizer.iterations() != 5 ||
+        !(std::abs(actual[0] - shrink) < 1e-12 && std::abs(actual[1] + 2. * shrink) < 1e-12))
+      throw std::runtime_error("Reset optimizer did not follow the zero-gradient reference");
+  }
+  std::print("\nAll seven upstream rules passed the twin-parameter, shared counter and reset checks.\n");
+
   // 3. Envelopes after a single gradient pulse: AMSGrad's maximum never decreases, Adamax's decays like beta2^t, and
   // AdamW with zero gradients decays the weights geometrically.
   {
@@ -303,6 +331,8 @@ First update from w = (1, −2) with gradient (3, −4), learning rate 0.1 (Adam
 | RAdam | (0.700000, -1.600000) | (0.700000, -1.600000) | 0.0e+00 |
 | AdaBelief | (0.888889, -1.888889) | (0.888889, -1.888889) | 0.0e+00 |
 | Yogi | (0.900000, -1.900000) | (0.900000, -1.900000) | 0.0e+00 |
+
+All seven upstream rules passed the twin-parameter, shared counter and reset checks.
 
 After a pulse and 8 zero gradients: AMSGrad's maximum changes by a factor of at least 1.000000 per step; Adamax's u differs from 3·0.999^t by at most 4.4e-16.
 AdamW after 5 zero gradients: w_1 = 0.9509900499 against (1 − 0.1·0.1)^5 = 0.9509900499.

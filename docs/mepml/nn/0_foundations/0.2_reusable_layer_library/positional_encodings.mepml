@@ -1,5 +1,5 @@
 //? Title: Positional Encodings: Rotations, Biases, Context Extension and Coordinates
-//? Subtitle: Sinusoidal tables as rotations with offset-only dot products; learned tables; RoPE and its long-range decay bound; ALiBi's attention span in closed form; position interpolation and NTK-aware RoPE scaling; 2-D tables; and Fourier features for a coordinate MLP fitted to the volcano map, using datamunge's nn::sinusoidal_encoding, nn::learned_encoding, nn::apply_rotary, nn::alibi_bias, nn::rope_inverse_frequencies, nn::apply_rotary_at, nn::sinusoidal_encoding_2d, nn::fourier_features and nn::gaussian_fourier_features
+//? Subtitle: Sinusoidal tables as rotations with offset-only dot products; learned tables; RoPE and its long-range decay bound; ALiBi attention span in closed form; clipped relative bias; position interpolation and NTK-aware RoPE scaling; 2-D tables; and Fourier features for a coordinate MLP fitted to the volcano map, using datamunge's nn::sinusoidal_encoding, nn::learned_encoding, nn::apply_rotary, nn::alibi_bias, nn::rope_inverse_frequencies, nn::apply_rotary_at, nn::sinusoidal_encoding_2d, nn::fourier_features and nn::gaussian_fourier_features
 //? Exports: both
 //? Lang: en-GB
 
@@ -67,6 +67,15 @@ $$
 
 Each head therefore has a span set by its slope, from about one token to hundreds, with no parameters.
 
+>> Learned relative attention bias
+
+A learned bias assigns a separate scalar to each head and signed
+key-minus-query offset. Clipping at radius `r` gives `2r + 1` rows.
+Every offset at or above `r` shares one row, and every offset at or
+below `-r` shares another. Add the resulting bias to the attention
+logits before applying the mask and softmax. When the loss sums every
+bias entry, the derivative of each table value counts the pairs that use it.
+
 >> Fourier features for coordinates
 
 A ReLU MLP on raw coordinates learns low frequencies first and high frequencies very slowly. This is the spectral bias (Rahaman et al., 2019). NeRF's encoding (`nn::fourier_features`) maps each coordinate \(p\) to \((p,\sin(2^k\pi p),\cos(2^k\pi p))_{k<L}\). Random Fourier features (`nn::gaussian_fourier_features`) map \(x\) to \(\gamma(x)=[\cos(2\pi xB),\sin(2\pi xB)]\) with \(B\in\mathbb R^{D\times m}\) drawn \(\mathcal N(0,\sigma^2)\). Then \(\gamma(x)\cdot\gamma(x')=\sum_j\cos(2\pi b_j\cdot(x-x'))\). Its expectation is \(m\) times the characteristic function of \(\mathcal N(0,\sigma^2 I)\) at \(2\pi(x-x')\) (Rahimi and Recht, 2007):
@@ -80,7 +89,7 @@ In the neural tangent kernel view, an MLP on \(\gamma(x)\) behaves like kernel r
 
 > Simple examples
 
->> Tables, learned rows, RoPE, scaling, 2-D tables and ALiBi
+>> Tables, learned rows, RoPE, ALiBi and relative bias
 
 The program prints the \(d=16\) sinusoidal table and checks its norms, its rotations and its dot products. It adds a learned table of 10 rows to a sequence of length 6, compares RoPE with a hand rotation and evaluates the score of one query and key at many position pairs, including fractional ones. It tabulates the RoPE rates for a 4-fold extension, checks the separability of the 2-D table and prints ALiBi's attention for 4 heads.
 
@@ -191,6 +200,25 @@ int main() {
     std::print(" |\n");
   }
 
+  // 7. Learned relative bias on the upstream two-head, rectangular grid.
+  {
+    constexpr int H = 2, Q = 4, K = 6, R = 2;
+    nn::ParameterStore store(41401, F64);
+    const Tensor relative = nn::clipped_relative_position_bias(store, "position", H, Q, K, R);
+    const Tensor table = store.at("position/bias");
+    const Tensor gradient = nn::grad(nn::sum(relative), {table}).front();
+    // Diagonal counts in signed order, with the tails combined.
+    const auto counts = nn::tensor({3., 3., 3., 3., 4., 4., 4., 4., 10., 10.}, {5, H}, F64);
+    for (int h = 0; h < H; ++h)
+      for (int q = 0; q < Q; ++q)
+        for (int k = 0; k < K; ++k)
+          if (relative.at({h, q, k}) != table.at({std::clamp(k - q, -R, R) + R, h}))
+            throw std::runtime_error("Incorrect clipped relative bias lookup");
+    if (gradient.to_vector<double>() != counts.to_vector<double>())
+      throw std::runtime_error("Relative bias gradient did not accumulate bucket counts");
+    std::print("\nLearned relative bias checked 48 lookups and 10 derivatives. Signed bucket counts: 3, 3, 4, 4, 10.\n");
+  }
+
   // Figure: the table, and dot products against the offset.
   auto fig = dm::graphics::RLayout::create(1, 2);
   {
@@ -280,6 +308,8 @@ ALiBi, 4 heads: slopes 0.2500 0.0625 0.0156 0.0039.
 | 1 (0.0625) | 0.099 0.106 0.113 0.120 0.128 0.136 0.145 0.154 |
 | 2 (0.0156) | 0.118 0.120 0.122 0.124 0.126 0.128 0.130 0.132 |
 | 3 (0.0039) | 0.123 0.124 0.124 0.125 0.125 0.126 0.126 0.127 |
+
+Learned relative bias checked 48 lookups and 10 derivatives. Signed bucket counts: 3, 3, 4, 4, 10.
 \image(figures/positional_tables.svg)
 // result_end
 

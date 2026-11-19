@@ -1,0 +1,89 @@
+//? Title: SimSiam with stopped cross-view targets
+//? Lang: en
+
+> SimSiam with stopped cross-view targets
+
+A shared encoder and projector process two independently augmented crops
+of each source. A predictor takes the projection of one crop and tries
+to align with the normalized projection of its companion. Each crop
+serves as both input and target. Stop-gradient treats the target as a
+constant when differentiating each direction, so the loss updates the
+encoder through the predictor path.
+
+The compact model takes 16 Adam updates per epoch on fresh crop pairs.
+On a fixed held-out batch, the report tracks negative cosine loss, the
+average feature standard deviation, and how often each target's nearest
+neighbor is its matching crop. Feature spread helps detect constant
+representations even when alignment loss is low.
+
+```{cpp, results="markdown", file="figures/simsiam_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::mt19937 training(50104), testing(50105);
+  const auto test = n::synthetic_contrastive_views(testing, 32, true);
+  n::ParameterStore model(50101);
+  const auto forward = [&](const n::Tensor &x) { return n::simsiam(model, "simsiam", x); };
+  forward(test.views);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .008, config);
+  const auto pair = n::concat({n::arange(32, 64), n::arange(0, 32)}, 0).to(n::DType::Int64);
+
+  std::vector<double> epochs, losses, spread, retrieval;
+  std::print("| Epoch | Held-out loss | Feature spread | Nearest positive |\n"
+             "|---:|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard no_grad;
+      const auto held = forward(test.views);
+      const auto centered = held.target - n::mean(held.target, {0}, true);
+      const auto nearest = n::nt_xent(held.target).nearest;
+      const auto hits = n::count_nonzero(n::equal(nearest, pair)).item<int>();
+      epochs.push_back(epoch);
+      losses.push_back(held.loss.item());
+      spread.push_back(n::mean(n::sqrt(n::mean(n::square(centered), {0}))).item());
+      retrieval.push_back(hits / 64.);
+      std::print("| {} | {:.6f} | {:.6f} | {}/64 |\n", epoch, losses.back(), spread.back(), hits);
+    }
+    if (epoch < 3)
+      for (int step = 0; step < 16; ++step)
+        adam.minimize(forward(n::synthetic_contrastive_views(training, 32, true).views).loss);
+  }
+
+  auto loss_plot = dm::graphics::RPlot::create();
+  loss_plot.lines(epochs, losses, "Held-out loss", {37, 99, 235})
+      .title("Alignment loss").x_label("Epoch").y_label("Negative cosine");
+  auto spread_plot = dm::graphics::RPlot::create();
+  spread_plot.lines(epochs, spread, "Feature spread", {22, 120, 97})
+      .title("Target spread").x_label("Epoch").y_label("Mean feature standard deviation");
+  auto retrieval_plot = dm::graphics::RPlot::create();
+  retrieval_plot.lines(epochs, retrieval, "Nearest positive", {173, 83, 46})
+      .title("Nearest-positive retrieval").x_label("Epoch").y_label("Fraction of views").y_limits(0, 1);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 3).add(loss_plot).add(spread_plot).add(retrieval_plot)
+      .size(1230, 390).fit_panels().save_svg("build/simsiam_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out loss | Feature spread | Nearest positive |
+|---:|---:|---:|---:|
+| 0 | -0.015601 | 0.209858 | 13/64 |
+| 1 | -0.889401 | 0.068355 | 6/64 |
+| 2 | -0.982549 | 0.044092 | 5/64 |
+| 3 | -0.987830 | 0.041948 | 7/64 |
+\image(figures/simsiam_fit.svg)
+// result_end
+\caption(Alignment, feature spread and matching-crop retrieval on held-out view pairs.)
+\alttext(Three line plots show held-out alignment loss, target spread and nearest-positive retrieval by epoch.)
+
+The alignment loss approaches its lower bound of -1 while target spread
+shrinks and nearest-positive retrieval declines. On this compact fixture,
+the predictor aligns the views even as the target representation loses
+information that distinguishes sources.
+
+> Reference
+
+- [Chen and He (2021), Exploring Simple Siamese Representation Learning](https://arxiv.org/abs/2011.10566).

@@ -1,0 +1,162 @@
+//? Title: Neural collaborative filtering
+//? Lang: en
+
+> Neural collaborative filtering
+
+NeuMF combines a generalized matrix-factorization branch with an MLP.
+The first branch multiplies the user and item embeddings coordinate by
+coordinate. The second branch learns separate embeddings and feeds
+their concatenation through two ReLU layers. A linear head takes both
+representations and scores the pair.
+
+For every fitting positive, sample four fit-unobserved items and use
+them as negative examples for the logistic loss. These samples can
+include items the user would like. The evaluation masks fitting
+positives, then ranks each user's reserved positive among the
+remaining items. The plot shows hit rate as the rank cutoff grows.
+
+Set `DM_NEUMF_REFERENCE` to the upstream `neural_cf/recommendations.npz`
+to replay its fitted parameters. The native fit uses Datamunge
+initialization with the upstream sampling and optimizer schedule.
+
+[He et al. (2017)|https://arxiv.org/abs/1708.05031]
+
+```{cpp, results="markdown", file="figures/neural_cf.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int users = 24, items = 30, width = 6;
+  struct Pair { int user, item; float label; };
+  std::vector<Pair> positives, all;
+  std::array<std::vector<int>,users> unknown;
+  std::vector<int> heldout(users), seen(users*items), grades(users*items);
+  for (int u = 0; u < users; ++u) {
+    const int group = u % 6;
+    heldout[u] = group + 6*(u/6);
+    grades[u*items+heldout[u]] = 1;
+    for (int i = 0; i < items; ++i) {
+      const bool fit = i%6 == group && i != heldout[u];
+      seen[u*items+i] = fit;
+      all.push_back({u,i,float(fit)});
+      if (fit) positives.push_back({u,i,1});
+      else unknown[u].push_back(i);
+    }
+  }
+  const auto encode = [](std::span<const Pair> pairs) {
+    const auto rows = static_cast<std::int64_t>(pairs.size());
+    std::vector<float> x(rows*(users+items)), y;
+    for (std::int64_t j = 0; j < rows; ++j) {
+      const auto& p = pairs[j];
+      x[j*(users+items)+p.user] = 1;
+      x[j*(users+items)+users+p.item] = 1;
+      y.push_back(p.label);
+    }
+    return std::pair{n::from_vector(x,{rows,users+items}),n::from_vector(y,{rows,1})};
+  };
+  n::ParameterStore params(6302);
+  const auto predict = [&](const n::Tensor& x) {
+    const auto user = n::slice(x,{0,0},{x.size(0),users});
+    const auto item = n::slice(x,{0,users},{x.size(0),items});
+    const auto embed = [&](const auto& ids, const std::string& name) {
+      return n::matmul(ids,params.get(name,{ids.size(1),width},n::init::normal(.15)));
+    };
+    const auto gmf_u = embed(user,"gmf_u"), gmf_i = embed(item,"gmf_i");
+    const auto deep_u = embed(user,"mlp_u"), deep_i = embed(item,"mlp_i");
+    const auto deep = n::mlp(params,"deep",n::concat({deep_u,deep_i},1),{16,8},n::Activation::Relu);
+    return n::dense(params,"head",n::concat({gmf_u*gmf_i,deep},1),1);
+  };
+  const auto loss = [&](std::span<const Pair> batch) {
+    const auto [x,y] = encode(batch);
+    const auto logits = predict(x);
+    return n::mean(n::softplus(logits)-logits*y);
+  };
+  const auto catalog = encode(all).first;
+  {
+    const n::NoGradGuard no_grad;
+    predict(catalog);
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.01,config);
+  std::mt19937 rng(6301);
+  std::print("| Epoch | Sampled logistic loss before | After |\n|---:|---:|---:|\n");
+  std::vector<int> sampled;
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    auto training = positives;
+    for (const auto& entry : positives) {
+      const auto& missing = unknown[entry.user];
+      std::uniform_int_distribution<std::size_t> draw(0,missing.size()-1);
+      for (int j = 0; j < 4; ++j) training.push_back({entry.user,missing[draw(rng)],0});
+    }
+    std::shuffle(training.begin(),training.end(),rng);
+    for (const auto& row : training) sampled.insert(sampled.end(),{row.user,row.item,int(row.label)});
+    const auto before = loss(training).item();
+    const std::span<const Pair> examples(training);
+    for (std::size_t i = 0; i < examples.size(); i += 16) {
+      optimizer.minimize(loss(examples.subspan(i,std::min<std::size_t>(16,examples.size()-i))));
+    }
+    const auto after = loss(training).item();
+    if (!(after < before)) throw std::runtime_error("NeuMF sampled loss did not improve");
+    std::print("| {} | {:.6f} | {:.6f} |\n",epoch+1,before,after);
+  }
+  const n::NoGradGuard no_grad;
+  const auto scores = predict(catalog);
+  const auto seen_mask = n::from_vector(seen,{users,items});
+  const auto target = n::from_vector(grades,{users,items});
+  std::vector<int> cutoffs(items);
+  std::iota(cutoffs.begin(),cutoffs.end(),1);
+  const auto evaluate = [&](const auto& logits) {
+    const auto metrics = n::recommendation_metrics(logits.reshape({users,items}),target,seen_mask,cutoffs);
+    const auto ranked = metrics.ranked.template to_vector<std::int64_t>();
+    std::vector<int> ranks;
+    for (int u = 0; u < users; ++u) {
+      const auto first = ranked.begin()+u*items;
+      ranks.push_back(std::find(first,first+items,heldout[u])-first+1);
+    }
+    return ranks;
+  };
+  const auto ranks = evaluate(scores);
+  std::print("\nHeld-out hit@5 {}/{}.\n",std::count_if(ranks.begin(),ranks.end(),[](int r){return r<=5;}),users);
+  std::filesystem::create_directories("build");
+  params.save("build/neumf_weights.npz");
+  n::save_npz("build/neumf_scores.npz",{{"scores",scores},{"seen",seen_mask},{"heldout",n::from_vector(heldout)},
+      {"ranks",n::from_vector(ranks)},{"sampled",n::from_vector(sampled,{3,480,3})}});
+  if (const char* reference = std::getenv("DM_NEUMF_REFERENCE")) {
+    const auto entries = n::load_npz(reference);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    for (const auto& name : params.names()) {
+      auto key = name;
+      if (key.starts_with("deep/dense0")) key.replace(0,11,"deep1");
+      if (key.starts_with("deep/dense1")) key.replace(0,11,"deep2");
+      std::replace(key.begin(),key.end(),'/','_');
+      params.set(name,stored.at(key));
+    }
+    const auto replay = predict(catalog);
+    const auto error = n::max(n::abs(replay-stored.at("scores"))).item();
+    if (!(error < 5e-6) || evaluate(replay) != stored.at("ranks").to_vector<int>()) {
+      throw std::runtime_error("NeuMF checkpoint replay mismatch");
+    }
+    std::print("\nUpstream checkpoint replay maximum logit error {:.3e}.\n",error);
+  }
+  std::vector<double> hit;
+  for (int k : cutoffs) hit.push_back(double(std::count_if(ranks.begin(),ranks.end(),
+      [k](int rank){return rank<=k;}))/users);
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(std::vector<double>(cutoffs.begin(),cutoffs.end()),hit,"NeuMF",{37,99,235})
+      .title("Held-out recommendation ranking").x_label("Rank cutoff").y_label("Hit rate")
+      .y_limits(0,1.05).size(900,425).save_svg("build/neural_cf.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Sampled logistic loss before | After |
+|---:|---:|---:|
+| 1 | 0.674776 | 0.493170 |
+| 2 | 0.495617 | 0.464337 |
+| 3 | 0.468749 | 0.408251 |
+
+Held-out hit@5 12/24.
+
+Upstream checkpoint replay maximum logit error 1.192e-07.
+\image(figures/neural_cf.svg)
+// result_end

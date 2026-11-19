@@ -128,6 +128,7 @@ and navigation. The `nn/` hierarchy is maintained separately.
 | --- | --- |
 | `just playground [FORMATS]` | Runs the playground manuscript's blocks, prints their captured results, and exports HTML and TeX with local figures to `build/playground/`. Optional arguments select export formats. |
 | `just docs-mepml-run [FILES]` | Runs every code block of every report (or FILES) with mep (`mep-mepml run`, the editor's `C-c C-c` without a window) and writes their results and `file=` figures back into the report. Prints each block's outcome and fails if one failed; a failed block keeps its earlier results. The C++ blocks build against datamunge found by `pkg-config`. |
+| `just view-docs` | Opens the unified API and report website in your browser. If the site is missing, it first runs `just docs-preview`, which exports stored results. |
 | `just docs` | Runs the reports that changed since their last run (and any that failed), exports every report with mep (`mep-mepml convert`) and builds the website in `build/debug/docs/site/`, with a **Report build status** page. Fails if a code block failed. `just docs-serve` serves it; it also works opened from disk. |
 
 The docs build runs a report only when its `.mepml` is newer than its last run
@@ -148,9 +149,9 @@ writes go into the report itself, so commit them with it. CMake options
 mep's command line works on any report from any directory:
 
 ```sh
-mep-mepml run docs/mepml/math/calendar/zeller_analysis.mepml          # run its blocks in place
+mep-mepml run docs/mepml/math/calendar/zeller.mepml          # run its blocks in place
 mep-mepml run --report out.json --timeout 600 a.mepml b.mepml    # per-block outcomes as JSON
-mep-mepml build --run docs/mepml/math/calendar/zeller_analysis.mepml md html -d /tmp/zeller
+mep-mepml build --run docs/mepml/math/calendar/zeller.mepml md html -d /tmp/zeller
 mep-mepml convert --run x.mepml /anywhere/x.pdf                  # run, then export one file
 ```
 
@@ -262,3 +263,20 @@ The native array writers also support explicit Fortran-order/big-endian NPY,
 DEFLATE NPZ archives and IDX output through `<datamunge/nn/array_io.hpp>` (also
 included by `<dm/dm.hpp>`). This keeps the small format fixtures and fitted-weight
 exports in the foundational reports native as well.
+
+## Publish the documentation site
+
+Run `just docs-publish` from the source checkout. It builds the API reference
+and exports the saved report results and locally available figures, then pushes
+the generated site to `origin/gh-pages`. The publishing command keeps the
+current branch and index in place. It uses your normal Git credentials.
+
+Generate missing figures locally with `just docs-mepml-run PATH.mepml` before
+publishing the affected reports. Keep the generated images, videos and audio
+in your local checkout and on the published branch. A fresh source checkout
+can preview the saved text and results, with placeholders for missing figures.
+
+After the first push, set **Settings → Pages → Source** to **Deploy from a
+branch**, and select **gh-pages** and **/(root)**. The branch contains the
+finished HTML and media. GitHub serves those files as-is. You can also fetch
+the branch and open its `index.html` from a local checkout.

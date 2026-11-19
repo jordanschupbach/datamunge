@@ -1,0 +1,106 @@
+//? Title: Train a dense layer with signed hash buckets
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train eleven shared coefficients for a dense layer with 36 connections.
+Use signed hashing to map each connection to a coefficient and measure
+held-out prediction error.
+)
+\toc
+
+The effective weight for connection \((i,j)\) is \(s_{ij}p_{h_{ij}}\).
+The fixed hash \(h\) selects a bucket, and a second hash supplies the
+sign \(s\). During backpropagation the derivative for a bucket is the
+sum of the signed derivatives of all connections that use it. This
+example uses a differentiable gather to construct the dense matrix.
+
+The generating model uses the same fixed map and eleven randomly drawn
+bucket values. Train on 192 noisy rows and test on 96 separate rows.
+The bucket counts show how uneven the sharing can be. This experiment
+measures whether the training procedure recovers a model that has the
+assumed sharing structure.
+
+```{cpp, results="markdown", file="figures/hashed_weights.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int inputs = 9, outputs = 4, buckets = 11, batch = 32;
+  const auto map = n::make_hashed_dense_map(inputs, outputs, buckets);
+  const auto ids = map.bucket.to_vector<int>();
+  std::vector<double> counts(buckets), bucket_axis(buckets);
+  for (const int id : ids) ++counts[id];
+  for (int i = 0; i < buckets; ++i) bucket_axis[i] = i;
+
+  std::mt19937 rng(8162);
+  std::normal_distribution<double> normal;
+  std::vector<double> truth(buckets);
+  for (auto& value : truth) value = .3 * normal(rng);
+  const auto generating = n::hashed_dense_weights(n::from_vector(truth), map).to_vector<double>();
+  auto draw = [&](int rows) {
+    std::vector<double> x(rows * inputs), y(rows * outputs);
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < inputs; ++j) x[i*inputs+j] = normal(rng);
+      for (int k = 0; k < outputs; ++k) {
+        double value = .02 * normal(rng);
+        for (int j = 0; j < inputs; ++j)
+          value += x[i*inputs+j] * generating[j*outputs+k];
+        y[i*outputs+k] = value;
+      }
+    }
+    return std::pair{n::from_vector(x, {rows, inputs}), n::from_vector(y, {rows, outputs})};
+  };
+  const auto [fit_x, fit_y] = draw(192);
+  const auto [test_x, test_y] = draw(96);
+  const auto values = n::zeros({buckets, 1}, n::DType::Float64).requires_grad_();
+  n::Optimizer sgd({values}, .16);
+  auto predict = [&](const n::Tensor& x) {
+    return n::matmul(x, n::hashed_dense_weights(values, map));
+  };
+  std::vector<double> errors{n::mse(predict(test_x), test_y).item()};
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    for (int i = 0; i < 192; i += batch) {
+      const auto x = n::slice(fit_x, {i, 0}, {batch, inputs});
+      const auto y = n::slice(fit_y, {i, 0}, {batch, outputs});
+      sgd.step(n::grad(n::mse(predict(x), y), {values}));
+    }
+    errors.push_back(n::mse(predict(test_x), test_y).item());
+  }
+  if (!(errors.back() < errors.front()))
+    throw std::runtime_error("The tied weights did not improve held-out predictions");
+  std::println("Learned {} bucket values for {} connections. Held-out MSE {:.7g} to {:.7g}.",
+               buckets, inputs * outputs, errors.front(), errors.back());
+
+  const std::string folder = "build/hashed_weights/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "buckets.npz", {{"bucket",map.bucket},{"sign",map.sign.to(n::DType::Float64)},
+      {"values",values},{"fit_x",fit_x},{"fit_y",fit_y},{"test_x",test_x},{"test_y",test_y},
+      {"effective",n::hashed_dense_weights(values,map)},{"prediction",predict(test_x)}});
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines({0., 1., 2., 3.}, errors, "Held-out MSE", {37, 99, 235})
+      .title("Learning the shared weights").x_label("Epoch").y_label("Held-out MSE");
+  auto loads = dm::graphics::RPlot::create();
+  loads.points(bucket_axis, counts, "Connections", {191, 88, 34}, 5)
+      .title("Fixed bucket occupancy").x_label("Bucket").y_label("Connections");
+  auto plot = dm::graphics::RLayout::create(1, 2).size(960, 380);
+  plot.add(loss).add(loads).save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/hashed_weights.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Learned 11 bucket values for 36 connections. Held-out MSE 0.5271054 to 0.001542223.
+\image(figures/hashed_weights.svg)
+// result_end
+
+> Reference
+
+- [Chen et al., Compressing Neural Networks with the Hashing Trick|https://proceedings.mlr.press/v37/chenc15.html].

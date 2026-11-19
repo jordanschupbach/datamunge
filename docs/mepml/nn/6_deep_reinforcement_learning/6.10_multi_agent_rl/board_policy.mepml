@@ -1,0 +1,50 @@
+//? Title: Board action values and frozen policy snapshots
+//? Lang: en
+
+> Board action values and frozen policy snapshots
+
+The board policy scores nine actions from a tic-tac-toe observation
+expressed from the current player's perspective. Greedy selection
+considers legal actions only. Training regresses the value of the
+executed action onto its eventual outcome for that player.
+
+Here player one has an immediate winning move at cell two. The same
+labeled board trains for 40 updates. A separate policy reloads
+the checkpoint from before training. Its legal action remains
+the action chosen by the original policy before fitting. The plot
+tracks squared outcome error for the winning action.
+
+```{cpp, results="markdown", file="figures/board_policy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  dm::rl::environments::TicTacToe game;
+  for (int move:{0,3,1,4}) game.Apply(move);
+  dm::rl::BoardValuePolicy policy, frozen(1);
+  const int original=policy.greedy(game);
+  frozen.load_snapshot(policy.snapshot());
+  const auto x=n::from_vector(game.Observation(),{1,9});
+  const auto action=n::from_vector<int>({2});
+  std::vector<double> steps,loss;
+  for (int i=0;i<40;++i) {
+    steps.push_back(i);
+    loss.push_back(policy.train(x,action,n::ones({1})));
+  }
+  const int fitted=policy.greedy(game);
+  if (frozen.greedy(game)!=original || fitted!=2 || !(loss.back()<loss.front())) {
+    throw std::runtime_error("Board fit or snapshot check failed");
+  }
+  std::print("The frozen policy chooses cell {} and the fitted policy chooses winning cell {}. "
+             "Outcome MSE fell from {:.6f} to {:.6f}.\n",original,fitted,loss.front(),loss.back());
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,loss,"Winning action",{37,99,235})
+      .title("Fitting a board action value").x_label("Update").y_label("Squared outcome error")
+      .size(800,460).save_svg("build/board_policy.svg");
+}
+```
+// result_begin: markdown
+The frozen policy chooses cell 7 and the fitted policy chooses winning cell 2. Outcome MSE fell from 1.097860 to 0.000020.
+\image(figures/board_policy.svg)
+// result_end

@@ -1,0 +1,128 @@
+//? Title: DeepWalk and node2vec embeddings
+//? Lang: en
+
+> DeepWalk and node2vec embeddings
+
+Two six-node communities are joined by a single bridge. Each walk yields
+a center and context pair for every neighbor within two positions of the
+center. The model fits a separate embedding and output weight for each
+node using the full conditional softmax over all 12 context candidates.
+
+DeepWalk samples the next neighbor uniformly. Node2vec changes the weights
+after the first step. With p = 0.5, stepping back gets twice the weight of
+an edge to another neighbor of the previous node. With q = 2, stepping
+outward gets half that weight. Both models fit on 288 walks and evaluate
+on 96 independently seeded walks from their own sampling distributions.
+
+```{cpp, results="markdown", file="figures/node_embeddings_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int nodes = 12, width = 8, length = 10;
+  std::vector<int> edges(nodes * nodes);
+  const auto link = [&](int a, int b) { edges[a * nodes + b] = edges[b * nodes + a] = 1; };
+  for (const int base : {0, 6})
+    for (int i = 0; i < 6; ++i) {
+      link(base + i, base + (i + 1) % 6);
+      link(base + i, base + (i + 2) % 6);
+    }
+  link(5, 6);
+  const auto adjacency = n::from_vector(edges, {nodes, nodes});
+
+  auto curve = dm::graphics::RPlot::create();
+  curve.title("Held-out context prediction").x_label("Epoch").y_label("NLL");
+  std::vector<double> rates;
+  std::filesystem::create_directories("build");
+  std::print("| sampler | epoch | held-out NLL |\n|---|---:|---:|\n");
+  for (const bool biased : {false, true}) {
+    const std::string name = biased ? "node2vec" : "deepwalk";
+    const double p = biased ? .5 : 1., q = biased ? 2. : 1.;
+    std::mt19937 fitting(48002), test_rng(48003), shuffle(48004);
+    const auto train = n::node_walk_corpus(adjacency, 24, length, 2, fitting, p, q);
+    const auto test = n::node_walk_corpus(adjacency, 8, length, 2, test_rng, p, q);
+    const auto pairs = train.pairs.to_vector<int>();
+    std::vector<int> order(train.pairs.size(0));
+    std::iota(order.begin(), order.end(), 0);
+
+    n::ParameterStore parameters(48001);
+    const auto input = parameters.get("input", {nodes, width}, n::init::uniform(.25));
+    const auto output = parameters.get("output", {width, nodes}, n::init::uniform(.25));
+    const auto objective = [&](const n::Tensor &batch) {
+      const auto embedding = n::gather(input, n::select(batch, 1, 0));
+      return n::sparse_softmax_cross_entropy(n::matmul(embedding, output), n::select(batch, 1, 1));
+    };
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(parameters, .025, config);
+    std::vector<double> epochs, losses;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        epochs.push_back(epoch);
+        losses.push_back(objective(test.pairs).item());
+        std::print("| {} | {} | {:.6f} |\n", name, epoch, losses.back());
+      }
+      if (epoch < 3) {
+        std::shuffle(order.begin(), order.end(), shuffle);
+        for (std::size_t start = 0; start < order.size(); start += 256) {
+          const auto count = std::min<std::size_t>(256, order.size() - start);
+          std::vector<int> batch;
+          for (std::size_t i = start; i < start + count; ++i) {
+            const auto row = order[i];
+            batch.insert(batch.end(), {pairs[2 * row], pairs[2 * row + 1]});
+          }
+          adam.minimize(objective(n::from_vector(batch, {static_cast<std::int64_t>(count), 2})));
+        }
+      }
+    }
+    const auto grads = n::grad(objective(test.pairs), {input, output});
+    n::save_npz("build/node_embeddings_" + name + ".npz",
+                {{"adjacency", adjacency}, {"train_walks", train.walks}, {"train_draws", train.draws},
+                 {"train_pairs", train.pairs}, {"test_walks", test.walks}, {"test_draws", test.draws},
+                 {"test_pairs", test.pairs}, {"history", n::from_vector(losses)}, {"embedding", input},
+                 {"output", output}, {"embedding_gradient", grads[0]}, {"output_gradient", grads[1]}});
+
+    const auto returns = n::equal(n::slice_axis(test.walks, 1, 2, length),
+                                  n::slice_axis(test.walks, 1, 0, length - 2));
+    rates.push_back(n::mean(returns.to(n::DType::Float64)).item());
+    std::print("{} immediate returns {:.2f}%.\n", name, 100. * rates.back());
+    curve.lines(epochs, losses, name, biased ? dm::graphics::RGBA{22, 120, 97}
+                                           : dm::graphics::RGBA{37, 99, 235});
+  }
+
+  auto backtracking = dm::graphics::RPlot::create();
+  backtracking.bars({0., 1.}, rates, "Immediate return", {22, 120, 97})
+      .title("How often a walk immediately returns").x_label("0 DeepWalk, 1 node2vec")
+      .y_label("Fraction of eligible transitions").y_limits(0, 1);
+  dm::graphics::RLayout::create(1, 2).add(curve).add(backtracking).size(1050, 430)
+      .fit_panels().save_svg("build/node_embeddings_fit.svg");
+}
+```
+// result_begin: markdown
+| sampler | epoch | held-out NLL |
+|---|---:|---:|
+| deepwalk | 0 | 2.486923 |
+| deepwalk | 1 | 1.928304 |
+| deepwalk | 2 | 1.913597 |
+| deepwalk | 3 | 1.896746 |
+deepwalk immediate returns 24.09%.
+| node2vec | 0 | 2.490023 |
+| node2vec | 1 | 1.865884 |
+| node2vec | 2 | 1.839272 |
+| node2vec | 3 | 1.818787 |
+node2vec immediate returns 45.57%.
+\image(figures/node_embeddings_fit.svg)
+// result_end
+\caption(Held-out context loss for each walk distribution and the frequency of immediate returns.)
+\alttext(A line plot comparing context losses and two bars showing the fraction of immediate return transitions.)
+
+Node2vec backtracks more often under these choices of p and q. Each NLL
+averages over a different test corpus, so the two values describe how well
+the models predict contexts within their respective walk distributions.
+
+> References
+
+- [Perozzi, Al-Rfou, and Skiena (2014), DeepWalk](https://arxiv.org/abs/1403.6652).
+- [Grover and Leskovec (2016), node2vec](https://arxiv.org/abs/1607.00653).

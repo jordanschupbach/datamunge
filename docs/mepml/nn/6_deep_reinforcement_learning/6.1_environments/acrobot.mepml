@@ -35,7 +35,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The recorded demonstrations use the original policy and reset seed.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -44,11 +44,9 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 //
 // Port of tflow's acrobot. Gymnasium's Acrobot-v1, including its RK4
 // integrator. Only the elbow is actuated, with torque -1, 0 or +1; the goal is
-// to swing the tip above a height of one link length. Reward is -1 per step,
+// to swing the tip above a height of one link length. Reward is -1 on nonterminal steps,
 // so shorter is better. The environment is common/rl/classic_control.hpp
-// (copied from tflow, TF-free). The vsim video of the pump controller is
-// omitted; the port adds checks that the pump reaches the goal in every
-// episode and random actions in none.
+// (copied from tflow, TF-free). The seeded pump rollout is recorded below.
 
 
 // Editable workflow support: checks.hpp
@@ -129,8 +127,7 @@ using datamunge::rl::environments::Acrobot;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy choices and reward information.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -446,7 +443,33 @@ int main() {
                    "the pump controller should reach the goal quickly in every episode");
     check::Require(pump.mean_length() < random.mean_length(), "the pump should beat random actions");
     check::Require(goal, "the traced pump episode should end at the goal with the tip above 1");
-    std::cout << "\nchecks passed (vsim video omitted)\n";
+
+    {
+      const std::string name = "acrobot_pump";
+      auto observation = env.reset(1);
+      const auto pose = [](const rl::Obs& o) -> std::array<float, 3> { return {0, std::atan2(o[1], o[0]), std::atan2(o[3], o[2])}; };
+      std::vector<std::array<float, 3>> samples{pose(observation)};
+      std::vector<float> observations = observation, rewards;
+      while (true) {
+        const auto result = env.step((Pump)(observation));
+        observation = result.obs;
+        samples.push_back(pose(observation));
+        observations.insert(observations.end(), observation.begin(), observation.end());
+        rewards.push_back(result.reward);
+        if (result.done()) break;
+      }
+      std::filesystem::create_directories("build");
+      std::filesystem::create_directories("figures");
+      dm::rl::environments::save_linkage_replay(
+          dm::rl::environments::LinkageReplay::Acrobot, samples, "build/" + name + ".mp4");
+      std::filesystem::copy_file("build/" + name + ".mp4", "figures/" + name + ".mp4",
+                                 std::filesystem::copy_options::overwrite_existing);
+      dm::nn::save_npz("build/" + name + "_replay.npz",
+          {{"observations", dm::nn::from_vector(observations,
+                 {static_cast<std::int64_t>(samples.size()), static_cast<std::int64_t>(observation.size())})},
+            {"reward", dm::nn::from_vector(rewards)}});
+    }
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -466,7 +489,7 @@ int main() {
 //   t=60  height=-1.31  t1=+0.18 t2=+1.06
 //   t=76  height=+1.37  t1=-2.37 t2=-1.63  GOAL
 //
-// checks passed (vsim video omitted)
+// checks passed
 // result_end
 
 > A fixed-action diagnostic trajectory
@@ -485,3 +508,10 @@ int main(){namespace e=dm::rl::environments;e::Acrobot env;auto observation=env.
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+> Seeded policy replay
+
+The pump reaches the height target on step 76. Its terminal step earns zero,
+for a return of -75.
+
+\video(figures/acrobot_pump.mp4)

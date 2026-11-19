@@ -1,0 +1,132 @@
+//? Title: Radial and directional molecular graphs
+//? Lang: en
+
+> Radial and directional molecular graphs
+
+Each synthetic molecule has a central atom and two equivalent outer
+atoms. Its target energy is a fixed function of the two central bond
+lengths and the included angle. A SchNet-style block uses distances to
+build continuous filters for neighboring atoms. A DimeNet-style block
+also uses the angle formed by the incoming and outgoing edges of a
+non-backtracking triplet. Both models sum per-atom predictions.
+
+Both branches fit on 768 geometries and evaluate on 128 independently
+sampled geometries. A second evaluation rotates and translates every
+molecule and exchanges its two equivalent atoms. Those transformations
+leave the analytic target unchanged.
+
+```{cpp, results="markdown", file="figures/molecular_graphs_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto simulate = [](int count, std::mt19937 &rng) {
+    std::uniform_real_distribution<double> bond(.85, 1.65), angle(.9, 2.5);
+    std::vector<double> coordinates;
+    std::vector<float> target;
+    for (int row = 0; row < count; ++row) {
+      const double a = bond(rng), b = bond(rng), theta = angle(rng);
+      const double cosine = std::cos(theta);
+      coordinates.insert(coordinates.end(), {0., 0., 0., a, 0., 0.,
+                                             b * cosine, b * std::sin(theta), 0.});
+      target.push_back((a - 1.1) * (a - 1.1) + (b - 1.1) * (b - 1.1) +
+                       .7 * (cosine + .3) * (cosine + .3));
+    }
+    return std::pair{n::from_vector(coordinates, {count, 3, 3}),
+                     n::from_vector(target, {count, 1})};
+  };
+
+  std::mt19937 fitting(49102), evaluation(49103);
+  std::vector<std::pair<n::TriatomicGraphBasis, n::Tensor>> training;
+  for (int batch = 0; batch < 32; ++batch) {
+    const auto [xyz, target] = simulate(24, fitting);
+    training.emplace_back(n::triatomic_graph_basis(xyz), target);
+  }
+  const auto [xyz, target] = simulate(128, evaluation);
+  const auto basis = n::triatomic_graph_basis(xyz);
+  const auto rotated = n::concat({2. - n::slice_axis(xyz, 2, 1, 2),
+                                  1. + n::slice_axis(xyz, 2, 0, 1),
+                                 -3. + n::slice_axis(xyz, 2, 2, 3)}, 2);
+  const auto transformed = n::triatomic_graph_basis(
+      n::gather(rotated, n::from_vector(std::vector<int>{0, 2, 1}), 1));
+
+  auto loss = dm::graphics::RPlot::create();
+  loss.title("Held-out energy fit").x_label("Epoch").y_label("Mean squared error");
+  auto fit = dm::graphics::RPlot::create();
+  fit.title("Predicted versus analytic energy").x_label("Analytic energy").y_label("Prediction");
+  std::filesystem::create_directories("build");
+  std::print("| method | epoch | held-out MSE |\n|---|---:|---:|\n");
+
+  for (const bool directional : {false, true}) {
+    const std::string name = directional ? "DimeNet" : "SchNet";
+    n::ParameterStore model(49101);
+    const auto forward = [&](const n::TriatomicGraphBasis &features) {
+      return n::triatomic_energy(model, "energy", features, 16, directional);
+    };
+    forward(basis);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .008, config);
+    std::vector<double> epochs, errors;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        epochs.push_back(epoch);
+        errors.push_back(n::mean(n::square(forward(basis) - target)).item());
+        std::print("| {} | {} | {:.6f} |\n", name, epoch, errors.back());
+      }
+      if (epoch < 3)
+        for (const auto &[features, observed] : training)
+          adam.minimize(n::mean(n::square(forward(features) - observed)));
+    }
+
+    n::NoGradGuard guard;
+    const auto prediction = forward(basis), altered = forward(transformed);
+    const auto error = n::max(n::abs(altered - prediction)).item();
+    if (error > 2e-6)
+      throw std::runtime_error("prediction changed under rigid motion or equivalent-atom exchange");
+    std::print("{} maximum transformed prediction difference {:.3g}.\n", name, error);
+    n::NamedTensors evidence{{"xyz", xyz}, {"target", target}, {"gaussian", basis.gaussian},
+        {"radial_basis", basis.radial}, {"spherical_basis", basis.angular}, {"cutoff", basis.cutoff},
+        {"prediction", prediction}, {"transformed", altered}, {"history", n::from_vector(errors)}};
+    for (const auto &key : model.names())
+      evidence.emplace_back(key.substr(std::string_view("energy/").size()), model.at(key));
+    n::save_npz("build/molecular_graphs_" + name + ".npz", evidence);
+
+    const dm::graphics::RGBA color = directional ? dm::graphics::RGBA{22, 120, 97}
+                                                 : dm::graphics::RGBA{37, 99, 235};
+    loss.lines(epochs, errors, name, color);
+    fit.points(target.to_vector<double>(), prediction.to_vector<double>(), name, color, 3);
+  }
+  const double high = n::max(target).item();
+  fit.lines({0., high}, {0., high}, "Perfect prediction", {95, 95, 95});
+  dm::graphics::RLayout::create(1, 2).add(loss).add(fit).size(1100, 450)
+      .fit_panels().save_svg("build/molecular_graphs_fit.svg");
+}
+```
+// result_begin: markdown
+| method | epoch | held-out MSE |
+|---|---:|---:|
+| SchNet | 0 | 0.109051 |
+| SchNet | 1 | 0.013153 |
+| SchNet | 2 | 0.011326 |
+| SchNet | 3 | 0.009039 |
+SchNet maximum transformed prediction difference 0.
+| DimeNet | 0 | 2.124205 |
+| DimeNet | 1 | 0.026608 |
+| DimeNet | 2 | 0.018828 |
+| DimeNet | 3 | 0.016644 |
+DimeNet maximum transformed prediction difference 0.
+\image(figures/molecular_graphs_fit.svg)
+// result_end
+\caption(Loss on held-out synthetic molecules and predictions against analytic energies.)
+\alttext(A line plot of held-out MSE alongside a scatter plot of predictions versus true energies for both models.)
+
+The learned regressors approximate one synthetic energy function.
+The invariance check applies to the trained predictions on this fixture.
+
+> References
+
+- [Schütt et al. (2017), SchNet](https://arxiv.org/abs/1706.08566).
+- [Klicpera, Groß, and Günnemann (2020), DimeNet](https://arxiv.org/abs/2003.03123).

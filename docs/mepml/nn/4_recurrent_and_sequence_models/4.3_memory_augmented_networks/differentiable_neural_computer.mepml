@@ -1,0 +1,127 @@
+//? Title: Differentiable Neural Computer on a bit-copy task
+//? Lang: en
+
+> Differentiable Neural Computer on a bit-copy task
+
+A 16-unit LSTM controller writes to six five-wide memory slots. Each write
+mixes a content address with allocation to the least-used slots. A temporal
+link matrix tracks write order, and the read head can follow those links
+in either direction or retrieve directly by content. The link diagonal
+stays zero. Read and write weights can have total mass below one.
+
+The model observes three four-bit vectors and a delimiter, then recalls
+the vectors on three blank steps. The fit, validation, and test sets use
+distinct bit strings. The plots show validation loss, allocation over time,
+and the final temporal links for a held-out string.
+
+```{cpp, results="markdown", file="figures/dnc_bit_copy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::vector<int> codes(4096);
+  std::iota(codes.begin(), codes.end(), 0);
+  std::mt19937 split(41396);
+  std::shuffle(codes.begin(), codes.end(), split);
+  const auto encode = [&](int start, int count) {
+    std::vector<float> x(count * 35), y(count * 12);
+    for (int row = 0; row < count; ++row) {
+      const auto code = codes[start + row];
+      x[row * 35 + 19] = 1.f;
+      for (int t = 0; t < 3; ++t)
+        for (int bit = 0; bit < 4; ++bit)
+          x[row * 35 + t * 5 + bit] = y[row * 12 + t * 4 + bit] = (code >> (t * 4 + bit)) & 1;
+    }
+    return std::pair{n::from_vector(x, {count,7,5}), n::from_vector(y, {count,3,4})};
+  };
+  const auto [x,y] = encode(0,384);
+  const auto [valid,vy] = encode(384,64);
+  const auto [test,ty] = encode(448,64);
+  n::ParameterStore model(41395);
+  const auto predict = [&](const n::Tensor &data) { return n::models::DncBitCopy(model,data); };
+  predict(n::slice_axis(x,0,0,1));
+  const auto loss = [&](const n::Tensor &data, const n::Tensor &target) {
+    return n::sigmoid_cross_entropy(predict(data)[0], target);
+  };
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.006,config);
+  n::BatchOrder order(384,16,41397);
+  double initial;
+  { n::NoGradGuard guard; initial = loss(test,ty).item(); }
+  const std::vector<double> epochs{0,1,2,3};
+  std::vector<double> history;
+  std::print("| Epoch | Validation BCE |\n|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    { n::NoGradGuard guard; history.push_back(loss(valid,vy).item()); }
+    std::print("| {} | {:.6f} |\n", epoch,history.back());
+    if (epoch == 3)
+      break;
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto ids=n::from_vector(rows);
+      adam.minimize(loss(n::gather(x,ids), n::gather(y,ids)));
+    }
+  }
+
+  n::NoGradGuard guard;
+  const auto [logits, memory, reads, read, write, controls, usage, allocation, links, precedence] = predict(test);
+  for (const auto &head : {read,write})
+    if (n::min(head).item()<0. || n::max(n::sum(head,{2})).item()>1.000002)
+      throw std::runtime_error("address normalization");
+  if (n::max(n::abs(logits-predict(test)[0])).item()!=0.)
+    throw std::runtime_error("repeat inference");
+  const auto ok=n::equal(n::greater_equal(logits,0.),n::greater(ty,.5));
+  std::print("Held-out BCE {:.6f} to {:.6f}, {}/768 correct bits and {}/64 exact copies.\n",
+      initial,n::sigmoid_cross_entropy(logits,ty).item(),n::count_nonzero(ok).item<int>(),
+      n::count_nonzero(n::all(ok,{1,2})).item<int>());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/dnc_bit_copy.npz", {{"ids",n::from_vector(std::vector<int>(codes.begin(),codes.begin()+512))},
+      {"input",test},{"target",ty},{"logits",logits},{"memory",memory},{"reads",reads},
+      {"read_weights",read},{"write_weights",write},{"controls",controls},
+      {"usage",usage},{"allocation",allocation},{"links",links},{"precedence",precedence},
+      {"bce",n::sigmoid_cross_entropy(logits,ty)}});
+  auto validation=dm::graphics::RPlot::create();
+  validation.lines(epochs,history,"Validation", {37,99,235})
+      .title("Copy learning curve").x_label("Epoch").y_label("Validation BCE");
+  auto figure=dm::graphics::RLayout::create(1,3);
+  figure.add(validation);
+  auto allocation_plot=dm::graphics::RPlot::create();
+  const auto first_allocation=n::select(allocation,0,0);
+  std::vector<std::vector<double>> times;
+  for (int t=0;t<7;++t)
+    times.push_back(n::select(first_allocation,0,t).to_vector<double>());
+  const std::vector<double> slots{0.,1.,2.,3.,4.,5.};
+  allocation_plot.image({0.,1.,2.,3.,4.,5.,6.},slots,times,
+                        dm::graphics::terrain_colors(32),0.,1.)
+      .title("Least-used slot allocation").x_label("Step (delimiter at 3)").y_label("Slot");
+  auto link_plot=dm::graphics::RPlot::create();
+  const auto final_links=n::select(n::select(links,0,0),0,6);
+  std::vector<std::vector<double>> columns;
+  for (int i=0;i<6;++i)
+    columns.push_back(n::select(final_links,1,i).to_vector<double>());
+  link_plot.image(slots,slots,columns,dm::graphics::terrain_colors(32),0.,
+                  std::max(.001, n::max(final_links).item()))
+      .title("Final temporal links").x_label("Earlier slot").y_label("Later slot");
+  figure.add(allocation_plot).add(link_plot);
+  figure.size(1200,420).fit_panels().save_svg("build/dnc_bit_copy.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation BCE |
+|---:|---:|
+| 0 | 0.691632 |
+| 1 | 0.624994 |
+| 2 | 0.559893 |
+| 3 | 0.503690 |
+Held-out BCE 0.691248 to 0.535498, 564/768 correct bits and 0/64 exact copies.
+\image(figures/dnc_bit_copy.svg)
+// result_end
+
+\caption(Validation loss, allocation over time and final links for a held-out string.)
+\alttext(A line plot shows validation binary cross-entropy. Heatmaps show allocation by slot and step and the final directed temporal links.)
+
+> Reference
+
+- [Graves et al. (2016), Hybrid computing using a neural network with dynamic external memory](https://doi.org/10.1038/nature20101).

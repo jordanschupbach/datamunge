@@ -1,0 +1,83 @@
+//? Title: Separable natural evolution strategies
+//? Lang: en
+
+> Separable natural evolution strategies
+
+A diagonal Gaussian supplies candidate weights for a bounded feedback
+controller. Every candidate in a generation encounters the same starting
+states. The best returns receive positive log-rank utility, and the weights
+sum to zero after centering. The utility-weighted first moment of the
+standardized samples moves the mean. The weighted second moment, centered
+at one, moves the log standard deviation, with a factor of one half from the
+inverse Fisher information. Each weight learns its own sampling scale.
+
+The [mirrored evolution strategies report|natural_es.mepml] uses the same
+controller. This experiment tracks the mean policy on twelve separately
+seeded starting states as the search distribution changes.
+
+[Wierstra et al. (2014)|https://www.jmlr.org/papers/v15/wierstra14a.html]
+
+```{cpp, results="markdown", file="figures/natural_es.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto starts=[](std::mt19937& rng) {
+    const auto uniform=[&] { return float((rng()+.5)/4294967296.); };
+    std::vector<float> states;
+    for (int i=0;i<6;++i) {
+      const float p=.4f+.6f*uniform(), v=.6f*(uniform()-.5f);
+      states.insert(states.end(),{p,v,-p,-v});
+    }
+    return n::from_vector(states,{12,2});
+  };
+  std::mt19937 rng(47401), train(47203), evaluation(47204);
+  std::normal_distribution<float> normal;
+  const auto test=starts(evaluation);
+  auto center=n::zeros({1,3});
+  auto scale=.35f*n::ones({1,3});
+  const n::NoGradGuard no_grad;
+  std::vector<double> history;
+  std::filesystem::create_directories("build");
+  std::print("| Generation | Held-out return | Position scale | Velocity scale | Bias scale |\n"
+             "|---:|---:|---:|---:|---:|\n");
+  for (int generation=0;generation<=3;++generation) {
+    history.push_back(r::feedback_returns(center,test).first.item());
+    const auto scales=scale.to_vector<float>();
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",
+               generation,history.back(),scales[0],scales[1],scales[2]);
+    if (generation==3) break;
+    const auto initial=starts(train);
+    std::vector<float> draws(32*3);
+    for (auto& value:draws) value=normal(rng);
+    const auto noise=n::from_vector(draws,{32,3});
+    const auto population=center+scale*noise;
+    const auto fitness=r::feedback_returns(population,initial).first;
+    const auto [next_center,next_scale,utilities]=r::snes_update(center,scale,noise,fitness);
+    n::save_npz(std::format("build/natural_es_generation{}.npz",generation+1),{{"center",center},
+        {"scale",scale},{"noise",noise},{"population",population},{"starts",initial},
+        {"fitness",fitness},{"utilities",utilities},{"next_center",next_center},{"next_scale",next_scale}});
+    center=next_center;
+    scale=next_scale;
+  }
+  if (!(history.back()>history.front())) {
+    throw std::runtime_error("SNES mean policy did not improve");
+  }
+  n::save_npz("build/natural_es_evaluation.npz",{{"starts",test},{"history",n::from_vector(history)}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Unperturbed policy",{37,99,235})
+      .points({0,1,2,3},history,"Gaussian updates",{37,99,235})
+      .title("Separable natural evolution strategies").x_label("Generation").y_label("Mean held-out return")
+      .size(880,425).save_svg("build/natural_es.svg");
+}
+```
+// result_begin: markdown
+| Generation | Held-out return | Position scale | Velocity scale | Bias scale |
+|---:|---:|---:|---:|---:|
+| 0 | -18.609520 | 0.350000 | 0.350000 | 0.350000 |
+| 1 | -5.364028 | 0.344500 | 0.337298 | 0.301909 |
+| 2 | -3.812285 | 0.328579 | 0.329870 | 0.244261 |
+| 3 | -2.720727 | 0.306533 | 0.271974 | 0.220456 |
+\image(figures/natural_es.svg)
+// result_end

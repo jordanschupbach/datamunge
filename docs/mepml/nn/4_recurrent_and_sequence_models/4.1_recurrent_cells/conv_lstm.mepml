@@ -1360,7 +1360,7 @@ confusion (target pixel rows, predicted pixel columns):
 0 0 0 0 1 0 0 0 0 0 0 0 0 2 0 0 
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 
 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-testWeightedCE=1.29713 top1=0.4375 brier=0.249244;spatialKernels/maps/padding/causality/restore/labelFree PASS (0.0183868 s)
+testWeightedCE=1.29713 top1=0.4375 brier=0.249244;spatialKernels/maps/padding/causality/restore/labelFree PASS (0.050075 s)
 Artifacts:"build/recurrent-models/models/conv_lstm/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/conv_lstm" not found; skipping the comparison
 // result_end

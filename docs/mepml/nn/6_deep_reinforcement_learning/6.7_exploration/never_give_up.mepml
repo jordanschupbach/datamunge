@@ -1,0 +1,88 @@
+//? Title: Never Give Up-style episodic novelty
+//? Lang: en
+
+> Never Give Up-style episodic novelty
+
+An [inverse-dynamics encoder|curiosity_model.mepml] learns state features
+from replay. The agent snapshots all features at each episode boundary
+so distances within an episode use one representation. Memory starts
+with the initial state and records every successor, including repeats.
+
+The bonus uses up to five nearest visits in that memory. Squared
+distances are divided by their running mean across episodes, then
+reduced by a small clustering threshold. A sum of kernel similarities
+estimates density, and its inverse square root gives the novelty bonus.
+This example isolates the episodic component of Never Give Up.
+
+The [shared grid schedule|exploration_grid.mepml] compares three matched
+control and novelty runs. The plot tracks coverage across seeds. The
+table also reports task success and inverse-action accuracy on replay.
+
+[Badia et al. (2020), Never Give Up|https://arxiv.org/abs/2002.06038]
+
+```{cpp, results="markdown", file="figures/never_give_up.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto pack=[](std::span<const std::array<int,3>> batch) {
+    std::vector<int> values;
+    for (const auto& row:batch) values.insert(values.end(),row.begin(),row.end());
+    return n::from_vector(values,{std::ssize(batch),3});
+  };
+  std::vector<double> control,ngu;
+  std::filesystem::create_directories("build");
+  std::print("| Seed | Mode | Visited | Training goals | Greedy success | Inverse accuracy |\n"
+             "|---:|:---|---:|---:|:---|---:|\n");
+  for (const auto seed:{43602u,43603u,43604u}) {
+    const auto [path,reward,visited,goals,success]=r::sparse_grid_experiment(seed);
+    control.push_back(visited);
+    std::print("| {} | Control | {} | {} | {} | |\n",seed,visited,goals,success);
+    n::save_npz(std::format("build/{}_control.npz",seed),{{"transitions",path},{"bonus",reward}});
+
+    r::IntrinsicCuriosity model(49,4,12,24,0.);
+    r::EpisodicNovelty novelty;
+    std::vector<int> states(49);
+    std::iota(states.begin(),states.end(),0);
+    const auto ids=n::from_vector(states);
+    std::vector<n::Tensor> snapshots;
+    const auto [rows,bonus,coverage,hits,solved]=r::sparse_grid_experiment(seed,
+        [&](const auto& step) {
+          return static_cast<float>(novelty.observe(step[2]));
+        },
+        [&](const auto batch) { model.train(pack(batch)); },
+        [&] {
+          snapshots.push_back(model.embed(ids));
+          novelty.reset(snapshots.back());
+        });
+    ngu.push_back(coverage);
+    const auto [error,prediction,target,logits]=model.evaluate(rows);
+    const auto actions=n::slice(rows,{0,1},{rows.size(0),1}).to_vector<int>();
+    const auto guesses=n::argmax(logits,1).to_vector<int>();
+    int correct=0;
+    for (std::size_t i=0;i<actions.size();++i) correct+=actions[i]==guesses[i];
+    std::print("| {} | NGU-style | {} | {} | {} | {:.3f} |\n",
+               seed,coverage,hits,solved,double(correct)/actions.size());
+    n::save_npz(std::format("build/{}_ngu.npz",seed),{{"transitions",rows},{"bonus",bonus},
+        {"final_error",error},{"prediction",prediction},{"features",target},{"inverse_logits",logits},
+        {"episode_embeddings",n::stack(snapshots)}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({43602,43603,43604},control,"Task reward only",{217,96,26},7)
+      .points({43602,43603,43604},ngu,"With episodic novelty",{37,99,235},7)
+      .title("Sparse-grid exploration coverage").x_label("Seed").y_label("Unique cells visited")
+      .ylim(0,49).size(820,460).save_svg("build/never_give_up.svg");
+}
+```
+// result_begin: markdown
+| Seed | Mode | Visited | Training goals | Greedy success | Inverse accuracy |
+|---:|:---|---:|---:|:---|---:|
+| 43602 | Control | 18 | 0 | false | |
+| 43602 | NGU-style | 25 | 0 | false | 0.847 |
+| 43603 | Control | 17 | 0 | false | |
+| 43603 | NGU-style | 26 | 0 | false | 0.837 |
+| 43604 | Control | 15 | 0 | false | |
+| 43604 | NGU-style | 33 | 0 | false | 0.843 |
+\image(figures/never_give_up.svg)
+// result_end

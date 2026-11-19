@@ -1,0 +1,181 @@
+//? Title: Character BERT fine-tuning for classification, BIO tags and spans
+//? Lang: en
+
+> Character BERT fine-tuning for classification, BIO tags and spans
+
+Three tasks start from the same pretrained character BERT and train
+independent heads and encoders. Binary classification asks whether a
+place occurs in a short story. Named entity recognition labels the
+start and continuation characters of people and places. Extractive
+question answering predicts the start and end of a person's name.
+
+The model masks padded characters in self-attention. The tag objective
+downweights the outside class, and the QA head excludes question and
+padding positions. Evaluation counts exact entities and exact answer
+spans. Run the masked-character pretraining report first or supply
+`DM_CHARACTER_WEIGHTS`. The character vocabulary can be supplied through
+`DM_CHARACTER_VOCABULARY`.
+
+```{cpp, results="markdown", file="figures/character_bert_finetune.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n=dm::nn;
+
+int main() {
+  n::set_num_threads(2);
+  using Task=n::CharacterBertTask;
+  const char *vocab=std::getenv("DM_CHARACTER_VOCABULARY"), *weights=std::getenv("DM_CHARACTER_WEIGHTS");
+  const auto path=vocab?std::filesystem::path(vocab):
+      std::filesystem::path(dm::datasets::prepare_example_data("character_rnn"))/"vocabulary.txt";
+  std::ifstream file(path,std::ios::binary);
+  const std::string alphabet{std::istreambuf_iterator<char>(file),{}};
+  if(alphabet.size()!=65) throw std::runtime_error("expected 65-character vocabulary");
+  const auto pretrained=n::load_npz(weights?weights:"build/masked_character_weights.npz");
+  const std::array<std::string,8> people{"Ada","Ben","Eva","Jim","Leo","Mia","Ned","Sam"};
+  const std::array<std::string,8> places{"Oslo","Lima","Rome","Riga","Peru","Cuba","York","Pisa"};
+  std::mt19937 rng(41412);
+  std::set<std::array<int,4>> seen;
+  std::vector<int> records;
+  while(records.size()<640*6) {
+    std::array<int,6> r;
+    for(int &id:r) id=rng()%8;
+    auto [a,b,x,y,z,mode]=r;
+    if(a==b || x==y || z==x || z==y || !seen.insert({a,b,x,y}).second) continue;
+    r[5]%=4;
+    records.insert(records.end(),r.begin(),r.end());
+  }
+  const auto entities=[](const int *tags,int length) {
+    std::set<std::array<int,3>> out;
+    int start=-1,type=0;
+    for(int i=0;i<=length;++i) {
+      const int tag=i<length?tags[i]:0, kind=(tag+1)/2;
+      if(start>=0 && (tag==0 || tag%2 || kind!=type)) {out.insert({start,i,type}); start=-1;}
+      if(tag && start<0) {start=i; type=kind;}
+    }
+    return out;
+  };
+  auto figure=dm::graphics::RLayout::create(1,3);
+  std::filesystem::create_directories("build");
+  for(auto [task,name]:{std::pair{Task::Classification,"classification"},
+      std::pair{Task::BioTagging,"ner"},std::pair{Task::ExtractiveQa,"qa"}}) {
+    std::vector<int> tokens(640*64), labels(640*64), lengths, spans;
+    for(int row=0;row<640;++row) {
+      const int a=records[6*row], b=records[6*row+1], x=records[6*row+2], y=records[6*row+3];
+      const int z=records[6*row+4], mode=records[6*row+5], who=mode%2;
+      const int queried=task==Task::Classification && mode>=2?z:who?y:x;
+      std::string text;
+      if(task==Task::Classification) text="Is anyone in "+places[queried]+"? ";
+      if(task==Task::ExtractiveQa) text="Who is in "+places[queried]+"? ";
+      const auto append=[&](const std::string &word,int tag){
+        const int begin=text.size();
+        text+=word;
+        if(task==Task::BioTagging)
+          for(int p=begin;p<int(text.size());++p) labels[row*64+p]=p==begin?tag:tag+1;
+        return begin;
+      };
+      const int first=append(people[a],1);
+      text+=" is in ";
+      append(places[x],3);
+      text+=". ";
+      const int second=append(people[b],1);
+      text+=" is in ";
+      append(places[y],3);
+      text+=".";
+      for(std::size_t p=0;p<text.size();++p) {
+        const auto id=alphabet.find(text[p]);
+        if(id>=65) throw std::runtime_error("unknown character");
+        tokens[row*64+p]=id;
+      }
+      lengths.push_back(text.size());
+      if(task==Task::Classification) labels[row*64]=mode<2;
+      const int start=who?second:first;
+      spans.insert(spans.end(),{start,start+2});
+    }
+    const auto input=n::from_vector(tokens,{640,64}), len=n::from_vector(lengths);
+    const auto label=n::from_vector(labels,{640,64}), span=n::from_vector(spans,{640,2});
+    const auto valid=n::arange(512,576,1,n::DType::Int64), held=n::arange(576,640,1,n::DType::Int64);
+    n::ParameterStore model(41413);
+    n::character_bert_encoder(model,n::slice_axis(input,0,0,1));
+    n::NamedTensors pairs;
+    for(const auto &key:model.names()) pairs.emplace_back(key,model.at(key));
+    n::restore_tensors(pairs,pretrained,false);
+    const auto scores=[&](const n::Tensor &rows) {
+      return n::character_bert_task_logits(model,n::gather(input,rows),n::gather(len,rows),task);
+    };
+    const auto loss=[&](const n::Tensor &logits,const n::Tensor &rows) {
+      const auto y=n::gather(label,rows);
+      if(task==Task::Classification) return n::sparse_softmax_cross_entropy(logits,n::select(y,1,0));
+      if(task==Task::ExtractiveQa) return n::sparse_softmax_cross_entropy(logits,n::gather(span,rows));
+      const auto keep=n::less(n::arange(0,64),n::gather(len,rows).reshape({-1,1}));
+      const auto weight=n::where(n::equal(y,0.),n::scalar(.25),n::scalar(1.))*keep.to(logits.dtype());
+      return n::sum(weight*n::sparse_softmax_cross_entropy(logits,y,n::Reduction::None))/n::sum(weight);
+    };
+    scores(valid);
+    n::OptimizerConfig config;
+    config.kind=n::OptimizerKind::Adam;
+    n::Optimizer adam(model,.002,config);
+    n::BatchOrder order(512,16,41414);
+    std::vector<double> history;
+    for(int epoch=0;epoch<=3;++epoch) {
+      {n::NoGradGuard guard; history.push_back(loss(scores(valid),valid).item());}
+      if(epoch==3) break;
+      order.begin_epoch();
+      for(auto rows=order.next();!rows.empty();rows=order.next()) {
+        const auto ids=n::from_vector(rows);
+        adam.minimize(loss(scores(ids),ids));
+      }
+    }
+    n::NoGradGuard guard;
+    const auto final=scores(held);
+    const auto target=n::gather(label,held), bounds=n::gather(span,held);
+    const auto guess=n::argmax(final,task==Task::Classification?1:2).to_vector<int>();
+    const auto raw=final.to_vector<float>();
+    std::vector<int> predicted(64*64,-1);
+    int hits=0, proposed=0, total=0;
+    for(int row=0;row<64;++row) {
+      const int count=lengths[576+row], offset=(576+row)*64;
+      if(task==Task::Classification) {
+        predicted[row*64]=guess[row];
+        hits+=guess[row]==labels[offset];
+      } else if(task==Task::BioTagging) {
+        std::copy_n(guess.begin()+row*64,count,predicted.begin()+row*64);
+        const auto p=entities(guess.data()+row*64,count), y=entities(labels.data()+offset,count);
+        for(const auto &entity:p) hits+=y.contains(entity);
+        proposed+=p.size(); total+=y.size();
+      } else {
+        float best=-std::numeric_limits<float>::infinity();
+        int start=16,end=16;
+        for(int i=16;i<count;++i)
+          for(int j=i;j<std::min(count,i+4);++j) {
+            const auto value=raw[(row*2)*64+i]+raw[(row*2+1)*64+j];
+            if(value>best) {best=value; start=i; end=j;}
+          }
+        predicted[row*64]=start; predicted[row*64+1]=end;
+        hits+=start==spans[(576+row)*2] && end==spans[(576+row)*2+1];
+      }
+    }
+    const auto nll=loss(final,held);
+    std::print("{} validation NLL {:.6f} to {:.6f}, held-out NLL {:.6f}. ",name,history.front(),history.back(),nll.item());
+    if(task==Task::BioTagging) std::print("Entity F1 {:.4f} ({} correct of {} predicted and {} gold).\n\n",2.*hits/(proposed+total),hits,proposed,total);
+    else std::print("{}/64 exact.\n\n",hits);
+    n::save_npz(std::string("build/character_bert_")+name+".npz",{{"input",n::gather(input,held)},
+        {"lengths",n::gather(len,held)},{"labels",target},{"spans",bounds},{"logits",final},
+        {"predicted",n::from_vector(predicted,{64,64})},{"nll",nll},{"records",n::from_vector(records,{640,6})}});
+    auto plot=dm::graphics::RPlot::create();
+    plot.lines({0.,1.,2.,3.},history,"Validation",{37,99,235})
+        .title(name).x_label("Epoch").y_label("Validation NLL");
+    figure.add(plot);
+  }
+  figure.size(1210,430).fit_panels().save_svg("build/character_bert_finetune.svg");
+}
+```
+// result_begin: markdown
+classification validation NLL 1.108410 to 0.681356, held-out NLL 0.714568. 22/64 exact.
+
+ner validation NLL 1.981342 to 0.005529, held-out NLL 0.005552. Entity F1 1.0000 (256 correct of 256 predicted and 256 gold).
+
+qa validation NLL 3.382295 to 0.676424, held-out NLL 0.665228. 35/64 exact.
+
+\image(figures/character_bert_finetune.svg)
+// result_end
+\caption(Validation trajectories for three tasks that start from the same encoder checkpoint.)
+\alttext(Three line panels show validation loss for classification, BIO tagging and extractive question answering.)

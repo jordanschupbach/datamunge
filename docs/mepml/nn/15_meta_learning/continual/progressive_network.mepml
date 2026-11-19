@@ -1,0 +1,95 @@
+//? Title: Progressive neural networks with frozen columns
+//? Lang: en
+
+> Progressive neural networks with frozen columns
+
+Fit one column to a regression task. Then freeze it and train a
+separate column for a related task. Learned lateral projections let
+the new column reuse the first column's hidden activations. Detaching
+those activations prevents task-B gradients from changing task A.
+
+At evaluation, compare task-A predictions before and after fitting
+task B. To measure how much the fitted second column relies on the
+lateral connections, set their multiplier to zero at inference.
+The resulting ablation uses the same trained weights and test rows.
+
+```{cpp, results="markdown", file="figures/progressive_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed,bool second) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> sample(-1,1);
+    std::vector<float> x(count*3),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=0;j<3;++j) x[3*i+j]=sample(rng);
+      const float shared=std::sin(3.f*x[3*i])+.55f*x[3*i+1]*x[3*i+2];
+      y[i]=second ? .7f*shared-.45f*std::cos(2.f*x[3*i+1]) : shared;
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(y,{count,1})};
+  };
+  const auto [a,ay]=draw(1024,33194,false);
+  const auto [b,by]=draw(1024,33195,true);
+  const auto [at,aty]=draw(256,33196,false);
+  const auto [bt,bty]=draw(256,33197,true);
+  n::ParameterStore old(33191),next(33192);
+  const auto first=[&](const auto& x) { return n::progressive_column(old,x); };
+  const auto second=[&](const auto& x,double gate=1) {
+    n::ProgressiveColumn frozen;
+    {
+      n::NoGradGuard guard;
+      frozen=first(x);
+    }
+    return n::progressive_column(next,x,&frozen,gate).prediction;
+  };
+  const auto train=[](const auto& x,const auto& y,const auto& predict,n::ParameterStore& model) {
+    (void)predict(n::take_rows(x,{0}));
+    n::Optimizer opt(model,.006,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder order(1024,32,33193);
+    for (int epoch=0;epoch<3;++epoch) {
+      order.begin_epoch();
+      for (auto rows=order.next();!rows.empty();rows=order.next())
+        opt.minimize(n::mean(n::square(predict(n::take_rows(x,rows))-n::take_rows(y,rows))));
+    }
+  };
+  train(a,ay,[&](const auto& x){return first(x).prediction;},old);
+  const auto a_before=first(at).prediction.detach();
+  const auto snapshot=old.clone();
+  train(b,by,second,next);
+  n::NoGradGuard guard;
+  const auto a_after=first(at).prediction,b_after=second(bt),ablated=second(bt,0);
+  for (const auto& key:old.names())
+    if (old.at(key).to_vector<float>()!=snapshot.at(key).to_vector<float>()) return 1;
+  if (a_after.to_vector<float>()!=a_before.to_vector<float>()) return 1;
+  const auto rmse=[](const auto& p,const auto& y) {
+    return n::sqrt(n::mean(n::square(p.to(n::DType::Float64)-y.to(n::DType::Float64)))).item();
+  };
+  const auto ea=rmse(a_after,aty),eb=rmse(b_after,bty),eo=rmse(ablated,bty);
+  std::print("Task A RMSE {:.5f} before and after fitting B. Task B RMSE {:.5f} with laterals and {:.5f} with laterals disabled.\n",
+      ea,eb,eo);
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({0},{ea},"Task A",{31,41,55}).points({1},{eb},"Task B with laterals",{37,99,235})
+      .points({2},{eo},"Task B without laterals",{234,88,12})
+      .title("Held-out progressive network error").x_label("Evaluation condition").y_label("RMSE");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/progressive_network.svg");
+  n::NamedTensors saved{{"a_x",at},{"a_y",aty},{"b_x",bt},{"b_y",bty},
+      {"a_before",a_before},{"a_after",a_after},{"b_after",b_after},{"b_lateral_disabled",ablated}};
+  const auto save=[&](const auto& store,const std::string& tag) {
+    for (const auto& name:store.names()) {
+      auto key=name;
+      std::replace(key.begin(),key.end(),'/','_');
+      saved.emplace_back(tag+key,store.at(name));
+    }
+  };
+  save(snapshot,"old_before_");
+  save(old,"old_after_");
+  save(next,"new_");
+  n::save_npz("build/progressive_network.npz",saved);
+}
+```
+// result_begin: markdown
+Task A RMSE 0.42763 before and after fitting B. Task B RMSE 0.27196 with laterals and 0.32440 with laterals disabled.
+\image(figures/progressive_network.svg)
+// result_end

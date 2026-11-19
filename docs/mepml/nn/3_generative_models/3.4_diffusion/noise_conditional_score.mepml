@@ -2027,7 +2027,7 @@ weights from nn's generator (statistical parity with TF only)
 epoch1:validationWeightedDSM=0.494837
 epoch2:validationWeightedDSM=0.482563
 epoch3:validationWeightedDSM=0.470559
-testWeightedDSM=0.480109,zero=0.507598,fitGaussianScore=0.234877,tweedieMSE=0.175131;VEcorruption/16sigmas/64Langevin/noisyLast/oracle/timeControl/restore/immutable PASS (training 0.158882 s)
+testWeightedDSM=0.480109,zero=0.507598,fitGaussianScore=0.234877,tweedieMSE=0.175131;VEcorruption/16sigmas/64Langevin/noisyLast/oracle/timeControl/restore/immutable PASS (training 0.268662 s)
 no TF record at /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.4_diffusion/build/models/noise_conditional_score; parity checks skipped
 Artifacts: build/diffusion-models/models/noise_conditional_score
 // result_end

@@ -525,9 +525,9 @@ int main() {
 
 | n | forward (ms) | forward + gradient (ms) | ratio | central differences, 2n evaluations (ms, estimated) |
 | ---: | ---: | ---: | ---: | ---: |
-| 100 | 0.002 | 0.008 | 3.4 | 0.495 |
-| 10000 | 0.130 | 0.214 | 1.6 | 2.59e+03 |
-| 1000000 | 4.864 | 9.492 | 2.0 | 9.73e+06 |
+| 100 | 0.009 | 0.032 | 3.4 | 1.84 |
+| 10000 | 0.463 | 0.747 | 1.6 | 9.25e+03 |
+| 1000000 | 16.698 | 40.783 | 2.4 | 3.34e+07 |
 // result_end
 
 `gradcheck` and `gradgradcheck` agree with float64 central differences to \(1.5\times10^{-10}\) and \(4.3\times10^{-10}\), near

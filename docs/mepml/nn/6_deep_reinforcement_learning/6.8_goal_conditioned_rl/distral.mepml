@@ -1,0 +1,91 @@
+//? Title: Distral policy sharing across chain tasks
+//? Lang: en
+
+> Distral policy sharing across chain tasks
+
+Three navigation tasks share a nine-cell chain. They differ in their
+goal cells. Each round solves a soft Bellman problem for each task.
+The task policy balances its own action values against the log
+probabilities of a shared action prior.
+
+The distillation step estimates each task policy's discounted
+state occupancy from uniformly sampled nonterminal starts. It weights
+action probabilities by that occupancy, adds a small pseudocount,
+and normalizes across actions to form the next shared prior. This
+alternates task-specific planning with learning a policy that reflects
+behavior common to the tasks.
+
+The plot shows the shared probability of moving right across the
+chain, starting from a uniform prior. The table measures greedy
+task-policy success over the 24 nonterminal starts.
+
+[Teh et al. (2017), Distral|https://arxiv.org/abs/1707.04175]
+
+```{cpp, results="markdown", file="figures/distral.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int states=9,actions=2;
+  constexpr std::array goals{0,7,8};
+  std::vector<int> successor;
+  for (int state=0;state<states;++state) {
+    successor.insert(successor.end(),{std::max(0,state-1),std::min(states-1,state+1)});
+  }
+  std::vector<float> rewards,live,initial;
+  for (const int goal:goals) {
+    for (int state=0;state<states;++state) {
+      live.push_back(state!=goal);
+      initial.push_back(state==goal?0.f:1.f/(states-1));
+      for (int action=0;action<actions;++action) {
+        const int next=successor[state*actions+action];
+        rewards.push_back(state==goal?0.f:next==goal?1.f:-.01f);
+      }
+    }
+  }
+  const auto next=n::from_vector(successor,{states,actions});
+  const auto reward=n::from_vector(rewards,{3,states,actions});
+  const auto nonterminal=n::from_vector(live,{3,states});
+  const auto start=n::from_vector(initial,{3,states});
+  auto prior=.5*n::ones({states,actions});
+  std::vector<double> cells(states);
+  std::iota(cells.begin(),cells.end(),0.);
+  const std::array<dm::RGBA,3> colors{
+      dm::RGBA{37,99,235},dm::RGBA{217,96,26},dm::RGBA{24,135,101}};
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(cells,std::vector<double>(states,.5),"Initial prior",{116,123,135});
+  std::filesystem::create_directories("build/distral");
+  std::print("| Round | Greedy successes | Shared right probability at cell 4 |\n|---:|---:|---:|\n");
+  for (int round=1;round<=3;++round) {
+    const auto [value,policy,occupancy,shared]=dm::rl::distral_round(next,reward,nonterminal,start,prior);
+    const auto greedy=n::argmax(policy,2).to_vector<int>();
+    int successes=0;
+    for (std::size_t task=0;task<goals.size();++task) {
+      for (int first=0;first<states;++first) {
+        if (first==goals[task]) continue;
+        int state=first;
+        for (int step=0;step<states && state!=goals[task];++step) {
+          state=successor[state*actions+greedy[task*states+state]];
+        }
+        successes+=state==goals[task];
+      }
+    }
+    const auto right=n::slice(shared,{0,1},{states,1}).to_vector<double>();
+    std::print("| {} | {} / 24 | {:.6f} |\n",round,successes,right[4]);
+    plot.lines(cells,right,std::format("Round {}",round),colors[round-1]);
+    n::save_npz(std::format("build/distral/round{}.npz",round),{{"prior",prior},
+        {"values",value},{"policy",policy},{"occupancy",occupancy},{"distilled",shared}});
+    prior=shared;
+  }
+  plot.title("Distral shared action prior").x_label("Chain cell").y_label("Probability of moving right")
+      .ylim(0,1).size(820,460).save_svg("build/distral.svg");
+}
+```
+// result_begin: markdown
+| Round | Greedy successes | Shared right probability at cell 4 |
+|---:|---:|---:|
+| 1 | 24 / 24 | 0.583369 |
+| 2 | 21 / 24 | 0.632069 |
+| 3 | 21 / 24 | 0.659965 |
+\image(figures/distral.svg)
+// result_end

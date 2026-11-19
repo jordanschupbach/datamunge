@@ -1,0 +1,81 @@
+//? Title: A smoothed bigram reference for preference learning
+//? Lang: en
+
+> A smoothed bigram reference for preference learning
+
+A synthetic corpus contains noun–verb responses to two prompts.
+For each prompt, the reference fits one start-of-sequence row and
+one transition row for each previous token. Adding half a count
+per entry gives unseen tokens positive probability. A row with no
+observations becomes uniform.
+
+Each two-token completion has a log probability given by the two
+transition log probabilities added together. The program enumerates
+all 16 completions and plots their probabilities for both prompts.
+It prints the four features used by the synthetic preference oracle.
+The [DPO report|dpo.mepml] uses the same smoothed reference.
+
+```{cpp, results="markdown", file="figures/preference_bigram.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  std::vector<float> counts(40);
+  for (int prompt=0;prompt<2;++prompt) {
+    for (int i=0;i<16;++i) {
+      const int noun=i%2,verb=2+(i/2)%2;
+      ++counts[4*(5*prompt+4)+noun];
+      ++counts[4*(5*prompt+noun)+verb];
+    }
+  }
+  const auto reference=r::smoothed_bigram_logp(n::from_vector(counts,{10,4}));
+  std::vector<int> tokens;
+  for (int prompt=0;prompt<2;++prompt) {
+    for (int completion=0;completion<16;++completion) {
+      tokens.insert(tokens.end(),{completion/4,completion%4});
+    }
+  }
+  const auto completions=n::from_vector(tokens,{2,16,2});
+  const auto logp=r::bigram_completion_logp(reference,n::from_vector<int>({0,1}),completions);
+  const auto probability=n::exp(logp);
+  for (double sum:n::sum(probability,{1}).to_vector<double>()) {
+    if (std::abs(sum-1)>1e-6) throw std::runtime_error("Completion probabilities do not sum to one");
+  }
+  const auto p=probability.to_vector<double>();
+  constexpr std::array words{"cat","dog","rests","runs"};
+  std::print("| Prompt | Completion | Noun match | Verb match | Noun then verb | Exact match | Probability |\n"
+             "|:---|:---|---:|---:|---:|---:|---:|\n");
+  for (int prompt=0;prompt<2;++prompt) {
+    for (int id:{2,3,6,7}) {
+      const int first=id/4,second=id%4;
+      const bool noun=first==prompt,verb=second==2+prompt;
+      std::print("| {} {} | {} {} | {} | {} | {} | {} | {:.6f} |\n",
+                 words[prompt],words[prompt+2],words[first],words[second],
+                 int(noun),int(verb),int(first<2 && second>=2),int(noun && verb),p[16*prompt+id]);
+    }
+  }
+  std::vector<double> ids(16);
+  std::iota(ids.begin(),ids.end(),0.);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/preference_bigram_audit.npz",{{"reference",reference},{"probability",probability}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(ids,std::vector<double>(p.begin(),p.begin()+16),"Cat rests",{37,99,235},6)
+      .points(ids,std::vector<double>(p.begin()+16,p.end()),"Dog runs",{217,96,26},3)
+      .title("Completion probabilities under the reference").x_label("Completion ID").y_label("Probability")
+      .size(800,460).save_svg("build/preference_bigram.svg");
+}
+```
+// result_begin: markdown
+| Prompt | Completion | Noun match | Verb match | Noun then verb | Exact match | Probability |
+|:---|:---|---:|---:|---:|---:|---:|
+| cat rests | cat rests | 1 | 1 | 1 | 1 | 0.212500 |
+| cat rests | cat runs | 1 | 0 | 1 | 0 | 0.212500 |
+| cat rests | dog rests | 0 | 1 | 1 | 0 | 0.212500 |
+| cat rests | dog runs | 0 | 0 | 1 | 0 | 0.212500 |
+| dog runs | cat rests | 0 | 0 | 1 | 0 | 0.212500 |
+| dog runs | cat runs | 0 | 1 | 1 | 0 | 0.212500 |
+| dog runs | dog rests | 1 | 0 | 1 | 0 | 0.212500 |
+| dog runs | dog runs | 1 | 1 | 1 | 1 | 0.212500 |
+\image(figures/preference_bigram.svg)
+// result_end

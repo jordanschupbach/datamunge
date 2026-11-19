@@ -1,0 +1,145 @@
+//? Title: Audio Spectrogram Transformer for tones and chirps
+//? Lang: en
+
+> Audio Spectrogram Transformer for tones and chirps
+
+Convert waveforms to log-mel spectrograms and normalize them with the
+fitting split's mean and standard deviation. A grid of overlapping
+4-by-4 patches captures short patterns over time and frequency.
+Project the patches into tokens, add learned position embeddings and
+a classification token, and apply two self-attention blocks. The
+classification token supplies logits for low tones, high tones, rising
+chirps, and falling chirps.
+
+This compact model trains on simulated waveforms with the upstream
+Adam schedule and Datamunge initialization. The plot shows validation
+loss. Set `DM_AST_REFERENCE` to upstream
+`output/models/audio_spectrogram_transformer` to check preprocessing
+and replay its checkpoint.
+
+[Gong, Chung and Glass (2021)|https://arxiv.org/abs/2104.01778]
+
+```{cpp, results="markdown", file="figures/audio_spectrogram_transformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int rate=8000, frame=256, hop=128, bins=16, samples=frame+15*hop;
+  constexpr int width=24, patches=49, tokens=50, classes=4;
+  struct Split {n::Tensor waves,labels,mel;};
+  const auto filters=n::linear_to_mel_weight_matrix(bins,129,rate,0,rate/2.);
+  const auto generate=[&](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> unit(0,1);
+    std::normal_distribution<float> noise(0,.035f);
+    std::vector<int> labels(count);
+    for (int i=0;i<count;++i) labels[i]=i%classes;
+    std::shuffle(labels.begin(),labels.end(),rng);
+    std::vector<float> waveform;
+    for (const int type:labels) {
+      const double low=300+300*unit(rng), high=1550+650*unit(rng);
+      const double begin=type==0 || type==2 ? low : high;
+      const double end=type<2 ? begin : type==2 ? high : low;
+      const double phase=2*std::numbers::pi*unit(rng), gain=.3+.5*unit(rng);
+      for (int i=0;i<samples;++i) {
+        const double time=double(i)/rate, length=double(samples)/rate;
+        const double angle=phase+2*std::numbers::pi*(begin*time+.5*(end-begin)*time*time/length);
+        waveform.push_back(gain*std::sin(angle)+noise(rng));
+      }
+    }
+    const auto wave=n::from_vector(waveform,{count,samples});
+    const auto mel=n::log_mel_spectrogram(n::power_spectrogram(n::stft(wave,frame,hop,frame)),filters);
+    return Split{wave,n::from_vector(labels),mel};
+  };
+  const auto fit=generate(512,42301), valid=generate(128,42302), test=generate(128,42303);
+  const auto values=fit.mel.to_vector<double>();
+  const double mean=std::accumulate(values.begin(),values.end(),0.)/values.size();
+  double squared=0;
+  for (double value:values) squared+=(value-mean)*(value-mean);
+  const double sd=std::sqrt(squared/values.size());
+  std::vector<int> ids;
+  for (int y=0;y<7;++y) {
+    for (int x=0;x<7;++x) {
+      for (int i=0;i<16;++i) ids.push_back((2*y+i/4)*bins+2*x+i%4);
+    }
+  }
+  const auto positions=n::from_vector(ids,{patches,16});
+  n::ParameterStore params(42304);
+  const auto predict=[&](const n::Tensor& mel,double center,double spread) {
+    const auto count=mel.size(0);
+    const auto patch=n::gather(((mel-center)/spread).reshape({count,16*bins}),positions,1);
+    const auto embeddings=n::dense(params,"patch",patch,width);
+    const auto cls=n::broadcast_to(params.get("cls",{1,1,width},n::init::normal(.02)),{count,1,width});
+    auto x=n::concat({cls,embeddings},1)+params.get("position",{1,tokens,width},n::init::normal(.02));
+    for (int i=0;i<2;++i) {
+      const auto key=std::format("block{}",i);
+      const auto norm=n::layer_norm(params,key+"/ln1",x);
+      const auto residual=x+n::multi_head_attention(params,key+"/attention",norm,norm,2).output;
+      const auto ff=n::dense(params,key+"/ff1",n::layer_norm(params,key+"/ln2",residual),
+                             2*width,n::Activation::GeluTanh);
+      x=residual+n::dense(params,key+"/ff2",ff,width);
+    }
+    const auto summary=n::slice(x,{0,0,0},{count,1,width}).reshape({count,width});
+    return std::pair{n::dense(params,"head",n::layer_norm(params,"norm",summary),classes),patch};
+  };
+  const auto loss=[&](const n::Tensor& mel,const n::Tensor& labels) {
+    return n::sparse_softmax_cross_entropy(predict(mel,mean,sd).first,labels);
+  };
+  const auto evaluate=[&](const Split& split) {
+    const n::NoGradGuard no_grad;
+    return loss(split.mel,split.labels).item();
+  };
+  const double initial=evaluate(test);
+  std::vector<double> history{evaluate(valid)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.002,config);
+  n::BatchOrder batch(512,32,42305);
+  for (int epoch=0;epoch<3;++epoch) {
+    batch.begin_epoch();
+    for (auto ids=batch.next();!ids.empty();ids=batch.next()) {
+      optimizer.minimize(loss(n::take_rows(fit.mel,ids),n::take_rows(fit.labels,ids)));
+    }
+    history.push_back(evaluate(valid));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,patch]=predict(test.mel,mean,sd);
+  const auto score=n::sparse_softmax_cross_entropy(logits,test.labels);
+  const auto prediction=n::argmax(logits,1).to_vector<int>(), labels=test.labels.to_vector<int>();
+  int correct=0;
+  for (int i=0;i<128;++i) correct+=prediction[i]==labels[i];
+  if (!(score.item()<initial) || optimizer.iterations()!=48) throw std::runtime_error("AST fit failed");
+  std::filesystem::create_directories("build");
+  params.save("build/ast_weights.npz");
+  n::save_npz("build/ast.npz",{{"waves",test.waves},{"labels",test.labels},{"mel",test.mel},
+      {"logits",logits},{"patches",patch},{"fit_mel",fit.mel},{"mean",n::from_scalar(mean)},
+      {"deviation",n::from_scalar(sd)},{"nll",score}});
+  std::print("Test NLL {:.6f} to {:.6f}. Accuracy {}/128.\n",initial,score.item(),correct);
+  if (const char* reference=std::getenv("DM_AST_REFERENCE")) {
+    const auto path=std::filesystem::path(reference);
+    params.load((path/"weights.npz").string());
+    const auto entries=n::load_npz((path/"audit.npz").string());
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=predict(test.mel,stored.at("mean").item(),stored.at("deviation").item());
+    const auto mel_error=n::max(n::abs(test.mel-stored.at("mel"))).item();
+    const auto logit_error=n::max(n::abs(replay.first-stored.at("logits"))).item();
+    const auto patch_error=n::max(n::abs(replay.second-stored.at("patches"))).item();
+    if (!(mel_error<2e-4 && patch_error<1e-4 && logit_error<1e-4)) {
+      throw std::runtime_error(std::format("AST replay errors {} {} {}",mel_error,patch_error,logit_error));
+    }
+    std::print("\nUpstream replay errors {:.3e} for mel, {:.3e} for patches, and {:.3e} for logits.\n",
+               mel_error,patch_error,logit_error);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Validation NLL",{37,99,235})
+      .points({0,1,2,3},history,"Epoch boundaries",{37,99,235})
+      .title("Tone and chirp classification").x_label("Epoch").y_label("Negative log-likelihood")
+      .size(880,425).save_svg("build/audio_spectrogram_transformer.svg");
+}
+```
+// result_begin: markdown
+Test NLL 1.603500 to 0.013190. Accuracy 128/128.
+
+Upstream replay errors 1.109e-05 for mel, 4.530e-06 for patches, and 4.500e-06 for logits.
+\image(figures/audio_spectrogram_transformer.svg)
+// result_end

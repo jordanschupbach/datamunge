@@ -1,0 +1,85 @@
+//? Title: SimCLR with symmetric NT-Xent
+//? Lang: en
+
+> SimCLR with symmetric NT-Xent
+
+SimCLR encodes two stochastic crops of each source with shared weights,
+then applies a projection MLP. Unit-normalized projections put comparisons
+on a cosine scale. For each anchor, the matching crop is the positive and
+the other sources supply negatives. The normalized temperature-scaled
+cross-entropy loss compares the positive score with the log sum of exponentiated
+scores over all views except the anchor itself. Both crops serve as anchors.
+
+This compact example trains an encoder and projection MLP on synthetic
+grayscale surfaces. It samples fresh views each training update and keeps
+a fixed batch from a separate random engine for evaluation. Nearest-positive
+retrieval counts the anchors whose companion crop ranks first among all
+other views.
+
+```{cpp, results="markdown", file="figures/simclr_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::mt19937 train_rng(49802), test_rng(49803);
+  const auto test = n::synthetic_contrastive_views(test_rng);
+  n::ParameterStore model(49801);
+  const auto project = [&](const n::Tensor &x) { return n::simclr_projection(model, "simclr", x); };
+  project(test.views);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .008, config);
+  const auto positive = n::concat({n::arange(32, 64), n::arange(0, 32)}, 0).to(n::DType::Int64);
+
+  std::vector<double> epochs, loss, retrieval;
+  std::print("| Epoch | Held-out NT-Xent | Nearest positive |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto held = n::nt_xent(project(test.views));
+      const auto hits = n::count_nonzero(n::equal(held.nearest, positive)).item<int>();
+      epochs.push_back(epoch);
+      loss.push_back(held.loss.item());
+      retrieval.push_back(hits / 64.);
+      std::print("| {} | {:.6f} | {}/64 |\n", epoch, loss.back(), hits);
+    }
+    if (epoch < 3)
+      for (int batch = 0; batch < 24; ++batch)
+        adam.minimize(n::nt_xent(project(n::synthetic_contrastive_views(train_rng).views)).loss);
+  }
+
+  n::NoGradGuard guard;
+  const auto held = n::nt_xent(project(test.views));
+  n::NamedTensors evidence{{"views", test.views}, {"unit", held.unit},
+      {"similarity", held.similarity}, {"nearest", held.nearest}, {"loss", held.loss}};
+  for (const auto &key : model.names())
+    evidence.emplace_back(key, model.at(key));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/simclr_fit.npz", evidence);
+  auto likelihood = dm::graphics::RPlot::create();
+  likelihood.lines(epochs, loss, "Held-out loss", {37, 99, 235})
+      .title("Contrastive loss").x_label("Epoch").y_label("NT-Xent");
+  auto ranking = dm::graphics::RPlot::create();
+  ranking.lines(epochs, retrieval, "Held-out retrieval", {22, 120, 97})
+      .title("Nearest-positive retrieval").x_label("Epoch")
+      .y_label("Fraction of views").y_limits(0, 1.05);
+  dm::graphics::RLayout::create(1, 2).add(likelihood).add(ranking).size(1050, 430)
+      .fit_panels().save_svg("build/simclr_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out NT-Xent | Nearest positive |
+|---:|---:|---:|
+| 0 | 3.809875 | 11/64 |
+| 1 | 1.994579 | 33/64 |
+| 2 | 1.890316 | 41/64 |
+| 3 | 1.793901 | 35/64 |
+\image(figures/simclr_fit.svg)
+// result_end
+\caption(NT-Xent and nearest-positive retrieval on the same held-out crop pairs at every epoch.)
+\alttext(Two line plots show held-out contrastive loss and the fraction of views whose matching crop ranks first.)
+
+> Reference
+
+- [Chen et al. (2020), A Simple Framework for Contrastive Learning of Visual Representations](https://proceedings.mlr.press/v119/chen20j.html).

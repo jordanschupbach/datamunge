@@ -1,0 +1,110 @@
+//? Title: Option-Critic on a sparse-reward chain
+//? Lang: en
+
+> Option-Critic on a sparse-reward chain
+
+An option is a policy over primitive actions with its own termination
+probability. The agent chooses an option at episode start, follows its
+policy, and chooses again only when it terminates. Both option policies
+and their termination probabilities are learned from experience.
+
+The critic bootstraps from a mixture of the current option's value and
+the best option value at the successor. The intra-option policy uses
+the TD error as its learning signal. The termination update compares
+continuing with switching, including a margin that favors continuation
+when the values are close. At the goal, the target is the immediate
+reward and the termination gradient is zero.
+
+The plot shows goal arrivals across three groups of 64 training episodes.
+The program also records gradients on a continuing transition and a
+terminal transition for a direct comparison with the derivatives.
+The policy logits use Datamunge's native seeded initializer.
+
+[Bacon, Harb and Precup (2017)|https://arxiv.org/abs/1609.05140]
+
+```{cpp, results="markdown", file="figures/option_critic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int goal=8;
+  n::ParameterStore params(44201);
+  const auto q=params.get("q",{9,2},n::init::zeros());
+  const auto policy=params.get("policy",{18,2},n::init::normal(.1));
+  const auto termination=params.get("termination",{18},n::init::constant(-1));
+  n::Optimizer optimizer(params,.015,{.kind=n::OptimizerKind::Adam});
+  const auto row=[](const n::Tensor& x,int index) {return n::gather(x,n::from_scalar(index));};
+  const auto objective=[&](int state,int option,int action,int next) {
+    const auto logits=row(policy,2*state+option);
+    const auto termination_logit=row(termination,2*next+option);
+    const auto outputs=dm::rl::option_critic_loss(row(row(q,state),option),row(q,next),logits,
+        termination_logit,option,action,next==goal?1.f:-.02f,next==goal);
+    return std::tuple{outputs,logits,termination_logit};
+  };
+  std::mt19937 rng(44202);
+  const auto uniform=[&] { return (double(rng())+.5)/4294967296.; };
+  const auto select=[&](int state) {
+    const n::NoGradGuard guard;
+    const auto scores=row(q,state).to_vector<float>();
+    return uniform()<.2?int(rng()%2):int(scores[1]>scores[0]);
+  };
+  const auto episode=[&](int state) {
+    int option=select(state),ended=0;
+    for (int t=0;t<32;++t) {
+      const auto scores=[&] {
+        const n::NoGradGuard guard;
+        return row(policy,2*state+option).to_vector<float>();
+      }();
+      const double right=1/(1+std::exp(double(scores[0]-scores[1])));
+      const int action=uniform()<right;
+      const int next=std::clamp(state+(action?1:-1),0,goal);
+      const auto [outputs,logits,termination_logit]=objective(state,option,action,next);
+      optimizer.step(n::grad(outputs[0],optimizer.parameters()));
+      if (next==goal) return std::pair{true,ended};
+      const double beta=[&] {
+        const n::NoGradGuard guard;
+        return n::sigmoid(row(termination,2*next+option)).item();
+      }();
+      if (uniform()<beta) {
+        ++ended;
+        option=select(next);
+      }
+      state=next;
+    }
+    return std::pair{false,ended};
+  };
+  std::vector<double> hits;
+  std::print("| Phase | Goal arrivals | Option terminations |\n|---:|---:|---:|\n");
+  for (int phase=1;phase<=3;++phase) {
+    int successes=0,terminations=0;
+    for (int trial=0;trial<64;++trial) {
+      const auto [hit,ended]=episode(rng()%goal);
+      successes+=hit;
+      terminations+=ended;
+    }
+    hits.push_back(successes);
+    std::print("| {} | {} / 64 | {} |\n",phase,successes,terminations);
+  }
+  std::filesystem::create_directories("build/option_critic");
+  for (const auto next:{6,goal}) {
+    const auto [outputs,logits,termination_logit]=objective(next-1,0,1,next);
+    const auto [loss,beta,td,advantage]=outputs;
+    const auto gradients=n::grad(loss,{logits,termination_logit});
+    n::save_npz(std::format("build/option_critic/{}.npz",next==goal?"terminal":"continuing"),{
+        {"logits",logits},{"beta",beta},{"td",td},{"advantage",advantage},
+        {"policy_grad",gradients[0]},{"termination_grad",gradients[1]}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({1,2,3},hits,"Reached goal",{37,99,235})
+      .title("Option-Critic training").x_label("Phase").y_label("Successful episodes out of 64")
+      .ylim(0,64).size(800,460).save_svg("build/option_critic.svg");
+}
+```
+// result_begin: markdown
+| Phase | Goal arrivals | Option terminations |
+|---:|---:|---:|
+| 1 | 61 / 64 | 144 |
+| 2 | 64 / 64 | 81 |
+| 3 | 64 / 64 | 75 |
+\image(figures/option_critic.svg)
+// result_end

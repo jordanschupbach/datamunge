@@ -1,0 +1,145 @@
+//? Title: VDN and QMIX on cooperative chains
+//? Lang: en
+
+> VDN and QMIX on cooperative chains
+
+Two agents observe private positions and receive a team reward when
+both reach their goals. Value Decomposition Networks (VDN) sum their
+local action values into one joint estimate. Both agents learn from
+the same team TD error and can act greedily from local observations.
+
+QMIX uses a state-conditioned network to combine the local utilities.
+The chain variant uses softplus weights and an increasing ELU, making
+the joint value nondecreasing in each utility. Independently maximizing
+the local utilities therefore also maximizes the mixed value.
+
+Both models fit the 96 possible nonterminal joint transitions for
+180 updates and synchronize target parameters every ten updates.
+The plot compares joint TD error. Greedy evaluation uses every
+ordered pair of nonterminal starts. The networks use Datamunge's
+seeded initializer.
+Both native fits reduce TD error and reach no joint goals in greedy
+evaluation. The TensorFlow VDN fit reached all 16; its QMIX fit also
+reached none under the same evaluation protocol.
+
+[Sunehag et al. (2018), VDN|https://arxiv.org/abs/1706.05296]
+[Rashid et al. (2018), QMIX|https://proceedings.mlr.press/v80/rashid18a.html]
+
+```{cpp, results="markdown", file="figures/vdn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto move=[](int state,int action){return state==4?4:std::clamp(state+2*action-1,0,4);};
+  std::vector<int> from,actions,to;
+  std::vector<float> rewards;
+  for (int a=0;a<5;++a) {
+    for (int b=0;b<5;++b) {
+      if (a==4 && b==4) continue;
+      for (int u=0;u<2;++u) {
+        for (int v=0;v<2;++v) {
+          const int x=move(a,u),y=move(b,v);
+          from.insert(from.end(),{a,b});
+          actions.insert(actions.end(),{u,v});
+          to.insert(to.end(),{x,y});
+          rewards.push_back(x==4 && y==4);
+        }
+      }
+    }
+  }
+  constexpr int rows=96;
+  const auto states=n::from_vector(from,{rows,2}),act=n::from_vector(actions,{rows,2});
+  const auto next=n::from_vector(to,{rows,2}),reward=n::from_vector(rewards);
+  const auto q=[](n::ParameterStore& store,const n::Tensor& positions,int agent) {
+    const auto ids=n::slice(positions,{0,agent},{positions.size(0),1}).reshape({-1});
+    const auto input=n::one_hot(ids,5);
+    const auto name=std::format("agent{}",agent);
+    const auto hidden=n::dense(store,name+"/hidden",input,16,n::Activation::Tanh);
+    return n::dense(store,name+"/values",hidden,2);
+  };
+  std::array<std::vector<double>,2> history;
+  std::print("| Mixer | Phase 1 TD MSE | Phase 2 TD MSE | Phase 3 TD MSE | Greedy successes |\n"
+             "|:---|---:|---:|---:|---:|\n");
+  for (bool monotone:{false,true}) {
+    n::ParameterStore online(45501),target(45502);
+    const auto mix=[&](n::ParameterStore& store,const n::Tensor& position,const n::Tensor& value) {
+      if (!monotone) return std::array<n::Tensor,5>{r::vdn_values(value),{},{},{},{}};
+      return r::qmix_values(store,n::one_hot(position,5).reshape({position.size(0),10}),value);
+    };
+    const auto future=[&] {
+      const n::NoGradGuard guard;
+      return mix(target,next,n::stack({n::max(q(target,next,0),{1}),n::max(q(target,next,1),{1})},1));
+    };
+    const auto evaluate=[&] {
+      const std::array values{q(online,states,0),q(online,states,1)};
+      std::array<n::Tensor,2> chosen;
+      for (int agent=0;agent<2;++agent) {
+        const auto ids=n::slice(act,{0,agent},{rows,1}).reshape({rows});
+        chosen[agent]=n::sum(values[agent]*n::one_hot(ids,2),{1});
+      }
+      const auto mixed=mix(online,states,n::stack({chosen[0],chosen[1]},1));
+      const auto next_mixed=future();
+      const auto td=reward+.95f*((1.-reward)*next_mixed[0]);
+      const auto loss=n::mean(n::square(mixed[0]-td));
+      return std::tuple{values,chosen,mixed,next_mixed,td,loss};
+    };
+    (void)evaluate();
+    target.copy_from(online);
+    n::Optimizer optimizer(online,monotone?.006:.012,{.kind=n::OptimizerKind::Adam});
+    for (int step=1;step<=180;++step) {
+      optimizer.step(n::grad(std::get<5>(evaluate()),optimizer.parameters()));
+      if (step%10==0) target.copy_from(online);
+      if (step%60==0) {
+        const n::NoGradGuard guard;
+        history[monotone].push_back(std::get<5>(evaluate()).item());
+      }
+    }
+    const auto [values,chosen,mixed,next_mixed,td,loss]=evaluate();
+    const auto grads=n::grad(loss,{chosen[0],chosen[1]});
+    const auto base=std::filesystem::path("build")/(monotone?"qmix":"vdn");
+    std::filesystem::create_directories(base);
+    n::save_npz((base/"audit.npz").string(),{{"states",states},{"actions",act},{"next",next},{"reward",reward},
+        {"utility0",values[0]},{"utility1",values[1]},{"joint",mixed[0]},{"next_joint",next_mixed[0]},
+        {"target",td},{"loss",loss},{"grad0",grads[0]},{"grad1",grads[1]}});
+    if (monotone) {
+      const auto save=[&](const char* name,const auto& weights) {
+        n::save_npz((base/name).string(),{{"first",weights[1]},{"bias",weights[2]},
+            {"second",weights[3]},{"offset",weights[4]}});
+      };
+      save("mixer.npz",mixed);
+      save("next_mixer.npz",next_mixed);
+    }
+    const n::NoGradGuard guard;
+    const auto probe=n::from_vector<int>({0,0,1,1,2,2,3,3,4,4},{5,2});
+    const auto left=n::argmax(q(online,probe,0),1).to_vector<int>();
+    const auto right=n::argmax(q(online,probe,1),1).to_vector<int>();
+    int success=0;
+    for (int a=0;a<4;++a) {
+      for (int b=0;b<4;++b) {
+        int x=a,y=b;
+        for (int t=0;t<16;++t) {
+          x=move(x,left[x]);
+          y=move(y,right[y]);
+        }
+        success+=x==4 && y==4;
+      }
+    }
+    const auto& error=history[monotone];
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {} / 16 |\n",
+               monotone?"QMIX":"VDN",error[0],error[1],error[2],success);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({60,120,180},history[0],"VDN",{37,99,235})
+      .lines({60,120,180},history[1],"QMIX",{217,96,26})
+      .title("Cooperative joint value fitting").x_label("Updates").y_label("Joint TD mean squared error")
+      .size(820,460).save_svg("build/vdn.svg");
+}
+```
+// result_begin: markdown
+| Mixer | Phase 1 TD MSE | Phase 2 TD MSE | Phase 3 TD MSE | Greedy successes |
+|:---|---:|---:|---:|---:|
+| VDN | 0.016696 | 0.003302 | 0.002617 | 0 / 16 |
+| QMIX | 0.173942 | 0.043344 | 0.016586 | 0 / 16 |
+\image(figures/vdn.svg)
+// result_end

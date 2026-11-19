@@ -1,0 +1,101 @@
+//? Title: Randomized smoothing with a finite-sample L2 certificate
+//? Lang: en
+
+> Randomized smoothing with a finite-sample L2 certificate
+
+A smoothed classifier predicts the most probable class of a base classifier
+under added isotropic Gaussian noise. Use 64 noisy predictions to select a
+candidate class and 1,024 fresh predictions to estimate its probability.
+Independent selection and estimation let us use a one-sided Clopper–Pearson
+lower bound for the selected class.
+
+When the bound exceeds one half, the certified radius is the noise standard
+deviation times the standard normal quantile at the bound. Within that open
+L2 ball the ideal smoothed classifier keeps the same label, with pointwise
+confidence 99.9%. Otherwise the method abstains. The plotted radii use zero
+for abstentions, and the labels distinguish correct from incorrect candidates.
+Confidence is per input. A certificate measures stability, so an incorrect
+prediction can also have a positive radius.
+
+The experiment uses the upstream fixed affine classifier and 48 simulated
+points. Draw two independent uniform coordinates per point. Assign class
+0 when their sum is below 0.8, class 1 when the sum is at least 0.8 and the
+first coordinate is greater, and class 2 otherwise. Gaussian noise is added
+in the full plane, including outside the unit square used to sample the
+evaluation points.
+
+[Cohen, Rosenfeld and Kolter (2019)|https://proceedings.mlr.press/v97/cohen19c.html]
+
+```{cpp, results="markdown", file="figures/randomized_smoothing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int points = 48, select_draws = 64, estimate_draws = 1024;
+  constexpr float sigma = 0.16f;
+  const auto weights = n::from_vector<float>({-1, 1, 0, -1, 0, 1}, {2, 3});
+  const auto bias = n::from_vector<float>({1.2f, 0, 0});
+  std::mt19937 fixture_rng(44721), select_rng(44722), estimate_rng(44723);
+  std::uniform_real_distribution<float> uniform(0, 1);
+  std::vector<float> inputs, noise;
+  std::vector<std::int32_t> labels, counts, decisions;
+  std::vector<double> bounds;
+  std::array<std::vector<double>, 2> rows, radii;
+  int certified = 0, correct_at_tenth = 0;
+  for (int row = 0; row < points; ++row) {
+    const float a = uniform(fixture_rng), b = uniform(fixture_rng);
+    const int label = a + b < 0.8f ? 0 : (a > b ? 1 : 2);
+    inputs.insert(inputs.end(), {a, b});
+    labels.push_back(label);
+    const auto votes = [&](int samples, std::mt19937& rng) {
+      std::normal_distribution<float> normal(0, sigma);
+      std::vector<float> noisy;
+      for (int i = 0; i < samples; ++i) {
+        const float dx = normal(rng), dy = normal(rng);
+        noise.insert(noise.end(), {dx, dy});
+        noisy.insert(noisy.end(), {a + dx, b + dy});
+      }
+      const auto logits = n::matmul(n::from_vector(noisy, {samples, 2}), weights) + bias;
+      std::array<std::size_t, 3> histogram{};
+      for (const auto winner : n::argmax(logits, 1).to_vector<std::int64_t>()) {
+        ++histogram.at(winner);
+      }
+      counts.insert(counts.end(), histogram.begin(), histogram.end());
+      return histogram;
+    };
+    const auto selection = votes(select_draws, select_rng);
+    const auto estimation = votes(estimate_draws, estimate_rng);
+    const auto result = n::gaussian_smoothing_certificate(selection, estimation, 0.16);
+    const auto candidate = static_cast<int>(result.candidate);
+    const bool accepted = result.radius > 0.0;
+    const bool correct = candidate == label;
+    decisions.insert(decisions.end(), {candidate, accepted ? candidate : -1});
+    bounds.insert(bounds.end(), {result.probability_lower, result.radius});
+    certified += accepted;
+    correct_at_tenth += correct && result.radius > 0.1;
+    rows[correct].push_back(row + 1);
+    radii[correct].push_back(result.radius);
+  }
+  n::save_npz("build/smoothing_certificates.npz", {
+      {"x", n::from_vector(inputs, {points, 2})},
+      {"labels", n::from_vector(labels)},
+      {"noise", n::from_vector(noise, {points, select_draws + estimate_draws, 2})},
+      {"counts", n::from_vector(counts, {points, 2, 3})},
+      {"decisions", n::from_vector(decisions, {points, 2})},
+      {"lower_and_radius", n::from_vector(bounds, {points, 2})}});
+  std::print("{}/{} certified at pointwise confidence 99.9%. "
+             "{}/{} correct with L2 radius above 0.1.\n",
+             certified, points, correct_at_tenth, points);
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({1, points}, {0.1, 0.1}, "Radius 0.1", {100, 116, 139})
+      .points(rows[true], radii[true], "Correct candidate", {37, 99, 235})
+      .points(rows[false], radii[false], "Incorrect candidate", {234, 88, 12})
+      .title("Randomized smoothing certificates")
+      .x_label("Evaluation point").y_label("Certified L2 radius");
+  plot.size(900, 430).save_svg("build/randomized_smoothing.svg");
+}
+```
+// result_begin: markdown
+41/48 certified at pointwise confidence 99.9%. 27/48 correct with L2 radius above 0.1.
+\image(figures/randomized_smoothing.svg)
+// result_end

@@ -1,0 +1,93 @@
+//? Title: Federated averaging on unequal non-IID clients
+//? Lang: en
+
+> Federated averaging on unequal non-IID clients
+
+Three clients have 24, 40, and 64 observations, with different feature
+means. At each round they start from the same server weights and each
+runs three full-batch gradient steps on its own regression data.
+The server averages their updated weights in proportion to client
+sample counts.
+
+For a single local step, all gradients are evaluated at the same
+weights. Their count-weighted average equals the gradient on the
+combined dataset. The report checks that identity before training.
+The plot tracks held-out half mean squared error over eight rounds.
+
+```{cpp, results="markdown", file="figures/federated_averaging.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  std::mt19937 rng(30101);
+  std::normal_distribution<double> normal;
+  const auto draw=[&](const std::vector<std::int64_t>& counts) {
+    std::vector<double> x,y;
+    for (std::size_t client=0;client<counts.size();++client) {
+      for (std::int64_t i=0;i<counts[client];++i) {
+        const double u=double(client)-1+.45*normal(rng),v=.65*normal(rng);
+        x.insert(x.end(),{1,u,v});
+        y.push_back(.2+1.1*u-.8*v+.06*normal(rng));
+      }
+    }
+    const auto rows=static_cast<std::int64_t>(y.size());
+    return std::pair{n::from_vector(x,{rows,3}),n::from_vector(y,{rows,1})};
+  };
+  const std::vector<std::int64_t> counts{24,40,64};
+  const auto [x,y]=draw(counts);
+  const auto [test,truth]=draw({32,32,32});
+  const auto step=[](const auto& x,const auto& y,const auto& w) {
+    return w-.18*(n::matmul(n::transpose(x),n::matmul(x,w)-y)/x.size(0));
+  };
+  const auto round=[&](const auto& initial,int steps) {
+    std::vector<n::Tensor> local;
+    std::int64_t first=0;
+    for (auto count:counts) {
+      const auto a=n::slice_axis(x,0,first,first+count),b=n::slice_axis(y,0,first,first+count);
+      auto w=initial;
+      for (int i=0;i<steps;++i) w=step(a,b,w);
+      local.push_back(w);
+      first+=count;
+    }
+    return n::federated_average(local,counts);
+  };
+  auto w=n::zeros({3,1},n::DType::Float64);
+  const auto delta=n::max(n::abs(round(w,1)-step(x,y,w))).item();
+  if (delta>=1e-12) return 1;
+  std::print("One-step difference from centralized training {:.3g}.\n\n",delta);
+  std::vector<n::Tensor> trace;
+  std::vector<double> rounds,losses;
+  std::print("| Round | Held-out half MSE |\n|---:|---:|\n");
+  for (int i=0;i<=8;++i) {
+    trace.push_back(w.reshape({3}));
+    rounds.push_back(i);
+    losses.push_back(.5*n::mean(n::square(n::matmul(test,w)-truth)).item());
+    std::print("| {} | {:.7f} |\n",i,losses.back());
+    if (i<8) w=round(w,3);
+  }
+  if (!(losses.back()<losses.front())) return 1;
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(rounds,losses,"Held-out loss",{37,99,235})
+      .title("Federated regression convergence").x_label("Server round").y_label("Half MSE");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/federated_averaging.svg");
+  n::save_npz("build/federated_averaging.npz",{{"x",x},{"y",y},{"validation_x",test},
+      {"validation_y",truth},{"trace",n::stack(trace)}});
+}
+```
+// result_begin: markdown
+One-step difference from centralized training 3.47e-17.
+
+| Round | Held-out half MSE |
+|---:|---:|
+| 0 | 0.7126266 |
+| 1 | 0.3215928 |
+| 2 | 0.1710857 |
+| 3 | 0.1017216 |
+| 4 | 0.0644954 |
+| 5 | 0.0424557 |
+| 6 | 0.0286806 |
+| 7 | 0.0198150 |
+| 8 | 0.0140082 |
+\image(figures/federated_averaging.svg)
+// result_end

@@ -37,7 +37,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The recorded demonstrations use the original policy and reset seed.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -48,8 +48,7 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // CartPole-v1 (common/rl/classic_control.hpp, copied from tflow). A random
 // policy lasts about 20 steps; a two-line hand-written controller holds the
 // pole for the full 500, which is the ceiling later learning algorithms aim
-// for. The vsim videos of both policies are omitted; the port adds checks on
-// the returns and on the always-right failure.
+// for. Both seeded policies are recorded below.
 
 
 // Editable workflow support: checks.hpp
@@ -130,8 +129,7 @@ using datamunge::rl::environments::Acrobot;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy choices and reward information.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -441,7 +439,34 @@ int main() {
     check::Require(random.mean_length() > 10 && random.mean_length() < 40, "a random policy should last about 20 steps");
     check::Require(ctrl.mean_return() > 450, "the hand-written controller should balance (nearly) every episode to 500");
     check::Require(fell_at < 50 && std::abs(theta) > 0.2f, "always pushing right should topple the pole past 0.209 rad");
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+
+    const auto record = [&](const std::string& name, auto policy) {
+      auto observation = env.reset(5);
+      const auto pose = [](const rl::Obs& o) -> std::array<float, 3> { return {o[0], o[2], 0}; };
+      std::vector<std::array<float, 3>> samples{pose(observation)};
+      std::vector<float> observations = observation, rewards;
+      while (true) {
+        const auto result = env.step(policy(observation));
+        observation = result.obs;
+        samples.push_back(pose(observation));
+        observations.insert(observations.end(), observation.begin(), observation.end());
+        rewards.push_back(result.reward);
+        if (result.done()) break;
+      }
+      std::filesystem::create_directories("build");
+      std::filesystem::create_directories("figures");
+      dm::rl::environments::save_linkage_replay(
+          dm::rl::environments::LinkageReplay::CartPole, samples, "build/" + name + ".mp4");
+      std::filesystem::copy_file("build/" + name + ".mp4", "figures/" + name + ".mp4",
+                                 std::filesystem::copy_options::overwrite_existing);
+      dm::nn::save_npz("build/" + name + "_replay.npz",
+          {{"observations", dm::nn::from_vector(observations,
+                 {static_cast<std::int64_t>(samples.size()), static_cast<std::int64_t>(observation.size())})},
+            {"reward", dm::nn::from_vector(rewards)}});
+    };
+    record("cartpole_hand_controller", controller);
+    record("cartpole_always_right", [](const rl::Obs&) { return 1; });
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -462,7 +487,7 @@ int main() {
 // -- Failure: always pushing right
 //   episode over at t=9 (theta=-0.245 rad, limit is +-0.209)
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > A fixed-action diagnostic trajectory
@@ -481,3 +506,9 @@ int main(){namespace e=dm::rl::environments;e::CartPole env;auto observation=env
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+> Seeded policy replay
+
+\video(figures/cartpole_hand_controller.mp4)
+
+\video(figures/cartpole_always_right.mp4)

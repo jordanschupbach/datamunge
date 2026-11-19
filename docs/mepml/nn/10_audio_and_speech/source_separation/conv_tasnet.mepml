@@ -1,0 +1,113 @@
+//? Title: Separating spoken digits with Conv-TasNet
+//? Lang: en
+
+> Separating spoken digits with Conv-TasNet
+
+A strided waveform convolution encodes overlapping samples into a learned
+representation. A residual mask network uses dilated causal convolutions
+to estimate two soft masks for the encoded mixture. A shared decoder
+reconstructs each source by overlap-add.
+
+The loss centers the predicted and reference waveforms. It projects the
+prediction onto the reference and compares projected energy with residual
+energy in decibels. The model minimizes negative scale-invariant SNR
+using the better of the two source assignments for each clip.
+
+The fit uses pairs of spoken digits from four speakers. Evaluation uses
+mixtures from two held-out speakers. For the fixture, run
+`python3 scripts/prepare_xvector.py` in the TensorFlow examples checkout.
+Set `DATAMUNGE_XVECTOR_DIR` to that checkout's `output/datasets/xvector`
+directory if it lives outside the default location.
+
+```{cpp, results="markdown", file="figures/conv_tasnet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int samples = 3200;
+  const auto* configured = std::getenv("DATAMUNGE_XVECTOR_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_XVECTOR_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/xvector";
+  const auto mix = [&](const char* role, int count, int per_speaker, int speakers, unsigned seed) {
+    const auto arrays = n::load_npz((root/(std::string(role)+".npz")).string());
+    const auto entry = std::ranges::find(arrays, "waveform", &n::NamedTensors::value_type::first);
+    if (entry == arrays.end() || entry->second.shape() != n::Shape{speakers*per_speaker,samples})
+      throw std::runtime_error("Unexpected spoken-digit fixture shape");
+    const auto& waveform = entry->second;
+    const auto data = waveform.to_vector<float>();
+    std::vector<float> input(count*samples), targets(count*2*samples);
+    std::mt19937 rng(seed);
+    for (int row=0; row<count; ++row) {
+      const int speaker=rng()%speakers, other=(speaker+1+rng()%(speakers-1))%speakers;
+      const int first=speaker*per_speaker+rng()%per_speaker, second=other*per_speaker+rng()%per_speaker;
+      for (int t=0; t<samples; ++t) {
+        const float a=.5f*data[first*samples+t], b=.5f*data[second*samples+t];
+        input[row*samples+t]=a+b;
+        targets[(2*row)*samples+t]=a;
+        targets[(2*row+1)*samples+t]=b;
+      }
+    }
+    return std::pair{n::from_vector(input,{count,samples,1}),n::from_vector(targets,{count,2,samples})};
+  };
+  const auto [fit,target] = mix("fit",192,60,4,31712);
+  const auto [test,truth] = mix("verify",48,30,2,31713);
+  n::ParameterStore model(31711);
+  const auto baseline = n::stack({n::squeeze(test,{2}),n::squeeze(test,{2})},1);
+  const auto initial = -n::permutation_invariant_si_snr_loss(n::conv_tasnet(model,test),truth).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(192,8,31714);
+  for (int epoch=0; epoch<3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto estimate = n::conv_tasnet(model,n::take_rows(fit,rows));
+      optimizer.minimize(n::permutation_invariant_si_snr_loss(estimate,n::take_rows(target,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto estimate = n::conv_tasnet(model,test);
+  const auto score = -n::permutation_invariant_si_snr_loss(estimate,truth).item();
+  const auto swapped = n::slice_axis(truth,1,1,-3,-1);
+  if (!(score>initial) ||
+      std::abs(score+n::permutation_invariant_si_snr_loss(estimate,swapped).item())>1e-6) return 1;
+  std::print("| Untrained (dB) | Mixture (dB) | Fitted (dB) |\n|---:|---:|---:|\n");
+  std::print("| {:.3f} | {:.3f} | {:.3f} |\n",initial,
+      -n::permutation_invariant_si_snr_loss(baseline,truth).item(),score);
+
+  const auto first = n::take_rows(estimate,{0});
+  const auto reference = n::take_rows(truth,{0});
+  const auto reverse = n::slice_axis(reference,1,1,-3,-1);
+  auto plot = dm::graphics::RPlot::create();
+  std::vector<double> seconds(samples);
+  auto predicted = first.to_vector<double>();
+  auto expected = reference.to_vector<double>();
+  auto correlation = [&](int source) {
+    const auto start = expected.begin()+source*samples;
+    return std::abs(std::inner_product(predicted.begin(),predicted.begin()+samples,start,0.0)) /
+        std::sqrt(std::inner_product(start,start+samples,start,1e-8));
+  };
+  if (correlation(1)>correlation(0)) expected = reverse.to_vector<double>();
+  predicted.resize(samples);
+  expected.resize(samples);
+  for (int i=0;i<samples;++i) seconds[i]=i/8000.;
+  plot.lines(seconds,expected,"Reference source",{31,41,55})
+      .lines(seconds,predicted,"Estimated source",{234,88,12})
+      .title("Held-out spoken-digit source").x_label("Time (s)").y_label("Amplitude");
+  std::filesystem::create_directories("build");
+  plot.size(960,440).save_svg("build/conv_tasnet.svg");
+  n::save_npz("build/conv_tasnet.npz",{{"mixture",test},{"truth",truth},{"estimates",estimate},
+      {"loss",n::permutation_invariant_si_snr_loss(estimate,truth)}});
+}
+```
+// result_begin: markdown
+| Untrained (dB) | Mixture (dB) | Fitted (dB) |
+|---:|---:|---:|
+| -30.351 | -0.310 | -5.278 |
+\image(figures/conv_tasnet.svg)
+// result_end
+
+The three-epoch fit improves held-out SI-SNR by about 25 dB over its
+initialization. Reusing the mixture as both estimates still scores
+about 5 dB higher, so this run demonstrates the training objective
+and architecture while leaving separation quality unresolved.

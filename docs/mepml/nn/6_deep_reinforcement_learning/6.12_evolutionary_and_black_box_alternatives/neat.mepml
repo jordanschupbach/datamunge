@@ -1,0 +1,103 @@
+//? Title: NEAT topology evolution on XOR
+//? Lang: en
+
+> NEAT topology evolution on XOR
+
+NeuroEvolution of Augmenting Topologies (NEAT) searches over connection
+weights and network structure. The 64 networks start with inputs and a
+bias feeding one tanh output. A mutation can perturb weights, add a
+forward connection, or split an existing connection to introduce a
+hidden node. The population records the same innovation ID whenever
+independent mutations add the same connection. Crossover uses these IDs
+to align genes across networks of different shapes.
+
+Each generation groups networks by compatibility distance. Networks
+join the first species whose representative is close enough. Species
+are sampled in proportion to their mean fitness, then tournaments
+select parents within the chosen species. This gives small species a
+chance to reproduce while new structures are still developing.
+
+The plot shows the best fitness across all four XOR cases. Fitness
+equals the reciprocal of one plus mean squared prediction error on
+targets of −1 and +1. The table also reports sign accuracy, which can
+fall even when squared error improves. This seeded three-update run
+demonstrates topology growth and lineage, and ends before solving XOR.
+
+[Stanley and Miikkulainen (2002), Evolving Neural Networks through Augmenting Topologies|https://doi.org/10.1162/106365602320169811]
+
+```{cpp, results="markdown", file="figures/neat.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int count=64;
+  std::mt19937 rng(47501);
+  n::Neat population(2,count,rng);
+  const auto features=n::from_vector<float>({-1,-1,-1,1,1,-1,1,1},{4,2});
+  const std::array targets{-1.f,1.f,1.f,-1.f};
+  auto parents=n::from_vector(std::vector<int>(2*count,-1),{count,2});
+  std::vector<double> history;
+  std::filesystem::create_directories("build");
+  std::print("| Generation | Species | Genomes with hidden nodes | Best fitness | Correct signs |\n"
+             "|---:|---:|---:|---:|---:|\n");
+  for (int generation=0;generation<=3;++generation) {
+    const auto output=population.predict(features);
+    const auto predictions=output.to_vector<float>();
+    std::vector<float> fitness(count);
+    for (int i=0;i<count;++i) {
+      float error=0;
+      for (int sample=0;sample<4;++sample) {
+        error+=std::pow(predictions[4*i+sample]-targets[sample],2)/4;
+      }
+      fitness[i]=1.f/(1.f+error);
+    }
+    const auto best=std::max_element(fitness.begin(),fitness.end())-fitness.begin();
+    history.push_back(fitness[best]);
+    const auto groups=population.species();
+    std::vector<int> species(count);
+    for (std::size_t group=0;group<groups.size();++group) {
+      for (int member:groups[group]) species[member]=static_cast<int>(group);
+    }
+    const auto innovations=population.innovations();
+    std::vector<float> genes(count*innovations*4,-1.f);
+    int hidden=0;
+    for (int row=0;row<count;++row) {
+      bool has_hidden=false;
+      for (const auto& [id,gene]:population.genomes()[row]) {
+        auto* entry=genes.data()+4*(row*innovations+id);
+        entry[0]=gene.from;
+        entry[1]=gene.to;
+        entry[2]=gene.weight;
+        entry[3]=gene.enabled;
+        has_hidden|=gene.to>3 && gene.enabled;
+      }
+      hidden+=has_hidden;
+    }
+    std::vector<int> splits;
+    for (const auto& [edge,node]:population.splits()) splits.insert(splits.end(),{edge,node});
+    int correct=0;
+    for (int i=0;i<4;++i) correct+=(predictions[4*best+i]>0)==(targets[i]>0);
+    std::print("| {} | {} | {} | {:.6f} | {} / 4 |\n",generation,groups.size(),hidden,history.back(),correct);
+    n::save_npz(std::format("build/neat_generation{}.npz",generation),{
+        {"genes",n::from_vector(genes,{count,static_cast<std::int64_t>(innovations),4})},
+        {"depth",n::from_vector(population.depths())},{"output",output},
+        {"fitness",n::from_vector(fitness)},{"species",n::from_vector(species)},
+        {"parents",parents},{"splits",n::from_vector(splits,{static_cast<std::int64_t>(splits.size()/2),2})}});
+    if (generation<3) parents=population.evolve(fitness,rng);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Best fitness",{37,99,235})
+      .points({0,1,2,3},history,dm::RGBA{37,99,235})
+      .title("NEAT on XOR").x_label("Generation").y_label("Best fitness")
+      .size(800,460).save_svg("build/neat.svg");
+}
+```
+// result_begin: markdown
+| Generation | Species | Genomes with hidden nodes | Best fitness | Correct signs |
+|---:|---:|---:|---:|---:|
+| 0 | 1 | 0 | 0.470487 | 3 / 4 |
+| 1 | 2 | 34 | 0.484754 | 3 / 4 |
+| 2 | 8 | 57 | 0.498984 | 2 / 4 |
+| 3 | 19 | 63 | 0.498984 | 2 / 4 |
+\image(figures/neat.svg)
+// result_end

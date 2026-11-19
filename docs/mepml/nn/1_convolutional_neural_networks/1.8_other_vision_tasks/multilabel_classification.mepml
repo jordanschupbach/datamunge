@@ -278,7 +278,6 @@ int main() {
 }
 ```
 // result_begin:
-// Validated80/24/24 unique source images and tensor OR-presence targets.
 // result_end
 
 Run preparation from the repository root after building the library(or use its

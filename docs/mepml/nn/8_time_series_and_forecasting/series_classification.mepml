@@ -1,0 +1,134 @@
+//? Title: Classify noisy signals with InceptionTime and ROCKET
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Compare a trainable multiscale convolutional classifier with frozen
+random convolution features and a fitted ridge head.
+)
+\toc
+
+Each sequence contains a noisy sinusoid with two, four, or eight cycles.
+Amplitude and phase vary within each class. Both classifiers train on
+the same 240 signals and predict the same 90 independently drawn tests.
+
+The compact InceptionTime model uses three multiscale blocks and a
+residual connection. Each block combines three convolution widths
+with a pooled branch. Global average pooling yields features for a
+linear class head trained against one-hot targets with squared error.
+[Fawaz et al., InceptionTime|https://arxiv.org/abs/1909.04939]
+
+ROCKET computes the maximum response and the fraction of positive
+responses for each of 64 frozen random filters. The ridge head fits
+the resulting 128 features with an unpenalized intercept.
+[Dempster et al., ROCKET|https://arxiv.org/abs/1910.13051]
+
+```{cpp, results="markdown", file="figures/series_classification.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <string>
+#include <utility>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int length = 64, classes = 3, bank_size = 64;
+  const auto generate = [](int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> phase(0, 6.2831853f), amplitude(.7f, 1.3f);
+    std::normal_distribution<float> noise(0, .25f);
+    std::vector<float> values(count * length), labels(count * classes);
+    for (int row = 0; row < count; ++row) {
+      const int label = row % classes;
+      labels[row * classes + label] = 1;
+      const auto offset = phase(rng), gain = amplitude(rng);
+      for (int t = 0; t < length; ++t)
+        values[row * length + t] = gain * std::sin(6.2831853f * (2 << label) * t / length + offset) + noise(rng);
+    }
+    return std::pair{n::from_vector(values, {count, length, 1}), n::from_vector(labels, {count, classes})};
+  };
+  const auto [fit, labels] = generate(240, 44202);
+  const auto [test, truth] = generate(90, 44203);
+  n::ParameterStore parameters;
+  const auto classifier = [&](const n::Tensor& x) {
+    return n::inception_time(parameters, "classifier", x, classes);
+  };
+  (void)classifier(n::take_rows(fit, {0}));
+  parameters.load("fixtures/series_classification_init.npz", true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(fit.size(0), 24, 44204);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto residual = classifier(n::take_rows(fit, rows)) - n::take_rows(labels, rows);
+      optimizer.step(n::grad(n::mean(n::square(residual)), parameters.parameters()));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto inception = classifier(test);
+  const auto bank = n::rocket_bank(length, bank_size, 44201);
+  const auto training_features = n::rocket_features(fit, bank);
+  const auto test_features = n::rocket_features(test, bank);
+  const auto coefficients = n::rocket_ridge(training_features, labels);
+  const auto rocket = n::matmul(n::concat({test_features.to(n::DType::Float64),
+      n::ones({test.size(0), 1}, n::DType::Float64)}, 1), coefficients);
+  const auto correct = [&](const n::Tensor& scores) {
+    return n::sum(n::equal(n::argmax(scores, 1), n::argmax(truth, 1)).to(n::DType::Int32)).item<int>();
+  };
+  std::println("InceptionTime classified **{} / {}** held-out signals correctly. ROCKET classified **{} / {}**.",
+               correct(inception), test.size(0), correct(rocket), test.size(0));
+
+  std::vector<int> settings;
+  std::vector<float> taps(bank.size() * 11), biases;
+  for (std::size_t i = 0; i < bank.size(); ++i) {
+    const auto& kernel = bank[i];
+    settings.insert(settings.end(), {int(kernel.taps.size()), int(kernel.dilation), int(kernel.same)});
+    std::ranges::copy(kernel.taps, taps.begin() + i * 11);
+    biases.push_back(kernel.bias);
+  }
+  n::NamedTensors arrays{{"inception_logits", inception}, {"rocket_logits", rocket},
+      {"fit_input", fit}, {"test_input", test}, {"fit_labels", labels}, {"test_labels", truth},
+      {"settings", n::from_vector(settings, {bank_size, 3})}, {"taps", n::from_vector(taps, {bank_size, 11})},
+      {"bias", n::from_vector(biases)}, {"coef", coefficients},
+      {"fit_features", training_features}, {"test_features", test_features}};
+  for (const auto& name : parameters.names()) {
+    auto key = name.substr(std::string("classifier/").size());
+    std::ranges::replace(key, '/', '_');
+    arrays.emplace_back("inception_" + key, parameters.at(name));
+  }
+
+  const std::string folder = "build/series_classification/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "classifiers.npz", arrays);
+  const std::vector<dm::graphics::RGB> colors{{37,99,235}, {191,88,34}, {15,118,110}};
+  const std::vector<std::string> names{"2 cycles", "4 cycles", "8 cycles"};
+  std::vector<double> time(length);
+  std::iota(time.begin(), time.end(), 0);
+  auto traces = dm::graphics::RPlot::create();
+  traces.title("Held-out signals").x_label("Sample").y_label("Amplitude");
+  auto predictions = dm::graphics::RPlot::create();
+  predictions.title("Scores for the first held-out signal").x_label("Class index").y_label("Score");
+  for (int label = 0; label < classes; ++label)
+    traces.lines(time, n::select(test, 0, label).to_vector<double>(), names[label], colors[label]);
+  predictions.points({0., 1., 2.}, n::select(rocket, 0, 0).to_vector<double>(), "ROCKET", {37,99,235}, 5)
+      .points({0., 1., 2.}, n::select(inception, 0, 0).to_vector<double>(), "InceptionTime", {191,88,34}, 4);
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 410);
+  layout.add(traces).add(predictions).save_svg(folder + "classifiers.svg");
+  std::filesystem::copy_file(folder + "classifiers.svg", "figures/series_classification.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+InceptionTime classified **90 / 90** held-out signals correctly. ROCKET classified **90 / 90**.
+\image(figures/series_classification.svg)
+// result_end
+
+Class indices zero, one, and two correspond to two, four, and eight cycles.

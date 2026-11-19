@@ -490,12 +490,8 @@ Variant1 restored epoch27: validation mIoU 0.530042; test pixel accuracy 0.89683
 \caption(Visible whole-model512-update Adam with explicit(main CE+.4 auxiliary CE)/1.4 and kernel L2. Paired learned/BN state is validation-selected and restored before testing.)
 \alttext(Visible whole-model512-update Adam with explicit(main CE+.4 auxiliary CE)/1.4 and kernel L2. Paired learned/BN state is validation-selected and restored before testing.)
 
-Compact PSPNet has222,704 learned and1,424 state scalars. Epoch25 is
-selected with validation mean IoU.522807. Test pixel accuracy is.875156
-and mean IoU.547042;per-class IoUs are background.945169,circle.361144,
-rectangle.415453 and triangle.466404. The actual prediction gallery retains
-these class confusions rather than implying that high background accuracy
-means strong foreground recognition.
+Compare background and foreground IoUs in the results above. The gallery
+shows the class confusions behind the aggregate segmentation scores.
 
 \image(figures/pspnet_predictions_1.png)
 \caption(Each row shows an actual test image,its truth mask and restored main-head PSPNet prediction. Same palette/range as the fitting preview;errors remain visible.)

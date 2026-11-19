@@ -1,0 +1,117 @@
+//? Title: ArcFace, CosFace and SphereFace angular metric heads
+//? Lang: en
+
+> ArcFace, CosFace and SphereFace angular metric heads
+
+The three classifiers normalize their embeddings and class weight columns
+before computing cosine scores. ArcFace adds an angle to the target
+angle, while CosFace subtracts a constant from the target cosine.
+SphereFace blends the target cosine toward a monotonic fourth-order
+angular transform and scales the scores by each raw embedding's norm.
+Inference uses the ordinary cosine with the corresponding scale.
+
+Each model trains on matching batches from the same three-class signal
+generator. The report plots held-out classification accuracy and losses,
+and shows the SphereFace transform used during training. Training losses
+have different scales because each head imposes its own margin.
+
+```{cpp, results="markdown", file="figures/angular_metric_heads.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+namespace m = n::models;
+
+int main() {
+  const auto sample = [](std::mt19937 &rng) {
+    std::normal_distribution<float> signal(0.f,.24f), nuisance(0.f,1.f);
+    std::vector<float> x;
+    std::vector<int> labels;
+    for (int i = 0; i < 24; ++i) {
+      const int id = i % 3;
+      labels.push_back(id);
+      x.insert(x.end(), {std::cos(2.0943951f * id) + signal(rng),
+                         std::sin(2.0943951f * id) + signal(rng), nuisance(rng), nuisance(rng)});
+    }
+    return std::pair{n::from_vector(x, {24,4}), n::from_vector(labels)};
+  };
+  auto loss_plot = dm::graphics::RPlot::create();
+  loss_plot.title("Held-out training objective").x_label("Epoch").y_label("Cross-entropy");
+  auto accuracy = dm::graphics::RPlot::create();
+  accuracy.title("Margin-free classification").x_label("Epoch").y_label("Fraction correct").y_limits(0,1.05);
+  const std::array<dm::graphics::RGBA,3> colors{{{37,99,235},{22,120,97},{190,75,48}}};
+  std::print("| Head | Epoch | Held-out loss | Correct |\n|---|---:|---:|---:|\n");
+  const std::array<std::string,3> names{"ArcFace","CosFace","SphereFace"};
+  for (int kind = 0; kind < 3; ++kind) {
+    n::ParameterStore model(51401);
+    m::AngularMarginConfig config;
+    config.scale = 8.f;
+    config.kind = kind == 1 ? m::AngularMarginKind::kCosFace : m::AngularMarginKind::kArcFace;
+    config.margin = kind == 0 ? .35f : kind == 1 ? .22f : 0.f;
+    const auto forward = [&](const n::Tensor &x, const n::Tensor &y, double blend) {
+      const auto h = n::dense(model, "tower", x, 16, n::Activation::Tanh);
+      const auto raw = n::dense(model, "projection", h, 6);
+      const auto head = m::NormalizedAngularHead(model, raw, y, 6, 3, config);
+      return kind == 2 ? m::ApplySphereFace(head.cosine, y, raw, blend)
+                       : std::pair{head.training, head.inference};
+    };
+    std::mt19937 training(51402), testing(51403);
+    const auto [test, labels] = sample(testing);
+    forward(test, labels, .5);
+    n::OptimizerConfig opt;
+    opt.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .012, opt);
+    std::vector<double> epochs, losses, hits;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        const auto [train_logits, infer_logits] = forward(test, labels, .5);
+        const auto correct = n::count_nonzero(n::equal(n::argmax(infer_logits, 1), labels)).item<int>();
+        epochs.push_back(epoch);
+        losses.push_back(n::sparse_softmax_cross_entropy(train_logits, labels).item());
+        hits.push_back(correct / 24.);
+        std::print("| {} | {} | {:.6f} | {}/24 |\n", names[kind], epoch, losses.back(), correct);
+      }
+      if (epoch < 3)
+        for (int step = 0; step < 24; ++step) {
+          const auto [x, y] = sample(training);
+          adam.minimize(n::sparse_softmax_cross_entropy(forward(x, y, 1. / (4 - epoch)).first, y));
+        }
+    }
+    loss_plot.lines(epochs, losses, names[kind], colors[kind]);
+    accuracy.lines(epochs, hits, names[kind], colors[kind]);
+  }
+  loss_plot.legend({names.begin(),names.end()}, {colors.begin(),colors.end()});
+  const auto grid = n::arange(0, 257) / 128. - 1.;
+  auto phi = dm::graphics::RPlot::create();
+  phi.lines(grid.to_vector<double>(), m::SphereFacePhi(grid).to_vector<double>(), "SphereFace", {190,75,48})
+      .title("SphereFace target transform").x_label("Input cosine").y_label("Transformed cosine");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 3).add(loss_plot).add(accuracy).add(phi).size(1270,430)
+      .fit_panels().save_svg("build/angular_metric_heads.svg");
+}
+```
+// result_begin: markdown
+| Head | Epoch | Held-out loss | Correct |
+|---|---:|---:|---:|
+| ArcFace | 0 | 5.053021 | 10/24 |
+| ArcFace | 1 | 0.211478 | 24/24 |
+| ArcFace | 2 | 0.040132 | 24/24 |
+| ArcFace | 3 | 0.031829 | 24/24 |
+| CosFace | 0 | 4.636348 | 10/24 |
+| CosFace | 1 | 0.151307 | 24/24 |
+| CosFace | 2 | 0.038786 | 24/24 |
+| CosFace | 3 | 0.025274 | 24/24 |
+| SphereFace | 0 | 2.867342 | 10/24 |
+| SphereFace | 1 | 0.528219 | 23/24 |
+| SphereFace | 2 | 0.294731 | 24/24 |
+| SphereFace | 3 | 0.134451 | 24/24 |
+\image(figures/angular_metric_heads.svg)
+// result_end
+\caption(Held-out method-specific loss, margin-free accuracy and the SphereFace target transformation.)
+\alttext(Three line plots show losses, classification accuracy, and the monotonic piecewise SphereFace curve.)
+
+> References
+
+- [Deng et al. (2019), ArcFace](https://arxiv.org/abs/1801.07698).
+- [Wang et al. (2018), CosFace](https://arxiv.org/abs/1801.09414).
+- [Liu et al. (2017), SphereFace](https://arxiv.org/abs/1704.08063).

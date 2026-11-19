@@ -665,12 +665,12 @@ clip first critic batch: loss=4.81026e-13, gap=-4.81026e-13, penalty=0.999998
 clip epoch 1: critic gap=-4.58048e-06, penalty=0.999795
 clip epoch 2: critic gap=-7.10991e-06, penalty=0.999727
 clip epoch 3: critic gap=-5.01595e-06, penalty=0.999813
-clip: D steps=117, G steps=39, test gap=1.29041e-07, GP=0.999813, critic loss=-1.29041e-07, Jacobian max error=0; isolation/clip/restore/noiseOnly/batch/immutable PASS (training 0.0198532 s)
+clip: D steps=117, G steps=39, test gap=1.29041e-07, GP=0.999813, critic loss=-1.29041e-07, Jacobian max error=0; isolation/clip/restore/noiseOnly/batch/immutable PASS (training 0.0288585 s)
 GP first critic batch: loss=4.40766, gap=0.10469, penalty=0.451235
 GP epoch 1: critic gap=-0.0100408, penalty=0.417256
 GP epoch 2: critic gap=-0.0120474, penalty=0.374761
 GP epoch 3: critic gap=-0.0133545, penalty=0.33426
-GP: D steps=117, G steps=39, test gap=0.00198581, GP=0.348145, critic loss=3.47947, Jacobian max error=0; isolation/clip/restore/noiseOnly/batch/immutable PASS (training 0.0193944 s)
+GP: D steps=117, G steps=39, test gap=0.00198581, GP=0.348145, critic loss=3.47947, Jacobian max error=0; isolation/clip/restore/noiseOnly/batch/immutable PASS (training 0.0289696 s)
 All Wasserstein variants complete with explicit native updates.
 \image(figures/wgan_gap.svg)
 // result_end

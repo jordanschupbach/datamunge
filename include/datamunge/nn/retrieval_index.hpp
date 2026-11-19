@@ -238,6 +238,94 @@ inline TensorRetrievalMetrics ScoreTensorRetrieval(const nn::Tensor &queries,
           nn::sum(nn::stack(hits5) * valid) / denominator, eligible,
           nn::full({}, double(query_labels.size()), nn::DType::Int64) - eligible};
 }
+/// @brief Store exact retrieval hit rates and item recalls at requested ranks.
+///
+/// Metrics are ordered like the supplied cutoffs. Both average over queries
+/// with at least one relevant item after source-ID self exclusion.
+///
+/// @par Example
+/// @code
+/// const dm::nn::models::TensorRetrievalCutoffMetrics metrics{{1., 1.}, {.5, 1.}, 1, 0};
+/// @endcode
+///
+/// @par References
+/// - Manning, Raghavan and Schütze (2008), Introduction to Information Retrieval,
+///   https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-in-information-retrieval-1.html
+/// @see ScoreTensorRetrievalAtCutoffs(), ScoreTensorRetrieval()
+struct TensorRetrievalCutoffMetrics {
+  std::vector<double> hit_rate; ///< Fraction of eligible queries with a relevant top-k item.
+  std::vector<double> item_recall; ///< Mean fraction of each eligible query's positives retrieved.
+  std::size_t eligible; ///< Queries with at least one relevant candidate.
+  std::size_t without_positive; ///< Queries with no relevant candidate.
+};
+
+/// @brief Compute exact category retrieval hit rate and macro item recall at each cutoff.
+///
+/// Relevance is category equality. Exact squared-distance ties follow the index's
+/// source-ID order. Query IDs exclude matching gallery IDs. Cutoffs larger than
+/// the candidate set include the entire set. Queries with no positives do not
+/// contribute to either average. With no eligible queries the rates are zero.
+/// Does not mutate descriptors or record gradients.
+///
+/// @param queries Finite Float32/64 [Q,D] descriptor matrix.
+/// @param query_labels Q categories in query-row order.
+/// @param query_ids Q source IDs used to exclude matching gallery entries.
+/// @param index Exact gallery descriptor index.
+/// @param gallery_labels One category per original gallery row.
+/// @param cutoffs Positive ranks in result order, including repeated ranks if desired.
+/// @return Hit rates, macro item recalls, and eligibility counts.
+/// @throws std::invalid_argument For misaligned metadata, invalid query geometry or nonpositive cutoffs.
+///
+/// @par Example
+/// @code
+/// namespace n = dm::nn;
+/// n::models::TensorDescriptorIndex gallery(n::tensor({-1., 1., 2.}, {3, 1}), {0, 1, 2});
+/// const auto metrics = n::models::ScoreTensorRetrievalAtCutoffs(
+///     n::tensor({0.}, {1, 1}), {1}, {3}, gallery, {0, 1, 1}, {1, 2, 3});
+/// // metrics.item_recall = {0., .5, 1.}
+/// @endcode
+///
+/// @par References
+/// - Manning, Raghavan and Schütze (2008), Introduction to Information Retrieval,
+///   https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-in-information-retrieval-1.html
+/// @see TensorDescriptorIndex, ScoreTensorRetrieval()
+inline TensorRetrievalCutoffMetrics ScoreTensorRetrievalAtCutoffs(
+    const nn::Tensor &queries, const std::vector<int> &query_labels,
+    const std::vector<std::int64_t> &query_ids, const TensorDescriptorIndex &index,
+    const std::vector<int> &gallery_labels, const std::vector<int> &cutoffs) {
+  if (queries.dim() != 2 || queries.shape()[1] != index.dimensions() ||
+      (queries.dtype() != nn::DType::Float32 && queries.dtype() != nn::DType::Float64) ||
+      queries.shape()[0] != std::int64_t(query_labels.size()) ||
+      query_ids.size() != query_labels.size() || gallery_labels.size() != index.size() ||
+      std::ranges::any_of(cutoffs, [](int k) { return k <= 0; }))
+    throw std::invalid_argument("aligned retrieval metadata and positive cutoffs required");
+
+  TensorRetrievalCutoffMetrics metrics{
+      std::vector<double>(cutoffs.size()), std::vector<double>(cutoffs.size()), 0, 0};
+  for (std::size_t i = 0; i < query_labels.size(); ++i) {
+    const auto ranking = index.Rank(queries, std::int64_t(i), query_ids[i]);
+    const auto rows = ranking.rows.to_vector<std::int64_t>();
+    std::vector<std::size_t> relevant(rows.size() + 1);
+    for (std::size_t j = 0; j < rows.size(); ++j)
+      relevant[j + 1] = relevant[j] + (gallery_labels[rows[j]] == query_labels[i]);
+    if (relevant.back() == 0)
+      continue;
+    ++metrics.eligible;
+    for (std::size_t j = 0; j < cutoffs.size(); ++j) {
+      const auto hits = relevant[std::min(std::size_t(cutoffs[j]), rows.size())];
+      metrics.hit_rate[j] += hits != 0;
+      metrics.item_recall[j] += double(hits) / double(relevant.back());
+    }
+  }
+  const double denominator = double(std::max(std::size_t{1}, metrics.eligible));
+  for (std::size_t j = 0; j < cutoffs.size(); ++j) {
+    metrics.hit_rate[j] /= denominator;
+    metrics.item_recall[j] /= denominator;
+  }
+  metrics.without_positive = query_labels.size() - metrics.eligible;
+  return metrics;
+}
+
 /// @brief Form unit-normalized block-mean RGB reference descriptors without learning.
 ///
 /// Subtract.5 and pool in Float64,cast block means to Float32,then normalize

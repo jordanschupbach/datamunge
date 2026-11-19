@@ -1,0 +1,99 @@
+//? Title: PEARL for off-policy bandit adaptation
+//? Lang: en
+
+> PEARL for off-policy bandit adaptation
+
+Probabilistic Embeddings for Actor-critic RL (PEARL) conditions a policy
+on a latent representation of the current task. In this bandit, task
+sign determines which arm pays more. A uniform behavior policy collects
+context and independent query transitions. The context encoder maps each
+observed action and reward to a Gaussian factor. Adding their precisions
+gives the posterior precision. With no observations, the latent has a
+standard normal prior.
+
+The twin critics learn from replay rewards and pass their gradients back
+through the sampled latent to the encoder. A KL penalty regularizes the
+posterior. The actor maximizes the lower critic estimate plus policy
+entropy, with the latent and critic values held fixed for that update.
+The plot compares held-out expected reward after zero, one and four
+context observations using the same latent noise in each condition.
+
+```{cpp, results="markdown", file="figures/pearl.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int steps = 4;
+  const auto replay = [](int count, std::span<const float> tasks, std::mt19937& rng) {
+    std::vector<float> contexts, mask, noise, rewards, identities;
+    std::vector<int> actions;
+    std::normal_distribution<float> normal;
+    for (int row = 0; row < count; ++row) {
+      const float task = tasks[row % tasks.size()];
+      const auto reward = [task](int a) { return .5f * (1.f + task * (2*a-1)); };
+      identities.push_back(task);
+      for (int step = 0; step < steps; ++step) {
+        const int arm = rng() % 2;
+        contexts.insert(contexts.end(), {float(arm),reward(arm)});
+        mask.push_back(step <= (row / tasks.size()) % steps);
+      }
+      const int arm = rng() % 2;
+      actions.push_back(arm);
+      rewards.push_back(reward(arm));
+      noise.push_back(normal(rng));
+    }
+    return std::array{n::from_vector(contexts,{count,steps,2}), n::from_vector(mask,{count,steps}),
+        n::from_vector(noise,{count,1}), n::from_vector(actions), n::from_vector(rewards),
+        n::from_vector(identities)};
+  };
+  constexpr std::array train_tasks{-.95f,-.8f,-.65f,-.5f,.5f,.65f,.8f,.95f};
+  constexpr std::array test_tasks{-.9f,-.7f,-.55f,.55f,.7f,.9f};
+  std::mt19937 train_rng(46802), test_rng(46803);
+  std::vector<std::array<n::Tensor,6>> train;
+  for (int i = 0; i < 12; ++i) train.push_back(replay(64,train_tasks,train_rng));
+  const auto test = replay(768,test_tasks,test_rng);
+  n::ParameterStore params(46801);
+  const auto evaluate = [&](const auto& batch, const n::Tensor& mask) {
+    return dm::rl::pearl_bandit(params,batch[0],mask,batch[2],batch[3],batch[4]);
+  };
+  (void)evaluate(train.front(),train.front()[1]);
+  n::Optimizer optimizer(params,.015,{.kind=n::OptimizerKind::Adam});
+  for (int epoch = 0; epoch < 3; ++epoch)
+    for (const auto& batch : train)
+      optimizer.step(n::grad(evaluate(batch,batch[1]).loss,optimizer.parameters()));
+
+  const n::NoGradGuard guard;
+  const auto arm_sign = n::from_vector(std::vector<float>{-1,1},{1,2});
+  const auto arm_reward = .5 * (1.0 + test[5].reshape({768,1}) * arm_sign);
+  n::NamedTensors evidence{{"context",test[0]},{"epsilon",test[2]},{"action",test[3]},
+      {"reward",test[4]},{"tasks",test[5]}};
+  std::vector<double> returns;
+  std::print("| Observations | Expected reward | Mean posterior variance |\n|---:|---:|---:|\n");
+  for (int count : {0,1,steps}) {
+    std::vector<float> selected(768 * steps);
+    for (std::size_t i = 0; i < selected.size(); ++i) selected[i] = i % steps < count;
+    const auto fit = evaluate(test,n::from_vector(selected,{768,steps}));
+    returns.push_back(n::mean(n::sum(fit.policy * arm_reward,{1})).item());
+    std::print("| {} | {:.6f} | {:.6f} |\n",count,returns.back(),n::mean(fit.variance).item());
+    for (const auto& [name,tensor] : n::NamedTensors{{"mean",fit.mean},{"variance",fit.variance},
+        {"z",fit.latent},{"policy",fit.policy},{"q1",fit.q1},{"q2",fit.q2},
+        {"actor_loss",fit.actor_loss},{"loss",fit.loss}})
+      evidence.emplace_back(std::to_string(count)+"_"+name,tensor);
+  }
+  for (const auto& name : params.names()) evidence.emplace_back(name,params.at(name));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/pearl_evaluation.npz",evidence);
+  dm::graphics::RPlot::create().lines({0,1,4},returns,"Expected reward",{37,99,235})
+      .points({0,1,4},returns,"Context sizes",{37,99,235},5)
+      .title("PEARL adaptation on held-out bandits").x_label("Context observations")
+      .y_label("Expected reward").size(800,460).save_svg("build/pearl.svg");
+}
+```
+// result_begin: markdown
+| Observations | Expected reward | Mean posterior variance |
+|---:|---:|---:|
+| 0 | 0.510998 | 1.000000 |
+| 1 | 0.844034 | 0.355762 |
+| 4 | 0.855463 | 0.083952 |
+\image(figures/pearl.svg)
+// result_end

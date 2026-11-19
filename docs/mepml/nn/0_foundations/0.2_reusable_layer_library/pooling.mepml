@@ -133,6 +133,24 @@ int main() {
              nn::max_pool3d(vol, 2, 2).at({0, 1, 2, 3, 1}), nn::max(cell).item(), nn::avg_pool3d(vol, 2, 2).at({0, 1, 2, 3, 1}), nn::mean(cell).item());
 
   // 4. From average to max: power mean and log-sum-exp of one window.
+  // Compare the same image before and after a one-pixel shift at each pooling depth.
+  std::mt19937_64 rng(2);
+  std::uniform_real_distribution<float> uniform(0.f, 1.f);
+  std::vector<float> pixels(256);
+  for (auto& value : pixels) value = uniform(rng);
+  const Tensor original = nn::from_vector(pixels, {1, 16, 16, 1});
+  const Tensor shifted = nn::concat({nn::zeros({1, 16, 1, 1}, original.dtype()),
+      nn::slice(original, {0, 0, 0, 0}, {1, 16, 15, 1})}, 2);
+  auto agreement = [](const Tensor& a, const Tensor& b) {
+    return 100.0 * nn::mean(nn::cast(nn::less_equal(nn::abs(a - b), 1e-6), F64)).item();
+  };
+  const Tensor original_once = nn::max_pool2d(original, 2, 2);
+  const Tensor shifted_once = nn::max_pool2d(shifted, 2, 2);
+  std::print("One-pixel shift agreement: raw {:.0f}%, one max pool {:.0f}%, two max pools {:.0f}%, global max {:.0f}%.\n\n",
+      agreement(original, shifted), agreement(original_once, shifted_once),
+      agreement(nn::max_pool2d(original_once, 2, 2), nn::max_pool2d(shifted_once, 2, 2)),
+      agreement(nn::global_max_pool2d(original), nn::global_max_pool2d(shifted)));
+
   const Tensor w = nn::from_vector(std::vector<double>{0.2, 0.5, 0.9, 2.0}, {1, 2, 2, 1});
   std::print("\nWindow {{0.2, 0.5, 0.9, 2.0}} (mean 0.9, max 2.0):\n\n| parameter | power mean, p | log-sum-exp, β |\n| ---: | ---: | ---: |\n");
   for (double t : {0.01, 1.0, 2.0, 4.0, 16.0, 64.0, 1000.0})
@@ -205,6 +223,8 @@ dL/dx, power-mean pool, p = 4 [4 × 4]: 0.7069 0.0010 0.0014 0.0014 / 0.0010 0.0
 
 Global average pool vs mean over H, W: 0.0e+00; global max pool vs max over H, W: 0.0e+00; GeM with p = 1 vs global average (inputs made positive): 0.0e+00.
 3-D pooling [1, 8, 8, 8, 2] → [1, 4, 4, 4, 2], cell (1, 2, 3), channel 1: max 2.3903 (hand 2.3903), average 0.3810 (hand 0.3810).
+One-pixel shift agreement: raw 0%, one max pool 28%, two max pools 31%, global max 100%.
+
 
 Window {0.2, 0.5, 0.9, 2.0} (mean 0.9, max 2.0):
 

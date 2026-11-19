@@ -1,0 +1,96 @@
+//? Title: PackNet with magnitude pruning and frozen ownership
+//? Lang: en
+
+> PackNet with magnitude pruning and frozen ownership
+
+Fit a dense model to task A, reserve its 80 largest-magnitude
+parameters, and zero the remaining 81. Recover accuracy on task A
+using only its reserved weights. Task B can read all parameters
+but only updates the free ones.
+
+At inference, the task-A mask hides all parameters assigned to B.
+The report checks that task B leaves both task A's owned weights
+and its predictions unchanged. The plot compares held-out errors
+before and after fitting B.
+
+```{cpp, results="markdown", file="figures/packnet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed,bool second) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1,1);
+    std::vector<float> x(count*3),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=0;j<3;++j) x[3*i+j]=uniform(rng);
+      const auto a=x[3*i],b=x[3*i+1],c=x[3*i+2];
+      y[i]=second?std::cos(2.5f*b)-.5f*a*c:std::sin(2.5f*a)+.5f*b*c;
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(y,{count,1})};
+  };
+  const auto [a,ay]=draw(768,34101,false);
+  const auto [b,by]=draw(768,34102,true);
+  const auto [at,aty]=draw(256,34103,false);
+  const auto [bt,bty]=draw(256,34104,true);
+  const auto predict=[](const n::Tensor& x,const n::Tensor& w) {
+    const auto incoming=n::slice_axis(w,0,0,96).reshape({3,32});
+    const auto bias=n::slice_axis(w,0,96,128);
+    const auto head=n::slice_axis(w,0,128,160).reshape({32,1});
+    return n::matmul(n::tanh(n::matmul(x,incoming)+bias),head)+n::select(w,0,160);
+  };
+  std::mt19937 rng(34105);
+  std::normal_distribution<float> normal(0,.22f);
+  std::vector<float> start(161);
+  for (auto& v:start) v=normal(rng);
+  auto weights=n::from_vector(start);
+  const auto train=[&](const auto& x,const auto& y,const auto& visible,const auto& writable,unsigned seed) {
+    n::BatchOrder order(768,32,seed);
+    for (int e=0;e<3;++e) {
+      order.begin_epoch();
+      for (auto rows=order.next();!rows.empty();rows=order.next()) {
+        weights.requires_grad_(true);
+        const auto prediction=predict(n::take_rows(x,rows),weights*visible);
+        const auto loss=n::mean(n::square(prediction-n::take_rows(y,rows)));
+        const auto gradient=n::grad(loss,{weights})[0];
+        weights=(weights-.035f*(writable*gradient)).detach();
+      }
+    }
+  };
+  const auto all=n::ones({161});
+  train(a,ay,all,all,34106);
+  const auto dense=weights;
+  const auto reserve=n::magnitude_pruning_mask(dense,80);
+  const auto pruned=dense*reserve;
+  weights=pruned;
+  train(a,ay,reserve,reserve,34107);
+  const auto packed_a=weights;
+  const auto a_before=predict(at,packed_a*reserve),b_before=predict(bt,packed_a);
+  train(b,by,all,1-reserve,34108);
+  const auto a_after=predict(at,weights*reserve),b_after=predict(bt,weights);
+  if (n::max(n::abs((weights-packed_a)*reserve)).item()!=0 ||
+      a_before.to_vector<float>()!=a_after.to_vector<float>()) return 1;
+  const auto rmse=[](const auto& p,const auto& y) {
+    return n::sqrt(n::mean(n::square(p.to(n::DType::Float64)-y.to(n::DType::Float64)))).item();
+  };
+  const auto ma=rmse(a_after,aty),mb=rmse(b_before,bty),mc=rmse(b_after,bty);
+  if (!(mc<mb)) return 1;
+  std::print("| Task | Before training B | After training B |\n|---|---:|---:|\n");
+  std::print("| A | {:.5f} | {:.5f} |\n| B | {:.5f} | {:.5f} |\n",ma,ma,mb,mc);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1},{ma,ma},"Task A",{37,99,235}).lines({0,1},{mb,mc},"Task B",{234,88,12})
+      .title("PackNet task-specific held-out error").x_label("Before (0) and after (1) fitting B").y_label("RMSE");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/packnet.svg");
+  n::save_npz("build/packnet.npz",{{"dense",dense},{"pruned",pruned},{"packed_a",packed_a},
+      {"packed_b",weights},{"reserve",reserve},{"a_x",at},{"a_y",aty},{"b_x",bt},{"b_y",bty},
+      {"a_before",a_before},{"a_after",a_after},{"b_before",b_before},{"b_after",b_after}});
+}
+```
+// result_begin: markdown
+| Task | Before training B | After training B |
+|---|---:|---:|
+| A | 0.28965 | 0.28965 |
+| B | 0.99879 | 0.63342 |
+\image(figures/packnet.svg)
+// result_end

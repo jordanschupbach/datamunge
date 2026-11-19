@@ -201,7 +201,7 @@ contain embedded mesh data and can be opened in a glTF viewer.
 
 \tab(R,
 
-```{r, results="markdown", nix-shell="git+file:../../..#r", cmd="env R_LIBS_USER=../../../build/r/library Rscript {file}", file="figures/rebot_arm_r.png"}
+```{r, results="markdown", nix-shell="git+file:../../..#report-r", file="figures/rebot_arm_r.png"}
 suppressPackageStartupMessages(library(datamunger))
 # Native downloading, verification and cache layout are shared by all tabs.
 assets <- fetch("rebot_devarm", "../../../build/cad-assets/rebot")
@@ -209,20 +209,20 @@ out <- "build/cad_r"
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
 dir.create("build/figs", recursive = TRUE, showWarnings = FALSE)
 
-arm <- CadScene_from_urdf(
+arm <- CadScene$from_urdf(
   file.path(assets, "Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf")
 )
 invisible(arm$set_joint("joint2", -.8))
 invisible(arm$set_joint("joint3", -.7))
 invisible(arm$set_joint("finger_left", .015))
 invisible(arm$save_gltf(file.path(out, "rebot_arm.gltf")))
-part <- CadScene_from_file(
+part <- CadScene$from_file(
   file.path(assets, "hardware/reBot_B601_DM/Metal_Parts/03_Link1.step")
 )
 invisible(part$save_gltf(file.path(out, "rebot_link1.gltf")))
 
-saved_arm <- CadScene_from_file(file.path(out, "rebot_arm.gltf"))
-saved_part <- CadScene_from_file(file.path(out, "rebot_link1.gltf"))
+saved_arm <- CadScene$from_file(file.path(out, "rebot_arm.gltf"))
+saved_part <- CadScene$from_file(file.path(out, "rebot_link1.gltf"))
 stopifnot(
   arm$object_count() == saved_arm$object_count(),
   arm$triangle_count() == saved_arm$triangle_count(),

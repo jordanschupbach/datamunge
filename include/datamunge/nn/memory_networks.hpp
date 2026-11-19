@@ -37,10 +37,10 @@ inline Tensor Cols(const Tensor& x, std::int64_t begin, std::int64_t width) {
 /// - Graves et al. (2014), Neural Turing Machines, https://arxiv.org/abs/1410.5401 ; Sukhbaatar et
 /// al. (2015), End-To-End Memory Networks, https://arxiv.org/abs/1503.08895 .
 struct NtmAddressOutput {
-  Tensor content;      ///< CPU[N,4] content softmax.
-  Tensor interpolated; ///< CPU[N,4] gated content/previous mixture.
-  Tensor shifted;      ///< CPU[N,4] three-tap circular convolution.
-  Tensor weights;      ///< CPU[N,4] sharpened normalized addressing weights.
+  Tensor content;      ///< CPU[N,S] content softmax.
+  Tensor interpolated; ///< CPU[N,S] gated content/previous mixture.
+  Tensor shifted;      ///< CPU[N,S] three-tap circular convolution.
+  Tensor weights;      ///< CPU[N,S] sharpened normalized addressing weights.
 };
 /// @brief Own the flat live NtmState tensor endpoints.
 ///
@@ -132,12 +132,14 @@ struct QaMemoryOutput {
 /// @brief Compute content, interpolation, circular shift and sharpening.
 ///
 /// Source epsilon1e-6 regularizes cosine norms;1e-8 regularizes sharpening. No mutation, fitting or
-/// RNG; O(N*16). Native nonsmooth conventions apply at norm extrema.
+/// RNG. The work is linear in the number of memory cells. Native nonsmooth conventions apply at norm extrema.
 ///
-/// @param memory Finite floating CPU[N,4,4] memory slots.
-/// @param parameters Same-dtype finite CPU[N,10]:key4,beta1,gate1,shift3,gamma1.
-/// @param previous Same-dtype nonnegative finite CPU[N,4] previous address; not implicitly
+/// @param memory Finite floating CPU[N,S,W], with S >= 2 and W positive memory slots.
+/// @param parameters Same-dtype finite CPU[N,W+6]:keyW,beta1,gate1,shift3,gamma1.
+/// @param previous Same-dtype nonnegative finite CPU[N,S] previous address; not implicitly
 /// normalized.
+/// @param log_sharpen Use floor 1e-20 and log-softmax normalization when true.
+/// The default keeps the additive 1e-8 sharpening offset.
 /// @return Owning live four-stage address record.
 /// @throws std::invalid_argument Invalid finite CPU dtype, geometry or option domain.
 /// @par Example
@@ -147,17 +149,19 @@ struct QaMemoryOutput {
 /// @endcode
 /// @par References
 /// - Graves, Wayne and Danihelka (2014), Neural Turing Machines, https://arxiv.org/abs/1410.5401.
-/// This compact source preset uses four4-wide slots and one read/write head.
 /// @see MaskedTanhSequence()
 inline NtmAddressOutput
-NtmAddressing(const Tensor& memory, const Tensor& parameters, const Tensor& previous) {
+NtmAddressing(const Tensor& memory, const Tensor& parameters, const Tensor& previous,
+              bool log_sharpen = false) {
   recurrent_component_detail::Floating(memory);
   if (memory.dim() != 3)
     throw std::invalid_argument("address memory rank");
   auto rows = memory.size(0);
-  memory_network_detail::Geometry(memory, {rows, 4, 4});
-  memory_network_detail::Geometry(parameters, {rows, 10});
-  memory_network_detail::Geometry(previous, {rows, 4});
+  const auto slots = memory.size(1), width = memory.size(2);
+  if (slots < 2 || width < 1)
+    throw std::invalid_argument("invalid memory geometry");
+  memory_network_detail::Geometry(parameters, {rows, width + 6});
+  memory_network_detail::Geometry(previous, {rows, slots});
   if (parameters.dtype() != memory.dtype() || previous.dtype() != memory.dtype())
     throw std::invalid_argument("address dtype");
   for (auto v : previous.to_vector<double>())
@@ -167,29 +171,32 @@ NtmAddressing(const Tensor& memory, const Tensor& parameters, const Tensor& prev
   auto part = [&](std::int64_t b, std::int64_t w) {
     return memory_network_detail::Cols(parameters, b, w);
   };
-  const Tensor key          = part(0, 4);
+  const Tensor key          = part(0, width);
   const Tensor dot          = sum(mul(memory, expand_dims(key, 1)), {2});
   const Tensor mn           = sqrt(add(sum(square(memory), {2}), 1e-6));
   const Tensor kn           = sqrt(add(sum(square(key), {1}, true), 1e-6));
   const Tensor cosine       = div(dot, mul(mn, kn));
-  const Tensor beta         = softplus(part(4, 1));
+  const Tensor beta         = softplus(part(width, 1));
   const Tensor content      = softmax(mul(beta, cosine), -1);
-  const Tensor gate         = sigmoid(part(5, 1));
+  const Tensor gate         = sigmoid(part(width + 1, 1));
   const Tensor interpolated = add(mul(gate, content), mul(sub(1.0, gate), previous));
-  const Tensor shift        = softmax(part(6, 3), -1);
+  const Tensor shift        = softmax(part(width + 2, 3), -1);
   const Tensor left         = concat(
-      {memory_network_detail::Cols(interpolated, 1, 3),
+      {memory_network_detail::Cols(interpolated, 1, slots - 1),
                memory_network_detail::Cols(interpolated, 0, 1)},
       1);
   const Tensor right = concat(
-      {memory_network_detail::Cols(interpolated, 3, 1),
-       memory_network_detail::Cols(interpolated, 0, 3)},
+      {memory_network_detail::Cols(interpolated, slots - 1, 1),
+       memory_network_detail::Cols(interpolated, 0, slots - 1)},
       1);
   const Tensor shifted =
       add(add(mul(left, memory_network_detail::Cols(shift, 0, 1)),
               mul(interpolated, memory_network_detail::Cols(shift, 1, 1))),
           mul(right, memory_network_detail::Cols(shift, 2, 1)));
-  const Tensor gamma     = add(softplus(part(9, 1)), 1.0);
+  const Tensor gamma     = add(softplus(part(width + 5, 1)), 1.0);
+  if (log_sharpen)
+    return {content, interpolated, shifted,
+            softmax(gamma * log(maximum(shifted, scalar(1e-20, shifted.dtype()))), 1)};
   const Tensor sharpened = exp(mul(gamma, log(add(shifted, 1e-8))));
   const Tensor weights   = div(sharpened, sum(sharpened, {1}, true));
   return {content, interpolated, shifted, weights};
@@ -527,4 +534,115 @@ inline QaMemoryOutput KeyValueMemoryNetwork(
   result.values    = values;
   return result;
 }
+
+/// @brief Unroll the seven-step NTM bit-copy experiment with an explicit delimiter.
+///
+/// A 16-unit LSTM controls one read and one write head over six five-wide
+/// slots. It writes before reading and emits logits only in steps 4 to 6.
+/// The initial read and memory are 0.01 and both heads favor the first slot.
+///
+/// @param p Owns the controller, interface and output weights.
+/// @param input Finite floating observations [N,7,5], with N positive.
+/// @return In order, logits [N,3,4], memory [N,7,6,5], reads [N,7,5], read and write weights [N,7,6], and controls [N,7,32].
+/// @throws std::invalid_argument For incompatible input or parameters.
+/// @par Example
+/// @code
+/// dm::nn::ParameterStore p(7);
+/// const auto output = dm::nn::models::NtmBitCopy(p, dm::nn::zeros({2,7,5}));
+/// @endcode
+/// @par References
+/// - Graves et al. (2014), https://arxiv.org/abs/1410.5401
+/// @see NtmAddressing()
+inline std::array<Tensor, 6> NtmBitCopy(ParameterStore &p, const Tensor &input) {
+  if (input.dim() != 3 || input.shape()[0] < 1 || input.shape()[1] != 7 ||
+      input.shape()[2] != 5 || input.dtype() != p.dtype())
+    throw std::invalid_argument("NtmBitCopy: expected [N,7,5] input matching the store");
+  const auto batch = input.shape()[0];
+  const auto type = input.dtype();
+  auto state = lstm_zero_state(batch, 16, type);
+  auto memory = full({batch, 6, 5}, .01, type);
+  auto read = full({batch, 5}, .01, type);
+  auto read_weights = broadcast_to(tensor({.95,.01,.01,.01,.01,.01}).to(type), {batch,6});
+  auto write_weights = read_weights;
+  std::array<std::vector<Tensor>, 6> trace;
+  for (int t = 0; t < 7; ++t) {
+    const auto observed = concat({select(input, 1, t), read}, 1);
+    state = lstm_step(p, "copy/controller", observed, state);
+    const auto control = dense(p, "copy/interface", state.h, 32);
+    const auto col = [&](int from, int to) { return slice_axis(control, 1, from, to); };
+    write_weights = NtmAddressing(memory, col(0,11), write_weights, true).weights;
+    const auto write = expand_dims(write_weights, 2);
+    const auto erase = expand_dims(sigmoid(col(22,27)), 1);
+    const auto add = expand_dims(tanh(col(27,32)), 1);
+    memory = memory * (1. - write * erase) + write * add;
+    read_weights = NtmAddressing(memory, col(11,22), read_weights, true).weights;
+    read = sum(memory * expand_dims(read_weights, 2), {1});
+    if (t > 3)
+      trace[0].push_back(dense(p, "copy/output", concat({state.h, read}, 1), 4));
+    trace[1].push_back(memory);
+    trace[2].push_back(read);
+    trace[3].push_back(read_weights);
+    trace[4].push_back(write_weights);
+    trace[5].push_back(control);
+  }
+  return {stack(trace[0],1), stack(trace[1],1), stack(trace[2],1),
+          stack(trace[3],1), stack(trace[4],1), stack(trace[5],1)};
+}
+
+
+/// @brief Predict an answer through two residual attention hops over relational facts.
+///
+/// Each hop learns independent key and value token tables. In the bag
+/// variant both include the full triple. The key-value variant uses
+/// subject and relation as the key and object as the value. No fact order
+/// embeddings are used, so permuting facts permutes attention accordingly.
+///
+/// @param model Owns question, per-hop key/value and answer parameters.
+/// @param facts Integral [N,M,3] triples of token IDs in [0,26), N and M positive.
+/// @param query Integral [N] query token IDs in [0,26).
+/// @param structured Use key-value mode when true and full bags otherwise.
+/// @return Answer logits [N,8], attention [N,2,M], and states [N,3,16], in order.
+/// @throws std::invalid_argument For incompatible shape, token IDs or parameters.
+/// @par Example
+/// @code
+/// dm::nn::ParameterStore model(7);
+/// const auto ids = dm::nn::DType::Int64;
+/// const auto path = dm::nn::models::RelationalMemoryNetwork(model,
+///     dm::nn::zeros({2,4,3},ids), dm::nn::zeros({2},ids), true);
+/// @endcode
+/// @par References
+/// - Sukhbaatar et al. (2015), https://arxiv.org/abs/1503.08895
+/// - Miller et al. (2016), https://arxiv.org/abs/1606.03126
+/// @see AdjacentMemoryNetwork()
+inline std::array<Tensor, 3> RelationalMemoryNetwork(ParameterStore &model,
+    const Tensor &facts, const Tensor &query, bool structured) {
+  if (facts.dim() != 3 || facts.shape()[0] < 1 || facts.shape()[1] < 1 || facts.shape()[2] != 3 ||
+      query.shape() != Shape{facts.shape()[0]} || !is_integral(facts.dtype()) ||
+      !is_integral(query.dtype()) || min(facts).item() < 0 || max(facts).item() >= 26 ||
+      min(query).item() < 0 || max(query).item() >= 26)
+    throw std::invalid_argument("RelationalMemoryNetwork: invalid token geometry");
+  const auto table = [&](const std::string &name) {
+    return model.get(name, {26,16}, init::normal(.15));
+  };
+  auto state = gather(table("question"), query);
+  std::vector<Tensor> states{state}, attention;
+  const auto subject = select(facts,2,0), relation = select(facts,2,1), object = select(facts,2,2);
+  for (int hop = 0; hop < 2; ++hop) {
+    const auto prefix = "hop" + std::to_string(hop);
+    const auto key_table = table(prefix + "/key");
+    const auto value_table = table(prefix + "/value");
+    auto keys = gather(key_table,subject) + gather(key_table,relation);
+    auto values = gather(value_table,object);
+    if (!structured) {
+      keys = keys + gather(key_table,object);
+      values = values + gather(value_table,subject) + gather(value_table,relation);
+    }
+    const auto weights = softmax(sum(keys * expand_dims(state,1),{2}),1);
+    state = state + sum(values * expand_dims(weights,2),{1});
+    attention.push_back(weights);
+    states.push_back(state);
+  }
+  return {dense(model,"answer",state,8), stack(attention,1), stack(states,1)};
+}
+
 } // namespace datamunge::nn::models

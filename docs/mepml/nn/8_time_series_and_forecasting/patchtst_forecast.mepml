@@ -1,0 +1,138 @@
+//? Title: Forecast with overlapping PatchTST history tokens
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train a univariate PatchTST encoder to forecast six observations.
+Inspect attention over the seven patches and compare the forecast
+with held-out observations.
+)
+\toc
+
+Length-six windows advance by three samples through the 24 observed
+values. A learned projection and position embedding turn each window
+into a token. One encoder block combines two-head self-attention and a
+GELU feed-forward layer with residual connections and layer
+normalization. The linear head reads all seven tokens to predict the
+six leads directly.
+[Nie et al., A Time Series is Worth 64 Words|https://arxiv.org/abs/2211.14730]
+
+The history contains only observations before the forecast origin.
+Attention can look across the entire observed history. Scaling uses
+the fitting prefix, and training, validation, and test targets occupy
+disjoint intervals. The initialization fixture matches the upstream run.
+
+```{cpp, results="markdown", file="figures/patchtst_forecast.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int lag = 24, horizon = 6, fit_end = 768, test_begin = 960, end = 1152;
+  std::vector<double> samples(end);
+  for (int t = 0; t < end; ++t) {
+    const auto phase = 2 * std::numbers::pi * t;
+    samples[t] = (1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                 + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73);
+  }
+  const auto series = n::from_vector(samples);
+  const auto prefix = n::slice(series, {0}, {fit_end});
+  const auto center = n::mean(prefix).item();
+  const auto scale = n::sqrt(n::mean(n::square(prefix - center))).item();
+  const auto normalize = [&](const n::Tensor& x) {
+    return ((x - center) / scale).to(n::DType::Float32);
+  };
+  const auto normalized = normalize(series);
+  const auto origins = [](int first, int last) {
+    std::vector<std::int64_t> indices(last - horizon - first + 1);
+    std::iota(indices.begin(), indices.end(), first);
+    return indices;
+  };
+  const auto fit_indices = origins(lag, fit_end);
+  const auto test_indices = origins(test_begin, end);
+  const auto fit = n::ForecastWindows(normalized, fit_indices, lag, horizon);
+  const auto val = n::ForecastWindows(normalized, origins(fit_end, test_begin), lag, horizon);
+  const auto test = n::ForecastWindows(normalized, test_indices, lag, horizon);
+  const auto first = n::ForecastWindows(normalized, {test_begin}, lag, horizon);
+  auto shifted = samples;
+  for (int t = test_begin; t < end; ++t) shifted[t] += 100;
+  const auto changed = n::ForecastWindows(normalize(n::from_vector(shifted)), {test_begin}, lag, horizon);
+  const auto baseline = n::forecast_baselines(series, test_indices, fit_end, 24, horizon, 6, 4);
+
+
+  n::ParameterStore parameters;
+  const auto model = [&](const n::Tensor& history) {
+    return n::patchtst(parameters, "patchtst", history.reshape({-1, lag}), horizon);
+  };
+  (void)model(first.history);
+  parameters.load("fixtures/patchtst_init.npz", true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(fit_indices.size(), 32, 41381);
+  const auto in_units = [&](const n::Tensor& x) { return x.to(n::DType::Float64) * scale + center; };
+  const auto rmse = [&](const n::Tensor& output) {
+    return n::sqrt(n::mean(n::square(in_units(output) - baseline.actual))).item();
+  };
+  double initial;
+  {
+    n::NoGradGuard guard;
+    initial = rmse(model(test.history).forecast);
+  }
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto residual = model(n::take_rows(fit.history, rows)).forecast - n::take_rows(fit.target, rows);
+      optimizer.step(n::grad(n::mean(n::square(residual)), parameters.parameters()));
+    }
+  }
+  n::NoGradGuard guard;
+  if (first.target.to_vector<float>() == changed.target.to_vector<float>() ||
+      model(first.history).forecast.to_vector<float>() != model(changed.history).forecast.to_vector<float>())
+    throw std::runtime_error("Unexpected fixed-origin perturbation result");
+  const auto result = model(test.history);
+  const auto val_mse = n::mean(n::square(model(val.history).forecast - val.target)).item() * scale * scale;
+  std::println("The final validation MSE was {:.6f}. Test RMSE fell from {:.6f} to {:.6f} across {} origins.",
+               val_mse, initial, rmse(result.forecast), test_indices.size());
+
+  const std::string folder = "build/patchtst_forecast/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "encoder.npz", {{"patches", result.patches}, {"weights", result.weights}});
+  n::save_npz(folder + "forecast.npz", {{"prediction", in_units(result.forecast)}, {"actual", baseline.actual}});
+
+  const auto first_row = [](const n::Tensor& x) { return n::select(x, 0, 0).to_vector<double>(); };
+  std::vector<double> patches(result.patches.size(1)), leads(horizon);
+  std::iota(patches.begin(), patches.end(), 1);
+  std::iota(leads.begin(), leads.end(), 1);
+  auto attention = dm::graphics::RPlot::create();
+  attention.title("Attention from the latest patch").x_label("Key patch").y_label("Weight");
+  const auto first_weights = n::select(result.weights, 0, 0);
+  const auto last_query = n::select(first_weights, 1, result.patches.size(1) - 1);
+  attention.lines(patches, first_row(last_query), "Head 1", {37,99,235})
+      .lines(patches, n::select(last_query, 0, 1).to_vector<double>(), "Head 2", {191,88,34});
+  auto prediction = dm::graphics::RPlot::create();
+  prediction.title("Forecast at origin 960").x_label("Lead").y_label("Level");
+  prediction.lines(leads, first_row(baseline.actual), "Observed", {30,41,59}, 2)
+      .lines(leads, first_row(in_units(result.forecast)), "PatchTST", {37,99,235});
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 410);
+  layout.add(attention).add(prediction).save_svg(folder + "encoder.svg");
+  std::filesystem::copy_file(folder + "encoder.svg", "figures/patchtst_forecast.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+The final validation MSE was 0.022483. Test RMSE fell from 1.192475 to 0.153591 across 187 origins.
+\image(figures/patchtst_forecast.svg)
+// result_end
+
+The attention panel shows how both heads distribute the newest query
+patch's weight among the seven observed key patches at the first test
+origin. The forecast panel uses the original data scale.

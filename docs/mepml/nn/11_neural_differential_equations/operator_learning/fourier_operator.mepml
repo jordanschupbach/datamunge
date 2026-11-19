@@ -1,0 +1,103 @@
+//? Title: Fourier neural operator for periodic heat evolution
+//? Lang: en
+
+> Fourier neural operator for periodic heat evolution
+
+This operator maps a periodic initial field to a later field. Its
+spectral layers retain six Fourier modes, with learned complex
+channel mixing at each frequency. A pointwise path acts locally.
+Two such blocks follow a scalar-to-channel lift and precede the
+scalar projection.
+
+The simulated target attenuates mode $m$ by $\exp(-0.13m^2)$,
+as in periodic heat diffusion. Training uses 256 functions sampled
+on 32 points. The same weights predict 32 held-out functions on
+both 32-point and 64-point grids. The transform basis is evaluated
+on each grid while the retained frequencies stay fixed.
+
+```{cpp, results="markdown", file="figures/fourier_operator.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+
+int main() {
+  namespace n=dm::nn;
+  const auto data=[](int rows,int length,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> draw(-1,1);
+    std::vector<float> inputs,targets;
+    for(int row=0;row<rows;++row) {
+      std::array<double,6> a,b;
+      for(int f=0;f<6;++f) { a[f]=draw(rng); b[f]=draw(rng); }
+      for(int t=0;t<length;++t) {
+        double x=0,y=0;
+        for(int f=0;f<6;++f) {
+          const double angle=2*std::numbers::pi*f*t/length;
+          const auto signal=(a[f]*std::cos(angle)+b[f]*std::sin(angle))/(1+f);
+          x+=signal;
+          y+=std::exp(-.13*f*f)*signal;
+        }
+        inputs.push_back(x);
+        targets.push_back(y);
+      }
+    }
+    return std::pair{n::from_vector(inputs,{rows,length}),n::from_vector(targets,{rows,length})};
+  };
+  const auto [fit_x,fit_y]=data(256,32,19133);
+  const auto [coarse_x,coarse_y]=data(32,32,19134);
+  const auto [fine_x,fine_y]=data(32,64,19134);
+  n::ParameterStore model(19132);
+  const auto mse=[](const n::Tensor& prediction,const n::Tensor& target) {
+    return n::mean(n::square(prediction-target));
+  };
+  double initial;
+  {
+    n::NoGradGuard guard;
+    initial=std::sqrt(mse(n::fourier_operator_1d(model,coarse_x),coarse_y).item());
+  }
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(256,16,19135);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(mse(n::fourier_operator_1d(model,n::take_rows(fit_x,rows)),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+  }
+  n::NoGradGuard guard;
+  const auto count=model.count();
+  const auto coarse=n::fourier_operator_1d(model,coarse_x);
+  const auto fine=n::fourier_operator_1d(model,fine_x);
+  const auto r32=std::sqrt(mse(coarse,coarse_y).item()), r64=std::sqrt(mse(fine,fine_y).item());
+  if (updates!=48 || model.count()!=count || !(r32<initial && std::isfinite(r64)))
+    throw std::runtime_error("Fourier operator fit or shared resolution check failed");
+  std::print("| Updates | Initial 32-grid RMSE | Fitted 32-grid RMSE | Fitted 64-grid RMSE |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.6f} | {:.6f} | {:.6f} |\n",updates,initial,r32,r64);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/fourier_operator.npz",{{"input32",coarse_x},{"target32",coarse_y},{"prediction32",coarse},
+      {"input64",fine_x},{"target64",fine_y},{"prediction64",fine}});
+  const auto plot=[](const n::Tensor& input,const n::Tensor& prediction,const n::Tensor& target,const char* title) {
+    std::vector<double> x(input.size(1));
+    for(std::size_t i=0;i<x.size();++i) x[i]=double(i)/x.size();
+    return dm::graphics::RPlot::create()
+        .lines(x,n::select(input,0,0).to_vector<double>(),"Initial",{110,110,110})
+        .lines(x,n::select(target,0,0).to_vector<double>(),"Analytic",{37,99,235})
+        .points(x,n::select(prediction,0,0).to_vector<double>(),"Fitted",{220,90,45},3)
+        .title(title).x_label("Position").y_label("Field");
+  };
+  dm::graphics::RLayout::create(1,2).add(plot(coarse_x,coarse,coarse_y,"32-point grid"))
+      .add(plot(fine_x,fine,fine_y,"64-point grid")).size(1080,420).fit_panels()
+      .save_svg("build/fourier_operator.svg");
+}
+```
+// result_begin: markdown
+| Updates | Initial 32-grid RMSE | Fitted 32-grid RMSE | Fitted 64-grid RMSE |
+|---:|---:|---:|---:|
+| 48 | 0.538301 | 0.057158 | 0.057158 |
+\image(figures/fourier_operator.svg)
+// result_end
+\caption(The same held-out periodic function and fitted weights on coarse and refined grids.)
+
+> Reference
+
+- [Li et al., Fourier Neural Operator for Parametric Partial Differential Equations](https://arxiv.org/abs/2010.08895).

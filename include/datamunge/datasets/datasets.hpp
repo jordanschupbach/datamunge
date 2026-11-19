@@ -1,5 +1,6 @@
 #pragma once
 #include <datamunge/datasets/network_data.hpp>
+#include <datamunge/datasets/citation_graph.hpp>
 #include "datamunge/datasets/assets.hpp"
 
 /// @file datasets.hpp

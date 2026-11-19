@@ -37,7 +37,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The seeded greedy replay is available as both a video and a filmstrip.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -48,10 +48,7 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // body, food) over the grid, flattened to a float vector. That makes Snake the
 // stand-in for Atari in the pixel-based examples later on (DQN on pixels,
 // 6.3). The environment is common/rl/snake.hpp (copied from tflow, TF-free).
-// tflow films the greedy episode on a vsim 3D board; the port replays the same
-// episode without vsim/ffmpeg and instead writes its frames, drawn from the
-// board (common/rl/snake_frames.hpp), as one PNG filmstrip to
-// output/nn/frames/snake_greedy_policy.png. Checks are added.
+// The seeded greedy episode is captured once for the video and PNG filmstrip.
 
 
 // Editable workflow support: checks.hpp
@@ -154,13 +151,7 @@ inline std::filesystem::path OutputDir(const std::string& relative) {
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// Playback visits the same seeded states and captures each board in order.
 
 
 // Editable workflow support: rl/env.hpp
@@ -376,7 +367,7 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  std::printf("  played %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -582,12 +573,20 @@ int main() {
       }
     }
 
-    std::cout << "\n-- The greedy episode replayed as frames (tflow films it on a 3D board; video omitted)\n";
+    std::cout << "\n-- The greedy episode replayed as frames\n";
     rl::SnakeFilmstrip strip;
     const rl::Playback pb = rl::PlayEpisode(env, greedy, "snake_greedy_policy", 3,
                                             [&](const rl::Snake& e, const rl::Hud&) { strip.Add(e); });
     const std::string png = (paths::OutputDir("frames") / "snake_greedy_policy.png").string();
     strip.Save(png);
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    const std::string video = "snake_greedy_policy.mp4";
+    strip.SaveVideo("build/" + video);
+    std::filesystem::copy_file("build/" + video, "figures/" + video,
+                               std::filesystem::copy_options::overwrite_existing);
+    dm::nn::save_npz("build/snake_replay.npz", {{"frames", strip.tensor()}});
+
     std::printf("  wrote %s (%d frames, one per step plus the reset)\n", png.c_str(), strip.frames());
 
     check::Require(greedy_stats.mean_return() > 10.f && greedy_stats.min_return() > 0.f,
@@ -599,7 +598,7 @@ int main() {
     check::Require(pb.steps == steps && pb.ret == static_cast<float>(env.length() - 2),
                    "the replay should reproduce the traced episode (food eaten - 1 = final length - 2, the fatal step drops the tail)");
     check::Require(strip.frames() == steps + 1, "the filmstrip should have one frame per step plus the reset");
-    std::cout << "\nchecks passed (vsim video replaced by a PNG filmstrip)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -653,11 +652,11 @@ int main() {
 //     ........
 //     ........
 //
-// -- The greedy episode replayed as frames (tflow films it on a 3D board; video omitted)
-//   played snake_greedy_policy (video omitted): 108 steps, return 16.0
+// -- The greedy episode replayed as frames
+//   played snake_greedy_policy: 108 steps, return 16.0
 //   wrote /mnt/projects/datamunge/docs/mepml/nn/6_deep_reinforcement_learning/6.1_environments/build/environment-models/frames/snake_greedy_policy.png (109 frames, one per step plus the reset)
 //
-// checks passed (vsim video replaced by a PNG filmstrip)
+// checks passed
 // result_end
 
 > Inspect the captured source episode
@@ -688,3 +687,9 @@ int main(){namespace e=dm::rl::environments;e::Snake env;auto observation=env.re
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+> Seeded greedy replay
+
+The film and PNG show the same captured boards, including the initial state and the final collision.
+
+\video(figures/snake_greedy_policy.mp4)

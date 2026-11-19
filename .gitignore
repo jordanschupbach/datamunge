@@ -74,14 +74,18 @@ plans/
 !docs/mepml/figures/fruit_vision_*
 !docs/mepml/figures/fruit_stream_*
 
-# Report images are build output: running the reports (`just docs`) renders them
-# again, so they are never committed (SVG is ignored below).
-docs/mepml/**/figures/*.png
-docs/mepml/**/figures/*.jpg
-docs/mepml/**/figures/*.gif
-docs/mepml/**/figures/*.png
-docs/mepml/**/figures/*.jpg
-docs/mepml/**/figures/*.gif
+# Generated report media is exported to gh-pages. Small tabular records and
+# deliberately tracked fixtures can still live next to their reports.
+docs/mepml/**/figures/**/*.png
+docs/mepml/**/figures/**/*.jpg
+docs/mepml/**/figures/**/*.jpeg
+docs/mepml/**/figures/**/*.gif
+docs/mepml/**/figures/**/*.svg
+docs/mepml/**/figures/**/*.webp
+docs/mepml/**/figures/**/*.mp4
+docs/mepml/**/figures/**/*.webm
+docs/mepml/**/figures/**/*.wav
+docs/mepml/**/figures/**/*.mp3
 
 # Compiled binding/test binaries (Ruby/Perl bundles, Perl blib, D and root test executables).
 *.bundle

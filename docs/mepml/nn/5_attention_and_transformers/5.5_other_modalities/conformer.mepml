@@ -1,0 +1,169 @@
+//? Title: Conformer with CTC on simulated acoustic sequences
+//? Lang: en
+
+> Conformer with CTC on simulated acoustic sequences
+
+A Conformer block puts global self-attention and local depthwise
+convolution between two half-weight feed-forward residual updates.
+Here attention learns a bias by relative frame offset. The convolution
+takes gated features, then applies batch normalization and a SiLU
+activation.
+
+Each simulated acoustic sequence has 18 frames and contains two to
+four symbols. Labels are padded for batching, and CTC uses their actual
+lengths. It sums over alignments between frames and target symbols
+without requiring frame-level labels. Greedy decoding merges successive
+repeats and drops blanks. The report plots validation CTC loss and
+class probabilities for one held-out sequence.
+
+The fit uses Datamunge initialization. Set `DM_CONFORMER_REFERENCE`
+to the upstream `conformer/audit.npz` to check its convolution and
+per-sequence CTC losses with Datamunge.
+
+[Gulati et al. (2020)|https://arxiv.org/abs/2005.08100]
+
+```{cpp, results="markdown", file="figures/conformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int frames=18,bands=12,width=24,classes=5,blank=4;
+  struct Corpus {n::Tensor features,text;};
+  const auto generate=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise(0,.08f);
+    std::vector<float> features(count*frames*bands);
+    std::vector<int> text(count*4,-1);
+    for (int row=0;row<count;++row) {
+      auto* x=features.data()+row*frames*bands;
+      for (int i=0;i<frames*bands;++i) x[i]=noise(rng);
+      int start=rng()%3;
+      const int length=2+rng()%3;
+      for (int index=0;index<length;++index) {
+        const int symbol=rng()%blank, duration=2+rng()%2;
+        text[row*4+index]=symbol;
+        const float jitter=2.f*noise(rng), gain=1.f+noise(rng);
+        for (int t=start;t<start+duration;++t) {
+          for (int band=0;band<bands;++band) {
+            const float low=(band-(1.5f+1.4f*symbol+jitter))/.7f;
+            const float high=(band-(10.5f-.65f*symbol+jitter))/.9f;
+            x[t*bands+band]+=gain*(std::exp(-.5f*low*low)+.6f*std::exp(-.5f*high*high));
+          }
+        }
+        start+=duration+1;
+      }
+    }
+    return Corpus{n::from_vector(features,{count,frames,bands}),n::from_vector(text,{count,4})};
+  };
+  const auto fit=generate(768,42401), valid=generate(96,42402), test=generate(96,42403);
+  n::ParameterStore params(42404), stats(0);
+  std::vector<int> offsets;
+  for (int q=0;q<frames;++q) {
+    for (int k=0;k<frames;++k) offsets.push_back(q-k+frames-1);
+  }
+  const auto offsets_tensor=n::from_vector(offsets,{frames,frames});
+  const auto convolution=[](const n::Tensor& gate,const n::Tensor& kernel) {
+    return n::depthwise_conv2d(gate.reshape({gate.size(0),frames,1,width}),kernel).reshape(gate.shape());
+  };
+  const auto model=[&](const n::Tensor& features,bool training) {
+    const auto ff=[&](const std::string& key,const n::Tensor& x) {
+      const auto normalized=n::layer_norm(params,key+"/norm",x);
+      const auto hidden=n::dense(params,key+"/up",normalized,2*width,n::Activation::Silu);
+      return x+.5*n::dense(params,key+"/down",hidden,width);
+    };
+    const auto first=ff("first",n::dense(params,"input",features,width));
+    const auto query=n::layer_norm(params,"attention/norm",first);
+    const auto relative=params.get("attention/relative",{2*frames-1,3},n::init::normal(.02));
+    n::MultiHeadOptions opts;
+    opts.mask=n::gather(relative,offsets_tensor).transpose({2,0,1});
+    opts.need_weights=true;
+    const auto attention=n::multi_head_attention(params,"attention",query,query,3,opts);
+    const auto residual=first+attention.output;
+    const auto norm=n::layer_norm(params,"convolution/norm",residual);
+    const auto value=n::dense(params,"convolution/value",norm,width);
+    const auto gate=n::dense(params,"convolution/gate",norm,width,n::Activation::Sigmoid);
+    const auto gated=value*gate;
+    const auto kernel=params.get("convolution/depth",{5,1,width,1},n::init::uniform(.4));
+    const auto depth=convolution(gated,kernel);
+    const auto normalized=n::batch_norm(params,stats,"convolution/bn",depth,training,{.momentum=.9});
+    const auto conv=n::dense(params,"convolution/out",n::silu(normalized),width);
+    const auto final=n::layer_norm(params,"final",ff("second",residual+conv));
+    return std::array{n::dense(params,"head",final,classes).transpose({1,0,2}),attention.weights,gated,depth,kernel};
+  };
+  const auto ctc=[](const n::Tensor& logits,const n::Tensor& text) {
+    const auto sizes=n::sum(n::greater(text,-1).to(n::DType::Int64),{1}).to(n::DType::Int64);
+    const auto input=n::full({text.size(0)},frames,n::DType::Int64);
+    return n::ctc_loss(logits,text,sizes,input);
+  };
+  const auto evaluate=[&](const Corpus& data) {
+    const n::NoGradGuard no_grad;
+    return n::mean(ctc(model(data.features,false)[0],data.text)).item();
+  };
+  const auto initial=evaluate(test);
+  std::vector<double> history{evaluate(valid)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.003,config);
+  n::BatchOrder order(768,24,42405);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(n::mean(ctc(model(n::take_rows(fit.features,rows),true)[0],n::take_rows(fit.text,rows))));
+    }
+    history.push_back(evaluate(valid));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,attention,gated,depth,kernel]=model(test.features,false);
+  const auto losses=ctc(logits,test.text);
+  const auto final=n::mean(losses).item();
+  const auto decoded=n::ctc_greedy_decode(logits);
+  const auto labels=test.text.to_vector<int>();
+  int exact=0, edits=0, total=0;
+  for (int row=0;row<96;++row) {
+    std::string actual, expected;
+    for (auto id:decoded.sequences[row]) actual.push_back('0'+id);
+    for (int i=0;i<4 && labels[4*row+i]>=0;++i) expected.push_back('0'+labels[4*row+i]);
+    exact+=actual==expected;
+    edits+=dm::algorithms::levenshtein_distance(actual,expected);
+    total+=expected.size();
+  }
+  if (!(final<initial) || optimizer.iterations()!=96) throw std::runtime_error("Conformer fit failed");
+  std::filesystem::create_directories("build");
+  n::save_npz("build/conformer.npz",{{"features",test.features},{"text",test.text},{"nll",losses},
+      {"logits",logits},{"attention",attention},{"gated",gated},{"depth",depth},{"kernel",kernel}});
+  std::print("Test CTC loss {:.6f} to {:.6f}. Exact transcripts {}/96, token edits {}/{}.\n",
+             initial,final,exact,edits,total);
+  if (const char* reference=std::getenv("DM_CONFORMER_REFERENCE")) {
+    const auto entries=n::load_npz(reference);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=ctc(stored.at("logits"),stored.at("text"));
+    const auto ctc_error=n::max(n::abs(replay-stored.at("nll"))).item();
+    const auto depth_error=n::max(n::abs(convolution(stored.at("gated"),stored.at("kernel"))-stored.at("depth"))).item();
+    if (!(ctc_error<4e-5 && depth_error<5e-6)) {
+      throw std::runtime_error(std::format("Conformer replay errors {} {}",ctc_error,depth_error));
+    }
+    std::print("\nUpstream replay maximum errors {:.3e} for CTC and {:.3e} for depthwise convolution.\n",
+               ctc_error,depth_error);
+  }
+  auto validation=dm::graphics::RPlot::create();
+  validation.lines({0,1,2,3},history,"Validation CTC",{37,99,235})
+      .title("Validation loss").x_label("Epoch").y_label("CTC negative log-likelihood");
+  auto path=dm::graphics::RPlot::create();
+  std::vector<double> time(frames);
+  std::iota(time.begin(),time.end(),1);
+  const auto prob=n::softmax(n::slice(logits,{0,0,0},{frames,1,classes}),2);
+  for (int c=0;c<classes;++c) {
+    path.lines(time,n::slice(prob,{0,0,c},{frames,1,1}).to_vector<double>(),
+               c==blank ? "Blank" : std::format("Symbol {}",c));
+  }
+  path.title("Held-out frame predictions").x_label("Frame").y_label("Probability");
+  dm::graphics::RLayout::create(1,2).add(validation).add(path).size(1060,425).fit_panels()
+      .save_svg("build/conformer.svg");
+}
+```
+// result_begin: markdown
+Test CTC loss 21.760458 to 0.060676. Exact transcripts 96/96, token edits 0/290.
+
+Upstream replay maximum errors 6.147e-07 for CTC and 1.192e-07 for depthwise convolution.
+\image(figures/conformer.svg)
+// result_end

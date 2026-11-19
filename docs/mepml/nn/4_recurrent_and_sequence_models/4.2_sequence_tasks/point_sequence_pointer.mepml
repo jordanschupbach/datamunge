@@ -1,0 +1,168 @@
+//? Title: Pointer networks for sorting and convex-hull traversal
+//? Lang: en
+
+> Pointer networks for sorting and convex-hull traversal
+
+A pointer network predicts source positions. The source has four to six
+points and a special STOP slot at index zero. A masked LSTM encodes the
+points. The decoder attends over encoded slots and feeds back the state of
+each chosen slot. Padding and previously chosen nonzero slots are masked.
+Once greedy decoding selects STOP, every subsequent output is STOP.
+
+The sorting task orders points by their first coordinate. The hull task
+uses a monotone chain to produce a counterclockwise boundary starting
+at the lexicographically smallest point. Each task trains separately,
+using cross-entropy on teacher-forced sequences through the first STOP.
+
+```{cpp, results="markdown", file="figures/point_sequence_pointer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n = dm::nn;
+
+int main() {
+  const auto validation=n::arange(256,320,1,n::DType::Int64);
+  const auto test=n::arange(320,384,1,n::DType::Int64);
+  auto curve=dm::graphics::RPlot::create();
+  curve.title("Teacher-forced validation").x_label("Epoch").y_label("Token NLL");
+  auto paths=dm::graphics::RPlot::create();
+  paths.title("First held-out hull").x_label("X").y_label("Y");
+  std::filesystem::create_directories("build");
+  for(bool hull : {false,true}) {
+    using Point=std::array<int,2>;
+    std::mt19937 rng(hull?41368:41367);
+    std::set<std::vector<Point>> seen;
+    std::vector<float> inputs(384*21);
+    std::vector<int> lengths, targets(384*7), target_lengths;
+    for(int row=0;row<384;++row) {
+      std::vector<Point> points, canonical;
+      do {
+        points.clear();
+        const auto count=4+rng()%3;
+        while(points.size()<count) {
+          Point p{int(rng()%201)-100,hull?int(rng()%201)-100:0};
+          if(std::find(points.begin(),points.end(),p)==points.end()) points.push_back(p);
+        }
+        canonical=points;
+        std::sort(canonical.begin(),canonical.end());
+      } while(!seen.insert(canonical).second);
+      const auto point=[&](int id){return points[id-1];};
+      std::vector<int> order(points.size());
+      std::iota(order.begin(),order.end(),1);
+      std::sort(order.begin(),order.end(),[&](int a,int b){return point(a)<point(b);});
+      if(hull) {
+        const auto turn=[](Point a,Point b,Point c){
+          return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+        };
+        const auto half=[&](const std::vector<int> &ids){
+          std::vector<int> out;
+          for(int id : ids) {
+            while(out.size()>=2 && turn(point(out[out.size()-2]),point(out.back()),point(id))<=0)
+              out.pop_back();
+            out.push_back(id);
+          }
+          out.pop_back();
+          return out;
+        };
+        auto lower=half(order);
+        std::reverse(order.begin(),order.end());
+        const auto upper=half(order);
+        lower.insert(lower.end(),upper.begin(),upper.end());
+        order=std::move(lower);
+      }
+      lengths.push_back(points.size()+1);
+      target_lengths.push_back(order.size()+1);
+      std::copy(order.begin(),order.end(),targets.begin()+row*7);
+      inputs[row*21+2]=1.f;
+      for(std::size_t i=0;i<points.size();++i)
+        for(int col=0;col<2;++col)
+          inputs[row*21+3*(i+1)+col]=points[i][col]/100.f;
+    }
+    const auto x=n::from_vector(inputs,{384,7,3}), y=n::from_vector(targets,{384,7});
+    const auto len=n::from_vector(lengths), ylen=n::from_vector(target_lengths);
+    const auto slots=n::arange(0,7,1,n::DType::Int64);
+    n::ParameterStore model(41369);
+    const auto objective=[&](const n::Tensor &ids) {
+      const auto labels=n::gather(y,ids);
+      const auto score=n::point_sequence_pointer(model,n::gather(x,ids),n::gather(len,ids),labels).first;
+      const auto mask=n::less(slots,n::gather(ylen,ids).reshape({-1,1})).to(score.dtype());
+      return n::sum(mask*n::sparse_softmax_cross_entropy(score,labels,n::Reduction::None))/n::sum(mask);
+    };
+    objective(validation);
+    n::OptimizerConfig cfg;
+    cfg.kind=n::OptimizerKind::Adam;
+    n::Optimizer adam(model,.01,cfg);
+    n::BatchOrder batches(256,16,41370);
+    const std::string name=hull?"hull":"sort";
+    std::vector<double> history;
+    std::print("| Task | Epoch | Validation NLL |\n|---|---:|---:|\n");
+    for(int epoch=0;epoch<=3;++epoch) {
+      {n::NoGradGuard guard; history.push_back(objective(validation).item());}
+      std::print("| {} | {} | {:.6f} |\n",name,epoch,history.back());
+      if(epoch==3) break;
+      batches.begin_epoch();
+      for(auto rows=batches.next();!rows.empty();rows=batches.next()) adam.minimize(objective(n::from_vector(rows)));
+    }
+    n::NoGradGuard guard;
+    const auto test_x=n::gather(x,test), test_y=n::gather(y,test), test_len=n::gather(len,test);
+    const auto logits=n::point_sequence_pointer(model,test_x,test_len,test_y).first;
+    const auto greedy=n::point_sequence_pointer(model,test_x,test_len).second;
+    const auto valid=n::less(slots,test_len.reshape({64,1}));
+    const auto modified=n::where(valid.reshape({64,7,1}),test_x,31.);
+    const auto alternate=n::point_sequence_pointer(model,modified,test_len).second;
+    if(n::count_nonzero(n::not_equal(greedy,alternate)).item()!=0.)
+      throw std::runtime_error("padding changed decoding");
+    const auto nll=objective(test);
+    std::print("\n{} test NLL {:.6f}, {}/64 exact.\n\n",name,nll.item(),
+      n::count_nonzero(n::all(n::equal(greedy,test_y),{1})).item<int>());
+    n::save_npz("build/point_pointer_"+name+".npz",{{"points",x},{"target",y},{"lengths",len},
+      {"target_lengths",ylen},{"logits",logits},{"greedy",greedy},{"nll",nll}});
+    curve.lines({0.,1.,2.,3.},history,name,hull?dm::graphics::RGBA{22,120,97}:dm::graphics::RGBA{37,99,235});
+    if(hull) {
+      const auto coords=n::select(test_x,0,0).to_vector<double>();
+      std::vector<double> xs,ys;
+      for(int i=1;i<lengths[320];++i) {xs.push_back(coords[3*i]);ys.push_back(coords[3*i+1]);}
+      paths.points(xs,ys,"Source",{100,116,139});
+      const auto route=[&](const n::Tensor &sequence,std::string label,dm::graphics::RGBA color){
+        std::vector<double> a,b;
+        for(int id : n::select(sequence,0,0).to_vector<int>()) {
+          if(id==0) break;
+          a.push_back(coords[3*id]); b.push_back(coords[3*id+1]);
+        }
+        if(!a.empty()) paths.lines(a,b,label,color).points(a,b,label,color);
+      };
+      route(test_y,"Target",{22,120,97});
+      route(greedy,"Greedy",{190,75,48});
+      paths.legend({"Source","Target","Greedy"},{{100,116,139},{22,120,97},{190,75,48}});
+    }
+  }
+  curve.legend({"Sort","Hull"},{{37,99,235},{22,120,97}});
+  dm::graphics::RLayout::create(1,2).add(curve).add(paths).size(1050,430)
+      .fit_panels().save_svg("build/point_sequence_pointer.svg");
+}
+```
+// result_begin: markdown
+| Task | Epoch | Validation NLL |
+|---|---:|---:|
+| sort | 0 | 1.093601 |
+| sort | 1 | 0.860274 |
+| sort | 2 | 0.403218 |
+| sort | 3 | 0.188536 |
+
+sort test NLL 0.191723, 56/64 exact.
+
+| Task | Epoch | Validation NLL |
+|---|---:|---:|
+| hull | 0 | 1.261424 |
+| hull | 1 | 1.208914 |
+| hull | 2 | 1.061655 |
+| hull | 3 | 1.002020 |
+
+hull test NLL 1.016101, 2/64 exact.
+
+\image(figures/point_sequence_pointer.svg)
+// result_end
+\caption(Validation losses and the first held-out hull's target and greedily decoded traversal.)
+\alttext(A line panel compares validation token losses. A scatter panel shows the held-out point set and the predicted and target paths.)
+
+> Reference
+
+- [Vinyals et al. (2015), Pointer Networks](https://arxiv.org/abs/1506.03134).

@@ -1,0 +1,134 @@
+//? Title: Hamiltonian Monte Carlo on a curved Gaussian target
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Run 16 Hamiltonian Monte Carlo chains on a two-dimensional curved
+density with known moments. Save the proposals, random momenta and
+Metropolis decisions, then inspect the retained sample and trace.
+)
+\toc
+
+> Differentiate the target and check the transition
+
+Let X and E be independent standard Gaussians and define
+Y = E + 0.65(X² − 1). The transformation has unit Jacobian, so the
+potential is half the sum of X² and the squared residual
+Y − 0.65(X² − 1). Both marginal means are zero. The marginal variances
+are 1 and 1.845.
+
+Refresh a standard Gaussian momentum at each iteration. Use automatic
+differentiation of the log density and seven leapfrog steps of size
+0.21 to propose the next point. Accept using the signed change in
+Hamiltonian energy. The proposal API takes the momentum explicitly so
+the report can retain the needed inputs for replay. Each chain starts at
+the origin. Keep iterations 151 through 900 for the diagnostics.
+
+```{cpp, results="markdown", file="figures/hamiltonian_monte_carlo_trace.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+int main() {
+  namespace b = dm::bayes;
+  namespace n = dm::nn;
+  constexpr int chains = 16, transitions = 900, burn = 150;
+  b::AutodiffModel target([](auto&, const auto& q) {
+    const auto x2 = q[0] * q[0];
+    const auto residual = q[1] - .65 * (x2 - 1.0);
+    return -.5 * (x2 + residual * residual);
+  });
+
+  std::mt19937 random(124413);
+  std::normal_distribution<double> normal;
+  std::uniform_real_distribution<double> uniform(0.0, 1.0);
+  std::vector<std::vector<double>> current(chains, std::vector<double>(2));
+  std::vector<double> states(chains * 2), positions, momenta, delta, uniforms;
+  std::vector<std::int32_t> accepted;
+  std::vector<std::vector<double>> x(chains), y(chains);
+  std::vector<double> points_x, points_y;
+  int hits = 0;
+  for (int step = 0; step < transitions; ++step) {
+    std::vector<std::vector<double>> kicks(chains, std::vector<double>(2));
+    for (auto& momentum : kicks) {
+      for (auto& value : momentum)
+        value = normal(random);
+    }
+    for (int chain = 0; chain < chains; ++chain) {
+      const auto proposal = b::hmc_proposal(target, current[chain], kicks[chain], .21, 7);
+      if (!std::isfinite(proposal.energy_change))
+        throw std::runtime_error("nonfinite Hamiltonian error");
+      const double u = uniform(random);
+      const bool accept = std::log(u) < -proposal.energy_change;
+      const auto append = [](auto& flat, const auto& row) {
+        flat.insert(flat.end(), row.begin(), row.end());
+      };
+      append(positions, proposal.position);
+      append(momenta, kicks[chain]);
+      delta.push_back(proposal.energy_change);
+      uniforms.push_back(u);
+      accepted.push_back(accept);
+      if (accept)
+        current[chain] = proposal.position;
+      append(states, current[chain]);
+      if (step >= burn) {
+        hits += accept;
+        const auto& q = current[chain];
+        x[chain].push_back(q[0]);
+        y[chain].push_back(q[1]);
+        if ((step - burn) % 5 == 0) {
+          points_x.push_back(q[0]);
+          points_y.push_back(q[1]);
+        }
+      }
+    }
+  }
+  constexpr double draws = (transitions - burn) * chains;
+  double mx = 0, my = 0;
+  for (int chain = 0; chain < chains; ++chain) {
+    mx += std::accumulate(x[chain].begin(), x[chain].end(), 0.0) / draws;
+    my += std::accumulate(y[chain].begin(), y[chain].end(), 0.0) / draws;
+  }
+  std::println("| Diagnostic | Value |\n| --- | ---: |");
+  std::println("| Post-burn-in acceptance | {:.4f} |", hits / draws);
+  std::println("| Sample mean X | {:.5f} |\n| Sample mean Y | {:.5f} |", mx, my);
+  std::println("| Split R-hat for X | {:.4f} |\n| Split R-hat for Y | {:.4f} |",
+               b::split_rhat(x), b::split_rhat(y));
+
+  const std::string root = "build/hamiltonian_monte_carlo/";
+  std::filesystem::create_directories(root);
+  std::filesystem::create_directories("figures");
+  n::save_npz(root + "trace.npz",
+               {{"states", n::from_vector(states, {transitions + 1, chains, 2})},
+                {"proposals", n::from_vector(positions, {transitions, chains, 2})},
+                {"momentum", n::from_vector(momenta, {transitions, chains, 2})},
+                {"delta", n::from_vector(delta, {transitions, chains})},
+                {"uniforms", n::from_vector(uniforms, {transitions, chains})},
+                {"accepted", n::from_vector(accepted, {transitions, chains})}});
+  const auto grid = n::linspace(-3, 3, 121, n::DType::Float64);
+  auto density = dm::graphics::RPlot::create(), trace = dm::graphics::RPlot::create();
+  density.points(points_x, points_y, "Retained sample", {37, 99, 235, .24}, 2)
+         .lines(grid.to_vector<double>(), (.65 * (n::square(grid) - 1)).to_vector<double>(),
+                "Exact conditional mean", {234, 88, 12})
+         .title("Curved target and HMC draws").x_label("X").y_label("Y");
+  const auto iterations = n::arange(burn + 1, transitions + 1).to_vector<double>();
+  trace.lines(iterations, x[0], "Chain 1", {37, 99, 235})
+       .lines(iterations, x[1], "Chain 2", {234, 88, 12})
+       .title("Retained X draws from two chains").x_label("Iteration").y_label("X");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(density).add(trace).size(1280, 510).fit_panels().save_svg(root + "trace.svg");
+  std::filesystem::copy_file(root + "trace.svg", "figures/hamiltonian_monte_carlo_trace.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Diagnostic | Value |
+| --- | ---: |
+| Post-burn-in acceptance | 0.9900 |
+| Sample mean X | 0.01151 |
+| Sample mean Y | -0.00963 |
+| Split R-hat for X | 1.0044 |
+| Split R-hat for Y | 1.0054 |
+\image(figures/hamiltonian_monte_carlo_trace.svg)
+// result_end

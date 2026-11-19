@@ -1,0 +1,136 @@
+//? Title: MAP-Elites for feedback policies
+//? Lang: en
+
+> MAP-Elites for feedback policies
+
+MAP-Elites searches for a collection of high-scoring policies with
+different behaviors. A policy enters the archive according to its mean
+absolute position and velocity in the latter half of the same twelve
+training rollouts. The two descriptors form an eight-by-eight grid.
+Within each cell, the policy with the highest training return survives.
+
+The first batch samples around zero controller weights. Each later batch
+samples parents uniformly from the occupied cells at the start of the
+round and mutates their weights with Gaussian noise. This preserves
+opportunities to explore from policies with less common behavior.
+
+The plot places elites at their training cell centers. Color denotes
+training return, with darker points indicating higher return. An orange
+ring identifies the training champion. The report evaluates every
+archived elite on separately seeded starts and reports the champion's
+held-out return.
+
+[Mouret and Clune (2015), Illuminating search spaces by mapping elites|https://arxiv.org/abs/1504.04909]
+
+```{cpp, results="markdown", file="figures/map_elites.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto starts=[](std::mt19937& rng) {
+    const auto uniform=[&] { return float((rng()+.5)/4294967296.); };
+    std::vector<float> states;
+    for (int i=0;i<6;++i) {
+      const float p=.4f+.6f*uniform(), v=.6f*(uniform()-.5f);
+      states.insert(states.end(),{p,v,-p,-v});
+    }
+    return n::from_vector(states,{12,2});
+  };
+  const auto evaluate=[](const n::Tensor& weights,const n::Tensor& initial) {
+    const auto [returns,trace]=r::feedback_returns(weights,initial,24,true);
+    const auto late=n::slice(trace,{0,0,12,0},{weights.size(0),initial.size(0),12,2});
+    return std::pair{returns,n::mean(n::abs(late),{1,2})};
+  };
+  std::mt19937 rng(47901),train(47203),evaluation(47204);
+  std::normal_distribution<float> gaussian;
+  const auto initial=starts(train), test=starts(evaluation);
+  r::MapElites archive({8,8},{.25f,.15f});
+  auto occupied=[&] {
+    std::vector<std::size_t> result;
+    for (std::size_t cell=0;cell<archive.cells().size();++cell) {
+      if (archive.cells()[cell]) result.push_back(cell);
+    }
+    return result;
+  };
+  std::filesystem::create_directories("build");
+  std::print("| Round | Occupied cells | Insertions | Best training return |\n|---:|---:|---:|---:|\n");
+  for (int round=0;round<3;++round) {
+    const auto parents=occupied();
+    std::uniform_int_distribution<int> choose(0,parents.empty()?0:static_cast<int>(parents.size()-1));
+    std::vector<float> draws, population;
+    std::vector<std::int32_t> parent_ids, cells, occupants;
+    for (int i=0;i<64;++i) {
+      const auto* parent=parents.empty()?nullptr:&archive.cells()[parents[choose(rng)]].value();
+      parent_ids.push_back(parent?static_cast<std::int32_t>(parent->id):-1);
+      for (int j=0;j<3;++j) {
+        const float draw=gaussian(rng), center=parent?float(parent->parameters[j]):0.f;
+        draws.push_back(draw);
+        population.push_back(center+(round==0?.75f:.35f)*draw);
+      }
+    }
+    const auto candidates=n::from_vector(population,{64,3});
+    const auto [returns,descriptor]=evaluate(candidates,initial);
+    const auto rewards=returns.to_vector<float>();
+    const auto behavior=descriptor.to_vector<float>();
+    int insertions=0;
+    for (int i=0;i<64;++i) {
+      const auto begin=population.begin()+3*i;
+      const auto [cell,improved]=archive.insert(
+          {behavior[2*i],behavior[2*i+1]},rewards[i],std::vector<double>(begin,begin+3));
+      cells.push_back(static_cast<std::int32_t>(cell));
+      insertions+=improved;
+    }
+    double best=-std::numeric_limits<double>::infinity();
+    for (const auto& elite:archive.cells()) {
+      occupants.push_back(elite?static_cast<std::int32_t>(elite->id):-1);
+      if (elite) best=std::max(best,elite->score);
+    }
+    std::print("| {} | {} / 64 | {} | {:.6f} |\n",round+1,occupied().size(),insertions,best);
+    n::save_npz(std::format("build/map_elites_round{}.npz",round+1),
+        {{"weights",candidates},{"noise",n::from_vector(draws,{64,3})},
+         {"parents",n::from_vector(parent_ids)},{"returns",returns},{"descriptor",descriptor},
+         {"cells",n::from_vector(cells)},{"archive",n::from_vector(occupants)}});
+  }
+  std::vector<double> x,y,scores;
+  std::vector<float> finalists;
+  std::vector<std::int32_t> ids;
+  for (const auto cell:occupied()) {
+    const auto& elite=archive.cells()[cell].value();
+    x.push_back((cell/8+.5)*.25);
+    y.push_back((cell%8+.5)*.15);
+    scores.push_back(elite.score);
+    ids.push_back(static_cast<std::int32_t>(elite.id));
+    finalists.insert(finalists.end(),elite.parameters.begin(),elite.parameters.end());
+  }
+  const auto low=std::min_element(scores.begin(),scores.end());
+  const auto high=std::max_element(scores.begin(),scores.end());
+  const auto champion=static_cast<std::size_t>(high-scores.begin());
+  const auto [held_out,test_descriptor]=evaluate(n::from_vector(finalists,{std::ssize(ids),3}),test);
+  std::print("\nTraining champion held-out return: {:.6f}.\n",held_out.to_vector<float>()[champion]);
+  n::save_npz("build/map_elites_evaluation.npz",{{"starts",initial},{"test",test},
+      {"ids",n::from_vector(ids)},{"test_returns",held_out},{"test_descriptor",test_descriptor}});
+  std::vector<dm::RGBA> colors;
+  for (const auto score:scores) {
+    const double fraction=*low==*high?1.:(score-*low)/(*high-*low);
+    colors.emplace_back(static_cast<int>(198-162*fraction),static_cast<int>(219-153*fraction),
+                        static_cast<int>(239-83*fraction),255);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({x[champion]},{y[champion]},"Training champion",{245,128,35},13)
+      .points_colored(x,y,colors,9)
+      .title("Final MAP-Elites archive").x_label("Mean absolute position")
+      .y_label("Mean absolute velocity").xlim(0,2).ylim(0,1.2)
+      .size(800,520).save_svg("build/map_elites.svg");
+}
+```
+// result_begin: markdown
+| Round | Occupied cells | Insertions | Best training return |
+|---:|---:|---:|---:|
+| 1 | 19 / 64 | 29 | -4.255505 |
+| 2 | 26 / 64 | 18 | -2.259662 |
+| 3 | 29 / 64 | 15 | -2.259662 |
+
+Training champion held-out return: -2.370273.
+\image(figures/map_elites.svg)
+// result_end

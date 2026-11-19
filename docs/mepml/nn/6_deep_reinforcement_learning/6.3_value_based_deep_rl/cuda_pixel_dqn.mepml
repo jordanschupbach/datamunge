@@ -1,0 +1,142 @@
+//? Title: CUDA pixel-DQN replay updates
+//? Lang: en
+
+> CUDA pixel-DQN replay updates
+
+A replay transition supplies the current pixels, selected action, reward,
+and next pixels. The online network chooses the next action, and the
+target network supplies that action's Q value. The Huber loss compares
+this bootstrapped target with the current action's Q value.
+
+The Snake and Nature Q networks run every convolutional and dense
+matrix product, including its gradients, on CUDA. Replay, patch packing,
+activations, and Adam use host memory. The report compares one CUDA
+replay update with a CPU update from the same weights on genuine Snake
+and ALE observations. The longer training experiments are in
+[Snake pixel DQN|pixel_dqn.mepml] and [Atari Double DQN|dqn_atari.mepml].
+
+Use a Datamunge build with `DATAMUNGE_ENABLE_CUDA=ON`, an NVIDIA driver,
+and the ALE SDK. Set `DM_ALE_CXX_FLAGS` to the ALE compile and link flags
+and `ALE_ROM_DIR` to the directory containing ALE's bundled Tetris ROM.
+
+```{cpp, results="markdown", file="figures/cuda_pixel_dqn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) $(echo ${DM_ALE_CXX_FLAGS:-}) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <ale/ale_interface.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace e=dm::rl::environments;
+  const dm::compute::Context cuda({dm::compute::Backend::CUDA,0});
+  constexpr int batch=8;
+  struct Replay {
+    std::vector<float> before,after,reward,discount;
+    std::vector<int> action;
+    void add(const e::Obs& x,const e::Obs& y,int move,float r,bool done) {
+      before.insert(before.end(),x.begin(),x.end());
+      after.insert(after.end(),y.begin(),y.end());
+      reward.push_back(r);
+      discount.push_back(done ? 0.f : .97f);
+      action.push_back(move);
+    }
+  };
+  Replay snake_data,atari_data;
+  e::Snake snake(6,6);
+  auto observation=snake.reset(31);
+  for (int i=0;i<batch;++i) {
+    const int action=i%4;
+    const auto step=snake.step(action);
+    snake_data.add(observation,step.obs,action,step.reward,step.done());
+    observation=step.done() ? snake.reset(32+i) : step.obs;
+  }
+  const char* rom_dir=std::getenv("ALE_ROM_DIR");
+  if (!rom_dir) throw std::runtime_error("Set ALE_ROM_DIR to ALE's ROM directory");
+  ale::Logger::setMode(ale::Logger::Error);
+  ale::ALEInterface ale;
+  ale.setInt("random_seed",31);
+  ale.setInt("frame_skip",1);
+  ale.setFloat("repeat_action_probability",0.f);
+  ale.loadROM((std::filesystem::path(rom_dir)/"tetris.bin").string());
+  const auto actions=ale.getMinimalActionSet();
+  e::AtariFrameStack frames(ale.getScreen().width(),ale.getScreen().height());
+  std::vector<unsigned char> current,previous;
+  ale.getScreenGrayscale(current);
+  for (int i=0;i<4;++i) frames.PushFrame(current);
+  for (int i=0;i<batch;++i) {
+    const auto before=frames.StackedObs();
+    const int action=i%actions.size();
+    float reward=0;
+    for (int j=0;j<4;++j) {
+      reward+=ale.act(actions[action]);
+      if (j==2) ale.getScreenGrayscale(previous);
+      if (ale.game_over()) throw std::runtime_error("ALE ended during the replay fixture");
+    }
+    ale.getScreenGrayscale(current);
+    e::AtariFrameStack::MaxPool(current,previous);
+    frames.PushFrame(current);
+    atari_data.add(before,frames.StackedObs(),action,std::clamp(reward,-1.f,1.f),false);
+  }
+  std::vector<double> losses_cpu,losses_cuda;
+  std::print("| Network | CPU Huber loss | CUDA Huber loss | Max gradient difference |\n|---|---:|---:|---:|\n");
+  for (bool atari:{false,true}) {
+    const auto& data=atari ? atari_data : snake_data;
+    const int count=atari ? int(actions.size()) : 4;
+    const auto x=n::from_vector(data.before).reshape({batch,-1});
+    const auto next=n::from_vector(data.after).reshape({batch,-1});
+    const auto selected=n::one_hot(n::from_vector(data.action),count);
+    const auto reward=n::from_vector(data.reward),discount=n::from_vector(data.discount);
+    n::ParameterStore cpu(41),gpu(41),target(42);
+    const auto predict=[&](n::ParameterStore& p,const n::Tensor& input,bool use_cuda) {
+      if (atari)
+        return use_cuda ? n::models::NaturePixelQCuda(cuda,p,input,count)
+                        : n::models::NaturePixelQ(p,input,count);
+      return use_cuda ? n::models::SnakePixelQCuda(cuda,p,input)
+                      : n::models::SnakePixelQ(p,input);
+    };
+    const auto loss=[&](n::ParameterStore& p,bool use_cuda) {
+      const auto q=predict(p,x,use_cuda);
+      const auto expected=[&] {
+        const n::NoGradGuard guard;
+        const auto action=n::argmax(predict(p,next,use_cuda),1);
+        const auto value=n::sum(predict(target,next,use_cuda)*n::one_hot(action,count),{1});
+        return reward+discount*value;
+      }();
+      return std::pair{q,n::huber_loss(n::sum(q*selected,{1}),expected)};
+    };
+    const auto [cpu_q,cpu_loss]=loss(cpu,false);
+    const auto [gpu_q,gpu_loss]=loss(gpu,true);
+    const auto compare=[](const n::Tensor& a,const n::Tensor& b,double tolerance) {
+      const double error=n::max(n::abs(a-b)).item();
+      if (!(error<=tolerance)) throw std::runtime_error(std::format("CPU/CUDA maximum error {}",error));
+      return error;
+    };
+    compare(cpu_q,gpu_q,2e-5);
+    compare(cpu_loss,gpu_loss,2e-5);
+    n::Optimizer cpu_adam(cpu,.0001,{.kind=n::OptimizerKind::Adam});
+    n::Optimizer gpu_adam(gpu,.0001,{.kind=n::OptimizerKind::Adam});
+    const auto cpu_grad=n::grad(cpu_loss,cpu_adam.parameters());
+    const auto gpu_grad=n::grad(gpu_loss,gpu_adam.parameters());
+    double error=0;
+    for (std::size_t i=0;i<cpu_grad.size();++i)
+      error=std::max(error,compare(cpu_grad[i],gpu_grad[i],3e-5));
+    cpu_adam.step(cpu_grad);
+    gpu_adam.step(gpu_grad);
+    compare(predict(cpu,x,false),predict(gpu,x,true),2e-4);
+    losses_cpu.push_back(cpu_loss.item());
+    losses_cuda.push_back(gpu_loss.item());
+    std::print("| {} | {:.8f} | {:.8f} | {:.3g} |\n",
+               atari ? "Nature" : "Snake",losses_cpu.back(),losses_cuda.back(),error);
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().points({.9,1.9},losses_cpu,"CPU",{37,99,235},6)
+      .points({1.1,2.1},losses_cuda,"CUDA",{217,96,26},6)
+      .title("Matched replay objectives").x_label("1 Snake     2 Nature")
+      .y_label("Huber loss").size(800,460).save_svg("build/cuda_pixel_dqn.svg");
+}
+```
+// result_begin: markdown
+| Network | CPU Huber loss | CUDA Huber loss | Max gradient difference |
+|---|---:|---:|---:|
+| Snake | 0.00105605 | 0.00105605 | 1.49e-08 |
+| Nature | 0.00387512 | 0.00387512 | 1.49e-08 |
+\image(figures/cuda_pixel_dqn.svg)
+// result_end

@@ -1,0 +1,163 @@
+//? Title: XLNet permutation language modeling
+//? Lang: en
+
+> XLNet permutation language modeling
+
+Randomize the factorization order without moving tokens from their
+original positions. The content stream starts with token and position
+embeddings and can attend to positions up to and including its own
+permutation rank. The query stream starts with position information
+and a learned seed. It attends only to content at strictly earlier
+ranks, keeping the target token out of its own prediction. Both
+streams read the previous layer's content, and the two streams share
+attention and feed-forward parameters.
+
+Train on the first 16 positions of each upstream character window.
+The report changes every forbidden token, including the target, and
+checks that the selected query logits remain unchanged. It also alters
+the first token in permutation order to check that later queries can
+respond to allowed context.
+
+Set `DM_XLNET_DATA` to the upstream `character_rnn.npz` archive if it
+is outside the default checkout. Set `DM_XLNET_REFERENCE` to the
+upstream `output/models/xlnet_permutation` directory to replay its
+weights. The native fit uses Datamunge initialization.
+
+[Yang et al. (2019)|https://arxiv.org/abs/1906.08237]
+
+```{cpp, results="markdown", file="figures/xlnet_permutation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int time=16,vocab=65,width=24,heads=3;
+  const char* data=std::getenv("DM_XLNET_DATA");
+  const char* home=std::getenv("HOME");
+  if (!data && !home) throw std::runtime_error("Set DM_XLNET_DATA");
+  const auto path=data ? std::filesystem::path(data) :
+      std::filesystem::path(home)/"projects/tflow_examples/output/datasets/character_rnn/character_rnn.npz";
+  const auto corpus=n::load_npz(path.string());
+  const std::map<std::string,n::Tensor> arrays(corpus.begin(),corpus.end());
+  const auto crop=[&](const std::string& key) {
+    return n::slice_axis(arrays.at(key+"_input"),1,0,time);
+  };
+  const auto fit=crop("fit"), valid=crop("validation"), test=crop("test");
+  const auto ranks=[](std::int64_t count,std::mt19937& rng) {
+    std::array<int,time> order{};
+    std::vector<int> rank(count*time);
+    for (std::int64_t row=0;row<count;++row) {
+      std::iota(order.begin(),order.end(),0);
+      std::shuffle(order.begin(),order.end(),rng);
+      for (int j=0;j<time;++j) rank[row*time+order[j]]=j;
+    }
+    return n::from_vector(rank,{count,time});
+  };
+  std::mt19937 random(41420), evaluation(41421);
+  const auto valid_rank=ranks(valid.size(0),evaluation), test_rank=ranks(test.size(0),evaluation);
+  n::ParameterStore p(41419);
+  const auto model=[&](const n::Tensor& tokens,const n::Tensor& rank,bool trace=false) {
+    const auto batch=tokens.size(0);
+    const auto position=p.get("position",{1,time,width},n::init::normal(.1));
+    const auto seed=p.get("query_seed",{1,1,width},n::init::normal(.1));
+    const auto embedding=p.get("token",{vocab,width},n::init::normal(.1));
+    auto content=n::gather(embedding,tokens)+position;
+    auto query=n::broadcast_to(position+seed,{batch,time,width});
+    const auto keys=rank.reshape({batch,1,1,time}), queries=rank.reshape({batch,1,time,1});
+    n::MultiHeadOptions query_options, content_options;
+    query_options.mask=n::less(keys,queries);
+    query_options.need_weights=trace;
+    content_options.mask=n::less_equal(keys,queries);
+    std::array<n::Tensor,2> maps;
+    for (int layer=0;layer<2;++layer) {
+      const auto name=std::format("layer{}",layer);
+      const auto block=[&](const n::Tensor& stream,const n::Tensor& attention) {
+        const auto residual=n::layer_norm(p,name+"/ln1",stream+attention);
+        const auto expanded=n::dense(p,name+"/up",residual,2*width,n::Activation::GeluTanh);
+        return n::layer_norm(p,name+"/ln2",residual+n::dense(p,name+"/down",expanded,width));
+      };
+      const auto att=n::multi_head_attention(p,name+"/attention",query,content,heads,query_options);
+      maps[layer]=att.weights;
+      query=block(query,att.output);
+      if (layer==0) {
+        const auto same=n::multi_head_attention(p,name+"/attention",content,content,heads,content_options);
+        content=block(content,same.output);
+      }
+    }
+    return std::array{n::dense(p,"head",query,vocab),maps[0],maps[1]};
+  };
+  const auto loss=[&](const n::Tensor& tokens,const n::Tensor& order) {
+    return n::sparse_softmax_cross_entropy(model(tokens,order)[0],tokens);
+  };
+  const auto evaluate=[&](const n::Tensor& tokens,const n::Tensor& order) {
+    const n::NoGradGuard no_grad;
+    return loss(tokens,order).item();
+  };
+  const auto initial=evaluate(test,test_rank);
+  std::vector<double> history{evaluate(valid,valid_rank)};
+  n::Optimizer optimizer(p,.003,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.size(0),8,41422);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto ids=order.next();!ids.empty();ids=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit,ids),ranks(ids.size(),random)));
+    }
+    history.push_back(evaluate(valid,valid_rank));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,a0,a1]=model(test,test_rank,true);
+  const auto score=n::sparse_softmax_cross_entropy(logits,test);
+  const auto tokens=test.to_vector<int>(), permutation=test_rank.to_vector<int>();
+  double worst=0;
+  for (int position:{0,7,15}) {
+    auto edited=tokens;
+    for (std::int64_t row=0;row<test.size(0);++row) {
+      for (int key=0;key<time;++key) {
+        if (permutation[row*time+key]>=permutation[row*time+position]) {
+          edited[row*time+key]=(edited[row*time+key]+1)%vocab;
+        }
+      }
+    }
+    const auto changed=model(n::from_vector(edited,test.shape()),test_rank,true)[0];
+    const auto diff=n::slice_axis(changed-logits,1,position,position+1);
+    worst=std::max(worst,n::max(n::abs(diff)).item());
+  }
+  auto earlier=tokens;
+  for (std::size_t i=0;i<earlier.size();++i) if (permutation[i]==0) earlier[i]=(earlier[i]+1)%vocab;
+  const auto changed=model(n::from_vector(earlier,test.shape()),test_rank,true)[0];
+  const auto effect=n::sum(n::abs(changed-logits)).item();
+  if (!(score.item()<initial) || !(worst<=1e-6) || !(effect>1)) {
+    throw std::runtime_error("XLNet training or permutation visibility failed");
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/xlnet_permutation.npz",{{"tokens",test},{"ranks",test_rank},{"logits",logits},
+      {"attention0",a0},{"attention1",a1},{"nll",score}});
+  std::print("Test NLL {:.6f} to {:.6f}. Forbidden-token change at tested queries {:.3e}.\n",
+             initial,score.item(),worst);
+  if (const char* reference=std::getenv("DM_XLNET_REFERENCE")) {
+    const auto folder=std::filesystem::path(reference);
+    p.load((folder/"weights.npz").string());
+    const auto entries=n::load_npz((folder/"audit.npz").string());
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=model(test,test_rank,true);
+    const std::array names{"logits","attention0","attention1"};
+    double max_error=0;
+    for (int i=0;i<3;++i) {
+      const auto error=n::max(n::abs(replay[i]-stored.at(names[i]))).item();
+      if (!(error<2e-5)) throw std::runtime_error(std::format("{} replay error {}",names[i],error));
+      max_error=std::max(max_error,error);
+    }
+    std::print("\nUpstream replay maximum absolute error {:.3e}.\n",max_error);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Validation NLL",{37,99,235})
+      .points({0,1,2,3},history,"Epoch boundaries",{37,99,235})
+      .title("XLNet permutation language modeling").x_label("Epoch").y_label("Negative log-likelihood")
+      .size(880,425).save_svg("build/xlnet_permutation.svg");
+}
+```
+// result_begin: markdown
+Test NLL 4.361160 to 3.519795. Forbidden-token change at tested queries 0.000e+00.
+
+Upstream replay maximum absolute error 1.192e-06.
+\image(figures/xlnet_permutation.svg)
+// result_end

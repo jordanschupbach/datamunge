@@ -1,0 +1,104 @@
+//? Title: MAML, first-order MAML and Meta-SGD
+//? Lang: en
+
+> MAML, first-order MAML and Meta-SGD
+
+Each sinusoid episode uses ten support observations for one adaptation
+step and twenty query observations to score the adapted weights. MAML
+backpropagates query loss through the support gradient. First-order
+MAML treats that gradient as constant while keeping the direct path
+from the initialization to the adapted parameters. Meta-SGD learns a
+separate signed adaptation rate for each parameter.
+
+All three fits start from the same weights and see identical episodes.
+The plot compares query error before and after adaptation on 64 unseen
+tasks. The report also saves the first update for checking the inner
+and outer derivatives.
+
+```{cpp, results="markdown", file="figures/maml.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](std::mt19937& rng) {
+    std::uniform_real_distribution<float> amplitude(.4f,2),phase(-1.5f,1.5f),domain(-3,3);
+    const float a=amplitude(rng),b=phase(rng);
+    const auto set=[&](int count) {
+      std::vector<float> x(count),y(count);
+      for (int i=0;i<count;++i) { x[i]=domain(rng); y[i]=a*std::sin(x[i]+b); }
+      return n::concat({n::from_vector(x,{count,1}),n::from_vector(y,{count,1})},1);
+    };
+    return std::tuple{set(10),set(20),a,b};
+  };
+  const auto col=[](const n::Tensor& set,int i) { return n::slice_axis(set,1,i,i+1); };
+  std::mt19937 initial_rng(24321);
+  std::normal_distribution<float> normal(0,.25f);
+  std::vector<float> initial_values(37);
+  for (auto& value:initial_values) value=normal(initial_rng);
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB,3> colors{{{37,99,235},{234,88,12},{22,163,74}}};
+  const auto error=[&](const auto& w,const auto& query) {
+    return n::mean(n::square(n::scalar_regressor(col(query,0),w)-col(query,1)));
+  };
+  std::print("| Method | Before adaptation | After adaptation |\n|---|---:|---:|\n");
+  for (int method=0;method<3;++method) {
+    const std::string name=std::array{"maml","first_order","meta_sgd"}[method];
+    const bool learned=method==2;
+    std::mt19937 train(24322),test(24323);
+    auto w=n::from_vector(initial_values);
+    auto alpha=n::full({37},.045f);
+    for (int i=0;i<384;++i) {
+      const auto [s,q,a,b]=draw(train);
+      w.requires_grad_(true);
+      if (learned) alpha.requires_grad_(true);
+      const auto inner=n::scalar_regressor_gradient(col(s,0),col(s,1),w);
+      const auto adapted=w-alpha*(method==1 ? inner.detach() : inner);
+      const auto g=n::grad(error(adapted,q),learned ? std::vector{w,alpha} : std::vector{w});
+      const auto next=(w-.012f*g[0]).detach();
+      const auto next_alpha=learned ? (alpha-.006f*g[1]).detach() : alpha;
+      if (i==0) {
+        n::NamedTensors records{{"sx",col(s,0)},{"sy",col(s,1)},{"qx",col(q,0)},{"qy",col(q,1)},
+            {"initial",w},{"inner",inner},{"adapted",adapted},{"gradient",g[0]},{"next",next}};
+        if (learned) {
+          records.emplace_back("initial_alpha",alpha);
+          records.emplace_back("alpha_gradient",g[1]);
+          records.emplace_back("next_alpha",next_alpha);
+        }
+        n::save_npz("build/"+name+"_step.npz",records);
+      }
+      w=next;
+      alpha=next_alpha;
+    }
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> support,query,metrics;
+    for (int i=0;i<64;++i) {
+      const auto [s,q,a,b]=draw(test);
+      support.push_back(s);
+      query.push_back(q);
+      const auto adapted=w-alpha*n::scalar_regressor_gradient(col(s,0),col(s,1),w);
+      metrics.push_back(n::stack({error(w,q),error(adapted,q)}));
+    }
+    const auto losses=n::stack(metrics);
+    const auto means=n::mean(losses,{0}).to_vector<double>();
+    if (!(means[1]<means[0])) return 1;
+    std::print("| {} | {:.5f} | {:.5f} |\n",name,means[0],means[1]);
+    plot.lines({0,1},means,name,colors[method]);
+    n::NamedTensors records{{"weights",w},{"support",n::stack(support)},{"query",n::stack(query)},
+        {"query_mse",losses}};
+    if (learned) records.emplace_back("alpha",alpha);
+    n::save_npz("build/"+name+"_test.npz",records);
+  }
+  plot.title("Query error on held-out sinusoid tasks").x_label("Before (0) and after (1) support update")
+      .y_label("Mean squared error");
+  plot.size(900,430).save_svg("build/maml.svg");
+}
+```
+// result_begin: markdown
+| Method | Before adaptation | After adaptation |
+|---|---:|---:|
+| maml | 0.66549 | 0.60344 |
+| first_order | 0.67200 | 0.61684 |
+| meta_sgd | 0.65708 | 0.55775 |
+\image(figures/maml.svg)
+// result_end

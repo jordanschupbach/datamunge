@@ -1,0 +1,92 @@
+//? Title: GloVe weighted log-count regression
+//? Lang: en
+
+> GloVe weighted log-count regression
+
+GloVe fits word and context vectors to the logarithms of positive
+co-occurrence counts. Each pair of token positions contributes the
+inverse of its distance within a two-position window. The model predicts
+a log count with the word-context dot product plus two bias terms.
+Its squared residual receives weight $\min(1,(x/100)^{0.75})$, where
+$x$ is the weighted count. The exported word embedding adds the fitted
+word and context vectors for each token.
+
+The report optimizes the model with Adagrad on synthetic topic sentences
+and evaluates it on counts from independently sampled sentences. Both
+corpora share the same vocabulary. The scatter plot compares fitted
+log counts with the held-out log counts that the loss targets.
+
+```{cpp, results="markdown", file="figures/glove_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto training = n::glove_pairs(n::synthetic_topic_corpus(192, 49402), 12);
+  const auto testing = n::glove_pairs(n::synthetic_topic_corpus(192, 49502), 12);
+  n::ParameterStore model(49501);
+  const auto predict = [&](const n::GloVePairs &rows) { return n::glove(model, "glove", rows, 12); };
+  predict(training);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adagrad;
+  n::Optimizer optimizer(model, .18, config);
+  std::vector<int> order(training.ids.shape()[0]);
+  std::iota(order.begin(), order.end(), 0);
+  std::mt19937 rng(49503);
+  std::vector<double> epochs, train_loss, test_loss;
+  std::print("| Epoch | Training loss | Held-out loss |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      epochs.push_back(epoch);
+      train_loss.push_back(predict(training).loss.item());
+      test_loss.push_back(predict(testing).loss.item());
+      std::print("| {} | {:.6f} | {:.6f} |\n", epoch, train_loss.back(), test_loss.back());
+    }
+    if (epoch == 3)
+      break;
+    std::shuffle(order.begin(), order.end(), rng);
+    const auto indices = n::from_vector(order);
+    for (std::int64_t start = 0; start < indices.shape()[0]; start += 12) {
+      const auto ids = n::slice_axis(indices, 0, start, std::min(start + 12, indices.shape()[0]));
+      optimizer.minimize(predict({n::gather(training.ids, ids), n::gather(training.counts, ids)}).loss);
+    }
+  }
+
+  n::NoGradGuard guard;
+  const auto result = predict(testing);
+  const auto logged = n::log(testing.counts).to_vector<double>();
+  std::filesystem::create_directories("build");
+  n::save_npz("build/glove_fit.npz", {{"train_pairs", training.ids}, {"train_counts", training.counts},
+      {"test_pairs", testing.ids}, {"test_counts", testing.counts}, {"prediction", result.prediction},
+      {"weight", result.weight}, {"embedding", result.embedding}, {"loss", result.loss}});
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines(epochs, train_loss, "Training", {22, 120, 97})
+      .lines(epochs, test_loss, "Held out", {37, 99, 235})
+      .legend({"Training", "Held out"}, {{22, 120, 97}, {37, 99, 235}})
+      .title("Weighted regression loss").x_label("Epoch").y_label("Weighted mean squared error");
+  auto fit = dm::graphics::RPlot::create();
+  const std::vector<double> ends{*std::min_element(logged.begin(), logged.end()),
+                                 *std::max_element(logged.begin(), logged.end())};
+  fit.lines(ends, ends, "Exact fit", {100, 116, 139})
+      .points(logged, result.prediction.to_vector<double>(), "Held-out pairs", {37, 99, 235})
+      .title("Fit to held-out counts").x_label("Observed log count").y_label("Predicted log count");
+  dm::graphics::RLayout::create(1, 2).add(loss).add(fit).size(1050, 430)
+      .fit_panels().save_svg("build/glove_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Training loss | Held-out loss |
+|---:|---:|---:|
+| 0 | 14.145478 | 13.776212 |
+| 1 | 9.838841 | 9.592891 |
+| 2 | 6.804016 | 6.649196 |
+| 3 | 3.723241 | 3.658863 |
+\image(figures/glove_fit.svg)
+// result_end
+\caption(Training and held-out losses and predicted versus observed held-out log co-occurrence counts.)
+\alttext(A line plot shows loss by epoch and a scatter plot compares fitted and held-out log counts against the identity line.)
+
+> Reference
+
+- [Pennington et al. (2014), GloVe: Global Vectors for Word Representation](https://aclanthology.org/D14-1162/).

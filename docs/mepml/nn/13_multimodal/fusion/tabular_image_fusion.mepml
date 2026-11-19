@@ -1,0 +1,90 @@
+//? Title: Image and metadata fusion
+//? Lang: en
+
+> Image and metadata fusion
+
+Each image contains a short horizontal or vertical bar at a random
+location. The label indicates whether its orientation agrees with
+an independent instrument setting in the metadata. Two other metadata
+fields are nuisance values.
+
+A CNN and global spatial average encode the image. A separate dense
+layer encodes metadata. Concatenating both encodings and their
+elementwise product gives the classifier a direct way to model
+interactions between them.
+
+We train on paired examples and test on a separately seeded batch.
+At evaluation, we rotate either the image rows or the metadata rows
+by one position while retaining the original labels. These controls
+measure how sensitive the original predictions are to each pairing.
+
+```{cpp, results="markdown", file="figures/tabular_image_fusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto generate=[](int count,unsigned seed) {
+    std::vector<float> images(count*64),meta(count*3),target(count);
+    std::mt19937 rng(seed);
+    std::uniform_int_distribution<int> bit(0,1),center(2,5);
+    std::uniform_real_distribution<float> noise(0,.15f),signal(.7f,1),nuisance(-1,1);
+    for (int i=0;i<count;++i) {
+      const int vertical=bit(rng), setting=bit(rng), cy=center(rng), cx=center(rng);
+      for (int y=0;y<8;++y)
+        for (int x=0;x<8;++x) {
+          const bool on=vertical ? x==cx && std::abs(y-cy)<=2 : y==cy && std::abs(x-cx)<=2;
+          images[i*64+y*8+x]=on ? signal(rng) : noise(rng);
+        }
+      meta[3*i]=setting;
+      meta[3*i+1]=nuisance(rng);
+      meta[3*i+2]=nuisance(rng);
+      target[i]=vertical==setting;
+    }
+    return std::tuple{n::from_vector(images,{count,8,8,1}),n::from_vector(meta,{count,3}),
+                      n::from_vector(target,{count,1})};
+  };
+  const auto [image,meta,label]=generate(1536,14892);
+  const auto [held,context,truth]=generate(256,14893);
+  n::ParameterStore model(41380);
+  const auto initial=n::sigmoid_cross_entropy(n::tabular_image_logits(model,held,context),truth).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(1536,32,14894);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto logits=n::tabular_image_logits(model,n::take_rows(image,rows),n::take_rows(meta,rows));
+      optimizer.minimize(n::sigmoid_cross_entropy(logits,n::take_rows(label,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  std::vector<std::int64_t> shifted(256);
+  for (int i=0;i<256;++i) shifted[i]=(i+1)%256;
+  const auto paired=n::tabular_image_logits(model,held,context);
+  const auto swapped_images=n::tabular_image_logits(model,n::take_rows(held,shifted),context);
+  const auto swapped_metadata=n::tabular_image_logits(model,held,n::take_rows(context,shifted));
+  const auto loss=n::sigmoid_cross_entropy(paired,truth);
+  const auto correct=[&](const n::Tensor& scores) {
+    return n::sum(n::equal(n::greater_equal(scores,0).to(n::DType::Float32),truth).to(n::DType::Int32)).item();
+  };
+  const std::vector<double> hits{correct(paired),correct(swapped_images),correct(swapped_metadata)};
+  if (!(loss.item()<initial) || hits[0]<=hits[1] || hits[0]<=hits[2]) return 1;
+  std::print("Held-out loss {:.5f} → {:.5f}. Correct out of 256, paired {:.0f}, image swap {:.0f}, metadata swap {:.0f}.\n",
+      initial,loss.item(),hits[0],hits[1],hits[2]);
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({0},{hits[0]/256},"Paired",{37,99,235})
+      .points({1},{hits[1]/256},"Image swap",{234,88,12})
+      .points({2},{hits[2]/256},"Metadata swap",{22,163,74})
+      .lines({-.2,2.2},{.5,.5},"Chance",{148,163,184})
+      .title("Held-out accuracy under modality swaps").x_label("Pairing condition")
+      .y_label("Accuracy").y_limits(0,1.05);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/tabular_image_fusion.svg");
+  n::save_npz("build/tabular_image_fusion.npz",{{"input",n::concat({held.reshape({256,64}),context},1)},
+      {"target",truth},{"loss",loss},{"paired",paired},{"swapped_images",swapped_images},
+      {"swapped_metadata",swapped_metadata}});
+}
+```
+// result_begin: markdown
+Held-out loss 0.69115 → 0.00033. Correct out of 256, paired 256, image swap 128, metadata swap 116.
+\image(figures/tabular_image_fusion.svg)
+// result_end

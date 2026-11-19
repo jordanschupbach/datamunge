@@ -1,0 +1,120 @@
+//? Title: Hyperband and asynchronous successive halving
+//? Lang: en
+
+> Hyperband and asynchronous successive halving
+
+Hyperband runs three brackets with different initial training budgets.
+At each rung, it ranks validation losses and advances the best half.
+ASHA simulates two workers that advance eligible trials as soon as an
+evaluation finishes. Different widths have different virtual runtimes.
+
+Each resource unit spends nine optimizer updates. Promotion resumes
+the same weights, Adam moments and minibatch order. Only a full-budget
+validation winner is evaluated on test data. The plot shows the
+validation losses of full-budget trials as the search spends resources.
+
+```{cpp, results="markdown", file="figures/hyperband_asha.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1,1);
+    std::normal_distribution<float> noise(0,.12f);
+    std::vector<float> x(count*3),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=0;j<3;++j) x[3*i+j]=uniform(rng);
+      y[i]=std::sin(3.f*x[3*i])+x[3*i+1]*x[3*i+2]+noise(rng);
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(y,{count,1})};
+  };
+  const auto [fit,target]=draw(384,36543);
+  const auto [validation,valid_y]=draw(128,36544);
+  const auto [test,test_y]=draw(256,36545);
+  constexpr std::array widths{4,8,16,24,32};
+  constexpr std::array rates{.0003f,.001f,.003f,.01f,.03f};
+  const auto predict=[&](n::ParameterStore& model,int id,const n::Tensor& x) {
+    return n::dense(model,"head",n::dense(model,"hidden",x,widths[id/5],n::Activation::Tanh),1);
+  };
+  const auto mse=[](const n::Tensor& a,const n::Tensor& b) {
+    return n::mean(n::square(a.to(n::DType::Float64)-b.to(n::DType::Float64))).item();
+  };
+  std::vector<int> permutation(25);
+  std::iota(permutation.begin(),permutation.end(),0);
+  std::mt19937 rng(38101);
+  std::shuffle(permutation.begin(),permutation.end(),rng);
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Scheduler | Resource units | Candidate | Validation MSE | Test MSE |\n|---|---:|---:|---:|---:|\n");
+  for (bool async:{false,true}) {
+    struct Trial {
+      n::ParameterStore model{36541};
+      n::BatchOrder order{384,32,36542};
+      std::unique_ptr<n::Optimizer> optimizer;
+      int candidate=0,resource=0,steps=0;
+    };
+    std::deque<Trial> trials;
+    std::vector<double> events,budget,history;
+    int used=0,best=-1;
+    double best_loss=std::numeric_limits<double>::infinity();
+    const auto start=[&](int position) {
+      auto& trial=trials.emplace_back();
+      trial.candidate=permutation.at(position);
+      (void)predict(trial.model,trial.candidate,n::take_rows(fit,{0}));
+      trial.optimizer=std::make_unique<n::Optimizer>(trial.model,rates[trial.candidate%5],
+                                                     n::OptimizerConfig{.kind=n::OptimizerKind::Adam});
+      return int(trials.size())-1;
+    };
+    const auto advance=[&](int id,int resource,int bracket,double time) {
+      auto& trial=trials.at(id);
+      if (resource<=trial.resource) throw std::runtime_error("Repeated trial budget");
+      for (int step=0;step<9*(resource-trial.resource);++step) {
+        if (trial.steps++%12==0) trial.order.begin_epoch();
+        const auto rows=trial.order.next();
+        const auto y=predict(trial.model,trial.candidate,n::take_rows(fit,rows));
+        trial.optimizer->minimize(n::mean(n::square(y-n::take_rows(target,rows))));
+      }
+      used+=resource-trial.resource;
+      trial.resource=resource;
+      n::NoGradGuard guard;
+      const auto error=mse(predict(trial.model,trial.candidate,validation),valid_y);
+      events.insert(events.end(),{double(id),double(trial.candidate),double(bracket),double(resource),error,time});
+      if (resource==4) {
+        if (error<best_loss) { best_loss=error; best=id; }
+        budget.push_back(used);
+        history.push_back(error);
+      }
+      return error;
+    };
+    if (async) n::asha_search(10,start,advance,[&](int id,int units) {
+      return units*(1+.25*(trials.at(id).candidate/5));
+    });
+    else n::hyperband_search(start,advance);
+    if (best<0) return 1;
+    n::NoGradGuard guard;
+    const auto name=async?"ASHA":"Hyperband";
+    const auto test_prediction=predict(trials[best].model,trials[best].candidate,test);
+    std::print("| {} | {} | {} | {:.5f} | {:.5f} |\n",name,used,trials[best].candidate,
+        best_loss,mse(test_prediction,test_y));
+    plot.points(budget,history,name,async?dm::graphics::RGB{234,88,12}:dm::graphics::RGB{37,99,235});
+    n::save_npz(async?"build/asha.npz":"build/hyperband.npz",
+        {{"events",n::from_vector(events,{static_cast<std::int64_t>(events.size()/6),6})},{"winner",n::scalar(best)},
+         {"resource_units",n::scalar(used)},{"predictions",test_prediction},{"test_y",test_y}});
+  }
+  plot.title("Validation loss among full-budget trials").x_label("Resource units spent").y_label("Validation MSE");
+  plot.size(900,430).save_svg("build/hyperband_asha.svg");
+}
+```
+// result_begin: markdown
+| Scheduler | Resource units | Candidate | Validation MSE | Test MSE |
+|---|---:|---:|---:|---:|
+| Hyperband | 28 | 4 | 0.29280 | 0.24476 |
+| ASHA | 25 | 4 | 0.29280 | 0.24476 |
+\image(figures/hyperband_asha.svg)
+// result_end
+
+Both native schedules select the same candidate. ASHA spends three
+fewer resource units in this virtual timing run. The upstream
+schedules are driven by separately initialized trial scores and
+select different winners from one another.

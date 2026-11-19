@@ -823,4 +823,84 @@ NamedTensors FrozenGraph::evaluate(
     out.emplace_back(fetches[i], value[roots[i]].detach().clone());
   return out;
 }
+namespace {
+
+/// @brief Emit an unsigned protobuf varint to a binary string.
+void AppendVarint(std::string& bytes, std::uint64_t value) {
+  while (value >= 128) {
+    bytes += static_cast<char>((value & 127) | 128);
+    value >>= 7;
+  }
+  bytes += static_cast<char>(value);
+}
+
+/// @brief Encode a varint field with its tag.
+std::string WireVarint(unsigned field, std::uint64_t value) {
+  std::string bytes;
+  AppendVarint(bytes, std::uint64_t{field} << 3);
+  AppendVarint(bytes, value);
+  return bytes;
+}
+
+/// @brief Encode a length-delimited field with its tag.
+std::string WireBytes(unsigned field, std::string_view value) {
+  std::string bytes;
+  AppendVarint(bytes, (std::uint64_t{field} << 3) | 2);
+  AppendVarint(bytes, value.size());
+  bytes += value;
+  return bytes;
+}
+
+/// @brief Encode one NodeDef attribute map entry.
+std::string WireAttr(std::string_view name, std::string_view value) {
+  return WireBytes(5, WireBytes(1, name) + WireBytes(2, value));
+}
+
+/// @brief Prefix the NodeDef with its name and operation type.
+std::string WireNode(std::string_view name, std::string_view op) {
+  return WireBytes(1, name) + WireBytes(2, op);
+}
+
+/// @brief Write an unsigned floating-point bit pattern in TensorProto byte order.
+template<class Bits>
+std::string LittleEndianBits(Bits bits) {
+  std::string bytes;
+  for (unsigned byte = 0; byte < sizeof(Bits); ++byte)
+    bytes += static_cast<char>((bits >> (byte * 8)) & 255);
+  return bytes;
+}
+
+/// @brief Encode one scalar Const node as a GraphDef node field.
+std::string WireConst(std::string_view name, const Tensor& value, unsigned dtype) {
+  const auto raw = dtype == 1
+      ? LittleEndianBits(std::bit_cast<std::uint32_t>(value.item<float>()))
+      : LittleEndianBits(std::bit_cast<std::uint64_t>(value.item<double>()));
+  const auto tensor = WireVarint(1, dtype) + WireBytes(2, "") + WireBytes(4, raw);
+  return WireBytes(1, WireNode(name, "Const") +
+      WireAttr("dtype", WireVarint(6, dtype)) + WireAttr("value", WireBytes(8, tensor)));
+}
+
+} // namespace
+
+std::vector<unsigned char> export_frozen_affine(const Tensor& weight, const Tensor& bias) {
+  if (!weight.defined() || !bias.defined() || weight.dim() != 0 || bias.dim() != 0 ||
+      weight.device().backend != compute::Backend::CPU || bias.device().backend != compute::Backend::CPU ||
+      weight.dtype() != bias.dtype() || (weight.dtype() != DType::Float32 && weight.dtype() != DType::Float64) ||
+      !std::isfinite(weight.item()) || !std::isfinite(bias.item()))
+    throw std::invalid_argument("export_frozen_affine: expected finite CPU scalars with matching floating dtype");
+
+  const unsigned dtype = weight.dtype() == DType::Float32 ? 1 : 2;
+  const auto type = WireVarint(6, dtype);
+  const auto shape = WireBytes(2, WireVarint(1, std::numeric_limits<std::uint64_t>::max()));
+  const auto input = WireNode("features", "Placeholder") + WireAttr("dtype", type) +
+      WireAttr("shape", WireBytes(7, shape));
+  const auto multiply = WireNode("Multiply", "Mul") + WireBytes(3, "features") +
+      WireBytes(3, "model/w") + WireAttr("T", type);
+  const auto output = WireNode("predictions", "Add") + WireBytes(3, "Multiply") +
+      WireBytes(3, "model/b") + WireAttr("T", type);
+  const auto graph = WireConst("model/w", weight, dtype) + WireConst("model/b", bias, dtype) +
+      WireBytes(1, input) + WireBytes(1, multiply) + WireBytes(1, output);
+  return {graph.begin(), graph.end()};
+}
+
 } // namespace datamunge::nn

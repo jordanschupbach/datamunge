@@ -604,6 +604,7 @@ def export(mep_mepml, report, out_root, highlight, link=None):
 
         # Pictures: copied beside the page at the same relative path.
         model_diagrams = set()
+        missing_media = set()
 
         def picture(match):
             src = html.unescape(match.group(2))
@@ -614,6 +615,7 @@ def export(mep_mepml, report, out_root, highlight, link=None):
                 if os.path.isfile(full):
                     break
             else:
+                missing_media.add(src)
                 return match.group(0)
             rel = os.path.normpath(src)
             if rel.startswith(".."):
@@ -630,16 +632,22 @@ def export(mep_mepml, report, out_root, highlight, link=None):
 
         body = SRC.sub(picture, body)
 
-        def model_picture(match):
-            """Keep wide network diagrams readable without changing ordinary report images."""
+        def report_picture(match):
+            """Handle missing assets and keep wide network diagrams scrollable."""
             source = SRC.search(match.group(0))
-            if not source or html.unescape(source.group(2)) not in model_diagrams:
+            if not source:
+                return match.group(0)
+            path = html.unescape(source.group(2))
+            if path in missing_media:
+                return ('<span class="muted">Figure unavailable in this build: '
+                        f'<code>{html.escape(path)}</code></span>')
+            if path not in model_diagrams:
                 return match.group(0)
             return ('<span class="model-diagram" tabindex="0" role="region" '
                     'aria-label="Network diagram; scroll to explore">'
                     + match.group(0) + '</span>')
 
-        body = IMG.sub(model_picture, body)
+        body = IMG.sub(report_picture, body)
         report.body = body.strip()
 
 

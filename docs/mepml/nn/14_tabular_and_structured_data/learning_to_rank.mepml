@@ -1,0 +1,132 @@
+//? Title: RankNet, LambdaRank and ListNet on grouped tabular data
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train one document scoring architecture with three query-level losses.
+Compare how well each fitted scorer orders held-out documents by relevance.
+)
+\toc
+
+Each query contains six documents with grades from zero to three. RankNet
+penalizes reversed preferences for every unequal-grade pair. LambdaRank
+scales the same logistic terms by the change in NDCG that would result
+from swapping the two documents in the current ranking. ListNet uses
+cross-entropy between the softmax of the grades and the softmax of the
+scores within each query. The three losses have different scales.
+
+All three models use the same native initialization and 96-update batch
+schedule. NDCG rewards relevant documents near the top of the list, and
+normalizes by the gain of the ideal order. Queries with zero ideal gain
+are excluded from its average. The second figure shows the ordering of
+one held-out query, with original document IDs on the horizontal axis.
+
+```{cpp, results="markdown", file="figures/learning_to_rank_ndcg.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+std::pair<n::Tensor,n::Tensor> simulate(int count,unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> draw(-1.f,1.f);
+  std::vector<float> x, grades;
+  for (int i = 0; i < count; ++i) {
+    const float query = draw(rng);
+    for (int j = 0; j < 6; ++j) {
+      const float a = draw(rng), b = draw(rng);
+      x.insert(x.end(),{a,b,query});
+      const float score = 1.2f*a+.8f*query*b+.3f*b*b;
+      grades.push_back((score>-.45f)+(score>0.f)+(score>.55f));
+    }
+  }
+  return {n::from_vector(x,{count,6,3}), n::from_vector(grades,{count,6})};
+}
+
+int main() {
+  const auto [x,y] = simulate(512,21802);
+  const auto [test,observed] = simulate(128,21803);
+  const std::string folder = "build/learning_to_rank/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::NamedTensors records{{"x",test},{"grades",observed}};
+  std::vector<double> scores;
+  auto example = dm::graphics::RPlot::create();
+  const auto docs = n::arange(0,6).to_vector<double>();
+  const auto grades = n::slice(observed,{0,0},{1,6}).to_vector<double>();
+  const std::array<dm::RGBA,3> colors{{{37,99,235},{191,88,34},{19,130,125}}};
+  int model = 0;
+  std::println("| Objective | Mean held-out NDCG@6 |\n| --- | ---: |");
+  for (const std::string name : {"ranknet","lambdarank","listnet"}) {
+    n::ParameterStore parameters(21801);
+    const auto predict = [&](const n::Tensor& rows) {
+      const auto h = n::dense(parameters,"hidden",rows,20,n::Activation::Tanh);
+      return n::dense(parameters,"score",h,1).reshape({rows.size(0),6});
+    };
+    const auto objective = [&](const n::Tensor& scores, const n::Tensor& labels) {
+      if (name == "listnet") return n::listnet_loss(scores,labels);
+      return n::pairwise_ranking_loss(scores,n::ranking_weights(scores,labels,name=="lambdarank").second);
+    };
+    predict(test);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(parameters,.008,config);
+    n::BatchOrder order(512,16,21804);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto ids = order.next(); !ids.empty(); ids = order.next())
+        optimizer.minimize(objective(predict(n::take_rows(x,ids)),n::take_rows(y,ids)));
+    }
+    n::NoGradGuard guard;
+    const auto fit = predict(test);
+    const auto loss = objective(fit,observed);
+    const auto [ndcg, weights] = n::ranking_weights(fit,observed,name=="lambdarank");
+    if (optimizer.iterations() != 96 || !std::isfinite(loss.item()) || ndcg <= 0.)
+      throw std::runtime_error("invalid ranking fit");
+    scores.push_back(ndcg);
+    records.emplace_back(name+"_scores",fit);
+    records.emplace_back(name+"_loss",loss);
+    if (name != "listnet") records.emplace_back(name+"_weights",weights);
+    parameters.save(folder+name+"_weights.npz");
+    std::println("| {} | {:.5f} |",name,ndcg);
+    const auto score = n::slice(fit,{0,0},{1,6}).to_vector<double>();
+    std::array<int,6> order_by_score{};
+    std::iota(order_by_score.begin(),order_by_score.end(),0);
+    std::stable_sort(order_by_score.begin(),order_by_score.end(),[&](int a,int b){return score[a]>score[b];});
+    std::vector<double> ranks(6);
+    for (int i = 0; i < 6; ++i) ranks[order_by_score[i]] = i+1;
+    example.points(docs,ranks,name,colors[model++],5);
+  }
+  n::save_npz(folder+"ranking.npz",records);
+  auto summary = dm::graphics::RPlot::create();
+  summary.bars({0.,1.,2.},scores,"NDCG@6",{37,99,235}).ylim(0.,1.)
+         .title("Held-out ranking quality")
+         .x_label("0 RankNet, 1 LambdaRank, 2 ListNet").y_label("Mean NDCG@6")
+         .save_svg(folder+"ndcg.svg");
+  std::string label = "Document ID (grades:";
+  for (double grade : grades) label += " "+std::to_string(int(grade));
+  example.title("Fitted order of one held-out query").x_label(label+")").y_label("Predicted rank")
+         .save_svg(folder+"query.svg");
+  std::filesystem::copy_file(folder+"ndcg.svg","figures/learning_to_rank_ndcg.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"query.svg","figures/learning_to_rank_query.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Objective | Mean held-out NDCG@6 |
+| --- | ---: |
+| ranknet | 0.99449 |
+| lambdarank | 0.98797 |
+| listnet | 0.99818 |
+\image(figures/learning_to_rank_ndcg.svg)
+// result_end
+
+\image(figures/learning_to_rank_query.svg)
+
+> References
+
+- Burges (2010). [From RankNet to LambdaRank to LambdaMART|https://www.microsoft.com/en-us/research/publication/from-ranknet-to-lambdarank-to-lambdamart-an-overview/].
+- Cao et al. (2007). [Learning to Rank: From Pairwise Approach to Listwise Approach|https://doi.org/10.1145/1273496.1273513].

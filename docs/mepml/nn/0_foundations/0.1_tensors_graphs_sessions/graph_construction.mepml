@@ -62,6 +62,14 @@ $$
 A tape implements this sum automatically, because each use is an edge into the same leaf, and the leaf's accumulator adds every
 adjoint that reaches it. A tied autoencoder that encodes with \(W\) and decodes with \(W^\top\) gets the encoder's gradient plus the decoder's gradient.
 
+>> Device placement
+
+A context selects a backend and device before an eager operation runs.
+The example first requests CUDA strictly, then implements soft placement
+explicitly by probing CUDA and choosing CPU when it is unavailable. Each
+matrix multiplication runs where its inputs live. The program transfers both
+results to the CPU context for the final addition.
+
 >> Control dependencies and side effects
 
 In a static graph, operations without a data path between them may run in any order. A control dependency forces "run \(a\) before \(b\)" when
@@ -137,6 +145,30 @@ int main() {
   reads.push_back(counter.item<std::int32_t>());
   std::print("- counter reads: three plain, three after an increment, one plain: {}\n", reads);
 
+  namespace compute = dm::compute;
+  const compute::Device requested{compute::Backend::CUDA, 0};
+  const compute::Context cpu;
+  const auto a_cpu = nn::tensor({{1.f, 2.f}, {3.f, 4.f}}).to(cpu);
+  const auto on_cpu = nn::matmul(a_cpu, a_cpu);
+  const auto multiply = [&a_cpu](const compute::Context& place) {
+    const auto placed = a_cpu.to(place);
+    return nn::matmul(placed, placed);
+  };
+  try {
+    const auto strict = multiply(compute::Context(requested));
+    std::print("- strict CUDA placement ran on {}\n", compute::backend_name(strict.device().backend));
+  } catch (const std::exception& e) {
+    std::print("- strict CUDA placement failed: {}\n", e.what());
+  }
+
+  const auto available = compute::probe(requested).available;
+  const auto selected = available ? compute::Context(requested) : cpu;
+  const auto product = on_cpu + multiply(selected).to(cpu);
+  if (product.to_vector<float>() != std::vector<float>{14, 20, 30, 44})
+    throw std::runtime_error("unexpected placement example result");
+  std::print("- explicit fallback policy chose {}; sum of CPU and selected products: {}\n",
+             compute::backend_name(selected.device().backend), product.values_str());
+
   // Errors are raised by the call that causes them; later calls are unaffected.
   const Tensor m = nn::tensor({{1, 2, 3}, {4, 5, 6}});
   try {
@@ -169,6 +201,8 @@ int main() {
 - y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
 
 - counter reads: three plain, three after an increment, one plain: [0, 0, 0, 1, 2, 3, 3]
+- strict CUDA placement failed: CUDA backend was not enabled at build time
+- explicit fallback policy chose cpu; sum of CPU and selected products: [[14, 20], [30, 44]]
 - matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
 - the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
 // result_end

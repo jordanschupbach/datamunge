@@ -1,0 +1,86 @@
+//? Title: Full-covariance CMA-ES
+//? Lang: en
+
+> Full-covariance CMA-ES
+
+Covariance matrix adaptation evolution strategy (CMA-ES) fits a Gaussian
+search distribution over the weights of a feedback controller. Each
+generation evaluates 24 policies on the same 12 starting states, then
+moves the mean toward a log-weighted average of the best 12. The full
+covariance lets the search learn directions that change several weights
+together. A rank-one update follows the accumulated movement of the mean,
+and a rank-mu update incorporates the dispersion of the selected steps.
+
+A second evolution path accumulates whitened steps. Its length relative
+to the expected length under a standard Gaussian determines whether the
+global step size grows or shrinks. The experiment evaluates the mean
+policy on separate starts and plots the resulting held-out return.
+The table tracks the global step size and the largest absolute
+off-diagonal covariance entry.
+
+[Hansen (2016), The CMA Evolution Strategy: A Tutorial|https://arxiv.org/abs/1604.00772]
+
+```{cpp, results="markdown", file="figures/cma_es.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto starts=[](std::mt19937& rng) {
+    const auto uniform=[&] { return float((rng()+.5)/4294967296.); };
+    std::vector<float> states;
+    for (int i=0;i<6;++i) {
+      const float p=.4f+.6f*uniform(), v=.6f*(uniform()-.5f);
+      states.insert(states.end(),{p,v,-p,-v});
+    }
+    return n::from_vector(states,{12,2});
+  };
+  std::mt19937 rng(47301), train(47203), evaluation(47204);
+  std::normal_distribution<double> normal;
+  const auto test=starts(evaluation);
+  r::CmaEs search(n::zeros({1,3},n::DType::Float64),.35);
+  std::vector<double> history;
+  std::filesystem::create_directories("build");
+  std::print("| Generation | Held-out return | Step size | Largest absolute off-diagonal |\n"
+             "|---:|---:|---:|---:|\n");
+  for (int generation=0;generation<=3;++generation) {
+    const auto [mean,covariance,ps,pc,sigma]=search.state();
+    history.push_back(r::feedback_returns(mean.to(n::DType::Float32),test).first.item());
+    const auto entries=covariance.to_vector<double>();
+    const double off_diagonal=std::max({std::abs(entries[1]),std::abs(entries[2]),std::abs(entries[5])});
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} |\n",generation,history.back(),sigma,off_diagonal);
+    if (generation==3) break;
+    const auto initial=starts(train);
+    std::vector<double> draws(24*3);
+    for (auto& value:draws) value=normal(rng);
+    const auto noise=n::from_vector(draws,{24,3});
+    const auto population=search.sample(noise);
+    const auto candidates=population.to(n::DType::Float32);
+    const auto fitness=r::feedback_returns(candidates,initial).first;
+    const auto selected=search.update(population,fitness.to(n::DType::Float64));
+    const auto [next_mean,next_covariance,next_ps,next_pc,next_sigma]=search.state();
+    n::save_npz(std::format("build/cma_es_generation{}.npz",generation+1),{{"noise",noise.to(n::DType::Float32)},
+        {"candidates",candidates},{"starts",initial},{"fitness",fitness},{"selected",selected},
+        {"mean",next_mean},{"covariance",next_covariance},{"step_path",next_ps},
+        {"covariance_path",next_pc},{"sigma",n::from_scalar(next_sigma)}});
+  }
+  if (!(history.back()>history.front())) {
+    throw std::runtime_error("CMA-ES mean policy did not improve");
+  }
+  n::save_npz("build/cma_es_evaluation.npz",{{"starts",test},{"history",n::from_vector(history)}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Unperturbed policy",{37,99,235})
+      .points({0,1,2,3},history,"Gaussian updates",{37,99,235})
+      .title("Full-covariance CMA-ES").x_label("Generation").y_label("Mean held-out return")
+      .size(880,425).save_svg("build/cma_es.svg");
+}
+```
+// result_begin: markdown
+| Generation | Held-out return | Step size | Largest absolute off-diagonal |
+|---:|---:|---:|---:|
+| 0 | -18.609520 | 0.350000 | 0.000000 |
+| 1 | -7.239995 | 0.348508 | 0.159970 |
+| 2 | -4.374411 | 0.419657 | 0.546467 |
+| 3 | -2.625544 | 0.712219 | 0.968605 |
+\image(figures/cma_es.svg)
+// result_end

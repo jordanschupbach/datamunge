@@ -117,12 +117,13 @@ struct WaveStackOutput {
 ///
 /// Every block has a dilated two-tap joined filter/gate and1x1skip.
 /// All but the last also have a1x1residual projection. Sum skips,ReLU,
-/// 1x1post/ReLU,linear1x1head. No batchnorm,dropout,conditioning or fitting.
+/// 1x1post/ReLU,linear1x1head. Optional local conditioning projects into every gate.
 /// Input onehot is differentiable for structural Jacobian checks.
 ///
 /// @param p Mutable learned store;warm all leaves before optimizer construction.
 /// @param encoded Floating[N,T,classes],positive N/T,dtype matching p;normally onehot.
-/// @param config Valid architecture,defaultfull32/64/6/2/256.
+/// @param config Valid architecture.
+/// @param condition Optional aligned floating [N,T,bands] matching p.
 /// @return Same-time causal next-code logits,skip sum and all gated activations.
 /// @throws std::invalid_argument For invalid architecture,input shape,dtype or stored leaves.
 /// @par Example
@@ -131,25 +132,30 @@ struct WaveStackOutput {
 /// namespace m = n::models;
 /// n::ParameterStore p(541);
 /// const auto out =
-///     m::WaveStack(p, n::one_hot(n::zeros({1, 6}, n::DType::Int32), 3), {1, 1, 2, 1, 3});
+///     m::WaveStack(p, n::one_hot(n::zeros({1, 6}, n::DType::Int32), 3), {1, 1, 2, 1, 3}, n::zeros({1,6,2}));
 /// @endcode
 /// @par References
 /// - van den Oord et al.(2016),WaveNet:A Generative Model for Raw Audio, https://arxiv.org/abs/1609.03499. Teaching unconditional stack uses source two-tap causal ingress,12gated layers/dilations1..32 twice,omits the final unused residual projection,and a mu-law256 categorical head;not a paper-quality speech model.
 /// @see WaveStack()
 inline WaveStackOutput WaveStack(nn::ParameterStore &p, const Tensor &encoded,
-                                 const WaveStackConfig &config = {}) {
+                                 const WaveStackConfig &config, const Tensor& condition) {
   (void)WaveStackField(config);
   if (encoded.dim() != 3 || encoded.size(0) < 1 || encoded.size(1) < 1 ||
       encoded.size(2) != config.classes || encoded.dtype() != p.dtype())
     throw std::invalid_argument("floating encoded[N,T,classes] matching store required");
+  if (condition.defined() && (condition.dim() != 3 || condition.size(0) != encoded.size(0) ||
+      condition.size(1) != encoded.size(1) || condition.size(2) < 1 || condition.dtype() != p.dtype()))
+    throw std::invalid_argument("WaveNet condition must align with encoded audio");
   WaveStackOutput result;
   Tensor x = WaveStackConv(p, "input", encoded, config.residual, 2);
   std::vector<Tensor> skips;
   const int blocks = config.levels * config.cycles;
   for (int block = 0; block < blocks; ++block) {
     const auto name = "block" + std::to_string(block + 1);
-    const Tensor joined = WaveStackConv(p, name + "/gate", x, 2 * config.residual, 2,
+    Tensor joined = WaveStackConv(p, name + "/gate", x, 2 * config.residual, 2,
                                         1 << (block % config.levels));
+    if (condition.defined())
+      joined = joined + WaveStackConv(p,name + "/condition",condition,2 * config.residual);
     const auto split = nn::split(joined, 2, 2);
     const Tensor gate = nn::mul(nn::tanh(split[0]), nn::sigmoid(split[1]));
     result.gates.push_back(gate);
@@ -165,6 +171,19 @@ inline WaveStackOutput WaveStack(nn::ParameterStore &p, const Tensor &encoded,
   result.logits = WaveStackConv(p, "output", hidden, config.classes);
   return result;
 }
+
+/// @brief Predict audio codes with the unconditional WaveNet stack.
+/// @param p Mutable parameter store.
+/// @param encoded Floating one-hot inputs [batch, time, classes].
+/// @param config Architecture, default full WaveNet stack.
+/// @return Logits, accumulated skip connections and gated activations.
+/// @throws std::invalid_argument For invalid input or architecture.
+/// @see WaveStack()
+inline WaveStackOutput WaveStack(nn::ParameterStore& p, const Tensor& encoded,
+                                 const WaveStackConfig& config = {}) {
+  return WaveStack(p,encoded,config,Tensor());
+}
+
 
 /// @brief Compute stable next-code NLL after an explicit warmup.
 ///

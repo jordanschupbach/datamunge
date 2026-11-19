@@ -1,0 +1,148 @@
+//? Title: Compare logit, feature, and self-distillation
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train a larger teacher and four small classifiers on the same toy task.
+Compare plain label training, distillation from the larger model,
+feature matching, and same-size teacher transfer.
+)
+\toc
+
+A teacher's softmax probabilities capture relative preferences among
+classes. The student matches them at temperature two, with a factor of
+four on the soft cross-entropy. The label loss and rescaled soft loss
+have equal weight. Cross-entropy with fixed teacher probabilities
+differs from KL divergence by the teacher's entropy, which is constant
+during student training.
+
+The feature condition adds mean squared error between the student's
+four hidden activations and the teacher's first four activations.
+The self-distillation condition uses the fitted four-unit baseline as
+the teacher for a fresh four-unit student. All small models start from
+the same weights. Held-out accuracy uses the same 128 points for every
+condition, so it is comparable even though training objectives differ.
+
+```{cpp, results="markdown", file="figures/knowledge_distillation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+namespace n = dm::nn;
+struct Data { n::Tensor x, y; };
+struct Fit {
+  n::Tensor w1, w2, train_logits, train_hidden, test_logits;
+  double first_loss, last_loss;
+};
+
+Data draw(int rows, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<double> uniform(-1., 1.);
+  std::vector<double> x(rows*3), y(rows*3);
+  for (int i = 0; i < rows; ++i) {
+    const double u = uniform(rng), v = uniform(rng);
+    x[3*i] = 1.;
+    x[3*i+1] = u;
+    x[3*i+2] = v;
+    const std::array scores{u+.6*v*v, -u+.3*v, v-.4*u*u};
+    y[3*i+std::distance(scores.begin(),std::max_element(scores.begin(),scores.end()))] = 1.;
+  }
+  return {n::from_vector(x,{rows,3}), n::from_vector(y,{rows,3})};
+}
+
+Fit train(const Data& fit, const Data& test, int width, unsigned seed,
+          const Fit* teacher = nullptr, bool features = false) {
+  std::mt19937 rng(seed);
+  std::normal_distribution<double> normal(0., .4);
+  auto init = [&](int rows, int cols) {
+    std::vector<double> v(rows*cols);
+    for (auto& value : v) value = normal(rng);
+    return n::from_vector(v,{rows,cols}).requires_grad_();
+  };
+  const auto w1 = init(3,width);
+  const auto w2 = init(width,3);
+  const std::vector<n::Tensor> weights{w1,w2};
+  auto objective = [&](int begin, int count) {
+    const auto x = n::slice(fit.x,{begin,0},{count,3});
+    const auto y = n::slice(fit.y,{begin,0},{count,3});
+    const auto h = n::tanh(n::matmul(x,w1));
+    const auto logits = n::matmul(h,w2);
+    auto loss = teacher
+        ? n::distillation_loss(logits,y,n::slice(teacher->train_logits,{begin,0},{count,3}))
+        : n::softmax_cross_entropy(logits,y);
+    if (features)
+      loss = loss + n::mse(h,n::slice(teacher->train_hidden,{begin,0},{count,width}));
+    return loss;
+  };
+  n::Optimizer sgd(weights,.3);
+  const double before = objective(0,256).item();
+  for (int epoch = 0; epoch < 3; ++epoch)
+    for (int begin = 0; begin < 256; begin += 32)
+      sgd.step(n::grad(objective(begin,32),weights));
+  const double after = objective(0,256).item();
+  const auto h = n::tanh(n::matmul(fit.x,w1.detach()));
+  const auto logits = n::matmul(h,w2.detach());
+  const auto held = n::matmul(n::tanh(n::matmul(test.x,w1.detach())),w2.detach());
+  return {w1.detach(),w2.detach(),logits,h,held,before,after};
+}
+
+int main() {
+  const auto fit = draw(256,53301), test = draw(128,53302);
+  const auto teacher = train(fit,test,8,127);
+  const auto baseline = train(fit,test,4,128);
+  const auto logits = train(fit,test,4,128,&teacher);
+  const auto hints = train(fit,test,4,128,&teacher,true);
+  const auto self = train(fit,test,4,128,&baseline);
+  const std::array names{"teacher","baseline","logits","features","self"};
+  const std::array models{&teacher,&baseline,&logits,&hints,&self};
+  n::NamedTensors archive{{"fit_x",fit.x},{"fit_y",fit.y},{"test_x",test.x},{"test_y",test.y}};
+  std::vector<double> accuracy;
+  std::println("| Condition | Initial objective | Final objective | Held-out correct |");
+  std::println("| :--- | ---: | ---: | ---: |");
+  for (std::size_t i = 0; i < models.size(); ++i) {
+    const auto& model = *models[i];
+    const auto correct = n::sum(n::equal(n::argmax(model.test_logits),n::argmax(test.y))).item<int>();
+    if (!(model.last_loss < model.first_loss) || correct < 1 || correct > 128)
+      throw std::runtime_error("Distillation training check failed");
+    accuracy.push_back(correct / 128.);
+    std::println("| {} | {:.7g} | {:.7g} | {} / 128 |", names[i],
+                 model.first_loss, model.last_loss, correct);
+    const std::string prefix = names[i];
+    archive.emplace_back(prefix+"_w1",model.w1);
+    archive.emplace_back(prefix+"_w2",model.w2);
+    archive.emplace_back(prefix+"_test_logits",model.test_logits);
+  }
+  const std::string folder = "build/knowledge_distillation/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder+"models.npz",archive);
+  auto plot = dm::graphics::RPlot::create();
+  plot.points({1.,2.,3.,4.,5.},accuracy,"Held-out accuracy",{37,99,235},6)
+      .title("Teacher and student prediction accuracy")
+      .x_label("Conditions 1–5 in table order").y_label("Held-out accuracy")
+      .save_svg(folder+"accuracy.svg");
+  std::filesystem::copy_file(folder+"accuracy.svg","figures/knowledge_distillation.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Condition | Initial objective | Final objective | Held-out correct |
+| :--- | ---: | ---: | ---: |
+| teacher | 1.209513 | 0.4185655 | 104 / 128 |
+| baseline | 1.012782 | 0.555691 | 99 / 128 |
+| logits | 2.662024 | 2.221887 | 103 / 128 |
+| features | 3.114705 | 2.562616 | 102 / 128 |
+| self | 2.645299 | 2.344598 | 98 / 128 |
+\image(figures/knowledge_distillation.svg)
+// result_end
+
+> References
+
+- [Hinton, Vinyals, and Dean, Distilling the Knowledge in a Neural Network|https://arxiv.org/abs/1503.02531].
+- [Romero et al., FitNets|https://arxiv.org/abs/1412.6550].

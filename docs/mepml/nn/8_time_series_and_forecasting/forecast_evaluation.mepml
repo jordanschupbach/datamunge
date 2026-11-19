@@ -1,0 +1,95 @@
+//? Title: Evaluate rolling-origin point and ensemble forecasts
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Compare persistence and seasonal-naive forecasts at six leads over a
+chronological backtest. Score point errors and empirical predictive
+distributions using information available at each origin.
+)
+\toc
+
+Persistence repeats the last observation. Seasonal naive repeats the
+corresponding observation 24 steps earlier. At each origin, add the 32
+latest available errors for that model and lead to the point forecast.
+A prior forecast contributes an error only once its target is observed.
+
+The seasonal MASE denominator is the mean absolute seasonal difference
+over the expanding observed prefix. sMAPE divides the absolute error
+by the sum of the two magnitudes and multiplies by 200. A pair of zeros
+contributes zero. Ensemble CRPS subtracts half the mean pairwise absolute
+difference from the mean absolute deviation from the actual value. The
+pair sum includes its zero diagonal and the implementation computes
+it from adjacent gaps in the sorted draws.
+
+```{cpp, results="markdown", file="figures/forecast_evaluation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <string>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  std::vector<double> series;
+  for (int t = 0; t < 1152; ++t) {
+    const double phase = 2 * std::numbers::pi * t;
+    series.push_back((1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                     + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73));
+  }
+  std::vector<std::int64_t> origins;
+  for (int t = 960; t <= 1152-6; ++t) origins.push_back(t);
+  const auto fit = n::naive_forecast_backtest(n::from_vector(series),origins,24,6,32);
+
+  std::println("{} expanding-window origins with six leads.\n",origins.size());
+  std::println("| Model | Mean MASE | Mean sMAPE (%) | Mean CRPS |");
+  std::println("| :--- | ---: | ---: | ---: |");
+  for (int model = 0; model < 2; ++model)
+    std::println("| {} | {:.8g} | {:.8g} | {:.8g} |",model == 0 ? "Persistence" : "Seasonal naive",
+        n::mean(n::select(fit.mase,0,model)).item(),n::mean(n::select(fit.smape,0,model)).item(),
+        n::mean(n::select(fit.crps,0,model)).item());
+
+  const std::string folder = "build/forecast_evaluation/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder+"backtest.npz",{{"origins",n::from_vector(origins).to(n::DType::Int32)},
+      {"actual",fit.actual},{"point",fit.point},{"scale",fit.scale},{"draws",fit.draws},
+      {"mase",fit.mase},{"smape",fit.smape},{"crps",fit.crps}});
+
+  auto figure = dm::graphics::RLayout::create(1,3).size(1080,360);
+  const std::vector<double> lead{1,2,3,4,5,6};
+  auto add = [&](const n::Tensor& measure,const std::string& label) {
+    auto plot = dm::graphics::RPlot::create();
+    plot.lines(lead,n::select(measure,0,0).to_vector<double>(),"Persistence",{37,99,235})
+        .lines(lead,n::select(measure,0,1).to_vector<double>(),"Seasonal naive",{191,88,34})
+        .x_label("Forecast lead").y_label(label).title(label);
+    figure.add(plot);
+  };
+  add(fit.mase,"MASE");
+  add(fit.smape,"sMAPE (%)");
+  add(fit.crps,"CRPS");
+  figure.save_svg(folder+"scores.svg");
+  std::filesystem::copy_file(folder+"scores.svg","figures/forecast_evaluation.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+187 expanding-window origins with six leads.
+
+| Model | Mean MASE | Mean sMAPE (%) | Mean CRPS |
+| :--- | ---: | ---: | ---: |
+| Persistence | 2.5091543 | 90.958528 | 0.45412507 |
+| Seasonal naive | 1.0353623 | 46.662572 | 0.20575495 |
+\image(figures/forecast_evaluation.svg)
+// result_end
+
+Seasonal naive has lower average error on all three scores in this
+fixture. The lead-wise plot shows how persistence degrades as the lead
+approaches a quarter of the dominant seasonal cycle.
+
+> References
+
+- [Hyndman and Koehler, Another look at measures of forecast accuracy|https://doi.org/10.1016/j.ijforecast.2006.03.001].
+- [Gneiting and Raftery, Strictly Proper Scoring Rules, Prediction, and Estimation|https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf].

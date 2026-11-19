@@ -1022,7 +1022,7 @@ int main(int argc, char** argv) {
 // 5	5	32
 // convex_hull testTokenCE=1.24019 teacherTokenAccuracy=0.240602 greedyExact=0/32; padding/empty/restore/labelFree/immutable PASS
 // (TF recorded: sorting testTokenCE=1.15717 teacherTokenAccuracy=0.424837 greedyExact=0/32; convex_hull 1.47777 / 0.286585 / 0)
-// wall 0.105386 s
+// wall 0.766521 s
 // result_end
 
 > Inspect the actual saved results

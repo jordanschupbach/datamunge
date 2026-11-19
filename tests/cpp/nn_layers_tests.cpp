@@ -567,3 +567,148 @@ TEST(NnParams, InferenceLayerNormMatchesRecordedPrecisionAndLayoutFallback) {
           dtype == DType::Float32 ? 2e-6 : 1e-12);
     }
 }
+
+TEST(NnReservoir, RecurrentStateAndUnpenalizedIntercept) {
+  const auto inputs = nn::tensor({1, 0, 0}, {3, 1}, DType::Float64);
+  const auto kernel = nn::ones({1, 1}, DType::Float64);
+  const auto stateless = nn::reservoir_features(inputs, kernel);
+  const auto recurrent = nn::reservoir_features(inputs, kernel, .5 * kernel);
+  EXPECT_EQ(stateless.shape(), (nn::Shape{3, 2}));
+  EXPECT_EQ(stateless.at({1, 1}), 0);
+  const auto first = std::tanh(1.);
+  EXPECT_NEAR(recurrent.at({0, 1}), first, 1e-14);
+  EXPECT_NEAR(recurrent.at({1, 1}), std::tanh(.5 * first), 1e-14);
+  EXPECT_NEAR(recurrent.at({2, 1}), std::tanh(.5 * recurrent.at({1, 1})), 1e-14);
+
+  const auto design = nn::tensor({1, -1, 1, 0, 1, 1}, {3, 2}, DType::Float64);
+  const auto target = nn::tensor({1, 3, 5}, {3, 1}, DType::Float64);
+  const auto coefficients = nn::fit_reservoir_readout(design, target, 2);
+  EXPECT_NEAR(coefficients.at({0, 0}), 3, 1e-14);
+  EXPECT_NEAR(coefficients.at({1, 0}), 1, 1e-14);
+  EXPECT_THROW(nn::fit_reservoir_readout(design, target, 0), std::invalid_argument);
+  EXPECT_THROW(nn::reservoir_features(inputs, kernel, nn::ones({1, 2})), std::invalid_argument);
+}
+
+TEST(NnSpiking, HardThresholdAndDetachedReset) {
+  const auto currents = nn::tensor({.5, .75, .5}, {1, 3, 1}, DType::Float64).requires_grad_();
+  const auto result = nn::leaky_integrate_and_fire(currents, .5, 1., 4.);
+  EXPECT_EQ(result.spikes.to_vector<int>(), (std::vector<int>{0, 1, 0}));
+  EXPECT_DOUBLE_EQ(result.final_membrane.item(), .5);
+  const auto dx = nn::grad(nn::sum(result.spikes), {currents}).front().to_vector<double>();
+  const double s = 1. / (1. + std::exp(2.));
+  const double subthreshold_derivative = 4. * s * (1. - s);
+  EXPECT_NEAR(dx[0], subthreshold_derivative + .5, 1e-14);
+  EXPECT_NEAR(dx[1], 1., 1e-14);
+  EXPECT_NEAR(dx[2], subthreshold_derivative, 1e-14);
+  EXPECT_THROW(nn::leaky_integrate_and_fire(currents, .5, 1., 0.), std::invalid_argument);
+}
+
+TEST(NnTangentKernel, MatchesExplicitParameterGradients) {
+  const auto x = nn::tensor({1, 0, 0, 1, 0, 0}, {3, 2}, DType::Float64);
+  const auto w = nn::tensor({.5, -1, 2, 1}, {2, 2}, DType::Float64).requires_grad_();
+  const auto a = nn::tensor({.25, -.5}, {2}, DType::Float64).requires_grad_();
+  const auto gram = nn::relu_neural_tangent_kernel(x, w, a);
+  std::vector<nn::Tensor> derivatives;
+  for (int i = 0; i < 2; ++i) {
+    const auto contribution = nn::relu(nn::matmul(nn::slice_axis(x, 0, i, i + 1), w)) * a;
+    const auto gradient = nn::grad(nn::sum(contribution) / std::sqrt(2.), {w, a});
+    derivatives.push_back(nn::concat({nn::reshape(gradient[0], {4}), gradient[1]}, 0));
+  }
+  for (int i = 0; i < 2; ++i)
+    for (int j = 0; j < 2; ++j)
+      EXPECT_NEAR(gram.at({i, j}), nn::sum(derivatives[i] * derivatives[j]).item(), 1e-14);
+  const auto limit = nn::relu_neural_tangent_kernel_limit(x);
+  EXPECT_DOUBLE_EQ(limit.at({0, 0}), 1.);
+  EXPECT_NEAR(limit.at({0, 1}), 1. / (2. * std::numbers::pi), 1e-14);
+  EXPECT_DOUBLE_EQ(limit.at({1, 2}), 0.);
+  EXPECT_DOUBLE_EQ(limit.at({2, 2}), 0.);
+  EXPECT_THROW(nn::relu_neural_tangent_kernel(x, w, nn::ones({1})), std::invalid_argument);
+}
+
+TEST(NnPoincare, RadialDistanceGradientAndProjection) {
+  const auto point = nn::tensor({.5, 0}, {1, 2}, DType::Float64).requires_grad_();
+  const auto origin = nn::zeros({1, 2}, DType::Float64);
+  const auto distance = nn::poincare_distance(point, origin);
+  EXPECT_NEAR(distance.item(), std::log(3.), 1e-15);
+  const auto derivative = nn::grad(distance, {point}).front();
+  EXPECT_NEAR(derivative.at({0, 0}), 8. / 3., 1e-14);
+  EXPECT_DOUBLE_EQ(derivative.at({0, 1}), 0.);
+  const auto same = nn::poincare_distance(point, point);
+  EXPECT_DOUBLE_EQ(same.item(), 0.);
+  EXPECT_DOUBLE_EQ(nn::sum(nn::abs(nn::grad(same, {point}).front())).item(), 0.);
+
+  const auto gradient = nn::tensor({1., 0.}, {1, 2}, DType::Float64);
+  const auto next = nn::poincare_sgd_step(origin, gradient, 10., .9);
+  EXPECT_NEAR(next.at({0, 0}), -.9, 1e-15);
+  EXPECT_THROW(nn::poincare_distance(origin, gradient), std::invalid_argument);
+  const auto infinite = nn::full({1, 1}, std::numeric_limits<float>::infinity());
+  EXPECT_THROW(nn::poincare_sgd_step(nn::zeros({1, 1}), infinite, .3, .9), std::invalid_argument);
+}
+
+TEST(NnSplineEdges, InterpolationExtrapolationAndGradient) {
+  const auto inputs = nn::tensor({-2, .25, 2}, {3, 1}, DType::Float64).requires_grad_();
+  const auto weights = nn::tensor({1, 2, 4}, {3, 1}, DType::Float64).requires_grad_();
+  const auto result = nn::spline_edge_layer(inputs, weights, 3, 1.);
+  EXPECT_EQ(result.output.to_vector<double>(), (std::vector<double>{1, 2.5, 4}));
+  EXPECT_EQ(nn::sum(result.basis, {-1}).to_vector<double>(), (std::vector<double>{1, 1, 1}));
+  const auto gradients = nn::grad(nn::sum(result.output), {inputs, weights});
+  EXPECT_EQ(gradients[0].to_vector<double>(), (std::vector<double>{0, 2, 0}));
+  EXPECT_EQ(gradients[1].to_vector<double>(), (std::vector<double>{1, .75, 1.25}));
+  EXPECT_THROW(nn::linear_spline_basis(inputs, 1, 1.), std::invalid_argument);
+  EXPECT_THROW(nn::spline_edge_layer(inputs, weights, 4, 1.), std::invalid_argument);
+}
+
+TEST(NnSoftCircleRaster, CompositesFrontCoverageBeforeBack) {
+  const auto xy = nn::zeros({1, 2}, DType::Float64);
+  const auto colors = nn::tensor({1, 0, 0, 0, 0, 1}, {2, 3}, DType::Float64);
+  const auto centers = nn::zeros({2, 2}, DType::Float64);
+  const auto result = nn::soft_circle_raster(xy, centers, {1, 1}, colors, 1.);
+  const double coverage = 1. / (1. + std::exp(-1.));
+  EXPECT_EQ(result.alpha.shape(), (nn::Shape{1, 2}));
+  EXPECT_NEAR(result.rgb.at({0, 0}), coverage, 1e-15);
+  EXPECT_NEAR(result.rgb.at({0, 2}), (1. - coverage) * coverage, 1e-15);
+  EXPECT_THROW(nn::soft_circle_raster(xy, centers, {1, -1}, colors, 1.), std::invalid_argument);
+}
+
+TEST(NnCellularAutomaton, ZeroMasksFreezeAndOneStepIsLocal) {
+  const auto seed = nn::reshape(nn::eye(3, DType::Float64), {1, 3, 3, 1});
+  const auto perception = nn::ones({3, 3, 1, 1}, DType::Float64);
+  const auto update = nn::ones({1, 1, 1, 1}, DType::Float64).requires_grad_();
+  const auto frozen = nn::zeros({2, 1, 3, 3, 1}, DType::Float64);
+  EXPECT_EQ(nn::cellular_automaton_rollout(seed, perception, update, frozen).to_vector<double>(),
+            seed.to_vector<double>());
+  const auto full = nn::ones({1, 1, 3, 3, 1}, DType::Float64);
+  const auto state = nn::cellular_automaton_rollout(seed, perception, update, full);
+  EXPECT_NEAR(state.at({0, 0, 2, 0}), std::tanh(1.), 1e-15);
+  EXPECT_NEAR(state.at({0, 1, 1, 0}), 1. + std::tanh(3.), 1e-15);
+  const auto gradient = nn::grad(nn::sum(state), {update}).front();
+  EXPECT_NEAR(gradient.item(), nn::sum(state - seed).item(), 1e-14);
+  EXPECT_THROW(nn::cellular_automaton_rollout(seed, perception, update, seed), std::invalid_argument);
+}
+
+TEST(NnC4Kernels, RotateSpatialWeightsAndTieRelativeOrientations) {
+  const auto filter = nn::tensor({0, 1, 2, 3, 4, 5, 6, 7, 8}, {3, 3}, DType::Float64);
+  const auto lift = nn::c4_lift_kernel(filter);
+  EXPECT_EQ(lift.shape(), (nn::Shape{3, 3, 1, 4}));
+  EXPECT_EQ(lift.at({0, 0, 0, 1}), 2);
+  EXPECT_EQ(lift.at({0, 0, 0, 2}), 8);
+  EXPECT_EQ(lift.at({0, 0, 0, 3}), 6);
+  const auto relative = nn::tensor({1, 2, 3, 4}, {1, 1, 4}, DType::Float64).requires_grad_();
+  const auto group = nn::c4_group_kernel(relative);
+  EXPECT_EQ(group.shape(), (nn::Shape{1, 1, 4, 4}));
+  EXPECT_EQ(group.at({0, 0, 0, 1}), 4);
+  EXPECT_EQ(nn::grad(nn::sum(group), {relative}).front().to_vector<double>(),
+            (std::vector<double>{4, 4, 4, 4}));
+  EXPECT_THROW(nn::c4_lift_kernel(nn::zeros({2, 2})), std::invalid_argument);
+}
+
+TEST(NnEuclideanGraphStep, UsesMaskedMeanForCoordinatesAndScalars) {
+  const auto points = nn::tensor({0, 2}, {2, 1}, DType::Float64);
+  const auto features = nn::zeros({2, 1}, DType::Float64);
+  const auto edges = nn::tensor({0, 1, 1, 0}, {2, 2, 1}, DType::Float64);
+  const auto step = nn::euclidean_graph_step(points, features, edges);
+  EXPECT_NEAR(step.positions.at({0, 0}), std::tanh(1.), 1e-15);
+  EXPECT_NEAR(step.positions.at({1, 0}), 2. - std::tanh(1.), 1e-15);
+  EXPECT_NEAR(step.features.at({1, 0}), -.5 * std::tanh(1.), 1e-15);
+  EXPECT_THROW(nn::euclidean_graph_step(points, features, features), std::invalid_argument);
+}

@@ -506,7 +506,7 @@ logistic algebra: D loss=41.1269, G loss=20.5635, dG/dfake=[[-4.51213e-36], [-0.
 epoch 1: diagnostic D loss=0.374804, G loss=2.40289, coarse MMD=0.120571
 epoch 2: diagnostic D loss=0.15527, G loss=3.27348, coarse MMD=0.120265
 epoch 3: diagnostic D loss=0.0930847, G loss=3.7335, coarse MMD=0.119878
-fixed FINAL epoch 3, test D/G=0.0888795/3.72334, coarse MMD=0.117657, mean baseline=0.000135779, D real/fake accuracy (logit sign)=1/1, mean pixel=0.49911, pixel variance=0.00169518; D then G/restore/noiseOnly/immutable PASS (training 1.3059 s)
+fixed FINAL epoch 3, test D/G=0.0888795/3.72334, coarse MMD=0.117657, mean baseline=0.000135779, D real/fake accuracy (logit sign)=1/1, mean pixel=0.49911, pixel variance=0.00169518; D then G/restore/noiseOnly/immutable PASS (training 0.324987 s)
 Artifacts: build/vanilla_gan
 All vanilla_gan checks passed.
 \image(figures/vanilla_gan_learning.svg)

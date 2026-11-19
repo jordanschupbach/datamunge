@@ -1,0 +1,99 @@
+//? Title: Speaker embeddings and enrollment with x-vectors
+//? Lang: en
+
+> Speaker identification and verification
+
+A temporal CNN extracts frame-level features from the log-mel
+spectrogram. Pooling means and standard deviations over time yields a
+fixed-size representation. A learned projection produces the x-vector
+and a speaker classification head supplies the training objective.
+
+Identification selects among four training speakers using held-out
+recordings. Verification instead enrolls two unseen speakers on separate
+recordings. Normalize each enrollment embedding, average within speaker
+and normalize the centroid. Score separate probes by cosine similarity
+to each centroid. AUROC measures how often a genuine trial outranks an
+impostor trial, giving half credit for ties.
+
+Prepare the spoken-digit fixture with `python3 scripts/prepare_xvector.py`
+in the TensorFlow examples checkout. Set `DATAMUNGE_XVECTOR_DIR` to the
+prepared dataset directory for another checkout location.
+
+```{cpp, results="markdown", file="figures/xvector.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto* configured = std::getenv("DATAMUNGE_XVECTOR_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_XVECTOR_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/xvector";
+  const auto mel = n::linear_to_mel_weight_matrix(24,129,8000,60,3800);
+  const auto load = [&](const char* split) {
+    const auto named = n::load_npz((root/(std::string(split)+".npz")).string());
+    const std::map<std::string,n::Tensor> data(named.begin(),named.end());
+    const auto& audio = data.at("waveform");
+    const auto& label = data.at("label");
+    if (label.dim()!=1 || audio.shape()!=n::Shape{label.size(0),3200})
+      throw std::runtime_error("Unexpected spoken-digit fixture shape");
+    const auto power = n::power_spectrogram(n::stft(audio,200,80,256));
+    return std::pair{n::log_mel_spectrogram(power,mel),label};
+  };
+  const auto [fit,labels]=load("fit");
+  const auto [identify,known]=load("identify");
+  const auto [enroll,enrolled]=load("enroll");
+  const auto [verify,unknown]=load("verify");
+  n::ParameterStore model(41380);
+  const auto predict=[&](const n::Tensor& x) {
+    return n::dense(model,"speaker",n::relu(n::xvector_embedding(model,x)),4);
+  };
+  const auto initial=n::sparse_softmax_cross_entropy(predict(identify),known).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.size(0),16,61023);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next())
+      optimizer.minimize(n::sparse_softmax_cross_entropy(predict(n::take_rows(fit,rows)),
+                                                       n::take_rows(labels,rows)));
+  }
+  n::NoGradGuard guard;
+  const auto scores=predict(identify);
+  const auto loss=n::sparse_softmax_cross_entropy(scores,known).item();
+  const auto actual=known.to_vector<int>(), predicted=n::argmax(scores).to_vector<int>();
+  const auto correct=std::inner_product(actual.begin(),actual.end(),predicted.begin(),0,
+                                       std::plus<>(),std::equal_to<>());
+  const auto gallery=n::xvector_embedding(model,enroll), probes=n::xvector_embedding(model,verify);
+  const auto trials=n::speaker_centroid_scores(gallery,enrolled,probes,2);
+  const auto similarities=trials.to_vector<double>();
+  const auto ids=unknown.to_vector<int>();
+  std::vector<int> genuine;
+  std::vector<double> same,different;
+  for (std::size_t i=0;i<ids.size();++i) {
+    for (int speaker=0;speaker<2;++speaker) {
+      genuine.push_back(ids[i]==speaker);
+      (ids[i]==speaker ? same : different).push_back(similarities[2*i+speaker]);
+    }
+  }
+  if (!(loss<initial)) return 1;
+  std::print("Identification {}/{}. Loss {:.4f} → {:.4f}. Verification AUROC {:.4f} on {} trials.\n",
+      correct,actual.size(),initial,loss,n::roc_auc(genuine,similarities),genuine.size());
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(different,std::vector<double>(different.size(),0),"Impostor",{234,88,12})
+      .points(same,std::vector<double>(same.size(),1),"Genuine",{37,99,235})
+      .title("Verification on unseen speakers").x_label("Cosine similarity")
+      .y_label("Trial type (0 impostor, 1 genuine)").y_limits(-.2,1.2);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/xvector.svg");
+  n::save_npz("build/xvector.npz",{{"identify_scores",scores},{"identify_label",known},
+      {"gallery",gallery},{"enroll_label",enrolled},{"probes",probes},{"verify_label",unknown},{"trials",trials}});
+}
+```
+// result_begin: markdown
+Identification 62/80. Loss 1.4437 → 0.8622. Verification AUROC 0.9578 on 120 trials.
+\image(figures/xvector.svg)
+// result_end
+
+These verification trials share two enrolled speakers and come from a
+single corpus. The AUROC describes this fixture and does not establish
+performance across recording conditions or a larger speaker population.

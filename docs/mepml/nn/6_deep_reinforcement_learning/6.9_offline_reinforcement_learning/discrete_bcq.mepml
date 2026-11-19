@@ -1,0 +1,85 @@
+//? Title: Discrete batch-constrained Q-learning
+//? Lang: en
+
+> Discrete batch-constrained Q-learning
+
+The offline batch records action counts on a five-cell chain. Some
+left actions are missing, and one is observed much less often than
+its competitor. The behavior model estimates action probabilities
+from those counts. Discrete BCQ permits actions with positive counts
+whose probability is at least 30% of the most likely action for that
+state.
+
+The restriction applies to both the greedy policy and the bootstrap
+maximum. The Bellman sweep still updates every action that appears
+in the batch. Both fits run 30 synchronous sweeps from the same
+optimistic initial table. The control chooses actions without the
+support restriction.
+
+The plot compares greedy goal arrivals from the four nonterminal
+states. The table also reports choices outside the behavior support.
+
+[Fujimoto et al. (2019)|https://arxiv.org/abs/1910.01708]
+
+```{cpp, results="markdown", file="figures/discrete_bcq.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto next=[](int state,int action) {
+    return state==4?4:std::clamp(state+(action?1:-1),0,4);
+  };
+  std::vector<int> successors;
+  std::vector<float> rewards,live;
+  for (int state=0;state<5;++state) {
+    for (int action=0;action<2;++action) {
+      const int cell=next(state,action);
+      successors.push_back(cell);
+      rewards.push_back(state!=4 && cell==4);
+      live.push_back(state!=4 && cell!=4);
+    }
+  }
+  const auto counts=n::from_vector<int>({0,30,2,30,0,30,15,30,0,0},{5,2});
+  const auto initial=n::from_vector<float>({3,0,0,0,3,0,0,0,0,0},{5,2});
+  const auto indices=n::from_vector(successors,{5,2});
+  const auto reward=n::from_vector(rewards,{5,2}),active=n::from_vector(live,{5,2});
+  std::vector<double> successes;
+  std::filesystem::create_directories("build/discrete_bcq");
+  std::print("| Mode | Goals reached | Unsupported choices |\n|:---|---:|---:|\n");
+  for (bool constrained:{false,true}) {
+    const auto sweep=[&](const auto& q) {
+      return dm::rl::discrete_bcq_sweep(q,counts,indices,reward,active,.3f,.95f,constrained);
+    };
+    auto q=initial;
+    for (int step=0;step<30;++step) q=sweep(q)[0];
+    const auto [updated,actions,probability,support,td]=sweep(q);
+    const auto policy=actions.to_vector<int>(),allowed=support.to_vector<int>();
+    int solved=0,unsupported=0;
+    for (int start=0;start<4;++start) {
+      unsupported+=!allowed[2*start+policy[start]];
+      int cell=start;
+      for (int t=0;t<8 && cell!=4;++t) cell=next(cell,policy[cell]);
+      solved+=cell==4;
+    }
+    if (constrained && unsupported) throw std::runtime_error("BCQ chose an unsupported action");
+    successes.push_back(solved);
+    const auto mode=constrained?"bcq":"control";
+    std::print("| {} | {} / 4 | {} |\n",mode,solved,unsupported);
+    n::save_npz(std::format("build/discrete_bcq/{}.npz",mode),{{"count",counts},
+        {"initial",initial},{"q",q},{"policy",actions},{"probability",probability},
+        {"support",support},{"td",td}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({1},{successes[0]},"Unconstrained",{217,96,26})
+      .bars({2},{successes[1]},"Batch constrained",{37,99,235})
+      .title("Greedy evaluation on the chain").y_label("Goals reached out of four")
+      .xlim(.4,2.6).ylim(0,4).size(800,460).save_svg("build/discrete_bcq.svg");
+}
+```
+// result_begin: markdown
+| Mode | Goals reached | Unsupported choices |
+|:---|---:|---:|
+| control | 0 / 4 | 3 |
+| bcq | 4 / 4 | 0 |
+\image(figures/discrete_bcq.svg)
+// result_end

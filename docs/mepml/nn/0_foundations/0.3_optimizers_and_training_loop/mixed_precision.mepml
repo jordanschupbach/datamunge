@@ -318,15 +318,158 @@ Each mode applied 400 updates; all master weights remained Float32.
 \caption(Three emulated storage choices fit the same toy data; a forced overflow independently checks the skip policy.)
 \alttext(Three log10 MSE curves fall over 400 applied Adam updates. A table records final losses, ordinary skipped attempts and loss scales. Printed evidence checks that one forced overflow leaves all Adam state unchanged.)
 
+> Native CUDA products
+
+The CPU blocks expose the rounding and scaling rules. The CUDA block
+runs the same regression with native Float32 or binary16 matrix
+products. Bias addition and Adam remain on the host. The binary16
+path rounds the bias and the summed output to model the dense layer's
+storage edges. Bfloat16 uses the host path shown above, as in the
+upstream example's default configuration.
+
+Before fitting, a CUDA dot product tests a derivative of \(10^{-8}\).
+At unit scale its binary16 result rounds to zero. Scale 65,536 brings
+it into range before the product, then unscaling recovers the derivative.
+During fitting an oversized scale independently tests the overflow
+gate. The dynamic policy doubles the scale after each 100 successful
+updates.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  namespace c = dm::compute;
+  const c::Device device{c::Backend::CUDA, 0};
+  const auto info = c::probe(device);
+  if (!info.available) {
+    std::println("Native mixed precision unavailable. {}",info.diagnostic);
+    return 0;
+  }
+  const c::Context gpu(device), host;
+  const n::CudaHalfMatmul half(gpu);
+  const auto one = n::ones({1,1});
+  const double tiny = half(one,n::full({1,1},1e-8)).item();
+  const double recovered = half(one,n::full({1,1},65536.*1e-8)).item()/65536.;
+  if (tiny != 0. || std::abs(recovered-1e-8) > 1e-11)
+    throw std::runtime_error("CUDA loss scaling failed to recover the derivative");
+  std::println("CUDA binary16 derivative {:.0f} at unit scale and {:.9g} after unscaling.\n",
+               tiny,recovered);
+
+  std::vector<float> xv(32), yv(16);
+  for (int i = 0; i < 16; ++i) {
+    const float a = std::sin(i*.7f), b = std::cos(i*.4f);
+    xv[2*i] = a;
+    xv[2*i+1] = b;
+    yv[i] = .73f*a - 1.27f*b + .13f;
+  }
+  const auto x = n::from_vector(xv,{16,2}), y = n::from_vector(yv,{16,1});
+  const auto ones = n::ones({16,1});
+  const auto rounded = [](const n::Tensor& value) {
+    return n::round_tensor_precision(value,n::PrecisionEmulation::Float16);
+  };
+  auto plot = dm::graphics::RPlot::create();
+  n::NamedTensors archive{{"x",x},{"y",y}};
+  std::println("| CUDA mode | Final MSE | Applied steps | Final scale | Skipped updates |");
+  std::println("| :--- | ---: | ---: | ---: | ---: |");
+  for (bool binary16 : {false,true}) {
+    n::ParameterStore store(11);
+    const auto w = store.get("dense/W",{2,1},n::init::uniform(std::sqrt(2.)));
+    const auto b = store.get("dense/b",{1},n::init::zeros());
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(store,.03,config);
+    n::DynamicLossScale scale(binary16?128:1,100,1,binary16?65536:1);
+    auto product = [&](const n::Tensor& a,const n::Tensor& b,bool transpose = false) {
+      return binary16 ? half(a,b,transpose) : n::matmul(a.to(gpu),b.to(gpu),transpose).to(host);
+    };
+    auto predict = [&] {
+      const auto raw = product(x,w.detach());
+      return binary16 ? rounded(raw+rounded(b.detach())) : raw+b.detach();
+    };
+    auto gradients = [&](float multiplier) {
+      const auto residual = (predict()-y)*(2.f*multiplier/16.f);
+      return std::vector{product(x,residual,true),
+                         product(ones,residual,true).reshape({1})};
+    };
+    auto snapshot = [&] {
+      std::vector<std::vector<float>> state{w.to_vector<float>(),b.to_vector<float>()};
+      for (const auto& [key,value] : adam.state()) state.push_back(value.to_vector<float>());
+      return state;
+    };
+    std::vector<n::Tensor> g;
+    std::vector<double> steps{0.}, loss{std::log10(n::mse(predict(),y).item())};
+    int skipped = 0;
+    for (int attempt = 0; adam.iterations() < 400 && attempt < 450; ++attempt) {
+      if (!n::unscale_gradients(gradients(scale.value()),scale.value(),&g)) {
+        scale.overflow();
+        ++skipped;
+        continue;
+      }
+      adam.step(g);
+      scale.applied();
+      if (binary16 && adam.iterations() == 1) {
+        const auto before = snapshot();
+        if (before.size() < 6 || n::unscale_gradients(gradients(1e12f),1e12f,&g) ||
+            before != snapshot() || adam.iterations() != 1)
+          throw std::runtime_error("CUDA overflow did not preserve Adam state");
+      }
+      if (adam.iterations()%10 == 0) {
+        steps.push_back(adam.iterations());
+        loss.push_back(std::log10(std::max(1e-16,n::mse(predict(),y).item())));
+      }
+    }
+    const auto prediction = predict();
+    const auto mse = n::mse(prediction,y).item();
+    if (adam.iterations()!=400 || w.dtype()!=n::DType::Float32 || !(mse<3e-4))
+      throw std::runtime_error("Native CUDA regression failed to converge");
+    const std::string name = binary16 ? "Float16" : "Float32";
+    std::println("| {} | {:.8g} | {} | {:.0f} | {} |",name,mse,adam.iterations(),scale.value(),skipped);
+    plot.lines(steps,loss,name,binary16?dm::graphics::RGB{191,88,34}:dm::graphics::RGB{37,99,235});
+    archive.emplace_back(name+"_prediction",prediction);
+    archive.emplace_back(name+"_weights",w);
+    archive.emplace_back(name+"_bias",b);
+  }
+
+  std::println("\nThe forced CUDA overflow left the Float32 master weights, moments, and counter unchanged.");
+  const std::string folder = "build/mixed_precision_cuda/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder+"fits.npz",archive);
+  plot.title("Native CUDA mixed-precision regression").x_label("Applied Adam updates")
+      .y_label("log10 MSE").save_svg(folder+"loss.svg");
+  std::filesystem::copy_file(folder+"loss.svg","figures/mixed_precision_cuda.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::println("");
+  std::println("\\image(figures/mixed_precision_cuda.svg)");
+}
+```
+// result_begin: markdown
+CUDA binary16 derivative 0 at unit scale and 9.99716576e-09 after unscaling.
+
+| CUDA mode | Final MSE | Applied steps | Final scale | Skipped updates |
+| :--- | ---: | ---: | ---: | ---: |
+| Float32 | 7.0179973e-14 | 400 | 1 | 0 |
+| Float16 | 1.0525036e-07 | 400 | 2048 | 0 |
+
+The forced CUDA overflow left the Float32 master weights, moments, and counter unchanged.
+
+\image(figures/mixed_precision_cuda.svg)
+// result_end
+
 > Conclusion
 
-The experiment separates range, spacing, loss scaling and optimizer state. Reduced
-formats use Float32 carriers and arithmetic; their rounded VJPs model selected storage
-edges. Loss scaling recovers a small derivative here, and nonfinite gradients cause no
+The CPU emulation shows range, spacing, and rounded gradients. The native
+CUDA run applies the same loss-scale policy to binary16 products. Loss scaling recovers a small derivative here, and nonfinite gradients cause no
 optimizer call. Exact resume of a dynamic-scale run must also retain its host scale
 and successful-update history, separately from model/optimizer checkpoints.
 
 > References
 
-- TensorFlow authors. [Mixed precision guide|https://www.tensorflow.org/guide/mixed_precision]. Float32 master variables and loss-scaling motivation; this report uses explicit CPU storage emulation rather than native hardware kernels.
+- TensorFlow authors. [Mixed precision guide|https://www.tensorflow.org/guide/mixed_precision]. Float32 master variables and loss-scaling motivation.
 - Kingma, D. P. and Ba, J. (2015). [Adam: A Method for Stochastic Optimization|https://arxiv.org/abs/1412.6980]. Moment state and update counting.

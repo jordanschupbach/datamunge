@@ -1,0 +1,127 @@
+//? Title: Temporal graph memory for link prediction
+//? Lang: en
+
+> Temporal graph memory for link prediction
+
+Each stream contains eight timestamped links. Two source nodes each have
+a persistent partner sampled independently for that stream. The predictor
+compares the positive partner with a sampled negative using the endpoint
+memories available just before the event. It then updates only the positive
+endpoints. A shared GRU receives a message built from both memories, the
+source role, and the log of one plus the time since the updating node's
+last event.
+
+Training backpropagates through all eight events. On held-out streams the
+model resets memory, processes four warm-up events, and evaluates the
+remaining four. Memory continues to update throughout evaluation.
+
+```{cpp, results="markdown", file="figures/temporal_graph_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int steps = 8, warmup = 4, width = 8;
+  const auto simulate = [](int count, std::mt19937 &rng) {
+    std::vector<int> events;
+    std::vector<float> times;
+    for (int row = 0; row < count; ++row) {
+      std::array targets{2, 3, 4, 5};
+      std::shuffle(targets.begin(), targets.end(), rng);
+      float timestamp = 0;
+      for (int t = 0; t < steps; ++t) {
+        const int source = t % 2, destination = targets[source];
+        int negative;
+        do { negative = 2 + rng() % 4; } while (negative == destination);
+        events.insert(events.end(), {source, destination, negative});
+        timestamp += .25f * (1 + rng() % 4);
+        times.push_back(timestamp);
+      }
+    }
+    return std::pair{n::from_vector(events, {count, steps, 3}),
+                     n::from_vector(times, {count, steps})};
+  };
+  std::mt19937 train_rng(49002), test_rng(49003);
+  std::vector<std::pair<n::Tensor, n::Tensor>> training;
+  for (int batch = 0; batch < 12; ++batch)
+    training.push_back(simulate(32, train_rng));
+  const auto [events, times] = simulate(96, test_rng);
+  const auto roles = n::tensor({-1., 1., 0., 0., 0., 0.});
+
+  n::ParameterStore model(49001);
+  const auto forward = [&](const n::Tensor &links, const n::Tensor &timestamps) {
+    return n::temporal_graph_memory(model, "tgn", links, timestamps, roles, width);
+  };
+  const auto loss = [](const n::Tensor &z) {
+    return .5 * n::mean(n::softplus(-n::select(z, 2, 0)) + n::softplus(n::select(z, 2, 1)));
+  };
+
+  forward(events, times);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .018, config);
+  std::vector<double> epochs, losses, accuracy;
+  std::print("| epoch | held-out suffix NLL | positive ranked higher |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto suffix = n::slice_axis(forward(events, times).logits, 1, warmup, steps);
+      const auto hits = n::count_nonzero(n::greater(n::select(suffix, 2, 0),
+                                                   n::select(suffix, 2, 1))).item<int>();
+      epochs.push_back(epoch);
+      losses.push_back(loss(suffix).item());
+      accuracy.push_back(hits / 384.);
+      std::print("| {} | {:.6f} | {}/384 |\n", epoch, losses.back(), hits);
+    }
+    if (epoch < 3)
+      for (const auto &[links, stamps] : training)
+        adam.minimize(loss(forward(links, stamps).logits));
+  }
+
+  n::NoGradGuard guard;
+  const auto path = forward(events, times);
+  const auto prefix = forward(n::slice_axis(events, 1, 0, warmup), n::slice_axis(times, 1, 0, warmup));
+  const auto error = n::max(n::abs(prefix.logits - n::slice_axis(path.logits, 1, 0, warmup))).item();
+  const auto first = n::select(path.logits, 1, 0);
+  const auto gap = n::max(n::abs(n::select(first, 1, 0) - n::select(first, 1, 1))).item();
+  if (gap != 0. || error != 0.)
+    throw std::runtime_error("temporal graph ordering check failed");
+  std::print("First-event score gap {:.3g}. Truncated-prefix replay error {:.3g}.\n", gap, error);
+
+  n::NamedTensors evidence{{"events", events}, {"time", times}, {"logits", path.logits},
+                           {"states", path.memory}, {"suffix_nll", n::from_vector(losses)}};
+  for (const auto &key : model.names())
+    evidence.emplace_back(key, model.at(key));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/temporal_graph_fit.npz", evidence);
+
+  auto likelihood = dm::graphics::RPlot::create();
+  likelihood.lines(epochs, losses, "Held-out suffix", {37, 99, 235})
+      .title("Link prediction loss").x_label("Epoch").y_label("Binary NLL");
+  auto ranking = dm::graphics::RPlot::create();
+  ranking.lines(epochs, accuracy, "Positive ranked higher", {22, 120, 97})
+      .title("Positive link vs. sampled negative").x_label("Epoch")
+      .y_label("Fraction of held-out suffix events").y_limits(0, 1.05);
+  dm::graphics::RLayout::create(1, 2).add(likelihood).add(ranking).size(1050, 430)
+      .fit_panels().save_svg("build/temporal_graph_fit.svg");
+}
+```
+// result_begin: markdown
+| epoch | held-out suffix NLL | positive ranked higher |
+|---:|---:|---:|
+| 0 | 0.707959 | 192/384 |
+| 1 | 0.113449 | 384/384 |
+| 2 | 0.006571 | 384/384 |
+| 3 | 0.001431 | 384/384 |
+First-event score gap 0. Truncated-prefix replay error 0.
+\image(figures/temporal_graph_fit.svg)
+// result_end
+\caption(Held-out link loss and positive-link ranking after four warm-up events on each stream.)
+\alttext(Two line plots of held-out suffix loss and the fraction of events whose positive link ranks higher than the sampled negative.)
+
+At the first event both candidates have zero memory and the scores agree.
+The prefix check confirms that future events do not affect earlier scores.
+
+> Reference
+
+- [Rossi et al. (2020), Temporal Graph Networks for Deep Learning on Dynamic Graphs](https://arxiv.org/abs/2006.10637).

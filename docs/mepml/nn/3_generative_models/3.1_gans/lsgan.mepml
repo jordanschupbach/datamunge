@@ -495,7 +495,7 @@ least-squares algebra: D loss=3202.5, G loss=1601.5, dG/dfake=[[19.75], [0.25], 
 epoch 1: diagnostic D loss=0.0652749, G loss=0.513796, coarse MMD=0.120708
 epoch 2: diagnostic D loss=0.0496801, G loss=0.503967, coarse MMD=0.120641
 epoch 3: diagnostic D loss=0.0418647, G loss=0.446913, coarse MMD=0.120578
-fixed FINAL epoch 3, test D/G=0.0371181/0.442653, coarse MMD=0.118193, mean baseline=0.000135779, D real/fake accuracy (threshold .5)=0.97/1, mean pixel=0.499584, pixel variance=0.00160337; D then G/restore/noiseOnly/immutable PASS (training 1.56179 s)
+fixed FINAL epoch 3, test D/G=0.0371181/0.442653, coarse MMD=0.118193, mean baseline=0.000135779, D real/fake accuracy (threshold .5)=0.97/1, mean pixel=0.499584, pixel variance=0.00160337; D then G/restore/noiseOnly/immutable PASS (training 0.326343 s)
 Artifacts: build/lsgan
 All lsgan checks passed.
 \image(figures/lsgan_learning.svg)

@@ -1,0 +1,84 @@
+//? Title: Compact two convolutions by pruning intermediate channels
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Rank hidden convolution channels by their filter L1 norms. Remove the
+unused output filters, biases, and matching input slices in the next layer.
+)
+\toc
+
+Filter pruning removes a complete feature map. The first convolution
+produces six maps, of which the three largest filter L1 norms are
+retained. ReLU operates independently on each map, so removing an
+intermediate map is equivalent to setting it to zero before the second
+convolution. The compact model stores fewer values and has smaller
+convolution dimensions.
+
+The code compares the full network, the full network with a channel mask,
+and the compact network. The plot shows which output positions change
+when the channels are removed.
+
+```{cpp, results="markdown", file="figures/structured_pruning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  std::mt19937 rng(12091);
+  std::uniform_real_distribution<double> uniform(-1., 1.);
+  auto draw = [&](n::Shape shape, int count) {
+    std::vector<double> values(count);
+    for (auto& value : values) value = uniform(rng);
+    return n::from_vector(values, shape);
+  };
+  const auto input = draw({2, 5, 5, 2}, 100);
+  const auto kernel = draw({3, 3, 2, 6}, 108);
+  const auto bias = draw({6}, 6);
+  const auto second = draw({1, 1, 6, 2}, 12);
+  const auto reduced = n::prune_conv_channels(kernel, bias, second, 3);
+  std::vector<double> mask(6);
+  const auto kept = reduced.kept.to_vector<int>();
+  for (const int channel : kept) mask[channel] = 1.;
+  const auto hidden = n::relu(n::conv2d(input, kernel) + bias);
+  const auto dense = n::conv2d(hidden, second);
+  const auto masked = n::conv2d(hidden * n::from_vector(mask), second);
+  const auto compact = n::conv2d(n::relu(n::conv2d(input, reduced.first) + reduced.bias),
+                                  reduced.second);
+  const double agreement = n::max(n::abs(masked - compact)).item();
+  const double drift = n::max(n::abs(dense - compact)).item();
+  if (!(agreement < 1e-12) || !(drift > 1e-3))
+    throw std::runtime_error("Compact and masked convolution check failed");
+  std::println("Retained channels {}. Parameters {} to {}. Maximum masked difference {:.3g}. "
+               "Maximum change from the full model {:.6f}.",
+               kept, kernel.numel() + bias.numel() + second.numel(),
+               reduced.first.numel() + reduced.bias.numel() + reduced.second.numel(), agreement, drift);
+
+  const std::string folder = "build/structured_pruning/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "convolutions.npz", {{"input",input},{"kernel",kernel},{"bias",bias},
+      {"second",second},{"kept",reduced.kept},{"dense",dense},{"masked",masked},{"compact",compact},
+      {"compact_kernel",reduced.first},{"compact_bias",reduced.bias},{"compact_second",reduced.second}});
+  auto plot = dm::graphics::RPlot::create();
+  const auto axis = n::arange(0, 100).to_vector<double>();
+  plot.lines(axis, dense.to_vector<double>(), "Full network", {37, 99, 235})
+      .lines(axis, compact.to_vector<double>(), "Pruned network", {191, 88, 34})
+      .title("Output before and after channel pruning").x_label("Flattened position")
+      .y_label("Convolution output").save_svg(folder + "prediction.svg");
+  std::filesystem::copy_file(folder + "prediction.svg", "figures/structured_pruning.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Retained channels [1, 5, 0]. Parameters 126 to 63. Maximum masked difference 4.44e-16. Maximum change from the full model 3.027326.
+\image(figures/structured_pruning.svg)
+// result_end
+
+> Reference
+
+- [Li et al., Pruning Filters for Efficient ConvNets|https://arxiv.org/abs/1608.08710].

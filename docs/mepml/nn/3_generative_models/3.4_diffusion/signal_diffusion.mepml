@@ -1942,7 +1942,7 @@ weights from nn's generator (statistical parity with TF only)
 epoch1:validationepsilonMSE=0.940843
 epoch2:validationepsilonMSE=0.871676
 epoch3:validationepsilonMSE=0.815409
-testepsilonMSE=0.810879,zero=1.00073,fitGaussianPrior=0.30081,terminalbar=2.36997e-06;forward/schedule/32reverse/zeroLastNoise/timeControl/restore/immutable PASS (training 0.148029 s)
+testepsilonMSE=0.810879,zero=1.00073,fitGaussianPrior=0.30081,terminalbar=2.36997e-06;forward/schedule/32reverse/zeroLastNoise/timeControl/restore/immutable PASS (training 0.14712 s)
 no TF record at /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.4_diffusion/build/models/signal_diffusion; parity checks skipped
 Artifacts: build/diffusion-models/models/signal_diffusion
 // result_end

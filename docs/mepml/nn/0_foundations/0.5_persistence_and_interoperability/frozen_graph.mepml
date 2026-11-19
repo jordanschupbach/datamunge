@@ -1,13 +1,13 @@
-//? Title: Frozen Eager Models: Reachable Weights Without Training State
-//? Subtitle: A snapshot contains values; the consumer still supplies the inference function
+//? Title: Freeze a trained affine predictor as TensorFlow GraphDef
+//? Subtitle: Train, export, and reload a prediction-only graph
 //? Exports: both
 //? Lang: en-GB
 
 \abstract(
-A deployed predictor should use a fixed set of learned values without carrying optimizer slots
-or unused training parameters. We select the parameters reached by an executed output, detach
-and copy them, then check that live-model mutations do not change the saved predictor. In this
-eager library the artifact is NPZ weights and a contract, not a TensorFlow GraphDef.
+Train a scalar affine predictor on five observations, export its learned
+coefficients as GraphDef constants, and load the resulting graph for
+inference. The exported graph accepts any batch length and keeps its
+predictions after the live model changes.
 )
 \toc
 
@@ -23,11 +23,13 @@ f(x)=wx+b,\qquad (w,b)=(2,-1/2),\qquad f((-3,1/2,4))=(-13/2,1/2,15/2).
 $$
 \alttext(The affine function with slope two and intercept minus one half gives predictions minus six point five, point five and seven point five.)
 
-Selecting values excludes optimizer slots and disconnected parameters. Deep copies prevent
-later updates from changing the snapshot. The graph is only the executed branch: a different
-input-dependent branch may reach other parameters. This is neither static graph pruning nor
-serializing program code; the consumer must retain the same inference function and dtype/shape
-contract. Selection costs a backward traversal; storage costs the selected parameter bytes.
+The affine exporter writes a placeholder, two scalar constants, and
+the multiply and add operations. It exposes `features:0` and
+`predictions:0` as the serving endpoints. Since the architecture is
+specified by the exporter, the GraphDef needs only these five nodes
+and carries no training state or device assignments. The eager
+reachability helper demonstrated below instead discovers parameter
+dependencies for an executed output.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -39,9 +41,9 @@ as the numerical examples. Exports consume the saved local SVG.
 int main() {
   std::filesystem::create_directories("build");
   dm::graphics::Diagram diagram;
-  diagram.node("n0", {0.0, 0}, "Executed eager output\nf(x)=wx+b");
-  diagram.node("n1", {5.2, 0}, "Reachable parameters\ndefined VJP, even zero");
-  diagram.node("n2", {10.4, 0}, "Detached deep copies\nNPZ + consumer code");
+  diagram.node("n0", {0.0, 0}, "Train eager model\nf(x)=wx+b");
+  diagram.node("n1", {5.2, 0}, "Snapshot coefficients\nFloat32 constants");
+  diagram.node("n2", {10.4, 0}, "Frozen GraphDef\nfeatures:0 → predictions:0");
   diagram.edge("n0", "n1").edge("n1", "n2");
   diagram.save_svg("build/frozen_graph_concept.svg");
 }
@@ -49,38 +51,90 @@ int main() {
 // result_begin:
 // \image(figures/frozen_graph_concept.svg)
 // result_end
-\caption(A snapshot contains values; the consumer still supplies the inference function)
-\alttext(Executed eager output; f(x)=wx+b Then Reachable parameters; defined VJP, even zero Then Detached deep copies; NPZ + consumer code.)
+\caption(Train, export, and reload a prediction-only graph)
+\alttext(An eager affine fit yields two scalar coefficients. These become constants in a GraphDef with named input and prediction endpoints.)
 
 > Simple examples
 
 ```{cpp, results="markdown", file="figures/frozen_graph_prediction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-int main(){
- namespace n=dm::nn;n::ParameterStore store;
- auto w=store.get("w",{},n::init::constant(2)),b=store.get("b",{},n::init::constant(-.5));
- store.get("unused",{8},n::init::ones());
- const auto x=n::tensor({-3,.5,4}),y=x*w+b;
- const auto frozen=n::inference_parameters(store,{y});
- std::filesystem::create_directories("build");n::save_npz("build/frozen_graph_weights.npz",frozen);
- {n::NoGradGuard guard;w.copy_(n::scalar(-100));b.copy_(n::scalar(100));}
- n::ParameterStore serving;serving.load("build/frozen_graph_weights.npz",false);
- const auto prediction=x*serving.at("w")+serving.at("b");
- auto p=dm::graphics::RPlot::create();p.lines(x.to_vector<double>(),prediction.to_vector<double>(),"saved predictor")
- .title("Saved weights remain independent of live mutation").x_label("x").y_label("prediction");
- p.size(820,420).save_svg("build/frozen_graph_prediction.svg");
- if(frozen.size()!=2||prediction.to_vector<double>()!=std::vector<double>({-6.5,.5,7.5}))return 1;
- std::print("Store arrays: {}; exported arrays: {}.\n\nPredictions: {}.\n",store.size(),frozen.size(),prediction.to_vector<double>());
+#include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <print>
+#include <stdexcept>
+
+int main() {
+  namespace n = dm::nn;
+  n::ParameterStore store;
+  auto weight = store.get("w", {}, n::init::zeros());
+  auto bias = store.get("b", {}, n::init::zeros());
+  (void)store.get("unused", {8}, n::init::ones());
+  const auto x = n::tensor({-2.f, -1.f, 0.f, 1.f, 2.f}, n::Shape{5}, n::DType::Float32);
+  const auto y = n::tensor({-4.5f, -2.5f, -.5f, 1.5f, 3.5f}, n::Shape{5}, n::DType::Float32);
+  const std::vector<n::Tensor> fitted{weight, bias};
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(fitted, .05, config);
+  for (int i = 0; i < 500; ++i)
+    adam.step(n::grad(n::mse(x * weight + bias, y), fitted));
+
+  const auto query = n::tensor({-3.f, .5f, 4.f}, n::Shape{3}, n::DType::Float32);
+  const auto expected = (query * weight + bias).to_vector<float>();
+  const auto bytes = n::export_frozen_affine(weight, bias);
+  std::filesystem::create_directories("build/frozen_affine");
+  std::filesystem::create_directories("figures");
+  const std::string path = "build/frozen_affine/graph.pb";
+  std::ofstream graph(path, std::ios::binary);
+  graph.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
+  graph.close();
+  std::ofstream contract("build/frozen_affine/signature.txt");
+  contract << "input=features:0 float32 [batch]\noutput=predictions:0 float32 [batch]\n";
+  contract.close();
+  if (!graph || !contract) throw std::runtime_error("Could not write GraphDef and signature");
+
+  {
+    n::NoGradGuard guard;
+    weight.copy_(n::full({}, -100., n::DType::Float32));
+    bias.copy_(n::full({}, 100., n::DType::Float32));
+  }
+  const auto frozen = n::FrozenGraph::load(path);
+  auto predict = [&](const n::Tensor& features) {
+    return frozen.evaluate({{"features:0", features}}, {"predictions:0"}).front().second;
+  };
+  const auto prediction = predict(query);
+  const auto one = predict(n::full({1}, 5., n::DType::Float32));
+  const auto nodes = frozen.node_names();
+  if (nodes != std::vector<std::string>{"model/w", "model/b", "features", "Multiply", "predictions"} ||
+      frozen.operation("model/w") != "Const" || frozen.operation("model/b") != "Const" ||
+      prediction.to_vector<float>() != expected || prediction.requires_grad() ||
+      (query * weight + bias).to_vector<float>() == expected || std::abs(one.item() - 9.5) > 1e-5)
+    throw std::runtime_error("Frozen model failed integrity, reload or dynamic batch checks");
+  const auto actual = prediction.to_vector<double>();
+  const std::vector<double> truth{-6.5, .5, 7.5};
+  for (std::size_t i = 0; i < truth.size(); ++i)
+    if (std::abs(actual[i] - truth[i]) > 1e-5)
+      throw std::runtime_error("Affine fit failed");
+
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(query.to_vector<double>(), actual, "Frozen predictor")
+      .points(x.to_vector<double>(), y.to_vector<double>(), "Training observations", {191, 88, 34}, 5)
+      .title("Frozen affine fit after the live model changes").x_label("Feature").y_label("Prediction")
+      .size(820, 420).save_svg("build/frozen_graph_prediction.svg");
+  std::filesystem::copy_file("build/frozen_graph_prediction.svg", "figures/frozen_graph_prediction.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::println("GraphDef contains {} nodes and two constants. Reloaded predictions match exactly.", nodes.size());
+  std::println("Predictions {:.5f}, {:.5f}, {:.5f}. Single-row prediction {:.5f}.",
+               actual[0], actual[1], actual[2], one.item());
 }
 ```
 // result_begin: markdown
-Store arrays: 3; exported arrays: 2.
-
-Predictions: [-6.5, 0.5, 7.5].
+GraphDef contains 5 nodes and two constants. Reloaded predictions match exactly.
+Predictions -6.50000, 0.50000, 7.50000. Single-row prediction 9.50000.
 \image(figures/frozen_graph_prediction.svg)
 // result_end
-\caption(Only the two connected scalar parameters reconstruct the affine predictions.)
-\alttext(Only the two connected scalar parameters reconstruct the affine predictions.)
+\caption(The serialized prediction graph uses two scalar constants and accepts dynamic batches.)
+\alttext(The serialized prediction graph uses two scalar constants and accepts dynamic batches.)
 
 > Checking the theory
 
@@ -103,11 +157,12 @@ Snapshot requires_grad: false.
 
 > Conclusion
 
-The selected values reproduce the chosen function and remain independent of live mutation.
-Zero gradients do not prove a parameter is unused. Since execution can depend on control flow,
-a single eager trace is not a universal inference signature or a portable executable model.
+The fitted prediction graph is self-contained. Reloading it after
+changing the live weights preserves the predictions, including on a
+single row. The reachability example also shows how a zero derivative
+can arise from a parameter that the executed computation still uses.
 
 > References
 
 - [TensorFlow: GraphDef constant conversion](https://www.tensorflow.org/api_docs/python/tf/compat/v1/graph_util/convert_variables_to_constants).
-- [NumPy NPY format specification](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html).
+- [TensorFlow GraphDef schema|https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/graph.proto].

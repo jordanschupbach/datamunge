@@ -340,7 +340,7 @@ Power iteration against the exact formula sqrt(A_4k / A_(4k−2)), A_m = Σ c_i�
 | σ2/σ1 = 0.8 | 0.800 | 3.6e-12 | 1.9e-04 | 0.361 (k = 19 to 24) | 0.410 |
 | Glorot, σ2/σ1 = 0.955 | 0.955 | 7.3e-13 | 1.9e-02 | 0.825 (k = 35 to 40) | 0.830 |
 
-Gradient of σ̂ after 400 iterations against u1 v1^T from the SVD: max difference 3.5e-14 (sign fixed by σ̂ > 0: 3.5e-14).
+Gradient of σ̂ after 400 iterations against u1 v1^T from the SVD: max difference 3.4e-14 (sign fixed by σ̂ > 0: 3.4e-14).
 
 Weight-normalised softmax regression on all 1797 digits, full-batch gradient descent, 300 steps:
 

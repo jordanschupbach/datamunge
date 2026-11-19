@@ -779,7 +779,7 @@ int main() {
 epoch 1: stable4, alpha=0, D/G=0.475629/0.953438
 epoch 2: fade8, alpha=1, D/G=0.437051/0.868214
 epoch 3: stable8, alpha=1, D/G=0.344331/0.626965
-fixed final=3, test D/G=0.344081/0.626964, active params 1462 -> 2067 -> 2054, group updates=576; actual growth/alpha endpoints/inactive freeze/captured phase grads/restore/immutable PASS (training 1.69266 s)
+fixed final=3, test D/G=0.344081/0.626964, active params 1462 -> 2067 -> 2054, group updates=576; actual growth/alpha endpoints/inactive freeze/captured phase grads/restore/immutable PASS (training 0.709824 s)
 Artifacts: build/progressive_gan
 All progressive_gan checks passed.
 \image(figures/progressive_learning.svg)

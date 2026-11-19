@@ -1,0 +1,89 @@
+//? Title: MLP-Mixer and ConvMixer on MNIST
+//? Lang: en
+
+> MLP-Mixer and ConvMixer on MNIST
+
+Both classifiers divide each digit into sixteen 7-by-7 patches.
+MLP-Mixer alternates a dense network across patch positions with a
+dense network across channels. ConvMixer uses a strided convolution
+for the patch embedding, depthwise convolutions across the patch grid,
+and pointwise convolutions across channels. ConvMixer updates batch
+normalization estimates during training and uses the saved estimates
+at validation and test time.
+
+Both fits use the upstream MNIST sample of 1,024 training images and
+256 validation images. Evaluation uses 256 images from the official
+test split. The plot compares validation loss across three epochs.
+
+```{cpp, results="markdown", file="figures/image_mixers.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto root=std::filesystem::path(dm::datasets::prepare_example_data("mnist-assets"))/"mnist";
+  const auto train=n::load_mnist(root.string(),"train");
+  const auto test=n::load_mnist(root.string(),"test");
+  std::vector<int> train_ids(60000),test_ids(10000);
+  std::iota(train_ids.begin(),train_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 rng(41434);
+  std::shuffle(train_ids.begin(),train_ids.end(),rng);
+  std::shuffle(test_ids.begin(),test_ids.end(),rng);
+  const auto ids=[](const std::vector<int>& order,int from,int count) {
+    return n::from_vector(std::vector<int>(order.begin()+from,order.begin()+from+count));
+  };
+  const auto fit=ids(train_ids,0,1024),valid=ids(train_ids,1024,256),held=ids(test_ids,0,256);
+  const auto x=n::gather(train.images,fit),y=n::gather(train.labels,fit);
+  const auto vx=n::gather(train.images,valid),vy=n::gather(train.labels,valid);
+  const auto tx=n::gather(test.images,held),ty=n::gather(test.labels,held);
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Model | Validation NLL, epochs 1–3 | Test NLL | Correct out of 256 |\n|---|---|---:|---:|\n");
+  for (bool conv:{false,true}) {
+    const std::string name=conv ? "conv_mixer" : "mlp_mixer";
+    n::ParameterStore params(41433),stats(41433);
+    const auto predict=[&](const n::Tensor& inputs,bool training) {
+      return conv ? n::conv_image_mixer(params,stats,inputs,training) : n::mlp_image_mixer(params,inputs);
+    };
+    (void)predict(n::slice_axis(x,0,0,1),false);
+    n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder batches(1024,32,41435);
+    std::vector<double> curve;
+    for (int epoch=0;epoch<3;++epoch) {
+      batches.begin_epoch();
+      for (auto rows=batches.next();!rows.empty();rows=batches.next()) {
+        const auto batch=n::from_vector(rows);
+        const auto loss=n::sparse_softmax_cross_entropy(predict(n::gather(x,batch),true).logits,n::gather(y,batch));
+        optimizer.step(n::grad(loss,optimizer.parameters()));
+      }
+      const n::NoGradGuard guard;
+      curve.push_back(n::sparse_softmax_cross_entropy(predict(vx,false).logits,vy).item());
+    }
+    const n::NoGradGuard guard;
+    const auto result=predict(tx,false);
+    const auto nll=n::sparse_softmax_cross_entropy(result.logits,ty);
+    const int correct=n::sum(n::equal(n::argmax(result.logits,1),ty).to(n::DType::Int32)).item<int>();
+    std::print("| {} | {:.5f}, {:.5f}, {:.5f} | {:.5f} | {} |\n",
+               name,curve[0],curve[1],curve[2],nll.item(),correct);
+    const std::filesystem::path out="build/image_mixers/"+name;
+    std::filesystem::create_directories(out);
+    n::NamedTensors weights;
+    for (const auto* store:{&params,&stats})
+      for (const auto& key:store->names()) weights.emplace_back(key,store->at(key));
+    n::save_npz((out/"weights.npz").string(),weights);
+    n::save_npz((out/"audit.npz").string(),{{"fit_ids",fit},{"validation_ids",valid},{"test_ids",held},
+        {"pixels",tx},{"labels",ty},{"patches",result.patches},{"embedded",result.embedded},
+        {"logits",result.logits},{"nll",nll}});
+    plot.lines({1,2,3},curve,conv ? "ConvMixer" : "MLP-Mixer",
+               conv ? dm::graphics::RGB{217,96,26} : dm::graphics::RGB{37,99,235});
+  }
+  plot.title("Validation loss on MNIST").x_label("Epoch").y_label("Nats per image")
+      .size(800,460).save_svg("build/image_mixers.svg");
+}
+```
+// result_begin: markdown
+| Model | Validation NLL, epochs 1–3 | Test NLL | Correct out of 256 |
+|---|---|---:|---:|
+| mlp_mixer | 1.34921, 0.80983, 0.65430 | 0.60571 | 206 |
+| conv_mixer | 2.28286, 1.16845, 0.88956 | 0.84973 | 194 |
+\image(figures/image_mixers.svg)
+// result_end

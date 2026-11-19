@@ -1,0 +1,70 @@
+//? Title: Recovering synthetic class prototypes from linear scores
+//? Lang: en
+
+> Recovering synthetic class prototypes from linear scores
+
+A ridge classifier learns to distinguish noisy horizontal and vertical
+bars. To see what the fitted scores reveal about the classes, start with
+a uniform gray image and maximize each class's signed score. A quadratic
+penalty discourages large departures from gray, and projection keeps
+every pixel between zero and one.
+
+The objective is a separable concave quadratic. Its constrained optimum
+clips each unconstrained solution to the pixel range, so it provides a
+check on the projected iterations. The image grid compares the known
+templates (top) with the recovered prototypes (bottom), with horizontal
+bars on the left and vertical bars on the right.
+
+```{cpp, results="markdown", file="figures/model_inversion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int side=6,pixels=side*side,rows=80;
+  constexpr double penalty=.25;
+  std::vector<double> patterns(2*pixels), values, labels;
+  for (int p=0;p<pixels;++p) {
+    patterns[p]=p/side==2 || p/side==3;
+    patterns[pixels+p]=p%side==2 || p%side==3;
+  }
+  std::mt19937 rng(61021);
+  std::normal_distribution<double> noise(0,.19);
+  for (int i=0;i<rows;++i) {
+    labels.push_back(i%2 ? 1.0 : -1.0);
+    for (int p=0;p<pixels;++p)
+      values.push_back(std::clamp(.2+.6*patterns[(i%2)*pixels+p]+noise(rng),0.0,1.0));
+  }
+  const auto images=n::from_vector(values,{rows,pixels});
+  const auto truth=n::from_vector(labels,{rows,1});
+  const auto templates=n::from_vector(patterns,{2,pixels});
+  const auto x=images-.5;
+  const auto w=n::solve(n::matmul(x,x,true,false)+4*n::eye(pixels,n::DType::Float64),
+                        n::matmul(x,truth,true,false)).reshape({1,pixels});
+  const auto signed_scores=n::concat({-w,w},0);
+  const auto prototypes=n::fit_linear_prototypes(signed_scores,penalty,55,2);
+  const auto exact=n::clip(.5+signed_scores/penalty,0,1);
+  const auto difference=prototypes-.5;
+  const auto objectives=n::sum(signed_scores*difference-.5*penalty*n::square(difference),{1}).to_vector<double>();
+  const auto errors=n::mean(n::square(prototypes-templates),{1}).to_vector<double>();
+  std::print("| Class | Objective from gray | Template MSE |\n|---|---:|---:|\n");
+  for (int k=0;k<2;++k)
+    std::print("| {} | {:.6f} | {:.6f} |\n",k,objectives[k],errors[k]);
+  std::print("\nMaximum pixel difference from the exact constrained solution is {:.3g}.\n",
+             n::max(n::abs(prototypes-exact)).item());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/inversion_evaluation.npz",{{"images",images},{"labels",truth},
+      {"templates",templates},{"prototypes",prototypes}});
+  n::plot_tensor_images(n::concat({templates,prototypes},0).reshape({4,side,side,1}),2)
+      .title("Known templates (top) and recovered prototypes (bottom)")
+      .size(640,620).save_svg("build/model_inversion.svg");
+}
+```
+// result_begin: markdown
+| Class | Objective from gray | Template MSE |
+|---|---:|---:|
+| 0 | 1.111650 | 0.141284 |
+| 1 | 1.111650 | 0.149823 |
+
+Maximum pixel difference from the exact constrained solution is 1.11e-16.
+\image(figures/model_inversion.svg)
+// result_end

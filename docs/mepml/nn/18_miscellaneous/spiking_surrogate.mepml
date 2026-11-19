@@ -1,0 +1,114 @@
+//? Title: Leaky integrate-and-fire neurons with surrogate gradients
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Train a neuron to identify which of two input channels contains a pulse
+train. The forward pass emits binary spikes, and the backward pass uses
+a smooth surrogate to update the input weights.
+)
+
+> Integrate, fire, and reset
+
+At each step the neuron keeps 72% of its last membrane value and adds a
+weighted input current. At voltage 1 or above it emits a spike and resets
+the membrane to zero. Otherwise the membrane carries forward. The initial
+membrane is zero for every sequence.
+
+A hard threshold has zero derivative almost everywhere. The layer uses
+the hard spike for prediction and the derivative of
+\(\sigma(7(v-1))\) for backpropagation. The reset decision is held
+constant in the backward pass. This lets gradients flow through the
+spike count and the subthreshold state, but it does not give the true
+derivative of a hard threshold at its discontinuity.
+
+> Train on the upstream two-channel pulses
+
+Each sequence has eight time steps. One channel gets an extra pulse on
+even steps, and both receive uniform noise. The label is one when the
+first channel carries the pulses. The classifier's logit is 1.4 times
+the spike count minus 2.1, so two spikes predict class one. A separate
+seed produces the 96 held-out examples.
+
+```{cpp, results="markdown", file="figures/spiking_surrogate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+constexpr int steps = 8;
+
+struct Data { nn::Tensor input, label; };
+
+Data pulses(int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::bernoulli_distribution flip;
+    std::uniform_real_distribution<double> noise(0, .2);
+    std::vector<double> input(count * steps * 2), label(count);
+    for (int i = 0; i < count; ++i) {
+        const bool first = flip(rng);
+        label[i] = first;
+        for (int t = 0; t < steps; ++t) {
+            input[(i * steps + t) * 2] = noise(rng) + (first && t % 2 == 0 ? .85 : 0.);
+            input[(i * steps + t) * 2 + 1] = noise(rng) + (!first && t % 2 == 0 ? .85 : 0.);
+        }
+    }
+    return {nn::from_vector(input, {count, steps, 2}), nn::from_vector(label, {count, 1})};
+}
+
+int main() {
+    nn::set_num_threads(2);
+    const auto fit = pulses(192, 19641), test = pulses(96, 19642);
+    const auto weight = nn::full({2, 1}, .35, nn::DType::Float64).requires_grad_();
+    nn::Optimizer sgd({weight}, .12);
+    const auto spikes = [&](const auto& input) {
+        return nn::leaky_integrate_and_fire(nn::matmul(input, weight), .72, 1., 7.).spikes;
+    };
+    const auto correct = [&](const auto& raster) {
+        return nn::sum(nn::cast(nn::equal(nn::greater_equal(nn::sum(raster, {1}), 2),
+                                         nn::greater(test.label, 0)), nn::DType::Int64)).template item<int>();
+    };
+    const auto before = correct(spikes(test.input));
+    for (int epoch = 0; epoch < 3; ++epoch) {
+        for (int start = 0; start < 192; start += 32) {
+            const auto batch = [&](const auto& t) { return nn::slice_axis(t, 0, start, start + 32); };
+            const auto counts = nn::sum(spikes(batch(fit.input)), {1});
+            const auto loss = nn::sigmoid_cross_entropy(1.4 * (counts - 1.5), batch(fit.label));
+            sgd.step(nn::grad(loss, {weight}));
+        }
+    }
+    const nn::NoGradGuard no_grad;
+    const auto raster = spikes(test.input);
+    const auto after = correct(raster);
+    if (after <= before) throw std::runtime_error("Surrogate training did not improve accuracy");
+    std::vector<double> times(steps), cases(96);
+    std::iota(times.begin(), times.end(), 0);
+    std::iota(cases.begin(), cases.end(), 1);
+    std::stable_sort(cases.begin(), cases.end(), [&](double a, double b) {
+        return test.label.at({int(a)-1, 0}) < test.label.at({int(b)-1, 0});
+    });
+    std::vector<std::vector<double>> pixels(steps, std::vector<double>(96));
+    for (int t = 0; t < steps; ++t) {
+        for (int i = 0; i < 96; ++i) {
+            const auto v = raster.at({int(cases[i])-1, t, 0});
+            if (v != 0 && v != 1) throw std::runtime_error("Forward spikes must be binary");
+            pixels[t][i] = v;
+        }
+    }
+    std::iota(cases.begin(), cases.end(), 1);
+    std::filesystem::create_directories("build");
+    dm::graphics::RPlot::create().title("Held-out spikes grouped by class")
+        .x_label("Time step").y_label("Held-out case")
+        .image(times, cases, pixels, {{235, 238, 241}, {27, 92, 150}}, 0, 1)
+        .save_svg("build/spiking_surrogate.svg");
+    nn::save_npz("build/spiking_surrogate.npz", {{"weight", weight},
+        {"test_counts", nn::sum(raster, {1})}, {"test_spikes", nn::reshape(raster, {96, steps})}});
+    std::print("Held-out correct {} to {}/96. Weights {:.9f}, {:.9f}.\n",
+               before, after, weight.at({0, 0}), weight.at({1, 0}));
+}
+```
+// result_begin: markdown
+Held-out correct 48 to 96/96. Weights 1.241681555, -0.041269578.
+\image(figures/spiking_surrogate.svg)
+// result_end
+
+The raster shows only the hard spikes. Cases are sorted by true class
+for display. That sorting does not enter the fit or the accuracy check.

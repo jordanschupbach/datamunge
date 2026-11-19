@@ -1,0 +1,117 @@
+//? Title: fastText skip-gram for unseen words
+//? Lang: en
+
+> fastText skip-gram for unseen words
+
+This compact fastText example sums a known word's identity vector and
+its hashed subword vectors. Boundary markers let a byte n-gram encode
+where it starts or ends in an ASCII word. Every 3- to 6-byte substring
+contributes once to one of 128 buckets. An unseen word has no identity
+vector and is represented by its subwords.
+
+Skip-gram predicts surrounding words with four unigram-sampled negatives.
+In the held-out corpus, the source word is replaced by its unseen topic
+variant. The variants walker, painter, and cooker appear in that order in
+the heatmap. Known token IDs 0–3 are forms of walk, 4–7 of paint, and
+8–11 of cook. The heatmap compares fitted vectors by cosine similarity.
+
+```{cpp, results="markdown", file="figures/fasttext_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto train = n::synthetic_topic_corpus(192, 49402);
+  const auto test = n::synthetic_topic_corpus(48, 49403);
+  const auto counts = n::sum(n::one_hot(train, 12, 1, 0, n::DType::Float64), {0, 1});
+  const auto weights = n::pow(counts, .75);
+  std::filesystem::create_directories("build");
+  auto fit = dm::graphics::RPlot::create();
+  fit.title("Word prediction loss").x_label("Epoch").y_label("Held-out negative sampling loss");
+  const auto subwords = n::fasttext_subword_features(
+      {"walk", "walks", "walking", "walked", "paint", "paints", "painting", "painted",
+       "cook", "cooks", "cooking", "cooked", "walker", "painter", "cooker"}, 12);
+  auto held = n::sampled_word_windows(test, weights, false, 49604);
+  auto unseen_ids = held.source.to_vector<int>();
+  for (int &id : unseen_ids)
+    id = 12 + id / 4;
+  held.source = n::from_vector(unseen_ids, held.source.shape());
+  const auto fixture = n::sampled_word_windows(train, weights, false, 49405);
+  n::ParameterStore model(49601);
+  const auto input = model.get("input", {140, 8}, n::init::uniform(.08));
+  const auto output = model.get("output", {12, 8}, n::init::uniform(.2));
+  const auto vectors = [&] { return n::matmul(subwords, input); };
+  const auto logits = [&](const n::SampledWordWindows &rows) {
+    return n::sampled_word_logits(vectors(), output, rows.source, rows.candidates);
+  };
+  std::print("| Epoch | Unseen-word held-out loss |\n|---:|---:|\n");
+  const auto objective = [&](const n::Tensor &scores) {
+    const auto sign = n::tensor({-1., 1., 1., 1., 1.}).to(scores.dtype());
+    return n::mean(n::sum(n::softplus(sign * scores), {1}));
+  };
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .012, config);
+  std::mt19937 shuffle(49406);
+  std::vector<double> epochs, losses;
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      epochs.push_back(epoch);
+      losses.push_back(objective(logits(held)).item());
+      std::print("| {} | {:.6f} |\n", epoch, losses.back());
+    }
+    if (epoch == 3)
+      break;
+    const auto examples = n::sampled_word_windows(train, weights, false, 49405 + epoch);
+    std::vector<int> order(examples.source.shape()[0]);
+    std::iota(order.begin(), order.end(), 0);
+    std::shuffle(order.begin(), order.end(), shuffle);
+    const auto indices = n::from_vector(order);
+    for (std::int64_t start = 0; start < indices.shape()[0]; start += 64) {
+      const auto ids = n::slice_axis(indices, 0, start, std::min(start + 64, indices.shape()[0]));
+      adam.minimize(objective(logits({n::gather(examples.source, ids),
+                                      n::gather(examples.candidates, ids)})));
+    }
+  }
+  n::NoGradGuard guard;
+  n::save_npz("build/fasttext_fit.npz", {{"train_corpus", train}, {"test_corpus", test},
+      {"weights", weights}, {"train_source", fixture.source}, {"train_targets", fixture.candidates},
+      {"test_source", held.source}, {"test_targets", held.candidates}, {"input", input},
+      {"output", output}, {"subwords", subwords}, {"vectors", vectors()}, {"logits", logits(held)}});
+  fit.lines(epochs, losses, "Unseen words", {37, 99, 235});
+  const auto raw = vectors();
+  const auto unit = raw / n::sqrt(n::sum(n::square(raw), {1}, true) + 1e-8);
+  const auto similarities = n::matmul(n::slice_axis(unit, 0, 12, 15),
+                                     n::slice_axis(unit, 0, 0, 12).transpose());
+  std::vector<std::vector<double>> columns;
+  for (int i = 0; i < 12; ++i)
+    columns.push_back(n::select(similarities, 1, i).to_vector<double>());
+  auto heat = dm::graphics::RPlot::create();
+  heat.image(n::arange(0, 12).to_vector<double>(), {0., 1., 2.}, columns,
+             dm::graphics::diverging_colors(33), -1., 1.)
+      .title("Unseen-to-known cosine similarity")
+      .x_label("Known token ID").y_label("Unseen token index");
+  dm::graphics::RLayout::create(1, 2).add(fit).add(heat).size(1060, 430)
+      .fit_panels().save_svg("build/fasttext_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Unseen-word held-out loss |
+|---:|---:|
+| 0 | 3.522031 |
+| 1 | 1.559909 |
+| 2 | 1.546675 |
+| 3 | 1.479544 |
+\image(figures/fasttext_fit.svg)
+// result_end
+
+\caption(Held-out skip-gram loss with unseen sources and cosine similarity to all twelve known words.)
+\alttext(A line shows held-out loss by epoch. A heatmap compares three unseen word forms against the twelve known word forms.)
+
+On this fixture, the closest known forms to walker, painter, and cooker
+were walk, painting, and cooked, respectively.
+
+> Reference
+
+- [Bojanowski et al. (2017), Enriching Word Vectors with Subword Information](https://aclanthology.org/Q17-1010/).

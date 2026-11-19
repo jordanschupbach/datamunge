@@ -1,0 +1,163 @@
+//? Title: SASRec and BERT4Rec on matched item sequences
+//? Lang: en
+
+> SASRec and BERT4Rec on matched item sequences
+
+Both models use one self-attention block with tied input and output item
+embeddings. SASRec restricts attention to the current and earlier
+positions. It learns to predict the next item at each visible position,
+using one sampled negative per positive. BERT4Rec attends in both
+directions and predicts one randomly masked item per training session
+with catalog cross-entropy.
+
+At evaluation both predict the seventh item from the first six. SASRec
+scores it at position six, and BERT4Rec scores it at the final mask. The
+sessions are generated independently for fitting and evaluation from the
+same set of cyclic paths. To check what each model can see, change the
+sixth click and sum the absolute logit changes at the first position
+over all evaluation sessions and items. Initial and final losses use
+the same sampled evaluation targets within each model. Both models
+use Datamunge initialization with the upstream Adam schedule.
+
+[Kang and McAuley (2018)|https://arxiv.org/abs/1808.09781] and
+[Sun et al. (2019)|https://arxiv.org/abs/1904.06690]
+
+```{cpp, results="markdown", file="figures/sequential_rec.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int items=16, tokens=17, length=7, width=16, test_count=192;
+  const auto generate = [](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::vector<int> result;
+    for (int i=0;i<count;++i) {
+      const int start=rng()%items, stride=rng()%2 ? 1 : -1;
+      for (int t=0;t<length;++t) result.push_back((start+t*stride+items)%items);
+    }
+    return result;
+  };
+  const auto fit=generate(768,3828), test=generate(test_count,3829);
+  std::vector<std::int64_t> rows(test_count);
+  std::iota(rows.begin(),rows.end(),0);
+  std::vector<int> cutoffs(items);
+  std::iota(cutoffs.begin(),cutoffs.end(),1);
+  std::vector<int> grades(test_count*items);
+  for (int i=0;i<test_count;++i) grades[i*items+test[i*length+length-1]]=1;
+  const auto relevant=n::from_vector(grades,{test_count,items});
+  auto plot=dm::graphics::RPlot::create();
+  std::filesystem::create_directories("build");
+  std::print("| Model | Initial loss | Final loss | Hit@5 | First-position change |\n"
+             "|---|---:|---:|---:|---:|\n");
+  for (const bool bert:{false,true}) {
+    const std::string name=bert?"BERT4Rec":"SASRec";
+    const auto encode=[&](const std::vector<int>& data,std::span<const std::int64_t> selected,
+                          std::mt19937* rng,bool intervene=false) {
+      const auto count=static_cast<std::int64_t>(selected.size());
+      std::vector<int> ids;
+      std::vector<float> labels(count*length*items);
+      for (std::int64_t r=0;r<count;++r) {
+        const auto start=selected[r]*length;
+        const int masked=rng ? (*rng)()%length : length-1;
+        for (int t=0;t<length;++t) {
+          const int item=data[start+t];
+          const bool hide=t==(bert?masked:length-1);
+          ids.push_back(hide ? items : (intervene && t==length-2 ? (item+3)%items : item));
+          const auto offset=(r*length+t)*items;
+          if (bert && hide) labels[offset+item]=1;
+          if (!bert && t+1<length) {
+            const int positive=data[start+t+1];
+            labels[offset+positive]=1;
+            if (rng) labels[offset+(positive+1+(*rng)()%(items-1))%items]=-1;
+          }
+        }
+      }
+      return std::pair{n::one_hot(n::from_vector(ids,{count,length}),tokens),
+                       n::from_vector(labels,{count,length,items})};
+    };
+    n::ParameterStore params(3833);
+    const auto forward=[&](const n::Tensor& input) {
+      const auto table=params.get("item",{tokens,width},n::init::normal(.15));
+      const auto x=n::matmul(input,table)+params.get("position",{length,width},n::init::normal(.04));
+      n::MultiHeadOptions opts;
+      opts.causal=!bert;
+      opts.need_weights=true;
+      const auto attended=n::multi_head_attention(params,"attention",x,x,2,opts);
+      const auto residual=n::layer_norm(params,"attention_norm",x+attended.output);
+      const auto expanded=n::dense(params,"expand",residual,32,n::Activation::GeluTanh);
+      const auto contracted=n::dense(params,"contract",expanded,width);
+      const auto state=n::layer_norm(params,"output_norm",residual+contracted);
+      return std::pair{n::matmul(state,n::slice(table,{0,0},{items,width}),false,true),attended.weights};
+    };
+    const auto objective=[&](const n::Tensor& scores,const n::Tensor& label) {
+      if (!bert) {
+        const auto active=n::abs(label);
+        return n::sum(active*n::softplus(-scores*label))/n::sum(active);
+      }
+      return n::sum(n::softmax_cross_entropy(scores,label,n::Reduction::None))/n::sum(label);
+    };
+    std::mt19937 rng(3832);
+    auto probe_rng=rng;
+    const auto [probe,probe_target]=encode(test,rows,&probe_rng);
+    double initial;
+    {
+      const n::NoGradGuard no_grad;
+      initial=objective(forward(probe).first,probe_target).item();
+    }
+    n::OptimizerConfig config;
+    config.kind=n::OptimizerKind::Adam;
+    n::Optimizer optimizer(params,.01,config);
+    n::BatchOrder order(768,32,3831);
+    for (int epoch=0;epoch<3;++epoch) {
+      order.begin_epoch();
+      for (auto ids=order.next();!ids.empty();ids=order.next()) {
+        const auto [x,y]=encode(fit,ids,&rng);
+        optimizer.minimize(objective(forward(x).first,y));
+      }
+    }
+    const n::NoGradGuard no_grad;
+    const auto input=encode(test,rows,nullptr).first;
+    const auto [scores,weights]=forward(input);
+    const auto changed=forward(encode(test,rows,nullptr,true).first).first;
+    const auto effect=n::sum(n::abs(n::slice(scores-changed,{0,0,0},{test_count,1,items}))).item();
+    const auto [audit_x,audit_y]=encode(test,rows,&rng);
+    const auto audit_score=forward(audit_x).first;
+    const auto audit_loss=objective(audit_score,audit_y);
+    const double fitted=objective(forward(probe).first,probe_target).item();
+    if (optimizer.iterations()!=72 || !(fitted<initial) || (bert ? !(effect>.001) : effect!=0)) {
+      throw std::runtime_error("Sequential recommendation fit or visibility check failed");
+    }
+    const auto next=n::slice(scores,{0,length-(bert?1:2),0},{test_count,1,items}).reshape({test_count,items});
+    const auto metrics=n::recommendation_metrics(next,relevant,n::zeros_like(relevant),cutoffs);
+    const auto ids=metrics.ranked.to_vector<std::int64_t>();
+    std::vector<int> ranks;
+    for (int i=0;i<test_count;++i) {
+      const auto first=ids.begin()+i*items;
+      ranks.push_back(std::find(first,first+items,test[i*length+length-1])-first+1);
+    }
+    const auto avg=metrics.averages.to_vector<double>();
+    std::vector<double> hits;
+    for (int k=0;k<items;++k) hits.push_back(avg[3*k]);
+    std::print("| {} | {:.6f} | {:.6f} | {:.0f}/{} | {:.3f} |\n",
+        name,initial,fitted,test_count*hits[4],test_count,effect);
+    const auto key=bert?"bert4rec":"sasrec";
+    n::save_npz(std::format("build/{}.npz",key),{{"sessions",n::from_vector(test,{test_count,length})},
+        {"scores",scores.reshape({test_count,length*items})},{"weights",weights},{"rank",n::from_vector(ranks)},
+        {"input",input.reshape({test_count,length*tokens,1})},{"changed",changed.reshape({test_count,length*items})},
+        {"objective_input",audit_x.reshape({test_count,length*tokens,1})},
+        {"objective_target",audit_y.reshape({test_count,length*items})},
+        {"objective_scores",audit_score.reshape({test_count,length*items})},{"loss",audit_loss}});
+    plot.lines(std::vector<double>(cutoffs.begin(),cutoffs.end()),hits,name,
+        bert?dm::graphics::RGBA{234,88,12}:dm::graphics::RGBA{37,99,235});
+  }
+  plot.title("Next-item ranking after six clicks").x_label("Rank cutoff").y_label("Hit rate")
+      .y_limits(0,1.05).size(880,430).save_svg("build/sequential_rec.svg");
+}
+```
+// result_begin: markdown
+| Model | Initial loss | Final loss | Hit@5 | First-position change |
+|---|---:|---:|---:|---:|
+| SASRec | 0.792667 | 0.140209 | 192/192 | 0.000 |
+| BERT4Rec | 2.941196 | 0.727764 | 185/192 | 3750.696 |
+\image(figures/sequential_rec.svg)
+// result_end

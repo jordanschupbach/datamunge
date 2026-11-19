@@ -1,0 +1,124 @@
+//? Title: Learn scalar Kalman noise variances from observed data
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Differentiate through a scalar Kalman filter to fit process and sensor
+noise variances. Compare filtered and measured values with simulated
+latent states on independent test sequences.
+)
+\toc
+
+The state evolves with transition coefficient 0.85 and Gaussian process
+noise. Each observation adds independent Gaussian sensor noise to the
+state. The filter starts with zero mean and stationary variance, then
+alternates prediction and measurement updates. The innovation is the
+reading minus its one-step predicted mean. Its Gaussian likelihood
+penalizes both large standardized errors and overly wide uncertainty.
+[Kalman, A New Approach to Linear Filtering and Prediction Problems|https://doi.org/10.1115/1.3662552]
+
+The transition stays fixed. Adam fits the two unconstrained variance
+parameters through the full 32-step recurrence, using observations alone.
+The simulation uses process variance 0.04 and measurement variance 0.25.
+Latent states enter only the held-out error comparison.
+
+```{cpp, results="markdown", file="figures/differentiable_kalman.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int length = 32;
+  constexpr float transition = .85f;
+  const auto simulate = [](int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> initial(0.f, std::sqrt(.04f / (1 - transition * transition)));
+    std::normal_distribution<float> process(0.f, .2f), sensor(0.f, .5f);
+    std::vector<float> observed(count * length), latent(count * length);
+    for (int row = 0; row < count; ++row) {
+      auto state = initial(rng);
+      for (int t = 0; t < length; ++t) {
+        state = transition * state + process(rng);
+        latent[row * length + t] = state;
+        observed[row * length + t] = state + sensor(rng);
+      }
+    }
+    return std::pair{n::from_vector(observed, {count, length}), n::from_vector(latent, {count, length})};
+  };
+  const auto fit = simulate(512, 7332).first;
+  const auto [test, latent] = simulate(128, 7333);
+  n::ParameterStore parameters;
+  const auto raw_q = parameters.get("raw_q", {}, n::init::constant(-1.5));
+  const auto raw_r = parameters.get("raw_r", {}, n::init::constant(-1.5));
+  const auto filter = [&](const n::Tensor& observations) {
+    return n::differentiable_kalman(observations, transition, raw_q, raw_r);
+  };
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .03, config);
+  n::BatchOrder order(fit.size(0), 32, 7334);
+  std::vector<double> epochs{0, 1, 2, 3}, losses;
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    if (epoch > 0) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        auto result = filter(n::take_rows(fit, rows));
+        optimizer.step(n::grad(result.objective, parameters.parameters()));
+      }
+    }
+    n::NoGradGuard guard;
+    losses.push_back(filter(fit).objective.item());
+  }
+  const auto result = filter(test);
+  const auto gradient = n::grad(result.objective, parameters.parameters());
+  n::NoGradGuard guard;
+  const auto rmse = [&](const n::Tensor& value) {
+    return n::sqrt(n::mean(n::square(value - latent))).item();
+  };
+  std::println("Fit NLL went from {:.6f} to {:.6f}. Learned process variance was {:.6f} "
+               "and measurement variance was {:.6f}.\n", losses.front(), losses.back(),
+               result.process_variance.item(), result.measurement_variance.item());
+  std::println("Held-out RMSE was {:.6f} after filtering and {:.6f} for the raw readings.",
+               rmse(result.filtered), rmse(test));
+
+  const std::string folder = "build/differentiable_kalman/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "recurrence.npz", {
+      {"observed", test.reshape({-1, length, 1})}, {"latent", latent.reshape({-1, length, 1})},
+      {"filtered", result.filtered}, {"prior", result.prior}, {"variance", result.variance},
+      {"covariance", result.covariance}, {"objective", result.objective},
+      {"q", result.process_variance}, {"r", result.measurement_variance},
+      {"raw_q", raw_q}, {"raw_r", raw_r}, {"grad_q", gradient[0]}, {"grad_r", gradient[1]}});
+
+  std::vector<double> time(length);
+  std::iota(time.begin(), time.end(), 1);
+  auto trace = dm::graphics::RPlot::create();
+  trace.points(time, n::select(test, 0, 0).to_vector<double>(), "Measured", {92,102,120}, 3)
+      .lines(time, n::select(latent, 0, 0).to_vector<double>(), "Latent", {30,41,59}, 2)
+      .lines(time, n::select(result.filtered, 0, 0).to_vector<double>(), "Filtered", {37,99,235})
+      .title("First held-out sequence").x_label("Time").y_label("State");
+  auto objective = dm::graphics::RPlot::create();
+  objective.lines(epochs, losses, "Fit NLL", {191,88,34})
+      .points(epochs, losses, "", {191,88,34}, 3)
+      .title("Innovation likelihood during training").x_label("Epoch").y_label("Mean negative log-likelihood");
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 430);
+  layout.add(trace).add(objective).save_svg(folder + "filter.svg");
+  std::filesystem::copy_file(folder + "filter.svg", "figures/differentiable_kalman.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Fit NLL went from 0.951179 to 0.893426. Learned process variance was 0.065225 and measurement variance was 0.232964.
+
+Held-out RMSE was 0.266351 after filtering and 0.501840 for the raw readings.
+\image(figures/differentiable_kalman.svg)
+// result_end
+
+The fitted filter reduces latent-state error on the test set. The fitted
+variances reflect a short training run and finite simulated data.

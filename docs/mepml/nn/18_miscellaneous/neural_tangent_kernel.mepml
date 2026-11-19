@@ -1,0 +1,120 @@
+//? Title: Finite-width ReLU neural tangent kernels
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Compute the parameter-gradient Gram matrix for a two-layer network at
+initialization. Compare the kernels at widths 32, 512, and 8,192 with
+the infinite-width expression and fit a ridge predictor with each kernel.
+)
+
+> From a parameter Jacobian to a kernel
+
+A kernel entry is the dot product between the parameter gradients of the
+network output on two inputs. Here the scalar output is the sum of
+weighted ReLU activations divided by the square root of hidden width.
+The gradient with respect to the output weights contributes an activation
+Gram matrix. Differentiating through the hidden weights contributes a
+second term that combines input dot products, ReLU gates, and squared
+output weights.
+
+Under independent standard normal weights, the infinite-width limit
+depends on the input norms and the angle between them. The probability
+that both Gaussian projections are positive is \((\pi-\theta)/(2\pi)\).
+The limiting kernel includes the contributions from differentiating
+both layers. The finite implementation computes the same Gram matrix
+through matrix products without forming the full parameter Jacobian.
+
+> Compare the three widths on the upstream fixture
+
+The first 18 rows fit the kernel ridge model and the remaining ten rows
+measure its predictions. Each width draws its own initial weights.
+The report checks its observed convergence against the limiting kernel
+and compares predictions with a ridge model fitted using that limit.
+
+```{cpp, results="markdown", file="figures/neural_tangent_kernel.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    namespace nn = dm::nn;
+    namespace g = dm::graphics;
+    constexpr int rows = 28, fit = 18, features = 4;
+    nn::set_num_threads(2);
+    std::mt19937 rng(83145);
+    std::normal_distribution<double> normal;
+    const auto draw = [&](int n) {
+        std::vector<double> out(n);
+        for (auto& v : out) v = normal(rng);
+        return out;
+    };
+    const auto vectors = draw(rows * features);
+    std::vector<double> labels(rows);
+    for (int i = 0; i < rows; ++i) {
+        const int j = i * features;
+        labels[i] = .5 * vectors[j] - .2 * vectors[j + 1] + .1 * vectors[j] * vectors[j + 2];
+    }
+    const auto x = nn::from_vector(vectors, {rows, features});
+    const auto y = nn::from_vector(labels, {rows, 1});
+    const auto actual = nn::slice_axis(y, 0, fit, rows);
+    const auto prediction = [&](const auto& gram) {
+        const auto fitting_columns = nn::slice_axis(gram, 1, 0, fit);
+        const auto system = nn::slice_axis(fitting_columns, 0, 0, fit) + .025 * nn::eye(fit, nn::DType::Float64);
+        const auto alpha = nn::solve(system, nn::slice_axis(y, 0, 0, fit));
+        return nn::matmul(nn::slice_axis(fitting_columns, 0, fit, rows), alpha);
+    };
+    const auto limit = nn::relu_neural_tangent_kernel_limit(x);
+    const auto reference = prediction(limit);
+    nn::NamedTensors archive{{"x", x}, {"target", y}, {"limit", limit}, {"limit_prediction", reference}};
+    std::vector<double> log_widths, errors, indices(rows - fit);
+    std::iota(indices.begin(), indices.end(), 1);
+    auto compare = g::RPlot::create().title("Kernel ridge predictions")
+        .x_label("Held-out row").y_label("Response")
+        .points(indices, actual.to_vector<double>(), "Target", {45, 48, 55})
+        .lines(indices, reference.to_vector<double>(), "Infinite width", {35, 115, 175});
+    for (int width : {32, 512, 8192}) {
+        const auto w = nn::from_vector(draw(features * width), {features, width});
+        const auto a = nn::from_vector(draw(width));
+        const auto gram = nn::relu_neural_tangent_kernel(x, w, a);
+        const auto pred = prediction(gram);
+        const double error = std::sqrt((nn::sum(nn::square(gram - limit)) / nn::sum(nn::square(limit))).item());
+        if (!errors.empty() && !(error < errors.back()))
+            throw std::runtime_error("Kernel error does not decrease on the upstream fixture");
+        errors.push_back(error);
+        log_widths.push_back(std::log2(width));
+        const auto suffix = std::to_string(width);
+        archive.emplace_back("kernel_" + suffix, gram);
+        archive.emplace_back("prediction_" + suffix, pred);
+        if (width == 8192)
+            compare.lines(indices, pred.to_vector<double>(), "Width 8192", {189, 67, 45});
+        std::print("Width {}. Relative kernel error {:.6f}. Prediction MSE versus limit {:.6g}.\n\n",
+                   width, error, nn::mean(nn::square(pred - reference)).item());
+    }
+    if (errors.back() > .08) throw std::runtime_error("Wide kernel differs from its limit");
+    auto convergence = g::RPlot::create().title("Convergence on the fixed fixture")
+        .x_label("Hidden width").y_label("Relative Frobenius error")
+        .x_ticks(log_widths, {"32", "512", "8192"})
+        .lines(log_widths, errors, "Empirical kernel", {189, 67, 45});
+    std::filesystem::create_directories("build");
+    g::RLayout::create(1, 2).size(1000, 410).add(convergence).add(compare)
+        .save_svg("build/neural_tangent_kernel.svg");
+    nn::save_npz("build/neural_tangent_kernel.npz", archive);
+}
+```
+// result_begin: markdown
+Width 32. Relative kernel error 0.495540. Prediction MSE versus limit 0.00720527.
+
+Width 512. Relative kernel error 0.071620. Prediction MSE versus limit 6.39159e-05.
+
+Width 8192. Relative kernel error 0.016437. Prediction MSE versus limit 4.53718e-05.
+
+\image(figures/neural_tangent_kernel.svg)
+// result_end
+
+The left plot shows relative kernel error on the fixed 28-row matrix.
+The right plot compares the wide and limiting readouts on the held-out
+rows. The decreasing error is a result of this fixture. It is not a
+guarantee that independent random draws will improve monotonically.
+
+> Reference
+
+- [Jacot, Gabriel and Hongler, Neural Tangent Kernel|https://arxiv.org/abs/1806.07572].

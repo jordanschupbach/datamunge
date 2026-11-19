@@ -132,16 +132,42 @@ int main() {
 \caption(Both FFT grids locate the same 1 kHz tone; one-sided Parseval recovers window energy.)
 \alttext(Both FFT grids locate the same 1 kHz tone; one-sided Parseval recovers window energy.)
 
->> Storage and the silence floor
+>> Cepstral coefficients, storage and the silence floor
+
+A type-II discrete cosine transform of the log-mel bands produces
+mel-frequency cepstral coefficients (MFCCs). Keeping the first 13
+coefficients summarizes the smooth spectral envelope. The example first
+checks the cosine sum on a single frame, then checks that a signal too
+short for a complete analysis window yields zero MFCC frames.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 int main() {
   namespace n=dm::nn;
-  const auto samples=n::tensor({-.5,-.1,0,.1,.5},{5,1});
+  const auto samples=n::tensor({-.5,.5,-.1,.1,0,0,.1,-.1,.5,-.5},{5,2});
   const auto wave=n::decode_wav(n::encode_wav(samples,8000));
   const auto weights=n::linear_to_mel_weight_matrix(20,129,8000,0,4000);
   const auto silent=n::log_mel_spectrogram(n::power_spectrogram(n::stft(n::zeros({256}),256,128,256)),weights);
+  const auto tone = n::sin(n::arange(0,2048,1,n::DType::Float64) *
+                           (2 * std::numbers::pi * 1000 / 8000));
+  const auto log_mel = n::log_mel_spectrogram(n::power_spectrogram(n::stft(tone,256,128,256)),weights);
+  const auto mfcc = n::slice_axis(n::mfccs_from_log_mel_spectrograms(log_mel),1,0,13);
+  const auto short_power = n::power_spectrogram(n::stft(n::zeros({10}),256,128,256));
+  const auto short_mfcc = n::slice_axis(
+      n::mfccs_from_log_mel_spectrograms(n::log_mel_spectrogram(short_power,weights)),1,0,13);
+  if (log_mel.shape() != n::Shape{15,20} || mfcc.shape() != n::Shape{15,13} ||
+      short_power.shape() != n::Shape{0,129} || short_mfcc.shape() != n::Shape{0,13})
+    throw std::runtime_error("Unexpected spectral feature dimensions");
+  double mfcc_error = 0.;
+  for (int k = 0; k < 13; ++k) {
+    double coefficient = 0.;
+    for (int m = 0; m < 20; ++m)
+      coefficient += log_mel.at({0,m}) * std::cos(std::numbers::pi * k * (2*m + 1) / 40.);
+    mfcc_error = std::max(mfcc_error, std::abs(mfcc.at({0,k}) - coefficient * std::sqrt(.1)));
+  }
+  if (!(mfcc_error < 1e-11) || wave.sample_rate != 8000 || wave.samples.shape() != samples.shape())
+    throw std::runtime_error("MFCC reference or stereo WAV round trip disagreed");
+  std::print("MFCC shape [15, 13], independent DCT error {:.1e}. Short signals preserve zero frames.\n\n", mfcc_error);
   const double error=n::max(n::abs(wave.samples-samples)).item();
   if(error>1./32768 || std::abs(n::mean(silent).item()-std::log(1e-6))>2e-6) return 1;
   std::print("PCM16 maximum error: {:.9f}; sample rate: {} Hz.\n\nSilence log-mel mean: {:.6f}; short-signal frames: {}.\n",
@@ -149,6 +175,8 @@ int main() {
 }
 ```
 // result_begin: markdown
+MFCC shape [15, 13], independent DCT error 5.3e-15. Short signals preserve zero frames.
+
 PCM16 maximum error: 0.000006102; sample rate: 8000 Hz.
 
 Silence log-mel mean: -13.815511; short-signal frames: 0.

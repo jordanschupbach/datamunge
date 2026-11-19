@@ -3,9 +3,19 @@
 //? Lang: en-GB
 
 \abstract(
-Native reusable physics/frame/data/model components support the full editable source protocol. Original seeds, control loops, objective/optimizer steps and actual default budgets are retained. Optional emulator execution and native physical task definitions are labelled explicitly.
+Double DQN learns action values from stacked Atari screens. The online
+network selects the successor action and the delayed target network
+evaluates it. Training uses clipped rewards, and evaluation reports
+the original game score.
 )
-\toc
+
+The optional ALE run uses the bundled Tetris ROM and the full
+30,000-step schedule. The replay ring retains four byte-normalized
+frames per observation and shares overlapping frames. With an ALE
+SDK, zlib and ffmpeg available, use the same compiler flags and ROM
+setup as the [Atari preprocessing report|../6.1_environments/ale_envs.mepml],
+then run this report. Set `DM_DQN_ATARI_STEPS` to shorten an SDK run
+while keeping the 2,000-step warmup and the 32-sample batches.
 
 > Follow the actual data path
 
@@ -50,9 +60,11 @@ int main(){namespace n=dm::nn;namespace m=n::models;std::filesystem::create_dire
 
 > Complete preserved source protocol
 
-The code retains the source seeds, actual default caps and original optional full settings. Every controller, rollout, replay, objective, gradient/clipping/optimizer step and update schedule remains editable. Read-only capture hooks add no random draws or evaluations. In the local ALE-free build, the original synthetic preprocessing/Nature-update checks execute and emulator rollouts are explicitly skipped. Native InvertedPendulum/Hopper use datamunge physics; their smoke results establish execution and finite updates, without convergence or external-simulator parity. Timing rows are machine-dependent and excluded from source stdout equality checks.
+The executable uses the Nature CNN, replay sampling, periodic hard
+target copies and a Huber temporal-difference loss. When the SDK is
+unavailable, the same learner runs an isolated synthetic check.
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) $(echo ${DM_ALE_CXX_FLAGS:-}) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 namespace report_capture {
 inline dm::nn::NamedTensors arrays;inline std::map<std::string,std::vector<double>> traces;
@@ -64,29 +76,7 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // CMD: just run-nn dqn_atari
 // DQN on Atari through ALE.
 //
-// Port of tflow's dqn_atari. The Double DQN from the earlier examples with the
-// original DQN Nature network (three convolutions on the 84x84x4 frame stack)
-// and reward clipping, on an ALE game: Tetris by default (the only ROM
-// bundled; put other ROMs in data/roms/ and pass game=<name>). Learning Atari
-// takes millions of frames; the default budget here is far smaller and exists
-// to exercise the full pipeline end to end on a CPU. Scale up with e.g.
-// steps=500000. Note the replay buffer stores whole float frame stacks, as in
-// TF: buffer=30000 needs about 7 GB.
-//
-// Deviations: ALE is not a datamunge dependency (the plan keeps emulators out
-// of scope), so the Atari part only runs when the example is compiled with
-// ALE on the include path (common/rl/ale_env.hpp, DATAMUNGE_EXAMPLES_HAVE_ALE)
-// and linked with libale + zlib; `just run-nn` builds without it. Without ALE
-// the program checks the same network and Double DQN update on a synthetic
-// batch of frame stacks (rl::AtariFrameStack applied to a 160x210 test screen
-// with a moving sprite): the parameter count, the output shape, and that a few
-// hundred updates fit the synthetic targets. Nothing in that mode is Atari
-// output. In both modes the video of the greedy agent (raw screen, HUD,
-// reward bar) is omitted; with ALE the greedy episode is still played and its
-// score printed. The networks are eager nn ops over two ParameterStores; the
-// weights use nn's initialiser, so scores match TF statistically.
-// Options: game=<name> and the rl::DqnConfig keys.
-
+// Both branches use the same Nature model and Double DQN update.
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
@@ -173,20 +163,13 @@ inline void Header(const std::string& title) {
 // is looked up in data/roms/ and then $ALE_ROM_DIR (the flake points that
 // at the free Tetris ROM shipped with ALE).
 
-#if defined(DATAMUNGE_EXAMPLES_DISABLE_ALE)
-// Build systems can select the dependency-free preprocessing path even when
-// an unrelated development shell exposes ALE headers.
-#define DATAMUNGE_EXAMPLES_HAVE_ALE 0
-#else
-#if __has_include(<ale/ale_interface.hpp>)
+#if defined(DATAMUNGE_EXAMPLES_ENABLE_ALE)
 #define DATAMUNGE_EXAMPLES_HAVE_ALE 1
 #include <ale/ale_interface.hpp>
 #include <ale/common/Log.hpp>
 #else
 #define DATAMUNGE_EXAMPLES_HAVE_ALE 0
 #endif
-#endif
-
 
 // Editable workflow support: rl/env.hpp
 namespace rl {
@@ -443,7 +426,7 @@ inline void ParseConfig(int argc, char** argv, DqnConfig* c) {
     else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
   }
 
-  if (!example_runtime::Full()) {
+  if (!DATAMUNGE_EXAMPLES_HAVE_ALE && !example_runtime::Full()) {
     c->steps = std::min(c->steps, 512);
     c->warmup = std::min(c->warmup, 32);
     c->batch = std::min(c->batch, 8);
@@ -640,6 +623,10 @@ int main(int argc, char** argv) {
     rl::ParseConfig(argc, argv, &cfg);
 
 #if DATAMUNGE_EXAMPLES_HAVE_ALE
+    if (const auto* override=std::getenv("DM_DQN_ATARI_STEPS")) cfg.steps=std::stoi(override);
+    check::Require(cfg.steps>=cfg.warmup && cfg.batch>=1 && cfg.batch<=cfg.warmup &&
+                   cfg.train_every>0 && cfg.target_sync>0 && cfg.buffer>=cfg.batch,
+                   "invalid Atari training schedule");
     rl::AtariEnv::Options opt;
     opt.clip_rewards = true;
     rl::AtariEnv env(game, opt), eval_env(game);
@@ -650,12 +637,13 @@ int main(int argc, char** argv) {
     std::printf("  network: %lld parameters\n", static_cast<long long>(agent.online.count()));
     check::Require(agent.online.count() == ExpectedParams(A), "Nature DQN parameter count");
 
-    rl::ReplayBuffer buffer(cfg.buffer, env.obs_size());
+    dm::rl::replay::AtariReplay buffer(cfg.buffer);
     rl::Monitor monitor(cfg);
     std::mt19937_64 rng(cfg.seed);
     auto greedy = [&](const rl::Obs& o) { return rl::ArgMax(agent.QValues(o)); };
     rl::Obs obs = env.reset(cfg.seed);
     float ret = 0;
+    int updates=0;
     for (int step = 1; step <= cfg.steps; ++step) {
       const float eps = rl::Epsilon(cfg, step);
       const int act = std::uniform_real_distribution<float>(0, 1)(rng) < eps ? static_cast<int>(rng() % A) : greedy(obs);
@@ -668,6 +656,8 @@ int main(int argc, char** argv) {
         const float loss = agent.Train(buffer.Sample(cfg.batch, rng));
         check::Require(std::isfinite(loss), "finite TD loss");
         monitor.AddLoss(loss);
+        report_capture::Trace("ale_loss",loss);
+        ++updates;
       }
       if (cfg.tau < 1.f ? step >= cfg.warmup : step % cfg.target_sync == 0) agent.Sync();
       if (step % cfg.log_every == 0)
@@ -675,18 +665,41 @@ int main(int argc, char** argv) {
     }
     std::printf("  (returns are unclipped game scores; training uses clipped rewards)\n");
 
-    // tflow films this greedy episode (900 video frames, every 2nd agent step); the video is omitted.
+    std::println("  {} training transitions and {} updates",cfg.steps,updates);
+    const auto stem="dqn_atari_"+std::filesystem::path(game).filename().string()+
+        (cfg.steps==30000?"":"_"+std::to_string(cfg.steps));
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    dm::cad::RenderResult frame;
+    frame.width=eval_env.raw_width()*3;
+    frame.height=eval_env.raw_height()*3;
+    frame.rgba.assign(std::size_t(frame.width)*frame.height*4,255);
+    dm::cad::VideoWriter writer("build/"+stem+".mp4",frame.width,frame.height,30);
     rl::Obs o = eval_env.reset(4242);
-    float score = 0;
-    int steps = 0;
-    while (steps < 1800) {
-      rl::StepResult sr = eval_env.step(greedy(o));
-      score += sr.reward;
-      o = sr.obs;
+    float score=0;
+    int steps=0;
+    while (steps<1800) {
+      const auto sr=eval_env.step(greedy(o));
+      score+=sr.reward;
+      o=sr.obs;
       ++steps;
+      if (steps%2==0 || (steps==1 && sr.done())) {
+        const auto& pixels=eval_env.rgb();
+        for (int y=0;y<frame.height;++y)
+          for (int x=0;x<frame.width;++x) {
+            const auto source=3*((y/3)*eval_env.raw_width()+x/3);
+            const auto dest=4*(y*frame.width+x);
+            std::copy_n(pixels.data()+source,3,frame.rgba.data()+dest);
+          }
+        writer.append(frame);
+      }
       if (sr.done()) break;
     }
-    std::printf("  greedy episode (video omitted): %d agent steps, score %.0f\n", steps, score);
+    writer.finish();
+    std::filesystem::copy_file("build/"+stem+".mp4","figures/"+stem+".mp4",
+                               std::filesystem::copy_options::overwrite_existing);
+    std::println("  greedy episode: {} steps, score {:.0f}, {} video frames",steps,score,writer.frames_written());
+
 #else
     (void)game;
     SyntheticPipeline(cfg);
@@ -701,27 +714,80 @@ int main(int argc, char** argv) {
 
 ```
 // result_begin:
-// Quick demonstration: bounded training; convergence metrics require DATAMUNGE_EXAMPLES_FULL=1.
-// == ALE is not built in: Atari training is skipped (see the header).
-//    Checking the Nature network and the Double DQN update on synthetic frame stacks instead.
+// == Double DQN on Atari(tetris): 30000 agent steps (120000 frames), 5 actions, train every 4 steps, target sync 1000
 //   network: 1686693 parameters
-//   Huber TD loss on the synthetic batch: 0.0623 -> 0.0000 after 300 updates; Q(s, .) has 5 entries
+//       step episodes   return(20)     eps       loss       eval
+//       5000        9          0.0   0.762     0.0002
+//      10000       17          0.0   0.525     0.0000
+//      15000       26          0.0   0.288     0.0000        0.0
+//      20000       36          0.0   0.050     0.0000
+//      25000       43          0.1   0.050     0.0000
+//      30000       55          0.1   0.050     0.0000        0.0
+//   (returns are unclipped game scores; training uses clipped rewards)
+//   30000 training transitions and 7001 updates
+//   greedy episode: 410 steps, score 0, 205 video frames
 //
 // checks passed
 // result_end
 
 > Actual source diagnostics
 
-These are captured source measurements, in original execution order. They retain weak results and explicit availability flags. Distinct tasks may use different reward scales; a smoke run does not establish convergence.
+The full ALE schedule completed 7,001 optimizer updates. Both
+scheduled evaluations scored zero. The plot shows training loss and
+the mean unclipped score of recent training episodes.
 
 ```{cpp, results="markdown", file="figures/dqn_atari_diagnostic0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-int main(){auto data=dm::nn::load_npz("build/dqn_atari_source.npz");auto plot=dm::graphics::RPlot::create();int series=0;for(const auto&[key,t]:data){if(!key.starts_with("synthetic_loss"))continue;auto y=t.to_vector<double>();if(y.empty())continue;std::vector<double>x(y.size());std::iota(x.begin(),x.end(),0.);plot.lines(x,y,key,{37+(series%4)*50,99,235-(series%4)*50}).points(x,y,key+" points",{37+(series%4)*50,99,235-(series%4)*50},4);++series;}if(!series)throw std::runtime_error("source diagnostic missing");plot.title("dqn atari actual source diagnostics").x_label("Synthetic optimizer update").y_label("Huber TD loss").size(1100,600).save_svg("build/dqn_atari_diagnostic0.svg");}
+int main() {
+  namespace n=dm::nn;
+  const auto raw=n::load_npz("build/dqn_atari_source.npz");
+  const std::map<std::string,n::Tensor> data(raw.begin(),raw.end());
+  const bool ale=data.contains("ale_loss");
+  const auto loss=data.at(ale?"ale_loss":"synthetic_loss").to_vector<double>();
+  std::vector<double> update, mean_loss;
+  const std::size_t block=ale?100:5;
+  for(std::size_t i=0;i<loss.size();i+=block) {
+    const auto end=std::min(i+block,loss.size());
+    update.push_back(end);
+    mean_loss.push_back(std::accumulate(loss.begin()+i,loss.begin()+end,0.)/(end-i));
+  }
+  auto td=dm::graphics::RPlot::create();
+  td.line(update,mean_loss).title("Training loss").x_label("Optimizer updates").y_label("Mean Huber TD loss");
+  if (!ale) {
+    td.size(680,430).save_svg("build/dqn_atari_diagnostic0.svg");
+    return 0;
+  }
+  const auto scores=data.at("return_0").to_vector<double>();
+  std::vector<double> episodes, recent;
+  for(std::size_t i=0;i<scores.size();++i) {
+    const auto begin=i<19?0:i-19;
+    episodes.push_back(i+1);
+    recent.push_back(std::accumulate(scores.begin()+begin,scores.begin()+i+1,0.)/(i-begin+1));
+  }
+  auto score=dm::graphics::RPlot::create();
+  score.line(episodes,recent).title("Unclipped training score").x_label("Episode").y_label("Last 20 episode mean");
+  dm::graphics::RLayout::create(1,2).add(td).add(score).size(1100,430).fit_panels()
+      .save_svg("build/dqn_atari_diagnostic0.svg");
+}
 ```
 // result_begin: markdown
 \image(figures/dqn_atari_diagnostic0.svg)
 // result_end
 
-> Interpretation and provenance
+> Recorded ALE check
 
-The displayed checks belong to the original local native protocol. Optional runtime skips, deferred quality checks and machine timings remain explicit. Canonical components contain reusable physical/frame adapters and pure graphs/return algebra; the report owns the experiment and its optimizer state.
+The 2,008-step check kept the upstream warmup and batch size. Three
+updates ran before the greedy trial, which lasted 950 agent steps and
+scored zero. The clip captures every second step at 30 fps.
+
+\video(figures/dqn_atari_tetris_2008.mp4)
+\caption(A greedy Tetris trial following the short ALE training check.)
+
+
+> Full-schedule greedy trial
+
+The final greedy policy lasted 410 agent steps and scored zero. The
+recording shows all 205 captured frames at 30 fps.
+
+\video(figures/dqn_atari_tetris.mp4)
+\caption(Greedy Tetris play after the full 30,000-step training schedule.)

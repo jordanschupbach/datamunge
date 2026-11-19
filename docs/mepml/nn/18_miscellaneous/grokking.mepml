@@ -1,0 +1,147 @@
+//? Title: Grokking modular addition with a quadratic network
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit modular addition on a fixed subset of ordered operand pairs. Track
+training and held-out accuracy for 5,500 updates with and without weight
+decay to measure delayed generalization.
+)
+
+> Learn a table of sums from partial observations
+
+The task is to predict \((a+b)\bmod 17\) from two concatenated one-hot
+vectors. A fixed ordering puts 231 of the 289 ordered pairs into the
+training set. The network has a width-64 hidden layer with a square
+activation and a linear readout. Squaring a sum produces an interaction
+term, so the hidden units can combine information from both operands.
+
+Grokking describes a delayed improvement in held-out performance after
+the model fits the training data. This experiment compares two runs
+with the same initialization and full-batch updates. In the second run,
+AdamW applies a separate shrinkage step to the weights. The held-out
+pairs are evaluated at fixed checkpoints and never contribute gradients
+or determine when training stops.
+
+> Run both upstream configurations
+
+The generator below reproduces the source ordering and initial weights.
+The forward pass, loss, gradients, and optimizer all use Datamunge's
+existing NN API.
+
+```{cpp, results="markdown", file="figures/grokking.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+
+std::uint32_t mix(std::uint32_t x) {
+    x = (x ^ (x >> 16)) * 0x7feb352dU;
+    x = (x ^ (x >> 15)) * 0x846ca68bU;
+    return x ^ (x >> 16);
+}
+
+int main() {
+    constexpr int prime = 17, rows = prime * prime, train = 231, test = rows - train;
+    constexpr int hidden = 64, steps = 5500, every = 250;
+    nn::set_num_threads(2);
+    std::vector<std::int32_t> ids(rows);
+    std::iota(ids.begin(), ids.end(), 0);
+    std::ranges::sort(ids, {}, [](auto id) { return mix(id + 15818U); });
+    std::vector<double> features(rows * 2 * prime), targets(rows * prime);
+    std::vector<std::int32_t> label(rows);
+    for (int i = 0; i < rows; ++i) {
+        const auto a = ids[i] / prime, b = ids[i] % prime;
+        features[i * 2 * prime + a] = 1;
+        features[i * 2 * prime + prime + b] = 1;
+        label[i] = (a + b) % prime;
+        targets[i * prime + label[i]] = 1;
+    }
+    const auto x = nn::from_vector(features, {rows, 2 * prime});
+    const auto y = nn::from_vector(targets, {rows, prime});
+    const auto fit_x = nn::slice_axis(x, 0, 0, train);
+    const auto fit_y = nn::slice_axis(y, 0, 0, train);
+    nn::NamedTensors archive{{"ids", nn::from_vector(ids)}, {"x", x}, {"y", y}};
+    const auto initial = [](int m, int n, std::uint32_t seed) {
+        std::vector<double> weights(m * n);
+        for (std::size_t i = 0; i < weights.size(); ++i)
+            weights[i] = .25 * (2. * mix(seed + static_cast<std::uint32_t>(i)) / 4294967296. - 1.);
+        return nn::from_vector(weights, {m, n}).requires_grad_();
+    };
+
+    namespace g = dm::graphics;
+    auto plots = g::RLayout::create(1, 2).size(1020, 410);
+    int best_without_decay = 0;
+    std::print("| Setting | First perfect training checkpoint | First test checkpoint with 55 correct | Best test score |\n"
+               "|:---|---:|---:|---:|\n");
+    for (const double decay : {0., 1.}) {
+        const auto w = initial(2 * prime, hidden, 12000), v = initial(hidden, prime, 25000);
+        const std::vector<nn::Tensor> weights{w, v};
+        nn::Optimizer optimizer(weights, .01, {.kind = nn::OptimizerKind::AdamW, .weight_decay = decay});
+        const auto predict = [&](const auto& input) {
+            return nn::matmul(nn::square(nn::matmul(input, w)), v);
+        };
+        std::vector<std::int32_t> counts;
+        std::vector<double> scores, checkpoints, train_accuracy, test_accuracy;
+        int first_train = -1, first_test = -1, best_test = 0;
+        for (int step = 0; step <= steps; ++step) {
+            if (step % every == 0) {
+                const nn::NoGradGuard guard;
+                const auto logits = predict(x);
+                const auto values = logits.to_vector<double>();
+                scores.insert(scores.end(), values.begin(), values.end());
+                const auto choices = nn::argmax(logits, 1).to_vector<std::int32_t>();
+                int train_correct = 0, test_correct = 0;
+                for (int row = 0; row < rows; ++row)
+                    if (choices[row] == label[row]) ++(row < train ? train_correct : test_correct);
+                if (train_correct == train && first_train < 0) first_train = step;
+                if (test_correct >= 55 && first_test < 0) first_test = step;
+                best_test = std::max(best_test, test_correct);
+                counts.insert(counts.end(), {step, train_correct, test_correct});
+                checkpoints.push_back(step);
+                train_accuracy.push_back(double(train_correct) / train);
+                test_accuracy.push_back(double(test_correct) / test);
+            }
+            if (step == steps) break;
+            const auto error = nn::softmax_cross_entropy(predict(fit_x), fit_y);
+            optimizer.step(nn::grad(error, weights));
+        }
+        if (decay == 0) best_without_decay = best_test;
+        else if (first_train < 0 || first_test < first_train + 1000 || best_test <= best_without_decay)
+            throw std::runtime_error("Missing the upstream delayed generalization pattern");
+        const std::string name = decay == 0 ? "no_decay" : "weight_decay";
+        const auto n = static_cast<std::int64_t>(checkpoints.size());
+        archive.emplace_back(name + "_counts", nn::from_vector(counts, {n, 3}));
+        archive.emplace_back(name + "_scores", nn::from_vector(scores, {n, rows, prime}));
+        archive.emplace_back(name + "_first", w);
+        archive.emplace_back(name + "_second", v);
+        auto plot = g::RPlot::create().title(decay == 0 ? "AdamW with zero decay" : "AdamW with weight decay")
+            .x_label("Updates").y_label("Fraction correct").y_limits(0, 1.03);
+        plot.lines(checkpoints, train_accuracy, "Training", {33, 103, 166})
+            .lines(checkpoints, test_accuracy, "Held out", {187, 74, 45});
+        plots.add(plot);
+        std::print("| {} | {} | {} | {}/{} |\n", decay == 0 ? "No decay" : "Weight decay",
+                   first_train < 0 ? "—" : std::to_string(first_train),
+                   first_test < 0 ? "—" : std::to_string(first_test), best_test, test);
+    }
+    std::filesystem::create_directories("build");
+    nn::save_npz("build/grokking.npz", archive);
+    plots.save_svg("build/grokking.svg");
+}
+```
+// result_begin: markdown
+| Setting | First perfect training checkpoint | First test checkpoint with 55 correct | Best test score |
+|:---|---:|---:|---:|
+| No decay | 250 | — | 10/58 |
+| Weight decay | 250 | 5500 | 56/58 |
+\image(figures/grokking.svg)
+// result_end
+
+The first qualifying checkpoints are measured on a 250-update grid.
+With decay, the rise in held-out accuracy comes well after the training
+pairs are all correct. The two runs isolate the effect of decay on this
+fixed split and initialization. The result does not establish the
+mechanism of the transition or how often it occurs across different splits.
+
+> Reference
+
+- [Power et al., Grokking|https://arxiv.org/abs/2201.02177].

@@ -707,7 +707,7 @@ int main(int argc, char** argv) {
 // addition epoch=3 validationTokenCE=1.69775
 // addition testTokenCE=1.69509 teacherTokenAccuracy=0.444444 greedyExact=0/32; padding/empty/restore/labelFree/immutable PASS
 // (TF recorded: reversal testTokenCE=2.06084 teacherTokenAccuracy=0.27044 greedyExact=0/32; addition 1.98821 / 0.40566 / 0)
-// wall 0.126929 s
+// wall 0.583182 s
 // result_end
 
 > Inspect the actual saved results

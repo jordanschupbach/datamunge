@@ -1,0 +1,83 @@
+//? Title: Sparse adjacency propagation
+//? Lang: en
+
+> Sparse adjacency propagation
+
+A directed relation maps four source nodes to five receivers. Store each
+nonzero contribution as a coordinate pair and a weight. Propagation
+gathers the source features, weights them, and adds them at the receiver.
+Two parallel edges add together. A receiver without edges gets a zero row.
+
+Reversing the relation applies the transpose. This is also the operation
+that sends a loss gradient back from the receivers to the source features.
+The fixture compares both paths against a dense reference and checks the
+inner-product identity that defines the adjoint.
+
+```{cpp, results="markdown", file="figures/sparse_adjacency.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto coordinates = n::from_vector(std::vector<int>{3, 2, 0, 1, 4, 3, 0, 1, 1, 0, 3, 0}, {6, 2});
+  auto weights = n::tensor({.8, .4, -1., .6, 2., -.5}, {6}, n::DType::Float64).requires_grad_();
+  auto features = n::tensor({1., -2., .5, 1., 3., .25, -1., 2.}, {4, 2}, n::DType::Float64).requires_grad_();
+  const auto incoming = n::tensor({-.1, 1., .3, 2., 4., 1., 2., -.3, .4, .5}, {5, 2}, n::DType::Float64);
+  const auto dense = n::scatter_nd(coordinates, weights, {5, 4});
+
+  const auto forward = n::coo_matmul(coordinates, weights, {5, 4}, features);
+  const auto transpose = n::coo_matmul(coordinates, weights, {5, 4}, incoming, true);
+  const auto packed_features = n::transpose(features, {1, 0}).contiguous();
+  const auto packed = n::coo_matmul(coordinates, weights, {5, 4}, n::transpose(packed_features, {1, 0}));
+  const auto product = n::sum(forward * incoming);
+  const auto gradient = n::grad(product, {features, weights});
+  const auto max_error = [](const n::Tensor &a, const n::Tensor &b) {
+    return n::max(n::abs(a - b)).item();
+  };
+  const double matrix_error = std::max({
+      max_error(forward, n::matmul(dense, features)),
+      max_error(transpose, n::matmul(n::transpose(dense, {1, 0}), incoming)),
+      max_error(forward, packed)});
+  const double adjoint_error = std::abs(product.item() - n::sum(features * transpose).item());
+  const double gradient_error = max_error(gradient.at(0), transpose);
+  if (std::max({matrix_error, adjoint_error, gradient_error}) > 1e-12 ||
+      n::max(n::abs(n::select(forward, 0, 2))).item() != 0)
+    throw std::runtime_error("sparse propagation check failed");
+  std::print("Six COO entries, shape 5×4. Maximum dense error {:.3g}.\n", matrix_error);
+  std::print("Adjoint inner-product error {:.3g}. Feature gradient error {:.3g}.\n",
+             adjoint_error, gradient_error);
+  const auto messages = forward.to_vector<double>();
+  std::print("| receiver | feature 1 | feature 2 |\n|---:|---:|---:|\n");
+  for (int i = 0; i < 5; ++i)
+    std::print("| {} | {:.3f} | {:.3f} |\n", i, messages[2 * i], messages[2 * i + 1]);
+
+  std::filesystem::create_directories("build");
+  n::save_npz("build/sparse_adjacency.npz",
+              {{"indices", coordinates}, {"values", weights}, {"features", features},
+               {"incoming", incoming}, {"forward", forward}, {"transpose", transpose},
+               {"dense", dense}, {"adjoint_b", packed}, {"weight_gradient", gradient.at(1)}});
+  auto adjacency = n::plot_tensor_map(n::reverse(dense, {0}), -2, 2);
+  adjacency.title("Weighted directed relation").x_label("Source column").y_label("Receiver row");
+  auto propagated = n::plot_tensor_map(n::reverse(forward, {0}), -4, 4);
+  propagated.title("Aggregated messages").x_label("Feature channel").y_label("Receiver row");
+  dm::graphics::RLayout::create(1, 2).add(adjacency).add(propagated).size(1000, 460)
+      .fit_panels().save_svg("build/sparse_adjacency.svg");
+}
+```
+// result_begin: markdown
+Six COO entries, shape 5×4. Maximum dense error 2.22e-16.
+Adjoint inner-product error 0. Feature gradient error 0.
+| receiver | feature 1 | feature 2 |
+|---:|---:|---:|
+| 0 | 0.500 | 1.000 |
+| 1 | 2.000 | -4.000 |
+| 2 | 0.000 | 0.000 |
+| 3 | 1.900 | 1.200 |
+| 4 | 1.000 | -2.000 |
+\image(figures/sparse_adjacency.svg)
+// result_end
+\caption(The left panel shows the combined edge weights. The right panel shows the two propagated feature channels. Isolated receiver 2 has a zero row in both.)
+\alttext(Heatmaps of a five-by-four adjacency matrix and its five-by-two propagated features.)
+
+The public COO operation works directly on the coordinate list. The dense
+matrix in this example provides a small reference for checking the result.

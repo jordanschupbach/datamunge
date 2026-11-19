@@ -1,0 +1,130 @@
+//? Title: Shared character BERT for paraphrase retrieval
+//? Lang: en
+
+> Shared character BERT for paraphrase retrieval
+
+Each example describes a person taking an object to a place. The two
+sentence forms express the same event. The shared pretrained encoder
+mean-pools valid character states and normalizes the resulting vectors.
+A symmetric contrastive loss treats matching sentences as positives and
+other sentences in the batch as negatives.
+
+The report splits distinct events and measures retrieval over 64
+held-out paraphrases. It plots validation loss and the final cosine
+matrix. Run the masked-character pretraining report first to produce
+`build/masked_character_weights.npz`. Set `DM_CHARACTER_WEIGHTS` to
+override the checkpoint and `DM_CHARACTER_VOCABULARY` to override the
+65-character vocabulary file.
+
+```{cpp, results="markdown", file="figures/character_sentence_retrieval.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n=dm::nn;
+
+int main() {
+  n::set_num_threads(2);
+  const char *vocab=std::getenv("DM_CHARACTER_VOCABULARY"), *weights=std::getenv("DM_CHARACTER_WEIGHTS");
+  const auto vocabulary=vocab?std::filesystem::path(vocab):
+    std::filesystem::path(dm::datasets::prepare_example_data("character_rnn"))/"vocabulary.txt";
+  std::ifstream file(vocabulary,std::ios::binary);
+  const std::string alphabet{std::istreambuf_iterator<char>(file),{}};
+  if(alphabet.size()!=65) throw std::runtime_error("expected 65-character vocabulary");
+  const std::array<std::string,8> people{"Ada","Ben","Eva","Jim","Leo","Mia","Ned","Sam"};
+  const std::array<std::string,8> objects{"book","ball","pen","bag","cup","box","hat","key"};
+  const std::array<std::string,8> places{"Oslo","Lima","Rome","Riga","Peru","Cuba","York","Pisa"};
+  std::vector<int> ids(512), first(512*64), second(512*64), left_length,right_length;
+  std::iota(ids.begin(),ids.end(),0);
+  std::mt19937 split(41424);
+  std::shuffle(ids.begin(),ids.end(),split);
+  for(int row=0;row<512;++row) {
+    const int id=ids[row];
+    const auto &who=people[id&7], &what=objects[(id>>3)&7], &where=places[(id>>6)&7];
+    const auto encode=[&](const std::string &text,std::vector<int> &tokens,std::vector<int> &length) {
+      length.push_back(text.size());
+      for(std::size_t i=0;i<text.size();++i) {
+        const auto code=alphabet.find(text[i]);
+        if(code==std::string::npos) throw std::runtime_error("unknown character");
+        tokens[row*64+i]=code;
+      }
+    };
+    encode(who+" took the "+what+" to "+where+".",first,left_length);
+    encode("The "+what+" was brought to "+where+" by "+who+".",second,right_length);
+  }
+  const auto a=n::from_vector(first,{512,64}), b=n::from_vector(second,{512,64});
+  const auto al=n::from_vector(left_length), bl=n::from_vector(right_length);
+  n::ParameterStore model(41406);
+  const auto embed=[&](const n::Tensor &t,const n::Tensor &l){return n::character_sentence_embedding(model,t,l);};
+  embed(n::slice_axis(a,0,0,1),n::slice_axis(al,0,0,1));
+  n::NamedTensors dest;
+  for(const auto &name:model.names()) dest.emplace_back(name,model.at(name));
+  n::restore_tensors(dest,n::load_npz(weights?weights:"build/masked_character_weights.npz"),false);
+  const auto contrast=[](const n::Tensor &s) {
+    const auto y=n::arange(0,s.shape()[0],1,n::DType::Int64);
+    return .5*(n::sparse_softmax_cross_entropy(s*12.,y)+n::sparse_softmax_cross_entropy(s.transpose()*12.,y));
+  };
+  const auto forward=[&](const n::Tensor &rows) {
+    const auto left=embed(n::gather(a,rows),n::gather(al,rows));
+    const auto right=embed(n::gather(b,rows),n::gather(bl,rows));
+    return std::array{left,right,n::matmul(left,right.transpose())};
+  };
+  const auto valid=n::arange(384,448,1,n::DType::Int64), test=n::arange(448,512,1,n::DType::Int64);
+  n::Tensor initial;
+  { n::NoGradGuard guard; initial=forward(test)[2]; }
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.002,config);
+  n::BatchOrder order(384,16,41425);
+  std::vector<double> history;
+  std::print("| Epoch | Validation NLL |\n|---:|---:|\n");
+  for(int epoch=0;epoch<=3;++epoch) {
+    { n::NoGradGuard guard; history.push_back(contrast(forward(valid)[2]).item()); }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if(epoch==3) break;
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next())
+      adam.minimize(contrast(forward(n::from_vector(rows))[2]));
+  }
+  n::NoGradGuard guard;
+  const auto [left,right,similarity]=forward(test);
+  const auto held=n::gather(a,test), len=n::gather(al,test);
+  const auto valid_chars=n::less(n::arange(0,64,1,n::DType::Int64),len.reshape({64,1}));
+  if(n::max(n::abs(left-embed(n::where(valid_chars,held,65.),len))).item()>2e-6)
+    throw std::runtime_error("padding changed embeddings");
+  const auto hits=[](const n::Tensor &x) {
+    return n::count_nonzero(n::equal(n::argmax(x,1),n::arange(0,64,1,n::DType::Int64))).item<int>();
+  };
+  std::print("Held-out recall@1 went from {}/64 to {}/64. Final NLL {:.6f}.\n",
+             hits(initial),hits(similarity),contrast(similarity).item());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/character_sentence_retrieval.npz",{{"ids",n::from_vector(ids)},
+      {"first",held},{"second",n::gather(b,test)},{"first_length",len},{"second_length",n::gather(bl,test)},
+      {"left_embedding",left},{"right_embedding",right},{"similarity",similarity},
+      {"initial_similarity",initial},{"loss",contrast(similarity)}});
+  auto curve=dm::graphics::RPlot::create();
+  curve.lines({0.,1.,2.,3.},history,"Validation",{37,99,235})
+      .title("Paraphrase training").x_label("Epoch").y_label("Validation NLL");
+  std::vector<std::vector<double>> columns;
+  for(int i=0;i<64;++i) columns.push_back(n::select(similarity,1,i).to_vector<double>());
+  const auto axis=n::arange(0,64).to_vector<double>();
+  auto heat=dm::graphics::RPlot::create();
+  heat.image(axis,axis,columns,dm::graphics::diverging_colors(32),-1.,1.)
+      .title("Held-out cosine scores").x_label("Paraphrase index").y_label("Query index");
+  dm::graphics::RLayout::create(1,2).add(curve).add(heat).size(1050,440)
+      .fit_panels().save_svg("build/character_sentence_retrieval.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation NLL |
+|---:|---:|
+| 0 | 4.157722 |
+| 1 | 1.615857 |
+| 2 | 0.745840 |
+| 3 | 0.603842 |
+Held-out recall@1 went from 3/64 to 61/64. Final NLL 0.588172.
+\image(figures/character_sentence_retrieval.svg)
+// result_end
+\caption(Validation loss and the held-out query-to-paraphrase score matrix. Matches lie on the diagonal.)
+\alttext(A line plot shows validation loss and a heatmap compares the 64 held-out query and candidate vectors.)
+
+> Reference
+
+- [Reimers and Gurevych (2019), Sentence-BERT](https://aclanthology.org/D19-1410/).

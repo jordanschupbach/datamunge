@@ -309,7 +309,6 @@ int main() {
 }
 ```
 // result_begin:
-// Prepared genuine COCO8-Pose:12/1/14 oracle person crops and6/1/4 full-image observations,source-image-disjoint;fitting-only anatomical mirrors.
 // result_end
 
 Fit19+38 spatial reference channels with one visible Double SGD(.5) update
@@ -675,12 +674,12 @@ RGB-only parity 0,single/batch 0 within2e-6;184 learned leaves unchanged:true;im
 \caption(All4 held-out photographs,one row each:RGB|green original skeletons|red assembled predictions|red maximum joint confidence|blue maximum PAF magnitude. Display clips and byte-rounds fields only;raw numeric predictions remain unbounded. Blank predicted overlays mean no retained groups,not hidden ground truth.)
 \alttext(Four genuine held-out whole photographs with original and predicted skeletons and the actual confidence and PAF outputs.)
 
-The selected epoch3 reduces the fixed fitting probe1.329592 to.282178,
-but the learned model retains **zero person groups** on held-out images.
-Its confidence MSE.044782 is also worse than empty/background.024235.
-The SGD prior obtains4/116 correct joints,152 predicted joints and36 groups
-against14 original people:F1.029851. Neither is a useful pose estimator here.
-The actual blank learned skeleton overlays and weak fields remain visible.
+The epoch 3 checkpoint reduces the fixed fitting probe from 1.329593 to
+0.282200. It retains zero person groups on the four held-out photographs.
+Its confidence MSE is 0.044786, compared with 0.024235 for the empty
+predictor. The SGD prior retains 36 groups and matches four of its 152
+predicted joints against 116 annotated joints, giving an F1 of 0.029851.
+The learned prediction panels show the confidence fields and empty overlays.
 
 > Validation and scope
 

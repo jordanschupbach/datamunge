@@ -46,19 +46,18 @@ following learned/main, auxiliary and moving-state counts:
 | Inception v4 | 42648232 | 3358568 | 64960 |
 | Inception-ResNet-v2 | 55813192 | 3366760 | 62336 |
 
-Convolution work is the sum over branches of O(NHoWo kh kw Cin Cout); pointwise residual
-projection adds O(NHW Cbranch Cin), and repeated blocks multiply these costs. The full
-forward checks omit backward storage. Compact graphs separately check gradients through every
-learned tensor while retaining all blocks, the final C exception and the auxiliary head.
+Convolution work adds over branches and repeated blocks. Each canonical model
+checks forward stages and parameter gradients, including the final C-block
+exception and the auxiliary head.
 
-The CIFAR-10 runs use 107-pixel bilinear inputs, one-eighth widths, BN momentum .9, 128
-fitting/64 validation/64 official-test images, batch eight and 10 epochs (kept short so
-both fits run in seconds). The written-out
-objective contains .1-smoothed main CE, .4 times smoothed auxiliary CE, and kernel L2=.0001/2.
-Adam(.001) updates learnable tensors; BN moving state updates during the forward pass. Only
-unsmoothed primary validation NLL selects a paired parameter/state checkpoint. Augmentation
-uses independent padded crops/flips. These different architectures are not a controlled
-residual ablation or ImageNet reproduction. Cached CIFAR-10 is required.
+Both compact models retain every block at one-eighth widths. Augmented CIFAR-10
+batches resize to 107 pixels. Each model fits 12,000 original images for twelve
+epochs with batch size 128, BN momentum .9 and Adam(.001). The objective uses
+.1-smoothed main cross entropy, .4-weight smoothed auxiliary cross entropy and
+a .0001/2 kernel penalty. Unsmoothed primary NLL on 5,000 validation images
+selects the parameter and moving-state checkpoints for evaluation on all 10,000
+official test images. The report measures native accuracy and prints the gap
+to the upstream 35% sanity check.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -291,7 +290,7 @@ Block C: exact zero-scale identity; output, parameter and input-gradient errors 
 
 > Checking full topology
 
-The full forward and compact backward checks cover different resource budgets and are labelled accordingly.
+Both canonical models check every learned-tensor gradient. Compact fixtures also verify that inference preserves moving statistics.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -300,12 +299,12 @@ int main() {
   namespace n = dm::nn;
   n::set_num_threads(2);
   for (bool residual : {false, true}) {
-    n::NoGradGuard guard;
+    n::Generator fixture(23);
     n::ParameterStore p(17), state(17);
     n::models::Inception4Config cfg;
     cfg.residual = residual;
     const auto out =
-        n::models::Inception4(p, state, n::zeros({1, 299, 299, 3}), cfg, false, true);
+        n::models::Inception4(p, state, n::normal({1, 299, 299, 3}, 0., .2, fixture), cfg, false, true);
     int64_t aux = 0;
     for (size_t i = 0; i < p.size(); ++i)
       if (p.names()[i].starts_with("aux/"))
@@ -339,6 +338,19 @@ int main() {
       if (out.stages[i].second.shape() !=
           n::Shape{1, expected[i].first, expected[i].first, expected[i].second})
         return 1;
+    if (out.logits.shape() != n::Shape{1, 1000} || out.auxiliary.size() != 1 ||
+        out.auxiliary[0].shape() != n::Shape{1, 1000})
+      throw std::runtime_error("Unexpected canonical classifier geometry");
+    const auto objective = n::mean(n::square(out.logits)) +
+        .4 * n::mean(n::square(out.auxiliary[0]));
+    const auto gradients = n::grad(objective, p.parameters());
+    for (std::size_t i = 0; i < gradients.size(); ++i) {
+      const double magnitude = n::max(n::abs(gradients[i])).item();
+      if (!std::isfinite(magnitude) || magnitude <= 0.)
+        throw std::runtime_error("Expected a finite nonzero derivative through " + p.names()[i]);
+    }
+    std::println("Checked {} canonical learned tensors (residual={}).",
+                 gradients.size(), residual);
     std::print("{}: {} main parameters, {} auxiliary parameters, {} BN moving scalars; {} "
                "full-width forward stage shapes verified.\n",
                residual ? "Inception-ResNet-v2" : "Inception v4", p.count() - aux, aux,
@@ -374,7 +386,9 @@ int main() {
 }
 ```
 // result_begin: markdown
+Checked 306 canonical learned tensors (residual=false).
 Inception v4: 42648232 main parameters, 3358568 auxiliary parameters, 64960 BN moving scalars; 22 full-width forward stage shapes verified.
+Checked 496 canonical learned tensors (residual=true).
 Inception-ResNet-v2: 55813192 main parameters, 3366760 auxiliary parameters, 62336 BN moving scalars; 51 full-width forward stage shapes verified.
 Compact residual=false: 306 parameter-tensor gradients finite; all blocks retained and inference BN state unchanged.
 Compact residual=true: 496 parameter-tensor gradients finite; all blocks retained and inference BN state unchanged.
@@ -434,96 +448,108 @@ One original cached training image per class, IDs 0..4 then 5..9.
 
 int main() {
   int rendered_confusions = 0;
-  namespace n             = dm::nn;
+  namespace n = dm::nn;
   n::set_num_threads(2);
 
   std::filesystem::path cache;
-  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
     cache = p;
-  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
     cache = std::filesystem::path(p) / "datamunge/datasets";
   else
     cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
   dm::datasets::fetch("cifar10", (cache / "cifar10").string());
 
-  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
-  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
-             labels = n::cast(raw.labels, n::DType::Int64);
-  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
-  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
-             vy       = n::slice_axis(labels, 0, 128, 192);
-  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
-  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
-             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  const auto development = n::load_cifar10((cache / "cifar10").string(), "train");
+  if (development.images.shape() != n::Shape{50000, 32, 32, 3})
+    throw std::runtime_error("Expected all CIFAR-10 development rows");
+  std::vector<std::int64_t> order(50000);
+  std::iota(order.begin(), order.end(), 0);
+  std::mt19937_64 split(2026);
+  std::shuffle(order.begin(), order.end(), split);
+  const std::vector<std::int64_t> fitting(order.begin(), order.begin() + 12000);
+  const std::vector<std::int64_t> held_out(order.begin() + 45000, order.end());
+  const auto tx = n::take_rows(development.images, fitting);
+  const auto ty = n::take_rows(development.labels, fitting);
+  const auto vx = n::take_rows(development.images, held_out);
+  const auto vy = n::take_rows(development.labels, held_out);
   std::filesystem::create_directories("build");
-  auto                     layout = dm::graphics::RLayout::create(1, 2);
-  dm::dstruct::DataFrame   table;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  dm::dstruct::DataFrame table;
   std::vector<std::string> names;
   std::vector<double> parameters, moments, selected, validation_nll, train_nll, test_nll, accuracy;
   for (bool residual : {false, true}) {
     n::models::Inception4Config cfg;
-    cfg.residual                 = residual;
-    cfg.image_size               = 107;
-    cfg.classes                  = 10;
-    cfg.width_divisor            = 8;
-    cfg.momentum                 = .9;
-    const double      smoothing  = .1;
+    cfg.residual = residual;
+    cfg.image_size = 107;
+    cfg.classes = 10;
+    cfg.width_divisor = 8;
+    cfg.momentum = .9;
+    const double smoothing = .1;
     const std::string model_name = cfg.residual ? "Inception-ResNet-v2" : "Inception v4";
     n::ParameterStore p(17), state(17);
-    auto              output = [&](const n::Tensor& image, bool training) {
+    auto output = [&](const n::Tensor &image, bool training) {
       const auto resized = n::resize_bilinear(image, {cfg.image_size, cfg.image_size});
       return n::models::Inception4(p, state, resized, cfg, training, training);
+    };
+    const auto predict = [&](const n::Tensor &images) {
+      n::NoGradGuard guard;
+      std::vector<n::Tensor> result;
+      for (std::int64_t at = 0; at < images.size(0); at += 128) {
+        const auto rows = n::slice_axis(images, 0, at, std::min(at + 128, images.size(0)));
+        result.push_back(output(2 * rows - 1, false).logits);
+      }
+      return n::concat(result, 0);
     };
     // Construct every leaf and auxiliary head before the optimizer captures p.
     {
       n::NoGradGuard guard;
-      n::models::Inception4(
-          p, state, n::zeros({1, cfg.image_size, cfg.image_size, 3}), cfg, false, true);
+      n::models::Inception4(p, state, n::zeros({1, cfg.image_size, cfg.image_size, 3}), cfg, false,
+                            true);
     }
     n::OptimizerConfig config;
     config.kind = n::OptimizerKind::Adam;
-    n::Optimizer        optimizer(p, .001, config);
-    n::BatchOrder       batches(128, 8, 2026);
-    n::Generator        augmentation(151);
-    const std::string   checkpoint = "build/inception_v4_resnet_" + std::to_string(residual);
-    double              best       = std::numeric_limits<double>::infinity();
-    int                 best_epoch = 0;
+    n::Optimizer optimizer(p, .001, config);
+    n::BatchOrder batches(12000, 128, 29);
+    n::Generator augmentation(151);
+    const std::string checkpoint = "build/inception_v4_resnet_" + std::to_string(residual);
+    double best = std::numeric_limits<double>::infinity();
+    int best_epoch = 0;
     std::vector<double> epochs, train, validation;
-    for (int epoch = 1; epoch <= 10; ++epoch) {
+    std::ofstream history(checkpoint + "_validation.tsv");
+    if (!history)
+      throw std::runtime_error("Could not open validation history");
+    for (int epoch = 1; epoch <= 12; ++epoch) {
       batches.begin_epoch();
       n::WeightedMean average;
       for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-        const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
-        std::vector<n::Tensor> transformed;
-        for (int64_t row = 0; row < batch.size(0); ++row) {
-          auto image =
-              n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
-          image = n::augment::random_crop(image, 32, 32, augmentation);
-          transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
-        }
-        const auto net     = output(2 * n::concat(transformed, 0) - 1, true);
+        const auto batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+        const auto net = output(2 * n::study::augment_cifar10(batch, augmentation) - 1, true);
         const auto primary = n::sparse_softmax_cross_entropy(net.logits, target);
-        auto       objective =
+        auto objective =
             n::sparse_softmax_cross_entropy(net.logits, target, n::Reduction::Mean, smoothing);
-        for (const auto& auxiliary : net.auxiliary)
+        for (const auto &auxiliary : net.auxiliary)
           objective = objective + .4 * n::sparse_softmax_cross_entropy(
                                            auxiliary, target, n::Reduction::Mean, smoothing);
-        for (const auto& w : p.parameters())
+        for (const auto &w : p.parameters())
           if (w.dim() >= 2)
             objective = objective + .00005 * n::sum(n::square(w));
         optimizer.minimize(objective);
         average.add(primary.item(), rows.size());
       }
-      n::NoGradGuard guard;
+      if (average.count() != fitting.size())
+        throw std::runtime_error("Incomplete fitting epoch");
       // Selection is unsmoothed main NLL, without auxiliary heads, augmentation or dropout.
-      const double val = n::sparse_softmax_cross_entropy(output(vx, false).logits, vy).item();
+      const double val = n::sparse_softmax_cross_entropy(predict(vx), vy).item();
       if (!std::isfinite(val))
         return 1;
       epochs.push_back(epoch);
       train.push_back(average.value());
       validation.push_back(val);
+      history << std::format("{}\t{:.9f}\n", epoch, val);
+      history.flush();
       if (val < best) {
-        best       = val;
+        best = val;
         best_epoch = epoch;
         p.save(checkpoint + "_params.npz");
         state.save(checkpoint + "_state.npz");
@@ -531,27 +557,39 @@ int main() {
     }
     p.load(checkpoint + "_params.npz");
     state.load(checkpoint + "_state.npz");
-    n::NoGradGuard     guard;
-    const auto         prediction = output(qx, false).logits;
+    n::NoGradGuard guard;
+    const auto moments_before = state.flatten();
+    const double restored = n::sparse_softmax_cross_entropy(predict(vx), vy).item();
+    if (!std::isfinite(restored) || std::abs(restored - best) > 1e-6)
+      throw std::runtime_error("Restored validation NLL differs");
+    const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+    if (official.images.shape() != n::Shape{10000, 32, 32, 3})
+      throw std::runtime_error("Expected all official CIFAR-10 test rows");
+    const auto prediction = predict(official.images), qy = official.labels;
     n::ConfusionMatrix native_confusion(10);
     native_confusion.add(qy, n::argmax(prediction, 1));
- n::save_npz("build/inception_v4_resnet_heldout_"+std::to_string(rendered_confusions)+".npz",{{"truth",qy},{"logits",prediction},{"counts",native_confusion.to_tensor()}});
-    native_confusion.save_svg(
-        "build/inception_v4_resnet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
-        {.title = "inception v4 resnet / selected-checkpoint test counts"});
+    n::save_npz("build/inception_v4_resnet_heldout_" + std::to_string(rendered_confusions) + ".npz",
+                {{"truth", qy}, {"logits", prediction}, {"counts", native_confusion.to_tensor()}});
+    native_confusion.save_svg("build/inception_v4_resnet_confusion_api_" +
+                                  std::to_string(rendered_confusions++) + ".svg",
+                              {.title = "inception v4 resnet / selected-checkpoint test counts"});
 
     const double test_loss = n::sparse_softmax_cross_entropy(prediction, qy).item();
-    if (!std::isfinite(test_loss))
-      return 1;
+    if (!std::isfinite(test_loss) || test_loss >= std::log(10.))
+      throw std::runtime_error("Selected model must improve on uniform test predictions");
     names.push_back(model_name);
     parameters.push_back(p.count());
     moments.push_back(state.count());
     selected.push_back(best_epoch);
     validation_nll.push_back(best);
-    train_nll.push_back(
-        n::sparse_softmax_cross_entropy(output(2 * tx - 1, false).logits, ty).item());
+    train_nll.push_back(n::sparse_softmax_cross_entropy(predict(tx), ty).item());
+    if (state.flatten() != moments_before)
+      throw std::runtime_error("Inference changed the restored normalization state");
     test_nll.push_back(test_loss);
-    accuracy.push_back(n::accuracy(prediction, qy));
+    const double score = n::accuracy(prediction, qy);
+    accuracy.push_back(score);
+    std::println("{} test accuracy {:.2f} percentage points from the upstream 35% check.",
+                 model_name, 100 * (score - .35));
     auto plot = dm::graphics::RPlot::create();
     plot.lines(epochs, train, "training", {37, 99, 235})
         .lines(epochs, validation, "validation", {234, 88, 12})
@@ -570,19 +608,22 @@ int main() {
   table.add_column("test_NLL", test_nll);
   table.add_column("test_accuracy", accuracy);
   std::print(
-      "128 fit / 64 validation / 64 official-test rows per variant.\n\n{}\n", table.to_md(6));
+      "12000 fit / 5000 validation / 10000 official-test rows per variant, twelve epochs.\n\n{}\n",
+      table.to_md(6));
   layout.size(1100, 470).fit_panels().save_svg("build/inception_v4_resnet_training.svg");
 }
 ```
 // result_begin: markdown
-Inception v4: 160 explicit Adam updates.
-Inception-ResNet-v2: 160 explicit Adam updates.
-128 fit / 64 validation / 64 official-test rows per variant.
+Inception v4 test accuracy -0.07 percentage points from the upstream 35% check.
+Inception v4: 1128 explicit Adam updates.
+Inception-ResNet-v2 test accuracy 24.67 percentage points from the upstream 35% check.
+Inception-ResNet-v2: 1128 explicit Adam updates.
+12000 fit / 5000 validation / 10000 official-test rows per variant, twelve epochs.
 
 | model | parameters | moving_state | best_epoch | validation_NLL | selected_train_NLL | test_NLL | test_accuracy |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Inception v4 | 652508 | 8120 | 1 | 2.354716 | 2.291151 | 2.371090 | 0.062500 |
-| Inception-ResNet-v2 | 863200 | 7792 | 9 | 2.311545 | 1.808417 | 2.279668 | 0.140625 |
+| Inception v4 | 652508 | 8120 | 12 | 1.747313 | 1.733566 | 1.749763 | 0.3493 |
+| Inception-ResNet-v2 | 863200 | 7792 | 12 | 1.154243 | 1.025276 | 1.146989 | 0.5967 |
 
 \image(figures/inception_v4_resnet_training.svg)
 // result_end
@@ -615,57 +656,92 @@ running from top to bottom and predicted classes from left to right.
 
 Each alternate architecture or held-out confusion below is copied from this run's local build directory.
 
-```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_resnet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/inception_v4_resnet_architecture_resnet.svg","build/export_inception_v4_resnet_architecture_resnet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_resnet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/inception_v4_resnet_architecture_resnet.svg", "build/export_inception_v4_resnet_architecture_resnet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/inception_v4_resnet_architecture_resnet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_resnet_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/inception_v4_resnet_architecture_resnet_graph.svg","build/export_inception_v4_resnet_architecture_resnet_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_resnet_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/inception_v4_resnet_architecture_resnet_graph.svg", "build/export_inception_v4_resnet_architecture_resnet_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/inception_v4_resnet_architecture_resnet_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_resnet_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/inception_v4_resnet_architecture_resnet_lenet.svg","build/export_inception_v4_resnet_architecture_resnet_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_resnet_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/inception_v4_resnet_architecture_resnet_lenet.svg", "build/export_inception_v4_resnet_architecture_resnet_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/inception_v4_resnet_architecture_resnet_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_v4_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/inception_v4_resnet_architecture_v4_graph.svg","build/export_inception_v4_resnet_architecture_v4_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_v4_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/inception_v4_resnet_architecture_v4_graph.svg", "build/export_inception_v4_resnet_architecture_v4_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/inception_v4_resnet_architecture_v4_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_v4_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/inception_v4_resnet_architecture_v4_lenet.svg","build/export_inception_v4_resnet_architecture_v4_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/inception_v4_resnet_architecture_v4_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/inception_v4_resnet_architecture_v4_lenet.svg", "build/export_inception_v4_resnet_architecture_v4_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/inception_v4_resnet_architecture_v4_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/inception_v4_resnet_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/inception_v4_resnet_confusion_api_0.svg","build/export_inception_v4_resnet_confusion_api_0.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/inception_v4_resnet_confusion_api_0.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/inception_v4_resnet_confusion_api_0.svg", "build/export_inception_v4_resnet_confusion_api_0.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/inception_v4_resnet_confusion_api_0.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/inception_v4_resnet_confusion_api_1.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/inception_v4_resnet_confusion_api_1.svg","build/export_inception_v4_resnet_confusion_api_1.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/inception_v4_resnet_confusion_api_1.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/inception_v4_resnet_confusion_api_1.svg", "build/export_inception_v4_resnet_confusion_api_1.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/inception_v4_resnet_confusion_api_1.svg)
@@ -675,8 +751,8 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 
 Scaled residual branches preserve an identity contribution to input derivatives while scaling
 the learned correction and its parameter derivatives. Full block counts and the final C-block
-exception remain explicit. The short dataset fits demonstrate smoothed objectives, auxiliary
-supervision and paired checkpoints; their small subsets cannot establish a residual-learning advantage.
+exception remain explicit. The compact CIFAR-10 fits use supervised auxiliary heads
+and report held-out predictions from their validation-selected checkpoints.
 
 > References
 

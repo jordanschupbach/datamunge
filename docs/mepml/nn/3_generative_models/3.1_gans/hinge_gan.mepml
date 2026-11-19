@@ -490,7 +490,7 @@ hinge algebra: D loss=28.1667, G loss=0.25, dG/dfake=[[-0.166667], [-0.166667], 
 epoch 1: diagnostic D loss=0.0371716, G loss=1.12118, coarse MMD=0.120712
 epoch 2: diagnostic D loss=0.0088106, G loss=1.23698, coarse MMD=0.120575
 epoch 3: diagnostic D loss=0.00443996, G loss=1.37568, coarse MMD=0.120437
-fixed FINAL epoch 3, test D/G=0.00340479/1.35383, coarse MMD=0.118199, mean baseline=0.000135779, D real/fake accuracy (threshold 0)=1/1, mean pixel=0.499734, pixel variance=0.00163654; D then G/restore/noiseOnly/immutable PASS (training 1.11649 s)
+fixed FINAL epoch 3, test D/G=0.00340479/1.35383, coarse MMD=0.118199, mean baseline=0.000135779, D real/fake accuracy (threshold 0)=1/1, mean pixel=0.499734, pixel variance=0.00163654; D then G/restore/noiseOnly/immutable PASS (training 0.312736 s)
 Artifacts: build/hinge_gan
 All hinge_gan checks passed.
 \image(figures/hinge_gan_learning.svg)

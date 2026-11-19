@@ -1,0 +1,140 @@
+//? Title: Bayesian Optimization with Expected Improvement
+//? Subtitle: Twelve sequential choices on a fixed candidate grid
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Minimize a multimodal function with 15 objective evaluations. A Gaussian
+process models the observations, and expected improvement chooses each
+new point from a 201-point grid.
+)
+\toc
+
+> Choosing an evaluation
+
+The surrogate has zero prior mean, unit signal variance and an RBF covariance
+with length scale .24. A diagonal term of $10^{-8}$ stabilizes conditioning.
+After each evaluation the report conditions the GP on all available observations.
+
+For predictive mean $\mu$, latent standard deviation $s$, best observed value
+$b$ and margin $\xi=.005$, the improvement is $\max(b-\xi-F,0)$ where
+$F\sim\mathrm{Normal}(\mu,s^2)$. Its expectation is
+
+$$
+\mathrm{EI}=g\Phi(g/s)+s\phi(g/s),\qquad g=b-\xi-\mu.
+$$
+\alttext(Expected improvement combines the gain weighted by the probability of improvement and a term proportional to the predictive standard deviation.)
+
+The optimizer evaluates the first unseen point with the largest EI. Posterior
+uncertainty can give an unseen point high EI even when its mean is above the
+incumbent.
+
+> Fit the surrogate and search
+
+Start at -1, 0 and 1. Each of the next twelve rounds saves posterior means,
+latent variances and acquisitions for all 201 points. The dense objective curve
+and grid optimum are calculated after the sequential search to assess the final
+grid regret.
+
+```{cpp, results="markdown", file="figures/bayesian_optimization_trace.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int size = 201, rounds = 12;
+  const auto objective = [](double x) {
+    const double displacement = x - .3;
+    return std::sin(8. * x) + .35 * std::cos(17. * x) + .22 * displacement * displacement;
+  };
+  std::vector<double> grid(size);
+  for (int i = 0; i < size; ++i)
+    grid[i] = -1. + 2. * i / (size - 1);
+  dm::optim::RBFGaussianProcessSurrogate gp(.24, 1e-8);
+  std::vector<int> indices;
+  std::vector<std::vector<double>> points;
+  std::vector<double> measured, values, incumbent, trace, last_mean, last_variance;
+  std::vector<bool> visited(size);
+  const auto observe = [&](int index) {
+    if (index < 0 || visited[index])
+      throw std::runtime_error("Expected an unseen grid point");
+    visited[index] = true;
+    indices.push_back(index);
+    measured.push_back(grid[index]);
+    points.push_back({grid[index]});
+    values.push_back(objective(grid[index]));
+    incumbent.push_back(*std::ranges::min_element(values));
+  };
+  for (int i : {0, size / 2, size - 1})
+    observe(i);
+
+  for (int round = 0; round < rounds; ++round) {
+    gp.fit(points, values);
+    std::vector<double> mean, variance, acquisition;
+    int choice = -1;
+    double best_score = -1.;
+    for (int i = 0; i < size; ++i) {
+      const auto prediction = gp.predict({grid[i]});
+      const double ei = dm::optim::expected_improvement(
+          prediction.mean, prediction.sd, incumbent.back(), .005);
+      if (!std::isfinite(ei))
+        throw std::runtime_error("Expected finite improvement");
+      mean.push_back(prediction.mean);
+      variance.push_back(prediction.sd * prediction.sd);
+      acquisition.push_back(ei);
+      if (!visited[i] && ei > best_score) {
+        choice = i;
+        best_score = ei;
+      }
+    }
+    for (const auto *series : {&mean, &variance, &acquisition})
+      trace.insert(trace.end(), series->begin(), series->end());
+    last_mean = std::move(mean);
+    last_variance = std::move(variance);
+    observe(choice);
+  }
+
+  std::vector<double> truth, lower, upper;
+  for (int i = 0; i < size; ++i) {
+    truth.push_back(objective(grid[i]));
+    const double margin = 1.96 * std::sqrt(last_variance[i]);
+    lower.push_back(last_mean[i] - margin);
+    upper.push_back(last_mean[i] + margin);
+  }
+  auto band_x = grid;
+  band_x.insert(band_x.end(), grid.rbegin(), grid.rend());
+  lower.insert(lower.end(), upper.rbegin(), upper.rend());
+  auto fit = dm::graphics::RPlot::create();
+  fit.polygon(band_x, lower, dm::RGBA{37, 99, 235, .16})
+      .lines(grid, truth, "objective (audit)", {107, 114, 128})
+      .lines(grid, last_mean, "GP mean before final evaluation", {37, 99, 235})
+      .points(measured, values, "observations", {194, 65, 12})
+      .title("Final acquisition round").x_label("x").y_label("objective");
+  auto convergence = dm::graphics::RPlot::create();
+  convergence.lines(n::arange(1, 16).to_vector<double>(), incumbent, "best observed", {15, 118, 110})
+      .title("Incumbent after each objective evaluation")
+      .x_label("evaluation number").y_label("best objective value");
+  const double regret = incumbent.back() - *std::ranges::min_element(truth);
+  if (incumbent.back() >= incumbent.at(2) || regret > 1e-8)
+    throw std::runtime_error("Search did not improve and find the grid optimum");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(fit).add(convergence).fit_panels()
+      .size(1150, 460).save_svg("build/bayesian_optimization_trace.svg");
+  n::save_npz("build/bayesian_optimization_trace.npz",
+      {{"grid", n::from_vector(grid, {size, 1})}, {"indices", n::from_vector(indices)},
+       {"observations", n::from_vector(values)},
+       {"mean_variance_ei", n::from_vector(trace, {rounds, 3, size})}});
+  std::println("{} evaluations. Initial incumbent {:.6f}, final incumbent {:.6f}, grid regret {:.6g}.",
+               values.size(), incumbent.at(2), incumbent.back(), regret);
+  std::println("Evaluation grid indices {}.", indices);
+}
+```
+// result_begin: markdown
+15 evaluations. Initial incumbent -0.713865, final incumbent -1.310135, grid regret 0.
+Evaluation grid indices [0, 100, 200, 26, 145, 164, 70, 160, 157, 83, 9, 80, 190, 1, 2].
+\image(figures/bayesian_optimization_trace.svg)
+// result_end
+\alttext(The Gaussian process mean tracks the multimodal objective near sampled inputs. The best observation falls over successive evaluations.)
+
+> References
+
+- [Jones, Schonlau and Welch (1998), Efficient Global Optimization of Expensive Black-Box Functions](https://doi.org/10.1023/A:1008306431147).

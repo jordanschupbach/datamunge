@@ -49,6 +49,21 @@ Tensor causal_mask(std::int64_t T, DType dtype = DType::Float32, double value = 
 /// Bool keep mask [N, 1, 1, T] from per-example lengths [N]: position t is
 /// kept when t < lengths[n]. Broadcasts against [N, heads, Tq, T].
 Tensor padding_keep_mask(const Tensor& lengths, std::int64_t T);
+/// @brief Builds a causal self-attention keep mask that excludes padding on both axes.
+/// @param lengths CPU integer vector with one valid prefix length per batch item.
+/// @param T Positive padded sequence length. Lengths must lie in [0, T].
+/// @return Boolean tensor [N, 1, T, T] that broadcasts over attention heads.
+/// @throws std::invalid_argument If lengths is undefined, empty, nonintegral, on
+/// a device other than CPU, or outside the allowed range, or T is nonpositive.
+/// @par Example
+/// @code
+/// const auto lengths = dm::nn::arange(0, 3, 1, dm::nn::DType::Int64);
+/// const auto mask = dm::nn::causal_padding_keep_mask(lengths, 3);
+/// std::print("{}\n", mask.at({2, 0, 1, 0})); // 1
+/// @endcode
+/// @see causal_keep_mask(), padding_keep_mask(), scaled_dot_product_attention()
+Tensor causal_padding_keep_mask(const Tensor& lengths, std::int64_t T);
+
 /// Bool keep mask [N, 1, 1, T] from token ids [N, T]: ids equal to `pad_id` are masked out.
 Tensor padding_keep_mask_from_ids(const Tensor& ids, std::int64_t pad_id = 0);
 /// Converts a keep mask to an additive one: 0 where kept, `value` elsewhere.

@@ -1,0 +1,121 @@
+//? Title: Semi-supervised graph convolution
+//? Lang: en
+
+> Semi-supervised graph convolution
+
+Two graph convolution layers classify nodes in an undirected graph. Each
+layer adds information from neighbors and from the node itself. The weight
+of each contribution is scaled by the inverse square root of the degrees
+of its two endpoints after adding self-loops. The first layer projects the
+aggregated features into twelve channels and applies ReLU. The second layer
+outputs two class scores.
+
+The seeded 48-node fixture has denser edges within each class and one weakly
+informative feature. All nodes and edges participate in propagation. Only
+the labels of 16 nodes contribute to the loss used by Adam. Labels on the
+other 32 nodes are reserved for evaluation. This is a transductive experiment
+on a single graph.
+
+```{cpp, results="markdown", file="figures/gcn_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int nodes = 48;
+  std::mt19937 random(48201);
+  std::uniform_real_distribution<float> uniform;
+  std::normal_distribution<float> noise(0.f, .6f);
+  std::vector<float> edges(nodes * nodes), attributes;
+  std::vector<int> labels, fit, test;
+  for (int i = 0; i < nodes; ++i) {
+    const int label = i % 2;
+    labels.push_back(label);
+    (i % 6 < 2 ? fit : test).push_back(i);
+    for (int j = 0; j < i; ++j) {
+      const float probability = label == j % 2 ? .32f : .035f;
+      edges[i * nodes + j] = edges[j * nodes + i] = uniform(random) < probability;
+    }
+    attributes.insert(attributes.end(), {(label ? .4f : -.4f) + noise(random),
+                                         noise(random), noise(random)});
+  }
+
+  const auto adjacency = n::from_vector(edges, {nodes, nodes});
+  const auto normalized = n::gcn_normalize(adjacency);
+  const auto features = n::from_vector(attributes, {nodes, 3});
+  const auto target = n::from_vector(labels);
+  const auto train_rows = n::from_vector(fit), test_rows = n::from_vector(test);
+  const auto train_y = n::gather(target, train_rows), test_y = n::gather(target, test_rows);
+  n::ParameterStore parameters(48202);
+  const auto forward = [&]() {
+    const auto hidden = n::dense(parameters, "hidden", n::matmul(normalized, features),
+                                 12, n::Activation::Relu);
+    return std::pair{hidden, n::dense(parameters, "head", n::matmul(normalized, hidden), 2)};
+  };
+  const auto training_loss = [&](const n::Tensor &logits) {
+    return n::sparse_softmax_cross_entropy(n::gather(logits, train_rows), train_y);
+  };
+
+  forward();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(parameters, .06, config);
+  std::vector<double> epochs, train_nll, test_nll, accuracy;
+  std::print("| epoch | fitting NLL | held-out NLL | correct |\n|---:|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    const auto logits = forward().second;
+    const auto loss = training_loss(logits);
+    const auto held_out = n::gather(logits, test_rows);
+    const auto correct = n::count_nonzero(n::equal(n::argmax(held_out, 1), test_y)).item<int>();
+    epochs.push_back(epoch);
+    train_nll.push_back(loss.item());
+    test_nll.push_back(n::sparse_softmax_cross_entropy(held_out, test_y).item());
+    accuracy.push_back(double(correct) / test.size());
+    std::print("| {} | {:.6f} | {:.6f} | {}/{} |\n",
+               epoch, train_nll.back(), test_nll.back(), correct, test.size());
+    if (epoch < 3)
+      adam.minimize(loss);
+  }
+
+  const auto [hidden, logits] = forward();
+  const auto gradients = n::grad(training_loss(logits), parameters.parameters());
+  n::NamedTensors arrays{{"adjacency", adjacency}, {"normalized", normalized},
+                         {"features", features}, {"labels", target}, {"train_ids", train_rows},
+                         {"test_ids", test_rows}, {"hidden", hidden}, {"logits", logits},
+                         {"test_nll", n::from_vector(test_nll)}};
+  const auto names = parameters.names();
+  for (std::size_t i = 0; i < names.size(); ++i) {
+    arrays.emplace_back(names[i], parameters.at(names[i]));
+    arrays.emplace_back("gradient/" + names[i], gradients[i]);
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/gcn_fit.npz", arrays);
+
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines(epochs, train_nll, "Fitting labels", {37, 99, 235})
+      .lines(epochs, test_nll, "Held-out labels", {190, 33, 66})
+      .title("Node classification loss").x_label("Adam update").y_label("NLL");
+  auto held_out = dm::graphics::RPlot::create();
+  held_out.lines(epochs, accuracy, "Held-out labels", {22, 120, 97})
+      .points(epochs, accuracy, "Held-out labels", {22, 120, 97})
+      .title("Held-out node accuracy").x_label("Adam update").y_label("Fraction correct")
+      .y_limits(0, 1.05);
+  dm::graphics::RLayout::create(1, 2).add(loss).add(held_out).size(1050, 420)
+      .fit_panels().save_svg("build/gcn_fit.svg");
+}
+```
+// result_begin: markdown
+| epoch | fitting NLL | held-out NLL | correct |
+|---:|---:|---:|---:|
+| 0 | 0.715137 | 0.721847 | 7/32 |
+| 1 | 0.665178 | 0.666066 | 26/32 |
+| 2 | 0.617406 | 0.614675 | 30/32 |
+| 3 | 0.567448 | 0.561152 | 30/32 |
+\image(figures/gcn_fit.svg)
+// result_end
+\caption(Fitting and held-out label loss on one fixed graph, with held-out accuracy after each of three updates.)
+\alttext(Line plots of negative log likelihood for fitting and held-out nodes and the fraction of held-out nodes classified correctly.)
+
+> Reference
+
+- [Kipf and Welling (2017), Semi-Supervised Classification with Graph Convolutional Networks](https://arxiv.org/abs/1609.02907).

@@ -326,7 +326,6 @@ int main() {
 }
 ```
 // result_begin:
-// Validated32/8/24 published-GT crops with disjoint scene families.
 // result_end
 
 C++ validates little-endian PIEH ingress and image dimensions,then uses

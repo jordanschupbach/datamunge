@@ -1,0 +1,119 @@
+//? Title: Double descent in minimum-norm regression
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Vary the number of Gaussian features from one to 128 while fitting 32
+noisy observations. Compare training MSE and held-out MSE on eight
+independent draws to see what happens near interpolation.
+)
+
+> Why test error can peak at interpolation
+
+The data uses four predictive features and independent Gaussian label
+noise. At small model widths, adding the missing predictive features
+reduces bias. As width approaches the number of fitting observations,
+small singular values make the least-squares coefficients sensitive to
+noise. Beyond interpolation, several parameter vectors can fit the
+training data exactly. The SVD fit chooses the one with smallest
+Euclidean norm.
+
+Each repeat uses nested features. A larger model gets the same columns as
+the smaller one plus additional columns from the same fixture. This keeps
+the examples paired across widths. A separate 128-row test set per repeat
+is used only for evaluation.
+
+> Fit and evaluate the eight upstream draws
+
+The report uses Datamunge's SVD route in `nn::lstsq`. Datamunge's
+default relative singular-value threshold and the upstream absolute
+threshold of \(10^{-10}\) both retain every singular value in this
+fixture.
+
+```{cpp, results="markdown", file="figures/double_descent.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    namespace nn = dm::nn;
+    namespace g = dm::graphics;
+    constexpr int fit = 32, test = 128, rows = fit + test, features = 128, repeats = 8;
+    const std::vector<int> widths{1, 2, 4, 12, 24, 30, 32, 40, 64, 128};
+    std::mt19937 rng(40485);
+    std::normal_distribution<double> normal;
+    std::vector<double> inputs(repeats * rows * features), outputs(repeats * rows);
+    for (int row = 0; row < repeats * rows; ++row) {
+        const int offset = row * features;
+        for (int column = 0; column < features; ++column)
+            inputs[offset + column] = normal(rng);
+        outputs[row] = .65 * inputs[offset] - .42 * inputs[offset + 1] +
+                       .3 * inputs[offset + 2] + .23 * inputs[offset + 3] + .28 * normal(rng);
+    }
+    const auto x = nn::from_vector(inputs, {repeats, rows, features});
+    const auto y = nn::from_vector(outputs, {repeats, rows, 1});
+    const auto fitting = nn::slice_axis(y, 1, 0, fit), heldout = nn::slice_axis(y, 1, fit, rows);
+    std::vector<double> x_axis, train_mean, test_median, train, evaluation;
+    std::print("| Features | Mean train MSE | Median test MSE | Mean test MSE |\n|---:|---:|---:|---:|\n");
+    for (const int width : widths) {
+        const auto batch = nn::slice_axis(x, 2, 0, width);
+        const auto a = nn::slice_axis(batch, 1, 0, fit);
+        const auto b = nn::slice_axis(batch, 1, fit, rows);
+        const auto singular = nn::svd(a, false).s;
+        const double relative_cutoff = 10 * std::max(fit, width) * std::numeric_limits<double>::epsilon();
+        if (nn::min(singular).item() <= std::max(1e-10, relative_cutoff * nn::max(singular).item()))
+            throw std::runtime_error("Fixture differs under the two singular-value cutoffs");
+        const auto beta = nn::lstsq(a, fitting, 0., false);
+        const auto tr = nn::mean(nn::square(nn::matmul(a, beta) - fitting), {1, 2});
+        const auto te = nn::mean(nn::square(nn::matmul(b, beta) - heldout), {1, 2});
+        if (width >= fit && nn::max(tr).item() > 1e-14)
+            throw std::runtime_error("Full-row-rank fit did not interpolate");
+        const auto tr_values = tr.to_vector<double>();
+        auto te_values = te.to_vector<double>();
+        train.insert(train.end(), tr_values.begin(), tr_values.end());
+        evaluation.insert(evaluation.end(), te_values.begin(), te_values.end());
+        std::ranges::sort(te_values);
+        const double median = .5 * (te_values[3] + te_values[4]);
+        x_axis.push_back(width);
+        train_mean.push_back(nn::mean(tr).item());
+        test_median.push_back(median);
+        std::print("| {} | {:.6g} | {:.6g} | {:.6g} |\n",
+                   width, train_mean.back(), median, nn::mean(te).item());
+    }
+    if (!(test_median[0] > test_median[2] && test_median[6] > 5 * test_median[3] &&
+          test_median[6] > 5 * test_median[8]))
+        throw std::runtime_error("Missing the upstream interpolation peak");
+
+    auto training = g::RPlot::create().title("Training error")
+        .x_label("Features").y_label("Mean MSE").abline_v(fit)
+        .lines(x_axis, train_mean, "Training", {31, 103, 162});
+    auto testing = g::RPlot::create().title("Held-out error")
+        .x_label("Features").y_label("Median MSE").abline_v(fit)
+        .lines(x_axis, test_median, "Held-out", {180, 62, 49});
+    std::filesystem::create_directories("build");
+    g::RLayout::create(1, 2).size(1000, 420).add(training).add(testing).save_svg("build/double_descent.svg");
+    const auto count = static_cast<std::int64_t>(widths.size());
+    nn::save_npz("build/double_descent.npz", {{"features", x}, {"labels", y},
+        {"train_mse", nn::from_vector(train, {count, repeats})},
+        {"test_mse", nn::from_vector(evaluation, {count, repeats})}});
+}
+```
+// result_begin: markdown
+| Features | Mean train MSE | Median test MSE | Mean test MSE |
+|---:|---:|---:|---:|
+| 1 | 0.405866 | 0.429601 | 0.413507 |
+| 2 | 0.215919 | 0.221514 | 0.215092 |
+| 4 | 0.0736273 | 0.0887683 | 0.0917955 |
+| 12 | 0.0475999 | 0.139022 | 0.142121 |
+| 24 | 0.0150405 | 0.336425 | 0.360384 |
+| 30 | 0.00210729 | 1.17832 | 1.68316 |
+| 32 | 8.40605e-28 | 3.51939 | 313.125 |
+| 40 | 2.97214e-30 | 0.41622 | 0.465608 |
+| 64 | 2.9862e-30 | 0.495064 | 0.52086 |
+| 128 | 2.79753e-30 | 0.634993 | 0.636158 |
+\image(figures/double_descent.svg)
+// result_end
+
+The vertical line marks the 32 fitting observations. Interpolation
+produces vanishing training error from that point onward, while the
+median held-out error rises sharply at width 32 and then falls. The
+mean test error is reported separately because a few nearly singular
+draws can dominate it near interpolation.

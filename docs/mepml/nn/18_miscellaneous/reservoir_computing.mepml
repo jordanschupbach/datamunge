@@ -1,0 +1,99 @@
+//? Title: Frozen random features and echo-state reservoirs
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit linear readouts on frozen tanh features. Compare a static extreme
+learning machine on a nonlinear regression problem with an echo-state
+reservoir that must recover delays in a signal.
+)
+
+> Freeze the hidden weights and fit the readout
+
+The static model applies a random nonlinear feature map independently to
+each input. The recurrent model adds the previous hidden state after
+multiplying it by a cyclic shift with gain 0.82. The shift has spectral
+norm 0.82 and tanh is 1-Lipschitz, so changing the initial state has a
+decaying effect under a common input sequence. The first 16 recurrent
+states are discarded from the fit as a washout.
+
+In both cases, \(X\) contains a column of ones and the hidden states.
+The readout solves \((X^T X+\lambda D)w=X^T y\), with \(D\) diagonal
+and zero for the intercept. Only the fitting rows contribute to the
+system. Test states continue from the fitting sequence and use inputs
+as they arrive. The targets for the delayed problem are never fed back.
+
+> Fit both upstream fixtures
+
+The static target is a nonlinear function of the current input. The
+recurrent target combines two delays with an interaction of two other
+lags. These are separate tasks, each with its own upstream seed and input
+weights. Compare each model with its own zero-prediction baseline.
+
+```{cpp, results="markdown", file="figures/reservoir_computing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    namespace nn = dm::nn;
+    namespace g = dm::graphics;
+    constexpr int steps = 512, split = 340, hidden = 28;
+    nn::set_num_threads(2);
+    std::filesystem::create_directories("build");
+    auto plots = g::RLayout::create(2, 1).size(950, 560);
+    for (const bool recurrent : {false, true}) {
+        std::mt19937 rng(recurrent ? 50581 : 50582);
+        std::normal_distribution<double> normal(0, recurrent ? .42 : 1.4);
+        std::vector<double> weights(2 * hidden), cycle(hidden * hidden), signal(steps);
+        for (auto& w : weights) w = normal(rng);
+        for (int j = 0; j < hidden; ++j) cycle[j * hidden + (j + 1) % hidden] = .82;
+        std::uniform_real_distribution<double> draw(-1, 1);
+        for (auto& u : signal) u = draw(rng);
+        const auto value = [&](int t) { return t >= 0 ? signal[t] : 0.; };
+        std::vector<double> inputs(steps * 2), labels(steps);
+        for (int t = 0; t < steps; ++t) {
+            const double u = value(t);
+            inputs[2 * t] = 1;
+            inputs[2 * t + 1] = u;
+            labels[t] = recurrent ? .75 * value(t-2) - .25 * value(t-4) + .15 * value(t-1) * value(t-3)
+                                  : std::sin(3 * u) + .24 * u * u;
+        }
+        const auto design = nn::reservoir_features(
+            nn::from_vector(inputs, {steps, 2}), nn::from_vector(weights, {2, hidden}),
+            recurrent ? nn::from_vector(cycle, {hidden, hidden}) : nn::Tensor{});
+        const auto target = nn::from_vector(labels, {steps, 1});
+        const int start = recurrent ? 16 : 0;
+        const auto coefficients = nn::fit_reservoir_readout(
+            nn::slice_axis(design, 0, start, split), nn::slice_axis(target, 0, start, split), .01);
+        const auto prediction = nn::matmul(nn::slice_axis(design, 0, split, steps), coefficients);
+        const auto actual = nn::slice_axis(target, 0, split, steps);
+        const double mse = nn::mean(nn::square(prediction - actual)).item();
+        const double zero = nn::mean(nn::square(actual)).item();
+        if (!(mse < .35 * zero)) throw std::runtime_error("Readout fails held-out source criterion");
+
+        const std::string name = recurrent ? "echo_state" : "extreme_learning";
+        nn::save_npz("build/" + name + ".npz",
+            {{"features", design}, {"readout", coefficients}, {"prediction", prediction}});
+        std::vector<double> times(steps - split);
+        std::iota(times.begin(), times.end(), split);
+        auto plot = g::RPlot::create().title(recurrent ? "Echo-state reservoir" : "Extreme learning machine")
+            .x_label("Held-out time step").y_label("Response");
+        plot.lines(times, actual.to_vector<double>(), "Target", {50, 70, 90})
+            .lines(times, prediction.to_vector<double>(), "Prediction", {208, 87, 48});
+        plots.add(plot);
+        std::print("{} held-out MSE {:.9f}, zero baseline {:.9f}.\n\n", name, mse, zero);
+    }
+    plots.save_svg("build/reservoir_computing.svg");
+}
+```
+// result_begin: markdown
+extreme_learning held-out MSE 0.000014309, zero baseline 0.569209565.
+
+echo_state held-out MSE 0.002126608, zero baseline 0.210767953.
+
+\image(figures/reservoir_computing.svg)
+// result_end
+
+Both readouts solve the fitting problem without updating the hidden weights.
+The chronological split and the zero baseline test useful predictions on
+new inputs. Because the targets differ, the two MSE values do not measure
+the effect of adding recurrence to the same task.

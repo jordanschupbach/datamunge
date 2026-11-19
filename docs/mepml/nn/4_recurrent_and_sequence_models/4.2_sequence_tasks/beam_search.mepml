@@ -11,6 +11,76 @@ Restored native translation checkpoint -> explicit ranked beam expansion. The co
 
 The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
 
+> Check beam search against exhaustive enumeration
+
+The upstream three-token transition model allows 15 completed or capped
+paths in three steps. Width one keeps only the current best prefix, while
+width two can retain the competing prefix that ends sooner with higher
+joint probability. A wide beam can be compared with every path.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <print>
+
+int main() {
+  constexpr int eos = 2, bos = 3, cap = 3;
+  const std::array<std::array<double, 3>, 4> probabilities{{
+      {.34, .33, .33}, {.06, .04, .90}, {.20, .20, .60}, {.55, .35, .10}}};
+  const auto expand = [&](int token, const dm::nn::BeamHypothesis<int>& parent) {
+    if (token == eos || parent.state >= cap)
+      throw std::runtime_error("expanded a terminal path");
+    std::vector<double> logits;
+    for (const double p : probabilities.at(token))
+      logits.push_back(std::log(p) + 1000);
+    return std::pair{parent.state + 1, logits};
+  };
+  using Path = std::pair<std::vector<int>, double>;
+  std::vector<Path> truth;
+  const auto visit = [&](auto&& self, std::vector<int> path, double probability) -> void {
+    const int last = path.empty() ? bos : path.back();
+    if (last == eos || path.size() == cap) {
+      truth.emplace_back(path, probability);
+      return;
+    }
+    for (int token = 0; token < 3; ++token) {
+      auto child = path;
+      child.push_back(token);
+      self(self, std::move(child), probability * probabilities[last][token]);
+    }
+  };
+  visit(visit, {}, 1.0);
+  std::sort(truth.begin(), truth.end(), [](const Path& a, const Path& b) {
+    return a.second == b.second ? a.first < b.first : a.second > b.second;
+  });
+  const auto wide = dm::nn::BeamSearch(0, bos, eos, 32, cap, expand);
+  if (wide.size() != truth.size() || wide.size() != 15)
+    throw std::runtime_error("wide beam path count");
+  for (std::size_t i = 0; i < wide.size(); ++i) {
+    if (wide[i].tokens != truth[i].first ||
+        std::abs(std::exp(wide[i].log_probability) - truth[i].second) > 1e-12 ||
+        wide[i].state != static_cast<int>(wide[i].tokens.size())) {
+      throw std::runtime_error("exhaustive path, probability or state mismatch");
+    }
+  }
+  const auto greedy = dm::nn::BeamSearch(0, bos, eos, 1, cap, expand).front();
+  const auto narrow = dm::nn::BeamSearch(0, bos, eos, 2, cap, expand).front();
+  const auto tied = dm::nn::BeamSearch(0, bos, eos, 2, 1, [](int, const auto&) {
+    return std::pair{1, std::vector<double>(3, 0.0)};
+  });
+  if (greedy.tokens != std::vector<int>{0, 0, 0} ||
+      narrow.tokens != std::vector<int>{1, eos} ||
+      tied[0].tokens != std::vector<int>{0} || tied[1].tokens != std::vector<int>{1}) {
+    throw std::runtime_error("width or tie behavior");
+  }
+  std::println("{} paths checked. Width one [0,0,0]: {:.6f}. Width two [1,EOS]: {:.6f}.",
+               wide.size(), std::exp(greedy.log_probability), std::exp(narrow.log_probability));
+}
+```
+// result_begin:
+// 15 paths checked. Width one [0,0,0]: 0.063580. Width two [1,EOS]: 0.315000.
+// result_end
+
 > Follow the computation
 
 Restored native translation checkpoint -> explicit ranked beam expansion.
@@ -1059,40 +1129,24 @@ inline bool Better(const Hypothesis& a, const Hypothesis& b) {
   return a.score != b.score ? a.score > b.score : a.tokens < b.tokens;
 }
 
-/// Keeps the `width` best of all one-token extensions (ended hypotheses carry
-/// over unchanged) for at most `cap` tokens or until every beam has ended.
-inline std::vector<Hypothesis> BeamSearch(Hypothesis initial, int width, int cap, int eos,
-                                          const std::function<Step(const Hypothesis&)>& decoder) {
-  if (width < 1 || cap < 1) throw std::invalid_argument("positive beam width/cap required");
-  std::vector<Hypothesis> beam{initial};
-  for (int depth = 0; depth < cap; ++depth) {
-    std::vector<Hypothesis> candidates;
-    bool                    all_ended = true;
-    for (const auto& parent : beam) {
-      if (parent.ended) {
-        candidates.push_back(parent);
-        continue;
-      }
-      all_ended       = false;
-      const auto next = decoder(parent);
-      const auto lp   = LogSoftmax(next.logits);
-      if (eos < 0 || eos >= static_cast<int>(lp.size())) throw std::invalid_argument("EOS outside vocabulary");
-      for (std::size_t token = 0; token < lp.size(); ++token) {
-        Hypothesis child = parent;
-        child.tokens.push_back(static_cast<int>(token));
-        child.score += lp[token];
-        child.ended = static_cast<int>(token) == eos;
-        child.h     = next.h;
-        child.c     = next.c;
-        candidates.push_back(std::move(child));
-      }
-    }
-    if (all_ended) break;
-    std::sort(candidates.begin(), candidates.end(), Better);
-    if (static_cast<int>(candidates.size()) > width) candidates.resize(width);
-    beam = std::move(candidates);
+// Adapt the report's LSTM state and audit callback to the shared decoder.
+inline std::vector<Hypothesis> BeamSearch(
+    const Hypothesis& initial, int width, int cap, int eos,
+    const std::function<Step(const Hypothesis&)>& decoder) {
+  using State = std::pair<std::vector<float>, std::vector<float>>;
+  const auto beams = dm::nn::BeamSearch(
+      State{initial.h, initial.c}, dm::nn::models::seq2seq::kBos, eos, width, cap,
+      [&](int, const dm::nn::BeamHypothesis<State>& parent) {
+        const auto next = decoder({parent.tokens, parent.log_probability, false,
+                                   parent.state.first, parent.state.second});
+        return std::pair{State{next.h, next.c}, next.logits};
+      });
+  std::vector<Hypothesis> result;
+  for (const auto& path : beams) {
+    result.push_back({path.tokens, path.log_probability, path.tokens.back() == eos,
+                      path.state.first, path.state.second});
   }
-  return beam;
+  return result;
 }
 
 /// The 3-token fixture where greedy is not optimal: hypothesis states are a
@@ -1662,7 +1716,7 @@ int main(int argc, char** argv) {
 // result_begin:
 // translation weights: /mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/nn-completion/models/translation/english_french/final.npz
 // realWidth1=greedy, width3 scored per-hypothesis states;expansions=128 (width3 beats greedy on 0/32 sentences);fixture greedy -1.42712 vs beam -1.10112;15exhaustiveFixturePaths/beamBeatsGreedy/EOSonce/cap/restore/immutable PASS
-// wall 0.0123963 s
+// wall 0.0227625 s
 // result_end
 
 > Inspect the actual saved results

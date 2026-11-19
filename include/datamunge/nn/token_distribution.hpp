@@ -137,6 +137,35 @@ inline int DrawToken(const std::vector<double>& p, double uniform) {
   return last;
 }
 
+/// @brief Draw a token by visiting the retained IDs in ranked order.
+/// Use this function to replay a sampler that accumulates the most likely
+/// tokens first. DrawToken() visits vocabulary indices in order.
+/// @param distribution The filtered token distribution returned by FilterTokens().
+/// @param uniform Finite number in [0, 1).
+/// @return The selected vocabulary index.
+/// @throws std::invalid_argument Invalid probabilities, retained IDs or uniform.
+/// @code
+/// auto d = dm::nn::models::FilterTokens({0.0, 1.0, 2.0}, 1.0, 2);
+/// auto token = dm::nn::models::DrawRankedToken(d, 0.25);
+/// @endcode
+inline int DrawRankedToken(const TokenDistribution& distribution, double uniform) {
+  std::vector<bool> seen(distribution.probability.size(), false);
+  std::vector<double> ranked;
+  ranked.reserve(distribution.retained.size());
+  for (const int id : distribution.retained) {
+    if (id < 0 || static_cast<std::size_t>(id) >= seen.size() || seen[id]) {
+      throw std::invalid_argument("invalid ranked token IDs");
+    }
+    seen[id] = true;
+    ranked.push_back(distribution.probability[id]);
+  }
+  for (std::size_t i = 0; i < seen.size(); ++i) {
+    if (!seen[i] && distribution.probability[i] != 0.0)
+      throw std::invalid_argument("ranked distribution omits a positive-mass token");
+  }
+  return distribution.retained[DrawToken(ranked, uniform)];
+}
+
 /// Largest logit (lowest index on ties).
 /// @brief Return the first highest-scoring finite token with source tie order.
 ///

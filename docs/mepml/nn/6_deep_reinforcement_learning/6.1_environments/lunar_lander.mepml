@@ -56,9 +56,7 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // point mass with rotation (no Box2D), but the observation, actions and reward
 // shaping follow Gymnasium's LunarLander so later agents transfer with little
 // change. The environment is common/rl/lunar_lander.hpp (copied from tflow,
-// TF-free). The vsim video of the heuristic landing is omitted: the port plays
-// the same episode without filming (common/rl/playback.hpp) and adds checks
-// (the heuristic lands every episode, random crashes, the replay matches).
+// TF-free). The native renderer records the heuristic landing from seed 4.
 
 
 // Editable workflow support: checks.hpp
@@ -139,8 +137,7 @@ using datamunge::rl::environments::Acrobot;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the original controller decisions and reward information.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -321,13 +318,7 @@ namespace rl {using dm::rl::environments::LunarLander;}
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// Capture the state at reset and after every environment transition.
 
 
 
@@ -355,6 +346,7 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<float> observations = obs, rewards;
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
@@ -363,10 +355,27 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
+    observations.insert(observations.end(), obs.begin(), obs.end());
+    rewards.push_back(r.reward);
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  namespace e = dm::rl::environments;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::nn::save_npz("build/" + name + "_replay.npz",
+      {{"observations", dm::nn::from_vector(observations, {pb.steps + 1, static_cast<std::int64_t>(obs.size())})},
+       {"reward", dm::nn::from_vector(rewards)}});
+  std::vector<std::array<float,3>> poses;
+  for (std::size_t i = 0; i < observations.size(); i += obs.size()) {
+    const auto* o = observations.data() + i;
+    poses.push_back({o[0],o[1],o[4]});
+  }
+  const auto file = name + ".mp4";
+  e::save_lunar_lander_replay(poses, "build/" + file);
+  std::filesystem::copy_file("build/" + file, "figures/" + file,
+                             std::filesystem::copy_options::overwrite_existing);
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   report_capture::Trace("playback_return",pb.ret);report_capture::Trace("playback_steps",pb.steps);
   return pb;
 }
@@ -504,7 +513,7 @@ int main() {
         break;
       }
     }
-    std::cout << "  the same landing replayed (tflow films it in the 3D world; video omitted):\n";
+    std::cout << "  the same landing replayed:\n";
     const rl::Playback pb = rl::PlayEpisode(env, Heuristic, "lunar_lander_pilot", 4);
 
     check::Require(heuristic.landed == 100, "the heuristic controller should land in every episode");
@@ -514,7 +523,7 @@ int main() {
     check::Require(landed, "the traced episode should end with a landing");
     check::Require(pb.steps == steps && std::abs(pb.ret - ret) < 1e-3f,
                    "replaying seed 4 should reproduce the traced episode exactly");
-    std::cout << "\nchecks passed (vsim video omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -536,10 +545,10 @@ int main() {
 //   t=240  x=+0.01 y=0.08 vx=-0.03 vy=-0.06 angle=-0.00  return so far 126.8
 //   t=300  x=-0.00 y=0.00 vx=+0.02 vy=-0.06 angle=-0.01  return so far 126.0
 //   t=305  x=-0.00 y=0.00 vx=+0.00 vy=+0.00 angle=-0.00  return so far 232.8  LANDED
-//   the same landing replayed (tflow films it in the 3D world; video omitted):
-//   played lunar_lander_pilot (video omitted): 305 steps, return 232.8
+//   the same landing replayed:
+//   recorded lunar_lander_pilot: 305 steps, return 232.8
 //
-// checks passed (vsim video omitted)
+// checks passed
 // result_end
 
 > Actual source diagnostics
@@ -569,3 +578,7 @@ int main(){auto data=dm::nn::load_npz("build/lunar_lander_source.npz");auto plot
 > Interpretation and provenance
 
 The displayed checks belong to the original local native protocol. Optional runtime skips, deferred quality checks and machine timings remain explicit. Canonical components contain reusable physical/frame adapters and pure graphs/return algebra; the report owns the experiment and its optimizer state.
+
+> Recorded policy trajectories
+
+\video(figures/lunar_lander_pilot.mp4)

@@ -1,0 +1,116 @@
+//? Title: FT-Transformer for mixed tabular features
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Build a token for each numeric and categorical feature, then train a
+feature transformer to predict a continuous response.
+)
+\toc
+
+Each numeric field receives its own affine projection. Each categorical
+field receives an embedding and a learned field bias. The transformer
+appends a shared aggregate token and mixes the five tokens with two
+self-attention blocks. The first attention layer uses unnormalized inputs.
+The feed-forward layers use a linear branch gated by a ReLU branch.
+A normalized aggregate token supplies the regression head.
+
+In the simulator, category IDs change the slopes of the numeric inputs.
+Train on 2,048 rows and evaluate predictions on 512 independent rows.
+The attention plot averages the final aggregate token's attention over
+test rows and heads. These weights describe routing in the model.
+Datamunge initializes its own parameters and follows the upstream batch schedule.
+
+```{cpp, results="markdown", file="figures/ft_transformer_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+std::pair<n::Tensor,n::Tensor> simulate(int count,unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> value(-1.f,1.f);
+  std::uniform_int_distribution<int> row(0,3),column(0,2);
+  std::normal_distribution<float> noise(0.f,.04f);
+  constexpr float alpha[]{-.8f,.9f,-.4f,.5f}, beta[]{.6f,-.6f,.1f};
+  std::vector<float> fields, responses;
+  for (int i = 0; i < count; ++i) {
+    const float x = value(rng), y = value(rng);
+    const int a = row(rng), b = column(rng);
+    fields.insert(fields.end(),{x,y,float(a),float(b)});
+    responses.push_back(alpha[a]*x+beta[b]*(1.f+y)+.5f*x*y+noise(rng));
+  }
+  return {n::from_vector(fields,{count,4}),n::from_vector(responses,{count,1})};
+}
+
+int main() {
+  const auto [x,y] = simulate(2048,17201);
+  const auto [test,observed] = simulate(512,17202);
+  n::ParameterStore parameters(41380);
+  const auto forward = [&](const n::Tensor& inputs) {
+    return n::ft_transformer_regression(parameters,"ft",inputs,{4,3});
+  };
+  double initial;
+  {
+    n::NoGradGuard guard;
+    initial = n::sqrt(n::mean(n::square(forward(test).prediction-observed))).item();
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters,.01,config);
+  n::BatchOrder order(2048,32,17203);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids = order.next(); !ids.empty(); ids = order.next())
+      optimizer.minimize(n::mean(n::square(forward(n::take_rows(x,ids)).prediction-n::take_rows(y,ids))));
+  }
+  n::NoGradGuard guard;
+  const auto fit = forward(test);
+  const auto rmse = n::sqrt(n::mean(n::square(fit.prediction-observed))).item();
+  if (optimizer.iterations() != 192 || !std::isfinite(rmse) || rmse >= initial)
+    throw std::runtime_error("invalid FT-Transformer fit");
+  std::println("| Held-out RMSE | Value |\n| --- | ---: |\n| Before training | {:.5f} |\n| After training | {:.5f} |",
+               initial,rmse);
+
+  const std::string folder = "build/ft_transformer/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  parameters.save(folder+"weights.npz");
+  n::save_npz(folder+"predictions.npz",{{"x",test.reshape({512,4,1})},{"y",observed},
+      {"prediction",fit.prediction},{"tokens",fit.tokens},{"attention_0",fit.attention[0]},
+      {"attention_1",fit.attention[1]}});
+
+  const double lo = n::min(observed).item(), hi = n::max(observed).item();
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(observed.to_vector<double>(),fit.prediction.to_vector<double>(),"Held-out rows",{37,99,235},3)
+      .lines({lo,hi},{lo,hi},"Perfect prediction",{100,116,139})
+      .title("FT-Transformer regression").x_label("Observed response").y_label("Predicted response")
+      .save_svg(folder+"fit.svg");
+  const auto aggregate = n::slice(fit.attention.back(),{0,0,4,0},{512,2,1,5});
+  const auto weights = n::mean(aggregate,{0,1,2}).to_vector<double>();
+  auto attention = dm::graphics::RPlot::create();
+  attention.bars({0.,1.,2.,3.,4.},weights,"Mean attention",{37,99,235})
+           .title("Final layer attention from the aggregate token")
+           .x_label("Token index: numeric 0-1, category 2-3, aggregate 4")
+           .y_label("Mean weight across rows and heads").save_svg(folder+"attention.svg");
+  std::filesystem::copy_file(folder+"fit.svg","figures/ft_transformer_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"attention.svg","figures/ft_transformer_attention.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Held-out RMSE | Value |
+| --- | ---: |
+| Before training | 1.54876 |
+| After training | 0.08974 |
+\image(figures/ft_transformer_fit.svg)
+// result_end
+
+\image(figures/ft_transformer_attention.svg)
+
+> Reference
+
+Gorishniy et al. (2021).
+[Revisiting Deep Learning Models for Tabular Data|https://arxiv.org/abs/2106.11959].

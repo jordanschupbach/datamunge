@@ -1,0 +1,94 @@
+//? Title: Two-hop stacked attention for visual question answering
+//? Lang: en
+
+> Two-hop stacked attention for visual question answering
+
+Each scene contains differently colored objects on the left and
+right. We ask both color questions about every image. A CNN makes a
+4×4 region grid with explicit coordinates, and a length-masked LSTM
+encodes the question.
+
+Each attention hop scores all regions with the current question state,
+then adds the probability-weighted region features to that state.
+The second hop therefore reads from the image using a query already
+updated by the first. The final state predicts one of three colors.
+The plot compares attention across both questions on the same image.
+
+```{cpp, results="markdown", file="figures/vqa_stacked_attention.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto generate=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_int_distribution<int> color(0,2),center(1,6);
+    std::uniform_real_distribution<float> background(0,.12f),signal(.65f,1);
+    std::vector<float> image(count*192);
+    std::vector<int> tokens(count*3),labels(count);
+    for (int i=0;i<count;i+=2) {
+      const int left=color(rng),right=(left+1+color(rng)%2)%3;
+      const int ly=center(rng),ry=center(rng);
+      for (int y=0;y<8;++y)
+        for (int x=0;x<8;++x)
+          for (int c=0;c<3;++c) {
+            const bool object=(c==left && x>=1 && x<=2 && std::abs(y-ly)<=1) ||
+                              (c==right && x>=5 && x<=6 && std::abs(y-ry)<=1);
+            const int pixel=(y*8+x)*3+c;
+            image[i*192+pixel]=image[(i+1)*192+pixel]=object ? signal(rng) : background(rng);
+          }
+      for (int side=0;side<2;++side) {
+        tokens[3*(i+side)]=1;
+        tokens[3*(i+side)+1]=2+side;
+      }
+      labels[i]=left;
+      labels[i+1]=right;
+    }
+    return std::tuple{n::from_vector(image,{count,8,8,3}),n::from_vector(tokens,{count,3}),
+                      n::from_vector(labels),n::full({count},2,n::DType::Int32)};
+  };
+  const auto [image,tokens,target,lengths]=generate(1024,13712);
+  const auto [held,question,truth,test_lengths]=generate(192,13713);
+  n::ParameterStore model(13711);
+  const auto initial=n::sparse_softmax_cross_entropy(
+      n::stacked_vqa(model,held,question,test_lengths).logits,truth).item();
+  n::Optimizer optimizer(model,.012,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(1024,16,13714);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto out=n::stacked_vqa(model,n::take_rows(image,rows),n::take_rows(tokens,rows),
+                                    n::take_rows(lengths,rows));
+      optimizer.minimize(n::sparse_softmax_cross_entropy(out.logits,n::take_rows(target,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto out=n::stacked_vqa(model,held,question,test_lengths);
+  const auto loss=n::sparse_softmax_cross_entropy(out.logits,truth);
+  const auto predicted=n::argmax(out.logits).to_vector<int>(), actual=truth.to_vector<int>();
+  const auto hits=std::inner_product(predicted.begin(),predicted.end(),actual.begin(),0,
+                                    std::plus<>(),std::equal_to<>());
+  const auto changed_pad=n::concat({n::slice_axis(question,1,0,2),n::ones({192,1},n::DType::Int32)},1);
+  if (!(loss.item()<initial) ||
+      n::max(n::abs(n::stacked_vqa(model,held,changed_pad,test_lengths).logits-out.logits)).item()!=0 ||
+      n::max(n::abs(n::sum(out.attention,{2})-1)).item()>1e-5) return 1;
+  std::print("Held-out loss {:.5f} → {:.5f}. Correct answers {}/192.\n",initial,loss.item(),hits);
+  auto plot=dm::graphics::RPlot::create();
+  std::vector<double> columns{0,1,2,3};
+  const std::array<dm::graphics::RGB,4> colors{{{37,99,235},{147,51,234},{234,88,12},{22,163,74}}};
+  const auto horizontal=n::sum(n::take_rows(out.attention,{0,1}).reshape({2,2,4,4}),{2});
+  for (int side=0;side<2;++side)
+    for (int hop=0;hop<2;++hop)
+      plot.lines(columns,n::select(n::select(horizontal,0,side),0,hop).to_vector<double>(),
+          std::format("{} question, hop {}",side==0?"Left":"Right",hop+1),colors[2*side+hop]);
+  plot.title("Spatial attention for two questions about one image")
+      .x_label("Image grid column").y_label("Attention mass").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(920,430).save_svg("build/vqa_stacked_attention.svg");
+  n::save_npz("build/vqa_stacked_attention.npz",{{"images",held},{"tokens",question},{"answers",truth},
+      {"logits",out.logits},{"attention",out.attention},{"regions",out.regions},{"states",out.states}});
+}
+```
+// result_begin: markdown
+Held-out loss 1.10659 → 0.00041. Correct answers 192/192.
+\image(figures/vqa_stacked_attention.svg)
+// result_end

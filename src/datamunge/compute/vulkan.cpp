@@ -17,6 +17,23 @@ void check(VkResult result, const char* operation) {
     throw std::runtime_error(
         std::string(operation) + " failed (VkResult " + std::to_string(int(result)) + ")");
 }
+/// @brief Create a loader instance for Vulkan 1.3 compute.
+VkInstance create_compute_instance() {
+  VkApplicationInfo application{VK_STRUCTURE_TYPE_APPLICATION_INFO};
+  application.pApplicationName = "datamunge compute";
+  application.apiVersion = VK_API_VERSION_1_3;
+  VkInstanceCreateInfo create{VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO};
+  create.pApplicationInfo = &application;
+  VkInstance instance = VK_NULL_HANDLE;
+  check(vkCreateInstance(&create, nullptr, &instance), "vkCreateInstance");
+  return instance;
+}
+/// @brief Query the number of physical devices visible to an instance.
+std::uint32_t visible_devices(VkInstance instance) {
+  std::uint32_t count = 0;
+  check(vkEnumeratePhysicalDevices(instance, &count, nullptr), "vkEnumeratePhysicalDevices");
+  return count;
+}
 /// @brief Pad a logical buffer/transfer size to Vulkan's four-byte copy granularity.
 std::size_t padded(std::size_t n) {
   if (n > std::numeric_limits<std::size_t>::max() - 3)
@@ -84,19 +101,15 @@ class VulkanDevice final : public GpuDevice {
   /// @brief Create a Vulkan 1.3 compute context, enabling supported numeric shader features.
   explicit VulkanDevice(std::uint32_t index) {
     try {
-      VkApplicationInfo application{VK_STRUCTURE_TYPE_APPLICATION_INFO};
-      application.pApplicationName = "datamunge compute";
-      application.apiVersion       = VK_API_VERSION_1_3;
-      VkInstanceCreateInfo create{VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO};
-      create.pApplicationInfo = &application;
-      check(vkCreateInstance(&create, nullptr, &instance_), "vkCreateInstance");
-      std::uint32_t count = 0;
-      check(vkEnumeratePhysicalDevices(instance_, &count, nullptr), "vkEnumeratePhysicalDevices");
+      instance_ = create_compute_instance();
+      auto count = visible_devices(instance_);
+      if (index >= count)
+        throw std::runtime_error("Vulkan device index unavailable");
       std::vector<VkPhysicalDevice> devices(count);
       check(
           vkEnumeratePhysicalDevices(instance_, &count, devices.data()),
           "vkEnumeratePhysicalDevices");
-      if (index >= devices.size())
+      if (index >= count)
         throw std::runtime_error("Vulkan device index unavailable");
       physical_ = devices[index];
       vkGetPhysicalDeviceProperties(physical_, &properties_);
@@ -463,12 +476,26 @@ class VulkanDevice final : public GpuDevice {
   void synchronize() override { check(vkDeviceWaitIdle(device_), "vkDeviceWaitIdle"); }
 };
 } // namespace
+std::uint32_t vulkan_device_count() {
+  const auto instance = create_compute_instance();
+  try {
+    const auto count = visible_devices(instance);
+    vkDestroyInstance(instance, nullptr);
+    return count;
+  } catch (...) {
+    vkDestroyInstance(instance, nullptr);
+    throw;
+  }
+}
 std::shared_ptr<GpuDevice> make_vulkan(std::uint32_t index) {
   return std::make_shared<VulkanDevice>(index);
 }
 } // namespace datamunge::compute::detail
 #else
 namespace datamunge::compute::detail {
+std::uint32_t vulkan_device_count() {
+  throw std::runtime_error("Vulkan backend was not enabled at build time");
+}
 std::shared_ptr<GpuDevice> make_vulkan(std::uint32_t) {
   throw std::runtime_error("Vulkan backend was not enabled at build time");
 }

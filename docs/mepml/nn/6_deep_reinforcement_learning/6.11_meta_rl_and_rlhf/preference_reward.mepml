@@ -1,0 +1,105 @@
+//? Title: Learning a reward from segment preferences
+//? Lang: en
+
+> Learning a reward from segment preferences
+
+A synthetic oracle compares pairs of five-step trajectories. It
+rewards progress and stability and penalizes squared effort. A
+logistic draw turns the difference in utility into a noisy label.
+
+The learned model assigns each step a scalar reward and sums those
+rewards over the segment. The probability that the left segment
+wins is the sigmoid of the difference between the sums. A shared
+output bias would cancel for equal-length segments, so the output
+head has no bias.
+
+The plot tracks likelihood on independently generated comparisons.
+The table reports agreement with the noisy labels and with the
+oracle's underlying ordering. The model uses Datamunge's native initializer.
+
+[Christiano et al. (2017)|https://arxiv.org/abs/1706.03741]
+
+```{cpp, results="markdown", file="figures/preference_reward.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto sample=[](int count,std::mt19937& rng) {
+    std::uniform_real_distribution<float> feature(-1.f,1.f),uniform(0.f,1.f);
+    std::vector<float> segments,labels,oracle,draws;
+    for (int i=0;i<count;++i) {
+      for (int side=0;side<2;++side) {
+        float utility=0;
+        for (int step=0;step<5;++step) {
+          const float progress=feature(rng),effort=feature(rng),stability=feature(rng);
+          segments.insert(segments.end(),{progress,effort,stability});
+          utility+=1.2f*progress-.7f*effort*effort+.8f*stability;
+        }
+        oracle.push_back(utility);
+      }
+      const float delta=oracle[2*i]-oracle[2*i+1];
+      draws.push_back(uniform(rng));
+      labels.push_back(draws.back()<1.f/(1.f+std::exp(-delta)));
+    }
+    return std::array{n::from_vector(segments,{count,2,5,3}),n::from_vector(labels),
+                      n::from_vector(oracle,{count,2}),n::from_vector(draws)};
+  };
+  std::mt19937 train_rng(46902),test_rng(46903);
+  std::vector<std::array<n::Tensor,4>> batches;
+  for (int i=0;i<24;++i) batches.push_back(sample(64,train_rng));
+  const auto test=sample(768,test_rng);
+  n::ParameterStore params(46901);
+  const auto evaluate=[&](const auto& data) {
+    const auto [per_step,returns,delta]=dm::rl::preference_segment_scores(params,data[0],16);
+    return std::tuple{n::mean(n::softplus(delta)-data[1]*delta),n::sigmoid(delta),per_step,returns};
+  };
+  (void)evaluate(test);
+  n::Optimizer optimizer(params,.018,{.kind=n::OptimizerKind::Adam});
+  const auto labels=test[1].to_vector<float>(),oracle=test[2].to_vector<float>();
+  std::vector<double> history;
+  std::vector<float> diagnostics;
+  std::print("| Epoch | Held-out NLL | Label agreement | Oracle agreement |\n|---:|---:|---:|---:|\n");
+  for (int epoch=0;epoch<=3;++epoch) {
+    {
+      const n::NoGradGuard guard;
+      const auto [loss,probability,per_step,returns]=evaluate(test);
+      const auto prediction=probability.to_vector<float>();
+      int agreement=0,oracle_agreement=0;
+      for (std::size_t i=0;i<labels.size();++i) {
+        agreement+=(prediction[i]>=.5f)==(labels[i]==1.f);
+        oracle_agreement+=(prediction[i]>=.5f)==(oracle[2*i]>=oracle[2*i+1]);
+      }
+      history.push_back(loss.item());
+      diagnostics.insert(diagnostics.end(),{float(history.back()),agreement/768.f,oracle_agreement/768.f});
+      std::print("| {} | {:.6f} | {} / 768 | {} / 768 |\n",epoch,history.back(),agreement,oracle_agreement);
+    }
+    if (epoch==3) break;
+    for (const auto& batch:batches) optimizer.step(n::grad(std::get<0>(evaluate(batch)),optimizer.parameters()));
+  }
+  const auto [loss,probability,per_step,returns]=evaluate(test);
+  const auto gradient=n::grad(loss,optimizer.parameters());
+  n::NamedTensors evidence{{"segments",test[0]},{"labels",test[1]},{"oracle",test[2]},{"draws",test[3]},
+      {"history",n::from_vector(diagnostics,{4,3})},{"per_step",per_step},{"returns",returns},
+      {"probability",probability},{"nll",loss}};
+  const auto& names=params.names();
+  for (std::size_t i=0;i<names.size();++i) {
+    evidence.emplace_back(names[i],params.at(names[i]));
+    evidence.emplace_back("gradient/"+names[i],gradient[i]);
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/preference_reward_evaluation.npz",evidence);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Held-out preference NLL",{37,99,235})
+      .title("Reward learning from preferences").x_label("Epoch").y_label("Preference NLL")
+      .size(800,460).save_svg("build/preference_reward.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out NLL | Label agreement | Oracle agreement |
+|---:|---:|---:|---:|
+| 0 | 0.787558 | 281 / 768 | 264 / 768 |
+| 1 | 0.429007 | 605 / 768 | 700 / 768 |
+| 2 | 0.421982 | 604 / 768 | 699 / 768 |
+| 3 | 0.418513 | 606 / 768 | 707 / 768 |
+\image(figures/preference_reward.svg)
+// result_end

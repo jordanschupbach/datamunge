@@ -1,0 +1,122 @@
+//? Title: Compare post-training and quantization-aware int8 inference
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a dense regressor, calibrate symmetric int8 scales on training data,
+and compare post-training quantization with quantization-aware training.
+)
+\toc
+
+Each scale is the largest training magnitude divided by 127. Divide by
+that scale, clip to the symmetric int8 range, and round to the nearest
+integer with ties to even. Inference widens packed int8 operands and returns exact int32 dot products.
+The CPU kernel uses a wider running sum. Multiply the result by the activation
+and weight scales to recover real-valued predictions.
+
+Post-training quantization uses the float fit directly. Quantization-aware
+training starts from zero and uses fake-quantized weights and features in
+the forward pass. Its clipped straight-through gradient updates the float
+weights inside the clipping interval. Both variants use the same scales.
+Held-out features extend to ±1.12, so test inputs can saturate at the
+activation bounds learned from features between ±1.
+
+```{cpp, results="markdown", file="figures/int8_quantization.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  auto draw = [](int rows, unsigned seed, double radius) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> uniform(-radius, radius);
+    std::vector<double> x(rows*8), y(rows*2);
+    for (int i = 0; i < rows; ++i) {
+      const auto offset = i*8;
+      for (int j = 0; j < 8; ++j) x[offset+j] = uniform(rng);
+      y[2*i] = .92*x[offset] - .45*x[offset+1] + .012*x[offset+7];
+      y[2*i+1] = .61*x[offset+2] + .32*x[offset+3] - .018*x[offset+6];
+    }
+    return std::pair{n::from_vector(x, {rows, 8}), n::from_vector(y, {rows, 2})};
+  };
+  const auto [fit_x, fit_y] = draw(192, 30051, 1.);
+  const auto [test_x, test_y] = draw(96, 30052, 1.12);
+  const double activation_scale = n::calibrate_int8_scale(fit_x);
+  auto train = [&](bool aware, double weight_scale) {
+    const auto weights = n::zeros({8, 2}, n::DType::Float64).requires_grad_();
+    n::Optimizer sgd({weights}, .6);
+    for (int epoch = 0; epoch < 3; ++epoch)
+      for (int row = 0; row < 192; row += 32) {
+        auto x = n::slice(fit_x, {row, 0}, {32, 8});
+        const auto y = n::slice(fit_y, {row, 0}, {32, 2});
+        const auto w = aware ? n::fake_quantize_int8(weights, weight_scale) : weights;
+        if (aware) x = n::fake_quantize_int8(x, activation_scale);
+        sgd.step(n::grad(n::mse(n::matmul(x, w), y), {weights}));
+      }
+    return weights.detach();
+  };
+  const auto ptq = train(false, 1.);
+  const double weight_scale = n::calibrate_int8_scale(ptq);
+  const auto qat = train(true, weight_scale);
+  const auto qx = n::quantize_int8(test_x, activation_scale);
+  const auto fake_x = n::fake_quantize_int8(test_x, activation_scale);
+  n::NamedTensors archive{{"fit_x",fit_x},{"fit_y",fit_y},{"test_x",test_x},{"test_y",test_y},
+      {"ptq_w",ptq},{"qat_w",qat},{"scales",n::from_vector(std::vector{activation_scale,weight_scale})}};
+  auto record_codes = [](const n::SymmetricInt8& q) {
+    return n::from_vector(std::vector<std::int32_t>(q.values.begin(), q.values.end()), q.shape);
+  };
+  std::vector<double> float_mse, int8_mse;
+  std::println("Activation scale {:.9g}. Weight scale {:.9g}.\n", activation_scale, weight_scale);
+  std::println("| Fit | Float MSE | Int8 MSE |");
+  std::println("| :--- | ---: | ---: |");
+  for (const auto& [name, weights] : n::NamedTensors{{"ptq",ptq},{"qat",qat}}) {
+    const auto qw = n::quantize_int8(weights, weight_scale);
+    const auto [accumulator, prediction] = n::int8_dense(qx, qw);
+    const auto fake = n::matmul(fake_x, n::fake_quantize_int8(weights, weight_scale));
+    if (accumulator.dtype() != n::DType::Int32 || n::max(n::abs(prediction - fake)).item() > 1e-12)
+      throw std::runtime_error("Fake-quantized and integer inference disagree");
+    float_mse.push_back(n::mse(n::matmul(test_x, weights), test_y).item());
+    int8_mse.push_back(n::mse(prediction, test_y).item());
+    std::println("| {} | {:.9g} | {:.9g} |", name, float_mse.back(), int8_mse.back());
+    archive.emplace_back(name + "_activation", record_codes(qx));
+    archive.emplace_back(name + "_weight", record_codes(qw));
+    archive.emplace_back(name + "_accumulator", accumulator);
+    archive.emplace_back(name + "_prediction", prediction);
+  }
+
+  const std::string folder = "build/int8_quantization/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "inference.npz", archive);
+  auto plot = dm::graphics::RPlot::create();
+  plot.points({1., 2.}, float_mse, "Float inference", {37, 99, 235}, 6)
+      .points({1., 2.}, int8_mse, "Int8 inference", {191, 88, 34}, 6)
+      .title("Held-out error with fixed calibration scales")
+      .x_label("1 Post-training · 2 Quantization-aware").y_label("Held-out MSE")
+      .save_svg(folder + "error.svg");
+  std::filesystem::copy_file(folder + "error.svg", "figures/int8_quantization.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Activation scale 0.00786916641. Weight scale 0.0070492708.
+
+| Fit | Float MSE | Int8 MSE |
+| :--- | ---: | ---: |
+| ptq | 0.000218103186 | 0.000633749968 |
+| qat | 0.000224547622 | 0.00062598384 |
+\image(figures/int8_quantization.svg)
+// result_end
+
+The diagnostic NPZ file records int8 codes as Int32 arrays so the generic
+tensor archive can read them. Operands remain packed as signed bytes in
+the quantizer and are widened for the integer product.
+
+> Reference
+
+- [Jacob et al., Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference|https://arxiv.org/abs/1712.05877].

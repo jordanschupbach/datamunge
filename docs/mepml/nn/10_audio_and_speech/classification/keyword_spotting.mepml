@@ -1,0 +1,102 @@
+//? Title: Keyword spotting on Mini Speech Commands
+//? Lang: en
+
+> Keyword spotting on Mini Speech Commands
+
+A convolutional classifier maps one-second audio excerpts to one of
+eight commands. Log-mel features summarize spectral power over short
+windows. Each frequency band is centered and scaled using the training
+clips, and the same statistics are reused for validation and test.
+Two convolution and pooling stages preserve a coarse time–frequency
+grid so the dense classifier can distinguish words by their timing.
+
+The split separates speakers. Validation accuracy measures progress
+during training, and the final test reports accuracy and per-word
+recall on speakers held out from both training and validation.
+
+Prepare the fixture with `python3 scripts/prepare_speech_commands.py`
+in the TensorFlow examples checkout. For a different checkout location,
+set `DATAMUNGE_SPEECH_COMMANDS_DIR` to its prepared dataset directory.
+
+```{cpp, results="markdown", file="figures/keyword_spotting.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto* configured = std::getenv("DATAMUNGE_SPEECH_COMMANDS_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_SPEECH_COMMANDS_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/speech_commands";
+  const auto mel = n::linear_to_mel_weight_matrix(32,257,16000,60,7600);
+  const auto load = [&](const char* split) {
+    const auto named = n::load_npz((root/(std::string(split)+".npz")).string());
+    const std::map<std::string,n::Tensor> data(named.begin(),named.end());
+    const auto& audio = data.at("waveform");
+    const auto& label = data.at("label");
+    if (label.dim()!=1 || audio.shape()!=n::Shape{label.size(0),16000})
+      throw std::runtime_error("Unexpected Speech Commands fixture shape");
+    const auto power = n::power_spectrogram(n::stft(audio,400,320,512));
+    return std::pair{n::log_mel_spectrogram(power,mel),label};
+  };
+  const auto [fit,labels] = load("fit");
+  const auto [validation,validation_labels] = load("validation");
+  const auto [test,truth] = load("test");
+  const auto wide = fit.to(n::DType::Float64);
+  const auto center = n::mean(wide,{0,1});
+  const auto scale = n::sqrt(n::maximum(n::mean(n::square(wide-center),{0,1}),
+                                      n::full({32},1e-6,n::DType::Float64))).to(n::DType::Float32);
+  const auto mean = center.to(n::DType::Float32);
+  const auto normalize = [&](const n::Tensor& clip) { return (clip-mean)/scale; };
+  const auto x = normalize(fit), val = normalize(validation), held_out = normalize(test);
+  n::ParameterStore model(41380);
+  const auto initial = n::sparse_softmax_cross_entropy(n::keyword_cnn_logits(model,held_out),truth).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.size(0),16,70123);
+  std::print("| Epoch | Validation correct |\n|---:|---:|\n");
+  for (int epoch=1; epoch<=3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto scores = n::keyword_cnn_logits(model,n::take_rows(x,rows));
+      optimizer.minimize(n::sparse_softmax_cross_entropy(scores,n::take_rows(labels,rows)));
+    }
+    n::NoGradGuard guard;
+    const auto decisions = n::argmax(n::keyword_cnn_logits(model,val)).to_vector<int>();
+    const auto actual = validation_labels.to_vector<int>();
+    std::print("| {} | {}/{} |\n",epoch,std::inner_product(decisions.begin(),decisions.end(),
+        actual.begin(),0,std::plus<>(),std::equal_to<>()),actual.size());
+  }
+  n::NoGradGuard guard;
+  const auto scores = n::keyword_cnn_logits(model,held_out);
+  const auto loss = n::sparse_softmax_cross_entropy(scores,truth);
+  const auto predicted = n::argmax(scores).to_vector<int>(), actual = truth.to_vector<int>();
+  const std::array<std::string,8> words{"down","go","left","no","right","stop","up","yes"};
+  std::array<int,8> hit{}, count{};
+  for (std::size_t i=0;i<actual.size();++i) {
+    ++count.at(actual[i]);
+    hit.at(actual[i]) += predicted[i]==actual[i];
+  }
+  const auto correct = std::accumulate(hit.begin(),hit.end(),0);
+  if (!(loss.item()<initial)) return 1;
+  std::print("\nTest accuracy {}/{}. Cross-entropy {:.4f} → {:.4f}.\n",correct,actual.size(),initial,loss.item());
+  auto plot = dm::graphics::RPlot::create();
+  for (std::size_t i=0;i<words.size();++i) {
+    if (count[i]>0) plot.points({double(i+1)},{double(hit[i])/count[i]},words[i],{37,99,235});
+  }
+  plot.title("Held-out recall by keyword").x_label("Keyword index").y_label("Recall").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(960,430).save_svg("build/keyword_spotting.svg");
+  n::save_npz("build/keyword_spotting.npz",{{"features",test},{"label",truth},
+      {"scores",scores},{"mean",mean},{"scale",scale},{"loss",loss}});
+}
+```
+// result_begin: markdown
+| Epoch | Validation correct |
+|---:|---:|
+| 1 | 34/128 |
+| 2 | 46/128 |
+| 3 | 47/128 |
+
+Test accuracy 69/192. Cross-entropy 2.1788 → 1.8373.
+\image(figures/keyword_spotting.svg)
+// result_end

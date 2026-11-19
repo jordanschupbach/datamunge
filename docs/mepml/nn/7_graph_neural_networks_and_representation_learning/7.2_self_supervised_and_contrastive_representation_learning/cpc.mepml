@@ -1,0 +1,106 @@
+//? Title: Contrastive predictive coding with causal GRU states
+//? Lang: en
+
+> Contrastive predictive coding with causal GRU states
+
+Contrastive predictive coding asks a context state to identify a future
+latent from its own sequence among a batch of candidates. Here a GRU
+reads a four-step prefix and two bilinear heads predict one and two
+steps ahead. For each context time and horizon, the matching sequence
+is the positive in the InfoNCE cross-entropy.
+
+Training draws fresh six-step sequences with random levels, slopes and
+noise. Held-out loss and retrieval measure how well contexts identify
+their own futures. A separate check alters the suffix and verifies
+that the prefix states remain identical while scores for the changed
+future candidates move.
+
+```{cpp, results="markdown", file="figures/cpc_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto sample = [](std::mt19937 &rng) {
+    std::normal_distribution<float> normal;
+    std::vector<float> x(32 * 6 * 4);
+    for (int row = 0; row < 32; ++row)
+      for (int f = 0; f < 4; ++f) {
+        const float level = normal(rng), slope = .15f * normal(rng);
+        for (int t = 0; t < 6; ++t)
+          x[(row * 6 + t) * 4 + f] = level + slope * t + .15f * normal(rng);
+      }
+    return n::from_vector(x, {32, 6, 4});
+  };
+  std::mt19937 training(50502), testing(50503);
+  const auto test = sample(testing);
+  n::ParameterStore model(50501);
+  const auto forward = [&](const n::Tensor &x) {
+    return n::contrastive_predictive_coding(model, "cpc", x);
+  };
+  forward(test);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .015, config);
+  const auto diagonal = n::arange(0, 32, 1, n::DType::Int64);
+  std::vector<double> epochs, losses, retrieval;
+  std::print("| Epoch | Held-out InfoNCE | Correct future retrieval |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto result = forward(test);
+      const auto hits = n::count_nonzero(n::equal(n::argmax(result.scores, 2), diagonal)).item<int>();
+      epochs.push_back(epoch);
+      losses.push_back(result.loss.item());
+      retrieval.push_back(hits / 256.);
+      std::print("| {} | {:.6f} | {}/256 |\n", epoch, losses.back(), hits);
+    }
+    if (epoch < 3)
+      for (int step = 0; step < 24; ++step)
+        adam.minimize(forward(sample(training)).loss);
+  }
+
+  n::NoGradGuard guard;
+  const auto result = forward(test);
+  const auto altered = n::concat({n::slice_axis(test, 1, 0, 4),
+                                   n::slice_axis(test, 1, 4, 6) + 5.}, 1);
+  const auto changed = forward(altered);
+  const auto context_error = n::max(n::abs(result.context - changed.context)).item();
+  const auto score_change = n::max(n::abs(result.scores - changed.scores)).item();
+  if (context_error != 0. || score_change <= 0.)
+    throw std::runtime_error("CPC causal context check failed");
+  std::print("Suffix perturbation changed the context by {:.3g} and the scores by up to {:.6f}.\n",
+             context_error, score_change);
+
+  std::filesystem::create_directories("build");
+  n::NamedTensors evidence{{"input", test}, {"latent", result.latent}, {"context", result.context},
+                           {"scores", result.scores}, {"future_scores", changed.scores}};
+  for (const auto &key : model.names())
+    evidence.emplace_back(key, model.at(key));
+  n::save_npz("build/cpc_fit.npz", evidence);
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines(epochs, losses, "Held-out loss", {37, 99, 235})
+      .title("Future prediction loss").x_label("Epoch").y_label("InfoNCE");
+  auto hits = dm::graphics::RPlot::create();
+  hits.lines(epochs, retrieval, "Top-1 retrieval", {22, 120, 97})
+      .title("Matching sequence retrieval").x_label("Epoch").y_label("Fraction correct").y_limits(0, 1);
+  dm::graphics::RLayout::create(1, 2).add(loss).add(hits).size(1050, 430)
+      .fit_panels().save_svg("build/cpc_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out InfoNCE | Correct future retrieval |
+|---:|---:|---:|
+| 0 | 3.537139 | 2/256 |
+| 1 | 1.563304 | 119/256 |
+| 2 | 1.342064 | 132/256 |
+| 3 | 1.166413 | 140/256 |
+Suffix perturbation changed the context by 0 and the scores by up to 23.887289.
+\image(figures/cpc_fit.svg)
+// result_end
+\caption(Held-out InfoNCE and matching-sequence retrieval across both prediction horizons.)
+\alttext(Two line plots show held-out loss and the fraction of future latents retrieved correctly by epoch.)
+
+> Reference
+
+- [van den Oord et al. (2018), Representation Learning with Contrastive Predictive Coding](https://arxiv.org/abs/1807.03748).

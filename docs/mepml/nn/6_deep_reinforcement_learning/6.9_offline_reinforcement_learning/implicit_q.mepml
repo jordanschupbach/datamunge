@@ -1,0 +1,75 @@
+//? Title: Fitted Implicit Q-Learning on a chain
+//? Lang: en
+
+> Fitted Implicit Q-Learning on a chain
+
+Implicit Q-Learning fits a state value to an upper expectile of Q-values
+for actions in the offline dataset. This example solves the empirical
+expectile exactly and uses it to bootstrap the next Q sweep. The
+two left actions initialized at an optimistic value of three have
+zero count and contribute no mass to the expectile.
+
+The fitted actor multiplies action counts by clipped exponentials of
+their advantages over the expectile. Normalizing these weights yields
+a policy supported by the batch. After 30 synchronous sweeps the
+report evaluates the greedy actor from each nonterminal start and
+plots the fitted state values against the retained optimistic estimate.
+
+[Kostrikov et al. (2022)|https://arxiv.org/abs/2110.06169]
+
+```{cpp, results="markdown", file="figures/implicit_q.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto next=[](int state,int action) {
+    return state==4?4:std::clamp(state+(action?1:-1),0,4);
+  };
+  std::vector<int> successors;
+  std::vector<float> rewards,live;
+  for (int state=0;state<5;++state) {
+    for (int action=0;action<2;++action) {
+      const int cell=next(state,action);
+      successors.push_back(cell);
+      rewards.push_back(state!=4 && cell==4);
+      live.push_back(state!=4 && cell!=4);
+    }
+  }
+  const auto counts=n::from_vector<float>({0,30,2,30,0,30,15,30,0,0},{5,2});
+  const auto initial=n::from_vector<float>({3,0,0,0,3,0,0,0,0,0},{5,2});
+  const auto indices=n::from_vector(successors,{5,2});
+  const auto reward=n::from_vector(rewards,{5,2}),active=n::from_vector(live,{5,2});
+  auto q=initial;
+  for (int step=0;step<30;++step) {
+    const auto estimate=dm::rl::implicit_q_policy(q,counts);
+    const auto target=reward+.95f*(active*n::gather(estimate[0],indices));
+    q=n::where(n::greater(counts,n::zeros_like(counts)),target,q);
+  }
+  const auto [value,policy,weight]=dm::rl::implicit_q_policy(q,counts);
+  const auto target=reward+.95f*(active*n::gather(value,indices));
+  const auto greedy=n::argmax(policy,1).to_vector<int>();
+  int solved=0;
+  for (int start=0;start<4;++start) {
+    int state=start;
+    for (int t=0;t<8 && state!=4;++t) state=next(state,greedy[state]);
+    solved+=state==4;
+  }
+  const auto fitted=value.to_vector<double>();
+  const auto optimistic=q.to_vector<double>()[0];
+  std::print("The greedy actor reached the goal from {} of 4 starts. "
+             "The starting expectile is {:.6f} and the excluded left action retains Q={:.1f}.\n",
+             solved,fitted[0],optimistic);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/implicit_q_audit.npz",{{"count",counts},{"initial",initial},{"q",q},
+      {"value",value},{"target",target},{"policy",policy},{"actor_weight",weight}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3,4},fitted,"Empirical expectile",{37,99,235})
+      .points({0,2},{optimistic,optimistic},"Excluded left actions",{217,96,26},7)
+      .title("Fitted values on the offline chain").x_label("State").y_label("Value")
+      .ylim(0,3.3).size(800,460).save_svg("build/implicit_q.svg");
+}
+```
+// result_begin: markdown
+The greedy actor reached the goal from 4 of 4 starts. The starting expectile is 0.837496 and the excluded left action retains Q=3.0.
+\image(figures/implicit_q.svg)
+// result_end

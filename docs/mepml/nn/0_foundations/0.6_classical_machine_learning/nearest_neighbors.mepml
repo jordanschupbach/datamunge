@@ -168,6 +168,67 @@ int main() {
 // result_end
 
 
+> Held-out rings
+
+Use position to predict ring membership and radius. The upstream fixture
+uses 400 reference points and 160 held-out queries. A direct distance sort
+checks each selected neighbor and the weighted radius prediction.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  std::mt19937 rng(73);
+  std::normal_distribution<float> noise(0,.06f);
+  std::uniform_real_distribution<float> angle(0,2*std::numbers::pi_v<float>);
+  std::vector<float> points,radii;
+  std::vector<std::int64_t> classes;
+  for(int i=0;i<560;++i) {
+    const float a=angle(rng),r=(i%2?1.5f:.6f)+noise(rng);
+    points.push_back(r*std::cos(a));
+    points.push_back(r*std::sin(a));
+    if(i<400) { radii.push_back(r); classes.push_back(i%2); }
+  }
+  const auto all=n::from_vector(points,{560,2});
+  const auto train=n::slice_axis(all,0,0,400), query=n::slice_axis(all,0,400,560);
+  const n::ml::TensorNeighbors uniform(train,query,5), weighted(train,query,5,true);
+  const auto labels=n::from_vector(classes);
+  const auto plain=uniform.classify(labels,2), votes=weighted.classify(labels,2);
+  const auto predicted=weighted.regress(n::from_vector(radii));
+  int correct=0,weighted_correct=0;
+  double mse=0.,worst=0.;
+  for(int i=0;i<160;++i) {
+    std::vector<std::pair<double,int>> distances;
+    for(int j=0;j<400;++j) {
+      const double x=query.at({i,0})-train.at({j,0}),y=query.at({i,1})-train.at({j,1});
+      distances.emplace_back(x*x+y*y,j);
+    }
+    std::sort(distances.begin(),distances.end());
+    double numerator=0.,denominator=0.;
+    for(int k=0;k<5;++k) {
+      const auto [d,row]=distances[k];
+      if(uniform.indices.at({i,k})!=row) throw std::runtime_error("Unexpected neighbor index");
+      worst=std::max(worst,std::abs(uniform.squared_distances.at({i,k})-d));
+      const double weight=1/std::sqrt(d);
+      numerator+=weight*radii[row];
+      denominator+=weight;
+    }
+    if(std::abs(predicted.at({i})-numerator/denominator)>3e-5)
+      throw std::runtime_error("Weighted radius differs from the direct calculation");
+    correct+=plain.at({i})==i%2;
+    weighted_correct+=votes.at({i})==i%2;
+    mse+=std::pow(predicted.at({i})-std::hypot(query.at({i,0}),query.at({i,1})),2)/160;
+  }
+  if(correct<=.98*160||weighted_correct<=.98*160||mse>=.005||worst>2e-6)
+    throw std::runtime_error("Held-out ring fit did not match the reference");
+  std::print("All 800 neighbor indices match. Accuracy {:.2f}% and {:.2f}%; radius MSE {:.6f}; max distance error {:.2e}.\n",
+             correct*100./160,weighted_correct*100./160,mse,worst);
+}
+```
+// result_begin: markdown
+All 800 neighbor indices match. Accuracy 100.00% and 100.00%; radius MSE 0.001308; max distance error 5.67e-09.
+// result_end
+
 > Conclusion
 
 The exact two-point calculation, duplicate policy and class tie rule match the native predictions.

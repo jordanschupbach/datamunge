@@ -395,6 +395,18 @@ Tensor padding_keep_mask(const Tensor& lengths, I64 T) {
   return reshape(less(pos, len), {lengths.size(0), 1, 1, T});
 }
 
+Tensor causal_padding_keep_mask(const Tensor& lengths, I64 T) {
+  if (T <= 0 || !lengths.defined() || lengths.dim() != 1 || lengths.size(0) == 0 ||
+      !is_integral(lengths.dtype()) || lengths.device().backend != compute::Backend::CPU)
+    throw std::invalid_argument("causal_padding_keep_mask: expected a nonempty CPU integer vector and positive T");
+  for (const auto length : lengths.to_vector<I64>())
+    if (length < 0 || length > T)
+      throw std::invalid_argument("causal_padding_keep_mask: length outside [0, T]");
+  const auto keys = padding_keep_mask(lengths, T);
+  const auto queries = reshape(keys, {lengths.size(0), 1, T, 1});
+  return logical_and(logical_and(keys, queries), causal_keep_mask(T));
+}
+
 Tensor padding_keep_mask_from_ids(const Tensor& ids, I64 pad_id) {
   if (ids.dim() != 2) throw std::invalid_argument("padding_keep_mask_from_ids: ids must be [N, T]");
   return reshape(not_equal(ids, static_cast<double>(pad_id)), {ids.size(0), 1, 1, ids.size(1)});

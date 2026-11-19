@@ -1513,7 +1513,7 @@ truth/pred     0     1
   confusion (truth rows):
     64 0
     2 62
-testCE=0.124958 accuracy=0.984375 cueFlip=0.984375 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.201116 s)
+testCE=0.124958 accuracy=0.984375 cueFlip=0.984375 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.463687 s)
 Artifacts:"build/recurrent-models/models/layer_norm_lstm/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/layer_norm_lstm" not found; skipping the comparison
 // result_end

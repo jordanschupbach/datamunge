@@ -1,0 +1,133 @@
+//? Title: Batch-hard triplet loss
+//? Lang: en
+
+> Batch-hard triplet loss
+
+Learn an embedding by asking each anchor to sit closer to its farthest
+same-class example than to its nearest different-class example. Mine both
+neighbors from the current batch and apply a hinge to their squared-distance
+gap plus a margin of 0.35. Every anchor needs at least one other member of
+its class and one member of another class. A negative gap orders the two
+neighbors correctly. The loss stays active until the gap is at most −0.35.
+
+The simulation puts class signal in two coordinates and independent nuisance
+noise in two others. Each 24-row batch has eight examples per class. A
+two-layer embedding trains for 48 Adam updates on freshly simulated batches.
+A fixed batch from a separate seed measures generalization at each epoch.
+The current embedding selects the neighbor indices, and the hinge
+differentiates the distances of those selected triplets.
+
+```{cpp, results="markdown", file="figures/batch_hard_triplet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+namespace m = n::models;
+
+int main() {
+  constexpr int rows = 24;
+  constexpr float margin = .35f;
+  std::vector<int> labels(rows);
+  for (int i = 0; i < rows; ++i)
+    labels[i] = i % 3;
+
+  const auto simulate = [&](std::mt19937 &rng) {
+    std::normal_distribution<float> signal(0.f, .24f), nuisance(0.f, 1.f);
+    std::vector<float> values;
+    for (const auto label : labels) {
+      const float angle = 2.0943951f * label;
+      values.insert(values.end(), {std::cos(angle) + signal(rng), std::sin(angle) + signal(rng),
+                                   nuisance(rng), nuisance(rng)});
+    }
+    return n::from_vector(values).reshape({rows, 4});
+  };
+
+  std::mt19937 training(51102), testing(51103);
+  const auto held_out = simulate(testing);
+  n::ParameterStore parameters(51101);
+  const auto embed = [&](const n::Tensor &x) {
+    const auto hidden = n::dense(parameters, "hidden", x, 16, n::Activation::Tanh);
+    return n::dense(parameters, "embedding", hidden, 6);
+  };
+  const auto initial = embed(held_out);
+  const auto initial_triplets = m::RetrievalHardTriplets(initial, labels);
+  const auto initial_gradient = n::grad(m::MeanTriplet(initial, initial_triplets, margin),
+                                        {initial}).at(0);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(parameters, .012, config);
+
+  std::vector<double> epochs, losses, ordered, initial_gaps, final_gaps;
+  std::print("| epoch | held-out hinge | ordered anchors |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto z = embed(held_out);
+      const auto triplets = m::RetrievalHardTriplets(z, labels);
+      const auto distances = m::MetricDistanceMatrix(z).to_vector<double>();
+      std::vector<double> gaps;
+      for (const auto &[anchor, positive, negative] : triplets)
+        gaps.push_back(distances[rows * anchor + positive] - distances[rows * anchor + negative]);
+      const auto count = std::ranges::count_if(gaps, [](double gap) { return gap < 0; });
+      epochs.push_back(epoch);
+      losses.push_back(m::MeanTriplet(z, triplets, margin).item());
+      ordered.push_back(count);
+      if (epoch == 0)
+        initial_gaps = gaps;
+      if (epoch == 3)
+        final_gaps = gaps;
+      std::print("| {} | {:.6f} | {}/{} |\n", epoch, losses.back(), count, rows);
+    }
+    if (epoch < 3)
+      for (int step = 0; step < 16; ++step) {
+        const auto z = embed(simulate(training));
+        adam.minimize(m::MeanTriplet(z, m::RetrievalHardTriplets(z, labels), margin));
+      }
+  }
+
+  const auto z = embed(held_out);
+  const auto triplets = m::RetrievalHardTriplets(z, labels);
+  const auto gradient = n::grad(m::MeanTriplet(z, triplets, margin), {z}).at(0);
+  std::vector<int> selected;
+  for (const auto &[anchor, positive, negative] : triplets)
+    selected.insert(selected.end(), {anchor, positive, negative});
+
+  std::filesystem::create_directories("build");
+  n::save_npz("build/batch_hard_triplet_test.npz",
+              {{"embedding", z}, {"labels", n::from_vector(labels)},
+               {"initial_embedding", initial}, {"initial_gradient", initial_gradient},
+               {"triplets", n::from_vector(selected).reshape({rows, 3})}, {"gradient", gradient},
+               {"gaps", n::from_vector(final_gaps)}, {"hinge", n::from_vector(losses)}});
+
+  auto history = dm::graphics::RPlot::create();
+  history.lines(epochs, losses, "Held-out loss", {37, 99, 235})
+      .title("Held-out triplet hinge").x_label("Epoch").y_label("Mean hinge");
+  std::vector<double> anchors(rows), threshold(rows, -margin);
+  std::iota(anchors.begin(), anchors.end(), 1.);
+  auto margins = dm::graphics::RPlot::create();
+  margins.points(anchors, initial_gaps, "Before fitting", {148, 163, 184})
+      .points(anchors, final_gaps, "After fitting", {37, 99, 235})
+      .lines(anchors, threshold, "Required gap", {185, 28, 28})
+      .title("Hardest neighbor gaps").x_label("Held-out anchor").y_label("Positive − negative distance²");
+  auto figure = dm::graphics::RLayout::create(1, 2);
+  figure.add(history).add(margins).size(1100, 440).fit_panels().save_svg("build/batch_hard_triplet.svg");
+}
+```
+// result_begin: markdown
+| epoch | held-out hinge | ordered anchors |
+|---:|---:|---:|
+| 0 | 5.555956 | 0/24 |
+| 1 | 0.107558 | 21/24 |
+| 2 | 0.000000 | 24/24 |
+| 3 | 0.000000 | 24/24 |
+\image(figures/batch_hard_triplet.svg)
+// result_end
+\caption(The left panel tracks the same held-out batch before fitting and after each epoch. The right panel compares each anchor's initial and final squared-distance gap against the margin.)
+\alttext(Mean held-out triplet hinge by epoch and a scatter plot of positive minus negative squared distances before and after fitting.)
+
+The right panel distinguishes correct ordering from full margin satisfaction.
+The held-out batch is small, and the hardest neighbors depend on which rows
+share the batch.
+
+> Reference
+
+- [Hermans, Beyer and Leibe (2017), In Defense of the Triplet Loss for Person Re-Identification](https://arxiv.org/abs/1703.07737).

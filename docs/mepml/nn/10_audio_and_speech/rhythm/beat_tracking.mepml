@@ -1,0 +1,91 @@
+//? Title: Spectral-flux onsets and beat tracking
+//? Lang: en
+
+> Spectral-flux onsets and beat tracking
+
+A drum hit produces a sudden increase in energy across many frequency
+bins. Spectral flux sums the positive changes in log STFT magnitude
+between adjacent windows. Peak picking gives candidate onset times.
+The code timestamps each peak at the later window's center, rounded
+down to a whole hop.
+
+An autocorrelation of the weighted onset peaks estimates a constant
+beat period. Folding the peaks modulo that period estimates the phase.
+With an 80-sample hop at 8 kHz, each lag is 10 ms. A 48-hop period gives
+125 beats per minute. Quieter offbeats and two missing downbeats test
+whether the recovered grid follows the pulse through gaps. The search
+range encodes a tempo prior, and tracks with changing tempo or stronger
+subdivisions may need a more flexible model.
+
+```{cpp, results="markdown", file="figures/beat_tracking.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int rate = 8000, hop = 80, window = 256, samples = 64000;
+  std::vector<float> wave(samples, 0);
+  std::vector<std::int64_t> onsets, beats;
+  std::mt19937 rng(78203);
+  std::normal_distribution<float> noise;
+  const auto hit = [&](int frame, float gain) {
+    onsets.push_back(frame);
+    for (int t = 0; t < 180; ++t) wave[frame*hop+t] += gain*std::exp(-t/40.)*noise(rng);
+  };
+  for (int frame = 21; frame < 770; frame += 48) {
+    beats.push_back(frame);
+    if (beats.size() != 6 && beats.size() != 12) hit(frame, .55f);
+    if (beats.size()%3) hit(frame+24, .19f);
+  }
+  const auto input = n::from_vector(wave, {samples});
+  const auto timing = n::track_beats(input, window, hop, 35, 65);
+  const auto silence = n::track_beats(n::zeros({1024}), window, hop, 3, 6);
+  const auto matches = [](const auto& estimated, const auto& expected) {
+    std::size_t i = 0, j = 0, count = 0;
+    while (i < estimated.size() && j < expected.size()) {
+      if (std::abs(estimated[i]-expected[j]) <= 2) {
+        ++i;
+        ++j;
+        ++count;
+      } else if (estimated[i] < expected[j]) {
+        ++i;
+      } else {
+        ++j;
+      }
+    }
+    return count;
+  };
+  const auto onset_hits = matches(timing.onsets, onsets);
+  const auto beat_hits = matches(timing.beats, beats);
+  if (timing.period != 48 || onset_hits != onsets.size() || beat_hits != beats.size() ||
+      silence.period != 0 || !silence.beats.empty()) return 1;
+  std::print("Estimated tempo {:.1f} BPM. Matched {}/{} onsets and {}/{} beats within 20 ms.\n",
+      60.*rate/(hop*timing.period), onset_hits, onsets.size(), beat_hits, beats.size());
+
+  std::vector<double> seconds;
+  for (std::size_t i = 0; i < timing.flux.size(); ++i)
+    seconds.push_back((i+1+window/(2*hop))*hop/double(rate));
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(seconds, timing.flux, "Spectral flux", {37,99,235});
+  const auto beat_markers = [&](const auto& frames, double height, const auto& label, dm::graphics::RGB color) {
+    std::vector<double> time, level(frames.size(), height);
+    for (auto frame : frames) time.push_back(frame*hop/double(rate));
+    plot.points(time, level, label, color);
+  };
+  const auto peak = *std::max_element(timing.flux.begin(), timing.flux.end());
+  beat_markers(beats, peak*1.10, "Reference beat", {31,41,55});
+  beat_markers(timing.beats, peak*1.23, "Estimated beat", {234,88,12});
+  plot.title("Beat grid across missing downbeats").x_label("Time (s)").y_label("Spectral flux");
+  std::filesystem::create_directories("build");
+  plot.size(960,440).save_svg("build/beat_tracking.svg");
+  const auto pack = [](const auto& values) {
+    return n::from_vector(values, {static_cast<std::int64_t>(values.size())});
+  };
+  n::save_npz("build/beat_tracking.npz", {{"wave",input}, {"flux",pack(timing.flux)},
+      {"onsets",pack(onsets)}, {"beats",pack(beats)}, {"peaks",pack(timing.onsets)},
+      {"predicted",pack(timing.beats)}, {"period_phase",pack(std::vector{timing.period,timing.phase})}});
+}
+```
+// result_begin: markdown
+Estimated tempo 125.0 BPM. Matched 25/25 onsets and 16/16 beats within 20 ms.
+\image(figures/beat_tracking.svg)
+// result_end

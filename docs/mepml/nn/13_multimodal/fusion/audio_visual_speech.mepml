@@ -1,0 +1,107 @@
+//? Title: Audio-visual syllable recognition
+//? Lang: en
+
+> Audio-visual syllable recognition
+
+In this synthetic fixture, noisy formants distinguish the vowels and
+mouth aperture before release distinguishes the consonants. Each clip
+has eight aligned waveform and video frames. A Fourier projection
+extracts four acoustic magnitudes per frame.
+
+Separate dense encoders process the acoustic features and mouth pixels.
+A fusion layer combines them to score four syllables. On held-out
+clips, rotating either modality while preserving the original labels
+tests how much each pairing matters. The plot compares classification
+accuracy for paired clips and both mismatched controls.
+
+```{cpp, results="markdown", file="figures/audio_visual_speech.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto generate=[](int count,unsigned seed) {
+    constexpr double tau=2*std::numbers::pi;
+    constexpr std::array<int,4> frequency{4,7,13,19};
+    std::vector<float> wave(count*640),audio(count*32),video(count*512);
+    std::vector<int> label(count);
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise;
+    std::uniform_real_distribution<float> phase(0,tau),variation(.8f,1.2f);
+    std::uniform_int_distribution<int> bit(0,1);
+    for (int row=0;row<count;++row) {
+      const int consonant=bit(rng), vowel=bit(rng), release=2+bit(rng);
+      label[row]=2*consonant+vowel;
+      const float gain=variation(rng), offset=variation(rng)-1.f;
+      for (int frame=0;frame<8;++frame) {
+        const bool closed=frame<release;
+        const float angle=phase(rng);
+        const int start=(row*8+frame)*80;
+        for (int j=0;j<80;++j) {
+          const double time=tau*j/80;
+          const double voiced=.72*std::sin(frequency[vowel]*time+angle)+
+                              .43*std::sin(frequency[2+vowel]*time+.5*angle);
+          wave[start+j]=gain*(closed ? 0. : voiced)+.6*noise(rng);
+        }
+        for (int b=0;b<4;++b) {
+          double real=0,imag=0;
+          for (int j=0;j<80;++j) {
+            const auto theta=tau*frequency[b]*j/80;
+            real+=wave[start+j]*std::cos(theta);
+            imag+=wave[start+j]*std::sin(theta);
+          }
+          audio[(row*8+frame)*4+b]=std::hypot(real,imag)/80;
+        }
+        const float aperture=closed ? (consonant==0 ? .32f : 1.25f) : 1.7f;
+        for (int y=0;y<8;++y)
+          for (int x=0;x<8;++x) {
+            const float dx=(x-3.5f)/2.9f,dy=(y-3.5f-offset)/aperture;
+            const float mouth=std::exp(-.5f*(dx*dx+dy*dy));
+            video[((row*8+frame)*8+y)*8+x]=mouth+.09f*noise(rng);
+          }
+      }
+    }
+    return std::tuple{n::from_vector(wave,{count,8,80}),n::from_vector(audio,{count,32}),
+                      n::from_vector(video,{count,512}),n::from_vector(label)};
+  };
+  const auto [fit_wave,fit_audio,fit_video,target]=generate(1024,14412);
+  const auto [wave,audio,video,truth]=generate(256,14413);
+  n::ParameterStore model(14411);
+  const auto initial=n::sparse_softmax_cross_entropy(n::audio_visual_logits(model,audio,video),truth).item();
+  n::Optimizer optimizer(model,.004,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(1024,32,14414);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto scores=n::audio_visual_logits(model,n::take_rows(fit_audio,rows),n::take_rows(fit_video,rows));
+      optimizer.minimize(n::sparse_softmax_cross_entropy(scores,n::take_rows(target,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  std::vector<std::int64_t> shift(256);
+  for (int i=0;i<256;++i) shift[i]=(i+1)%256;
+  const auto paired=n::audio_visual_logits(model,audio,video);
+  const auto moved_audio=n::audio_visual_logits(model,n::take_rows(audio,shift),video);
+  const auto moved_video=n::audio_visual_logits(model,audio,n::take_rows(video,shift));
+  const auto loss=n::sparse_softmax_cross_entropy(paired,truth).item();
+  const auto count=[&](const n::Tensor& scores) {
+    return n::sum(n::equal(n::argmax(scores),truth).to(n::DType::Int32)).item();
+  };
+  const auto a=count(paired),b=count(moved_audio),c=count(moved_video);
+  if (!(loss<initial) || a<=b || a<=c) return 1;
+  std::print("Held-out loss {:.5f} → {:.5f}. Correct out of 256, paired {:.0f}, audio swap {:.0f}, video swap {:.0f}.\n",
+      initial,loss,a,b,c);
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({0},{a/256},"Paired",{37,99,235})
+      .points({1},{b/256},"Audio swap",{234,88,12})
+      .points({2},{c/256},"Video swap",{22,163,74})
+      .title("Held-out syllable recognition").x_label("Pairing condition").y_label("Accuracy").y_limits(0,1.05);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/audio_visual_speech.svg");
+  n::save_npz("build/audio_visual_speech.npz",{{"wave",wave},{"audio",audio},{"video",video},
+      {"label",truth},{"paired",paired},{"shuffled_audio",moved_audio},{"shuffled_video",moved_video}});
+}
+```
+// result_begin: markdown
+Held-out loss 1.41784 → 0.01087. Correct out of 256, paired 256, audio swap 126, video swap 138.
+\image(figures/audio_visual_speech.svg)
+// result_end

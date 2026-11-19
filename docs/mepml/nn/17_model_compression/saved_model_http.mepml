@@ -1,0 +1,126 @@
+//? Title: Serve a TensorFlow SavedModel over loopback HTTP
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Load the Python-trained affine SavedModel once, then run its dynamic
+serving signature on feature pairs submitted in a loopback HTTP request.
+)
+\toc
+
+The server binds to 127.0.0.1. A GET request to `/healthz` checks the
+listener, and POST `/predict` passes a batch through the SavedModel's
+named Float32 signature. The request body is whitespace-separated
+feature pairs. A successful response contains one prediction per line.
+Incomplete pairs get a 400 response. Libevent handles HTTP framing,
+with limits on headers, body size, and the number of feature pairs.
+
+Build Datamunge with `-DDATAMUNGE_ENABLE_TENSORFLOW=ON` and
+`-DDATAMUNGE_ENABLE_SAVED_MODEL_HTTP=ON`. Point `CMAKE_PREFIX_PATH`
+at the TensorFlow C++ and Libevent SDKs. The self-test uses curl for
+three requests over an ephemeral port. For continuous serving, compile
+the block as a standalone program and pass `port=8080`. Set
+`model=PATH` to select another model with the same serving signature.
+The default model is the fixture shared with the SavedModel report.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <charconv>
+#include <cmath>
+#include <cstdio>
+#include <filesystem>
+#include <future>
+#include <memory>
+#include <print>
+#include <sstream>
+#include <stdexcept>
+#include <string_view>
+
+#ifndef _WIN32
+std::string request(unsigned port, std::string_view arguments, std::string_view path) {
+  const auto command = std::format("curl --noproxy '*' -sS --max-time 4 "
+      "--write-out '\\n%{{http_code}}' {} http://127.0.0.1:{}/{}", arguments, port, path);
+  const auto close = [](std::FILE* stream) { (void)pclose(stream); };
+  std::unique_ptr<std::FILE, decltype(close)> pipe(popen(command.c_str(), "r"), close);
+  if (!pipe) throw std::runtime_error("Could not run curl");
+  std::string reply;
+  char buffer[512];
+  while (auto count = std::fread(buffer, 1, sizeof(buffer), pipe.get())) reply.append(buffer, count);
+  if (pclose(pipe.release()) != 0) throw std::runtime_error("curl request failed");
+  return reply;
+}
+#endif
+
+int main(int argc, char** argv) {
+  namespace n = dm::nn;
+#ifdef _WIN32
+  std::println("This curl self-test uses a POSIX shell.");
+#else
+  if (!n::saved_model_http_available()) {
+    std::println("Loopback serving requires DATAMUNGE_ENABLE_SAVED_MODEL_HTTP.");
+    return 0;
+  }
+  unsigned port = 0;
+  bool continuous = false;
+  std::string model_path = "../0_foundations/0.5_persistence_and_interoperability/"
+                           "fixtures/python_affine/saved_model";
+  for (int i = 1; i < argc; ++i) {
+    std::string_view arg(argv[i]);
+    if (arg.starts_with("model=") && arg.size() > 6) {
+      model_path = arg.substr(6);
+    } else if (arg.starts_with("port=")) {
+      arg.remove_prefix(5);
+      const auto parsed = std::from_chars(arg.data(),arg.data()+arg.size(),port);
+      if (parsed.ec != std::errc{} || parsed.ptr != arg.data()+arg.size() || port > 65535)
+        throw std::invalid_argument("Expected a port in 0..65535");
+      continuous = true;
+    } else {
+      throw std::invalid_argument("Expected model=PATH or port=PORT");
+    }
+  }
+  const n::SavedModel model(model_path);
+  n::SavedModelHttpServer server(model, static_cast<std::uint16_t>(port));
+  if (continuous) {
+    std::println("Listening on http://127.0.0.1:{}",server.port());
+    std::fflush(stdout);
+    server.serve();
+    return 0;
+  }
+
+  auto run = std::async(std::launch::async, [&] { server.serve(3); });
+  const auto predicted = request(server.port(), "--data-binary '1 0\n2 -3\n'", "predict");
+  const auto malformed = request(server.port(), "--data-binary '1'", "predict");
+  const auto health = request(server.port(), "", "healthz");
+  run.get();
+  const auto direct = model.predict(n::tensor({1.,0.,2.,-3.},{2,2})).to_vector<float>();
+  const auto body = predicted.substr(0, predicted.rfind('\n'));
+  std::istringstream values(body);
+  float a, b;
+  if (!predicted.ends_with("\n200") || !(values >> a >> b) ||
+      a != direct[0] || b != direct[1] || std::abs(a-1.) > 1e-5 ||
+      std::abs(b-6.25) > 1e-5 || !malformed.ends_with("\n400") || health != "ok\n\n200")
+    throw std::runtime_error("HTTP contract or prediction mismatch");
+  std::println("Batched HTTP predictions {:.6f} and {:.6f} matched direct inference.",
+               a,b);
+  std::println("Malformed feature pair returned 400. Health returned 200.");
+  std::filesystem::create_directories("build/saved_model_http");
+  std::filesystem::create_directories("figures");
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({0.,7.},{0.,7.},"Agreement",{75,85,99})
+      .points({direct[0],direct[1]},{a,b},"HTTP output",{37,99,235},6)
+      .title("Predictions survive the HTTP round trip")
+      .x_label("Direct inference").y_label("HTTP inference")
+      .save_svg("build/saved_model_http/agreement.svg");
+  std::filesystem::copy_file("build/saved_model_http/agreement.svg","figures/saved_model_http.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::println("");
+  std::println("\\image(figures/saved_model_http.svg)");
+#endif
+}
+```
+// result_begin: markdown
+Batched HTTP predictions 0.999999 and 6.249995 matched direct inference.
+Malformed feature pair returned 400. Health returned 200.
+
+\image(figures/saved_model_http.svg)
+// result_end

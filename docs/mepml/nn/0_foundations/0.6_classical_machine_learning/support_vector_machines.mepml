@@ -161,3 +161,76 @@ int main(){namespace n=dm::nn;n::ml::RandomFourierFeatures features(1,1024,1.f,7
 1024-feature mean absolute kernel error: 0.033442.
 \image(figures/common_rff.svg)
 // result_end
+
+> Linear clusters and concentric rings
+
+Train a margin classifier on two separated clusters, then compare linear
+and fixed Fourier features on concentric rings. Reuse the same Fourier
+map at training and prediction time. The evaluation also compares the
+feature inner products to the exact Gaussian kernel on 32 held-out points.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  std::mt19937 rng(59);
+  auto sample=[&](int size,bool rings) {
+    std::normal_distribution<float> normal;
+    std::uniform_real_distribution<float> angle(0,2*std::numbers::pi_v<float>);
+    std::vector<float> x,y;
+    for(int i=0;i<size;++i) {
+      const float label=i%2?1.f:-1.f;
+      y.push_back(label);
+      if(rings) {
+        const float r=(label>0?1.7f:.55f)+.09f*normal(rng), a=angle(rng);
+        x.insert(x.end(),{r*std::cos(a),r*std::sin(a)});
+      } else {
+        x.insert(x.end(),{1.5f*label+.45f*normal(rng),.5f*label+.45f*normal(rng)});
+      }
+    }
+    return std::pair{n::from_vector(x,{size,2}),n::from_vector(y,{size,1})};
+  };
+  const auto cluster_train=sample(500,false),cluster_test=sample(400,false);
+  const auto ring_train=sample(600,true),ring_test=sample(400,true);
+  std::print("| Dataset and map | Accuracy | Held-out hinge | Margin violations |\n| :--- | ---: | ---: | ---: |\n");
+  auto fit=[](const std::pair<n::Tensor,n::Tensor>& train,
+              const std::pair<n::Tensor,n::Tensor>& test,bool rff,std::string_view label) {
+    const n::ml::RandomFourierFeatures features(2,256,1.f,67);
+    const auto x=rff?features.Transform(train.first):train.first;
+    const auto q=rff?features.Transform(test.first):test.first;
+    auto w=n::zeros({x.size(1),1}).requires_grad_(),b=n::scalar(0.).requires_grad_();
+    n::Optimizer adam({w,b},.03,{.kind=n::OptimizerKind::Adam});
+    auto objective=[&](const n::Tensor& inputs,const n::Tensor& labels) {
+      return n::hinge(n::matmul(inputs,w)+b,labels)+.005*n::sum(n::square(w));
+    };
+    for(int step=0;step<600;++step) {
+      if(step==400) adam.set_learning_rate(.003);
+      adam.minimize(objective(x,train.second));
+    }
+    const auto scores=n::matmul(q,w)+b,margins=scores*test.second;
+    const double accuracy=n::mean(n::cast(n::greater(margins,0.),n::DType::Float64)).item();
+    const int violations=n::sum(n::cast(n::less(margins,1.),n::DType::Int32)).item<int>();
+    if(!(objective(x,train.second).item()<=1.001)||!std::isfinite(objective(q,test.second).item()))
+      throw std::runtime_error("Invalid hinge fit");
+    if(rff) {
+      const auto probes=n::slice_axis(test.first,0,0,32), z=features.Transform(probes);
+      if(n::mean(n::abs(n::matmul(z,z,false,true)-n::ml::RbfKernel(probes,probes,1.f))).item()>=.1)
+        throw std::runtime_error("Fourier features failed the kernel comparison");
+    }
+    std::print("| {} | {:.2f}% | {:.5f} | {} |\n",label,100*accuracy,n::hinge(scores,test.second).item(),violations);
+    return accuracy;
+  };
+  const double clusters=fit(cluster_train,cluster_test,false,"Linear clusters");
+  const double linear=fit(ring_train,ring_test,false,"Linear rings");
+  const double nonlinear=fit(ring_train,ring_test,true,"Fourier rings");
+  if(clusters<=.98||nonlinear<=.98||nonlinear-linear<=.25)
+    throw std::runtime_error("Held-out boundaries failed reference thresholds");
+}
+```
+// result_begin: markdown
+| Dataset and map | Accuracy | Held-out hinge | Margin violations |
+| :--- | ---: | ---: | ---: |
+| Linear clusters | 100.00% | 0.00389 | 10 |
+| Linear rings | 64.75% | 1.04670 | 382 |
+| Fourier rings | 100.00% | 0.00730 | 36 |
+// result_end

@@ -1,0 +1,135 @@
+//? Title: Compare one-shot pruning, iterative pruning, and weight rewinding
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train a small regressor, prune it to a fixed parameter budget, and
+compare the effects of the mask and the starting weights.
+)
+\toc
+
+Magnitude pruning keeps the largest absolute weights. In the one-shot
+condition, a dense fit with 70 weights is pruned directly to 28 and
+fine-tuned. The iterative condition keeps 49 weights during an
+intermediate fit, then reduces that mask to 28 and fine-tunes again.
+Once removed, a weight stays out of the mask. Multiplying by the fixed
+mask makes its gradient zero during each fit.
+
+The lottery-ticket comparison trains that final iterative mask from
+the original initialization, then from fresh weights. A random mask
+with the same 28 active weights gives a second control. All conditions
+use the same observations and final training budget. The iterative
+condition also receives the intermediate optimization stage. The
+results show what these choices do for one initialization and one
+synthetic problem.
+
+```{cpp, results="markdown", file="figures/magnitude_pruning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int inputs = 6, hidden = 10, first = inputs * hidden, params = first + hidden;
+  constexpr int batch = 32;
+  auto draw = [&](int rows, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> uniform(-1., 1.);
+    std::vector<double> x(rows * inputs), y(rows);
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < inputs; ++j) x[i*inputs+j] = uniform(rng);
+      y[i] = std::tanh(2. * x[i*inputs] - x[i*inputs+1]) + .4 * x[i*inputs+2];
+    }
+    return std::pair{n::from_vector(x, {rows, inputs}), n::from_vector(y, {rows, 1})};
+  };
+  auto initialize = [](unsigned seed) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<double> normal(0., .3);
+    std::vector<double> weights(params);
+    for (auto& value : weights) value = normal(rng);
+    return n::from_vector(weights);
+  };
+  const auto [x, y] = draw(192, 1873);
+  const auto [test_x, test_y] = draw(96, 1874);
+  auto predict = [](const n::Tensor& input, const n::Tensor& w, const n::Tensor& mask) {
+    const auto applied = w * mask;
+    const auto a = n::slice(applied, {0}, {first}).reshape({inputs, hidden});
+    const auto b = n::slice(applied, {first}, {hidden}).reshape({hidden, 1});
+    return n::matmul(n::tanh(n::matmul(input, a)), b);
+  };
+  auto train = [&](const n::Tensor& starting, const n::Tensor& mask) {
+    const auto weights = (starting * mask).requires_grad_();
+    n::Optimizer sgd({weights}, .13);
+    for (int epoch = 0; epoch < 3; ++epoch)
+      for (int i = 0; i < 192; i += batch) {
+        const auto features = n::slice(x, {i, 0}, {batch, inputs});
+        const auto targets = n::slice(y, {i, 0}, {batch, 1});
+        sgd.step(n::grad(n::mse(predict(features, weights, mask), targets), {weights}));
+      }
+    return weights.detach();
+  };
+  const auto initial = initialize(1881), fresh_initial = initialize(1882), random_order = initialize(1883);
+  const auto all = n::ones({params}, n::DType::Float64);
+  const auto dense = train(initial, all);
+  const auto one = n::magnitude_pruning_mask(dense, 28);
+  const auto middle = n::magnitude_pruning_mask(dense, 49);
+  const auto middle_w = train(dense, middle);
+  const auto ticket = n::magnitude_pruning_mask(middle_w, 28, middle);
+  const auto random = n::magnitude_pruning_mask(random_order, 28);
+
+  n::NamedTensors archive{{"x",x},{"y",y},{"test_x",test_x},{"test_y",test_y},
+      {"initial",initial},{"middle_mask",middle},{"middle_w",middle_w},
+      {"random_order",random_order},{"fresh_initial",fresh_initial}};
+  std::vector<double> positions, errors;
+  std::println("| Condition | Active weights | Held-out MSE |\n| :--- | ---: | ---: |");
+  auto show = [&](const std::string& name, const n::Tensor& w, const n::Tensor& mask, int count) {
+    const auto mse = n::mse(predict(test_x, w, mask), test_y).item();
+    if (n::sum(mask).item() != count || n::max(n::abs(w * (1. - mask))).item() != 0. || !std::isfinite(mse))
+      throw std::runtime_error("Incorrect sparsity or nonfinite prediction");
+    positions.push_back(errors.size() + 1);
+    errors.push_back(mse);
+    std::println("| {} | {} / 70 | {:.8g} |", name, count, mse);
+    archive.emplace_back(name + "_w", w);
+    archive.emplace_back(name + "_mask", mask);
+  };
+  show("dense", dense, all, 70);
+  show("one_shot", train(dense, one), one, 28);
+  show("iterative", train(middle_w, ticket), ticket, 28);
+  show("rewound", train(initial, ticket), ticket, 28);
+  show("fresh", train(fresh_initial, ticket), ticket, 28);
+  show("random_mask", train(initial, random), random, 28);
+
+  const std::string folder = "build/magnitude_pruning/";
+  std::filesystem::create_directories(folder);
+  n::save_npz(folder + "models.npz", archive);
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(positions, errors, "Held-out MSE", {37, 99, 235}, 5)
+      .title("Prediction error at matched sparsity")
+      .x_label("Conditions 1–6 in table order").y_label("Held-out MSE")
+      .save_svg(folder + "comparison.svg");
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file(folder + "comparison.svg", "figures/magnitude_pruning.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Condition | Active weights | Held-out MSE |
+| :--- | ---: | ---: |
+| dense | 70 / 70 | 0.054262455 |
+| one_shot | 28 / 70 | 0.02325949 |
+| iterative | 28 / 70 | 0.019503192 |
+| rewound | 28 / 70 | 0.046544127 |
+| fresh | 28 / 70 | 0.1624663 |
+| random_mask | 28 / 70 | 0.45590669 |
+\image(figures/magnitude_pruning.svg)
+// result_end
+
+> References
+
+- [Han et al., Learning both Weights and Connections for Efficient Neural Networks|https://arxiv.org/abs/1506.02626].
+- [Frankle and Carbin, The Lottery Ticket Hypothesis|https://arxiv.org/abs/1803.03635].

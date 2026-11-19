@@ -11,8 +11,54 @@
 #include "datamunge/nn/adaptive_variants.hpp"
 #include "datamunge/nn/advanced_variants.hpp"
 #include "datamunge/nn/attention.hpp"
+#include "datamunge/nn/attention_rollout.hpp"
+#include "datamunge/nn/linear_counterfactual.hpp"
+#include "datamunge/nn/group_fairness.hpp"
+#include "datamunge/nn/kernel_shap.hpp"
+#include "datamunge/nn/local_linear_surrogate.hpp"
+#include "datamunge/nn/tcav.hpp"
+#include "datamunge/nn/ood_scores.hpp"
+#include "datamunge/nn/federated_average.hpp"
+#include "datamunge/nn/randomized_smoothing.hpp"
+#include "datamunge/nn/ridge_influence.hpp"
+#include "datamunge/nn/recommendation_metrics.hpp"
+#include "datamunge/nn/factorization_machine.hpp"
+#include "datamunge/nn/explicit_factorization.hpp"
+#include "datamunge/nn/implicit_feedback.hpp"
+#include "datamunge/nn/retention.hpp"
+#include "datamunge/nn/hyena.hpp"
+#include "datamunge/nn/s4.hpp"
+#include "datamunge/nn/selective_scan.hpp"
+#include "datamunge/nn/rwkv.hpp"
+#include "datamunge/nn/causal_relative_attention.hpp"
 #include "datamunge/nn/attention_variants.hpp"
 #include "datamunge/nn/audio.hpp"
+#include "datamunge/nn/beat_tracking.hpp"
+#include "datamunge/nn/conv_tasnet.hpp"
+#include "datamunge/nn/deepspeech_ctc.hpp"
+#include "datamunge/nn/listen_attend_spell.hpp"
+#include "datamunge/nn/tacotron2.hpp"
+#include "datamunge/nn/tabular_image_fusion.hpp"
+#include "datamunge/nn/audio_visual_speech.hpp"
+#include "datamunge/nn/digit_backbone.hpp"
+#include "datamunge/nn/continual_learning.hpp"
+#include "datamunge/nn/progressive_column.hpp"
+#include "datamunge/nn/expected_improvement.hpp"
+#include "datamunge/nn/halving_search.hpp"
+#include "datamunge/nn/population_training.hpp"
+#include "datamunge/nn/neat.hpp"
+#include "datamunge/nn/darts_regressor.hpp"
+#include "datamunge/nn/enas_controller.hpp"
+#include "datamunge/nn/sinusoid_hypernetwork.hpp"
+#include "datamunge/nn/learned_optimizer.hpp"
+#include "datamunge/nn/episodic_classifier.hpp"
+#include "datamunge/nn/stacked_vqa.hpp"
+#include "datamunge/nn/image_captioner.hpp"
+#include "datamunge/nn/rnn_transducer.hpp"
+#include "datamunge/nn/audio_tagger.hpp"
+#include "datamunge/nn/mfcc_summary.hpp"
+#include "datamunge/nn/xvector.hpp"
+#include "datamunge/nn/wav2vec2.hpp"
 #include "datamunge/nn/augment.hpp"
 #include "datamunge/nn/autograd.hpp"
 #include "datamunge/nn/autoencoder_models.hpp"
@@ -72,13 +118,48 @@
 #include "datamunge/nn/image_explainers.hpp"
 #include "datamunge/nn/io.hpp"
 #include "datamunge/nn/frozen_graph.hpp"
+#include "datamunge/nn/saved_model.hpp"
+#include "datamunge/nn/saved_model_http.hpp"
+#include "datamunge/nn/graph_session.hpp"
+#include "datamunge/nn/lite_model.hpp"
+#include "datamunge/nn/low_rank_dense.hpp"
+#include "datamunge/nn/hashed_dense.hpp"
+#include "datamunge/nn/channel_pruning.hpp"
+#include "datamunge/nn/magnitude_pruning.hpp"
+#include "datamunge/nn/int8_dense.hpp"
+#include "datamunge/nn/cuda_half_matmul.hpp"
+#include "datamunge/nn/distillation.hpp"
+#include "datamunge/nn/inference_benchmark.hpp"
 #include "datamunge/nn/kernel.hpp"
 #include "datamunge/nn/layers.hpp"
+#include "datamunge/nn/recurrent_forecast.hpp"
+#include "datamunge/nn/forecast_evaluation.hpp"
+#include "datamunge/nn/forecast_baselines.hpp"
+#include "datamunge/nn/forecast_losses.hpp"
+#include "datamunge/nn/dlinear.hpp"
+#include "datamunge/nn/change_point.hpp"
+#include "datamunge/nn/series_anomaly.hpp"
+#include "datamunge/nn/graph_forecast.hpp"
+#include "datamunge/nn/differentiable_kalman.hpp"
+#include "datamunge/nn/nbeats.hpp"
+#include "datamunge/nn/nhits.hpp"
+#include "datamunge/nn/patchtst.hpp"
+#include "datamunge/nn/seq2seq_forecast.hpp"
+#include "datamunge/nn/deepar.hpp"
+#include "datamunge/nn/irregular_ode.hpp"
+#include "datamunge/nn/autoformer_forecast.hpp"
+#include "datamunge/nn/informer_forecast.hpp"
+#include "datamunge/nn/series_classification.hpp"
+#include "datamunge/nn/probabilistic_regression.hpp"
+#include "datamunge/nn/langevin.hpp"
+#include "datamunge/nn/weight_gaussian.hpp"
+#include "datamunge/nn/beam_search.hpp"
 #include "datamunge/nn/linalg.hpp"
 #include "datamunge/nn/losses.hpp"
 #include "datamunge/nn/memory.hpp"
 #include "datamunge/nn/model_plot.hpp"
 #include "datamunge/nn/metrics.hpp"
+#include "datamunge/nn/calibration.hpp"
 #include "datamunge/nn/mixed_precision.hpp"
 #include "datamunge/nn/normalization_variants.hpp"
 #include "datamunge/nn/ops.hpp"
@@ -93,6 +174,16 @@
 #include "datamunge/nn/recurrent_variants.hpp"
 #include "datamunge/nn/recurrent_components.hpp"
 #include "datamunge/nn/recurrent_data.hpp"
+#include "datamunge/nn/reservoir.hpp"
+#include "datamunge/nn/spiking.hpp"
+#include "datamunge/nn/neural_tangent_kernel.hpp"
+#include "datamunge/nn/poincare.hpp"
+#include "datamunge/nn/spline_edges.hpp"
+#include "datamunge/nn/soft_circle_raster.hpp"
+#include "datamunge/nn/cellular_automata.hpp"
+#include "datamunge/nn/program_induction.hpp"
+#include "datamunge/nn/volume_rendering.hpp"
+#include "datamunge/nn/equivariant.hpp"
 #include "datamunge/nn/schedules.hpp"
 #include "datamunge/nn/sequence.hpp"
 #include "datamunge/nn/tape.hpp"
@@ -111,6 +202,7 @@
 #include "datamunge/nn/tfrecord.hpp"
 #include "datamunge/nn/artifacts.hpp"
 #include "datamunge/nn/linear.hpp"
+#include "datamunge/nn/gaussian_conditioning.hpp"
 #include "datamunge/nn/polynomial.hpp"
 #include "datamunge/nn/validation.hpp"
 #include "datamunge/nn/glm.hpp"
@@ -375,6 +467,10 @@
 #include "datamunge/nn/character_data.hpp"
 
 #include "datamunge/nn/wavenet_stack_models.hpp"
+#include "datamunge/nn/hifigan.hpp"
+#include "datamunge/nn/waveglow.hpp"
+#include "datamunge/nn/wavenet_vocoder.hpp"
+#include "datamunge/nn/speech_denoising.hpp"
 #include "datamunge/nn/wavenet_stack_data.hpp"
 
 #include "datamunge/nn/point_geometry.hpp"
@@ -511,6 +607,62 @@
 #include <datamunge/nn/sequence_language_graphs.hpp>
 
 #include <datamunge/nn/safetensors.hpp>
+#include <datamunge/nn/coo.hpp>
+#include <datamunge/nn/graph_convolution.hpp>
+#include <datamunge/nn/graph_pooling.hpp>
+#include <datamunge/nn/graph_walks.hpp>
+#include <datamunge/nn/knowledge_graph.hpp>
+#include <datamunge/nn/temporal_graph.hpp>
+#include <datamunge/nn/molecular_graph.hpp>
+#include <datamunge/nn/contrastive_models.hpp>
+#include <datamunge/nn/image_pretext.hpp>
+#include <datamunge/nn/extended_pointer.hpp>
+#include <datamunge/nn/handwriting_ctc.hpp>
+#include <datamunge/nn/pen_synthesis.hpp>
+#include <datamunge/nn/character_mlm.hpp>
+#include <datamunge/nn/grouped_query_attention.hpp>
+#include <datamunge/nn/chunked_attention.hpp>
+#include <datamunge/nn/switch_transformer.hpp>
+#include <datamunge/nn/transformer_xl.hpp>
+#include <datamunge/nn/mnist_vision_transformer.hpp>
+#include <datamunge/nn/mnist_dino.hpp>
+#include <datamunge/nn/heat_surrogate.hpp>
+#include <datamunge/nn/deep_ritz.hpp>
+#include <datamunge/nn/deeponet.hpp>
+#include <datamunge/nn/fourier_operator.hpp>
+#include <datamunge/nn/inverse_heat.hpp>
+#include <datamunge/nn/scalar_neural_ode.hpp>
+#include <datamunge/nn/hamiltonian_network.hpp>
+#include <datamunge/nn/lagrangian_network.hpp>
+#include <datamunge/nn/neural_sde.hpp>
+#include <datamunge/nn/latent_ode.hpp>
+#include <datamunge/nn/particle_network.hpp>
+#include <datamunge/nn/pinn_equations.hpp>
+#include <datamunge/nn/sindy_autoencoder.hpp>
+#include <datamunge/nn/instruction_tuning.hpp>
+#include <datamunge/nn/embedded_clustering.hpp>
+#include <datamunge/nn/word_prediction.hpp>
+#include <datamunge/nn/representation_evaluation.hpp>
 
 #include <datamunge/nn/completion_graphs.hpp>
 #include <datamunge/nn/published_bert.hpp>
+
+#include "datamunge/nn/neural_process.hpp"
+
+#include "datamunge/nn/cross_network.hpp"
+
+#include "datamunge/nn/neural_additive.hpp"
+
+#include "datamunge/nn/multi_gate_experts.hpp"
+
+#include "datamunge/nn/neural_oblivious.hpp"
+
+#include "datamunge/nn/survival_losses.hpp"
+
+#include "datamunge/nn/ft_transformer.hpp"
+
+#include "datamunge/nn/ranking_losses.hpp"
+
+#include "datamunge/nn/tabnet.hpp"
+
+#include "datamunge/nn/feature_preprocessing.hpp"

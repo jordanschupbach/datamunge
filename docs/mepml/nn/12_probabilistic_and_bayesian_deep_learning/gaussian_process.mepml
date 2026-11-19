@@ -1,0 +1,131 @@
+//? Title: Exact Gaussian Process Regression
+//? Subtitle: Training evidence and posterior uncertainty across a gap in the data
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit an RBF Gaussian process to 36 noisy observations in two separated clusters.
+Choose the length scale by training marginal likelihood. Joint conditioning
+gives the forecast covariance and pointwise intervals for latent values and
+new observations.
+)
+\toc
+
+> Fit and condition
+
+The zero-mean prior has unit marginal variance and squared-exponential
+covariance $k(x,x')=\exp[-(x-x')^2/(2\ell^2)]$. Add the known noise variance
+$\sigma^2$ to the training diagonal. Let $L$ be the lower Cholesky factor
+of the resulting covariance and $A=L^{-1}K_{XQ}$ for the query points $Q$.
+The conditional latent moments are
+
+$$
+\mu_Q=A^\top L^{-1}y,\qquad
+\operatorname{Cov}(f_Q\mid y)=K_{QQ}-A^\top A.
+$$
+\alttext(The query mean pairs the whitened cross-covariance with the whitened response. Conditioning subtracts the cross-covariance Gram matrix from the prior query covariance.)
+
+Each candidate length scale gets its own factorization and Gaussian log
+evidence. The prediction uses the most likely candidate on the training
+observations. Its intervals condition on that choice. New noisy observations
+add $\sigma^2$ to the latent covariance diagonal.
+
+> A sinusoid with a missing interval
+
+Observe a noisy sinusoid from -1.8 through -.4 and from .4 through 1.8.
+Use observation noise SD .15 and compare eight proposed length scales.
+Predict at 81 points from -2.5 to 2.5. The plot shows where the posterior
+standard deviation grows in the gap and in extrapolation. A separate set
+of simulated responses at the query points measures coverage.
+
+```{cpp, results="markdown", file="figures/gaussian_process_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int training_size = 36, query_size = 81;
+  constexpr double sd = .15;
+  std::mt19937 rng(90031);
+  std::normal_distribution<double> noise(0., sd);
+  std::vector<double> x, y, q, held_out;
+  for (int i = 0; i < training_size; ++i) {
+    const double row = (i < 18 ? -1.8 : .4) + 1.4 * (i % 18) / 17;
+    x.push_back(row);
+    y.push_back(std::sin(2.7 * row) + noise(rng));
+  }
+  for (int i = 0; i < query_size; ++i) {
+    const double row = -2.5 + 5. * i / (query_size - 1);
+    q.push_back(row);
+    held_out.push_back(std::sin(2.7 * row) + noise(rng));
+  }
+  const auto tx = n::from_vector(x, {training_size, 1});
+  const auto ty = n::from_vector(y, {training_size, 1});
+  const auto query = n::from_vector(q, {query_size, 1});
+  const auto actual = n::from_vector(held_out, {query_size, 1});
+  const auto kernel = [](const n::Tensor &a, const n::Tensor &b, double length) {
+    return n::exp(-.5 * n::square((a - n::transpose(b)) / length));
+  };
+  const auto diagonal = sd * sd * n::eye(training_size, n::DType::Float64);
+  const std::vector<double> lengths{.12, .22, .34, .48, .65, .85, 1.1, 1.5};
+  std::vector<double> nll;
+  n::GaussianCovarianceFit best;
+  double length = 0.;
+  for (const double candidate : lengths) {
+    const auto fit = n::fit_gaussian_covariance(kernel(tx, tx, candidate) + diagonal, ty);
+    nll.push_back(-fit.log_evidence);
+    if (!best.lower.defined() || fit.log_evidence > best.log_evidence) {
+      best = fit;
+      length = candidate;
+    }
+  }
+  const auto prediction = n::condition_gaussian(best, kernel(tx, query, length),
+                                                 kernel(query, query, length));
+  const auto latent = n::matrix_diag_part(prediction.covariance);
+  if (n::min(latent).item() <= 0. || n::max(latent).item() > 1.)
+    throw std::runtime_error("Unexpected latent posterior variance");
+  const auto predicted = prediction.mean.reshape({query_size});
+  const auto latent_width = 1.96 * n::sqrt(latent);
+  const auto observation_width = 1.96 * n::sqrt(latent + sd * sd);
+  const auto inside = n::less_equal(n::abs(actual.reshape({query_size}) - predicted), observation_width);
+  const double coverage = n::mean(inside.to(n::DType::Float64)).item();
+
+  auto plot = dm::graphics::RPlot::create();
+  auto band_x = q;
+  band_x.insert(band_x.end(), q.rbegin(), q.rend());
+  const auto draw_band = [&](const n::Tensor &width, dm::RGBA color) {
+    auto bottom = (predicted - width).to_vector<double>();
+    const auto top = (predicted + width).to_vector<double>();
+    bottom.insert(bottom.end(), top.rbegin(), top.rend());
+    plot.polygon(band_x, bottom, color);
+  };
+  draw_band(observation_width, {37, 99, 235, .13});
+  draw_band(latent_width, {37, 99, 235, .22});
+  plot.lines(q, predicted.to_vector<double>(), "GP posterior mean", {37, 99, 235})
+      .points(x, y, "fitting observations", {17, 24, 39})
+      .title("Predictive uncertainty across the gap")
+      .x_label("x").y_label("response");
+  auto selection = dm::graphics::RPlot::create();
+  selection.lines(lengths, nll, "training marginal NLL", {15, 118, 110})
+      .points({length}, {-best.log_evidence}, "selected length", {194, 65, 12})
+      .title("Compare eight length scales").x_label("length scale").y_label("negative log evidence");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(plot).add(selection).fit_panels()
+      .size(1200, 460).save_svg("build/gaussian_process_fit.svg");
+  n::save_npz("build/gaussian_process_posterior.npz", {
+      {"train_x", tx}, {"train_y", ty}, {"x", query}, {"y", actual},
+      {"length", n::full({}, length, n::DType::Float64)},
+      {"candidate_nll", n::stack({n::from_vector(lengths), n::from_vector(nll)}, 1)},
+      {"cholesky", best.lower}, {"mean", prediction.mean}, {"latent_covariance", prediction.covariance}});
+  std::println("Selected length {:.2f}. Training marginal NLL {:.6f}. Pointwise test coverage {:.4f}.",
+               length, -best.log_evidence, coverage);
+}
+```
+// result_begin: markdown
+Selected length 0.65. Training marginal NLL -0.708872. Pointwise test coverage 0.9877.
+\image(figures/gaussian_process_fit.svg)
+// result_end
+\alttext(The posterior mean is surrounded by a lighter response interval and a darker latent interval. The other panel highlights the length scale with the lowest training marginal negative log likelihood.)
+
+> References
+
+- [Rasmussen and Williams, Gaussian Processes for Machine Learning, chapter 2](https://gaussianprocess.org/gpml/chapters/RW2.pdf).

@@ -207,6 +207,113 @@ Learned reconstruction SSE 24.953285088; SVD oracle 24.953285088; orthogonality 
 \alttext(The learned two-dimensional subspace projects every standardised Iris observation.)
 
 
+> Whitening and held-out reconstruction
+
+The upstream linear fixture rotates three independent directions and
+translates the result. Their population variances are 9, 1 and 0.04.
+Whitening divides the retained scores by the square roots of the sample
+variances, so their sample covariance is the identity. Reconstructing
+with two axes leaves the last direction's energy in the residual.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  constexpr auto dtype=n::DType::Float64;
+  const double a=.6,b=.4,ca=std::cos(a),sa=std::sin(a),cb=std::cos(b),sb=std::sin(b);
+  const auto rotation=n::tensor({ca,-sa*cb,sa*sb,sa,ca*cb,-ca*sb,0,sb,cb},{3,3},dtype);
+  const auto offset=n::tensor({1,-2,.5},{1,3},dtype);
+  const auto t=n::arange(0,128,1,dtype).reshape({128,1})*(2*std::numbers::pi/128);
+  auto data=[&](const n::Tensor& phase) {
+    const auto latent=n::concat({std::sqrt(18.)*n::cos(phase),std::sqrt(2.)*n::sin(phase),
+                                 std::sqrt(.08)*n::cos(2*phase)},1);
+    return n::matmul(latent,rotation,false,true)+offset;
+  };
+  const auto train=data(t),query=data(t+std::numbers::pi/128),mean=n::mean(train,{0},true);
+  const auto fit=n::svd(train-mean);
+  const auto axes=n::slice_axis(fit.v,1,0,2);
+  const auto variances=n::square(n::slice_axis(fit.s,0,0,2))/127.;
+  const auto scores=n::matmul(train-mean,axes);
+  const auto whitened=scores/n::sqrt(variances);
+  auto error=[](const n::Tensor& x,const n::Tensor& y){return n::max(n::abs(x-y)).item();};
+  const double whiten_error=error(n::matmul(whitened,whitened,true,false)/127.,n::eye(2,dtype));
+  const auto alignment=n::matmul(n::slice_axis(rotation,1,0,2),axes,true,false);
+  auto mse=[&](const n::Tensor& x) {
+    const auto centered=x-mean;
+    return n::mse(n::matmul(n::matmul(centered,axes),axes,false,true),centered).item();
+  };
+  const double train_mse=mse(train),held_out=mse(query);
+  if(error(mean,offset)>1e-12 || error(n::abs(alignment),n::eye(2,dtype))>1e-12 ||
+     error(variances,n::tensor({9.,1.},{2},dtype)*(128./127.))>1e-11 ||
+     whiten_error>1e-12 || std::abs(train_mse-.04/3)>1e-12 || std::abs(held_out-.04/3)>1e-12)
+    throw std::runtime_error("Linear PCA fixture does not match the known moments");
+  std::print("Whitened covariance error {:.2e}. Rank-two reconstruction MSE {:.9f} on train and {:.9f} on held-out rows.\n",
+             whiten_error,train_mse,held_out);
+}
+```
+// result_begin: markdown
+Whitened covariance error 1.55e-15. Rank-two reconstruction MSE 0.013333333 on train and 0.013333333 on held-out rows.
+// result_end
+
+> Kernel PCA on concentric rings
+
+Fit a three-axis RBF embedding to two rings. The training-centred Gram
+matrix should have zero row sums and nonnegative eigenvalues to rounding.
+Projection of the training rows should reproduce their eigen-embedding,
+and the coordinates of a new query should be independent of other queries
+in the batch.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto rings=[](int rows,bool training) {
+    std::vector<double> x,y;
+    for(int i=0;i<rows;++i) {
+      const double angle=training?2*std::numbers::pi*(i/2)/40:.13+.7*i;
+      const double radius=i%2?2.:.5;
+      x.push_back(radius*std::cos(angle));
+      y.push_back(radius*std::sin(angle));
+    }
+    dm::dstruct::DataFrame frame;
+    frame.add_column("x",x);
+    frame.add_column("y",y);
+    return frame;
+  };
+  const auto train=rings(80,true), query=rings(6,false);
+  const dm::stats::KernelPCA model(train,{"x","y"},{.n_components=3,.gamma=.5});
+  const auto k=model.centered_kernel_matrix();
+  const auto z=model.embedding(), projected=model.transform(train), q=model.transform(query);
+  const auto dual=model.dual_coefficients();
+  double center=0.,residual=0.,reproject=0.,query_error=0.;
+  for(int i=0;i<80;++i) {
+    double sum=0.;
+    for(int j=0;j<80;++j) sum+=k(i,j);
+    center=std::max(center,std::abs(sum));
+    for(int c=0;c<3;++c) {
+      double score=0.;
+      for(int j=0;j<80;++j) score+=k(i,j)*dual(j,c);
+      residual=std::max(residual,std::abs(score-z(i,c)));
+      reproject=std::max(reproject,std::abs(projected(i,c)-z(i,c)));
+    }
+  }
+  for(int i=0;i<6;++i) {
+    dm::dstruct::DataFrame row;
+    row.add_column("x",std::vector<double>{query.double_at("x",i)});
+    row.add_column("y",std::vector<double>{query.double_at("y",i)});
+    const auto alone=model.transform(row);
+    for(int c=0;c<3;++c) query_error=std::max(query_error,std::abs(q(i,c)-alone(0,c)));
+  }
+  if(model.all_eigenvalues().back() < -1e-10 || model.eigenvalues().back() < .1 ||
+     std::max({center,residual,reproject,query_error})>1e-10)
+    throw std::runtime_error("Kernel PCA projection or eigensystem differs");
+  std::print("Retained eigenvalues {}. Centering {:.2e}, eigen residual {:.2e}, reprojection {:.2e}, query-batch error {:.2e}.\n",
+             model.eigenvalues(),center,residual,reproject,query_error);
+}
+```
+// result_begin: markdown
+Retained eigenvalues [13.911981435228848, 8.682219658615036, 8.682219658615029]. Centering 3.00e-15, eigen residual 1.55e-15, reprojection 1.50e-15, query-batch error 0.00e+00.
+// result_end
+
 > Conclusion
 
 The known covariance and discarded-variance identity agree on the four-point example. Fixed

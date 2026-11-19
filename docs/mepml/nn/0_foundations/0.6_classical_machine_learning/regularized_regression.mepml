@@ -180,6 +180,65 @@ int main() {
 \alttext(Every point on the proximal path agrees with the orthogonal soft-threshold solution.)
 
 
+> Optimality with correlated predictors
+
+On correlated columns, a coordinate-wise closed form no longer solves the
+whole problem. Check the KKT conditions instead. A nonzero coefficient
+requires the smooth gradient to cancel the signed penalty. At zero, the
+absolute smooth gradient must be bounded by the penalty. The intercept stays
+unpenalized.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  const auto type=n::DType::Float64;
+  const auto t=n::arange(0,96,1,type).reshape({96,1})*(2*std::numbers::pi/96);
+  const auto truth=n::tensor({.7,2.,-1.,.12,0.},{5,1},type);
+  const auto mask=n::tensor({0,1,1,1,1},{5,1},type);
+  std::print("| design | rule | objective | KKT residual | penalized zeros |\n| :--- | :--- | ---: | ---: | ---: |\n");
+  for(bool correlated:{false,true}) {
+    std::vector<n::Tensor> columns{n::ones_like(t)};
+    for(int j=1;j<5;++j) columns.push_back(std::sqrt(2.)*n::cos(j*t));
+    if(correlated) columns[2]=.8*columns[1]+.6*columns[2];
+    const auto x=n::concat(columns,1), y=n::matmul(x,truth)+.05*n::cos(5*t);
+    for(int rule=0;rule<3;++rule) {
+      const float l1=rule==0?0.f:.2f,l2=rule==1?0.f:.5f;
+      auto w=n::zeros_like(truth);
+      double objective=std::numeric_limits<double>::infinity();
+      for(int step=0;step<240;++step) {
+        w=n::ml::ElasticNetStep(x,y,w,mask,l1,l2,.4f);
+        const double next=.5*n::mse(n::matmul(x,w),y).item()+
+            l1*n::sum(mask*n::abs(w)).item()+.5*l2*n::sum(mask*n::square(w)).item();
+        if(!std::isfinite(next)||next>objective+5e-7) throw std::runtime_error("Objective increased");
+        objective=next;
+      }
+      const auto gradient=n::matmul(x,n::matmul(x,w)-y,true,false)/96.+l2*mask*w;
+      double kkt=0.;
+      int zeros=0;
+      for(int j=0;j<5;++j) {
+        const double coef=w.at({j,0}), g=gradient.at({j,0}), penalty=j?l1:0;
+        kkt=std::max(kkt,coef==0?std::max(0.,std::abs(g)-penalty):std::abs(g+std::copysign(penalty,coef)));
+        zeros+=j&&coef==0;
+      }
+      if(kkt>3e-6 || (rule!=0&&zeros<2)) throw std::runtime_error("KKT or sparsity check failed");
+      std::print("| {} | {} | {:.6f} | {:.2e} | {} |\n",correlated?"correlated":"orthogonal",
+                 rule==0?"ridge":rule==1?"lasso":"elastic net",objective,kkt,zeros);
+    }
+  }
+}
+```
+// result_begin: markdown
+| design | rule | objective | KKT residual | penalized zeros |
+| :--- | :--- | ---: | ---: | ---: |
+| orthogonal | ridge | 0.836358 | 1.11e-16 | 0 |
+| orthogonal | lasso | 0.567825 | 2.50e-16 | 2 |
+| orthogonal | elastic net | 1.214492 | 1.11e-16 | 2 |
+| correlated | ridge | 0.422280 | 6.71e-17 | 0 |
+| correlated | lasso | 0.407825 | 1.39e-16 | 3 |
+| correlated | elastic net | 0.574492 | 1.09e-16 | 3 |
+// result_end
+
 > Conclusion
 
 The orthogonal solution explains both ridge shrinkage and lasso zeros under the exact loss

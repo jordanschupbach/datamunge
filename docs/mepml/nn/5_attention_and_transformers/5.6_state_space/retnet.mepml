@@ -1,0 +1,113 @@
+//? Title: RetNet in parallel, recurrent, and chunkwise forms
+//? Lang: en
+
+> RetNet in parallel, recurrent, and chunkwise forms
+
+Retention weights each query–key inner product by a head-specific
+exponential decay in the token distance. It then uses that weight to
+combine past values. The parallel form evaluates the whole causal
+matrix. Recurrent execution carries a decaying sum of key–value outer
+products. Chunkwise execution combines a parallel calculation within
+each chunk with the state carried from earlier chunks.
+
+Here a compact RetNet predicts the next event in simulated musical
+phrases. Queries and keys use rotary positions, and the three heads have
+different decay factors. Train via the parallel path and compare all
+three forms on fitted projections. The chunk size of four leaves a
+short final chunk, so the parity check covers that case too.
+
+[Sun et al. (2023)|https://arxiv.org/abs/2307.08621]
+
+```{cpp, results="markdown", file="figures/retnet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <set>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int steps=15, vocab=26, heads=3, depth=8, width=heads*depth;
+  const std::array decay{31.0/32,63.0/64,127.0/128};
+  std::mt19937 random(41382);
+  std::set<std::array<int,steps+1>> seen;
+  std::vector<int> corpus;
+  const std::array movement{0,2,4,7,4,2,0,5};
+  while (seen.size()<384) {
+    const int root=random()%5;
+    std::array<int,steps+1> phrase{};
+    for (int t=0;t<=steps;++t) {
+      const int duration=t%4==3 || random()%7==0;
+      int pitch=root+movement[t%8];
+      if (random()%11==0) pitch=(pitch+10)%12;
+      phrase[t]=t>0 && random()%9==0 ? 24+duration : 2*pitch+duration;
+    }
+    if (seen.insert(phrase).second) corpus.insert(corpus.end(),phrase.begin(),phrase.end());
+  }
+  const auto phrases=n::from_vector(corpus,{384,steps+1});
+  const auto input=n::slice(phrases,{0,0},{384,steps});
+  const auto target=n::slice(phrases,{0,1},{384,steps});
+  const auto test_x=n::slice(input,{320,0},{64,steps}), test_y=n::slice(target,{320,0},{64,steps});
+  const auto valid_x=n::slice(input,{256,0},{64,steps}), valid_y=n::slice(target,{256,0},{64,steps});
+  n::ParameterStore params(43401);
+  const auto model=[&](const n::Tensor& ids) {
+    const auto x=n::gather(params.get("embedding",{vocab,width},n::init::normal(.15)),ids);
+    const auto norm=n::layer_norm(params,"input_norm",x);
+    const auto project=[&](const char* name) {
+      return n::split_heads(n::dense(params,name,norm,width),heads);
+    };
+    const auto q=n::apply_rotary(project("query"));
+    const auto k=n::apply_rotary(project("key"))/std::sqrt(double(depth));
+    const auto v=project("value");
+    const auto retained=n::causal_retention(q,k,v,decay);
+    const auto merged=n::merge_heads(n::layer_norm(params,"head_norm",retained));
+    const auto gated=merged*n::dense(params,"gate",norm,width,n::Activation::Silu);
+    const auto residual=x+n::dense(params,"out",gated,width);
+    const auto ff=n::dense(params,"ff/up",n::layer_norm(params,"ff/norm",residual),
+                           2*width,n::Activation::GeluTanh);
+    const auto final=residual+n::dense(params,"ff/down",ff,width);
+    return std::array{n::dense(params,"head",n::layer_norm(params,"final",final),vocab),q,k,v,retained};
+  };
+  const auto loss=[](const n::Tensor& logits,const n::Tensor& target) {
+    return n::sparse_softmax_cross_entropy(logits,target);
+  };
+  const auto inspect=[&](const n::Tensor& x,const n::Tensor& y) {
+    const n::NoGradGuard no_grad;
+    return loss(model(x)[0],y).item();
+  };
+  const double initial=inspect(test_x,test_y);
+  std::vector<double> validation{inspect(valid_x,valid_y)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.003,config);
+  n::BatchOrder order(256,16,43402);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(model(n::take_rows(input,rows))[0],n::take_rows(target,rows)));
+    }
+    validation.push_back(inspect(valid_x,valid_y));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,q,k,v,parallel]=model(test_x);
+  const auto recurrent=n::causal_retention(q,k,v,decay,1);
+  const auto chunkwise=n::causal_retention(q,k,v,decay,4);
+  const auto score=loss(logits,test_y);
+  const double error=std::max(n::max(n::abs(parallel-recurrent)).item(),
+                              n::max(n::abs(parallel-chunkwise)).item());
+  if (!(score.item()<initial) || !(error<4e-5) || optimizer.iterations()!=48) {
+    throw std::runtime_error("RetNet training or execution-mode parity failed");
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/retnet.npz",{{"target",test_y},{"loss",score},{"logits",logits},
+      {"q",q},{"k",k},{"v",v},{"parallel",parallel},{"recurrent",recurrent},{"chunkwise",chunkwise}});
+  std::print("Test NLL {:.6f} to {:.6f}. Maximum deviation from parallel retention {:.3e}.\n",
+             initial,score.item(),error);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},validation,"Validation NLL",{37,99,235})
+      .points({0,1,2,3},validation,"Epoch boundaries",{37,99,235})
+      .title("RetNet next-event prediction").x_label("Epoch").y_label("Negative log-likelihood")
+      .size(850,425).save_svg("build/retnet.svg");
+}
+```
+// result_begin: markdown
+Test NLL 3.725425 to 1.966256. Maximum deviation from parallel retention 3.815e-06.
+\image(figures/retnet.svg)
+// result_end

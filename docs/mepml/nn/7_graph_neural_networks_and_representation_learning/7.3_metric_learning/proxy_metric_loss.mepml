@@ -1,0 +1,105 @@
+//? Title: Proxy-NCA and Proxy Anchor metric learning
+//? Lang: en
+
+> Proxy-NCA and Proxy Anchor metric learning
+
+A trainable proxy represents each class. The model learns those
+proxies jointly with a shared embedding tower. Proxy-NCA compares a
+sample's squared distance to its own proxy with a soft aggregate over
+the negative proxies. The negative-only denominator allows negative
+values for this objective.
+
+Proxy Anchor treats each proxy as the anchor and aggregates positive
+and negative cosine similarities with separate log-sum-exp penalties.
+The positive penalty averages over classes present in the batch.
+The negative penalty includes all proxies. Both methods predict the
+held-out class by the highest cosine similarity.
+
+```{cpp, results="markdown", file="figures/proxy_metric_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto sample = [](std::mt19937 &rng) {
+    std::normal_distribution<float> signal(0.f,.24f), nuisance(0.f,1.f);
+    std::vector<float> x;
+    std::vector<int> labels;
+    for (int i = 0; i < 24; ++i) {
+      const int id = i % 3;
+      labels.push_back(id);
+      x.insert(x.end(), {std::cos(2.0943951f * id) + signal(rng),
+                         std::sin(2.0943951f * id) + signal(rng), nuisance(rng), nuisance(rng)});
+    }
+    return std::pair{n::from_vector(x, {24,4}), n::from_vector(labels)};
+  };
+  std::filesystem::create_directories("build");
+  auto layout = dm::graphics::RLayout::create(1,2);
+  std::print("| Objective | Epoch | Held-out loss | Correct |\n|---|---:|---:|---:|\n");
+  for (bool anchor : {false,true}) {
+    const std::string name = anchor ? "Proxy Anchor" : "Proxy-NCA";
+    std::mt19937 training(51302), testing(51303);
+    const auto [test, labels] = sample(testing);
+    n::ParameterStore model(51301);
+    const auto embed = [&](const n::Tensor &x) {
+      return n::dense(model, "projection", n::dense(model, "tower", x, 16, n::Activation::Tanh), 6);
+    };
+    const auto proxies = model.get("proxies", {3,6}, n::init::uniform(.4));
+    const auto objective = [&](const n::Tensor &z, const n::Tensor &y) {
+      return n::proxy_metric_loss(z, proxies, y, anchor);
+    };
+    embed(test);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .012, config);
+    std::vector<double> epochs, losses;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        epochs.push_back(epoch);
+        const auto result = objective(embed(test), labels);
+        const auto hits = n::count_nonzero(n::equal(n::argmax(result.similarity, 1), labels)).item<int>();
+        losses.push_back(result.loss.item());
+        std::print("| {} | {} | {:.6f} | {}/24 |\n", name, epoch, losses.back(), hits);
+      }
+      if (epoch < 3)
+        for (int step = 0; step < 24; ++step) {
+          const auto [x, y] = sample(training);
+          adam.minimize(objective(embed(x), y).loss);
+        }
+    }
+    n::NoGradGuard guard;
+    const auto embedding = embed(test);
+    const auto result = objective(embedding, labels);
+    const std::string path = anchor ? "proxyanchor" : "proxynca";
+    n::save_npz("build/proxy_" + path + ".npz", {{"input",test}, {"labels",labels},
+        {"embedding",embedding}, {"proxy",proxies}, {"similarity",result.similarity}, {"loss",result.loss}});
+    auto plot = dm::graphics::RPlot::create();
+    plot.lines(epochs, losses, name, {37,99,235})
+        .title(name).x_label("Epoch").y_label("Held-out objective");
+    layout.add(plot);
+  }
+  layout.size(1050,430).fit_panels().save_svg("build/proxy_metric_fit.svg");
+}
+```
+// result_begin: markdown
+| Objective | Epoch | Held-out loss | Correct |
+|---|---:|---:|---:|
+| Proxy-NCA | 0 | 1.137549 | 4/24 |
+| Proxy-NCA | 1 | -2.058193 | 24/24 |
+| Proxy-NCA | 2 | -2.127686 | 24/24 |
+| Proxy-NCA | 3 | -2.150320 | 24/24 |
+| Proxy Anchor | 0 | 40.856491 | 4/24 |
+| Proxy Anchor | 1 | 1.538408 | 24/24 |
+| Proxy Anchor | 2 | 0.600315 | 24/24 |
+| Proxy Anchor | 3 | 0.978347 | 24/24 |
+\image(figures/proxy_metric_fit.svg)
+// result_end
+
+\caption(Held-out loss for the two proxy objectives on the same batch schedule.)
+\alttext(Two line plots show held-out Proxy-NCA and Proxy Anchor objectives by epoch.)
+
+> References
+
+- [Movshovitz-Attias et al. (2017), No Fuss Distance Metric Learning Using Proxies](https://arxiv.org/abs/1703.07464).
+- [Kim et al. (2020), Proxy Anchor Loss for Deep Metric Learning](https://arxiv.org/abs/2003.13911).

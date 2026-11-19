@@ -521,11 +521,9 @@ Variant1 restored epoch26: validation mIoU 0.526076; test pixel accuracy 0.87479
 \caption(Complete compact HRNet fits512 visible Adam updates. Unregularized weighted CE and validation mean IoU are plotted;paired learned/BN restoration precedes held-out predictions and branch inspection.)
 \alttext(Complete compact HRNet fits512 visible Adam updates. Unregularized weighted CE and validation mean IoU are plotted;paired learned/BN restoration precedes held-out predictions and branch inspection.)
 
-Compact HRNet has382,580 learned and3,744 BN state scalars. Epoch19 is
-selected with validation mean IoU.514050. Test pixel accuracy is.860664,
-but mean IoU is.480074: background.952996,circle.241481,rectangle
-.377457 and triangle.348361. The prediction gallery retains these class
-confusions;high background accuracy does not imply strong shape recognition.
+Compare pixel accuracy, mean IoU, and the per-class counts above. The
+prediction gallery shows where frequent background pixels and confused
+foreground classes contribute to those metrics.
 
 \image(figures/hrnet_predictions_1.png)
 \caption(Each row is an actual test image,its truth mask and restored HRNet prediction. Wrong labels and boundaries remain visible with the same palette/range.)

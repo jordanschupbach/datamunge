@@ -15,12 +15,57 @@
 /// (Mildenhall et al. 2020), and gaussian_fourier_features() the random Fourier features of Tancik et al. (2020),
 /// which let a coordinate MLP fit high-frequency functions.
 
-#include "datamunge/nn/tensor.hpp"
+#include "datamunge/nn/ops.hpp"
+#include "datamunge/nn/params.hpp"
 
+#include <algorithm>
 #include <cstdint>
+#include <limits>
+#include <stdexcept>
 #include <vector>
 
 namespace datamunge::nn {
+
+/// @brief Learns one attention bias per head and clipped signed key-minus-query offset.
+///
+/// Reuses the trainable table at `name + "/bias"` with shape [2 * radius + 1, heads].
+/// A new table uses a normal initialization with standard deviation 0.02.
+/// Gradients for positions assigned to the same row accumulate in that row.
+/// @param store Parameter store that owns the bias table.
+/// @param name Parameter prefix.
+/// @param heads Number of heads, positive.
+/// @param queries Query count, positive.
+/// @param keys Key count, positive.
+/// @param radius Nonnegative clipping distance. Zero shares one row across all pairs.
+/// @return Attention bias [heads, queries, keys], with both positions measured from zero.
+/// @throws std::invalid_argument Invalid dimensions or incompatible existing parameter.
+/// @throws std::length_error The dense lookup or the table exceeds representable size.
+/// @par Example
+/// @code
+/// dm::nn::ParameterStore store(1, dm::nn::DType::Float64);
+/// const auto bias = dm::nn::clipped_relative_position_bias(store, "pos", 2, 4, 6, 2);
+/// std::print("{}\n", bias.size(2)); // 6
+/// @endcode
+/// @par References
+/// TensorFlow examples, `src/common/nn/positional.h`, RelativePositionBias.
+/// @see relative_position_bias(), alibi_bias()
+inline Tensor clipped_relative_position_bias(ParameterStore& store, const std::string& name,
+                                            std::int64_t heads, std::int64_t queries,
+                                            std::int64_t keys, std::int64_t radius) {
+  if (heads < 1 || queries < 1 || keys < 1 || radius < 0)
+    throw std::invalid_argument("clipped_relative_position_bias: invalid dimensions");
+  constexpr auto limit = std::numeric_limits<std::int64_t>::max();
+  if (radius > (limit - 1) / 2 || queries > limit / keys ||
+      queries * keys > limit / heads || 2 * radius + 1 > limit / heads)
+    throw std::length_error("clipped_relative_position_bias: tensor size overflow");
+  std::vector<std::int64_t> buckets(queries * keys);
+  for (std::int64_t q = 0; q < queries; ++q)
+    for (std::int64_t k = 0; k < keys; ++k)
+      buckets[q * keys + k] = std::clamp(k - q, -radius, radius) + radius;
+  const auto indices = from_vector(buckets, {queries, keys});
+  const auto table = store.get(name + "/bias", {2 * radius + 1, heads}, init::normal(0.02));
+  return transpose(gather(table, indices, 0), {2, 0, 1});
+}
 
 /// @brief How rope_inverse_frequencies() stretches RoPE to a longer context.
 enum class RopeScaling {

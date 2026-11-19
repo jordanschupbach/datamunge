@@ -166,21 +166,32 @@ int main() {
     auto D = n::normal({3, 3, 3, m}, 0, .3, rng, type).requires_grad_();
     auto P = n::normal({1, 1, 3 * m, 5}, 0, .3, rng, type).requires_grad_();
     const auto W = n::compose_separable_kernel(D, P);
+    for(int row=0;row<3;++row)
+      for(int column=0;column<3;++column)
+        for(int channel=0;channel<3;++channel)
+          for(int out=0;out<5;++out) {
+            double expected=0.;
+            for(int j=0;j<m;++j)
+              expected+=D.at({row,column,channel,j})*P.at({0,0,channel*m+j,out});
+            if(std::abs(W.at({row,column,channel,out})-expected)>1e-12)
+              throw std::runtime_error("Dense kernel disagrees with direct factor contraction");
+          }
     const auto per_channel = n::transpose(W.reshape({9, 3, 5}), {1, 0, 2});
     const auto singular = n::svd(per_channel, false).s;
     if (n::max(n::abs(n::slice_axis(singular, 1, m, 5))).item() > 1e-10)
       return 1;
     double worst = 0;
     for (int stride : {1, 2}) {
-      const auto x = n::normal({2, 7, 8, 3}, 0, .3, rng, type);
+      const auto x = n::normal({2, 7, 8, 3}, 0, .3, rng, type).requires_grad_();
       const auto o = n::conv_options(stride);
       const auto factored = n::conv2d(n::depthwise_conv2d(x, D, o), P);
       const auto composed = n::conv2d(x, n::compose_separable_kernel(D, P), o);
-      const auto g = n::grad(n::sum(factored), {D, P});
-      const auto h = n::grad(n::sum(composed), {D, P});
+      const auto g = n::grad(n::sum(factored), {D, P, x});
+      const auto h = n::grad(n::sum(composed), {D, P, x});
       worst =
           std::max({worst, n::max(n::abs(factored - composed)).item(),
-                    n::max(n::abs(g[0] - h[0])).item(), n::max(n::abs(g[1] - h[1])).item()});
+                    n::max(n::abs(g[0] - h[0])).item(), n::max(n::abs(g[1] - h[1])).item(),
+                    n::max(n::abs(g[2] - h[2])).item()});
     }
     multipliers.push_back(m);
     parameters.push_back(D.numel() + P.numel());
@@ -260,6 +271,67 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 ```
 // result_begin: markdown
 \image(figures/depthwise_separable_architecture_lenet.svg)
+// result_end
+
+> Rank reconstruction and CPU cost
+
+Truncating each input channel's spatial-by-output matrix to the retained
+singular directions gives the best approximation at that multiplier.
+The squared error comes from the discarded directions. The second
+experiment times equivalent dense and separable filters after warming
+up both code paths. The ratio of multiply-accumulates describes their
+arithmetic cost, while elapsed time depends on the implementation and
+machine.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  n::set_num_threads(2);
+  n::Generator rng(109);
+  const auto arbitrary=n::normal({3,9,5},0,.3,rng,n::DType::Float64);
+  const auto [s,u,v]=n::svd(arbitrary);
+  const double total=n::sum(n::square(arbitrary)).item();
+  double previous=total;
+  std::print("| Multiplier | Relative squared kernel error |\n| ---: | ---: |\n");
+  for(int keep:{1,2,5}) {
+    const auto sigma=n::slice_axis(s,1,0,keep);
+    const auto left=n::slice_axis(u,2,0,keep),right=n::slice_axis(v,2,0,keep);
+    const auto approx=n::matmul(left*n::expand_dims(sigma,1),right,false,true);
+    const double error=n::sum(n::square(approx-arbitrary)).item();
+    const double tail=keep==5?0.:n::sum(n::square(n::slice_axis(s,1,keep,5))).item();
+    if(std::abs(error-tail)>1e-10 || !(error<previous) || (keep==5&&error/total>1e-10))
+      throw std::runtime_error("SVD truncation did not recover the predicted rank error");
+    previous=error;
+    std::print("| {} | {:.4e} |\n",keep,error/total);
+  }
+  n::NoGradGuard no_grad;
+  const auto x=n::normal({1,32,32,32},0,.2,rng);
+  const auto d=n::normal({3,3,32,1},0,.2,rng),p=n::normal({1,1,32,64},0,.2,rng);
+  const auto w=n::compose_separable_kernel(d,p);
+  auto dense=[&]{return n::conv2d(x,w);};
+  auto factored=[&]{return n::conv2d(n::depthwise_conv2d(x,d),p);};
+  if(n::max(n::abs(dense()-factored())).item()>1e-5)
+    throw std::runtime_error("Cost comparison uses unequal forward maps");
+  auto measure=[](const auto& operation) {
+    for(int i=0;i<10;++i) (void)operation();
+    const auto start=std::chrono::steady_clock::now();
+    for(int i=0;i<100;++i) (void)operation();
+    return std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()/100.;
+  };
+  const double dense_ms=measure(dense),factored_ms=measure(factored);
+  std::print("\nDense: {} parameters, {} MACs, {:.3f} ms. Separable: {} parameters, {} MACs, {:.3f} ms.\n",
+             w.numel(),1024*w.numel(),dense_ms,d.numel()+p.numel(),1024*(d.numel()+p.numel()),factored_ms);
+}
+```
+// result_begin: markdown
+| Multiplier | Relative squared kernel error |
+| ---: | ---: |
+| 1 | 5.5181e-01 |
+| 2 | 2.4379e-01 |
+| 5 | 6.2900e-31 |
+
+Dense: 18432 parameters, 18874368 MACs, 0.227 ms. Separable: 2336 parameters, 2392064 MACs, 0.166 ms.
 // result_end
 
 > Conclusion

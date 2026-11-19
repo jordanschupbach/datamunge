@@ -1,0 +1,149 @@
+//? Title: Class weighting, focal loss and resampling for rare events
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit four copies of a binary classifier on a 5% positive training set.
+Compare their precision and recall on a common held-out set at the
+original threshold of logit zero.
+)
+\toc
+
+The positive class shifts two of four Gaussian features. Each run uses
+the same 12-unit tanh network and starts from the same initialization.
+The plain fit uses binary cross-entropy. The weighted fit balances the
+expected contribution of the two classes to that loss. The focal fit
+reduces each easy example's contribution by the square of its error
+probability. The resampled fit uses the plain loss on batches drawn
+with replacement, half from each class.
+
+The held-out set keeps the original 5% prevalence. Precision and recall
+describe the shared decision threshold, while average precision describes
+the ordering over all thresholds. Reweighting or resampling may change
+the scale of the scores, so the report treats the sigmoid output as a
+score for classification.
+
+```{cpp, results="markdown", file="figures/imbalanced_classification_tradeoff.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+enum class Method { Plain, Weighted, Focal, Resampled };
+
+std::pair<n::Tensor,n::Tensor> simulate(int rows, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::vector<float> y(rows), x(rows*4);
+  std::fill_n(y.begin(),rows/20,1.f);
+  std::shuffle(y.begin(),y.end(),rng);
+  std::normal_distribution<float> noise;
+  constexpr std::array offsets{1.65f,1.1f,0.f,0.f};
+  for (int i = 0; i < rows; ++i)
+    for (int j = 0; j < 4; ++j)
+      x[4*i+j] = noise(rng)+y[i]*offsets[j];
+  return {n::from_vector(x,{rows,4}),n::from_vector(y,{rows,1})};
+}
+
+n::Tensor objective(Method method, const n::Tensor& logits, const n::Tensor& labels) {
+  if (method == Method::Focal)
+    return n::mean(n::models::SigmoidFocalLoss(logits,labels,.8,2.));
+  const auto ce = n::softplus(-logits*(2.*labels-1.));
+  if (method == Method::Weighted)
+    return n::mean(ce*((1.-labels)/1.9+10.*labels));
+  return n::mean(ce);
+}
+
+int main() {
+  const auto [x,y] = simulate(3200,19641);
+  const auto [test,observed] = simulate(1280,19642);
+  const auto truth = observed.reshape({1280}).to(n::DType::Int64);
+  std::vector<std::int64_t> positives, negatives;
+  const auto flags = y.to_vector<int>();
+  for (std::size_t i = 0; i < flags.size(); ++i)
+    (flags[i] ? positives : negatives).push_back(i);
+  const std::string folder = "build/imbalanced_classification/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::NamedTensors records{{"fit_y",y},{"test_y",observed},{"test_x",test}};
+  auto tradeoff = dm::graphics::RPlot::create();
+  std::println("| Method | Precision | Recall | Balanced accuracy | Average precision |\n| --- | ---: | ---: | ---: | ---: |");
+  const std::array names{"plain","weighted","focal","resampled"};
+  const std::array methods{Method::Plain,Method::Weighted,Method::Focal,Method::Resampled};
+  const std::array<dm::RGBA,4> colors{{{37,99,235},{191,88,34},{19,130,125},{125,77,168}}};
+  for (std::size_t model = 0; model < methods.size(); ++model) {
+    const auto method = methods[model];
+    const std::string name = names[model];
+    n::ParameterStore parameters(41380);
+    const auto predict = [&](const n::Tensor& input) {
+      return n::dense(parameters,"logit",n::dense(parameters,"hidden",input,12,n::Activation::Tanh),1);
+    };
+    {
+      n::NoGradGuard guard;
+      const auto initial = predict(test);
+      records.emplace_back(name+"_initial_logits",initial);
+      records.emplace_back(name+"_initial_loss",objective(method,initial,observed));
+    }
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(parameters,.01,config);
+    n::BatchOrder order(3200,32,19643);
+    std::mt19937 rng(19644);
+    std::uniform_int_distribution<std::size_t> pos(0,positives.size()-1), neg(0,negatives.size()-1);
+    std::vector<std::int64_t> seen;
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        if (method == Method::Resampled) {
+          for (int i = 0; i < 32; ++i)
+            rows[i] = i < 16 ? positives[pos(rng)] : negatives[neg(rng)];
+          std::shuffle(rows.begin(),rows.end(),rng);
+        }
+        seen.insert(seen.end(),rows.begin(),rows.end());
+        optimizer.minimize(objective(method,predict(n::take_rows(x,rows)),n::take_rows(y,rows)));
+      }
+    }
+    n::NoGradGuard guard;
+    const auto logits = predict(test);
+    if (!n::all(n::is_finite(logits)).item<bool>() || optimizer.iterations() != 300)
+      throw std::runtime_error("invalid rare-event classifier fit");
+    n::ConfusionMatrix confusion(2);
+    confusion.add(truth,n::greater_equal(logits,0.).reshape({1280}).to(n::DType::Int64));
+    const auto positive = confusion.per_class(1);
+    const auto balanced = confusion.macro().recall;
+    const auto ap = n::average_precision(truth.to_vector<int>(),logits.to_vector<double>());
+    std::println("| {} | {:.4f} | {:.4f} | {:.4f} | {:.4f} |",name,positive.precision,positive.recall,balanced,ap);
+    const auto& cells = confusion.cells();
+    records.emplace_back(name+"_confusion",n::tensor(
+        {double(cells[1][1]),double(cells[0][1]),double(cells[0][0]),double(cells[1][0])}).to(n::DType::Int64));
+    records.emplace_back(name+"_logits",logits);
+    records.emplace_back(name+"_rows",n::from_vector(seen,{3,3200}));
+    parameters.save(folder+name+"_weights.npz");
+    tradeoff.points({positive.recall},{positive.precision},name,colors[model],7);
+  }
+  n::save_npz(folder+"comparison.npz",records);
+  tradeoff.xlim(0.,1.).ylim(0.,1.).title("Rare-event classification at logit zero")
+          .x_label("Recall").y_label("Precision").save_svg(folder+"tradeoff.svg");
+  std::filesystem::copy_file(folder+"tradeoff.svg","figures/imbalanced_classification_tradeoff.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Method | Precision | Recall | Balanced accuracy | Average precision |
+| --- | ---: | ---: | ---: | ---: |
+| plain | 0.6774 | 0.3281 | 0.6600 | 0.4868 |
+| weighted | 0.1782 | 0.8438 | 0.8195 | 0.4834 |
+| focal | 0.4021 | 0.6094 | 0.7808 | 0.4839 |
+| resampled | 0.1923 | 0.8594 | 0.8347 | 0.4547 |
+\image(figures/imbalanced_classification_tradeoff.svg)
+// result_end
+
+The weighted and resampled fits detect more positives at logit zero,
+with lower precision. The plain fit has the highest average precision
+in this run. These results distinguish the choice of operating
+threshold from the quality of the ranking.
+
+> Reference
+
+Lin et al. (2017).
+[Focal Loss for Dense Object Detection|https://arxiv.org/abs/1708.02002].

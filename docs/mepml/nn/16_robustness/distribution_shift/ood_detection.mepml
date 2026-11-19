@@ -1,0 +1,97 @@
+//? Title: Maximum softmax, ODIN and energy for OOD detection
+//? Lang: en
+
+> Confidence under distribution shift
+
+A classifier learns three clusters. The held-out in-distribution
+examples come from those clusters. The out-of-distribution examples
+come from a different distribution concentrated between them.
+
+Maximum softmax reports the largest class probability. ODIN uses
+temperature-scaled probabilities after a small input adjustment along
+the gradient of predicted-class confidence. Negative energy uses the
+log-sum-exp of the original logits. All three scores rank larger
+values as more likely to be in-distribution.
+
+AUROC measures how often an in-distribution example outranks an
+out-of-distribution example. The plot compares that ranking on the
+same held-out data for all three scores.
+
+```{cpp, results="markdown", file="figures/ood_detection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed,bool noise_only) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise(0,noise_only?.055f:.075f);
+    constexpr float centers[3][2]={{.2f,.25f},{.8f,.25f},{.5f,.8f}};
+    std::vector<float> x(count*2);
+    std::vector<int> y(count);
+    for (int i=0;i<count;++i) {
+      const int c=i%3;
+      y[i]=noise_only ? -1 : c;
+      for (int j=0;j<2;++j)
+        x[i*2+j]=std::clamp((noise_only?.5f:centers[c][j])+noise(rng),0.f,1.f);
+    }
+    return std::pair{n::from_vector(x,{count,2}),n::from_vector(y)};
+  };
+  const auto [fit,y]=draw(768,47701,false);
+  const auto [id,labels]=draw(256,47702,false);
+  const auto [ood,unused]=draw(256,47703,true);
+  n::ParameterStore model(47704);
+  const auto predict=[&](const auto& x) {
+    return n::dense(model,"head",n::dense(model,"hidden",x,16,n::Activation::Tanh),3);
+  };
+  const auto before=n::sparse_softmax_cross_entropy(predict(id),labels).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(768,32,47705);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next())
+      optimizer.minimize(n::sparse_softmax_cross_entropy(predict(n::take_rows(fit,rows)),n::take_rows(y,rows)));
+  }
+  n::NoGradGuard inference;
+  const auto a=n::ood_confidence_scores(id,predict,20,.015f),b=n::ood_confidence_scores(ood,predict,20,.015f);
+  const auto after=n::sparse_softmax_cross_entropy(a.logits,labels).item();
+  if (!(after<before)) return 1;
+  std::print("Held-out classification loss {:.5f} → {:.5f}.\n\n",before,after);
+  std::vector<int> truth(512,0);
+  std::fill_n(truth.begin(),256,1);
+  auto plot=dm::graphics::RPlot::create();
+  const std::array<std::string,3> names{"Maximum softmax","ODIN","Negative energy"};
+  std::print("| Score | AUROC |\n|---|---:|\n");
+  const auto scores=n::concat({a.scores,b.scores},0);
+  for (int j=0;j<3;++j) {
+    const auto auc=n::roc_auc(truth,n::select(scores,1,j).to_vector<double>());
+    std::print("| {} | {:.6f} |\n",names[j],auc);
+    plot.points({double(j)},{auc},names[j],{37,99,235});
+  }
+  plot.title("Confidence ranking on held-out distributions").x_label("Score").y_label("AUROC").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/ood_detection.svg");
+  n::NamedTensors saved;
+  const auto save=[&](const std::string& name,const auto& x,const n::OodScores& r) {
+    saved.insert(saved.end(),{{name+"_x",x},{name+"_logits",r.logits},{name+"_odin_grad",r.gradient},
+        {name+"_shifted",r.shifted},{name+"_odin_logp",r.tempered},{name+"_scores",r.scores}});
+  };
+  save("id",id,a);
+  save("ood",ood,b);
+  for (const auto& name:model.names()) {
+    auto key=name;
+    std::replace(key.begin(),key.end(),'/','_');
+    saved.emplace_back(key,model.at(name));
+  }
+  n::save_npz("build/ood_detection.npz",saved);
+}
+```
+// result_begin: markdown
+Held-out classification loss 1.02680 → 0.08983.
+
+| Score | AUROC |
+|---|---:|
+| Maximum softmax | 0.995895 |
+| ODIN | 0.998291 |
+| Negative energy | 0.959579 |
+\image(figures/ood_detection.svg)
+// result_end

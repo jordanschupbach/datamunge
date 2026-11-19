@@ -1,0 +1,140 @@
+//? Title: Mamba selective memory
+//? Lang: en
+
+> Mamba selective memory
+
+The model receives a value and a write marker at each step. Its target
+is the most recent marked value. A causal depthwise convolution supplies
+local context. The selective scan uses that context to choose each
+channel's step size and the read and write projections for the current
+token. The learned diagonal rates control how quickly memory decays.
+A separate gate modulates the scan output before the final prediction.
+
+Training uses the upstream simulated task and Adam schedule with
+Datamunge initialization. The plots show validation error and a
+held-out sequence. The report changes values in the second half of the
+sequence and checks that all earlier predictions remain identical.
+
+Set `DM_MAMBA_REFERENCE` to the upstream `output/models/mamba` directory
+to replay predictions, final state and step sizes from its saved weights.
+
+[Gu and Dao (2023)|https://arxiv.org/abs/2312.00752]
+
+```{cpp, results="markdown", file="figures/mamba.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int steps=24, channels=8, states=4;
+  const auto generate=[](int count,unsigned seed) {
+    std::mt19937 random(seed);
+    std::uniform_real_distribution<float> value(-1,1);
+    std::vector<float> x,y;
+    for (int row=0;row<count;++row) {
+      float memory=0;
+      for (int t=0;t<steps;++t) {
+        const float sample=value(random);
+        const bool mark=t==0 || random()%6==0;
+        if (mark) memory=sample;
+        x.insert(x.end(),{sample,float(mark)});
+        y.push_back(memory);
+      }
+    }
+    return std::pair{n::from_vector(x,{count,steps,2}),n::from_vector(y,{count,steps,1})};
+  };
+  const auto [x,y]=generate(768,43101);
+  const auto [vx,vy]=generate(128,43102);
+  const auto [tx,ty]=generate(128,43103);
+  n::ParameterStore params(43104);
+  std::vector<float> rates;
+  for (int i=0;i<channels;++i) {
+    for (int j=0;j<states;++j) rates.push_back(std::log(float(j+1)));
+  }
+  params.set("log_rates",n::from_vector(rates,{channels,states}));
+  const auto model=[&](const n::Tensor& input) {
+    const auto count=input.size(0);
+    const auto content=n::dense(params,"content",input,channels);
+    const auto gate=n::dense(params,"gate",input,channels,n::Activation::Silu);
+    const auto kernel=params.get("conv/kernel",{3,1,channels,1},n::init::uniform(.65));
+    const auto bias=params.get("conv/bias",{channels},n::init::zeros());
+    n::Conv2DOptions opts;
+    opts.padding=n::Padding::Explicit;
+    opts.explicit_paddings={2,0,0,0};
+    const auto convolved=n::depthwise_conv2d(content.reshape({count,steps,1,channels}),kernel,opts);
+    const auto driven=n::silu(convolved.reshape({count,steps,channels})+bias);
+    const auto delta=n::dense(params,"delta",driven,channels,n::Activation::Softplus);
+    const auto write=n::dense(params,"write",driven,states);
+    const auto read=n::dense(params,"read",driven,states);
+    const auto [sequence,state]=n::selective_scan(driven,delta,write,read,
+        params.at("log_rates"),params.get("skip",{channels},n::init::ones()));
+    return std::array{n::dense(params,"output",sequence*gate,1),state,delta};
+  };
+  const auto evaluate=[&](const n::Tensor& input,const n::Tensor& target) {
+    const n::NoGradGuard no_grad;
+    return n::mean(n::square(model(input)[0]-target)).item();
+  };
+  const auto initial=evaluate(tx,ty);
+  std::vector<double> history{evaluate(vx,vy)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.004,config);
+  n::BatchOrder order(768,32,43105);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(n::mean(n::square(model(n::take_rows(x,rows))[0]-n::take_rows(y,rows))));
+    }
+    history.push_back(evaluate(vx,vy));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [output,state,delta]=model(tx);
+  const auto loss=n::mean(n::square(output-ty));
+  auto modified=tx.to_vector<float>();
+  for (int row=0;row<128;++row) {
+    for (int t=steps/2;t<steps;++t) modified[(row*steps+t)*2]+=3;
+  }
+  const auto alternate=model(n::from_vector(modified,tx.shape()))[0];
+  const auto prefix_error=n::max(n::abs(n::slice(output-alternate,{0,0,0},{128,steps/2,1}))).item();
+  if (!(loss.item()<initial) || prefix_error!=0 || optimizer.iterations()!=72) {
+    throw std::runtime_error("Mamba fit or prefix check failed");
+  }
+  std::filesystem::create_directories("build");
+  params.save("build/mamba_weights.npz");
+  n::save_npz("build/mamba.npz",{{"input",tx},{"target",ty},{"output",output},
+       {"state",state},{"delta",delta},{"loss",loss}});
+  std::print("Test MSE {:.6f} to {:.6f}. Earlier predictions were identical after the suffix edit.\n",
+             initial,loss.item());
+  if (const char* reference=std::getenv("DM_MAMBA_REFERENCE")) {
+    const auto path=std::filesystem::path(reference);
+    params.load((path/"weights.npz").string());
+    const auto entries=n::load_npz((path/"audit.npz").string());
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=model(stored.at("input"));
+    const std::array keys{"output","state","delta"};
+    double worst=0;
+    for (int i=0;i<3;++i) {
+      const double error=n::max(n::abs(replay[i]-stored.at(keys[i]))).item();
+      if (!(error<2e-5)) throw std::runtime_error(std::format("Mamba replay mismatch for {} ({})",keys[i],error));
+      worst=std::max(worst,error);
+    }
+    std::print("\nUpstream replay maximum absolute error {:.3e}.\n",worst);
+  }
+  auto validation=dm::graphics::RPlot::create();
+  validation.lines({0,1,2,3},history,"Validation MSE",{37,99,235})
+      .title("Validation error").x_label("Epoch").y_label("Mean squared error");
+  std::vector<double> time(steps);
+  std::iota(time.begin(),time.end(),0);
+  auto fitted=dm::graphics::RPlot::create();
+  fitted.lines(time,n::slice(ty,{0,0,0},{1,steps,1}).to_vector<double>(),"Target",{100,116,139})
+      .lines(time,n::slice(output,{0,0,0},{1,steps,1}).to_vector<double>(),"Prediction",{37,99,235})
+      .title("Marked-value memory").x_label("Time step").y_label("Value");
+  dm::graphics::RLayout::create(1,2).add(validation).add(fitted).size(1050,430).fit_panels()
+      .save_svg("build/mamba.svg");
+}
+```
+// result_begin: markdown
+Test MSE 0.346459 to 0.274757. Earlier predictions were identical after the suffix edit.
+
+Upstream replay maximum absolute error 4.768e-07.
+\image(figures/mamba.svg)
+// result_end

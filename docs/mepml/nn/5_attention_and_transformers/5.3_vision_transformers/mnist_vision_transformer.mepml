@@ -1,0 +1,112 @@
+//? Title: Vision Transformer on MNIST
+//? Lang: en
+
+> Vision Transformer on MNIST
+
+Each 28×28 digit is split into sixteen nonoverlapping 7×7 patches in
+raster order. A learned projection embeds each patch in 24 dimensions.
+The model prepends a learned class token, adds a learned position for
+each token and applies two pre-normalized self-attention blocks. The
+classification head reads the final class token. Its attention shows
+how that token pools information across the image.
+
+The experiment uses 1,024 fitting and 256 validation images selected
+from the official training set and 256 held-out images from the official
+test set. It reproduces the upstream row selection and trains from a
+native initialization for three epochs. The evaluation checks that
+every extracted patch matches its source pixels and that logits for a
+single image agree with the same image in a batch.
+
+```{cpp, results="markdown", file="figures/mnist_vision_transformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto directory = dm::datasets::fetch("mnist");
+  const auto train = n::load_mnist(directory,"train");
+  const auto test = n::load_mnist(directory,"test");
+  if (train.images.size(0)!=60000 || test.images.size(0)!=10000)
+    throw std::runtime_error("expected the official MNIST partitions");
+  std::vector<std::int64_t> train_ids(60000), test_ids(10000);
+  std::iota(train_ids.begin(), train_ids.end(), 0);
+  std::iota(test_ids.begin(), test_ids.end(), 0);
+  std::mt19937 rng(41434);
+  std::shuffle(train_ids.begin(), train_ids.end(), rng);
+  std::shuffle(test_ids.begin(), test_ids.end(), rng);
+  const std::vector<std::int64_t> fit_ids(train_ids.begin(),train_ids.begin()+1024);
+  const std::vector<std::int64_t> val_ids(train_ids.begin()+1024,train_ids.begin()+1280);
+  test_ids.resize(256);
+  const auto fit_x=n::take_rows(train.images,fit_ids), fit_y=n::take_rows(train.labels,fit_ids);
+  const auto val_x=n::take_rows(train.images,val_ids), val_y=n::take_rows(train.labels,val_ids);
+  const auto held=n::take_rows(test.images,test_ids), labels=n::take_rows(test.labels,test_ids);
+  n::ParameterStore model(41433);
+  const auto loss = [&](const n::Tensor& x, const n::Tensor& y) {
+    return n::sparse_softmax_cross_entropy(n::mnist_vision_transformer(model,x).logits,y);
+  };
+  const auto evaluate = [&](const n::Tensor& x, const n::Tensor& y) {
+    n::NoGradGuard guard;
+    return loss(x,y).item();
+  };
+  const auto initial=evaluate(held,labels);
+  std::vector<double> epoch{0}, validation{evaluate(val_x,val_y)};
+  n::Optimizer optimizer(model,.003,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit_ids.size(),32,41435);
+  int updates=0;
+  for (int i=1;i<=3;++i) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x,rows),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+    epoch.push_back(i);
+    validation.push_back(evaluate(val_x,val_y));
+  }
+  n::NoGradGuard guard;
+  const auto result=n::mnist_vision_transformer(model,held);
+  const auto single=n::mnist_vision_transformer(model,n::slice_axis(held,0,0,1));
+  const auto single_error=n::max(n::abs(single.logits-n::slice_axis(result.logits,0,0,1))).item();
+  if (updates!=96 || !(single_error<=8e-6)) throw std::runtime_error("unexpected update count or batch result");
+  const auto pixels=held.to_vector<float>(), patches=result.patches.to_vector<float>();
+  for (std::size_t row=0;row<test_ids.size();++row)
+    for (int patch=0;patch<16;++patch)
+      for (int index=0;index<49;++index) {
+        const int h=7*(patch/4)+index/7, w=7*(patch%4)+index%7;
+        if (patches[row*784+patch*49+index]!=pixels[row*784+h*28+w])
+          throw std::runtime_error("unexpected patch layout");
+      }
+  const auto correct=n::sum(n::cast(n::equal(n::argmax(result.logits,-1),labels),n::DType::Int32)).item<int>();
+  const auto final=n::sparse_softmax_cross_entropy(result.logits,labels).item();
+  std::print("| Updates | Starting test NLL | Final test NLL | Test accuracy |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.5f} | {:.5f} | {} / {} |\n",updates,initial,final,correct,test_ids.size());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/mnist_vision_transformer.npz",
+      {{"fit_ids",n::from_vector(fit_ids)},{"validation_ids",n::from_vector(val_ids)},
+       {"test_ids",n::from_vector(test_ids)},{"pixels",held},{"labels",labels},{"logits",result.logits},
+       {"patches",result.patches},{"embedded",result.embedded},{"attention0",result.attention[0]},
+       {"attention1",result.attention[1]},{"nll",n::scalar(final)}});
+  auto curve=dm::graphics::RPlot::create();
+  curve.line(epoch,validation).title("Validation fit").x_label("Epoch").y_label("NLL");
+  const auto weights=n::select(n::select(n::select(result.attention[1],0,0),0,0),0,0).to_vector<double>();
+  std::vector<std::vector<double>> columns(4,std::vector<double>(4));
+  for (int i=0;i<16;++i) columns[i%4][3-i/4]=weights[i+1];
+  const std::vector<double> grid{0,1,2,3};
+  auto heatmap=dm::graphics::RPlot::create();
+  heatmap.image(grid,grid,columns,dm::graphics::terrain_colors(32),0.,
+                *std::max_element(weights.begin()+1,weights.end()))
+      .title("Class token attention to image patches").x_label("Patch column").y_label("Patch row from bottom");
+  dm::graphics::RLayout::create(1,2).add(curve).add(heatmap).size(1100,420).fit_panels()
+      .save_svg("build/mnist_vision_transformer.svg");
+}
+```
+// result_begin: markdown
+| Updates | Starting test NLL | Final test NLL | Test accuracy |
+|---:|---:|---:|---:|
+| 96 | 3.12204 | 1.09612 | 157 / 256 |
+\image(figures/mnist_vision_transformer.svg)
+// result_end
+\caption(Validation loss and the class token’s attention over the image patches in one held-out digit.)
+\alttext(A validation loss curve is shown beside a four-by-four patch attention heatmap.)
+
+> Reference
+
+- [Dosovitskiy et al. (2021), An Image is Worth 16x16 Words](https://arxiv.org/abs/2010.11929).

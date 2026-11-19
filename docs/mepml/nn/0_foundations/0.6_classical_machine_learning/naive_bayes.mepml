@@ -194,6 +194,60 @@ Adam Gaussian means [-1.5, 4, 1.5, 4]; variance entries [0.25000000000000006, 0.
 // result_end
 
 
+> Held-out Gaussian classification
+
+A constant feature exercises the variance floor. Fit on 600 rows, then
+compare held-out scores with the sum of independent Gaussian log densities.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  std::mt19937 rng(97);
+  std::normal_distribution<float> normal;
+  auto sample=[&](int rows) {
+    std::vector<double> x;
+    std::vector<int> y;
+    for(int i=0;i<rows;++i) {
+      const int c=i%2;
+      x.push_back((c?1.5f:-1.5f)+.5f*normal(rng));
+      x.push_back(c+.8f*normal(rng));
+      x.push_back(5.);
+      y.push_back(c);
+    }
+    return std::pair{n::from_vector(x,{rows,3}),n::from_vector(y)};
+  };
+  const auto [train,labels]=sample(600);
+  const auto [query,truth]=sample(300);
+  const n::ml::NaiveBayes model(train,labels,2,n::ml::NaiveBayesKind::kGaussian);
+  const auto scores=model.Scores(query), probabilities=n::softmax(scores,1);
+  const auto predicted=n::argmax(scores,1);
+  int correct=0;
+  double worst=0.;
+  for(int i=0;i<300;++i) {
+    correct+=predicted.at({i})==truth.at({i});
+    if(std::abs(probabilities.at({i,0})+probabilities.at({i,1})-1)>1e-12)
+      throw std::runtime_error("Unnormalized posterior");
+    for(int c=0;c<2;++c) {
+      double expected=std::log(.5);
+      for(int j=0;j<3;++j) {
+        const double variance=model.variance.at({c,j});
+        expected-=.5*(std::log(2*std::numbers::pi*variance)+
+            std::pow(query.at({i,j})-model.mean.at({c,j}),2)/variance);
+      }
+      worst=std::max(worst,std::abs(scores.at({i,c})-expected));
+    }
+  }
+  if(correct<294 || worst>1e-10 || std::abs(model.variance.at({0,2})-1e-4)>1e-9 ||
+     std::abs(model.variance.at({1,2})-1e-4)>1e-9)
+    throw std::runtime_error("Gaussian classification or variance floor differs");
+  std::print("Held-out Gaussian accuracy {:.2f}%; direct log-score error {:.2e}.\n",100.*correct/300,worst);
+}
+```
+// result_begin: markdown
+Held-out Gaussian accuracy 100.00%; direct log-score error 3.55e-15.
+// result_end
+
 > Conclusion
 
 The visible tensor Adam fits recover the smoothed count solutions and constrained Gaussian

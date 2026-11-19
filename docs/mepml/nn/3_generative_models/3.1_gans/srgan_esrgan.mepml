@@ -930,11 +930,11 @@ RaGAN algebra: D=1.12372, G=0.957052, dG/dreal=[[0.0918314], [0.142112], [0.2332
 SRGAN epoch 1: reconstruction-warmup, pixel/content/adv=0.00261826/0.00467923/0.698881
 SRGAN epoch 2: GAN, pixel/content/adv=0.00260541/0.00462893/0.693675
 SRGAN epoch 3: GAN, pixel/content/adv=0.00258949/0.00457098/0.694223
-SRGAN: all 32 test mean PSNR/SSIM=26.7547/0.855841, bicubic=26.7112/0.854135; frozen VGG/warmup+GAN/restore/LR only/target canary/immutable PASS (training 1.12283 s)
+SRGAN: all 32 test mean PSNR/SSIM=26.7547/0.855841, bicubic=26.7112/0.854135; frozen VGG/warmup+GAN/restore/LR only/target canary/immutable PASS (training 2.24847 s)
 ESRGAN epoch 1: reconstruction-warmup, pixel/content/adv=0.0341665/0.0559572/0.693487
 ESRGAN epoch 2: GAN, pixel/content/adv=0.0341431/0.0559087/0.693771
 ESRGAN epoch 3: GAN, pixel/content/adv=0.0341156/0.0558486/0.694021
-ESRGAN: all 32 test mean PSNR/SSIM=26.7389/0.855221, bicubic=26.7112/0.854135; frozen VGG/warmup+GAN/restore/LR only/target canary/immutable PASS (training 1.19489 s)
+ESRGAN: all 32 test mean PSNR/SSIM=26.7389/0.855221, bicubic=26.7112/0.854135; frozen VGG/warmup+GAN/restore/LR only/target canary/immutable PASS (training 2.34437 s)
 Artifacts: build/srgan_esrgan
 All srgan_esrgan checks passed.
 // result_end

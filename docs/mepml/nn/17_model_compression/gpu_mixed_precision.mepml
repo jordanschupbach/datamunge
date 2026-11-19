@@ -1,0 +1,102 @@
+//? Title: Train with CUDA binary16 products and Float32 master weights
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a dense regression on the GPU using binary16 operands in the forward
+and backward products. Keep Float32 master weights and measure held-out loss.
+)
+\toc
+
+Each device product packs its input buffers as binary16. The CUDA kernel
+accumulates dot products in Float32, rounds each output to binary16,
+then widens it for host access. Both the forward prediction and the
+transposed weight-gradient product use this path. The example needs a
+CUDA-enabled Datamunge build and a device supporting binary16 conversion.
+
+The regression uses 64 training rows and 16 held-out rows. The host
+forms a scaled loss derivative, which is rounded to binary16 on upload
+for the backward product. Scaling by 256 before that product protects
+small derivatives from binary16 underflow. The host divides the resulting
+gradient by 256 when updating the Float32 master weights. Inference
+rounds those master weights afresh for each call. The reported loss is
+computed in Float32 on the host.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  namespace c = dm::compute;
+  const c::Device device{c::Backend::CUDA, 0};
+  const auto info = c::probe(device);
+  if (!info.available) {
+    std::println("CUDA binary16 example unavailable. {}", info.diagnostic);
+    return 0;
+  }
+  const c::Context gpu(device);
+  const n::CudaHalfMatmul multiply(gpu);
+
+  constexpr int rows = 80, fit_rows = 64, inputs = 4, outputs = 2, batch = 16;
+  constexpr float scale = 256.f, rate = .42f;
+  std::vector<float> x(rows*inputs), y(rows*outputs);
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < inputs; ++j)
+      x[i*inputs+j] = n::round_float16(std::sin(.17f*(i+1)*(j+1)));
+    for (int j = 0; j < outputs; ++j)
+      y[i*outputs+j] = .7f*x[i*inputs+j] - .33f*x[i*inputs+j+2];
+  }
+  const auto features = n::from_vector(x,{rows,inputs});
+  const auto targets = n::from_vector(y,{rows,outputs});
+  const auto test_x = n::slice(features,{fit_rows,0},{rows-fit_rows,inputs});
+  const auto test_y = n::slice(targets,{fit_rows,0},{rows-fit_rows,outputs});
+  auto master = n::zeros({inputs,outputs},n::DType::Float32);
+  std::vector<double> loss{n::mse(multiply(test_x,master),test_y).item()};
+  n::NamedTensors archive{{"features",features},{"targets",targets},{"weights_0",master}};
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    for (int i = 0; i < fit_rows; i+=batch) {
+      const auto x_batch = n::slice(features,{i,0},{batch,inputs});
+      const auto y_batch = n::slice(targets,{i,0},{batch,outputs});
+      const auto residual = (multiply(x_batch,master)-y_batch)*(2.f*scale/(batch*outputs));
+      const auto gradient = multiply(x_batch,residual,true);
+      master = master-(rate/scale)*gradient;
+    }
+    const auto held = multiply(test_x,master);
+    loss.push_back(n::mse(held,test_y).item());
+    archive.emplace_back("weights_"+std::to_string(epoch+1),master);
+    archive.emplace_back("prediction_"+std::to_string(epoch+1),held);
+  }
+  if (master.dtype() != n::DType::Float32 || !(loss.back() < .03*loss.front()))
+    throw std::runtime_error("CUDA half training failed to converge");
+  std::println("Both products ran on CUDA device {} with scale {:.0f}.", device.index,scale);
+  std::println("Float32 master weights. Held-out MSE {:.7g} to {:.7g}.",loss.front(),loss.back());
+
+  const std::string folder = "build/gpu_mixed_precision/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder+"training.npz",archive);
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({0.,1.,2.,3.},loss,"Held-out MSE",{37,99,235})
+      .title("CUDA binary16 training with Float32 master weights")
+      .x_label("Epoch").y_label("Held-out MSE").save_svg(folder+"loss.svg");
+  std::filesystem::copy_file(folder+"loss.svg","figures/gpu_mixed_precision.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::println("");
+  std::println("\\image(figures/gpu_mixed_precision.svg)");
+}
+```
+// result_begin: markdown
+Both products ran on CUDA device 0 with scale 256.
+Float32 master weights. Held-out MSE 0.2530549 to 0.001482835.
+
+\image(figures/gpu_mixed_precision.svg)
+// result_end
+
+> Reference
+
+- [NVIDIA PTX ISA, binary16 floating-point conversion|https://docs.nvidia.com/cuda/pdf/ptx_isa_8.7.pdf].

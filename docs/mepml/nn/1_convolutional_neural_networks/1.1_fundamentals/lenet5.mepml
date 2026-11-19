@@ -30,8 +30,7 @@ Disconnected C3 inputs have exactly zero derivative for that output map. The fix
 seven-segment prototypes used here are our own, not the original paper's digit art. Input
 pixels pad to 32×32 and map to [-.1,1.175]. Training uses sparse softmax cross entropy on
 negative distances with Adam and kernel L2, a modern adaptation rather than reproduction of
-the paper's loss and optimiser. The report exposes three epochs on 256 fitting rows, 128
-validation rows and 128 official test rows. Sparse convolution work sums only connected pairs;
+the paper's loss and optimiser. The benchmark fits 55,000 rows for eight epochs, selects on 5,000 validation rows and evaluates all 10,000 official test rows. Sparse convolution work sums only connected pairs;
 parameter sparsity is preserved, while 16 small C3 calls need not minimise runtime.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
@@ -270,37 +269,51 @@ int main() {
 
   const auto training = n::load_mnist((cache / "mnist").string(), "train");
   const auto official = n::load_mnist((cache / "mnist").string(), "test");
-  const auto fit_x = n::slice_axis(training.images, 0, 0, 256),
-             fit_y = n::slice_axis(training.labels, 0, 0, 256);
-  const auto validation_x = n::slice_axis(training.images, 0, 256, 256 + 128),
-             validation_y = n::slice_axis(training.labels, 0, 256, 256 + 128);
-  const auto test_x = n::slice_axis(official.images, 0, 0, 128),
-             test_y = n::slice_axis(official.labels, 0, 0, 128);
+  if (training.images.shape() != n::Shape{60000, 28, 28, 1} ||
+      official.images.shape() != n::Shape{10000, 28, 28, 1})
+    throw std::runtime_error("Expected the original MNIST splits");
+  std::vector<std::int64_t> order(60000);
+  std::iota(order.begin(), order.end(), 0);
+  std::mt19937_64 split_rng(2026);
+  std::shuffle(order.begin(), order.end(), split_rng);
+  const std::vector<std::int64_t> validation(order.begin() + 55000, order.end());
 
   n::ParameterStore p(17);
-  auto logits = [&](const n::Tensor &input) {
-    return n::models::LeNet5(p, input).logits;
-  };
+  auto logits = [&](const n::Tensor &input) { return n::models::LeNet5(p, input).logits; };
   {
     n::NoGradGuard guard;
-    logits(n::zeros_like(n::take_rows(fit_x, {0})));
+    (void)logits(n::zeros({1, 28, 28, 1}));
   }
   n::OptimizerConfig config;
   config.kind = n::OptimizerKind::Adam;
   n::Optimizer optimizer(p, .001, config);
-  n::BatchOrder batches(fit_x.size(0), 16, 2026);
-  n::Generator augmentation_rng(151);
+  n::BatchOrder batches(55000, 256, 29);
   std::filesystem::create_directories("build");
   const std::string checkpoint = "build/lenet5_best.npz";
   double best = std::numeric_limits<double>::infinity();
   std::vector<double> epoch, training_nll, validation_nll;
-  for (int e = 0; e < 3; ++e) {
+  auto validation_loss = [&] {
+    n::NoGradGuard guard;
+    n::WeightedMean mean;
+    for (std::size_t start = 0; start < validation.size(); start += 512) {
+      const std::vector<std::int64_t> rows(validation.begin() + start,
+                                           validation.begin() +
+                                               std::min(start + 512, validation.size()));
+      const auto values = logits(n::take_rows(training.images, rows));
+      const auto labels = n::take_rows(training.labels, rows);
+      mean.add(n::sparse_softmax_cross_entropy(values, labels).item(), rows.size());
+    }
+    return mean.value();
+  };
+  for (int e = 0; e < 8; ++e) {
     batches.begin_epoch();
     n::WeightedMean average;
     for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-      auto input = n::take_rows(fit_x, rows);
+      for (auto &row : rows)
+        row = order[row];
+      auto input = n::take_rows(training.images, rows);
       const auto nll =
-          n::sparse_softmax_cross_entropy(logits(input), n::take_rows(fit_y, rows));
+          n::sparse_softmax_cross_entropy(logits(input), n::take_rows(training.labels, rows));
       auto loss = nll;
       for (const auto &weight : p.parameters())
         if (weight.dim() >= 2)
@@ -308,9 +321,9 @@ int main() {
       optimizer.minimize(loss);
       average.add(nll.item(), rows.size());
     }
-    n::NoGradGuard guard;
-    const double val =
-        n::sparse_softmax_cross_entropy(logits(validation_x), validation_y).item();
+    if (average.count() != 55000)
+      throw std::runtime_error("Incomplete fitting epoch");
+    const double val = validation_loss();
     epoch.push_back(e + 1);
     training_nll.push_back(average.value());
     validation_nll.push_back(val);
@@ -321,59 +334,86 @@ int main() {
   }
   p.load(checkpoint);
   n::NoGradGuard guard;
-  const auto z = logits(test_x);
-  n::ConfusionMatrix cm(10);cm.add(test_y,n::argmax(z,1));cm.save_svg("build/lenet5_confusion.svg",{.title="lenet5: held-out official-test subset"});n::save_npz("build/lenet5_confusion.npz",{{"truth",test_y},{"logits",z},{"counts",cm.to_tensor()}});
+  const double restored = validation_loss();
+  if (!std::isfinite(restored) || std::abs(restored - best) > 1e-7)
+    throw std::runtime_error("Restored validation loss differs");
+  std::vector<n::Tensor> test_logits;
+  for (int start = 0; start < 10000; start += 512)
+    test_logits.push_back(
+        logits(n::slice_axis(official.images, 0, start, std::min(start + 512, 10000))));
+  const auto z = n::concat(test_logits, 0), test_y = official.labels;
+  n::ConfusionMatrix cm(10);
+  cm.add(test_y, n::argmax(z, 1));
+  cm.save_svg("build/lenet5_confusion.svg", {.title = "LeNet-5 on all official MNIST test images"});
+  n::save_npz("build/lenet5_confusion.npz",
+              {{"truth", test_y}, {"logits", z}, {"counts", cm.to_tensor()}});
   const double test_nll = n::sparse_softmax_cross_entropy(z, test_y).item(),
                accuracy = n::accuracy(z, test_y);
-  if (!std::isfinite(test_nll) || training_nll.back() >= training_nll.front())
-    return 1;
+  if (!std::isfinite(test_nll) || accuracy < .975 || training_nll.back() >= training_nll.front())
+    throw std::runtime_error(
+        std::format("LeNet-5 held-out accuracy {:.5f}, NLL {:.5f}", accuracy, test_nll));
   auto plot = dm::graphics::RPlot::create();
   plot.lines(epoch, training_nll, "training", {37, 99, 235})
       .lines(epoch, validation_nll, "validation", {234, 88, 12})
-      .title("A short explicit Adam run; select on validation")
+      .title("Full MNIST LeNet-5 training and validation")
       .x_label("epoch")
       .y_label("mean NLL");
   std::filesystem::create_directories("build");
   plot.size(850, 420).save_svg("build/lenet5_training.svg");
   std::print(
-      "{} fitted rows; 128 validation rows; 128 official-test rows; {} parameters; {} Adam "
+      "55000 fitted rows; 5000 validation rows; 10000 official-test rows; {} parameters; {} Adam "
       "steps.\n\nSelected validation NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
-      fit_x.size(0), p.count(), optimizer.iterations(), best, test_nll, accuracy);
+      p.count(), optimizer.iterations(), best, test_nll, accuracy);
 }
 ```
 // result_begin: markdown
-256 fitted rows; 128 validation rows; 128 official-test rows; 60000 parameters; 48 Adam steps.
+55000 fitted rows; 5000 validation rows; 10000 official-test rows; 60000 parameters; 1720 Adam steps.
 
-Selected validation NLL 0.855704; test NLL 1.285632; test accuracy 0.703125.
+Selected validation NLL 0.079856; test NLL 0.068379; test accuracy 0.979400.
 \image(figures/lenet5_training.svg)
 // result_end
-\caption(Training and validation losses come from the visible minibatch loop; the official test subset is evaluated only after checkpoint selection.)
-\alttext(Training and validation losses come from the visible minibatch loop; the official test subset is evaluated only after checkpoint selection.)
+\caption(Training and validation losses come from the visible minibatch loop; the official test split is evaluated only after checkpoint selection.)
+\alttext(Training and validation losses come from the visible minibatch loop; the official test split is evaluated only after checkpoint selection.)
 
 
 > Fresh artifact and held-out checks
 
 The views below are regenerated from the executed programs above. Confusion matrices use the selected checkpoint and original held-out rows. Paired ablations retain each seed and policy separately; they do not pool the same test observations into one artificial sample.
 
-```{cpp, results="markdown", file="figures/lenet5_architecture_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/lenet5_architecture_graph.svg","build/export_lenet5_architecture_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/lenet5_architecture_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/lenet5_architecture_graph.svg", "build/export_lenet5_architecture_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/lenet5_architecture_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/lenet5_architecture_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/lenet5_architecture_lenet.svg","build/export_lenet5_architecture_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/lenet5_architecture_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/lenet5_architecture_lenet.svg", "build/export_lenet5_architecture_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/lenet5_architecture_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/lenet5_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/lenet5_confusion.svg","build/export_lenet5_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/lenet5_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/lenet5_confusion.svg", "build/export_lenet5_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/lenet5_confusion.svg)
@@ -383,7 +423,7 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 
 The original sparse architecture has exactly 60000 learned scalars, and absent C3 inputs
 have zero derivative. The report distinguishes its fixed prototype art and Adam training
-adaptations from the original model and provides a compact executed MNIST demonstration.
+adaptations from the original model and evaluates the selected checkpoint on the full official MNIST test split.
 
 > References
 

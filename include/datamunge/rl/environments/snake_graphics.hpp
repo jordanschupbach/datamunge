@@ -1,14 +1,9 @@
-// datamunge::nn port helper: Snake boards as RGB frames and a PNG filmstrip.
-//
-// tflow films Snake on a vsim 3D board (vsim_worlds.h SnakeWorld) and streams it into ffmpeg;
-// both are out of scope for the datamunge ports. Instead the board is drawn as a small RGB
-// image (one pixel per cell: head red, body green, food gold, empty dark) and an episode's
-// frames are tiled into one PNG with nn::save_image_grid.
 #pragma once
 /// @file snake_graphics.hpp
 /// @brief Native snake graphics simulation components for explicit caller-owned rollouts.
 
 #include <datamunge/rl/environments/snake.hpp>
+#include "datamunge/cad/video.hpp"
 #include <string>
 #include <vector>
 
@@ -181,6 +176,51 @@ class SnakeFilmstrip {
   void Save(const std::string& path, int cols = 16, int scale = 6) const {
     datamunge::nn::save_image_grid(
         tensor(), path, cols, 0.0, 1.0, /*padding=*/1, /*pad_value=*/0.5, scale);
+  }
+
+  /// @brief Encode the captured boards as an H.264 MP4 with one frame per board.
+  ///
+  /// Each cell is enlarged by nearest-neighbor replication. An even scale
+  /// supplies the even dimensions required by the encoder. Requires ffmpeg
+  /// with libx264 on PATH.
+  /// @param path Destination MP4 path with an existing parent directory.
+  /// @param fps Frames per second, 1 to 240, default 12.
+  /// @param scale Positive even pixels per cell, default 24.
+  /// @throws std::logic_error Empty filmstrip.
+  /// @throws std::invalid_argument Invalid scale, dimensions or encoder settings.
+  /// @throws std::runtime_error Encoder startup, write or finalization failure.
+  /// @par Example
+  /// @code
+  /// namespace e = dm::rl::environments;
+  /// e::Snake board;
+  /// board.reset(1);
+  /// e::SnakeFilmstrip strip;
+  /// strip.Add(board);
+  /// strip.SaveVideo("snake.mp4");
+  /// @endcode
+  /// @see Save(), cad::VideoWriter
+  void SaveVideo(const std::string& path, int fps = 12, int scale = 24) const {
+    if (frames_ == 0)
+      throw std::logic_error("empty snake filmstrip");
+    if (scale < 2 || scale % 2 != 0 || scale > 8192 / h_ || scale > 8192 / w_)
+      throw std::invalid_argument("invalid snake video scale");
+    cad::RenderResult frame;
+    frame.width = w_ * scale;
+    frame.height = h_ * scale;
+    frame.rgba.resize(static_cast<std::size_t>(frame.width) * frame.height * 4);
+    cad::VideoWriter video(path, frame.width, frame.height, fps);
+    for (int i = 0; i < frames_; ++i) {
+      for (int y = 0; y < frame.height; ++y)
+        for (int x = 0; x < frame.width; ++x) {
+          const auto source = ((static_cast<std::size_t>(i) * h_ + y / scale) * w_ + x / scale) * 3;
+          auto* target = frame.rgba.data() + (static_cast<std::size_t>(y) * frame.width + x) * 4;
+          for (int channel = 0; channel < 3; ++channel)
+            target[channel] = static_cast<unsigned char>(255.f * pixels_[source + channel] + .5f);
+          target[3] = 255;
+        }
+      video.append(frame);
+    }
+    video.finish();
   }
 
  private:

@@ -1,0 +1,86 @@
+//? Title: Gaussian cross-entropy policy search
+//? Lang: en
+
+> Gaussian cross-entropy policy search
+
+A bounded feedback controller combines position, velocity, and a bias
+into a force with a hyperbolic tangent. Each rollout starts at one of
+twelve mirrored initial states and runs for 24 steps. Penalize displacement,
+velocity, and effort with squared costs weighted by 1, 0.1, and 0.025,
+respectively. Average the negative total cost across starts. The report
+also saves all pre-transition states for the final mean policy.
+
+Sample 48 controllers from a diagonal Gaussian, evaluate them on the same
+initial states, and retain the 10 highest-return controllers. Fit the next
+Gaussian to these elites using maximum-likelihood mean and variance.
+Mix 80 percent of the refit into the previous distribution and apply a
+variance floor. Evaluate the mean controller after each update on held-out
+starts, without sampling policy weights.
+
+[Rubinstein and Kroese (2004)|https://doi.org/10.1007/978-1-4757-4321-0]
+
+```{cpp, results="markdown", file="figures/cross_entropy_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto starts=[](std::mt19937& rng) {
+    const auto uniform=[&] { return float((rng()+.5)/4294967296.); };
+    std::vector<float> states;
+    for (int i=0;i<6;++i) {
+      const float p=.4f+.6f*uniform(), v=.6f*(uniform()-.5f);
+      states.insert(states.end(),{p,v,-p,-v});
+    }
+    return n::from_vector(states,{12,2});
+  };
+  std::mt19937 rng(47701), train(47203), evaluation(47204);
+  std::normal_distribution<float> normal;
+  const auto test=starts(evaluation);
+  auto mean=n::zeros({1,3}), variance=n::full({1,3},.35f*.35f);
+  std::vector<double> held, spread;
+  std::filesystem::create_directories("build");
+  std::print("| Generation | Held-out return | Mean variance |\n|---:|---:|---:|\n");
+  for (int i=0;i<=3;++i) {
+    held.push_back(r::feedback_returns(mean,test).first.item());
+    spread.push_back(n::mean(variance).item());
+    std::print("| {} | {:.6f} | {:.6f} |\n",i,held.back(),spread.back());
+    if (i==3) break;
+    std::vector<float> draws(48*3);
+    for (auto& value:draws) value=normal(rng);
+    const auto noise=n::from_vector(draws,{48,3}), initial=starts(train);
+    const auto population=mean+n::sqrt(variance)*noise;
+    const auto fitness=r::feedback_returns(population,initial).first;
+    const auto [elite,elite_mean,elite_var,next_mean,next_var]=
+        r::gaussian_elite_refit(population,fitness,mean,variance,10,.8f,.0025f);
+    n::save_npz(std::format("build/cem_generation{}.npz",i+1),{{"mean",mean},{"variance",variance},
+        {"noise",noise},{"starts",initial},{"population",population},{"fitness",fitness},
+        {"elite",elite},{"elite_mean",elite_mean},{"elite_variance",elite_var},
+        {"next_mean",next_mean},{"next_variance",next_var}});
+    mean=next_mean;
+    variance=next_var;
+  }
+  if (!(held.back()>held.front())) throw std::runtime_error("Mean policy did not improve");
+  n::save_npz("build/cem_evaluation.npz",{{"starts",test},{"history",n::from_vector(held)}});
+  const auto [scores,observations]=r::feedback_returns(mean,test,24,true);
+  n::save_npz("build/cem_feedback.npz",{{"policy",mean},{"starts",test},{"return",scores},
+                                      {"observations",observations}});
+  auto performance=dm::graphics::RPlot::create();
+  performance.lines({0,1,2,3},held,"Mean policy",{37,99,235})
+      .title("Held-out return").x_label("Generation").y_label("Mean return");
+  auto contraction=dm::graphics::RPlot::create();
+  contraction.lines({0,1,2,3},spread,"Sampling distribution",{234,88,12})
+      .title("Search distribution").x_label("Generation").y_label("Mean sampling variance");
+  dm::graphics::RLayout::create(1,2).add(performance).add(contraction).size(1050,430).fit_panels()
+      .save_svg("build/cross_entropy_method.svg");
+}
+```
+// result_begin: markdown
+| Generation | Held-out return | Mean variance |
+|---:|---:|---:|
+| 0 | -18.609520 | 0.122500 |
+| 1 | -4.218099 | 0.057347 |
+| 2 | -3.321565 | 0.034437 |
+| 3 | -3.031933 | 0.012481 |
+\image(figures/cross_entropy_method.svg)
+// result_end

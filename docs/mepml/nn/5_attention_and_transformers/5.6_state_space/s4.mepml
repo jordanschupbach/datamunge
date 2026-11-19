@@ -1,0 +1,122 @@
+//? Title: S4 convolution and recurrence with HiPPO dynamics
+//? Lang: en
+
+> S4 convolution and recurrence with HiPPO dynamics
+
+This compact structured state-space model starts from a fixed normal
+HiPPO component and learns the strength of a rank-one correction. It
+uses a bilinear transform to discretize the continuous dynamics. The
+Woodbury identity evaluates the inverse from the fixed normal component
+and a rank-one update.
+
+The convolution taps are the readout applied to successive powers of
+the discrete transition acting on the input projection. Alternatively,
+each input advances a zero-initialized state and the readout observes
+that state. Both forms add a direct input skip. This report uses a
+direct causal convolution on 64-step sequences and compares the two
+forms on the fitted parameters.
+
+The supervised target is the input passed through a damped oscillatory
+filter. Training uses 512 simulated sequences and the upstream Adam
+schedule with Datamunge initialization. The plots show validation error
+and the observed and predicted response for a held-out sequence.
+
+[Gu, Goel and Ré (2022)|https://arxiv.org/abs/2111.00396]
+
+```{cpp, results="markdown", file="figures/s4.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int width=8, steps=64;
+  const auto generate=[](int count,unsigned seed) {
+    std::mt19937 random(seed);
+    std::normal_distribution<float> normal;
+    std::vector<float> x(count*steps), y(count*steps);
+    for (int row=0;row<count;++row) {
+      for (int t=0;t<steps;++t) {
+        const auto index=row*steps+t;
+        x[index]=normal(random);
+        float smooth=0;
+        for (int lag=1;lag<=t;++lag) {
+          smooth+=.17f*std::exp(-lag/12.f)*std::cos(.22f*lag)*x[index-lag];
+        }
+        y[index]=.3f*x[index]+smooth;
+      }
+    }
+    return std::pair{n::from_vector(x,{count,steps}),n::from_vector(y,{count,steps})};
+  };
+  const auto [x,y]=generate(512,43001);
+  const auto [valid_x,valid_y]=generate(128,43002);
+  const auto [test_x,test_y]=generate(128,43003);
+  n::ParameterStore params(43004);
+  std::vector<float> initial_b;
+  for (int i=0;i<width;++i) initial_b.push_back(std::sqrt(2.f*i+1));
+  params.set("B",n::from_vector(initial_b,{width,1}));
+  const auto b=params.at("B");
+  const auto c=params.get("C",{1,width},n::init::normal(.05));
+  const auto skip=params.get("D",{},n::init::zeros());
+  const auto strength=params.get("log_strength",{},n::init::zeros());
+  const auto model=[&](const n::Tensor& input) {
+    const auto [a,ad,bd]=n::s4_discretize(b,strength,.125);
+    const auto [prediction,kernel]=n::s4_convolve(input,ad,bd,c,skip);
+    return std::array{prediction,kernel,a,ad,bd};
+  };
+  const auto criterion=[](const n::Tensor& prediction,const n::Tensor& target) {
+    return n::mean(n::square(prediction-target));
+  };
+  const auto evaluate=[&](const n::Tensor& input,const n::Tensor& target) {
+    const n::NoGradGuard no_grad;
+    return criterion(model(input)[0],target).item();
+  };
+  const double initial=evaluate(test_x,test_y);
+  std::vector<double> history{evaluate(valid_x,valid_y)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.008,config);
+  n::BatchOrder order(512,32,43005);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto ids=order.next();!ids.empty();ids=order.next()) {
+      optimizer.minimize(criterion(model(n::take_rows(x,ids))[0],n::take_rows(y,ids)));
+    }
+    history.push_back(evaluate(valid_x,valid_y));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [prediction,kernel,a,ad,bd]=model(test_x);
+  const auto loss=criterion(prediction,test_y);
+  const auto ad64=ad.to(n::DType::Float64);
+  const auto bd64=bd.to(n::DType::Float64);
+  const auto c64=c.to(n::DType::Float64);
+  auto state=n::zeros({128,width},n::DType::Float64);
+  std::vector<n::Tensor> outputs;
+  for (const auto& signal:n::time_steps(test_x.reshape({128,steps,1}).to(n::DType::Float64))) {
+    state=n::matmul(state,ad64,false,true)+n::matmul(signal,bd64,false,true);
+    outputs.push_back(n::matmul(state,c64,false,true)+skip.item()*signal);
+  }
+  const double error=n::max(n::abs(n::concat(outputs,1)-prediction)).item();
+  if (!(loss.item()<initial) || !(error<3e-6) || optimizer.iterations()!=48) {
+    throw std::runtime_error("S4 fit or recurrence parity failed");
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/s4.npz",{{"input",test_x},{"target",test_y},{"output",prediction},
+      {"kernel",kernel},{"a",a},{"b",b},{"abar",ad},{"bbar",bd},{"c",c},{"skip",skip},{"loss",loss}});
+  std::print("Test MSE {:.6f} to {:.6f}. Convolution versus recurrence maximum error {:.3e}.\n",
+             initial,loss.item(),error);
+  auto validation=dm::graphics::RPlot::create();
+  validation.lines({0,1,2,3},history,"Validation MSE",{37,99,235})
+      .title("Validation error").x_label("Epoch").y_label("Mean squared error");
+  std::vector<double> time(steps);
+  std::iota(time.begin(),time.end(),0);
+  auto fit=dm::graphics::RPlot::create();
+  fit.lines(time,n::slice(test_y,{0,0},{1,steps}).to_vector<double>(),"Target",{100,116,139})
+      .lines(time,n::slice(prediction,{0,0},{1,steps}).to_vector<double>(),"Prediction",{37,99,235})
+      .title("Held-out sequence").x_label("Time step").y_label("Response");
+  dm::graphics::RLayout::create(1,2).add(validation).add(fit).size(1050,430).fit_panels()
+      .save_svg("build/s4.svg");
+}
+```
+// result_begin: markdown
+Test MSE 0.183042 to 0.009270. Convolution versus recurrence maximum error 2.052e-07.
+\image(figures/s4.svg)
+// result_end

@@ -1,0 +1,68 @@
+//? Title: LIME-style local linear surrogates
+//? Lang: en
+
+> LIME-style local linear surrogates
+
+The same nonlinear prediction function can behave differently around
+different anchor points. For each anchor, draw Gaussian neighbors and
+query the black box. Fit a ridge regression on their displacements
+from the anchor. Exponential distance weights emphasize closer
+neighbors, and the ridge penalty applies only to the slopes.
+
+Evaluate the surrogate with weighted RMSE on independently sampled
+neighbors. The plot compares the fitted slopes at two anchors.
+These coefficients describe the model within the sampled neighborhood
+and depend on the perturbation distribution and kernel width.
+
+```{cpp, results="markdown", file="figures/lime_surrogate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto sample=[](const auto& anchor,int rows,std::mt19937& rng) {
+    std::normal_distribution<double> normal(0,.52);
+    std::vector<double> values;
+    for (int i=0;i<rows;++i)
+      for (double x:anchor) values.push_back(x+normal(rng));
+    return n::from_vector(values,{rows,3});
+  };
+  const auto black_box=[](const auto& x) {
+    const auto a=n::slice_axis(x,1,0,1),b=n::slice_axis(x,1,1,2),c=n::slice_axis(x,1,2,3);
+    return n::sigmoid(n::sin(1.6*a)+a*b+.45*n::square(c));
+  };
+  std::mt19937 fit_rng(49031),check_rng(49032);
+  const std::array<std::vector<double>,2> anchors{{{-.8,.25,.65},{.75,.25,-.35}}};
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Anchor | Held-out weighted RMSE | Feature 1 | Feature 2 | Feature 3 |\n"
+             "|---:|---:|---:|---:|---:|\n");
+  for (int i=0;i<2;++i) {
+    const auto anchor=n::from_vector(anchors[i]);
+    const auto fit=sample(anchors[i],512,fit_rng),check=sample(anchors[i],256,check_rng);
+    const auto observed=black_box(fit), held=black_box(check);
+    const auto coef=n::fit_local_linear_surrogate(fit-anchor,observed,.45,.03);
+    const auto design=n::concat({n::ones({256,1},n::DType::Float64),check-anchor},1);
+    const auto estimate=n::matmul(design,coef);
+    const auto mass=n::local_kernel_weights(check-anchor,.45);
+    const auto error=n::sqrt(n::sum(mass*n::square(estimate-held))/n::sum(mass)).item();
+    if (!std::isfinite(error)) return 1;
+    const auto slopes=n::slice_axis(coef,0,1,4).to_vector<double>();
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",i,error,slopes[0],slopes[1],slopes[2]);
+    plot.points({.9+.2*i,1.9+.2*i,2.9+.2*i},slopes,std::format("Anchor {}",i),
+        i==0?dm::graphics::RGB{37,99,235}:dm::graphics::RGB{234,88,12});
+    n::save_npz(std::format("build/lime_anchor{}.npz",i),{{"anchor",anchor},{"fit",fit},{"fit_response",observed},
+        {"weights",n::local_kernel_weights(fit-anchor,.45)},{"coef",coef},{"check",check},
+        {"check_response",held},{"predictions",estimate}});
+  }
+  plot.lines({.5,3.5},{0,0},"Zero slope",{148,163,184}).title("Local slopes at two anchors")
+      .x_label("Feature").y_label("Surrogate coefficient");
+  plot.size(900,430).save_svg("build/lime_surrogate.svg");
+}
+```
+// result_begin: markdown
+| Anchor | Held-out weighted RMSE | Feature 1 | Feature 2 | Feature 3 |
+|---:|---:|---:|---:|---:|
+| 0 | 0.032094 | 0.143058 | -0.159084 | 0.127092 |
+| 1 | 0.028378 | 0.139481 | 0.130106 | -0.064102 |
+\image(figures/lime_surrogate.svg)
+// result_end

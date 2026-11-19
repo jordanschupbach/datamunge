@@ -1,0 +1,78 @@
+//? Title: Sparse-grid exploration schedule
+//? Lang: en
+
+> Sparse-grid exploration schedule
+
+This fixture gives an exploration algorithm 2,048 actions on a
+seven-by-seven grid. Actions move up, down, left or right, with the
+current coordinate clipped to the grid boundary. The agent starts in
+the upper-left cell and receives a task reward of one on entering the
+lower-right cell. An episode resets there or after 64 actions.
+
+Two tabular learners share every transition. The behavior table adds
+half the supplied curiosity reward and chooses epsilon-greedy actions
+with exploration probability one quarter. The task table sees only the
+goal reward and supplies the greedy evaluation policy. Every sixteen
+actions, the training callback receives 32 transitions sampled with
+replacement from replay. It uses a random stream separate from action
+selection. An episode reset callback lets stateful curiosity modules
+clear episodic state while retaining their learned parameters.
+
+This example compares task-only training with a constant bonus callback
+to illustrate the schedule. A constant bonus rewards visits uniformly.
+See [random network distillation|random_network_distillation.mepml]
+for a predictor that gives different bonuses to different observations.
+
+```{cpp, results="markdown", file="figures/exploration_grid.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int resets=0,updates=0;
+  const auto [control,zero,control_count,control_goals,control_success]=dm::rl::sparse_grid_experiment(43602);
+  const auto [path,bonus,count,goals,success]=dm::rl::sparse_grid_experiment(43602,
+      [](const auto&) { return .1f; },
+      [&](const auto batch) {
+        if (batch.size()!=32) throw std::runtime_error("Unexpected replay batch size");
+        ++updates;
+      },
+      [&] { ++resets; });
+  if (updates!=128) throw std::runtime_error("Unexpected replay update count");
+  const auto accumulate=[](const dm::nn::Tensor& rows) {
+    const auto values=rows.to_vector<int>();
+    std::set<int> seen{0};
+    std::vector<double> coverage{1};
+    for (std::size_t i=2;i<values.size();i+=3) {
+      seen.insert(values[i]);
+      coverage.push_back(seen.size());
+    }
+    return coverage;
+  };
+  const auto baseline=accumulate(control), curiosity=accumulate(path);
+  if (baseline.back()!=control_count || curiosity.back()!=count) {
+    throw std::runtime_error("Coverage differs from the transition trace");
+  }
+  std::vector<double> steps(baseline.size());
+  std::iota(steps.begin(),steps.end(),0.);
+  std::print("| Schedule | Visited cells | Training goals | Greedy task success |\n"
+             "|:---|---:|---:|:---|\n"
+             "| Task only | {} | {} | {} |\n"
+             "| Constant bonus | {} | {} | {} |\n\n"
+             "The constant-bonus run made {} replay updates and called reset {} times, including initialization.\n",
+             control_count,control_goals,control_success,count,goals,success,updates,resets);
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,baseline,"Task reward only",{217,96,26})
+      .lines(steps,curiosity,"Constant bonus",{37,99,235})
+      .title("Sparse-grid coverage over time").x_label("Actions").y_label("Unique cells visited")
+      .ylim(0,49).size(820,460).save_svg("build/exploration_grid.svg");
+}
+```
+// result_begin: markdown
+| Schedule | Visited cells | Training goals | Greedy task success |
+|:---|---:|---:|:---|
+| Task only | 18 | 0 | false |
+| Constant bonus | 7 | 0 | false |
+
+The constant-bonus run made 128 replay updates and called reset 33 times, including initialization.
+\image(figures/exploration_grid.svg)
+// result_end

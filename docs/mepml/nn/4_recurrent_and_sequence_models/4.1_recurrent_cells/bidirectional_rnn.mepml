@@ -1394,7 +1394,7 @@ truth/pred     0     1
   confusion (truth rows):
     56 8
     34 30
-testCE=0.604058 accuracy=0.671875 cueFlip=0.664062 lastBaseline=0.5625;fullBPTT/masking/forwardCausality+offlineBackwardFuture/zeroLength/restore/labelFree/immutable PASS (0.0673454 s)
+testCE=0.604058 accuracy=0.671875 cueFlip=0.664062 lastBaseline=0.5625;fullBPTT/masking/forwardCausality+offlineBackwardFuture/zeroLength/restore/labelFree/immutable PASS (0.175702 s)
 Artifacts:"build/recurrent-models/models/bidirectional_rnn/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/bidirectional_rnn" not found; skipping the comparison
 // result_end

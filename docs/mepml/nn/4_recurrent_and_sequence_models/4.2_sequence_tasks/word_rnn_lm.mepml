@@ -1125,7 +1125,7 @@ int main(int argc, char** argv) {
 // testNLL=8.25156 perplexity=3833.61 fitUnigram=7.59409 fitBigram=8.97219 unknown=18/512;wordBPTT/causal/streaming/restore/256draws/immutable PASS
 // Artifacts:"/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/recovered-language/models/word_rnn_lm/index.html"
 // (TF recorded: testNLL=8.28867 perplexity=3978.53 fitUnigram=7.59409 fitBigram=8.97219 unknown=18/512)
-// wall 1.44473 s
+// wall 2.65874 s
 // result_end
 
 > Actual source diagnostics

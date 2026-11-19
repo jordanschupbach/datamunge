@@ -1,0 +1,96 @@
+//? Title: Measure CPU inference latency and throughput by batch size
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Measure warmed call latency and examples per second for a fixed
+two-layer network, and check that batching preserves predictions.
+)
+\toc
+
+The deterministic network maps 24 inputs through 64 ReLU units to six
+outputs. The same weights serve every batch. Before timing, the code
+checks all 128 rows against single-row inference. Each batch size gets
+12 warm-up calls and 100 timed calls cycling through prepared batches.
+The reported p95 is the 95th observation in sorted call times.
+Throughput divides the number of rows served by the sum of those
+times, which accounts for slow calls.
+
+The timings include forward computation and allocation of its result.
+Input preparation and equivalence checks run outside the timed region.
+A larger batch can improve throughput while taking longer per call.
+
+```{cpp, results="markdown", file="figures/batching_latency.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  auto wave = [](int rows, int columns) {
+    std::vector<float> data(rows * columns);
+    for (std::size_t i = 0; i < data.size(); ++i) data[i] = .25f * std::sin(.13f * (i + 1));
+    return n::from_vector(data, {rows, columns});
+  };
+  const auto x = wave(128, 24), w1 = wave(24, 64), w2 = wave(64, 6);
+  auto predict = [&](const n::Tensor& batch) {
+    return n::matmul(n::relu(n::matmul(batch, w1)), w2);
+  };
+  std::vector<n::Tensor> single;
+  for (int i = 0; i < 128; ++i)
+    single.push_back(predict(n::slice(x, {i, 0}, {1, 24})));
+  const auto reference = n::concat(single, 0);
+  n::NamedTensors archive{{"input", x}, {"w1", w1}, {"w2", w2}, {"reference", reference}};
+  std::vector<double> sizes, p50, p95, throughput;
+  std::println("| Batch | Median µs | P95 µs | Examples/s | Max prediction difference |");
+  std::println("| ---: | ---: | ---: | ---: | ---: |");
+  for (int batch : {1, 4, 16, 64, 128}) {
+    std::vector<n::Tensor> inputs, predictions;
+    for (int i = 0; i < 128; i += batch) {
+      inputs.push_back(n::slice(x, {i, 0}, {batch, 24}).contiguous());
+      predictions.push_back(predict(inputs.back()));
+    }
+    const auto joined = n::concat(predictions, 0);
+    const double error = n::max(n::abs(joined - reference)).item();
+    if (joined.shape() != n::Shape{128, 6} || !(error < 1e-5))
+      throw std::runtime_error("Batch and single-row inference disagree");
+    archive.emplace_back("batch_" + std::to_string(batch), joined);
+    const auto timing = n::benchmark_inference(predict, inputs, batch);
+    sizes.push_back(batch);
+    p50.push_back(timing.median_us);
+    p95.push_back(timing.p95_us);
+    throughput.push_back(timing.examples_per_second);
+    std::println("| {} | {:.3f} | {:.3f} | {:.0f} | {:.2g} |", batch, p50.back(),
+                 p95.back(), throughput.back(), error);
+  }
+
+  const std::string folder = "build/batching_latency/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "predictions.npz", archive);
+  auto latency = dm::graphics::RPlot::create();
+  latency.lines(sizes, p50, "Median", {37, 99, 235})
+      .lines(sizes, p95, "P95", {191, 88, 34}).title("Latency per call")
+      .x_label("Batch rows").y_label("Microseconds");
+  auto rate = dm::graphics::RPlot::create();
+  rate.lines(sizes, throughput, "Throughput", {15, 118, 110}).title("Total throughput")
+      .x_label("Batch rows").y_label("Examples per second");
+  auto figure = dm::graphics::RLayout::create(1, 2).size(960, 380);
+  figure.add(latency).add(rate).save_svg(folder + "timings.svg");
+  std::filesystem::copy_file(folder + "timings.svg", "figures/batching_latency.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Batch | Median µs | P95 µs | Examples/s | Max prediction difference |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.583 | 1.593 | 632163 | 0 |
+| 4 | 1.583 | 1.603 | 2524328 | 0 |
+| 16 | 2.044 | 2.094 | 6701823 | 0 |
+| 64 | 3.667 | 3.697 | 17435367 | 0 |
+| 128 | 5.630 | 5.690 | 22442990 | 0 |
+\image(figures/batching_latency.svg)
+// result_end

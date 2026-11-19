@@ -38,7 +38,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The native CAD renderer records the four deterministic policy replays at the end of the report.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -48,9 +48,8 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // Port of tflow's grid_world. Two small finite MDPs used by the tabular
 // examples in 6.2 (common/rl/grid_world.hpp, copied from tflow). Both expose
 // their transition model (TabularEnv::transitions) so dynamic programming can
-// plan on them, and both render as text. The vsim videos of the policies are
-// omitted; the port adds checks that the transition models are distributions
-// and that the cliff paths have Sutton & Barto's returns (-13 and -17).
+// plan on them, and both render as text. The four native video replays follow
+// below. Here we check the transition distributions and cliff route returns.
 
 
 // Editable workflow support: checks.hpp
@@ -323,7 +322,7 @@ int main() {
                 cliff.state());
     check::Require(r.reward == -100.f && !r.terminated && cliff.state() == cliff.Index(3, 0),
                    "the cliff costs -100 and sends the agent back to the start");
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    std::cout << "\ntransition model and policy checks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -367,7 +366,7 @@ int main() {
 // -- Walking into the cliff: -100 and back to the start, episode continues
 //   reward -100 terminated=0, now at state 36
 //
-// checks passed (vsim videos omitted)
+// transition model and policy checks passed
 // result_end
 
 > Inspect the actual board state
@@ -385,3 +384,85 @@ int main(){namespace e=dm::rl::environments;e::GridWorld env;env.reset(1);int ro
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+> The four policy replays
+
+The first replay follows the manual policy down the left edge of the
+deterministic grid and along the bottom to the goal. On the cliff board,
+the risky policy follows the row immediately above the cliff. The safe
+policy uses the top row and takes four more moves. In the final replay
+the agent first steps onto the cliff, loses 100 reward, and returns to
+the start. The episode continues with the safe policy.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+
+int main() {
+  namespace e = dm::rl::environments;
+  std::filesystem::create_directories("build/grid_replays");
+  std::filesystem::create_directories("figures");
+  e::GridWorld grid;
+  e::CliffWalking cliff;
+  const auto record = [](e::GridBase& board, std::string_view filename, auto policy,
+                         int expected_steps, double expected_return) {
+    auto obs = board.reset(0);
+    std::vector<int> states{board.state()};
+    double total = 0.;
+    for (int step = 0; step < board.max_steps(); ++step) {
+      const auto [row, col] = board.Coords(int(obs[0]));
+      auto result = board.step(policy(step, row, col));
+      states.push_back(board.state());
+      total += result.reward;
+      obs = std::move(result.obs);
+      if (result.done()) break;
+    }
+    if (states.size() != std::size_t(expected_steps + 1) || total != expected_return)
+      throw std::runtime_error("unexpected policy replay length or return");
+    if (filename == "grid_cliff_fall" && states[3] != states[0])
+      throw std::runtime_error("cliff fall did not return to start");
+    const auto path = std::string(filename) + ".mp4";
+    e::save_grid_replay(board, states, "build/grid_replays/" + path);
+    std::filesystem::copy_file("build/grid_replays/" + path, "figures/" + path,
+                               std::filesystem::copy_options::overwrite_existing);
+    std::println("**{} moves, return {:+g}**\n\n{}video(figures/{})\n",
+                 expected_steps, total, '\\', path);
+  };
+  const auto manual = [](int, int row, int) { return row < 4 ? e::GridBase::kDown : e::GridBase::kRight; };
+  const auto risky = [](int, int row, int col) {
+    if (row == 3 && col == 0) return e::GridBase::kUp;
+    if (row == 2 && col < 11) return e::GridBase::kRight;
+    return e::GridBase::kDown;
+  };
+  const auto safe = [](int, int row, int col) {
+    if (col == 0 && row > 0) return e::GridBase::kUp;
+    if (row == 0 && col < 11) return e::GridBase::kRight;
+    return e::GridBase::kDown;
+  };
+  record(grid, "grid_manual", manual, 9, -9.);
+  record(cliff, "grid_cliff_risky", risky, 13, -13.);
+  record(cliff, "grid_cliff_safe", safe, 17, -17.);
+  record(cliff, "grid_cliff_fall", [&](int step, int row, int col) {
+    constexpr int first[] = {e::GridBase::kUp, e::GridBase::kRight, e::GridBase::kDown};
+    return step < 3 ? first[step] : static_cast<int>(safe(step, row, col));
+  }, 20, -119.);
+}
+```
+// result_begin: markdown
+**9 moves, return -9**
+
+\video(figures/grid_manual.mp4)
+
+**13 moves, return -13**
+
+\video(figures/grid_cliff_risky.mp4)
+
+**17 moves, return -17**
+
+\video(figures/grid_cliff_safe.mp4)
+
+**20 moves, return -119**
+
+\video(figures/grid_cliff_fall.mp4)
+// result_end

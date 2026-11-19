@@ -1,0 +1,133 @@
+//? Title: Conditional Gaussian mixture density network
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit two conditional Gaussian components to a response whose two
+branches overlap in predictor space. The network learns the branch
+weights, means and scales from unlabelled fitting data.
+)
+\toc
+
+> Learn the branches from marginal likelihood
+
+The response comes from an upper or lower branch. The upper branch
+becomes more common as x increases. Both means depend on x, and the
+upper spread also changes with x. The model receives x and y during
+fitting and marginalizes over the unobserved branch.
+
+A layer of 16 tanh features feeds six outputs. Two are mixing logits,
+two shift the component locations, and two become positive scales by
+softplus. Initial location offsets of −0.8 and 0.8 break the symmetry.
+Within each row, add log weights and component log densities and use
+log-sum-exp to obtain the mixture likelihood. Adam fits the model for
+three epochs. Independent test inputs support likelihood scoring and
+conditional simulation.
+
+```{cpp, results="markdown", file="figures/mixture_density_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+
+std::pair<n::Tensor, n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(0.f, 1.f);
+  std::normal_distribution<float> normal;
+  std::vector<float> x(count), y(count);
+  for (int i = 0; i < count; ++i) {
+    x[i] = 2.f * uniform(rng) - 1.f;
+    const bool upper = uniform(rng) < .5f + .28f * x[i];
+    const float center = upper ? 1.3f - .4f * x[i] : -1.3f + .55f * x[i];
+    const float scale = upper ? .28f + .06f * x[i] : .19f;
+    y[i] = center + scale * normal(rng);
+  }
+  return {n::from_vector(x, {count, 1}), n::from_vector(y, {count, 1})};
+}
+
+int main() {
+  const auto [x_fit, y_fit] = simulate(2048, 68213);
+  const auto [x_test, y_test] = simulate(512, 68214);
+  n::ParameterStore parameters(41380);
+  const auto offsets = n::tensor({-.8, .8}, {2});
+  const auto predict = [&](const n::Tensor& x) {
+    const auto hidden = n::dense(parameters, "hidden", x, 16, n::Activation::Tanh);
+    return n::GaussianMixtureHead(n::dense(parameters, "head", hidden, 6), offsets);
+  };
+  double initial;
+  {
+    n::NoGradGuard frozen;
+    initial = n::GaussianMixtureNll(predict(x_test), y_test).item();
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(x_fit.size(0), 32, 68215);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto loss = n::GaussianMixtureNll(predict(n::take_rows(x_fit, rows)), n::take_rows(y_fit, rows));
+      optimizer.step(n::grad(loss, parameters.parameters()));
+    }
+  }
+
+  n::NoGradGuard frozen;
+  const auto fit = predict(x_test);
+  const double fitted = n::GaussianMixtureNll(fit, y_test).item();
+  const auto probabilities = n::softmax(n::cast(fit.logits, n::DType::Float64), 1);
+  const auto p0 = n::select(probabilities, 1, 0).to_vector<double>();
+  std::mt19937 rng(68216);
+  std::uniform_real_distribution<float> uniform(0.f, 1.f);
+  std::normal_distribution<float> normal;
+  const auto means = fit.mean.to_vector<float>(), scales = fit.scale.to_vector<float>();
+  std::vector<float> draws, u, z;
+  for (std::size_t i = 0; i < p0.size(); ++i) {
+    u.push_back(uniform(rng));
+    z.push_back(normal(rng));
+    const std::size_t index = 2 * i + (u.back() < p0[i] ? 0 : 1);
+    draws.push_back(means[index] + scales[index] * z.back());
+  }
+  const auto separation = n::mean(n::abs(n::select(fit.mean, 1, 0) - n::select(fit.mean, 1, 1))).item();
+  std::println("| Held-out mixture statistic | Value |\n| --- | ---: |");
+  std::println("| Initial NLL | {:.6f} |\n| Fitted NLL | {:.6f} |", initial, fitted);
+  std::println("| Mean distance between component means | {:.6f} |", separation);
+
+  const std::string folder = "build/mixture_density/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "predictions.npz",
+              {{"x", x_test}, {"y", y_test}, {"logits", fit.logits}, {"mean", fit.mean},
+               {"scale", fit.scale}, {"probabilities", probabilities}, {"loss", n::scalar(fitted)},
+               {"u", n::from_vector(u, {x_test.size(0)})}, {"z", n::from_vector(z, {x_test.size(0)})},
+               {"draws", n::from_vector(draws, {x_test.size(0)})}});
+  parameters.save(folder + "weights.npz");
+  const auto query = n::linspace(-1, 1, 201).reshape({201, 1});
+  const auto grid = predict(query);
+  const auto xx = query.to_vector<double>();
+  const auto x = x_test.to_vector<double>();
+  auto branches = dm::graphics::RPlot::create(), weights = dm::graphics::RPlot::create();
+  branches.points(x, y_test.to_vector<double>(), "Held-out observations", {100, 116, 139, .35}, 2)
+          .points(x, std::vector<double>(draws.begin(), draws.end()), "Conditional draws", {22, 120, 68, .35}, 2)
+          .lines(xx, n::select(grid.mean, 1, 0).to_vector<double>(), "First component mean", {37, 99, 235})
+          .lines(xx, n::select(grid.mean, 1, 1).to_vector<double>(), "Second component mean", {234, 88, 12})
+          .title("Fitted response branches").x_label("x").y_label("Response");
+  weights.lines(xx, n::select(n::softmax(grid.logits, 1), 1, 1).to_vector<double>(),
+                "Second component", {234, 88, 12})
+         .lines(xx, (.5 + .28 * query).to_vector<double>(), "Generating upper branch", {17, 24, 39})
+         .title("Branch probability").x_label("x").y_label("Probability").y_limits(0, 1);
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(branches).add(weights).size(1280, 510).fit_panels().save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/mixture_density_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Held-out mixture statistic | Value |
+| --- | ---: |
+| Initial NLL | 1.785208 |
+| Fitted NLL | 0.637129 |
+| Mean distance between component means | 2.526132 |
+\image(figures/mixture_density_fit.svg)
+// result_end

@@ -1,0 +1,98 @@
+//? Title: N-pair and lifted structured metric losses
+//? Lang: en
+
+> N-pair and lifted structured metric losses
+
+Each batch has one anchor and one positive from each of three classes.
+The N-pair objective asks each anchor to score its matched positive
+above the two other classes' positives. It regularizes embedding
+norms to limit the effect of scaling dot products.
+
+The lifted structured objective combines negatives from both ends of
+each pair with a log-sum-exp over margin-minus-distance scores. It
+adds the positive distance and penalizes the squared positive part.
+Both objectives train the same tower on matching streams of synthetic
+batches. Their loss curves use separate scales.
+
+```{cpp, results="markdown", file="figures/structured_metric_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto sample = [](std::mt19937 &rng) {
+    std::normal_distribution<float> signal(0.f,.24f), nuisance(0.f,1.f);
+    std::vector<float> x;
+    std::vector<int> labels;
+    for (int i = 0; i < 6; ++i) {
+      const int id = i % 3;
+      labels.push_back(id);
+      x.insert(x.end(), {std::cos(2.0943951f * id) + signal(rng),
+                         std::sin(2.0943951f * id) + signal(rng), nuisance(rng), nuisance(rng)});
+    }
+    return std::pair{n::from_vector(x, {6,4}), n::from_vector(labels)};
+  };
+  std::filesystem::create_directories("build");
+  auto layout = dm::graphics::RLayout::create(1,2);
+  std::print("| Objective | Epoch | Held-out loss |\n|---|---:|---:|\n");
+  for (bool lifted : {false,true}) {
+    const std::string name = lifted ? "Lifted structured" : "N-pair";
+    std::mt19937 training(51202), testing(51203);
+    const auto [test, labels] = sample(testing);
+    n::ParameterStore model(51201);
+    const auto embed = [&](const n::Tensor &x) {
+      return n::dense(model, "projection", n::dense(model, "tower", x, 16, n::Activation::Tanh), 6);
+    };
+    const auto objective = [&](const n::Tensor &z) {
+      return lifted ? n::lifted_structured_loss(z) : n::npair_loss(z);
+    };
+    embed(test);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .012, config);
+    std::vector<double> epochs, losses;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        epochs.push_back(epoch);
+        losses.push_back(objective(embed(test)).loss.item());
+        std::print("| {} | {} | {:.6f} |\n", name, epoch, losses.back());
+      }
+      if (epoch < 3)
+        for (int step = 0; step < 24; ++step)
+          adam.minimize(objective(embed(sample(training).first)).loss);
+    }
+    n::NoGradGuard guard;
+    const auto embedding = embed(test);
+    const auto result = objective(embedding);
+    const std::string path = lifted ? "lifted" : "npair";
+    n::save_npz("build/structured_" + path + ".npz", {{"input",test}, {"labels",labels},
+        {"embedding",embedding}, {"terms",result.terms}, {"loss",result.loss}});
+    auto plot = dm::graphics::RPlot::create();
+    plot.lines(epochs, losses, name, {37,99,235})
+        .title(name).x_label("Epoch").y_label("Held-out objective");
+    layout.add(plot);
+  }
+  layout.size(1050,430).fit_panels().save_svg("build/structured_metric_fit.svg");
+}
+```
+// result_begin: markdown
+| Objective | Epoch | Held-out loss |
+|---|---:|---:|
+| N-pair | 0 | 0.499378 |
+| N-pair | 1 | 0.014944 |
+| N-pair | 2 | 0.009502 |
+| N-pair | 3 | 0.027495 |
+| Lifted structured | 0 | 2.353276 |
+| Lifted structured | 1 | 0.195603 |
+| Lifted structured | 2 | 0.009211 |
+| Lifted structured | 3 | 0.001083 |
+\image(figures/structured_metric_fit.svg)
+// result_end
+\caption(Held-out N-pair and lifted structured losses for identical batch schedules.)
+\alttext(Two line plots show the held-out training objectives by epoch.)
+
+> References
+
+- [Sohn (2016), Improved Deep Metric Learning with Multi-class N-pair Loss Objective](https://papers.neurips.cc/paper/2016/hash/6b180037abbebea991d8b1232f8a8ca9-Abstract.html).
+- [Song et al. (2016), Deep Metric Learning via Lifted Structured Feature Embedding](https://arxiv.org/abs/1511.06452).

@@ -711,7 +711,7 @@ epoch 2: diagnostic D loss=1.47452, G loss=0.678403, coarse MMD=0.120365
 epoch 3: diagnostic D loss=1.33524, G loss=0.863683, coarse MMD=0.120011
 G attention: max effect of one token on OTHER positions=0.000728369
 D attention: max effect of one token on OTHER positions=0.000387209
-fixed FINAL epoch 3, test D/G=1.34462/0.863172, coarse MMD=0.117778, mean baseline=0.000135779, D real/fake accuracy (threshold 0)=0/1, mean pixel=0.49841, pixel variance=0.000416633; D then G/restore/noiseOnly/immutable PASS (training 0.472736 s)
+fixed FINAL epoch 3, test D/G=1.34462/0.863172, coarse MMD=0.117778, mean baseline=0.000135779, D real/fake accuracy (threshold 0)=0/1, mean pixel=0.49841, pixel variance=0.000416633; D then G/restore/noiseOnly/immutable PASS (training 0.967035 s)
 Artifacts: build/self_attention_gan
 All self_attention_gan checks passed.
 \image(figures/self_attention_gan_learning.svg)

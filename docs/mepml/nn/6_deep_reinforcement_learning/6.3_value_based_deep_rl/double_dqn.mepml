@@ -3,7 +3,7 @@
 //? Lang: en-GB
 
 \abstract(
-The complete source CartPole protocol uses native tensors and explicit caller-owned Adam, target updates and replay. The source default is a bounded512-step demonstration; full-training convergence checks are deferred in that mode. The original opt-in full budget remains available with DATAMUNGE_EXAMPLES_FULL=1. No TensorFlow parity or solved-control claim is made from the bounded run.
+The complete source CartPole protocol uses native tensors and explicit caller-owned Adam, target updates and replay. The report defaults to a bounded 512-step demonstration; full-training convergence checks are deferred in that mode. The original opt-in full budget remains available with DATAMUNGE_EXAMPLES_FULL=1. No TensorFlow parity or solved-control claim is made from the bounded run.
 )
 \toc
 

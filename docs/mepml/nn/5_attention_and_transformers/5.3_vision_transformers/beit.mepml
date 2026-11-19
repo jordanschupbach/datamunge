@@ -1,0 +1,145 @@
+//? Title: BEiT masked visual token prediction
+//? Lang: en
+
+> BEiT masked visual token prediction
+
+Divide each 28-by-28 digit image into sixteen 7-by-7 patches. The frozen
+upstream tokenizer assigns each patch to its closest codebook centroid.
+Its sixteen centroids were fitted on training patches only. This compact
+example uses those discrete targets to demonstrate masked pretraining.
+
+Replace a contiguous block of six patch embeddings with a learned mask
+token, then add position embeddings. Two bidirectional attention blocks
+predict a code at every location. Cross-entropy selects only masked
+locations. The report inverts the pixels of masked patches and changes
+the targets of visible patches to verify that the logits and loss remain
+identical.
+
+This report uses the upstream `saliency_data.npz` and `beit_tokens.npz`
+archives in `~/projects/tflow_examples/output/datasets/saliency`. Set
+`DM_BEIT_DATA` to that directory if the archives are elsewhere. Training
+uses Datamunge initialization and the upstream Adam and masking schedule.
+
+[Bao et al. (2022)|https://arxiv.org/abs/2106.08254]
+
+```{cpp, results="markdown", file="figures/beit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int width=24, patches=16, classes=16;
+  const char* configured=std::getenv("DM_BEIT_DATA");
+  const char* home=std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DM_BEIT_DATA");
+  const auto root=configured ? std::filesystem::path(configured) :
+      std::filesystem::path(home)/"projects/tflow_examples/output/datasets/saliency";
+  const auto load=[&](const char* name) {
+    const auto entries=n::load_npz((root/name).string());
+    return std::map<std::string,n::Tensor>(entries.begin(),entries.end());
+  };
+  const auto images=load("saliency_data.npz"), codebook=load("beit_tokens.npz");
+  struct Batch {n::Tensor pixels,target,mask;};
+  const auto select=[&](const std::string& split,const std::vector<std::int64_t>& rows,std::mt19937& rng) {
+    const auto count=static_cast<std::int64_t>(rows.size());
+    const auto pixels=n::take_rows(images.at(split+"_images"),rows).to(n::DType::Float32)/255.0;
+    std::vector<float> mask(count*patches);
+    for (std::int64_t row=0;row<count;++row) {
+      const int top=rng()%3, left=rng()%2;
+      for (int y=top;y<top+2;++y) {
+        for (int x=left;x<left+3;++x) mask[row*patches+4*y+x]=1.f;
+      }
+    }
+    return Batch{pixels.reshape({count,28,28,1}),n::take_rows(codebook.at(split+"_ids"),rows),
+                 n::from_vector(mask,{count,patches})};
+  };
+  const auto patchify=[](const n::Tensor& image) {
+    return image.reshape({-1,4,7,4,7}).transpose({0,1,3,2,4}).reshape({-1,patches,49});
+  };
+  n::ParameterStore params(41440);
+  const auto predict=[&](const n::Tensor& pixels,const n::Tensor& mask,bool trace=false) {
+    const auto count=pixels.size(0);
+    const auto embedded=n::dense(params,"patch",patchify(pixels),width);
+    const auto token=params.get("mask_token",{width},n::init::normal(.02));
+    const auto hidden=n::greater(mask,0).reshape({count,patches,1});
+    auto x=n::where(hidden,token,embedded)+params.get("position",{1,patches,width},n::init::normal(.02));
+    n::Tensor map;
+    for (int i=0;i<2;++i) {
+      const auto key=std::format("block{}",i);
+      const auto norm=n::layer_norm(params,key+"/ln1",x);
+      n::MultiHeadOptions options;
+      options.need_weights=trace && i==1;
+      const auto attention=n::multi_head_attention(params,key+"/attention",norm,norm,2,options);
+      map=attention.weights;
+      const auto residual=x+attention.output;
+      const auto ff=n::dense(params,key+"/ff1",n::layer_norm(params,key+"/ln2",residual),
+                             2*width,n::Activation::GeluTanh);
+      x=residual+n::dense(params,key+"/ff2",ff,width);
+    }
+    return std::pair{n::dense(params,"head",n::layer_norm(params,"norm",x),classes),map};
+  };
+  const auto objective=[](const n::Tensor& logits,const n::Tensor& labels,const n::Tensor& mask) {
+    const auto ce=n::sparse_softmax_cross_entropy(logits,labels,n::Reduction::None);
+    return n::sum(ce*mask)/n::sum(mask);
+  };
+  const auto loss=[&](const Batch& data) {
+    return objective(predict(data.pixels,data.mask).first,data.target,data.mask);
+  };
+  const auto evaluate=[&](const Batch& data) {
+    const n::NoGradGuard no_grad;
+    return loss(data).item();
+  };
+  std::vector<std::int64_t> rows(200);
+  std::iota(rows.begin(),rows.end(),0);
+  std::mt19937 training(41441), evaluation(41442);
+  const auto valid=select("validation",rows,evaluation);
+  const auto test=select("test",rows,evaluation);
+  const double initial=evaluate(test);
+  std::vector<double> history{evaluate(valid)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.003,config);
+  n::BatchOrder order(1000,32,41443);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto ids=order.next();!ids.empty();ids=order.next()) optimizer.minimize(loss(select("fit",ids,training)));
+    history.push_back(evaluate(valid));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,attention]=predict(test.pixels,test.mask,true);
+  const auto final=objective(logits,test.target,test.mask);
+  const auto pixels=patchify(test.pixels);
+  const auto hidden=n::greater(test.mask,0);
+  const auto changed=n::where(hidden.reshape({200,patches,1}),1.0-pixels,pixels)
+      .reshape({200,4,4,7,7}).transpose({0,1,3,2,4}).reshape({200,28,28,1});
+  const auto modified= test.target.to_vector<int>();
+  auto edited=modified;
+  const auto mask=test.mask.to_vector<float>();
+  const auto ids=n::argmax(logits,2).to_vector<int>();
+  int correct=0, count=0;
+  for (std::size_t i=0;i<ids.size();++i) {
+    if (mask[i]>0) {
+      correct+=ids[i]==edited[i];
+      ++count;
+    } else edited[i]=(edited[i]+1)%classes;
+  }
+  const auto alternate=predict(changed,test.mask,true).first;
+  const auto edited_loss=objective(alternate,n::from_vector(edited,{200,patches}),test.mask);
+  if (!(final.item()<initial) || optimizer.iterations()!=96 || n::max(n::abs(alternate-logits)).item()!=0 ||
+      edited_loss.item()!=final.item()) throw std::runtime_error("BEiT training or mask invariance failed");
+  std::filesystem::create_directories("build");
+  n::save_npz("build/beit.npz",{{"pixels",test.pixels},{"target",test.target},{"mask",test.mask},
+      {"logits",logits},{"attention",attention},{"nll",final}});
+  std::print("Test masked NLL {:.6f} to {:.6f}, with {}/{} correct masked tokens. "
+             "The pixel and label interventions leave logits and loss identical.\n",
+             initial,final.item(),correct,count);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Validation masked NLL",{37,99,235})
+      .points({0,1,2,3},history,"Epoch boundaries",{37,99,235})
+      .title("BEiT masked token training").x_label("Epoch").y_label("Negative log-likelihood")
+      .size(880,425).save_svg("build/beit.svg");
+}
+```
+// result_begin: markdown
+Test masked NLL 3.411247 to 1.632119, with 574/1200 correct masked tokens. The pixel and label interventions leave logits and loss identical.
+\image(figures/beit.svg)
+// result_end

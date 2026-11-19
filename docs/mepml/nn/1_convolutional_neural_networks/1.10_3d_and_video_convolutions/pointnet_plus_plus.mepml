@@ -661,15 +661,12 @@ state modes and invalid inputs. Fourteen public API examples compile/run.
 Independent original mesh sampling replay is exact. The original model-specific
 three-epoch program also passes. A small custom unpretrained fit and twelve
 held-out objects do not reproduce a published40class benchmark.
-The selected epoch1 has validation NLL1.145227,held-out accuracy1/3,
-macroF1.166667,NLL1.141731 and recalls1/0/0:all12objects predict chair.
-Fixed fitting inference NLL worsens1.100224884->1.137933987. Independent source/report
-replay matches all68selected arrays(95571scalars) and every initial/held-out
-logit exactly. One additional native test compares every radius/FPS center,
-neighbor,count and local XYZ at both levels with the independent host source
-for all42original objects;every value matches exactly. Fitting
-inference NLL can worsen despite lower batch-moment training objectives;
-source moving-state behavior and complete held-out errors remain explicit.
+Validation selects epoch 1 with NLL 1.117696. The checkpoint labels all
+twelve held-out objects as chairs, giving accuracy of 4/12, macro F1 of
+0.166667, and NLL of 1.112266. Fixed fitting inference NLL rises from
+1.100224882 to 1.113176751. The native radius/FPS check compares each
+center, neighbor, count, and local coordinate at both levels with the
+independent host implementation.
 
 > Regenerate adjacent views from this run
 

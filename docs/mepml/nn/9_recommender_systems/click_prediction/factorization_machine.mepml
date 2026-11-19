@@ -1,0 +1,123 @@
+//? Title: Factorization machines for recommendation
+//? Lang: en
+
+> Factorization machines for recommendation
+
+A factorization machine augments a linear prediction with a term for
+each pair of distinct features. The coefficient of a pair is the dot
+product of its two latent vectors. Sharing these vectors across pairs
+lets the model learn about a user and an item even when their particular
+pair is absent from training. The squared projection includes every
+ordered pair. Subtract the self-pairs and halve the sum to get the
+interaction score in time linear in feature count for fixed rank.
+
+Fit a linear baseline and a rank-four factorization machine on the same
+synthetic ratings. Each record encodes one user, one item, and two
+context features. Hold out entire user–item pairs for testing. Set
+`DM_FM_REFERENCE` to the upstream `factorization_machine/pairs.npz`
+to replay its predictions with its saved coefficients.
+
+[Rendle (2010)|https://doi.org/10.1109/ICDM.2010.127]
+
+```{cpp, results="markdown", file="figures/factorization_machine_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build");
+  std::array<std::vector<float>,2> features, responses;
+  for (int user = 0; user < 20; ++user) {
+    for (int item = 0; item < 20; ++item) {
+      const bool test = (user + 2*item) % 5 == 0;
+      for (int context = -1; context <= 1; ++context) {
+        std::array<float,42> row{};
+        row[user] = row[20+item] = 1;
+        row[40] = context;
+        row[41] = std::sin(context + .2 * item);
+        features[test].insert(features[test].end(),row.begin(),row.end());
+        responses[test].push_back(.18 * std::cos(.3 * user) + .12 * context
+            + std::sin(.65 * user) * std::cos(.61 * item)
+            + .7 * std::cos(.41 * user) * std::sin(.38 * item)
+            + context * (.38 * std::cos(.73 * user) - .21 * std::sin(.1 * item))
+            + row[41] * .4 * std::cos(.43 * item));
+      }
+    }
+  }
+  const auto x = n::from_vector(features[0],{960,42});
+  const auto y = n::from_vector(responses[0],{960,1});
+  const auto test = n::from_vector(features[1],{240,42});
+  const auto target = n::from_vector(responses[1],{240,1});
+  auto plot = dm::graphics::RPlot::create();
+  const auto observed = target.to_vector<double>();
+  n::NamedTensors arrays{{"input",test.reshape({240,42,1})},{"fit_input",x.reshape({960,42,1})},
+      {"target",target}};
+  std::print("| Model | Initial held-out RMSE | Final held-out RMSE |\n|---|---:|---:|\n");
+  for (bool fm : {false,true}) {
+    const std::string name = fm ? "fm" : "linear";
+    n::ParameterStore params(17369);
+    const auto predict = [&](const n::Tensor& input) {
+      const auto base = n::dense(params,"linear",input,1);
+      return fm ? base + n::factorized_interactions(input,
+          params.get("V",{42,4},n::init::normal(.12))) : base;
+    };
+    const auto rmse = [&] {
+      const n::NoGradGuard no_grad;
+      return n::sqrt(n::mean(n::square(predict(test)-target))).item();
+    };
+    const auto initial = rmse();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(params,.01,config);
+    n::BatchOrder order(960,16,17368);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto ids = order.next(); !ids.empty(); ids = order.next()) {
+        optimizer.minimize(n::mean(n::square(predict(n::take_rows(x,ids))-n::take_rows(y,ids))));
+      }
+    }
+    const n::NoGradGuard no_grad;
+    const double fitted = rmse();
+    if (optimizer.iterations() != 180 || !(fitted < initial)) {
+      throw std::runtime_error("Rating fit did not improve");
+    }
+    const auto prediction = predict(test);
+    arrays.emplace_back(name+"_prediction",prediction);
+    arrays.emplace_back(name+"_W",params.at("linear/W"));
+    arrays.emplace_back(name+"_b",params.at("linear/b"));
+    if (fm) {
+      arrays.emplace_back("V",params.at("V"));
+      arrays.emplace_back("interaction",n::factorized_interactions(test,params.at("V")));
+    }
+    std::print("| {} | {:.5f} | {:.5f} |\n",name,initial,fitted);
+    const dm::graphics::RGBA color = fm ? dm::graphics::RGBA{37,99,235} : dm::graphics::RGBA{234,88,12};
+    plot.points(observed,prediction.to_vector<double>(),name,color,2);
+  }
+  n::save_npz("build/factorization_pairs.npz",arrays);
+  if (const char* reference = std::getenv("DM_FM_REFERENCE")) {
+    const auto entries = n::load_npz(reference);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto input = stored.at("input").reshape({240,42});
+    const auto interaction = n::factorized_interactions(input,stored.at("V"));
+    const auto linear = n::matmul(input,stored.at("linear_W")) + stored.at("linear_b");
+    const auto fm = n::matmul(input,stored.at("fm_W")) + stored.at("fm_b") + interaction;
+    const auto error = std::max({n::max(n::abs(linear-stored.at("linear_prediction"))).item(),
+        n::max(n::abs(fm-stored.at("fm_prediction"))).item(),
+        n::max(n::abs(interaction-stored.at("interaction"))).item()});
+    if (!(error < 5e-6)) throw std::runtime_error("Factorization checkpoint replay mismatch");
+    std::print("\nUpstream checkpoint replay maximum absolute error {:.3e}.\n",error);
+  }
+  const auto [lo,hi] = std::minmax_element(observed.begin(),observed.end());
+  plot.lines({*lo,*hi},{*lo,*hi},"Perfect prediction",{100,116,139})
+      .title("Predictions for held-out user–item pairs").x_label("Observed rating")
+      .y_label("Predicted rating").size(900,450).save_svg("build/factorization_machine_fit.svg");
+}
+```
+// result_begin: markdown
+| Model | Initial held-out RMSE | Final held-out RMSE |
+|---|---:|---:|
+| linear | 0.74477 | 0.62870 |
+| fm | 0.74677 | 0.30447 |
+
+Upstream checkpoint replay maximum absolute error 1.192e-07.
+\image(figures/factorization_machine_fit.svg)
+// result_end

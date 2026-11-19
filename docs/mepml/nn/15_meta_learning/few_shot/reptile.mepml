@@ -1,0 +1,97 @@
+//? Title: Reptile initialization for few-shot regression
+//? Lang: en
+
+> Reptile initialization for few-shot regression
+
+Reptile learns an initialization that can adapt to a new task from a
+small support set. For each sampled sinusoid, two gradient steps fit
+different halves of its support data. The outer update moves the
+shared initialization toward those task-adapted weights.
+
+Query observations are reserved for evaluation. On 64 unseen tasks,
+we compare the learned initialization before and after adaptation
+and apply the same support updates to the original random weights.
+The plot shows the learned regressor before and after adaptation
+on one held-out sinusoid.
+
+```{cpp, results="markdown", file="figures/reptile.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](std::mt19937& rng) {
+    std::uniform_real_distribution<float> amplitude(.4f,2),phase(-1.5f,1.5f),domain(-3,3);
+    const float a=amplitude(rng),b=phase(rng);
+    const auto set=[&](int count) {
+      std::vector<float> x(count),y(count);
+      for (int i=0;i<count;++i) { x[i]=domain(rng); y[i]=a*std::sin(x[i]+b); }
+      return n::concat({n::from_vector(x,{count,1}),n::from_vector(y,{count,1})},1);
+    };
+    return std::tuple{set(10),set(20),a,b};
+  };
+  const auto col=[](const n::Tensor& set,int i) { return n::slice_axis(set,1,i,i+1); };
+  const auto adapt=[&](const n::Tensor& weights,const n::Tensor& support) {
+    const auto half=[&](int begin,const n::Tensor& w) {
+      const auto rows=n::slice_axis(support,0,begin,begin+5);
+      return n::scalar_regressor_step(col(rows,0),col(rows,1),w,.045f);
+    };
+    const auto first=half(0,weights);
+    return std::pair{first,half(5,first)};
+  };
+  std::mt19937 initial_rng(24321),train_rng(24322),test_rng(24323);
+  std::normal_distribution<float> normal(0,.25f);
+  std::vector<float> initial_values(37);
+  for (auto& v:initial_values) v=normal(initial_rng);
+  const auto initial=n::from_vector(initial_values);
+  auto weights=initial;
+  std::filesystem::create_directories("build");
+  for (int step=0;step<384;++step) {
+    const auto [support,query,a,b]=draw(train_rng);
+    const auto [first,second]=adapt(weights,support);
+    const auto updated=n::reptile_update(weights,second,.12f);
+    if (step==0) n::save_npz("build/reptile_first.npz",{{"sx",col(support,0)},{"sy",col(support,1)},
+        {"initial",weights},{"inner1",first},{"inner2",second},{"updated",updated}});
+    weights=updated;
+  }
+  std::vector<n::Tensor> supports,queries,losses;
+  auto plot=dm::graphics::RPlot::create();
+  for (int i=0;i<64;++i) {
+    const auto [support,query,a,b]=draw(test_rng);
+    supports.push_back(support);
+    queries.push_back(query);
+    const auto fitted=adapt(weights,support).second;
+    const auto control=adapt(initial,support).second;
+    const auto error=[&](const auto& w) {
+      return n::mean(n::square(n::scalar_regressor(col(query,0),w)-col(query,1)));
+    };
+    losses.push_back(n::stack({error(weights),error(fitted),error(control)}));
+    if (i!=0) continue;
+    std::vector<float> grid(121);
+    std::vector<double> x,truth;
+    for (int j=0;j<121;++j) {
+      grid[j]=-3.f+j*.05f;
+      x.push_back(grid[j]);
+      truth.push_back(a*std::sin(grid[j]+b));
+    }
+    const auto values=n::from_vector(grid,{121,1});
+    plot.lines(x,truth,"Reference",{31,41,55})
+        .lines(x,n::scalar_regressor(values,weights).to_vector<double>(),"Before adaptation",{148,163,184})
+        .lines(x,n::scalar_regressor(values,fitted).to_vector<double>(),"After adaptation",{37,99,235})
+        .points(col(support,0).to_vector<double>(),col(support,1).to_vector<double>(),
+                "Support",{234,88,12});
+  }
+  const auto scores=n::stack(losses);
+  const auto average=n::mean(scores,{0}).to_vector<double>();
+  if (!(average[1]<average[0] && average[1]<average[2])) return 1;
+  std::print("Held-out MSE before adaptation {:.5f}, after adaptation {:.5f}, adapted random control {:.5f}.\n",
+      average[0],average[1],average[2]);
+  plot.title("Reptile adaptation on a held-out task").x_label("Input").y_label("Response");
+  plot.size(900,430).save_svg("build/reptile.svg");
+  n::save_npz("build/reptile.npz",{{"weights",weights},{"initial",initial},{"support",n::stack(supports)},
+      {"query",n::stack(queries)},{"losses",scores}});
+}
+```
+// result_begin: markdown
+Held-out MSE before adaptation 0.67438, after adaptation 0.59980, adapted random control 0.82584.
+\image(figures/reptile.svg)
+// result_end

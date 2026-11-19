@@ -23,14 +23,6 @@ int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(
 
 The native adapter follows the recovered upstream preparation script, including source checksums, source row identities, fitting-only vocabulary/palette selection and held-out boundaries. Runtime preparation calls no Python or another checkout. Native byte-valued image arrays are stored as Int32 with identical numeric values. Optional external TensorFlow recordings are separate; their absence does not establish external parity.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){auto path=dm::datasets::prepare_example_data("character_rnn");std::print("Prepared original character_rnn protocol at {}\n",path);}
-```
-// result_begin: markdown
-Prepared original character_rnn protocol at /home/jordan/.cache/datamunge/datasets/character_rnn
-// result_end
-
 > A hand-checkable likelihood reference
 
 A uniform categorical distribution over65 classes gives negative log-likelihood log(65). For language/image models this is nats per predicted token; for a sequence tagger it is a single independent-token reference, not its CRF sequence likelihood.
@@ -2064,12 +2056,33 @@ int main(int argc, char** argv) {
 
 ```
 // result_begin:
-// weights from nn's generator (statistical parity with TF only)
-// epoch1:validationbits/char=5.19021,perplexity=36.5097
-// epoch2:validationbits/char=4.74589,perplexity=26.8322
-// epoch3:validationbits/char=4.46719,perplexity=22.1186
-// testNLL/perplexity=3.11061/22.4348, fitting unigram/bigram=3.46589/2.77813; attention-LN-GELU/causal/restore/1024 sampled chars/immutable PASS
-// training 0.139011 s, wall 0.389759 s
+// replaying TF's initial arrays /home/jordan/projects/tflow_examples/output/models/transformer_lm/initial_arrays.npz
+// epoch1:validationbits/char=5.18276,perplexity=36.3218
+// epoch2:validationbits/char=4.7909,perplexity=27.6825
+// epoch3:validationbits/char=4.54312,perplexity=23.3139
+// testNLL/perplexity=3.1646/23.6792, fitting unigram/bigram=3.46589/2.77813; attention-LN-GELU/causal/restore/1024 sampled chars/immutable PASS
+// replay vs TF's recorded run (/home/jordan/projects/tflow_examples/output/models/transformer_lm):
+//   vs TF initial_arrays.npz         max |ours - TF| = 0
+//   vs TF initial_outputs.npz        max |ours - TF| = 4.77e-07
+//   vs TF first_batch.npz            max |ours - TF| = 0
+//   vs TF first_forward.npz          max |ours - TF| = 4.77e-07
+//   vs TF initial_gradients.npz      max |ours - TF| = 1.79e-07
+//   vs TF first_after.npz            max |ours - TF| = 2.93e-07
+//   vs TF history.tsv                max |ours - TF| = 0
+//   vs TF epoch3_validation.npz      max |ours - TF| = 4.23e-06
+//   vs TF model_arrays.npz           max |ours - TF| = 4.76e-05
+//   vs TF outputs.npz                max |ours - TF| = 4.83e-06
+//   vs TF final_gradients.npz        max |ours - TF| = 4.99e-07
+//   vs TF causality.npz              max |ours - TF| = 1.55e-06
+//   vs TF future_control.npz         max |ours - TF| = 2.26e-06
+//   vs TF sample0.npz                max |ours - TF| = 2.15e-06
+//   vs TF sample1.npz                max |ours - TF| = 1.91e-06
+//   vs TF sample2.npz                max |ours - TF| = 1.91e-06
+//   vs TF sample3.npz                max |ours - TF| = 1.61e-06
+//   vs TF baseline.npz               max |ours - TF| = 0
+//   vs TF outputs.npz                max |ours - TF| = 9.54e-07
+//   from TF's final weights: 4/4 seeded 256-character samples identical to TF's
+// training 0.221591 s, wall 0.740765 s
 // Artifacts:/mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.2_autoregressive_models/build/recovered-language/models/transformer_lm/index.html
 // result_end
 

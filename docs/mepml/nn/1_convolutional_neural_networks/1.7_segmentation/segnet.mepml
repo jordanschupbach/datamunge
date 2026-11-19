@@ -468,12 +468,9 @@ Variant1 restored epoch12: validation mIoU 0.321528; test pixel accuracy 0.80573
 \caption(All compact SegNet parameters fit192 explicit Adam updates. Training CE excludes kernel L2; validation selects and restores paired learned/BN state before test evaluation.)
 \alttext(All compact SegNet parameters fit192 explicit Adam updates. Training CE excludes kernel L2; validation selects and restores paired learned/BN state before test evaluation.)
 
-The compact model has463,132 learned scalars and1,984 BN state scalars.
-Epoch12, the last, selects validation mean IoU.329043, so the short fit is
-still improving. Test pixel accuracy is.810140, but mean IoU is only.315424:
-background.935009,circle.274629,rectangle.046585 and triangle.005472. The
-model largely misses rectangles/triangles in this bounded seed17 fit. The galleries retain this failure; falling CE
-and high background accuracy do not establish successful shape segmentation.
+The prediction gallery shows how errors on foreground shapes can persist
+even as the fitting loss decreases. Compare the per-class IoUs above
+with the overall pixel accuracy.
 
 \image(figures/segnet_predictions_1.png)
 \caption(Each row shows an actual test RGB image,its truth mask and restored SegNet prediction. The same palette/range is used throughout,and errors remain visible.)

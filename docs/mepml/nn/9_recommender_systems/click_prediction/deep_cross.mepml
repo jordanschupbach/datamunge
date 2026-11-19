@@ -1,0 +1,183 @@
+//? Title: Deep & Cross networks for click prediction
+//? Lang: en
+
+> Deep & Cross networks for click prediction
+
+Embed the user segment and item topic, and concatenate their embeddings
+with a numerical context feature. The deep branch passes this base vector
+through two ReLU layers. The cross branch applies two residual crossings,
+each using the same original base vector. A linear head combines both
+branches to predict click logits.
+
+DCN multiplies the base vector by a scalar projection of the current cross
+state, then adds a bias and the residual. DCN-v2 multiplies the base vector
+elementwise by a full affine projection of the current cross state, then
+adds the residual. The full projection lets each coordinate learn its own
+combination of cross-state features.
+
+The simulator includes segment-by-topic interactions and a quadratic
+context effect. Hold out every row from pairs whose segment and topic IDs
+sum to a multiple of eight. Also hold out four rows from each remaining
+pair. Compare the two kinds of held-out data after each epoch. Both models
+use Datamunge initialization and the upstream Adam learning rate, batch
+size, and number of epochs. On this split, the fitted DCN gets worse on
+unseen pairs even though its seen-pair loss improves.
+
+Set `DM_DEEP_CROSS_REFERENCE` to the upstream `output/models/deep_cross`
+directory to replay both upstream checkpoints and compare intermediate
+states and logits.
+
+[DCN|https://arxiv.org/abs/1708.05123] and [DCN-v2|https://arxiv.org/abs/2008.13535]
+
+```{cpp, results="markdown", file="figures/deep_cross_clicks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::array<std::vector<float>, 2> features, labels;
+  std::vector<bool> unseen;
+  std::mt19937 rng(12031);
+  std::uniform_real_distribution<float> context(-2.f, 2.f), chance(0.f, 1.f);
+  for (int segment = 0; segment < 8; ++segment) {
+    for (int topic = 0; topic < 8; ++topic) {
+      const bool new_pair = (segment + topic) % 8 == 0;
+      const double interaction = segment % 2 == topic % 2 ? 1.2 : -1.2;
+      const double local = (3 * segment + 5 * topic) % 7 == 1 ? 1.8 : 0.0;
+      for (int row = 0; row < 24; ++row) {
+        const float c = context(rng);
+        const double logit = interaction + local + 1.1 * c * c + 0.4 * c - 1.65;
+        const bool test = row < 4 || new_pair;
+        std::array<float, 17> encoded{};
+        encoded[segment] = encoded[8 + topic] = 1.0f;
+        encoded.back() = c;
+        features[test].insert(features[test].end(), encoded.begin(), encoded.end());
+        labels[test].push_back(chance(rng) < 1.0 / (1.0 + std::exp(-logit)));
+        if (test) unseen.push_back(new_pair);
+      }
+    }
+  }
+  const auto x = n::from_vector(features[0], {1120, 17});
+  const auto y = n::from_vector(labels[0], {1120, 1});
+  const auto test = n::from_vector(features[1], {416, 17});
+  const auto target = n::from_vector(labels[1], {416, 1});
+  const std::array<int, 2> totals{224, 192};
+  auto seen_plot = dm::graphics::RPlot::create();
+  auto unseen_plot = dm::graphics::RPlot::create();
+  std::print("| Model | Held-out pairs | Initial log loss | Final log loss | Correct |\n"
+             "|---|---|---:|---:|---:|\n");
+  std::vector<std::pair<std::string, double>> replay_errors;
+  for (bool v2 : {false, true}) {
+    const std::string name = v2 ? "DCN-v2" : "DCN";
+    n::ParameterStore params(12033);
+    const auto forward = [&](const n::Tensor& input) {
+      const auto segment = n::matmul(n::slice(input, {0,0}, {input.size(0),8}),
+                                     params.get("segment", {8,4}, n::init::normal(.15)));
+      const auto topic = n::matmul(n::slice(input, {0,8}, {input.size(0),8}),
+                                   params.get("topic", {8,4}, n::init::normal(.15)));
+      const auto base = n::concat({segment, topic, n::slice(input, {0,16}, {input.size(0),1})}, 1);
+      const auto c0 = n::cross_layer(params, "cross0", base, base, v2);
+      const auto c1 = n::cross_layer(params, "cross1", base, c0, v2);
+      const auto hidden = n::dense(params, "deep1", base, 16, n::Activation::Relu);
+      const auto deep = n::dense(params, "deep2", hidden, 16, n::Activation::Relu);
+      const auto logits = n::dense(params, "head", n::concat({c1, deep}, 1), 1);
+      return std::array{logits, base, c0, c1, deep};
+    };
+    std::array<std::vector<double>, 2> losses;
+    std::array<int, 2> correct{};
+    const auto evaluate = [&] {
+      const n::NoGradGuard no_grad;
+      const auto logits = forward(test)[0];
+      const auto values = (n::softplus(logits) - logits * target).to_vector<double>();
+      const auto predictions = logits.to_vector<double>();
+      std::array<double, 2> total{};
+      correct = {};
+      for (std::size_t i = 0; i < unseen.size(); ++i) {
+        const bool group = unseen[i];
+        total[group] += values[i];
+        correct[group] += (predictions[i] >= 0) == (labels[1][i] > 0);
+      }
+      for (int group = 0; group < 2; ++group) losses[group].push_back(total[group] / totals[group]);
+    };
+    evaluate();
+    const auto training_loss = [&] {
+      const n::NoGradGuard no_grad;
+      const auto logits = forward(x)[0];
+      return n::mean(n::softplus(logits) - logits * y).item();
+    };
+    const double initial_training_loss = training_loss();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(params, .01, config);
+    n::BatchOrder order(1120, 24, 12032);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto ids = order.next(); !ids.empty(); ids = order.next()) {
+        const auto logits = forward(n::take_rows(x, ids))[0];
+        optimizer.minimize(n::mean(n::softplus(logits) - logits * n::take_rows(y, ids)));
+      }
+      evaluate();
+    }
+    const n::NoGradGuard no_grad;
+    const auto [logits, base, c0, c1, deep] = forward(test);
+    if (optimizer.iterations() != 141 || !std::isfinite(losses[0].back()) ||
+        !std::isfinite(losses[1].back()) || !(training_loss() < initial_training_loss)) {
+      throw std::runtime_error("click training objective did not improve or held-out metrics are invalid");
+    }
+    for (int group = 0; group < 2; ++group) {
+      std::print("| {} | {} | {:.5f} | {:.5f} | {}/{} |\n", name, group ? "Unseen" : "Seen",
+          losses[group].front(), losses[group].back(), correct[group], totals[group]);
+    }
+    const auto prefix = "build/" + name;
+    params.save(prefix + "_weights.npz");
+    n::save_npz(prefix + "_clicks.npz", {{"input", test.reshape({416,17,1})},
+        {"fit_input", x.reshape({1120,17,1})}, {"label", target}, {"logits", logits},
+        {"embedded", base}, {"cross0_state", c0}, {"cross1_state", c1}, {"deep_state", deep}});
+    if (const char* reference = std::getenv("DM_DEEP_CROSS_REFERENCE")) {
+      const auto path = std::filesystem::path(reference) / (v2 ? "dcn_v2" : "dcn") / "clicks.npz";
+      const auto entries = n::load_npz(path.string());
+      const std::map<std::string, n::Tensor> stored(entries.begin(), entries.end());
+      for (const auto& parameter : params.names()) {
+        auto key = parameter;
+        std::replace(key.begin(), key.end(), '/', '_');
+        params.set(parameter, stored.at(key));
+      }
+      const auto replay = forward(stored.at("input").reshape({416,17}));
+      const std::array keys{"logits", "embedded", "cross0_state", "cross1_state", "deep_state"};
+      double max_error = 0.0;
+      for (std::size_t i = 0; i < keys.size(); ++i) {
+        const double error = n::max(n::abs(replay[i] - stored.at(keys[i]))).item();
+        if (!std::isfinite(error) || error > 5e-6) {
+          throw std::runtime_error(std::format("Checkpoint replay mismatch for {}", keys[i]));
+        }
+        max_error = std::max(max_error, error);
+      }
+      replay_errors.emplace_back(name, max_error);
+    }
+    const dm::graphics::RGBA color = v2 ? dm::graphics::RGBA{234,88,12} : dm::graphics::RGBA{37,99,235};
+    seen_plot.lines({0,1,2,3}, losses[0], name, color);
+    unseen_plot.lines({0,1,2,3}, losses[1], name, color);
+  }
+  for (const auto& [name, error] : replay_errors) {
+    std::print("\n{} upstream checkpoint replay maximum absolute error {:.3e}.\n", name, error);
+  }
+  seen_plot.title("Seen pairs").x_label("Epoch").y_label("Held-out log loss");
+  unseen_plot.title("Unseen pairs").x_label("Epoch").y_label("Held-out log loss");
+  dm::graphics::RLayout::create(1,2).add(seen_plot).add(unseen_plot).size(1000,430).fit_panels()
+      .save_svg("build/deep_cross_clicks.svg");
+}
+```
+// result_begin: markdown
+| Model | Held-out pairs | Initial log loss | Final log loss | Correct |
+|---|---|---:|---:|---:|
+| DCN | Seen | 0.65131 | 0.56807 | 165/224 |
+| DCN | Unseen | 0.69174 | 0.79680 | 108/192 |
+| DCN-v2 | Seen | 0.68399 | 0.54227 | 164/224 |
+| DCN-v2 | Unseen | 0.68194 | 0.64296 | 121/192 |
+
+DCN upstream checkpoint replay maximum absolute error 7.153e-07.
+
+DCN-v2 upstream checkpoint replay maximum absolute error 7.153e-07.
+\image(figures/deep_cross_clicks.svg)
+// result_end

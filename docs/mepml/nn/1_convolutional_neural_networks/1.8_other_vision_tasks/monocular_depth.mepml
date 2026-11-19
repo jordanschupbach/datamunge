@@ -319,8 +319,6 @@ int main() {
 }
 ```
 // result_begin:
-// Decoded464 original room identities and first-frame metadata.
-// Validated32/8/16 source-room-disjoint RGB/rawDepth sensor pairs.
 // result_end
 
 The preparation needs C++23,pkg-config,datamunge and HDF5 C++ development

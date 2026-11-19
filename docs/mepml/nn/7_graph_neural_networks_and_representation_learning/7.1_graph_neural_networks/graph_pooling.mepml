@@ -1,0 +1,169 @@
+//? Title: DiffPool, TopK, and SAGPool
+//? Lang: en
+
+> DiffPool, TopK, and SAGPool
+
+All three methods reduce each eight-node weighted ring to four nodes.
+DiffPool learns a soft assignment of original nodes to clusters and
+coarsens both features and edges with that assignment. Link reconstruction
+and assignment entropy regularize fitting. TopK ranks nodes with a
+normalized learned projection. SAGPool ranks them after neighbor
+aggregation. Both hard-selection methods keep an induced subgraph and
+multiply retained features by a learned score gate.
+
+A shared classifier uses the pooled features and pooled neighbor means.
+All variants see the same 128 training graphs and 64 held-out graphs.
+The two classes differ in whether positive and negative signals cluster
+or alternate around the ring, with node IDs randomly shuffled.
+
+```{cpp, results="markdown", file="figures/graph_pooling_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int nodes = 8, width = 12, keep = 4;
+  const auto simulate = [](int count, std::mt19937 &rng) {
+    std::vector<float> edges(count * nodes * nodes), input(count * nodes);
+    std::vector<int> labels;
+    std::uniform_real_distribution<float> weight(.7f, 1.3f), noise(-.15f, .15f);
+    for (int graph = 0; graph < count; ++graph) {
+      std::array<int, nodes> order;
+      std::iota(order.begin(), order.end(), 0);
+      std::shuffle(order.begin(), order.end(), rng);
+      const int label = graph % 2, phase = rng() % nodes;
+      labels.push_back(label);
+      for (int j = 0; j < nodes; ++j) {
+        const int a = order[j], b = order[(j + 1) % nodes], offset = graph * nodes * nodes;
+        edges[offset + a * nodes + b] = edges[offset + b * nodes + a] = weight(rng);
+        const int index = (j + phase) % nodes;
+        const bool positive = label == 0 ? index < nodes / 2 : index % 2 == 0;
+        input[graph * nodes + a] = (positive ? 1.f : -1.f) + noise(rng);
+      }
+    }
+    return std::array{n::from_vector(edges, {count, nodes, nodes}),
+                      n::from_vector(input, {count, nodes, 1}), n::from_vector(labels)};
+  };
+
+  std::mt19937 fit_rng(48902), test_rng(48903);
+  std::vector<std::array<n::Tensor, 3>> fit;
+  for (int i = 0; i < 8; ++i)
+    fit.push_back(simulate(16, fit_rng));
+  const auto [adjacency, input, labels] = simulate(64, test_rng);
+
+  auto loss_plot = dm::graphics::RPlot::create();
+  loss_plot.title("Held-out classification loss").x_label("Epoch").y_label("NLL");
+  auto score_plot = dm::graphics::RPlot::create();
+  score_plot.title("Held-out classification accuracy").x_label("Epoch")
+      .y_label("Fraction correct").y_limits(0, 1.05);
+  std::filesystem::create_directories("build");
+  std::print("| model | epoch | held-out NLL | correct |\n|---|---:|---:|---:|\n");
+
+  enum class Method { DiffPool, TopK, SAGPool };
+  const std::array names{"DiffPool", "TopK", "SAGPool"};
+  const std::array<dm::graphics::RGBA, 3> colors{{{37, 99, 235}, {185, 28, 28}, {22, 120, 97}}};
+  for (const auto method : {Method::DiffPool, Method::TopK, Method::SAGPool}) {
+    const auto index = static_cast<int>(method);
+    const std::string name = names[index];
+    n::ParameterStore model(48901);
+    const auto forward = [&](const n::Tensor &a, const n::Tensor &x) {
+      const auto loops = a + n::eye(nodes);
+      const auto normalized = loops / n::sum(loops, {2}, true);
+      const auto local = n::concat({x, n::matmul(normalized, x)}, 2);
+      const auto features = n::dense(model, "embed", local, width, n::Activation::Tanh);
+      auto auxiliary = n::scalar(0.);
+      n::Tensor raw;
+      const auto pool = [&]() {
+        if (method == Method::DiffPool) {
+          raw = n::dense(model, "assign", local, keep);
+          const auto logp = n::log_softmax(raw, 2);
+          const auto assignment = n::exp(logp);
+          const auto link = n::mean(n::square(a - n::matmul(assignment, assignment, false, true)));
+          const auto entropy = -n::mean(n::sum(assignment * logp, {2}));
+          auxiliary = .1 * link + .01 * entropy;
+          return n::coarsen_graph(features, a, n::transpose(assignment, {0, 2, 1}));
+        }
+        auto direction = model.get("score", {width, 1}, n::init::uniform(.3));
+        if (method == Method::TopK)
+          direction = direction / n::sqrt(n::sum(n::square(direction)) + 1e-8);
+        const auto scorer = method == Method::SAGPool ? n::matmul(normalized, features) : features;
+        raw = n::squeeze(n::matmul(scorer, direction), {-1});
+        return n::graph_topk_pool(features, a, raw, keep);
+      }();
+      const auto degree = n::maximum(n::sum(pool.adjacency, {2}, true), n::scalar(1e-6));
+      const auto neighbors = n::matmul(pool.adjacency / degree, pool.features);
+      const auto state = n::dense(model, "coarse", n::concat({pool.features, neighbors}, 2),
+                                  width, n::Activation::Relu);
+      const auto logits = n::dense(model, "head", n::mean(state, {1}), 2);
+      return std::tuple{pool, raw, auxiliary, logits};
+    };
+
+    forward(adjacency, input);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .025, config);
+    std::vector<double> epochs, losses, accuracy;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        const auto logits = std::get<3>(forward(adjacency, input));
+        const auto correct = n::count_nonzero(n::equal(n::argmax(logits, 1), labels)).item<int>();
+        epochs.push_back(epoch);
+        losses.push_back(n::sparse_softmax_cross_entropy(logits, labels).item());
+        accuracy.push_back(correct / 64.);
+        std::print("| {} | {} | {:.6f} | {}/64 |\n", name, epoch, losses.back(), correct);
+      }
+      if (epoch < 3)
+        for (const auto &[a, x, y] : fit) {
+          const auto [pool, raw, auxiliary, logits] = forward(a, x);
+          adam.minimize(n::sparse_softmax_cross_entropy(logits, y) + auxiliary);
+        }
+    }
+
+    n::NoGradGuard guard;
+    const auto [pool, raw, auxiliary, logits] = forward(adjacency, input);
+    const auto order = n::from_vector(std::vector<int>{7, 3, 5, 2, 1, 0, 6, 4});
+    const auto permuted = std::get<3>(forward(
+        n::gather(n::gather(adjacency, order, 1), order, 2), n::gather(input, order, 1)));
+    const auto error = n::max(n::abs(permuted - logits)).item();
+    if (error > 1e-5)
+      throw std::runtime_error("pooled graph prediction changed under node relabeling");
+    n::NamedTensors evidence{{"adjacency", adjacency}, {"input", input}, {"label", labels},
+        {"raw_scores", raw}, {"select", pool.assignment}, {"pooled", pool.features},
+        {"coarse", pool.adjacency}, {"aux", auxiliary}, {"logits", logits},
+        {"test_nll", n::from_vector(losses)}, {"permutation_error", n::scalar(error)}};
+    for (const auto &key : model.names())
+      evidence.emplace_back(key, model.at(key));
+    n::save_npz("build/graph_pooling_" + name + ".npz", evidence);
+    loss_plot.lines(epochs, losses, name, colors[index]);
+    score_plot.lines(epochs, accuracy, name, colors[index]);
+  }
+  dm::graphics::RLayout::create(1, 2).add(loss_plot).add(score_plot).size(1100, 430)
+      .fit_panels().save_svg("build/graph_pooling_fit.svg");
+}
+```
+// result_begin: markdown
+| model | epoch | held-out NLL | correct |
+|---|---:|---:|---:|
+| DiffPool | 0 | 0.704995 | 32/64 |
+| DiffPool | 1 | 0.262498 | 64/64 |
+| DiffPool | 2 | 0.001082 | 64/64 |
+| DiffPool | 3 | 0.000009 | 64/64 |
+| TopK | 0 | 0.714740 | 0/64 |
+| TopK | 1 | 0.126926 | 64/64 |
+| TopK | 2 | 0.004123 | 64/64 |
+| TopK | 3 | 0.000340 | 64/64 |
+| SAGPool | 0 | 0.687941 | 32/64 |
+| SAGPool | 1 | 0.087259 | 64/64 |
+| SAGPool | 2 | 0.000412 | 64/64 |
+| SAGPool | 3 | 0.000012 | 64/64 |
+\image(figures/graph_pooling_fit.svg)
+// result_end
+\caption(All three pooling methods are fitted and evaluated on the same weighted rings.)
+\alttext(Line plots comparing held-out loss and accuracy for DiffPool, TopK, and SAGPool.)
+
+> References
+
+- [Ying et al. (2018), Hierarchical Graph Representation Learning with Differentiable Pooling](https://arxiv.org/abs/1806.08804).
+- [Gao and Ji (2019), Graph U-Nets](https://arxiv.org/abs/1905.05178).
+- [Lee, Lee, and Kang (2019), Self-Attention Graph Pooling](https://arxiv.org/abs/1904.08082).

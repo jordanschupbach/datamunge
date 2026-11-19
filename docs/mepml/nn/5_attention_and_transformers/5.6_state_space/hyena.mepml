@@ -1,0 +1,130 @@
+//? Title: Two-stage Hyena sequence mixer
+//? Lang: en
+
+> Two-stage Hyena sequence mixer
+
+A short depthwise convolution mixes a few adjacent tokens after an
+input projection. Split the result into a value branch and two gates.
+Each stage multiplies the current values by a gate, applies a long causal
+depthwise filter, and adds a learned skip. A small sinusoidal network
+generates filter taps from lag coordinates and Fourier features. An
+exponential envelope modulates each output channel.
+
+This compact Hyena has 24 channels and predicts the next event in
+simulated musical phrases. It uses direct convolution for 15-token
+windows. The report plots validation loss and two fitted filter channels.
+Replace all tokens after position seven to check that earlier logits
+remain unchanged. The native fit uses Datamunge initialization.
+Set `DM_HYENA_REFERENCE` to the upstream `output/models/hyena` directory
+to replay its fitted filters and predictions.
+
+[Poli et al. (2023)|https://arxiv.org/abs/2302.10866]
+
+```{cpp, results="markdown", file="figures/hyena.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <set>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int steps=15, vocab=26, width=24;
+  std::mt19937 random(41382);
+  std::set<std::array<int,steps+1>> seen;
+  std::vector<int> corpus;
+  const std::array movement{0,2,4,7,4,2,0,5};
+  while (seen.size()<384) {
+    const int root=random()%5;
+    std::array<int,steps+1> phrase{};
+    for (int t=0;t<=steps;++t) {
+      const int duration=t%4==3 || random()%7==0;
+      int pitch=root+movement[t%8];
+      if (random()%11==0) pitch=(pitch+10)%12;
+      phrase[t]=t>0 && random()%9==0 ? 24+duration : 2*pitch+duration;
+    }
+    if (seen.insert(phrase).second) corpus.insert(corpus.end(),phrase.begin(),phrase.end());
+  }
+  const auto phrases=n::from_vector(corpus,{384,steps+1});
+  const auto input=n::slice(phrases,{0,0},{384,steps});
+  const auto target=n::slice(phrases,{0,1},{384,steps});
+  const auto test_x=n::slice(input,{320,0},{64,steps}), test_y=n::slice(target,{320,0},{64,steps});
+  const auto valid_x=n::slice(input,{256,0},{64,steps}), valid_y=n::slice(target,{256,0},{64,steps});
+  n::ParameterStore params(43301);
+  const auto model=[&](const n::Tensor& ids) {
+    const auto x=n::gather(params.get("embedding",{vocab,width},n::init::normal(.16)),ids);
+    const auto norm=n::layer_norm(params,"input_norm",x);
+    const auto [mixed,filters]=n::hyena_mixer(params,"",norm);
+    const auto residual=x+n::dense(params,"out",mixed,width);
+    const auto normalized=n::layer_norm(params,"final",residual);
+    return std::pair{n::dense(params,"head",normalized,vocab),filters};
+  };
+  const auto loss=[](const n::Tensor& logits,const n::Tensor& target) {
+    return n::sparse_softmax_cross_entropy(logits,target);
+  };
+  const auto inspect=[&](const n::Tensor& x,const n::Tensor& y) {
+    const n::NoGradGuard no_grad;
+    return loss(model(x).first,y).item();
+  };
+  const double initial=inspect(test_x,test_y);
+  std::vector<double> validation{inspect(valid_x,valid_y)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.003,config);
+  n::BatchOrder order(256,16,43302);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(model(n::take_rows(input,rows)).first,n::take_rows(target,rows)));
+    }
+    validation.push_back(inspect(valid_x,valid_y));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,filters]=model(test_x);
+  const auto score=loss(logits,test_y);
+  auto changed=test_x.to_vector<int>();
+  for (int i=0;i<64;++i) {
+    for (int t=7;t<steps;++t) changed[i*steps+t]=(changed[i*steps+t]+1)%vocab;
+  }
+  const auto alternate=model(n::from_vector(changed,{64,steps})).first;
+  const auto prefix_error=n::max(n::abs(n::slice(logits-alternate,{0,0,0},{64,7,vocab}))).item();
+  if (!(score.item()<initial) || prefix_error!=0 || optimizer.iterations()!=48) {
+    throw std::runtime_error("Hyena training or causal prefix check failed");
+  }
+  std::filesystem::create_directories("build");
+  params.save("build/hyena_weights.npz");
+  n::save_npz("build/hyena.npz",{{"input",test_x},{"target",test_y},{"nll",score},
+      {"logits",logits},{"filters",filters}});
+  std::print("Test NLL {:.6f} to {:.6f}. Earlier logits were identical after the suffix edit.\n",
+             initial,score.item());
+  if (const char* reference=std::getenv("DM_HYENA_REFERENCE")) {
+    const auto folder=std::filesystem::path(reference);
+    params.load((folder/"weights.npz").string());
+    const auto entries=n::load_npz((folder/"audit.npz").string());
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=model(stored.at("input"));
+    const auto logit_error=n::max(n::abs(replay.first-stored.at("logits"))).item();
+    const auto filter_error=n::max(n::abs(replay.second-stored.at("filters"))).item();
+    if (!(logit_error<3e-5 && filter_error<3e-6)) {
+      throw std::runtime_error(std::format("Hyena replay mismatch {} {}",logit_error,filter_error));
+    }
+    std::print("\nUpstream replay maximum errors of {:.3e} for logits and {:.3e} for taps.\n",
+               logit_error,filter_error);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},validation,"Validation NLL",{37,99,235})
+      .points({0,1,2,3},validation,"Epoch boundaries",{37,99,235})
+      .title("Validation loss").x_label("Epoch").y_label("Negative log-likelihood");
+  auto taps=dm::graphics::RPlot::create();
+  std::vector<double> lag(steps);
+  std::iota(lag.begin(),lag.end(),0);
+  taps.lines(lag,n::slice(filters,{0,0},{steps,1}).to_vector<double>(),"Stage 1",{37,99,235})
+      .lines(lag,n::slice(filters,{0,width},{steps,1}).to_vector<double>(),"Stage 2",{234,88,12})
+      .title("First-channel filter taps").x_label("Lag").y_label("Tap value");
+  dm::graphics::RLayout::create(1,2).add(plot).add(taps).size(1050,430).fit_panels()
+      .save_svg("build/hyena.svg");
+}
+```
+// result_begin: markdown
+Test NLL 3.713467 to 1.817176. Earlier logits were identical after the suffix edit.
+
+Upstream replay maximum errors of 1.431e-06 for logits and 5.960e-08 for taps.
+\image(figures/hyena.svg)
+// result_end

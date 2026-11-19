@@ -608,7 +608,7 @@ logistic algebra: D loss=41.1269, G loss=20.5635, dG/dfake=[[-4.51213e-36], [-0.
 epoch 1: diagnostic D loss=0.271719, G loss=2.6777, coarse MMD=0.120552
 epoch 2: diagnostic D loss=0.116838, G loss=3.54986, coarse MMD=0.12009
 epoch 3: diagnostic D loss=0.0712041, G loss=4.04661, coarse MMD=0.119395
-fixed FINAL epoch 3, test D/G=0.064464/4.03757, coarse MMD=0.11713, mean baseline=0.000135779, D real/fake accuracy=1/1, mean pixel=0.498581, pixel variance=0.00160298; D then G/restore/noise+classOnly/immutable PASS (training 1.78337 s)
+fixed FINAL epoch 3, test D/G=0.064464/4.03757, coarse MMD=0.11713, mean baseline=0.000135779, D real/fake accuracy=1/1, mean pixel=0.498581, pixel variance=0.00160298; D then G/restore/noise+classOnly/immutable PASS (training 0.410553 s)
 Artifacts: build/conditional_gan
 All conditional_gan checks passed.
 \image(figures/conditional_gan_learning.svg)

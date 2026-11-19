@@ -1,0 +1,139 @@
+//? Title: Forecast coupled sensor series with directed graph diffusion
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train a shared three-lead forecasting head on six coupled sensors.
+Compare local history, directed graph diffusion, and persistence.
+)
+\toc
+
+Each sensor depends on its previous value and on the previous value
+of its predecessor in a directed ring. Multiplying the matrix of
+observed histories by the adjacency shifts those histories one hop
+toward their destinations. The graph head receives the local history
+and the histories at one, two, and three hops. The local head receives
+only its sensor's four observations. Each head shares one set of
+coefficients across sensors and forecasts all three leads directly.
+
+Both heads fit on targets before index 768. Test targets start at
+index 960. The supplied fixtures reproduce the upstream initial
+weights. At each test origin, persistence repeats each sensor's
+last observed value.
+
+```{cpp, results="markdown", file="figures/graph_forecast.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int nodes = 6, lag = 4, horizon = 3, end = 1152;
+  std::mt19937 rng(8192);
+  std::normal_distribution<float> noise(0, .12f);
+  std::vector<float> values(end * nodes), edges(nodes * nodes);
+  for (int node = 0; node < nodes; ++node)
+    edges[node * nodes + (node + nodes - 1) % nodes] = 1;
+  for (int t = 1; t < end; ++t) {
+    for (int node = 0; node < nodes; ++node) {
+      const int prior = (t - 1) * nodes;
+      values[t * nodes + node] = .20f * values[prior + node]
+          + .75f * values[prior + (node + nodes - 1) % nodes] + noise(rng);
+    }
+  }
+  const auto series = n::from_vector(values, {end, nodes});
+  const auto adjacency = n::from_vector(edges, {nodes, nodes});
+  const auto origins = [](int first, int last) {
+    std::vector<std::int64_t> result(last - horizon - first + 1);
+    std::iota(result.begin(), result.end(), first);
+    return result;
+  };
+  const auto fit = n::graph_forecast_windows(series, origins(lag, 768), lag, horizon);
+  const auto test_indices = origins(960, end);
+  const auto test = n::graph_forecast_windows(series, test_indices, lag, horizon);
+  const auto origin_tensor = n::from_vector(test_indices).to(n::DType::Int32);
+  const auto persistence = n::slice_axis(test.history, 2, lag - 1, lag);
+  const auto rmse = [&](const n::Tensor& prediction) {
+    return n::sqrt(n::mean(n::square(prediction - test.target), {0, 1})).to_vector<double>();
+  };
+  const std::string folder = "build/graph_forecast/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+
+  auto trace = dm::graphics::RPlot::create();
+  auto accuracy = dm::graphics::RPlot::create();
+  std::vector<double> axis(test_indices.begin(), test_indices.begin() + 48);
+  const std::vector<double> leads{1, 2, 3};
+  const auto trace_lead_one = [](const n::Tensor& value) {
+    return n::slice(value, {0, 0, 0}, {48, 1, 1}).to_vector<double>();
+  };
+  trace.lines(axis, trace_lead_one(test.target), "Observed", {30,41,59}, 2);
+  const auto baseline = rmse(persistence);
+  accuracy.lines(leads, baseline, "Persistence", {92,102,120});
+  std::println("| Method | Lead 1 RMSE | Lead 2 RMSE | Lead 3 RMSE |");
+  std::println("| :--- | ---: | ---: | ---: |");
+  std::println("| Persistence | {:.6f} | {:.6f} | {:.6f} |", baseline[0], baseline[1], baseline[2]);
+
+  for (int hops : {0, 3}) {
+    const std::string name = hops == 0 ? "local" : "graph";
+    const dm::graphics::RGB color = hops == 0 ? dm::graphics::RGB{191,88,34} : dm::graphics::RGB{37,99,235};
+    n::ParameterStore parameters;
+    const auto model = [&](const n::Tensor& history, const n::Tensor& network) {
+      return n::graph_diffusion_forecast(parameters, "shared", history, network, horizon, hops);
+    };
+    (void)model(n::slice(fit.history, {0, 0, 0}, {1, nodes, lag}), adjacency);
+    parameters.load("fixtures/graph_forecast_" + name + "_init.npz", true);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(parameters, .01, config);
+    n::BatchOrder order(fit.history.size(0), 32, 8193);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        const auto fitted = model(n::take_rows(fit.history, rows), adjacency).forecast;
+        const auto loss = n::mean(n::square(fitted - n::take_rows(fit.target, rows)));
+        optimizer.step(n::grad(loss, parameters.parameters()));
+      }
+    }
+    n::NoGradGuard guard;
+    const auto result = model(test.history, adjacency);
+    const auto score = rmse(result.forecast);
+    std::println("| {} | {:.6f} | {:.6f} | {:.6f} |", name, score[0], score[1], score[2]);
+    trace.lines(axis, trace_lead_one(result.forecast), name, color);
+    accuracy.lines(leads, score, name, color);
+    n::save_npz(folder + name + ".npz", {
+        {"series", series}, {"origins", origin_tensor}, {"actual", test.target.reshape({-1, nodes * horizon})},
+        {"prediction", result.forecast.reshape({-1, nodes * horizon})}, {"adjacency", adjacency},
+        {"features", result.features}, {"weights", parameters.at("shared/W")}, {"bias", parameters.at("shared/b")}});
+    if (hops != 0) {
+      const auto reverse = rmse(model(test.history, n::transpose(adjacency)).forecast);
+      std::println("\nReversing the edges at inference gives RMSE {:.6f}, {:.6f}, {:.6f}.",
+                   reverse[0], reverse[1], reverse[2]);
+    }
+  }
+  trace.title("Lead-one forecasts for sensor 0").x_label("Test origin").y_label("Sensor value");
+  accuracy.title("Accuracy across origins and sensors").x_label("Lead").y_label("RMSE");
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 430);
+  layout.add(trace).add(accuracy).save_svg(folder + "forecast.svg");
+  std::filesystem::copy_file(folder + "forecast.svg", "figures/graph_forecast.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Method | Lead 1 RMSE | Lead 2 RMSE | Lead 3 RMSE |
+| :--- | ---: | ---: | ---: |
+| Persistence | 0.222470 | 0.273235 | 0.280993 |
+| local | 0.200655 | 0.224958 | 0.220098 |
+| graph | 0.128097 | 0.176290 | 0.177729 |
+
+Reversing the edges at inference gives RMSE 0.238735, 0.192318, 0.200180.
+\image(figures/graph_forecast.svg)
+// result_end
+
+The graph model can follow innovations as they move through the ring.
+The reversed-edge check changes graph direction at inference while
+holding the trained weights and observations fixed.

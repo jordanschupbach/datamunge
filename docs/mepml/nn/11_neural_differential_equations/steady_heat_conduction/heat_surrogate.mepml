@@ -1,0 +1,94 @@
+//? Title: Neural surrogate for steady heat conduction
+//? Lang: en
+
+> Neural surrogate for steady heat conduction
+
+A heterogeneous rod conducts heat according to the conductivity at each
+face. In steady state with uniform heating, adjacent face fluxes differ
+by the heat generated in the intervening control volume. The finite-volume
+solver chooses the initial flux so that integrating the face temperature
+drops satisfies both prescribed boundary temperatures.
+
+The network takes three numbers that control the conductivity slope,
+the heat source, and the right boundary temperature. It predicts all
+31 interior temperatures in one evaluation. The left boundary is fixed
+at zero. The model fits 1,024 independently simulated parameter
+combinations and is evaluated on 128 combinations generated with a
+different seed. Test error measures interpolation within the sampled
+parameter ranges.
+
+```{cpp, results="markdown", file="figures/heat_surrogate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto simulate=[](int rows, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1.f,1.f);
+    std::vector<float> parameters, target;
+    for (int row=0;row<rows;++row) {
+      const double slope=uniform(rng), source=uniform(rng), boundary=uniform(rng);
+      parameters.insert(parameters.end(),{float(slope),float(source),float(boundary)});
+      std::array<double,32> conductivity;
+      for (int face=0;face<32;++face)
+        conductivity[face]=1+slope*((face+.5)/32-.5);
+      const double right=.5*boundary;
+      const auto temp=n::steady_heat_rod(conductivity,1+.5*source,0.,right);
+      if (!(std::abs(temp.back()-right)<=1e-12)) throw std::runtime_error("boundary mismatch");
+      target.insert(target.end(),temp.begin()+1,temp.end()-1);
+    }
+    return std::pair{n::from_vector(parameters,{rows,3}),n::from_vector(target,{rows,31})};
+  };
+  const auto [fit_x,fit_y]=simulate(1024,1711);
+  const auto [test_x,test_y]=simulate(128,1712);
+  n::ParameterStore model(41380);
+  const auto loss=[&](const n::Tensor& x,const n::Tensor& y) {
+    return n::mean(n::square(n::heat_rod_surrogate(model,x)-y));
+  };
+  const auto evaluate=[&] {
+    n::NoGradGuard guard;
+    return std::sqrt(loss(test_x,test_y).item());
+  };
+  std::vector<double> epochs{0}, rmse{evaluate()};
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(1024,32,1713);
+  int updates=0;
+  for (int epoch=1;epoch<=3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x,rows),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+    epochs.push_back(epoch);
+    rmse.push_back(evaluate());
+  }
+  n::NoGradGuard guard;
+  const auto prediction=n::heat_rod_surrogate(model,test_x);
+  if (updates!=96 || !(rmse.back()<rmse.front()))
+    throw std::runtime_error("unexpected surrogate fit");
+  std::print("| Updates | Held-out profiles | Initial RMSE | Final RMSE |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {} | {:.6f} | {:.6f} |\n",updates,test_x.size(0),rmse.front(),rmse.back());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/heat_surrogate.npz",{{"fit_parameters",fit_x.reshape({1024,3,1})},
+      {"parameters",test_x.reshape({128,3,1})},{"target",test_y},{"prediction",prediction},
+      {"loss",n::mean(n::square(prediction-test_y))}});
+  std::vector<double> x(31);
+  for (int i=0;i<31;++i) x[i]=(i+1)/32.;
+  auto profile=dm::graphics::RPlot::create();
+  profile.lines(x,n::select(test_y,0,0).to_vector<double>(),"Finite volume",{37,99,235})
+      .points(x,n::select(prediction,0,0).to_vector<double>(),"Surrogate",{220,90,45},4)
+      .title("One held-out temperature profile").x_label("Position").y_label("Temperature");
+  auto error=dm::graphics::RPlot::create();
+  error.line(epochs,rmse).title("Held-out error").x_label("Epoch").y_label("RMSE");
+  dm::graphics::RLayout::create(1,2).add(profile).add(error).size(1090,420).fit_panels()
+      .save_svg("build/heat_surrogate.svg");
+}
+```
+// result_begin: markdown
+| Updates | Held-out profiles | Initial RMSE | Final RMSE |
+|---:|---:|---:|---:|
+| 96 | 128 | 0.306242 | 0.019555 |
+\image(figures/heat_surrogate.svg)
+// result_end
+\caption(Finite-volume and predicted interior temperatures for one held-out rod, with aggregate error over the full test set.)
+\alttext(A profile plot compares reference and predicted temperatures. A second plot shows RMSE over three epochs.)

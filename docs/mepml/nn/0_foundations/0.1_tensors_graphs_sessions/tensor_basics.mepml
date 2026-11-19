@@ -348,15 +348,15 @@ Random reshapes: 20000 cases, view_strides agrees with the brute-force search in
 
 | n × n float32 | reshape (view) | transpose (view) | contiguous copy of the transpose | sum(x) | sum(transpose(x)) |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 64 | 0.17 µs | 0.17 µs | 1.2 µs | 0.7 µs | 2.1 µs |
-| 128 | 0.22 µs | 0.21 µs | 5.1 µs | 2.0 µs | 7.2 µs |
-| 256 | 0.21 µs | 0.20 µs | 39.5 µs | 6.7 µs | 34.5 µs |
-| 512 | 0.21 µs | 0.21 µs | 52.3 µs | 26.5 µs | 90.8 µs |
-| 1024 | 0.23 µs | 0.20 µs | 323.8 µs | 104.6 µs | 501.0 µs |
-| 2048 | 0.23 µs | 0.21 µs | 1883.5 µs | 453.8 µs | 2557.8 µs |
-| 4096 | 0.24 µs | 0.22 µs | 12366.6 µs | 2020.6 µs | 14708.9 µs |
+| 64 | 0.23 µs | 0.21 µs | 1.3 µs | 0.7 µs | 2.2 µs |
+| 128 | 0.22 µs | 0.22 µs | 5.3 µs | 2.0 µs | 7.4 µs |
+| 256 | 0.22 µs | 0.21 µs | 44.2 µs | 10.6 µs | 72.2 µs |
+| 512 | 0.28 µs | 0.22 µs | 99.4 µs | 32.0 µs | 128.4 µs |
+| 1024 | 0.22 µs | 0.20 µs | 495.2 µs | 127.8 µs | 797.5 µs |
+| 2048 | 0.23 µs | 0.21 µs | 3378.7 µs | 464.6 µs | 3318.9 µs |
+| 4096 | 0.24 µs | 0.22 µs | 19686.0 µs | 2563.6 µs | 23899.5 µs |
 
-At n = 4096 the copy moves 10.9 GB/s (64 MiB read and 64 MiB written).
+At n = 4096 the copy moves 6.8 GB/s (64 MiB read and 64 MiB written).
 
 | integers in | exactly representable in float32 |
 | :--- | ---: |
@@ -507,6 +507,54 @@ means, normalised to average 1. Two slices of the factors, concatenated, put the
 completely. The autocorrelations, each the sum of products of two slices of the centred ratio series, agree with `stats::acf` to \(3.3\times10^{-16}\). They also match R's `acf`:
 \(r(6)=-0.483\) and \(r(12)=0.874\). The detrended series is dominated by its yearly cycle. It correlates strongly with itself 12, 24 and 36 months apart
 (0.87, 0.77, 0.68) and negatively at half-year lags, far outside the \(\pm0.17\) band expected of white noise.
+
+> A borrowed host buffer
+
+A contiguous CPU tensor exposes its row-major values through a typed
+pointer. A `std::span` can borrow those values while the tensor remains
+alive. The program writes the input through the span before running any
+tensor operators, since raw pointer writes bypass the version tracking
+used by autograd. It checks reductions, broadcast arithmetic and matrix
+contraction on the same host values as the upstream example.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <span>
+
+int main() {
+  namespace n=dm::nn;
+  auto a=n::zeros({2,3},n::DType::Float32);
+  std::span<float> storage(a.data_ptr<float>(),6);
+  std::iota(storage.begin(),storage.end(),1.f);
+  const auto b=n::tensor({{1,0},{0,1},{1,1}});
+  const auto rows=n::sum(a,{1}),prod=n::matmul(a,b),gram=n::matmul(a,a,false,true);
+  const auto bias=n::tensor({10,20,30}), column=n::tensor({1,-1},{2,1});
+  auto check=[](const n::Tensor& value,const std::vector<float>& expected) {
+    if(value.to_vector<float>()!=expected) throw std::runtime_error("Tensor values disagree");
+  };
+  check(n::sum(a),{21});
+  check(rows,{6,15});
+  check(a*2+1,{3,5,7,9,11,13});
+  check(a+bias,{11,22,33,14,25,36});
+  check(a*column,{1,2,3,-4,-5,-6});
+  check(prod,{4,5,10,11});
+  check(gram,{14,32,32,77});
+  check(n::arange(0,10,3),{0,3,6,9});
+  check(n::full({2,2},7),{7,7,7,7});
+  if(n::concat({a,a},0).shape()!=n::Shape{4,3} ||
+     n::stack({a,a},0).shape()!=n::Shape{2,2,3} ||
+     n::cast(a*1.7,n::DType::Int32).to_vector<int>()!=std::vector<int>{1,3,5,6,8,10})
+    throw std::runtime_error("Shape or cast differs");
+  bool rejected=false;
+  try { (void)(a+n::ones({2})); } catch(const std::invalid_argument&) { rejected=true; }
+  if(!rejected) throw std::runtime_error("Mismatched broadcast axes were accepted");
+  std::print("Borrowed host buffer: row sums {}, product {}, Gram {}. Invalid broadcasting rejected.\n",
+             rows.to_vector<float>(),prod.to_vector<float>(),gram.to_vector<float>());
+}
+```
+// result_begin: markdown
+Borrowed host buffer: row sums [6, 15], product [4, 5, 10, 11], Gram [14, 32, 32, 77]. Invalid broadcasting rejected.
+// result_end
 
 > Conclusion
 

@@ -1,0 +1,134 @@
+//? Title: TD3 plus behavior cloning for offline control
+//? Lang: en
+
+> TD3 plus behavior cloning for offline control
+
+A noisy feedback controller generates a fixed dataset of 1,024
+transitions in a bounded scalar control system. The actor learns to
+keep position near zero while limiting action cost. Both critics
+regress onto the same target using the smaller of two target values
+and clipped smoothing noise on the target action.
+
+Every second critic update, the actor takes a step that improves
+the first critic's value and penalizes deviation from the recorded
+action. The critic coefficient is scaled by the mean absolute policy
+value and held fixed during differentiation. Target parameters move
+toward their online counterparts after each actor update.
+
+The plot compares the fitted bounded actor to the noiseless behavior
+controller. Evaluation measures return on 64 separate starting
+positions. The networks use Datamunge's native seeded initializer.
+
+[Fujimoto and Gu (2021)|https://arxiv.org/abs/2106.06860]
+
+```{cpp, results="markdown", file="figures/td3_bc.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto advance=[](float x,float u){return .75f*x+.25f*u;};
+  const auto reward=[](float x,float u){return -x*x-.05f*u*u;};
+  const auto actor=[](n::ParameterStore& p,const n::Tensor& x) {
+    return n::dense(p,"out",n::mlp(p,"mlp",x,{32,32}),1,n::Activation::Tanh);
+  };
+  const auto critic=[](n::ParameterStore& p,const std::string& name,const n::Tensor& x,const n::Tensor& u) {
+    const auto features=n::mlp(p,name+"/mlp",n::concat({x,u},1),{32,32});
+    return n::dense(p,name+"/out",features,1).reshape({-1});
+  };
+  n::ParameterStore online_a(45001),online_q(45002),target_a(45003),target_q(45004);
+  const auto zero=n::zeros({1,1});
+  for (auto* p:{&online_a,&target_a}) actor(*p,zero);
+  for (auto* p:{&online_q,&target_q}) {
+    critic(*p,"q1",zero,zero);
+    critic(*p,"q2",zero,zero);
+  }
+  target_a.copy_from(online_a);
+  target_q.copy_from(online_q);
+  n::Optimizer critic_adam(online_q,.003,{.kind=n::OptimizerKind::Adam});
+  n::Optimizer actor_adam(online_a,.002,{.kind=n::OptimizerKind::Adam});
+  std::mt19937 rng(45005);
+  std::uniform_real_distribution<float> position(-1,1);
+  std::normal_distribution<float> jitter(0,.24f),unit;
+  std::vector<float> xs,us,ns,rs;
+  for (int i=0;i<1024;++i) {
+    const float x=position(rng),u=std::clamp(-.6f*x+jitter(rng),-1.f,1.f);
+    const float next=advance(x,u);
+    xs.push_back(x);
+    us.push_back(u);
+    ns.push_back(next);
+    rs.push_back(reward(next,u));
+  }
+  const auto state=n::from_vector(xs,{1024,1}),action=n::from_vector(us,{1024,1});
+  const auto next=n::from_vector(ns,{1024,1}),rewards=n::from_vector(rs,{1024,1});
+  const auto backup=[&](const n::Tensor& x,const n::Tensor& r,const n::Tensor& noise) {
+    const n::NoGradGuard guard;
+    const auto next_pi=actor(target_a,x);
+    const auto smoothed=n::clip(next_pi+n::clip(.2f*noise,-.5,.5),-1.,1.);
+    const auto q1=critic(target_q,"q1",x,smoothed),q2=critic(target_q,"q2",x,smoothed);
+    return std::array{r.reshape({-1})+.95f*n::minimum(q1,q2),q1,q2,next_pi,smoothed};
+  };
+  n::BatchOrder order(1024,32,45006);
+  int critic_updates=0,actor_updates=0;
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto x=n::take_rows(state,rows),u=n::take_rows(action,rows);
+      std::vector<float> random(rows.size());
+      for (auto& value:random) value=unit(rng);
+      const auto y=backup(n::take_rows(next,rows),n::take_rows(rewards,rows),
+                          n::from_vector(random,{std::ssize(rows),1}))[0];
+      const auto loss=n::mean(n::square(critic(online_q,"q1",x,u)-y))+
+                      n::mean(n::square(critic(online_q,"q2",x,u)-y));
+      critic_adam.step(n::grad(loss,critic_adam.parameters()));
+      if (++critic_updates%2==0) {
+        const auto estimate=actor(online_a,x);
+        const auto objective=dm::rl::td3_bc_actor_loss(estimate,u,critic(online_q,"q1",x,estimate))[0];
+        actor_adam.step(n::grad(objective,actor_adam.parameters()));
+        target_a.copy_from(online_a,.05);
+        target_q.copy_from(online_q,.05);
+        ++actor_updates;
+      }
+    }
+  }
+  if (critic_updates!=96 || actor_updates!=48) throw std::runtime_error("Unexpected update counts");
+  const n::NoGradGuard guard;
+  std::vector<float> probe(1024);
+  for (int i=0;i<1024;++i) probe[i]=i%13-6;
+  const auto noise=n::from_vector(probe,{1024,1});
+  const auto [y,q1,q2,next_pi,smooth]=backup(next,rewards,noise);
+  const auto pi=actor(online_a,state),q_pi=critic(online_q,"q1",state,pi);
+  const auto [objective,lambda,bc]=dm::rl::td3_bc_actor_loss(pi,action,q_pi);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/td3_bc_audit.npz",{{"state",state},{"action",action},{"reward",rewards},
+      {"next",next},{"pi",pi},{"q_pi",q_pi},{"lambda",lambda},{"bc",bc},{"objective",objective},
+      {"next_q1",q1},{"next_q2",q2},{"target",y},{"noise",noise},{"next_pi",next_pi},{"smoothed",smooth}});
+  std::vector<float> starts(64);
+  for (int i=0;i<64;++i) starts[i]=-.99f+1.98f*i/63;
+  const auto rollout=[&](bool trained) {
+    auto x=starts;
+    double total=0;
+    for (int step=0;step<20;++step) {
+      const auto u=trained?actor(online_a,n::from_vector(x,{64,1})).to_vector<float>():std::vector<float>{};
+      for (int i=0;i<64;++i) {
+        const float a=trained?u[i]:-.6f*x[i];
+        x[i]=advance(x[i],a);
+        total+=reward(x[i],a);
+      }
+    }
+    return total/64;
+  };
+  std::print("After {} critic and {} actor updates, mean rollout return was {:.6f} for TD3+BC and {:.6f} for behavior.\n",
+             critic_updates,actor_updates,rollout(true),rollout(false));
+  const auto fitted=actor(online_a,n::from_vector(starts,{64,1})).to_vector<double>();
+  std::vector<double> grid(starts.begin(),starts.end()),behavior;
+  for (float x:starts) behavior.push_back(-.6f*x);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(grid,fitted,"TD3+BC",{37,99,235}).lines(grid,behavior,"Behavior",{217,96,26})
+      .title("Offline control policy").x_label("Position").y_label("Action")
+      .size(800,460).save_svg("build/td3_bc.svg");
+}
+```
+// result_begin: markdown
+After 96 critic and 48 actor updates, mean rollout return was -0.399751 for TD3+BC and -0.199083 for behavior.
+\image(figures/td3_bc.svg)
+// result_end

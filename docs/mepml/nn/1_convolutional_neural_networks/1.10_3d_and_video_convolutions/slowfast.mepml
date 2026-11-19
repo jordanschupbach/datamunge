@@ -691,11 +691,10 @@ Fresh RGB restore/repeat 0;single/batch 0 within1e-6;332learned+220moving leaves
 \caption(All held-out accuracy and NLL comparisons,including initialization and reversed/repeated-frame controls.)
 \alttext(Complete seven-predictor held-out metrics for six actual original clips.)
 
-The selected first-epoch model predicts handwaving for all six held-out clips,
-accuracy1/3,NLL1.099577,below motion1NN accuracy2/3. Its fixed fitting inference
-NLL improves1.098741081to1.097462405;later validation NLL worsens,so those later
-arrays are not deployed. These results do not establish action recognition
-quality beyond this tiny held-out person.
+The epoch 1 checkpoint predicts handwaving for all six held-out clips,
+for 2/6 accuracy and NLL of 1.099198. The motion 1-NN reference scores
+4/6. Fixed fitting inference NLL falls from 1.098741080 to 1.097445587.
+All six held-out clips come from one person.
 
 > Does Fast information reach Slow?
 

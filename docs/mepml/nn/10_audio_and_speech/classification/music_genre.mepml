@@ -1,0 +1,103 @@
+//? Title: Track-level music genre classification
+//? Lang: en
+
+> Track-level music genre classification
+
+An orthonormal discrete cosine transform of each log-mel frame gives
+mel-frequency cepstral coefficients (MFCCs). The first 13 coefficients
+describe the coarse spectral envelope. Their means and population
+standard deviations across time give a 26-feature vector per excerpt.
+
+The classifier fits an MLP to one-second excerpts using normalization
+learned on training data. Each held-out track contributes three excerpts.
+We average their logits before predicting the genre, so each track
+counts once. The plot compares excerpt and track recall by genre.
+
+Prepare the four-genre GTZAN filtered split with
+`python3 scripts/prepare_music_genre.py` in the TensorFlow examples
+checkout. Set `DATAMUNGE_MUSIC_GENRE_DIR` to the prepared dataset
+directory for a checkout outside the default location.
+
+```{cpp, results="markdown", file="figures/music_genre.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto* configured = std::getenv("DATAMUNGE_MUSIC_GENRE_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_MUSIC_GENRE_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/music_genre";
+  const auto mel = n::linear_to_mel_weight_matrix(32,257,16000,60,7600);
+  const auto load = [&](const char* split) {
+    const auto named = n::load_npz((root/(std::string(split)+".npz")).string());
+    const std::map<std::string,n::Tensor> data(named.begin(),named.end());
+    const auto& audio = data.at("waveform");
+    const auto& label = data.at("label");
+    if (label.dim()!=1 || audio.shape()!=n::Shape{label.size(0),16000})
+      throw std::runtime_error("Unexpected GTZAN fixture shape");
+    const auto power = n::power_spectrogram(n::stft(audio,400,320,512));
+    return std::pair{n::mfcc_summary(n::log_mel_spectrogram(power,mel)),label};
+  };
+  const auto [fit,labels]=load("fit");
+  const auto [test,truth]=load("test");
+  const auto wide=fit.to(n::DType::Float64);
+  const auto center=n::mean(wide,{0});
+  const auto scale=n::sqrt(n::maximum(n::mean(n::square(wide-center),{0}),
+      n::full({26},1e-6,n::DType::Float64))).to(n::DType::Float32);
+  const auto mean=center.to(n::DType::Float32);
+  const auto x=(fit-mean)/scale, held_out=(test-mean)/scale;
+  n::ParameterStore model(41380);
+  const auto predict=[&](const n::Tensor& input) {
+    return n::dense(model,"head",n::dense(model,"hidden",input,32,n::Activation::Relu),4);
+  };
+  const auto initial=n::sparse_softmax_cross_entropy(predict(held_out),truth).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.size(0),8,77104);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(n::sparse_softmax_cross_entropy(predict(n::take_rows(x,rows)),
+                                                       n::take_rows(labels,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto excerpts=predict(held_out);
+  const auto loss=n::sparse_softmax_cross_entropy(excerpts,truth);
+  const auto tracks=truth.size(0)/3;
+  if (tracks==0 || truth.size(0)%3!=0 || !(loss.item()<initial)) return 1;
+  const auto scores=n::mean(excerpts.to(n::DType::Float64).reshape({tracks,3,4}),{1});
+  const auto actual=truth.to_vector<int>(), ep=n::argmax(excerpts).to_vector<int>(),
+             tp=n::argmax(scores).to_vector<int>();
+  std::array<int,4> count{}, excerpt_hits{}, track_hits{};
+  for (std::int64_t i=0;i<tracks;++i) {
+    const int genre=actual[3*i];
+    ++count.at(genre);
+    track_hits.at(genre)+=tp[i]==genre;
+    for (int j=0;j<3;++j) {
+      if (actual[3*i+j]!=genre) return 1;
+      excerpt_hits.at(genre)+=ep[3*i+j]==genre;
+    }
+  }
+  const auto correct=std::accumulate(track_hits.begin(),track_hits.end(),0);
+  std::print("Held-out tracks correct {}/{}. Excerpt loss {:.4f} → {:.4f}.\n",
+      correct,tracks,initial,loss.item());
+  auto plot=dm::graphics::RPlot::create();
+  const std::array<std::string,4> genres{"Classical","Disco","Metal","Reggae"};
+  for (int i=0;i<4;++i) {
+    if (count[i]==0) continue;
+    plot.lines({0.,1.},{double(excerpt_hits[i])/(3*count[i]),double(track_hits[i])/count[i]},
+        genres[i],std::array<dm::graphics::RGB,4>{{{37,99,235},{234,88,12},{22,163,74},{147,51,234}}}[i]);
+  }
+  plot.title("Held-out recall before and after track averaging")
+      .x_label("Excerpt (0) to track (1)").y_label("Recall").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/music_genre.svg");
+  n::save_npz("build/music_genre.npz",{{"fit",fit},{"features",test},{"labels",truth},
+      {"excerpts",excerpts},{"scores",scores},{"mean",mean},{"scale",scale},{"loss",loss}});
+}
+```
+// result_begin: markdown
+Held-out tracks correct 28/32. Excerpt loss 1.2942 → 0.5367.
+\image(figures/music_genre.svg)
+// result_end

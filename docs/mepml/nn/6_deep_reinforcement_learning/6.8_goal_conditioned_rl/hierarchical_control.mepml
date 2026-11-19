@@ -1,0 +1,140 @@
+//? Title: HIRO and HAC replay on a discrete chain
+//? Lang: en
+
+> HIRO and HAC replay on a discrete chain
+
+A manager assigns nearby subgoals and a worker takes up to three
+actions toward each one. Both policies learn on a nine-cell chain.
+As the worker changes, the actions recorded under an earlier policy
+may become unlikely for the original subgoal.
+
+In this discrete HIRO variant, replay assigns the subgoal under which
+the current worker is most likely to take the recorded actions. HAC
+instead uses the segment's actual final state as its replay goal.
+Occasional HAC subgoal tests run the greedy worker, and a failed test
+adds a penalty for the requested goal. Both managers bootstrap with
+a discount raised to the actual segment length.
+
+The plot compares cumulative goal arrivals while training. The final
+evaluation starts the greedy hierarchy at each of the eight nonterminal
+cells. This is a compact tabular comparison of the replay rules.
+
+[Nachum et al. (2018), HIRO|https://arxiv.org/abs/1805.08296]
+[Levy et al. (2019), HAC|https://arxiv.org/abs/1712.00948]
+
+```{cpp, results="markdown", file="figures/hierarchical_control.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  constexpr int cells=9,goal=8,period=3,segments=768;
+  const auto move=[goal](int state,int action) {return std::clamp(state+(action?1:-1),0,goal);};
+  std::array<std::vector<double>,2> histories;
+  std::filesystem::create_directories("build/hierarchical_control");
+  std::print("| Method | Relabeled segments | Failed tests | Training goals | Greedy successes |\n"
+             "|:---|---:|---:|---:|---:|\n");
+  for (const bool hac:{false,true}) {
+    r::foundations::QTable worker(cells*cells,2),manager(cells,cells);
+    std::mt19937 rng(44401);
+    const auto greedy=[&](int state) {
+      int best=state==0?1:state-1;
+      for (int next=std::max(0,state-period);next<=std::min(goal,state+period);++next) {
+        if (next!=state && manager(state,next)>manager(state,best)) best=next;
+      }
+      return best;
+    };
+    const auto update=[](float& value,float target) { value+=.3f*(target-value); };
+    const auto learn_worker=[&](int from,int action,int to,int requested) {
+      if (from==requested) return;
+      const float target=to==requested?1.f:.95f*worker.Max(requested*cells+to);
+      update(worker(requested*cells+from,action),target);
+    };
+    std::vector<int> trace;
+    std::vector<float> recorded_logits,recorded_scores;
+    int state=0,goals=0,changed=0,failed_tests=0,session_segments=0;
+    histories[hac].push_back(0);
+    for (int i=0;i<segments;++i) {
+      const int start=state, first=std::max(0,start-period),last=std::min(goal,start+period);
+      int requested=greedy(state);
+      if (rng()%3==0) {
+        do { requested=rng()%cells; } while (requested==start || requested<first || requested>last);
+      }
+      const bool test=hac && rng()%4==0;
+      std::array<int,period> actions{},arrivals{};
+      int length=0;
+      while (length<period && state!=goal) {
+        int action=worker.Greedy(requested*cells+state);
+        if (!test && rng()%3==0) action=rng()%2;
+        const int next=move(state,action);
+        actions[length]=action;
+        arrivals[length++]=next;
+        learn_worker(state,action,next,requested);
+        learn_worker(state,action,next,next);
+        state=next;
+      }
+      std::vector<float> logits(cells*period*2);
+      for (int candidate=0;candidate<cells;++candidate) {
+        for (int t=0;t<length;++t) {
+          const int from=t?arrivals[t-1]:start;
+          for (int action=0;action<2;++action) {
+            logits[(candidate*period+t)*2+action]=4.f*worker(candidate*cells+from,action);
+          }
+        }
+      }
+      const auto [hiro_goal,scores]=r::hiro_replay_goal(n::from_vector(logits,{cells,period,2}),
+          n::from_vector(std::vector<int>(actions.begin(),actions.begin()+length)),first,last,requested);
+      const auto [hac_goal,failed]=r::hac_replay_goal(requested,state,test);
+      const int replay=hac?hac_goal:static_cast<int>(hiro_goal);
+      changed+=replay!=requested;
+      failed_tests+=failed;
+      const float target=state==goal?1.f:std::pow(.95f,length)*manager(state,greedy(state));
+      update(manager(start,replay),target);
+      if (failed) update(manager(start,requested),-.3f);
+      trace.insert(trace.end(),{start,requested,length,replay,test,failed});
+      trace.insert(trace.end(),actions.begin(),actions.end());
+      trace.insert(trace.end(),arrivals.begin(),arrivals.end());
+      recorded_logits.insert(recorded_logits.end(),logits.begin(),logits.end());
+      const auto values=scores.to_vector<float>();
+      recorded_scores.insert(recorded_scores.end(),values.begin(),values.end());
+      goals+=state==goal;
+      histories[hac].push_back(goals);
+      if (++session_segments==8 || state==goal) {
+        state=rng()%goal;
+        session_segments=0;
+      }
+    }
+    int solved=0;
+    for (int start=0;start<goal;++start) {
+      int state=start;
+      for (int segment=0;segment<8 && state!=goal;++segment) {
+        const int subgoal=greedy(state);
+        for (int t=0;t<period && state!=goal;++t) {
+          state=move(state,worker.Greedy(subgoal*cells+state));
+        }
+      }
+      solved+=state==goal;
+    }
+    std::print("| {} | {} / {} | {} | {} | {} / 8 |\n",
+               hac?"HAC":"HIRO",changed,segments,failed_tests,goals,solved);
+    n::save_npz(std::format("build/hierarchical_control/{}.npz",hac?"hac":"hiro"),{
+        {"segments",n::from_vector(trace,{segments,12})},
+        {"logits",n::from_vector(recorded_logits,{segments,cells,period,2})},
+        {"scores",n::from_vector(recorded_scores,{segments,cells})}});
+  }
+  std::vector<double> steps(segments+1);
+  std::iota(steps.begin(),steps.end(),0.);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,histories[0],"HIRO",{37,99,235})
+      .lines(steps,histories[1],"HAC",{217,96,26})
+      .title("Hierarchical replay on a chain").x_label("Training segment").y_label("Cumulative goal arrivals")
+      .size(820,460).save_svg("build/hierarchical_control.svg");
+}
+```
+// result_begin: markdown
+| Method | Relabeled segments | Failed tests | Training goals | Greedy successes |
+|:---|---:|---:|---:|---:|
+| HIRO | 438 / 768 | 0 | 12 | 4 / 8 |
+| HAC | 265 / 768 | 43 | 20 | 2 / 8 |
+\image(figures/hierarchical_control.svg)
+// result_end

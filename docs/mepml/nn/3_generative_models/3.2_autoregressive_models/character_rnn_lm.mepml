@@ -23,14 +23,6 @@ int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(
 
 The native adapter follows the recovered upstream preparation script, including source checksums, source row identities, fitting-only vocabulary/palette selection and held-out boundaries. Runtime preparation calls no Python or another checkout. Native byte-valued image arrays are stored as Int32 with identical numeric values. Optional external TensorFlow recordings are separate; their absence does not establish external parity.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){auto path=dm::datasets::prepare_example_data("character_rnn");std::print("Prepared original character_rnn protocol at {}\n",path);}
-```
-// result_begin: markdown
-Prepared original character_rnn protocol at /home/jordan/.cache/datamunge/datasets/character_rnn
-// result_end
-
 > A hand-checkable likelihood reference
 
 A uniform categorical distribution over65 classes gives negative log-likelihood log(65). For language/image models this is nats per predicted token; for a sequence tagger it is a single independent-token reference, not its CRF sequence likelihood.
@@ -2175,7 +2167,7 @@ int main(int argc, char** argv) {
 // epoch2:validationbits/char=5.06319,perplexity=33.4327
 // epoch3:validationbits/char=4.94538,perplexity=30.8111
 // testNLL/perplexity=3.46849/32.0883, fitting unigram/bigram=3.46589/2.77813; BPTT/state-parity/causal/restore/1024 sampled chars/immutable PASS
-// training 0.106828 s, wall 0.130332 s
+// training 0.154698 s, wall 0.185402 s
 // Artifacts:/mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.2_autoregressive_models/build/recovered-language/models/character_rnn_lm/index.html
 // result_end
 

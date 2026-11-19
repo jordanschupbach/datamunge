@@ -1285,7 +1285,7 @@ epoch3 validationCE=0.607341 accuracy=0.671875
   confusion (truth rows):
     52 12
     38 26
-testCE=0.651485 accuracy=0.609375 cueFlip=0.679688 lastBaseline=0.5625;configuredBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0410003 s)
+testCE=0.651485 accuracy=0.609375 cueFlip=0.679688 lastBaseline=0.5625;configuredBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0802333 s)
 Artifacts:"build/recurrent-models/models/truncated_bptt/full/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/truncated_bptt/full" not found; skipping the comparison
 == last3 (window 3)
@@ -1295,7 +1295,7 @@ epoch3 validationCE=0.601654 accuracy=0.679688
   confusion (truth rows):
     54 10
     32 32
-testCE=0.609615 accuracy=0.671875 cueFlip=0.664062 lastBaseline=0.5625;configuredBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0409194 s)
+testCE=0.609615 accuracy=0.671875 cueFlip=0.664062 lastBaseline=0.5625;configuredBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0887794 s)
 Artifacts:"build/recurrent-models/models/truncated_bptt/last3/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/truncated_bptt/last3" not found; skipping the comparison
 // result_end

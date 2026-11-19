@@ -1,0 +1,151 @@
+//? Title: DeepSurv and DeepHit with competing risks
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Simulate two competing event times and right censoring. Fit an all-cause
+Cox network and a discrete competing-risk network, then evaluate both
+on a separate cohort.
+)
+\toc
+
+DeepSurv learns a log risk for any event. Its loss compares each event
+with subjects still under observation at that time. The held-out
+concordance measures how often an earlier event has higher predicted
+risk than a strictly later observation.
+
+DeepHit predicts a joint probability over two causes and eight time bins,
+plus a beyond-horizon bin. An observed event uses the probability at its
+cause and bin. A censored observation uses all the probability strictly
+after its bin. A ranking term compares the predicted cumulative incidence
+of the observed cause at the event time with that of subjects observed
+for longer.
+
+The fit uses 160 rows and 48 full-cohort updates per model. The plots use
+the 128 independent test rows. The fit uses Datamunge’s native initialization.
+Averaged cumulative incidence is a model
+summary over those covariates.
+
+```{cpp, results="markdown", file="figures/survival_analysis_incidence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+struct Cohort { n::Tensor x, time, cause; };
+
+Cohort simulate(int rows, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f,1.f);
+  std::exponential_distribution<float> exponential;
+  std::vector<float> x(rows*3), time(rows);
+  std::vector<int> cause(rows);
+  for (int i = 0; i < rows; ++i) {
+    auto* row = x.data()+3*i;
+    for (int j = 0; j < 3; ++j) row[j] = uniform(rng);
+    const float common = 1.3f*row[0]+.65f*row[1]*row[2];
+    const float first = exponential(rng)/(.14f*std::exp(common+.5f*row[2]));
+    const float second = exponential(rng)/(.10f*std::exp(common-.5f*row[2]));
+    const float censor = std::min(8.f,exponential(rng)/.08f);
+    time[i] = std::min({first,second,censor});
+    cause[i] = time[i] == censor ? 0 : time[i] == first ? 1 : 2;
+  }
+  return {n::from_vector(x,{rows,3}),n::from_vector(time,{rows}),n::from_vector(cause,{rows})};
+}
+
+int main() {
+  const auto fit = simulate(160,21019), test = simulate(128,21020);
+  n::ParameterStore cox(21021), hit(21022);
+  const auto risk = [&](const n::Tensor& x) {
+    const auto h = n::dense(cox,"hidden",x,16,n::Activation::Tanh);
+    const auto h2 = n::dense(cox,"hidden2",h,16,n::Activation::Tanh);
+    return n::dense(cox,"risk",h2,1).reshape({x.size(0)});
+  };
+  const auto mass = [&](const n::Tensor& x) {
+    const auto shared = n::dense(hit,"shared",x,24,n::Activation::Relu);
+    const auto joined = n::concat({shared,x},1);
+    std::vector<n::Tensor> logits;
+    for (int k = 0; k < 2; ++k) {
+      const auto name = "cause_"+std::to_string(k);
+      const auto h = n::dense(hit,name+"/hidden",joined,16,n::Activation::Relu);
+      logits.push_back(n::dense(hit,name+"/mass",h,8));
+    }
+    logits.push_back(n::dense(hit,"tail",joined,1));
+    return n::softmax(n::concat(logits,1));
+  };
+  const auto event = n::greater(fit.cause,0.);
+  risk(fit.x);
+  mass(fit.x);
+  n::OptimizerConfig adam;
+  adam.kind = n::OptimizerKind::Adam;
+  n::Optimizer cox_fit(cox,.01,adam), hit_fit(hit,.008,adam);
+  for (int step = 0; step < 48; ++step) {
+    cox_fit.minimize(n::cox_partial_nll(risk(fit.x),fit.time,event));
+    const auto terms = n::deep_hit_loss(mass(fit.x),fit.time,fit.cause,2,8);
+    hit_fit.minimize(terms.nll+.2*terms.ranking);
+  }
+  n::NoGradGuard guard;
+  const auto log_risk = risk(test.x), probabilities = mass(test.x);
+  const auto test_event = n::greater(test.cause,0.);
+  const auto cox_loss = n::cox_partial_nll(log_risk,test.time,test_event);
+  const auto terms = n::deep_hit_loss(probabilities,test.time,test.cause,2,8);
+  const auto total = terms.nll+.2*terms.ranking;
+  const auto comparable = n::logical_and(n::expand_dims(test_event,1),
+      n::greater(n::expand_dims(test.time,0),n::expand_dims(test.time,1))).to(n::DType::Float64);
+  const auto difference = n::expand_dims(log_risk,1)-n::expand_dims(log_risk,0);
+  const auto correct = n::greater(difference,0.).to(n::DType::Float64)+.5*n::equal(difference,0.).to(n::DType::Float64);
+  const double pairs = n::sum(comparable).item();
+  const double concordance = n::sum(comparable*correct).item()/pairs;
+  if (pairs == 0 || !std::isfinite(cox_loss.item()) || !std::isfinite(total.item()))
+    throw std::runtime_error("invalid held-out survival results");
+  std::println("| Held-out diagnostic | Value |\n| --- | ---: |");
+  std::println("| DeepSurv concordance | {:.5f} |\n| Cox partial NLL | {:.5f} |",concordance,cox_loss.item());
+  std::println("| DeepHit NLL | {:.5f} |\n| DeepHit ranking penalty | {:.5f} |",terms.nll.item(),terms.ranking.item());
+  const std::string folder = "build/survival_analysis/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder+"predictions.npz",{{"x",test.x},{"time",test.time},{"cause",test.cause},
+      {"risk",log_risk},{"mass",probabilities},{"cox_loss",cox_loss},{"nll",terms.nll},
+      {"ranking",terms.ranking},{"hit_loss",total}});
+
+  auto plot = dm::graphics::RPlot::create();
+  const auto bins = n::arange(1,9).to_vector<double>();
+  const auto averages = n::mean(probabilities,{0});
+  for (int k = 0; k < 2; ++k) {
+    auto values = n::slice(averages,{8*k},{8}).to_vector<double>();
+    std::partial_sum(values.begin(),values.end(),values.begin());
+    plot.lines(bins,values,"Cause "+std::to_string(k+1),k ? dm::RGBA{191,88,34} : dm::RGBA{37,99,235});
+  }
+  plot.ylim(0.,1.).title("DeepHit cumulative incidence on held-out rows")
+      .x_label("Time bin end").y_label("Average cumulative probability").save_svg(folder+"incidence.svg");
+  auto rank = dm::graphics::RPlot::create();
+  const auto times = test.time.to_vector<double>(), scores = log_risk.to_vector<double>();
+  const auto causes = test.cause.to_vector<int>();
+  std::vector<double> observed_time, observed_score, censored_time, censored_score;
+  for (std::size_t i = 0; i < times.size(); ++i) {
+    (causes[i] ? observed_time : censored_time).push_back(times[i]);
+    (causes[i] ? observed_score : censored_score).push_back(scores[i]);
+  }
+  rank.points(observed_time,observed_score,"Event",{37,99,235},4)
+      .points(censored_time,censored_score,"Censored",{148,83,40},4)
+      .title("DeepSurv log risk on held-out rows").x_label("Observed time").y_label("Predicted log risk")
+      .save_svg(folder+"risk.svg");
+  std::filesystem::copy_file(folder+"incidence.svg","figures/survival_analysis_incidence.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"risk.svg","figures/survival_analysis_risk.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Held-out diagnostic | Value |
+| --- | ---: |
+| DeepSurv concordance | 0.68887 |
+| Cox partial NLL | 3.90891 |
+| DeepHit NLL | 2.31736 |
+| DeepHit ranking penalty | 0.92877 |
+\image(figures/survival_analysis_incidence.svg)
+// result_end
+
+\image(figures/survival_analysis_risk.svg)

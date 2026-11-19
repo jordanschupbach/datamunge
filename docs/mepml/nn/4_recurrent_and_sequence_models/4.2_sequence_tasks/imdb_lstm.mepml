@@ -708,7 +708,7 @@ int main(int argc, char** argv) {
 // epoch3 validationCE=0.692103 accuracy=0.5
 // testCE=0.691814 accuracy=0.59375 fitNaiveBayes=0.5625 (TF recorded testCE=0.690584 accuracy=0.625 NB=0.5625);LSTMprefix/BPTT/padding/causality/restore/labelFree/immutable PASS
 // Artifacts:/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.2_sequence_tasks/build/recovered-language/models/imdb_lstm/index.html
-// wall 0.173818 s
+// wall 0.365418 s
 // result_end
 
 > Actual source diagnostics

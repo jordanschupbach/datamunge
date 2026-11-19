@@ -1,0 +1,112 @@
+//? Title: Grow a pattern with a neural cellular automaton
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit a shared local update that grows a cross from one active cell.
+Train with random update masks and check how the learned pattern
+changes when the initial seed is translated.
+)
+
+> Share one update rule across cells
+
+Each cell has three continuous state channels. A 3-by-3 convolution
+reads the neighborhood. A tanh activation and a pointwise convolution
+produce a candidate change to the state. The result is added back to
+the previous state. This residual rule is applied four times with
+shared weights.
+
+During training, each cell accepts an update with probability 0.7,
+independently at every step. The squared error weights target cross
+pixels five times as heavily as the background. At test time all
+updates are enabled. Translating the seed checks whether the model
+uses the same rule at different positions. The pattern starts far
+enough from the boundaries for the four-step comparison.
+
+> Reproduce the upstream translated-seed fixture
+
+```{cpp, results="markdown", file="figures/neural_cellular_automata.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+constexpr int side = 11, channels = 3, steps = 4, hidden = 12;
+
+std::pair<nn::Tensor, nn::Tensor> fixture(int batch, int shift) {
+    std::vector<double> seed(batch * side * side * channels), target(batch * side * side);
+    for (int b = 0; b < batch; ++b) {
+        const int row = 5 + shift, col = 5 - shift, offset = b * side * side;
+        seed[(offset + row * side + col) * channels] = 1.;
+        for (int d = -2; d <= 2; ++d) {
+            target[offset + (row + d) * side + col] = 1.;
+            target[offset + row * side + col + d] = 1.;
+        }
+    }
+    return {nn::from_vector(seed, {batch, side, side, channels}),
+            nn::from_vector(target, {batch, side, side, 1})};
+}
+
+int main() {
+    nn::set_num_threads(2);
+    constexpr int batch = 4;
+    std::mt19937 rng(27581);
+    std::normal_distribution<double> normal(0., .12);
+    std::bernoulli_distribution fires(.7);
+    std::vector<double> perception_values(3 * 3 * channels * hidden), update_values(hidden * channels);
+    for (auto& v : perception_values) v = normal(rng);
+    for (auto& v : update_values) v = normal(rng);
+    const auto perception = nn::from_vector(perception_values, {3, 3, channels, hidden}).requires_grad_();
+    const auto update = nn::from_vector(update_values, {1, 1, hidden, channels}).requires_grad_();
+    const std::vector<nn::Tensor> weights{perception, update};
+    nn::Optimizer sgd(weights, .13);
+    const auto visible = [](const auto& state) { return nn::slice_axis(state, 3, 0, 1); };
+    const auto run = [&](const auto& seed, const auto& masks) {
+        return nn::cellular_automaton_rollout(seed, perception, update, masks);
+    };
+    const auto loss = [&](const auto& state, const auto& target) {
+        return nn::mean((1. + 4. * target) * nn::square(visible(state) - target));
+    };
+    const auto [training_seed, training_target] = fixture(batch, 0);
+    const auto [translated, target] = fixture(1, 1);
+    const auto [center, unused_target] = fixture(1, 0);
+    const auto all = nn::ones({steps, 1, side, side, 1}, nn::DType::Float64);
+    const double before = loss(run(translated, all), target).item();
+    std::vector<double> masks(steps * batch * side * side);
+    for (int epoch = 0; epoch < 3; ++epoch)
+        for (int i = 0; i < 32; i += batch) {
+            for (auto& v : masks) v = fires(rng);
+            const auto active = nn::from_vector(masks, {steps, batch, side, side, 1});
+            const auto error = loss(run(training_seed, active), training_target);
+            sgd.step(nn::grad(error, weights));
+        }
+    const nn::NoGradGuard guard;
+    const auto state = run(translated, all);
+    const auto shifted = visible(state), central = visible(run(center, all));
+    const auto after = loss(state, target).item();
+    double translation_error = 0.;
+    for (int r = 1; r < side; ++r)
+        for (int c = 0; c < side - 1; ++c)
+            translation_error = std::max(translation_error,
+                std::abs(central.at({0, r - 1, c + 1, 0}) - shifted.at({0, r, c, 0})));
+    if (!(after < before) || translation_error > 1e-12)
+        throw std::runtime_error("Cellular automaton failed the upstream checks");
+    std::filesystem::create_directories("build");
+    nn::save_npz("build/neural_cellular_automata.npz", {{"seed", translated}, {"target", target},
+        {"perception", perception}, {"update", update}, {"visible", shifted}, {"state", state}});
+    nn::save_image_grid(nn::concat({visible(translated), target, shifted}, 0),
+                        "build/neural_cellular_automata.png", 3, 0, 1, 8, .3, 14);
+    std::print("Translated weighted MSE {:.8f} to {:.8f}. Maximum translation error {:.2e}.\n",
+               before, after, translation_error);
+}
+```
+// result_begin: markdown
+Translated weighted MSE 0.40456471 to 0.17162434. Maximum translation error 0.00e+00.
+\image(figures/neural_cellular_automata.png)
+// result_end
+
+The image shows the translated seed, target and learned output from left
+to right. The grayscale display clips values to the range from zero to
+one. The error and translation check use the original continuous values.
+
+> Reference
+
+- [Mordvintsev et al., Growing Neural Cellular Automata|https://distill.pub/2020/growing-ca/].

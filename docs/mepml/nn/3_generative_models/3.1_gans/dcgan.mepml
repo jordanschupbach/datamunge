@@ -668,7 +668,7 @@ first batch (training BN): D loss=1.42212, G loss=0.693163
 epoch 1: diagnostic D loss=1.09095, G loss=0.809653, coarse MMD=0.113555
 epoch 2: diagnostic D loss=0.34096, G loss=1.49879, coarse MMD=0.0739498
 epoch 3: diagnostic D loss=0.252443, G loss=1.93104, coarse MMD=0.0544977
-fixed FINAL epoch 3, test D/G=0.252165/1.99433, coarse MMD=0.0548266, mean baseline=0.000135779, D real/fake accuracy=1/0.98, mean pixel=0.323393, pixel variance=0.00169251; D then G/restore/noiseOnly/immutable PASS (training 0.362777 s)
+fixed FINAL epoch 3, test D/G=0.252165/1.99433, coarse MMD=0.0548266, mean baseline=0.000135779, D real/fake accuracy=1/0.98, mean pixel=0.323393, pixel variance=0.00169251; D then G/restore/noiseOnly/immutable PASS (training 0.615275 s)
 Artifacts: build/dcgan
 All dcgan checks passed.
 \image(figures/dcgan_learning.svg)

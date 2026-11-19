@@ -1,0 +1,152 @@
+//? Title: Decision Transformer on an offline bit task
+//? Lang: en
+
+> Decision Transformer on an offline bit task
+
+Six-step demonstrations include policies that always match the current
+bit, always flip it, or mix those behaviors. Each transition receives
+reward one if the action matches. The return-to-go label sums rewards
+from the current step to the end of the trajectory.
+
+The model orders each step's tokens as return, state and action.
+A causal decoder reads the state token to predict that step's action.
+The validation check changes current actions and all future tokens,
+then verifies that the corresponding action logits stay identical.
+
+At rollout time the requested return is reduced by each observed
+reward. The same 128 independently generated state sequences are
+used with requested returns six and zero. The plot shows how those
+requests change realized rewards. The model uses Datamunge's native
+initialization.
+
+[Chen et al. (2021)|https://arxiv.org/abs/2106.01345]
+
+```{cpp, results="markdown", file="figures/decision_transformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int steps=6,held=128;
+  const auto states=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::vector<int> bits(count*steps);
+    for (auto& bit:bits) bit=rng()%2;
+    return bits;
+  };
+  const auto dataset=[&](int count,unsigned seed) {
+    const auto bits=states(count,seed);
+    std::mt19937 rng(seed+17);
+    std::vector<int> actions(count*steps);
+    std::vector<float> returns(count*steps);
+    for (int row=0;row<count;++row) {
+      float remaining=0;
+      for (int t=steps-1;t>=0;--t) {
+        const bool match=row%4==0 || (row%4>=2 && rng()%2==0);
+        const auto index=row*steps+t;
+        actions[index]=bits[index]^int(!match);
+        returns[index]=remaining+=match;
+      }
+    }
+    return std::array{n::from_vector(returns,{count,steps}),n::from_vector(bits,{count,steps}),
+                      n::from_vector(actions,{count,steps})};
+  };
+  const auto fit=dataset(768,42601),validation=dataset(held,42602);
+  n::ParameterStore params(42604);
+  const auto predict=[&](const std::array<n::Tensor,3>& x) {
+    return dm::rl::decision_transformer_logits(params,x[0],x[1],x[2],2);
+  };
+  const auto loss=[&](const std::array<n::Tensor,3>& x) {
+    return n::sparse_softmax_cross_entropy(predict(x).reshape({-1,2}),x[2].reshape({-1}));
+  };
+  const auto valid_nll=[&] {
+    const n::NoGradGuard guard;
+    return loss(validation).item();
+  };
+  std::print("| Epoch | Validation action NLL |\n|---:|---:|\n| 0 | {:.6f} |\n",valid_nll());
+  n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(768,32,42605);
+  for (int epoch=1;epoch<=3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto objective=loss({n::take_rows(fit[0],rows),n::take_rows(fit[1],rows),n::take_rows(fit[2],rows)});
+      optimizer.step(n::grad(objective,optimizer.parameters()));
+    }
+    std::print("| {} | {:.6f} |\n",epoch,valid_nll());
+  }
+  const n::NoGradGuard guard;
+  const auto baseline=predict(validation).to_vector<float>();
+  for (int t=0;t<steps;++t) {
+    auto returns=validation[0].to_vector<float>();
+    auto bits=validation[1].to_vector<int>(),actions=validation[2].to_vector<int>();
+    for (int row=0;row<held;++row) {
+      for (int j=t;j<steps;++j) {
+        const auto index=row*steps+j;
+        actions[index]^=1;
+        if (j>t) {
+          bits[index]^=1;
+          returns[index]+=3;
+        }
+      }
+    }
+    const auto alternate=predict({n::from_vector(returns,{held,steps}),n::from_vector(bits,{held,steps}),
+                                  n::from_vector(actions,{held,steps})}).to_vector<float>();
+    for (int row=0;row<held;++row) {
+      const auto index=2*(row*steps+t);
+      if (baseline[index]!=alternate[index] || baseline[index+1]!=alternate[index+1]) {
+        throw std::runtime_error("Action logits changed when future tokens changed");
+      }
+    }
+  }
+  std::filesystem::create_directories("build/decision_transformer");
+  n::save_npz("build/decision_transformer/offline.npz",{{"returns",fit[0]},{"states",fit[1]},{"actions",fit[2]}});
+  const auto bits=states(held,42603);
+  std::vector<double> realized;
+  std::print("\n| Requested return | Matched bits |\n|---:|---:|\n");
+  for (const int target:{0,steps}) {
+    std::vector<int> seen(held*steps),actions(held*steps);
+    std::vector<float> returns(held*steps),remaining(held,target),scores(held*steps*2);
+    int reward=0;
+    for (int t=0;t<steps;++t) {
+      for (int row=0;row<held;++row) {
+        const auto i=row*steps+t;
+        seen[i]=bits[i];
+        returns[i]=remaining[row];
+      }
+      const auto logits=predict({n::from_vector(returns,{held,steps}),n::from_vector(seen,{held,steps}),
+                                 n::from_vector(actions,{held,steps})}).to_vector<float>();
+      for (int row=0;row<held;++row) {
+        const auto i=row*steps+t;
+        scores[2*i]=logits[2*i];
+        scores[2*i+1]=logits[2*i+1];
+        actions[i]=scores[2*i+1]>scores[2*i];
+        const int hit=actions[i]==bits[i];
+        reward+=hit;
+        remaining[row]-=hit;
+      }
+    }
+    realized.push_back(reward);
+    std::print("| {} | {} / {} |\n",target,reward,held*steps);
+    n::save_npz(std::format("build/decision_transformer/{}.npz",target?"high":"low"),
+        {{"states",n::from_vector(bits,{held,steps})},{"actions",n::from_vector(actions,{held,steps})},
+         {"returns",n::from_vector(returns,{held,steps})},{"scores",n::from_vector(scores,{held,steps,2})}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({0,6},realized,"Matched bits",{37,99,235},1.5)
+      .title("Return-conditioned rollouts").x_label("Requested return").y_label("Matched bits out of 768")
+      .ylim(0,held*steps).size(800,460).save_svg("build/decision_transformer.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation action NLL |
+|---:|---:|
+| 0 | 0.877288 |
+| 1 | 0.354985 |
+| 2 | 0.293612 |
+| 3 | 0.271035 |
+
+| Requested return | Matched bits |
+|---:|---:|
+| 0 | 0 / 768 |
+| 6 | 768 / 768 |
+\image(figures/decision_transformer.svg)
+// result_end

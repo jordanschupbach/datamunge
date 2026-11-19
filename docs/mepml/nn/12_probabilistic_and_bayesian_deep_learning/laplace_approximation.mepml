@@ -1,0 +1,103 @@
+//? Title: Laplace approximation for Bayesian logistic regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit Bayesian logistic regression to simulated binary outcomes, then
+approximate the coefficient posterior by a Gaussian at its mode.
+Compare posterior-averaged probabilities with predictions at the mode.
+)
+\toc
+
+> Use curvature at the posterior mode
+
+Generate 48 binary observations with an intercept and two continuous
+features. The prior on each coefficient is standard Gaussian. Newton
+updates minimize the negative log posterior. The mode gives the Gaussian
+center, and the inverse Hessian at the mode gives the covariance.
+
+Use a Cholesky factor to transform 4,096 standard Gaussian coefficient
+draws. Average the logistic probabilities across draws and compare
+with the result from applying the logistic transform to the mode.
+The x-axis follows a single slice of the two-dimensional predictor
+space, with the second feature equal to −0.5 times the first.
+The curve includes extrapolation outside the fitting range.
+
+```{cpp, results="markdown", file="figures/laplace_approximation_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int rows = 48, queries = 64, samples = 4096;
+  std::mt19937 rng(89123);
+  std::uniform_real_distribution<double> uniform(0.0, 1.0);
+  std::normal_distribution<double> normal;
+  std::vector<double> predictors, outcomes, a0, b0, a1, b1;
+  for (int row = 0; row < rows; ++row) {
+    const double a = 2 * uniform(rng) - 1, b = 2 * uniform(rng) - 1;
+    const double probability = 1 / (1 + std::exp(-(-.35 + 2.1 * a - 1.4 * b)));
+    const bool positive = uniform(rng) < probability;
+    predictors.insert(predictors.end(), {1., a, b});
+    outcomes.push_back(positive);
+    (positive ? a1 : a0).push_back(a);
+    (positive ? b1 : b0).push_back(b);
+  }
+  std::vector<double> walk, probes, normals(samples * 3);
+  for (int i = 0; i < queries; ++i) {
+    const double t = -3. + 6. * i / (queries - 1);
+    walk.push_back(t);
+    probes.insert(probes.end(), {1., t, -.5 * t});
+  }
+  for (double& value : normals)
+    value = normal(rng);
+
+  const auto x = n::from_vector(predictors, {rows, 3});
+  const auto y = n::from_vector(outcomes, {rows, 1});
+  const auto design = n::from_vector(probes, {queries, 3});
+  const auto noise = n::from_vector(normals, {3, samples});
+  const auto fit = n::ml::FitBayesianLogisticLaplace(x, y, 1., 12);
+  const auto draws = fit.mode + n::matmul(n::cholesky(fit.covariance), noise);
+  const auto at_mode = n::sigmoid(n::matmul(design, fit.mode));
+  const auto integrated = n::mean(n::sigmoid(n::matmul(design, draws)), {1});
+  const auto gradient_norm = n::sqrt(n::sum(n::square(fit.gradient))).item();
+  const auto change = n::max(n::abs(n::reshape(at_mode, {queries}) - integrated)).item();
+  if (gradient_norm >= 1e-9 || !std::isfinite(change) || change <= 0)
+    throw std::runtime_error("mode stationarity or predictive integration check");
+  std::println("| Diagnostic | Value |\n| --- | ---: |");
+  std::println("| Mode gradient norm | {:.3g} |\n| Posterior coefficient draws | {} |", gradient_norm, samples);
+  std::println("| Largest change from integrating weights | {:.6f} |", change);
+
+  const std::string folder = "build/laplace_approximation/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "posterior.npz",
+               {{"x", x}, {"y", y}, {"probes", design}, {"mode", fit.mode},
+                {"gradient", fit.gradient}, {"hessian", fit.precision},
+                {"covariance", fit.covariance}, {"noise", noise}, {"draws", draws},
+                {"plugin", at_mode}, {"predictive", integrated}});
+
+  auto data = dm::graphics::RPlot::create(), fits = dm::graphics::RPlot::create();
+  data.points(a0, b0, "Outcome 0", {100, 116, 139}, 4)
+      .points(a1, b1, "Outcome 1", {37, 99, 235}, 4)
+      .title("Binary fitting observations").x_label("First feature").y_label("Second feature");
+  fits.lines(walk, at_mode.to_vector<double>(), "At posterior mode", {234, 88, 12})
+      .lines(walk, integrated.to_vector<double>(), "Posterior average", {37, 99, 235})
+      .title("Predictions along the probe slice").x_label("First feature").y_label("Probability of outcome 1")
+      .y_limits(0, 1);
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(data).add(fits).size(1280, 510).fit_panels().save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/laplace_approximation_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Diagnostic | Value |
+| --- | ---: |
+| Mode gradient norm | 1.83e-15 |
+| Posterior coefficient draws | 4096 |
+| Largest change from integrating weights | 0.020740 |
+\image(figures/laplace_approximation_fit.svg)
+// result_end

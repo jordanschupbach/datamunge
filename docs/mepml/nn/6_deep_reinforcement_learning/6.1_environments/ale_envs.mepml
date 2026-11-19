@@ -3,9 +3,28 @@
 //? Lang: en-GB
 
 \abstract(
-Native reusable physics/frame/data/model components support the full editable source protocol. Original seeds, control loops, objective/optimizer steps and actual default budgets are retained. Optional emulator execution and native physical task definitions are labelled explicitly.
+An Atari agent repeats each action across four emulator frames. The
+preprocessor pools the last two grayscale frames to reduce flicker,
+resizes the result to 84 by 84 pixels, and stacks four observations to
+retain information about motion.
 )
 \toc
+
+The recorded clip uses ALE 0.11.2 and its bundled homebrew Tetris ROM.
+To regenerate the clip in a Datamunge C++ docs shell with `ffmpeg` on
+PATH, build the ALE package from the upstream checkout and point the
+report runner at its SDK and ROM directory.
+
+```
+ale_sdk=$(nix build --no-link --print-out-paths "$HOME/projects/tflow_examples#ale")
+export ALE_ROM_DIR="$ale_sdk/share/ale/roms"
+export DM_ALE_CXX_FLAGS="-DDATAMUNGE_EXAMPLES_ENABLE_ALE -I$ale_sdk/include $ale_sdk/lib/libale.a -lz"
+mep-mepml run docs/mepml/nn/6_deep_reinforcement_learning/6.1_environments/ale_envs.mepml
+```
+
+The link command also needs the zlib development library on its search
+path. A regular docs run executes the synthetic diagnostic and keeps
+the recorded emulator video.
 
 > Follow the actual data path
 
@@ -21,7 +40,7 @@ int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(
 
 > A hand-checkable calculation
 
-Pooling byte frames1,4 and3,2 gives3,4. A nonempty mismatched previous screen is rejected. This local build exercises the original synthetic moving/flickering sprite, with emulator execution explicitly skipped.
+Pooling byte frames [1, 4] and [3, 2] gives [3, 4]. The synthetic check isolates flicker by showing a moving sprite on alternating frames.
 
 ```{cpp, results="markdown", file="figures/ale_envs_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -37,9 +56,11 @@ int main(){std::filesystem::create_directories("build");std::vector<unsigned cha
 
 > Complete preserved source protocol
 
-The code retains the source seeds, actual default caps and original optional full settings. Every controller, rollout, replay, objective, gradient/clipping/optimizer step and update schedule remains editable. Read-only capture hooks add no random draws or evaluations. In the local ALE-free build, the original synthetic preprocessing/Nature-update checks execute and emulator rollouts are explicitly skipped. Native InvertedPendulum/Hopper use datamunge physics; their smoke results establish execution and finite updates, without convergence or external-simulator parity. Timing rows are machine-dependent and excluded from source stdout equality checks.
+The optional emulator run executes five seeded random-policy episodes
+and records up to 400 subsequent agent steps. It also runs the synthetic
+diagnostic, which supplies the plots below. Throughput depends on the host.
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) $(echo ${DM_ALE_CXX_FLAGS:-}) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 namespace report_capture {
 inline dm::nn::NamedTensors arrays;inline std::map<std::string,std::vector<double>> traces;
@@ -58,15 +79,8 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // available (Tetris by default, anything in data/roms/), measures throughput,
 // and checks that motion is visible in the stack.
 //
-// Deviations: ALE is not a datamunge dependency (the plan keeps emulators out
-// of scope), so the emulator part only runs when the example is compiled with
-// ALE on the include path (common/rl/ale_env.hpp, DATAMUNGE_EXAMPLES_HAVE_ALE)
-// and linked with libale; `just run-nn` builds without it. Without ALE the
-// program lists the ROMs and runs the same preprocessing code
-// (rl::AtariFrameStack) on a synthetic 160x210 test screen with a flickering,
-// moving sprite instead. The video (raw screen next to the 4 stacked frames)
-// is omitted in both cases. Options: game=<name>.
-
+// Build with DATAMUNGE_EXAMPLES_ENABLE_ALE and link libale to record gameplay.
+// The synthetic diagnostic uses the same frame stack and runs in either build.
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
@@ -153,18 +167,12 @@ inline void Header(const std::string& title) {
 // is looked up in data/roms/ and then $ALE_ROM_DIR (the flake points that
 // at the free Tetris ROM shipped with ALE).
 
-#if defined(DATAMUNGE_EXAMPLES_DISABLE_ALE)
-// Build systems can select the dependency-free preprocessing path even when
-// an unrelated development shell exposes ALE headers.
-#define DATAMUNGE_EXAMPLES_HAVE_ALE 0
-#else
-#if __has_include(<ale/ale_interface.hpp>)
+#if defined(DATAMUNGE_EXAMPLES_ENABLE_ALE)
 #define DATAMUNGE_EXAMPLES_HAVE_ALE 1
 #include <ale/ale_interface.hpp>
 #include <ale/common/Log.hpp>
 #else
 #define DATAMUNGE_EXAMPLES_HAVE_ALE 0
-#endif
 #endif
 
 
@@ -396,7 +404,6 @@ double StackDifference(const rl::Obs& obs) {
   return s / P;
 }
 
-#if !DATAMUNGE_EXAMPLES_HAVE_ALE
 // A 160x210 grayscale "screen": dark background, a bright 8x8 sprite moving 3 px
 // per emulator frame, drawn only on even frames (Atari-style flicker).
 std::vector<unsigned char> TestScreen(int frame) {
@@ -410,9 +417,7 @@ std::vector<unsigned char> TestScreen(int frame) {
 }
 
 void SyntheticPipeline() {
-  std::printf("== ALE is not built in: the emulator part is skipped (see the header).\n"
-              "   The DQN preprocessing runs on a synthetic 160x210 screen instead\n"
-              "   (an 8x8 sprite moving 3 px per frame, visible only on even frames).\n");
+  std::puts("== Synthetic flicker diagnostic: an 8x8 sprite moves 3 pixels per frame");
   rl::AtariFrameStack stack(160, 210);
   for (int i = 0; i < rl::AtariFrameStack::kStack; ++i) stack.PushFrame(TestScreen(0));
   rl::Obs obs = stack.StackedObs();
@@ -444,7 +449,6 @@ void SyntheticPipeline() {
   report_capture::Save("frame_stack",obs);report_capture::Save("pooled_peaks",std::vector<double>{min_peak_plain,min_peak_pooled});
   check::Require(diff > 0.001, "the stack should show the sprite's motion");
 }
-#endif
 
 }  // namespace
 
@@ -476,22 +480,52 @@ int main(int argc, char** argv) {
     const double steps = stats.mean_length() * 5;
     std::printf("  throughput: %.0f agent steps/s = %.0f emulator frames/s (with preprocessing)\n", steps / secs, 4 * steps / secs);
 
-    // tflow films these 400 steps (raw screen and the four stacked frames); the video is omitted.
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    const auto clip = "ale_" + std::filesystem::path(game).filename().string() + "_preprocessing.mp4";
+    dm::cad::RenderResult frame;
+    frame.width = (env.raw_width()*3+198+1)&~1;
+    frame.height = (std::max(env.raw_height()*3,188)+1)&~1;
+    frame.rgba.assign(std::size_t(frame.width)*frame.height*4,255);
+    dm::cad::VideoWriter writer(std::string("build/")+clip,frame.width,frame.height,15);
+    const auto paint = [&](int x,int y,unsigned char red,unsigned char green,unsigned char blue) {
+      auto* pixel=frame.rgba.data()+4*(std::size_t(y)*frame.width+x);
+      pixel[0]=red; pixel[1]=green; pixel[2]=blue;
+    };
     rl::Obs obs = env.reset(1);
     for (int t = 0; t < 400; ++t) {
       rl::StepResult r = env.step(env.action_space().Sample(rng));
       obs = r.obs;
+      for (std::size_t p=0;p<frame.rgba.size();p+=4)
+        frame.rgba[p]=frame.rgba[p+1]=frame.rgba[p+2]=20;
+      const auto& raw=env.rgb();
+      for (int y=0;y<env.raw_height()*3;++y)
+        for (int x=0;x<env.raw_width()*3;++x) {
+          const auto pixel=3*((y/3)*env.raw_width()+x/3);
+          paint(x,y,raw[pixel],raw[pixel+1],raw[pixel+2]);
+        }
+      for (int tile=0;tile<4;++tile)
+        for (int y=0;y<84;++y)
+          for (int x=0;x<84;++x) {
+            const auto gray=static_cast<unsigned char>(255*obs[(tile*84+y)*84+x]);
+            paint(env.raw_width()*3+10+(tile%2)*94+x,(tile/2)*94+y,gray,gray,gray);
+          }
+      writer.append(frame);
       if (r.done()) break;
     }
+    writer.finish();
+    std::filesystem::copy_file(std::string("build/")+clip,std::string("figures/")+clip,
+                               std::filesystem::copy_options::overwrite_existing);
+    std::print("  Recorded {} frames at 15 fps\n",writer.frames_written());
     const double diff = StackDifference(obs);
     std::printf("  frame stack difference (newest - oldest, mean |diff| over pixels): %.4f -> motion is visible to the network\n", diff);
     check::Require(static_cast<int>(obs.size()) == env.obs_size(), "the observation is 4 stacked 84x84 frames");
     check::Require(diff > 0, "the stack should show motion");
 #else
     (void)game;
-    SyntheticPipeline();
 #endif
-    std::cout << "\nchecks passed (video omitted)\n";
+    SyntheticPipeline();
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -501,15 +535,18 @@ int main(int argc, char** argv) {
 
 ```
 // result_begin:
-// == available ROMs:   (pass game=<name> to pick one)
-// == ALE is not built in: the emulator part is skipped (see the header).
-//    The DQN preprocessing runs on a synthetic 160x210 screen instead
-//    (an 8x8 sprite moving 3 px per frame, visible only on even frames).
+// == available ROMs: tetris   (pass game=<name> to pick one)
+// == Atari(tetris): Discrete(5), 5 actions: NOOP FIRE RIGHT LEFT DOWN
+//   random policy, 5 episodes        return mean     0.00  min     0.00  max     0.00   length mean  512.6
+//   throughput: 2337 agent steps/s = 9347 emulator frames/s (with preprocessing)
+//   Recorded 400 frames at 15 fps
+//   frame stack difference (newest - oldest, mean |diff| over pixels): 0.0012 -> motion is visible to the network
+// == Synthetic flicker diagnostic: an 8x8 sprite moves 3 pixels per frame
 //   obs: 28224 floats = 4 frames of 84x84, values in [0.078, 0.902]
 //   brightest pixel of the last frame alone: 0.078, after max-pooling the last two frames: 0.902 -> flicker removed
 //   frame stack difference (newest - oldest, mean |diff| over pixels): 0.0031 -> motion is visible to the network
 //
-// checks passed (video omitted)
+// checks passed
 // result_end
 
 > Actual source diagnostics
@@ -526,7 +563,7 @@ int main(){auto data=dm::nn::load_npz("build/ale_envs_source.npz");auto plot=dm:
 
 > Inspect the actual final four-frame synthetic stack
 
-Each tile is one retained84-square frame, oldest to newest, from the source moving/flickering sprite check. Values are normalized raw grayscale intensities; these frames are synthetic, not an Atari game.
+Each tile shows one 84-by-84 frame from the synthetic moving-sprite check, ordered from oldest to newest. Values are normalized grayscale intensities.
 
 ```{cpp, results="markdown", file="figures/ale_envs_stack.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -536,6 +573,12 @@ int main(){auto data=dm::nn::load_npz("build/ale_envs_source.npz");auto it=std::
 \image(figures/ale_envs_stack.png)
 // result_end
 
-> Interpretation and provenance
+> Emulator playback
 
-The displayed checks belong to the original local native protocol. Optional runtime skips, deferred quality checks and machine timings remain explicit. Canonical components contain reusable physical/frame adapters and pure graphs/return algebra; the report owns the experiment and its optimizer state.
+In the recorded Tetris run, five seeded random episodes averaged 512.6 agent steps and earned zero reward. The mean absolute difference between the oldest and newest frames of the final stack was 0.0012.
+
+The raw screen is on the left. The agent’s four grayscale frames are
+on the right, oldest to newest in reading order.
+
+\video(figures/ale_tetris_preprocessing.mp4)
+\caption(Tetris with a seeded random policy, recorded at 15 agent steps per second.)

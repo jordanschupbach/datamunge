@@ -1,0 +1,127 @@
+//? Title: Neural Itô SDE with learned drift and diffusion
+//? Lang: en
+
+> Neural Itô SDE with learned drift and diffusion
+
+The model learns drift and state-dependent diffusion from noisy
+transitions observed at varying time increments. A Gaussian Euler
+step has mean equal to the initial state plus drift times the increment.
+Its standard deviation is the diffusion coefficient times the square
+root of that increment. The network applies softplus and a small
+positive floor to its diffusion output.
+
+Training minimizes the mean negative log likelihood of independent
+transitions. For simulation, 128 paths start at each of −1 and +1.
+The learned process and reference simulator use the same normal draws.
+This reduces Monte Carlo noise when comparing their endpoint means
+and spreads after 40 steps.
+
+```{cpp, results="markdown", file="figures/neural_sde.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n=dm::nn;
+double drift(double x) {return -.65*x+.25*std::sin(1.7*x);}
+double diffusion(double x) {return .14+.26/(1+std::exp(-2*x));}
+
+int main() {
+  const auto data=[](int rows,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> state(-2,2),step(.035,.18);
+    std::normal_distribution<double> noise;
+    std::vector<float> input,target;
+    for(int i=0;i<rows;++i) {
+      const float x=state(rng),dt=step(rng);
+      input.insert(input.end(),{x,dt});
+      target.push_back(x+dt*drift(x)+std::sqrt(dt)*diffusion(x)*noise(rng));
+    }
+    return std::pair{n::from_vector(input,{rows,2}),n::from_vector(target,{rows,1})};
+  };
+  const auto [fit_x,fit_y]=data(2048,31721);
+  const auto [test_x,test_y]=data(512,31722);
+  n::ParameterStore model(41380);
+  const auto apply=[&](const n::Tensor& x) {
+    return n::neural_sde_transition(model,n::slice_axis(x,1,0,1),n::slice_axis(x,1,1,2));
+  };
+  const auto loss=[&](const n::Tensor& x,const n::Tensor& y) {return n::neural_sde_nll(apply(x),y);};
+  const auto initial=loss(test_x,test_y).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(2048,32,31723);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x,rows),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+  }
+  n::NoGradGuard guard;
+  const auto result=apply(test_x);
+  const auto nll=n::neural_sde_nll(result,test_y);
+  constexpr int count=256, steps=40;
+  constexpr float dt=.05f;
+  std::vector<float> state(count),paths(count*(steps+1)),brownian(count*steps);
+  std::vector<double> oracle(paths.size());
+  for(int row=0;row<count;++row)
+    oracle[row*(steps+1)]=paths[row*(steps+1)]=state[row]=row<count/2?-1.f:1.f;
+  std::mt19937 rng(31724);
+  std::normal_distribution<float> normal;
+  const auto interval=n::full({count,1},dt);
+  for(int step=0;step<steps;++step) {
+    const auto prediction=n::neural_sde_transition(model,n::from_vector(state,{count,1}),interval);
+    const auto mu=prediction.mean.to_vector<float>(),sigma=prediction.sigma.to_vector<float>();
+    for(int row=0;row<count;++row) {
+      const float z=normal(rng);
+      const auto at=row*(steps+1)+step;
+      brownian[row*steps+step]=z;
+      paths[at+1]=state[row]=mu[row]+sigma[row]*z;
+      const double x=oracle[at];
+      oracle[at+1]=x+dt*drift(x)+std::sqrt(dt)*diffusion(x)*z;
+    }
+  }
+  if (updates!=192 || !(nll.item()<initial) ||
+      !std::all_of(paths.begin(),paths.end(),[](float x){return std::isfinite(x);}))
+    throw std::runtime_error("SDE likelihood or rollout check failed");
+  std::print("Held-out transition NLL changed from {:.6f} to {:.6f}.\n\n",initial,nll.item());
+  std::print("| Starting state | Fitted endpoint mean | Reference mean | Fitted SD | Reference SD |\n|---:|---:|---:|---:|---:|\n");
+  auto layout=dm::graphics::RLayout::create(1,2);
+  std::vector<double> time;
+  for(int i=0;i<=steps;++i) time.push_back(i*dt);
+  for(int group=0;group<2;++group) {
+    std::vector<double> a(steps+1),b(steps+1);
+    double aa=0,bb=0;
+    for(int row=group*128;row<(group+1)*128;++row) {
+      for(int t=0;t<=steps;++t) {
+        a[t]+=paths[row*(steps+1)+t]/128.;
+        b[t]+=oracle[row*(steps+1)+t]/128.;
+      }
+      aa+=std::pow(paths[row*(steps+1)+steps],2)/128;
+      bb+=std::pow(oracle[row*(steps+1)+steps],2)/128;
+    }
+    std::print("| {} | {:.5f} | {:.5f} | {:.5f} | {:.5f} |\n",group?1:-1,a.back(),b.back(),
+               std::sqrt(aa-a.back()*a.back()),std::sqrt(bb-b.back()*b.back()));
+    auto plot=dm::graphics::RPlot::create();
+    plot.lines(time,a,"Fitted",{220,90,45}).lines(time,b,"Reference",{37,99,235})
+        .title(group?"Initial state +1":"Initial state −1").x_label("Time").y_label("Mean state");
+    layout.add(plot);
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1050,420).fit_panels().save_svg("build/neural_sde.svg");
+  n::save_npz("build/neural_sde.npz",{{"input",test_x.reshape({512,2,1})},{"target",test_y},
+       {"prediction",n::concat({result.mean,result.sigma},1)},{"loss",nll},
+       {"paths",n::from_vector(paths,{count,steps+1})},{"oracle",n::from_vector(oracle,{count,steps+1})},
+       {"standard_normal",n::from_vector(brownian,{count,steps})}});
+}
+```
+// result_begin: markdown
+Held-out transition NLL changed from -0.489405 to -1.044428.
+
+| Starting state | Fitted endpoint mean | Reference mean | Fitted SD | Reference SD |
+|---:|---:|---:|---:|---:|
+| -1 | -0.52957 | -0.49722 | 0.16019 | 0.19637 |
+| 1 | 0.10737 | 0.46685 | 0.28802 | 0.33486 |
+\image(figures/neural_sde.svg)
+// result_end
+\caption(Mean paths for the fitted and reference simulators using common noise draws.)
+
+The fitted process underestimates the endpoint mean from +1 even
+though the held-out one-step likelihood improves.

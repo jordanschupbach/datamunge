@@ -1,0 +1,135 @@
+//? Title: Sparse GCN on Cora
+//? Lang: en
+
+> Sparse GCN on Cora
+
+Cora links research papers by citation. Each paper has a bag-of-words vector
+and one of seven subject labels. The loader normalizes each word vector by
+its word count and turns citations into a weighted, undirected graph. It
+combines repeated edges, adds one self-loop per node, and scales each edge
+by the inverse square root of its two endpoint degrees.
+
+The first graph convolution aggregates the word features and projects them
+into 16 channels. A second sparse propagation step feeds the class scores.
+Only 20 labels per subject are used for optimization. All 2,708 feature
+vectors and the full graph participate in both propagation steps. The other
+2,568 labels measure performance on unseen labels within the same graph.
+
+```{cpp, results="markdown", file="figures/cora_gcn_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto data = dm::datasets::load_cora();
+  const auto nodes = data.features.size(0);
+  const auto propagate = [&](const n::Tensor &signal, bool transpose = false) {
+    return n::coo_matmul(data.coordinates, data.weights, {nodes, nodes}, signal, transpose);
+  };
+
+  const auto words = propagate(data.features);
+  const auto training_labels = n::gather(data.labels, data.training);
+  const auto test_labels = n::gather(data.labels, data.test);
+  n::ParameterStore parameters(49302);
+  const auto forward = [&]() {
+    const auto hidden = n::dense(parameters, "hidden", words, 16, n::Activation::Relu);
+    const auto messages = propagate(hidden);
+    return std::array{hidden, messages, n::dense(parameters, "head", messages, 7)};
+  };
+  const auto training_loss = [&](const n::Tensor &scores) {
+    return n::sparse_softmax_cross_entropy(n::gather(scores, data.training), training_labels);
+  };
+
+  forward();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(parameters, .10, config);
+  std::vector<double> epochs, fit_nll, test_nll, accuracy;
+  std::array<int, 7> label_counts{};
+  for (const int label : test_labels.to_vector<int>())
+    ++label_counts.at(label);
+  const auto majority = *std::max_element(label_counts.begin(), label_counts.end());
+  const auto test_size = data.test.size(0);
+
+  std::print("| update | fitting NLL | held-out NLL | correct |\n|---:|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    const auto scores = forward()[2];
+    const auto objective = training_loss(scores);
+    {
+      n::NoGradGuard guard;
+      const auto test_scores = n::gather(scores, data.test);
+      const auto correct =
+          n::count_nonzero(n::equal(n::argmax(test_scores, 1), test_labels)).item<int>();
+      epochs.push_back(epoch);
+      fit_nll.push_back(objective.item());
+      test_nll.push_back(n::sparse_softmax_cross_entropy(test_scores, test_labels).item());
+      accuracy.push_back(double(correct) / test_size);
+      std::print("| {} | {:.6f} | {:.6f} | {}/{} |\n",
+                 epoch, fit_nll.back(), test_nll.back(), correct, test_size);
+    }
+    if (epoch < 3)
+      adam.minimize(objective);
+  }
+
+  const auto [hidden, messages, scores] = forward();
+  auto inputs = parameters.parameters();
+  inputs.push_back(hidden);
+  inputs.push_back(messages);
+  const auto derivatives = n::grad(training_loss(scores), inputs);
+  const auto explicit_adjoint = propagate(derivatives.back(), true);
+  const auto adjoint_error =
+      n::max(n::abs(explicit_adjoint - derivatives[derivatives.size() - 2])).item();
+  if (adjoint_error > 2e-6)
+    throw std::runtime_error("sparse transpose and automatic derivative disagree");
+
+  std::print("Graph entries {}. Sparse adjoint maximum error {:.3g}. "
+             "Held-out majority reference {}/{}.\n",
+             data.weights.size(0), adjoint_error, majority, test_size);
+  n::NamedTensors evidence{{"features", data.features}, {"indices", data.coordinates},
+                           {"values", data.weights}, {"labels", data.labels},
+                           {"train_ids", data.training}, {"test_ids", data.test},
+                           {"propagated", words}, {"hidden", hidden}, {"logits", scores},
+                           {"test_nll", n::from_vector(test_nll)}};
+  for (std::size_t i = 0; i < parameters.names().size(); ++i) {
+    const auto &name = parameters.names()[i];
+    evidence.emplace_back(name, parameters.at(name));
+    evidence.emplace_back("gradient/" + name, derivatives[i]);
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/cora_gcn_fit.npz", evidence);
+
+  auto losses = dm::graphics::RPlot::create();
+  losses.lines(epochs, fit_nll, "Fitting labels", {37, 99, 235})
+      .lines(epochs, test_nll, "Held-out labels", {185, 28, 28})
+      .title("Node classification loss").x_label("Adam update").y_label("NLL");
+  auto correct = dm::graphics::RPlot::create();
+  correct.lines(epochs, accuracy, "Sparse GCN", {22, 120, 97})
+      .lines(epochs, std::vector<double>(epochs.size(), double(majority) / test_size),
+             "Held-out majority reference", {100, 116, 139})
+      .title("Classification on held-out labels").x_label("Adam update").y_label("Fraction correct")
+      .y_limits(0, 1);
+  dm::graphics::RLayout::create(1, 2).add(losses).add(correct).size(1050, 440)
+      .fit_panels().save_svg("build/cora_gcn_fit.svg");
+}
+```
+// result_begin: markdown
+| update | fitting NLL | held-out NLL | correct |
+|---:|---:|---:|---:|
+| 0 | 1.946905 | 1.946805 | 204/2568 |
+| 1 | 1.928681 | 1.929262 | 408/2568 |
+| 2 | 1.895317 | 1.922950 | 592/2568 |
+| 3 | 1.821403 | 1.865684 | 1131/2568 |
+Graph entries 13264. Sparse adjoint maximum error 0. Held-out majority reference 798/2568.
+\image(figures/cora_gcn_fit.svg)
+// result_end
+\caption(Fitting and held-out likelihood plus held-out accuracy after each of the three updates. The gray line is the accuracy of always predicting the most common held-out class.)
+\alttext(Line plots showing fitting and held-out loss, and held-out accuracy compared with a majority-class reference.)
+
+The majority reference uses the held-out class distribution as a descriptive
+comparison. It does not influence the optimizer. The fixed graph makes this
+a transductive evaluation.
+
+> References
+
+- [Kipf and Welling (2017), Semi-Supervised Classification with Graph Convolutional Networks](https://arxiv.org/abs/1609.02907).
+- [Original Cora tables from the pinned pygcn mirror](https://github.com/tkipf/pygcn/tree/1600b5b748b3976413d1e307540ccc62605b4d6d/data/cora).

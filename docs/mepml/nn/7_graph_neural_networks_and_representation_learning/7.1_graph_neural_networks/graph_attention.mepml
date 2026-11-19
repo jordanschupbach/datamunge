@@ -1,0 +1,129 @@
+//? Title: Static and dynamic graph attention
+//? Lang: en
+
+> Static and dynamic graph attention
+
+Two queries share two possible sender nodes. A query should retrieve the
+binary payload of the sender with the matching sign. The graph mask allows
+each query to read both senders. Each sender can attend to itself.
+
+In the original GAT scoring rule, adding a receiver-specific scalar and
+applying a monotone activation preserves the sender ranking across
+receivers. GATv2 instead applies the activation to a vector formed from
+both nodes and then projects to a scalar score. The ranking can therefore
+depend on the query. This synthetic task isolates that distinction.
+
+```{cpp, results="markdown", file="figures/graph_attention_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto simulate = [](int count, std::mt19937 &rng) {
+    std::vector<float> features;
+    std::vector<int> labels;
+    std::uniform_real_distribution<float> noise(-.07f, .07f);
+    for (int graph = 0; graph < count; ++graph) {
+      const int sign = rng() % 2 ? 1 : -1;
+      const std::array payload{int(rng() % 2), int(rng() % 2)};
+      for (int node = 0; node < 4; ++node) {
+        const bool query = node < 2;
+        features.insert(features.end(), {sign * (node % 2 ? 1.f : -1.f) + noise(rng),
+                        query ? 1.f : -1.f, query ? 0.f : 2.f * payload[node - 2] - 1.f, noise(rng)});
+        if (query)
+          labels.push_back(payload[node]);
+      }
+    }
+    return std::pair{n::from_vector(features, {count, 4, 4}), n::from_vector(labels)};
+  };
+  std::mt19937 fitting(48402), evaluation(48403);
+  std::vector<std::pair<n::Tensor, n::Tensor>> fit;
+  for (int i = 0; i < 24; ++i)
+    fit.push_back(simulate(32, fitting));
+  const auto [test_x, test_y] = simulate(96, evaluation);
+  const auto mask = n::tensor({0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1},
+                              {4, 4}, n::DType::Bool);
+
+  auto diagnostic = dm::graphics::RPlot::create();
+  diagnostic.title("Held-out lookup loss").x_label("Epoch").y_label("NLL");
+  auto matching = dm::graphics::RPlot::create();
+  matching.title("Queries ranking the matching key first").x_label("Epoch")
+      .y_label("Held-out fraction").y_limits(0, 1.05);
+  std::filesystem::create_directories("build");
+  std::print("| head | epoch | held-out NLL | correct | matching key first |\n"
+             "|---|---:|---:|---:|---:|\n");
+
+  for (const bool dynamic : {false, true}) {
+    const std::string name = dynamic ? "GATv2" : "GAT";
+    n::ParameterStore model(48401);
+    const auto forward = [&](const n::Tensor &x) {
+      const auto head = n::graph_attention_head(model, "attention", x, mask, 12, dynamic);
+      const auto queries = n::slice_axis(head.output, 1, 0, 2);
+      return std::pair{head, n::dense(model, "head", queries.reshape({-1, 12}), 2)};
+    };
+    forward(test_x);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .023, config);
+    std::vector<double> epochs, losses, ranks;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        const auto [head, logits] = forward(test_x);
+        const auto correct = n::count_nonzero(n::equal(n::argmax(logits, 1), test_y)).item<int>();
+        const auto key_scores = n::slice_axis(n::slice_axis(head.scores, 1, 0, 2), 2, 2, 4);
+        const auto ranked = n::argmax(key_scores, 2);
+        const auto target = n::tensor({0, 1}, {1, 2}, n::DType::Int64);
+        const auto hits = n::count_nonzero(n::equal(ranked, target)).item<int>();
+        epochs.push_back(epoch);
+        losses.push_back(n::sparse_softmax_cross_entropy(logits, test_y).item());
+        ranks.push_back(hits / 192.);
+        std::print("| {} | {} | {:.6f} | {}/192 | {}/192 |\n",
+                   name, epoch, losses.back(), correct, hits);
+      }
+      if (epoch < 3)
+        for (const auto &[x, labels] : fit)
+          adam.minimize(n::sparse_softmax_cross_entropy(forward(x).second, labels));
+    }
+
+    n::NoGradGuard guard;
+    const auto [head, logits] = forward(test_x);
+    if (n::max(n::abs(n::sum(head.attention, {-1}) - 1.)).item() > 1e-6 ||
+        n::max(n::abs(n::where(mask, 0., head.attention))).item() != 0.)
+      throw std::runtime_error("graph attention mask check failed");
+    n::NamedTensors evidence{{"x", test_x}, {"y", test_y}, {"mask", mask}, {"scores", head.scores},
+                             {"attention", head.attention}, {"logits", logits},
+                             {"test_nll", n::from_vector(losses)}};
+    for (const auto &key : model.names())
+      evidence.emplace_back(key, model.at(key));
+    n::save_npz("build/graph_attention_" + name + ".npz", evidence);
+    const dm::graphics::RGBA color = dynamic ? dm::graphics::RGBA{22, 120, 97}
+                                             : dm::graphics::RGBA{37, 99, 235};
+    diagnostic.lines(epochs, losses, name, color);
+    matching.lines(epochs, ranks, name, color);
+  }
+
+  dm::graphics::RLayout::create(1, 2).add(diagnostic).add(matching).size(1100, 420)
+      .fit_panels().save_svg("build/graph_attention_fit.svg");
+}
+```
+// result_begin: markdown
+| head | epoch | held-out NLL | correct | matching key first |
+|---|---:|---:|---:|---:|
+| GAT | 0 | 0.564590 | 149/192 | 96/192 |
+| GAT | 1 | 0.312560 | 149/192 | 96/192 |
+| GAT | 2 | 0.311027 | 149/192 | 96/192 |
+| GAT | 3 | 0.310884 | 149/192 | 96/192 |
+| GATv2 | 0 | 0.870148 | 93/192 | 96/192 |
+| GATv2 | 1 | 0.009901 | 192/192 | 192/192 |
+| GATv2 | 2 | 0.000260 | 192/192 | 192/192 |
+| GATv2 | 3 | 0.000143 | 192/192 | 192/192 |
+\image(figures/graph_attention_fit.svg)
+// result_end
+\caption(Held-out classification loss and the fraction of queries whose matching key ranks first after each epoch.)
+\alttext(Two line charts comparing GAT and GATv2 held-out loss and matching-key rank.)
+
+> References
+
+- [Veličković et al. (2018), Graph Attention Networks](https://arxiv.org/abs/1710.10903).
+- [Brody, Alon, and Yahav (2022), How Attentive are Graph Attention Networks?](https://arxiv.org/abs/2105.14491).

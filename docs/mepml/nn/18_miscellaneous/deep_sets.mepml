@@ -1,0 +1,145 @@
+//? Title: Deep Sets with masked mean pooling
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit a permutation-invariant regressor to sets of up to eight elements, then
+test on independent sets of nine to twelve elements. Check that scrambling
+element order and replacing padding leave the prediction unchanged.
+)
+
+> Learn from elements without assigning meaning to their order
+
+Deep Sets apply the same encoder to every element and pool the resulting
+vectors before prediction. A symmetric reduction gives the same result
+under any permutation. Here the encoder is a shared tanh layer and the
+readout is linear. Mean pooling matches the scale of the target across
+set sizes. This choice discards cardinality information, so a task whose
+target changes with the number of elements may need a sum or an explicit
+count feature.
+
+Each valid element has features (1, x). The target is the mean of
+`sin(1.8*x) + 0.45*x*x` over valid elements. The constant feature plays
+the role of an encoder bias. `dm::nn::masked_mean` excludes padded elements
+and returns zero for an empty set. The bias-free readout preserves that zero.
+
+> Fit short sets and test on larger ones
+
+The data, seeds, hidden width, initial weights and SGD schedule follow the
+TensorFlow example. The report owns the three-epoch training loop and calls
+Datamunge for the layer operations, differentiation and updates.
+
+```{cpp, results="markdown", file="figures/deep_sets.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+constexpr int width = 12;
+struct Sets { nn::Tensor values, keep, target; };
+
+Sets make_sets(int count, unsigned seed, int min_size, int max_size) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> value(-1, 1);
+    std::uniform_int_distribution<int> size(min_size, max_size);
+    std::vector<double> x(count * width * 2), keep(count * width), y(count);
+    for (int i = 0; i < count; ++i) {
+        const int length = size(rng);
+        for (int j = 0; j < width; ++j) {
+            const int at = i * width + j;
+            const double z = value(rng);
+            x[2 * at] = 1;
+            x[2 * at + 1] = z;
+            keep[at] = j < length;
+            if (j < length) y[i] += std::sin(1.8 * z) + .45 * z * z;
+        }
+        y[i] /= std::max(1, length);
+    }
+    return {nn::from_vector(x, {count, width, 2}), nn::from_vector(keep, {count, width}),
+            nn::from_vector(y, {count, 1})};
+}
+
+int main() {
+    nn::set_num_threads(2);
+    std::mt19937 rng(40915);
+    std::normal_distribution<double> normal(0, .55);
+    std::vector<double> initial(2 * width);
+    for (auto& value : initial) value = normal(rng);
+    const auto encoder = nn::from_vector(initial, {2, width}).requires_grad_();
+    const auto readout = nn::zeros({width, 1}, nn::DType::Float64).requires_grad_();
+    const std::vector<nn::Tensor> parameters{encoder, readout};
+    nn::Optimizer sgd(parameters, .19);
+    const auto predict = [&](const nn::Tensor& values, const nn::Tensor& keep) {
+        const auto embedded = nn::tanh(nn::matmul(values, encoder));
+        return nn::matmul(nn::masked_mean(embedded, keep), readout);
+    };
+    const auto mse = [](const auto& estimate, const auto& target) {
+        return nn::mean(nn::square(estimate - target));
+    };
+    const auto fit = make_sets(384, 40916, 0, 8);
+    const auto test = make_sets(128, 40917, 9, width);
+    const double before = mse(predict(test.values, test.keep), test.target).item();
+    std::vector<double> epochs{0}, training{mse(predict(fit.values, fit.keep), fit.target).item()};
+    for (int epoch = 1; epoch <= 3; ++epoch) {
+        for (int row = 0; row < 384; row += 32) {
+            const auto batch = [&](const auto& t) { return nn::slice_axis(t, 0, row, row + 32); };
+            const auto loss = mse(predict(batch(fit.values), batch(fit.keep)), batch(fit.target));
+            sgd.step(nn::grad(loss, parameters));
+        }
+        epochs.push_back(epoch);
+        training.push_back(mse(predict(fit.values, fit.keep), fit.target).item());
+    }
+    const nn::NoGradGuard no_grad;
+    const auto prediction = predict(test.values, test.keep);
+    const double after = mse(prediction, test.target).item();
+
+    auto permuted_values = test.values.to_vector<double>();
+    auto permuted_keep = test.keep.to_vector<double>();
+    std::vector<int> order(width);
+    std::iota(order.begin(), order.end(), 0);
+    for (int row = 0; row < 128; ++row) {
+        std::shuffle(order.begin(), order.end(), rng);
+        for (int j = 0; j < width; ++j) {
+            const bool valid = test.keep.at({row, order[j]}) != 0;
+            permuted_keep[row * width + j] = valid;
+            for (int c = 0; c < 2; ++c)
+                permuted_values[2 * (row * width + j) + c] =
+                    valid ? test.values.at({row, order[j], c}) : 37 + j;
+        }
+    }
+    const auto permuted = predict(nn::from_vector(permuted_values, {128, width, 2}),
+                                  nn::from_vector(permuted_keep, {128, width}));
+    const double difference = nn::max(nn::abs(prediction - permuted)).item();
+    const auto empty = make_sets(1, 40918, 0, 0);
+    const double empty_prediction = predict(empty.values, empty.keep).item();
+    if (!(after < .4 * before) || difference > 1e-12 || empty_prediction != 0)
+        throw std::runtime_error("Deep Sets fit or invariance check failed");
+
+    namespace g = dm::graphics;
+    auto fitted = g::RPlot::create().title("Held-out sets of size 9 to 12")
+        .x_label("True mean").y_label("Predicted mean")
+        .points(test.target.to_vector<double>(), prediction.to_vector<double>(), g::RGBA{42, 110, 171});
+    fitted.lines({-1, 1.4}, {-1, 1.4}, "Identity", {120, 120, 120});
+    auto losses = g::RPlot::create().title("Training on sets of size 0 to 8")
+        .x_label("Epoch").y_label("Mean squared error").lines(epochs, training);
+    std::filesystem::create_directories("build");
+    g::RLayout::create(1, 2).size(950, 400).add(fitted).add(losses).save_svg("build/deep_sets.svg");
+    nn::save_npz("build/deep_sets.npz", {
+        {"prediction", prediction}, {"shuffled_prediction", permuted},
+        {"phi", encoder}, {"rho", readout}
+    });
+    std::print("Test MSE {:.6f} to {:.6f}. Maximum change after reordering and replacing padding: {:.2e}. "
+               "Empty set prediction: {}.\n", before, after, difference, empty_prediction);
+}
+```
+// result_begin: markdown
+Test MSE 0.075295 to 0.002789. Maximum change after reordering and replacing padding: 1.11e-16. Empty set prediction: 0.
+\image(figures/deep_sets.svg)
+// result_end
+
+The held-out set sizes are all outside the training range. This works here
+because each target is itself an average of a function applied independently
+to each element. The numerical check tests both permutation invariance and
+insensitivity to finite values in the padded slots.
+
+> Reference
+
+- [Zaheer et al. (2017), Deep Sets|https://arxiv.org/abs/1703.06114].

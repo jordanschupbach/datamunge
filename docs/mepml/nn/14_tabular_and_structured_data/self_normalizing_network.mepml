@@ -1,0 +1,149 @@
+//? Title: Self-normalizing networks with SELU and LeCun initialization
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Compare activation moments over ten layers under SELU and ReLU. Then
+fit the SELU network to simulated regression data and evaluate predictions
+on a held-out set.
+)
+\toc
+
+SELU combines a linear positive branch with a saturating negative branch.
+With approximately standardized inputs and weights of variance one over
+fan-in, repeated layers can keep activation means near zero and variances
+near one. The effect depends on the input distribution and network design.
+This experiment measures it before training. The ReLU control uses the same
+initial weights and biases, so the activation is the only change.
+
+The regression target depends on three of 32 independent Gaussian inputs.
+The remaining inputs add features the model must learn to ignore. Three
+epochs of Adam fit the SELU model on 1,024 examples. The report uses
+Datamunge's native parameter initialization and evaluates 256 fresh rows.
+
+```{cpp, results="markdown", file="figures/self_normalizing_moments.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+constexpr int features = 32, width = 64, depth = 10;
+
+std::pair<n::Tensor,n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::normal_distribution<float> normal;
+  std::vector<float> x(count * features), y(count);
+  for (int i = 0; i < count; ++i) {
+    auto* row = x.data() + i * features;
+    for (int j = 0; j < features; ++j) row[j] = normal(rng);
+    y[i] = std::sin(row[0]) + .5f * row[1] - .4f * row[2] + .05f * normal(rng);
+  }
+  return {n::from_vector(x, {count,features}), n::from_vector(y, {count,1})};
+}
+
+int main() {
+  const auto [probe, probe_y] = simulate(2048, 19011);
+  const auto [x, y] = simulate(1024, 19012);
+  const auto [test, observed] = simulate(256, 19013);
+  n::ParameterStore parameters(41380);
+  n::DenseOptions options;
+  options.init = n::init::lecun_normal();
+  const auto transform = [&](n::Tensor h, n::Activation activation, std::vector<double>* moments = nullptr) {
+    for (int i = 0; i < depth; ++i) {
+      h = n::activate(n::dense(parameters, "layer_" + std::to_string(i), h, width, options), activation);
+      if (moments) {
+        const auto values = h.to(n::DType::Float64);
+        const auto average = n::mean(values);
+        moments->insert(moments->end(), {average.item(), n::mean(n::square(values-average)).item()});
+      }
+    }
+    return h;
+  };
+  const auto predict = [&](const n::Tensor& input) {
+    return n::dense(parameters, "response", transform(input, n::Activation::Selu), 1);
+  };
+
+  std::filesystem::create_directories("build/self_normalizing_network");
+  std::filesystem::create_directories("figures");
+  const std::string folder = "build/self_normalizing_network/";
+  std::vector<double> moments;
+  double initial;
+  {
+    n::NoGradGuard no_grad;
+    transform(probe, n::Activation::Selu, &moments);
+    transform(probe, n::Activation::Relu, &moments);
+    initial = n::sqrt(n::mean(n::square(predict(test) - observed))).item();
+  }
+  parameters.save(folder + "initial_weights.npz");
+  n::save_npz(folder + "initial.npz",
+      {{"x", probe.reshape({2048,features,1})}, {"moments", n::from_vector(moments,{2,depth,2})}});
+
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(1024, 32, 19014);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids = order.next(); !ids.empty(); ids = order.next()) {
+      const auto prediction = predict(n::take_rows(x, ids));
+      optimizer.minimize(n::mean(n::square(prediction - n::take_rows(y, ids))));
+    }
+  }
+  n::NoGradGuard no_grad;
+  const auto prediction = predict(test);
+  const auto loss = n::mean(n::square(prediction - observed));
+  if (optimizer.iterations() != 96 || !std::isfinite(loss.item()) || loss.item() >= initial * initial)
+    throw std::runtime_error("self-normalizing network did not improve");
+  parameters.save(folder + "trained_weights.npz");
+  n::save_npz(folder + "trained.npz",
+      {{"x", test.reshape({256,features,1})}, {"y", observed}, {"prediction", prediction}, {"loss", loss}});
+
+  std::println("| Diagnostic | Value |\n| --- | ---: |");
+  std::println("| Initial held-out RMSE | {:.5f} |\n| Fitted held-out RMSE | {:.5f} |",
+               initial, std::sqrt(loss.item()));
+  std::println("| Initial layer-10 SELU variance | {:.5f} |", moments[19]);
+  std::println("| Initial layer-10 ReLU variance | {:.5f} |", moments[39]);
+
+  const auto layers = n::arange(1, depth+1).to_vector<double>();
+  std::vector<double> selu_mean, selu_variance, relu_mean, relu_variance;
+  for (int i = 0; i < depth; ++i) {
+    selu_mean.push_back(moments[2*i]);
+    selu_variance.push_back(moments[2*i+1]);
+    relu_mean.push_back(moments[2*(depth+i)]);
+    relu_variance.push_back(moments[2*(depth+i)+1]);
+  }
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(layers, selu_variance, "SELU variance", {37,99,235})
+      .lines(layers, relu_variance, "ReLU variance", {176,59,35})
+      .lines(layers, selu_mean, "SELU mean", {19,130,125})
+      .lines(layers, relu_mean, "ReLU mean", {155,103,34})
+      .title("Activation moments with the same initial weights").x_label("Layer")
+      .save_svg(folder + "moments.svg");
+  auto fit = dm::graphics::RPlot::create();
+  fit.points(observed.to_vector<double>(), prediction.to_vector<double>(), "Held-out rows", {37,99,235}, 3)
+      .lines({-2.,2.}, {-2.,2.}, "Perfect prediction", {100,116,139})
+      .title("Held-out predictions after 96 Adam updates")
+      .x_label("Observed response").y_label("Predicted response").save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "moments.svg", "figures/self_normalizing_moments.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder + "fit.svg", "figures/self_normalizing_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Diagnostic | Value |
+| --- | ---: |
+| Initial held-out RMSE | 1.70140 |
+| Fitted held-out RMSE | 0.54820 |
+| Initial layer-10 SELU variance | 1.06881 |
+| Initial layer-10 ReLU variance | 0.00061 |
+\image(figures/self_normalizing_moments.svg)
+// result_end
+
+\image(figures/self_normalizing_fit.svg)
+
+> Reference
+
+Klambauer, Unterthiner, Mayr and Hochreiter (2017).
+[Self-Normalizing Neural Networks|https://arxiv.org/abs/1706.02515].

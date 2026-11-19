@@ -1,0 +1,289 @@
+//? Title: Soft actor-critic on articulated vsim tasks
+//? Lang: en
+
+> Soft actor-critic on articulated vsim tasks
+
+Soft actor-critic fits a stochastic actor, two value critics, and an
+entropy temperature from a replay buffer. The target uses the lower
+of the two target critics and includes the next action’s entropy
+bonus. Only physical termination masks the bootstrap. The target
+critics follow exponential moving averages of the fitted critics.
+
+The actor samples Gaussian actions and applies tanh to keep them in
+the unit box. The simulator receives actions scaled to its actuator
+limits. Evaluation uses the deterministic tanh of the Gaussian mean.
+The rollout footage uses this mean policy, filmed on the highest-return
+of three seeded trials.
+
+The pendulum protocol uses 30,000 transitions. The longer Hopper
+protocol uses 300,000. Both use 256-unit layers, 256-sample replay
+batches, and 1,000 warmup actions. The C++ code accepts `DM_SAC_TASK`
+to select one task and `DM_SAC_STEPS` to set a smaller experimental
+budget. Datamunge initializes its own model parameters.
+
+> Run with the vsim SDK
+
+Use the [vsim SDK and original scenes|../6.1_environments/vsim_articulated_tasks.mepml]
+setup. The same compiler flags enable the task adapter and link the
+offscreen renderer. The run publishes one chart and one video per task.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) $(echo ${DM_VSIM_TASK_FLAGS:-}) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#if defined(DATAMUNGE_ENABLE_VSIM_TASKS)
+#include <vsim/renderer.hpp>
+
+namespace n=dm::nn;
+namespace e=dm::rl::environments;
+namespace m=n::models;
+
+void train_sac(vsim::Renderer& renderer,const std::filesystem::path& scenes,e::VsimTask task,int steps) {
+  const bool pendulum=task==e::VsimTask::InvertedPendulum;
+  const std::string name=pendulum?"inverted_pendulum":"hopper";
+  e::VsimTaskEnv env(task,scenes/(name+".json")), test(task,scenes/(name+".json"));
+  const auto space=env.action_space();
+  const int dimension=space.dim, features=env.obs_size();
+  constexpr int batch=256, width=256, warmup=1000;
+  n::ParameterStore actor(0), critic(1), target(2), temperature(3);
+  const auto log_alpha=temperature.get("log_alpha",{},n::init::zeros());
+  const auto policy=[&](const n::Tensor& state) { return m::GaussianActor(actor,"pi",state,dimension,width); };
+  const auto q=[](n::ParameterStore& store,const char* key,const n::Tensor& state,const n::Tensor& action) {
+    return m::QNetwork(store,key,state,action,width);
+  };
+  {
+    n::NoGradGuard guard;
+    const auto state=n::zeros({1,features}), action=n::zeros({1,dimension});
+    policy(state);
+    for(auto* store:{&critic,&target})
+      for(const char* key:{"q1","q2"}) q(*store,key,state,action);
+    target.copy_from(critic,1.);
+  }
+  n::Optimizer actor_opt(actor,.0003,{.kind=n::OptimizerKind::Adam});
+  n::Optimizer critic_opt(critic,.0003,{.kind=n::OptimizerKind::Adam});
+  n::Optimizer alpha_opt(temperature,.0003,{.kind=n::OptimizerKind::Adam});
+  dm::rl::replay::ReplayBuffer replay(100000,features);
+  std::mt19937_64 rng(0);
+  const auto noise=[&](int rows) {
+    std::normal_distribution<float> normal;
+    std::vector<float> values(rows*dimension);
+    for(auto& value:values) value=normal(rng);
+    return n::from_vector(values,{rows,dimension});
+  };
+  const auto act=[&](const e::Obs& observed,bool random) {
+    n::NoGradGuard guard;
+    const auto distribution=policy(n::from_vector(observed,{1,features}));
+    return (random?m::SquashedSample(distribution,noise(1)).action:n::tanh(distribution.mean))
+        .to_vector<float>();
+  };
+  const auto scale=[&](std::vector<float> unit) {
+    for (int j=0;j<dimension;++j)
+      unit[j]=space.low[j]+(unit[j]+1.f)*.5f*(space.high[j]-space.low[j]);
+    return e::Action(std::move(unit));
+  };
+  const auto evaluate=[&](int seed) {
+    auto observed=test.reset(seed);
+    float reward=0;
+    while(true) {
+      auto result=test.step(scale(act(observed,false)));
+      reward+=result.reward;
+      if(result.done()) return reward;
+      observed=std::move(result.obs);
+    }
+  };
+  const auto mean_return=[&](int first,int count) {
+    double total=0;
+    for(int i=0;i<count;++i) total+=evaluate(first+i);
+    return total/count;
+  };
+  const double initial=mean_return(777,10);
+  std::vector<double> eval_steps{0}, evaluations{initial}, log_steps, losses, temperatures;
+  double interval_loss=0;
+  int interval_updates=0;
+  auto observed=env.reset(0);
+  int updates=0, episodes=0;
+  for (int step=1;step<=steps;++step) {
+    std::vector<float> unit;
+    if (step<=warmup) {
+      unit.resize(dimension);
+      for (auto& u:unit) u=std::uniform_real_distribution<float>(-1,1)(rng);
+    } else {
+      unit=act(observed,true);
+    }
+    auto result=env.step(scale(unit));
+    replay.Add({observed,0,result.reward,result.obs,result.terminated?1.f:0.f,unit});
+    observed=result.done()?env.reset():std::move(result.obs);
+    episodes+=result.done();
+    if (step>warmup) {
+      const auto samples=replay.Sample(batch,rng);
+      const auto eps=noise(batch), eps_next=noise(batch);
+      const auto alpha=n::exp(log_alpha).detach();
+      n::Tensor y;
+      {
+        n::NoGradGuard guard;
+        const auto next=m::SquashedSample(policy(samples.s2),eps_next);
+        const auto soft_q=n::minimum(q(target,"q1",samples.s2,next.action),
+                                    q(target,"q2",samples.s2,next.action))-alpha*next.logp;
+        y=samples.r+(.99f*(1.f-samples.done))*soft_q;
+      }
+      const auto loss=n::mean(n::square(y-q(critic,"q1",samples.s,samples.act_c)))+
+                      n::mean(n::square(y-q(critic,"q2",samples.s,samples.act_c)));
+      critic_opt.minimize(loss);
+      const auto sample=m::SquashedSample(policy(samples.s),eps);
+      const auto soft_min=n::minimum(q(critic,"q1",samples.s,sample.action),q(critic,"q2",samples.s,sample.action));
+      actor_opt.minimize(n::mean(alpha*sample.logp-soft_min));
+      alpha_opt.minimize(-n::mean(log_alpha*(sample.logp.detach()-dimension)));
+      target.copy_from(critic,.005f);
+      interval_loss+=loss.item();
+      ++interval_updates;
+      ++updates;
+    }
+    if (step%4000==0) {
+      evaluations.push_back(mean_return(1000+step,5));
+      eval_steps.push_back(step);
+    }
+    if ((step%2000==0 || step==steps) && interval_updates) {
+      log_steps.push_back(step);
+      losses.push_back(interval_loss/interval_updates);
+      temperatures.push_back(n::exp(log_alpha).item());
+      if (!std::isfinite(losses.back()) || !std::isfinite(temperatures.back()))
+        throw std::runtime_error("nonfinite SAC update");
+      interval_loss=0;
+      interval_updates=0;
+      std::println("{} step {} critic loss {:.5f} alpha {:.5f}",name,step,losses.back(),temperatures.back());
+      std::cout.flush();
+    }
+  }
+  if (updates!=steps-warmup) throw std::runtime_error("unexpected SAC update count");
+  const double final=mean_return(777,10);
+  if (eval_steps.back()==steps) evaluations.back()=final;
+  else { eval_steps.push_back(steps); evaluations.push_back(final); }
+  std::println("{}: {} transitions, {} updates, {} episodes, return {:.2f} -> {:.2f}",
+               name,steps,updates,episodes,initial,final);
+  auto eval_plot=dm::graphics::RPlot::create();
+  eval_plot.lines(eval_steps,evaluations,"Mean policy",{37,99,235})
+      .title("Deterministic evaluation").x_label("Transitions").y_label("Mean return");
+  auto critic_plot=dm::graphics::RPlot::create();
+  critic_plot.lines(log_steps,losses,"Twin critic",{204,99,42})
+      .title("Soft Bellman loss").x_label("Transitions").y_label("Squared error");
+  auto alpha_plot=dm::graphics::RPlot::create();
+  alpha_plot.lines(log_steps,temperatures,"Temperature",{39,130,92})
+      .title("Entropy temperature").x_label("Transitions").y_label("Alpha");
+  const auto publish=[](const std::string& file) {
+    std::filesystem::copy_file("build/"+file,"figures/"+file,std::filesystem::copy_options::overwrite_existing);
+  };
+  const int full_budget=pendulum?30000:300000;
+  const auto stem="sac_vsim_trained_"+name+(steps==full_budget?"":"_"+std::to_string(steps));
+  dm::graphics::RLayout::create(1,3).add(eval_plot).add(critic_plot).add(alpha_plot)
+      .size(1220,420).fit_panels().save_svg("build/"+stem+".svg");
+  publish(stem+".svg");
+  actor.save("build/"+stem+"_actor.npz");
+  int best_seed=4242;
+  float best=-std::numeric_limits<float>::infinity();
+  for(int seed=4242;seed<4245;++seed)
+    if(const auto reward=evaluate(seed);reward>best) { best=reward; best_seed=seed; }
+  constexpr int w=640,h=400;
+  dm::cad::VideoWriter video("build/"+stem+".mp4",w,h,pendulum?25:62);
+  dm::cad::RenderResult frame;
+  frame.width=w;
+  frame.height=h;
+  vsim::Image image{};
+  vsim::RenderView view;
+  observed=test.reset(best_seed);
+  for(int i=1;i<=(pendulum?750:1000);++i) {
+    auto result=test.step(scale(act(observed,false)));
+    if(pendulum || i%2==0 || result.done()) {
+      const auto x=test.root_position().x;
+      const auto offset=pendulum?glm::vec3(0,.55f,3.2f):glm::vec3(.8f,1.3f,4.2f);
+      view.transform.position=glm::vec3(x,0,0)+offset;
+      const auto look=glm::vec3(x+offset.x,pendulum?.15f:.75f,0);
+      view.transform.rotation=glm::quatLookAtRH(glm::normalize(look-view.transform.position),glm::vec3(0,1,0));
+      view.camera.vertical_fov=pendulum?40:38;
+      if(!renderer.draw(test.scene(),&view)) throw std::runtime_error("vsim draw failed");
+      renderer.capture(image);
+      frame.rgba.swap(image.rgba);
+      video.append(frame);
+      frame.rgba.swap(image.rgba);
+    }
+    if(result.done()) break;
+    observed=std::move(result.obs);
+  }
+  video.finish();
+  publish(stem+".mp4");
+  std::println("{}: recorded {} frames, best seed {} full return {:.2f}",name,video.frames_written(),best_seed,best);
+}
+#endif
+
+int main() {
+#if defined(DATAMUNGE_ENABLE_VSIM_TASKS)
+  const auto* scenes=std::getenv("DM_VSIM_SCENES");
+  if(!scenes || !*scenes) throw std::runtime_error("set DM_VSIM_SCENES to the authored scene directory");
+  const auto* task=std::getenv("DM_SAC_TASK");
+  const std::string_view selection=task?task:"both";
+  if(selection!="both" && selection!="inverted_pendulum" && selection!="hopper")
+    throw std::invalid_argument("DM_SAC_TASK must be both, inverted_pendulum, or hopper");
+  const auto* override_text=std::getenv("DM_SAC_STEPS");
+  const int budget=override_text?std::stoi(override_text):0;
+  if(override_text && budget<=1000) throw std::invalid_argument("DM_SAC_STEPS must exceed warmup");
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  vsim::Renderer renderer({.width=640,.height=400,.offscreen=true});
+  if(selection!="hopper") train_sac(renderer,scenes,e::VsimTask::InvertedPendulum,budget?budget:30000);
+  if(selection!="inverted_pendulum") train_sac(renderer,scenes,e::VsimTask::Hopper,budget?budget:300000);
+#else
+  std::puts("Set DM_VSIM_TASK_FLAGS and DM_VSIM_SCENES for the SDK-backed experiment.");
+#endif
+}
+```
+// result_begin:
+// inverted_pendulum step 1100 critic loss 1.59372 alpha 0.97054
+// inverted_pendulum: 1100 transitions, 100 updates, 111 episodes, return 26.90 -> 16.10
+// inverted_pendulum: recorded 22 frames, best seed 4243 full return 22.00
+// hopper step 1100 critic loss 3.07169 alpha 0.97024
+// hopper: 1100 transitions, 100 updates, 109 episodes, return 11.46 -> 68.44
+// hopper: recorded 40 frames, best seed 4244 full return 70.15
+// result_end
+
+
+> Recorded 1,100-transition check
+
+Each run completed 100 optimizer updates after warmup. The mean
+return fell from 26.90 to 16.10 for InvertedPendulum and rose from
+11.46 to 68.44 for Hopper. This run checks the training, evaluation,
+and video paths. At this budget the pendulum still falls quickly.
+
+\image(figures/sac_vsim_trained_inverted_pendulum_1100.svg)
+\caption(InvertedPendulum evaluation, critic loss, and temperature after the short run.)
+
+\video(figures/sac_vsim_trained_inverted_pendulum_1100.mp4)
+\caption(InvertedPendulum mean policy after 100 updates.)
+
+\image(figures/sac_vsim_trained_hopper_1100.svg)
+\caption(Hopper evaluation, critic loss, and temperature after the short run.)
+
+\video(figures/sac_vsim_trained_hopper_1100.mp4)
+\caption(Hopper mean policy after 100 updates.)
+
+> Full pendulum schedule
+
+After 30,000 transitions and 29,000 updates, the ten-episode mean
+return increased from 26.90 to 1,000. The selected policy video covers
+750 steps at 25 fps. The selected seed reaches the full 1,000-step
+horizon when evaluated without the recording cap.
+
+\image(figures/sac_vsim_trained_inverted_pendulum.svg)
+\caption(Deterministic evaluation, critic loss, and temperature over the full pendulum fit.)
+
+\video(figures/sac_vsim_trained_inverted_pendulum.mp4)
+\caption(The trained pendulum policy holds balance throughout the recorded interval.)
+
+> Full Hopper schedule
+
+After 300,000 transitions and 299,000 updates, the ten-episode mean
+return increased from 11.46 to 261.81. The best of the three recording
+seeds returned 261.47. The clip captures every second simulation step
+and the final terminal frame at 62 fps.
+
+\image(figures/sac_vsim_trained_hopper.svg)
+\caption(Deterministic evaluation, critic loss, and temperature over the full Hopper fit.)
+
+\video(figures/sac_vsim_trained_hopper.mp4)
+\caption(Hopper’s deterministic policy after the full training schedule.)

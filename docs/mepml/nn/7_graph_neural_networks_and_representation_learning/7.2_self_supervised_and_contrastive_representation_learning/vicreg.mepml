@@ -1,0 +1,83 @@
+//? Title: VICReg for paired image views
+//? Lang: en
+
+> VICReg for paired image views
+
+The invariance term matches projections of the two crops from each source.
+The variance hinge penalizes coordinates whose sample standard deviation
+falls below one. The covariance term penalizes squared off-diagonal
+covariances separately in each view. The objective weights invariance,
+variance and covariance by 25, 25 and 1.
+
+Both views pass through the same compact encoder and projection MLP used
+in the SimCLR example. Training draws fresh pairs of 6 by 6 crops. The
+report evaluates every epoch on the same 32 sources drawn from a separate
+random engine, using the stronger crop intensity perturbations.
+
+```{cpp, results="markdown", file="figures/vicreg_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::mt19937 training(50402), testing(50403);
+  const auto test = n::synthetic_contrastive_views(testing, 32, true);
+  n::ParameterStore model(50401);
+  const auto objective = [&](const n::Tensor &views) {
+    return n::vicreg(n::simclr_projection(model, "vicreg", views));
+  };
+  objective(test.views);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .008, config);
+  std::vector<double> epochs, losses;
+  std::array<std::vector<double>, 3> terms;
+  std::print("| Epoch | Held-out loss | Invariance | Variance | Covariance |\n"
+             "|---:|---:|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto result = objective(test.views);
+      epochs.push_back(epoch);
+      losses.push_back(result.loss.item());
+      terms[0].push_back(result.invariance.item());
+      terms[1].push_back(result.variance.item());
+      terms[2].push_back(result.covariance.item());
+      std::print("| {} | {:.6f} |", epoch, losses.back());
+      for (const auto &term : terms)
+        std::print(" {:.6f} |", term.back());
+      std::print("\n");
+    }
+    if (epoch < 3)
+      for (int batch = 0; batch < 24; ++batch)
+        adam.minimize(objective(n::synthetic_contrastive_views(training, 32, true).views).loss);
+  }
+
+  auto total = dm::graphics::RPlot::create();
+  total.lines(epochs, losses, "Total", {37, 99, 235})
+      .title("Held-out objective").x_label("Epoch").y_label("Loss");
+  auto penalties = dm::graphics::RPlot::create();
+  penalties.lines(epochs, terms[0], "Invariance", {22, 120, 97});
+  penalties.lines(epochs, terms[1], "Variance", {190, 75, 48});
+  penalties.lines(epochs, terms[2], "Covariance", {106, 67, 150});
+  penalties.title("Held-out components").x_label("Epoch").y_label("Unweighted penalty").legend({"Invariance", "Variance", "Covariance"}, {{22, 120, 97}, {190, 75, 48}, {106, 67, 150}});
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(total).add(penalties).size(1050, 430)
+      .fit_panels().save_svg("build/vicreg_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out loss | Invariance | Variance | Covariance |
+|---:|---:|---:|---:|---:|
+| 0 | 21.727041 | 0.020364 | 0.848591 | 0.003186 |
+| 1 | 14.270308 | 0.130278 | 0.391155 | 1.234459 |
+| 2 | 12.152575 | 0.124933 | 0.284839 | 1.908262 |
+| 3 | 10.142406 | 0.060546 | 0.260342 | 2.120214 |
+\image(figures/vicreg_fit.svg)
+// result_end
+\caption(Total loss and its unweighted components on fixed held-out crop pairs.)
+\alttext(Two line charts show held-out objective and component values across three epochs of training.)
+
+> Reference
+
+- [Bardes et al. (2022), VICReg](https://arxiv.org/abs/2105.04906).

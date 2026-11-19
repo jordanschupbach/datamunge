@@ -107,7 +107,6 @@ int main() {
 }
 ```
 // result_begin:
-// Tensor area/barycentric sampling and unit-ball normalization saved42original surfaces.
 // result_end
 
 Selected original object IDs are disjoint;near-duplicate CAD shapes are not
@@ -650,13 +649,11 @@ state modes and invalid inputs. Fourteen public API examples compile/run.
 Independent original mesh sampling replay is exact. The original model-specific
 three-epoch program also passes. A small custom unpretrained fit and twelve
 held-out objects do not reproduce a published40class benchmark.
-The selected epoch3 has validation NLL1.081701,held-out accuracy2/3,
-macroF1.538721,NLL1.089158 and recalls1/0/1:all four sofas are missed.
-Fixed fitting inference NLL worsens1.099125861->1.128235405. Independent
-source/report replay matches all108selected learned/moving arrays
-(174876scalars) and every held-out/initial logit exactly. Fitting
-inference NLL can worsen despite lower batch-moment training objectives;
-source moving-state behavior and complete held-out errors remain explicit.
+Validation selects epoch 1 with NLL 1.520893. The checkpoint labels all
+twelve held-out objects as chairs, giving accuracy of 4/12, macro F1 of
+0.166667, and NLL of 1.508108. Fixed fitting inference NLL rises from
+1.099125861 to 1.519292467. Batch-moment training and moving-moment
+inference evaluate the model in different modes.
 
 > Regenerate adjacent views from this run
 

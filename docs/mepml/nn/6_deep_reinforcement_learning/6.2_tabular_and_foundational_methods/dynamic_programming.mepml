@@ -35,7 +35,7 @@ int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("
 
 > Complete preserved experiment
 
-The original GridWorld slip.2/gamma.95 and CliffWalking gamma.99 solves retain stopping tolerances, policy initialization and2000-episode Monte Carlo checks. Terminal rewards remain in R but terminal continuation is removed from P. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+The original GridWorld slip.2/gamma.95 and CliffWalking gamma.99 solves retain stopping tolerances, policy initialization and2000-episode Monte Carlo checks. Terminal rewards remain in R but terminal continuation is removed from P. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. The seeded greedy rollouts are recorded with the native grid renderer.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -53,9 +53,7 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // into two tensors, P[s, a, s'] and R[s, a], and the Bellman backups become
 // batched tensor ops: one einsum computes the expected next-state value for
 // every (s, a) at once, and policy evaluation is a single linear solve
-// (nn::einsum and nn::solve in place of TF's Einsum and MatrixSolve). The vsim
-// videos of the greedy policy are omitted; the port adds one check, that
-// policy and value iteration agree.
+// The program checks that policy and value iteration agree.
 
 
 // Editable workflow support: checks.hpp
@@ -290,6 +288,21 @@ return dm::rl::foundations::EvaluateMdpPolicy(P,R,pi,gamma);
   const int start = env.state();  // still at the start cell after reset()
   std::printf("  V*(start) = %.3f; Monte Carlo return of the greedy policy over 2000 episodes = %.3f\n", v_star[start],
               DiscountedReturn(env, vi_policy, gamma, 2000));
+  auto obs = env.reset(7);
+  std::vector<int> states{env.state()};
+  while (true) {
+    const auto result = env.step(vi_policy.at(static_cast<std::size_t>(obs[0])));
+    states.push_back(env.state());
+    obs = result.obs;
+    if (result.done()) break;
+  }
+  const auto filename = "dynamic_programming_" + env.name() + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::rl::environments::save_grid_replay(env, states, "build/" + filename);
+  report_capture::Save("replay_" + filename.substr(0, filename.size() - 4), states);
+  std::filesystem::copy_file("build/" + filename, "figures/" + filename,
+                             std::filesystem::copy_options::overwrite_existing);
 }
 
 }  // namespace
@@ -386,3 +399,11 @@ int main(){auto archive=dm::nn::load_npz("build/dynamic_programming_source.npz")
 > Interpretation and provenance
 
 Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.
+
+> Greedy policy replays
+
+The native grid renderer records the visited states of each seeded greedy episode.
+
+\video(figures/dynamic_programming_GridWorld.mp4)
+
+\video(figures/dynamic_programming_CliffWalking.mp4)

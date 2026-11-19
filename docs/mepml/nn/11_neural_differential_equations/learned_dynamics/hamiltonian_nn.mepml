@@ -1,0 +1,114 @@
+//? Title: Hamiltonian neural network for pendulum dynamics
+//? Lang: en
+
+> Hamiltonian neural network for pendulum dynamics
+
+A scalar network represents the Hamiltonian as a function of pendulum
+angle and momentum. The time derivative of angle is the Hamiltonian’s
+momentum derivative, and the time derivative of momentum is its
+negative angle derivative. Training observes the vector field at sampled
+states. It learns the energy indirectly, up to an additive constant.
+
+The experiment fits 2,048 states and tests on 256 new states. It then
+integrates the fitted field with RK4 from twelve initial conditions.
+The learned Hamiltonian is conserved by the continuous model equations.
+Numerical integration can introduce small errors. The known pendulum
+energy may drift along the fitted trajectories because the learned
+vector field is approximate.
+
+```{cpp, results="markdown", file="figures/hamiltonian_nn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto sample=[](int rows,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> draw(-2,2);
+    std::vector<float> state, derivative;
+    for(int i=0;i<rows;++i) {
+      const auto q=draw(rng),p=draw(rng);
+      state.insert(state.end(),{q,p});
+      derivative.insert(derivative.end(),{p,-std::sin(q)});
+    }
+    return std::pair{n::from_vector(state,{rows,2}),n::from_vector(derivative,{rows,2})};
+  };
+  const auto [fit_x,fit_y]=sample(2048,4921);
+  const auto [test_x,test_y]=sample(256,4922);
+  n::ParameterStore model(41380);
+  const auto loss=[&](const n::Tensor& x,const n::Tensor& y) {
+    return n::mean(n::square(n::hamiltonian_network(model,x).derivative-y));
+  };
+  const auto baseline=loss(test_x,test_y).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(2048,32,4923);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x,rows),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+  }
+  auto state=test_x.clone().requires_grad_(true);
+  const auto checked=n::hamiltonian_network(model,state);
+  const auto gradient=n::grad(n::sum(checked.energy),{state}).at(0);
+  n::NoGradGuard guard;
+  const auto automatic=n::concat({n::slice_axis(gradient,1,1,2),-n::slice_axis(gradient,1,0,1)},1);
+  const auto error=n::max(n::abs(checked.derivative-automatic)).item();
+  const auto result=n::hamiltonian_network(model,test_x);
+  const auto mse=n::mean(n::square(result.derivative-test_y));
+  n::ParameterStore precise(41380,n::DType::Float64);
+  for(const auto& name:model.names()) precise.set(name,n::cast(model.at(name),n::DType::Float64));
+  const auto field=[&](const std::vector<double>& x) {
+    return n::hamiltonian_network(precise,n::from_vector(x,{1,2}));
+  };
+  const auto physical=[](const std::vector<double>& x) {return .5*x[1]*x[1]+1-std::cos(x[0]);};
+  double learned=0,truth=0;
+  std::vector<double> paths,values,time,first_q,first_p,first_learned,first_true;
+  for(int row=0;row<12;++row) {
+    const std::vector<double> initial{-.9+1.8*row/11,.3*std::cos(row)};
+    const auto sol=dm::algorithms::runge_kutta4(
+        [&](double,const std::vector<double>& x) {return field(x).derivative.to_vector<double>();},initial,0.,10.,200);
+    const auto h0=field(initial).energy.item(), true0=physical(initial);
+    for(std::size_t t=0;t<sol.y.size();++t) {
+      const auto& x=sol.y[t];
+      const auto h=field(x).energy.item(), true_h=physical(x);
+      learned=std::max(learned,std::abs(h-h0));
+      truth=std::max(truth,std::abs(true_h-true0));
+      paths.insert(paths.end(),x.begin(),x.end());
+      values.push_back(h);
+      if(row==0) {
+        time.push_back(sol.t[t]);
+        first_q.push_back(x[0]); first_p.push_back(x[1]);
+        first_learned.push_back(h-h0); first_true.push_back(true_h-true0);
+      }
+    }
+  }
+  if (updates!=192 || !(error<3e-6 && mse.item()<baseline && learned<1e-4))
+    throw std::runtime_error("Hamiltonian fit or conservation check failed");
+  std::print("| Updates | Test derivative RMSE | Learned energy drift | Physical energy drift |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.6f} | {:.3g} | {:.3g} |\n",updates,std::sqrt(mse.item()),learned,truth);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/hamiltonian_nn.npz",{{"input",test_x.reshape({256,2,1})},{"target",test_y},
+      {"prediction",result.derivative},{"loss",mse},{"energy",result.energy},
+      {"path",n::from_vector(paths,{12,201,2})},{"path_energy",n::from_vector(values,{12,201})}});
+  auto phase=dm::graphics::RPlot::create();
+  phase.line(first_q,first_p).title("Learned phase trajectory").x_label("Angle").y_label("Momentum");
+  auto drift=dm::graphics::RPlot::create();
+  drift.lines(time,first_learned,"Learned",{37,99,235}).lines(time,first_true,"Physical",{220,90,45})
+      .title("Change from initial energy").x_label("Time").y_label("Energy change");
+  dm::graphics::RLayout::create(1,2).add(phase).add(drift).size(1080,420).fit_panels()
+      .save_svg("build/hamiltonian_nn.svg");
+}
+```
+// result_begin: markdown
+| Updates | Test derivative RMSE | Learned energy drift | Physical energy drift |
+|---:|---:|---:|---:|
+| 192 | 0.070945 | 2.85e-08 | 0.0574 |
+\image(figures/hamiltonian_nn.svg)
+// result_end
+\caption(Phase trajectory and learned versus physical energy change for one held-out initial condition.)
+
+> Reference
+
+- [Greydanus et al., Hamiltonian Neural Networks](https://arxiv.org/abs/1906.01563).

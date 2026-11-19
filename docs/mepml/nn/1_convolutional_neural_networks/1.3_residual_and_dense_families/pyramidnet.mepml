@@ -6,7 +6,7 @@
 \abstract(
 PyramidNet widens at every residual unit rather than only at stage boundaries. We inspect
 the rounded additive schedule, signed pooled/zero-padded shortcuts, ten full architecture budgets
-and complete 272-layer gradients, then explicitly fit a shallow CIFAR PyramidNet-20 with tensor Adam.
+and complete 272-layer gradients, then explicitly fit a full-depth CIFAR PyramidNet-110 with tensor Adam.
 )
 \toc
 
@@ -46,13 +46,13 @@ and each first/last unit BN shift add channel constants removed by a later BN. T
 redundant directions are checked separately from other parameter derivatives; zero gradients
 there do not imply disconnected filters. Moving updates are disabled for the diagnostic.
 
-The visible fit uses the same alpha-48 basic design at depth 20 (three units per stage,
-310845 learned and 2368 moving scalars), so the documentation build stays short; the
-budget and gradient checks above cover the full-depth models. It uses 128 fitting images,
-64 validation images, 64 official-test images, 5 batch-eight epochs of Adam(.001), explicit
-kernel L2=.0001/2 and independent padded crops/flips. Validation selects paired learned/moving
-state before testing. The original source's larger short run and the paper's 300-epoch SGD
-experiment are different; this bounded fit demonstrates optimization, not published accuracy.
+The fit uses the upstream alpha-48 basic design at depth 110, with 18
+units per stage, 1,772,706 learned scalars, and 13,168 moving scalars.
+It uses 128 fitting images, 64 validation images, and 64 official-test
+images. Five batch-eight epochs use Adam at 0.001, kernel L2, and
+independent padded crops and flips. Validation selects the checkpoint
+with the lowest NLL before the official-test subset is evaluated. The
+subset keeps the full-depth fit practical for the documentation.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -66,7 +66,7 @@ int main() {
   dm::graphics::Diagram diagram;
   diagram.node("n0", {0.0, 0}, "Add alpha/N each unit\nround width half up");
   diagram.node("n1", {5.2, 0}, "BN/filter corrections\npool and zero-pad shortcut");
-  diagram.node("n2", {10.4, 0}, "PyramidNet-20 fit\nexplicit tensor Adam");
+  diagram.node("n2", {10.4, 0}, "PyramidNet-110 fit\nexplicit tensor Adam");
   diagram.edge("n0", "n1").edge("n1", "n2");
   diagram.save_svg("build/pyramidnet_concept.svg");
 }
@@ -75,7 +75,7 @@ int main() {
 // \image(figures/pyramidnet_concept.svg)
 // result_end
 \caption(PyramidNet: Gradual Width and Parameter-Free Shortcuts)
-\alttext(Add alpha/N each unit; round width half up; then BN/filter corrections; pool and zero-pad shortcut; then PyramidNet-20 fit; explicit tensor Adam.)
+\alttext(Add alpha/N each unit; round width half up; then BN/filter corrections; pool and zero-pad shortcut; then PyramidNet-110 fit; explicit tensor Adam.)
 
 > Executed tensor architecture
 
@@ -381,9 +381,9 @@ int main() {
   const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
   const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
              qy       = n::slice_axis(official.labels, 0, 0, 64);
-  // PyramidNet-20 (3 basic units per stage, alpha 48) keeps the docs run short.
   n::models::PyramidNetConfig cfg;
-  cfg.depth = 20;
+  cfg.depth = 110;
+  cfg.alpha = 48;
   n::ParameterStore p(17), state(17);
   auto              output = [&](const n::Tensor& image, bool training) {
     return n::models::PyramidNet(p, state, image, cfg, training).logits;
@@ -392,7 +392,7 @@ int main() {
     n::NoGradGuard guard;
     output(n::zeros({1, 32, 32, 3}), false);
   }
-  if (p.count() != 310845 || state.count() != 2368)
+  if (p.count() != 1772706 || state.count() != 13168)
     return 1;
   n::OptimizerConfig config;
   config.kind = n::OptimizerKind::Adam;
@@ -460,7 +460,7 @@ int main() {
   auto trace = dm::graphics::RPlot::create();
   trace.lines(epochs, train, "training", {37, 99, 235})
       .lines(epochs, validation, "validation", {234, 88, 12})
-      .title("PyramidNet-20, alpha 48")
+      .title("PyramidNet-110, alpha 48")
       .x_label("epoch")
       .y_label("mean primary NLL");
   // Flip before the image helper so its vertical tick is the actual true-class ID.
@@ -490,12 +490,12 @@ int main() {
 }
 ```
 // result_begin: markdown
-128 fit / 64 validation / 64 official-test rows; 310845 learned scalars, 2368 moving scalars; 80 explicit Adam updates.
-Selected epoch 4; validation NLL 2.199176; inference training NLL 1.761906; test NLL 2.147355; test accuracy 0.234375.
+128 fit / 64 validation / 64 official-test rows; 1772706 learned scalars, 13168 moving scalars; 80 explicit Adam updates.
+Selected epoch 4; validation NLL 2.636361; inference training NLL 1.803488; test NLL 2.500207; test accuracy 0.156250.
 \image(figures/pyramidnet_training.svg)
 // result_end
-\caption(Explicit 5-epoch Adam fit of PyramidNet-20 and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
-\alttext(Explicit 5-epoch Adam fit of PyramidNet-20 and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\caption(Explicit 5-epoch Adam fit of PyramidNet-110 and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 5-epoch Adam fit of PyramidNet-110 and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
 
 The executed results above report the current selected checkpoint. These fixed small
 subsets and source budgets do not establish a ranking of architectures. Assess

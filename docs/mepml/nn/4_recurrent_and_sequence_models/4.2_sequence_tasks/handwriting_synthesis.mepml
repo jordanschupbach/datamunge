@@ -1,0 +1,133 @@
+//? Title: Text-conditioned pen synthesis with a monotone window
+//? Lang: en
+
+> Text-conditioned pen synthesis with a monotone window
+
+Two LSTMs predict pen offsets and pen lifts from a three-character
+prompt. The first LSTM advances a Gaussian window monotonically over
+the characters. The second takes the resulting text vector and
+predicts a two-component correlated Gaussian mixture for the offsets
+and a Bernoulli probability for lifting the pen.
+
+Training uses the previous observed stroke. Sampling feeds back its
+own stroke, with identical random draws for two different prompts.
+The corpus uses four synthetic glyphs with small perturbations. A
+pen-lift indicator ends each plotted segment.
+
+```{cpp, results="markdown", file="figures/pen_synthesis.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n=dm::nn;
+
+int main() {
+  const auto corpus=[](int count,unsigned seed) {
+    constexpr float glyphs[4][4][2]{
+      {{0,0},{.16f,-.65f},{.19f,.65f},{.30f,0}},
+      {{0,0},{0,-.65f},{.32f,.25f},{-.03f,.40f}},
+      {{0,0},{.18f,-.47f},{.28f,.03f},{.05f,.44f}},
+      {{0,0},{0,-.65f},{.44f,.32f},{-.10f,.33f}}};
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise(0.f,.018f);
+    std::vector<int> text;
+    std::vector<float> stroke;
+    for(int row=0;row<count;++row)
+      for(int c=0;c<3;++c) {
+        const int glyph=rng()%4;
+        text.push_back(glyph);
+        for(int t=0;t<4;++t)
+          stroke.insert(stroke.end(),{glyphs[glyph][t][0]+noise(rng)+(t==0 && c>0 ? .24f:0.f),
+            glyphs[glyph][t][1]+noise(rng),float(t==3)});
+      }
+    return std::pair{n::from_vector(text,{count,3}),n::from_vector(stroke,{count,12,3})};
+  };
+  const auto [text,stroke]=corpus(256,41387);
+  const auto [val,vs]=corpus(64,41388);
+  const auto [test,ts]=corpus(64,41389);
+  n::ParameterStore model(41386);
+  const auto objective=[&](const n::Tensor &t,const n::Tensor &s) {
+    return n::pen_density_nll(n::text_conditioned_pen(model,t,s)[0],s);
+  };
+  objective(val,vs);
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.004,config);
+  n::BatchOrder order(256,16,41390);
+  double initial;
+  { n::NoGradGuard guard; initial=objective(test,ts).item(); }
+  std::vector<double> history;
+  std::print("| Epoch | Validation NLL |\n|---:|---:|\n");
+  for(int epoch=0;epoch<=3;++epoch) {
+    { n::NoGradGuard guard; history.push_back(objective(val,vs).item()); }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if(epoch==3) break;
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto ids=n::from_vector(rows);
+      adam.minimize(objective(n::gather(text,ids),n::gather(stroke,ids)));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto [raw,location,window,unused]=n::text_conditioned_pen(model,test,ts);
+  const auto delta=n::slice_axis(location,1,1,12)-n::slice_axis(location,1,0,11);
+  if(!n::all(n::is_finite(location)).item<bool>() || n::min(delta).item()<=0.)
+    throw std::runtime_error("window failed to advance");
+
+  std::mt19937 rng(41391);
+  std::normal_distribution<float> normal;
+  const auto uniform=[&] {return float((double(rng())+.5)/4294967296.);};
+  std::vector<float> random;
+  for(int t=0;t<12;++t) random.insert(random.end(),{uniform(),normal(rng),normal(rng),uniform()});
+  const auto noise=n::broadcast_to(n::from_vector(random,{1,12,4}),{2,12,4});
+  const auto prompts=n::from_vector(std::vector<int>{0,1,2,3,2,1},{2,3});
+  const auto generated=n::text_conditioned_pen(model,prompts,noise,true);
+  const auto sampled=generated[3];
+  const auto change=n::sum(n::abs(n::select(sampled,0,0)-n::select(sampled,0,1))).item();
+  if(change<=.01 || n::max(n::abs(sampled-n::text_conditioned_pen(model,prompts,noise,true)[3])).item()!=0.)
+    throw std::runtime_error("text-only sampling invariant");
+  const auto loss=n::pen_density_nll(raw,ts);
+  std::print("Test NLL {:.6f} to {:.6f}. Matched-draw sample L1 difference {:.6f}.\n",
+             initial,loss.item(),change);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/pen_synthesis.npz",{{"text",test},{"target",ts},{"raw",raw},{"location",location},
+      {"window",window},{"loss",loss},{"prompts",prompts},{"noise",noise},
+      {"strokes",sampled},{"sample_raw",generated[0]}});
+
+  auto learning=dm::graphics::RPlot::create();
+  learning.lines({0.,1.,2.,3.},history,"Validation",{37,99,235})
+      .title("Pen density fit").x_label("Epoch").y_label("Validation NLL");
+  auto figure=dm::graphics::RLayout::create(1,3);
+  figure.add(learning);
+  for(int i=0;i<2;++i) {
+    auto plot=dm::graphics::RPlot::create();
+    const auto points=n::select(sampled,0,i).to_vector<double>();
+    double x=0,y=0;
+    std::vector<double> xs{0},ys{0};
+    for(int t=0;t<12;++t) {
+      x+=points[3*t]; y+=points[3*t+1];
+      xs.push_back(x); ys.push_back(-y);
+      if(points[3*t+2]>.5 || t==11) {
+        plot.lines(xs,ys,"Pen down",{22,120,97}).points(xs,ys,"Stroke samples",{22,120,97});
+        xs={x}; ys={-y};
+      }
+    }
+    plot.title(i==0?"Prompt 0 1 2":"Prompt 3 2 1").x_label("Pen x").y_label("Pen y");
+    figure.add(plot);
+  }
+  figure.size(1230,430).fit_panels().save_svg("build/pen_synthesis.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation NLL |
+|---:|---:|
+| 0 | 1.980952 |
+| 1 | 0.932927 |
+| 2 | 0.146967 |
+| 3 | -0.185005 |
+Test NLL 1.981002 to -0.187603. Matched-draw sample L1 difference 1.947991.
+\image(figures/pen_synthesis.svg)
+// result_end
+\caption(Validation density loss and strokes sampled for two prompts using the same random draws.)
+\alttext(One line plot shows validation loss and two coordinate plots show the generated pen segments.)
+
+> Reference
+
+- [Graves (2013), Generating Sequences With Recurrent Neural Networks](https://arxiv.org/abs/1308.0850).

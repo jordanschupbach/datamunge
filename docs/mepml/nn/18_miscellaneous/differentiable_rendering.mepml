@@ -1,0 +1,84 @@
+//? Title: Recover circle centers with a differentiable soft rasterizer
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Recover the centers of two overlapping circles from their rendered RGB
+values. Evaluate all four initial position derivatives by central
+differences and compare the initial, target and fitted images.
+)
+
+> Smooth coverage makes the image differentiable
+
+For a point \(p\), a circle centered at \(c\) with radius \(r\)
+has coverage \(\sigma(24(r^2-\|p-c\|^2))\). Unlike a binary
+inside-circle test, this function gives a smooth transition around the
+boundary. The coverage of the front circle hides part of the back
+circle. Compositing uses the front color plus the back color weighted
+by whatever fraction is still visible.
+
+The target and fitted image use the same radii, colors, sharpness and
+layer ordering. Only the two centers are unknown. This is a controlled
+inverse problem for the soft renderer.
+
+> Optimize the centers on the upstream pixel grid
+
+```{cpp, results="markdown", file="figures/differentiable_rendering.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    namespace nn = dm::nn;
+    constexpr int side = 25, pixels = side * side;
+    nn::set_num_threads(2);
+    std::vector<double> points(pixels * 2);
+    for (int i = 0; i < pixels; ++i) {
+        points[i * 2] = 2. * (i % side) / (side - 1) - 1.;
+        points[i * 2 + 1] = 2. * (i / side) / (side - 1) - 1.;
+    }
+    const auto grid = nn::from_vector(points, {pixels, 2});
+    const auto colors = nn::tensor({.94, .25, .13, .12, .52, .92}, {2, 3}, nn::DType::Float64);
+    const auto truth = nn::tensor({-.21, .06, .27, -.16}, {2, 2}, nn::DType::Float64);
+    const auto centers = nn::tensor({-.37, -.08, .36, .11}, {2, 2}, nn::DType::Float64).requires_grad_();
+    const auto render = [&](const auto& at) {
+        return nn::soft_circle_raster(grid, at, {.47, .39}, colors, 24.);
+    };
+    const auto target = render(truth).rgb;
+    const auto initial_image = render(centers.detach()).rgb;
+    const auto loss = [&](const std::vector<nn::Tensor>& at) {
+        return nn::mean(nn::square(render(at[0]).rgb - target));
+    };
+    const auto initial_loss = loss({centers});
+    const double before = initial_loss.item();
+    const auto initial_gradient = nn::grad(initial_loss, {centers}).front();
+    const auto gradient_check = nn::gradcheck(loss, {centers}, {.eps = 1e-5, .atol = 1e-9, .rtol = 0.});
+    if (!gradient_check.ok) throw std::runtime_error(gradient_check.message);
+    nn::Optimizer sgd({centers}, 1.2);
+    for (int step = 0; step < 60; ++step)
+        sgd.step(nn::grad(loss({centers}), {centers}));
+    const nn::NoGradGuard guard;
+    const auto fitted = render(centers);
+    const double after = loss({centers}).item();
+    const double position_error = nn::max(nn::abs(centers - truth)).item();
+    if (!(after < 1e-4 * before) || !(position_error < .01))
+        throw std::runtime_error("Raster fit failed the upstream controls");
+
+    const auto gallery = nn::stack({nn::reshape(target, {side, side, 3}),
+        nn::reshape(initial_image, {side, side, 3}), nn::reshape(fitted.rgb, {side, side, 3})});
+    std::filesystem::create_directories("build");
+    nn::save_image_grid(gallery, "build/differentiable_rendering.png", 3, 0, 1, 8, .9, 7);
+    nn::save_npz("build/differentiable_rendering.npz", {{"grid", grid}, {"truth", truth},
+        {"points", centers}, {"target", target}, {"image", fitted.rgb},
+        {"front", nn::slice_axis(fitted.alpha, 1, 0, 1)},
+        {"back", nn::slice_axis(fitted.alpha, 1, 1, 2)}, {"initial_gradient", initial_gradient}});
+    std::print("Image MSE {:.8g} to {:.8g}. Maximum position error {:.3e}. Maximum gradient error {:.3e}.\n",
+               before, after, position_error, gradient_check.max_abs_error);
+}
+```
+// result_begin: markdown
+Image MSE 0.03026828 to 1.2537373e-32. Maximum position error 2.220e-16. Maximum gradient error 4.712e-11.
+\image(figures/differentiable_rendering.png)
+// result_end
+
+The panels show the target, the initial guess and the fitted image from
+left to right. The finite-difference check uses the initial guess,
+where both visible and partly occluded boundaries contribute to the loss.

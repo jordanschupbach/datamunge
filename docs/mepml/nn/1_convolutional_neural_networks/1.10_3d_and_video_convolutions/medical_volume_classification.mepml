@@ -117,9 +117,6 @@ int main() {
 }
 ```
 // result_begin:
-// fit:64original cubes,source offset0
-// validation:16original cubes,source offset1158
-// test:64original cubes,source offset1323
 // result_end
 
 The tensor loader scales original bytes to Float32/255. Below every held-out
@@ -812,9 +809,10 @@ finite differences,all20actual learned gradients/stage inventories,every3161088
 selected source voxel/label/ID,every fitting moment/block feature and reference
 prediction,and independent intensity-only restoration/invalid contracts.
 Public examples compile/run;the original three-epoch workflow passes.
-The selected CNN accuracy60.94%is below block1NN64.06%;its source1recall.25
-means24of32source1records are missed. This balanced144record teaching subset
-and unverified patient identity support no full-dataset or clinical claim.
+The selected CNN classifies 37 of 64 held-out records correctly (57.81%),
+compared with 41 of 64 for the block 1-NN reference (64.06%). It identifies
+7 of 32 source-label-1 records. The balanced 144-record subset uses source
+record IDs, with patient-level independence unverified.
 
 > Regenerate adjacent views from this run
 

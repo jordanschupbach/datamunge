@@ -1,0 +1,67 @@
+//? Title: Auditing membership leakage with classification loss
+//? Lang: en
+
+> Auditing membership leakage with classification loss
+
+An overparameterized classifier can give its training examples lower
+loss than unseen examples, even when the labels are independent coin
+flips. This report simulates that setting with 128 training rows and
+256 Gaussian features. A ridge-regularized linear score is fitted in
+the dual, and signed scores are converted into true-label logistic
+losses.
+
+The audit selects a loss cutoff by maximizing balanced accuracy on the
+first 64 members and 64 nonmembers. It evaluates the cutoff and AUROC on
+the remaining rows. The plot shows the evaluation loss distributions
+and the calibration cutoff. An AUROC of 0.5 would indicate chance
+ranking in this audit.
+
+```{cpp, results="markdown", file="figures/membership_inference.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int rows = 128, width = 256, half = rows / 2;
+  const auto draw = [](unsigned seed) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<double> coordinate;
+    std::bernoulli_distribution label;
+    std::vector<double> features, labels;
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < width; ++j) features.push_back(coordinate(rng) / std::sqrt(width));
+      labels.push_back(label(rng) ? 1.0 : -1.0);
+    }
+    return std::pair{n::from_vector(features,{rows,width}),n::from_vector(labels,{rows,1})};
+  };
+  const auto [members,member_y] = draw(41953);
+  const auto [others,other_y] = draw(41954);
+  const auto gram = n::matmul(members,members,false,true);
+  const auto dual = n::solve(gram + .05 * n::eye(rows,n::DType::Float64),member_y);
+  const auto weights = n::matmul(members,dual,true,false);
+  const auto member_loss = n::softplus(-member_y * n::matmul(members,weights));
+  const auto other_loss = n::softplus(-other_y * n::matmul(others,weights));
+  const auto m = member_loss.to_vector<double>(), o = other_loss.to_vector<double>();
+  const std::span<const double> member(m), nonmember(o);
+  const auto audit = n::audit_loss_membership(member.first(half),nonmember.first(half),
+                                               member.last(half),nonmember.last(half));
+  std::print("Calibration cutoff {:.6f}. Evaluation identifies {} of {} members and "
+             "flags {} of {} nonmembers. AUROC is {:.6f}.\n",
+             audit.threshold,audit.true_positives,half,audit.false_positives,half,audit.auc);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/membership_scores.npz",{{"member",members},{"member_y",member_y},
+      {"nonmember",others},{"nonmember_y",other_y},{"member_loss",member_loss},{"nonmember_loss",other_loss}});
+  std::vector<double> member_cdf(m.begin()+half,m.end()), other_cdf(o.begin()+half,o.end()), quantile(half);
+  std::ranges::sort(member_cdf);
+  std::ranges::sort(other_cdf);
+  for (int i=0;i<half;++i) quantile[i]=(i+1.0)/half;
+  dm::graphics::RPlot::create().lines(member_cdf,quantile,"Members",{37,99,235})
+      .lines(other_cdf,quantile,"Nonmembers",{217,96,26})
+      .lines({audit.threshold,audit.threshold},{0,1},"Calibration cutoff",{90,90,90})
+      .title("Loss distributions on evaluation rows").x_label("True-label logistic loss")
+      .y_label("Cumulative fraction").size(800,460).save_svg("build/membership_inference.svg");
+}
+```
+// result_begin: markdown
+Calibration cutoff 0.365615. Evaluation identifies 61 of 64 members and flags 10 of 64 nonmembers. AUROC is 0.848633.
+\image(figures/membership_inference.svg)
+// result_end

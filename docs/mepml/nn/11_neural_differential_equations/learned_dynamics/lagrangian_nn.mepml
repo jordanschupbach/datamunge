@@ -1,0 +1,101 @@
+//? Title: Lagrangian neural network with position-dependent inertia
+//? Lang: en
+
+> Lagrangian neural network with position-dependent inertia
+
+The network learns the inertia $m(q)$ and potential $V(q)$ in
+$L(q,v)=m(q)v^2/2-V(q)$. Exponentiating the log inertia keeps it
+positive. Evaluating the hidden layer relative to its value at
+zero sets $m(0)=1$ and $V(0)=0$, fixing the otherwise arbitrary
+scale and offset.
+
+The Euler–Lagrange equation computes acceleration from the position
+derivative of $L$, its mixed position–velocity derivative, and the
+inertia. The fit uses state and acceleration samples. The known inertia
+and potential are used to interpret the fit and check its accuracy on
+held-out samples.
+
+```{cpp, results="markdown", file="figures/lagrangian_nn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto data=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> draw(-1.8f,1.8f);
+    std::vector<float> input,target;
+    for(int i=0;i<count;++i) {
+      const double q=draw(rng),v=draw(rng),mass=1+.3*std::sin(q);
+      input.insert(input.end(),{float(q),float(v)});
+      target.push_back((-std::sin(q)-.15*std::cos(q)*v*v)/mass);
+    }
+    return std::pair{n::from_vector(input,{count,2}),n::from_vector(target,{count,1})};
+  };
+  const auto [fit_x,fit_y]=data(2048,89214);
+  const auto [test_x,test_y]=data(512,89215);
+  n::ParameterStore model(41380);
+  const auto loss=[&](const n::Tensor& x,const n::Tensor& y) {
+    return n::mean(n::square(n::lagrangian_network(model,x).acceleration-y));
+  };
+  const auto initial=loss(test_x,test_y).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(2048,32,89216);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x,rows),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+  }
+  auto check=test_x.clone().requires_grad_(true);
+  const auto differentiation=n::lagrangian_network(model,check);
+  const auto gradient=n::grad(n::sum(differentiation.lagrangian),{check},{.create_graph=true}).at(0);
+  const auto dv=n::slice_axis(gradient,1,1,2);
+  const auto second=n::grad(n::sum(dv),{check}).at(0);
+  n::NoGradGuard guard;
+  const auto mixed_error=n::max(n::abs(n::slice_axis(second,1,0,1)-differentiation.mixed)).item();
+  const auto q_error=n::max(n::abs(n::slice_axis(gradient,1,0,1)-differentiation.partial_q)).item();
+  const auto result=n::lagrangian_network(model,test_x);
+  const auto mse=n::mean(n::square(result.acceleration-test_y));
+  const auto origin=n::lagrangian_network(model,n::zeros({1,2}));
+  if (updates!=192 || !(mse.item()<initial && std::max(q_error,mixed_error)<4e-6 &&
+       n::min(result.mass).item()>0 && origin.mass.item()==1 && origin.lagrangian.item()==0))
+    throw std::runtime_error("Lagrangian training or derivative check failed");
+  std::print("| Updates | Initial acceleration RMSE | Final acceleration RMSE | Derivative max error |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.6f} | {:.6f} | {:.3g} |\n",updates,std::sqrt(initial),std::sqrt(mse.item()),
+             std::max(q_error,mixed_error));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/lagrangian_nn.npz",{{"input",test_x.reshape({512,2,1})},{"target",test_y},
+      {"acceleration",result.acceleration},{"loss",mse},{"lagrangian",result.lagrangian},
+      {"mass",result.mass},{"partial_q",result.partial_q},{"mixed",result.mixed}});
+  std::vector<float> grid;
+  std::vector<double> x,mass,potential;
+  for(int i=0;i<=100;++i) {
+    const auto q=-1.8+3.6*i/100.;
+    x.push_back(q);
+    grid.insert(grid.end(),{float(q),0.f});
+    mass.push_back(1+.3*std::sin(q));
+    potential.push_back(1-std::cos(q));
+  }
+  const auto curve=n::lagrangian_network(model,n::from_vector(grid,{101,2}));
+  const auto plot=[&](const std::vector<double>& exact,const n::Tensor& fitted,const char* title) {
+    return dm::graphics::RPlot::create().lines(x,exact,"Analytic",{37,99,235})
+        .lines(x,fitted.to_vector<double>(),"Fitted",{220,90,45}).title(title).x_label("Position");
+  };
+  dm::graphics::RLayout::create(1,2).add(plot(mass,curve.mass,"Inertia"))
+      .add(plot(potential,curve.potential,"Potential")).size(1060,420).fit_panels()
+      .save_svg("build/lagrangian_nn.svg");
+}
+```
+// result_begin: markdown
+| Updates | Initial acceleration RMSE | Final acceleration RMSE | Derivative max error |
+|---:|---:|---:|---:|
+| 192 | 0.824309 | 0.018955 | 3.58e-07 |
+\image(figures/lagrangian_nn.svg)
+// result_end
+\caption(Learned and analytic inertia and potential over the sampled positions.)
+
+> Reference
+
+- [Cranmer et al., Lagrangian Neural Networks](https://arxiv.org/abs/2003.04630).

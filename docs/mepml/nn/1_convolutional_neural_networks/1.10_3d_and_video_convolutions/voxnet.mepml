@@ -115,7 +115,6 @@ int main() {
 }
 ```
 // result_begin:
-// Tensor65536point surface sampling,bounding-box normalization and32cube occupancy saved42original surfaces.
 // result_end
 
 Show all12held-out objects as axis projections,then inspect genuine fitting
@@ -507,11 +506,10 @@ ModelNet10 test:12 distinct objects,balanced chair/sofa/table
 \caption(All18actual optimizer updates show CE gradients,weight-only L2,random quarter turns and three independent dropout streams. Validation selects on four-rotated-logit NLL;the fitting objective additionally contains L2.)
 \alttext(All18actual optimizer updates show CE gradients,weight-only L2,random quarter turns and three independent dropout streams. Validation selects on four-rotated-logit NLL;the fitting objective additionally contains L2.)
 
-The selected third epoch has validation NLL1.092044. Fixed fitting C4NLL
-improves1.106853194to1.065721723. Held-out accuracy is7/12,NLL1.097433,
-with zero recall on all four sofas. Coarse1NN also reaches7/12but has lower
-NLL.968111 and detects one sofa. Full class errors matter more than a tied
-overall accuracy on this tiny custom split.
+Validation selects epoch 1 with four-view NLL of 1.096750. Fixed fitting
+four-view NLL falls from 1.106853195 to 1.103441973. The model labels all
+held-out objects as tables, for 4/12 accuracy and NLL of 1.102454. The
+coarse 1-NN reference gets 7/12 correct with NLL of 0.968111.
 
 > Fresh occupancy-only restoration and every held-out error
 

@@ -103,7 +103,15 @@ int main() {
      for(int c=0;c<3;++c)for(int p=0;p<1024;++p)b.push_back((17*r+61*c+p)%256);
      files.push_back(b);
    }
-   const auto batch=d::ParseCifar(files,kind);int count=0,bad=0;
+   std::vector<std::filesystem::path> paths;
+   for(std::size_t i=0;i<files.size();++i){
+     const auto path=std::filesystem::path("build") / std::format("cifar_audit_{}.bin",i);
+     d::WriteBinary(path,files[i]);paths.push_back(path);
+   }
+   const auto batch=d::LoadCifar(paths,kind);int count=0,bad=0;
+   if(batch.images.shape()!=n::Shape{2,32,32,3} ||
+      (kind==d::Cifar::k100 && batch.coarse_labels.to_vector<int>()!=std::vector<int>{4,5}))
+     throw std::runtime_error("CIFAR file shape or coarse labels differ");
    for(int r=0;r<2;++r)for(int p=0;p<1024;++p)for(int c=0;c<3;++c) {
      if(batch.images.at({r,p/32,p%32,c})!=(17*r+61*c+p)%256)return 1;++count;
    }

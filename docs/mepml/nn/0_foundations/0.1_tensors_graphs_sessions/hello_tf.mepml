@@ -17,14 +17,20 @@ much more slowly, the signature of a blocked kernel. As a first model, least squ
 
 > The problem
 
-TensorFlow's "hello" example lists the framework's devices (CPUs and GPUs) and prints a constant computed in a session.
-`datamunge::nn` runs on the CPU only, with no sessions and no device placement: an operation runs when it is called. The useful first
-questions are therefore different. What was this build compiled with, which BLAS and LAPACK does it call, and how many threads may it use? And do its kernels run as
-fast and as accurately as they should?
+TensorFlow's first example lists the framework's devices and evaluates a
+constant in a session. Datamunge evaluates tensor operations eagerly. The
+examples below use the default CPU context and measure its matrix products.
+Use `nn::build_info()` for the host build's compiler, thread count, and math
+libraries, and `dm::compute::probe()` to check whether an explicit backend
+and device index can create a context. Use `dm::compute::device_count()`
+to enumerate every ordinal visible to each backend. CUDA and Vulkan count
+devices independently, so the same GPU can appear under both backends.
 
-This report replaces the original example `examples/nn/0_foundations/0.1_tensors_graphs_sessions/hello_tf.cpp`. That example also
-queried NVIDIA's management library for GPU details. That part reports hardware, not the library, and is not repeated here. The build
-facts it printed by hand are now `nn::build_info()`.
+`dm::compute::nvidia_telemetry()` reads the installed NVIDIA Management
+Library independently of CUDA execution support. NVML ordinals can differ
+from CUDA ordinals when the CUDA process sees a restricted or reordered
+device list. The readings are snapshots, and each queried metric can be
+unavailable independently. [NVIDIA NVML device queries|https://docs.nvidia.com/deploy/nvml-api/latest/api/group__nvmlDeviceQueries.html].
 
 > The method
 
@@ -77,6 +83,53 @@ using nn::Tensor;
 
 int main() {
   std::print("{}\n", nn::build_info().to_markdown());
+  namespace compute = dm::compute;
+  using compute::Backend;
+  std::print("| Backend | Ordinal | Available | Device or diagnostic |\n"
+             "| :--- | ---: | :--- | :--- |\n");
+  for (const auto backend : {Backend::CPU, Backend::CUDA, Backend::Vulkan}) {
+    const auto name = compute::backend_name(backend);
+    std::uint32_t count = 0;
+    try {
+      count = compute::device_count(backend);
+    } catch (const std::runtime_error& error) {
+      std::print("| {} | — | false | {} |\n", name, error.what());
+      continue;
+    }
+    if (count == 0) std::print("| {} | — | false | No visible devices |\n", name);
+    for (std::uint32_t i = 0; i < count; ++i) {
+      const auto info = compute::probe({backend, i});
+      std::print("| {} | {} | {} | {} |\n", name, i,
+                 info.available, info.available ? info.name : info.diagnostic);
+    }
+  }
+  std::print("\n");
+  const auto telemetry = compute::nvidia_telemetry();
+  const auto label = [](const std::string& value) { return value.empty() ? "—" : value; };
+  const auto version = [](const std::optional<std::pair<int, int>>& value) {
+    return value ? std::format("{}.{}", value->first, value->second) : "—";
+  };
+  if (!telemetry.diagnostic.empty()) {
+    std::println("NVIDIA telemetry unavailable. {}\n", telemetry.diagnostic);
+  } else {
+    std::println("NVIDIA driver {}, NVML {}, CUDA driver compatibility {} ({} devices).\n",
+                 label(telemetry.driver_version), label(telemetry.nvml_version),
+                 version(telemetry.cuda_version), telemetry.devices.size());
+    const auto metric = [](const auto& value) { return value ? std::format("{}", *value) : "—"; };
+    const auto mib = [](const auto& bytes) {
+      return bytes ? std::format("{:.1f}", *bytes / 1048576.) : "—";
+    };
+    std::println("| NVML index | Device | Compute capability | Cores | Used MiB | Total MiB | "
+                 "Graphics MHz | Memory MHz | °C | W | GPU % | Memory % |\n"
+                 "| ---: | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& d : telemetry.devices)
+      std::println("| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+                   d.index, label(d.name), version(d.compute_capability), metric(d.cores),
+                   mib(d.memory_used_bytes), mib(d.memory_total_bytes), metric(d.graphics_clock_mhz),
+                   metric(d.memory_clock_mhz), metric(d.temperature_celsius), metric(d.power_watts),
+                   metric(d.gpu_utilization_percent), metric(d.memory_utilization_percent));
+    std::println("");
+  }
   // Hello, tensors: values exist as soon as the call returns; there is no session to run.
   const Tensor a = nn::tensor({{1, 2}, {3, 4}}), b = nn::tensor({{5, 6}, {7, 8}});
   std::print("- a + b = {}\n", (a + b).values_str());
@@ -97,16 +150,31 @@ int main() {
 | nn threads | 16 |
 | hardware threads | 32 |
 | architecture | x86_64 |
-| compiler | gcc 15.2.0 |
+| compiler | clang 21.1.8 |
 | CPU features | SSE4.2, AVX, AVX2, FMA, AVX512F |
+
+| Backend | Ordinal | Available | Device or diagnostic |
+| :--- | ---: | :--- | :--- |
+| cpu | 0 | true | CPU |
+| cuda | 0 | true | NVIDIA GeForce RTX 5080 Laptop GPU |
+| vulkan | 0 | true | AMD Ryzen 9 9955HX 16-Core Processor (RADV RAPHAEL_MENDOCINO) |
+| vulkan | 1 | true | NVIDIA GeForce RTX 5080 Laptop GPU |
+| vulkan | 2 | true | llvmpipe (LLVM 21.1.8, 256 bits) |
+
+NVIDIA driver 595.71.05, NVML 13.595.71.05, CUDA driver compatibility 13.2 (1 devices).
+
+| NVML index | Device | Compute capability | Cores | Used MiB | Total MiB | Graphics MHz | Memory MHz | °C | W | GPU % | Memory % |
+| ---: | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | NVIDIA GeForce RTX 5080 Laptop GPU | 12.0 | 7680 | 573.6 | 16303.0 | 1575 | 11001 | 65 | 25.457 | 7 | 1 |
 
 - a + b = [[6, 8], [10, 12]]
 - a @ b = [[19, 22], [43, 50]] (16 flops)
 - mean(a) = 2.5, a cast to int32 = [[1, 2], [3, 4]] (int32)
 // result_end
 
-The table is `nn::build_info().to_markdown()`. This build calls a CBLAS for float GEMM and LAPACK for dense linear algebra, and may use
-the number of threads shown. The first operations need no session: \(a+b\) and \(ab\) have values as soon as the calls return. By hand,
+The build table reports the selected host kernels and available thread count.
+A failed probe reports why the requested context is unavailable. The tensor
+operations execute eagerly: \(a+b\) and \(ab\) have values as soon as the calls return. By hand,
 \(ab=\begin{pmatrix}1\cdot5+2\cdot7&1\cdot6+2\cdot8\\3\cdot5+4\cdot7&3\cdot6+4\cdot8\end{pmatrix}=\begin{pmatrix}19&22\\43&50\end{pmatrix}\), which takes eight multiplications and eight additions, \(2\cdot2^3=16\) flops.
 
 > Checking the theory
@@ -193,12 +261,12 @@ int main() {
 // result_begin: markdown
 | n | flops 2n³ | nn::matmul float32 (GFLOP/s) | nn::matmul float64 | triple loop i-k-j | triple loop i-j-k | elementwise add (GFLOP/s) |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 32 | 6.55e+04 | 92.2 | 62.3 | 19.94 | 7.10 | 2.18 |
-| 64 | 5.24e+05 | 188.3 | 96.2 | 25.70 | 6.53 | 6.29 |
-| 128 | 4.19e+06 | 506.2 | 267.0 | 29.03 | 3.89 | 10.98 |
-| 256 | 3.36e+07 | 864.3 | 556.3 | 29.48 | 3.18 | 13.06 |
-| 512 | 2.68e+08 | 1903.4 | 876.6 | 29.44 | 2.12 | 22.21 |
-| 1024 | 2.15e+09 | 1839.1 | 774.6 | 28.67 | not run | 61.78 |
+| 32 | 6.55e+04 | 87.3 | 53.2 | 7.19 | 7.55 | 2.13 |
+| 64 | 5.24e+05 | 143.8 | 88.1 | 7.66 | 6.59 | 5.60 |
+| 128 | 4.19e+06 | 276.3 | 153.1 | 7.42 | 4.46 | 8.43 |
+| 256 | 3.36e+07 | 792.1 | 429.4 | 6.99 | 3.23 | 7.84 |
+| 512 | 2.68e+08 | 1681.0 | 762.3 | 6.99 | 1.87 | 25.48 |
+| 1024 | 2.15e+09 | 1720.9 | 619.0 | 7.01 | not run | 65.65 |
 
 Arithmetic intensity at n = 1024: matmul 171 flops per byte of its inputs and output, elementwise add 0.083.
 \image(figures/hello_tf_gemm.svg)
@@ -361,12 +429,12 @@ where gradients are noisy anyway, but not for reporting coefficients to six digi
 
 > Conclusion
 
-`nn::build_info()` replaces TensorFlow's device listing with the facts that matter for a CPU library: the BLAS and LAPACK in use, the threads,
-the compiler and the CPU's vector features. The measurements then showed what those facts buy. A matrix product's arithmetic intensity grows
+`nn::build_info()` reports the host build and `dm::compute::probe()` reports
+available contexts. The CPU measurements quantify the effect of its kernel and
+floating-point choices. A matrix product's arithmetic intensity grows
 with \(n\), so a blocked GEMM can run at the speed of arithmetic: about 160 to 170 GFLOP/s here, 5 to 20 times a vectorised triple loop and 70 or more times a cache-hostile
 one. An elementwise operation's intensity is fixed and small, so it runs at the speed of memory. Float32 products stay far inside their worst-case
 rounding bound, and a blocked kernel keeps the typical error from growing like \(\sqrt k\). The first model, least squares in float32, lost the digits the condition number predicted.
-For a CPU-only library these are the "devices": cores, vector units, caches and memory bandwidth, and the precision of the type chosen.
 
 > References
 

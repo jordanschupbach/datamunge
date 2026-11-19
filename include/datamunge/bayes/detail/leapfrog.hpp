@@ -3,6 +3,7 @@
 #include <datamunge/optim/function_types.hpp>
 
 #include <cstddef>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -23,12 +24,16 @@ inline LeapfrogState leapfrog_step(optim::DifferentiableFunction& log_posterior,
     const std::size_t d = state.q.size();
     std::vector<double> p = state.p;
     std::vector<double> grad = log_posterior.gradient(state.q);
+    if (grad.size() != d)
+        throw std::invalid_argument("leapfrog gradient dimension does not match the current point");
     for (std::size_t j = 0; j < d; ++j) p[j] += 0.5 * step_size * grad[j];
 
     std::vector<double> q = state.q;
     for (std::size_t j = 0; j < d; ++j) q[j] += step_size * p[j];
 
     grad = log_posterior.gradient(q);
+    if (grad.size() != d)
+        throw std::invalid_argument("leapfrog gradient dimension does not match the proposed point");
     for (std::size_t j = 0; j < d; ++j) p[j] += 0.5 * step_size * grad[j];
 
     return LeapfrogState{std::move(q), std::move(p)};

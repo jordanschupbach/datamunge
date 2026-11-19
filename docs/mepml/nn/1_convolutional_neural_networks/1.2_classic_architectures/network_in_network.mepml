@@ -32,11 +32,12 @@ kernels 5/5/3. SAME max-pooling and dropout follow the first two blocks. The fin
 average directly into ten logits. Full widths learn 966986 scalars. A block costs
 O(NHW(k² Cin A+AB+BC)), with A/B/C its three widths.
 
-The report's thirty-epoch fit uses width divisor eight, 128 fitting/64 validation rows from
-binary batch one and 64 official test rows. It keeps dropout and every block but uses Adam,
-He initialization and [-1,1] pixels; it does not reproduce original contrast normalization,
-ZCA preprocessing or the paper's training results. Class maps are scores, not masks or
-spatial class probabilities. Cached CIFAR-10 is required; no download runs here.
+The compact model keeps all three MLPconv blocks and uses quarter-width hidden
+channels, dropout, independent padded crops and flips, and pixels scaled to
+[-1,1]. Adam fits 12,000 original CIFAR-10 images for twelve epochs. The
+5,000-image validation split selects a checkpoint before evaluating all 10,000
+official test images. Class maps are spatial scores whose average gives the logit.
+The gallery uses the first official test image of each class.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -96,7 +97,7 @@ int main() {
   std::filesystem::create_directories("build");
   n::ParameterStore    p(17);
   n::models::NinConfig cfg;
-  cfg.width_divisor = 8;
+  cfg.width_divisor = 4;
   cfg.classes       = 10;
   n::Module model(
       [&](const n::Tensor& image) {
@@ -152,13 +153,13 @@ int main() {
 }
 ```
 // result_begin: markdown
-Graph / layers: 15 nodes, 17058 distinct learned values.
-LeNet / blocks: 8 nodes, 17058 distinct learned values.
-Flow / blocks: 8 nodes, 17058 distinct learned values.
+Graph / layers: 15 nodes, 63770 distinct learned values.
+LeNet / blocks: 8 nodes, 63770 distinct learned values.
+Flow / blocks: 8 nodes, 63770 distinct learned values.
 \image(figures/network_in_network_architecture.svg)
 // result_end
-\caption(The full three-MLPconv NiN topology with the report's width divisor eight and ten class maps. Each composite MLPconv node includes its spatial convolution and two pointwise mixers; inference disables dropout.)
-\alttext(The full three-MLPconv NiN topology with the report's width divisor eight and ten class maps. Each composite MLPconv node includes its spatial convolution and two pointwise mixers; inference disables dropout.)
+\caption(The full three-MLPconv NiN topology with the report's width divisor four and ten class maps. Each composite MLPconv node includes its spatial convolution and two pointwise mixers; inference disables dropout.)
+\alttext(The full three-MLPconv NiN topology with the report's width divisor four and ten class maps. Each composite MLPconv node includes its spatial convolution and two pointwise mixers; inference disables dropout.)
 > Graph and LeNet views
 
 \image(figures/network_in_network_architecture_graph.svg)
@@ -229,22 +230,32 @@ int main() {
     error = std::max(error, n::max(n::abs(a[i] - b[i])).item());
   if (error > 1e-10)
     return 1;
-  n::NoGradGuard guard;
   n::ParameterStore full(17);
-  const auto model = n::models::NetworkInNetwork(full, n::zeros({1, 32, 32, 3}));
-  if (full.count() != 966986 || model.blocks[2].shape() != n::Shape{1, 8, 8, 10})
-    return 1;
+  const auto fixture = n::normal({2, 32, 32, 3}, 0., .2, rng);
+  const auto model = n::models::NetworkInNetwork(full, fixture);
+  if (full.count() != 966986 || model.blocks[0].shape() != n::Shape{2, 32, 32, 96} ||
+      model.blocks[1].shape() != n::Shape{2, 16, 16, 192} ||
+      model.blocks[2].shape() != n::Shape{2, 8, 8, 10} || model.logits.shape() != n::Shape{2, 10})
+    throw std::runtime_error("Unexpected full NiN architecture");
+  const auto gradients = n::grad(n::mean(n::square(model.logits)), full.parameters());
+  for (const auto &gradient : gradients) {
+    const double magnitude = n::max(n::abs(gradient)).item();
+    if (!std::isfinite(magnitude) || magnitude <= 0.)
+      throw std::runtime_error("Expected finite nonzero derivatives through all learned tensors");
+  }
+  std::println("Checked {} canonical parameter tensors.", gradients.size());
   std::print("Maximum patch-MLP value/gradient discrepancy {:.12f}; full parameters {}.\n",
              error, full.count());
 }
 ```
 // result_begin: markdown
+Checked 18 canonical parameter tensors.
 Maximum patch-MLP value/gradient discrepancy 0.000000000000; full parameters 966986.
 // result_end
 
 > A dataset example
 
-The preview selects one original training image of every class. The loop fits a separate fixed subset.
+The preview selects one original training image of every class. The benchmark uses a seeded fitting/validation split.
 
 ```{cpp, results="markdown", file="figures/network_in_network_inputs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -296,141 +307,214 @@ One original cached training image per class, IDs 0..4 then 5..9.
 
 int main() {
   int rendered_confusions = 0;
-  namespace n             = dm::nn;
+  namespace n = dm::nn;
   n::set_num_threads(2);
 
   std::filesystem::path cache;
-  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
     cache = p;
-  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
     cache = std::filesystem::path(p) / "datamunge/datasets";
   else
     cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
   dm::datasets::fetch("cifar10", (cache / "cifar10").string());
 
-  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
-  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
-  const auto labels = n::cast(raw.labels, n::DType::Int64);
-  const auto tx = 2 * n::slice_axis(images, 0, 0, 128) - 1, ty = n::slice_axis(labels, 0, 0, 128);
-  const auto vx   = 2 * n::slice_axis(images, 0, 128, 192) - 1,
-             vy   = n::slice_axis(labels, 0, 128, 192);
-  const auto test = n::load_cifar10((cache / "cifar10").string(), "test");
-  const auto qx   = 2 * n::slice_axis(test.images, 0, 0, 64) - 1,
-             qy   = n::slice_axis(test.labels, 0, 0, 64);
-  std::filesystem::create_directories("build");
-  auto                learning = dm::graphics::RPlot::create();
-  std::vector<double> variants, counts, accuracy, nll, training_nll;
-  n::Tensor           selected_map;
-  int                 selected_class = 0;
-  for (int variant : {8}) {
-    n::ParameterStore    p(17);
-    n::models::NinConfig cfg;
-    cfg.width_divisor    = 8;
-    cfg.keep_probability = .5;
-    auto output          = [&](const n::Tensor& x, bool training) {
-      return n::models::NetworkInNetwork(p, x, cfg, training);
-    };
-    {
-      n::NoGradGuard guard;
-      output(n::zeros({1, 32, 32, 3}), false);
+  const auto development = n::load_cifar10((cache / "cifar10").string(), "train");
+  if (development.images.shape() != n::Shape{50000, 32, 32, 3})
+    throw std::runtime_error("Expected all CIFAR-10 development rows");
+  std::vector<std::int64_t> order(50000);
+  std::iota(order.begin(), order.end(), 0);
+  std::mt19937_64 split(2026);
+  std::shuffle(order.begin(), order.end(), split);
+  const std::vector<std::int64_t> fitting(order.begin(), order.begin() + 12000);
+  const std::vector<std::int64_t> held_out(order.begin() + 45000, order.end());
+  const auto tx = n::take_rows(development.images, fitting);
+  const auto ty = n::take_rows(development.labels, fitting);
+  const auto vx = n::take_rows(development.images, held_out);
+  const auto vy = n::take_rows(development.labels, held_out);
+  n::models::NinConfig cfg;
+  cfg.width_divisor = 4;
+  n::ParameterStore p(17);
+  const auto output = [&](const n::Tensor &images, bool training) {
+    return n::models::NetworkInNetwork(p, images, cfg, training);
+  };
+  const auto predict = [&](const n::Tensor &images) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> result;
+    for (std::int64_t at = 0; at < images.size(0); at += 128) {
+      const auto rows = n::slice_axis(images, 0, at, std::min(at + 128, images.size(0)));
+      result.push_back(output(2 * rows - 1, false).logits);
     }
-    n::OptimizerConfig options;
-    options.kind = n::OptimizerKind::Adam;
-    n::Optimizer        optimizer(p, .001, options);
-    n::BatchOrder       batches(128, 16, 2026);
-    const std::string   path = "build/network_in_network_" + std::to_string(variant) + "_best.npz";
-    double              best = std::numeric_limits<double>::infinity();
-    std::vector<double> epochs, validation;
-    for (int epoch = 0; epoch < 30; ++epoch) {
-      batches.begin_epoch();
-      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-        const auto logits = output(n::take_rows(tx, rows), true).logits;
-        auto       loss   = n::sparse_softmax_cross_entropy(logits, n::take_rows(ty, rows));
-        for (const auto& w : p.parameters())
-          if (w.dim() >= 2)
-            loss = loss + .00005 * n::sum(n::square(w));
-        optimizer.minimize(loss);
-      }
-      n::NoGradGuard guard;
-      const double   val = n::sparse_softmax_cross_entropy(output(vx, false).logits, vy).item();
-      if (!std::isfinite(val))
-        return 1;
-      epochs.push_back(epoch + 1);
-      validation.push_back(val);
-      if (val < best) {
-        best = val;
-        p.save(path);
-      }
-    }
-    p.load(path);
-    n::NoGradGuard     guard;
-    const auto         predicted = output(qx, false);
-    n::ConfusionMatrix native_confusion(10);
-    native_confusion.add(qy, n::argmax(predicted.logits, 1));
- n::save_npz("build/network_in_network_heldout_"+std::to_string(rendered_confusions)+".npz",{{"truth",qy},{"logits",predicted.logits},{"counts",native_confusion.to_tensor()}});
-    native_confusion.save_svg(
-        "build/network_in_network_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
-        {.title = "network in network / selected-checkpoint test counts"});
-
-    variants.push_back(variant);
-    counts.push_back(p.count());
-    accuracy.push_back(n::accuracy(predicted.logits, qy));
-    training_nll.push_back(n::sparse_softmax_cross_entropy(output(tx, false).logits, ty).item());
-    nll.push_back(n::sparse_softmax_cross_entropy(predicted.logits, qy).item());
-    learning.lines(
-        epochs,
-        validation,
-        "NiN, width divisor 8",
-        variant == 11   ? dm::graphics::RGB{37, 99, 235}
-        : variant == 16 ? dm::graphics::RGB{234, 88, 12}
-                        : dm::graphics::RGB{22, 163, 74});
-
-    const auto maps          = predicted.blocks[2];
-    selected_class           = int(n::argmax(predicted.logits, 1).at({0}));
-    selected_map             = n::select(n::select(maps, 0, 0), 2, selected_class);
-    const double discrepancy = n::max(n::abs(n::global_avg_pool2d(maps) - predicted.logits)).item();
-    if (discrepancy > 1e-6)
-      return 1;
-    std::print("Final class-map/logit identity discrepancy {:.9f}.\n", discrepancy);
+    return n::concat(result, 0);
+  };
+  // Materialise every learned leaf before capturing optimizer parameters.
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
   }
-  learning.title("Validation NLL from explicit compact-model Adam loops")
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(p, .001, config);
+  n::BatchOrder batches(12000, 128, 29);
+  n::Generator augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string checkpoint = "build/network_in_network_best.npz";
+  double best = std::numeric_limits<double>::infinity();
+  int best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 12; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      const auto net = output(2 * n::study::augment_cifar10(batch, augmentation) - 1, true);
+      const auto primary = n::sparse_softmax_cross_entropy(net.logits, target);
+      auto objective = primary;
+
+      // L2 coefficient .0001/2, kernels only; coupled penalty is explicit in the objective.
+      for (const auto &w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(primary.item(), rows.size());
+    }
+    if (average.count() != fitting.size())
+      throw std::runtime_error("Incomplete fitting epoch");
+    const double val = n::sparse_softmax_cross_entropy(predict(vx), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best = val;
+      best_epoch = epoch;
+      p.save(checkpoint);
+    }
+  }
+  p.load(checkpoint);
+  n::NoGradGuard guard;
+  const double restored = n::sparse_softmax_cross_entropy(predict(vx), vy).item();
+  if (!std::isfinite(restored) || std::abs(restored - best) > 1e-6)
+    throw std::runtime_error("Restored validation NLL differs");
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  if (official.images.shape() != n::Shape{10000, 32, 32, 3})
+    throw std::runtime_error("Expected all official CIFAR-10 test rows");
+  const auto test = predict(official.images), qy = official.labels;
+  n::ConfusionMatrix native_confusion(10);
+  native_confusion.add(qy, n::argmax(test, 1));
+  n::save_npz("build/network_in_network_heldout_" + std::to_string(rendered_confusions) + ".npz",
+              {{"truth", qy}, {"logits", test}, {"counts", native_confusion.to_tensor()}});
+  native_confusion.save_svg("build/network_in_network_confusion_api_" +
+                                std::to_string(rendered_confusions++) + ".svg",
+                            {.title = "network_in_network / selected-checkpoint test counts"});
+
+  const double train_nll = n::sparse_softmax_cross_entropy(predict(tx), ty).item();
+  const double test_nll = n::sparse_softmax_cross_entropy(test, qy).item();
+  if (!std::isfinite(test_nll) || n::accuracy(test, qy) < .35)
+    return 1;
+  const auto labels = qy.to_vector<std::int64_t>();
+  std::vector<std::int64_t> first_of_class;
+  for (std::int64_t cls = 0; cls < 10; ++cls) {
+    const auto first = std::ranges::find(labels, cls);
+    if (first == labels.end())
+      throw std::runtime_error("An official test class is missing");
+    first_of_class.push_back(std::distance(labels.begin(), first));
+  }
+  const auto images = n::take_rows(official.images, first_of_class);
+  const auto gallery = output(2 * images - 1, false);
+  const auto scores = gallery.blocks[2];
+  const auto pixels = scores.to_vector<float>();
+  const auto logits = gallery.logits.to_vector<float>();
+  double discrepancy = 0.;
+  for (int row = 0; row < 10; ++row)
+    for (int cls = 0; cls < 10; ++cls) {
+      double mean = 0.;
+      for (int position = 0; position < 64; ++position)
+        mean += pixels[(row * 64 + position) * 10 + cls] / 64.;
+      discrepancy = std::max(discrepancy, std::abs(mean - logits[row * 10 + cls]));
+    }
+  std::println("Maximum of 100 class map mean errors: {:.9f}.", discrepancy);
+  const auto maps = n::transpose(scores, {0, 3, 1, 2}).reshape({100, 8, 8, 1});
+  if (scores.shape() != n::Shape{10, 8, 8, 10} || discrepancy > 2e-6 ||
+      n::max(n::abs(gallery.logits - n::take_rows(test, first_of_class))).item() > 2e-5)
+    throw std::runtime_error("Class-map averages disagree with held-out logits");
+  n::save_npz("build/network_in_network_class_maps.npz",
+              {{"images", images},
+               {"labels", n::take_rows(qy, first_of_class)},
+               {"row_ids", n::from_vector(first_of_class)},
+               {"maps", scores},
+               {"logits", gallery.logits},
+               {"predicted", n::argmax(gallery.logits, 1)},
+               {"probabilities", n::softmax(gallery.logits, 1)}});
+  n::plot_tensor_images(images, 10)
+      .title("First official test image in each class (0 to 9)")
+      .size(1100, 180)
+      .save_svg("build/network_in_network_sources.svg");
+  n::plot_tensor_images(maps, 10, 0., n::max(maps).item())
+      .title("Class score maps: true class by row, logit class by column")
+      .size(1050, 1050)
+      .save_svg("build/network_in_network_maps.svg");
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("network_in_network: compact CIFAR-10 primary NLL")
       .x_label("epoch")
-      .y_label("mean NLL");
-  learning.title("Compact NiN: validation NLL");
-  auto map = n::plot_tensor_map(selected_map)
-                 .title("Predicted-class score map: " + std::to_string(selected_class));
-  dm::graphics::RLayout::create(1, 2).add(learning).add(map).size(1100, 470).fit_panels().save_svg(
-      "build/network_in_network_training.svg");
-  dm::dstruct::DataFrame table;
-  table.add_column("variant", variants);
-  table.add_column("parameters", counts);
-  table.add_column("test_subset_accuracy", accuracy);
-  table.add_column("test_subset_NLL", nll);
-  table.add_column("selected_training_NLL", training_nll);
-  std::print(
-      "128 fitted rows, 64 validation rows, 64 official-test rows; thirty epochs.\n\n{}\n",
-      table.to_md(6));
+      .y_label("mean NLL")
+      .size(1000, 470)
+      .save_svg("build/network_in_network_training.svg");
+  std::print("12000 fit / 5000 validation / 10000 official-test rows; {} learned scalars; {} Adam "
+             "updates.\nBest validation epoch {}; NLL {:.6f}.\nSelected inference training "
+             "NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+             p.count(), optimizer.iterations(), best_epoch, best, train_nll, test_nll,
+             n::accuracy(test, qy));
 }
 ```
 // result_begin: markdown
-Final class-map/logit identity discrepancy 0.000000000.
-128 fitted rows, 64 validation rows, 64 official-test rows; thirty epochs.
-
-| variant | parameters | test_subset_accuracy | test_subset_NLL | selected_training_NLL |
-| ---: | ---: | ---: | ---: | ---: |
-| 8 | 17058 | 0.140625 | 2.136731 | 2.067149 |
-
+Maximum of 100 class map mean errors: 0.000000471.
+12000 fit / 5000 validation / 10000 official-test rows; 63770 learned scalars; 1128 Adam updates.
+Best validation epoch 10; NLL 1.411857.
+Selected inference training NLL 1.385734; test NLL 1.394978; test accuracy 0.480600.
 \image(figures/network_in_network_training.svg)
 // result_end
-\caption(The validation trace accompanies a predicted-class score map for the first official-test image; map values are not spatial probabilities or object masks.)
-\alttext(The validation trace accompanies a predicted-class score map for the first official-test image; map values are not spatial probabilities or object masks.)
+\caption(Primary classification NLL by epoch for augmented training and unaugmented validation.)
+\alttext(Training and validation loss curves over twelve epochs.)
 
-The executed results above report the current selected checkpoint. These fixed small
-subsets and source budgets do not establish a ranking of architectures. Assess
-training, validation and test NLL together with the complete held-out confusion.
-Augmented or batch-moment training objectives and saved-state inference can differ;
-weak or below-chance outcomes remain part of the result. The independent geometry,
-parameter-count and derivative checks establish separate implementation claims.
+> Class score maps
+
+Each gallery row corresponds to one original test image, in true-class order.
+The columns show the 8×8 spatial scores for the ten output classes on a common
+grayscale scale. The report checks the means of all 100 maps against their logits.
+
+```{cpp, results="markdown", file="figures/network_in_network_sources.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/network_in_network_sources.svg", "build/export_network_in_network_sources.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+\image(figures/network_in_network_sources.svg)
+// result_end
+\caption(Ten original CIFAR-10 test images in true-class order.)
+\alttext(Ten original CIFAR-10 test images in true-class order.)
+
+```{cpp, results="markdown", file="figures/network_in_network_maps.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/network_in_network_maps.svg", "build/export_network_in_network_maps.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+\image(figures/network_in_network_maps.svg)
+// result_end
+\caption(A ten by ten gallery of 8×8 class score maps. Rows index true class and columns index output class.)
+\alttext(A ten by ten gallery of 8×8 class score maps. Rows index true class and columns index output class.)
 
 > Native confusion matrices
 
@@ -447,25 +531,40 @@ running from top to bottom and predicted classes from left to right.
 
 Each alternate architecture or held-out confusion below is copied from this run's local build directory.
 
-```{cpp, results="markdown", file="figures/network_in_network_architecture_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/network_in_network_architecture_graph.svg","build/export_network_in_network_architecture_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/network_in_network_architecture_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/network_in_network_architecture_graph.svg", "build/export_network_in_network_architecture_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/network_in_network_architecture_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/network_in_network_architecture_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/network_in_network_architecture_lenet.svg","build/export_network_in_network_architecture_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/network_in_network_architecture_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/network_in_network_architecture_lenet.svg", "build/export_network_in_network_architecture_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/network_in_network_architecture_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/network_in_network_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/network_in_network_confusion_api_0.svg","build/export_network_in_network_confusion_api_0.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/network_in_network_confusion_api_0.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/network_in_network_confusion_api_0.svg", "build/export_network_in_network_confusion_api_0.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/network_in_network_confusion_api_0.svg)
@@ -474,9 +573,8 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 > Conclusion
 
 The pointwise XOR and explicit patch comparison establish why MLPconv differs from a
-single linear filter. Full-width shape/count checks and compact explicit training serve
-different purposes; the short CIFAR demonstration establishes neither benchmark accuracy
-nor an interpretation of class maps as ground-truth segmentation.
+single linear filter. The compact CIFAR-10 fit supplies the learned maps, whose
+spatial averages are the class logits.
 
 > References
 

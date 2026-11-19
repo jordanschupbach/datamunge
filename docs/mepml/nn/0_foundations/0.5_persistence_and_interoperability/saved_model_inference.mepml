@@ -1,15 +1,82 @@
-//? Title: Serving Exported Weights with a Dynamic Batch
-//? Subtitle: Native least squares fits the coefficients; C++ supplies and checks the serving function
+//? Title: Serve a Python-trained TensorFlow SavedModel from C++
+//? Subtitle: Resolve a named serving signature and test dynamic batches
 //? Exports: both
 //? Lang: en-GB
 
 \abstract(
-A fitted model must accept new batch sizes after leaving its training environment. We fit a
-small affine model with native least squares, export its Float32 weights, and evaluate it in C++ on two batch
-sizes. The native process needs the numeric weights and matching inference code; it does not
-load a TensorFlow SavedModel directory.
+Load the upstream Python-trained affine model with Datamunge's optional
+TensorFlow backend. Resolve the serving signature, check dynamic batch
+inference, and compare predictions with exported references. A native
+weight-only example shows how to deploy the same affine computation using NPZ.
 )
 \toc
+
+> Load and serve the SavedModel
+
+The bundled fixture comes from `scripts/train_export_affine.py` in the
+TensorFlow examples checkout. It trained on 128 sinusoidal feature pairs
+with 600 gradient updates. The export stores the serving graph, variables,
+and a SignatureDef mapping logical keys to tensor endpoints. Datamunge
+loads the serve-tagged graph and restores its checkpoint using the
+TensorFlow C++ runtime. The inference executable needs no Python runtime.
+
+Build Datamunge with `-DDATAMUNGE_ENABLE_TENSORFLOW=ON` and point
+`CMAKE_PREFIX_PATH` at a TensorFlow C++ SDK containing its headers and
+libraries. On a build with the backend disabled, this block reports its
+availability. The native weight-only exercise below still runs.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <fstream>
+#include <print>
+#include <stdexcept>
+
+int main() {
+  namespace n = dm::nn;
+  if (!n::saved_model_runtime_available()) {
+    std::println("SavedModel requires a Datamunge build with DATAMUNGE_ENABLE_TENSORFLOW.");
+    return 0;
+  }
+  const std::string fixture = "fixtures/python_affine/";
+  const n::SavedModel model(fixture + "saved_model");
+  if (model.input_shape() != n::Shape{-1, 2} || model.output_shape() != n::Shape{-1, 1})
+    throw std::runtime_error("Unexpected serving signature");
+  std::ifstream rows(fixture + "reference.tsv");
+  std::vector<float> input, reference;
+  float a, b, y;
+  while (rows >> a >> b >> y) {
+    input.insert(input.end(), {a, b});
+    reference.push_back(y);
+  }
+  if (reference.size() != 4) throw std::runtime_error("Missing reference predictions");
+  const auto prediction = model.predict(n::from_vector(input, {4, 2}));
+  const auto single = model.predict(n::tensor({-2., 4.}, {1, 2}));
+  if (prediction.shape() != n::Shape{4, 1} || single.shape() != n::Shape{1, 1} ||
+      prediction.requires_grad() || std::abs(single.item() + 7.25) > 1e-5)
+    throw std::runtime_error("Unexpected inference result");
+  const auto actual = prediction.to_vector<float>();
+  for (std::size_t i = 0; i < actual.size(); ++i)
+    if (std::abs(actual[i] - reference[i]) > 1e-6f)
+      throw std::runtime_error("SavedModel output differs from Python reference");
+  bool rejected = false;
+  try {
+    (void)model.predict(n::zeros({1, 3}));
+  } catch (const std::invalid_argument&) {
+    rejected = true;
+  }
+  if (!rejected) throw std::runtime_error("Incompatible feature width was accepted");
+  std::println("Serving signature features [-1, 2] to predictions [-1, 1].");
+  std::println("Four predictions {:.6f}, {:.6f}, {:.6f}, {:.6f}. Single-row prediction {:.6f}.",
+               actual[0], actual[1], actual[2], actual[3], single.item());
+  std::println("Incompatible feature width rejected.");
+}
+```
+// result_begin: markdown
+Serving signature features [-1, 2] to predictions [-1, 1].
+Four predictions 0.250000, 0.999999, -1.249999, 6.249995. Single-row prediction -7.249994.
+Incompatible feature width rejected.
+// result_end
 
 > The method
 
@@ -49,7 +116,7 @@ int main() {
 // result_begin:
 // \image(figures/saved_model_inference_concept.svg)
 // result_end
-\caption(Native least squares fits the coefficients; C++ supplies and checks the serving function)
+\caption(Resolve a named serving signature and test dynamic batches)
 \alttext(Native fit; least squares coefficients Then Export Float32 NPZ; weights + bias Then C++ serving contract; dynamic batch; no grad.)
 
 > Simple examples
@@ -80,6 +147,11 @@ int main(){
  const auto single=n::affine_inference(n::tensor({{2,-3}}),w,b);
  auto p=dm::graphics::RPlot::create();p.lines({.25,1,-1.25,6.25},y.to_vector<double>(),"native output")
  .title("Exported model agrees with its generating affine rule").x_label("analytic prediction").y_label("native prediction");
+ if (n::saved_model_runtime_available()) {
+   const n::SavedModel model("fixtures/python_affine/saved_model");
+   p.points(y.to_vector<double>(), model.predict(x).to_vector<double>(),
+            "SavedModel output", {191, 88, 34}, 5);
+ }
  p.size(820,420).save_svg("build/saved_model_inference_agreement.svg");
  if(y.to_vector<double>()!=std::vector<double>({.25,1,-1.25,6.25})||single.item()!=6.25||y.requires_grad())return 1;
  std::print("Batch shapes: {} and {}; predictions: {}.\n",n::shape_str(y.shape()),n::shape_str(single.shape()),y.to_vector<double>());
@@ -89,8 +161,8 @@ int main(){
 Batch shapes: [4, 1] and [1, 1]; predictions: [0.25, 1, -1.25, 6.25].
 \image(figures/saved_model_inference_agreement.svg)
 // result_end
-\caption(The same weights serve four rows or one row without rebuilding a graph.)
-\alttext(The same weights serve four rows or one row without rebuilding a graph.)
+\caption(The plot overlays the SavedModel predictions on the native affine reference when the backend is available.)
+\alttext(The plot overlays the SavedModel predictions on the native affine reference when the backend is available.)
 
 > Checking the theory
 
@@ -110,9 +182,9 @@ Incompatible input width and dtype rejected: 2.
 
 > Conclusion
 
-Native estimation and serving inference agree across dynamic batch sizes, and incompatible inputs
-fail at the serving boundary. This is weight interoperability with explicit native code. It does
-not demonstrate SavedModel loading, graph portability or execution of arbitrary exported functions.
+The SavedModel and native exercises both support dynamic batch sizes.
+The SavedModel signature supplies tensor endpoints and metadata. The
+native NPZ path pairs the coefficients with an explicit affine function.
 
 > References
 

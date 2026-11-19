@@ -1,0 +1,152 @@
+//? Title: GRU4Rec session-based ranking with TOP1 loss
+//? Lang: en
+
+> GRU4Rec session-based ranking with TOP1 loss
+
+A GRU reads a sequence of clicks and updates a hidden state at each step.
+A linear head scores the next item from that state. The TOP1 loss
+compares the score of each other catalog item with the true next item's
+score and penalizes large negative-item scores. This small catalog
+allows comparisons against every negative item.
+
+Each simulated session follows a cycle forwards or backwards. From the
+first click alone, the direction is ambiguous. Once the model sees
+another click, it can infer the direction. The fitting and test sets
+sample sessions independently from the same 32 possible paths. The plot
+shows held-out hit@1 by prefix length before and after training.
+
+Set `DM_GRU4REC_REFERENCE` to upstream `gru4rec/sessions.npz` to check
+predictions with upstream parameters. The native fit uses Datamunge
+initialization and the upstream Adam schedule.
+
+[Hidasi et al. (2016)|https://arxiv.org/abs/1511.06939]
+
+```{cpp, results="markdown", file="figures/gru4rec.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int items = 16, steps = 6, units = 24;
+  const auto sessions = [](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::vector<int> values;
+    for (int i = 0; i < count; ++i) {
+      const int start = rng()%items, stride = rng()%2==0 ? 1 : -1;
+      for (int t = 0; t <= steps; ++t) values.push_back((start+t*stride+items)%items);
+    }
+    return n::from_vector(values,{count,steps+1});
+  };
+  const auto fit = sessions(768,3022), test = sessions(192,3023);
+  const auto encode = [](const n::Tensor& data,int start) {
+    return n::one_hot(n::slice(data,{0,start},{data.size(0),steps}),items);
+  };
+  const auto x = encode(fit,0), y = encode(fit,1);
+  const auto input = encode(test,0), labels = encode(test,1);
+  n::ParameterStore params(3025);
+  const auto predict = [&](const n::Tensor& rows) {
+    const auto state = n::recurrent(params,"gru",rows,units,n::RnnKind::Gru);
+    return n::dense(params,"head",state.reshape({-1,units}),items)
+        .reshape({rows.size(0),steps,items});
+  };
+  const auto loss = [](const n::Tensor& scores,const n::Tensor& positive) {
+    return n::top1_ranking_loss(scores.reshape({-1,items}),positive.reshape({-1,items}));
+  };
+  const auto ranks = [&](const n::Tensor& logits) {
+    const auto scores = logits.to_vector<float>();
+    const auto ids = test.to_vector<int>();
+    std::vector<int> result;
+    for (int row = 0; row < 192; ++row) {
+      for (int t = 0; t < steps; ++t) {
+        const auto* s = scores.data()+(row*steps+t)*items;
+        const int target = ids[row*(steps+1)+t+1];
+        int rank = 1;
+        for (int i = 0; i < items; ++i) rank += s[i]>s[target] || (s[i]==s[target] && i<target);
+        result.push_back(rank);
+      }
+    }
+    return result;
+  };
+  const auto hits = [](const std::vector<int>& ranks) {
+    std::vector<double> result(steps);
+    for (std::size_t i = 0; i < ranks.size(); ++i) result[i%steps] += (ranks[i]==1)/192.0;
+    return result;
+  };
+  double initial;
+  std::vector<double> before;
+  {
+    const n::NoGradGuard no_grad;
+    const auto logits = predict(input);
+    initial = loss(logits,labels).item();
+    before = hits(ranks(logits));
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.01,config);
+  n::BatchOrder order(768,32,3024);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids = order.next(); !ids.empty(); ids = order.next()) {
+      optimizer.minimize(loss(predict(n::take_rows(x,ids)),n::take_rows(y,ids)));
+    }
+  }
+  const n::NoGradGuard no_grad;
+  const auto scores = predict(input);
+  const auto fitted_loss = loss(scores,labels);
+  const auto ranking = ranks(scores);
+  if (optimizer.iterations()!=72 || !(fitted_loss.item()<initial)) {
+    throw std::runtime_error("GRU4Rec fit did not improve");
+  }
+  const auto alone = predict(n::slice(input,{0,0,0},{1,steps,items}));
+  const auto changed = test.to_vector<int>();
+  std::vector<int> prefix(changed.begin(),changed.begin()+steps);
+  prefix.back() = (prefix.back()+1)%items;
+  const auto shifted = predict(n::one_hot(n::from_vector(prefix,{1,steps}),items));
+  if (n::max(n::abs(alone-n::slice(scores,{0,0,0},{1,steps,items}))).item()>2e-6 ||
+      n::max(n::abs(n::slice(alone-shifted,{0,0,0},{1,steps-1,items}))).item()!=0) {
+    throw std::runtime_error("Session reset or prefix invariance failed");
+  }
+  std::filesystem::create_directories("build");
+  params.save("build/gru4rec_weights.npz");
+  n::save_npz("build/gru4rec_sessions.npz",{{"sessions",test},{"scores",scores.reshape({192,steps*items})},
+      {"ranks",n::from_vector(ranking,{192,steps})},{"loss",fitted_loss}});
+  const auto after = hits(ranking);
+  std::print("Held-out TOP1 loss {:.6f} to {:.6f}.\n\n",initial,fitted_loss.item());
+  std::print("| Prefix length | Initial hit@1 | Fitted hit@1 |\n|---:|---:|---:|\n");
+  for (int t = 0; t < steps; ++t) std::print("| {} | {:.1f}% | {:.1f}% |\n",t+1,100*before[t],100*after[t]);
+  if (const char* path = std::getenv("DM_GRU4REC_REFERENCE")) {
+    const auto entries = n::load_npz(path);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    for (const auto& name : params.names()) {
+      auto key = name;
+      std::replace(key.begin(),key.end(),'/','_');
+      params.set(name,stored.at(key));
+    }
+    const auto replay = predict(input);
+    const auto error = n::max(n::abs(replay.reshape({192,steps*items})-stored.at("scores"))).item();
+    if (!(error<1e-5) || ranks(replay)!=stored.at("ranks").to_vector<int>()) {
+      throw std::runtime_error("GRU4Rec checkpoint replay mismatch");
+    }
+    std::print("\nUpstream replay maximum logit error {:.3e}.\n",error);
+  }
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({1,2,3,4,5,6},before,"Initial",{100,116,139})
+      .lines({1,2,3,4,5,6},after,"Fitted",{37,99,235})
+      .title("GRU4Rec next-item ranking").x_label("Prefix length").y_label("Hit@1")
+      .y_limits(0,1.05).size(850,410).save_svg("build/gru4rec.svg");
+}
+```
+// result_begin: markdown
+Held-out TOP1 loss 0.999530 to 0.577276.
+
+| Prefix length | Initial hit@1 | Fitted hit@1 |
+|---:|---:|---:|
+| 1 | 3.6% | 46.9% |
+| 2 | 9.9% | 100.0% |
+| 3 | 15.6% | 100.0% |
+| 4 | 9.4% | 100.0% |
+| 5 | 10.4% | 93.8% |
+| 6 | 9.4% | 96.9% |
+
+Upstream replay maximum logit error 9.537e-07.
+\image(figures/gru4rec.svg)
+// result_end

@@ -109,7 +109,6 @@ int main() {
 }
 ```
 // result_begin:
-// Prepared genuine FSDD72/12/24speaker-disjoint windows and3original held-out prompts
 // result_end
 
 Keep the first1025 actual samples without resampling,peak normalization or

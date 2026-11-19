@@ -1,0 +1,118 @@
+//? Title: English–Spanish translation with Luong attention
+//? Lang: en
+
+> English–Spanish translation with Luong attention
+
+An LSTM encodes each English sentence. At each Spanish output step,
+the decoder scores the valid encoder states with a dot product and
+uses their weighted sum to predict the next token. During training it
+conditions on the reference prefix. At evaluation it also decodes
+without the reference, stopping at EOS or after six tokens.
+
+This uses the pinned Tatoeba/ManyThings corpus prepared by the upstream
+`scripts/prepare_seq2seq_translation.py` recipe. The 512 fitting,
+64 validation, and 64 test pairs are disjoint. The shared 512-token
+vocabulary is built only from fitting pairs. Set `DM_TRANSLATION_DATA`
+to the prepared `translation.npz` when the upstream checkout is
+outside its default path. The dataset directory includes attribution.
+
+The plot tracks validation loss per nonpadding token. References containing unknown tokens count as misses in the exact-match score.
+
+```{cpp, results="markdown", file="figures/english_spanish_luong.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace seq=n::models::seq2seq;
+  namespace fs=std::filesystem;
+  constexpr int vocab=512;
+  const char* data=std::getenv("DM_TRANSLATION_DATA");
+  const char* home=std::getenv("HOME");
+  if (!data && !home) throw std::runtime_error("Set DM_TRANSLATION_DATA to translation.npz");
+  const auto path=data ? fs::path(data) :
+      fs::path(home)/"projects/tflow_examples/output/datasets/seq2seq_translation/translation.npz";
+  const auto tensors=n::load_npz(path.string());
+  const std::map<std::string,n::Tensor> arrays(tensors.begin(),tensors.end());
+  struct Batch {n::Tensor input,lengths,teacher,target,target_lengths;};
+  const auto load=[&](const std::string& split) {
+    return Batch{arrays.at(split+"_input"),arrays.at(split+"_input_lengths"),
+                 arrays.at(split+"_teacher"),arrays.at(split+"_target"),arrays.at(split+"_target_lengths")};
+  };
+  const auto fit=load("fit"), validation=load("validation"), test=load("test");
+  n::ParameterStore params(41360);
+  const auto forward=[&](const Batch& b) {
+    return seq::Attentive(params,n::one_hot(b.input,vocab),n::one_hot(b.teacher,vocab),
+                          b.lengths,b.target_lengths,vocab,seq::DecoderAttention::Luong);
+  };
+  const auto loss=[](const n::Tensor& logits,const Batch& b) {
+    const auto mask=seq::ValidPositions(b.target_lengths).to(logits.dtype());
+    return n::sum(mask*n::sparse_softmax_cross_entropy(logits,b.target,n::Reduction::None))/n::sum(mask);
+  };
+  const double initial=loss(forward(test).first,test).item();
+  n::Optimizer optimizer(params,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(512,16,41365);
+  std::vector<double> curve;
+  std::print("| Epoch | Validation token NLL |\n|---:|---:|\n");
+  for (int epoch=1;epoch<=3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto ids=n::from_vector(rows);
+      const Batch b{n::gather(fit.input,ids),n::gather(fit.lengths,ids),n::gather(fit.teacher,ids),
+                    n::gather(fit.target,ids),n::gather(fit.target_lengths,ids)};
+      optimizer.step(n::grad(loss(forward(b).first,b),optimizer.parameters()));
+    }
+    const n::NoGradGuard guard;
+    curve.push_back(loss(forward(validation).first,validation).item());
+    std::print("| {} | {:.6f} |\n",epoch,curve.back());
+  }
+  const n::NoGradGuard guard;
+  const auto [logits,alignment]=forward(test);
+  const auto zero=n::zeros({64,seq::kUnits});
+  const auto source=seq::Encode(params,seq::Embedding(params,n::one_hot(test.input,vocab),vocab),
+                                test.lengths,zero,zero);
+  n::LstmState state{source.h.back(),source.c.back()};
+  auto token=n::full({64},seq::kBos,n::DType::Int32);
+  auto active=n::ones({64},n::DType::Bool);
+  std::vector<n::Tensor> decoded;
+  for (int t=0;t<seq::kSteps;++t) {
+    const auto step=seq::AttentiveStep(params,seq::Embedding(params,n::one_hot(token,vocab),vocab),
+        state,source.memory,test.lengths,vocab,seq::DecoderAttention::Luong);
+    state={step.h,step.c};
+    token=n::argmax(step.logits,1).to(n::DType::Int32);
+    decoded.push_back(n::where(active,token,0));
+    active=n::logical_and(active,n::not_equal(token,seq::kEos));
+  }
+  const auto greedy=n::stack(decoded,1);
+  const auto valid=seq::ValidPositions(test.target_lengths);
+  const auto correct=n::logical_and(valid,n::equal(n::argmax(logits,2),test.target));
+  const auto exact=n::all(n::logical_and(n::equal(greedy,test.target),n::not_equal(test.target,3)),{1});
+  const auto test_loss=loss(logits,test);
+  std::print("\nHeld-out NLL {:.6f} → {:.6f}. Teacher-forced tokens: {}/{}. "
+             "Greedy exact matches: {}/64.\n",initial,test_loss.item(),
+             n::sum(correct.to(n::DType::Int32)).item<int>(),
+             n::sum(valid.to(n::DType::Int32)).item<int>(),
+             n::sum(exact.to(n::DType::Int32)).item<int>());
+  const fs::path out="build/english_spanish_luong";
+  fs::create_directories(out);
+  for (const auto* name:{"pairs.tsv","vocabulary.txt","attribution.txt"})
+    fs::copy_file(path.parent_path()/name,out/name,fs::copy_options::overwrite_existing);
+  params.save((out/"weights.npz").string());
+  n::save_npz((out/"test_arrays.npz").string(),{{"input",test.input},{"input_lengths",test.lengths},
+      {"teacher",test.teacher},{"target",test.target},{"target_lengths",test.target_lengths},
+      {"teacher_logits",logits},{"token_nll",test_loss},{"greedy",greedy},{"alignment",alignment}});
+  dm::graphics::RPlot::create().lines({1,2,3},curve,"Validation",{37,99,235})
+      .points({1,2,3},curve,"Epochs",{37,99,235},5).title("Luong English–Spanish translation")
+      .x_label("Epoch").y_label("Nats per valid token").size(800,460)
+      .save_svg("build/english_spanish_luong.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation token NLL |
+|---:|---:|
+| 1 | 3.170020 |
+| 2 | 2.912769 |
+| 3 | 2.924810 |
+
+Held-out NLL 6.238670 → 2.934701. Teacher-forced tokens: 64/326. Greedy exact matches: 0/64.
+\image(figures/english_spanish_luong.svg)
+// result_end

@@ -880,7 +880,7 @@ int main() {
 epoch 1: G=16.1641, cycle A/B=0.468616/0.474623, D A/B=0.495259/0.492733
 epoch 2: G=15.9779, cycle A/B=0.464855/0.471618, D A/B=0.482119/0.465656
 epoch 3: G=15.6066, cycle A/B=0.459178/0.468738, D A/B=0.450151/0.391976
-fixed final=3, joint G snapshot wrong sequential difference=0.000810921, mapping MSE=0.229145/0.210121; unpaired/joint grad/restore/source only/immutable PASS (training 1.82791 s)
+fixed final=3, joint G snapshot wrong sequential difference=0.000810921, mapping MSE=0.229145/0.210121; unpaired/joint grad/restore/source only/immutable PASS (training 2.6413 s)
 Artifacts: build/cycle_gan
 All cycle_gan checks passed.
 \image(figures/cycle_learning.svg)

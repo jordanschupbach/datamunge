@@ -23,8 +23,9 @@ def export_fixture(tmp_path, monkeypatch, name, marker):
     source = tmp_path / "source"
     source.mkdir()
     diagram = source / name
-    diagram.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="500" '
-                       + marker + '></svg>')
+    if marker is not None:
+        diagram.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="500" '
+                           + marker + '></svg>')
     document = source / "model.mepml"
     document.write_text("Source fixture")
     page = ('<body><figure><img src="' + html.escape(name)
@@ -68,3 +69,10 @@ def test_escaped_local_filename_still_matches_diagram_metadata(tmp_path, monkeyp
     assert sum(tag == "span" for tag, attrs in tags) == 1
     assert (output / "reports/nn/model&layers.svg").is_file()
     assert 'src="model&amp;layers.svg"' in report.body
+
+
+def test_missing_local_figure_is_explained_in_preview(tmp_path, monkeypatch):
+    report, tags, output = export_fixture(tmp_path, monkeypatch, "missing.svg", None)
+    assert "Figure unavailable in this build: <code>missing.svg</code>" in report.body
+    assert [attrs["src"] for tag, attrs in tags if tag == "img"] == ["https://example.test/remote.svg"]
+    assert not (output / "reports/nn/missing.svg").exists()

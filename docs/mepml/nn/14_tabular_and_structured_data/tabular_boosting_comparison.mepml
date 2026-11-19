@@ -1,0 +1,138 @@
+//? Title: Gradient-boosted trees and an MLP on the same tabular data
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a two-hidden-layer MLP and a boosted tree ensemble on identical
+synthetic rows. Compare their held-out error and inspect their fits.
+)
+\toc
+
+The simulated response combines a step, a threshold interaction, and a
+sinusoid. Gradient boosting starts at the observed response mean and
+fits a shallow tree to the current residuals at each stage. With squared
+error, unit Hessians, and zero regularization, the Datamunge tree
+regressor chooses splits by squared-error reduction and uses the mean
+residual in each leaf. A shrinkage factor of 0.12 scales each new tree.
+
+The MLP uses tanh layers of width 32 and 16. It trains with Datamunge's
+native initialization and the upstream Adam batch schedule. Both models
+use the same 1,536 fitting rows and 512 test rows. The boosting history
+shows training error, while the prediction plot and table use only test rows.
+
+```{cpp, results="markdown", file="figures/tabular_boosting_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+std::pair<n::Tensor,n::Tensor> simulate(int rows,unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f,1.f);
+  std::normal_distribution<float> noise(0.f,.08f);
+  std::vector<float> x(rows*5), y(rows);
+  for (int i = 0; i < rows; ++i) {
+    auto* row = x.data()+5*i;
+    for (int j = 0; j < 5; ++j) row[j]=uniform(rng);
+    y[i] = (row[0]>.15f ? .9f : -.6f)+(row[1]<-.1f && row[2]>.2f ? 1.25f : 0.f)
+         +.45f*std::sin(3.f*row[3])+noise(rng);
+  }
+  return {n::from_vector(x,{rows,5}),n::from_vector(y,{rows,1})};
+}
+
+dm::dstruct::DataFrame frame(const n::Tensor& x,const n::Tensor& y) {
+  dm::dstruct::DataFrame data;
+  for (int j = 0; j < 5; ++j)
+    data.add_column("x"+std::to_string(j),n::slice(x,{0,j},{x.size(0),1}).to_vector<double>());
+  data.add_column("y",y.to_vector<double>());
+  return data;
+}
+
+int main() {
+  const auto [x,y] = simulate(1536,24191);
+  const auto [test,observed] = simulate(512,24192);
+  n::ParameterStore parameters(41380);
+  const auto predict = [&](const n::Tensor& rows) {
+    const auto h = n::dense(parameters,"hidden",rows,32,n::Activation::Tanh);
+    const auto next = n::dense(parameters,"hidden2",h,16,n::Activation::Tanh);
+    return n::dense(parameters,"response",next,1);
+  };
+  predict(x);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters,.01,config);
+  n::BatchOrder order(1536,32,24193);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids=order.next(); !ids.empty(); ids=order.next())
+      optimizer.minimize(n::mean(n::square(predict(n::take_rows(x,ids))-n::take_rows(y,ids))));
+  }
+  n::NoGradGuard guard;
+  const auto mlp = predict(test);
+  dm::stats::XGBoostRegressorOptions tree_options;
+  tree_options.n_trees=64;
+  tree_options.max_depth=2;
+  tree_options.min_samples_leaf=12;
+  tree_options.learning_rate=.12;
+  tree_options.lambda=0.;
+  const dm::stats::XGBoostRegressor model(frame(x,y),"y ~ x0 + x1 + x2 + x3 + x4",tree_options);
+  const auto trees = model.predict(frame(test,observed));
+  const auto boosted = n::from_vector(trees,{512,1});
+  const auto y64 = y.to(n::DType::Float64);
+  const double baseline = n::mean(y64).item();
+  std::vector<double> history{n::mean(n::square(y64-baseline)).item()};
+  const auto& stages = model.training_deviance();
+  history.insert(history.end(),stages.begin(),stages.end());
+  if (history.size()!=65 || optimizer.iterations()!=144 ||
+      !std::is_sorted(history.rbegin(),history.rend()))
+    throw std::runtime_error("invalid fit schedule or boosting error history");
+  std::vector<double> metrics;
+  std::println("| Model | Held-out RMSE | Held-out MAE |\n| --- | ---: | ---: |");
+  for (const auto& [name,fit] : std::array{std::pair{"MLP",mlp},std::pair{"Boosted trees",boosted}}) {
+    const auto residual = fit.to(n::DType::Float64)-observed;
+    const auto rmse = n::sqrt(n::mean(n::square(residual))).item();
+    const auto mae = n::mean(n::abs(residual)).item();
+    metrics.insert(metrics.end(),{rmse,mae});
+    std::println("| {} | {:.5f} | {:.5f} |",name,rmse,mae);
+  }
+  const std::string folder = "build/tabular_boosting_comparison/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  parameters.save(folder+"mlp_weights.npz");
+  n::save_npz(folder+"comparison.npz",{{"fit_x",x.reshape({1536,5,1})},{"fit_y",y},
+    {"test_x",test.reshape({512,5,1})},{"test_y",observed},{"mlp",mlp},{"boosted",boosted.reshape({512})},
+    {"baseline",n::full({},baseline,n::DType::Float64)},{"train_mse",n::from_vector(history)},
+    {"metrics",n::from_vector(metrics,{2,2})}});
+  const auto truth = observed.to_vector<double>();
+  const double lo=n::min(observed).item(), hi=n::max(observed).item();
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(truth,mlp.to_vector<double>(),"MLP",{37,99,235,.55},3)
+      .points(truth,trees,"Boosted trees",{191,88,34,.55},3)
+      .lines({lo,hi},{lo,hi},"Perfect prediction",{100,116,139})
+      .title("Held-out tabular regression").x_label("Observed response").y_label("Predicted response")
+      .save_svg(folder+"fit.svg");
+  auto training = dm::graphics::RPlot::create();
+  training.lines(n::arange(0,65).to_vector<double>(),history,"Training MSE",{37,99,235})
+          .title("Successive residual fits").x_label("Boosting stage").y_label("Training MSE")
+          .save_svg(folder+"training.svg");
+  std::filesystem::copy_file(folder+"fit.svg","figures/tabular_boosting_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"training.svg","figures/tabular_boosting_training.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Model | Held-out RMSE | Held-out MAE |
+| --- | ---: | ---: |
+| MLP | 0.47286 | 0.36909 |
+| Boosted trees | 0.10161 | 0.08144 |
+\image(figures/tabular_boosting_fit.svg)
+// result_end
+
+\image(figures/tabular_boosting_training.svg)
+
+> Reference
+
+Friedman (2001).
+[Greedy Function Approximation: A Gradient Boosting Machine|https://doi.org/10.1214/aos/1013203451].

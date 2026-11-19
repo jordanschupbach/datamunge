@@ -254,11 +254,17 @@ Accuracy 0.973333; NLL 0.068156; maximum mass error 0.000000119.
 \alttext(Training loss on the bundled 8×8 digits; held-out scores are evaluated after the fixed training budget.)
 
 
+> Original 28×28 MNIST
+
+The [original MNIST benchmark|softmax_mnist.mepml] runs the 784→128→64→10
+architecture alongside the linear baseline. It restores each model's
+best validation checkpoint before scoring the official test set.
+
 > Conclusion
 
 The explicit construction and fitted XOR model show why nonlinear features expand the hypothesis
 class. The digit run evaluates one fixed architecture on a separate dataset. It does not establish
-an architecture ranking or reproduce the full MNIST benchmark and its relevance analysis.
+an architecture ranking on the original MNIST dataset. The companion benchmark reports that evaluation.
 
 > References
 

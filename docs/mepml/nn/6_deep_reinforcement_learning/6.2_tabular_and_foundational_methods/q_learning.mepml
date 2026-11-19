@@ -35,7 +35,7 @@ int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("
 
 > Complete preserved experiment
 
-Grid/cliff learning and the1000-run,300-episode maximization-bias comparison retain source budgets and RNG draws. Deep-copy table snapshots preserve independent estimates. Real terminality stops the bootstrap; truncation preserves it. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+Grid/cliff learning and the1000-run,300-episode maximization-bias comparison retain source budgets and RNG draws. Deep-copy table snapshots preserve independent estimates. Real terminality stops the bootstrap; truncation preserves it. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. The seeded greedy rollouts are recorded with the native grid renderer.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -48,15 +48,13 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // CMD: just run-nn q_learning
 // Q-learning.
 //
-// Port of tflow's q_learning (TF-free apart from the Q-table, so the numbers
-// match tflow exactly). Off-policy TD control: Q(s, a) moves toward
+// Datamunge translation of tflow's q_learning.
+// Off-policy TD control: Q(s, a) moves toward
 // r + gamma max_a' Q(s', a') regardless of which action the behaviour policy
 // takes next. This program trains on the cliff and on a slippery grid world,
 // tracks the gap between the behaviour policy's return and the greedy
 // policy's return, and shows the maximisation bias that Double Q-learning
-// removes. The vsim videos of the greedy policies are omitted: the best of the
-// same 3 seeded episodes is played and reported instead. The port adds checks
-// (exit 1 on failure).
+// removes. The best of the three seeded greedy episodes is recorded.
 
 
 // Editable workflow support: checks.hpp
@@ -132,8 +130,7 @@ using datamunge::rl::environments::CliffWalking;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy decisions and action values.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -314,19 +311,13 @@ struct Hud {
 // RecordBest plays `candidates` seeded episodes (seeds seed .. seed+candidates-1) without
 // filming, then films the one with the highest return. PlayBestOfSeeds runs the same candidate
 // episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
-// (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
+// (common/rl/playback.hpp), which records the episode and prints its return.
 
 
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// The native recorder saves the states from the original seeded episode.
 
 
 
@@ -354,18 +345,27 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<int> states{env.state()};
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
     const StepResult r = env.step(pb.hud.decision.action);
     pb.hud.Observe(r);
+    states.push_back(env.state());
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  const auto filename = name + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::rl::environments::save_grid_replay(env, states, "build/" + filename);
+  report_capture::Save("replay_" + filename.substr(0, filename.size() - 4), states);
+  std::filesystem::copy_file("build/" + filename, "figures/" + filename,
+                             std::filesystem::copy_options::overwrite_existing);
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -558,7 +558,7 @@ Curve Report(rl::GridBase& env, int episodes, float alpha, float eps, float gamm
   std::printf("\n  greedy policy:\n%s", rl::PolicyGrid(env, Q).c_str());
   // tflow films the greedy policy here (the overlay showing Q(s, .) at every cell).
   rl::PlayBestOfSeeds(
-      env, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); }, "q_learning_greedy",
+      env, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); }, "q_learning_" + env.name(),
       4242, 3);
   return c;
 }
@@ -662,7 +662,7 @@ int main() {
     check::Require(left_frac[0][0] > 0.5, "Q-learning should be biased toward 'left' early on");
     check::Require(left_frac[1][0] < left_frac[0][0] - 0.3, "Double Q-learning should remove most of the bias");
     check::Require(left_frac[1][2] < 0.1, "Double Q-learning should approach the optimal 5% left");
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -683,7 +683,7 @@ int main() {
 // > > > > > > > > > > > v 
 // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ G 
 //   best of 3 episodes (return -13.0):
-//   played q_learning_greedy (video omitted): 13 steps, return -13.0
+//   recorded q_learning_CliffWalking: 13 steps, return -13.0
 //
 // ==== GridWorld: alpha 0.10, epsilon 0.10, gamma 0.95, 2000 episodes
 //   episode        200     400     600     800    1000    1200    1400    1600    1800    2000
@@ -696,13 +696,13 @@ int main() {
 // v > v # > v 
 // > > > > > G 
 //   best of 3 episodes (return -9.0):
-//   played q_learning_greedy (video omitted): 9 steps, return -9.0
+//   recorded q_learning_GridWorld: 9 steps, return -9.0
 //
 // ==== Maximisation bias (Sutton & Barto 6.7): fraction of 'left' actions from A
 //   Q-learning         episodes 1-100: 76%   101-200: 27%   201-300: 13%   (optimal: 5%)
 //   Double Q-learning  episodes 1-100: 20%   101-200: 8%   201-300: 7%   (optimal: 5%)
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > Inspect the actual experiment results
@@ -720,3 +720,11 @@ int main(){auto archive=dm::nn::load_npz("build/q_learning_source.npz");auto get
 > Interpretation and provenance
 
 Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.
+
+> Greedy policy replays
+
+The native grid renderer records the visited states of each seeded greedy episode.
+
+\video(figures/q_learning_CliffWalking.mp4)
+
+\video(figures/q_learning_GridWorld.mp4)

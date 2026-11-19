@@ -1,0 +1,115 @@
+//? Title: Neural oblivious decision trees for tabular regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train an ensemble of 12 depth-three differentiable trees on a response
+with threshold effects. Inspect the fitted values and learned feature
+selectors on an independent test set.
+)
+\toc
+
+An oblivious tree uses a single split rule for all nodes at a given
+depth. Each split mixes the input features using sparse entmax weights.
+A temperature-scaled entmoid converts the selected feature value to a
+right-branch probability. Multiplying the corresponding probabilities
+along a path gives each leaf's weight. The model averages predictions
+from 12 trees, and gradients train both the splits and the leaf values.
+
+Three of the six inputs determine the response. A threshold on the
+first input contributes a main effect, and thresholds on the next two
+contribute a joint effect. Training follows the reference minibatch
+schedule and uses Datamunge's parameter initialization. The selection
+plot averages weights across depths and trees.
+
+```{cpp, results="markdown", file="figures/neural_oblivious_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+std::pair<n::Tensor,n::Tensor> simulate(int rows, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f,1.f);
+  std::vector<float> x(rows*6), y(rows);
+  for (int i = 0; i < rows; ++i) {
+    auto* row = x.data()+6*i;
+    for (int j = 0; j < 6; ++j) row[j] = uniform(rng);
+    y[i] = (row[0] > 0.f ? .7f : -.6f) + (row[1] > .2f && row[2] < -.25f ? .9f : 0.f);
+  }
+  return {n::from_vector(x,{rows,6}),n::from_vector(y,{rows,1})};
+}
+
+int main() {
+  const auto [x,y] = simulate(2048,17401);
+  const auto [test,observed] = simulate(512,17402);
+  n::ParameterStore parameters(41380);
+  const auto forward = [&](const n::Tensor& input) {
+    return n::neural_oblivious_regression(parameters,"ensemble",input,12,3);
+  };
+  double initial;
+  {
+    n::NoGradGuard guard;
+    initial = n::sqrt(n::mean(n::square(forward(test).prediction-observed))).item();
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters,.01,config);
+  n::BatchOrder order(2048,32,17403);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids = order.next(); !ids.empty(); ids = order.next())
+      optimizer.minimize(n::mean(n::square(forward(n::take_rows(x,ids)).prediction-n::take_rows(y,ids))));
+  }
+
+  n::NoGradGuard guard;
+  const auto fit = forward(test);
+  const auto rmse = n::sqrt(n::mean(n::square(fit.prediction-observed))).item();
+  const auto route_error = n::max(n::abs(n::sum(fit.routes,{2})-1.)).item();
+  if (!std::isfinite(rmse) || rmse >= initial || optimizer.iterations() != 192 || route_error > 1e-6)
+    throw std::runtime_error("invalid oblivious tree fit");
+  std::println("| Diagnostic | Value |\n| --- | ---: |");
+  std::println("| Initial held-out RMSE | {:.5f} |\n| Fitted held-out RMSE | {:.5f} |",initial,rmse);
+  std::println("| Maximum leaf mass error | {:.2e} |",route_error);
+
+  const std::string folder = "build/neural_oblivious_trees/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  parameters.save(folder+"weights.npz");
+  n::save_npz(folder+"predictions.npz",
+      {{"x",test.reshape({512,6,1})},{"y",observed},{"predictions",fit.prediction},
+       {"feature_weights",fit.feature_weights},{"split_probability",fit.split_probability},{"routes",fit.routes}});
+
+  const double lo = n::min(observed).item(), hi = n::max(observed).item();
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(observed.to_vector<double>(),fit.prediction.to_vector<double>(),"Held-out rows",{37,99,235,.65},3)
+      .lines({lo,hi},{lo,hi},"Perfect prediction",{100,116,139})
+      .title("Neural oblivious trees").x_label("Observed response").y_label("Predicted response")
+      .save_svg(folder+"fit.svg");
+  auto selection = dm::graphics::RPlot::create();
+  selection.bars(n::arange(0,6).to_vector<double>(),n::mean(fit.feature_weights,{0}).to_vector<double>(),
+                 "Mean selector weight",{37,99,235})
+           .title("Feature selection across all tree depths")
+           .x_label("Feature index").y_label("Mean entmax weight").save_svg(folder+"selection.svg");
+  std::filesystem::copy_file(folder+"fit.svg","figures/neural_oblivious_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"selection.svg","figures/neural_oblivious_selection.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Diagnostic | Value |
+| --- | ---: |
+| Initial held-out RMSE | 0.75930 |
+| Fitted held-out RMSE | 0.22109 |
+| Maximum leaf mass error | 1.19e-07 |
+\image(figures/neural_oblivious_fit.svg)
+// result_end
+
+\image(figures/neural_oblivious_selection.svg)
+
+> Reference
+
+Popov, Morozov and Babenko (2020).
+[Neural Oblivious Decision Ensembles|https://arxiv.org/abs/1909.06312].

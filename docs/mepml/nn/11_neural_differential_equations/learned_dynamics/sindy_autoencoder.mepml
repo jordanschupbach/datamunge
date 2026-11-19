@@ -1,0 +1,93 @@
+//? Title: SINDy autoencoder for latent dynamics
+//? Lang: en
+
+> SINDy autoencoder for latent dynamics
+
+The encoder maps four nonlinear measurements to one latent coordinate.
+A cubic polynomial library predicts its time derivative. The decoder
+reconstructs the original measurements, and the chain rule propagates
+the learned derivative back into measurement space.
+
+Training combines reconstruction error, derivative error in both
+coordinate systems, and an L1 penalty on the polynomial coefficients.
+Between epochs, coefficients below 0.08 are masked except for the
+largest. A masked coefficient stays inactive. The learned coordinate
+has arbitrary scale and origin, so its coefficients can differ from
+those in the simulation coordinate.
+
+```{cpp, results="markdown", file="figures/sindy_autoencoder.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto sample=[](int rows,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> draw(-1.2f,1.2f);
+    std::vector<float> x,dx;
+    for(int i=0;i<rows;++i) {
+      const double z=draw(rng), dz=-.55*z-.35*z*z*z, t=std::tanh(z);
+      x.insert(x.end(),{float(z),float(z*z),float(z*z*z),float(t)});
+      dx.insert(dx.end(),{float(dz),float(2*z*dz),float(3*z*z*dz),float((1-t*t)*dz)});
+    }
+    return std::pair{n::from_vector(x,{rows,4}),n::from_vector(dx,{rows,4})};
+  };
+  const auto [fit,fit_dx]=sample(1024,28412);
+  const auto [test,test_dx]=sample(256,28413);
+  n::ParameterStore model(28411);
+  auto mask=n::ones({4,1});
+  const auto initial=n::sindy_autoencoder(model,test,test_dx,mask).loss.item();
+  n::Optimizer optimizer(model,.006,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(1024,32,28414);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(n::sindy_autoencoder(model,n::take_rows(fit,rows),
+          n::take_rows(fit_dx,rows),mask).loss);
+      ++updates;
+    }
+    if(epoch<2) {
+      n::NoGradGuard guard;
+      const auto active=(model.at("coefficient")*mask).to_vector<float>();
+      const auto strongest=std::max_element(active.begin(),active.end(),
+          [](float a,float b){return std::abs(a)<std::abs(b);})-active.begin();
+      auto keep=mask.to_vector<float>();
+      for(int i=0;i<4;++i) if(i!=strongest && std::abs(active[i])<.08f) keep[i]=0.f;
+      mask=n::from_vector(keep,{4,1});
+    }
+  }
+  n::NoGradGuard guard;
+  const auto out=n::sindy_autoencoder(model,test,test_dx,mask);
+  const auto coefficient=out.coefficients.to_vector<double>();
+  if(updates!=96 || !(out.loss.item()<initial)) throw std::runtime_error("SINDy fit failed");
+  std::print("| Initial objective | Final objective | Constant | Linear | Quadratic | Cubic |\n|---:|---:|---:|---:|---:|---:|\n");
+  std::print("| {:.6f} | {:.6f} | {:.5f} | {:.5f} | {:.5f} | {:.5f} |\n",initial,out.loss.item(),
+      coefficient[0],coefficient[1],coefficient[2],coefficient[3]);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/sindy_autoencoder.npz",{{"x",test},{"dx",test_dx},{"mask",mask},
+      {"latent",out.latent},{"latent_dx",out.latent_dx},{"sindy_dx",out.sindy_dx},
+      {"pred",out.prediction},{"pred_dx",out.prediction_dx},{"coefficient",out.coefficients},{"loss",out.loss}});
+  const auto z=out.latent.to_vector<double>();
+  auto latent=dm::graphics::RPlot::create();
+  latent.points(z,out.latent_dx.to_vector<double>(),"Encoder tangent",{37,99,235},3)
+      .points(z,out.sindy_dx.to_vector<double>(),"Sparse dynamics",{220,90,45},3)
+      .title("Latent derivatives").x_label("Latent coordinate").y_label("Time derivative");
+  auto reconstructed=dm::graphics::RPlot::create();
+  reconstructed.points(n::select(test,1,0).to_vector<double>(),
+      n::select(out.prediction,1,0).to_vector<double>(),"Held-out reconstruction",{37,99,235},3)
+      .title("First observed channel").x_label("Observed").y_label("Reconstructed");
+  dm::graphics::RLayout::create(1,2).add(latent).add(reconstructed).size(1090,430).fit_panels()
+      .save_svg("build/sindy_autoencoder.svg");
+}
+```
+// result_begin: markdown
+| Initial objective | Final objective | Constant | Linear | Quadratic | Cubic |
+|---:|---:|---:|---:|---:|---:|
+| 2.950114 | 0.875370 | -0.00000 | -0.31299 | 0.25192 | -0.27437 |
+\image(figures/sindy_autoencoder.svg)
+// result_end
+\caption(Held-out derivative consistency and reconstruction after sequential thresholding.)
+
+> Reference
+
+- [Champion et al., Data-driven discovery of coordinates and governing equations](https://arxiv.org/abs/1904.02107).

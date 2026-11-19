@@ -1,0 +1,120 @@
+//? Title: Causal attention with padded sequences
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Run causal self-attention on a batch with valid sequence lengths 5, 3 and 0.
+Inspect the masked probabilities, verify that padded inputs and outputs have
+zero gradients, and compare all 120 input derivatives against finite differences.
+)
+
+> Why mask both query and key positions?
+
+An autoregressive query at position i can attend to key positions through i.
+When batches are padded to a common width, a padding mask must also exclude
+invalid keys and disable queries whose positions are themselves padding.
+For sequence length L, a pair (i, j) is visible exactly when i and j are
+less than L and j is at most i. The Boolean mask returned by
+`dm::nn::causal_padding_keep_mask` broadcasts over attention heads.
+
+The softmax normalizes over visible keys. An empty row has zero weights
+and produces a zero context vector. This convention covers every query in
+the zero-length item and prevents padded query, key, and value positions
+from receiving a gradient from the attention loss.
+
+> Run the three-length fixture
+
+The TensorFlow fixture uses deterministic sine and cosine inputs. This
+program keeps the same shapes and input values rounded to Float32, then
+uses Float64 for the finite-difference check. Each panel uses the same
+probability scale. Gray cells are excluded by the keep mask.
+
+```{cpp, results="markdown", file="figures/attention_masks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    namespace nn = dm::nn;
+    namespace g = dm::graphics;
+    constexpr int width = 5;
+    const std::vector<int> lengths{5, 3, 0};
+    const auto mask = nn::causal_padding_keep_mask(nn::from_vector(lengths), width);
+
+    std::vector<double> q(45), k(45), v(30);
+    for (std::size_t i = 0; i < q.size(); ++i) {
+        q[i] = static_cast<float>(std::sin(.23 * i));
+        k[i] = static_cast<float>(std::cos(.41 * i));
+    }
+    for (std::size_t i = 0; i < v.size(); ++i)
+        v[i] = static_cast<float>(std::sin(.61 * i));
+    const std::vector<nn::Tensor> inputs{
+        nn::from_vector(q, {3, 1, width, 3}).requires_grad_(),
+        nn::from_vector(k, {3, 1, width, 3}).requires_grad_(),
+        nn::from_vector(v, {3, 1, width, 2}).requires_grad_()
+    };
+    const auto attend = [&](const auto& x) {
+        return nn::scaled_dot_product_attention(x[0], x[1], x[2], mask);
+    };
+    const auto loss = [&](const auto& x) {
+        const auto context = attend(x).output;
+        return nn::sum(context * context);
+    };
+    const auto attended = attend(inputs);
+    const auto gradients = nn::grad(loss(inputs), inputs);
+    const auto check = nn::gradcheck(loss, inputs, {.atol = 1e-8, .rtol = 1e-6});
+    if (!check.ok) throw std::runtime_error(check.message);
+
+    auto plots = g::RLayout::create(1, 3).size(1050, 345);
+    const std::vector<double> positions{0, 1, 2, 3, 4};
+    auto palette = g::viridis_colors(64);
+    palette.insert(palette.begin(), {226, 229, 233});
+    for (int sample = 0; sample < 3; ++sample) {
+        const int length = lengths[sample];
+        std::vector<std::vector<double>> cells(width, std::vector<double>(width, -1));
+        for (int query = 0; query < width; ++query) {
+            double mass = 0;
+            for (int key = 0; key < width; ++key) {
+                const double probability = attended.weights.at({sample, 0, query, key});
+                mass += probability;
+                if (query < length && key <= query) cells[key][query] = probability;
+                else if (probability != 0) throw std::runtime_error("Excluded key has weight");
+            }
+            if (std::abs(mass - (query < length ? 1.0 : 0.0)) > 1e-12)
+                throw std::runtime_error("Attention probabilities do not have the expected mass");
+            if (query < length) continue;
+            const std::vector<nn::Tensor> padded{
+                attended.output, gradients[0], gradients[1], gradients[2]
+            };
+            for (const auto& tensor : padded)
+                for (int feature = 0; feature < tensor.size(-1); ++feature)
+                    if (tensor.at({sample, 0, query, feature}) != 0)
+                        throw std::runtime_error("Padding changed the context or gradient");
+        }
+        auto plot = g::RPlot::create().title(std::format("Valid length {}", length))
+            .x_label("Key").y_label("Query");
+        plot.x_ticks(positions, {"0", "1", "2", "3", "4"});
+        plot.y_ticks(positions, {"0", "1", "2", "3", "4"});
+        plot.x_limits(-.5, 4.5).y_limits(-.5, 4.5).image(positions, positions, cells, palette, -1.0 / 63, 1);
+        plots.add(plot);
+    }
+    std::filesystem::create_directories("build");
+    plots.save_svg("build/attention_masks.svg");
+    nn::save_npz("build/attention_masks.npz", {
+        {"weights", attended.weights}, {"context", attended.output},
+        {"dq", gradients[0]}, {"dk", gradients[1]}, {"dv", gradients[2]}
+    });
+    std::print("Valid rows sum to 1. All padded contexts and input gradients are zero.\n\n");
+    std::print("Maximum finite-difference error across 120 input derivatives: {:.2e}.\n",
+               check.max_abs_error);
+}
+```
+// result_begin: markdown
+Valid rows sum to 1. All padded contexts and input gradients are zero.
+
+Maximum finite-difference error across 120 input derivatives: 4.93e-10.
+\image(figures/attention_masks.svg)
+// result_end
+
+The item of length zero has no visible keys or queries. In the length-three
+item, even large padding values cannot affect the context at a valid query.
+The derivative check applies to the sum of squared context values and
+includes valid and padded elements of Q, K and V.

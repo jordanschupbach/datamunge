@@ -1,0 +1,138 @@
+//? Title: Synchronous population-based training
+//? Lang: en
+
+> Synchronous population-based training
+
+Population-based training adapts hyperparameters while models train.
+Six workers fit the same noisy regression surface from interactions
+between two predictors. Each starts with its own weights, learning rate,
+and momentum coefficient. All workers see the same mini-batches and are
+ranked by mean squared error on a separate validation set.
+
+After each of the first two epochs, the two worst workers copy the
+weights, momentum buffers, and hyperparameters of the two best workers.
+They then perturb their inherited learning rates and momentum coefficients
+by independently chosen factors of 0.8 or 1.2, within fixed bounds.
+The copies are made from the population at the end of the epoch so every
+worker sees the same checkpoints when making a transfer.
+
+The plot compares the six validation histories. Test error is reported
+for the worker selected by final validation error.
+
+[Jaderberg et al. (2017), Population Based Training of Neural Networks|https://arxiv.org/abs/1711.09846]
+
+```{cpp, results="markdown", file="figures/population_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto sample=[](int count,std::mt19937& rng) {
+    std::uniform_real_distribution<float> uniform(-1.f,1.f);
+    std::normal_distribution<float> noise(0.f,.03f);
+    std::vector<float> features, response;
+    for (int i=0;i<count;++i) {
+      const float x=uniform(rng), z=uniform(rng);
+      features.insert(features.end(),{1.f,x,z,x*z});
+      response.push_back(.15f+1.1f*x-.8f*z+.5f*x*z+noise(rng));
+    }
+    return std::pair{n::from_vector(features,{count,4}),n::from_vector(response,{count,1})};
+  };
+  std::mt19937 rng(47601),validation_rng(47602),test_rng(47603);
+  std::array<std::pair<n::Tensor,n::Tensor>,8> train;
+  for (auto& batch:train) batch=sample(16,rng);
+  const auto [valid_x,valid_y]=sample(96,validation_rng);
+  const auto [test_x,test_y]=sample(96,test_rng);
+  std::normal_distribution<float> initial(0.f,.12f);
+  std::vector<float> weights(24), decays(6);
+  for (auto& weight:weights) weight=initial(rng);
+  for (int i=0;i<6;++i) decays[i]=.35f+.09f*i;
+  auto w=n::from_vector(weights,{6,4}), m=n::zeros_like(w);
+  auto lr=n::from_vector<float>({.005f,.015f,.03f,.06f,.12f,.24f},{6,1});
+  auto beta=n::from_vector(decays,{6,1});
+  std::filesystem::create_directories("build");
+  n::NamedTensors data{{"valid_x",valid_x},{"valid_y",valid_y},{"test_x",test_x},{"test_y",test_y}};
+  for (std::size_t i=0;i<train.size();++i) {
+    data.emplace_back(std::format("x{}",i),train[i].first);
+    data.emplace_back(std::format("y{}",i),train[i].second);
+  }
+  n::save_npz("build/population_training_data.npz",data);
+  const auto evaluate=[&](const n::Tensor& x,const n::Tensor& y) {
+    return n::mean(n::square(n::matmul(x,w,false,true)-y),{0});
+  };
+  const auto bound=[](const n::Tensor& values,float lower,float upper) {
+    return n::minimum(n::maximum(values,n::from_scalar(lower)),n::from_scalar(upper));
+  };
+  std::array<std::vector<double>,6> history;
+  std::print("| Epoch | Best worker (zero based) | Validation MSE | Transfers (recipient from donor) |\n"
+             "|---:|---:|---:|:---|\n");
+  double selected_mse=0;
+  for (int epoch=1;epoch<=3;++epoch) {
+    n::NamedTensors record{{"start_w",w},{"start_m",m},{"lr",lr},{"beta",beta}};
+    for (const auto& [x,y]:train) {
+      const auto error=n::matmul(x,w,false,true)-y;
+      m=beta*m+(2.f/x.size(0))*n::matmul(error,x,true,false);
+      w=w-lr*m;
+    }
+    const auto validation=evaluate(valid_x,valid_y);
+    const auto losses=validation.to_vector<double>();
+    for (std::size_t worker=0;worker<history.size();++worker) history[worker].push_back(losses[worker]);
+    const auto best=std::min_element(losses.begin(),losses.end())-losses.begin();
+    record.emplace_back("trained_w",w);
+    record.emplace_back("trained_m",m);
+    record.emplace_back("validation",validation);
+    std::vector<std::int32_t> donors(6,-1);
+    std::vector<float> factors(12,1.f);
+    std::string transfers;
+    if (epoch<3) {
+      const auto sources=n::population_donors(losses,2);
+      std::vector<int> recipients;
+      for (int worker=0;worker<6;++worker) {
+        if (sources[worker]!=worker) recipients.push_back(worker);
+      }
+      std::stable_sort(recipients.begin(),recipients.end(),[&](int a,int b){return losses[a]<losses[b];});
+      for (const int worker:recipients) {
+        donors[worker]=static_cast<std::int32_t>(sources[worker]);
+        factors[2*worker]=rng()%2?1.2f:.8f;
+        factors[2*worker+1]=rng()%2?1.2f:.8f;
+        if (!transfers.empty()) transfers+=", ";
+        transfers+=std::format("{} from {}",worker,donors[worker]);
+      }
+      const auto inherited=n::inherit_population(std::array{w,m,lr,beta},sources);
+      const auto perturbation=n::from_vector(factors,{6,2});
+      w=inherited[0];
+      m=inherited[1];
+      lr=bound(inherited[2]*n::slice(perturbation,{0,0},{6,1}),.001f,.3f);
+      beta=bound(inherited[3]*n::slice(perturbation,{0,1},{6,1}),.05f,.95f);
+    } else {
+      const auto held_out=evaluate(test_x,test_y);
+      record.emplace_back("test",held_out);
+      selected_mse=held_out.to_vector<double>()[best];
+    }
+    std::print("| {} | {} | {:.6f} | {} |\n",epoch,best,losses[best],transfers);
+    record.emplace_back("donor",n::from_vector(donors));
+    record.emplace_back("factors",n::from_vector(factors,{6,2}));
+    n::save_npz(std::format("build/population_training_epoch{}.npz",epoch),record);
+  }
+  std::print("\nValidation-selected test MSE is {:.6f}.\n",selected_mse);
+  const std::array<dm::RGBA,6> colors{
+      dm::RGBA{37,99,235},dm::RGBA{209,65,51},dm::RGBA{23,135,106},
+      dm::RGBA{118,63,179},dm::RGBA{166,102,16},dm::RGBA{46,120,148}};
+  auto plot=dm::graphics::RPlot::create();
+  for (std::size_t worker=0;worker<history.size();++worker) {
+    plot.lines({1,2,3},history[worker],std::format("Worker {}",worker),colors[worker])
+        .points({1,2,3},history[worker],colors[worker]);
+  }
+  plot.title("Population-based training").x_label("Epoch").y_label("Validation mean squared error")
+      .size(860,475).save_svg("build/population_training.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Best worker (zero based) | Validation MSE | Transfers (recipient from donor) |
+|---:|---:|---:|:---|
+| 1 | 4 | 0.041686 | 0 from 4, 1 from 5 |
+| 2 | 4 | 0.011168 | 1 from 4, 2 from 0 |
+| 3 | 4 | 0.002953 |  |
+
+Validation-selected test MSE is 0.003700.
+\image(figures/population_training.svg)
+// result_end

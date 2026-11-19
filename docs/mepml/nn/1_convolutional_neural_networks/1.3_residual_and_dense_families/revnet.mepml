@@ -299,7 +299,7 @@ CIFAR RevNet-164: 1748778 learned / 24768 moving scalars, 27 units, 3 stored sta
 ImageNet RevNet-56: 27553128 learned / 51200 moving scalars, 9 units, 4 stored stage entries.
 ImageNet RevNet-104: 45428072 learned / 100352 moving scalars, 17 units, 4 stored stage entries.
 RevNet-38: 113 parameter derivatives; stored-input relative error 0.000000000; reconstructed-input relative error 0.000001550; max reconstruction relative drift 0.000000485.
-RevNet-164: 497 parameter derivatives; stored-input relative error 0.000000000; reconstructed-input relative error 0.006451627; max reconstruction relative drift 0.000005195.
+RevNet-164: 497 parameter derivatives; stored-input relative error 0.000000000; reconstructed-input relative error 0.009101529; max reconstruction relative drift 0.000005938.
 // result_end
 
 > Measuring live tensor memory

@@ -1224,7 +1224,7 @@ epoch1 validationQuadratureNLL=3.89911
 epoch2 validationQuadratureNLL=3.894
 epoch3 validationQuadratureNLL=3.83767
 analytic Hessian vs finite differences of the autograd force: max err 2.04e-11
-testQuadratureNLL=3.90634 fitGaussian=3.56378 logZ128/256=1.57718/1.57718;confinement/actualForce/stoppedNegatives/persistentChains/restore/repeat/immutable PASS (training 0.0300758 s)
+testQuadratureNLL=3.90634 fitGaussian=3.56378 logZ128/256=1.57718/1.57718;confinement/actualForce/stoppedNegatives/persistentChains/restore/repeat/immutable PASS (training 0.0363963 s)
 no TF record at /home/jordan/.cache/datamunge/models/energy_langevin; parity checks skipped
 Artifacts: /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.5_energy_based_models/build/generative-models/models/energy_langevin
 // result_end

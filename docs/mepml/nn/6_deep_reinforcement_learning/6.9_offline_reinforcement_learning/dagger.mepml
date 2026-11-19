@@ -1,0 +1,115 @@
+//? Title: DAgger on a grid with blocked edges
+//? Lang: en
+
+> DAgger on a grid with blocked edges
+
+Dataset Aggregation (DAgger) asks the expert for labels at states
+encountered by the learner. This exposes the learner to recovery
+decisions missing from its original demonstrations. The example
+initially trains on trajectories from the left side of a seven-by-seven
+grid. On the right, two blocked edges require a detour.
+
+In the first aggregation round the expert provides the executed action
+one quarter of the time. In the second round only the learner acts.
+The expert labels every visited state in both rounds. The same
+[coordinate policy|grid_imitation.mepml] continues fitting on the
+combined dataset after each round. It uses Datamunge's native initializer.
+
+The plot compares greedy closed-loop success from all 48 nonterminal
+start cells before and after the two rounds.
+The second round collects more labels, yet its fitted policy reaches
+no goals within the evaluation budget in this seeded run.
+
+[Ross et al. (2011)|https://proceedings.mlr.press/v15/ross11a.html]
+
+```{cpp, results="markdown", file="figures/dagger.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  constexpr int goal=48,horizon=18;
+  const auto advance=[](int state,int action) {
+    return state/7==4 && state%7>=5 && action==1?state:r::sparse_grid_move(state,action);
+  };
+  const auto expert=[](int state) {
+    if (state/7<=4 && state%7>=5) return 2;
+    return state/7<6?1:3;
+  };
+  std::vector<float> grid;
+  for (int state=0;state<goal;++state) grid.insert(grid.end(),{float(state/7)/6,float(state%7)/6});
+  const auto features=n::from_vector(grid,{goal,2});
+  std::vector<std::int64_t> ids;
+  std::vector<int> labels,initial_labels;
+  for (int repeat=0;repeat<8;++repeat) {
+    for (const int start:{0,1,7,8,14,15,21,22,28,29}) {
+      for (int cell=start;cell!=goal;cell=advance(cell,expert(cell))) {
+        ids.push_back(cell);
+        labels.push_back(expert(cell));
+        initial_labels.insert(initial_labels.end(),{cell,expert(cell)});
+      }
+    }
+  }
+  r::ImitationPolicy model(2,16,4);
+  const auto fit=[&](unsigned seed) {
+    const auto x=n::take_rows(features,ids), y=n::from_vector(labels);
+    n::BatchOrder batches(ids.size(),16,seed);
+    batches.begin_epoch();
+    for (auto batch=batches.next();!batch.empty();batch=batches.next()) {
+      if (!std::isfinite(model.train(n::take_rows(x,batch),n::take_rows(y,batch)))) {
+        throw std::runtime_error("Nonfinite imitation loss");
+      }
+    }
+    return model.predict(features);
+  };
+  const auto evaluate=[&](const n::Tensor& scores) {
+    const auto policy=n::argmax(scores,1).to_vector<int>();
+    int solved=0;
+    for (int start=0;start<goal;++start) {
+      int cell=start;
+      for (int step=0;step<horizon && cell!=goal;++step) cell=advance(cell,policy[cell]);
+      solved+=cell==goal;
+    }
+    return solved;
+  };
+  std::filesystem::create_directories("build/dagger");
+  auto scores=fit(44601);
+  n::save_npz("build/dagger/initial.npz",{{"labels",n::from_vector(initial_labels,{std::ssize(ids),2})},
+      {"logits",scores}});
+  std::vector<double> success{double(evaluate(scores))};
+  std::print("| Round | Added labels | Aggregate labels | Greedy success |\n|---:|---:|---:|---:|\n"
+             "| 0 | 0 | {} | {:.0f} / 48 |\n",ids.size(),success.back());
+  std::mt19937 rng(44602);
+  std::array<int,64> starts;
+  for (int episode=0;episode<64;++episode) starts[episode]=(episode%5)*7+5+episode%2;
+  for (int round=1;round<=2;++round) {
+    const auto greedy=n::argmax(scores,1).to_vector<int>();
+    const auto visits=r::dagger_collect(starts,goal,horizon,[&](int s){return greedy[s];},
+        expert,advance,rng,round==1?4:0);
+    std::vector<int> trace;
+    for (const auto& row:visits) {
+      ids.push_back(row[1]);
+      labels.push_back(row[4]);
+      trace.insert(trace.end(),row.begin(),row.end());
+    }
+    const auto before=scores;
+    scores=fit(44602+round);
+    success.push_back(evaluate(scores));
+    n::save_npz(std::format("build/dagger/round{}.npz",round),{{"before",before},
+        {"after",scores},{"visits",n::from_vector(trace,{std::ssize(visits),6})}});
+    std::print("| {} | {} | {} | {:.0f} / 48 |\n",round,visits.size(),ids.size(),success.back());
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({0,1,2},success,"Reached goal",{37,99,235})
+      .title("DAgger closed-loop evaluation").x_label("Aggregation round").y_label("Start cells solved")
+      .ylim(0,48).size(800,460).save_svg("build/dagger.svg");
+}
+```
+// result_begin: markdown
+| Round | Added labels | Aggregate labels | Greedy success |
+|---:|---:|---:|---:|
+| 0 | 0 | 760 | 5 / 48 |
+| 1 | 1146 | 1906 | 18 / 48 |
+| 2 | 1152 | 3058 | 0 / 48 |
+\image(figures/dagger.svg)
+// result_end

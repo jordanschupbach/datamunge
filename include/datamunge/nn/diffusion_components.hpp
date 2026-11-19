@@ -1231,4 +1231,107 @@ inline Tensor PeriodicSignalGrid(const Tensor& images, int columns = 8) {
   return from_vector(out, {H, W, 3});
 }
 
+/// @brief Fit-ready residual MLP for predicting clean samples from token slots and normalized time.
+///
+/// Each slot has its own learned embedding table. The network concatenates the
+/// noisy samples, time, squared time and embeddings before its first GELU layer.
+/// A second GELU layer adds a residual before the linear clean-output layer.
+/// @param parameters Caller-owned store. Missing leaves are initialized on first use.
+/// Calls sharing a store require caller serialization.
+/// @param state CPU floating [batch, features] noisy samples in the store's dtype.
+/// @param time CPU floating [batch, 1] normalized time in the same dtype.
+/// @param tokens CPU Int32/Int64 [batch, slots] zero-based IDs.
+/// @param vocabulary_sizes Positive vocabulary size for each slot.
+/// @param embedding_width Width of each learned slot embedding.
+/// @param hidden_width Width of both hidden layers.
+/// @return Differentiable clean predictions with the same shape as state.
+/// @throws std::invalid_argument Invalid tensor shapes, dtypes, token IDs, or widths.
+/// @code
+/// namespace n = dm::nn;
+/// n::ParameterStore p(14201);
+/// auto tokens = n::from_vector(std::vector<std::int32_t>{0, 1}, {1, 2});
+/// auto clean = n::models::TokenConditionedDenoiser(p, n::zeros({1, 64}),
+///                                               n::ones({1, 1}), tokens, {2, 2});
+/// @endcode
+inline Tensor TokenConditionedDenoiser(
+    ParameterStore& parameters,
+    const Tensor& state,
+    const Tensor& time,
+    const Tensor& tokens,
+    const Shape& vocabulary_sizes,
+    std::int64_t embedding_width = 8,
+    std::int64_t hidden_width = 96) {
+  if (!state.defined() || !time.defined() || !tokens.defined() ||
+      state.device().backend != compute::Backend::CPU || time.device().backend != compute::Backend::CPU ||
+      tokens.device().backend != compute::Backend::CPU ||
+      state.dim() != 2 || state.size(0) <= 0 || state.size(1) <= 0 ||
+      (state.dtype() != DType::Float32 && state.dtype() != DType::Float64) ||
+      parameters.dtype() != state.dtype() || time.dtype() != state.dtype() ||
+      time.shape() != Shape{state.size(0), 1} || vocabulary_sizes.empty() ||
+      tokens.shape() != Shape{state.size(0), std::int64_t(vocabulary_sizes.size())} ||
+      (tokens.dtype() != DType::Int32 && tokens.dtype() != DType::Int64) ||
+      embedding_width <= 0 || hidden_width <= 0) {
+    throw std::invalid_argument("token denoiser shapes, dtypes or widths");
+  }
+  auto ids = tokens.to_vector<std::int64_t>();
+  const auto slots = vocabulary_sizes.size();
+  for (std::size_t slot = 0; slot < slots; ++slot) {
+    if (vocabulary_sizes[slot] <= 0)
+      throw std::invalid_argument("token denoiser vocabulary size");
+    for (std::size_t i = slot; i < ids.size(); i += slots) {
+      if (ids[i] < 0 || ids[i] >= vocabulary_sizes[slot])
+        throw std::invalid_argument("token denoiser ID outside vocabulary");
+    }
+  }
+
+  std::vector<Tensor> conditioning{state, time, square(time)};
+  for (std::size_t slot = 0; slot < slots; ++slot) {
+    const auto column = reshape(slice(tokens, {0, std::int64_t(slot)}, {state.size(0), 1}), {-1});
+    const auto table = parameters.get("word_slot_" + std::to_string(slot),
+                                      {vocabulary_sizes[slot], embedding_width}, init::uniform(.35));
+    conditioning.push_back(matmul(cast(one_hot(column, vocabulary_sizes[slot]), state.dtype()), table));
+  }
+  const auto affine = [&](const Tensor& x, const std::string& name, std::int64_t width) {
+    const auto w = parameters.get(name + "/W", {x.size(1), width}, init::glorot_uniform());
+    const auto b = parameters.get(name + "/b", {width}, init::zeros());
+    return matmul(x, w) + b;
+  };
+  const auto h = gelu(affine(concat(conditioning, 1), "hidden", hidden_width), true);
+  const auto residual = gelu(affine(h, "residual", hidden_width), true);
+  return affine(h + residual, "clean", state.size(1));
+}
+
+/// @brief A deterministic DDIM step from a direct clean-sample prediction.
+struct DdimCleanTransition {
+  Tensor value;   ///< Next state, in the dtype of the incoming state.
+  Tensor epsilon; ///< Noise consistent with the clipped estimate, in the incoming dtype.
+};
+
+/// @brief Clip the clean estimate and move to an earlier state along the same noise direction.
+/// @param state Current CPU floating noisy sample.
+/// @param estimate CPU floating clean prediction with the same shape and dtype.
+/// @param alpha Current cumulative signal power, in [0, 1).
+/// @param previous_alpha Earlier cumulative signal power, in [alpha, 1].
+/// @return Next state and inferred noise. Coefficient arithmetic uses Float64.
+/// @throws std::invalid_argument Invalid powers or incompatible tensors.
+/// @code
+/// namespace n = dm::nn;
+/// auto out = n::models::DdimFromClean(n::zeros({1, 2}), n::ones({1, 2}), 0.5, 1.0);
+/// @endcode
+inline DdimCleanTransition DdimFromClean(
+    const Tensor& state, const Tensor& estimate, double alpha, double previous_alpha) {
+  if (!(alpha >= 0.0 && alpha < 1.0 && previous_alpha >= alpha && previous_alpha <= 1.0) ||
+      !state.defined() || !estimate.defined() ||
+      state.device().backend != compute::Backend::CPU || estimate.device().backend != compute::Backend::CPU ||
+      state.shape() != estimate.shape() ||
+      state.dtype() != estimate.dtype() ||
+      (state.dtype() != DType::Float32 && state.dtype() != DType::Float64)) {
+    throw std::invalid_argument("DDIM clean estimate or schedule");
+  }
+  const auto clean = clip(cast(estimate, DType::Float64), -1.0, 1.0);
+  const auto noise = (cast(state, DType::Float64) - std::sqrt(alpha) * clean) / std::sqrt(1.0 - alpha);
+  const auto next = std::sqrt(previous_alpha) * clean + std::sqrt(1.0 - previous_alpha) * noise;
+  return {cast(next, state.dtype()), cast(noise, state.dtype())};
+}
+
 } // namespace datamunge::nn::models

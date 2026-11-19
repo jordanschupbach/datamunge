@@ -85,6 +85,17 @@ int main() {
     improved.push_back(d.improved);
     stop.push_back(d.stop);
   }
+  dm::nn::EarlyStopping maximize(0, 0., true);
+  if (maximize.observe(.4, 0).stop || !maximize.observe(.5, 1).improved ||
+      !maximize.observe(.5, 2).stop || improved != std::vector<double>{1, 0, 1, 0, 0} ||
+      stop != std::vector<double>{0, 0, 0, 0, 1})
+    throw std::runtime_error("Early stopping disagrees with its patience and improvement rules");
+  bool rejected = false;
+  try { (void)maximize.observe(.6, 2); }
+  catch (const std::invalid_argument&) { rejected = true; }
+  if (!rejected || maximize.best() != .5)
+    throw std::runtime_error("Out-of-order validation epoch was accepted or changed the best score");
+  std::print("Minimize and maximize patience checks passed. Repeated epoch rejected.\n\n");
   dm::dstruct::DataFrame t;
   t.add_column("epoch", epoch);
   t.add_column("metric", metric);
@@ -105,6 +116,8 @@ int main() {
 }
 ```
 // result_begin: markdown
+Minimize and maximize patience checks passed. Repeated epoch rejected.
+
 | epoch | metric | best | misses | improved | stop |
 | ---: | ---: | ---: | ---: | ---: | ---: |
 | 0 | 1.00 | 1.0 | 0 | 1 | 0 |
@@ -211,6 +224,13 @@ int main() {
     oc.minimize(dm::nn::square(wc - 4.));
   }
   double     worst = std::abs(wa.item<double>() - wb.item<double>());
+  const auto restored_weight = wb.item();
+  auto absent = std::filesystem::path("build/early_resume.npz") / "missing.npz";
+  bool rejected = false;
+  try { dm::nn::load_training_checkpoint(absent.string(), b, &ob); }
+  catch (const std::runtime_error&) { rejected = true; }
+  if (!rejected || wb.item() != restored_weight || ob.iterations() != 40)
+    throw std::runtime_error("Failed restore changed the checkpoint weights or step");
   const auto sa = oa.state(), sb = ob.state();
   for (std::size_t i = 0; i < sa.size(); ++i) {
     if (sa[i].first != sb[i].first)

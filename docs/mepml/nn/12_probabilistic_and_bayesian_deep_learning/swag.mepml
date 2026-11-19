@@ -1,0 +1,136 @@
+//? Title: Stochastic weight-averaging Gaussian for a nonlinear regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Collect snapshots from an SGD fit and approximate their weight
+distribution with a diagonal plus low-rank Gaussian. Compare the
+prediction at the average weights with predictions from sampled weights.
+)
+\toc
+
+> Summarize correlated variation in the SGD trajectory
+
+Fit an eight-unit tanh network to 256 noisy observations of sin(2.5x).
+Skip the first eight updates and keep alternate snapshots thereafter.
+The mean and diagonal variance use all 44 retained weight vectors.
+A circular buffer keeps the last 12 deviations from their respective
+running means. The sampled covariance uses half the diagonal estimate
+and half the low-rank estimate from this buffer.
+
+Pass every sampled weight vector through the same network on a grid.
+The average of these predictions can differ from the prediction at
+the mean weights because the network is nonlinear. The band shows
+the spread of these latent mean predictions. It leaves out the
+variation of a new response around its latent mean.
+
+```{cpp, results="markdown", file="figures/swag_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+constexpr int width = 8, weights = 25, rank = 12, samples = 128, query_count = 128;
+
+n::Tensor predict(const n::Tensor& x, const n::Tensor& w) {
+  const auto a = n::slice_axis(w, 0, 0, width);
+  const auto b = n::slice_axis(w, 0, width, 2 * width);
+  const auto c = n::slice_axis(w, 0, 2 * width, 3 * width);
+  return n::sum(n::tanh(x * a + b) * c, {1}, true) + n::select(w, 0, 3 * width);
+}
+
+int main() {
+  std::mt19937 rng(80098);
+  std::normal_distribution<float> normal;
+  std::uniform_real_distribution<float> uniform(-1.f, 1.f);
+  std::vector<float> x(256), y(256);
+  for (std::size_t i = 0; i < x.size(); ++i) {
+    x[i] = uniform(rng);
+    y[i] = std::sin(2.5f * x[i]) + .2f * normal(rng);
+  }
+  std::vector<float> start(weights), grid(query_count), noise(samples * (weights + rank));
+  for (auto& w : start)
+    w = .35f * normal(rng);
+  for (int i = 0; i < query_count; ++i)
+    grid[i] = -1.5f + 3.f * i / (query_count - 1);
+  const auto input = n::from_vector(x, {256, 1});
+  const auto response = n::from_vector(y, {256, 1});
+  const auto query = n::from_vector(grid, {query_count, 1});
+  auto w = n::from_vector(start, {weights});
+  std::vector<n::Tensor> snapshots;
+  n::BatchOrder order(x.size(), 8, 80099);
+  int step = 0;
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      w.requires_grad_(true);
+      const auto loss = n::mean(n::square(predict(n::take_rows(input, rows), w) - n::take_rows(response, rows)));
+      const auto next = w - .045f * n::grad(loss, {w}).front();
+      w = next.detach();
+      ++step;
+      if (step > 8 && step % 2 == 0)
+        snapshots.push_back(w);
+    }
+  }
+  if (snapshots.size() != 44)
+    throw std::runtime_error("unexpected SWAG snapshot count");
+  for (auto& value : noise)
+    value = normal(rng);
+
+  const auto trajectory = n::stack(snapshots, 0);
+  const auto fit = n::FitSwag(trajectory, rank);
+  const auto innovation = n::from_vector(noise, {samples, weights + rank});
+  const auto bank = n::cast(n::DrawSwag(fit, n::slice_axis(innovation, 1, 0, weights),
+                                           n::slice_axis(innovation, 1, weights, weights + rank)), n::DType::Float32);
+  const auto swa = n::cast(fit.mean, n::DType::Float32);
+  const auto reference = predict(query, swa);
+  std::vector<n::Tensor> predictions;
+  for (int i = 0; i < samples; ++i)
+    predictions.push_back(predict(query, n::select(bank, 0, i)).reshape({query_count}));
+  const auto output = n::stack(predictions, 0);
+  const auto output64 = n::cast(output, n::DType::Float64);
+  const auto average = n::mean(output64, {0});
+  const auto sd = n::sqrt(n::mean(n::square(output64 - average), {0}));
+  const auto truth = n::sin(2.5 * n::cast(query, n::DType::Float64)).reshape({query_count});
+  const auto rmse = [&](const n::Tensor& values) {
+    return n::sqrt(n::mean(n::square(values.reshape({query_count}) - truth))).item();
+  };
+  std::println("| Predictive statistic | Value |\n| --- | ---: |");
+  std::println("| SWA mean-weight RMSE | {:.6f} |\n| SWAG averaged RMSE | {:.6f} |",
+               rmse(reference), rmse(average));
+  std::println("| Mean predictive SD | {:.6f} |", n::mean(sd).item());
+
+  const std::string folder = "build/swag/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "posterior.npz",
+               {{"trajectory", trajectory}, {"swa", swa}, {"diagonal", fit.diagonal},
+                {"deviations", fit.deviations}, {"noise", innovation}, {"samples", bank},
+                {"x", query}, {"swa_prediction", reference}, {"draws", output},
+                {"fit_x", input}, {"fit_y", response}});
+  const auto t = query.to_vector<double>(), upper = (average + sd).to_vector<double>();
+  auto band_t = t, band = (average - sd).to_vector<double>();
+  band_t.insert(band_t.end(), t.rbegin(), t.rend());
+  band.insert(band.end(), upper.rbegin(), upper.rend());
+  auto plot = dm::graphics::RPlot::create();
+  plot.polygon(band_t, band, {37, 99, 235, .16})
+      .points(input.to_vector<double>(), response.to_vector<double>(), "Fitting observations",
+              {100, 116, 139, .35}, 2)
+      .lines(t, truth.to_vector<double>(), "Generating mean", {17, 24, 39})
+      .lines(t, reference.to_vector<double>(), "At mean weights", {234, 88, 12})
+      .lines(t, average.to_vector<double>(), "Average sampled prediction", {37, 99, 235})
+      .title("Fit and spread from sampled weights").x_label("x").y_label("Response")
+      .save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/swag_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Predictive statistic | Value |
+| --- | ---: |
+| SWA mean-weight RMSE | 0.798697 |
+| SWAG averaged RMSE | 0.804266 |
+| Mean predictive SD | 0.131919 |
+\image(figures/swag_fit.svg)
+// result_end

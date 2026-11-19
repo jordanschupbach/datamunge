@@ -1,0 +1,125 @@
+//? Title: Graph isomorphism network
+//? Lang: en
+
+> Graph isomorphism network
+
+Can a model distinguish a path from a star when every real node has the
+same input feature and the node IDs are shuffled? A graph isomorphism
+network sums each node's neighbors, adds its own feature with a learned
+coefficient, and applies an MLP. A sum preserves differences in how many
+neighbors contribute. This example concatenates the sum readouts from two
+layers to classify the full graph.
+
+Each graph has six to nine real nodes. Zero input features and zero
+incident edges identify padding, and a mask clears padded rows after each
+MLP. The model fits on 128 graphs, then predicts on 64 graphs sampled from a
+separate seed.
+
+```{cpp, results="markdown", file="figures/gin_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int nodes = 9, width = 12;
+  const auto generate = [](int batch, std::mt19937 &rng) {
+    std::vector<float> adjacency(batch * nodes * nodes), mask(batch * nodes);
+    std::vector<int> labels;
+    for (int i = 0; i < batch; ++i) {
+      const int label = i % 2, count = 6 + rng() % 4;
+      std::array<int, nodes> order;
+      std::iota(order.begin(), order.end(), 0);
+      std::shuffle(order.begin(), order.end(), rng);
+      labels.push_back(label);
+      for (int j = 0; j < count; ++j) {
+        const int a = order[j];
+        mask[i * nodes + a] = 1.f;
+        if (j > 0) {
+          const int b = order[label == 0 ? j - 1 : 0];
+          const int offset = i * nodes * nodes;
+          adjacency[offset + a * nodes + b] = adjacency[offset + b * nodes + a] = 1.f;
+        }
+      }
+    }
+    return std::array{n::from_vector(adjacency, {batch, nodes, nodes}),
+                      n::from_vector(mask, {batch, nodes, 1}), n::from_vector(labels)};
+  };
+
+  std::mt19937 fit_rng(48502), test_rng(48503);
+  std::vector<std::array<n::Tensor, 3>> fit;
+  for (int i = 0; i < 8; ++i)
+    fit.push_back(generate(16, fit_rng));
+  const auto [adjacency, input, labels] = generate(64, test_rng);
+
+  n::ParameterStore model(48501);
+  const auto forward = [&](const n::Tensor &edges, const n::Tensor &mask) {
+    const auto first = n::gin_layer(model, "gin0", edges, mask, mask, width);
+    const auto second = n::gin_layer(model, "gin1", edges, first, mask, width);
+    const auto graph = n::concat({n::sum(first, {1}), n::sum(second, {1})}, 1);
+    return std::array{first, second, n::dense(model, "head", graph, 2)};
+  };
+
+  forward(adjacency, input);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .025, config);
+  std::vector<double> epochs, losses, accuracy;
+  std::print("| epoch | held-out NLL | correct |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto logits = forward(adjacency, input)[2];
+      const auto correct = n::count_nonzero(n::equal(n::argmax(logits, 1), labels)).item<int>();
+      epochs.push_back(epoch);
+      losses.push_back(n::sparse_softmax_cross_entropy(logits, labels).item());
+      accuracy.push_back(correct / 64.);
+      std::print("| {} | {:.6f} | {}/64 |\n", epoch, losses.back(), correct);
+    }
+    if (epoch < 3)
+      for (const auto &[edges, mask, observed] : fit)
+        adam.minimize(n::sparse_softmax_cross_entropy(forward(edges, mask)[2], observed));
+  }
+
+  n::NoGradGuard guard;
+  const auto [first, second, logits] = forward(adjacency, input);
+  const auto permutation = n::from_vector(std::vector<int>{8, 3, 5, 2, 1, 0, 6, 4, 7});
+  const auto reordered = forward(n::gather(n::gather(adjacency, permutation, 1), permutation, 2),
+                                 n::gather(input, permutation, 1));
+  const auto error = n::max(n::abs(reordered[2] - logits)).item();
+  if (error > 1e-5 || n::max(n::abs(second * (1. - input))).item() != 0)
+    throw std::runtime_error("graph order or padding check failed");
+  std::print("Maximum logit change under node permutation {:.3g}.\n", error);
+
+  n::NamedTensors evidence{{"adjacency", adjacency}, {"input", input}, {"label", labels},
+                           {"state0", first}, {"state1", second}, {"logits", logits},
+                           {"held_out_nll", n::from_vector(losses)}};
+  for (const auto &name : model.names())
+    evidence.emplace_back(name, model.at(name));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/gin_fit.npz", evidence);
+  auto curve = dm::graphics::RPlot::create();
+  curve.lines(epochs, losses, "Held-out NLL", {37, 99, 235})
+      .title("Path and star loss").x_label("Epoch").y_label("Held-out NLL");
+  auto score = dm::graphics::RPlot::create();
+  score.lines(epochs, accuracy, "Held-out accuracy", {22, 120, 97})
+      .title("Path and star predictions").x_label("Epoch").y_label("Fraction correct").y_limits(0, 1.05);
+  dm::graphics::RLayout::create(1, 2).add(curve).add(score).size(1000, 420)
+      .fit_panels().save_svg("build/gin_fit.svg");
+}
+```
+// result_begin: markdown
+| epoch | held-out NLL | correct |
+|---:|---:|---:|
+| 0 | 8.218710 | 32/64 |
+| 1 | 0.846559 | 32/64 |
+| 2 | 0.432323 | 64/64 |
+| 3 | 0.162198 | 64/64 |
+Maximum logit change under node permutation 0.
+\image(figures/gin_fit.svg)
+// result_end
+\caption(Held-out likelihood and accuracy for the same 64 graphs after each epoch.)
+\alttext(Line plots of held-out negative log likelihood and accuracy on path and star classification.)
+
+> Reference
+
+- [Xu, Hu, Leskovec, and Jegelka (2019), How Powerful are Graph Neural Networks?](https://arxiv.org/abs/1810.00826).

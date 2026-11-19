@@ -947,10 +947,10 @@ both full-reference-size graphs and all learned gradients/BN state inventories,
 explicit state mutation/inference immutability,and symmetric stride/invalid
 contracts. Shared video tests independently check every1769472source pixel,
 reference feature and score. Every public example and original three-epoch
-workflow passes. Both select epoch2:validation NLL1.099605/1.095704.
-Held-out R(2+1)D accuracy.50/NLL1.094525,recalls1/0/.5;P3D accuracy1/3/
-NLL1.122472,recalls0/0/1. Both miss every handclapping example and remain
-below motion1NN accuracy2/3. The initial P3D held-out NLL8386.22 is retained.
+workflow passes. Validation selects epoch 1 for R(2+1)D-18 and epoch 3
+for P3D-199, with NLL of 1.100746 and 1.062703. The held-out models get
+2/6 and 3/6 clips correct, with NLL of 1.102048 and 1.092514. Both miss
+all handclapping clips. The motion 1-NN reference gets 4/6 clips correct.
 This short random-initialized custom split and adaptation
 of BN state do not reproduce pretrained Kinetics/Sports1M results.
 

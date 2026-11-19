@@ -610,7 +610,7 @@ epoch 1: diagnostic D loss=0.161854, G loss=1.00915, coarse MMD=0.120623
 epoch 2: diagnostic D loss=0.0365898, G loss=1.20601, coarse MMD=0.1204
 epoch 3: diagnostic D loss=0.0193689, G loss=1.20816, coarse MMD=0.120147
 effective kernel spectral norms (exact SVD): hidden=1.00868, output=1
-fixed FINAL epoch 3, test D/G=0.00978997/1.20336, coarse MMD=0.117836, mean baseline=0.000135779, D real/fake accuracy (threshold 0)=1/1, mean pixel=0.499476, pixel variance=0.00160577; D then G/restore/noiseOnly/immutable PASS (training 0.271274 s)
+fixed FINAL epoch 3, test D/G=0.00978997/1.20336, coarse MMD=0.117836, mean baseline=0.000135779, D real/fake accuracy (threshold 0)=1/1, mean pixel=0.499476, pixel variance=0.00160577; D then G/restore/noiseOnly/immutable PASS (training 0.512585 s)
 Artifacts: build/spectral_gan
 All spectral_gan checks passed.
 \image(figures/spectral_gan_learning.svg)

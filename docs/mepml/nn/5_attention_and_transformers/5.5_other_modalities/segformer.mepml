@@ -1,0 +1,201 @@
+//? Title: SegFormer with spatially reduced attention
+//? Lang: en
+
+> SegFormer with spatially reduced attention
+
+Four overlapping strided convolutions build a hierarchy of feature
+grids. At each stage the queries keep their full spatial resolution.
+In the first three stages a strided convolution reduces the grid used
+as keys and values. This gives broad context without a full quadratic
+attention matrix at the finest resolution. A depthwise convolution
+inside the feed-forward branch mixes neighboring positions.
+
+The decoder projects each stage to the same width, resizes all grids
+to the finest stage, and fuses them with pointwise layers. Bilinear
+upsampling gives four logits per pixel. Train on procedural shapes
+with weighted cross-entropy and L2 regularization, select the checkpoint on validation mean
+IoU, then compare predictions with held-out masks. The fit uses
+Datamunge initialization and the upstream split seeds and batch schedule.
+
+Set `DM_SEGFORMER_REFERENCE` to upstream `segformer/audit.npz` to
+replay the decoder using the saved projection grids and weights.
+
+[Xie et al. (2021)|https://arxiv.org/abs/2105.15203]
+
+```{cpp, results="markdown", file="figures/segformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace m=n::models;
+  constexpr int size=48,classes=4;
+  const auto shapes=[](int count,std::uint64_t seed) {
+    std::mt19937_64 rng(seed);
+    std::uniform_real_distribution<float> noise(-.04,.04), intensity(.55,.95), center(.2,.8), radius(.12,.27);
+    std::uniform_int_distribution<int> number(1,4), label(1,3);
+    std::vector<float> images;
+    std::vector<int> labels(count*size*size);
+    for (int row=0;row<count;++row) {
+      std::vector<float> gray(size*size);
+      for (float& pixel:gray) pixel=.1f+noise(rng);
+      const int objects=number(rng);
+      for (int object=0;object<objects;++object) {
+        const int type=label(rng);
+        const float y=center(rng)*size, x=center(rng)*size;
+        const float h=radius(rng)*size, w=radius(rng)*size, brightness=intensity(rng);
+        for (int r=0;r<size;++r) {
+          for (int c=0;c<size;++c) {
+            const float dy=(r+.5f-y)/h, dx=(c+.5f-x)/w;
+            const bool inside=type==1 ? dx*dx+dy*dy<1 : type==2 ?
+                std::abs(dx)<1 && std::abs(dy)<1 : dy>-1 && dy<1 && std::abs(dx)<(dy+1)/2;
+            if (inside) {
+              gray[r*size+c]=brightness+noise(rng);
+              labels[(row*size+r)*size+c]=type;
+            }
+          }
+        }
+      }
+      std::array<float,3> tint;
+      for (float& channel:tint) channel=1+noise(rng);
+      for (float pixel:gray) {
+        for (float channel:tint) images.push_back(std::clamp(pixel*channel,0.f,1.f));
+      }
+    }
+    return m::TensorSegmentationData{n::from_vector(images,{count,size,size,3}),
+                                     n::from_vector(labels,{count,size,size}),classes};
+  };
+  const auto fit=shapes(192,11), valid=shapes(48,22), test=shapes(48,33);
+  const auto weights=m::SegmentationClassWeights(fit.labels,classes);
+  n::ParameterStore p(17);
+  const auto conv=[&](const n::Tensor& x,const std::string& key,int filters,int kernel=1,int stride=1,
+                      n::Padding pad=n::Padding::Same) {
+    const auto w=p.get(key+"/W",{kernel,kernel,x.size(3),filters},n::init::lecun_uniform());
+    const auto b=p.get(key+"/b",{filters},n::init::zeros());
+    return n::conv2d(x,w,{.strides={stride,stride},.padding=pad})+b;
+  };
+  const auto resize=[](const n::Tensor& x,int side) { return n::resize_bilinear(x,{side,side},false,true); };
+  const auto predict=[&](const n::Tensor& pixels,bool trace=false) {
+    const std::array widths{12,16,24,32}, heads{2,2,3,4}, ratios{4,2,2,1};
+    std::array<n::Tensor,4> scales, attention;
+    std::vector<n::Tensor> resized;
+    auto grid=pixels;
+    int side=size;
+    for (int stage=0;stage<4;++stage) {
+      const auto name=std::format("stage{}",stage);
+      const int width=widths[stage], ratio=ratios[stage];
+      side/=2;
+      const auto patches=conv(grid,name+"/overlap",width,stage==0?5:3,2);
+      const auto embedded=n::layer_norm(p,name+"/patch_norm",patches);
+      const auto query=n::layer_norm(p,name+"/attention_norm",embedded);
+      auto memory=query;
+      if (ratio>1) {
+        memory=n::layer_norm(p,name+"/memory_norm",conv(query,name+"/reduce",width,ratio,ratio,n::Padding::Valid));
+      }
+      const auto keys=memory.size(1)*memory.size(2);
+      n::MultiHeadOptions options;
+      options.need_weights=trace;
+      const auto attended=n::multi_head_attention(p,name+"/attention",
+          query.reshape({-1,side*side,width}),memory.reshape({-1,keys,width}),heads[stage],options);
+      attention[stage]=attended.weights;
+      const auto residual=embedded+attended.output.reshape(embedded.shape());
+      const auto expanded=conv(n::layer_norm(p,name+"/ffn_norm",residual),name+"/expand",2*width);
+      const auto dw=p.get(name+"/mix/W",{3,3,2*width,1},n::init::lecun_uniform());
+      const auto db=p.get(name+"/mix/b",{2*width},n::init::zeros());
+      const auto mixed=n::gelu(n::depthwise_conv2d(expanded,dw)+db,true);
+      grid=n::layer_norm(p,name+"/output_norm",residual+conv(mixed,name+"/contract",width));
+      scales[stage]=conv(grid,"decoder/"+name,16);
+      resized.push_back(stage==0 ? scales[stage] : resize(scales[stage],size/2));
+    }
+    const auto coarse=conv(n::relu(conv(n::concat(resized,3),"decoder/fuse",16)),"decoder/head",classes);
+    return std::tuple{resize(coarse,size),coarse,scales,attention};
+  };
+  const auto metric=[&](const m::TensorSegmentationData& data) {
+    const n::NoGradGuard no_grad;
+    return m::SegmentationPredictionMetrics(n::argmax(std::get<0>(predict(data.images)),3),data.labels,classes);
+  };
+  (void)metric(valid);
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(p,.003,config);
+  n::BatchOrder batch(192,8,29);
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  std::vector<double> history, losses;
+  double best=-1;
+  int selected=0;
+  for (int epoch=1;epoch<=3;++epoch) {
+    batch.begin_epoch();
+    double total=0;
+    for (auto ids=batch.next();!ids.empty();ids=batch.next()) {
+      const auto logits=std::get<0>(predict(n::take_rows(fit.images,ids)));
+      const auto loss=m::SegmentationCrossEntropy(logits,n::take_rows(fit.labels,ids),classes,weights);
+      total+=loss.item()*ids.size();
+      auto penalty=n::from_scalar(0.f);
+      for (const auto& parameter:p.parameters()) {
+        if (parameter.dim()>1) penalty=penalty+n::sum(n::square(parameter));
+      }
+      optimizer.minimize(loss+.00005*penalty);
+    }
+    losses.push_back(total/192);
+    const auto score=metric(valid).mean_iou.item();
+    history.push_back(score);
+    if (score>best) {
+      best=score;
+      selected=epoch;
+      p.save("build/segformer_weights.npz");
+    }
+  }
+  p.load("build/segformer_weights.npz");
+  const n::NoGradGuard no_grad;
+  const auto [logits,coarse,scales,maps]=predict(test.images);
+  const auto first=predict(n::slice_axis(test.images,0,0,1),true);
+  const auto predicted=n::argmax(logits,3);
+  const auto score=m::SegmentationPredictionMetrics(predicted,test.labels,classes);
+  if (!(losses.back()<losses.front()) || std::abs(metric(valid).mean_iou.item()-best)>1e-12 ||
+      optimizer.iterations()!=72) throw std::runtime_error("SegFormer fit or checkpoint check failed");
+  n::NamedTensors arrays{{"labels",test.labels},{"logits",logits},{"coarse",coarse},
+      {"fuse_w",p.at("decoder/fuse/W")},{"fuse_b",p.at("decoder/fuse/b")},
+      {"head_w",p.at("decoder/head/W")},{"head_b",p.at("decoder/head/b")}};
+  for (int i=0;i<4;++i) {
+    arrays.emplace_back(std::format("scale{}",i),scales[i]);
+    arrays.emplace_back(std::format("attention{}",i),std::get<3>(first)[i]);
+  }
+  n::save_npz("build/segformer.npz",arrays);
+  std::print("Training loss {:.6f} to {:.6f}. Selected epoch {}, held-out mean IoU {:.6f}.\n",
+             losses.front(),losses.back(),selected,score.mean_iou.item());
+  if (const char* path=std::getenv("DM_SEGFORMER_REFERENCE")) {
+    const auto entries=n::load_npz(path);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    std::vector<n::Tensor> grids{stored.at("scale0")};
+    for (int i=1;i<4;++i) grids.push_back(resize(stored.at(std::format("scale{}",i)),size/2));
+    const auto f=n::relu(n::conv2d(n::concat(grids,3),stored.at("fuse_w"))+stored.at("fuse_b"));
+    const auto coarse=n::conv2d(f,stored.at("head_w"))+stored.at("head_b");
+    const auto diff=n::max(n::abs(resize(coarse,size)-stored.at("logits"))).item();
+    if (!(diff<3e-5)) throw std::runtime_error("SegFormer decoder replay mismatch");
+    std::print("\nUpstream decoder maximum absolute logit error {:.3e}.\n",diff);
+  }
+  std::vector<n::Tensor> gallery;
+  for (int i=0;i<4;++i) {
+    gallery.push_back(n::slice_axis(test.images,0,i,i+1));
+    gallery.push_back(m::ColorSegmentationLabels(n::slice_axis(test.labels,0,i,i+1)));
+    gallery.push_back(m::ColorSegmentationLabels(n::slice_axis(predicted,0,i,i+1)));
+  }
+  n::save_image_grid(n::concat(gallery,0),"build/segformer_masks.png",3,0.,1.,3,1.,2);
+  std::filesystem::copy_file("build/segformer_masks.png","figures/segformer_masks.png",
+      std::filesystem::copy_options::overwrite_existing);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({1,2,3},history,"Validation mean IoU",{37,99,235})
+      .points({1,2,3},history,"Epoch boundaries",{37,99,235})
+      .title("SegFormer checkpoint selection").x_label("Epoch").y_label("Mean intersection over union")
+      .size(880,425).save_svg("build/segformer.svg");
+}
+```
+// result_begin: markdown
+Training loss 1.234041 to 0.750136. Selected epoch 3, held-out mean IoU 0.317886.
+
+Upstream decoder maximum absolute logit error 0.000e+00.
+\image(figures/segformer.svg)
+// result_end
+
+\image(figures/segformer_masks.png)
+\caption(Held-out examples show input, true mask, and predicted mask from left to right.)

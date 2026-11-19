@@ -1,0 +1,136 @@
+//? Title: Forecast at irregular query times with an ODE-RNN
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train an ODE-RNN on irregular samples of sinusoids. Compare its four
+future queries with persistence and test sensitivity to elapsed time.
+)
+\toc
+
+The hidden state evolves between timestamps under a learned autonomous
+vector field. Two fourth-order Runge–Kutta substeps integrate each
+elapsed interval. At an observed timestamp a GRU incorporates the
+reading into the integrated state. Future queries advance the same
+field and read out a forecast without a measurement update.
+[Rubanova et al., Latent ODEs for Irregularly-Sampled Time Series|https://arxiv.org/abs/1907.03907]
+
+The simulation varies amplitude, phase, and the time between readings.
+Each training sequence contains eight observations and four future
+targets. The model minimizes forecast mean squared error. Test sequences
+use an independent seed, and model initialization matches TensorFlow.
+
+```{cpp, results="markdown", file="figures/irregular_ode.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int observed = 8, queries = 4, steps = observed + queries;
+  const auto simulate = [](int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> gap(.1f, .8f), phase(0, 6.2831853f), amplitude(.6f, 1.4f);
+    std::vector<float> gaps(count * steps), history(count * observed), target(count * queries);
+    for (int row = 0; row < count; ++row) {
+      float time = 0;
+      const auto offset = phase(rng), gain = amplitude(rng);
+      for (int step = 0; step < steps; ++step) {
+        const auto dt = step == 0 ? 0.f : gap(rng);
+        time += dt;
+        const auto value = gain * std::sin(1.3f * time + offset);
+        gaps[row * steps + step] = dt;
+        if (step < observed) history[row * observed + step] = value;
+        else target[row * queries + step - observed] = value;
+      }
+    }
+    return std::tuple{n::from_vector(gaps, {count, steps}), n::from_vector(history, {count, observed}),
+                      n::from_vector(target, {count, queries})};
+  };
+  const auto [fit_gaps, fit_history, fit_target] = simulate(512, 65031);
+  const auto [gaps, history, target] = simulate(128, 65032);
+  n::ParameterStore parameters;
+  const auto forecast = [&](const n::Tensor& dt, const n::Tensor& values) {
+    return n::irregular_ode_forecast(parameters, "irregular_ode", dt, values);
+  };
+  (void)forecast(n::take_rows(gaps, {0}), n::take_rows(history, {0}));
+  parameters.load("fixtures/irregular_ode_init.npz", true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(fit_gaps.size(0), 32, 65033);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto model = forecast(n::take_rows(fit_gaps, rows), n::take_rows(fit_history, rows));
+      const auto residual = model.forecast - n::take_rows(fit_target, rows);
+      optimizer.step(n::grad(n::mean(n::square(residual)), parameters.parameters()));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto result = forecast(gaps, history);
+  auto delayed_gaps = gaps.to_vector<float>();
+  for (int row = 0; row < gaps.size(0); ++row) delayed_gaps[row * steps + steps - 1] += .4f;
+  const auto delayed = forecast(n::from_vector(delayed_gaps, gaps.shape()), history).forecast;
+  const auto earlier = [&](const n::Tensor& predictions) {
+    return n::slice_axis(predictions, 1, 0, queries - 1).to_vector<float>();
+  };
+  const auto gap_effect = n::sum(n::abs(n::select(delayed - result.forecast, 1, queries - 1))).item();
+  if (earlier(delayed) != earlier(result.forecast) || !(gap_effect > 1e-3))
+    throw std::runtime_error("Unexpected final-query delay response");
+  const auto persistence = n::slice_axis(history, 1, observed - 1, observed);
+  const auto rmse = [&](const n::Tensor& estimate) {
+    return n::sqrt(n::mean(n::square(estimate - target))).item();
+  };
+  std::println("Across 128 held-out series, the ODE-RNN RMSE was {:.6f}, versus {:.6f} for persistence.",
+               rmse(result.forecast), rmse(persistence));
+  std::println("\nDelaying the last query changed its forecasts by {:.6f} on average. Earlier forecasts were unchanged.",
+               gap_effect / gaps.size(0));
+
+  const std::string folder = "build/irregular_ode/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::NamedTensors arrays{{"input", n::concat({gaps, history}, 1).reshape({-1, steps + observed, 1})},
+      {"target", target}, {"prediction", result.forecast}, {"shifted_prediction", delayed},
+      {"start", result.start}, {"end", result.end}};
+  for (const auto& name : parameters.names()) {
+    auto key = name.substr(std::string("irregular_ode/").size());
+    std::ranges::replace(key, '/', '_');
+    arrays.emplace_back(key, parameters.at(name));
+  }
+  n::save_npz(folder + "trajectory.npz", arrays);
+
+  auto time = n::select(gaps, 0, 0).to_vector<double>();
+  std::partial_sum(time.begin(), time.end(), time.begin());
+  const std::vector<double> observation_times(time.begin(), time.begin() + observed);
+  const std::vector<double> query_times(time.begin() + observed, time.end());
+  const auto first = [](const n::Tensor& value) { return n::select(value, 0, 0).to_vector<double>(); };
+  const double last = first(history).back();
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(observation_times, first(history), "Observed history", {30,41,59}, 4)
+      .points(query_times, first(target), "Held-out targets", {191,88,34}, 4)
+      .lines(query_times, first(result.forecast), "ODE-RNN", {37,99,235}, 2)
+      .lines(query_times, std::vector<double>(queries, last), "Persistence", {92,102,120})
+      .title("Forecasts for the first held-out sequence").x_label("Time").y_label("Level");
+  plot.save_svg(folder + "trajectory.svg");
+  std::filesystem::copy_file(folder + "trajectory.svg", "figures/irregular_ode.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Across 128 held-out series, the ODE-RNN RMSE was 0.214475, versus 0.990392 for persistence.
+
+Delaying the last query changed its forecasts by 0.349122 on average. Earlier forecasts were unchanged.
+\image(figures/irregular_ode.svg)
+// result_end
+
+The irregular query positions are plotted in elapsed time. The
+persistence baseline repeats the final measured value at every query.

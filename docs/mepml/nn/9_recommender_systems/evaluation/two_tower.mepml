@@ -1,0 +1,142 @@
+//? Title: Two-tower retrieval with in-batch negatives
+//? Lang: en
+
+> Two-tower retrieval with in-batch negatives
+
+A query encoder and an item encoder transform two different observations
+of the same latent identity. Each tower is a separate MLP. Normalize the
+projected vectors and use ten times their cosine similarity as the score.
+In a paired minibatch, each query's matching item is on the diagonal.
+Row-wise cross-entropy raises that score relative to the other items in
+the batch.
+
+The towers can encode queries and catalog items independently once fitted.
+The report uses 384 fitting identities and a separate 96-item catalog.
+The plot shows how often the paired item appears by each rank cutoff
+before and after training. The score archive can also be evaluated by
+the [filtered recommendation metrics report|recommendation_metrics.mepml].
+
+Set `DM_TWO_TOWER_REFERENCE` to upstream `two_tower/retrieval.npz` to
+replay upstream weights. The native model uses Datamunge initialization
+with the upstream learning rate and batch schedule.
+
+```{cpp, results="markdown", file="figures/two_tower.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int width = 8, fit = 384, test = 96;
+  const auto generate = [](int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> normal;
+    std::vector<float> queries, items;
+    for (int row = 0; row < count; ++row) {
+      std::array<float,width> latent;
+      for (auto& value : latent) value = normal(rng);
+      for (int d = 0; d < width; ++d) {
+        queries.push_back(latent[d] + .08f*normal(rng));
+        items.push_back(.75f*latent[(d+3)%width] - .4f*latent[(d+1)%width] + .08f*normal(rng));
+      }
+    }
+    return std::pair{n::from_vector(queries,{count,width}),n::from_vector(items,{count,width})};
+  };
+  const auto [q_fit,v_fit] = generate(fit,45382);
+  const auto [query,item] = generate(test,45383);
+  n::ParameterStore params(45381);
+  const auto tower = [&](const n::Tensor& x, const std::string& name) {
+    const auto hidden = n::dense(params,name+"_hidden",x,16,n::Activation::Relu);
+    const auto output = n::dense(params,name+"_out",hidden,width);
+    return output / n::sqrt(n::maximum(n::sum(n::square(output),{1},true),n::from_scalar(1e-12f)));
+  };
+  const auto similarity = [](const n::Tensor& q,const n::Tensor& v) {
+    return 10.0*n::matmul(q,v,false,true);
+  };
+  const auto cross_entropy = [](const n::Tensor& s) {
+    return n::softmax_cross_entropy(s,n::eye(s.size(0)));
+  };
+  const auto score = [&](const n::Tensor& q, const n::Tensor& v) {
+    return similarity(tower(q,"query"),tower(v,"item"));
+  };
+  std::vector<int> cutoffs(test);
+  std::iota(cutoffs.begin(),cutoffs.end(),1);
+  const auto grades = n::eye(test), seen = n::zeros_like(grades);
+  const auto metrics = [&](const n::Tensor& scores) {
+    return n::recommendation_metrics(scores,grades,seen,cutoffs);
+  };
+  auto plot = dm::graphics::RPlot::create();
+  const auto show = [&](const n::Tensor& scores, const std::string& label, dm::graphics::RGBA color) {
+    const auto averages = metrics(scores).averages.to_vector<double>();
+    std::vector<double> hits;
+    for (int k = 0; k < test; ++k) hits.push_back(averages[3*k]);
+    plot.lines(std::vector<double>(cutoffs.begin(),cutoffs.end()),hits,label,color);
+    const double loss = cross_entropy(scores).item();
+    std::print("| {} | {:.6f} | {:.0f}/{} |\n",label,loss,hits[4]*test,test);
+    return loss;
+  };
+  std::print("| Model | Catalog cross-entropy | Hit@5 |\n|---|---:|---:|\n");
+  double initial;
+  {
+    const n::NoGradGuard no_grad;
+    initial = show(score(query,item),"Initial",{100,116,139});
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.01,config);
+  n::BatchOrder order(fit,24,45384);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      optimizer.minimize(cross_entropy(score(n::take_rows(q_fit,rows),n::take_rows(v_fit,rows))));
+    }
+  }
+  const n::NoGradGuard no_grad;
+  const auto q = tower(query,"query"), v = tower(item,"item");
+  const auto scores = similarity(q,v);
+  if (optimizer.iterations()!=48 || !(show(scores,"Fitted",{37,99,235})<initial)) {
+    throw std::runtime_error("Two-tower fit did not improve");
+  }
+  const auto ranks = [&](const n::Tensor& logits) {
+    const auto ranked = metrics(logits).ranked.to_vector<std::int64_t>();
+    std::vector<int> result;
+    for (int i = 0; i < test; ++i) {
+      const auto first = ranked.begin()+i*test;
+      result.push_back(std::find(first,first+test,i)-first+1);
+    }
+    return result;
+  };
+  std::filesystem::create_directories("build/two_tower");
+  params.save("build/two_tower/weights.npz");
+  n::save_npz("build/two_tower/retrieval.npz",{{"query",query},{"item",item},
+      {"query_embedding",q},{"item_embedding",v},{"scores",scores},{"loss",cross_entropy(scores)},
+      {"ranks",n::from_vector(ranks(scores))}});
+  if (const char* path = std::getenv("DM_TWO_TOWER_REFERENCE")) {
+    const auto entries = n::load_npz(path);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    for (const auto& name : params.names()) {
+      auto key = name;
+      std::replace(key.begin(),key.end(),'/','_');
+      params.set(name,stored.at(key));
+    }
+    const auto replay_q = tower(query,"query"), replay_v = tower(item,"item");
+    const auto replay = similarity(replay_q,replay_v);
+    const double error = std::max({n::max(n::abs(replay-stored.at("scores"))).item(),
+        n::max(n::abs(replay_q-stored.at("query_embedding"))).item(),
+        n::max(n::abs(replay_v-stored.at("item_embedding"))).item()});
+    if (!(error < 1e-5) || ranks(replay)!=stored.at("ranks").to_vector<int>()) {
+      throw std::runtime_error("Two-tower checkpoint replay mismatch");
+    }
+    std::print("\nUpstream replay maximum absolute error {:.3e}.\n",error);
+  }
+  plot.title("Two-tower catalog retrieval").x_label("Rank cutoff").y_label("Hit rate")
+      .y_limits(0,1.05).size(900,425).save_svg("build/two_tower.svg");
+}
+```
+// result_begin: markdown
+| Model | Catalog cross-entropy | Hit@5 |
+|---|---:|---:|
+| Initial | 7.351359 | 2/96 |
+| Fitted | 1.468453 | 96/96 |
+
+Upstream replay maximum absolute error 2.861e-06.
+\image(figures/two_tower.svg)
+// result_end

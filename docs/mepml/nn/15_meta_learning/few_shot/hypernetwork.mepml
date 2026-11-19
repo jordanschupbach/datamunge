@@ -1,0 +1,97 @@
+//? Title: Hypernetwork for few-shot sinusoid regression
+//? Lang: en
+
+> Hypernetwork for few-shot sinusoid regression
+
+Each task draws a new amplitude and phase. The support observations
+identify the task, and independent query observations supply its loss.
+An encoder transforms each support pair, including products with sine
+and cosine features. Averaging those encodings gives an order-independent
+summary of the support set.
+
+The hypernetwork produces all 37 weights of a separate tanh regressor.
+Query loss differentiates through the generated weights back into the
+support encoder. The fitted hypernetwork adapts to a new task by
+generating its weights in one pass. The plot shows a held-out curve,
+its support observations, and the generated regressor.
+
+```{cpp, results="markdown", file="figures/hypernetwork.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](std::mt19937& rng) {
+    std::uniform_real_distribution<float> amplitude(.4f,2),phase(-1.5f,1.5f),domain(-3,3);
+    const float a=amplitude(rng),b=phase(rng);
+    const auto set=[&](int count) {
+      std::vector<float> x(count),y(count);
+      for (int i=0;i<count;++i) { x[i]=domain(rng); y[i]=a*std::sin(x[i]+b); }
+      return n::concat({n::from_vector(x,{count,1}),n::from_vector(y,{count,1})},1);
+    };
+    return std::tuple{set(10),set(20),a,b};
+  };
+  const auto col=[](const n::Tensor& set,int i) { return n::slice_axis(set,1,i,i+1); };
+  n::ParameterStore model(26563);
+  const auto weights=[&](const auto& support) {
+    return n::sinusoid_hypernetwork_weights(model,col(support,0),col(support,1));
+  };
+  std::mt19937 train(24322),test(24323);
+  std::vector<n::Tensor> supports,queries,generated,predictions;
+  float amplitude=0,phase=0;
+  for (int i=0;i<64;++i) {
+    const auto [s,q,a,b]=draw(test);
+    if (i==0) { amplitude=a; phase=b; }
+    supports.push_back(s);
+    queries.push_back(q);
+  }
+  const auto evaluate=[&]() {
+    double mse=0;
+    for (int i=0;i<64;++i)
+      mse+=n::mean(n::square(n::scalar_regressor(col(queries[i],0),weights(supports[i]))-
+                            col(queries[i],1))).item()/64;
+    return mse;
+  };
+  const auto initial=evaluate();
+  n::Optimizer optimizer(model,.003,{.kind=n::OptimizerKind::Adam});
+  for (int i=0;i<480;++i) {
+    const auto [s,q,a,b]=draw(train);
+    optimizer.minimize(n::mean(n::square(n::scalar_regressor(col(q,0),weights(s))-col(q,1))));
+  }
+  n::NoGradGuard guard;
+  const auto mse=evaluate();
+  double reverse_error=0;
+  const std::vector<std::int64_t> reversed{9,8,7,6,5,4,3,2,1,0};
+  for (int i=0;i<64;++i) {
+    generated.push_back(weights(supports[i]));
+    const auto x=col(queries[i],0);
+    const auto y=n::scalar_regressor(x,generated.back());
+    predictions.push_back(y.reshape({20}));
+    const auto other=n::scalar_regressor(x,weights(n::take_rows(supports[i],reversed)));
+    reverse_error=std::max(reverse_error,n::max(n::abs(y-other)).item());
+  }
+  if (!(mse<initial) || reverse_error>=1e-5) return 1;
+  std::print("Held-out query MSE {:.5f} → {:.5f}. Maximum support reversal error {:.3g}.\n",
+      initial,mse,reverse_error);
+  std::vector<float> grid(121);
+  std::vector<double> x,exact;
+  for (int i=0;i<121;++i) {
+    grid[i]=-3.f+i*.05f;
+    x.push_back(grid[i]);
+    exact.push_back(amplitude*std::sin(grid[i]+phase));
+  }
+  const auto fitted=n::scalar_regressor(n::from_vector(grid,{121,1}),generated.front()).to_vector<double>();
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(x,exact,"Reference",{37,99,235}).lines(x,fitted,"Generated regressor",{234,88,12})
+      .points(col(supports.front(),0).to_vector<double>(),col(supports.front(),1).to_vector<double>(),
+              "Support observations",{31,41,55})
+      .title("A held-out sinusoid task").x_label("Input").y_label("Response");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/hypernetwork.svg");
+  n::save_npz("build/hypernetwork.npz",{{"support",n::stack(supports)},{"query",n::stack(queries)},
+      {"generated_weights",n::stack(generated)},{"prediction",n::stack(predictions)}});
+}
+```
+// result_begin: markdown
+Held-out query MSE 1.17800 → 0.21019. Maximum support reversal error 0.
+\image(figures/hypernetwork.svg)
+// result_end

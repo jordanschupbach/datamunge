@@ -1,0 +1,154 @@
+//? Title: Approximate embedding retrieval with hyperplane hashing
+//? Lang: en
+
+> Approximate embedding retrieval with hyperplane hashing
+
+Hash each item by the signs of eight random projections. For a query,
+probe occupied buckets in order of increasing Hamming distance from
+its signature. Continue until enough candidates have been collected.
+Score every item in the visited buckets by cosine similarity and
+keep the top five. A bucket may push the number scored above the
+requested minimum.
+
+The fixture uses 384 catalog vectors and 96 noisy queries. Save the
+catalog and planes, then reload them into the same index used to
+query and rerank. The plot compares top-five recall against exhaustive
+search at minimum budgets of 16 and 32 candidates. Set
+`DM_ANN_RETRIEVAL` to a two-tower retrieval archive to try the same
+evaluation on fitted embeddings. Set `DM_ANN_INDEX` as well to query a
+saved index directly. In that mode the input archive only needs
+`query_embedding`, and the program skips exhaustive search.
+
+[Charikar (2002)|https://doi.org/10.1145/509907.509965]
+
+```{cpp, results="markdown", file="figures/embedding_ann.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  using dm::algorithms::CosineLSH;
+  using Rows = std::vector<std::vector<double>>;
+  constexpr int bits = 8, top = 5;
+  const char* saved_index = std::getenv("DM_ANN_INDEX");
+  std::mt19937 rng(78301);
+  n::Tensor query, catalog;
+  if (const char* archive = std::getenv("DM_ANN_RETRIEVAL")) {
+    const auto entries = n::load_npz(archive);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    query = stored.at("query_embedding");
+    if (!saved_index) catalog = stored.at("item_embedding");
+  } else {
+    if (saved_index) throw std::invalid_argument("Saved index requires DM_ANN_RETRIEVAL");
+    std::normal_distribution<float> normal;
+    std::vector<float> items, queries;
+    for (int i = 0; i < 384; ++i) {
+      for (int d = 0; d < 12; ++d) {
+        const auto value = normal(rng);
+        items.push_back(value);
+        if (i < 96) queries.push_back(value + .45f*normal(rng));
+      }
+    }
+    catalog = n::from_vector(items,{384,12});
+    query = n::from_vector(queries,{96,12});
+  }
+  const auto normalize = [](const n::Tensor& matrix) {
+    auto values = matrix.to_vector<float>();
+    const auto width = matrix.size(1);
+    for (std::int64_t i = 0; i < matrix.size(0); ++i) {
+      auto* row = values.data()+i*width;
+      const double norm = std::sqrt(std::inner_product(row,row+width,row,0.0,
+          std::plus<>(),[](float a,float b){return double(a)*b;}));
+      if (!(norm>0 && std::isfinite(norm))) throw std::invalid_argument("Invalid embedding norm");
+      for (std::int64_t d = 0; d < width; ++d) row[d] /= norm;
+    }
+    return n::from_vector(values,matrix.shape());
+  };
+
+  const auto rows = [](const n::Tensor& matrix) {
+    const auto values = matrix.to_vector<double>();
+    Rows result;
+    const auto width = matrix.size(1);
+    for (std::int64_t i = 0; i < matrix.size(0); ++i) {
+      result.emplace_back(values.begin()+i*width,values.begin()+(i+1)*width);
+    }
+    return result;
+  };
+  if (query.dim()!=2 || query.size(0)<=0 || query.size(1)<=0) {
+    throw std::invalid_argument("Expected a nonempty query matrix");
+  }
+  query = normalize(query);
+  std::filesystem::create_directories("build");
+  if (saved_index) {
+    const auto entries = n::load_npz(saved_index);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const CosineLSH index(rows(stored.at("catalog")),rows(stored.at("planes")));
+    std::print("| Query | Top-five item IDs | Candidates scored |\n|---:|---|---:|\n");
+    std::vector<double> positions, work;
+    for (const auto& row : rows(query)) {
+      const auto [ids,scored] = index.query_top_k(row,top,32);
+      std::print("| {} |",positions.size());
+      for (const auto id : ids) std::print(" {}",id);
+      std::print(" | {} |\n",scored);
+      positions.push_back(positions.size());
+      work.push_back(scored);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(positions,work,"Saved index",{37,99,235})
+        .title("Candidates scored per query").x_label("Query row").y_label("Candidates scored")
+        .size(900,425).save_svg("build/embedding_ann.svg");
+    return 0;
+  }
+  if (catalog.dim()!=2 || query.dim()!=2 || catalog.size(1)!=query.size(1) || catalog.size(0)<32) {
+    throw std::invalid_argument("Incompatible retrieval matrices");
+  }
+  catalog = normalize(catalog);
+  std::normal_distribution<float> normal;
+  std::vector<float> projections(bits*catalog.size(1));
+  for (auto& value : projections) value = normal(rng);
+  const auto planes = n::from_vector(projections,{bits,catalog.size(1)});
+  const CosineLSH built(rows(catalog),rows(planes));
+  std::vector<int> codes;
+  for (const auto& row : built.data()) codes.push_back(built.signature(row,0));
+  n::save_npz("build/ann_index.npz",{{"catalog",catalog},{"planes",planes},{"codes",n::from_vector(codes)}});
+  const auto entries = n::load_npz("build/ann_index.npz");
+  const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+  const CosineLSH index(rows(stored.at("catalog")),rows(stored.at("planes")));
+  const std::array budgets{16,32};
+  std::array<double,2> hit_totals{}, scans{};
+  std::vector<int> exact, approximate, candidate_count;
+  for (const auto& row : rows(query)) {
+    const auto reference = index.query_top_k(row,top,index.data().size()).first;
+    exact.insert(exact.end(),reference.begin(),reference.end());
+    for (std::size_t b = 0; b < budgets.size(); ++b) {
+      const auto [ids,scored] = index.query_top_k(row,top,budgets[b]);
+      approximate.insert(approximate.end(),ids.begin(),ids.end());
+      candidate_count.push_back(scored);
+      scans[b] += scored;
+      for (auto id : ids) hit_totals[b] += std::find(reference.begin(),reference.end(),id)!=reference.end();
+    }
+  }
+  const auto count = query.size(0);
+  n::save_npz("build/ann_results.npz",{{"query",query},{"exact",n::from_vector(exact,{count,top})},
+      {"approximate",n::from_vector(approximate,{count,2,top})},
+      {"candidate_count",n::from_vector(candidate_count,{count,2})}});
+  std::vector<double> work, recalls;
+  std::print("| Minimum candidates | Mean scored | Exact top-five recall |\n|---:|---:|---:|\n");
+  for (std::size_t b = 0; b < budgets.size(); ++b) {
+    work.push_back(scans[b]/count);
+    recalls.push_back(hit_totals[b]/(count*top));
+    std::print("| {} | {:.3f} | {:.5f} |\n",budgets[b],work.back(),recalls.back());
+  }
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(work,recalls,"Hyperplane index",{37,99,235})
+      .points(work,recalls,"Candidate budgets",{37,99,235})
+      .title("Candidate work and top-five recall").x_label("Mean candidates scored")
+      .y_label("Recall against exhaustive search").size(900,425).save_svg("build/embedding_ann.svg");
+}
+```
+// result_begin: markdown
+| Minimum candidates | Mean scored | Exact top-five recall |
+|---:|---:|---:|
+| 16 | 18.406 | 0.31250 |
+| 32 | 34.583 | 0.43125 |
+\image(figures/embedding_ann.svg)
+// result_end

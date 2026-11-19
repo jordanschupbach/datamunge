@@ -1,0 +1,87 @@
+//? Title: A piecewise linear learned index with exact correction
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit local linear predictors of insertion rank on an unevenly spaced integer
+key set. Bound the rank errors and verify the resulting lookups against
+ordinary binary search at every query in the fixture.
+)
+
+> A rank model with a certified correction
+
+For a sorted array, lower bound returns the first index whose key is at
+least the query. As the query increases, this rank is a staircase. An
+index can fit a line on each equal-width key interval to estimate where
+the search should start. Each observed key is paired with its first
+occurrence rank, so duplicate keys retain lower-bound semantics.
+
+Datamunge floors the prediction, clips it to the valid rank range, and stores the minimum and maximum signed
+errors on each interval. Between keys the true rank is constant and
+the floored linear prediction is monotone. The extreme errors can
+therefore be found at the endpoints of each constant-rank stretch,
+including both sides of key discontinuities. A binary search between
+the certified rank bounds returns the exact rank. The upper rank is a
+valid insertion position even when it is the end iterator of the search.
+
+> Fit and verify the upstream integer fixture
+
+The program generates the same 1,800 nonlinear keys and 18 duplicates as
+the TensorFlow example. It fits twelve intervals of width 5,000 and
+checks every integer query from -1 through 60,000.
+
+```{cpp, results="markdown", file="figures/learned_index.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    constexpr int domain = 60000, span = 5000;
+    std::vector<std::int32_t> keys;
+    for (int i = 0; i < 1800; ++i) {
+        const double f = double(i) / 1800;
+        keys.push_back(int(domain * (.37 * f + .63 * f * f)));
+    }
+    for (int j = 0; j < 18; ++j) keys.push_back(keys[j * 83]);
+    std::ranges::sort(keys);
+    const dm::algorithms::LearnedIndex index(keys, span);
+    std::vector<double> x, rank, lo, hi;
+    std::size_t widest = 0;
+    for (int q = -1; q <= domain; ++q) {
+        const auto expected = std::size_t(std::ranges::lower_bound(keys, q) - keys.begin());
+        const auto [lower, upper] = index.rank_bounds(q);
+        if (index.lower_bound(q) != expected || lower > expected || expected > upper)
+            throw std::runtime_error("Certified lookup differs from binary search");
+        widest = std::max(widest, upper - lower);
+        if (q >= 10000 && q <= 10500) {
+            x.push_back(q);
+            rank.push_back(expected);
+            lo.push_back(lower);
+            hi.push_back(upper);
+        }
+    }
+    if (widest >= keys.size() / 10) throw std::runtime_error("Correction window is too wide");
+    const auto min = std::numeric_limits<std::int32_t>::min();
+    const auto max = std::numeric_limits<std::int32_t>::max();
+    const dm::algorithms::LearnedIndex sparse({min, min, max}, 1000000000);
+    if (sparse.lower_bound(min) != 0 || sparse.lower_bound(0) != 2 || sparse.lower_bound(max) != 2)
+        throw std::runtime_error("Sparse or duplicate boundary case failed");
+
+    std::filesystem::create_directories("build");
+    dm::graphics::RPlot::create().title("Exact ranks within certified search bounds")
+        .x_label("Integer query").y_label("Insertion rank")
+        .lines(x, lo, "Lower bound", {153, 82, 43})
+        .lines(x, hi, "Upper bound", {153, 82, 43})
+        .lines(x, rank, "Exact rank", {31, 97, 158})
+        .save_svg("build/learned_index.svg");
+    std::print("{} keys. All {} queries matched binary search. Widest correction window: {} ranks.\n",
+               keys.size(), domain + 2, widest);
+}
+```
+// result_begin: markdown
+1818 keys. All 60002 queries matched binary search. Widest correction window: 20 ranks.
+\image(figures/learned_index.svg)
+// result_end
+
+The figure zooms into a small part of the key space so the rank staircase
+and its enclosing bounds are visible. A narrow correction interval is a
+property of this fitted fixture. It does not by itself establish a lookup
+speedup, which also depends on the cost of locating and evaluating a model.

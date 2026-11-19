@@ -1,0 +1,111 @@
+//? Title: Universal value function approximation on held-out goals
+//? Lang: en
+
+> Universal value function approximation on held-out goals
+
+A universal value function approximator shares parameters across goals.
+This network uses normalized state coordinates and the displacement
+from state to goal. Two ReLU layers feed four sigmoid action values.
+For each action, the supervised target is 0.9 raised to the Manhattan
+distance between the successor cell and the goal. The value is one
+when the action reaches the goal immediately.
+
+The split holds out entire goals. No state paired with a held-out
+goal enters an optimizer step. After three training epochs, the
+greedy policy takes up to 14 actions from each held-out start–goal
+pair. The plot compares predicted and target values for all held-out
+actions. The network uses Datamunge's native seeded initializer.
+
+[Schaul et al. (2015), Universal Value Function Approximators|https://proceedings.mlr.press/v37/schaul15.html]
+
+```{cpp, results="markdown", file="figures/uvfa.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto distance=[](int a,int b) {
+    return std::abs(a/7-b/7)+std::abs(a%7-b%7);
+  };
+  using Pair=std::pair<int,int>;
+  const auto pack=[&](const std::vector<Pair>& rows) {
+    std::vector<float> states,goals,targets;
+    std::vector<int> ids;
+    for (const auto [state,goal]:rows) {
+      states.insert(states.end(),{float(state/7),float(state%7)});
+      goals.insert(goals.end(),{float(goal/7),float(goal%7)});
+      ids.insert(ids.end(),{state,goal});
+      for (int action=0;action<4;++action) {
+        targets.push_back(std::pow(.9f,distance(r::sparse_grid_move(state,action),goal)));
+      }
+    }
+    const auto count=std::ssize(rows);
+    return std::array{n::from_vector(states,{count,2}),n::from_vector(goals,{count,2}),
+                      n::from_vector(targets,{count,4}),n::from_vector(ids,{count,2})};
+  };
+  std::vector<Pair> fit,test;
+  for (int goal=0;goal<49;++goal) {
+    for (int state=0;state<49;++state) {
+      if (state!=goal) {
+        auto& split=(goal/7+2*(goal%7))%5==0?test:fit;
+        split.emplace_back(state,goal);
+      }
+    }
+  }
+  const auto train=pack(fit),held=pack(test);
+  n::ParameterStore params(44001);
+  const auto predict=[&](const auto& states,const auto& goals) {
+    return r::universal_action_values(params,states,goals,6.,48,4);
+  };
+  const auto evaluate=[&] {
+    const n::NoGradGuard guard;
+    return predict(held[0],held[1]);
+  };
+  const auto mse=[](const auto& predicted,const auto& target) {
+    return n::mean(n::square(predicted-target));
+  };
+  const double initial=mse(evaluate(),held[2]).item();
+  n::Optimizer optimizer(params,.005,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.size(),32,44002);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto batch=order.next();!batch.empty();batch=order.next()) {
+      const auto output=predict(n::take_rows(train[0],batch),n::take_rows(train[1],batch));
+      optimizer.step(n::grad(mse(output,n::take_rows(train[2],batch)),optimizer.parameters()));
+    }
+  }
+  const auto values=evaluate();
+  const auto final_mse=mse(values,held[2]);
+  const auto choices=n::argmax(values,1).to_vector<int>();
+  std::array<std::array<int,49>,49> policy{};
+  for (std::size_t i=0;i<test.size();++i) {
+    const auto [state,goal]=test[i];
+    policy[goal][state]=choices[i];
+  }
+  int solved=0,shortest=0;
+  for (const auto [start,goal]:test) {
+    int state=start,step=0;
+    while (step<14 && state!=goal) {
+      state=r::sparse_grid_move(state,policy[goal][state]);
+      ++step;
+    }
+    solved+=state==goal;
+    shortest+=state==goal && step==distance(start,goal);
+  }
+  if (!(final_mse.item()<initial)) throw std::runtime_error("Held-out value error did not improve");
+  std::print("Held-out MSE decreased from {:.6f} to {:.6f}. The greedy policy solved {} of {} pairs. "
+             "{} used shortest paths.\n",initial,final_mse.item(),solved,test.size(),shortest);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/uvfa_audit.npz",{{"fit_pairs",train[3]},{"test_pairs",held[3]},
+      {"values",values},{"target",held[2]},{"mse",final_mse}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(held[2].to_vector<double>(),values.to_vector<double>(),"Held-out action values",{37,99,235,110},3)
+      .lines({0,1},{0,1},"Exact fit",{217,96,26})
+      .title("Value prediction for unseen goals").x_label("Target value").y_label("Predicted value")
+      .xlim(0,1).ylim(0,1).size(800,500).save_svg("build/uvfa.svg");
+}
+```
+// result_begin: markdown
+Held-out MSE decreased from 0.036151 to 0.001102. The greedy policy solved 473 of 480 pairs. 473 used shortest paths.
+\image(figures/uvfa.svg)
+// result_end

@@ -1,0 +1,115 @@
+//? Title: Deep Ritz method for Poisson’s equation
+//? Lang: en
+
+> Deep Ritz method for Poisson’s equation
+
+The Deep Ritz method fits a trial function by minimizing the average
+Dirichlet energy density, one half the squared gradient magnitude
+minus the forcing times the trial value. Here the forcing is
+$2\pi^2\sin(\pi x)\sin(\pi y)$ and the analytic solution is
+$\sin(\pi x)\sin(\pi y)$. Multiplying the network by
+$x(1-x)y(1-y)$ imposes zero values along all four edges throughout
+training.
+
+A one-hidden-layer tanh network fits 2,048 seeded interior points.
+A separate 32×32 midpoint grid measures energy and solution error.
+The experiment uses the upstream three-epoch schedule with independent
+native initialization. It checks the spatial derivatives against
+automatic differentiation and the boundary values against exact zero.
+
+```{cpp, results="markdown", file="figures/deep_ritz.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr double pi=std::numbers::pi;
+  const auto sample=[](int count,bool grid) {
+    std::vector<float> data;
+    std::mt19937 rng(44171);
+    std::uniform_real_distribution<float> uniform(0,1);
+    for(int i=0;i<count;++i) {
+      data.push_back(grid?(i/32+.5)/32:uniform(rng));
+      data.push_back(grid?(i%32+.5)/32:uniform(rng));
+    }
+    return n::from_vector(data,{count,2});
+  };
+  const auto force=[](const n::Tensor& xy) {
+    const auto points=xy.to_vector<float>();
+    std::vector<float> f;
+    for(std::size_t i=0;i<points.size();i+=2)
+      f.push_back(2*pi*pi*std::sin(pi*points[i])*std::sin(pi*points[i+1]));
+    return n::from_vector(f,{xy.size(0),1});
+  };
+  const auto fit=sample(2048,false), grid=sample(1024,true);
+  const auto source=force(fit), grid_force=force(grid);
+  n::ParameterStore model(41380);
+  const auto energy=[&](const n::Tensor& xy,const n::Tensor& f) {
+    return n::poisson_ritz_energy(n::ritz_square_field(model,xy),f);
+  };
+  const auto test=[&] { n::NoGradGuard guard; return energy(grid,grid_force).item(); };
+  const auto initial=test();
+  n::Optimizer opt(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(2048,32,44172);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      opt.minimize(energy(n::take_rows(fit,rows),n::take_rows(source,rows)));
+      ++updates;
+    }
+  }
+  auto coordinates=grid.clone().requires_grad_(true);
+  const auto result=n::ritz_square_field(model,coordinates);
+  const auto gradient=n::grad(n::sum(result.value),{coordinates}).at(0);
+  n::NoGradGuard guard;
+  const auto field=n::concat({result.value,result.dx,result.dy},1);
+  const auto error=n::max(n::abs(gradient-n::concat({result.dx,result.dy},1))).item();
+  std::vector<float> edge;
+  for(int face=0;face<4;++face)
+    for(int i=0;i<32;++i) {
+      const float z=i/31.f;
+      edge.push_back(face<2?float(face):z);
+      edge.push_back(face<2?z:float(face-2));
+    }
+  const auto edge_value=n::ritz_square_field(model,n::from_vector(edge,{128,2})).value;
+  const auto final=test();
+  const auto exact=grid_force/(2*pi*pi);
+  const auto rmse=std::sqrt(n::mean(n::square(result.value-exact)).item());
+  if (updates!=192 || !(error<5e-6) || n::max(n::abs(edge_value)).item()!=0. ||
+      !(final<initial && rmse<.12))
+    throw std::runtime_error("Deep Ritz numerical checks failed");
+  std::print("| Updates | Initial energy | Final energy | Exact energy | Grid RMSE | Gradient max error |\n");
+  std::print("|---:|---:|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.2g} |\n",
+             updates,initial,final,-pi*pi/4,rmse,error);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/deep_ritz.npz",{{"input",grid.reshape({1024,2,1})},{"force",grid_force},
+      {"field",field},{"energy",n::scalar(final)},{"edge",n::from_vector(edge,{128,2,1})},
+      {"edge_value",edge_value}});
+  const auto plot=[](const n::Tensor& u,const char* title) {
+    std::vector<double> axis;
+    std::vector<std::vector<double>> columns;
+    const auto raster=u.reshape({32,32});
+    for(int j=0;j<32;++j) {
+      axis.push_back((j+.5)/32);
+      columns.push_back(n::select(raster,0,j).to_vector<double>());
+    }
+    return dm::graphics::RPlot::create().image(axis,axis,columns,dm::graphics::terrain_colors(32),0.,1.)
+        .title(title).x_label("x").y_label("y");
+  };
+  dm::graphics::RLayout::create(1,2).add(plot(result.value,"Deep Ritz fit")).add(plot(exact,"Analytic solution"))
+      .size(1000,465).fit_panels().save_svg("build/deep_ritz.svg");
+}
+```
+// result_begin: markdown
+| Updates | Initial energy | Final energy | Exact energy | Grid RMSE | Gradient max error |
+|---:|---:|---:|---:|---:|---:|
+| 192 | 0.001601 | -2.416186 | -2.467401 | 0.037947 | 4.8e-07 |
+\image(figures/deep_ritz.svg)
+// result_end
+\caption(Fitted and analytic solutions on the same midpoint grid and color scale.)
+
+> Reference
+
+- [E and Yu (2018), The Deep Ritz Method](https://arxiv.org/abs/1710.00211).

@@ -1,0 +1,89 @@
+//? Title: Filtered recommendation metrics
+//? Lang: en
+
+> Filtered recommendation metrics
+
+Rank items by descending predicted score after filtering out items the user
+has already seen. Break ties by ascending item ID. Hit rate checks whether
+any top-k result has positive relevance. Reciprocal rank gives credit equal
+to one over the rank of the first positive result, or zero if none appears.
+
+NDCG credits graded relevance. At each rank, divide the gain
+`2^grade - 1` by `log2(rank + 1)`, sum these discounted gains up to k,
+then divide by the corresponding sum for an ideal ordering of the same
+eligible items. Average the three metrics over users with at least one
+eligible positive item.
+
+The synthetic catalog includes a score tie, hidden positives, an item
+outside the evaluated ranks, and two users excluded from the averages.
+Set `DM_RECOMMENDATION_RETRIEVAL` to a paired two-tower `retrieval.npz`
+to evaluate its square score matrix with diagonal relevance and no seen
+items.
+
+[Järvelin and Kekäläinen (2002)|https://doi.org/10.1145/582415.582418]
+
+```{cpp, results="markdown", file="figures/recommendation_metrics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build");
+  const auto scores = n::from_vector<float>({9,4,4,2,1,0, 8,7,6,5,4,3, 1,2,3,4,5,6,
+                                          3,2,1,0,-1,-2, 3,2,1,0,-1,-2}, {5,6});
+  const auto relevance = n::from_vector<int>({3,0,2,1,0,0, 0,0,0,0,0,1, 0,0,0,2,0,0,
+                                             2,0,0,0,0,0, 0,0,0,0,0,0}, {5,6});
+  const auto seen = n::from_vector<int>({1,0,0,0,0,0, 0,0,0,0,0,0, 1,1,1,0,1,0,
+                                        1,0,0,0,0,0, 1,1,1,1,1,1}, {5,6});
+  const std::vector<int> cutoffs{1,3,5};
+  auto evaluate = [&](const std::string& name, const n::Tensor& scores,
+                      const n::Tensor& relevance, const n::Tensor& seen) {
+    const auto result = n::recommendation_metrics(scores, relevance, seen, cutoffs);
+    const auto averages = result.averages.to_vector<double>();
+    std::print("\n**{}** · {}/{} eligible users\n\n", name, result.eligible_users, scores.size(0));
+    std::print("| k | Hit rate | NDCG | MRR |\n|---:|---:|---:|---:|\n");
+    for (std::size_t i = 0; i < cutoffs.size(); ++i) {
+      std::print("| {} | {:.6f} | {:.6f} | {:.6f} |\n",
+          cutoffs[i], averages[3*i], averages[3*i+1], averages[3*i+2]);
+    }
+    n::save_npz("build/recommendation_" + name + ".npz", {{"scores", scores}, {"relevance", relevance},
+        {"seen", seen}, {"ranked", result.ranked}, {"per_user", result.per_user},
+        {"averages", result.averages}});
+    return averages;
+  };
+  const auto averages = evaluate("fixture", scores, relevance, seen);
+  if (const char* path = std::getenv("DM_RECOMMENDATION_RETRIEVAL")) {
+    const auto entries = n::load_npz(path);
+    const auto paired = std::map<std::string,n::Tensor>(entries.begin(), entries.end()).at("scores");
+    if (paired.shape().size() != 2 || paired.size(0) != paired.size(1)) {
+      throw std::invalid_argument("Paired evaluation requires a square score matrix");
+    }
+    const auto grades = n::eye(paired.size(0));
+    evaluate("paired", paired, grades, n::zeros_like(grades));
+  }
+  auto plot = dm::graphics::RPlot::create();
+  const std::vector<double> k{1,3,5};
+  plot.lines(k, {averages[0],averages[3],averages[6]}, "Hit rate", {37,99,235})
+      .lines(k, {averages[1],averages[4],averages[7]}, "NDCG", {234,88,12})
+      .lines(k, {averages[2],averages[5],averages[8]}, "MRR", {22,163,74})
+      .title("Filtered fixture rankings").x_label("Rank cutoff").y_label("Macro average")
+      .y_limits(0,1.05).size(850,400).save_svg("build/recommendation_metrics.svg");
+}
+```
+// result_begin: markdown
+**fixture** · 3/5 eligible users
+
+| k | Hit rate | NDCG | MRR |
+|---:|---:|---:|---:|
+| 1 | 0.000000 | 0.000000 | 0.000000 |
+| 3 | 0.666667 | 0.429977 | 0.333333 |
+| 5 | 0.666667 | 0.429977 | 0.333333 |
+
+**paired** · 96/96 eligible users
+
+| k | Hit rate | NDCG | MRR |
+|---:|---:|---:|---:|
+| 1 | 0.645833 | 0.645833 | 0.645833 |
+| 3 | 0.895833 | 0.794019 | 0.758681 |
+| 5 | 0.937500 | 0.811051 | 0.768056 |
+\image(figures/recommendation_metrics.svg)
+// result_end

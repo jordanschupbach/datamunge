@@ -1,0 +1,116 @@
+//? Title: Rotation, jigsaw and relative-position prediction
+//? Lang: en
+
+> Rotation, jigsaw and relative-position prediction
+
+Image pretext tasks generate labels from the transformations applied to
+unlabeled images. Rotation predicts one of four quarter turns. Jigsaw
+predicts which of four orders arranged the corner tiles. Relative-position
+prediction takes a center patch and a second patch and predicts whether
+the second came from above, left, right or below. The jigsaw and
+relative-position inputs are zero-padded to the same width as rotation.
+
+The images are noisy spatial ramps with a bright corner. Each task fits an
+independent two-layer classifier and evaluates it on images drawn from a
+separate random stream. The plots measure how well the models recover the
+applied transformations on this synthetic data.
+
+```{cpp, results="markdown", file="figures/image_pretext_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto sample = [](int count, std::mt19937 &rng) {
+    std::uniform_real_distribution<float> noise(-.12f, .12f), scale(.8f, 1.2f);
+    std::vector<float> pixels;
+    std::vector<int> labels;
+    for (int row = 0; row < count; ++row) {
+      const float gain = scale(rng), offset = noise(rng);
+      for (int y = 0; y < 8; ++y)
+        for (int x = 0; x < 8; ++x)
+          pixels.push_back(gain * (.08f*y + .033f*x + .25f*(y < 2 && x < 3)) + offset + noise(rng));
+      labels.push_back(row % 4);
+    }
+    return std::pair{n::from_vector(pixels, {count, 8, 8}), n::from_vector(labels)};
+  };
+  auto loss_plot = dm::graphics::RPlot::create();
+  auto accuracy = dm::graphics::RPlot::create();
+  loss_plot.title("Held-out loss").x_label("Epoch").y_label("Cross-entropy");
+  accuracy.title("Transformation accuracy").x_label("Epoch").y_label("Fraction correct")
+      .y_limits(0, 1.05);
+  std::filesystem::create_directories("build");
+  const auto fit = [&](n::ImagePretextTask task, const std::string &name, dm::graphics::RGBA color) {
+    std::mt19937 training(49702), testing(49703);
+    const auto [test_images, truth] = sample(128, testing);
+    const auto test = n::image_pretext_features(test_images, truth, task);
+    std::vector<std::pair<n::Tensor, n::Tensor>> batches;
+    for (int i = 0; i < 24; ++i) {
+      const auto [images, labels] = sample(32, training);
+      batches.emplace_back(n::image_pretext_features(images, labels, task), labels);
+    }
+    n::ParameterStore model(49701);
+    const auto predict = [&](const n::Tensor &x) { return n::image_pretext_logits(model, name, x); };
+    predict(test);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .025, config);
+    std::vector<double> epochs, losses, correct;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        const auto scores = predict(test);
+        const auto hits = n::count_nonzero(n::equal(n::argmax(scores, 1), truth)).item<int>();
+        epochs.push_back(epoch);
+        losses.push_back(n::sparse_softmax_cross_entropy(scores, truth).item());
+        correct.push_back(hits / 128.);
+        std::print("| {} | {} | {:.6f} | {}/128 |\n", name, epoch, losses.back(), hits);
+      }
+      if (epoch < 3)
+        for (const auto &[x, y] : batches)
+          adam.minimize(n::sparse_softmax_cross_entropy(predict(x), y));
+    }
+    n::NoGradGuard guard;
+    n::NamedTensors evidence{{"image", test_images}, {"input", test}, {"label", truth},
+                             {"logits", predict(test)}};
+    for (const auto &key : model.names())
+      evidence.emplace_back(key, model.at(key));
+    n::save_npz("build/image_pretext_" + name + ".npz", evidence);
+    loss_plot.lines(epochs, losses, name, color);
+    accuracy.lines(epochs, correct, name, color);
+  };
+  std::print("| Task | Epoch | Held-out NLL | Correct |\n|---|---:|---:|---:|\n");
+  fit(n::ImagePretextTask::Rotation, "rotation", {37, 99, 235});
+  fit(n::ImagePretextTask::Jigsaw, "jigsaw", {22, 120, 97});
+  fit(n::ImagePretextTask::RelativePosition, "context", {190, 75, 48});
+  accuracy.legend({"Rotation", "Jigsaw", "Relative position"},
+                  {{37, 99, 235}, {22, 120, 97}, {190, 75, 48}});
+  dm::graphics::RLayout::create(1, 2).add(loss_plot).add(accuracy).size(1050, 430)
+      .fit_panels().save_svg("build/image_pretext_fit.svg");
+}
+```
+// result_begin: markdown
+| Task | Epoch | Held-out NLL | Correct |
+|---|---:|---:|---:|
+| rotation | 0 | 1.392204 | 33/128 |
+| rotation | 1 | 0.000275 | 128/128 |
+| rotation | 2 | 0.000059 | 128/128 |
+| rotation | 3 | 0.000037 | 128/128 |
+| jigsaw | 0 | 1.318792 | 50/128 |
+| jigsaw | 1 | 0.000760 | 128/128 |
+| jigsaw | 2 | 0.000116 | 128/128 |
+| jigsaw | 3 | 0.000090 | 128/128 |
+| context | 0 | 1.375028 | 32/128 |
+| context | 1 | 0.460213 | 113/128 |
+| context | 2 | 0.310495 | 114/128 |
+| context | 3 | 0.280045 | 115/128 |
+\image(figures/image_pretext_fit.svg)
+// result_end
+\caption(Held-out classification loss and transformation accuracy for the three pretext tasks.)
+\alttext(Two line charts show loss and accuracy for rotation, jigsaw and relative-position prediction.)
+
+> References
+
+- [Gidaris et al. (2018), Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728).
+- [Noroozi and Favaro (2016), Unsupervised Learning of Visual Representations by Solving Jigsaw Puzzles](https://arxiv.org/abs/1603.09246).
+- [Doersch et al. (2015), Unsupervised Visual Representation Learning by Context Prediction](https://arxiv.org/abs/1505.05192).

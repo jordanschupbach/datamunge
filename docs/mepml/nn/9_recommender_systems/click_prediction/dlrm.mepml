@@ -1,0 +1,158 @@
+//? Title: Deep Learning Recommendation Model
+//? Lang: en
+
+> Deep Learning Recommendation Model for click prediction
+
+DLRM maps categorical fields to embeddings and continuous features to a
+vector of the same width using a bottom MLP. The three pairwise dot
+products measure interactions between the two category embeddings and
+the continuous representation. A top MLP takes those interaction scores
+alongside the continuous representation and predicts the click logit.
+
+The synthetic split holds out all rows for pairs whose segment and topic
+IDs sum to a multiple of eight, along with four rows from every other
+pair. The native fit uses Datamunge initialization with the upstream Adam
+schedule. Set `DM_DLRM_REFERENCE` to the upstream `dlrm/clicks.npz` to
+replay the checkpoint and compare its intermediate states and logits.
+
+[Naumov et al. (2019)|https://arxiv.org/abs/1906.00091]
+
+```{cpp, results="markdown", file="figures/dlrm_clicks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::array<std::vector<float>, 2> features, labels;
+  std::vector<bool> unseen;
+  std::mt19937 rng(12031);
+  std::uniform_real_distribution<float> context(-2.f, 2.f), chance(0.f, 1.f);
+  for (int segment = 0; segment < 8; ++segment) {
+    for (int topic = 0; topic < 8; ++topic) {
+      const bool new_pair = (segment + topic) % 8 == 0;
+      const double interaction = segment % 2 == topic % 2 ? 1.2 : -1.2;
+      const double local = (3 * segment + 5 * topic) % 7 == 1 ? 1.8 : 0.0;
+      for (int row = 0; row < 24; ++row) {
+        const float c = context(rng);
+        const double logit = interaction + local + 1.1 * c * c + 0.4 * c - 1.65;
+        const bool test = row < 4 || new_pair;
+        std::array<float, 17> encoded{};
+        encoded[segment] = encoded[8 + topic] = 1.0f;
+        encoded.back() = c;
+        features[test].insert(features[test].end(), encoded.begin(), encoded.end());
+        labels[test].push_back(chance(rng) < 1.0 / (1.0 + std::exp(-logit)));
+        if (test) unseen.push_back(new_pair);
+      }
+    }
+  }
+  const auto x = n::from_vector(features[0], {1120, 17});
+  const auto y = n::from_vector(labels[0], {1120, 1});
+  const auto test = n::from_vector(features[1], {416, 17});
+  const auto target = n::from_vector(labels[1], {416, 1});
+  const std::array<int, 2> totals{224, 192};
+  n::ParameterStore params(12033);
+  const auto forward = [&](const n::Tensor& input) {
+    const auto rows = input.size(0);
+    const auto segment = n::slice(input, {0,0}, {rows,8});
+    const auto topic = n::slice(input, {0,8}, {rows,8});
+    const auto context = n::slice(input, {0,16}, {rows,1});
+    const auto segment_embedding = n::matmul(segment, params.get("segment", {8,8}, n::init::normal(.15)));
+    const auto topic_embedding = n::matmul(topic, params.get("topic", {8,8}, n::init::normal(.15)));
+    const auto hidden = n::dense(params, "bottom1", context, 16, n::Activation::Relu);
+    const auto dense = n::dense(params, "bottom2", hidden, 8, n::Activation::Relu);
+    const auto dot = [](const auto& a, const auto& b) { return n::sum(a*b, {1}, true); };
+    const auto interactions = n::concat({dot(segment_embedding,dense), dot(topic_embedding,dense),
+                                         dot(topic_embedding,segment_embedding)},1);
+    const auto combined = n::concat({dense,interactions},1);
+    const auto top = n::dense(params, "top1", combined, 16, n::Activation::Relu);
+    const auto logits = n::dense(params, "top2", top, 1);
+    return std::array{logits,dense,interactions,combined};
+  };
+  const auto loss = [](const n::Tensor& logits, const n::Tensor& labels) {
+    return n::softplus(logits) - logits * labels;
+  };
+  const auto training_loss = [&] {
+    const n::NoGradGuard no_grad;
+    return n::mean(loss(forward(x)[0], y)).item();
+  };
+  std::array<std::vector<double>,2> history;
+  std::array<int,2> correct{};
+  const auto evaluate = [&] {
+    const n::NoGradGuard no_grad;
+    const auto logits = forward(test)[0];
+    const auto values = loss(logits,target).to_vector<double>();
+    const auto scores = logits.to_vector<double>();
+    std::array<double,2> total{};
+    correct = {};
+    for (std::size_t i = 0; i < unseen.size(); ++i) {
+      total[unseen[i]] += values[i];
+      correct[unseen[i]] += (scores[i] >= 0) == (labels[1][i] > 0);
+    }
+    for (int group = 0; group < 2; ++group) history[group].push_back(total[group] / totals[group]);
+  };
+  evaluate();
+  const double initial = training_loss();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params, .01, config);
+  n::BatchOrder order(1120, 24, 12032);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids = order.next(); !ids.empty(); ids = order.next()) {
+      optimizer.minimize(n::mean(loss(forward(n::take_rows(x,ids))[0], n::take_rows(y,ids))));
+    }
+    evaluate();
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,dense,interactions,combined] = forward(test);
+  const double final_loss = training_loss();
+  if (optimizer.iterations() != 141 || !(final_loss < initial)) {
+    throw std::runtime_error("DLRM training loss did not improve");
+  }
+  params.save("build/dlrm_weights.npz");
+  n::save_npz("build/dlrm_clicks.npz", {{"input",test.reshape({416,17,1})},
+      {"fit_input",x.reshape({1120,17,1})}, {"label",target}, {"logits",logits},
+      {"dense",dense}, {"interactions",interactions}, {"features",combined}});
+  std::print("Training log loss {:.5f} to {:.5f} after 141 Adam updates.\n\n", initial, final_loss);
+  std::print("| Held-out pairs | Initial log loss | Final log loss | Correct |\n|---|---:|---:|---:|\n");
+  for (int group = 0; group < 2; ++group) {
+    std::print("| {} | {:.5f} | {:.5f} | {}/{} |\n", group ? "Unseen" : "Seen",
+        history[group].front(), history[group].back(), correct[group], totals[group]);
+  }
+  if (const char* reference = std::getenv("DM_DLRM_REFERENCE")) {
+    const auto entries = n::load_npz(reference);
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    for (const auto& parameter : params.names()) {
+      auto key = parameter;
+      std::replace(key.begin(),key.end(),'/','_');
+      params.set(parameter,stored.at(key));
+    }
+    const auto replay = forward(stored.at("input").reshape({416,17}));
+    const std::array keys{"logits","dense","interactions","features"};
+    double max_error = 0.0;
+    for (std::size_t i = 0; i < keys.size(); ++i) {
+      const double error = n::max(n::abs(replay[i] - stored.at(keys[i]))).item();
+      if (!std::isfinite(error) || error > 5e-6) throw std::runtime_error(keys[i]);
+      max_error = std::max(max_error,error);
+    }
+    std::print("\nUpstream checkpoint replay maximum absolute error {:.3e}.\n",max_error);
+  }
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history[0],"Seen pairs",{37,99,235})
+      .lines({0,1,2,3},history[1],"Unseen pairs",{234,88,12})
+      .title("DLRM click prediction").x_label("Epoch").y_label("Held-out log loss")
+      .size(900,430).save_svg("build/dlrm_clicks.svg");
+}
+```
+// result_begin: markdown
+Training log loss 0.70176 to 0.46113 after 141 Adam updates.
+
+| Held-out pairs | Initial log loss | Final log loss | Correct |
+|---|---:|---:|---:|
+| Seen | 0.70577 | 0.51601 | 171/224 |
+| Unseen | 0.69787 | 0.59269 | 133/192 |
+
+Upstream checkpoint replay maximum absolute error 4.768e-07.
+\image(figures/dlrm_clicks.svg)
+// result_end

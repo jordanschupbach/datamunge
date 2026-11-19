@@ -673,7 +673,7 @@ int main() {
 epoch 1: D=1.37487, G=47.8422, paired L1=0.471372
 epoch 2: D=1.29983, G=46.9446, paired L1=0.461563
 epoch 3: D=1.26117, G=41.3895, paired L1=0.405885
-fixed final=3, test L1=0.408498, MSE=0.191904, mean baseline L1/MSE=0.151757/0.0677981, test D/G=1.26889/41.6462; source only/conditional PatchGAN/restore/immutable PASS (training 3.89411 s)
+fixed final=3, test L1=0.408498, MSE=0.191904, mean baseline L1/MSE=0.151757/0.0677981, test D/G=1.26889/41.6462; source only/conditional PatchGAN/restore/immutable PASS (training 1.22487 s)
 Artifacts: build/pix2pix
 All pix2pix checks passed.
 \image(figures/pix2pix_learning.svg)

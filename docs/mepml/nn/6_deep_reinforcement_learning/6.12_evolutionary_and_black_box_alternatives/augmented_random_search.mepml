@@ -1,0 +1,105 @@
+//? Title: Augmented random search with observation whitening
+//? Lang: en
+
+> Augmented random search with observation whitening
+
+Evaluate both signs of each random perturbation to a linear feedback
+policy. Rank directions by their better return, then move the policy
+along the selected directions in proportion to the difference between
+their two returns. Dividing by the selected returns' standard deviation
+keeps the step size less sensitive to reward scale.
+
+A running mean and variance whiten position and velocity. Freeze these
+statistics while evaluating a batch of directions, then update them
+from the collected states. The held-out starts are used only to evaluate
+the mean policy. This is the same simulation as in the
+[cross-entropy policy-search report|cross_entropy_method.mepml].
+
+[Mania, Guy and Recht (2018)|https://arxiv.org/abs/1803.07055]
+
+```{cpp, results="markdown", file="figures/augmented_random_search.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto starts=[](std::mt19937& rng) {
+    const auto uniform=[&] {return float((rng()+.5)/4294967296.);};
+    std::vector<float> states;
+    for (int i=0;i<6;++i) {
+      const float p=.4f+.6f*uniform(), v=.6f*(uniform()-.5f);
+      states.insert(states.end(),{p,v,-p,-v});
+    }
+    return n::from_vector(states,{12,2});
+  };
+  std::array<double,2> mean{}, m2{};
+  std::size_t count=0;
+  const auto normalization=[&] {
+    std::vector<double> values(mean.begin(),mean.end());
+    for (double x:m2) values.push_back(count?std::sqrt(std::max(.01,x/count)):1.);
+    return n::from_vector(values,{2,2});
+  };
+  const auto raw=[](const n::Tensor& coefficients,const n::Tensor& stats) {
+    auto values=coefficients.to_vector<float>();
+    const auto scale=stats.to_vector<double>();
+    for (std::size_t i=0;i<values.size();i+=3) {
+      double bias=values[i+2];
+      for (int j=0;j<2;++j) {
+        values[i+j]=values[i+j]/scale[j+2];
+        bias-=values[i+j]*scale[j];
+      }
+      values[i+2]=bias;
+    }
+    return n::from_vector(values,coefficients.shape());
+  };
+  std::mt19937 rng(47801), training(47203), evaluation(47204);
+  std::normal_distribution<float> normal;
+  const auto test=starts(evaluation);
+  auto center=n::zeros({1,3});
+  std::vector<double> history;
+  std::filesystem::create_directories("build");
+  std::print("| Iteration | Held-out return | States observed |\n|---:|---:|---:|\n");
+  for (int i=0;i<=3;++i) {
+    const auto stats=normalization();
+    history.push_back(r::feedback_returns(raw(center,stats),test).first.item());
+    std::print("| {} | {:.6f} | {} |\n",i,history.back(),count);
+    if (i==3) break;
+    std::vector<float> draw(24*3);
+    for (auto& value:draw) value=normal(rng);
+    const auto directions=n::from_vector(draw,{24,3});
+    const auto candidates=n::concat({center+.12f*directions,center-.12f*directions},0);
+    const auto initial=starts(training), coefficients=raw(candidates,stats);
+    const auto [returns,observed]=r::feedback_returns(coefficients,initial,24,true);
+    const auto [next,selected,deviation]=r::ars_update(center,directions,returns,12,.06f);
+    const auto trace=observed.transpose({2,0,1,3}).to_vector<float>();
+    for (std::size_t index=0;index<trace.size();index+=2) {
+      ++count;
+      for (int j=0;j<2;++j) {
+        const double delta=trace[index+j]-mean[j];
+        mean[j]+=delta/count;
+        m2[j]+=delta*(trace[index+j]-mean[j]);
+      }
+    }
+    n::save_npz(std::format("build/ars_iteration{}.npz",i+1),{{"center",center},{"normalization",stats},
+        {"starts",initial},{"directions",directions},{"raw",coefficients},{"returns",returns},
+        {"selected",selected},{"reward_std",deviation},{"next_center",next},{"next_normalization",normalization()}});
+    center=next;
+  }
+  if (!(history.back()>history.front())) throw std::runtime_error("ARS fit did not improve");
+  n::save_npz("build/ars_evaluation.npz",{{"starts",test},{"history",n::from_vector(history)}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Whitened controller",{37,99,235})
+      .points({0,1,2,3},history,"Policy updates",{37,99,235})
+      .title("ARS held-out policy evaluation").x_label("Iteration").y_label("Mean return")
+      .size(880,425).save_svg("build/augmented_random_search.svg");
+}
+```
+// result_begin: markdown
+| Iteration | Held-out return | States observed |
+|---:|---:|---:|
+| 0 | -18.609520 | 0 |
+| 1 | -9.088941 | 13824 |
+| 2 | -5.575827 | 27648 |
+| 3 | -4.178938 | 41472 |
+\image(figures/augmented_random_search.svg)
+// result_end

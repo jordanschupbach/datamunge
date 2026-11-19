@@ -202,3 +202,68 @@ int main(){namespace n=dm::nn;n::ml::HiddenMarkovModel model(2,2,3);n::ml::HmmSt
 Sequence log likelihood: -2.664760853; after one EM update: -1.869496714.
 \image(figures/common_hmm_posterior.svg)
 // result_end
+
+> Baum–Welch on held-out sequences
+
+Fit the upstream two-state, three-symbol model to 160 sequences. Use
+hidden labels only to evaluate the decoded path on 60 independent
+sequences. Since the fit can swap state names, evaluate both labelings.
+
+```{cpp, results="markdown", file="figures/hidden_markov_em.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  constexpr auto type=n::DType::Float64;
+  std::mt19937 rng(101);
+  auto sample=[&](int count) {
+    std::vector<int> observations, hidden;
+    std::discrete_distribution<int> initial{.6,.4};
+    std::array transitions{std::discrete_distribution<int>{.8,.2},std::discrete_distribution<int>{.3,.7}};
+    std::array emissions{std::discrete_distribution<int>{.65,.3,.05},std::discrete_distribution<int>{.05,.25,.7}};
+    for(int i=0;i<count;++i) {
+      int state=initial(rng);
+      for(int t=0;t<20;++t) {
+        hidden.push_back(state);
+        observations.push_back(emissions[state](rng));
+        if(t+1<20) state=transitions[state](rng);
+      }
+    }
+    return std::pair{n::from_vector(observations,{count,20}),n::from_vector(hidden,{count,20})};
+  };
+  const auto [train,train_hidden]=sample(160);
+  const auto [test,truth]=sample(60);
+  const n::ml::HiddenMarkovModel model(2,3,20);
+  n::ml::HmmState state{n::tensor({.5,.5},{2},type),n::tensor({.6,.4,.4,.6},{2,2},type),
+                        n::tensor({.55,.3,.15,.15,.3,.55},{2,3},type)};
+  std::vector<double> steps,likelihood;
+  for(int step=0;step<=45;++step) {
+    const auto result=model.Run(train,state);
+    const double ll=n::sum(result.log_likelihood).item();
+    if(!std::isfinite(ll)||(!likelihood.empty()&&ll<likelihood.back()-1e-8))
+      throw std::runtime_error("Baum-Welch decreased the likelihood");
+    steps.push_back(step);
+    likelihood.push_back(ll);
+    if(step<45) state=result.next;
+  }
+  const auto result=model.Run(test,state);
+  const auto decoded=result.path.to_vector<int>(), expected=truth.to_vector<int>();
+  int correct=0;
+  for(std::size_t i=0;i<decoded.size();++i) correct+=decoded[i]==expected[i];
+  const double accuracy=std::max(correct,1200-correct)/1200.;
+  if(likelihood.back()<=likelihood.front()+40 || accuracy<=.75 ||
+     n::max(result.viterbi_score-result.log_likelihood).item()>1e-12 ||
+     n::max(n::abs(n::sum(result.posterior,{2})-1)).item()>1e-12)
+    throw std::runtime_error("Held-out HMM check failed");
+  dm::graphics::RPlot::create().lines(steps,likelihood,"Baum-Welch",{37,99,235})
+      .title("Baum–Welch training log likelihood").x_label("EM update")
+      .y_label("Log likelihood").size(850,420).save_svg("build/hidden_markov_em.svg");
+  std::print("Training likelihood {:.3f} to {:.3f}. Held-out mean log likelihood {:.4f}; Viterbi accuracy {:.2f}%.\n",
+             likelihood.front(),likelihood.back(),n::mean(result.log_likelihood).item(),100*accuracy);
+}
+```
+// result_begin: markdown
+Training likelihood -3456.859 to -3319.057. Held-out mean log likelihood -20.6518; Viterbi accuracy 83.83%.
+\image(figures/hidden_markov_em.svg)
+// result_end
+\caption(Baum–Welch increases the observed-data likelihood over 45 updates.)
+\alttext(The log-likelihood trace rises rapidly and then levels off.)

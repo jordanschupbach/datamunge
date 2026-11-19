@@ -1,0 +1,115 @@
+//? Title: Squared contrastive margin loss for a shared tower
+//? Lang: en
+
+> Squared contrastive margin loss for a shared tower
+
+A shared neural network embeds both examples in each pair. Matching
+pairs pay squared Euclidean distance. Nonmatching pairs pay a squared
+hinge that reaches zero once their distance reaches the margin of one.
+A small offset inside the square root stabilizes derivatives when
+the embeddings coincide.
+
+The task uses pairs from three noisy signal classes. Two features carry
+class information and two are independent nuisance features. The report
+fits the shared tower on balanced positive and negative pairs, then
+evaluates a fixed held-out set. The distance CDFs show how many pairs of
+each kind fall below the decision threshold of half the margin.
+
+```{cpp, results="markdown", file="figures/contrastive_loss_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto sample = [](int count, std::mt19937 &rng) {
+    std::normal_distribution<float> signal(0.f,.35f), nuisance(0.f,1.f);
+    std::vector<float> x, same;
+    std::vector<int> labels;
+    for (int i = 0; i < count; ++i) {
+      const int first = rng() % 3;
+      const bool match = i % 2 == 0;
+      const int second = match ? first : (first + 1 + rng() % 2) % 3;
+      same.push_back(match);
+      for (const int id : {first, second}) {
+        labels.push_back(id);
+        x.insert(x.end(), {std::cos(2.0943951f * id) + signal(rng),
+                           std::sin(2.0943951f * id) + signal(rng), nuisance(rng), nuisance(rng)});
+      }
+    }
+    return std::tuple{n::from_vector(x, {count,2,4}), n::from_vector(same),
+                      n::from_vector(labels, {count,2})};
+  };
+  std::mt19937 training(51002), testing(51003);
+  const auto [x, same, labels] = sample(256, testing);
+  n::ParameterStore model(51001);
+  const auto embed = [&](const n::Tensor &input) {
+    const auto h = n::dense(model, "tower", input, 16, n::Activation::Tanh);
+    return n::dense(model, "projection", h, 6);
+  };
+  embed(x);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .012, config);
+  std::vector<double> epochs, losses;
+  std::print("| Epoch | Held-out loss | Correct at distance 0.5 |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto result = n::contrastive_margin(embed(x), same);
+      const auto correct = n::equal(n::less(result.distances, .5), n::greater(same, 0.));
+      epochs.push_back(epoch);
+      losses.push_back(result.loss.item());
+      std::print("| {} | {:.6f} | {}/256 |\n", epoch, losses.back(),
+                 n::count_nonzero(correct).item<int>());
+    }
+    if (epoch < 3)
+      for (int step = 0; step < 16; ++step) {
+        const auto [pair, match, truth] = sample(32, training);
+        adam.minimize(n::contrastive_margin(embed(pair), match).loss);
+      }
+  }
+  n::NoGradGuard guard;
+  const auto z = embed(x);
+  const auto result = n::contrastive_margin(z, same);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/contrastive_loss_fit.npz", {{"embedding",z}, {"same",same}, {"labels",labels},
+      {"distance",result.distances}, {"per_pair",result.per_pair}, {"loss",result.loss}});
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines(epochs, losses, "Held-out", {37,99,235})
+      .title("Contrastive training").x_label("Epoch").y_label("Held-out loss");
+  auto cdf = dm::graphics::RPlot::create();
+  const auto distances = result.distances.to_vector<double>();
+  const auto truth = same.to_vector<int>();
+  for (int label : {1,0}) {
+    std::vector<double> values, fraction;
+    for (std::size_t i = 0; i < distances.size(); ++i)
+      if (truth[i] == label)
+        values.push_back(distances[i]);
+    std::sort(values.begin(), values.end());
+    for (std::size_t i = 0; i < values.size(); ++i)
+      fraction.push_back(double(i+1) / values.size());
+    cdf.lines(values, fraction, label ? "Matching" : "Nonmatching",
+              label ? dm::graphics::RGBA{37,99,235} : dm::graphics::RGBA{190,75,48});
+  }
+  cdf.lines({.5,.5}, {0.,1.}, "Decision threshold", {100,116,139})
+      .legend({"Matching","Nonmatching","Decision threshold"}, {{37,99,235},{190,75,48},{100,116,139}})
+      .title("Held-out pair distances").x_label("Euclidean distance").y_label("Cumulative fraction");
+  dm::graphics::RLayout::create(1,2).add(loss).add(cdf).size(1050,430)
+      .fit_panels().save_svg("build/contrastive_loss_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out loss | Correct at distance 0.5 |
+|---:|---:|---:|
+| 0 | 0.853927 | 135/256 |
+| 1 | 0.142424 | 210/256 |
+| 2 | 0.100198 | 231/256 |
+| 3 | 0.091024 | 235/256 |
+\image(figures/contrastive_loss_fit.svg)
+// result_end
+\caption(Held-out loss and fitted distance distributions for matching and nonmatching pairs.)
+\alttext(A line plot shows loss by epoch. Two cumulative curves show the distance distributions and a vertical threshold at 0.5.)
+
+> Reference
+
+- [Hadsell et al. (2006), Dimensionality Reduction by Learning an Invariant Mapping](https://doi.org/10.1109/CVPR.2006.100).

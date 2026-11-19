@@ -224,9 +224,25 @@ int main() {
     const auto forward = n::conv2d(fine, kernel, options);
     const auto transpose = n::conv2d_transpose(coarse, kernel, fine.shape(), options);
     const auto from_grad = n::grad(n::sum(forward * coarse), {fine})[0];
+    std::vector<double> scatter(fine.numel());
+    const int top=padding==n::Padding::Same?((4-1)*2+3-h)/2:0;
+    const int left=padding==n::Padding::Same?((5-1)*2+3-w)/2:0;
+    for(int batch=0;batch<2;++batch)
+      for(int i=0;i<4;++i)
+        for(int j=0;j<5;++j)
+          for(int ky=0;ky<3;++ky)
+            for(int kx=0;kx<3;++kx) {
+              const int y=2*i+ky-top,x=2*j+kx-left;
+              if(y<0||y>=h||x<0||x>=w) continue;
+              for(int channel=0;channel<3;++channel)
+                for(int out=0;out<2;++out)
+                  scatter[((batch*h+y)*w+x)*3+channel]+=
+                      coarse.at({batch,i,j,out})*kernel.at({ky,kx,channel,out});
+            }
+    const double scatter_error=n::max(n::abs(transpose-n::from_vector(scatter,fine.shape()))).item();
     worst = std::max(
         {worst, std::abs(n::sum(forward * coarse).item() - n::sum(fine * transpose).item()),
-         n::max(n::abs(from_grad - transpose)).item()});
+         n::max(n::abs(from_grad - transpose)).item(),scatter_error});
     auto probe = n::normal({1, 2, 2, 1}, 0, .2, rng, type).requires_grad_();
     auto small = n::normal({2, 2, 1, 1}, 0, .2, rng, type).requires_grad_();
     const auto check = n::gradcheck(
@@ -239,13 +255,13 @@ int main() {
   }
   if (worst > 1e-10)
     return 1;
-  std::print("SAME/VALID adjoint and input-gradient maximum error {:.12f}; transposed "
+  std::print("SAME/VALID scatter, adjoint and input-gradient maximum error {:.12f}; transposed "
              "input/filter finite differences passed.\n",
              worst);
 }
 ```
 // result_begin: markdown
-SAME/VALID adjoint and input-gradient maximum error 0.000000000000; transposed input/filter finite differences passed.
+SAME/VALID scatter, adjoint and input-gradient maximum error 0.000000000000; transposed input/filter finite differences passed.
 // result_end
 
 

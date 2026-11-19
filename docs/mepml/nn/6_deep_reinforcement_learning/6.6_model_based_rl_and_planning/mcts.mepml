@@ -60,9 +60,7 @@ struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!
 // network evaluator instead of random playouts it becomes the search inside
 // AlphaZero.
 //
-// tflow films three more MCTS games on vsim's 3D boards; the films are omitted
-// but the games are still played (same moves, same RNG draws) and their
-// outcomes printed. The port adds checks (exit 1 on failure).
+// Record the three seeded matches from the moves chosen by MCTS.
 
 
 // Editable workflow support: checks.hpp
@@ -224,14 +222,25 @@ int main() {
       check::Require(mcts.last_root_value() > 0.5f, "the root value shows X is winning");
     }
 
-    std::printf("\n-- MCTS games tflow films on the 3D boards (played here without the video)\n");
+    std::printf("\n-- MCTS game replays\n");
     auto film = [&](rl::GridGame& game, int sims1, int sims2, const std::string& name) {
       game.Reset();
+      const auto initial = game.Clone();
+      std::vector<int> moves;
       while (!game.Terminal()) {
         const int sims = game.CurrentPlayer() == 1 ? sims1 : sims2;
         std::vector<int> c = mcts.Search(game, sims, rng);
-        game.Apply(static_cast<int>(std::max_element(c.begin(), c.end()) - c.begin()));
+        const int move = static_cast<int>(std::max_element(c.begin(), c.end()) - c.begin());
+        moves.push_back(move);
+        game.Apply(move);
       }
+      std::filesystem::create_directories("build");
+      std::filesystem::create_directories("figures");
+      dm::rl::environments::save_board_replay(dynamic_cast<const rl::GridGame&>(*initial),
+                                               moves, "build/" + name + ".mp4");
+      std::filesystem::copy_file("build/" + name + ".mp4", "figures/" + name + ".mp4",
+                                 std::filesystem::copy_options::overwrite_existing);
+      report_capture::Save(name + "_moves", moves);
       const std::string outcome = game.Winner() ? "player " + std::to_string(game.Winner()) + " wins" : "draw";
       std::printf("  %s: %s\n", name.c_str(), outcome.c_str());
       return game.Winner();
@@ -240,7 +249,7 @@ int main() {
     film(c4, 400, 50, "mcts_connect_four_400_vs_50");
     film(oth, 200, 50, "mcts_othello_200_vs_50");
     check::Require(w_ttt == 0, "MCTS(400) vs MCTS(400) tic-tac-toe is a draw");
-    std::printf("\nchecks passed (vsim videos omitted)\n");
+    std::printf("\nchecks passed\n");
   } catch (const std::exception& e) {
     std::fprintf(stderr, "CHECK FAILED: %s\n", e.what());
     return 1;
@@ -269,12 +278,12 @@ int main() {
 //      1870    60    21
 //   (cell 4, the centre, or cell 2/6 should dominate: they start a double threat)
 //
-// -- MCTS games tflow films on the 3D boards (played here without the video)
+// -- MCTS game replays
 //   mcts_tic_tac_toe_400_vs_400: draw
 //   mcts_connect_four_400_vs_50: player 1 wins
 //   mcts_othello_200_vs_50: player 1 wins
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > Actual source performance
@@ -306,3 +315,16 @@ int main(){auto archive=dm::nn::load_npz("build/mcts_source.npz");auto plot=dm::
 The retained checks and printed outcomes determine what this run supports. Weak or deferred quality checks are not evidence of full convergence. Native APIs provide pure differentiable model components, owning transitions and cloned-game search; every objective, optimizer, episode/self-play loop, controller search and training schedule stays editable above.
 
 Match series0–3 contain100 games each; Othello series4–5 contain20 each. Outcome coordinates0,1,2 are wins, losses and draws for the first-labelled search budget.
+
+
+> Recorded matches
+
+Each clip begins at the reset board. Each following frame applies the
+move chosen by root visit count. The two sides use the simulation budgets
+in the video filenames, and the final frame reports the outcome.
+
+\video(figures/mcts_tic_tac_toe_400_vs_400.mp4)
+
+\video(figures/mcts_connect_four_400_vs_50.mp4)
+
+\video(figures/mcts_othello_200_vs_50.mp4)

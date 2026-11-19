@@ -1,0 +1,112 @@
+//? Title: Linear probes and nearest neighbors on frozen embeddings
+//? Lang: en
+
+> Linear probes and nearest neighbors on frozen embeddings
+
+A linear probe fits a softmax classifier to frozen training descriptors.
+Its held-out accuracy measures how well a linear classifier generalizes
+from the representation. Five-neighbor voting measures local class
+agreement using squared Euclidean distance. Both evaluations use the same
+held-out descriptors and labels.
+
+Set `DM_DEEPCLUSTER_EVALUATION` to DeepCluster's `evaluation.npz` to
+compare its initial and learned descriptors on the original splits. Without
+the archive the same evaluation runs on a synthetic three-class fixture.
+The probe fits for 24 full-batch Adam updates using training labels only.
+The saved plot uses the DeepCluster archive and the Datamunge parameter
+initialization.
+
+```{cpp, results="markdown", file="figures/representation_eval.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<double> epochs{0, 1, 2, 3};
+  auto losses = dm::graphics::RPlot::create();
+  auto accuracy = dm::graphics::RPlot::create();
+  losses.title("Linear probe training loss").x_label("Epoch").y_label("Cross-entropy");
+  accuracy.title("Held-out accuracy").x_label("Method (1 = linear, 2 = kNN)")
+      .y_label("Accuracy").y_limits(0, 1.05).x_limits(.75, 2.25);
+  std::print("| Representation | Linear correct | 5-NN correct | Linear test NLL |\n"
+             "|---|---:|---:|---:|\n");
+
+  const auto evaluate = [&](const std::string &tag, const n::Tensor &train,
+                            const n::Tensor &query, const n::Tensor &labels,
+                            const n::Tensor &truth, dm::graphics::RGBA color, double offset) {
+    n::ParameterStore probe(50901);
+    const auto logits = [&](const n::Tensor &x) { return n::dense(probe, "linear", x, 3); };
+    const auto loss = [&] { return n::sparse_softmax_cross_entropy(logits(train), labels); };
+    logits(train);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(probe, .08, config);
+    std::vector<double> history;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      { n::NoGradGuard guard; history.push_back(loss().item()); }
+      if (epoch < 3)
+        for (int step = 0; step < 8; ++step)
+          adam.minimize(loss());
+    }
+    n::NoGradGuard guard;
+    const auto held_logits = logits(query);
+    const auto linear = n::argmax(held_logits, 1);
+    const auto knn = n::descriptor_knn(train, labels, query, 3);
+    const auto correct = [&](const n::Tensor &y) {
+      return n::count_nonzero(n::equal(y, truth)).item<int>();
+    };
+    const double total = truth.shape()[0];
+    const auto nll = n::sparse_softmax_cross_entropy(held_logits, truth);
+    std::print("| {} | {}/{} | {}/{} | {:.6f} |\n", tag, correct(linear), truth.shape()[0],
+               correct(knn.predicted), truth.shape()[0], nll.item());
+    losses.lines(epochs, history, tag, color);
+    accuracy.points({1. + offset, 2. + offset},
+                    {correct(linear) / total, correct(knn.predicted) / total}, tag, color);
+    n::save_npz("build/representation_eval_" + tag + ".npz",
+        {{"logits", held_logits}, {"loss", nll}, {"predicted", linear},
+         {"knn", knn.predicted}, {"neighbors", knn.neighbors}, {"distance", knn.distances},
+         {"weight", probe.at("linear/W")}, {"bias", probe.at("linear/b")}});
+  };
+
+  if (const char *archive = std::getenv("DM_DEEPCLUSTER_EVALUATION")) {
+    const auto entries = n::load_npz(archive);
+    const std::map<std::string, n::Tensor> data(entries.begin(), entries.end());
+    evaluate("initial", data.at("initial_training"), data.at("initial_test"),
+             data.at("train_labels"), data.at("labels"), {185, 64, 49}, -.07);
+    evaluate("learned", data.at("training"), data.at("held_out"), data.at("train_labels"),
+             data.at("labels"), {37, 99, 235}, .07);
+    losses.legend({"Initial", "Learned"}, {{185, 64, 49}, {37, 99, 235}});
+    accuracy.legend({"Initial", "Learned"}, {{185, 64, 49}, {37, 99, 235}});
+  } else {
+    std::mt19937 rng(50902);
+    std::normal_distribution<float> noise(0, .45f);
+    const auto sample = [&](int count) {
+      std::vector<float> points;
+      std::vector<int> labels;
+      for (int i = 0; i < count; ++i) {
+        const int label = i % 3;
+        const double angle = 2 * std::numbers::pi * label / 3;
+        points.insert(points.end(), {float(std::cos(angle)) + noise(rng),
+                                     float(std::sin(angle)) + noise(rng)});
+        labels.push_back(label);
+      }
+      return std::pair{n::from_vector(points, {count, 2}), n::from_vector(labels)};
+    };
+    const auto [train, labels] = sample(192);
+    const auto [query, truth] = sample(96);
+    evaluate("synthetic", train, query, labels, truth, {37, 99, 235}, 0.);
+  }
+  dm::graphics::RLayout::create(1, 2).add(losses).add(accuracy).size(1100, 450)
+      .fit_panels().save_svg("build/representation_eval.svg");
+}
+```
+// result_begin: markdown
+| Representation | Linear correct | 5-NN correct | Linear test NLL |
+|---|---:|---:|---:|
+| initial | 74/96 | 93/96 | 0.573969 |
+| learned | 84/96 | 93/96 | 0.400755 |
+\image(figures/representation_eval.svg)
+// result_end
+\caption(Training loss for the linear probe and held-out accuracy for both classifiers.)
+\alttext(A line plot tracks training cross-entropy and a point plot compares linear probe and five-neighbor accuracy.)

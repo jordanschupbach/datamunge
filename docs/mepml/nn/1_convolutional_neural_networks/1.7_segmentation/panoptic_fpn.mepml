@@ -722,12 +722,9 @@ int main() {
 \caption(Four unregularized task components and validation box AP50 selection. The code visibly optimizes the entire compact model and restores learned/BN stores together before semantic,instance and merged-map evaluation.)
 \alttext(Four unregularized task components and validation box AP50 selection. The code visibly optimizes the entire compact model and restores learned/BN stores together before semantic,instance and merged-map evaluation.)
 
-The selected epoch32 has validation box AP50.063308. Held-out semantic
-mean IoU.735548 and stuff PQ.910225 reflect the easy material cues,but thing
-PQ and integral mask AP50 are both zero. Test box AP50 is.113274. Overall
-category-macro PQ.165495 averages active stuff and missed thing categories;
-it does not establish successful instance segmentation. The actual merged
-maps below retain the missed objects and void regions.
+Compare the stuff and thing PQ in the results above. The material cues
+make stuff segmentation easier, while the merged maps below show missed
+objects and void regions.
 
 \image(figures/panoptic_fpn_predictions.png)
 \caption(First four actual held-out input/predicted-semantic/true-panoptic/predicted-panoptic quadruples. Semantic things/void are black;two stuff categories use blue-grey/tan and digit categories retain their palette. Colours identify category,while separate segment IDs retain individual objects. Missed,extra and wrong-class masks remain visible.)

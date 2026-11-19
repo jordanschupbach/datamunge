@@ -1,0 +1,71 @@
+//? Title: Exact policy occupancy on an imitation chain
+//? Lang: en
+
+> Exact policy occupancy on an imitation chain
+
+The five-state chain starts at the leftmost cell. Each action moves
+left or right, with moves clipped at the boundary. The goal is
+absorbing. At every step, multiply each state's mass by its action
+probabilities to count state-action visits, then propagate those
+visits through the known dynamics. The discounted average over
+eight steps is a normalized occupancy distribution.
+
+This fixture fits a stochastic tabular policy to the expert's
+occupancy. The objective differentiates through every transition
+during training. The plot shows the resulting goal probability after
+eight moves over the course of the fit. Occupancy targets include
+the expert's actions after arriving at the absorbing goal.
+
+```{cpp, results="markdown", file="figures/imitation_chain.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int states=5,actions=2,horizon=8;
+  std::vector<float> transitions(states*actions*states);
+  for (int cell=0;cell<states;++cell) {
+    for (int action=0;action<actions;++action) {
+      const int next=cell==4?4:std::clamp(cell+(action?1:-1),0,4);
+      transitions[(cell*actions+action)*states+next]=1;
+    }
+  }
+  const auto dynamics=n::from_vector(transitions,{states*actions,states});
+  const auto start=n::from_vector<float>({1,0,0,0,0});
+  const auto occupancy=[&](const n::Tensor& policy) {
+    return dm::rl::finite_policy_occupancy(policy,dynamics,start,horizon,.95f);
+  };
+  const auto expert=n::from_vector<float>({0,1,0,1,0,1,0,1,0,1},{states,actions});
+  const auto expert_visits=occupancy(expert).first;
+  n::ParameterStore params;
+  const auto logits=params.get("policy",{states,actions},n::init::zeros());
+  n::Optimizer optimizer(params,.08,{.kind=n::OptimizerKind::Adam});
+  std::vector<double> steps,success,error;
+  const auto success_at_goal=[](const n::Tensor& state){return state.to_vector<float>()[4];};
+  for (int step=0;step<=100;++step) {
+    const auto [visits,final]=occupancy(n::softmax(logits,-1));
+    const auto objective=n::mean(n::square(visits-expert_visits));
+    steps.push_back(step);
+    success.push_back(success_at_goal(final));
+    error.push_back(objective.item());
+    if (step<100) optimizer.step(n::grad(objective,{logits}));
+  }
+  const auto policy=n::softmax(logits.detach(),-1);
+  const auto [visits,final]=occupancy(policy);
+  if (!(error.back()<error.front() && success.back()>success.front())) {
+    throw std::runtime_error("The fitted occupancy did not improve");
+  }
+  std::print("Occupancy MSE fell from {:.6f} to {:.6f}. Goal probability rose from {:.6f} to {:.6f}.\n",
+             error.front(),error.back(),success.front(),success.back());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/imitation_chain_audit.npz",{{"dynamics",dynamics},{"start",start},
+      {"expert",expert},{"expert_visits",expert_visits},{"policy",policy},{"visits",visits},{"final",final}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,success,"Learned policy",{37,99,235})
+      .title("Matching expert occupancy").x_label("Adam updates").y_label("Goal probability after eight moves")
+      .ylim(0,1).size(800,460).save_svg("build/imitation_chain.svg");
+}
+```
+// result_begin: markdown
+Occupancy MSE fell from 0.028121 to 0.000055. Goal probability rose from 0.250000 to 0.999711.
+\image(figures/imitation_chain.svg)
+// result_end

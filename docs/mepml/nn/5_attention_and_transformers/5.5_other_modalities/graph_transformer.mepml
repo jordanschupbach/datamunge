@@ -1,0 +1,187 @@
+//? Title: Graph transformer with shortest-path attention bias
+//? Lang: en
+
+> Graph transformer with shortest-path attention bias
+
+Both classes contain 12 nodes of degree three. One class has one
+connected component and the other has two. The degree embeddings
+therefore give every node the same initial features. The distinction
+comes from the shortest-path distances, including a separate code for
+disconnected pairs. Each attention head learns an additive score bias
+for each distance. A virtual graph token uses its own distance code
+and supplies the final classification features.
+
+Train two graph-attention blocks on simulated graphs and plot the
+validation loss. At evaluation, permute each graph's node labels and
+recompute its distances. The graph-level logits should agree up to
+roundoff. Set `DM_GRAPH_TRANSFORMER_REFERENCE` to upstream
+`output/models/graph_transformer` to replay its weights.
+
+[Ying et al. (2021)|https://arxiv.org/abs/2106.05234]
+
+```{cpp, results="markdown", file="figures/graph_transformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int nodes=12, tokens=13, width=24, heads=3;
+  struct Graphs { n::Tensor adjacency, distance, labels; };
+  const auto distances=[tokens](const std::vector<int>& adjacency,int count) {
+    std::vector<int> result;
+    for (int row=0;row<count;++row) {
+      const auto* a=adjacency.data()+row*nodes*nodes;
+      std::vector<std::tuple<std::size_t,std::size_t,double>> edges;
+      for (int u=0;u<nodes;++u) {
+        for (int v=0;v<nodes;++v) if (a[u*nodes+v]) edges.emplace_back(u,v,1);
+      }
+      const auto paths=dm::algorithms::floyd_warshall(nodes,edges);
+      for (int u=0;u<tokens;++u) {
+        for (int v=0;v<tokens;++v) {
+          if (u==v) result.push_back(0);
+          else if (u==0 || v==0) result.push_back(tokens);
+          else {
+            const auto d=paths.distance[u-1][v-1];
+            result.push_back(std::isfinite(d) ? int(d) : nodes);
+          }
+        }
+      }
+    }
+    return n::from_vector(result,{count,tokens,tokens});
+  };
+  const auto generate=[&](int count,unsigned seed) {
+    std::mt19937 random(seed);
+    std::vector<int> adjacency(count*nodes*nodes), labels;
+    for (int row=0;row<count;++row) {
+      const bool connected=row%2==0;
+      labels.push_back(connected);
+      auto* a=adjacency.data()+row*nodes*nodes;
+      std::array<int,nodes> ids{};
+      std::iota(ids.begin(),ids.end(),0);
+      std::shuffle(ids.begin(),ids.end(),random);
+      const auto edge=[&](int u,int v) { a[u*nodes+v]=a[v*nodes+u]=1; };
+      const auto component=[&](int begin,int end) {
+        for (int i=begin;i<end;++i) edge(ids[i],ids[i+1==end ? begin : i+1]);
+        std::vector<int> matching(ids.begin()+begin,ids.begin()+end);
+        const auto valid=[&] {
+          for (std::size_t i=0;i<matching.size();i+=2) {
+            if (a[matching[i]*nodes+matching[i+1]]) return false;
+          }
+          return true;
+        };
+        do { std::shuffle(matching.begin(),matching.end(),random); } while (!valid());
+        for (std::size_t i=0;i<matching.size();i+=2) edge(matching[i],matching[i+1]);
+      };
+      if (connected) component(0,nodes);
+      else {
+        const int split=random()%2 ? 4 : 6;
+        component(0,split);
+        component(split,nodes);
+      }
+    }
+    return Graphs{n::from_vector(adjacency,{count,nodes,nodes}),distances(adjacency,count),n::from_vector(labels)};
+  };
+  const auto fit=generate(768,42701), validation=generate(128,42702), test=generate(128,42703);
+  n::ParameterStore params(42704);
+  const auto forward=[&](const Graphs& input) {
+    const auto count=input.labels.size(0);
+    const auto degree=n::sum(input.adjacency,{2}).to(n::DType::Int64);
+    const auto embeddings=n::gather(params.get("degree",{nodes,width},n::init::normal(.1)),degree);
+    const auto graph=n::broadcast_to(params.get("graph",{1,1,width},n::init::normal(.05)),{count,1,width});
+    auto x=n::concat({graph,embeddings},1);
+    std::array<n::Tensor,2> maps;
+    for (int block=0;block<2;++block) {
+      const auto name=std::format("block{}",block);
+      const auto table=params.get(name+"/distance",{tokens+1,heads},n::init::normal(.5));
+      const auto norm=n::layer_norm(params,name+"/ln1",x);
+      n::MultiHeadOptions options;
+      options.mask=n::gather(table,input.distance).transpose({0,3,1,2});
+      options.need_weights=true;
+      const auto attended=n::multi_head_attention(params,name+"/attention",norm,norm,heads,options);
+      maps[block]=attended.weights;
+      const auto residual=x+attended.output;
+      const auto hidden=n::dense(params,name+"/up",n::layer_norm(params,name+"/ln2",residual),
+                                 2*width,n::Activation::GeluTanh);
+      x=residual+n::dense(params,name+"/down",hidden,width);
+    }
+    const auto first=n::slice(x,{0,0,0},{count,1,width}).reshape({count,width});
+    return std::array{n::dense(params,"head",n::layer_norm(params,"final",first),2),maps[0],maps[1]};
+  };
+  const auto loss=[&](const Graphs& data) {
+    return n::sparse_softmax_cross_entropy(forward(data)[0],data.labels);
+  };
+  const auto evaluate=[&](const Graphs& data) {
+    const n::NoGradGuard no_grad;
+    return loss(data).item();
+  };
+  const auto initial=evaluate(test);
+  std::vector<double> val{evaluate(validation)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.001,config);
+  n::BatchOrder batches(768,32,42705);
+  for (int epoch=0;epoch<3;++epoch) {
+    batches.begin_epoch();
+    for (auto ids=batches.next();!ids.empty();ids=batches.next()) {
+      optimizer.minimize(loss({n::take_rows(fit.adjacency,ids),n::take_rows(fit.distance,ids),n::take_rows(fit.labels,ids)}));
+    }
+    val.push_back(evaluate(validation));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,a0,a1]=forward(test);
+  const auto target=n::sparse_softmax_cross_entropy(logits,test.labels);
+  const auto labels=test.labels.to_vector<int>();
+  const auto predicted=n::argmax(logits,1).to_vector<int>();
+  int correct=0;
+  for (int row=0;row<128;++row) correct+=labels[row]==predicted[row];
+  const auto original=test.adjacency.to_vector<int>();
+  auto shuffled=original;
+  std::array<int,nodes> permutation{};
+  std::iota(permutation.begin(),permutation.end(),0);
+  std::mt19937 random(42706);
+  for (int row=0;row<128;++row) {
+    std::shuffle(permutation.begin(),permutation.end(),random);
+    for (int u=0;u<nodes;++u) {
+      for (int v=0;v<nodes;++v) {
+        shuffled[(row*nodes+u)*nodes+v]=original[(row*nodes+permutation[u])*nodes+permutation[v]];
+      }
+    }
+  }
+  const Graphs renamed{n::from_vector(shuffled,{128,nodes,nodes}),distances(shuffled,128),test.labels};
+  const double error=n::max(n::abs(logits-forward(renamed)[0])).item();
+  if (!(error<8e-6) || !(target.item()<initial) || optimizer.iterations()!=72) {
+    throw std::runtime_error("Graph transformer fit or permutation invariance failed");
+  }
+  std::filesystem::create_directories("build");
+  params.save("build/graph_transformer_weights.npz");
+  n::save_npz("build/graph_transformer.npz",{{"adjacency",test.adjacency},{"distance",test.distance},
+      {"labels",test.labels},{"logits",logits},{"nll",target},{"attention0",a0},{"attention1",a1}});
+  std::print("Test NLL {:.6f} to {:.6f}, accuracy {}/128. Node relabeling maximum error {:.3e}.\n",
+             initial,target.item(),correct,error);
+  if (const char* reference=std::getenv("DM_GRAPH_TRANSFORMER_REFERENCE")) {
+    const auto path=std::filesystem::path(reference);
+    params.load((path/"weights.npz").string());
+    const auto entries=n::load_npz((path/"audit.npz").string());
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=forward({stored.at("adjacency"),stored.at("distance"),stored.at("labels")});
+    const std::array keys{"logits","attention0","attention1"};
+    double worst=0;
+    for (int i=0;i<3;++i) {
+      const auto diff=n::max(n::abs(replay[i]-stored.at(keys[i]))).item();
+      if (!(diff<2e-5)) throw std::runtime_error(std::format("{} replay error {}",keys[i],diff));
+      worst=std::max(worst,diff);
+    }
+    std::print("\nUpstream replay maximum absolute error {:.3e}.\n",worst);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},val,"Validation NLL",{37,99,235})
+      .points({0,1,2,3},val,"Epoch boundaries",{37,99,235})
+      .title("Degree-matched graph connectivity").x_label("Epoch").y_label("Negative log-likelihood")
+      .size(880,425).save_svg("build/graph_transformer.svg");
+}
+```
+// result_begin: markdown
+Test NLL 1.377537 to 0.089880, accuracy 128/128. Node relabeling maximum error 9.537e-07.
+
+Upstream replay maximum absolute error 3.576e-06.
+\image(figures/graph_transformer.svg)
+// result_end

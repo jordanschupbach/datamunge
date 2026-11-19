@@ -1,0 +1,109 @@
+//? Title: Hindsight experience replay on a sparse grid
+//? Lang: en
+
+> Hindsight experience replay on a sparse grid
+
+A random policy collects 384 short trajectories for randomly assigned
+goal cells. Goals supply sparse rewards: the agent earns one when
+the successor reaches the goal. The Q-table indexes the goal jointly
+with state and action.
+
+Hindsight experience replay adds two updates per original transition.
+Each extra update samples an achieved successor from the remainder
+of the same trajectory, including the current transition's successor.
+It recomputes reward and terminal status for the relabeled goal. A
+sample that would start at its relabeled goal falls back to the
+original goal. The control repeats the original transition twice,
+so both learners make the same number of updates in the same order.
+
+The fitted policies are tested greedily on all 2,352 ordered pairs of
+distinct starting cells and goals. The plot compares the number solved
+within 16 actions.
+
+[Andrychowicz et al. (2017)|https://arxiv.org/abs/1707.01495]
+
+```{cpp, results="markdown", file="figures/hindsight_replay.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  constexpr int states=49, actions=4, episodes=384;
+  std::mt19937 collect(44101);
+  std::array<std::vector<int>,episodes> achieved;
+  std::vector<std::array<int,6>> corpus;
+  for (int episode=0;episode<episodes;++episode) {
+    int state=collect()%states;
+    const int goal=(state+1+collect()%(states-1))%states;
+    for (int time=0;time<10 && state!=goal;++time) {
+      const int action=collect()%actions;
+      const int next=r::sparse_grid_move(state,action);
+      corpus.push_back({episode,time,state,action,next,goal});
+      achieved[episode].push_back(next);
+      state=next;
+    }
+  }
+  const auto matrix=[]<std::size_t width>(const std::vector<std::array<int,width>>& rows) {
+    std::vector<int> values;
+    for (const auto& row:rows) values.insert(values.end(),row.begin(),row.end());
+    return n::from_vector(values,{std::ssize(rows),static_cast<std::int64_t>(width)});
+  };
+  std::filesystem::create_directories("build/hindsight_replay");
+  n::save_npz("build/hindsight_replay/corpus.npz",{{"transitions",matrix(corpus)}});
+  std::vector<double> solved;
+  std::print("| Mode | Updates | Future relabels | Start-goal pairs solved |\n"
+             "|:---|---:|---:|---:|\n");
+  for (const bool hindsight:{false,true}) {
+    r::foundations::QTable table(states*states,actions);
+    std::mt19937 order(44102),relabel(44103);
+    std::vector<std::size_t> indices(corpus.size());
+    std::iota(indices.begin(),indices.end(),0);
+    std::vector<std::array<int,4>> trace;
+    int relabeled=0;
+    for (int epoch=0;epoch<3;++epoch) {
+      std::shuffle(indices.begin(),indices.end(),order);
+      for (const auto index:indices) {
+        const auto [episode,time,state,action,next,goal]=corpus[index];
+        for (int sample=0;sample<3;++sample) {
+          const auto [future,target_goal]=hindsight && sample>0 ?
+              r::future_hindsight_goal(achieved[episode],time,state,goal,relabel) :
+              std::pair<std::int64_t,int>{-1,goal};
+          const float target=next==target_goal?1.f:.95f*table.Max(target_goal*states+next);
+          auto& q=table(target_goal*states+state,action);
+          q+=.45f*(target-q);
+          trace.push_back({episode,time,static_cast<int>(future),target_goal});
+          relabeled+=future>=0;
+        }
+      }
+    }
+    int success=0;
+    for (int goal=0;goal<states;++goal) {
+      for (int start=0;start<states;++start) {
+        if (start==goal) continue;
+        int state=start;
+        for (int step=0;step<16 && state!=goal;++step) {
+          state=r::sparse_grid_move(state,table.Greedy(goal*states+state));
+        }
+        success+=state==goal;
+      }
+    }
+    solved.push_back(success);
+    const auto mode=hindsight?"her":"control";
+    std::print("| {} | {} | {} | {} / 2352 |\n",mode,trace.size(),relabeled,success);
+    n::save_npz(std::format("build/hindsight_replay/{}.npz",mode),
+                {{"q",table.tensor().reshape({-1})},{"replay",matrix(trace)}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({1},{solved[0]},"Original goals",{217,96,26})
+      .bars({2},{solved[1]},"Hindsight goals",{37,99,235})
+      .title("Greedy goal-conditioned evaluation").y_label("Start-goal pairs solved")
+      .xlim(.4,2.6).ylim(0,2352).size(820,460).save_svg("build/hindsight_replay.svg");
+}
+```
+// result_begin: markdown
+| Mode | Updates | Future relabels | Start-goal pairs solved |
+|:---|---:|---:|---:|
+| control | 32427 | 0 | 729 / 2352 |
+| her | 32427 | 18816 | 1848 / 2352 |
+\image(figures/hindsight_replay.svg)
+// result_end

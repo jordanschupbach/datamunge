@@ -2489,7 +2489,7 @@ weights from nn's generator (statistical parity with TF only)
 epoch1 latent validation epsilon MSE=0.711469
 epoch2 latent validation epsilon MSE=0.479595
 epoch3 latent validation epsilon MSE=0.478235
-latentTestEpsilonMSE=0.54627 fitGaussian=0.469139 frozenReconstructionMSE=0.0806533;frozenFirstStage/restore/lastNoise/repeat/immutable PASS (training 0.176533 s)
+latentTestEpsilonMSE=0.54627 fitGaussian=0.469139 frozenReconstructionMSE=0.0806533;frozenFirstStage/restore/lastNoise/repeat/immutable PASS (training 0.264808 s)
 no TF record at /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.4_diffusion/build/models/latent_diffusion; parity checks skipped
 Artifacts: build/diffusion-models/models/latent_diffusion
 // result_end

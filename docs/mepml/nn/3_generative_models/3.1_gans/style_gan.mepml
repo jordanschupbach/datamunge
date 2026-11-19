@@ -776,11 +776,11 @@ int main() {
 adain epoch 1: D/G=0.480187/0.961456
 adain epoch 2: D/G=0.422908/0.801558
 adain epoch 3: D/G=0.34998/0.511668
-StyleGAN1: test D/G=0.345204/0.512427, style effect=0.0973486, noise effect=0.0158234; constant/mapping/W mix/truncation/noise/restore/immutable PASS (training 0.977416 s)
+StyleGAN1: test D/G=0.345204/0.512427, style effect=0.0973486, noise effect=0.0158234; constant/mapping/W mix/truncation/noise/restore/immutable PASS (training 0.406484 s)
 modulated epoch 1: D/G=0.480166/0.96283
 modulated epoch 2: D/G=0.422393/0.807607
 modulated epoch 3: D/G=0.3476/0.519898
-StyleGAN2: test D/G=0.342792/0.520632, style effect=0.0484675, noise effect=0.00605994; constant/mapping/W mix/truncation/noise/restore/immutable PASS (training 1.84158 s)
+StyleGAN2: test D/G=0.342792/0.520632, style effect=0.0484675, noise effect=0.00605994; constant/mapping/W mix/truncation/noise/restore/immutable PASS (training 0.713223 s)
 Artifacts: build/style_gan
 All style_gan checks passed.
 // result_end

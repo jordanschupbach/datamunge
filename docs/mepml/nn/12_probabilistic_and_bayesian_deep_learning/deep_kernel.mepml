@@ -1,0 +1,133 @@
+//? Title: Deep kernel learning with an exact Gaussian process
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Learn a nonlinear feature map and an RBF length scale by maximizing
+Gaussian process marginal likelihood. Condition the fitted process
+on a separate set of query inputs and inspect its prediction errors
+and predictive intervals.
+)
+\toc
+
+The response depends on a curved combination of two inputs. A 12-unit
+tanh layer and a two-coordinate tanh embedding learn a representation
+in which RBF distances determine covariance. Training uses 36 simulator
+observations and 24 full-data Adam steps. The likelihood combines a
+Cholesky quadratic form and a log determinant. Its covariance derivative
+flows through the feature map and length scale.
+
+The 64 held-out responses have independent noise. Add the known noise
+variance to the latent conditional variance before constructing response
+intervals. The figure orders queries by fitted response mean.
+
+```{cpp, results="markdown", file="figures/deep_kernel_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+constexpr float noise_variance = .0225f;
+
+std::pair<n::Tensor, n::Tensor> simulate(int rows, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f, 1.f);
+  std::normal_distribution<float> noise(0.f, std::sqrt(noise_variance));
+  std::vector<float> x, y;
+  for (int row = 0; row < rows; ++row) {
+    const float a = uniform(rng), b = uniform(rng);
+    x.insert(x.end(), {a, b});
+    y.push_back(std::sin(3.f * (a + .5f * b * b)) + noise(rng));
+  }
+  return {n::from_vector(x, {rows, 2}), n::from_vector(y, {rows, 1})};
+}
+
+int main() {
+  const auto [x, y] = simulate(36, 97111);
+  const auto [queries, observed] = simulate(64, 97112);
+  n::ParameterStore parameters(97113);
+  const auto embed = [&](const n::Tensor& input) {
+    const auto hidden = n::dense(parameters, "hidden", input, 12, n::Activation::Tanh);
+    return n::dense(parameters, "embedding", hidden, 2, n::Activation::Tanh);
+  };
+  embed(x);
+  const auto length = parameters.get("log_length", {}, n::init::constant(-.6));
+  const auto kernel = [&](const n::Tensor& a, const n::Tensor& b) {
+    const auto delta = (n::expand_dims(a, 1) - n::expand_dims(b, 0)) / n::exp(length);
+    return n::exp(-.5 * n::sum(n::square(delta), {2}));
+  };
+  const auto covariance = [&](const n::Tensor& z) {
+    return kernel(z, z) + noise_variance * n::eye(x.size(0));
+  };
+
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .008, config);
+  const double initial = n::gaussian_covariance_nll(covariance(embed(x)), y).item();
+  for (int step = 0; step < 24; ++step) {
+    const auto loss = n::gaussian_covariance_nll(covariance(embed(x)), y);
+    optimizer.step(n::grad(loss, parameters.parameters()));
+  }
+
+  const std::string folder = "build/deep_kernel/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  const auto z = embed(x), zq = embed(queries);
+  const auto cov = covariance(z);
+  const auto fitted_nll = n::gaussian_covariance_nll(cov, y);
+  const auto gradients = n::grad(fitted_nll, parameters.parameters());
+  n::NoGradGuard frozen;
+  const auto fit = n::fit_gaussian_covariance(cov, y);
+  const auto prediction = n::condition_gaussian(fit, kernel(z, zq), kernel(zq, zq));
+  const auto variance = n::matrix_diag_part(prediction.covariance).reshape({64, 1});
+  if (!n::all(n::greater(variance, 0)).item<bool>())
+    throw std::runtime_error("nonpositive conditional variance");
+  const auto rmse = n::sqrt(n::mean(n::square(prediction.mean - observed))).item();
+  std::println("| Statistic | Value |\n| --- | ---: |");
+  std::println("| Initial training NLL | {:.5f} |\n| Fitted training NLL | {:.5f} |", initial, fitted_nll.item());
+  std::println("| Test RMSE | {:.5f} |", rmse);
+  n::NamedTensors record{{"fit_x", x}, {"fit_y", y}, {"x", queries}, {"y", observed},
+                         {"embedding", n::concat({z, zq}, 0)}, {"length", n::exp(length)},
+                         {"nll", fitted_nll}, {"mean", prediction.mean}, {"variance", variance}};
+  for (std::size_t i = 0; i < gradients.size(); ++i)
+    record.emplace_back("grad_" + parameters.names()[i], gradients[i]);
+  n::save_npz(folder + "posterior.npz", record);
+  parameters.save(folder + "weights.npz");
+
+  const auto center = prediction.mean.to_vector<double>();
+  const auto spread = n::sqrt(variance + noise_variance).to_vector<double>();
+  const auto responses = observed.to_vector<double>();
+  std::vector<int> order(64);
+  std::iota(order.begin(), order.end(), 0);
+  std::stable_sort(order.begin(), order.end(), [&](int a, int b) { return center[a] < center[b]; });
+  const auto rank = n::arange(1, 65).to_vector<double>();
+  std::vector<double> fitted, truth, lower, upper;
+  for (int i : order) {
+    fitted.push_back(center[i]);
+    truth.push_back(responses[i]);
+    lower.push_back(center[i] - 1.96 * spread[i]);
+    upper.push_back(center[i] + 1.96 * spread[i]);
+  }
+  auto polygon_x = rank;
+  polygon_x.insert(polygon_x.end(), rank.rbegin(), rank.rend());
+  lower.insert(lower.end(), upper.rbegin(), upper.rend());
+  auto plot = dm::graphics::RPlot::create();
+  plot.polygon(polygon_x, lower, {37, 99, 235, .16})
+      .lines(rank, fitted, "Conditional mean", {37, 99, 235})
+      .points(rank, truth, "Held-out responses", {30, 41, 59}, 3)
+      .title("Deep kernel fit with 95% response intervals")
+      .x_label("Query rank by fitted mean").y_label("Response").save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/deep_kernel_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Statistic | Value |
+| --- | ---: |
+| Initial training NLL | 78.99342 |
+| Fitted training NLL | 14.40776 |
+| Test RMSE | 0.29907 |
+\image(figures/deep_kernel_fit.svg)
+// result_end

@@ -1,0 +1,69 @@
+//? Title: Group fairness metrics for binary decisions
+//? Lang: en
+
+> Group fairness metrics for binary decisions
+
+Threshold the fifteen classifier scores at 0.5. The selection rate
+is the fraction predicted positive. True-positive and false-positive
+rates condition on positive and negative labels respectively.
+
+Demographic parity compares selection rates. Equalized odds compares
+both conditional rates, summarized here by the larger absolute gap.
+Group 2 has no positive labels. Its true-positive rate and any
+equalized-odds gap involving it are undefined. The plot leaves that
+point blank, while the tables retain the counts and other rates.
+
+```{cpp, results="markdown", file="figures/fairness_metrics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto rates=n::group_fairness_rates(
+      {.9,.8,.4,.7,.2,.1,.9,.4,.3,.2,.8,.6,.3,.5,.4},
+      {1,1,1,0,0,0,1,1,1,1,0,0,0,0,0},
+      {0,0,0,0,0,0,1,1,1,1,1,1,1,2,2},3);
+  const auto value=[](const auto& x) { return x?std::format("{:.6f}",*x):"Undefined"; };
+  std::print("| Group | Count | Selected | Positives | TP | FP | Selection | TPR | FPR |\n"
+             "|---:|---:|---:|---:|---:|---:|---:|---:|---:|\n");
+  for (std::size_t i=0;i<rates.size();++i) {
+    const auto& r=rates[i];
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",
+        i,r.count,r.selected,r.positives,r.true_positives,r.false_positives,
+        value(r.selection),value(r.tpr),value(r.fpr));
+  }
+  std::print("\n| Groups | Demographic parity gap | TPR gap | FPR gap | Equalized odds gap |\n"
+             "|---|---:|---:|---:|---:|\n");
+  for (std::size_t i=0;i<rates.size();++i)
+    for (std::size_t j=i+1;j<rates.size();++j) {
+      const auto g=n::group_fairness_gaps(rates[i],rates[j]);
+      std::print("| {}, {} | {} | {} | {} | {} |\n",
+          i,j,value(g.demographic_parity),value(g.tpr),value(g.fpr),value(g.equalized_odds));
+    }
+  const auto gap=n::group_fairness_gaps(rates[0],rates[1]);
+  if (!gap.tpr || std::abs(*gap.tpr-5./12)>1e-12 || rates[2].tpr ||
+      n::group_fairness_gaps(rates[0],rates[2]).equalized_odds) return 1;
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({-.15,.85,1.85},{*rates[0].selection,*rates[1].selection,*rates[2].selection},
+              "Selection",{37,99,235})
+      .points({0,1},{*rates[0].tpr,*rates[1].tpr},"True positive",{22,163,74})
+      .points({.15,1.15,2.15},{*rates[0].fpr,*rates[1].fpr,*rates[2].fpr},"False positive",{234,88,12})
+      .title("Classifier rates by group").x_label("Group").y_label("Rate").y_limits(0,1)
+      .x_limits(-.4,2.4);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/fairness_metrics.svg");
+}
+```
+// result_begin: markdown
+| Group | Count | Selected | Positives | TP | FP | Selection | TPR | FPR |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 6 | 3 | 3 | 2 | 1 | 0.500000 | 0.666667 | 0.333333 |
+| 1 | 7 | 3 | 4 | 1 | 2 | 0.428571 | 0.250000 | 0.666667 |
+| 2 | 2 | 1 | 0 | 0 | 1 | 0.500000 | Undefined | 0.500000 |
+
+| Groups | Demographic parity gap | TPR gap | FPR gap | Equalized odds gap |
+|---|---:|---:|---:|---:|
+| 0, 1 | 0.071429 | 0.416667 | 0.333333 | 0.416667 |
+| 0, 2 | 0.000000 | Undefined | 0.166667 | Undefined |
+| 1, 2 | 0.071429 | Undefined | 0.166667 | Undefined |
+\image(figures/fairness_metrics.svg)
+// result_end

@@ -287,11 +287,27 @@ Cap100 AP 0.000000; uncapped integral AP 0.009900990099; selected categories 1 (
 
 > Optional prepared VOC/COCO subsets
 
-The original C++ port is itself an evaluator: it consumes `predictions.json`
-exported by an external TensorFlow SSD MobileNet-v2 run. It does not load that
-SavedModel or train a detector. Those predictions and annotated subsets are not
-available in this checkout's dataset cache, so the executed results above are
-synthetic evaluator fixtures, **not VOC or COCO benchmark measurements**.
+The TensorFlow example runs the published SSD MobileNet-v2 320×320
+SavedModel on seeded samples of VOC 2007 test and COCO 2017 validation
+images. It exports the predictions with original image and category IDs.
+This report uses those scores and boxes as fixed inputs to the Datamunge
+evaluator. [TensorFlow 2 Detection Model Zoo|https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md]
+
+From the TensorFlow example checkout, prepare eight images per dataset,
+run the published detector, and check its output against the reference
+evaluators. The examples use the directory in `DATAMUNGE_DATA_DIR` as the
+shared asset root.
+
+```
+export DATAMUNGE_DATA_DIR="$HOME/.cache/datamunge/datasets"
+python3 scripts/fetch_datasets.py detection_eval --root "$DATAMUNGE_DATA_DIR" --count 8
+just run detection_evaluation "data=$DATAMUNGE_DATA_DIR/detection_eval"
+python3 scripts/verify_detection_eval.py --root "$DATAMUNGE_DATA_DIR/detection_eval"
+```
+
+The subset size and sampling seed are recorded in the preparation receipt.
+Without these assets, the optional block reports their absence and the
+synthetic fixtures above remain runnable.
 
 This optional import uses the retained example data readers and the canonical
 tensor evaluator. Set `DATAMUNGE_DATA_DIR` to the datasets root containing
@@ -347,9 +363,9 @@ int main() {
 }
 ```
 // result_begin: markdown
-voc2007: prepared images/annotations/predictions unavailable; no real-dataset metric computed.
-coco2017: prepared images/annotations/predictions unavailable; no real-dataset metric computed.
-Evaluated 0 prepared subsets.
+voc2007: 8 images, 36 truths, 800 predictions, 8 evaluated classes; AP50 0.766265, AP75 0.000000, AP50:95 0.000000, VOC07 0.759431.
+coco2017: 8 images, 74 truths, 800 predictions, 22 evaluated classes; AP50 0.555824, AP75 0.331552, AP50:95 0.345538, VOC07 0.000000.
+Evaluated 2 prepared subsets.
 // result_end
 
 

@@ -1,0 +1,154 @@
+//? Title: Graph autoencoders for held-out links
+//? Lang: en
+
+> Graph autoencoders for held-out links
+
+Two graph convolution layers encode each node into a four-dimensional
+vector. The inner product between two vectors gives their link logit.
+The variational version learns a mean and diagonal variance. It samples
+during fitting and adds a KL penalty toward a standard normal prior.
+Evaluation decodes the posterior means.
+
+Each fit sees the same synthetic two-community graph. Held-out positive
+edges are removed from the graph used for message passing. Every held-out
+pair is excluded from the loss, including held-out nonedges. AUC compares
+the ordering of the 24 held-out links and 24 held-out nonlinks.
+
+```{cpp, results="markdown", file="figures/graph_autoencoder_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int nodes = 32, withheld = 24, latent_width = 4;
+  std::vector<float> edges(nodes * nodes), positive(nodes * nodes), features(nodes * 3);
+  std::vector<int> training, testing, removable, negatives;
+  std::mt19937 graph_rng(48801);
+  std::uniform_real_distribution<float> uniform;
+  std::normal_distribution<float> noise(0.f, .45f);
+  int fit_positives = 0;
+  for (int a = 0; a < nodes; ++a) {
+    features[a * 3] = (a < nodes / 2 ? -.65f : .65f) + noise(graph_rng);
+    features[a * 3 + 1] = noise(graph_rng);
+    features[a * 3 + 2] = noise(graph_rng);
+    for (int b = a + 1; b < nodes; ++b) {
+      const bool same = a / 16 == b / 16;
+      const bool backbone = same && (b - a == 1 || b - a == 15);
+      const bool edge = backbone || uniform(graph_rng) < (same ? .46f : .06f);
+      const int index = a * nodes + b;
+      positive[index] = edge;
+      if (backbone) {
+        training.push_back(index);
+        ++fit_positives;
+      } else {
+        (edge ? removable : negatives).push_back(index);
+      }
+    }
+  }
+  std::shuffle(removable.begin(), removable.end(), graph_rng);
+  std::shuffle(negatives.begin(), negatives.end(), graph_rng);
+  for (std::size_t i = 0; i < removable.size(); ++i)
+    (i < withheld ? testing : training).push_back(removable[i]);
+  fit_positives += removable.size() - withheld;
+  for (int i = 0; i < fit_positives + withheld; ++i)
+    (i < withheld ? testing : training).push_back(negatives.at(i));
+  for (const int index : training)
+    edges[index] = edges[index % nodes * nodes + index / nodes] = positive[index];
+  const auto adjacency = n::from_vector(edges, {nodes, nodes});
+  const auto normalized = n::gcn_normalize(adjacency);
+  const auto signal = n::matmul(normalized, n::from_vector(features, {nodes, 3}));
+  const auto fit_ids = n::from_vector(training), test_ids = n::from_vector(testing);
+  const auto target = n::from_vector(positive);
+  const auto fit_labels = n::gather(target, fit_ids), test_labels = n::gather(target, test_ids);
+  const auto test_truth = test_labels.to_vector<int>();
+
+  auto loss_plot = dm::graphics::RPlot::create();
+  loss_plot.title("Held-out link loss").x_label("Epoch").y_label("Binary NLL");
+  auto auc_plot = dm::graphics::RPlot::create();
+  auc_plot.title("Link ranking").x_label("Epoch").y_label("Held-out ROC AUC").y_limits(0, 1.05);
+  std::filesystem::create_directories("build");
+  std::print("| model | epoch | held-out NLL | AUC |\n|---|---:|---:|---:|\n");
+
+  for (const bool variational : {false, true}) {
+    const std::string name = variational ? "VGAE" : "GAE";
+    n::ParameterStore model(48802);
+    const auto forward = [&](const n::Tensor &eps) {
+      const auto hidden = n::dense(model, "hidden", signal, 12, n::Activation::Relu);
+      const auto propagated = n::matmul(normalized, hidden);
+      const auto mean = n::dense(model, "mean", propagated, latent_width);
+      const auto logvar = variational ? n::dense(model, "logvar", propagated, latent_width)
+                                     : n::zeros_like(mean);
+      const auto latent = variational ? mean + eps * n::exp(.5 * logvar) : mean;
+      const auto kl = variational ? .5 * n::mean(n::sum(n::square(mean) + n::exp(logvar) - 1. - logvar, {1}))
+                                 : n::scalar(0.);
+      return std::array{mean, logvar, latent, n::matmul(latent, latent, false, true), kl};
+    };
+    const auto bce = [](const n::Tensor &z, const n::Tensor &ids, const n::Tensor &labels) {
+      return n::sigmoid_cross_entropy(n::gather(z.reshape({-1}), ids), labels);
+    };
+    const auto zero = n::zeros({nodes, latent_width});
+    forward(zero);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .025, config);
+    std::mt19937 sampling(48803);
+    std::normal_distribution<float> normal;
+    n::Tensor eps = zero;
+    std::vector<double> epochs, losses, aucs;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        const auto logits = forward(zero)[3];
+        const auto scores = n::gather(logits.reshape({-1}), test_ids).to_vector<double>();
+        epochs.push_back(epoch);
+        losses.push_back(bce(logits, test_ids, test_labels).item());
+        aucs.push_back(n::roc_auc(test_truth, scores));
+        std::print("| {} | {} | {:.6f} | {:.6f} |\n", name, epoch, losses.back(), aucs.back());
+      }
+      if (epoch < 3)
+        for (int step = 0; step < 8; ++step) {
+          std::vector<float> draw(nodes * latent_width);
+          for (auto &value : draw) value = normal(sampling);
+          eps = n::from_vector(draw, {nodes, latent_width});
+          const auto state = forward(eps);
+          adam.minimize(bce(state[3], fit_ids, fit_labels) + .05 * state[4]);
+        }
+    }
+    const auto sampled = forward(eps);
+    const auto test = forward(zero);
+    n::NamedTensors evidence{{"adjacency", adjacency}, {"features", n::from_vector(features, {nodes, 3})},
+        {"positive", target.reshape({nodes, nodes})}, {"train_ids", fit_ids}, {"test_ids", test_ids},
+        {"eps", eps}, {"norm", normalized}, {"mean", sampled[0]}, {"logvar", sampled[1]},
+        {"latent", sampled[2]}, {"logits", sampled[3]}, {"kl", sampled[4]}, {"test_logits", test[3]},
+        {"test_nll", n::from_vector(losses)}, {"auc", n::from_vector(aucs)}};
+    for (const auto &parameter : model.names())
+      evidence.emplace_back(parameter, model.at(parameter));
+    n::save_npz("build/graph_autoencoder_" + name + ".npz", evidence);
+    const dm::graphics::RGBA color = variational ? dm::graphics::RGBA{185, 28, 28}
+                                               : dm::graphics::RGBA{37, 99, 235};
+    loss_plot.lines(epochs, losses, name, color);
+    auc_plot.lines(epochs, aucs, name, color);
+  }
+  dm::graphics::RLayout::create(1, 2).add(loss_plot).add(auc_plot).size(1050, 450)
+      .fit_panels().save_svg("build/graph_autoencoder_fit.svg");
+}
+```
+// result_begin: markdown
+| model | epoch | held-out NLL | AUC |
+|---|---:|---:|---:|
+| GAE | 0 | 0.677839 | 0.701389 |
+| GAE | 1 | 0.695420 | 0.734375 |
+| GAE | 2 | 0.618894 | 0.734375 |
+| GAE | 3 | 0.613240 | 0.736111 |
+| VGAE | 0 | 0.677839 | 0.701389 |
+| VGAE | 1 | 0.684158 | 0.710069 |
+| VGAE | 2 | 0.639516 | 0.737847 |
+| VGAE | 3 | 0.643056 | 0.725694 |
+\image(figures/graph_autoencoder_fit.svg)
+// result_end
+\caption(Held-out binary negative log likelihood and ranking AUC for the deterministic and variational encoders over three fitting epochs.)
+\alttext(Two line charts comparing held-out link loss and ROC AUC for GAE and VGAE.)
+
+> Reference
+
+- [Kipf and Welling (2016), Variational Graph Auto-Encoders](https://arxiv.org/abs/1611.07308).

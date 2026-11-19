@@ -1069,7 +1069,7 @@ int main(int argc, char** argv) {
 // 19	19	4
 // copy testTokenCE=1.28339 teacherTokenAccuracy=0.463576 greedyExact=1/32; padding/empty/restore/labelFree/immutable PASS
 // (TF recorded: copy testTokenCE=0.711544 teacherTokenAccuracy=0.710059 greedyExact=2/32)
-// wall 0.0771529 s
+// wall 0.553289 s
 // result_end
 
 > Inspect the actual saved results

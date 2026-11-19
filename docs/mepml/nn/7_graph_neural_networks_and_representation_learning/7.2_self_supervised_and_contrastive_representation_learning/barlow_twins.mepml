@@ -1,0 +1,81 @@
+//? Title: Barlow Twins for paired image views
+//? Lang: en
+
+> Barlow Twins for paired image views
+
+The model standardizes each feature across the batch separately for each
+view. A cross-correlation matrix then compares every feature in one view
+with every feature in the other. The diagonal penalty pulls corresponding
+features toward correlation one. The off-diagonal penalty discourages
+redundancy and receives weight 0.02.
+
+Both views pass through the same compact encoder and projection MLP used
+in the SimCLR example. Training draws fresh pairs of 6 by 6 crops. The
+report evaluates every epoch on the same 32 sources drawn from a separate
+random engine, using the stronger crop intensity perturbations.
+
+```{cpp, results="markdown", file="figures/barlow_twins_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::mt19937 training(50302), testing(50303);
+  const auto test = n::synthetic_contrastive_views(testing, 32, true);
+  n::ParameterStore model(50301);
+  const auto objective = [&](const n::Tensor &views) {
+    return n::barlow_twins(n::simclr_projection(model, "barlow_twins", views));
+  };
+  objective(test.views);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .008, config);
+  std::vector<double> epochs, losses;
+  std::array<std::vector<double>, 2> terms;
+  std::print("| Epoch | Held-out loss | Diagonal | Off diagonal |\n"
+             "|---:|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto result = objective(test.views);
+      epochs.push_back(epoch);
+      losses.push_back(result.loss.item());
+      terms[0].push_back(result.diagonal.item());
+      terms[1].push_back(result.off_diagonal.item());
+      std::print("| {} | {:.6f} |", epoch, losses.back());
+      for (const auto &term : terms)
+        std::print(" {:.6f} |", term.back());
+      std::print("\n");
+    }
+    if (epoch < 3)
+      for (int batch = 0; batch < 24; ++batch)
+        adam.minimize(objective(n::synthetic_contrastive_views(training, 32, true).views).loss);
+  }
+
+  auto total = dm::graphics::RPlot::create();
+  total.lines(epochs, losses, "Total", {37, 99, 235})
+      .title("Held-out objective").x_label("Epoch").y_label("Loss");
+  auto penalties = dm::graphics::RPlot::create();
+  penalties.lines(epochs, terms[0], "Diagonal", {22, 120, 97});
+  penalties.lines(epochs, terms[1], "Off diagonal", {190, 75, 48});
+  penalties.title("Held-out components").x_label("Epoch").y_label("Unweighted penalty").legend({"Diagonal", "Off diagonal"}, {{22, 120, 97}, {190, 75, 48}});
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(total).add(penalties).size(1050, 430)
+      .fit_panels().save_svg("build/barlow_twins_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out loss | Diagonal | Off diagonal |
+|---:|---:|---:|---:|
+| 0 | 3.313872 | 3.054049 | 12.991138 |
+| 1 | 0.748027 | 0.270963 | 23.853193 |
+| 2 | 0.632891 | 0.146870 | 24.301073 |
+| 3 | 0.592952 | 0.164394 | 21.427929 |
+\image(figures/barlow_twins_fit.svg)
+// result_end
+\caption(Total loss and its unweighted components on fixed held-out crop pairs.)
+\alttext(Two line charts show held-out objective and component values across three epochs of training.)
+
+> Reference
+
+- [Zbontar et al. (2021), Barlow Twins](https://proceedings.mlr.press/v139/zbontar21a.html).

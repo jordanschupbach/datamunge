@@ -27,11 +27,12 @@ $$
 \alttext(The supervised objective averages over label-preserving random transforms and applies kernel L2 regularisation.)
 
 The visible minibatch loop samples transforms and computes tensor cross entropy before each
-Adam update. Augmentation is an assumption about label-preserving variation, not a guarantee
-for arbitrary images. Use O(B Ho Wo k² Cin Cout) convolution work per layer. This report fits
-256 rows from original binary training batch one, validates on the following 64, and evaluates
-the first 128 official test images after two epochs. These small fixed subsets illustrate
-workflow, not the original full-data accuracy claim. Cached binary CIFAR-10 is required.
+Adam update. The transforms model label-preserving variation for these image classes.
+Convolution work scales as O(B Ho Wo k² Cin Cout) per layer. The benchmark fits 45,000
+images for ten epochs and selects a checkpoint by NLL on 5,000 separate development
+images. The selected checkpoint is then evaluated on all 10,000 official test images.
+Set `DATAMUNGE_DATA_DIR` to the parent of a cached binary `cifar10/` directory when
+using an existing download.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -242,6 +243,70 @@ One original cached training image per class, IDs 0..4 then 5..9.
 \caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9.)
 \alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9.)
 
+A position- and row-coded fixture checks that each transformed image is a crop and
+optional horizontal flip of its own source row. The selected labels follow the same row order.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int height = 32, width = 32, channels = 3;
+  std::vector<float> pixels;
+  for (int row = 0; row < 4; ++row)
+    for (int y = 0; y < height; ++y)
+      for (int x = 0; x < width; ++x)
+        for (int c = 0; c < channels; ++c)
+          pixels.push_back(float(1 + 3072 * row + 96 * y + 3 * x + c) / 12288);
+  const auto images = n::from_vector(pixels, {4, height, width, channels});
+  const auto labels = n::from_vector(std::vector<std::int64_t>{2, 7, 1, 4}, {4});
+  const std::vector<std::int64_t> order{1, 3, 0, 2};
+  const auto ordered = n::take_rows(images, order);
+  n::Generator first(151), repeat(151);
+  const auto transformed = n::study::augment_cifar10(ordered, first);
+  const auto reproduced = n::study::augment_cifar10(ordered, repeat);
+  if (n::max(n::abs(transformed - reproduced)).item() != 0 ||
+      n::take_rows(labels, order).to_vector<std::int64_t>() !=
+          std::vector<std::int64_t>{7, 4, 2, 1})
+    throw std::runtime_error("Augmentation was not reproducible with paired rows");
+  const auto normalized = (2 * transformed - 1).to_vector<float>();
+  const auto expected = (2 * ordered - 1).to_vector<float>();
+  const auto pixel = [](int y, int x, int c) { return (y * width + x) * channels + c; };
+  std::set<std::tuple<int, int, bool>> transforms;
+  for (int row = 0; row < 4; ++row) {
+    int matches = 0;
+    for (int dy = -4; dy <= 4; ++dy)
+      for (int dx = -4; dx <= 4; ++dx)
+        for (bool flip : {false, true}) {
+          bool match = true;
+          for (int y = 0; y < height && match; ++y)
+            for (int x = 0; x < width && match; ++x) {
+              const int sy = y + dy;
+              const int sx = (flip ? width - 1 - x : x) + dx;
+              for (int c = 0; c < channels && match; ++c) {
+                const float value = sy < 0 || sy >= height || sx < 0 || sx >= width
+                    ? -1.f : expected[row * 3072 + pixel(sy, sx, c)];
+                match = normalized[row * 3072 + pixel(y, x, c)] == value;
+              }
+            }
+          if (match) {
+            ++matches;
+            transforms.emplace(dy, dx, flip);
+          }
+        }
+    if (matches != 1)
+      throw std::runtime_error("Image does not match one padded crop and flip of its source row");
+  }
+  if (transforms.size() < 2 || std::ranges::find(normalized, -1.f) == normalized.end())
+    throw std::runtime_error("Expected independent transforms and normalized black padding");
+  std::println("Verified {} distinct crop/flip transformations on four paired RGB rows.",
+               transforms.size());
+}
+```
+// result_begin: markdown
+Verified 4 distinct crop/flip transformations on four paired RGB rows.
+// result_end
+
 ```{cpp, results="markdown", file="figures/cnn_cifar10_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
 
@@ -256,19 +321,12 @@ int main() {
     cache = std::filesystem::path(p) / "datamunge/datasets";
   else
     cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
-  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
 
-  const auto raw =
-      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
-  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
-             labels = n::cast(raw.labels, n::DType::Int64);
-  const auto fit_x = n::slice_axis(images, 0, 0, 256),
-             fit_y = n::slice_axis(labels, 0, 0, 256);
-  const auto validation_x = 2 * n::slice_axis(images, 0, 256, 320) - 1,
-             validation_y = n::slice_axis(labels, 0, 256, 320);
-  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
-  const auto test_x = 2 * n::slice_axis(official.images, 0, 0, 128) - 1,
-             test_y = n::slice_axis(official.labels, 0, 0, 128);
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+  const auto data = n::split_image_holdout(
+      n::load_cifar10((cache / "cifar10").string(), "train"), 5000, 2026);
+  if (data.fit.images.shape() != n::Shape{45000, 32, 32, 3})
+    throw std::runtime_error("Expected all CIFAR-10 development rows");
 
   n::ParameterStore p(17);
   auto logits = [&](const n::Tensor &input) {
@@ -282,35 +340,36 @@ int main() {
   };
   {
     n::NoGradGuard guard;
-    logits(n::zeros_like(n::take_rows(fit_x, {0})));
+    (void)logits(n::zeros({1, 32, 32, 3}));
   }
   n::OptimizerConfig config;
   config.kind = n::OptimizerKind::Adam;
   n::Optimizer optimizer(p, .001, config);
-  n::BatchOrder batches(fit_x.size(0), 16, 2026);
-  n::Generator augmentation_rng(151);
+  n::Generator augmentation(151);
+  n::BatchOrder batches(45000, 128, 29);
   std::filesystem::create_directories("build");
   const std::string checkpoint = "build/cnn_cifar10_best.npz";
   double best = std::numeric_limits<double>::infinity();
   std::vector<double> epoch, training_nll, validation_nll;
-  for (int e = 0; e < 2; ++e) {
+  auto validation_loss = [&] {
+    n::NoGradGuard guard;
+    n::WeightedMean mean;
+    for (std::int64_t start = 0; start < data.validation.images.size(0); start += 512) {
+      const auto end = std::min(start + 512, data.validation.images.size(0));
+      const auto values = logits(2 * n::slice_axis(data.validation.images, 0, start, end) - 1);
+      const auto labels = n::slice_axis(data.validation.labels, 0, start, end);
+      mean.add(n::sparse_softmax_cross_entropy(values, labels).item(), end - start);
+    }
+    return mean.value();
+  };
+  for (int e = 0; e < 10; ++e) {
     batches.begin_epoch();
     n::WeightedMean average;
     for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-      auto input = n::take_rows(fit_x, rows);
-      // Independent transforms per image, before mapping padded black to -1.
-      std::vector<n::Tensor> augmented;
-      for (int64_t row = 0; row < input.size(0); ++row) {
-        const auto image = n::slice_axis(input, 0, row, row + 1);
-        auto transformed = n::augment::random_crop(
-            n::pad(image, {{0, 0}, {4, 4}, {4, 4}, {0, 0}}), 32, 32, augmentation_rng);
-        transformed = n::augment::random_flip_left_right(transformed, augmentation_rng);
-        augmented.push_back(transformed);
-      }
-      input = 2 * n::concat(augmented, 0) - 1;
-
+      const auto raw = n::take_rows(data.fit.images, rows);
+      const auto input = 2 * n::study::augment_cifar10(raw, augmentation) - 1;
       const auto nll =
-          n::sparse_softmax_cross_entropy(logits(input), n::take_rows(fit_y, rows));
+          n::sparse_softmax_cross_entropy(logits(input), n::take_rows(data.fit.labels, rows));
       auto loss = nll;
       for (const auto &weight : p.parameters())
         if (weight.dim() >= 2)
@@ -318,9 +377,9 @@ int main() {
       optimizer.minimize(loss);
       average.add(nll.item(), rows.size());
     }
-    n::NoGradGuard guard;
-    const double val =
-        n::sparse_softmax_cross_entropy(logits(validation_x), validation_y).item();
+    if (average.count() != 45000)
+      throw std::runtime_error("Incomplete fitting epoch");
+    const double val = validation_loss();
     epoch.push_back(e + 1);
     training_nll.push_back(average.value());
     validation_nll.push_back(val);
@@ -331,59 +390,90 @@ int main() {
   }
   p.load(checkpoint);
   n::NoGradGuard guard;
-  const auto z = logits(test_x);
-  n::ConfusionMatrix cm(10);cm.add(test_y,n::argmax(z,1));cm.save_svg("build/cnn_cifar10_confusion.svg",{.title="cnn_cifar10: held-out official-test subset"});n::save_npz("build/cnn_cifar10_confusion.npz",{{"truth",test_y},{"logits",z},{"counts",cm.to_tensor()}});
+  const double restored = validation_loss();
+  if (!std::isfinite(restored) || std::abs(restored - best) > 1e-7)
+    throw std::runtime_error("Restored validation loss differs");
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  if (official.images.shape() != n::Shape{10000, 32, 32, 3} || p.count() != 545098)
+    throw std::runtime_error("Unexpected CIFAR-10 test size or parameter count");
+  std::vector<n::Tensor> test_logits;
+  for (int start = 0; start < 10000; start += 512)
+    test_logits.push_back(
+        logits(2 * n::slice_axis(official.images, 0, start, std::min(start + 512, 10000)) - 1));
+  const auto z = n::concat(test_logits, 0), test_y = official.labels;
+  n::ConfusionMatrix cm(10);
+  cm.add(test_y, n::argmax(z, 1));
+  cm.save_svg("build/cnn_cifar10_confusion.svg",
+              {.title = "CIFAR-10 CNN on all official CIFAR-10 test images"});
+  n::save_npz("build/cnn_cifar10_confusion.npz",
+              {{"truth", test_y}, {"logits", z}, {"counts", cm.to_tensor()}});
   const double test_nll = n::sparse_softmax_cross_entropy(z, test_y).item(),
                accuracy = n::accuracy(z, test_y);
-  if (!std::isfinite(test_nll) || training_nll.back() >= training_nll.front())
-    return 1;
+  if (!std::isfinite(test_nll) || accuracy < .55 || training_nll.back() >= training_nll.front())
+    throw std::runtime_error(
+        std::format("CIFAR-10 CNN held-out accuracy {:.5f}, NLL {:.5f}", accuracy, test_nll));
   auto plot = dm::graphics::RPlot::create();
   plot.lines(epoch, training_nll, "training", {37, 99, 235})
       .lines(epoch, validation_nll, "validation", {234, 88, 12})
-      .title("A short explicit Adam run; select on validation")
+      .title("Full CIFAR-10 CNN training and validation")
       .x_label("epoch")
       .y_label("mean NLL");
   std::filesystem::create_directories("build");
   plot.size(850, 420).save_svg("build/cnn_cifar10_training.svg");
   std::print(
-      "{} fitted rows; 64 validation rows; 128 official-test rows; {} parameters; {} Adam "
+      "45000 fitted rows; 5000 validation rows; 10000 official-test rows; {} parameters; {} Adam "
       "steps.\n\nSelected validation NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
-      fit_x.size(0), p.count(), optimizer.iterations(), best, test_nll, accuracy);
+      p.count(), optimizer.iterations(), best, test_nll, accuracy);
 }
 ```
 // result_begin: markdown
-256 fitted rows; 64 validation rows; 128 official-test rows; 545098 parameters; 32 Adam steps.
+45000 fitted rows; 5000 validation rows; 10000 official-test rows; 545098 parameters; 3520 Adam steps.
 
-Selected validation NLL 2.105852; test NLL 2.173872; test accuracy 0.273438.
+Selected validation NLL 0.763048; test NLL 0.767207; test accuracy 0.731700.
 \image(figures/cnn_cifar10_training.svg)
 // result_end
-\caption(Training and validation losses come from the visible minibatch loop; the official test subset is evaluated only after checkpoint selection.)
-\alttext(Training and validation losses come from the visible minibatch loop; the official test subset is evaluated only after checkpoint selection.)
+\caption(Training and validation losses come from the visible minibatch loop; the official test split is evaluated only after checkpoint selection.)
+\alttext(Training and validation losses come from the visible minibatch loop; the official test split is evaluated only after checkpoint selection.)
 
 
 > Fresh artifact and held-out checks
 
 The views below are regenerated from the executed programs above. Confusion matrices use the selected checkpoint and original held-out rows. Paired ablations retain each seed and policy separately; they do not pool the same test observations into one artificial sample.
 
-```{cpp, results="markdown", file="figures/cnn_cifar10_architecture_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/cnn_cifar10_architecture_graph.svg","build/export_cnn_cifar10_architecture_graph.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/cnn_cifar10_architecture_graph.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/cnn_cifar10_architecture_graph.svg", "build/export_cnn_cifar10_architecture_graph.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/cnn_cifar10_architecture_graph.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/cnn_cifar10_architecture_lenet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/cnn_cifar10_architecture_lenet.svg","build/export_cnn_cifar10_architecture_lenet.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/cnn_cifar10_architecture_lenet.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/cnn_cifar10_architecture_lenet.svg", "build/export_cnn_cifar10_architecture_lenet.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/cnn_cifar10_architecture_lenet.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/cnn_cifar10_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/cnn_cifar10_confusion.svg","build/export_cnn_cifar10_confusion.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/cnn_cifar10_confusion.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/cnn_cifar10_confusion.svg", "build/export_cnn_cifar10_confusion.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/cnn_cifar10_confusion.svg)
@@ -392,8 +482,8 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 > Conclusion
 
 The input preview preserves RGB channels, and the seeded crop check establishes padding
-semantics. The report makes augmentation, tensor loss, Adam updates and validation selection
-visible. Two epochs on 256 rows do not establish full CIFAR-10 benchmark performance.
+semantics. The learning curves show training and validation NLL, and the confusion
+matrix shows which classes the selected checkpoint confuses on the official test split.
 
 > References
 

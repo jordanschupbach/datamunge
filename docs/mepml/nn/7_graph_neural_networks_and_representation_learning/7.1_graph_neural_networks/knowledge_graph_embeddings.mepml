@@ -1,0 +1,138 @@
+//? Title: Knowledge graph embeddings and filtered link ranking
+//? Lang: en
+
+> Knowledge graph embeddings and filtered link ranking
+
+A triple names a head entity, a relation, and a tail entity. TransE scores
+how close a real translation brings the head to the tail. DistMult uses a
+symmetric real product. ComplEx uses complex embeddings and conjugates the
+tail, which allows asymmetric scores. RotatE learns relation phases that
+rotate the head in the complex plane.
+
+All four models fit the same cyclic graph with twelve entities and three
+relations. Six positive triples stay out of fitting. Each update gives
+equal weight to the average positive and negative logistic losses. At
+evaluation, rank the missing head and tail separately. Filter other
+known true triples and average ties. Mean reciprocal rank averages the
+inverse ranks for all twelve endpoint queries.
+
+```{cpp, results="markdown", file="figures/knowledge_graph_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int entities = 12, relations = 3, width = 8;
+  constexpr std::array shifts{1, 11, 3};
+  std::vector<int> triples, labels, held_out(6 * 3);
+  std::array<std::vector<int>, 3> positive, negative;
+  for (int h = 0; h < entities; ++h)
+    for (int r = 0; r < relations; ++r)
+      for (int t = 0; t < entities; ++t) {
+        const int index = (h * relations + r) * entities + t;
+        const bool regular = t == (h + shifts[r]) % entities;
+        const bool truth = regular || (r == 2 && t == (h + 9) % entities);
+        triples.insert(triples.end(), {h, r, t});
+        labels.push_back(truth);
+        if (regular && (h == 2 * r || h == 2 * r + 6)) {
+          const int offset = 3 * (2 * r + (h >= 6));
+          const std::array query{h, r, t};
+          std::copy(query.begin(), query.end(), held_out.begin() + offset);
+        } else {
+          (truth ? positive : negative)[h % relations].push_back(index);
+        }
+      }
+  const auto all = n::from_vector(triples, {entities * relations * entities, 3});
+  const auto truth = n::from_vector(labels).reshape({entities, relations, entities}).to(n::DType::Bool);
+  const auto query = n::from_vector(held_out, {6, 3});
+  const std::array methods{n::TripleScorer::TransE, n::TripleScorer::DistMult,
+                           n::TripleScorer::ComplEx, n::TripleScorer::RotatE};
+  const std::array names{"TransE", "DistMult", "ComplEx", "RotatE"};
+  const std::array<dm::graphics::RGBA, 4> colors{{{37, 99, 235}, {185, 28, 28},
+                                                   {22, 120, 97}, {124, 58, 237}}};
+  auto plot = dm::graphics::RPlot::create();
+  plot.title("Held-out filtered ranking").x_label("Epoch").y_label("Mean reciprocal rank")
+      .y_limits(0, 1.05);
+  std::filesystem::create_directories("build");
+  std::print("| model | epoch | filtered MRR |\n|---|---:|---:|\n");
+
+  for (std::size_t method = 0; method < methods.size(); ++method) {
+    n::ParameterStore model(49201);
+    const auto forward = [&]() {
+      return n::knowledge_graph_scores(model, "embedding", all, entities, relations, width,
+                                       methods[method]);
+    };
+    const auto loss = [&](const n::Tensor &scores, int partition) {
+      const auto pos = n::gather(scores, n::from_vector(positive[partition]));
+      const auto neg = n::gather(scores, n::from_vector(negative[partition]));
+      return .5 * (n::mean(n::softplus(-pos)) + n::mean(n::softplus(neg)));
+    };
+    forward();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(model, .07, config);
+    std::vector<double> epochs, history;
+    n::Tensor ranks;
+    for (int epoch = 0; epoch <= 3; ++epoch) {
+      {
+        n::NoGradGuard guard;
+        ranks = n::filtered_triple_ranks(forward().reshape(truth.shape()), truth, query);
+        epochs.push_back(epoch);
+        history.push_back(n::mean(1. / ranks).item());
+        std::print("| {} | {} | {:.6f} |\n", names[method], epoch, history.back());
+      }
+      if (epoch < 3)
+        for (int partition = 0; partition < relations; ++partition)
+          adam.minimize(loss(forward(), partition));
+    }
+
+    n::NoGradGuard guard;
+    const auto scores = forward();
+    n::NamedTensors evidence{{"triples", all}, {"labels", n::from_vector(labels)}, {"test", query},
+                             {"ranks", ranks}, {"scores", scores}, {"loss", loss(scores, 0)},
+                             {"history", n::from_vector(history)}};
+    for (int i = 0; i < relations; ++i) {
+      std::vector<int> mask(labels.size());
+      for (const auto index : positive[i]) mask[index] = 1;
+      for (const auto index : negative[i]) mask[index] = 1;
+      evidence.emplace_back("mask" + std::to_string(i), n::from_vector(mask));
+    }
+    for (const auto &key : model.names())
+      evidence.emplace_back(key.substr(std::string_view("embedding/").size()), model.at(key));
+    n::save_npz("build/knowledge_graph_" + std::string(names[method]) + ".npz", evidence);
+    plot.lines(epochs, history, names[method], colors[method])
+        .points(epochs, history, names[method], colors[method]);
+  }
+  plot.size(900, 430).save_svg("build/knowledge_graph_fit.svg");
+}
+```
+// result_begin: markdown
+| model | epoch | filtered MRR |
+|---|---:|---:|
+| TransE | 0 | 0.206755 |
+| TransE | 1 | 0.125673 |
+| TransE | 2 | 0.111189 |
+| TransE | 3 | 0.116288 |
+| DistMult | 0 | 0.237241 |
+| DistMult | 1 | 0.290972 |
+| DistMult | 2 | 0.491667 |
+| DistMult | 3 | 0.475000 |
+| ComplEx | 0 | 0.280787 |
+| ComplEx | 1 | 0.419444 |
+| ComplEx | 2 | 0.619544 |
+| ComplEx | 3 | 0.743056 |
+| RotatE | 0 | 0.143921 |
+| RotatE | 1 | 0.168519 |
+| RotatE | 2 | 0.205159 |
+| RotatE | 3 | 0.237897 |
+\image(figures/knowledge_graph_fit.svg)
+// result_end
+\caption(Mean reciprocal rank over six held-out triples, ranking heads and tails after filtering other known positives.)
+\alttext(Four curves comparing held-out filtered mean reciprocal rank across the three fitting epochs.)
+
+> References
+
+- [Bordes et al. (2013), Translating Embeddings for Modeling Multi-relational Data](https://proceedings.neurips.cc/paper/2013/file/1cecc7a77928ca8133fa24680a88d2f9-Paper.pdf).
+- [Yang et al. (2015), Embedding Entities and Relations for Learning and Inference in Knowledge Bases](https://arxiv.org/abs/1412.6575).
+- [Trouillon et al. (2016), Complex Embeddings for Simple Link Prediction](https://arxiv.org/abs/1606.06357).
+- [Sun et al. (2019), RotatE](https://arxiv.org/abs/1902.10197).

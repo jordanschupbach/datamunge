@@ -1,0 +1,173 @@
+//? Title: Inducing arithmetic instructions and a gated convolutional tape rule
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Infer two arithmetic instructions from input and output examples, then
+train a shared convolutional rule to predict bit propagation on a longer tape.
+)
+\toc
+
+> Differentiable instructions
+
+A slot computes a weighted sum of addition, subtraction, and multiplication.
+Softmax gives a trainable probability vector for each slot. Fit the two
+vectors by minimizing squared output error on 128 triples. Decode each slot
+by its largest probability, then evaluate the resulting program on all
+64 triples made from {-6, -2, 2, 6}. These operands lie outside the training
+range of [-1.8, 1.8].
+
+> Convolutional tape
+
+Each cell starts with a bit and four zero channels. The prediction target is
+whether any input bit within three cells is set. Each recurrent step uses
+two width-three convolutions. A sigmoid gate mixes the current state with
+a tanh proposal, and the same weights apply at every step and position.
+Three updates give each cell a receptive field of seven neighboring positions
+including itself. Zero padding defines the behavior at the edges.
+A pointwise linear readout predicts the target bit. Train on width-24 tapes
+and measure binary cross-entropy on width-49 tapes after every epoch.
+
+```{cpp, results="markdown", file="figures/neural_program_induction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <vector>
+
+namespace n = dm::nn;
+
+void fit_interpreter() {
+  std::mt19937 rng(5982);
+  std::uniform_real_distribution<double> draw(-1.8, 1.8);
+  std::vector<double> columns(384), triples(384), targets(128);
+  for (auto& value : columns) value = draw(rng);
+  for (int i = 0; i < 128; ++i) {
+    for (int j = 0; j < 3; ++j) triples[3*i+j] = columns[128*j+i];
+    targets[i] = (triples[3*i] + triples[3*i+1]) * triples[3*i+2];
+  }
+  const auto inputs = n::from_vector(triples, {128, 3});
+  const auto target = n::from_vector(targets, {128});
+  const auto logits = n::zeros({2, 3}, n::DType::Float64).requires_grad_();
+  n::Optimizer sgd({logits}, .7);
+  auto mse = [&](const n::Tensor& weights) {
+    return n::mse(n::arithmetic_program(inputs, weights), target);
+  };
+  for (int step = 0; step < 40; ++step)
+    sgd.step(n::grad(mse(n::softmax(logits)), {logits}));
+
+  const auto probabilities = n::softmax(logits.detach());
+  const auto decoded = n::argmax(probabilities).to_vector<int>();
+  if (decoded != std::vector<int>{0, 2}) throw std::runtime_error("Incorrect program");
+  const auto one_hot = n::one_hot(n::argmax(probabilities), 3).to(n::DType::Float64);
+  constexpr std::array<double, 4> held_out{-6., -2., 2., 6.};
+  triples.clear();
+  targets.clear();
+  for (double a : held_out)
+    for (double b : held_out)
+      for (double c : held_out) {
+        triples.insert(triples.end(), {a, b, c});
+        targets.push_back((a+b)*c);
+      }
+  const auto pred = n::arithmetic_program(n::from_vector(triples, {64, 3}), one_hot).to_vector<double>();
+  double max_error = 0.;
+  for (std::size_t i = 0; i < pred.size(); ++i)
+    max_error = std::max(max_error, std::abs(pred[i] - targets[i]));
+  if (max_error > 1e-12) throw std::runtime_error("Decoded program differs on held-out operands");
+  const auto p = probabilities.to_vector<double>();
+  std::println("Decoded ADD and MULTIPLY (probabilities {:.6f} and {:.6f}). "
+               "Soft MSE {:.7f}. Hard held-out maximum error {:.0f}.\n",
+               p[0], p[5], mse(probabilities).item<double>(), max_error);
+}
+
+struct Tape { n::Tensor input, target; };
+
+Tape bit_tape(int batch, int width, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::bernoulli_distribution initial(.1);
+  std::vector<double> input(batch*width*5), target(batch*width);
+  for (int row = 0; row < batch; ++row) {
+    for (int i = 0; i < width; ++i) input[5*(row*width+i)] = initial(rng);
+    for (int i = 0; i < width; ++i)
+      for (int j = std::max(0, i-3); j < std::min(width, i+4); ++j)
+        target[row*width+i] = std::max(target[row*width+i], input[5*(row*width+j)]);
+  }
+  return {n::from_vector(input, {batch, 1, width, 5}),
+          n::from_vector(target, {batch, 1, width, 1})};
+}
+
+int main() {
+  fit_interpreter();
+
+  std::mt19937 rng(30122);
+  std::normal_distribution<double> normal(0., .36);
+  auto init = [&](const n::Shape& shape, int count) {
+    std::vector<double> values(count);
+    for (auto& value : values) value = normal(rng);
+    return n::from_vector(values).reshape(shape).requires_grad_();
+  };
+  const auto proposal = init({1, 3, 5, 5}, 75);
+  const auto gate = init({1, 3, 5, 5}, 75);
+  const auto readout = init({1, 1, 5, 1}, 5);
+  const auto bias = init({}, 1);
+  const std::vector<n::Tensor> parameters{proposal, gate, readout, bias};
+  n::Optimizer sgd(parameters, .9);
+  const auto fit = bit_tape(192, 24, 30123);
+  const auto test = bit_tape(96, 49, 30124);
+  auto predict = [&](const n::Tensor& input) {
+    return n::conv2d(n::gated_tape_rollout(input, proposal, gate, 3), readout) + bias;
+  };
+  auto bce = [](const n::Tensor& logits, const n::Tensor& target) {
+    return n::sigmoid_cross_entropy(logits, target);
+  };
+  std::vector<double> history;
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    if (epoch > 0)
+      for (int i = 0; i < 192; i += 16) {
+        const auto x = n::slice(fit.input, {i, 0, 0, 0}, {16, 1, 24, 5});
+        const auto y = n::slice(fit.target, {i, 0, 0, 0}, {16, 1, 24, 1});
+        sgd.step(n::grad(bce(predict(x), y), parameters));
+      }
+    history.push_back(bce(predict(test.input), test.target).item<double>());
+  }
+  const auto logits = predict(test.input).detach();
+  const auto actual = logits.to_vector<double>();
+  const auto expected = test.target.to_vector<double>();
+  int correct = 0;
+  for (std::size_t i = 0; i < actual.size(); ++i)
+    correct += (actual[i] > 0.) == (expected[i] > 0.);
+  if (!(history.back() < history.front()) || correct < .65 * actual.size())
+    throw std::runtime_error("Tape extrapolation failed");
+  std::println("Width 24 to 49. Held-out BCE {:.6f} to {:.6f}. "
+               "{}/{} positions correct.\n", history.front(), history.back(), correct, actual.size());
+
+  const std::string folder = "build/neural_program_induction/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "tape.npz", {{"input",test.input},{"target",test.target},
+                                    {"candidate",proposal},{"gates",gate},{"readout",readout},
+                                    {"bias",bias},{"logits",logits}});
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({0., 1., 2., 3.}, history, "Width-49 tapes", {37, 99, 235})
+      .title("Generalization to a longer tape").x_label("Training epoch")
+      .y_label("Held-out binary cross-entropy").save_svg(folder + "loss.svg");
+  std::filesystem::copy_file(folder + "loss.svg", "figures/neural_program_induction.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Decoded ADD and MULTIPLY (probabilities 0.959997 and 0.971135). Soft MSE 0.0152001. Hard held-out maximum error 0.
+
+Width 24 to 49. Held-out BCE 0.770931 to 0.316779. 4462/4704 positions correct.
+
+\image(figures/neural_program_induction.svg)
+// result_end
+
+> Reference
+
+The tape model adapts the convolutional recurrence from
+[Kaiser and Sutskever, Neural GPUs Learn Algorithms|https://arxiv.org/abs/1511.08228]
+with a single interpolation gate.

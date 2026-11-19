@@ -319,7 +319,10 @@ int main() {
 The following complete program contains the actual fitting loop. Normal report
 builds read the retained training record. Set `DATAMUNGE_CIFAR10_RETRAIN=1` to
 execute both pilots and the complete convergence schedule again; this replaces
-model and training artifacts. Initialisation seed is 17, split seed 20261030,
+model and training artifacts. Recomputing the downstream results requires the
+generated checkpoints and evaluation archives, which are not in the source
+checkout. Use the stored report results when browsing without these artifacts.
+Initialisation seed is 17, split seed 20261030,
 batch-order seed 2026, and each augmentation epoch uses seed `151 + epoch`.
 Archived row IDs avoid dependence on a platform's shuffle implementation.
 
@@ -650,6 +653,12 @@ int main() {
     namespace n = dm::nn;
     namespace st = n::study;
     n::set_num_threads(8);
+    for (const auto* path : {"artifacts/nll_parameters.npz", "artifacts/nll_bn.npz",
+                             "artifacts/converged_parameters.npz", "artifacts/converged_bn.npz"}) {
+        if (!std::filesystem::is_regular_file(path))
+            throw std::runtime_error(std::string("Missing ") + path +
+                                     ". Run the training block with DATAMUNGE_CIFAR10_RETRAIN=1.");
+    }
     const auto fit =
         n::read_csv("artifacts/fit_summary.tsv", nullptr, true, '\t');
     if (fit.shape() != n::Shape{1, 8} || fit.at({0, 6}) != 1)
@@ -661,7 +670,7 @@ int main() {
         n::models::ResNet(p, state, n::zeros({1, 32, 32, 3}),
                           st::cifar10_resnet_config(), false);
     }
-    std::ofstream candidates("artifacts/checkpoint_selection.tsv");
+    std::ostringstream candidates;
     candidates <<
         "candidate\tepoch\tvalidation_accuracy\traw_nll\tcalibrated_nll\ttemperature\n" <<
         std::setprecision(12);
@@ -697,6 +706,7 @@ int main() {
             state.save("artifacts/best_bn.npz");
         }
     }
+    std::ofstream("artifacts/checkpoint_selection.tsv") << candidates.str();
     std::ofstream summary("artifacts/training_summary.tsv");
     summary <<
         "peak_lr\tcompleted_epochs\tselected_epoch\tvalidation_nll\tplateau_train_" "change\tplateau_validation_change\tconverged\tseconds\n" <<
@@ -892,13 +902,16 @@ int main() {
     namespace n = dm::nn;
     namespace st = n::study;
     n::set_num_threads(8);
+    std::map<std::string, n::Tensor> a;
+    for (const auto & [k, v] : n::load_npz("artifacts/evaluation.npz"))
+        a[k] = v;
     const auto data = st::restore_cifar10_study("artifacts/preprocessing.npz");
     const auto test = n::load_cifar10(data.directory, "test");
     const auto audit =
         st::audit_image_overlap({data.fit, data.validation, test});
     const std::vector<std::string> names{"Fitting", "Validation",
                                          "Official test"};
-    std::ofstream record("artifacts/overlap.tsv");
+    std::ostringstream record;
     record << "partition1\tpartition2\texact_matching_pairs\n";
     std::print("| Partition pair | Exact matching image pairs |\n|---|---:|\n");
     for (int i = 0; i < 3; ++i)
@@ -918,9 +931,6 @@ int main() {
         for (int i = 0; i < 10000; ++i)
             if (!shared[i])
                 clean.push_back(i);
-        std::map<std::string, n::Tensor> a;
-        for (const auto & [k, v] : n::load_npz("artifacts/evaluation.npz"))
-            a[k] = v;
         if (!clean.empty()) {
             const auto d =
                 st::classification_diagnostics(n::take_rows(a.at("test_logits"),
@@ -931,6 +941,7 @@ int main() {
             std::print("After excluding test images with exact fitting matches: N={}, accuracy {:.4f}, calibrated " "NLL {:.5f}. " "This is a post-fit sensitivity analysis; official benchmark scores retain all images.\n",
                        clean.size(), d.accuracy, d.nll);
         }
+    std::ofstream("artifacts/overlap.tsv") << record.str();
 }
 ```
 // result_begin: markdown

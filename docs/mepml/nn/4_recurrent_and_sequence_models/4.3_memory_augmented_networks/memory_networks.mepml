@@ -1,0 +1,157 @@
+//? Title: Two-hop memory networks for relational questions
+//? Lang: en
+
+> Two-hop memory networks for relational questions
+
+Each question asks for the location of a person's item. Four shuffled
+facts contain the two links needed for the answer and a distractor chain.
+The model embeds the question, attends over facts, and adds a weighted
+sum of values to the query state. It repeats that operation with new
+embedding tables before predicting one of eight locations.
+
+The end-to-end variant uses the full fact for both key and value. The
+key-value variant uses subject and relation for addressing and the
+object for the retrieved value. The report fits both variants on the
+same disjoint question splits and checks how their attention changes when
+the facts are reversed.
+
+```{cpp, results="markdown", file="figures/relational_memory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::mt19937 rng(41398);
+  std::set<std::array<int,7>> seen;
+  std::vector<int> facts, query, labels;
+  while (labels.size() < 1280) {
+    int person=rng()%8, other=rng()%8, item=rng()%8, distractor=rng()%8;
+    int answer=rng()%8, wrong=rng()%8;
+    if (person==other || item==distractor || answer==wrong)
+      continue;
+    const bool reverse=rng()%2;
+    std::array<int,7> signature{person,other,item,distractor,answer,wrong,reverse};
+    if (person>other)
+      signature={other,person,distractor,item,wrong,answer,!reverse};
+    if (!seen.insert(signature).second)
+      continue;
+    std::array<std::array<int,3>,4> story{{{person,24,8+item},{8+item,25,16+answer},
+                                         {other,24,8+distractor},{8+distractor,25,16+wrong}}};
+    std::shuffle(story.begin(),story.end(),rng);
+    for (const auto &fact : story)
+      facts.insert(facts.end(),fact.begin(),fact.end());
+    query.push_back(reverse?other:person);
+    labels.push_back(reverse?wrong:answer);
+  }
+  const auto memory=n::from_vector(facts,{1280,4,3});
+  const auto questions=n::from_vector(query);
+  const auto truth=n::from_vector(labels);
+  const auto valid=n::arange(1024,1152,1,n::DType::Int64);
+  const auto held=n::arange(1152,1280,1,n::DType::Int64);
+  std::filesystem::create_directories("build");
+  auto learning=dm::graphics::RPlot::create();
+  learning.title("Relational question answering").x_label("Epoch").y_label("Validation NLL");
+  auto figure=dm::graphics::RLayout::create(1,3);
+  std::vector<dm::graphics::RPlot> heatmaps;
+  std::print("| Variant | Epoch | Validation NLL |\n|---|---:|---:|\n");
+  for(bool structured : {false,true}) {
+    const std::string name=structured?"key_value_memory":"end_to_end_memory";
+    n::ParameterStore model(41399);
+    const auto forward=[&](const n::Tensor &indices) {
+      return n::models::RelationalMemoryNetwork(model,n::gather(memory,indices),
+                                                n::gather(questions,indices),structured);
+    };
+    const auto loss=[&](const n::Tensor &indices) {
+      return n::sparse_softmax_cross_entropy(forward(indices)[0],n::gather(truth,indices));
+    };
+    forward(valid);
+    n::OptimizerConfig config;
+    config.kind=n::OptimizerKind::Adam;
+    n::Optimizer adam(model,.01,config);
+    n::BatchOrder order(1024,32,41400);
+    double initial;
+    { n::NoGradGuard guard; initial=loss(held).item(); }
+    std::vector<double> values;
+    for(int epoch=0;epoch<=3;++epoch) {
+      { n::NoGradGuard guard; values.push_back(loss(valid).item()); }
+      std::print("| {} | {} | {:.6f} |\n",name,epoch,values.back());
+      if(epoch==3)
+        break;
+      order.begin_epoch();
+      for(auto rows=order.next();!rows.empty();rows=order.next())
+        adam.minimize(loss(n::from_vector(rows)));
+    }
+
+    n::NoGradGuard guard;
+    const auto [scores,attention,states]=forward(held);
+    const auto f=n::gather(memory,held), q=n::gather(questions,held), y=n::gather(truth,held);
+    const auto [other, reversed, other_states]=n::models::RelationalMemoryNetwork(
+        model,n::reverse(f,{1}),q,structured);
+    if(n::max(n::abs(scores-other)).item()>3e-5 ||
+       n::max(n::abs(attention-n::reverse(reversed,{2}))).item()>3e-5)
+      throw std::runtime_error("fact permutation");
+    const auto matched=n::equal(n::argmax(scores,1),y);
+    const auto chosen=n::argmax(attention,2).to_vector<int>();
+    int first=0, second=0;
+    for(int row=0;row<128;++row) {
+      const auto i=1152+row, base=i*12;
+      int bridge=-1;
+      for(int j=0;j<4;++j)
+        if(facts[base+3*j]==query[i])
+          bridge=facts[base+3*j+2];
+      first+=facts[base+3*chosen[2*row]]==query[i];
+      second+=facts[base+3*chosen[2*row+1]]==bridge;
+    }
+    const auto nll=n::sparse_softmax_cross_entropy(scores,y);
+    std::print("\n{} test NLL {:.6f} to {:.6f}, {}/128 answers, {}/128 bridge and {}/128 answer facts.\n\n",
+        name,initial,nll.item(),n::count_nonzero(matched).item<int>(),first,second);
+    n::save_npz("build/"+name+"_audit.npz",{{"facts",memory},{"query",questions},{"labels",truth},
+        {"logits",scores},{"attention",attention},{"states",states},{"nll",nll}});
+    model.save("build/"+name+"_weights.npz");
+    learning.lines({0.,1.,2.,3.},values,name,structured?dm::graphics::RGBA{22,120,97}
+                                                       :dm::graphics::RGBA{37,99,235});
+    const auto example=n::select(attention,0,0);
+    std::vector<std::vector<double>> columns;
+    for(int i=0;i<4;++i)
+      columns.push_back(n::select(example,1,i).to_vector<double>());
+    auto plot=dm::graphics::RPlot::create();
+    plot.image({0.,1.,2.,3.},{1.,2.},columns,dm::graphics::terrain_colors(32),0.,1.)
+        .title(structured?"Key-value attention":"Full-fact attention").x_label("Fact slot").y_label("Hop");
+    heatmaps.push_back(plot);
+  }
+  learning.legend({"Full fact","Key-value"},{{37,99,235},{22,120,97}});
+  figure.add(learning).add(heatmaps[0]).add(heatmaps[1]).size(1240,430)
+      .fit_panels().save_svg("build/relational_memory.svg");
+}
+```
+// result_begin: markdown
+| Variant | Epoch | Validation NLL |
+|---|---:|---:|
+| end_to_end_memory | 0 | 2.123690 |
+| end_to_end_memory | 1 | 1.557825 |
+| end_to_end_memory | 2 | 1.121142 |
+| end_to_end_memory | 3 | 0.966191 |
+
+end_to_end_memory test NLL 2.137279 to 0.926727, 63/128 answers, 0/128 bridge and 65/128 answer facts.
+
+| key_value_memory | 0 | 2.094157 |
+| key_value_memory | 1 | 1.473537 |
+| key_value_memory | 2 | 0.970708 |
+| key_value_memory | 3 | 0.842299 |
+
+key_value_memory test NLL 2.115805 to 0.906303, 62/128 answers, 0/128 bridge and 64/128 answer facts.
+
+\image(figures/relational_memory.svg)
+// result_end
+\caption(Validation loss and both networks' attention for the first held-out question.)
+\alttext(A line plot compares validation loss. Two heatmaps show two hops of attention over four fact slots.)
+
+Both models improve held-out answer loss. The first hop never puts its
+largest weight on the expected bridge fact in this run, so the answer
+accuracy alone gives little evidence that either model follows the two
+facts in order.
+
+> References
+
+- [Sukhbaatar et al. (2015), End-To-End Memory Networks](https://arxiv.org/abs/1503.08895).
+- [Miller et al. (2016), Key-Value Memory Networks for Directly Reading Documents](https://arxiv.org/abs/1606.03126).

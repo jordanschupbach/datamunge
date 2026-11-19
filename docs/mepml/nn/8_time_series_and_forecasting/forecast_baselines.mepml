@@ -1,0 +1,102 @@
+//? Title: Compare four point forecast baselines at rolling origins
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Compare persistence, seasonal naive, a trailing mean, and a ridge
+autoregression on first differences using the same chronological origins.
+)
+\toc
+
+Persistence repeats the last value. Seasonal naive repeats the last
+24-step cycle. The trailing mean predicts the average of the six most
+recent observations at every lead. The linear model fits four lags of
+the first differences with an L2 penalty of 0.01 and no intercept.
+It recursively predicts the next difference, feeds that difference
+back into its lag window, and adds it to the last predicted level.
+
+The ridge fit uses observations 0–767. At each of the 187 test origins,
+all four forecasts can see the prefix ending immediately before the
+origin. The recurrence's coefficients stay fixed. That distinction
+allows the forecast to incorporate newly observed data without refitting.
+
+```{cpp, results="markdown", file="figures/forecast_baselines.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  std::vector<double> samples;
+  for (int t = 0; t < 1152; ++t) {
+    const double phase = 2 * std::numbers::pi * t;
+    samples.push_back((1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                      + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73));
+  }
+  const auto series = n::from_vector(samples);
+  std::vector<std::int64_t> origins;
+  for (int t = 960; t <= 1152-6; ++t) origins.push_back(t);
+  const auto fit = n::forecast_baselines(series,origins,768,24,6,6,4,.01);
+  std::println("{} chronological origins. Most-recent-first coefficients {}.\n",
+               origins.size(),fit.coefficients.to_vector<double>());
+  std::println("| Method | Lead 1 | Lead 2 | Lead 3 | Lead 4 | Lead 5 | Lead 6 | Mean MAE |");
+  std::println("| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+  constexpr std::array names{"Persistence","Seasonal naive","Trailing mean","Difference AR"};
+  constexpr std::array<dm::graphics::RGB,4> colors{
+      dm::graphics::RGB{37,99,235},{191,88,34},{93,68,169},{15,118,110}};
+
+  auto errors = dm::graphics::RPlot::create();
+  auto predictions = dm::graphics::RPlot::create();
+  const std::vector<double> lead{1,2,3,4,5,6};
+  const auto first = n::select(fit.forecasts,0,0);
+  predictions.lines(lead,n::select(fit.actual,0,0).to_vector<double>(),"Observed",{26,30,36},2);
+  for (int model = 0; model < 4; ++model) {
+    const auto scores = n::select(fit.mae,0,model);
+    const auto e = scores.to_vector<double>();
+    std::println("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |",
+                 names[model],e[0],e[1],e[2],e[3],e[4],e[5],n::mean(scores).item());
+    errors.lines(lead,e,names[model],colors[model]);
+    predictions.lines(lead,n::select(first,0,model).to_vector<double>(),names[model],colors[model]);
+  }
+  errors.title("Error across all test origins").x_label("Lead").y_label("MAE");
+  predictions.title("Forecasts at origin 960").x_label("Lead").y_label("Level");
+
+  const std::string folder = "build/forecast_baselines/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder+"forecasts.npz",{{"series",series},{"coefficients",fit.coefficients},
+      {"origins",n::from_vector(origins).to(n::DType::Int32)},{"actual",fit.actual},
+      {"forecasts",fit.forecasts},{"mae",fit.mae}});
+  auto plot = dm::graphics::RLayout::create(1,2).size(1050,430);
+  plot.add(errors).add(predictions).save_svg(folder+"errors.svg");
+  std::filesystem::copy_file(folder+"errors.svg","figures/forecast_baselines.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+187 chronological origins. Most-recent-first coefficients [2.295896154603419, -1.5705758321573153, -0.057564493100059344, 0.30574787469937176].
+
+| Method | Lead 1 | Lead 2 | Lead 3 | Lead 4 | Lead 5 | Lead 6 | Mean MAE |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Persistence | 0.174315 | 0.339382 | 0.498377 | 0.638436 | 0.775050 | 0.890403 | 0.552660 |
+| Seasonal naive | 0.227833 | 0.228160 | 0.228274 | 0.228152 | 0.227787 | 0.227183 | 0.227898 |
+| Trailing mean | 0.547346 | 0.683912 | 0.801709 | 0.911666 | 1.002955 | 1.080080 | 0.837944 |
+| Difference AR | 0.009113 | 0.038675 | 0.100146 | 0.200928 | 0.342259 | 0.520804 | 0.201988 |
+\image(figures/forecast_baselines.svg)
+// result_end
+
+The first-origin plot illustrates a single trajectory. The lead-wise
+average combines all origins and is the basis for comparing methods.
+
+The difference recurrence leads at horizons one through four. Seasonal
+naive has the lowest error at leads five and six. The recursive model's
+error grows as more of its own predicted differences enter the lag window.
+
+> References
+
+- [Hyndman and Athanasopoulos, Simple forecasting methods|https://otexts.com/fpp3/simple-methods.html].
+- [Hyndman and Athanasopoulos, ARIMA models|https://otexts.com/fpp3/arima.html].

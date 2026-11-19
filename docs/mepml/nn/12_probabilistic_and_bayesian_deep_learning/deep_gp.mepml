@@ -1,0 +1,87 @@
+//? Title: Two-layer deep Gaussian process with importance-weighted prediction
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Condition a two-layer Gaussian process on eight observations and
+predict the latent response on a 25-point grid. Use the effective sample
+size to assess how much of the prior simulation contributes to the fit.
+)
+\toc
+
+The first GP warps the input. It has an identity mean and an RBF covariance
+so the warp is jointly sampled across training and query locations. Given
+one warp, the second RBF GP has a Gaussian posterior that can be computed
+analytically. Its marginal likelihood measures how well that warp explains
+the observations and supplies its importance weight.
+
+The model uses fixed kernel and observation-noise parameters. The latent
+predictive variance combines each conditional variance with the variation
+across the conditional means. The band in the plot extends one posterior
+standard deviation on either side of the mean. Because the posterior is a
+mixture, this band has no fixed probability content.
+
+```{cpp, results="markdown", file="figures/deep_gp_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int training = 8, queries = 25, draws = 1024;
+  const auto train = -1. + 2. * n::arange(0, training, 1, n::DType::Float64) / (training - 1);
+  const auto query = -1.6 + 3.2 * n::arange(0, queries, 1, n::DType::Float64) / (queries - 1);
+  const auto x = n::concat({train, query}, 0);
+  const auto y = n::sin(3. * (train + .25 * n::square(train)));
+  std::mt19937 rng(98476);
+  std::normal_distribution<double> normal;
+  std::vector<double> values((training + queries) * draws);
+  for (auto& value : values) value = normal(rng);
+  const auto noise = n::from_vector(values, {training + queries, draws});
+
+  const auto prediction = n::condition_deep_gaussian_process(x, y, noise);
+  if (prediction.effective_sample_size <= 1. ||
+      !n::all(n::greater(prediction.variance, 0.)).item<bool>())
+    throw std::runtime_error("degenerate importance sample or predictive variance");
+  std::println("| Statistic | Value |\n| --- | ---: |");
+  std::println("| Joint hidden draws | {} |", draws);
+  std::println("| Importance effective sample size | {:.2f} |", prediction.effective_sample_size);
+  std::println("| Latent variance at the left edge | {:.5f} |",
+               prediction.variance.to_vector<double>().front());
+
+  const std::string folder = "build/deep_gp/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "posterior.npz",
+      {{"x", x}, {"y", y.reshape({training, 1})}, {"noise", noise}, {"hidden", prediction.hidden},
+       {"conditional_mean", prediction.conditional_mean},
+       {"conditional_variance", prediction.conditional_variance},
+       {"log_evidence", prediction.log_evidence}, {"weights", prediction.weights},
+       {"mean", prediction.mean}, {"variance", prediction.variance}});
+
+  const auto locations = query.to_vector<double>();
+  const auto spread = n::sqrt(prediction.variance);
+  auto band = (prediction.mean - spread).to_vector<double>();
+  const auto upper = (prediction.mean + spread).to_vector<double>();
+  auto band_x = locations;
+  band_x.insert(band_x.end(), locations.rbegin(), locations.rend());
+  band.insert(band.end(), upper.rbegin(), upper.rend());
+  auto plot = dm::graphics::RPlot::create();
+  plot.polygon(band_x, band, {37, 99, 235, .16})
+      .lines(locations, prediction.mean.to_vector<double>(), "Posterior mean", {37, 99, 235})
+      .points(train.to_vector<double>(), y.to_vector<double>(), "Training responses", {30, 41, 59}, 4)
+      .title("Deep GP fit with one posterior standard deviation")
+      .x_label("Input").y_label("Response").save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/deep_gp_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Statistic | Value |
+| --- | ---: |
+| Joint hidden draws | 1024 |
+| Importance effective sample size | 374.72 |
+| Latent variance at the left edge | 0.56331 |
+\image(figures/deep_gp_fit.svg)
+// result_end

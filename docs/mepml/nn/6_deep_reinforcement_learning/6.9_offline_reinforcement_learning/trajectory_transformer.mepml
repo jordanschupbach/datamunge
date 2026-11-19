@@ -1,0 +1,129 @@
+//? Title: Trajectory Transformer with reward-ranked beam planning
+//? Lang: en
+
+> Trajectory Transformer with reward-ranked beam planning
+
+A causal decoder learns to predict the next token in offline chain
+trajectories. Separate token ranges encode states, actions and rewards.
+The training objective is next-token negative log-likelihood. A
+held-out prefix check compares padded and full-sequence predictions.
+
+The planner expands possible action tokens, then predicts a reward and
+successor for each. It keeps four candidates ranked by discounted
+reward, using token likelihood to break ties. Only the first planned
+action is executed. The real successor is added to the history before
+replanning. The planner keeps the current state and, when available,
+the most recent transition.
+
+The plot shows held-out NLL during training. The final evaluation
+records plans and executed actions from all four nonterminal starts.
+Datamunge uses its native seeded initializer.
+
+[Janner, Li and Levine (2021)|https://arxiv.org/abs/2106.02039]
+
+```{cpp, results="markdown", file="figures/trajectory_transformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int context=12,vocab=10;
+  const auto advance=[](int state,int action){return state==4?4:std::clamp(state+(action?1:-1),0,4);};
+  const auto corpus=[&](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::vector<int> tokens;
+    for (int row=0;row<count;++row) {
+      int state=rng()%5;
+      tokens.push_back(state);
+      for (int t=0;t<context/3;++t) {
+        const int action=rng()%4!=0;
+        const int next=advance(state,action);
+        tokens.insert(tokens.end(),{5+action,7+int(state!=4 && next==4),next});
+        state=next;
+      }
+    }
+    return n::from_vector(tokens,{count,context+1});
+  };
+  const auto fit=corpus(1536,45102),held=corpus(128,45103);
+  n::ParameterStore params(45101);
+  const n::models::DecoderConfig config{.input_classes=vocab,.output_classes=vocab,
+      .context=context,.dimensions=24,.heads=3};
+  const auto forward=[&](const n::Tensor& input) {
+    return n::models::DecoderTransformer(params,n::one_hot(input,vocab),config).logits;
+  };
+  const auto evaluate=[&](const n::Tensor& rows) {
+    const auto logits=forward(n::slice(rows,{0,0},{rows.size(0),context}));
+    const auto labels=n::slice(rows,{0,1},{rows.size(0),context});
+    return std::pair{logits,n::sparse_softmax_cross_entropy(logits.reshape({-1,vocab}),labels.reshape({-1}))};
+  };
+  const auto held_loss=[&] {
+    const n::NoGradGuard guard;
+    return evaluate(held).second.item();
+  };
+  std::vector<double> loss{held_loss()};
+  n::Optimizer optimizer(params,.004,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(1536,32,45104);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto objective=evaluate(n::take_rows(fit,rows)).second;
+      optimizer.step(n::grad(objective,optimizer.parameters()));
+    }
+    loss.push_back(held_loss());
+  }
+  const n::NoGradGuard guard;
+  const auto [scores,nll]=evaluate(held);
+  const auto predict=[&](std::span<const int> prefix) {
+    if (prefix.empty() || prefix.size()>context) throw std::invalid_argument("Invalid context");
+    std::vector<int> padded(context,9);
+    std::copy(prefix.begin(),prefix.end(),padded.begin());
+    const auto logits=forward(n::from_vector(padded,{1,context}));
+    return n::slice(logits,{0,std::ssize(prefix)-1,0},{1,1,vocab}).to_vector<float>();
+  };
+  const auto first=held.to_vector<int>();
+  const auto expected=scores.to_vector<float>();
+  for (int t=0;t<context;++t) {
+    const auto actual=predict(std::span{first}.first(t+1));
+    for (int token=0;token<vocab;++token) {
+      if (std::abs(actual[token]-expected[t*vocab+token])>3e-6f) {
+        throw std::runtime_error("Prefix prediction changed with future tokens");
+      }
+    }
+  }
+  const std::array actions{5,6};
+  const std::array states{0,1,2,3,4};
+  const std::array reward{0.,1.};
+  constexpr int horizon=8,record=12;
+  std::vector<int> trace(4*horizon*record,-1);
+  int solved=0;
+  for (int start=0;start<4;++start) {
+    int state=start;
+    std::vector<int> history{state};
+    for (int t=0;t<horizon && state!=4;++t) {
+      const auto observed=std::span{history}.last(std::min<std::size_t>(4,history.size()));
+      const auto plan=dm::rl::trajectory_beam_plan(observed,actions,states,reward,7,predict,3,4,.95f);
+      const int action=plan.front()-5,next=advance(state,action);
+      auto row=trace.begin()+(start*horizon+t)*record;
+      row[0]=state;
+      row[1]=action;
+      row[2]=next;
+      std::copy(plan.begin(),plan.end(),row+3);
+      history.insert(history.end(),{5+action,7+int(next==4),next});
+      state=next;
+    }
+    solved+=state==4;
+  }
+  std::print("Held-out NLL fell from {:.6f} to {:.6f}. Beam planning solved {} of 4 starts.\n",
+             loss.front(),loss.back(),solved);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/trajectory_transformer_audit.npz",{{"held",held},{"logits",scores},
+      {"nll",nll},{"trace",n::from_vector(trace,{4,horizon,record})}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},loss,"Held-out NLL",{37,99,235})
+      .title("Learning the trajectory model").x_label("Epoch").y_label("Next-token NLL")
+      .size(800,460).save_svg("build/trajectory_transformer.svg");
+}
+```
+// result_begin: markdown
+Held-out NLL fell from 2.280730 to 0.212238. Beam planning solved 4 of 4 starts.
+\image(figures/trajectory_transformer.svg)
+// result_end

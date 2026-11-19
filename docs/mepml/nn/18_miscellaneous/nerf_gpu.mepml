@@ -1,0 +1,164 @@
+//? Title: Train a small neural radiance field with CUDA matrix products
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a coordinate network from rays through a synthetic colored volume, then
+render a view along an axis held out during training.
+)
+\toc
+
+Each ray samples twelve points. Two octaves of Fourier features lift each
+3D coordinate into a fifteen-dimensional input. A two-layer network
+predicts one density and three color logits per point. Softplus gives
+nonnegative density, and sigmoid bounds the colors. For each sample,
+the density and step length determine how much light reaches the next
+sample. The renderer adds each sample's emitted color weighted by the
+light that reaches it and blends in the background using the remaining
+transmittance. The RGB error differentiates through this compositing
+operation to both weight matrices.
+
+The two dense products execute on CUDA when supported. The activation and
+compositing computations use host tensors, and autograd follows the explicit
+device transfers. The program prints the actual placement and has a CPU
+fallback for readers without a CUDA build. Training rays run along the
+first and third axes. The test grid looks along the second axis. The RGB panel shows the target
+view on the left and the prediction on the right.
+[Mildenhall et al., NeRF|https://arxiv.org/abs/2003.08934].
+
+```{cpp, results="markdown", file="figures/nerf_gpu.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <vector>
+
+namespace n = dm::nn;
+namespace c = dm::compute;
+
+constexpr int samples = 12, fit_size = 288, test_size = 144, batch = 32;
+constexpr double step = 2. / samples, background = .05;
+
+struct Rays {
+  n::Tensor points, truth;
+};
+
+Rays draw_rays(int count, unsigned seed, bool held_out) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<double> uniform(-.85, .85);
+  std::vector<float> points, truth;
+  for (int ray = 0; ray < count; ++ray) {
+    const double a = held_out ? (ray/12+.5)/6.5-.85 : uniform(rng);
+    const double b = held_out ? (ray%12+.5)/6.5-.85 : uniform(rng);
+    const int axis = held_out ? 1 : (ray%2)*2;
+    std::array<double, 3> color{};
+    double through = 1.;
+    for (int j = 0; j < samples; ++j) {
+      std::array<double, 3> p{};
+      p[axis] = -1. + step*(j+.5);
+      p[(axis+1)%3] = a;
+      p[(axis+2)%3] = b;
+      for (auto v : p) points.push_back(static_cast<float>(v));
+      const double dist = std::pow(p[0]-.13,2) + std::pow(p[1]+.1,2) + std::pow(p[2]-.1,2);
+      const double alpha = -std::expm1(-8.*std::exp(-9.*dist)*step);
+      for (int k = 0; k < 3; ++k)
+        color[k] += through*alpha*(.5+.34*std::tanh(2.3*p[k]));
+      through *= 1. - alpha;
+    }
+    for (auto v : color) truth.push_back(static_cast<float>(v+through*background));
+  }
+  return {n::from_vector(points, {count, samples, 3}), n::from_vector(truth, {count, 3})};
+}
+
+struct Field {
+  n::Tensor rendered, density, color, through;
+  int cuda_products;
+};
+
+int main() {
+  const c::Context cpu;
+  auto device = cpu;
+  if (c::probe({c::Backend::CUDA, 0}).available) {
+    const c::Context cuda({c::Backend::CUDA, 0});
+    if (cuda.supports_matmul()) device = cuda;
+  }
+  const bool use_cuda = device.device().backend == c::Backend::CUDA;
+  std::mt19937 rng(13751);
+  std::normal_distribution<float> normal(0.f, .18f);
+  auto init = [&](int rows, int cols) {
+    std::vector<float> values(rows*cols);
+    for (auto& value : values) value = normal(rng);
+    return n::from_vector(values, {rows, cols}).requires_grad_();
+  };
+  const auto hidden = init(15, 28);
+  const auto weights = init(28, 4);
+  const std::vector<n::Tensor> parameters{hidden, weights};
+  n::Optimizer sgd(parameters, .7f);
+
+  auto evaluate = [&](const n::Tensor& points) -> Field {
+    const auto count = points.size(0);
+    const auto input = n::fourier_features(points.reshape({count*samples, 3}), 2);
+    const auto first = n::matmul(input.to(device), hidden.to(device));
+    const auto activation = n::tanh(first.to(cpu));
+    const auto second = n::matmul(activation.to(device), weights.to(device));
+    const auto grid = second.to(cpu).reshape({count, samples, 4});
+    const auto density = n::softplus(n::slice(grid, {0, 0, 0}, {count, samples, 1}) - .3f);
+    const auto color = n::sigmoid(n::slice(grid, {0, 0, 1}, {count, samples, 3}));
+    const auto [rendered, through] = n::composite_rays(density, color, step, background);
+    const int placed = (first.device().backend == c::Backend::CUDA) +
+                       (second.device().backend == c::Backend::CUDA);
+    return {rendered, density, color, through, placed};
+  };
+  const auto train = draw_rays(fit_size, 13752, false);
+  const auto test = draw_rays(test_size, 13753, true);
+  std::vector<double> loss;
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    if (epoch > 0)
+      for (int i = 0; i < fit_size; i += batch) {
+        const auto points = n::slice(train.points, {i, 0, 0}, {batch, samples, 3});
+        const auto truth = n::slice(train.truth, {i, 0}, {batch, 3});
+        sgd.step(n::grad(n::mse(evaluate(points).rendered, truth), parameters));
+      }
+    loss.push_back(n::mse(evaluate(test.points).rendered, test.truth).item());
+  }
+  const auto field = evaluate(test.points);
+  if (!(loss.back() < loss.front()) || field.cuda_products != (use_cuda ? 2 : 0))
+    throw std::runtime_error("Radiance-field training or product placement failed");
+  std::println("Dense products on {}. CUDA products: {}. Held-out RGB MSE {:.7f} to {:.7f}. PSNR {:.4f} dB.\n",
+               use_cuda ? "CUDA" : "CPU", field.cuda_products,
+               loss.front(), loss.back(), -10.*std::log10(loss.back()));
+
+  const std::string folder = "build/nerf_gpu/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "novel_view.npz", {{"points",test.points},{"truth",test.truth},{"hidden",hidden},
+      {"weights",weights},{"rendered",field.rendered},{"sigma",field.density},{"rgb",field.color},
+      {"transmittance",field.through}});
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines({0., 1., 2., 3.}, loss, "Novel view", {37, 99, 235})
+      .title("Held-out radiance field rendering error").x_label("Training epoch")
+      .y_label("RGB mean squared error").save_svg(folder + "loss.svg");
+  const auto comparison = n::concat({test.truth.reshape({1, 12, 12, 3}),
+                                    field.rendered.reshape({1, 12, 12, 3})}, 2);
+  const auto enlarged = n::resize_nearest(comparison, {144, 288});
+  n::save_png(n::select(enlarged, 0, 0), folder + "comparison.png");
+  std::filesystem::copy_file(folder + "comparison.png", "figures/nerf_view.png",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder + "loss.svg", "figures/nerf_gpu.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Dense products on CUDA. CUDA products: 2. Held-out RGB MSE 0.0736832 to 0.0679625. PSNR 11.6773 dB.
+
+\image(figures/nerf_gpu.svg)
+// result_end
+
+\image(figures/nerf_view.png)
+
+The predicted view remains blurry after three epochs. The held-out loss
+measures the improvement, and the RGB panel shows how much of the scene
+the small network still misses.

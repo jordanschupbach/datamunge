@@ -1,0 +1,116 @@
+//? Title: Gradient robustness probes on a synthetic classifier
+//? Lang: en
+
+> Gradient robustness probes on a synthetic classifier
+
+A fitted neural classifier separates three regions of the unit square.
+FGSM and projected gradient descent (PGD) increase the true-label loss
+within a fixed coordinate budget. FGSM takes one step from the original
+input. PGD takes twelve steps from a random start.
+
+Carlini–Wagner optimizes squared displacement and a target confidence
+margin together, retaining the closest successful point among four
+penalty settings. DeepFool linearizes the scores locally and moves
+toward the nearest competing boundary. These two probes use the unit
+square as their domain. A final probe fits a single shared displacement
+on a separate calibration split, then applies it to all test points.
+The figure compares held-out accuracy under each procedure. The
+different displacement constraints matter when comparing the counts.
+
+```{cpp, results="markdown", file="figures/gradient_robustness.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int training_rows=1024,test_rows=256,batch=32;
+  constexpr float radius=.12f;
+  const auto draw=[](int rows,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(0,1);
+    std::vector<float> x;
+    std::vector<int> y;
+    for (int row=0;row<rows;++row) {
+      const float a=uniform(rng),b=uniform(rng);
+      x.insert(x.end(),{a,b});
+      y.push_back(a+b<.8f ? 0 : (a>b ? 1 : 2));
+    }
+    return std::pair{n::from_vector(x,{rows,2}),n::from_vector(y)};
+  };
+  const auto [fit_x,fit_y]=draw(training_rows,42501);
+  const auto [test_x,test_y]=draw(test_rows,42502);
+  const auto ce=[](const n::Tensor& logits,const n::Tensor& y) {
+    return -n::mean(n::sum(n::log_softmax(logits,1)*n::one_hot(y,3),{1}));
+  };
+  n::ParameterStore params(42503);
+  const auto predict=[&](const n::Tensor& input) {
+    return n::dense(params,"head",n::tanh(n::dense(params,"hidden",input,16)),3);
+  };
+  (void)predict(test_x);
+  n::Optimizer optimizer(params,.01,{.kind=n::OptimizerKind::Adam});
+  std::mt19937_64 shuffle(42504);
+  for (int epoch=0;epoch<3;++epoch) {
+    std::vector<int> order(training_rows);
+    std::iota(order.begin(),order.end(),0);
+    std::ranges::shuffle(order,shuffle);
+    for (int i=0;i<training_rows;i+=batch) {
+      const auto ids=n::from_vector(std::vector<int>(order.begin()+i,order.begin()+i+batch));
+      const auto loss=ce(predict(n::gather(fit_x,ids)),n::gather(fit_y,ids));
+      optimizer.step(n::grad(loss,optimizer.parameters()));
+    }
+  }
+  const auto objective=[&](const n::Tensor& x) { return ce(predict(x),test_y); };
+  const auto last=[](const n::Tensor& path,const n::Shape& shape) {
+    return n::slice_axis(path,0,path.size(0)-1,path.size(0)).reshape(shape);
+  };
+  const auto fgsm=n::projected_sign_ascent(test_x,test_x,objective,radius,radius,1);
+  std::mt19937 rng(42505);
+  std::uniform_real_distribution<float> jitter(-radius,radius);
+  std::vector<float> noise(test_x.numel());
+  for (auto& value:noise) value=jitter(rng);
+  const auto start=test_x+n::from_vector(noise,test_x.shape());
+  const auto pgd=n::projected_sign_ascent(test_x,start,objective,radius,.025f,12);
+  const std::array coefficients{.01f,.1f,1.f,10.f};
+  const auto cw=n::carlini_wagner_l2(test_x,test_y,predict,coefficients,96);
+  const auto deepfool=n::deepfool_path(test_x,predict,14);
+  const auto [calibration,calibration_y]=draw(256,42506);
+  const auto shared=n::universal_sign_path(calibration,[&](const n::Tensor& x) {
+    return ce(predict(x),calibration_y);
+  },radius,.015f,24);
+  const auto universal=n::clip(test_x+last(shared,{2}),0,1);
+  const auto one_step=last(fgsm.states,test_x.shape());
+  const auto pgd_final=last(pgd.states,test_x.shape());
+  const auto deep_final=last(deepfool,test_x.shape());
+  n::NamedTensors evidence{{"clean",test_x},{"labels",test_y},{"fgsm",one_step},
+      {"clean_gradient",last(fgsm.gradients,test_x.shape())},{"pgd_states",pgd.states},{"pgd_gradients",pgd.gradients},
+      {"cw_examples",cw},{"deepfool_path",deepfool},{"universal_path",shared},{"universal_test",universal},
+      {"universal_calibration",calibration},{"universal_calibration_labels",calibration_y}};
+  const n::NoGradGuard guard;
+  for (const auto& name:params.names()) evidence.emplace_back(name,params.at(name));
+  std::vector<double> accuracies;
+  std::print("| Probe | Correct out of {} |\n|---|---:|\n",test_rows);
+  for (const auto& [name,input]:n::NamedTensors{{"clean",test_x},{"fgsm",one_step},{"pgd",pgd_final},
+      {"cw",cw},{"deepfool",deep_final},{"universal",universal}}) {
+    const auto logits=predict(input);
+    const auto correct=n::sum(n::equal(n::argmax(logits,1),test_y).to(n::DType::Float32)).item();
+    accuracies.push_back(correct/test_rows);
+    evidence.emplace_back(name+"_logits",logits);
+    std::print("| {} | {} |\n",name,int(correct));
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/gradient_robustness.npz",evidence);
+  dm::graphics::RPlot::create().points({1,2,3,4,5,6},accuracies,"Test accuracy",{37,99,235},7)
+      .title("Gradient robustness probes").x_label("1 Clean   2 FGSM   3 PGD   4 C–W   5 DeepFool   6 Shared")
+      .y_label("Fraction correct").size(800,460).save_svg("build/gradient_robustness.svg");
+}
+```
+// result_begin: markdown
+| Probe | Correct out of 256 |
+|---|---:|
+| clean | 231 |
+| fgsm | 127 |
+| pgd | 128 |
+| cw | 0 |
+| deepfool | 25 |
+| universal | 194 |
+\image(figures/gradient_robustness.svg)
+// result_end

@@ -1,0 +1,120 @@
+//? Title: Implicit matrix factorization and Bayesian personalized ranking
+//? Lang: en
+
+> Implicit matrix factorization and Bayesian personalized ranking
+
+Both models score items by the dot product of user and item factors.
+Weighted matrix factorization fits a binary preference target, using
+confidence one plus three times the interaction count. Unobserved pairs
+have target zero and contribute at the lowest confidence.
+
+Bayesian personalized ranking (BPR) samples an unobserved item for every
+observed fitting item. Its loss encourages the observed item's score to
+exceed the sampled item's score. An unobserved item can be relevant, so
+the sampled item is a training comparison rather than a known dislike.
+Both fits use a squared factor penalty.
+
+The simulator holds out one positive item per user. Evaluation filters
+fitting positives and measures the rank of that held-out item. The plot
+shows the fraction of users whose held-out item appears by each cutoff.
+
+[Confidence-weighted feedback|https://doi.org/10.1109/ICDM.2008.22]
+and [Bayesian personalized ranking|https://arxiv.org/abs/1205.2618]
+
+```{cpp, results="markdown", file="figures/implicit_mf.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build");
+  constexpr int users = 24, items = 30, rank = 6, groups = 6;
+  std::vector<float> counts(users*items);
+  std::vector<int> heldout(users), grades(users*items);
+  for (int u = 0; u < users; ++u) {
+    const int group = u % groups, hold = u / groups % 5;
+    heldout[u] = group + groups * hold;
+    grades[u*items+heldout[u]] = 1;
+    for (int slot = 0; slot < 5; ++slot) {
+      if (slot != hold) counts[u*items+group+groups*slot] = 1 + (u+slot)%4;
+    }
+  }
+  const auto count = n::from_vector(counts,{users,items});
+  const auto relevance = n::from_vector(grades,{users,items});
+  const auto sample = [&](std::mt19937& rng) {
+    std::vector<int> triples;
+    for (int u = 0; u < users; ++u) {
+      std::vector<int> unknown;
+      for (int i = 0; i < items; ++i) {
+        if (counts[u*items+i] == 0) unknown.push_back(i);
+      }
+      std::uniform_int_distribution<std::size_t> choose(0,unknown.size()-1);
+      for (int i = 0; i < items; ++i) {
+        if (counts[u*items+i] > 0) triples.insert(triples.end(),{u,i,unknown[choose(rng)]});
+      }
+    }
+    return n::from_vector(triples,{users*4,3});
+  };
+  std::vector<int> cutoffs(items);
+  std::iota(cutoffs.begin(),cutoffs.end(),1);
+  const std::vector<double> axis(cutoffs.begin(),cutoffs.end());
+  auto plot = dm::graphics::RPlot::create();
+  std::print("| Objective | Initial loss | Final loss | Hit@5 |\n|---|---:|---:|---:|\n");
+  for (bool pairwise : {false,true}) {
+    const std::string name = pairwise ? "bpr" : "weighted";
+    n::ParameterStore params(8870);
+    const auto u = params.get("users",{users,rank},n::init::normal(.15));
+    const auto v = params.get("items",{items,rank},n::init::normal(.15));
+    const auto score = [&] { return n::matmul(u,v,false,true); };
+    const auto loss = [&](const n::Tensor& triples) {
+      const auto scores = score();
+      const auto objective = [&] {
+        if (!pairwise) return n::implicit_feedback_loss(scores,count);
+        const auto rows = n::slice(triples,{0,0},{users*4,1});
+        const auto lookup = [&](int col) {
+          const auto index = n::concat({rows,n::slice(triples,{0,col},{users*4,1})},1);
+          return n::gather_nd(scores,index);
+        };
+        return n::bayesian_pairwise_ranking_loss(lookup(1),lookup(2));
+      }();
+      return objective + .001 * (n::sum(n::square(u)) + n::sum(n::square(v)));
+    };
+    std::mt19937 rng(8871);
+    const auto audit = sample(rng);
+    const double initial = loss(audit).item();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(params,.04,config);
+    for (int step = 0; step < 36; ++step) optimizer.minimize(loss(sample(rng)));
+    const auto fitted = loss(audit);
+    const auto gradients = n::grad(fitted,{u,v});
+    const n::NoGradGuard no_grad;
+    const auto scores = score();
+    if (!(fitted.item() < initial)) throw std::runtime_error("Implicit objective failed to improve");
+    const auto metrics = n::recommendation_metrics(scores,relevance,count,cutoffs);
+    const auto ranked = metrics.ranked.to_vector<std::int64_t>();
+    const auto averages = metrics.averages.to_vector<double>();
+    std::vector<int> ranks;
+    std::vector<double> hits;
+    for (int row = 0; row < users; ++row) {
+      const auto first = ranked.begin()+row*items;
+      ranks.push_back(std::find(first,first+items,heldout[row])-first+1);
+    }
+    for (int i = 0; i < items; ++i) hits.push_back(averages[i*3]);
+    n::save_npz("build/implicit_"+name+".npz",{{"count",count},{"heldout",n::from_vector(heldout)},
+        {"triples",audit},{"scores",scores},{"loss",fitted},{"users",u},{"items",v},
+        {"grad_users",gradients[0]},{"grad_items",gradients[1]},{"ranks",n::from_vector(ranks)}});
+    std::print("| {} | {:.6f} | {:.6f} | {:.0f}/{} |\n",name,initial,fitted.item(),hits[4]*users,users);
+    const dm::graphics::RGBA color = pairwise ? dm::graphics::RGBA{234,88,12} : dm::graphics::RGBA{37,99,235};
+    plot.lines(axis,hits,name,color);
+  }
+  plot.title("Ranking held-out interactions").x_label("Rank cutoff").y_label("Hit rate")
+      .y_limits(0,1.05).size(900,425).save_svg("build/implicit_mf.svg");
+}
+```
+// result_begin: markdown
+| Objective | Initial loss | Final loss | Hit@5 |
+|---|---:|---:|---:|
+| weighted | 1.161411 | 0.122779 | 24/24 |
+| bpr | 0.707200 | 0.231320 | 24/24 |
+\image(figures/implicit_mf.svg)
+// result_end

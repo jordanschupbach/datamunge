@@ -37,7 +37,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The replay shows 15 random pulls followed by 15 pulls of the best arm.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -48,10 +48,8 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // context that does not depend on the action), a reward per pull, and the
 // episode ends. This program shows the three variants in
 // common/rl/bandit.hpp (copied from tflow) and the notion of regret that
-// bandit algorithms (6.2) try to minimise. The vsim video of 15 random and 15
-// best-arm pulls is omitted (its pulls are still drawn, so the RNG stream and
-// every later number match tflow); the port adds checks on the sample means,
-// the regret and the contextual oracle.
+// bandit algorithms (6.2) try to minimise. The replay preserves the source
+// draws, and the report checks sample means, regret and the contextual oracle.
 
 
 // Editable workflow support: checks.hpp
@@ -237,13 +235,30 @@ int main() {
     check::Near(best_reward - random_reward, expected_regret, 0.1 * expected_regret + 4 * std::sqrt(4.0 * T),
                 "regret of the random policy");
 
-    // tflow films 15 random pulls and 15 pulls of the best arm here; the film
-    // is omitted but the pulls are made so the generators stay in step.
+    // Capture 15 random pulls followed by 15 pulls of the best arm.
+    std::vector<std::pair<int, float>> pulls;
     for (int t = 0; t < 30; ++t) {
       const int arm = t < 15 ? static_cast<int>(rng() % testbed.num_arms()) : testbed.best_arm();
       testbed.reset();
-      testbed.step(arm);
+      pulls.emplace_back(arm, testbed.step(arm).reward);
     }
+
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    const std::string replay = "bandits_random_then_best_arm.mp4";
+    dm::rl::environments::save_bandit_replay(testbed.num_arms(), pulls, "build/" + replay, 0.f);
+    std::filesystem::copy_file("build/" + replay, "figures/" + replay,
+                               std::filesystem::copy_options::overwrite_existing);
+
+    std::vector<int> arms;
+    std::vector<float> rewards;
+    for (const auto& [arm, reward] : pulls) {
+      arms.push_back(arm);
+      rewards.push_back(reward);
+    }
+
+    dm::nn::save_npz("build/bandits_replay.npz",
+                     {{"arm", dm::nn::from_vector(arms)}, {"reward", dm::nn::from_vector(rewards)}});
 
     std::cout << "\n== Bernoulli arms\n";
     rl::MultiArmedBandit coins = rl::MultiArmedBandit::Bernoulli({0.1f, 0.5f, 0.7f, 0.65f});
@@ -284,7 +299,7 @@ int main() {
     for (int a = 0; a < ctx.num_arms(); ++a)
       check::Require(oracle > fixed[a], "the context-aware oracle should beat always pulling arm " + std::to_string(a));
     check::Require(oracle > random, "the oracle should beat random pulls");
-    std::cout << "\nchecks passed (vsim video omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -324,7 +339,7 @@ int main() {
 //   context [1.139 -0.342 -0.388 -0.245]  P(reward|arm) = 0.31 0.06 0.37  best arm 2 -> reward 0
 //   mean reward over 5000 rounds: random 0.550, always-arm 0=0.556 1=0.508 2=0.588, oracle 0.770
 //
-// checks passed (vsim video omitted)
+// checks passed
 // result_end
 
 > Compare exact Bernoulli means with observed frequencies
@@ -342,3 +357,9 @@ int main(){namespace e=dm::rl::environments;auto env=e::MultiArmedBandit::Bernou
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+> Pull replay
+
+The first 15 pulls choose uniformly at random. The final 15 always choose the arm with the highest true mean. Green marks a nonnegative observed reward.
+
+\video(figures/bandits_random_then_best_arm.mp4)

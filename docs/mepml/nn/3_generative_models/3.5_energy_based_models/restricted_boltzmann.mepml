@@ -1073,7 +1073,7 @@ weights from nn's generator (statistical parity with TF only)
 epoch1 exactValidationNLL=5.36754
 epoch2 exactValidationNLL=5.27224
 epoch3 exactValidationNLL=5.23779
-exactTestNLL=5.26696 fitBernoulli=5.2198 visibleMass=1;CD1/exactZ/restore/GibbsRepeat/immutable PASS (training 0.00473143 s)
+exactTestNLL=5.26696 fitBernoulli=5.2198 visibleMass=1;CD1/exactZ/restore/GibbsRepeat/immutable PASS (training 0.00608083 s)
 no TF record at /home/jordan/.cache/datamunge/models/restricted_boltzmann; parity checks skipped
 Artifacts: /mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.5_energy_based_models/build/generative-models/models/restricted_boltzmann
 // result_end

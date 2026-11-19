@@ -35,7 +35,7 @@ int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("
 
 > Complete preserved experiment
 
-The four original methods retain40000 steps per run,8 runs, seeds1..8, alpha.3, gamma.99, epsilon.1 and beta.02. Counts include resets and persist. Evaluation uses only task Q-values; novelty-augmented collection returns are not task performance. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+The four original methods retain40000 steps per run,8 runs, seeds1..8, alpha.3, gamma.99, epsilon.1 and beta.02. Counts include resets and persist. Evaluation uses only task Q-values; novelty-augmented collection returns are not task performance. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. The native grid renderer records the seeded greedy rollouts.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -50,9 +50,8 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 //
 // Port of tflow's count_exploration. The example is TF-free (tabular Q-learning,
 // common/rl/count_bonus.hpp is a verbatim copy of tflow's count_bonus.h), so every
-// number matches tflow exactly. The vsim videos are replaced by PlayEpisode (the
-// same greedy episode, printed, no video); video=0 skips them as in tflow. The
-// port adds result checks after the table (exit 1 on failure).
+// report adds checks after the table and records each method’s greedy policy.
+// Use video=0 to skip recording.
 //
 // Compare epsilon-greedy Q-learning, an optimistic epsilon-greedy control,
 // exact state-visit bonuses and density pseudo-count bonuses in a sparse-
@@ -273,13 +272,7 @@ struct Hud {
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// Capture the actual visited states with the native grid renderer.
 
 
 
@@ -307,18 +300,27 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<int> states{env.state()};
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
     const StepResult r = env.step(pb.hud.decision.action);
     pb.hud.Observe(r);
+    states.push_back(env.state());
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  const auto file = name + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::rl::environments::save_grid_replay(env, states, "build/" + file);
+  std::filesystem::copy_file("build/" + file, "figures/" + file,
+                             std::filesystem::copy_options::overwrite_existing);
+  report_capture::Save("replay_" + name, states);
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -613,7 +615,7 @@ int main(int argc, char** argv) {
               "count and pseudo-count bonuses find the goal at least twice as fast as epsilon-greedy");
       for (const Summary& m : summary) Require(m.win >= 75, "the task-only greedy policy reaches the goal in most runs");
     }
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    std::cout << "\nchecks passed\n";
     return 0;
   } catch (const std::exception& e) {
     std::cerr << "count_exploration: " << e.what() << "\n";
@@ -645,22 +647,22 @@ int main(int argc, char** argv) {
 //   method           found goal   first step    goals/run   coverage % greedy win %
 //   epsilon only        8/8             1763       1724.8        100.0        100.0
 //     seed 1 greedy task return 1, 16 steps
-//   played count_exploration_epsilon (video omitted): 16 steps, return 1.0
+//   recorded count_exploration_epsilon: 16 steps, return 1.0
 //   optimistic eps      8/8              416         24.2        100.0        100.0
 //     seed 1 greedy task return 1, 16 steps
-//   played count_exploration_optimistic (video omitted): 16 steps, return 1.0
+//   recorded count_exploration_optimistic: 16 steps, return 1.0
 //   state counts        8/8              225         24.1        100.0        100.0
 //     seed 1 greedy task return 1, 16 steps
-//   played count_exploration_counts (video omitted): 16 steps, return 1.0
+//   recorded count_exploration_counts: 16 steps, return 1.0
 //   pseudo-counts       8/8              261         24.5        100.0        100.0
 //     seed 1 greedy task return 1, 16 steps
-//   played count_exploration_pseudo_counts (video omitted): 16 steps, return 1.0
+//   recorded count_exploration_pseudo_counts: 16 steps, return 1.0
 //
 //   Greedy evaluation uses only task Q-values; curiosity is used only during collection.
 //   Coverage includes resets and goal cells; walls are excluded.
 //   Feature sharing changes novelty, so pseudo-counts need not beat exact counts.
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > Inspect the actual experiment results
@@ -678,3 +680,16 @@ int main(){auto archive=dm::nn::load_npz("build/count_exploration_source.npz");a
 > Interpretation and provenance
 
 Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.
+
+> Seeded greedy policy replays
+
+The four learned greedy policies each reach the goal in 16 steps. The replays
+use only task Q-values, with the exploration bonus disabled.
+
+\video(figures/count_exploration_epsilon.mp4)
+
+\video(figures/count_exploration_optimistic.mp4)
+
+\video(figures/count_exploration_counts.mp4)
+
+\video(figures/count_exploration_pseudo_counts.mp4)

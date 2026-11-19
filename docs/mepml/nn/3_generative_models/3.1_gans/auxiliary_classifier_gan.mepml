@@ -695,7 +695,7 @@ logistic algebra: D loss=41.1269, G loss=20.5635, dG/dfake=[[-4.51213e-36], [-0.
 epoch 1: diagnostic D loss=4.99027, G loss=4.79502, coarse MMD=0.120637
 epoch 2: diagnostic D loss=4.58099, G loss=5.31675, coarse MMD=0.120366
 epoch 3: diagnostic D loss=4.34301, G loss=5.67805, coarse MMD=0.119984
-fixed FINAL epoch 3, test D/G=4.28507/5.68368, coarse MMD=0.117949, mean baseline=0.000135779, D real/fake accuracy=1/1, aux class accuracy real/fake=0.39/0.185, mean pixel=0.499391, pixel variance=0.00142644; D then G/restore/noise+classOnly/immutable PASS (training 1.16844 s)
+fixed FINAL epoch 3, test D/G=4.28507/5.68368, coarse MMD=0.117949, mean baseline=0.000135779, D real/fake accuracy=1/1, aux class accuracy real/fake=0.39/0.185, mean pixel=0.499391, pixel variance=0.00142644; D then G/restore/noise+classOnly/immutable PASS (training 0.251578 s)
 Artifacts: build/acgan
 All auxiliary_classifier_gan checks passed.
 \image(figures/acgan_learning.svg)

@@ -1,72 +1,48 @@
-//? Title: External Environment Interfaces: Explicit Optional Runtime Availability
+//? Title: External simulators through ALE and vsim
 //? Exports: both
 //? Lang: en-GB
 
-\abstract(
-Native reusable physics/frame/data/model components support the full editable source protocol. Original seeds, control loops, objective/optimizer steps and actual default budgets are retained. Optional emulator execution and native physical task definitions are labelled explicitly.
-)
-\toc
+The Arcade Learning Environment exposes Tetris as a discrete-action
+environment. Datamunge’s frame stack converts the emulator screen into
+the four observations used by a DQN. The seeded random policy runs
+until termination and records every second agent action.
 
-> Follow the actual data path
+The second experiment loads the upstream box-stack scene directly into
+vsim and advances its Jolt physics world at 120 Hz. It has a static
+floor, five dynamic crates and a moving ball. The height trace tracks
+the highest dynamic body’s center as the stack collapses.
 
-Runtime availability -> emulator adapter / explicit skip.
+> SDK setup
 
-```{cpp, results="markdown", file="figures/external_envs_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(29,1200);dm::graphics::DiagramNodeStyle s;s.width=14;s.height=5;s.font_size=23;d.node("input",{-18,0},"Source observations / actions",s).node("component",{0,0},"Runtime availability -> emulator adapter / explicit skip",s).node("report",{18,0},"Editable experiment / checks",s).edge("input","component").edge("component","report").save_svg("build/external_envs_method.svg");}
+From a Datamunge C++ docs shell with zlib, ffmpeg and a Vulkan driver available, build the
+two SDKs from the upstream checkout. The `vsim-renderer` pkg-config entry
+supplies its include and link flags. The scene path selects the original
+box stack from the checkout.
+
 ```
-// result_begin: markdown
-\image(figures/external_envs_method.svg)
-// result_end
-
-> A hand-checkable calculation
-
-Raw grayscale endpoints0 and255 normalize to0 and1. Preprocessing is a native component; optional ROM discovery and emulator setup stay visible in the complete report. An unavailable runtime is reported explicitly, without an invented environment rollout.
-
-```{cpp, results="markdown", file="figures/external_envs_worked.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::vector<double>values{0./255,255./255};std::print("| coordinate | computed value |\n|---:|---:|\n");for(size_t i=0;i<values.size();++i)std::print("| {} | {:.9f} |\n",i,values[i]);std::vector<double>x(values.size());std::iota(x.begin(),x.end(),0.);double low=std::min(0.,*std::min_element(values.begin(),values.end())),high=std::max(0.,*std::max_element(values.begin(),values.end())),span=std::max(1.,high-low);dm::graphics::RPlot::create().bars(x,values,"computed",{37,99,235}).ylim(low-.05*span,high+.05*span).title("external envs worked calculation").size(1000,550).save_svg("build/external_envs_worked.svg");}
+upstream="$HOME/projects/tflow_examples"
+ale=$(nix build --no-link --print-out-paths "$upstream#ale")
+vsim=$(nix build --no-link --print-out-paths "$upstream#vsim-sdk")
+export ALE_ROM_DIR="$ale/share/ale/roms"
+export DM_BOX_STACK_SCENE="$upstream/data/vsim/box_stack.json"
+export PKG_CONFIG_PATH="$vsim/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+vsim_flags=$(pkg-config --cflags --libs vsim-renderer | sed -E 's@ /nix/store/[^ ]+-glibc-[^ /]+/lib/libm\.so@@g; s@ -Wl,-rpath,/nix/store/[^ ]+-glibc-[^ /]+/lib@@g')
+export DM_EXTERNAL_ENV_FLAGS="$vsim_flags -std=c++23 -DDM_EXTERNAL_ENV_SDKS -I$ale/include $ale/lib/libale.a -lm -lz"
+mep-mepml run docs/mepml/nn/6_deep_reinforcement_learning/6.1_environments/external_envs.mepml
 ```
-// result_begin: markdown
-| coordinate | computed value |
-|---:|---:|
-| 0 | 0.000000000 |
-| 1 | 1.000000000 |
-\image(figures/external_envs_worked.svg)
-// result_end
 
 > Complete preserved source protocol
 
-The code retains the source seeds, actual default caps and original optional full settings. Every controller, rollout, replay, objective, gradient/clipping/optimizer step and update schedule remains editable. Read-only capture hooks add no random draws or evaluations. In the local ALE-free build, the original synthetic preprocessing/Nature-update checks execute and emulator rollouts are explicitly skipped. Native InvertedPendulum/Hopper use datamunge physics; their smoke results establish execution and finite updates, without convergence or external-simulator parity. Timing rows are machine-dependent and excluded from source stdout equality checks.
+Regular docs builds use the captured plot and clips. The optional
+SDK-enabled run regenerates them.
 
-```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) $(echo ${DM_EXTERNAL_ENV_FLAGS:-}) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
-namespace report_capture {
-inline dm::nn::NamedTensors arrays;inline std::map<std::string,std::vector<double>> traces;
-inline void Trace(const std::string&name,double value){traces[name].push_back(value);}inline int monitor_index=0,checkpoint_index=0;
-template<class T>void Save(const std::string& name,const std::vector<T>&v){arrays.push_back({name,dm::nn::from_vector(v)});}
-struct Checkpoint{dm::nn::ParameterStore& store;~Checkpoint(){auto tag=std::to_string(checkpoint_index++);for(const auto& name:store.names())arrays.push_back({"parameters_"+tag+"_"+name,store.at(name).detach().clone()});}};
-struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/external_envs_source.npz",arrays);}}};inline Flush flush;
-}
-// CMD: just run-nn external_envs
-// Binding to external environments: ALE (Atari 2600) and vsim.
-//
-// Port of tflow's external_envs. tflow reaches two real simulators through
-// their C++ APIs:
-//   - the Arcade Learning Environment, wrapped as rl::AtariEnv with DQN-style
-//     preprocessing (common/rl/ale_env.hpp);
-//   - vsim, the game engine whose scene files and Jolt-based PhysicsWorld the
-//     articulated tasks in tflow's common/rl/vsim_env.h are built on.
-// Atari ROMs are not redistributable; the free Tetris homebrew ships with ALE
-// and other ROMs can be dropped into data/roms/.
-//
-// Deviations: ALE and vsim are not datamunge dependencies (the plan keeps
-// emulators, vsim and video recording out of scope). The Atari demo runs only
-// when the example is compiled with ALE on the include path and linked with
-// libale (DATAMUNGE_EXAMPLES_HAVE_ALE); `just run-nn` builds without it and
-// then only reports where the ROMs are. The vsim demo (a ball knocking over a
-// crate stack, stepped at 120 Hz) and both videos are omitted.
-
+#if defined(DM_EXTERNAL_ENV_SDKS)
+#include <vsim/io.hpp>
+#include <vsim/physics.hpp>
+#include <vsim/renderer.hpp>
+#endif
 
 // Editable workflow support: checks.hpp
 // Small runtime checks used by the executable nn examples. They stay on in
@@ -153,20 +129,13 @@ inline void Header(const std::string& title) {
 // is looked up in data/roms/ and then $ALE_ROM_DIR (the flake points that
 // at the free Tetris ROM shipped with ALE).
 
-#if defined(DATAMUNGE_EXAMPLES_DISABLE_ALE)
-// Build systems can select the dependency-free preprocessing path even when
-// an unrelated development shell exposes ALE headers.
-#define DATAMUNGE_EXAMPLES_HAVE_ALE 0
-#else
-#if __has_include(<ale/ale_interface.hpp>)
+#if defined(DM_EXTERNAL_ENV_SDKS)
 #define DATAMUNGE_EXAMPLES_HAVE_ALE 1
 #include <ale/ale_interface.hpp>
 #include <ale/common/Log.hpp>
 #else
 #define DATAMUNGE_EXAMPLES_HAVE_ALE 0
 #endif
-#endif
-
 
 // Editable workflow support: rl/env.hpp
 namespace rl {
@@ -305,7 +274,7 @@ class AtariEnv : public Env {
 
 namespace {
 
-void AtariDemo() {report_capture::Trace("ale_enabled",DATAMUNGE_EXAMPLES_HAVE_ALE);
+void AtariDemo() {
   std::printf("#### ALE\n");
 #if DATAMUNGE_EXAMPLES_HAVE_ALE
   rl::AtariEnv env("tetris");
@@ -316,14 +285,34 @@ void AtariDemo() {report_capture::Trace("ale_enabled",DATAMUNGE_EXAMPLES_HAVE_AL
   std::printf("\n");
   std::mt19937_64 rng(0);
   env.reset(0);
+  dm::cad::RenderResult frame;
+  frame.width=env.raw_width()*3;
+  frame.height=env.raw_height()*3;
+  frame.rgba.assign(std::size_t(frame.width)*frame.height*4,255);
+  const std::string clip="external_envs_tetris_random.mp4";
+  dm::cad::VideoWriter writer("build/"+clip,frame.width,frame.height,30);
   float ret = 0;
   int steps = 0;
   while (true) {
     rl::StepResult r = env.step(env.action_space().Sample(rng));
     ret += r.reward;
     ++steps;
+    if (steps%2==0 && writer.frames_written()<450) {
+      const auto& rgb=env.rgb();
+      for (int y=0;y<frame.height;++y)
+        for (int x=0;x<frame.width;++x) {
+          const auto source=3*((y/3)*env.raw_width()+x/3);
+          const auto target=4*(y*frame.width+x);
+          std::copy_n(rgb.data()+source,3,frame.rgba.data()+target);
+        }
+      writer.append(frame);
+    }
     if (r.done()) break;
   }
+  writer.finish();
+  std::filesystem::copy_file("build/"+clip,"figures/"+clip,
+                             std::filesystem::copy_options::overwrite_existing);
+  std::print("  Recorded {} Atari frames\n",writer.frames_written());
   std::printf("  random agent: %d agent steps (%d emulator frames), score %.0f, game over = %d\n", steps, steps * 4, ret, env.lives() == 0);
   // The preprocessed frame the agent actually sees.
   std::printf("  last 84x84 frame, downsampled 4x for display (. < 64, : < 128, + < 192, # otherwise):\n");
@@ -349,17 +338,83 @@ void AtariDemo() {report_capture::Trace("ale_enabled",DATAMUNGE_EXAMPLES_HAVE_AL
 }
 
 void VsimDemo() {
-  std::printf("\n#### vsim\n");
-  std::printf("  vsim is not available to the datamunge ports (out of scope): the box-stack scene demo is skipped.\n");
+#if defined(DM_EXTERNAL_ENV_SDKS)
+  const char* scene_path=std::getenv("DM_BOX_STACK_SCENE");
+  if (!scene_path || !*scene_path) throw std::runtime_error("set DM_BOX_STACK_SCENE");
+  auto scene=vsim::load_scene(scene_path);
+  vsim::PhysicsWorld world(scene);
+  const auto entities=scene.entities();
+  std::vector<vsim::EntityId> bodies;
+  for (const auto id:entities) {
+    const auto& entity=scene.get(id);
+    if (entity.rigid_body && entity.rigid_body->motion=="dynamic") bodies.push_back(id);
+  }
+  check::Require(entities.size()==8 && world.body_count()==7 &&
+                 world.joint_count()==0 && bodies.size()==6,"unexpected scene inventory");
+  std::vector<double> time, height;
+  std::vector<std::vector<double>> tracks(bodies.size());
+  constexpr int width=640, frame_height=400;
+  vsim::Renderer renderer({.width=width,.height=frame_height,.offscreen=true});
+  vsim::RenderView view;
+  view.transform.position={2.6f,2.2f,4.8f};
+  view.transform.rotation=glm::quatLookAtRH(
+      glm::normalize(glm::vec3(.5f,.9f,0.f)-view.transform.position),glm::vec3(0,1,0));
+  view.camera.vertical_fov=42;
+  const std::string clip="external_envs_box_stack.mp4";
+  dm::cad::VideoWriter writer("build/"+clip,width,frame_height,30);
+  vsim::Image image{};
+  dm::cad::RenderResult frame;
+  frame.width=width;
+  frame.height=frame_height;
+  for (int step=0;step<=480;++step) {
+    if (step) world.step(1./120);
+    if (step>0 && (step-1)%4==0) {
+      if (!renderer.draw(scene,&view)) throw std::runtime_error("vsim frame rendering failed");
+      renderer.capture(image);
+      frame.rgba.swap(image.rgba);
+      writer.append(frame);
+      frame.rgba.swap(image.rgba);
+    }
+    double top=0;
+    for (std::size_t j=0;j<bodies.size();++j) {
+      const double y=scene.get(bodies[j]).transform.position.y;
+      tracks[j].push_back(y);
+      top=std::max(top,y);
+    }
+    time.push_back(step/120.);
+    height.push_back(top);
+  }
+  writer.finish();
+  std::filesystem::copy_file("build/"+clip,"figures/"+clip,
+                             std::filesystem::copy_options::overwrite_existing);
+  std::print("  Recorded {} vsim frames\n",writer.frames_written());
+  check::Require(std::abs(height.front()-2.25)<1e-5 && std::abs(height.back()-.30)<.01,
+                 "unexpected box-stack heights");
+  std::print("vsim: {} entities, {} rigid bodies, {} joints\n",entities.size(),
+             world.body_count(),world.joint_count());
+  std::print("  480 steps at 120 Hz, highest dynamic center {:.2f} -> {:.2f} m\n",
+             height.front(),height.back());
+  auto plot=dm::graphics::RPlot::create();
+  for (std::size_t j=0;j<bodies.size();++j)
+    plot.lines(time,tracks[j],scene.get(bodies[j]).name,{60+int(j)*29,100,200-int(j)*26});
+  plot.lines(time,height,"Highest center",{35,35,35})
+      .title("Ball and crate stack in vsim").x_label("Time (s)").y_label("Center height (m)")
+      .size(1000,500).save_svg("build/external_envs_box_stack.svg");
+  std::filesystem::copy_file("build/external_envs_box_stack.svg","figures/external_envs_box_stack.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+#else
+  std::puts("vsim playback requires the optional SDK");
+#endif
 }
 
 }  // namespace
 
 int main() {
   try {
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
     AtariDemo();
     VsimDemo();
-    std::printf("\n  no videos are written by the port\n");
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -370,27 +425,44 @@ int main() {
 ```
 // result_begin:
 // #### ALE
-//   ALE is not built in (see the header): the Atari demo is skipped.
-//   ROM tetris.bin not found in data/roms/ or $ALE_ROM_DIR
-//
-// #### vsim
-//   vsim is not available to the datamunge ports (out of scope): the box-stack scene demo is skipped.
-//
-//   no videos are written by the port
+//   Atari(tetris): raw screen 160x210, 4-frame stack of 84x84 -> obs of 28224 floats, Discrete(5)
+//   minimal action set: NOOP FIRE RIGHT LEFT DOWN
+//   Recorded 273 Atari frames
+//   random agent: 546 agent steps (2184 emulator frames), score 0, game over = 1
+//   last 84x84 frame, downsampled 4x for display (. < 64, : < 128, + < 192, # otherwise):
+//     ..........................................
+//     ::::::::::::::::::::::::::::::::::::::::::
+//     ..........................................
+//     ......:::::::::::........:###.###.###.###.
+//     ......:::++::::::........:#.#.#.#.#.#.#.#.
+//     ......:::::::::::........:#.#.#.#.#.#.#.#.
+//     ......:::::+:::::........:###.###.###.###.
+//     ......:::::+:::::.........................
+//     ......:::::+:::::.........................
+//     ......:::::+:::::.........................
+//     ......::::+::::::.........................
+//     ......::::+::::::.........................
+//     ......::::+::::::.........................
+//     ......:::++::::::.........................
+//     ......::+++#:::::.........................
+//     ......::+++#::::#.........................
+//     ......::+:+#::###.........................
+//     ......::::+++:::+.........................
+//     ......::++:+:::+:.........................
+//     ......::++++++:++.........................
+//     ......:+++++++++:.........................
+//   Recorded 120 vsim frames
+// vsim: 8 entities, 7 rigid bodies, 0 joints
+//   480 steps at 120 Hz, highest dynamic center 2.25 -> 0.30 m
 // result_end
 
-> Actual source diagnostics
+> Recorded diagnostics
 
-These are captured source measurements, in original execution order. They retain weak results and explicit availability flags. Distinct tasks may use different reward scales; a smoke run does not establish convergence.
+\video(figures/external_envs_tetris_random.mp4)
+\caption(Seeded random Tetris play recorded from the raw ALE screen.)
 
-```{cpp, results="markdown", file="figures/external_envs_diagnostic0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){auto data=dm::nn::load_npz("build/external_envs_source.npz");auto plot=dm::graphics::RPlot::create();int series=0;for(const auto&[key,t]:data){if(!key.starts_with("ale_enabled"))continue;auto y=t.to_vector<double>();if(y.empty())continue;std::vector<double>x(y.size());std::iota(x.begin(),x.end(),0.);plot.lines(x,y,key,{37+(series%4)*50,99,235-(series%4)*50}).points(x,y,key+" points",{37+(series%4)*50,99,235-(series%4)*50},4);++series;}if(!series)throw std::runtime_error("source diagnostic missing");plot.title("external envs actual source diagnostics").x_label("Build branch").y_label("ALE available (0/1)").size(1100,600).save_svg("build/external_envs_diagnostic0.svg");}
-```
-// result_begin: markdown
-\image(figures/external_envs_diagnostic0.svg)
-// result_end
+\image(figures/external_envs_box_stack.svg)
+\caption(Heights of all six dynamic bodies during four seconds of vsim simulation.)
 
-> Interpretation and provenance
-
-The displayed checks belong to the original local native protocol. Optional runtime skips, deferred quality checks and machine timings remain explicit. Canonical components contain reusable physical/frame adapters and pure graphs/return algebra; the report owns the experiment and its optimizer state.
+\video(figures/external_envs_box_stack.mp4)
+\caption(The original scene rendered offscreen by vsim every fourth physics step.)

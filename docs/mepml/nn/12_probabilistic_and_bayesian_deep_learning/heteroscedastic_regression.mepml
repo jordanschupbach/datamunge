@@ -1,0 +1,117 @@
+//? Title: Heteroscedastic Gaussian regression with learned variance
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a nonlinear Gaussian regression to data whose noise grows with the
+predictor. The network learns both the conditional mean and variance.
+Compare its predictions with one pooled variance and the same fitted mean.
+)
+\toc
+
+> Fit the two outputs jointly
+
+Responses have mean sin(2x) and standard deviation 0.16 + 0.34(x + 1).
+An affine head predicts a mean and a variance score from 16 tanh features.
+Softplus and a small floor keep the fitted variance positive. The
+Gaussian objective balances squared error scaled by the variance against
+a log-variance penalty.
+
+Training and test use independent draws. Adam visits all 2,048 fitting
+rows in each of three epochs. A pooled comparison reuses the same mean
+and estimates one variance from training residuals. Both intervals
+describe the spread of individual future responses.
+
+```{cpp, results="markdown", file="figures/heteroscedastic_regression_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+
+std::pair<n::Tensor, n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f, 1.f);
+  std::normal_distribution<float> normal;
+  std::vector<float> x(count), y(count);
+  for (int i = 0; i < count; ++i) {
+    x[i] = uniform(rng);
+    y[i] = std::sin(2.f * x[i]) + (.16f + .34f * (x[i] + 1.f)) * normal(rng);
+  }
+  return {n::from_vector(x, {count, 1}), n::from_vector(y, {count, 1})};
+}
+
+int main() {
+  const auto [x_fit, y_fit] = simulate(2048, 69401);
+  const auto [x_test, y_test] = simulate(1024, 69402);
+  n::ParameterStore parameters(41380);
+  const auto predict = [&](const n::Tensor& x) {
+    return n::GaussianRegressionHead(
+        parameters, "head", n::dense(parameters, "hidden", x, 16, n::Activation::Tanh));
+  };
+  predict(n::zeros({1, 1}));
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(x_fit.size(0), 32, 69403);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto prediction = predict(n::take_rows(x_fit, rows));
+      const auto observed = n::take_rows(y_fit, rows);
+      const auto loss = n::GaussianRegressionNll(prediction, observed);
+      optimizer.step(n::grad(loss, parameters.parameters()));
+    }
+  }
+
+  n::NoGradGuard frozen;
+  const std::string root = "build/heteroscedastic_regression/";
+  std::filesystem::create_directories(root);
+  std::filesystem::create_directories("figures");
+  const auto query = n::linspace(-1, 1, 201).reshape({201, 1});
+  const auto t = query.to_vector<double>();
+  const auto fit = predict(x_fit), test = predict(x_test), grid = predict(query);
+  const double pooled = n::mean(n::square(y_fit - fit.mean)).item();
+  const double nll = n::GaussianRegressionNll(test, y_test).item();
+  const double pooled_nll = n::GaussianRegressionNll(
+      {test.mean, n::full(test.variance.shape(), pooled)}, y_test).item();
+  const auto hits = n::less_equal(n::abs(y_test - test.mean), 1.96 * n::sqrt(test.variance));
+  const auto coverage = n::mean(n::cast(hits, n::DType::Float64)).item();
+  const auto rmse = n::sqrt(n::mean(n::square(y_test - test.mean))).item();
+  std::println("| Held-out statistic | Value |\n| --- | ---: |");
+  std::println("| Conditional variance NLL | {:.6f} |\n| Pooled variance NLL | {:.6f} |", nll, pooled_nll);
+  std::println("| Mean prediction RMSE | {:.6f} |\n| Nominal 95% interval coverage | {:.4f} |", rmse, coverage);
+  n::save_npz(root + "predictions.npz", {{"fit_x", x_fit}, {"fit_y", y_fit},
+                                     {"fit_mean", fit.mean}, {"fit_variance", fit.variance},
+                                     {"x", x_test}, {"y", y_test}, {"mean", test.mean},
+                                     {"variance", test.variance}, {"nll", n::scalar(nll)},
+                                     {"coverage", n::scalar(coverage)}});
+  const auto curve = grid.mean, width = 1.96 * n::sqrt(grid.variance);
+
+  const auto upper = (curve + width).to_vector<double>();
+  auto band = (curve - width).to_vector<double>();
+  auto band_x = t;
+  band.insert(band.end(), upper.rbegin(), upper.rend());
+  band_x.insert(band_x.end(), t.rbegin(), t.rend());
+  auto plot = dm::graphics::RPlot::create();
+  plot.polygon(band_x, band, {37, 99, 235, .16})
+      .points(x_test.to_vector<double>(), y_test.to_vector<double>(), "Held-out observations",
+              {100, 116, 139, .35}, 2)
+      .lines(t, curve.to_vector<double>(), "Fitted mean", {37, 99, 235})
+      .title("Conditional mean and 95% Gaussian prediction band").x_label("x").y_label("Response")
+      .save_svg(root + "fit.svg");
+  std::filesystem::copy_file(root + "fit.svg", "figures/heteroscedastic_regression_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  parameters.save(root + "weights.npz");
+}
+```
+// result_begin: markdown
+| Held-out statistic | Value |
+| --- | ---: |
+| Conditional variance NLL | 0.702422 |
+| Pooled variance NLL | 0.843726 |
+| Mean prediction RMSE | 0.561359 |
+| Nominal 95% interval coverage | 0.9365 |
+\image(figures/heteroscedastic_regression_fit.svg)
+// result_end

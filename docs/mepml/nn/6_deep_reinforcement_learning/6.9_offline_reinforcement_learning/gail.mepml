@@ -1,0 +1,85 @@
+//? Title: GAIL with exact chain occupancies
+//? Lang: en
+
+> GAIL with exact chain occupancies
+
+Generative adversarial imitation learning trains a discriminator to
+distinguish expert visits from learner visits. The actor maximizes a
+reward derived from the discriminator logit and an entropy bonus.
+This example computes the learner's entire finite-horizon occupancy
+on the [five-state chain|imitation_chain.mepml]. It differentiates
+through the state probabilities during the actor update.
+
+The discriminator treats the learner's occupancy as fixed. The actor
+treats the discriminator's reward as fixed. Each training step takes
+two discriminator updates and one actor update. The plot measures the
+stochastic probability of reaching the goal in eight moves.
+
+[Ho and Ermon (2016)|https://arxiv.org/abs/1606.03476]
+
+```{cpp, results="markdown", file="figures/gail.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int states=5,actions=2,horizon=8;
+  std::vector<float> transitions(states*actions*states);
+  for (int cell=0;cell<states;++cell) {
+    for (int action=0;action<actions;++action) {
+      const int next=cell==4?4:std::clamp(cell+(action?1:-1),0,4);
+      transitions[(cell*actions+action)*states+next]=1;
+    }
+  }
+  const auto dynamics=n::from_vector(transitions,{states*actions,states});
+  const auto start=n::from_vector<float>({1,0,0,0,0});
+  const auto occupancy=[&](const n::Tensor& policy) {
+    return dm::rl::finite_policy_occupancy(policy,dynamics,start,horizon,.95f);
+  };
+  const auto expert=n::from_vector<float>({0,1,0,1,0,1,0,1,.5f,.5f},{states,actions});
+  const auto expert_visits=occupancy(expert).first;
+  n::ParameterStore actor,disc;
+  const auto logits=actor.get("logits",{4,2},n::init::zeros());
+  const auto classifier=disc.get("logits",{5,2},n::init::zeros());
+  n::Optimizer actor_adam(actor,.06,{.kind=n::OptimizerKind::Adam});
+  n::Optimizer disc_adam(disc,.08,{.kind=n::OptimizerKind::Adam});
+  const auto evaluate=[&] {
+    const auto full=n::concat({logits,n::zeros({1,2})},0);
+    const auto policy=n::softmax(full,-1);
+    const auto [learner,final]=occupancy(policy);
+    const auto losses=dm::rl::gail_occupancy_losses(learner,expert_visits,
+        n::log_softmax(full,-1),classifier);
+    return std::tuple{policy,learner,final,losses};
+  };
+  std::vector<double> success;
+  std::filesystem::create_directories("build/gail");
+  std::print("| Phase | Goal probability | Discriminator loss |\n|---:|---:|---:|\n");
+  for (int phase=0;phase<=3;++phase) {
+    if (phase) {
+      for (int step=0;step<24;++step) {
+        for (int i=0;i<2;++i) disc_adam.step(n::grad(std::get<3>(evaluate())[0],{classifier}));
+        actor_adam.step(n::grad(std::get<3>(evaluate())[1],{logits}));
+      }
+    }
+    const n::NoGradGuard guard;
+    const auto [policy,learner,final,losses]=evaluate();
+    success.push_back(final.to_vector<float>()[4]);
+    std::print("| {} | {:.6f} | {:.6f} |\n",phase,success.back(),losses[0].item());
+    n::save_npz(std::format("build/gail/phase{}.npz",phase),{{"policy",policy},
+        {"learner",learner},{"expert",expert_visits},{"disc_logits",classifier},
+        {"reward",losses[2]},{"disc_loss",losses[0]},{"actor_loss",losses[1]}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},success,"Learned policy",{37,99,235})
+      .title("GAIL on a five-state chain").x_label("Training phase").y_label("Goal probability")
+      .ylim(0,1).size(800,460).save_svg("build/gail.svg");
+}
+```
+// result_begin: markdown
+| Phase | Goal probability | Discriminator loss |
+|---:|---:|---:|
+| 0 | 0.250000 | 0.693147 |
+| 1 | 0.992012 | 0.681037 |
+| 2 | 0.999353 | 0.688250 |
+| 3 | 0.999750 | 0.689663 |
+\image(figures/gail.svg)
+// result_end

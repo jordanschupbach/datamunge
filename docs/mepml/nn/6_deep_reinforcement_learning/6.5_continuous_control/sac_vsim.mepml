@@ -656,7 +656,7 @@ auto native_alpha_adam_minimize=[&](const Tensor& loss){auto gradients=nn::grad(
 // Quick demonstration: bounded training; convergence metrics require DATAMUNGE_EXAMPLES_FULL=1.
 // == SAC on Native InvertedPendulum: 256 native transitions, batch 8, hidden 32
 //   actor 1282 parameters, twin critics 2562
-//   training loop 0.1661 seconds, 1541.7 native transitions/s (CPU physics and NN)
+//   training loop 0.0823 seconds, 3111.8 native transitions/s (CPU physics and NN)
 //   maximum actor parameter change 0.0330793
 //   transitions 256, optimizer updates 224, completed episodes 62
 //   deterministic evaluation before 9.00, after 10.00; final critic loss 1.21645, alpha 0.9342, entropy 0.759

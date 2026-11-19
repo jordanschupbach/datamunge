@@ -1,0 +1,86 @@
+//? Title: SwAV with balanced prototype assignments
+//? Lang: en
+
+> SwAV with balanced prototype assignments
+
+SwAV scores each crop against a set of trainable prototypes. For each
+view group, Sinkhorn scaling alternates between equalizing total mass
+across prototypes and normalizing each crop's assignments to sum to one.
+Each crop then predicts its companion's soft assignment. The assignment
+acts as a fixed target during differentiation, so the loss updates the
+encoder, projection MLP and prototypes through the predicted scores.
+
+The compact example fits eight prototypes on paired synthetic crops.
+It plots the held-out swapped loss and the final soft assignment matrix.
+Column totals quantify prototype balance even when individual
+assignments are highly concentrated.
+
+```{cpp, results="markdown", file="figures/swav_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int batch = 32, count = 8;
+  std::mt19937 training(50202), testing(50203);
+  n::ParameterStore model(50201);
+  const auto test = n::synthetic_contrastive_views(testing, batch, true);
+  const auto forward = [&](const n::Tensor &views) { return n::swav(model, "swav", views); };
+  forward(test.views);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .008, config);
+  std::vector<double> epochs, losses;
+  std::print("| Epoch | Held-out swapped loss | Largest column mass error |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto result = forward(test.views);
+      const auto mass = n::sum(result.assignments.reshape({2, batch, count}), {1});
+      const auto error = n::max(n::abs(mass - double(batch) / count)).item();
+      epochs.push_back(epoch);
+      losses.push_back(result.loss.item());
+      std::print("| {} | {:.6f} | {:.6f} |\n", epoch, losses.back(), error);
+    }
+    if (epoch < 3)
+      for (int update = 0; update < 24; ++update)
+        adam.minimize(forward(n::synthetic_contrastive_views(training, batch, true).views).loss);
+  }
+
+  n::NoGradGuard guard;
+  const auto result = forward(test.views);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/swav_fit.npz",
+      {{"unit", result.unit}, {"prototypes", result.prototypes}, {"scores", result.scores},
+       {"assignments", result.assignments}, {"loss", result.loss}});
+  auto loss_plot = dm::graphics::RPlot::create();
+  loss_plot.lines(epochs, losses, "Held-out", {37, 99, 235})
+      .title("Swapped prediction loss").x_label("Epoch").y_label("Cross-entropy");
+  auto assignments_plot = dm::graphics::RPlot::create();
+  const auto first = n::slice_axis(result.assignments, 0, 0, batch);
+  std::vector<std::vector<double>> columns;
+  for (int k = 0; k < count; ++k)
+    columns.push_back(n::select(first, 1, k).to_vector<double>());
+  assignments_plot.image(n::arange(1, count + 1).to_vector<double>(),
+                         n::arange(1, batch + 1).to_vector<double>(),
+                         columns, dm::graphics::terrain_colors(32), 0., 1.)
+      .title("First-view soft assignments").x_label("Prototype").y_label("Held-out crop");
+  dm::graphics::RLayout::create(1, 2).add(loss_plot).add(assignments_plot).size(1050, 450)
+      .fit_panels().save_svg("build/swav_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out swapped loss | Largest column mass error |
+|---:|---:|---:|
+| 0 | 2.921565 | 0.000000 |
+| 1 | 1.731502 | 0.000000 |
+| 2 | 1.357176 | 0.000043 |
+| 3 | 1.303926 | 0.000560 |
+\image(figures/swav_fit.svg)
+// result_end
+\caption(Held-out swapped loss and final first-view assignment probabilities on a zero-to-one scale.)
+\alttext(A line plot shows cross-entropy by epoch and a heatmap shows assignment probabilities for 32 crops and eight prototypes.)
+
+> Reference
+
+- [Caron et al. (2020), Unsupervised Learning of Visual Features by Contrasting Cluster Assignments](https://arxiv.org/abs/2006.09882).

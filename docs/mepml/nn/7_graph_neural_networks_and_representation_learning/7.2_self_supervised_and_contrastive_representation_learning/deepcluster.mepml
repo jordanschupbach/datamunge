@@ -1,0 +1,128 @@
+//? Title: DeepCluster with balanced pseudo-labels
+//? Lang: en
+
+> DeepCluster with balanced pseudo-labels
+
+DeepCluster alternates between clustering the current embeddings and training
+the encoder to predict those cluster assignments. Here k-means++ and 40
+Lloyd updates fit three centers. Inverse cluster-size weights give each
+occupied cluster the same total weight. Every round resets the linear
+classification head and takes eight full-batch SGD steps with fixed labels.
+
+The data contain horizontal, vertical and diagonal stripes with random
+shifts, gain and noise. Stripe type is reserved for evaluation. After three
+rounds, the model fits fresh centers on training embeddings and assigns
+held-out embeddings to their nearest center. The report also exports the
+initial and learned embeddings to `build/deepcluster_evaluation.npz`.
+The frozen-representation report accepts that archive through
+`DM_DEEPCLUSTER_EVALUATION`.
+
+```{cpp, results="markdown", file="figures/deepcluster_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto sample = [](int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise(0.f, .22f);
+    std::uniform_real_distribution<float> gain(.65f, 1.3f);
+    std::vector<float> pixels;
+    std::vector<int> labels;
+    for (int i = 0; i < count; ++i) {
+      const int kind = i % 3, shift = int(rng() % 3) - 1;
+      const float amplitude = gain(rng);
+      labels.push_back(kind);
+      for (int row = 0; row < 8; ++row)
+        for (int col = 0; col < 8; ++col) {
+          const int c = kind == 0 ? row : kind == 1 ? col : (row + col) % 8;
+          pixels.push_back(amplitude * (c >= 3 + shift && c <= 4 + shift) + noise(rng));
+        }
+    }
+    return std::pair{n::from_vector(pixels, {count,64}), n::from_vector(labels)};
+  };
+  const auto [train, train_labels] = sample(192, 50803);
+  const auto [test, labels] = sample(96, 50804);
+  n::ParameterStore model(50801);
+  const auto encode = [&](const n::Tensor &x) {
+    const auto hidden = n::dense(model, "hidden", x, 24, n::Activation::Relu);
+    const auto z = n::dense(model, "feature", hidden, 12, n::Activation::Tanh);
+    return z / n::sqrt(n::sum(n::square(z), {1}, true) + 1e-8);
+  };
+  const auto classify = [&](const n::Tensor &z) { return n::dense(model, "head", z, 3); };
+  classify(encode(train));
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer sgd(model, .25, config);
+  n::Generator resets(50802);
+  n::ml::KMeans kmeans(12);
+  const auto centers_for = [&](const n::Tensor &z, int seed) {
+    auto c = kmeans.Initialize(z, 3, seed, true);
+    for (int step = 0; step < 40; ++step)
+      c = kmeans.Step(z, c).centers;
+    return c;
+  };
+  const auto initial_train = encode(train).detach(), initial_test = encode(test).detach();
+  std::filesystem::create_directories("build");
+  std::vector<double> rounds{1,2,3}, first, last, inertia;
+  std::print("| Round | Weighted NLL before | Weighted NLL after | Inertia |\n|---:|---:|---:|---:|\n");
+  for (int round = 1; round <= 3; ++round) {
+    const auto z = encode(train).detach();
+    const auto centers = centers_for(z, 50805 + round);
+    const auto cluster = kmeans.Step(z, centers);
+    const auto weights = n::cluster_balanced_weights(cluster.labels, 3);
+    model.set("head/W", n::uniform({12,3}, -.15, .15, resets));
+    model.set("head/b", n::zeros({3}));
+    const auto before = classify(z).detach();
+    first.push_back(n::deepcluster_loss(before, cluster.labels, weights).item());
+    for (int step = 0; step < 8; ++step)
+      sgd.minimize(n::deepcluster_loss(classify(encode(train)), cluster.labels, weights));
+    const auto after = classify(encode(train)).detach();
+    last.push_back(n::deepcluster_loss(after, cluster.labels, weights).item());
+    inertia.push_back(cluster.inertia);
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} |\n", round, first.back(), last.back(), inertia.back());
+    n::save_npz("build/deepcluster_round" + std::to_string(round) + ".npz",
+        {{"embedding", z}, {"centers", centers}, {"pseudo", cluster.labels}, {"weights", weights},
+         {"before", before}, {"after", after}, {"loss_before", n::scalar(first.back())},
+         {"loss_after", n::scalar(last.back())}});
+  }
+
+  n::NoGradGuard guard;
+  const auto final_train = encode(train), final_test = encode(test);
+  const auto centers = centers_for(final_train, 50809);
+  const auto predicted = kmeans.Step(final_test, centers).labels;
+  n::save_npz("build/deepcluster_evaluation.npz", {{"training", final_train}, {"held_out", final_test},
+      {"centers", centers}, {"predicted", predicted}, {"labels", labels}, {"train_labels", train_labels},
+      {"initial_training", initial_train}, {"initial_test", initial_test}});
+  const auto classes = n::one_hot(labels, 3, 1, 0, n::DType::Float32);
+  const auto assignments = n::one_hot(predicted, 3, 1, 0, n::DType::Float32);
+  const auto confusion = n::matmul(classes.transpose(), assignments);
+  std::vector<std::vector<double>> columns;
+  for (int i = 0; i < 3; ++i)
+    columns.push_back(n::select(confusion, 1, i).to_vector<double>());
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines(rounds, first, "Before", {100,116,139}).lines(rounds, last, "After", {22,120,97})
+      .legend({"Before","After"}, {{100,116,139}, {22,120,97}})
+      .title("Fixed pseudo-label loss").x_label("Round").y_label("Weighted cross-entropy");
+  auto heat = dm::graphics::RPlot::create();
+  heat.image({0.,1.,2.}, {0.,1.,2.}, columns, dm::graphics::terrain_colors(32), 0., 32.)
+      .title("Held-out count by stripe type").x_label("Cluster ID")
+      .y_label("Stripe (0 horizontal, 1 vertical, 2 diagonal)");
+  dm::graphics::RLayout::create(1, 2).add(loss).add(heat).size(1080,430)
+      .fit_panels().save_svg("build/deepcluster_fit.svg");
+}
+```
+// result_begin: markdown
+| Round | Weighted NLL before | Weighted NLL after | Inertia |
+|---:|---:|---:|---:|
+| 1 | 1.069879 | 0.878334 | 64.705841 |
+| 2 | 1.145780 | 0.883235 | 67.326996 |
+| 3 | 1.082267 | 0.784440 | 70.342438 |
+\image(figures/deepcluster_fit.svg)
+// result_end
+\caption(Within-round pseudo-label loss and held-out cluster membership by true stripe type.)
+\alttext(A line plot compares loss before and after updates. A heatmap cross-tabulates three true stripe types and three fitted clusters.)
+
+> Reference
+
+- [Caron et al. (2018), Deep Clustering for Unsupervised Learning of Visual Features](https://arxiv.org/abs/1807.05520).

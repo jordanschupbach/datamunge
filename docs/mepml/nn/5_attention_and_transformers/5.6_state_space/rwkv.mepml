@@ -1,0 +1,129 @@
+//? Title: RWKV-4 next-event prediction
+//? Lang: en
+
+> RWKV-4 next-event prediction
+
+Time mixing interpolates each normalized token with its predecessor and
+projects the result into keys, values, and a receptance gate. A recurrent
+weighted average discounts past tokens and adds a learned bonus for the
+current token. Subtracting the running maximum before exponentiation
+keeps the weighted sums numerically stable. The receptance gate controls
+how much of the weighted average reaches the output.
+
+Channel mixing again interpolates adjacent tokens, then applies a
+gated squared-ReLU expansion. The report trains both parts together
+to predict the next event in simulated monophonic phrases. It plots
+validation loss and the fitted weighted averages for one channel.
+A suffix edit checks that earlier logits remain unchanged.
+
+The native fit uses Datamunge initialization. Set `DM_RWKV_REFERENCE`
+to upstream `output/models/rwkv` to replay its weights.
+
+[Peng et al. (2023)|https://arxiv.org/abs/2305.13048]
+
+```{cpp, results="markdown", file="figures/rwkv.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <set>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int steps=15, vocab=26, width=24;
+  std::mt19937 random(41382);
+  std::set<std::array<int,steps+1>> seen;
+  std::vector<int> corpus;
+  const std::array movement{0,2,4,7,4,2,0,5};
+  while (seen.size()<384) {
+    const int root=random()%5;
+    std::array<int,steps+1> phrase{};
+    for (int t=0;t<=steps;++t) {
+      const int duration=t%4==3 || random()%7==0;
+      int pitch=root+movement[t%8];
+      if (random()%11==0) pitch=(pitch+10)%12;
+      phrase[t]=t>0 && random()%9==0 ? 24+duration : 2*pitch+duration;
+    }
+    if (seen.insert(phrase).second) corpus.insert(corpus.end(),phrase.begin(),phrase.end());
+  }
+  const auto phrases=n::from_vector(corpus,{384,steps+1});
+  const auto input=n::slice(phrases,{0,0},{384,steps});
+  const auto target=n::slice(phrases,{0,1},{384,steps});
+  const auto test_x=n::slice(input,{320,0},{64,steps}), test_y=n::slice(target,{320,0},{64,steps});
+  const auto valid_x=n::slice(input,{256,0},{64,steps}), valid_y=n::slice(target,{256,0},{64,steps});
+  n::ParameterStore params(43201);
+  const auto model=[&](const n::Tensor& ids) {
+    const auto x=n::gather(params.get("embedding",{vocab,width},n::init::normal(.12)),ids);
+    const auto [state,wkv]=n::rwkv4_block(params,"",x);
+    const auto normalized=n::layer_norm(params,"final",state);
+    return std::pair{n::dense(params,"head",normalized,vocab),wkv};
+  };
+  const auto loss=[](const n::Tensor& logits,const n::Tensor& target) {
+    return n::sparse_softmax_cross_entropy(logits,target);
+  };
+  const auto inspect=[&](const n::Tensor& x,const n::Tensor& y) {
+    const n::NoGradGuard no_grad;
+    return loss(model(x).first,y).item();
+  };
+  const double initial=inspect(test_x,test_y);
+  std::vector<double> validation{inspect(valid_x,valid_y)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.003,config);
+  n::BatchOrder order(256,16,43202);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(model(n::take_rows(input,rows)).first,n::take_rows(target,rows)));
+    }
+    validation.push_back(inspect(valid_x,valid_y));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,wkv]=model(test_x);
+  const auto score=loss(logits,test_y);
+  auto changed=test_x.to_vector<int>();
+  for (int i=0;i<64;++i) {
+    for (int t=7;t<steps;++t) changed[i*steps+t]=(changed[i*steps+t]+1)%vocab;
+  }
+  const auto alternate=model(n::from_vector(changed,{64,steps})).first;
+  const auto prefix_error=n::max(n::abs(n::slice(logits-alternate,{0,0,0},{64,7,vocab}))).item();
+  if (!(score.item()<initial) || prefix_error!=0 || optimizer.iterations()!=48) {
+    throw std::runtime_error("RWKV training or causal prefix check failed");
+  }
+  std::filesystem::create_directories("build");
+  params.save("build/rwkv_weights.npz");
+  n::save_npz("build/rwkv.npz",{{"input",test_x},{"target",test_y},{"loss",score},
+      {"logits",logits},{"wkv",wkv}});
+  std::print("Test NLL {:.6f} to {:.6f}. Earlier logits were identical after the suffix edit.\n",
+             initial,score.item());
+  if (const char* reference=std::getenv("DM_RWKV_REFERENCE")) {
+    const auto folder=std::filesystem::path(reference);
+    params.load((folder/"weights.npz").string());
+    const auto entries=n::load_npz((folder/"audit.npz").string());
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=model(stored.at("input"));
+    const auto logit_error=n::max(n::abs(replay.first-stored.at("logits"))).item();
+    const auto wkv_error=n::max(n::abs(replay.second-stored.at("wkv"))).item();
+    if (!(logit_error<3e-5 && wkv_error<3e-6)) {
+      throw std::runtime_error(std::format("RWKV replay mismatch {} {}",logit_error,wkv_error));
+    }
+    std::print("\nUpstream replay maximum errors of {:.3e} for logits and {:.3e} for weighted averages.\n",
+               logit_error,wkv_error);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},validation,"Validation NLL",{37,99,235})
+      .points({0,1,2,3},validation,"Epoch boundaries",{37,99,235})
+      .title("Validation loss").x_label("Epoch").y_label("Negative log-likelihood");
+  auto trace=dm::graphics::RPlot::create();
+  std::vector<double> positions(steps);
+  std::iota(positions.begin(),positions.end(),1);
+  trace.lines(positions,n::slice(wkv,{0,0,0},{1,steps,1}).to_vector<double>(),
+              "Held-out phrase",{37,99,235})
+      .title("Weighted value in channel one").x_label("Token position").y_label("Weighted value");
+  dm::graphics::RLayout::create(1,2).add(plot).add(trace).size(1050,430).fit_panels()
+      .save_svg("build/rwkv.svg");
+}
+```
+// result_begin: markdown
+Test NLL 3.573025 to 1.948274. Earlier logits were identical after the suffix edit.
+
+Upstream replay maximum errors of 1.669e-06 for logits and 4.768e-07 for weighted averages.
+\image(figures/rwkv.svg)
+// result_end

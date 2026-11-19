@@ -1,0 +1,123 @@
+//? Title: TabNet regression with sequential sparse feature selection
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a compact TabNet model to a response whose active features depend
+on a threshold. Inspect the learned sparse masks alongside fitted values.
+)
+\toc
+
+At each decision step, sparsemax projects the attention scores onto a
+probability simplex and can assign exact zeros. A multiplicative reuse
+prior changes the next step's scores. The model transforms the masked
+features with a shared gated layer and a step-specific residual transform.
+It sums the nonnegative decision channels before the regression head.
+
+The simulator changes which feature contributes when feature zero
+crosses zero. Features four through seven carry no signal. The two
+mask panels average over each half of the held-out data, with separate
+curves for the three decision steps. The averages describe where the
+model assigns mask mass. Training uses the upstream batch schedule and
+Datamunge's native initialization.
+
+```{cpp, results="markdown", file="figures/tabnet_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+std::pair<n::Tensor,n::Tensor> simulate(int rows,unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f,1.f);
+  std::vector<float> x(rows*8), y(rows);
+  for (int i = 0; i < rows; ++i) {
+    auto* row = x.data()+8*i;
+    for (int j = 0; j < 8; ++j) row[j]=uniform(rng);
+    y[i] = row[0]>0.f ? row[1]+.4f*row[3] : row[2]-.4f*row[3];
+  }
+  return {n::from_vector(x,{rows,8}),n::from_vector(y,{rows,1})};
+}
+
+int main() {
+  const auto [x,y] = simulate(2048,16901);
+  const auto [test,observed] = simulate(512,16902);
+  n::ParameterStore parameters(41380);
+  const auto forward = [&](const n::Tensor& input) { return n::tabnet_regression(parameters,"tabnet",input); };
+  double initial;
+  {
+    n::NoGradGuard guard;
+    initial = n::sqrt(n::mean(n::square(forward(test).prediction-observed))).item();
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters,.01,config);
+  n::BatchOrder order(2048,32,16903);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto ids=order.next(); !ids.empty(); ids=order.next())
+      optimizer.minimize(n::mean(n::square(forward(n::take_rows(x,ids)).prediction-n::take_rows(y,ids))));
+  }
+
+  n::NoGradGuard guard;
+  const auto fit = forward(test);
+  const double rmse = n::sqrt(n::mean(n::square(fit.prediction-observed))).item();
+  const double zeros = n::mean(n::equal(fit.masks,0.).to(n::DType::Float64)).item();
+  const double mass_error = n::max(n::abs(n::sum(fit.masks,{2})-1.)).item();
+  if (optimizer.iterations()!=192 || !std::isfinite(rmse) || rmse>=initial || zeros<=0. || mass_error>1e-6)
+    throw std::runtime_error("invalid TabNet fit or feature masks");
+  std::println("| Diagnostic | Value |\n| --- | ---: |");
+  std::println("| Initial held-out RMSE | {:.5f} |\n| Fitted held-out RMSE | {:.5f} |",initial,rmse);
+  std::println("| Exact zero mask fraction | {:.3f} |",zeros);
+  const std::string folder = "build/tabnet/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  parameters.save(folder+"weights.npz");
+  n::save_npz(folder+"predictions.npz",{{"x",test.reshape({512,8,1})},{"y",observed},
+    {"prediction",fit.prediction},{"masks",fit.masks},{"attention_inputs",fit.attention_inputs},
+    {"decisions",fit.decisions}});
+  const double lo=n::min(observed).item(), hi=n::max(observed).item();
+  auto fit_plot = dm::graphics::RPlot::create();
+  fit_plot.points(observed.to_vector<double>(),fit.prediction.to_vector<double>(),"Held-out rows",{37,99,235},3)
+      .lines({lo,hi},{lo,hi},"Perfect prediction",{100,116,139})
+      .title("TabNet regression").x_label("Observed response").y_label("Predicted response")
+      .save_svg(folder+"fit.svg");
+
+  const auto first = n::slice(test,{0,0},{512,1}).reshape({512,1,1});
+  const auto axis = n::arange(0,8).to_vector<double>();
+  const std::array<dm::RGBA,3> colors{{{37,99,235},{191,88,34},{19,130,125}}};
+  auto layout = dm::graphics::RLayout::create(1,2);
+  for (bool positive : {false,true}) {
+    const auto group = (positive ? n::greater(first,0.) : n::less_equal(first,0.)).to(fit.masks.dtype());
+    const auto means = n::sum(group*fit.masks,{0})/n::sum(group);
+    auto masks = dm::graphics::RPlot::create();
+    for (int step = 0; step < 3; ++step)
+      masks.lines(axis,n::slice(means,{step,0},{1,8}).to_vector<double>(),
+                  "Step "+std::to_string(step+1),colors[step]);
+    masks.ylim(0.,1.).title(positive ? "Feature 0 > 0" : "Feature 0 <= 0")
+         .x_label("Feature index").y_label("Mean mask weight");
+    layout.add(masks);
+  }
+  layout.fit_panels().save(folder+"masks.svg");
+  std::filesystem::copy_file(folder+"fit.svg","figures/tabnet_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder+"masks.svg","figures/tabnet_masks.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Diagnostic | Value |
+| --- | ---: |
+| Initial held-out RMSE | 0.62194 |
+| Fitted held-out RMSE | 0.09231 |
+| Exact zero mask fraction | 0.816 |
+\image(figures/tabnet_fit.svg)
+// result_end
+
+\image(figures/tabnet_masks.svg)
+
+> Reference
+
+Arik and Pfister (2021).
+[TabNet: Attentive Interpretable Tabular Learning|https://arxiv.org/abs/1908.07442].

@@ -1,4 +1,5 @@
 #include <datamunge/algorithms/binary_search.hpp>
+#include <datamunge/algorithms/learned_index.hpp>
 #include <gtest/gtest.h>
 #include <algorithm>
 #include <bit>
@@ -100,4 +101,22 @@ TEST(BinarySearchTrace,PerfectTreeProbeSumsMatchClosedForm) {
       EXPECT_EQ(absent.probes,depth);
     }
   }
+}
+
+TEST(LearnedIndex, CertifiesGapsDuplicatesAndExtremes) {
+  constexpr auto min = std::numeric_limits<std::int32_t>::min();
+  constexpr auto max = std::numeric_limits<std::int32_t>::max();
+  const std::vector<std::int32_t> keys{min, min, min + 1, -9, -3, -3, 1, max - 1};
+  for (const auto width : {std::int64_t{1000000000}, std::numeric_limits<std::int64_t>::max()}) {
+    const LearnedIndex index(keys, width);
+    for (const auto query : {min, min + 1, min + 2, -10, -9, -4, -3, 0, 1, 2, max - 1, max}) {
+      const auto expected = static_cast<std::size_t>(std::ranges::lower_bound(keys, query) - keys.begin());
+      const auto [lo, hi] = index.rank_bounds(query);
+      EXPECT_LE(lo, expected);
+      EXPECT_GE(hi, expected);
+      EXPECT_EQ(index.lower_bound(query), expected);
+    }
+  }
+  EXPECT_THROW((LearnedIndex({3, 2}, 1)), std::invalid_argument);
+  EXPECT_THROW((LearnedIndex({min, max}, 1)), std::length_error);
 }

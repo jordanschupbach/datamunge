@@ -1,0 +1,115 @@
+//? Title: Pointer generation with per-example extended vocabularies
+//? Lang: en
+
+> Pointer generation with per-example extended vocabularies
+
+The decoder generates an action token, copies a source entity, and emits
+EOS. Its vocabulary softmax and attention-derived copy distribution are
+combined by a learned gate. Local IDs 12 and 13 stand for distinct
+entities in each example. Their source and decoder embeddings are shared
+through UNK, while their copy probabilities remain distinct. Repeated
+mentions of the same local ID contribute to the same output probability.
+
+Teacher forcing trains the three-step decoder. At evaluation the greedy
+path feeds its own tokens back and receives no target sequence. The
+entity identities are disjoint between training, validation and test.
+
+```{cpp, results="markdown", file="figures/extended_pointer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  std::mt19937 rng(41371);
+  std::vector<int> source,lengths,targets,identities;
+  for(int count : {256,64,64}) {
+    const int base=1000+100*int(lengths.size());
+    std::set<std::array<int,5>> seen;
+    while(int(seen.size())<count) {
+      const int first=base+rng()%32, other=base+rng()%32, action=rng()%3;
+      const int gap=rng()%2?10+rng()%2:0, repeated=rng()%2;
+      if(first==other || !seen.insert({first,other,action,gap,repeated}).second)
+        continue;
+      std::vector<int> row{12,4+action};
+      if(gap) row.push_back(gap);
+      if(repeated) row.push_back(12);
+      row.push_back(13);
+      lengths.push_back(row.size());
+      row.resize(6,0);
+      source.insert(source.end(),row.begin(),row.end());
+      targets.insert(targets.end(),{7+action,12,2});
+      identities.insert(identities.end(),{first,other});
+    }
+  }
+  const auto src=n::from_vector(source,{384,6}), len=n::from_vector(lengths);
+  const auto tgt=n::from_vector(targets,{384,3});
+  const auto val=n::arange(256,320,1,n::DType::Int64), test=n::arange(320,384,1,n::DType::Int64);
+  n::ParameterStore model(41372);
+  const auto teacher=[&](const n::Tensor &ids) {
+    return n::extended_pointer_generator(model,n::gather(src,ids),n::gather(len,ids),n::gather(tgt,ids));
+  };
+  const auto objective=[](const n::Tensor &prob,const n::Tensor &y) {
+    const auto selected=n::sum(prob*n::one_hot(y,14,1,0,prob.dtype()),{2});
+    return -n::mean(n::log(n::maximum(selected,n::scalar(1e-20,prob.dtype()))));
+  };
+  const auto loss=[&](const n::Tensor &ids) {return objective(teacher(ids)[0],n::gather(tgt,ids));};
+  teacher(val);
+  n::OptimizerConfig cfg;
+  cfg.kind=n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.01,cfg);
+  n::BatchOrder order(256,16,41373);
+  std::vector<double> history;
+  std::print("| Epoch | Validation NLL |\n|---:|---:|\n");
+  for(int epoch=0;epoch<=3;++epoch) {
+    { n::NoGradGuard guard; history.push_back(loss(val).item()); }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if(epoch==3) break;
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) adam.minimize(loss(n::from_vector(rows)));
+  }
+  n::NoGradGuard guard;
+  const auto [mix,gen,alignment,gate,forced]=teacher(test);
+  const auto x=n::gather(src,test), l=n::gather(len,test), y=n::gather(tgt,test);
+  const auto greedy=n::extended_pointer_generator(model,x,l)[4];
+  const auto padded=n::where(n::less(n::arange(0,6,1,n::DType::Int64),l.reshape({64,1})),x,13.);
+  const auto changed=n::extended_pointer_generator(model,padded,l)[4];
+  if(n::count_nonzero(n::not_equal(greedy,changed)).item()!=0. ||
+     n::max(n::abs(n::sum(mix,{2})-1.)).item()>2e-6)
+    throw std::runtime_error("pointer invariants");
+  const auto nll=objective(mix,y);
+  std::print("Test NLL {:.6f}, {}/64 exact sequences and {}/64 correct local copies.\n",nll.item(),
+      n::count_nonzero(n::all(n::equal(greedy,y),{1})).item<int>(),
+      n::count_nonzero(n::equal(n::select(greedy,1,1),12.)).item<int>());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/extended_pointer.npz",{{"source",src},{"lengths",len},{"targets",tgt},
+      {"identities",n::from_vector(identities,{384,2})},{"mixture",mix},{"generator",gen},
+      {"alignment",alignment},{"gate",gate},{"greedy",greedy},{"nll",nll}});
+  auto learning=dm::graphics::RPlot::create();
+  learning.lines({0.,1.,2.,3.},history,"Validation",{37,99,235})
+      .title("Teacher-forced validation").x_label("Epoch").y_label("Token NLL");
+  auto attention=dm::graphics::RPlot::create();
+  std::vector<std::vector<double>> columns;
+  const auto example=n::select(alignment,0,0);
+  for(int i=0;i<6;++i) columns.push_back(n::select(example,1,i).to_vector<double>());
+  attention.image({0.,1.,2.,3.,4.,5.},{0.,1.,2.},columns,dm::graphics::terrain_colors(32),0.,1.)
+      .title("Held-out decoder attention").x_label("Source position").y_label("Decoder step");
+  dm::graphics::RLayout::create(1,2).add(learning).add(attention).size(1050,430)
+      .fit_panels().save_svg("build/extended_pointer.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation NLL |
+|---:|---:|
+| 0 | 2.722146 |
+| 1 | 1.674304 |
+| 2 | 0.891331 |
+| 3 | 0.562269 |
+Test NLL 0.552559, 39/64 exact sequences and 64/64 correct local copies.
+\image(figures/extended_pointer.svg)
+// result_end
+\caption(Validation loss and teacher-forced attention over the first held-out source.)
+\alttext(A line plot shows validation token loss. A heatmap shows source-position attention at the three decoder steps.)
+
+> Reference
+
+- [See et al. (2017), Get To The Point: Summarization with Pointer-Generator Networks](https://aclanthology.org/P17-1099/).

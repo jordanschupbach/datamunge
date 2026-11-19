@@ -180,6 +180,52 @@ int main() {
 // result_end
 
 
+> Solver agreement and near collinearity
+
+The upstream fixture uses orthogonal sinusoidal columns and a second
+harmonic as residual noise. Both direct solvers recover the coefficients,
+and a half-step shift supplies a separate evaluation grid. Making two
+columns nearly equal exposes the precision lost by forming the Gram matrix.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  const auto type=n::DType::Float64;
+  const auto phase=n::arange(0,64,1,type).reshape({64,1})*(2*std::numbers::pi/64);
+  auto design=[](const n::Tensor& t) {
+    return n::concat({n::ones_like(t),std::sqrt(2.)*n::cos(t),std::sqrt(2.)*n::sin(t)},1);
+  };
+  const auto x=design(phase), test_phase=phase+std::numbers::pi/64, test=design(test_phase);
+  const auto truth=n::tensor({.7,-1.2,2.5},{3,1},type);
+  const auto y=n::matmul(x,truth)+.1*n::cos(2*phase);
+  const auto test_y=n::matmul(test,truth)+.1*n::cos(2*test_phase);
+  auto error=[](const n::Tensor& a,const n::Tensor& b){return n::max(n::abs(a-b)).item();};
+  const auto qr=n::ml::LeastSquaresQr(x,y), chol=n::ml::LeastSquaresCholesky(x,y);
+  if(error(qr,truth)>1e-12 || error(chol,truth)>1e-12 ||
+     n::max(n::abs(n::matmul(x,n::matmul(x,qr)-y,true,false))).item()>1e-11)
+    throw std::runtime_error("Direct least squares failed the reference");
+  auto w=n::zeros_like(truth).requires_grad_();
+  n::Optimizer sgd({w},.1);
+  for(int i=0;i<180;++i) sgd.minimize(.5*n::mse(n::matmul(x,w),y));
+  const double train_mse=n::mse(n::matmul(x,w),y).item();
+  const double test_mse=n::mse(n::matmul(test,w),test_y).item();
+  if(error(w,truth)>2e-6 || std::abs(train_mse-.005)>1e-8 || std::abs(test_mse-.005)>1e-9)
+    throw std::runtime_error("SGD fit or held-out residual energy differs");
+  const auto a=n::slice_axis(x,1,1,2), b=a+1e-5*n::slice_axis(x,1,2,3);
+  const auto ill=n::concat({n::ones_like(a),a,b},1), target=1+2*a-2*b;
+  const auto exact=n::tensor({1,2,-2},{3,1},type);
+  const double qr_error=error(n::ml::LeastSquaresQr(ill,target),exact);
+  const double chol_error=error(n::ml::LeastSquaresCholesky(ill,target),exact);
+  if(qr_error>1e-8 || chol_error>.01) throw std::runtime_error("Near-collinear solve differs");
+  std::print("Train and held-out MSE {:.6f}, {:.6f}. Near-collinear coefficient error: QR {:.2e}, Cholesky {:.2e}.\n",
+             train_mse,test_mse,qr_error,chol_error);
+}
+```
+// result_begin: markdown
+Train and held-out MSE 0.005000, 0.005000. Near-collinear coefficient error: QR 1.24e-11, Cholesky 4.30e-06.
+// result_end
+
 > Conclusion
 
 The tensor SGD fits and QR reference agree on a hand-checkable optimum. Orthogonal residuals

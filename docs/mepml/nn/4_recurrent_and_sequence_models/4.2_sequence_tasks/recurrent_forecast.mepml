@@ -1,0 +1,192 @@
+//? Title: Direct LSTM and GRU forecasts with chronological evaluation
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit two recurrent models to the same seasonal series. At each forecast
+origin, the preceding 24 observations produce all six forecast leads.
+Compare the learned forecasts with persistence and a 24-step seasonal baseline.
+)
+\toc
+
+> Form complete target windows inside each split
+
+The series combines a period-24 cycle, slow amplitude modulation, and
+period-12 and period-73 oscillations. Fit on complete targets before index
+768, validate through index 959, and test through index 1151. Compute the
+normalization mean and standard deviation on the first 768 observations.
+In the rolling test, each forecast can use observations that have already
+arrived, including earlier test observations. A perturbation control
+checks that future observations leave the first test forecast unchanged.
+
+> Fit both models
+
+A 12-unit LSTM or GRU summarizes each history. Its last state feeds one
+linear layer with six outputs. Each model trains for three epochs with Adam
+and mean squared error across all leads. The setup mirrors the upstream
+experiment using Datamunge’s native cell and optimizer implementations.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <filesystem>
+#include <numbers>
+#include <numeric>
+#include <print>
+
+namespace n = dm::nn;
+constexpr int lag = 24, horizon = 6, fit_end = 768, validation_end = 960, length = 1152;
+
+std::vector<std::int64_t> origins(int first, int end) {
+  std::vector<std::int64_t> result(end - horizon + 1 - first);
+  std::iota(result.begin(), result.end(), first);
+  return result;
+}
+
+int main() {
+  std::filesystem::create_directories("build/recurrent_forecast");
+  const std::string folder = "build/recurrent_forecast/";
+  std::vector<double> series(length);
+  for (int t = 0; t < length; ++t) {
+    const double phase = 2 * std::numbers::pi * t;
+    series[t] = (1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73);
+  }
+  const auto initial_history = n::from_vector(series, {length});
+  const auto fitting_observations = n::slice_axis(initial_history, 0, 0, fit_end);
+  const double center = n::mean(fitting_observations).item();
+  const double scale = std::sqrt(n::mean(n::square(fitting_observations - center)).item());
+  const auto normalized = n::cast((initial_history - center) / scale, n::DType::Float32);
+  const auto fit_origins = origins(lag, fit_end);
+  const auto validation = n::ForecastWindows(normalized, origins(fit_end, validation_end), lag, horizon);
+  const auto test_origins = origins(validation_end, length);
+  const auto test = n::ForecastWindows(normalized, test_origins, lag, horizon);
+  auto shifted = series;
+  for (int t = validation_end; t < length; ++t)
+    shifted[t] += 100;
+  const auto changed = n::ForecastWindows(
+      n::cast((n::from_vector(shifted, {length}) - center) / scale, n::DType::Float32),
+      {validation_end}, lag, horizon);
+
+  std::vector<double> actual, persistence, seasonal;
+  for (const auto origin : test_origins) {
+    for (int lead = 0; lead < horizon; ++lead) {
+      actual.push_back(series[origin + lead]);
+      persistence.push_back(series[origin - 1]);
+      seasonal.push_back(series[origin + lead - lag]);
+    }
+  }
+  const n::Shape test_shape{std::int64_t(test_origins.size()), horizon};
+  const auto observed = n::from_vector(actual, test_shape);
+  const auto rmse = [&](const n::Tensor& predicted) {
+    return n::sqrt(n::mean(n::square(predicted - observed), {0})).to_vector<double>();
+  };
+  n::NamedTensors saved{{"series", initial_history},
+                        {"origins", n::from_vector(test_origins, {test_shape[0]})},
+                        {"actual", observed},
+                        {"persistence", n::from_vector(persistence, test_shape)},
+                        {"seasonal", n::from_vector(seasonal, test_shape)}};
+  const auto forecast = [](n::ParameterStore& p, const n::Tensor& input, n::RnnKind kind) {
+    return n::RecurrentDirectForecast(p, input, 12, horizon, kind);
+  };
+  for (const auto& [name, kind] : std::array{
+           std::pair{"lstm", n::RnnKind::Lstm}, std::pair{"gru", n::RnnKind::Gru}}) {
+    n::ParameterStore parameters(41380);
+    forecast(parameters, n::slice_axis(test.history, 0, 0, 1), kind);
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(parameters, .01, config);
+    n::BatchOrder order(fit_origins.size(), 32, 41381);
+    for (int epoch = 1; epoch <= 3; ++epoch) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        for (auto& row : rows)
+          row = fit_origins.at(row);
+        const auto batch = n::ForecastWindows(normalized, rows, lag, horizon);
+        const auto loss = n::mean(n::square(forecast(parameters, batch.history, kind) - batch.target));
+        optimizer.step(n::grad(loss, parameters.parameters()));
+      }
+      n::NoGradGuard guard;
+      const double val_mse = n::mean(n::square(forecast(parameters, validation.history, kind) -
+                                               validation.target)).item() * scale * scale;
+      std::println("{} epoch {} validation MSE {:.6f}", name, epoch, val_mse);
+    }
+    n::NoGradGuard guard;
+    const auto first = n::slice_axis(test.history, 0, 0, 1);
+    const auto first_target = n::slice_axis(test.target, 0, 0, 1);
+    if (n::equal_bits(first_target, changed.target) ||
+        !n::equal_bits(forecast(parameters, first, kind), forecast(parameters, changed.history, kind))) {
+      throw std::runtime_error("fixed-origin future perturbation check");
+    }
+    const auto test_prediction = n::cast(forecast(parameters, test.history, kind), n::DType::Float64)
+                                 * scale + center;
+    const auto errors = rmse(test_prediction);
+    std::println("{} test RMSE, lead 1 {:.6f}, lead 6 {:.6f}", name, errors.front(), errors.back());
+    parameters.save(folder + name + ".npz");
+    saved.emplace_back(name, test_prediction);
+  }
+  n::save_npz(folder + "predictions.npz", saved);
+}
+```
+// result_begin:
+// lstm epoch 1 validation MSE 0.072859
+// lstm epoch 2 validation MSE 0.044888
+// lstm epoch 3 validation MSE 0.037052
+// lstm test RMSE, lead 1 0.145328, lead 6 0.238190
+// gru epoch 1 validation MSE 0.153782
+// gru epoch 2 validation MSE 0.047772
+// gru epoch 3 validation MSE 0.035274
+// gru test RMSE, lead 1 0.104865, lead 6 0.231304
+// result_end
+
+> Compare test forecasts by lead
+
+The first panel shows the first 72 rolling one-step forecasts. The second
+uses every test origin to compare RMSE by lead. The seasonal baseline is
+strong because the generator has a prominent, fixed period of 24. In
+this run both fitted models have lower RMSE than the seasonal baseline
+at every lead. At lead one the LSTM gives 0.145 and the GRU gives 0.105,
+compared with 0.253 for the seasonal baseline.
+
+```{cpp, results="markdown", file="figures/recurrent_forecast_fits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <map>
+
+int main() {
+  namespace n = dm::nn;
+  using dm::graphics::RPlot;
+  std::map<std::string, n::Tensor> data;
+  for (const auto& entry : n::load_npz("build/recurrent_forecast/predictions.npz"))
+    data.emplace(entry);
+  const auto origin = n::slice_axis(data.at("origins"), 0, 0, 72).to_vector<double>();
+  const auto observed = data.at("actual");
+  const auto lead_one = [&](const n::Tensor& x) {
+    return n::slice_axis(n::select(x, 1, 0), 0, 0, 72).to_vector<double>();
+  };
+  const auto lead_error = [&](const n::Tensor& x) {
+    return n::sqrt(n::mean(n::square(x - observed), {0})).to_vector<double>();
+  };
+  const std::vector<double> leads{1, 2, 3, 4, 5, 6};
+  auto fits = RPlot::create();
+  fits.lines(origin, lead_one(observed), "Observed", {30, 41, 59})
+      .lines(origin, lead_one(data.at("lstm")), "LSTM", {37, 99, 235})
+      .lines(origin, lead_one(data.at("gru")), "GRU", {234, 88, 12})
+      .title("Rolling one-step predictions").x_label("Test origin").y_label("Value");
+  auto scores = RPlot::create();
+  scores.lines(leads, lead_error(data.at("lstm")), "LSTM", {37, 99, 235})
+        .lines(leads, lead_error(data.at("gru")), "GRU", {234, 88, 12})
+        .lines(leads, lead_error(data.at("persistence")), "Persistence", {100, 116, 139})
+        .lines(leads, lead_error(data.at("seasonal")), "Seasonal naive", {22, 120, 68})
+        .title("Held-out error by lead").x_label("Forecast lead").y_label("RMSE");
+  const auto file = "build/recurrent_forecast/fits.svg";
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(fits).add(scores).size(1280, 510).fit_panels().save_svg(file);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file(file, "figures/recurrent_forecast_fits.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+\image(figures/recurrent_forecast_fits.svg)
+// result_end

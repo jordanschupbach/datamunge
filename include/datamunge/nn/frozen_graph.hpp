@@ -169,4 +169,27 @@ class FrozenGraph {
   struct Impl;
   std::shared_ptr<const Impl> impl_; ///< Shared immutable model owner; no caller-owned references.
 };
+/// @brief Export a trained scalar affine model as an immutable TensorFlow GraphDef.
+///
+/// The graph stores the two scalar values as Const nodes and computes
+/// predictions = features * weight + bias. Feed features:0 with a rank-one
+/// tensor of any batch length and fetch predictions:0. The serialized graph
+/// owns the exact current values and uses no variables or device placement.
+/// @param weight Finite scalar Float32 or Float64 CPU coefficient.
+/// @param bias Finite scalar matching the weight dtype.
+/// @return Standard GraphDef wire bytes, independent of subsequent tensor changes.
+/// @throws std::invalid_argument Incompatible tensors or nonfinite coefficients.
+/// @par Example
+/// @code
+/// namespace n = dm::nn;
+/// const n::FrozenGraph graph(n::export_frozen_affine(n::full({}, 2.), n::full({}, -.5)));
+/// std::println("{}", graph.evaluate({{"features:0", n::full({1}, 4.)}},
+///                                   {"predictions:0"})[0].second.item()); // 7.5
+/// @endcode
+/// @par References
+/// - TensorFlow GraphDef, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/graph.proto
+/// - Protocol Buffers wire encoding, https://protobuf.dev/programming-guides/encoding/
+/// @see FrozenGraph, inference_parameters()
+std::vector<unsigned char> export_frozen_affine(const Tensor& weight, const Tensor& bias);
+
 } // namespace datamunge::nn

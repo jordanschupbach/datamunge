@@ -1,0 +1,149 @@
+//? Title: Inductive node classification with GraphSAGE
+//? Lang: en
+
+> Inductive node classification with GraphSAGE
+
+A sampled mean layer brings each node's own features together with the
+mean features of its sampled neighbors. A learned projection, ReLU, and
+row normalization produce the next embedding. The two layers sample
+four and three distinct neighbors per node, respectively.
+
+The fit and test graphs are generated independently. Each has two groups
+with dense within-group ring connections, occasional cross-group edges,
+and noisy attributes. The model sees four new sets of neighbor samples
+per epoch on the fitting graph. The held-out graph has a different node
+count and fixed neighbor samples for evaluation.
+
+```{cpp, results="markdown", file="figures/graphsage_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+struct Graph {
+  n::Tensor features, labels, adjacency;
+  std::vector<std::vector<int>> neighbors;
+};
+
+Graph simulate(int count, std::mt19937 &rng) {
+  std::vector<int> order(count), labels(count), adjacency(count * count);
+  std::vector<float> features(count * 3);
+  std::iota(order.begin(), order.end(), 0);
+  std::shuffle(order.begin(), order.end(), rng);
+  const auto link = [&](int a, int b) { adjacency[a * count + b] = adjacency[b * count + a] = 1; };
+  std::normal_distribution<float> noise(0.f, .55f);
+  const int half = count / 2;
+  for (int i = 0; i < count; ++i) {
+    const int node = order[i], group = i / half, local = i % half;
+    labels[node] = group;
+    for (const int distance : {1, 2, 4})
+      link(node, order[half * group + (local + distance) % half]);
+    if (group == 0 && local % 3 == 0)
+      link(node, order[half + local]);
+    features[3 * node] = (2 * group - 1) * .4f + noise(rng);
+    features[3 * node + 1] = noise(rng);
+    features[3 * node + 2] = noise(rng);
+  }
+  std::vector<std::vector<int>> neighbors(count);
+  for (int a = 0; a < count; ++a)
+    for (int b = 0; b < count; ++b)
+      if (adjacency[a * count + b])
+        neighbors[a].push_back(b);
+  return {n::from_vector(features, {count, 3}), n::from_vector(labels),
+          n::from_vector(adjacency, {count, count}), std::move(neighbors)};
+}
+
+n::Tensor sample(const Graph &graph, int fanout, std::mt19937 &rng) {
+  std::vector<int> ids;
+  for (auto pool : graph.neighbors) {
+    std::shuffle(pool.begin(), pool.end(), rng);
+    ids.insert(ids.end(), pool.begin(), pool.begin() + fanout);
+  }
+  return n::from_vector(ids, {graph.features.size(0), fanout});
+}
+
+int main() {
+  std::mt19937 fitting(48302), evaluation(48303);
+  const auto fit = simulate(48, fitting), test = simulate(60, evaluation);
+  const auto first = sample(test, 4, evaluation), second = sample(test, 3, evaluation);
+  n::ParameterStore model(48301);
+  const auto forward = [&](const n::Tensor &x, const n::Tensor &a, const n::Tensor &b) {
+    const auto h = n::graphsage_mean_layer(model, "sage0", x, a, 12);
+    const auto z = n::graphsage_mean_layer(model, "sage1", h, b, 8);
+    return std::array{h, z, n::dense(model, "head", z, 2)};
+  };
+  forward(test.features, first, second);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .03, config);
+  std::vector<double> epochs, losses, accuracy;
+  std::print("| epoch | held-out NLL | correct |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto scores = forward(test.features, first, second)[2];
+      const auto correct = n::count_nonzero(n::equal(n::argmax(scores, 1), test.labels)).item<int>();
+      epochs.push_back(epoch);
+      losses.push_back(n::sparse_softmax_cross_entropy(scores, test.labels).item());
+      accuracy.push_back(correct / 60.);
+      std::print("| {} | {:.6f} | {}/60 |\n", epoch, losses.back(), correct);
+    }
+    if (epoch < 3)
+      for (int update = 0; update < 4; ++update) {
+        const auto a = sample(fit, 4, fitting), b = sample(fit, 3, fitting);
+        const auto scores = forward(fit.features, a, b)[2];
+        adam.minimize(n::sparse_softmax_cross_entropy(scores, fit.labels));
+      }
+  }
+
+  n::NoGradGuard guard;
+  const auto [hidden, embedding, scores] = forward(test.features, first, second);
+  const auto order = n::reverse(n::arange(0, 60, 1, n::DType::Int64), {0});
+  const auto inverse = n::argsort(order);
+  const auto remap = [&](const n::Tensor &indices) {
+    return n::gather(inverse, n::gather(indices, order));
+  };
+  const auto reordered = forward(n::gather(test.features, order), remap(first), remap(second))[2];
+  const auto error = n::max(n::abs(reordered - n::gather(scores, order))).item();
+  if (error > 2e-6)
+    throw std::runtime_error("GraphSAGE permutation check failed");
+  std::print("Maximum logit error after remapping node IDs {:.3g}.\n", error);
+
+  n::NamedTensors evidence{{"adjacency", test.adjacency}, {"x", test.features}, {"y", test.labels},
+                           {"sample0", first}, {"sample1", second}, {"embedding0", hidden},
+                           {"embedding1", embedding}, {"logits", scores},
+                           {"test_nll", n::from_vector(losses)}};
+  for (const auto &name : model.names())
+    evidence.emplace_back(name, model.at(name));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/graphsage_fit.npz", evidence);
+
+  auto loss = dm::graphics::RPlot::create();
+  loss.lines(epochs, losses, "Held-out loss", {37, 99, 235})
+      .title("Loss on the independent graph").x_label("Epoch").y_label("NLL");
+  auto score = dm::graphics::RPlot::create();
+  score.lines(epochs, accuracy, "Held-out accuracy", {22, 120, 97})
+      .title("Node classification on the independent graph").x_label("Epoch")
+      .y_label("Fraction correct").y_limits(0, 1.05);
+  dm::graphics::RLayout::create(1, 2).add(loss).add(score).size(1100, 420)
+      .fit_panels().save_svg("build/graphsage_fit.svg");
+}
+```
+// result_begin: markdown
+| epoch | held-out NLL | correct |
+|---:|---:|---:|
+| 0 | 0.762013 | 25/60 |
+| 1 | 0.509378 | 50/60 |
+| 2 | 0.449386 | 49/60 |
+| 3 | 0.440885 | 49/60 |
+Maximum logit error after remapping node IDs 0.
+\image(figures/graphsage_fit.svg)
+// result_end
+\caption(Held-out node classification loss and accuracy after each four-update epoch.)
+\alttext(Line plots of negative log likelihood and accuracy on the separate 60-node graph.)
+
+The same parameters work at either node count. Reordering the graph and
+remapping the sampled neighbor IDs together changes only the output order.
+
+> Reference
+
+- [Hamilton, Ying, and Leskovec (2017), Inductive Representation Learning on Large Graphs](https://arxiv.org/abs/1706.02216).

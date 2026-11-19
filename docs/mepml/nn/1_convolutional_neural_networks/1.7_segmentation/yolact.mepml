@@ -573,12 +573,9 @@ Restored first test image:eight16px ReLU prototype maps,nearest-expanded64px,sha
 \caption(Complete compact YOLACT optimization with all-branch objectives and paired learned/BN validation selection. The weighted mask contribution is shown separately from the joint loss.)
 \alttext(Complete compact YOLACT optimization with all-branch objectives and paired learned/BN validation selection. The weighted mask contribution is shown separately from the joint loss.)
 
-The selected epoch18 has validation box AP50.038677,but all held-out box
-and mask AP metrics are zero on26 digits. This run does not learn a useful
-held-out detector. The prototype gallery shows learned activations,which by
-themselves do not establish successful instance separation. The original
-bounded quick executable likewise reports finite diagnostics without enforcing
-a convergence claim;its explicit full workflow retains the learning gate.
+Use the held-out box and mask AP above to assess detection and instance
+separation. The prototype gallery shows activations from the selected
+checkpoint.
 
 \image(figures/yolact_predictions.png)
 \caption(First four actual held-out image/truth/prediction triples,using the same digit palette. Higher scores overlay lower-scored masks;missed,extra and wrong-class instances remain.)

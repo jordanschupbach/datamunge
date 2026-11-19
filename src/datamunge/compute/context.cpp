@@ -178,6 +178,17 @@ std::string backend_name(Backend backend) {
   }
   throw std::invalid_argument("unknown compute backend");
 }
+std::uint32_t device_count(Backend backend) {
+  switch (backend) {
+    case Backend::CPU:
+      return 1;
+    case Backend::CUDA:
+      return detail::cuda_device_count();
+    case Backend::Vulkan:
+      return detail::vulkan_device_count();
+  }
+  throw std::invalid_argument("unknown compute backend");
+}
 DeviceInfo probe(Device device) {
   const auto name = backend_name(device.backend);
   if (device.backend == Backend::CPU && device.index == 0)

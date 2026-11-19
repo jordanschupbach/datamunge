@@ -99,12 +99,26 @@ int main(){
  const auto b=t::Bpe::Train({{"low",5},{"lower",2},{"newest",6},{"widest",3}},12),copy=t::Bpe::Load(b.Save());
  int checked=0;for(const auto w:{"low","lower","lowest","newest","z"}){if(b.EncodeWord(w)!=copy.EncodeWord(w))return 1;++checked;}
  int rejected=0;for(const std::string bad:{std::string("\xc0\x80",2),std::string("\xed\xa0\x80",3),std::string("\xf4\x90\x80\x80",4)})try{t::Characters(bad);}catch(const std::invalid_argument&){++rejected;}
+ if(t::Whitespace(" café\tnewer\nlowest ")!=std::vector<std::string>{"café","newer","lowest"} ||
+    t::Characters("café🙂")!=std::vector<std::string>{"c","a","f","é","🙂"} ||
+    t::Characters("e\u0301").size()!=2)
+   throw std::runtime_error("Text boundaries differ from the Unicode-scalar reference");
+ const t::WordPiece words({"[PAD]","[UNK]","caf","##é","low","##est","lower"});
+ if(words.EncodeWord("café")!=std::vector<std::string>{"caf","##é"} ||
+    words.EncodeWord("lowest")!=std::vector<std::string>{"low","##est"} ||
+    words.EncodeWord("lower")!=std::vector<std::string>{"lower"} ||
+    words.EncodeWord("lowerx")!=std::vector<std::string>{"[UNK]"} ||
+    words.EncodeWord(std::string(101,'a'))!=std::vector<std::string>{"[UNK]"})
+   throw std::runtime_error("WordPiece longest match or unknown-word handling differs");
+ std::print("Whitespace, Unicode scalars and WordPiece matched the reference tokens.\n\n");
  const auto truncated=t::PadTokens({{2,3,4,5,6}},3);
  if(rejected!=3||truncated.ids.to_vector<int>()!=std::vector<int>({2,3,4}))return 1;
  std::print("Serialized BPE: {} ranked merges; {} encodings exactly preserved.\n\nInvalid UTF-8 cases rejected: {}; right-truncation retains three IDs.\n",b.merges().size(),checked,rejected);
 }
 ```
 // result_begin: markdown
+Whitespace, Unicode scalars and WordPiece matched the reference tokens.
+
 Serialized BPE: 12 ranked merges; 5 encodings exactly preserved.
 
 Invalid UTF-8 cases rejected: 3; right-truncation retains three IDs.

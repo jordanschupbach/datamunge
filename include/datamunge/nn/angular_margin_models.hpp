@@ -3,6 +3,7 @@
 /// @brief Bias-free normalized cosine classification with ArcFace/CosFace target-only training margins.
 #include "datamunge/nn/facenet_models.hpp"
 #include "datamunge/nn/metric_learning_data.hpp"
+#include <limits>
 namespace datamunge::nn::models {
 namespace nn = datamunge::nn;
 /// @brief Choose additive angular or additive cosine training margins.
@@ -297,4 +298,65 @@ inline nn::Tensor AngularClassificationConfusion(const nn::Tensor &logits,
   return nn::unsorted_segment_sum(nn::ones_like(ids), ids, classes * classes)
       .reshape({classes, classes});
 }
+
+/// @brief Evaluate SphereFace's monotonic fourth-order angular margin.
+///
+/// Uses the polynomial for cos(4 theta) and the four sign/offset branches
+/// for theta in [0, pi]. The derivative follows the selected branch.
+///
+/// @param cosine Floating cosine values in [-1,1], any shape.
+/// @return Differentiable transformed cosines of the same shape.
+/// @throws std::invalid_argument For nonfloating input.
+/// @par Example
+/// @code
+/// const auto phi = dm::nn::models::SphereFacePhi(dm::nn::zeros({3}));
+/// @endcode
+/// @par References
+/// - Liu et al. (2017), https://arxiv.org/abs/1704.08063
+/// @see ApplySphereFace()
+inline nn::Tensor SphereFacePhi(const nn::Tensor &cosine) {
+  if (!nn::is_floating(cosine.dtype()))
+    throw std::invalid_argument("SphereFacePhi: expected floating cosines");
+  constexpr double boundary = 0.7071067811865475244;
+  const auto c2 = nn::square(cosine);
+  const auto cos4 = 1. + 8. * (c2 * (c2 - 1.));
+  return nn::where(nn::greater_equal(cosine, boundary), cos4,
+         nn::where(nn::greater_equal(cosine, 0.), -2. - cos4,
+         nn::where(nn::greater_equal(cosine, -boundary), cos4 - 4., -6. - cos4)));
+}
+
+/// @brief Apply the annealed SphereFace margin to labeled logits.
+///
+/// Only the target cosine is blended toward SphereFacePhi(). Both training
+/// and ordinary inference use raw feature norms as the rowwise scale.
+///
+/// @param cosine Floating cosine scores [N,K] with K >= 2.
+/// @param labels Integral [N] target IDs.
+/// @param raw Floating raw features [N,D], D positive.
+/// @param blend Finite target interpolation fraction in [0,1].
+/// @return Training logits and margin-free inference logits [N,K], respectively.
+/// @throws std::invalid_argument For invalid input geometry, labels or blend.
+/// @par Example
+/// @code
+/// namespace n = dm::nn;
+/// const auto scores = n::models::ApplySphereFace(n::zeros({2,3}),
+///     n::arange(0,2,1,n::DType::Int64), n::ones({2,4}), .5);
+/// @endcode
+/// @par References
+/// - Liu et al. (2017), https://arxiv.org/abs/1704.08063
+/// @see SphereFacePhi(), NormalizedAngularHead()
+inline std::pair<nn::Tensor, nn::Tensor> ApplySphereFace(
+    const nn::Tensor &cosine, const nn::Tensor &labels, const nn::Tensor &raw, double blend) {
+  if (cosine.dim() != 2 || cosine.shape()[1] < 2 ||
+      cosine.shape()[1] > std::numeric_limits<int>::max() || raw.dim() != 2 ||
+      raw.shape()[0] != cosine.shape()[0] || raw.shape()[1] < 1 ||
+      !nn::is_floating(raw.dtype()) || !std::isfinite(blend) || blend < 0. || blend > 1.)
+    throw std::invalid_argument("ApplySphereFace: invalid geometry or blend");
+  const auto classes = static_cast<int>(cosine.shape()[1]);
+  angular_margin_detail::Validate(cosine, labels, classes);
+  const auto norm = nn::sqrt(nn::sum(nn::square(raw), {1}, true) + 1e-8);
+  const auto mask = nn::one_hot(labels, classes, 1., 0., cosine.dtype());
+  return {(cosine + (mask * blend) * (SphereFacePhi(cosine) - cosine)) * norm, cosine * norm};
+}
+
 } // namespace datamunge::nn::models

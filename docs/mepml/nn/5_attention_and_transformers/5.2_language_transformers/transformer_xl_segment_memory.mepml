@@ -1,0 +1,112 @@
+//? Title: Transformer-XL segment memory
+//? Lang: en
+
+> Transformer-XL segment memory
+
+This character language model predicts the next character in each of
+two consecutive 16-position segments. At each Transformer layer, the
+second segment projects the first segment’s cached input states into
+keys and values. It sees the entire cache and the causal prefix of its
+own segment. Detaching the cache truncates differentiation at the
+boundary while preserving its effect on predictions.
+
+The attention score adds a content dot product and a query-dependent
+position dot product. The latter uses a projected sinusoid at the
+relative distance between query and key. Two learned biases per head
+adjust those scores before causal softmax. The experiment trains for 48
+Adam updates on the pinned Tiny Shakespeare windows, using native
+parameter initialization. Validation loss is measured each epoch.
+Resetting the cache isolates its effect on the second-segment test loss.
+
+```{cpp, results="markdown", file="figures/transformer_xl_segment_memory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto root = std::filesystem::path(dm::datasets::prepare_example_data("character_rnn"));
+  const auto raw = n::load_npz((root / "character_rnn.npz").string());
+  const std::map<std::string,n::Tensor> arrays(raw.begin(), raw.end());
+  const auto crop = [&](const char* key) { return n::slice_axis(arrays.at(key), 1, 0, 32); };
+  const auto fit_x = crop("fit_input"), fit_y = crop("fit_target");
+  const auto val_x = crop("validation_input"), val_y = crop("validation_target");
+  const auto test_x = crop("test_input"), test_y = crop("test_target");
+  n::ParameterStore model(41417);
+  const auto pair = [&](const n::Tensor& encoded) {
+    auto first = n::transformer_xl_segment(model, n::slice_axis(encoded, 1, 0, 16));
+    auto second = n::transformer_xl_segment(model, n::slice_axis(encoded, 1, 16, 32), first.memory);
+    return std::pair{first, second};
+  };
+  const auto loss = [&](const n::Tensor& ids, const n::Tensor& target) {
+    const auto [first, second] = pair(n::one_hot(ids, 65));
+    return n::sparse_softmax_cross_entropy(n::concat({first.logits, second.logits}, 1), target);
+  };
+  const auto evaluate = [&](const n::Tensor& ids, const n::Tensor& target) {
+    n::NoGradGuard guard;
+    return loss(ids, target).item();
+  };
+  const double initial = evaluate(test_x, test_y);
+  std::vector<double> epoch{0}, validation{evaluate(val_x, val_y)};
+  n::Optimizer optimizer(model, .003, {.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit_x.size(0), 8, 41418);
+  int updates = 0;
+  for (int i = 1; i <= 3; ++i) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x, rows), n::take_rows(fit_y, rows)));
+      ++updates;
+    }
+    epoch.push_back(i);
+    validation.push_back(evaluate(val_x, val_y));
+  }
+  auto encoded = n::one_hot(test_x, 65).requires_grad_(true);
+  const auto [first, second] = pair(encoded);
+  const auto boundary = n::grad(n::sum(second.logits * second.logits), {encoded}).at(0);
+  n::NoGradGuard guard;
+  const auto reset = n::transformer_xl_segment(model, n::slice_axis(encoded, 1, 16, 32));
+  const auto past_grad = n::max(n::abs(n::slice_axis(boundary, 1, 0, 16))).item();
+  const auto live_grad = n::sum(n::abs(n::slice_axis(boundary, 1, 16, 32))).item();
+  const auto past = n::slice_axis(encoded, 1, 0, 16);
+  const auto shifted = n::concat({n::slice_axis(past, 2, 64, 65), n::slice_axis(past, 2, 0, 64)}, 2);
+  const auto current = n::slice_axis(encoded, 1, 16, 32);
+  const auto context_effect = n::sum(n::abs(pair(n::concat({shifted, current}, 1)).second.logits - second.logits)).item();
+  const auto changed_current = n::concat({n::slice_axis(current, 1, 0, 15),
+      n::slice_axis(shifted, 1, 15, 16)}, 1);
+  const auto changed_reset = n::transformer_xl_segment(model, changed_current);
+  const auto causal_error = n::max(n::abs(n::slice_axis(reset.logits - changed_reset.logits, 1, 0, 15))).item();
+  if (updates != 48 || past_grad != 0 || causal_error != 0 || !(live_grad > 1 && context_effect > 1))
+    throw std::runtime_error("segment memory control failed");
+  const auto target = n::slice_axis(test_y, 1, 16, 32);
+  std::print("| Starting test NLL | Final test NLL | Second segment with cache | Second segment reset | Past gradient max |\n");
+  std::print("|---:|---:|---:|---:|---:|\n");
+  std::print("| {:.5f} | {:.5f} | {:.5f} | {:.5f} | {:.1f} |\n", initial, loss(test_x, test_y).item(),
+      n::sparse_softmax_cross_entropy(second.logits, target).item(),
+      n::sparse_softmax_cross_entropy(reset.logits, target).item(), past_grad);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/transformer_xl_segment_memory.npz",
+      {{"input",test_x},{"target",test_y},{"logits",second.logits},{"reset",reset.logits},
+       {"boundary",boundary},{"attention0",second.attention[0]},{"attention1",second.attention[1]}});
+  auto curve = dm::graphics::RPlot::create();
+  curve.line(epoch, validation).title("Validation fit").x_label("Epoch").y_label("Next-character NLL");
+  const auto weights = n::select(n::select(second.attention[0], 0, 0), 0, 0);
+  std::vector<std::vector<double>> columns;
+  for (int key = 0; key < 32; ++key) columns.push_back(n::select(weights,1,key).to_vector<double>());
+  auto heatmap = dm::graphics::RPlot::create();
+  heatmap.image(n::arange(0,32).to_vector<double>(), n::arange(0,16).to_vector<double>(),
+                columns, dm::graphics::terrain_colors(32), 0., 1.)
+      .title("Second segment attention").x_label("Key position including cache").y_label("Query position");
+  dm::graphics::RLayout::create(1,2).add(curve).add(heatmap).size(1120,420).fit_panels()
+      .save_svg("build/transformer_xl_segment_memory.svg");
+}
+```
+// result_begin: markdown
+| Starting test NLL | Final test NLL | Second segment with cache | Second segment reset | Past gradient max |
+|---:|---:|---:|---:|---:|
+| 4.34189 | 3.02047 | 2.96627 | 2.95765 | 0.0 |
+\image(figures/transformer_xl_segment_memory.svg)
+// result_end
+\caption(Validation loss and attention for the first head of the first layer on a held-out window.)
+\alttext(Validation loss is plotted over three epochs beside a heatmap of attention into cached and current positions.)
+
+> Reference
+
+- [Dai et al. (2019), Transformer-XL](https://aclanthology.org/P19-1285/).

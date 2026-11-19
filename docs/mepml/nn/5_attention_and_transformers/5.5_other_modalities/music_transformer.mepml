@@ -1,0 +1,172 @@
+//? Title: Music Transformer with relative attention
+//? Lang: en
+
+> Music Transformer with relative attention
+
+Each causal attention head scores earlier tokens with a content dot
+product and a second dot product between its query and a learned
+embedding of the token distance. This makes the position bias depend
+on the query. Two residual blocks predict the next event in simulated
+monophonic phrases.
+
+After fitting, sample 64 events autoregressively from a one-token
+prompt and save a Standard MIDI File. The plots show validation loss
+and the resulting event sequence. A suffix edit checks that the
+model's earlier logits are unaffected. The native fit uses Datamunge
+initialization. Set `DM_MUSIC_TRANSFORMER_REFERENCE` to the upstream
+`output/models/music_transformer` directory to replay its checkpoint.
+
+[Huang et al. (2019)|https://arxiv.org/abs/1809.04281]
+
+```{cpp, results="markdown", file="figures/music_transformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <set>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int steps=15, vocab=26, width=24;
+  std::mt19937 random(41382);
+  std::set<std::array<int,steps+1>> seen;
+  std::vector<int> corpus;
+  const std::array movement{0,2,4,7,4,2,0,5};
+  while (seen.size()<384) {
+    const int root=random()%5;
+    std::array<int,steps+1> phrase{};
+    for (int t=0;t<=steps;++t) {
+      const int duration=t%4==3 || random()%7==0;
+      int pitch=root+movement[t%8];
+      if (random()%11==0) pitch=(pitch+10)%12;
+      phrase[t]=t>0 && random()%9==0 ? 24+duration : 2*pitch+duration;
+    }
+    if (seen.insert(phrase).second) corpus.insert(corpus.end(),phrase.begin(),phrase.end());
+  }
+  const auto phrases=n::from_vector(corpus,{384,steps+1});
+  const auto input=n::slice(phrases,{0,0},{384,steps});
+  const auto target=n::slice(phrases,{0,1},{384,steps});
+  const auto test_x=n::slice(input,{320,0},{64,steps}), test_y=n::slice(target,{320,0},{64,steps});
+  const auto valid_x=n::slice(input,{256,0},{64,steps}), valid_y=n::slice(target,{256,0},{64,steps});
+  n::ParameterStore params(42501);
+  const auto model=[&](const n::Tensor& ids) {
+    auto state=n::gather(params.get("events",{vocab,width},n::init::normal(.15)),ids);
+    std::array<n::Tensor,2> attention;
+    for (int block=0;block<2;++block) {
+      const auto name=std::format("block{}",block);
+      const auto att=name+"/attention";
+      const auto norm=n::layer_norm(params,name+"/ln1",state);
+      const auto project=[&](const char* key) {
+        return n::split_heads(n::matmul(norm,params.get(att+key,{width,width},n::init::lecun_uniform())),3);
+      };
+      const auto q=project("/Wq"), k=project("/Wk"), v=project("/Wv");
+      const auto offsets=params.get(att+"/relative",{steps,8},n::init::normal(.08));
+      const auto result=n::causal_relative_attention(q,k,v,offsets);
+      attention[block]=result.weights;
+      const auto out=params.get(att+"/Wo",{width,width},n::init::lecun_uniform());
+      const auto residual=state+n::matmul(n::merge_heads(result.output),out);
+      const auto ff=n::dense(params,name+"/up",n::layer_norm(params,name+"/ln2",residual),
+                             2*width,n::Activation::GeluTanh);
+      state=residual+n::dense(params,name+"/down",ff,width);
+    }
+    return std::array{n::dense(params,"head",n::layer_norm(params,"final",state),vocab),
+                      attention[0],attention[1]};
+  };
+  const auto loss=[](const n::Tensor& logits,const n::Tensor& target) {
+    return n::sparse_softmax_cross_entropy(logits,target);
+  };
+  const auto inspect=[&](const n::Tensor& x,const n::Tensor& y) {
+    const n::NoGradGuard no_grad;
+    return loss(model(x)[0],y).item();
+  };
+  const double initial=inspect(test_x,test_y);
+  std::vector<double> validation{inspect(valid_x,valid_y)};
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer optimizer(params,.003,config);
+  n::BatchOrder order(256,16,42502);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(model(n::take_rows(input,rows))[0],n::take_rows(target,rows)));
+    }
+    validation.push_back(inspect(valid_x,valid_y));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [logits,a0,a1]=model(test_x);
+  const auto score=loss(logits,test_y);
+  auto changed=test_x.to_vector<int>();
+  for (int row=0;row<64;++row) {
+    for (int t=7;t<steps;++t) changed[row*steps+t]=(changed[row*steps+t]+1)%vocab;
+  }
+  const auto alternate=model(n::from_vector(changed,{64,steps}))[0];
+  const auto prefix=n::slice(logits-alternate,{0,0,0},{64,7,vocab});
+  if (!(score.item()<initial) || n::max(n::abs(prefix)).item()!=0 || optimizer.iterations()!=48) {
+    throw std::runtime_error("Music Transformer fit or causal prefix check failed");
+  }
+  const auto sample=[&] {
+    std::vector<int> codes{0};
+    std::vector<float> sampled;
+    std::vector<double> uniforms;
+    std::mt19937 rng(42503);
+    for (int t=0;t<64;++t) {
+      const int count=std::min(steps,t+1);
+      std::vector<int> context(steps);
+      std::copy(codes.end()-count,codes.end(),context.begin());
+      const auto last=n::slice(model(n::from_vector(context,{1,steps}))[0],{0,count-1,0},{1,1,vocab});
+      const auto values=last.to_vector<float>();
+      sampled.insert(sampled.end(),values.begin(),values.end());
+      const double peak=*std::max_element(values.begin(),values.end());
+      std::array<double,vocab> mass{};
+      std::transform(values.begin(),values.end(),mass.begin(),[&](double value){return std::exp(value-peak);});
+      const double draw=(double(rng())+.5)/4294967296.;
+      uniforms.push_back(draw);
+      double needle=draw*std::accumulate(mass.begin(),mass.end(),0.0);
+      int token=0;
+      while (token+1<vocab && needle>=mass[token]) needle-=mass[token++];
+      codes.push_back(token);
+    }
+    return std::tuple{codes,n::from_vector(sampled,{64,vocab}),n::from_vector(uniforms)};
+  };
+  const auto [codes,sampled,uniforms]=sample();
+  std::vector<dm::MidiEvent> events;
+  for (int token:codes) events.push_back({token>=24 ? -1 : 60+token/2,token%2 ? 480u : 240u});
+  std::filesystem::create_directories("build");
+  const auto notes=dm::write_midi("build/generated.mid",events);
+  params.save("build/music_transformer_weights.npz");
+  n::save_npz("build/music_transformer.npz",{{"corpus",phrases},{"logits",logits},{"nll",score},
+      {"attention0",a0},{"attention1",a1},{"codes",n::from_vector(codes)},{"uniform",uniforms},{"sample_logits",sampled}});
+  std::print("Test NLL {:.6f} to {:.6f}. Prefix logits unchanged. Generated {} MIDI notes including the prompt.\n",
+             initial,score.item(),notes);
+  if (const char* reference=std::getenv("DM_MUSIC_TRANSFORMER_REFERENCE")) {
+    const auto path=std::filesystem::path(reference);
+    params.load((path/"weights.npz").string());
+    const auto entries=n::load_npz((path/"audit.npz").string());
+    const std::map<std::string,n::Tensor> stored(entries.begin(),entries.end());
+    const auto replay=model(test_x);
+    const std::array keys{"logits","attention0","attention1"};
+    double worst=0;
+    for (int i=0;i<3;++i) worst=std::max(worst,n::max(n::abs(replay[i]-stored.at(keys[i]))).item());
+    const auto [tokens,sampled,draws]=sample();
+    const auto sample_error=n::max(n::abs(sampled-stored.at("sample_logits"))).item();
+    if (!(worst<3e-5 && sample_error<3e-5) || tokens!=stored.at("codes").to_vector<int>()) {
+      throw std::runtime_error(std::format("Music Transformer replay mismatch {} {}",worst,sample_error));
+    }
+    std::print("\nUpstream replay maximum errors {:.3e} for held-out outputs and {:.3e} for sampled logits. "
+               "All sampled tokens match.\n",worst,sample_error);
+  }
+  auto validation_plot=dm::graphics::RPlot::create();
+  validation_plot.lines({0,1,2,3},validation,"Validation NLL",{37,99,235})
+      .title("Validation loss").x_label("Epoch").y_label("Negative log-likelihood");
+  std::vector<double> position(codes.size()), events_as_values(codes.begin(),codes.end());
+  std::iota(position.begin(),position.end(),0);
+  auto generation=dm::graphics::RPlot::create();
+  generation.points(position,events_as_values,"Sampled events",{234,88,12})
+      .title("Autoregressive sample").x_label("Event position").y_label("Event code");
+  dm::graphics::RLayout::create(1,2).add(validation_plot).add(generation).size(1060,425).fit_panels()
+      .save_svg("build/music_transformer.svg");
+}
+```
+// result_begin: markdown
+Test NLL 3.823078 to 1.936422. Prefix logits unchanged. Generated 62 MIDI notes including the prompt.
+
+Upstream replay maximum errors 1.431e-06 for held-out outputs and 1.431e-06 for sampled logits. All sampled tokens match.
+\image(figures/music_transformer.svg)
+// result_end

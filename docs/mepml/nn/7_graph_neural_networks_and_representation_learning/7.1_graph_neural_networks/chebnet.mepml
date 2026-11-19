@@ -1,0 +1,138 @@
+//? Title: Chebyshev graph convolution
+//? Lang: en
+
+> Chebyshev graph convolution
+
+The task is to distinguish clustered and alternating signals on eight-node
+weighted rings. The node order and signal phase change from graph to graph.
+Multiplication by the rescaled Laplacian passes information along edges.
+Higher Chebyshev terms combine successive passes, so a degree-three filter
+can use information up to three hops away. A learned channel projection
+mixes the four terms, then mean pooling produces one representation per graph.
+
+The normalized Laplacian has eigenvalues between zero and two for these
+undirected graphs with positive degrees. Rescaling using two gives the
+operator −D⁻¹ᐟ²AD⁻¹ᐟ². The report trains on 128 graphs and evaluates on 64
+independently seeded graphs.
+
+```{cpp, results="markdown", file="figures/chebnet_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  constexpr int nodes = 8, width = 12, degree = 3;
+  const auto generate = [](int count, std::mt19937 &rng) {
+    std::vector<float> adjacency(count * nodes * nodes), input(count * nodes);
+    std::vector<int> labels;
+    std::uniform_real_distribution<float> weight(.7f, 1.3f), noise(-.15f, .15f);
+    for (int i = 0; i < count; ++i) {
+      std::array<int, nodes> order;
+      std::iota(order.begin(), order.end(), 0);
+      std::shuffle(order.begin(), order.end(), rng);
+      const int label = i % 2, phase = rng() % nodes;
+      labels.push_back(label);
+      for (int j = 0; j < nodes; ++j) {
+        const int a = order[j], b = order[(j + 1) % nodes];
+        const int offset = i * nodes * nodes;
+        adjacency[offset + a * nodes + b] = adjacency[offset + b * nodes + a] = weight(rng);
+        const int position = (j + phase) % nodes;
+        const bool positive = label == 0 ? position < nodes / 2 : position % 2 == 0;
+        input[i * nodes + a] = (positive ? 1.f : -1.f) + noise(rng);
+      }
+    }
+    return std::array{n::from_vector(adjacency, {count, nodes, nodes}),
+                      n::from_vector(input, {count, nodes, 1}), n::from_vector(labels)};
+  };
+  const auto make_operator = [](const n::Tensor &a) {
+    const auto degree_factor = n::rsqrt(n::sum(a, {2}));
+    return -(a * (n::expand_dims(degree_factor, 1) * n::expand_dims(degree_factor, 2)));
+  };
+  const auto basis = [&](const n::Tensor &a, const n::Tensor &x) {
+    return n::chebyshev_graph_basis(make_operator(a), x, degree);
+  };
+
+  std::mt19937 fit_rng(48102), test_rng(48103);
+  std::vector<std::pair<n::Tensor, n::Tensor>> fit;
+  for (int batch = 0; batch < 8; ++batch) {
+    const auto [a, x, y] = generate(16, fit_rng);
+    fit.emplace_back(basis(a, x), y);
+  }
+  const auto [adjacency, input, labels] = generate(64, test_rng);
+  const auto test_basis = basis(adjacency, input);
+
+  n::ParameterStore model(48101);
+  const auto forward = [&](const n::Tensor &features) {
+    const auto hidden = n::dense(model, "filter", features.reshape({-1, degree + 1}),
+                                 width, n::Activation::Relu);
+    return n::dense(model, "head", n::mean(hidden.reshape({-1, nodes, width}), {1}), 2);
+  };
+  forward(test_basis);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(model, .025, config);
+  std::vector<double> epochs, losses, accuracy;
+  std::print("| epoch | held-out NLL | correct |\n|---:|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto logits = forward(test_basis);
+      const auto correct = n::count_nonzero(n::equal(n::argmax(logits, 1), labels)).item<int>();
+      epochs.push_back(epoch);
+      losses.push_back(n::sparse_softmax_cross_entropy(logits, labels).item());
+      accuracy.push_back(correct / 64.);
+      std::print("| {} | {:.6f} | {}/64 |\n", epoch, losses.back(), correct);
+    }
+    if (epoch < 3)
+      for (const auto &[features, observed] : fit)
+        adam.minimize(n::sparse_softmax_cross_entropy(forward(features), observed));
+  }
+
+  n::NoGradGuard guard;
+  const auto logits = forward(test_basis);
+  const auto permutation = n::from_vector(std::vector<int>{7, 3, 5, 2, 1, 0, 6, 4});
+  const auto permuted = basis(n::gather(n::gather(adjacency, permutation, 1), permutation, 2),
+                              n::gather(input, permutation, 1));
+  const auto equivariance = n::max(n::abs(permuted - n::gather(test_basis, permutation, 1))).item();
+  const auto invariance = n::max(n::abs(forward(permuted) - logits)).item();
+  if (std::max(equivariance, invariance) > 2e-6)
+    throw std::runtime_error("node permutation check failed");
+  std::print("Basis equivariance error {:.3g}. Pooled logit error {:.3g}.\n", equivariance, invariance);
+
+  n::NamedTensors evidence{{"adjacency", adjacency}, {"input", input}, {"label", labels},
+                           {"laplacian", make_operator(adjacency)}, {"basis", test_basis},
+                           {"logits", logits}, {"held_out_nll", n::from_vector(losses)}};
+  for (const auto &name : model.names())
+    evidence.emplace_back(name, model.at(name));
+  std::filesystem::create_directories("build");
+  n::save_npz("build/chebnet_fit.npz", evidence);
+
+  auto curve = dm::graphics::RPlot::create();
+  curve.lines(epochs, losses, "Held-out loss", {37, 99, 235})
+      .title("Weighted-ring classification").x_label("Epoch").y_label("Held-out NLL");
+  auto terms = n::plot_tensor_map(n::select(test_basis, 0, 0), -1.5, 1.5);
+  terms.title("Filter basis on one graph").x_label("Polynomial degree").y_label("Node");
+  dm::graphics::RLayout::create(1, 2).add(curve).add(terms).size(1000, 420)
+      .fit_panels().save_svg("build/chebnet_fit.svg");
+}
+```
+// result_begin: markdown
+| epoch | held-out NLL | correct |
+|---:|---:|---:|
+| 0 | 0.680388 | 32/64 |
+| 1 | 0.196413 | 64/64 |
+| 2 | 0.037751 | 64/64 |
+| 3 | 0.008411 | 64/64 |
+Basis equivariance error 5.96e-07. Pooled logit error 4.77e-07.
+\image(figures/chebnet_fit.svg)
+// result_end
+\caption(Held-out loss through three epochs and the coefficients of the four filtered signals for one test graph.)
+\alttext(A line plot of held-out loss and a heatmap of the degree-zero through degree-three Chebyshev signals at eight nodes.)
+
+The task isolates the difference between low- and high-frequency signals
+on weighted rings. The permutation check confirms that relabeling the
+nodes relabels their basis rows and leaves the pooled prediction unchanged.
+
+> Reference
+
+- [Defferrard, Bresson, and Vandergheynst (2016), Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering](https://arxiv.org/abs/1606.09375).

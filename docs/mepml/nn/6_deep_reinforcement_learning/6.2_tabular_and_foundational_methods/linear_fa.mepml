@@ -41,7 +41,7 @@ int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("
 
 > Complete preserved experiment
 
-All60 source episodes retain the1000-step limit,8 tilings of8x8 cells per action, optimistic zero weights, epsilon0, gamma1 and learning rate.5/8. The explicit gather, stopped target and native SGD remain in the report. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+All60 source episodes retain the1000-step limit,8 tilings of8x8 cells per action, optimistic zero weights, epsilon0, gamma1 and learning rate.5/8. The explicit gather, stopped target and native SGD remain in the report. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. The native renderer records the best of the three seeded greedy episodes.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -62,10 +62,8 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // gradients + plain SGD (nn::gather, nn::stop_gradient, nn::Optimizer in place
 // of GatherV2, StopGradient, AddSymbolicGradients and ApplyGradientDescent);
 // only the active tile indices are fed each step. The weights start at zero
-// and the policy is greedy, so the run is deterministic and follows TF's
-// episode for episode (up to float summation order). The vsim video of the
-// greedy policy is omitted: the best of the same 3 seeded episodes is played
-// and reported instead. The port adds checks (exit 1 on failure).
+// and the policy is greedy. The report records the best of the three
+// seeded greedy episodes after training.
 
 
 // Editable workflow support: checks.hpp
@@ -146,8 +144,7 @@ using datamunge::rl::environments::Acrobot;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy choices and reward information.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -328,19 +325,13 @@ struct Hud {
 // RecordBest plays `candidates` seeded episodes (seeds seed .. seed+candidates-1) without
 // filming, then films the one with the highest return. PlayBestOfSeeds runs the same candidate
 // episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
-// (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
+// (common/rl/playback.hpp), which records the episode and prints its return.
 
 
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// Capture the actual position, velocity and reward trace for the native replay.
 
 
 
@@ -368,6 +359,7 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<float> positions{obs[0]}, velocities{obs[1]}, rewards;
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
@@ -376,10 +368,23 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
+    positions.push_back(obs[0]);
+    velocities.push_back(obs[1]);
+    rewards.push_back(r.reward);
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  const std::string filename = name + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  const auto goal = std::is_same_v<Env, datamunge::rl::environments::MountainCarContinuous> ? .45f : .5f;
+  dm::rl::environments::save_mountain_car_replay(positions, "build/" + filename, goal);
+  std::filesystem::copy_file("build/" + filename, "figures/" + filename,
+                             std::filesystem::copy_options::overwrite_existing);
+  dm::nn::save_npz("build/" + name + "_replay.npz",
+      {{"position", dm::nn::from_vector(positions)}, {"velocity", dm::nn::from_vector(velocities)},
+       {"reward", dm::nn::from_vector(rewards)}});
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -509,7 +514,7 @@ int main() {
       }
       std::printf("\n");
     }
-    std::cout << "\n-- The greedy policy on the hill (vsim film omitted)\n";
+    std::cout << "\n-- The greedy policy on the hill\n";
     auto greedy = [&](const rl::Obs& o) {  // the tile-coded q(s, .) without exploration
       return rl::GreedyQ(q_all(o), "q(s,a) from the tiles");
     };
@@ -524,7 +529,7 @@ int main() {
     // The cost-to-go is about the number of steps left: positive and bounded.
     check::Require(max_cost > 20.f && max_cost < 200.f, "cost-to-go should look like steps-to-go (20-200)");
     report_capture::Save("steps",steps_per_episode);report_capture::arrays.push_back({"weights",w.detach().clone()});
-    std::cout << "\nchecks passed (vsim video omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -564,11 +569,11 @@ int main() {
 //   -0.053     16.0   25.1   28.7   27.4   21.4   11.2    1.8   -0.0   -0.0
 //   -0.070      0.6    1.4    5.0    5.5    3.1    0.6   -0.0   -0.0   -0.0
 //
-// -- The greedy policy on the hill (vsim film omitted)
+// -- The greedy policy on the hill
 //   best of 3 episodes (return -155.0):
-//   played linear_fa_mountain_car (video omitted): 155 steps, return -155.0
+//   recorded linear_fa_mountain_car: 155 steps, return -155.0
 //
-// checks passed (vsim video omitted)
+// checks passed
 // result_end
 
 > Inspect the actual experiment results
@@ -586,3 +591,10 @@ int main(){auto archive=dm::nn::load_npz("build/linear_fa_source.npz");auto get=
 > Interpretation and provenance
 
 Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.
+
+> Policy replays
+
+The replay uses the greedy action from the fitted tile-coded value function
+and selects the highest return among the three source seeds.
+
+\video(figures/linear_fa_mountain_car.mp4)

@@ -1,0 +1,134 @@
+//? Title: Deep ensemble of Gaussian regressors
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit five Gaussian regressors independently and average their predictive
+densities. Compare the spread each member predicts with the spread
+of the member means, including beyond the fitted input range.
+)
+\toc
+
+> Fit independent members and average their densities
+
+The training data have mean sin(3x) and noise standard deviation 0.22.
+Every member learns a conditional mean and variance from the same
+256 observations in [−1, 1]. Each receives its own seeds for initialization
+and batch order. Test inputs span [−1.65, 1.65], so they include points
+outside the fitted interval.
+
+The mixture has equal weights. Its predictive variance is the average
+variance within members plus the variance of the member means.
+Compute mixture likelihood with log-sum-exp over the member log
+densities. The fit uses three epochs, and the report retains the observed
+difference between mixture likelihood and mean single-member likelihood.
+
+```{cpp, results="markdown", file="figures/deep_ensemble_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+
+std::pair<n::Tensor, n::Tensor> sample(int count, unsigned seed, float bound) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-bound, bound);
+  std::normal_distribution<float> noise(0.f, .22f);
+  std::vector<float> x(count), y(count);
+  for (int i = 0; i < count; ++i) {
+    x[i] = uniform(rng);
+    y[i] = std::sin(3.f * x[i]) + noise(rng);
+  }
+  return {n::from_vector(x, {count, 1}), n::from_vector(y, {count, 1})};
+}
+
+int main() {
+  const auto [x_fit, y_fit] = sample(256, 74201, 1.f);
+  const auto [x_test, y_test] = sample(512, 74202, 1.65f);
+  const auto query = n::linspace(-1.65, 1.65, 241).reshape({241, 1});
+  const std::string folder = "build/deep_ensemble/";
+  std::filesystem::create_directories(folder);
+  std::vector<n::Tensor> means, variances, grids, grid_variances, logps;
+  for (int member = 0; member < 5; ++member) {
+    n::ParameterStore parameters(74001 + member);
+    const auto predict = [&](const n::Tensor& x) {
+      return n::GaussianRegressionHead(
+          parameters, "head", n::dense(parameters, "hidden", x, 24, n::Activation::Tanh), .001);
+    };
+    predict(n::zeros({1, 1}));
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(parameters, .01, config);
+    n::BatchOrder order(x_fit.size(0), 8, 74101 + member);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        const auto predicted = predict(n::take_rows(x_fit, rows));
+        const auto loss = n::GaussianRegressionNll(predicted, n::take_rows(y_fit, rows));
+        optimizer.step(n::grad(loss, parameters.parameters()));
+      }
+    }
+    n::NoGradGuard frozen;
+    const auto output = predict(x_test), grid = predict(query);
+    means.push_back(n::cast(output.mean, n::DType::Float64));
+    variances.push_back(n::cast(output.variance, n::DType::Float64));
+    grids.push_back(n::cast(grid.mean, n::DType::Float64));
+    grid_variances.push_back(n::cast(grid.variance, n::DType::Float64));
+    logps.push_back(n::GaussianRegressionLogDensity({means.back(), variances.back()},
+                                                  n::cast(y_test, n::DType::Float64)));
+    parameters.save(folder + "member_" + std::to_string(member) + ".npz");
+  }
+
+  const auto member_mean = n::stack(means, 0), member_variance = n::stack(variances, 0);
+  const auto test = n::GaussianEnsembleMoments({member_mean, member_variance});
+  const auto member_logp = n::stack(logps, 0);
+  const auto logp = n::GaussianEnsembleLogDensity(member_logp);
+  const auto mixture_nll = -n::mean(logp).item(), average_nll = -n::mean(member_logp).item();
+  const auto disagreement = n::mean(test.between).item();
+  if (!std::isfinite(mixture_nll) || mixture_nll > average_nll + 1e-12 || disagreement <= 0)
+    throw std::runtime_error("invalid mixture likelihood or variance");
+  std::println("| Held-out statistic | Value |\n| --- | ---: |");
+  std::println("| Mixture NLL | {:.6f} |\n| Mean member NLL | {:.6f} |", mixture_nll, average_nll);
+  std::println("| Mean between-member variance | {:.6f} |", disagreement);
+  n::save_npz(folder + "predictions.npz",
+               {{"x", x_test}, {"y", y_test}, {"means", member_mean}, {"variances", member_variance},
+                {"mean", test.mean}, {"within", test.within}, {"between", test.between},
+                {"total", test.total}, {"log_density", logp}});
+
+  const auto grid = n::GaussianEnsembleMoments({n::stack(grids, 0), n::stack(grid_variances, 0)});
+  const auto t = query.to_vector<double>();
+  const auto sd = n::sqrt(grid.total);
+  const auto upper = (grid.mean + sd).to_vector<double>();
+  auto band = (grid.mean - sd).to_vector<double>();
+  auto order = t;
+  order.insert(order.end(), t.rbegin(), t.rend());
+  band.insert(band.end(), upper.rbegin(), upper.rend());
+  auto fit = dm::graphics::RPlot::create(), variance = dm::graphics::RPlot::create();
+  fit.polygon(order, band, {37, 99, 235, .18})
+      .points(x_test.to_vector<double>(), y_test.to_vector<double>(), "Held-out observations",
+              {100, 116, 139, .35}, 2)
+      .lines(t, grid.mean.to_vector<double>(), "Ensemble mean", {37, 99, 235})
+      .title("Ensemble mean ± one predictive SD").x_label("x").y_label("Response");
+  variance.lines(t, grid.within.to_vector<double>(), "Mean member variance", {22, 120, 68})
+          .lines(t, grid.between.to_vector<double>(), "Variance of member means", {234, 88, 12})
+          .title("Predictive variance components").x_label("x").y_label("Variance");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(fit).add(variance).size(1280, 510).fit_panels().save_svg(folder + "fit.svg");
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/deep_ensemble_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Held-out statistic | Value |
+| --- | ---: |
+| Mixture NLL | 3.502677 |
+| Mean member NLL | 3.894182 |
+| Mean between-member variance | 0.010887 |
+\image(figures/deep_ensemble_fit.svg)
+// result_end
+
+The shaded band shows one standard deviation from the mixture mean.
+Its width describes predictive spread. The second panel separates the
+variance predicted by each member from disagreement between members.

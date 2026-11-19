@@ -178,18 +178,18 @@ Antiderivative difference: 2.000000; quadrature: 2.000000.
 )
 \tab(R,
 
-```{r, results="markdown", nix-shell="git+file:../../..#r", cmd="env R_LIBS_USER=../../../build/r/library Rscript {file}"}
+```{r, results="markdown", nix-shell="git+file:../../..#report-r"}
 suppressPackageStartupMessages(library(datamunger))
 datamunger::hello()
 
-x <- Expr_variable("x")
-f <- x$power(Expr_constant(3))$subtract(x$multiply(Expr_constant(2)))$add(
-  Expr_constant(1)
+x <- Expr$variable("x")
+f <- x$power(Expr$constant(3))$subtract(x$multiply(Expr$constant(2)))$add(
+  Expr$constant(1)
 )
-padded <- f$multiply(Expr_constant(1))$add(Expr_constant(0))
+padded <- f$multiply(Expr$constant(1))$add(Expr$constant(0))
 derivative <- f$differentiate("x")$simplify()
 primitive <- f$integrate("x")$simplify()
-wave <- x$multiply(Expr_constant(2))$sin()
+wave <- x$multiply(Expr$constant(2))$sin()
 
 expressions <- list(
   padded,
@@ -422,15 +422,15 @@ $$
 )
 \tab(R,
 
-```{r, results="markdown", nix-shell="git+file:../../..#r", cmd="env R_LIBS_USER=../../../build/r/library Rscript {file}"}
+```{r, results="markdown", nix-shell="git+file:../../..#report-r"}
 suppressPackageStartupMessages(library(datamunger))
 
-p <- Polynomial(c(-1, 0, 1))
-q <- Polynomial(c(-1, 1))
+p <- Polynomial$new(c(-1, 0, 1))
+q <- Polynomial$new(c(-1, 1))
 quotient <- poly_quotient(p, q)
 remainder <- poly_remainder(p, q)
 gcd <- poly_gcd(p, q)
-reduced <- RationalFunction(p, q)
+reduced <- RationalFunction$new(p, q)
 values <- list(p, q, quotient, remainder, gcd, reduced)
 labels <- c(
   "Dividend p(x)",
@@ -455,7 +455,7 @@ cat(
   "\\quad (x\\ne 1)\n$$\n\n",
   sep = ""
 )
-exponential <- Expr_variable("x")$exp()
+exponential <- Expr$variable("x")$exp()
 taylor <- taylor_series(exponential, "x", 1, 4L)
 cat("Taylor approximation about x = 1, evaluated at h = x - 1:\n\n")
 cat("$$\nT_4(h) = ", taylor$to_tex("h"), "\n$$\n\n", sep = "")

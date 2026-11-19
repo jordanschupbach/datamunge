@@ -1219,7 +1219,7 @@ epoch3 validationCE=0.601493 accuracy=0.664062
   confusion (truth rows):
     44 20
     24 40
-testCE=0.597563 accuracy=0.65625 cueFlip=0.632812 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0373622 s)
+testCE=0.597563 accuracy=0.65625 cueFlip=0.632812 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0867105 s)
 Artifacts:"build/recurrent-models/models/vanilla_rnn/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/vanilla_rnn" not found; skipping the comparison
 // result_end

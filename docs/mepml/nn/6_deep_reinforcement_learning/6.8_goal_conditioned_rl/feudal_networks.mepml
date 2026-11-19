@@ -1,0 +1,131 @@
+//? Title: Directional FeUdal manager and worker
+//? Lang: en
+
+> Directional FeUdal manager and worker
+
+The manager emits a direction every three actions. The worker scores
+each action by the dot product of its learned action vector and that
+direction. It receives an intrinsic reward for motion aligned with
+the goal. The manager learns from alignment between its direction
+and the displacement observed over the complete segment, weighted
+by the segment's discounted extrinsic return.
+
+The task is to reach the lower-right cell of a seven-by-seven grid.
+The extrinsic reward includes progress toward the goal and a bonus
+for reaching it. The worker uses the collected manager direction as
+a fixed input. The manager and worker update after each segment.
+This example uses grid coordinates for the directional representation.
+
+The plot tracks goal arrivals across three groups of 64 training
+episodes. Greedy evaluation starts from every nonterminal cell and
+allows 16 actions. The networks use Datamunge's native initialization.
+
+[Vezhnevets et al. (2017), FeUdal Networks|https://proceedings.mlr.press/v70/vezhnevets17a.html]
+
+```{cpp, results="markdown", file="figures/feudal_networks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  constexpr int goal=48,period=3;
+  const auto point=[](int state){return n::from_vector<float>({float(state/7)/6,float(state%7)/6},{1,2});};
+  const auto distance=[](int state){return 12-state/7-state%7;};
+  n::ParameterStore params(44301);
+  const auto manager=[&](const auto& state){return r::feudal_direction(params,state,16);};
+  const auto worker=[&](const auto& states,const auto& directions) {
+    return r::feudal_action_logits(params,states,directions,16,4);
+  };
+  worker(point(0),manager(point(0)));
+  n::Optimizer optimizer(params,.006,{.kind=n::OptimizerKind::Adam});
+  std::mt19937 rng(44302);
+  std::vector<double> hits;
+  std::vector<float> goals,worker_reward,manager_cosine;
+  std::vector<int> trace;
+  int arrivals=0;
+  std::print("| Phase | Training goals |\n|---:|---:|\n");
+  for (int episode=0;episode<192;++episode) {
+    int state=rng()%goal;
+    for (int segment=0;segment<4 && state!=goal;++segment) {
+      const auto start=point(state);
+      const auto direction=manager(start).detach();
+      const auto components=direction.to_vector<float>();
+      goals.insert(goals.end(),components.begin(),components.end());
+      trace.push_back(state);
+      std::vector<n::Tensor> states,movements;
+      std::vector<int> actions;
+      std::array<float,period> returns{};
+      for (int t=0;t<period;++t) {
+        const auto before=point(state);
+        const auto scores=[&] {
+          const n::NoGradGuard guard;
+          return worker(before,direction).to_vector<float>();
+        }();
+        const float peak=*std::max_element(scores.begin(),scores.end());
+        std::array<double,4> mass;
+        for (int a=0;a<4;++a) mass[a]=std::exp(scores[a]-peak);
+        const int action=std::discrete_distribution<int>(mass.begin(),mass.end())(rng);
+        const int next=state==goal?goal:r::sparse_grid_move(state,action);
+        states.push_back(before);
+        movements.push_back(point(next)-before);
+        actions.push_back(action);
+        returns[t]=.1f*(distance(state)-distance(next))+(state!=goal && next==goal);
+        state=next;
+        trace.push_back(state);
+      }
+      for (int t=period-2;t>=0;--t) returns[t]+=.95f*returns[t+1];
+      const auto signal=n::from_vector(std::vector<float>(returns.begin(),returns.end()));
+      const auto directions=n::broadcast_to(direction,{period,2});
+      const auto logits=worker(n::concat(states,0),directions);
+      const auto chosen=n::sum(n::log_softmax(logits,-1)*n::one_hot(n::from_vector(actions),4),{1});
+      const auto intrinsic=r::feudal_alignment(n::concat(movements,0),directions);
+      const auto cosine=r::feudal_alignment(point(state)-start,manager(start)).sum();
+      const auto loss=-returns.front()*cosine-n::mean(chosen*(signal+.5*intrinsic));
+      optimizer.step(n::grad(loss,optimizer.parameters()));
+      const auto observed=intrinsic.to_vector<float>();
+      worker_reward.insert(worker_reward.end(),observed.begin(),observed.end());
+      manager_cosine.push_back(cosine.item());
+    }
+    arrivals+=state==goal;
+    if (episode%64==63) {
+      hits.push_back(arrivals);
+      std::print("| {} | {} / 64 |\n",hits.size(),arrivals);
+      arrivals=0;
+    }
+  }
+  const n::NoGradGuard guard;
+  int solved=0;
+  for (int start=0;start<goal;++start) {
+    int state=start;
+    n::Tensor direction;
+    for (int t=0;t<16 && state!=goal;++t) {
+      const auto x=point(state);
+      if (t%period==0) direction=manager(x);
+      const auto scores=worker(x,direction).to_vector<float>();
+      state=r::sparse_grid_move(state,std::max_element(scores.begin(),scores.end())-scores.begin());
+    }
+    solved+=state==goal;
+  }
+  const auto segments=std::ssize(manager_cosine);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/feudal_networks_audit.npz",{{"goals",n::from_vector(goals,{segments,2})},
+      {"states",n::from_vector(trace,{segments,period+1})},
+      {"worker_reward",n::from_vector(worker_reward,{segments,period})},
+      {"manager_cosine",n::from_vector(manager_cosine)}});
+  std::print("\nGreedy evaluation solved {} of 48 starts. Training recorded {} segments.\n",solved,segments);
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({1,2,3},hits,"Reached goal",{37,99,235})
+      .title("FeUdal training on a grid").x_label("Phase").y_label("Goal arrivals out of 64")
+      .ylim(0,64).size(820,460).save_svg("build/feudal_networks.svg");
+}
+```
+// result_begin: markdown
+| Phase | Training goals |
+|---:|---:|
+| 1 | 40 / 64 |
+| 2 | 61 / 64 |
+| 3 | 63 / 64 |
+
+Greedy evaluation solved 48 of 48 starts. Training recorded 546 segments.
+\image(figures/feudal_networks.svg)
+// result_end

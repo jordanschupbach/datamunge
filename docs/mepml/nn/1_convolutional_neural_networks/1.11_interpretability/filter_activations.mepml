@@ -192,8 +192,6 @@ int main() {
 }
 ```
 // result_begin: markdown
-Decoded full official VGG16:14714688 unmodified Float32 values,26 arrays.
-Decoded full official VGG19:20024384 unmodified Float32 values,32 arrays.
 Actual RGB shape [2, 64, 64, 3],original JPEG source /home/jordan/.cache/datamunge/datasets/style_transfer/content.jpg and /home/jordan/.cache/datamunge/datasets/style_transfer/style.jpg;unit-channel means float32[2, 3] [[0.649975, 0.662895, 0.477077], [0.553036, 0.44998, 0.394347]].
 \image(figures/filter_activations_inputs.png)
 // result_end
@@ -434,81 +432,121 @@ int main() {
 
 > Regenerate adjacent views from this run
 
-```{cpp, results="markdown", file="figures/filter_activations_layer0_local.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer0_local.png","build/export_filter_activations_layer0_local.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer0_local.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer0_local.png", "build/export_filter_activations_layer0_local.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer0_local.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer0_shared.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer0_shared.png","build/export_filter_activations_layer0_shared.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer0_shared.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer0_shared.png", "build/export_filter_activations_layer0_shared.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer0_shared.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer1_local.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer1_local.png","build/export_filter_activations_layer1_local.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer1_local.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer1_local.png", "build/export_filter_activations_layer1_local.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer1_local.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer1_shared.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer1_shared.png","build/export_filter_activations_layer1_shared.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer1_shared.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer1_shared.png", "build/export_filter_activations_layer1_shared.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer1_shared.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer2_local.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer2_local.png","build/export_filter_activations_layer2_local.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer2_local.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer2_local.png", "build/export_filter_activations_layer2_local.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer2_local.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer2_shared.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer2_shared.png","build/export_filter_activations_layer2_shared.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer2_shared.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer2_shared.png", "build/export_filter_activations_layer2_shared.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer2_shared.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer3_local.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer3_local.png","build/export_filter_activations_layer3_local.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer3_local.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer3_local.png", "build/export_filter_activations_layer3_local.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer3_local.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer3_shared.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer3_shared.png","build/export_filter_activations_layer3_shared.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer3_shared.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer3_shared.png", "build/export_filter_activations_layer3_shared.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer3_shared.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer4_local.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer4_local.png","build/export_filter_activations_layer4_local.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer4_local.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer4_local.png", "build/export_filter_activations_layer4_local.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer4_local.png)
 // result_end
 
-```{cpp, results="markdown", file="figures/filter_activations_layer4_shared.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/filter_activations_layer4_shared.png","build/export_filter_activations_layer4_shared.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/filter_activations_layer4_shared.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/filter_activations_layer4_shared.png", "build/export_filter_activations_layer4_shared.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/filter_activations_layer4_shared.png)

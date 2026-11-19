@@ -1,0 +1,83 @@
+//? Title: Pyramid Vision Transformer on MNIST
+//? Lang: en
+
+> Pyramid Vision Transformer on MNIST
+
+The first stage embeds sixteen 7-by-7 image patches. Each 2-by-2 group
+of nearby tokens is concatenated and projected to one key/value token,
+while all original positions remain queries. The second stage starts
+from a coarser 2-by-2 grid and reduces it to a single key/value token.
+The final stage contains one image token and one learned class token.
+The three attention maps therefore have query/key sizes 16 by 4,
+4 by 1, and 2 by 2.
+
+The model trains on 1,024 MNIST images. A separate 256-image validation
+split supplies the learning curve, and 256 examples from the official
+test split supply the final likelihood and accuracy.
+
+```{cpp, results="markdown", file="figures/pyramid_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto root=std::filesystem::path(dm::datasets::prepare_example_data("mnist-assets"))/"mnist";
+  const auto train=n::load_mnist(root.string(),"train");
+  const auto test=n::load_mnist(root.string(),"test");
+  std::vector<int> train_ids(60000),test_ids(10000);
+  std::iota(train_ids.begin(),train_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 rng(41434);
+  std::shuffle(train_ids.begin(),train_ids.end(),rng);
+  std::shuffle(test_ids.begin(),test_ids.end(),rng);
+  const auto ids=[](const std::vector<int>& order,int from,int count) {
+    return n::from_vector(std::vector<int>(order.begin()+from,order.begin()+from+count));
+  };
+  const auto fit=ids(train_ids,0,1024),valid=ids(train_ids,1024,256),held=ids(test_ids,0,256);
+  const auto x=n::gather(train.images,fit),y=n::gather(train.labels,fit);
+  const auto vx=n::gather(train.images,valid),vy=n::gather(train.labels,valid);
+  const auto tx=n::gather(test.images,held),ty=n::gather(test.labels,held);
+  n::ParameterStore params(41433);
+  (void)n::pyramid_digit_transformer(params,n::slice_axis(x,0,0,1));
+  n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder batches(1024,32,41435);
+  std::vector<double> curve;
+  std::print("| Epoch | Validation NLL |\n|---:|---:|\n");
+  for (int epoch=0;epoch<3;++epoch) {
+    batches.begin_epoch();
+    for (auto rows=batches.next();!rows.empty();rows=batches.next()) {
+      const auto batch=n::from_vector(rows);
+      const auto logits=n::pyramid_digit_transformer(params,n::gather(x,batch)).logits;
+      const auto loss=n::sparse_softmax_cross_entropy(logits,n::gather(y,batch));
+      optimizer.step(n::grad(loss,optimizer.parameters()));
+    }
+    const n::NoGradGuard guard;
+    curve.push_back(n::sparse_softmax_cross_entropy(n::pyramid_digit_transformer(params,vx).logits,vy).item());
+    std::print("| {} | {:.6f} |\n",epoch+1,curve.back());
+  }
+  const n::NoGradGuard guard;
+  const auto result=n::pyramid_digit_transformer(params,tx);
+  const auto nll=n::sparse_softmax_cross_entropy(result.logits,ty);
+  const int correct=n::sum(n::equal(n::argmax(result.logits,1),ty).to(n::DType::Int32)).item<int>();
+  std::print("\nTest NLL {:.6f}. Correct predictions {}/256.\n",nll.item(),correct);
+  const std::filesystem::path out="build/pyramid_digits";
+  std::filesystem::create_directories(out);
+  params.save((out/"weights.npz").string());
+  n::save_npz((out/"audit.npz").string(),{{"fit_ids",fit},{"validation_ids",valid},{"test_ids",held},
+      {"pixels",tx},{"labels",ty},{"patches",result.patches},{"embedded",result.embedded},
+      {"logits",result.logits},{"nll",nll},{"attention0",result.attention[0]},{"attention1",result.attention[1]}});
+  n::save_npz((out/"coarse.npz").string(),{{"attention",result.attention[2]}});
+  dm::graphics::RPlot::create().lines({1,2,3},curve,"Validation",{37,99,235})
+      .points({1,2,3},curve,"Epochs",{37,99,235},5).title("Pyramid transformer on MNIST")
+      .x_label("Epoch").y_label("Nats per image").size(800,460).save_svg("build/pyramid_digits.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation NLL |
+|---:|---:|
+| 1 | 1.118022 |
+| 2 | 0.674749 |
+| 3 | 0.561639 |
+
+Test NLL 0.617389. Correct predictions 205/256.
+\image(figures/pyramid_digits.svg)
+// result_end

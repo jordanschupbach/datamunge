@@ -127,9 +127,10 @@ class Site:
         self.written += 1
 
     def add_search(self, title, kind, url, detail="", summary=""):
-        if (title, kind) in self.search_seen:  # overloads: the first one
+        key = (url if kind == "report" else title, kind)
+        if key in self.search_seen:  # Index the first API overload.
             return
-        self.search_seen.add((title, kind))
+        self.search_seen.add(key)
         summary = re.sub(r"\s+", " ", (summary or "").replace("\\(", "").replace("\\)", "")).strip()
         if len(summary) > 110:
             summary = summary[:107].rsplit(" ", 1)[0] + "…"
@@ -203,8 +204,18 @@ class Site:
             slug_name = re.sub(r"[/.\-]", "_", os.path.splitext(rep.report_rel(path, examples))[0])
             return os.path.join(status_dir, slug_name + ".json")
 
+        def last_status_path(path):
+            current = status_path(path)
+            stem, extension = os.path.splitext(path)
+            previous = stem + "_analysis" + extension
+            if not os.path.exists(current) and not os.path.exists(previous):
+                legacy = status_path(previous)
+                if os.path.isfile(legacy):
+                    return legacy
+            return current
+
         if a.run:
-            stale = [(p, status_path(p)) for p in files if rep.is_stale(p, status_path(p), a.force)]
+            stale = [(p, status_path(p)) for p in files if rep.is_stale(p, last_status_path(p), a.force)]
             if stale:
                 stale = rep.with_prerequisites(stale, status_path)
                 rep.validate_cpp_toolchain([p for p, _ in stale])
@@ -213,7 +224,7 @@ class Site:
                 rep.run_reports(a.mep_mepml, stale, timeout=a.timeout, jobs=a.jobs or rep.default_jobs(), env=env)
         for path in files:
             r = rep.Report(path, rep.report_rel(path, examples))
-            r.status = rep.load_status(status_path(path))
+            r.status = rep.load_status(last_status_path(path))
             self.current_report = r
             self.linker.base = base_of(r.url)
             rep.export(a.mep_mepml, r, self.out, lambda code, lang: hl.highlight(code, lang, self.linker),
@@ -227,7 +238,7 @@ class Site:
         self.report_groups = sorted(groups.items(), key=lambda kv: (kv[0] != "", kv[0]))
         for r in self.reports:
             self.write_report(r)
-            self.add_search(r.title, "report", r.url, r.subtitle, r.summary)
+            self.add_search(r.title, "report", r.url, self.topic_label(r.group), r.summary or r.subtitle)
         self.write_reports_index()
         self.write_status()
         broken = [r for r in self.reports if r.broken]
@@ -248,20 +259,38 @@ class Site:
         t = re.sub(r"^[\d.]+_", "", name).replace("_", " ")
         return t[:1].upper() + t[1:]
 
-    def reports_sidebar(self, page, current=None):
-        out = ['<input class="side-filter" type="search" placeholder="Filter reports" aria-label="Filter reports">',
-               f'<a class="side-top" href="{rel("reports/index.html", page)}">All reports</a>',
-               f'<a class="side-top" href="{rel("reports/status.html", page)}">Build status</a>']
+    def topic_label(self, group):
+        return " / ".join(self.group_title(part) for part in group.split("/")) if group else "General"
+
+    def report_topics(self):
+        topics = defaultdict(list)
         for group, items in self.report_groups:
-            depth = group.count("/") + (1 if group else 0)
-            title = " / ".join(self.group_title("/".join(group.split("/")[:i + 1]))
-                               for i in range(len(group.split("/")))) if group else "General"
-            out.append(f'<div class="side-group"><div class="side-heading">{E(title)}</div><ul>')
-            for r in sorted(items, key=lambda r: r.title.lower()):
-                cur = ' class="current"' if r is current else ""
-                mark = ' <span class="dot-fail" title="code blocks failed"></span>' if r.broken else ""
-                out.append(f'<li><a{cur} href="{rel(r.url, page)}">{E(r.title)}</a>{mark}</li>')
-            out.append("</ul></div>")
+            topics[group.split("/", 1)[0]].append((group, items))
+        return topics
+
+    def reports_sidebar(self, page, current=None):
+        index = "reports/index.html"
+        out = [f'<a class="side-top" href="{rel(index, page)}">All reports</a>',
+               f'<a class="side-top" href="{rel("reports/status.html", page)}">Build status</a>',
+               '<div class="side-heading">Topics</div>']
+        current_topic = current.group.split("/", 1)[0] if current else None
+        for topic, groups in self.report_topics().items():
+            anchor = "topic-" + slug_id(topic or "general")
+            href = rel(index + "#" + anchor, page)
+            label = self.topic_label(topic)
+            if current_topic != topic:
+                out.append(f'<a class="side-top" href="{href}">{E(label)}</a>')
+                continue
+            out.append(f'<details class="side-topic" open><summary>{E(label)}</summary><ul>')
+            for group, items in groups:
+                if group != current.group:
+                    target = rel(index + "#group-" + slug_id(group), page) if group != topic else href
+                    out.append(f'<li><a href="{target}">{E(self.topic_label(group))}</a></li>')
+                    continue
+                for report in sorted(items, key=lambda r: r.title.casefold()):
+                    active = ' class="current" aria-current="page"' if report is current else ""
+                    out.append(f'<li><a{active} href="{rel(report.url, page)}">{E(report.title)}</a></li>')
+            out.append("</ul></details>")
         return "".join(out)
 
     def status_banner(self, r, page):
@@ -304,21 +333,21 @@ class Site:
     def write_reports_index(self):
         page = "reports/index.html"
         out = ['<h1>Reports</h1>',
-               '<p class="lead">Literate reports written in mepml, the document format of the mep editor: the '
-               'method and its mathematics, small C++ programs built on the library, and each program\'s tables and '
-               'figures. mep runs their code when the site is built.</p>',
-               f'<p><a href="{rel("reports/status.html", page)}">Build status of every report</a></p>']
-        for group, items in self.report_groups:
-            title = self.group_title(group) if group else "General"
-            if group:
-                title = " / ".join(self.group_title("/".join(group.split("/")[:i + 1]))
-                                   for i in range(len(group.split("/"))))
-            out.append(f'<h2 id="{E(slug_id(group or "general"))}">{E(title)}</h2><div class="cards">')
-            for r in sorted(items, key=lambda r: r.title.lower()):
-                badge = '<span class="badge badge-fail">failed blocks</span>' if r.broken else ""
-                out.append(f'<a class="card" href="{rel(r.url, page)}"><div class="card-title">{E(r.title)}{badge}</div>'
-                           f'<div class="card-text">{E(r.subtitle or r.summary)}</div></a>')
-            out.append("</div>")
+               '<p class="lead">Browse worked examples by topic or search reports and API reference above.</p>',
+               f'<p><a href="{rel("reports/status.html", page)}">Report build status</a></p>']
+        for topic, groups in self.report_topics().items():
+            anchor = "topic-" + slug_id(topic or "general")
+            out.append(f'<h2 id="{E(anchor)}">{E(self.topic_label(topic))}</h2>')
+            for group, items in groups:
+                if group != topic:
+                    name = self.topic_label(group.split("/", 1)[1])
+                    out.append(f'<h3 id="group-{E(slug_id(group))}">{E(name)}</h3>')
+                out.append('<div class="cards">')
+                for r in sorted(items, key=lambda r: r.title.casefold()):
+                    badge = '<span class="badge badge-fail">failed blocks</span>' if r.broken else ""
+                    out.append(f'<a class="card" href="{rel(r.url, page)}"><div class="card-title">{E(r.title)}{badge}</div>'
+                               f'<div class="card-text">{E(r.subtitle or r.summary)}</div></a>')
+                out.append("</div>")
         self.write(page, "Reports", "".join(out), "reports", self.reports_sidebar(page), math=True)
 
     def write_status(self):

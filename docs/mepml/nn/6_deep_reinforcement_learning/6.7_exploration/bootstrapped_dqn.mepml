@@ -1,0 +1,124 @@
+//? Title: Bootstrapped DQN on a sparse grid
+//? Lang: en
+
+> Bootstrapped DQN on a sparse grid
+
+Five action-value heads share a hidden layer. At the start of each
+episode the agent samples a head uniformly and uses it for the entire
+episode, with a one-quarter chance of a random action at each step.
+Holding the head fixed lets its value estimates guide a sequence of
+decisions through the grid.
+
+Each transition gets an independent Bernoulli mask per head. Replay
+updates use only the active head-transition pairs. The target network
+estimates future value per head and is copied from the online network
+every 128 actions. Terminal transitions use the immediate reward.
+
+The program trains for 4,096 actions and plots the number of distinct
+cells visited. It also probes a terminal transition and a wholly masked
+row to check the temporal-difference targets and output gradients.
+Datamunge uses its native initializer with the source seeds.
+
+[Osband et al. (2016)|https://arxiv.org/abs/1602.04621]
+
+```{cpp, results="markdown", file="figures/bootstrapped_dqn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  using Row=std::array<int,9>;
+  const auto values=[](n::ParameterStore& store,const n::Tensor& ids) {
+    return r::bootstrapped_values(store,n::one_hot(ids,49),32,5,4);
+  };
+  n::ParameterStore online(43801),target(43802);
+  const auto zero=n::from_vector<int>({0});
+  values(online,zero);
+  values(target,zero);
+  target.copy_from(online);
+  n::Optimizer optimizer(online,.001,{.kind=n::OptimizerKind::Adam});
+  const auto batch_loss=[&](std::span<const Row> batch,bool inspect) {
+    std::vector<int> states,next,actions;
+    std::vector<float> masks,rewards;
+    for (const auto& row:batch) {
+      states.push_back(row[0]);
+      actions.push_back(row[1]);
+      next.push_back(row[2]);
+      rewards.push_back(row[2]==48);
+      masks.insert(masks.end(),row.begin()+4,row.end());
+    }
+    const auto s=n::from_vector(states), a=n::from_vector(actions), ns=n::from_vector(next);
+    const auto mask=n::from_vector(masks,{std::ssize(batch),5});
+    const auto reward=n::from_vector(rewards);
+    const auto q=values(online,s);
+    const auto future=[&] {
+      const n::NoGradGuard guard;
+      return values(target,ns);
+    }();
+    const auto [loss,td]=r::bootstrapped_td_loss(q,future,a,reward,reward,mask);
+    if (inspect) {
+      const auto gradient=n::grad(loss,{q})[0];
+      n::save_npz("build/bootstrapped_dqn/gradient.npz",{{"state",s},{"next",ns},
+          {"action",a},{"mask",mask},{"values",q},{"td",td},{"gradient",gradient},
+          {"loss",loss},{"target_values",future}});
+    } else {
+      optimizer.step(n::grad(loss,optimizer.parameters()));
+    }
+  };
+  std::mt19937 policy(43803),replay_rng(43804),mask_rng(43805);
+  std::vector<Row> replay;
+  std::array<bool,49> visited{};
+  visited[0]=true;
+  std::vector<double> steps{0}, coverage{1};
+  int state=0,step=0,head=policy()%5,episodes=1,goals=0;
+  for (int t=0;t<4096;++t) {
+    const auto q=[&] {
+      const n::NoGradGuard guard;
+      return values(online,n::from_vector<int>({state})).to_vector<float>();
+    }();
+    const auto begin=q.begin()+4*head;
+    int action=std::max_element(begin,begin+4)-begin;
+    if (policy()%4==0) action=policy()%4;
+    const int next=r::sparse_grid_move(state,action);
+    Row row{state,action,next,head};
+    for (int i=4;i<9;++i) row[i]=mask_rng()%2;
+    replay.push_back(row);
+    visited[next]=true;
+    goals+=next==48;
+    state=next;
+    if (++step==64 || next==48) {
+      state=step=0;
+      head=policy()%5;
+      episodes+=t+1<4096;
+    }
+    if (t%4==3 && replay.size()>=32) {
+      std::array<Row,32> batch;
+      for (auto& sample:batch) sample=replay[replay_rng()%replay.size()];
+      batch_loss(batch,false);
+    }
+    if (t%128==127) {
+      target.copy_from(online);
+      steps.push_back(t+1);
+      coverage.push_back(std::count(visited.begin(),visited.end(),true));
+    }
+  }
+  std::filesystem::create_directories("build/bootstrapped_dqn");
+  std::vector<Row> probe(replay.begin(),replay.begin()+32);
+  probe.push_back({47,3,48,0,1,0,1,0,1});
+  probe.push_back({});
+  batch_loss(probe,true);
+  std::vector<int> trace;
+  for (const auto& row:replay) trace.insert(trace.end(),row.begin(),row.end());
+  n::save_npz("build/bootstrapped_dqn/trace.npz",{{"trace",n::from_vector(trace,{4096,9})}});
+  std::print("Visited {:.0f} of 49 cells across {} episodes, with {} training goals.\n",
+             coverage.back(),episodes,goals);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,coverage,"Unique cells",{37,99,235})
+      .title("Bootstrapped DQN exploration").x_label("Actions").y_label("Cells visited")
+      .ylim(0,49).size(820,460).save_svg("build/bootstrapped_dqn.svg");
+}
+```
+// result_begin: markdown
+Visited 49 of 49 cells across 76 episodes, with 27 training goals.
+\image(figures/bootstrapped_dqn.svg)
+// result_end

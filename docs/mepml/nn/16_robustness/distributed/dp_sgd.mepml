@@ -1,0 +1,72 @@
+//? Title: Per-example clipping and Gaussian noise in DP-SGD
+//? Lang: en
+
+> Per-example clipping and Gaussian noise in DP-SGD
+
+A logistic classifier has one gradient vector per training row.
+Clip each vector to Euclidean norm 0.5 before summing them. Add
+Gaussian noise with standard deviation 0.75 to each coordinate of
+the sum, then divide by the batch size to obtain the SGD update.
+
+The experiment uses synthetic rows and public random seeds so its
+24 updates can be inspected exactly. This setup demonstrates the
+clipping and noise calculations. A privacy guarantee requires a
+specified private-data sampling mechanism, secret randomness, and
+privacy accounting. The plot shows the largest raw and clipped
+gradient norms at each step.
+
+```{cpp, results="markdown", file="figures/dp_sgd.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr auto dtype=n::DType::Float64;
+  std::mt19937_64 fixture_rng(7021),noise_rng(7022);
+  std::normal_distribution<double> coordinate(0,1),gaussian(0,.75);
+  const auto draw=[&]() {
+    std::vector<double> x,y;
+    for (int i=0;i<32;++i) {
+      const double a=coordinate(fixture_rng),b=coordinate(fixture_rng);
+      x.insert(x.end(),{1,a,b});
+      y.push_back(a-.7*b+.2>0);
+    }
+    return std::pair{n::from_vector(x,{32,3}),n::from_vector(y,{32,1})};
+  };
+  auto w=n::zeros({3,1},dtype);
+  std::vector<double> steps,before,after;
+  std::filesystem::create_directories("build");
+  for (int i=0;i<24;++i) {
+    const auto [x,y]=draw();
+    const auto residual=n::sigmoid(n::matmul(x,w))-y;
+    const auto raw=x*residual;
+    const auto norms=n::dense_per_example_grad_norms(x,residual,false);
+    const auto clipped=raw*n::expand_dims(n::clip_factors(norms,.5),1);
+    const auto clipped_norms=n::sqrt(n::sum(n::square(clipped),{1}));
+    steps.push_back(i+1);
+    before.push_back(n::max(norms).item());
+    after.push_back(n::max(clipped_norms).item());
+    if (after.back()>.5+1e-12) return 1;
+    std::vector<double> values(3);
+    for (auto& value:values) value=gaussian(noise_rng);
+    const auto noise=n::from_vector(values);
+    const auto next=w-(.5/32)*(n::sum(clipped,{0})+noise).reshape({3,1});
+    n::save_npz(std::format("build/dp_step_{}.npz",i),{{"features",x},{"labels",y},{"before",w},
+        {"noise",noise},{"raw",raw},{"clipped",clipped},{"after",next}});
+    w=next;
+  }
+  double hits=0;
+  for (int i=0;i<8;++i) {
+    const auto [x,y]=draw();
+    hits+=n::sum(n::equal(n::greater(n::matmul(x,w),0).to(dtype),y).to(n::DType::Int32)).item();
+  }
+  std::print("24 updates. Noise standard deviation on the sum 0.75. Held-out correct {:.0f}/256.\n",hits);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,before,"Raw gradient",{234,88,12}).lines(steps,after,"Clipped gradient",{37,99,235})
+      .title("Maximum per-example gradient norm").x_label("Update").y_label("Euclidean norm");
+  plot.size(900,430).save_svg("build/dp_sgd.svg");
+}
+```
+// result_begin: markdown
+24 updates. Noise standard deviation on the sum 0.75. Held-out correct 251/256.
+\image(figures/dp_sgd.svg)
+// result_end

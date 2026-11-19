@@ -1,0 +1,103 @@
+//? Title: Behavior cloning and closed-loop grid evaluation
+//? Lang: en
+
+> Behavior cloning and closed-loop grid evaluation
+
+Behavior cloning treats expert actions as labels. Here the expert moves
+down to the bottom row and then right to the goal. The training corpus
+contains trajectories beginning in the upper-left five-by-five block
+of a seven-by-seven grid. A shared policy takes normalized row and
+column coordinates as input and learns by minimizing action NLL.
+
+The plot tracks training NLL over three epochs. Evaluation separates
+start cells that appeared in demonstrations from cells that never
+appeared. Each start contributes a one-step action agreement result
+and a closed-loop rollout of up to 16 actions. Good one-step agreement
+and reaching the goal measure different properties of the fit.
+The network uses Datamunge's native seeded initializer.
+
+```{cpp, results="markdown", file="figures/behavior_cloning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  constexpr int goal=48,horizon=16;
+  const auto expert=[](int cell){return cell/7<6?1:3;};
+  std::vector<float> grid;
+  for (int cell=0;cell<goal;++cell) grid.insert(grid.end(),{float(cell/7)/6,float(cell%7)/6});
+  const auto features=n::from_vector(grid,{goal,2});
+  std::array<bool,goal> seen{};
+  std::vector<int> demos,labels;
+  std::vector<std::int64_t> ids;
+  for (int repeat=0;repeat<16;++repeat) {
+    for (int y=0;y<5;++y) {
+      for (int x=0;x<5;++x) {
+        for (int cell=7*y+x;cell!=goal;cell=r::sparse_grid_move(cell,expert(cell))) {
+          demos.insert(demos.end(),{cell,expert(cell)});
+          ids.push_back(cell);
+          labels.push_back(expert(cell));
+          seen[cell]=true;
+        }
+      }
+    }
+  }
+  const auto inputs=n::take_rows(features,ids), actions=n::from_vector(labels);
+  r::ImitationPolicy policy(2,16,4);
+  n::BatchOrder order(ids.size(),32,44502);
+  std::vector<double> history;
+  std::print("| Epoch | Training NLL |\n|---:|---:|\n");
+  for (int epoch=1;epoch<=3;++epoch) {
+    n::WeightedMean average;
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      average.add(policy.train(n::take_rows(inputs,rows),n::take_rows(actions,rows)),rows.size());
+    }
+    history.push_back(average.value());
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+  }
+  const auto logits=policy.predict(features);
+  const auto greedy=n::argmax(logits,1).to_vector<int>();
+  std::array<int,2> correct{},solved{},count{};
+  std::vector<int> rollouts(goal*(horizon+1),-1);
+  for (int first=0;first<goal;++first) {
+    const int group=!seen[first];
+    ++count[group];
+    correct[group]+=greedy[first]==expert(first);
+    int cell=first;
+    rollouts[first*(horizon+1)]=first;
+    for (int step=1;step<=horizon && cell!=goal;++step) {
+      cell=r::sparse_grid_move(cell,greedy[cell]);
+      rollouts[first*(horizon+1)+step]=cell;
+    }
+    solved[group]+=cell==goal;
+  }
+  std::print("\n| Start group | Expert action agreement | Goal success |\n|:---|---:|---:|\n");
+  for (int group=0;group<2;++group) {
+    std::print("| {} | {} / {} | {} / {} |\n",
+               group?"Unseen":"Seen",correct[group],count[group],solved[group],count[group]);
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/behavior_cloning_audit.npz",
+      {{"demonstrations",n::from_vector(demos,{std::ssize(ids),2})},{"logits",logits},
+       {"rollouts",n::from_vector(rollouts,{goal,horizon+1})}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({1,2,3},history,"Training NLL",{37,99,235})
+      .points({1,2,3},history,dm::RGBA{37,99,235})
+      .title("Behavior cloning").x_label("Epoch").y_label("Mean negative log-likelihood")
+      .size(800,460).save_svg("build/behavior_cloning.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Training NLL |
+|---:|---:|
+| 1 | 0.487829 |
+| 2 | 0.137729 |
+| 3 | 0.062679 |
+
+| Start group | Expert action agreement | Goal success |
+|:---|---:|---:|
+| Seen | 36 / 36 | 36 / 36 |
+| Unseen | 12 / 12 | 12 / 12 |
+\image(figures/behavior_cloning.svg)
+// result_end

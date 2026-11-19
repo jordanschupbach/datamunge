@@ -1,0 +1,136 @@
+//? Title: DeepONet for the heat solution operator
+//? Lang: en
+
+> DeepONet for the heat solution operator
+
+DeepONet predicts the temperature at a continuous space-time query
+from eight readings of the initial temperature. The branch network
+embeds the readings, the trunk network embeds the coordinates, and
+their inner product plus a learned bias predicts the temperature.
+One fitted model serves all initial functions in the experiment.
+
+The initial profiles are random sums of three sine modes on the
+unit interval. Each mode decays at its analytic heat-equation rate
+with diffusivity 0.1 and zero boundary temperatures. The fitting set
+contains 192 functions with 32 queries each. The test set uses 32
+different functions with 48 new queries each. The plotted field
+uses one held-out function on a regular grid to show the spatial
+and temporal structure of the fit.
+
+```{cpp, results="markdown", file="figures/deeponet.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+
+namespace n=dm::nn;
+using Modes=std::array<float,3>;
+
+double heat(const Modes& initial,double x,double t) {
+  double value=0;
+  for(std::size_t i=0;i<initial.size();++i) {
+    const double w=(i+1)*std::numbers::pi;
+    value+=initial[i]*std::sin(w*x)*std::exp(-.1*w*w*t);
+  }
+  return value;
+}
+
+struct Data {
+  n::Tensor input,target,functions;
+};
+
+Data sample(int functions,int queries,unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> amplitude(-1,1),position(0,1);
+  std::vector<float> x,y,initials;
+  for(int i=0;i<functions;++i) {
+    Modes initial;
+    for(auto& coefficient:initial) coefficient=amplitude(rng);
+    initials.insert(initials.end(),initial.begin(),initial.end());
+    std::array<float,8> sensor;
+    for(int j=0;j<8;++j) sensor[j]=heat(initial,(j+1)/9.,0);
+    for(int j=0;j<queries;++j) {
+      const float point=position(rng),time=position(rng);
+      x.insert(x.end(),sensor.begin(),sensor.end());
+      x.insert(x.end(),{point,time});
+      y.push_back(heat(initial,point,time));
+    }
+  }
+  return {n::from_vector(x,{functions*queries,10}),n::from_vector(y,{functions*queries,1}),
+      n::from_vector(initials,{functions,3})};
+}
+
+int main() {
+  const auto fit=sample(192,32,19236),test=sample(32,48,19237);
+  n::ParameterStore model(41380);
+  const auto apply=[&](const n::Tensor& x) {
+    return n::deeponet(model,n::slice_axis(x,1,0,8),n::slice_axis(x,1,8,10));
+  };
+  const auto loss=[&](const n::Tensor& x,const n::Tensor& y) {
+    return n::mean(n::square(apply(x).prediction-y));
+  };
+  const auto evaluate=[&] {
+    n::NoGradGuard guard;
+    return std::sqrt(loss(test.input,test.target).item());
+  };
+  const auto initial=evaluate();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.input.size(0),64,19238);
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit.input,rows),n::take_rows(fit.target,rows)));
+      ++updates;
+    }
+  }
+  n::NoGradGuard guard;
+  const auto result=apply(test.input);
+  const auto rmse=evaluate();
+  if(updates!=288 || !(rmse<initial)) throw std::runtime_error("DeepONet fit failed");
+  std::print("| Unseen functions | Unseen queries | Updates | Initial RMSE | Final RMSE |\n|---:|---:|---:|---:|---:|\n");
+  std::print("| 32 | {} | {} | {:.6f} | {:.6f} |\n",test.input.size(0),updates,initial,rmse);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/deeponet.npz",{{"input",test.input.reshape({1536,10,1})},
+       {"fit_input",fit.input.reshape({6144,10,1})},{"target",test.target},
+       {"fit_functions",fit.functions},{"test_functions",test.functions},
+       {"prediction",result.prediction},{"branch",result.branch},{"trunk",result.trunk},
+       {"loss",n::scalar(rmse*rmse)}});
+  const auto coefficients=n::select(test.functions,0,0).to_vector<float>();
+  const Modes first{coefficients[0],coefficients[1],coefficients[2]};
+  const auto sensors=n::slice_axis(n::select(test.input,0,0),0,0,8).to_vector<float>();
+  std::vector<float> input,exact;
+  std::vector<double> axis;
+  for(int i=0;i<32;++i) {
+    const double x=i/31.;
+    axis.push_back(x);
+    for(int j=0;j<32;++j) {
+      const double t=j/31.;
+      input.insert(input.end(),sensors.begin(),sensors.end());
+      input.insert(input.end(),{float(x),float(t)});
+      exact.push_back(heat(first,x,t));
+    }
+  }
+  const auto truth=n::from_vector(exact,{32,32});
+  const auto prediction=apply(n::from_vector(input,{1024,10})).prediction.reshape({32,32});
+  const auto low=std::min(n::min(truth).item(),n::min(prediction).item());
+  const auto high=std::max(n::max(truth).item(),n::max(prediction).item());
+  const auto plot=[&](const n::Tensor& z,const char* title) {
+    std::vector<std::vector<double>> columns;
+    for(int i=0;i<32;++i) columns.push_back(n::select(z,0,i).to_vector<double>());
+    return dm::graphics::RPlot::create().image(axis,axis,columns,dm::graphics::terrain_colors(32),low,high)
+        .title(title).x_label("Position").y_label("Time");
+  };
+  dm::graphics::RLayout::create(1,2).add(plot(prediction,"DeepONet")).add(plot(truth,"Analytic heat field"))
+      .size(1010,465).fit_panels().save_svg("build/deeponet.svg");
+}
+```
+// result_begin: markdown
+| Unseen functions | Unseen queries | Updates | Initial RMSE | Final RMSE |
+|---:|---:|---:|---:|---:|
+| 32 | 1536 | 288 | 0.374433 | 0.204922 |
+\image(figures/deeponet.svg)
+// result_end
+\caption(Predicted and analytic temperatures for a held-out initial profile on a shared scale.)
+
+> Reference
+
+- [Lu et al., Learning nonlinear operators via DeepONet](https://arxiv.org/abs/1910.03193).

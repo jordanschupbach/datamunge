@@ -1,0 +1,123 @@
+//? Title: Random search and Gaussian process expected improvement
+//? Lang: en
+
+> Random search and Gaussian process expected improvement
+
+Search a 5×5 grid of hidden widths and Adam rates for a small
+regressor. Both searches evaluate eight configurations and start
+with the same three. Random search follows a seeded permutation.
+Bayesian search fits a Gaussian process to validation MSE on the
+grid coordinates. Expected improvement combines the probability
+of beating the best score so far with the size of that improvement.
+
+Each trial runs 36 updates with the same data order. The validation
+winner from each search is evaluated on a separate test split.
+The plot tracks the best validation MSE seen after each trial.
+
+```{cpp, results="markdown", file="figures/hyperparameter_search.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1,1);
+    std::normal_distribution<float> noise(0,.12f);
+    std::vector<float> x(count*3),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=0;j<3;++j) x[3*i+j]=uniform(rng);
+      y[i]=std::sin(3.f*x[3*i])+x[3*i+1]*x[3*i+2]+noise(rng);
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(y,{count,1})};
+  };
+  const auto [fit,target]=draw(384,36543);
+  const auto [validation,valid_y]=draw(128,36544);
+  const auto [test,test_y]=draw(256,36545);
+  constexpr std::array widths{4,8,16,24,32};
+  constexpr std::array rates{.0003f,.001f,.003f,.01f,.03f};
+  const auto predict=[&](n::ParameterStore& model,int id,const n::Tensor& x) {
+    return n::dense(model,"head",n::dense(model,"hidden",x,widths[id/5],n::Activation::Tanh),1);
+  };
+  const auto mse=[](const n::Tensor& a,const n::Tensor& b) {
+    return n::mean(n::square(a.to(n::DType::Float64)-b.to(n::DType::Float64))).item();
+  };
+  std::map<int,n::ParameterStore> models;
+  std::map<int,n::Tensor> validation_cache;
+  const auto fit_trial=[&](int id) {
+    if (models.contains(id)) return;
+    auto& model=models.try_emplace(id,36541).first->second;
+    (void)predict(model,id,n::take_rows(fit,{0}));
+    n::Optimizer opt(model,rates[id%5],{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder order(384,32,36542);
+    for (int epoch=0;epoch<3;++epoch) {
+      order.begin_epoch();
+      for (auto rows=order.next();!rows.empty();rows=order.next())
+        opt.minimize(n::mean(n::square(predict(model,id,n::take_rows(fit,rows))-n::take_rows(target,rows))));
+    }
+    n::NoGradGuard guard;
+    validation_cache.emplace(id,predict(model,id,validation));
+  };
+  std::vector<int> permutation(25);
+  std::iota(permutation.begin(),permutation.end(),0);
+  std::mt19937 rng(36546);
+  std::shuffle(permutation.begin(),permutation.end(),rng);
+  std::vector<double> coords;
+  for (int id=0;id<25;++id) { coords.push_back(id/5); coords.push_back(id%5); }
+  const auto grid=n::from_vector(coords,{25,2});
+  std::vector<double> trials,acquisition(8*25,-1),trial_numbers{1,2,3,4,5,6,7,8};
+  std::vector<int> winners;
+  std::vector<n::Tensor> scores;
+  n::NamedTensors saved{{"validation_y",valid_y},{"test_y",test_y}};
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Search | Width | Adam rate | Validation MSE | Test MSE |\n|---|---:|---:|---:|---:|\n");
+  for (bool bayesian:{false,true}) {
+    std::vector<std::int64_t> seen;
+    std::vector<double> observed,best_so_far;
+    for (int i=0;i<8;++i) {
+      int id=permutation[i];
+      if (bayesian && i>=3) {
+        const auto ei=n::gaussian_expected_improvement(grid,seen,observed);
+        id=std::max_element(ei.begin(),ei.end())-ei.begin();
+        std::copy(ei.begin(),ei.end(),acquisition.begin()+i*25);
+      }
+      fit_trial(id);
+      const auto& values=validation_cache.at(id);
+      const auto error=mse(values,valid_y);
+      scores.push_back(n::squeeze(values,{1}));
+      seen.push_back(id);
+      observed.push_back(error);
+      trials.insert(trials.end(),{double(id),error});
+      best_so_far.push_back(*std::min_element(observed.begin(),observed.end()));
+    }
+    const auto best=std::min_element(observed.begin(),observed.end());
+    const int id=seen[best-observed.begin()];
+    winners.push_back(id);
+    n::NoGradGuard guard;
+    const auto prediction=predict(models.at(id),id,test);
+    const std::string name=bayesian?"Bayesian":"Random";
+    std::print("| {} | {} | {:.4f} | {:.5f} | {:.5f} |\n",
+        name,widths[id/5],rates[id%5],*best,mse(prediction,test_y));
+    saved.emplace_back(bayesian?"bayesian_test":"random_test",prediction);
+    plot.lines(trial_numbers,best_so_far,name,bayesian?dm::graphics::RGB{37,99,235}:dm::graphics::RGB{234,88,12});
+  }
+  plot.title("Best validation loss by trial budget").x_label("Evaluated configurations").y_label("Validation MSE");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/hyperparameter_search.svg");
+  saved.emplace_back("trials",n::from_vector(trials,{2,8,2}));
+  saved.emplace_back("acquisition",n::from_vector(acquisition,{8,25}));
+  saved.emplace_back("validation_scores",n::stack(scores).reshape({2,8,128}));
+  saved.emplace_back("winners",n::from_vector(winners));
+  n::save_npz("build/hyperparameter_search.npz",saved);
+}
+```
+// result_begin: markdown
+| Search | Width | Adam rate | Validation MSE | Test MSE |
+|---|---:|---:|---:|---:|
+| Random | 4 | 0.0100 | 0.31268 | 0.32184 |
+| Bayesian | 4 | 0.0300 | 0.29280 | 0.24476 |
+\image(figures/hyperparameter_search.svg)
+// result_end
+
+The Bayesian search finds a lower validation and test MSE in this
+run. The upstream run selects the same winner for both methods.
+The outcome depends on the trial scores and the initial permutation.

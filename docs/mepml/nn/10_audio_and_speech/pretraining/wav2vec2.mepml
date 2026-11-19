@@ -1,0 +1,97 @@
+//? Title: Masked audio pretraining with wav2vec 2.0
+//? Lang: en
+
+> Masked audio pretraining with wav2vec 2.0
+
+A learned projection encodes short waveform frames. The context network
+replaces selected frames with a learned mask vector and uses attention
+to predict their representations from surrounding audio. A separate
+quantizer sees the original frames and selects one code in each of
+two groups. Gumbel noise perturbs the training assignments. The forward
+pass uses hard codes and the backward pass follows soft assignments.
+
+The contrastive loss asks each masked query to rank its own quantized
+target above other frames in the same clip. Frames with an identical
+pair of codes are excluded from the negatives. A diversity term
+encourages broader codebook use. The diagnostic tracks both terms on
+a fixed batch of synthetic waveforms with deterministic assignments.
+
+```{cpp, results="markdown", file="figures/wav2vec2.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto sample=[](std::mt19937& rng,bool training) {
+    std::uniform_real_distribution<float> uniform(-.7f,.7f);
+    std::normal_distribution<float> jitter(0.f,.025f);
+    std::vector<float> wave(24*96), mask(24*8), noise(24*16*8);
+    for (int row=0;row<24;++row) {
+      const float a=uniform(rng),b=uniform(rng),c=uniform(rng);
+      for (int t=0;t<8;++t)
+        for (int i=0;i<12;++i) {
+          const float phase=6.2831853f*i/12;
+          wave[row*96+t*12+i]=a*std::sin(phase)+b*std::cos(phase*2)+c*std::sin(phase*3)+
+                             .07f*(t-3)*std::cos(phase)+jitter(rng);
+        }
+      const int start=1+rng()%6;
+      mask[row*8+start]=mask[row*8+start+1]=1;
+    }
+    for (auto& value:noise) {
+      const double u=(rng()+.5)/4294967296.;
+      value=training ? -std::log(-std::log(u)) : 0.f;
+    }
+    return std::tuple{n::from_vector(wave,{24,96}),n::from_vector(mask,{24,8,1}),
+                      n::from_vector(noise,{384,8})};
+  };
+  std::mt19937 train_rng(50602),test_rng(50603);
+  const auto [wave,mask,noise]=sample(test_rng,false);
+  n::ParameterStore model(50601);
+  (void)n::wav2vec2_pretraining(model,wave,mask,noise);
+  n::Optimizer optimizer(model,.006,{.kind=n::OptimizerKind::Adam});
+  std::vector<double> epochs,loss,contrastive,diversity;
+  std::vector<float> history;
+  for (int epoch=0;epoch<=3;++epoch) {
+    {
+      n::NoGradGuard guard;
+      const auto test=n::wav2vec2_pretraining(model,wave,mask,noise);
+      epochs.push_back(epoch);
+      loss.push_back(test.loss.item());
+      contrastive.push_back(test.contrastive.item());
+      diversity.push_back(test.diversity.item());
+      history.insert(history.end(),{float(loss.back()),float(contrastive.back()),float(diversity.back())});
+    }
+    if (epoch==3) break;
+    for (int step=0;step<16;++step) {
+      const auto [x,m,g]=sample(train_rng,true);
+      optimizer.minimize(n::wav2vec2_pretraining(model,x,m,g).loss);
+    }
+  }
+  n::NoGradGuard guard;
+  const auto test=n::wav2vec2_pretraining(model,wave,mask,noise);
+  if (!(loss.back()<loss.front())) return 1;
+  std::print("Held-out objective {:.5f} → {:.5f} after 48 updates. Final mean code perplexity {:.3f}/8.\n",
+      loss.front(),loss.back(),8*(1-diversity.back()));
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(epochs,loss,"Total",{37,99,235})
+      .lines(epochs,contrastive,"Contrastive",{234,88,12})
+      .lines(epochs,diversity,"Diversity penalty (unweighted)",{22,163,74})
+      .title("Held-out masked audio objectives").x_label("Epoch").y_label("Objective");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/wav2vec2.svg");
+  n::save_npz("build/wav2vec2.npz",{{"waveform",wave},{"mask",mask},{"latent",test.latent},
+      {"masked",test.masked},{"mask_token",model.at("mask_token")},{"assign_logits",test.assignment_logits},
+      {"ids",test.ids},{"assignment",test.assignment},{"codebook",model.at("codebook")},
+      {"product",test.product},{"query",test.query},{"target",test.target},{"logits",test.logits},
+      {"history",n::from_vector(history,{4,3})}});
+}
+```
+// result_begin: markdown
+Held-out objective 1.01189 → 0.98972 after 48 updates. Final mean code perplexity 7.963/8.
+\image(figures/wav2vec2.svg)
+// result_end
+
+The loss is lowest at epoch two and rises in the final epoch. At the
+end, 32 of 48 masked frames still have an eligible negative. Frames
+without a negative contribute zero contrastive loss, so a lower
+average can also reflect more duplicate codes. The experiment checks
+pretraining behavior on synthetic audio.

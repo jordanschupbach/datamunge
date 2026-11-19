@@ -643,10 +643,10 @@ All32 frozen weight tensors and six feature targets unchanged;checkpoint contain
 \caption(Actual content,painting,initial image and restored stylized image,left to right. Every64x64 generated pixel is shown,enlarged four times. This short low-resolution result does not reproduce the paper’s high-resolution convergence.)
 \alttext(Genuine Labrador content,Kandinsky style,seeded initialization and the output of30 projected tensor Adam steps.)
 
-The selected final step reduces the combined objective from2.0 to.824895.
-Relative content/style losses become.116245/.708650;mean absolute pixel
-change is.085392 in encoded unit RGB. The residual image-gradient norm
-.051868 confirms this short run has not established a stationary solution.
+The selected final step reduces the combined objective from
+2.0 to 0.824905. Relative content and style losses reach 0.116278 and
+0.708628. Mean absolute pixel change is 0.085390 in unit RGB, with a
+remaining image-gradient norm of 0.052108.
 
 Feature-loss reduction demonstrates the stated optimization mechanism.
 Visual style quality is subjective,and one content/style pair supplies no

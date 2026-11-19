@@ -1,0 +1,115 @@
+//? Title: A reserved feature as a training-data integrity check
+//? Lang: en
+
+> A reserved feature as a training-data integrity check
+
+A trusted schema can make some training-data corruption observable.
+In this synthetic fixture, two features determine the class and the
+third feature must always be zero. The corrupted training split changes
+that feature and the label together on selected negative rows.
+
+Three fits use clean data, the corrupted split, or the corrupted split
+after dropping invalid rows. At prediction time the defended pipeline
+also restores the reserved feature on the probe inputs. The plot
+shows accuracy on ordinary test inputs and the false-positive rate
+when the reserved field is set on every probe row. This rule relies on
+a known feature invariant and detects violations of that invariant.
+
+```{cpp, results="markdown", file="figures/poisoning_defence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto draw = [](int count, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1,1);
+    std::vector<float> features,labels;
+    for (int row=0; row<count; ++row) {
+      const float a=uniform(rng),b=uniform(rng);
+      features.insert(features.end(),{a,b,0.f});
+      labels.push_back(a+.55f*b>0.f);
+    }
+    return std::pair{n::from_vector(features,{count,3}),n::from_vector(labels,{count,1})};
+  };
+  constexpr int training_rows=1024,test_rows=384;
+  const auto [fit,fit_y]=draw(training_rows,46901);
+  const auto [test,test_y]=draw(test_rows,46902);
+  auto values=fit.to_vector<float>(), labels=fit_y.to_vector<float>();
+  std::vector<int> changed(training_rows);
+  for (int i=0; i<training_rows; i+=4) {
+    if (labels[i]!=0) continue;
+    values[3*i+2]=labels[i]=1;
+    changed[i]=1;
+  }
+  const auto corrupted=n::from_vector(values,{training_rows,3});
+  const auto corrupted_y=n::from_vector(labels,{training_rows,1});
+  const n::ConstantFeature schema(2);
+  const auto probe=n::ConstantFeature(2,1).project(test);
+  const auto eligible=schema.valid_rows(corrupted);
+  const auto truth=test_y.to_vector<float>();
+  const int negatives=std::ranges::count(truth,0.f);
+  const auto as_fixture=[](const n::Tensor& x) { return x.reshape({x.size(0),3,1}); };
+  n::NamedTensors evidence{{"fit",as_fixture(fit)},{"fit_y",fit_y},
+      {"corrupted",as_fixture(corrupted)},{"corrupted_y",corrupted_y},
+      {"corruption_mask",n::from_vector(changed)},{"test",as_fixture(test)},
+      {"test_y",test_y},{"probe",as_fixture(probe)}};
+  std::vector<double> accuracy,false_positives;
+  std::print("The schema rejected {} of {} training rows.\n\n",training_rows-eligible.size(),training_rows);
+  std::print("| Training split | Test accuracy | Probe false-positive rate |\n|---|---:|---:|\n");
+  for (const std::string mode : {"clean","poisoned","filtered"}) {
+    const auto& x=mode=="clean" ? fit : corrupted;
+    const auto& y=mode=="clean" ? fit_y : corrupted_y;
+    const auto ids=mode=="filtered" ? eligible : schema.valid_rows(fit);
+    evidence.emplace_back(mode+"_eligible",n::from_vector(ids));
+    n::ParameterStore params(46903);
+    const auto predict=[&](const n::Tensor& input) {
+      return n::dense(params,"head",n::tanh(n::dense(params,"hidden",input,16)),1);
+    };
+    (void)predict(test);
+    n::Optimizer optimizer(params,.01,{.kind=n::OptimizerKind::Adam});
+    std::mt19937_64 rng(46903);
+
+    for (int epoch=0; epoch<3; ++epoch) {
+      auto order=ids;
+      std::ranges::shuffle(order,rng);
+      for (std::size_t start=0; start<order.size(); start+=32) {
+        const auto end=std::min(start+32,order.size());
+        const auto batch=n::from_vector(std::vector<std::int64_t>(order.begin()+start,order.begin()+end));
+        const auto z=predict(n::gather(x,batch));
+        const auto loss=n::mean(n::softplus(z)-z*n::gather(y,batch));
+        optimizer.step(n::grad(loss,optimizer.parameters()));
+      }
+    }
+    const n::NoGradGuard guard;
+    const auto clean=predict(test);
+    const auto triggered=predict(mode=="filtered" ? schema.project(probe) : probe);
+    evidence.emplace_back(mode+"_clean",clean);
+    evidence.emplace_back(mode+"_triggered",triggered);
+    const auto a=clean.to_vector<float>(),b=triggered.to_vector<float>();
+    int correct=0,fp=0;
+    for (int i=0; i<test_rows; ++i) {
+      correct+=(a[i]>=0)==(truth[i]==1);
+      fp+=(truth[i]==0 && b[i]>=0);
+    }
+    accuracy.push_back(double(correct)/test_rows);
+    false_positives.push_back(double(fp)/negatives);
+    std::print("| {} | {:.2f}% | {:.2f}% |\n",mode,100*accuracy.back(),100*false_positives.back());
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/poisoning_audit.npz",evidence);
+  dm::graphics::RPlot::create().points({1,2,3},accuracy,"Test accuracy",{37,99,235},6)
+      .points({1,2,3},false_positives,"Probe false positives",{217,96,26},6)
+      .title("Training-data schema check").x_label("1 Clean     2 Corrupted     3 Filtered")
+      .y_label("Fraction").size(800,460).save_svg("build/poisoning_defence.svg");
+}
+```
+// result_begin: markdown
+The schema rejected 132 of 1024 training rows.
+
+| Training split | Test accuracy | Probe false-positive rate |
+|---|---:|---:|
+| clean | 98.96% | 0.00% |
+| poisoned | 97.40% | 100.00% |
+| filtered | 97.66% | 4.64% |
+\image(figures/poisoning_defence.svg)
+// result_end

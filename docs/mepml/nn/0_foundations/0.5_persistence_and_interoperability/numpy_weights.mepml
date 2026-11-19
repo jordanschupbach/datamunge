@@ -113,6 +113,70 @@ Truncated NPY rejected.
 // result_end
 
 
+> Independent NumPy interchange
+
+The native arrays above are checked with NumPy. NumPy then writes its own
+stored and compressed parameter archives, plus NPY arrays with a different
+layout, byte order or header version. The final native block checks their
+logical values and runs the same affine prediction with either archive.
+This section uses Python with NumPy installed.
+
+```{python, results="markdown"}
+from pathlib import Path
+
+import numpy as np
+
+root = Path("build")
+matrix = np.arange(6, dtype=np.float64).reshape(2, 3)
+weights = np.array([[0.75], [-1.5]], dtype=np.float32)
+bias = np.array([0.25], dtype=np.float32)
+for encoding in ("stored", "deflated"):
+    with np.load(root / f"numpy_weights_{encoding}.npz", allow_pickle=False) as data:
+        np.testing.assert_array_equal(data["weights"], weights)
+        np.testing.assert_array_equal(data["bias"], bias)
+        assert data["weights"].dtype == data["bias"].dtype == np.float32
+
+np.savez(root / "numpy_from_python.npz", weights=weights, bias=bias)
+np.savez_compressed(root / "numpy_from_python_compressed.npz", weights=weights, bias=bias)
+np.save(root / "numpy_from_python_fortran.npy", np.asfortranarray(matrix))
+np.save(root / "numpy_from_python_big.npy",
+        np.array([[1, 256, -7], [2**20, -(2**20), 42]], dtype=">i4"))
+for version in (2, 3):
+    with (root / f"numpy_from_python_v{version}.npy").open("wb") as output:
+        np.lib.format.write_array(output, matrix, version=(version, 0), allow_pickle=False)
+print("NumPy verified the native archives and wrote independent fixtures.")
+```
+// result_begin: markdown
+NumPy verified the native archives and wrote independent fixtures.
+// result_end
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  for (const auto tag : {"fortran","v2","v3"}) {
+    const auto a = n::load_npy(std::format("build/numpy_from_python_{}.npy",tag));
+    if (a.shape()!=n::Shape{2,3} || a.dtype()!=n::DType::Float64 ||
+        a.to_vector<double>()!=std::vector<double>{0,1,2,3,4,5})
+      throw std::runtime_error("NumPy layout or header version decoded incorrectly");
+  }
+  const auto big=n::load_npy("build/numpy_from_python_big.npy");
+  if (big.dtype()!=n::DType::Int32 ||
+      big.to_vector<int>()!=std::vector<int>{1,256,-7,1048576,-1048576,42})
+    throw std::runtime_error("NumPy big-endian values decoded incorrectly");
+  for (const auto file : {"numpy_from_python.npz","numpy_from_python_compressed.npz"}) {
+    n::ParameterStore store;
+    store.load(std::string("build/")+file,false);
+    const auto y=n::affine_inference(n::tensor({{2,-3}}),store.at("weights"),store.at("bias"));
+    if (y.item()!=6.25) throw std::runtime_error("NumPy weights changed the prediction");
+  }
+  std::print("Fortran, big-endian and NPY 2/3 fixtures read exactly. Both NumPy archives predicted 6.25.\n");
+}
+```
+// result_begin: markdown
+Fortran, big-endian and NPY 2/3 fixtures read exactly. Both NumPy archives predicted 6.25.
+// result_end
+
 > Conclusion
 
 File encodings preserve dtype and shape, while the affine contract gives the arrays predictive

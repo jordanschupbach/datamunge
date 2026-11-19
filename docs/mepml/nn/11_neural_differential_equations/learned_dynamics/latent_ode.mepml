@@ -1,0 +1,117 @@
+//? Title: Variational latent ODE for irregularly sampled series
+//? Lang: en
+
+> Variational latent ODE for irregularly sampled series
+
+A backward ODE-GRU consumes six noisy observations at irregular times.
+Between observations it integrates its hidden state backward. At the
+first timestamp it predicts a diagonal Gaussian distribution over the
+initial latent state. A second ODE evolves a sample forward and a
+linear observation head reads out all ten timestamps.
+
+The objective combines a Gaussian observation likelihood with the
+KL divergence of the inferred initial state from a standard normal.
+A deterministic forecast evolves the posterior’s mean initial state.
+The held-out comparison uses four future observations and a persistence
+baseline that repeats the last observed value.
+
+```{cpp, results="markdown", file="figures/latent_ode.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+
+namespace n=dm::nn;
+struct Data { n::Tensor gaps, observed, target; };
+
+Data generate(int count,unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<double> phase(0,2*std::numbers::pi), magnitude(.6,1.4), step(.12,.65);
+  std::normal_distribution<double> noise(0,.04);
+  std::vector<float> gaps,context,target;
+  for(int row=0;row<count;++row) {
+    const double offset=phase(rng),amplitude=magnitude(rng);
+    double time=0;
+    for(int i=0;i<10;++i) {
+      const float gap=i?step(rng):0.;
+      time+=gap;
+      const float sample=amplitude*std::sin(1.6*time+offset)+noise(rng);
+      gaps.push_back(gap);
+      target.push_back(sample);
+      if(i<6) context.push_back(sample);
+    }
+  }
+  return {n::from_vector(gaps,{count,10}),n::from_vector(context,{count,6}),
+      n::from_vector(target,{count,10})};
+}
+
+int main() {
+  const auto fit=generate(640,88831),test=generate(128,88832);
+  n::ParameterStore model(41380);
+  const auto objective=[](const n::LatentOdeOutput& path,const n::Tensor& target) {
+    const auto mse=n::mean(n::square(path.decoded.prediction-target));
+    const auto kl=n::square(path.mean)+n::exp(path.log_variance)-path.log_variance-1.;
+    return 8.*mse+.5*std::log(2*std::numbers::pi*.0625)+.05*n::mean(n::sum(kl,{1}));
+  };
+  {
+    n::NoGradGuard guard;
+    n::latent_ode(model,test.gaps,test.observed,n::zeros({128,4}));
+  }
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(640,32,88833);
+  std::mt19937 rng(88834);
+  std::normal_distribution<float> normal;
+  const auto noise=[&](int rows) {
+    std::vector<float> values(rows*4);
+    for(auto& x:values) x=normal(rng);
+    return n::from_vector(values,{rows,4});
+  };
+  int updates=0;
+  for(int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto path=n::latent_ode(model,n::take_rows(fit.gaps,rows),
+          n::take_rows(fit.observed,rows),noise(rows.size()));
+      optimizer.minimize(objective(path,n::take_rows(fit.target,rows)));
+      ++updates;
+    }
+  }
+  n::NoGradGuard guard;
+  const auto mean=n::latent_ode(model,test.gaps,test.observed,n::zeros({128,4}));
+  const auto eps=noise(128);
+  const auto sample=n::latent_ode(model,test.gaps,test.observed,eps);
+  const auto y=n::slice_axis(test.target,1,6,10), forecast=n::slice_axis(mean.decoded.prediction,1,6,10);
+  const auto rmse=n::sqrt(n::mean(n::square(y-forecast))).item();
+  const auto persistence=n::sqrt(n::mean(n::square(y-n::slice_axis(test.observed,1,5,6)))).item();
+  const auto loss=objective(sample,test.target);
+  if(updates!=60 || !std::isfinite(rmse) || !std::isfinite(loss.item()))
+    throw std::runtime_error("latent ODE fit failed");
+  std::print("| Updates | Forecast RMSE | Persistence RMSE | Sampled objective |\n|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.6f} | {:.6f} | {:.6f} |\n",updates,rmse,persistence,loss.item());
+  const auto pack=[](const n::LatentOdeOutput& path) {
+    return n::concat({path.decoded.prediction,path.mean,path.log_variance},1);
+  };
+  std::filesystem::create_directories("build");
+  n::save_npz("build/latent_ode.npz",{{"input",n::concat({test.gaps,test.observed,eps},1).reshape({128,20,1})},
+      {"target",test.target},{"mean_prediction",pack(mean)},{"sample_prediction",pack(sample)},
+      {"states",sample.decoded.states},{"loss",loss}});
+  auto gap=n::select(test.gaps,0,0).to_vector<double>();
+  std::partial_sum(gap.begin(),gap.end(),gap.begin());
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({gap.begin(),gap.begin()+6},n::select(test.observed,0,0).to_vector<double>(),"Observed",{80,80,80},5)
+      .points({gap.begin()+6,gap.end()},n::select(y,0,0).to_vector<double>(),"Future truth",{37,99,235},5)
+      .lines(gap,n::select(mean.decoded.prediction,0,0).to_vector<double>(),"Mean initial state",{220,90,45})
+      .lines(gap,n::select(sample.decoded.prediction,0,0).to_vector<double>(),"Sampled initial state",{70,150,85})
+      .title("One held-out irregular series").x_label("Time").y_label("Observation")
+      .size(930,500).save_svg("build/latent_ode.svg");
+}
+```
+// result_begin: markdown
+| Updates | Forecast RMSE | Persistence RMSE | Sampled objective |
+|---:|---:|---:|---:|
+| 60 | 0.646052 | 0.997401 | 3.247343 |
+\image(figures/latent_ode.svg)
+// result_end
+\caption(The observed prefix and forecasts at the held-out function’s actual query times.)
+
+> Reference
+
+- [Rubanova et al., Latent ODEs for Irregularly-Sampled Time Series](https://arxiv.org/abs/1907.03907).

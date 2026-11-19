@@ -1,0 +1,164 @@
+//? Title: Detect time-series spikes with LSTM reconstruction and prediction
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a recurrent autoencoder and next-sample predictor on clean data.
+Calibrate two error thresholds on clean validation windows and compare
+how each responds to spikes inside and after the observed history.
+)
+\toc
+
+A 12-unit LSTM encodes the 24-sample input. A separate LSTM reconstructs
+the history from its final hidden state, while a linear head predicts
+the next observation from the same state. The training loss averages
+squared error over all 25 outputs. At test time the two scores are
+reported separately because the observed history and the next reading
+provide different evidence about an anomaly.
+
+All windows stay within their respective chronological splits. Each
+detector flags scores above the nearest-rank 95th percentile of the
+clean validation scores. The test windows are matched across three
+scenarios. Signed spikes alternate between +3 and −3.
+
+```{cpp, results="markdown", file="figures/series_anomaly.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int length = 24;
+  std::vector<double> samples(1152);
+  for (int t = 0; t < 1152; ++t) {
+    const auto phase = 2 * std::numbers::pi * t;
+    samples[t] = (1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                 + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73);
+  }
+  const auto series = n::from_vector(samples).to(n::DType::Float32);
+  const auto origins = [](int begin, int end) {
+    std::vector<std::int64_t> indices(end - begin - length);
+    std::iota(indices.begin(), indices.end(), begin + length);
+    return indices;
+  };
+  const auto fit = n::ForecastWindows(series, origins(0, 768), length, 1);
+  const auto val = n::ForecastWindows(series, origins(768, 960), length, 1);
+  const auto test_origins = origins(960, 1152);
+  const auto test = n::ForecastWindows(series, test_origins, length, 1);
+  const auto join = [](const n::ForecastWindowBatch& batch) {
+    return n::concat({batch.history.reshape({-1, length}), batch.target}, 1);
+  };
+  const auto target = join(fit);
+  n::ParameterStore parameters;
+  const auto predict = [&](const n::Tensor& history) {
+    return n::series_anomaly_output(parameters, "detector", history);
+  };
+  (void)predict(n::slice(fit.history, {0, 0, 0}, {1, length, 1}));
+  parameters.load("fixtures/series_anomaly_init.npz", true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(fit.history.size(0), 32, 28331);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto residual = predict(n::take_rows(fit.history, rows)) - n::take_rows(target, rows);
+      optimizer.step(n::grad(n::mean(n::square(residual)), parameters.parameters()));
+    }
+  }
+
+  n::NoGradGuard guard;
+  const auto val_target = join(val);
+  const auto val_output = predict(val.history);
+  const auto val_scores = n::series_anomaly_scores(val_output, val_target);
+  std::vector<double> thresholds;
+  for (int score = 0; score < 2; ++score) {
+    auto values = n::select(val_scores, 1, score).to_vector<double>();
+    std::ranges::sort(values);
+    thresholds.push_back(values[(95 * values.size() + 99) / 100 - 1]);
+  }
+  const std::string folder = "build/series_anomaly/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "calibration.npz", {{"target", val_target}, {"output", val_output},
+      {"scores", val_scores}, {"thresholds", n::from_vector(thresholds)}});
+
+  std::println("Clean validation thresholds: {:.6f} (reconstruction), {:.6f} (prediction).\n",
+               thresholds[0], thresholds[1]);
+  std::println("| Test scenario | Reconstruction flags | Prediction flags |");
+  std::println("| :--- | ---: | ---: |");
+  const auto clean_target = join(test);
+  const auto clean_output = predict(test.history);
+  const auto rows = test.history.size(0);
+  const auto origin_tensor = n::from_vector(test_origins).to(n::DType::Int32);
+  constexpr std::array names{"clean", "interior_spike", "next_spike"};
+  constexpr std::array<dm::graphics::RGB, 3> colors{
+      dm::graphics::RGB{30,41,59}, {37,99,235}, {191,88,34}};
+  std::vector<double> time(length + 1), axis(test_origins.begin(), test_origins.end());
+  std::iota(time.begin(), time.end(), 0);
+  auto fits = dm::graphics::RPlot::create();
+  auto reconstruction = dm::graphics::RPlot::create();
+  auto prediction = dm::graphics::RPlot::create();
+  fits.title("Interior spike at test origin 984").x_label("Window position").y_label("Level");
+  reconstruction.title("History reconstruction").x_label("Test origin").y_label("Mean squared error");
+  prediction.title("Next-sample prediction").x_label("Test origin").y_label("Squared error");
+
+  for (int scenario = 0; scenario < 3; ++scenario) {
+    auto values = clean_target.to_vector<float>();
+    if (scenario != 0) {
+      const int index = scenario == 1 ? 11 : length;
+      for (int row = 0; row < rows; ++row)
+        values[row * (length + 1) + index] += row % 2 ? -3.f : 3.f;
+    }
+    const auto observation = n::from_vector(values, {rows, length + 1});
+    const auto history = n::slice(observation, {0, 0}, {rows, length}).reshape({rows, length, 1});
+    const auto output = predict(history);
+    if (scenario == 2 && output.to_vector<float>() != clean_output.to_vector<float>())
+      throw std::runtime_error("The next observation changed the model output");
+    const auto scores = n::series_anomaly_scores(output, observation);
+    const auto r = n::select(scores, 1, 0).to_vector<double>();
+    const auto p = n::select(scores, 1, 1).to_vector<double>();
+    const auto count = [](const auto& values, double limit) {
+      return std::ranges::count_if(values, [=](double value) { return value > limit; });
+    };
+    std::println("| {} | {} / {} | {} / {} |", names[scenario],
+                 count(r, thresholds[0]), rows, count(p, thresholds[1]), rows);
+    reconstruction.lines(axis, r, names[scenario], colors[scenario]);
+    prediction.lines(axis, p, names[scenario], colors[scenario]);
+    if (scenario == 1) {
+      fits.lines(time, n::select(observation, 0, 0).to_vector<double>(), "Observed", colors[0])
+          .lines(time, n::select(output, 0, 0).to_vector<double>(), "Model output", colors[1]);
+    }
+    n::save_npz(folder + names[scenario] + ".npz", {{"origins", origin_tensor},
+        {"target", observation}, {"output", output}, {"scores", scores}});
+  }
+  reconstruction.lines(axis, std::vector<double>(axis.size(), thresholds[0]), "Threshold", {130,77,152});
+  prediction.lines(axis, std::vector<double>(axis.size(), thresholds[1]), "Threshold", {130,77,152});
+  auto layout = dm::graphics::RLayout::create(1, 3).size(1440, 400);
+  layout.add(fits).add(reconstruction).add(prediction).save_svg(folder + "scores.svg");
+  std::filesystem::copy_file(folder + "scores.svg", "figures/series_anomaly.svg",
+                            std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+Clean validation thresholds: 0.076722 (reconstruction), 0.092735 (prediction).
+
+| Test scenario | Reconstruction flags | Prediction flags |
+| :--- | ---: | ---: |
+| clean | 10 / 168 | 13 / 168 |
+| interior_spike | 168 / 168 | 36 / 168 |
+| next_spike | 10 / 168 | 168 / 168 |
+\image(figures/series_anomaly.svg)
+// result_end
+
+Interior spikes primarily raise reconstruction error on this fixture.
+A spike in the next reading raises prediction error while leaving
+the reconstruction and model output fixed.

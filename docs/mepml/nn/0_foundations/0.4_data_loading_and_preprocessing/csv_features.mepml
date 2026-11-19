@@ -99,6 +99,16 @@ int main(){
  const auto before=f.Transform(t,{2});std::swap(t.header[0],t.header[1]);for(auto& r:t.rows)std::swap(r[0],r[1]);
  const double error=n::max(n::abs(before-f.Transform(t,{2}))).item();
  int bad=0;for(const auto text:{"x,x\n1,2","x\n\"open","x,y\n1","x\nraw\"quote"})try{d::ParseCsv(text);}catch(const std::invalid_argument&){++bad;}
+ const auto alternate = d::ParseCsv("\xef\xbb\xbf" "a;b\n1;2", ';');
+ if(alternate.At(0,1)!="2" || d::ParseCsv("a,b\n,\n").At(0,1)!="" ||
+    d::ParseCsv("a\n  x  ").At(0,0)!="  x  " || d::Numeric(" \t"))
+   throw std::runtime_error("CSV text, delimiter, BOM or missing-value rule differs");
+ for(const auto invalid : {"NaN","inf","12x"}) {
+   bool rejected = false;
+   try { (void)d::Numeric(invalid); } catch(const std::invalid_argument&) { rejected = true; }
+   if(!rejected) throw std::runtime_error("Invalid numeric field accepted");
+ }
+ std::print("BOM, alternate delimiter, empty fields and whitespace preserved. Three invalid numbers rejected.\n\n");
  const auto fixed=d::ParseCsv("a,b\n4,\n4,\n");
  const auto constant=d::FeatureColumns::Fit(fixed,{0,1},{{"a",d::FeatureKind::kNumeric},{"b",d::FeatureKind::kNumeric}});
  if(error!=0||bad!=4||f.features()[0].mean!=2||constant.features()[1].scale!=1)return 1;
@@ -106,6 +116,8 @@ int main(){
 }
 ```
 // result_begin: markdown
+BOM, alternate delimiter, empty fields and whitespace preserved. Three invalid numbers rejected.
+
 Header-reorder error: 0; malformed tables rejected: 4.
 
 Training mean remains 2; constant/all-missing scales: 1, 1.

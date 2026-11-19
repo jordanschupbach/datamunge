@@ -1,0 +1,135 @@
+//? Title: Multi-agent PPO with a centralized critic
+//? Lang: en
+
+> Multi-agent PPO with a centralized critic
+
+Two agents move on separate five-cell chains. The actors see their own
+positions. The critic sees both positions and estimates a single team
+value. Their shared reward combines progress along the chains with a
+bonus when both agents arrive.
+
+Generalized advantage estimation uses the centralized value and the
+team rewards. Each actor gets its own clipped probability ratio using
+the same team advantage. The three update epochs for each rollout
+batch hold the old log probabilities and regression targets fixed.
+
+The plot shows joint goal arrivals during collection. A separate
+greedy evaluation uses every ordered pair of nonterminal starts.
+The networks use Datamunge's native seeded initializer.
+
+[Yu et al. (2022)|https://arxiv.org/abs/2103.01955]
+
+```{cpp, results="markdown", file="figures/mappo.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  using Pair=std::array<int,2>;
+  constexpr Pair complete{4,4};
+  constexpr int horizon=12;
+  const auto move=[](int cell,int action){return cell==4?4:std::clamp(cell+2*action-1,0,4);};
+  n::ParameterStore params(45601);
+  const auto predict=[&](const n::Tensor& states) {
+    const auto one=n::one_hot(states,5);
+    const auto features=n::dense(params,"critic/hidden",one.reshape({-1,10}),24,n::Activation::Tanh);
+    const auto value=n::dense(params,"critic/value",features,1).reshape({-1});
+    std::vector<n::Tensor> local;
+    for (int agent=0;agent<2;++agent) {
+      const auto own=n::slice(one,{0,agent,0},{states.size(0),1,5}).reshape({-1,5});
+      const auto name=std::format("actor{}",agent);
+      const auto hidden=n::dense(params,name+"/hidden",own,16,n::Activation::Tanh);
+      local.push_back(n::dense(params,name+"/logits",hidden,2));
+    }
+    return std::pair{n::log_softmax(n::stack(local,1),-1),value};
+  };
+  const auto act=[&](Pair state) {
+    const n::NoGradGuard guard;
+    const auto [logp,value]=predict(n::from_vector<int>({state[0],state[1]},{1,2}));
+    return std::pair{logp.to_vector<float>(),static_cast<float>(value.item())};
+  };
+  (void)act({0,0});
+  n::Optimizer optimizer(params,.018,{.kind=n::OptimizerKind::Adam});
+  std::mt19937 rng(45602);
+  std::vector<double> successes;
+  std::filesystem::create_directories("build/mappo");
+  std::print("| Phase | Sampled goals |\n|---:|---:|\n");
+  for (int phase=1;phase<=3;++phase) {
+    std::vector<int> cells,actions;
+    std::vector<float> old,advantages,targets,metadata;
+    int goals=0;
+    for (int episode=0;episode<128;++episode) {
+      Pair state{int(rng()%4),int(rng()%4)};
+      std::vector<float> values,rewards,done;
+      for (int t=0;t<horizon;++t) {
+        const auto [logp,value]=act(state);
+        cells.insert(cells.end(),state.begin(),state.end());
+        values.push_back(value);
+        Pair next;
+        for (int i=0;i<2;++i) {
+          const double u=(double(rng())+.5)/4294967296.;
+          const int action=u>=std::exp(logp[2*i]);
+          actions.push_back(action);
+          old.push_back(logp[2*i+action]);
+          next[i]=move(state[i],action);
+        }
+        const bool success=next==complete;
+        rewards.push_back(float(success)+.08f*(next[0]+next[1]-state[0]-state[1]));
+        done.push_back(success || t+1==horizon);
+        state=next;
+        if (done.back()) {
+          goals+=success;
+          break;
+        }
+      }
+      std::vector<float> adv,ret;
+      dm::rl::returns::Gae(rewards,values,done,0,.95f,.9f,&adv,&ret);
+      for (std::size_t t=0;t<adv.size();++t) {
+        metadata.insert(metadata.end(),{rewards[t],done[t],values[t],adv[t],ret[t]});
+      }
+      advantages.insert(advantages.end(),adv.begin(),adv.end());
+      targets.insert(targets.end(),ret.begin(),ret.end());
+    }
+    const auto count=std::ssize(advantages);
+    const auto x=n::from_vector(cells,{count,2}),a=n::from_vector(actions,{count,2});
+    const auto prior=n::from_vector(old,{count,2}),adv=n::from_vector(advantages),ret=n::from_vector(targets);
+    const auto objective=[&] {
+      const auto [logp,value]=predict(x);
+      return std::pair{dm::rl::mappo_loss(logp,a,prior,adv,value,ret),logp};
+    };
+    for (int epoch=0;epoch<3;++epoch) optimizer.step(n::grad(objective().first[0],optimizer.parameters()));
+    const n::NoGradGuard guard;
+    const auto [parts,logp]=objective();
+    n::save_npz(std::format("build/mappo/phase{}.npz",phase),{{"state",x},{"action",a},
+        {"old",prior},{"meta",n::from_vector(metadata,{count,5})},
+        {"ratio",parts[2]},{"policy_loss",parts[1]},{"logp",logp}});
+    successes.push_back(goals);
+    std::print("| {} | {} / 128 |\n",phase,goals);
+  }
+  int solved=0;
+  for (int a=0;a<4;++a) {
+    for (int b=0;b<4;++b) {
+      Pair state{a,b};
+      for (int t=0;t<horizon && state!=complete;++t) {
+        const auto logp=act(state).first;
+        for (int i=0;i<2;++i) state[i]=move(state[i],logp[2*i+1]>logp[2*i]);
+      }
+      solved+=state==complete;
+    }
+  }
+  std::print("\nGreedy evaluation solved {} of 16 start pairs.\n",solved);
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({1,2,3},successes,"Joint arrivals",{37,99,235})
+      .title("MAPPO training").x_label("Collection phase").y_label("Joint goals out of 128")
+      .ylim(0,128).size(800,460).save_svg("build/mappo.svg");
+}
+```
+// result_begin: markdown
+| Phase | Sampled goals |
+|---:|---:|
+| 1 | 30 / 128 |
+| 2 | 76 / 128 |
+| 3 | 101 / 128 |
+
+Greedy evaluation solved 16 of 16 start pairs.
+\image(figures/mappo.svg)
+// result_end

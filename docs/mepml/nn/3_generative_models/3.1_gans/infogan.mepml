@@ -690,7 +690,7 @@ int main() {
 epoch 1: D=0.171245, G=7.8612, recognition=4.46671, MI bound=-0.777833
 epoch 2: D=0.0735782, G=8.71646, recognition=4.45027, MI bound=-0.761392
 epoch 3: D=0.0447515, G=9.16259, recognition=4.38145, MI bound=-0.692571
-fixed final=3, category accuracy=0.115, continuous MSE=0.230721, MI bound=-0.670781; D then Q then G/restore/imageOnlyQ/codeOnlyG/immutable PASS (training 2.31714 s)
+fixed final=3, category accuracy=0.115, continuous MSE=0.230721, MI bound=-0.670781; D then Q then G/restore/imageOnlyQ/codeOnlyG/immutable PASS (training 0.547502 s)
 Artifacts: build/infogan
 All infogan checks passed.
 \image(figures/infogan_learning.svg)

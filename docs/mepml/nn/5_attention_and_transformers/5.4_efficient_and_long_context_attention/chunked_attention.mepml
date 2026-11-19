@@ -1,0 +1,85 @@
+//? Title: Exact chunked attention on CUDA
+//? Lang: en
+
+> Exact chunked attention on CUDA
+
+Scaled dot-product attention weights each value by the softmax of its
+query–key scores. Dense attention stores a score for every query–key
+pair. An online softmax instead carries a running maximum, a sum of
+rescaled exponentials, and a weighted value sum per query. Whenever the
+maximum increases, the previous sums are rescaled to the new maximum
+before the next value is added.
+
+The backward pass reconstructs each probability from its score and the
+saved softmax statistics. Its score derivative is the probability times
+the dot product of the output adjoint with the difference between that
+key's value and the query's output. One CUDA thread owns each row of a
+gradient matrix. Query and key threads independently recompute the scores
+they need, avoiding atomic updates and a stored score matrix.
+
+The experiment uses 521 queries and 1,031 keys with width 32. It compares
+the output and all three gradients across two tile sizes. Inputs and final
+results cross the host boundary. Scoring, normalization, and gradient
+accumulation run on CUDA device 0.
+
+```{cpp, results="markdown", file="figures/chunked_attention.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const dm::compute::Context cuda({dm::compute::Backend::CUDA, 0});
+  std::mt19937 rng(42101);
+  std::normal_distribution<double> normal;
+  const auto sample = [&](int rows, double scale) {
+    std::vector<double> values(rows * 32);
+    for (auto& value : values) value = scale * normal(rng);
+    return n::from_vector(values, {rows, 32});
+  };
+  const auto q = sample(521, 2);
+  const auto k = sample(1031, 2);
+  const auto v = sample(1031, 1);
+  const auto dy = sample(521, .2f);
+  const auto first = n::cuda_chunked_attention(cuda, q, k, v, dy, 64, 96);
+  const auto second = n::cuda_chunked_attention(cuda, q, k, v, dy, 113, 127);
+  const auto compare = [](const char* name, const n::Tensor& a, const n::Tensor& b) {
+    const auto error = n::max(n::abs(a - b)).item();
+    if (!(error <= 2e-10)) throw std::runtime_error("retiling changed the result");
+    std::print("| {} | {:.3g} |\n", name, error);
+  };
+  std::print("| Result | Maximum absolute difference |\n|---|---:|\n");
+  compare("Output", first.output, second.output);
+  compare("Query gradient", first.dq, second.dq);
+  compare("Key gradient", first.dk, second.dk);
+  compare("Value gradient", first.dv, second.dv);
+
+  std::filesystem::create_directories("build");
+  n::save_npz("build/chunked_attention.npz",
+      {{"q", q}, {"k", k}, {"v", v}, {"upstream", dy}, {"output", first.output},
+       {"dq", first.dq}, {"dk", first.dk}, {"dv", first.dv}});
+  auto figure = dm::graphics::RLayout::create(1, 2);
+  const auto x = n::arange(0, 521).to_vector<double>();
+  auto output = dm::graphics::RPlot::create();
+  output.line(x, n::select(first.output, 1, 0).to_vector<double>())
+      .title("Attention output").x_label("Query row").y_label("First value coordinate");
+  auto gradient = dm::graphics::RPlot::create();
+  gradient.line(x, n::select(first.dq, 1, 0).to_vector<double>())
+      .title("Query gradient").x_label("Query row").y_label("First query coordinate");
+  figure.add(output).add(gradient);
+  figure.size(1100, 400).fit_panels().save_svg("build/chunked_attention.svg");
+}
+```
+// result_begin: markdown
+| Result | Maximum absolute difference |
+|---|---:|
+| Output | 0 |
+| Query gradient | 0 |
+| Key gradient | 0 |
+| Value gradient | 0 |
+\image(figures/chunked_attention.svg)
+// result_end
+\caption(Output and query gradient across all query rows for the first coordinate.)
+\alttext(Two line plots show the first value coordinate of the output and the first coordinate of the query gradient.)
+
+> Reference
+
+- [Milakov and Gimelshein (2018), Online normalizer calculation for softmax](https://arxiv.org/abs/1805.02867).

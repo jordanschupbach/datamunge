@@ -1,0 +1,148 @@
+//? Title: MADDPG on coupled scalar dynamics
+//? Lang: en
+
+> MADDPG on coupled scalar dynamics
+
+Each actor observes only its own position. Its action also indirectly
+affects the other agent through coupled dynamics. Each critic sees
+both positions and both actions. The critics use replay and target
+actors to bootstrap each agent's own reward.
+
+When updating an actor, its centralized critic sees that actor's
+current proposed action alongside the other agent's recorded action.
+The other action is held fixed. Targets follow the online networks
+by Polyak averaging.
+
+The plot compares joint return for the trained actors and a zero-action
+baseline on a shared grid of 16 starting positions. The networks use
+Datamunge's seeded initializer.
+
+[Lowe et al. (2017)|https://arxiv.org/abs/1706.02275]
+
+```{cpp, results="markdown", file="figures/maddpg.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  using Pair=std::array<float,2>;
+  using Transition=std::array<Pair,4>;
+  const auto step=[](Pair x,Pair a)->Pair {
+    return {.65f*x[0]+.1f*x[1]+.25f*a[0],.65f*x[1]+.1f*x[0]+.25f*a[1]};
+  };
+  const auto reward=[](Pair x,Pair a)->Pair {
+    return {-x[0]*x[0]-.25f*x[1]*x[1]-.03f*a[0]*a[0],-x[1]*x[1]-.25f*x[0]*x[0]-.03f*a[1]*a[1]};
+  };
+  const auto column=[](const n::Tensor& x,int i) {return n::slice(x,{0,i},{x.size(0),1});};
+  const auto actor=[&](n::ParameterStore& p,const n::Tensor& x,int agent) {
+    return n::dense(p,"pi/out",n::mlp(p,"pi/mlp",column(x,agent),{24,24}),1,n::Activation::Tanh);
+  };
+  const auto critic=[](n::ParameterStore& p,const n::Tensor& x,const n::Tensor& a) {
+    return n::dense(p,"q/out",n::mlp(p,"q/mlp",n::concat({x,a},1),{32,32}),1).reshape({-1});
+  };
+  std::array online_a{n::ParameterStore(45401),n::ParameterStore(45402)};
+  std::array online_q{n::ParameterStore(45403),n::ParameterStore(45404)};
+  std::array target_a{n::ParameterStore(45405),n::ParameterStore(45406)};
+  std::array target_q{n::ParameterStore(45407),n::ParameterStore(45408)};
+  const auto zeros=n::zeros({1,2});
+  for (int i=0;i<2;++i) {
+    actor(online_a[i],zeros,i);
+    actor(target_a[i],zeros,i);
+    critic(online_q[i],zeros,zeros);
+    critic(target_q[i],zeros,zeros);
+    target_a[i].copy_from(online_a[i]);
+    target_q[i].copy_from(online_q[i]);
+  }
+  std::array aopt{n::Optimizer(online_a[0],.001,{.kind=n::OptimizerKind::Adam}),
+                  n::Optimizer(online_a[1],.001,{.kind=n::OptimizerKind::Adam})};
+  std::array qopt{n::Optimizer(online_q[0],.003,{.kind=n::OptimizerKind::Adam}),
+                  n::Optimizer(online_q[1],.003,{.kind=n::OptimizerKind::Adam})};
+  const auto joint=[&](auto& params,const n::Tensor& x) {
+    return n::concat({actor(params[0],x,0),actor(params[1],x,1)},1);
+  };
+  const auto choose=[&](Pair state) {
+    const n::NoGradGuard guard;
+    const auto a=joint(online_a,n::from_vector<float>({state[0],state[1]},{1,2})).to_vector<float>();
+    return Pair{a[0],a[1]};
+  };
+  const auto pack=[](std::span<const Transition> batch) {
+    std::array<n::Tensor,4> result;
+    for (int field=0;field<4;++field) {
+      std::vector<float> data;
+      for (const auto& row:batch) data.insert(data.end(),row[field].begin(),row[field].end());
+      result[field]=n::from_vector(data,{std::ssize(batch),2});
+    }
+    return result;
+  };
+  const auto backup=[&](const n::Tensor& next,const n::Tensor& reward) {
+    const n::NoGradGuard guard;
+    const auto actions=joint(target_a,next);
+    const auto q0=critic(target_q[0],next,actions),q1=critic(target_q[1],next,actions);
+    return std::array{q0,q1,column(reward,0).reshape({-1})+.95f*q0,
+                           column(reward,1).reshape({-1})+.95f*q1};
+  };
+  std::mt19937 rng(45409);
+  std::uniform_real_distribution<float> uniform(-1,1);
+  std::normal_distribution<float> noise(0,.3f);
+  std::vector<Transition> replay;
+  for (int episode=0;episode<72;++episode) {
+    Pair x{uniform(rng),uniform(rng)};
+    for (int t=0;t<16;++t) {
+      auto a=replay.size()<128?Pair{uniform(rng),uniform(rng)}:choose(x);
+      for (auto& u:a) u=std::clamp(u+noise(rng),-1.f,1.f);
+      const auto next=step(x,a);
+      replay.push_back({x,a,next,reward(next,a)});
+      x=next;
+      if (replay.size()<128) continue;
+      std::array<Transition,32> batch;
+      for (auto& row:batch) row=replay[rng()%replay.size()];
+      const auto [states,actions,successors,rewards]=pack(batch);
+      const auto targets=backup(successors,rewards);
+      for (int i=0;i<2;++i) {
+        const auto loss=n::mean(n::square(critic(online_q[i],states,actions)-targets[2+i]));
+        qopt[i].step(n::grad(loss,qopt[i].parameters()));
+      }
+      for (int i=0;i<2;++i) {
+        const auto hybrid=dm::rl::maddpg_replay_actions(actions,actor(online_a[i],states,i),i);
+        const auto loss=-n::mean(critic(online_q[i],states,hybrid));
+        aopt[i].step(n::grad(loss,aopt[i].parameters()));
+        target_a[i].copy_from(online_a[i],.03);
+        target_q[i].copy_from(online_q[i],.03);
+      }
+    }
+  }
+  const n::NoGradGuard guard;
+  const auto [states,actions,next,rewards]=pack(replay);
+  const auto [q0,q1,td0,td1]=backup(next,rewards);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/maddpg_audit.npz",{{"states",states},{"action",actions},{"next",next},
+      {"reward",rewards},{"pi",joint(online_a,states)},{"target_q0",q0},{"target_q1",q1},{"td0",td0},{"td1",td1}});
+  std::vector<double> steps(17),trained(17),baseline(17);
+  std::iota(steps.begin(),steps.end(),0.);
+  for (float a:{-.9f,-.3f,.3f,.9f}) {
+    for (float b:{-.9f,-.3f,.3f,.9f}) {
+      Pair x{a,b},zero=x;
+      double score=0,reference=0;
+      for (int t=1;t<=16;++t) {
+        const auto u=choose(x);
+        x=step(x,u);
+        zero=step(zero,{0,0});
+        const auto r=reward(x,u), rz=reward(zero,{0,0});
+        score+=r[0]+r[1];
+        reference+=rz[0]+rz[1];
+        trained[t]+=score/16;
+        baseline[t]+=reference/16;
+      }
+    }
+  }
+  std::print("Fitted on {} replay transitions. Joint return was {:.6f} for MADDPG and {:.6f} for zero actions.\n",
+             replay.size(),trained.back(),baseline.back());
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,trained,"MADDPG",{37,99,235}).lines(steps,baseline,"Zero action",{217,96,26})
+      .title("Joint evaluation return").x_label("Step").y_label("Mean cumulative reward")
+      .size(800,460).save_svg("build/maddpg.svg");
+}
+```
+// result_begin: markdown
+Fitted on 1152 replay transitions. Joint return was -0.227750 for MADDPG and -0.967093 for zero actions.
+\image(figures/maddpg.svg)
+// result_end

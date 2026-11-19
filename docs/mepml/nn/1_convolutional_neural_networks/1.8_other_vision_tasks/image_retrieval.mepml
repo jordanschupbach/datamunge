@@ -623,7 +623,7 @@ mAP,first-neighbor hits and pixel references can disagree about improvement.
 The source protocol does not establish particular-object retrieval performance
 or reproduce the paper’s training data,pretraining,whitening or benchmarks.
 
-The selected epoch2 reaches held-out mAP.402486 versus.383918 for the
+The selected epoch2 reaches held-out mAP of 0.402526 versus 0.383918 for the
 untrained CNN,but rank-one relevance drops from.375000 to.291667. Mean RGB
 reaches mAP.434927 and rank-one relevance.479167. This short learned fit does
 not outperform the fixed color reference. The printed metrics and actual

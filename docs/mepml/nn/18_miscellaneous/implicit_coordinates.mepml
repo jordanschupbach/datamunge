@@ -1,0 +1,124 @@
+//? Title: Sine and Fourier-feature networks for coordinate interpolation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit a continuous grayscale field with a sine-activated coordinate network
+and a ReLU network with octave Fourier features. Evaluate both models on
+an interleaved grid that was held out from fitting.
+)
+
+> Represent the image as a function of position
+
+The input is a pair of coordinates and the output is an intensity. The
+target combines oblique sinusoids with a product term. It can be sampled
+at any coordinate, so interpolation can be measured by shifting the
+sample grid by half a step along both axes.
+
+The first model applies sine to each hidden preactivation. The second
+applies ReLU to a richer input containing the original coordinates and
+sines and cosines at three frequencies. Both use a constant feature and
+a fixed output offset of 0.5. This experiment reproduces the small
+SIREN-style and Fourier-feature variants in the upstream fixture.
+
+> Fit on one grid and evaluate on its offset
+
+```{cpp, results="markdown", file="figures/implicit_coordinates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+constexpr int side = 16, rows = side * side;
+
+std::pair<nn::Tensor, nn::Tensor> grid(double offset) {
+    std::vector<double> coordinates(rows * 3), targets(rows);
+    for (int i = 0; i < rows; ++i) {
+        const double u = (i / side + offset + .2) * 2. / side - 1.;
+        const double v = (i % side + offset + .2) * 2. / side - 1.;
+        coordinates[3 * i] = 1.;
+        coordinates[3 * i + 1] = u;
+        coordinates[3 * i + 2] = v;
+        targets[i] = .5 + .24 * std::sin(6 * u + 1.7 * v) +
+                     .22 * std::cos(5 * v - 1.2 * u) + .06 * u * v;
+    }
+    return {nn::from_vector(coordinates, {rows, 3}), nn::from_vector(targets, {rows, 1})};
+}
+
+int main() {
+    namespace g = dm::graphics;
+    constexpr int hidden = 24;
+    nn::set_num_threads(2);
+    const auto [x, y] = grid(0.);
+    const auto [test_x, test_y] = grid(.5);
+    const auto palette = g::viridis_colors(90);
+    std::vector<double> axis(side);
+    for (int i = 0; i < side; ++i) axis[i] = (i + .7) * 2. / side - 1.;
+    auto plots = g::RLayout::create(1, 3).size(1050, 365);
+    const auto show = [&](const auto& values, const std::string& title) {
+        std::vector<std::vector<double>> matrix(side, std::vector<double>(side));
+        const auto data = values.template to_vector<double>();
+        for (int i = 0; i < side; ++i)
+            for (int j = 0; j < side; ++j) matrix[j][i] = data[i * side + j];
+        plots.add(g::RPlot::create().title(title).x_label("v").y_label("u")
+            .image(axis, axis, matrix, palette, 0., 1.));
+    };
+    show(test_y, "Target");
+    const auto mse = [](const auto& a, const auto& b) { return nn::mean(nn::square(a - b)); };
+    std::filesystem::create_directories("build");
+    for (const bool sine : {true, false}) {
+        const auto encode = [&](const auto& input) {
+            return sine ? input : nn::concat(
+                {input, nn::fourier_features(nn::slice_axis(input, 1, 1, 3), 3, false)}, 1);
+        };
+        const auto fit = encode(x), test = encode(test_x);
+        const auto width = fit.size(1);
+        std::mt19937 rng(67053);
+        std::uniform_real_distribution<double> init(-1., 1.);
+        std::vector<double> first(width * hidden), second(hidden);
+        const double scale = sine ? 1. / 3. : 1. / std::sqrt(double(width));
+        for (auto& w : first) w = init(rng) * scale;
+        for (auto& w : second) w = init(rng) * .05;
+        const auto w = nn::from_vector(first, {width, hidden}).requires_grad_();
+        const auto v = nn::from_vector(second, {hidden, 1}).requires_grad_();
+        const std::vector<nn::Tensor> weights{w, v};
+        nn::Optimizer sgd(weights, sine ? .04 : .09);
+        const auto predict = [&](const auto& data) {
+            const auto preactivation = nn::matmul(data, w);
+            return .5 + nn::matmul(sine ? nn::sin(6. * preactivation) : nn::relu(preactivation), v);
+        };
+        const double before = mse(predict(test), test_y).item();
+        for (int epoch = 0; epoch < 3; ++epoch)
+            for (int i = 0; i < rows; i += 32) {
+                const auto error = mse(predict(nn::slice_axis(fit, 0, i, i + 32)),
+                                       nn::slice_axis(y, 0, i, i + 32));
+                sgd.step(nn::grad(error, weights));
+            }
+        const nn::NoGradGuard guard;
+        const auto prediction = predict(test);
+        const double after = mse(prediction, test_y).item();
+        if (!(after < .8 * before)) throw std::runtime_error("Coordinate interpolation failed");
+        const std::string name = sine ? "siren" : "fourier";
+        nn::save_npz("build/" + name + ".npz", {{"x", test_x}, {"y", test_y},
+            {"first", w}, {"second", v}, {"prediction", prediction}});
+        show(prediction, sine ? "Sine activations" : "Fourier features");
+        std::print("{} held-out MSE {:.8f} to {:.8f}.\n\n", name, before, after);
+    }
+    plots.save_svg("build/implicit_coordinates.svg");
+}
+```
+// result_begin: markdown
+siren held-out MSE 0.08655099 to 0.04850074.
+
+fourier held-out MSE 0.05100756 to 0.04042365.
+
+\image(figures/implicit_coordinates.svg)
+// result_end
+
+The panels use the same intensity scale. Both models improve on the
+unseen coordinates after three epochs, with visible residual errors.
+This is one synthetic image and one fixed training schedule. The
+experiment measures interpolation within the sampled domain.
+
+> References
+
+- [Sitzmann et al., Implicit Neural Representations with Periodic Activation Functions|https://arxiv.org/abs/2006.09661].
+- [Mildenhall et al., NeRF|https://arxiv.org/abs/2003.08934].

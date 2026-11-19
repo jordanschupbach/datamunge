@@ -7,6 +7,14 @@ The exact upstream preparation protocol and the complete editable native C++ exp
 )
 \toc
 
+> Replay every held-out position
+
+The cache appends one key and value per head for each new token.
+The causal query uses the accumulated prefix. The reference replay
+checks all 2,048 held-out positions against a full-context evaluation
+using the same native checkpoint, then generates 48 greedy tokens from
+the first eight held-out tokens.
+
 > Follow the actual data and model
 
 New tokens / retained K,V -> causal chunk -> grown cache.
@@ -803,6 +811,43 @@ int Run(const lm::Options& o) {
   const auto weights = lm::Arrays(model.store);
   nn::save_npz((root / "model_arrays.npz").string(), weights);
   const auto data   = nn::load_npz((paths::Dataset("character_rnn") / "character_rnn.npz").string());
+  const auto all_test = attn::Named(data, "test_input");
+  auto test_cache = model.Empty(all_test.size(0));
+  std::vector<Tensor> step_logits, step_attention;
+  for (int t = 0; t < 64; ++t) {
+    const auto out = model.Append(nn::slice_axis(all_test, 1, t, t + 1), test_cache);
+    step_logits.push_back(out.at("logits"));
+    const auto attention = out.at("attention");
+    step_attention.push_back(t == 63 ? attention : nn::concat(
+        {attention, nn::zeros({all_test.size(0), 2, 1, 63 - t})}, 3));
+  }
+  const auto test_logits = nn::concat(step_logits, 1);
+  const double test_error = nn::max(nn::abs(test_logits - model.Predict(all_test))).item();
+  check::Require(test_error < 3e-6, "all held-out cached logits agree with the full forward");
+
+  const auto first = lm::Rows(all_test, {0});
+  auto greedy_cache = model.Empty(1);
+  auto prefix = nn::slice_axis(first, 1, 0, 8);
+  auto generated = prefix.to_vector<std::int32_t>();
+  auto next = model.Append(prefix, greedy_cache).at("logits");
+  for (int step = 0; step < 48; ++step) {
+    const auto logits = nn::select(next, 1, next.size(1) - 1).to_vector<float>();
+    const auto token = static_cast<std::int32_t>(std::max_element(logits.begin(), logits.end()) - logits.begin());
+    generated.push_back(token);
+    next = model.Append(nn::from_vector(std::vector<std::int32_t>{token}, {1, 1}), greedy_cache).at("logits");
+  }
+  const auto source_protocol = root / "source-protocol";
+  fs::create_directories(source_protocol);
+  nn::save_npz((source_protocol / "data.npz").string(), {{"test_input", all_test}});
+  nn::save_npz((source_protocol / "audit.npz").string(),
+               {{"input", all_test}, {"logits", test_logits},
+                {"attention", nn::concat(step_attention, 2)},
+                {"keys", test_cache.keys}, {"values", test_cache.values},
+                {"generation", nn::from_vector(generated, {1, 56})}});
+  fs::copy_file(root / "model_arrays.npz", source_protocol / "model_arrays.npz",
+                fs::copy_options::overwrite_existing);
+  std::cout << "Reference replay maximum cached/full logit difference: " << test_error
+            << " across " << all_test.size(0) * 64 << " held-out positions.\n";
   const Tensor tokens = lm::Rows(attn::Named(data, "test_input"), {0, 1});
   const Tensor full   = model.Predict(tokens);
   nn::save_npz((root / "full.npz").string(), {{"input", tokens}, {"logits", full}});
@@ -1014,9 +1059,10 @@ int main(int argc, char** argv) {
 ```
 // result_begin:
 // trained GPT weights: /mnt/projects/datamunge/docs/mepml/nn/5_attention_and_transformers/5.2_language_transformers/build/recovered-language/models/gpt_lm/final.npz
+// Reference replay maximum cached/full logit difference: 0 across 2048 held-out positions.
 // 73 native empty/prefill/chunk/single cache appends; max logit error=0; old KV unchanged, batch independent, 8 guards; 80 cached/full sample decisions with 31 correct absolute-position rebuilds; immutable PASS
 //   vs TF model_arrays.npz           (fixture missing)
-// wall 0.030646 s
+// wall 0.360272 s
 // result_end
 
 > Actual source diagnostics

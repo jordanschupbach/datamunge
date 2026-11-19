@@ -1,0 +1,81 @@
+//? Title: Mirrored and rank-shaped evolution strategies
+//? Lang: en
+
+> Mirrored and rank-shaped evolution strategies
+
+Sample random policy perturbations in pairs, evaluating a positive
+and negative copy of each direction on the same starting states.
+Convert returns to centered ranks with average ranks for ties. The
+rank difference within each pair weights its direction in the
+ascent estimate. Adam receives its negative because the optimizer
+minimizes. The sampling standard deviation stays fixed.
+
+The experiment uses the same bounded feedback controller as the
+[cross-entropy policy-search report|cross_entropy_method.mepml].
+Evaluate the unperturbed policy on held-out starting states after
+each of three updates. The plot shows the change in mean return.
+
+[Salimans et al. (2017)|https://arxiv.org/abs/1703.03864]
+
+```{cpp, results="markdown", file="figures/openai_es.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto starts=[](std::mt19937& rng) {
+    const auto uniform=[&] { return float((rng()+.5)/4294967296.); };
+    std::vector<float> states;
+    for (int i=0;i<6;++i) {
+      const float p=.4f+.6f*uniform(), v=.6f*(uniform()-.5f);
+      states.insert(states.end(),{p,v,-p,-v});
+    }
+    return n::from_vector(states,{12,2});
+  };
+  std::mt19937 rng(47202), train(47203), evaluation(47204);
+  std::normal_distribution<float> normal;
+  const auto test=starts(evaluation);
+  n::ParameterStore params(47201);
+  const auto center=params.get("center",{3},n::init::zeros());
+  n::Optimizer optimizer(params,.15,{.kind=n::OptimizerKind::Adam});
+  const n::NoGradGuard no_grad;
+  std::vector<double> history;
+  std::filesystem::create_directories("build");
+  std::print("| Generation | Held-out return |\n|---:|---:|\n");
+  for (int i=0;i<=3;++i) {
+    const auto before=center.clone();
+    history.push_back(r::feedback_returns(before.reshape({1,3}),test).first.item());
+    std::print("| {} | {:.6f} |\n",i,history.back());
+    if (i==3) break;
+    const auto initial=starts(train);
+    std::vector<float> draws(32*3);
+    for (auto& value:draws) value=normal(rng);
+    const auto noise=n::from_vector(draws,{32,3});
+    const auto population=n::concat({before+.12f*noise,before-.12f*noise},0);
+    const auto fitness=r::feedback_returns(population,initial).first;
+    const auto [ranks,gradient]=r::mirrored_rank_gradient(noise,fitness,.12f);
+    optimizer.step({-gradient});
+    n::save_npz(std::format("build/openai_es_generation{}.npz",i+1),{{"before",before},
+        {"noise",noise},{"population",population},{"starts",initial},{"fitness",fitness},
+        {"ranks",ranks},{"gradient",gradient},{"after",center}});
+  }
+  if (!(history.back()>history.front()) || optimizer.iterations()!=3) {
+    throw std::runtime_error("ES mean policy did not improve");
+  }
+  n::save_npz("build/openai_es_evaluation.npz",{{"starts",test},{"history",n::from_vector(history)}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Unperturbed policy",{37,99,235})
+      .points({0,1,2,3},history,"Adam updates",{37,99,235})
+      .title("Mirrored rank-shaped policy search").x_label("Generation").y_label("Mean held-out return")
+      .size(880,425).save_svg("build/openai_es.svg");
+}
+```
+// result_begin: markdown
+| Generation | Held-out return |
+|---:|---:|
+| 0 | -18.609520 |
+| 1 | -12.841409 |
+| 2 | -4.816406 |
+| 3 | -3.730335 |
+\image(figures/openai_es.svg)
+// result_end

@@ -842,7 +842,7 @@ int main() {
 epoch 1: D=1.58477, G=6.83707, reconstruction L1=0.475263
 epoch 2: D=1.54796, G=6.6807, reconstruction L1=0.462881
 epoch 3: D=1.48256, G=6.36028, reconstruction L1=0.437764
-fixed final=3, real/generated domain accuracy=0.683333/0.333333, mapping MSE=0.202748, test D/G=1.48392/6.36832; single G/3 domains/classifier/roundtrip/restore/immutable PASS (training 0.745573 s)
+fixed final=3, real/generated domain accuracy=0.683333/0.333333, mapping MSE=0.202748, test D/G=1.48392/6.36832; single G/3 domains/classifier/roundtrip/restore/immutable PASS (training 1.46803 s)
 Artifacts: build/star_gan
 All star_gan checks passed.
 // result_end

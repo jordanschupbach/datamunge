@@ -1,0 +1,181 @@
+//? Title: Sample multi-step prediction intervals with DeepAR
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train a shared Gaussian GRU on three related series. Sample 64 paths
+per test origin and compare empirical interval coverage with the
+conditional training objective.
+)
+\toc
+
+The GRU uses a shared pair of heads for the conditional mean and
+positive standard deviation. Training feeds in observed values as
+the previous step's input. At inference each path instead feeds back
+its own sampled value. This carries uncertainty through the recurrent
+state and produces a distribution at each lead.
+[Salinas et al., DeepAR|https://arxiv.org/abs/1704.04110]
+
+The related synthetic series share a fitting-only normalization.
+Training batches alternate across the three series, and validation and
+testing use the original series on disjoint target intervals. The
+initialization fixture reproduces the upstream TensorFlow weights.
+
+```{cpp, results="markdown", file="figures/deepar_forecast.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <numeric>
+#include <print>
+#include <random>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int lag = 24, horizon = 6, paths = 64, fit_end = 768, end = 1152;
+  std::array<std::vector<double>, 3> panel;
+  for (int t = 0; t < end; ++t) {
+    const auto phase = 2 * std::numbers::pi * t;
+    const auto value = (1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                       + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73);
+    panel[0].push_back(value);
+    panel[1].push_back(.8 * value + .1 * std::cos(t * .11));
+    panel[2].push_back(1.2 * value + .1 * std::sin(t * .08));
+  }
+  double center = 0, square = 0;
+  for (const auto& member : panel)
+    for (int t = 0; t < fit_end; ++t) {
+      center += member[t];
+      square += member[t] * member[t];
+    }
+  center /= panel.size() * fit_end;
+  const auto scale = std::sqrt(square / (panel.size() * fit_end) - center * center);
+  const auto normalize = [&](const std::vector<double>& x) {
+    return ((n::from_vector(x) - center) / scale).to(n::DType::Float32);
+  };
+  const auto series = normalize(panel[0]);
+  const auto origins = [](int first, int last) {
+    std::vector<std::int64_t> indices(last - horizon - first + 1);
+    std::iota(indices.begin(), indices.end(), first);
+    return indices;
+  };
+  const auto fit_indices = origins(lag, fit_end);
+  const std::array fit{n::ForecastWindows(series, fit_indices, lag, horizon),
+      n::ForecastWindows(normalize(panel[1]), fit_indices, lag, horizon),
+      n::ForecastWindows(normalize(panel[2]), fit_indices, lag, horizon)};
+  const auto val = n::ForecastWindows(series, origins(fit_end, 960), lag, horizon);
+  const auto test_indices = origins(960, end);
+  const auto test = n::ForecastWindows(series, test_indices, lag, horizon);
+
+  n::ParameterStore parameters;
+  const auto forecast = [&](const n::Tensor& history, const n::Tensor& future, n::DeepARMode mode) {
+    return n::deepar(parameters, "deepar", history, future, mode);
+  };
+  const auto loss = [](const n::DeepAROutput& x, const n::Tensor& y) {
+    return n::GaussianRegressionNll({x.mean, n::square(x.scale)}, y);
+  };
+  const auto teacher = n::DeepARMode::Teacher;
+  (void)forecast(n::take_rows(val.history, {0}), n::take_rows(val.target, {0}), teacher);
+  parameters.load("fixtures/deepar_init.npz", true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .005, config);
+  n::BatchOrder order(fit_indices.size(), 32, 49313);
+  std::println("| Epoch | Validation Gaussian NLL |\n| ---: | ---: |");
+  for (int epoch = 1; epoch <= 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      for (const auto& member : fit) {
+        const auto target = n::take_rows(member.target, rows);
+        const auto conditional = forecast(n::take_rows(member.history, rows), target, teacher);
+        optimizer.step(n::grad(loss(conditional, target), parameters.parameters()));
+      }
+    }
+    n::NoGradGuard guard;
+    std::println("| {} | {:.6f} |", epoch, loss(forecast(val.history, val.target, teacher), val.target).item());
+  }
+
+  n::NoGradGuard guard;
+  const auto conditional = forecast(test.history, test.target, teacher);
+  std::vector<std::int64_t> repeated;
+  for (std::size_t row = 0; row < test_indices.size(); ++row) repeated.insert(repeated.end(), paths, row);
+  std::mt19937 rng(49314);
+  std::normal_distribution<float> normal;
+  std::vector<float> innovations(repeated.size() * horizon);
+  for (auto& value : innovations) value = normal(rng);
+  const auto noise = n::from_vector(innovations, {static_cast<std::int64_t>(repeated.size()), horizon});
+  const auto sampled = forecast(n::take_rows(test.history, repeated), noise, n::DeepARMode::Sample);
+
+  const auto draws = sampled.values.to_vector<float>();
+  const auto actual = test.target.to_vector<float>();
+  std::vector<double> axis, truth, mean, lower, upper;
+  std::array<int, horizon> hits{};
+  double error = 0;
+  for (std::size_t row = 0; row < test_indices.size(); ++row) {
+    for (int lead = 0; lead < horizon; ++lead) {
+      std::array<double, paths> values;
+      for (int path = 0; path < paths; ++path)
+        values[path] = draws[(row * paths + path) * horizon + lead];
+      const double estimate = std::accumulate(values.begin(), values.end(), 0.) / paths;
+      const double observed = actual[row * horizon + lead];
+      error += std::pow((estimate - observed) * scale, 2);
+      std::ranges::sort(values);
+      hits[lead] += values[6] <= observed && observed <= values[57];
+      if (row < 48 && lead == horizon - 1) {
+        axis.push_back(test_indices[row]);
+        truth.push_back(center + scale * observed);
+        mean.push_back(center + scale * estimate);
+        lower.push_back(center + scale * values[6]);
+        upper.push_back(center + scale * values[57]);
+      }
+    }
+  }
+  const auto coverage = double(std::accumulate(hits.begin(), hits.end(), 0)) / actual.size();
+  std::println("\nAcross {} origins, sampled-mean RMSE was {:.6f}, central 80% coverage was {:.1f}%, "
+               "and teacher-forced test NLL was {:.6f}.", test_indices.size(), std::sqrt(error / actual.size()),
+               100 * coverage, loss(conditional, test.target).item());
+
+  const std::string folder = "build/deepar_forecast/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::save_npz(folder + "paths.npz", {{"draw", sampled.values}, {"mu", sampled.mean},
+      {"sigma", sampled.scale}, {"previous", sampled.previous}, {"noise", noise},
+      {"history", test.history}, {"actual", test.target}, {"teacher_loss", loss(conditional, test.target)},
+      {"teacher_mu", conditional.mean}, {"teacher_sigma", conditional.scale},
+      {"teacher_previous", conditional.previous}, {"scaling", n::from_vector(std::vector<double>{center, scale})}});
+
+  auto interval = dm::graphics::RPlot::create();
+  interval.lines(axis, lower, "Lower", {92,102,120}).lines(axis, upper, "Upper", {92,102,120})
+      .lines(axis, mean, "Sample mean", {37,99,235}).points(axis, truth, "Observed", {30,41,59}, 3)
+      .title("Six-step forecasts at the first 48 origins").x_label("Origin").y_label("Level");
+  const std::vector<double> leads{1, 2, 3, 4, 5, 6};
+  std::vector<double> rates;
+  for (auto hit : hits) rates.push_back(double(hit) / test_indices.size());
+  auto calibration = dm::graphics::RPlot::create();
+  calibration.lines(leads, rates, "Empirical", {37,99,235})
+      .lines(leads, std::vector<double>(horizon, .8), "Nominal", {191,88,34})
+      .title("Coverage by lead").x_label("Lead").y_label("Proportion covered");
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 410);
+  layout.add(interval).add(calibration).save_svg(folder + "paths.svg");
+  std::filesystem::copy_file(folder + "paths.svg", "figures/deepar_forecast.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Epoch | Validation Gaussian NLL |
+| ---: | ---: |
+| 1 | 0.078538 |
+| 2 | -1.153125 |
+| 3 | -1.030334 |
+
+Across 187 origins, sampled-mean RMSE was 0.382509, central 80% coverage was 38.9%, and teacher-forced test NLL was -1.049045.
+\image(figures/deepar_forecast.svg)
+// result_end
+
+The intervals use the seventh and 58th order statistics of 64 draws.
+Coverage on this fixture falls short of the nominal rate. The
+teacher-forced likelihood and free-running coverage assess different
+aspects of the model.

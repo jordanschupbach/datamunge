@@ -1,0 +1,129 @@
+//? Title: Poincaré embeddings of a binary tree
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fit two-dimensional Poincaré ball coordinates to shortest-path distances
+on a binary tree. Use 80 pairs for training and compare predicted and true
+distances for the other 25 pairs.
+)
+
+> A metric and a gradient step for the open ball
+
+Points live inside the unit disk. Their hyperbolic distance grows faster
+near the disk boundary than the same Euclidean displacement near the
+origin. This lets a two-dimensional embedding accommodate the increasing
+number of nodes at deeper levels of the tree.
+
+For points \(a\) and \(b\), let \(t=2\|a-b\|^2/[(1-\|a\|^2)(1-\|b\|^2)]\).
+The distance is \(\operatorname{acosh}(1+t)\). The API evaluates the
+equivalent log1p form. To update a point \(x\), multiply its Euclidean
+gradient by \((1-\|x\|^2)^2/4\), take the step, and project back to
+radius 0.96 when needed.
+
+> Fit and test on the upstream tree
+
+The fixture shuffles the 105 unordered pairs of a 15-node binary tree.
+The target is 0.62 times the shortest-path length. The first 80 pairs
+fit the embeddings in 30 minibatch updates. The remaining distances
+are computed from the same node coordinates, so the test measures
+generalization to unseen pairs of known nodes.
+
+```{cpp, results="markdown", file="figures/poincare_embeddings.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    namespace nn = dm::nn;
+    namespace g = dm::graphics;
+    constexpr int nodes = 15, cases = nodes * (nodes - 1) / 2, fit = 80;
+    nn::set_num_threads(2);
+    std::vector<std::pair<int, int>> pairs;
+    for (int a = 0; a < nodes; ++a)
+        for (int b = a + 1; b < nodes; ++b) pairs.emplace_back(a, b);
+    std::mt19937 rng(7864);
+    std::shuffle(pairs.begin(), pairs.end(), rng);
+    std::vector<double> left(cases * nodes), right(cases * nodes), targets(cases);
+    std::vector<int> pair_ids;
+    for (int i = 0; i < cases; ++i) {
+        auto [a, b] = pairs[i];
+        pair_ids.insert(pair_ids.end(), {a, b});
+        left[i * nodes + a] = 1;
+        right[i * nodes + b] = 1;
+        int path = 0;
+        for (; a != b; ++path) {
+            if (a > b) a = (a - 1) / 2;
+            else b = (b - 1) / 2;
+        }
+        targets[i] = .62 * path;
+    }
+    const auto one = nn::from_vector(left, {cases, nodes}), two = nn::from_vector(right, {cases, nodes});
+    const auto targets_tensor = nn::from_vector(targets, {cases, 1});
+    std::uniform_real_distribution<double> draw(-.23, .23);
+    std::vector<double> seeds(nodes * 2);
+    for (auto& coordinate : seeds) coordinate = draw(rng);
+    const auto initial = nn::from_vector(seeds, {nodes, 2});
+    auto points = initial.clone();
+    const auto distance = [&](const auto& a, const auto& b, int start, int end) {
+        return nn::poincare_distance(nn::matmul(nn::slice_axis(a, 0, start, end), points),
+                                     nn::matmul(nn::slice_axis(b, 0, start, end), points));
+    };
+    const auto score = [&](const auto& measured, int start, int end) {
+        return nn::mean(nn::square(measured - nn::slice_axis(targets_tensor, 0, start, end)));
+    };
+    const double before = score(distance(one, two, fit, cases), fit, cases).item();
+    for (int epoch = 0; epoch < 3; ++epoch)
+        for (int i = 0; i < fit; i += 8) {
+            points.requires_grad_();
+            const auto loss = score(distance(one, two, i, i + 8), i, i + 8);
+            const auto gradient = nn::grad(loss, {points}).front();
+            const nn::NoGradGuard guard;
+            points = nn::poincare_sgd_step(points, gradient, .8, .96);
+        }
+    const auto held_out = distance(one, two, fit, cases);
+    const auto reversed = distance(two, one, fit, cases);
+    const double after = score(held_out, fit, cases).item();
+    const double max_radius = nn::max(nn::sqrt(nn::sum(nn::square(points), {1}))).item();
+    const double symmetry = nn::max(nn::abs(held_out - reversed)).item();
+    if (!(after < before) || max_radius >= 1 || symmetry > 1e-12)
+        throw std::runtime_error("Poincaré fixture failed the upstream checks");
+
+    std::vector<double> x(nodes), y(nodes);
+    for (int i = 0; i < nodes; ++i) {
+        x[i] = points.at({i, 0});
+        y[i] = points.at({i, 1});
+    }
+    auto embedding = g::RPlot::create().title("Learned node coordinates")
+        .x_label("Coordinate 1").y_label("Coordinate 2").x_limits(-1, 1).y_limits(-1, 1);
+    for (int i = 1; i < nodes; ++i) {
+        const int parent = (i - 1) / 2;
+        embedding.lines({x[i], x[parent]}, {y[i], y[parent]}, "", {170, 180, 189});
+    }
+    embedding.points(x, y, g::RGBA{35, 113, 169});
+    auto accuracy = g::RPlot::create().title("Distances on held-out pairs")
+        .x_label("Scaled tree distance").y_label("Poincaré distance")
+        .points(nn::slice_axis(targets_tensor, 0, fit, cases).to_vector<double>(),
+                held_out.to_vector<double>(), g::RGBA{158, 68, 39})
+        .lines({0., 4.}, {0., 4.}, "Identity", {95, 104, 110});
+    std::filesystem::create_directories("build");
+    g::RLayout::create(1, 2).size(1010, 480).add(embedding).add(accuracy)
+        .save_svg("build/poincare_embeddings.svg");
+    nn::save_npz("build/poincare_embeddings.npz", {{"initial", initial}, {"points", points},
+         {"pairs", nn::from_vector(pair_ids, {cases, 2})}, {"target", targets_tensor},
+         {"test_distances", held_out}});
+    std::print("Held-out MSE {:.8f} to {:.8f}. Maximum radius {:.6f}. Symmetry error {:.2e}.\n",
+               before, after, max_radius, symmetry);
+}
+```
+// result_begin: markdown
+Held-out MSE 3.72235709 to 0.63825505. Maximum radius 0.853796. Symmetry error 0.00e+00.
+\image(figures/poincare_embeddings.svg)
+// result_end
+
+The left plot shows learned coordinates linked by the tree edges.
+The right plot reveals which held-out distances are under- or
+overestimated. Agreement between the two argument orders checks
+symmetry independently of the regression error.
+
+> Reference
+
+- [Nickel and Kiela, Poincaré Embeddings for Learning Hierarchical Representations|https://arxiv.org/abs/1705.08039].

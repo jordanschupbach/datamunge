@@ -372,11 +372,11 @@ int main() {
 // result_begin: markdown
 | kernel | memory traffic (MiB) | median time (ms) | effective bandwidth (GiB/s) |
 | :--- | ---: | ---: | ---: |
-| copy (clone) | 128 | 8.7 | 14.4 |
-| fused ScaleShift (one pass) | 128 | 8.3 | 15.1 |
-| x * 2 + 0.5 (two passes) | 256 | 16.8 | 14.8 |
+| copy (clone) | 128 | 10.1 | 12.4 |
+| fused ScaleShift (one pass) | 128 | 9.5 | 13.2 |
+| x * 2 + 0.5 (two passes) | 256 | 21.2 | 11.8 |
 
-Fused against composed: 2.03 times faster; results identical: true
+Fused against composed: 2.24 times faster; results identical: true
 - map_elements with 1 thread and with 8 threads: bit-identical = true
 - naive float32 sum of all 16777216 values, split into k equal chunks:
 
@@ -565,7 +565,7 @@ After 3000 gradient steps:
 
 - penalised loss 0.099591; gradient norm 6.8e-07; training accuracy 561/569 = 0.986
 - largest difference between fused and composed coefficients: 1.7e-16
-- time for 3000 steps: fused 87 ms, composed 131 ms
+- time for 3000 steps: fused 126 ms, composed 158 ms
 
 | feature (standardised) | coefficient |
 | :--- | ---: |

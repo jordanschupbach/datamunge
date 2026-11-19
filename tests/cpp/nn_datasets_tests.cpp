@@ -2,12 +2,15 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <datamunge/nn/nn.hpp>
 #include <filesystem>
 #include <fstream>
+#include <numeric>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -226,4 +229,41 @@ TEST(NnDatasets, RealCifar10WhenAvailable) {
   EXPECT_EQ(test.images.shape(), (nn::Shape{10000, 32, 32, 3}));
   EXPECT_EQ(train.labels.at({0}), 6);  // frog
   EXPECT_EQ(test.labels.at({0}), 3);   // cat
+}
+
+TEST(NnDatasets, ImageHoldoutKeepsSourcePairsAndUsesSameValidationWithFittingCap) {
+  nn::ImageDataset data{
+      nn::arange(0, 20).reshape({20, 1, 1, 1}).requires_grad_(),
+      (nn::arange(0, 20) + 100).to(DType::Int64),
+  };
+  std::vector<std::int64_t> expected(20);
+  std::iota(expected.begin(), expected.end(), 0);
+  std::mt19937_64 rng(2026);
+  std::shuffle(expected.begin(), expected.end(), rng);
+
+  auto capped = nn::split_image_holdout(data, 5, 2026, 8);
+  auto full = nn::split_image_holdout(data, 5, 2026);
+  EXPECT_EQ(capped.fit_rows, std::vector<std::int64_t>(expected.begin(), expected.begin() + 8));
+  EXPECT_EQ(full.fit_rows, std::vector<std::int64_t>(expected.begin(), expected.begin() + 15));
+  EXPECT_EQ(full.validation_rows, std::vector<std::int64_t>(expected.begin() + 15, expected.end()));
+  EXPECT_EQ(capped.validation_rows, full.validation_rows);
+  for (const auto* split : {&capped, &full}) {
+    for (std::size_t i = 0; i < split->fit_rows.size(); ++i) {
+      const auto row = static_cast<std::int64_t>(i);
+      EXPECT_EQ(split->fit.images.at({row, 0, 0, 0}), split->fit_rows[i]);
+      EXPECT_EQ(split->fit.labels.at({row}), split->fit_rows[i] + 100);
+    }
+    for (std::size_t i = 0; i < split->validation_rows.size(); ++i) {
+      const auto row = static_cast<std::int64_t>(i);
+      EXPECT_EQ(split->validation.images.at({row, 0, 0, 0}), split->validation_rows[i]);
+      EXPECT_EQ(split->validation.labels.at({row}), split->validation_rows[i] + 100);
+    }
+    EXPECT_FALSE(split->fit.images.requires_grad());
+  }
+  full.fit.images.fill_(-1.);
+  EXPECT_EQ(data.images.at({full.fit_rows.front(), 0, 0, 0}), full.fit_rows.front());
+  EXPECT_THROW(nn::split_image_holdout(data, 0), std::invalid_argument);
+  EXPECT_THROW(nn::split_image_holdout(data, 20), std::invalid_argument);
+  EXPECT_THROW(nn::split_image_holdout(data, 5, 0, 16), std::invalid_argument);
+  EXPECT_THROW(nn::split_image_holdout({data.images, nn::zeros({1})}, 5), std::invalid_argument);
 }

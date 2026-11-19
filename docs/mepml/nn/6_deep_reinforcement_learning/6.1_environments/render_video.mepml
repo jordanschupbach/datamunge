@@ -48,18 +48,10 @@ struct Checkpoint{dm::nn::ParameterStore& store;~Checkpoint(){auto tag=std::to_s
 struct Flush{~Flush(){for(const auto&[name,values]:traces)Save(name,values);if(!arrays.empty()){std::filesystem::create_directories("build");dm::nn::save_npz("build/render_video_source.npz",arrays);}}};inline Flush flush;
 }
 // CMD: just run-nn render_video
-// Rollout "video" of the hand-written 6.1 controllers.
+// Recorded rollouts of the hand-written 6.1 controllers.
 //
-// Port of tflow's render_video. tflow renders every built-in environment's 3D
-// world offscreen with vsim's NVRHI/Vulkan renderer and streams the frames,
-// with a HUD overlay, into ffmpeg (output/videos/*.mp4). vsim rendering and
-// ffmpeg video writing are out of scope for the datamunge ports, so this port
-// plays exactly the episodes tflow films (same controllers, same reset seeds,
-// same Hud bookkeeping; common/rl/playback.hpp) and prints each one's steps
-// and return, which match tflow's "recorded ..." lines. The only frames
-// rendered are Snake's, whose board is itself an image: they are written as a
-// PNG filmstrip to output/nn/frames/snake_greedy.png
-// (common/rl/snake_frames.hpp). Checks are added.
+// The native renderers encode the four original seeded episodes through
+// ffmpeg. The Snake recording also produces a PNG filmstrip.
 
 
 // Editable workflow support: checks.hpp
@@ -173,8 +165,7 @@ using datamunge::rl::environments::Acrobot;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the original controller decisions and reward information.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -355,13 +346,7 @@ namespace rl {using dm::rl::environments::LunarLander;}
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// Capture the state at reset and after every environment transition.
 
 
 
@@ -389,6 +374,7 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<float> observations = obs, rewards;
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
@@ -397,10 +383,36 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
+    observations.insert(observations.end(), obs.begin(), obs.end());
+    rewards.push_back(r.reward);
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  namespace e = dm::rl::environments;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::nn::save_npz("build/" + name + "_replay.npz",
+      {{"observations", dm::nn::from_vector(observations, {pb.steps + 1, static_cast<std::int64_t>(obs.size())})},
+       {"reward", dm::nn::from_vector(rewards)}});
+  if constexpr (!std::is_same_v<Env, e::Snake>) {
+    std::vector<std::array<float,3>> poses;
+    for (std::size_t i = 0; i < observations.size(); i += obs.size()) {
+      const auto* o = observations.data() + i;
+      if constexpr (std::is_same_v<Env, e::CartPole>) poses.push_back({o[0],o[2],0});
+      else if constexpr (std::is_same_v<Env, e::Pendulum>)
+        poses.push_back({0,std::atan2(o[1],o[0]),0});
+      else poses.push_back({o[0],o[1],o[4]});
+    }
+    const auto file = name + ".mp4";
+    if constexpr (std::is_same_v<Env, e::LunarLander>)
+      e::save_lunar_lander_replay(poses, "build/" + file);
+    else
+      e::save_linkage_replay(std::is_same_v<Env, e::CartPole>
+          ? e::LinkageReplay::CartPole : e::LinkageReplay::Pendulum, poses, "build/" + file);
+    std::filesystem::copy_file("build/" + file, "figures/" + file,
+                               std::filesystem::copy_options::overwrite_existing);
+  }
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   report_capture::Trace("playback_return",pb.ret);report_capture::Trace("playback_steps",pb.steps);
   return pb;
 }
@@ -425,7 +437,7 @@ using datamunge::rl::environments::SnakeFilmstrip;
 
 int main() {
   try {
-    std::printf("== Playing hand-written controllers (tflow records them to output/videos/; video omitted)\n");
+    std::printf("== Playing hand-written controllers\n");
     rl::Playback cart, pend, lander, snake;
     {
       std::printf("-- CartPole: push toward the lean\n");
@@ -484,6 +496,9 @@ int main() {
       snake = rl::PlayEpisode(env, greedy, "snake_greedy", 3, [&](const rl::Snake& e, const rl::Hud&) { strip.Add(e); });
       const std::string png = (paths::OutputDir("frames") / "snake_greedy.png").string();
       strip.Save(png);
+      strip.SaveVideo("build/snake_greedy.mp4");
+      std::filesystem::copy_file("build/snake_greedy.mp4", "figures/snake_greedy.mp4",
+                                 std::filesystem::copy_options::overwrite_existing);
       std::printf("  wrote %s (%d frames)\n", png.c_str(), strip.frames());
     }
 
@@ -491,7 +506,7 @@ int main() {
     check::Require(pend.steps == 200 && pend.ret > -300.f, "the pendulum swing-up should score above -300");
     check::Require(landed && lander.ret > 200.f, "the heuristic pilot should land with a return above 200");
     check::Require(snake.ret > 10.f && strip.frames() == snake.steps + 1, "greedy Snake should eat > 10 food and film every step");
-    std::cout << "\nchecks passed (vsim/ffmpeg videos omitted; Snake frames written as a PNG)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -501,18 +516,18 @@ int main() {
 
 ```
 // result_begin:
-// == Playing hand-written controllers (tflow records them to output/videos/; video omitted)
+// == Playing hand-written controllers
 // -- CartPole: push toward the lean
-//   played cartpole_controller (video omitted): 500 steps, return 500.0
+//   recorded cartpole_controller: 500 steps, return 500.0
 // -- Pendulum: energy pumping, then a linear regulator near the top
-//   played pendulum_swing_up (video omitted): 200 steps, return -231.3
+//   recorded pendulum_swing_up: 200 steps, return -231.3
 // -- LunarLander: the heuristic pilot (hover over the pad, keep upright)
-//   played lunar_lander_heuristic (video omitted): 305 steps, return 232.8
+//   recorded lunar_lander_heuristic: 305 steps, return 232.8
 // -- Snake: greedy toward the food, avoiding the body
-//   played snake_greedy (video omitted): 108 steps, return 16.0
+//   recorded snake_greedy: 108 steps, return 16.0
 //   wrote /mnt/projects/datamunge/docs/mepml/nn/6_deep_reinforcement_learning/6.1_environments/build/pixel-environments/frames/snake_greedy.png (109 frames)
 //
-// checks passed (vsim/ffmpeg videos omitted; Snake frames written as a PNG)
+// checks passed
 // result_end
 
 > Actual source diagnostics
@@ -542,3 +557,13 @@ int main(){std::filesystem::copy_file("build/pixel-environments/frames/snake_gre
 > Interpretation and provenance
 
 The displayed checks belong to the original local native protocol. Optional runtime skips, deferred quality checks and machine timings remain explicit. Canonical components contain reusable physical/frame adapters and pure graphs/return algebra; the report owns the experiment and its optimizer state.
+
+> Recorded policy trajectories
+
+\video(figures/cartpole_controller.mp4)
+
+\video(figures/pendulum_swing_up.mp4)
+
+\video(figures/lunar_lander_heuristic.mp4)
+
+\video(figures/snake_greedy.mp4)

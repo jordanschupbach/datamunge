@@ -1,0 +1,158 @@
+//? Title: Deep Embedded Clustering with refreshed targets
+//? Lang: en
+
+> Deep Embedded Clustering with refreshed targets
+
+An autoencoder first learns a two-dimensional representation by
+reconstructing six noisy features. K-means++ and Lloyd iterations then
+initialize three cluster centers in the fitted embedding. Student-t
+affinities give soft assignments from distances to those centers.
+
+During refinement, each round computes a target distribution over the
+full training set by squaring the assignments and dividing by cluster
+mass, then normalizing each row. The target stays fixed while the encoder
+and centers minimize KL divergence. The decoder is used during warm-up.
+The synthetic component labels are available for evaluation only.
+
+```{cpp, results="markdown", file="figures/deep_embedded_clustering.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+
+int main() {
+  const auto sample = [](int rows, unsigned seed) {
+    constexpr float centers[3][6]{{-1,.2f,.7f,0,-.5f,1},
+                                   {1,.8f,-.2f,-.4f,.5f,-.5f},
+                                   {0,-1,.3f,1,.5f,.2f}};
+    std::mt19937 rng(seed);
+    std::normal_distribution<float> noise(0.f,.45f);
+    std::vector<float> values;
+    std::vector<int> labels;
+    for (int i = 0; i < rows; ++i) {
+      labels.push_back(i % 3);
+      for (float center : centers[i % 3])
+        values.push_back(center + noise(rng));
+    }
+    return std::pair{n::from_vector(values, {rows,6}), n::from_vector(labels)};
+  };
+  const auto [train, train_labels] = sample(192, 50704);
+  const auto [test, labels] = sample(96, 50705);
+  n::ParameterStore encoder(50701), decoder(50702), clustering(50703);
+  const auto encode = [&](const n::Tensor &x) {
+    return n::dense(encoder, "latent", n::dense(encoder, "hidden", x, 16, n::Activation::Tanh), 2);
+  };
+  const auto reconstruct = [&](const n::Tensor &x) {
+    return n::dense(decoder, "output", n::dense(decoder, "hidden", encode(x), 16, n::Activation::Tanh), 6);
+  };
+  const auto joined = [](const n::ParameterStore &a, const n::ParameterStore &b) {
+    auto params = a.parameters();
+    const auto other = b.parameters();
+    params.insert(params.end(), other.begin(), other.end());
+    return params;
+  };
+  reconstruct(test);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer warm(joined(encoder, decoder), .015, config);
+  std::vector<double> epochs{0,1,2,3}, mse;
+  std::print("| Warm-up epoch | Held-out MSE |\n|---:|---:|\n");
+  for (int epoch = 0; epoch <= 3; ++epoch) {
+    {
+      n::NoGradGuard guard;
+      mse.push_back(n::mse(reconstruct(test), test).item());
+      std::print("| {} | {:.6f} |\n", epoch, mse.back());
+    }
+    if (epoch < 3)
+      for (int i = 0; i < 192; i += 32) {
+        const auto x = n::slice_axis(train, 0, i, i+32);
+        warm.minimize(n::mse(reconstruct(x), x));
+      }
+  }
+  {
+    n::NoGradGuard guard;
+    const auto latent = encode(train);
+    n::ml::KMeans kmeans(2);
+    auto centers = kmeans.Initialize(latent, 3, 50706, true);
+    for (int step = 0; step < 20; ++step)
+      centers = kmeans.Step(latent, centers).centers;
+    clustering.set("centers", centers);
+  }
+  const auto centers = clustering.at("centers");
+  const auto predict = [&](const n::Tensor &x) { return n::dec_assignments(encode(x), centers); };
+  n::Optimizer fine(joined(encoder, clustering), .010, config);
+  std::filesystem::create_directories("build");
+  std::print("\n| Refinement round | Fixed-target KL before | Fixed-target KL after |\n|---:|---:|---:|\n");
+  std::vector<double> before, after;
+  for (int round = 1; round <= 3; ++round) {
+    const auto z = encode(train).detach();
+    const auto initial_centers = centers.detach().clone();
+    const auto q = n::dec_assignments(z, initial_centers);
+    const auto target = n::dec_targets(q);
+    before.push_back(n::dec_kl(target, q).item());
+    for (int i = 0; i < 192; i += 32)
+      fine.minimize(n::dec_kl(n::slice_axis(target, 0, i, i+32),
+                              predict(n::slice_axis(train, 0, i, i+32))));
+    n::NoGradGuard guard;
+    const auto end_z = encode(train);
+    const auto end_q = n::dec_assignments(end_z, centers);
+    after.push_back(n::dec_kl(target, end_q).item());
+    std::print("| {} | {:.6f} | {:.6f} |\n", round, before.back(), after.back());
+    n::save_npz("build/dec_epoch" + std::to_string(round) + ".npz",
+        {{"latent", z}, {"center", initial_centers}, {"q", q}, {"p", target},
+         {"latent_after", end_z}, {"center_after", centers}, {"q_after", end_q},
+         {"kl_before", n::scalar(before.back())}, {"kl_after", n::scalar(after.back())}});
+  }
+
+  n::NoGradGuard guard;
+  const auto z = encode(test);
+  const auto q = n::dec_assignments(z, centers);
+  const auto pred = n::argmax(q, 1).to_vector<int>();
+  n::save_npz("build/dec_evaluation.npz", {{"latent", z}, {"q", q}, {"center", centers}, {"labels", labels}});
+  auto accuracy = dm::graphics::RPlot::create();
+  accuracy.lines(epochs, mse, "Held-out MSE", {37, 99, 235})
+      .title("Autoencoder warm-up").x_label("Epoch").y_label("Held-out reconstruction MSE");
+  auto kl = dm::graphics::RPlot::create();
+  kl.lines({1,2,3}, before, "Before", {100,116,139})
+      .lines({1,2,3}, after, "After", {22,120,97})
+      .legend({"Before","After"}, {{100,116,139}, {22,120,97}})
+      .title("Fixed-target refinement").x_label("Round").y_label("Training KL divergence");
+  auto embedding = dm::graphics::RPlot::create();
+  const auto xy = z.to_vector<double>();
+  const std::array<dm::graphics::RGBA,3> colors{{{37,99,235}, {22,120,97}, {190,75,48}}};
+  for (int k = 0; k < 3; ++k) {
+    std::vector<double> x, y;
+    for (std::size_t i = 0; i < pred.size(); ++i)
+      if (pred[i] == k) {
+        x.push_back(xy[2*i]);
+        y.push_back(xy[2*i+1]);
+      }
+    embedding.points(x, y, "Cluster " + std::to_string(k), colors[k]);
+  }
+  embedding.points(n::select(centers,1,0).to_vector<double>(), n::select(centers,1,1).to_vector<double>(),
+                   "Fitted centers", {17,24,39}, 7)
+      .title("Held-out assignments").x_label("Latent 1").y_label("Latent 2");
+  dm::graphics::RLayout::create(1, 3).add(accuracy).add(kl).add(embedding).size(1250,430)
+      .fit_panels().save_svg("build/deep_embedded_clustering.svg");
+}
+```
+// result_begin: markdown
+| Warm-up epoch | Held-out MSE |
+|---:|---:|
+| 0 | 0.704624 |
+| 1 | 0.395968 |
+| 2 | 0.330320 |
+| 3 | 0.191754 |
+
+| Refinement round | Fixed-target KL before | Fixed-target KL after |
+|---:|---:|---:|
+| 1 | 0.123516 | 0.098171 |
+| 2 | 0.129391 | 0.111237 |
+| 3 | 0.130472 | 0.115438 |
+\image(figures/deep_embedded_clustering.svg)
+// result_end
+\caption(Autoencoder reconstruction, KL before and after each target refresh round, and held-out latent points colored by fitted cluster.)
+\alttext(Two line plots show held-out reconstruction error and fixed-target training KL. A scatter plot shows three fitted clusters and their centers.)
+
+> Reference
+
+- [Xie et al. (2016), Unsupervised Deep Embedding for Clustering Analysis](https://proceedings.mlr.press/v48/xieb16.html).

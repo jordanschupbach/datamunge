@@ -62,6 +62,10 @@ struct GpuDevice {
   /// @brief Wait for native execution and surface pending driver errors.
   virtual void synchronize() = 0;
 };
+/// @brief Count physical CUDA devices through the native driver.
+std::uint32_t cuda_device_count();
+/// @brief Count physical Vulkan devices through the native loader.
+std::uint32_t vulkan_device_count();
 /// @brief Construct an explicit CUDA backend or throw an availability diagnostic.
 std::shared_ptr<GpuDevice> make_cuda(std::uint32_t index);
 /// @brief Construct an explicit Vulkan backend or throw an availability diagnostic.

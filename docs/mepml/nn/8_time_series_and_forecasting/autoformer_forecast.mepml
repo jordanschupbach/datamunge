@@ -1,0 +1,155 @@
+//? Title: Forecast with Autoformer decomposition and circular delays
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit a compact Autoformer to six-step forecasts and inspect its trend,
+seasonal contribution, and learned delay weights.
+)
+\toc
+
+A three-point moving average splits the observed history into a smooth
+trend and a residual. The decoder starts with the latest six residual
+values and six zeros. Its trend starts with the corresponding smooth
+values and the history mean at future steps. Each attention layer scores
+circular shifts of the keys, then mixes values at the three strongest
+delays. The decoder progressively removes smooth components and adds them
+to its trend branch. The forecast sums the final trend and seasonal values.
+[Wu et al., Autoformer|https://arxiv.org/abs/2106.13008]
+
+Training, validation, and test targets lie in disjoint time intervals.
+Scaling uses only the fitting prefix. The compact model and initial weights
+follow the upstream TensorFlow example.
+
+```{cpp, results="markdown", file="figures/autoformer_forecast.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int lag = 24, horizon = 6, fit_end = 768, test_begin = 960, end = 1152;
+  std::vector<double> samples(end);
+  for (int t = 0; t < end; ++t) {
+    const auto phase = 2 * std::numbers::pi * t;
+    samples[t] = (1 + .12 * std::sin(phase / 192)) * std::sin(phase / 24)
+                 + .35 * std::cos(phase / 12) + .2 * std::sin(phase / 73);
+  }
+  const auto series = n::from_vector(samples);
+  const auto prefix = n::slice(series, {0}, {fit_end});
+  const auto center = n::mean(prefix).item();
+  const auto scale = n::sqrt(n::mean(n::square(prefix - center))).item();
+  const auto normalize = [&](const n::Tensor& x) {
+    return ((x - center) / scale).to(n::DType::Float32);
+  };
+  const auto normalized = normalize(series);
+  const auto origins = [](int first, int last) {
+    std::vector<std::int64_t> indices(last - horizon - first + 1);
+    std::iota(indices.begin(), indices.end(), first);
+    return indices;
+  };
+  const auto fit_indices = origins(lag, fit_end);
+  const auto test_indices = origins(test_begin, end);
+  const auto fit = n::ForecastWindows(normalized, fit_indices, lag, horizon);
+  const auto val = n::ForecastWindows(normalized, origins(fit_end, test_begin), lag, horizon);
+  const auto test = n::ForecastWindows(normalized, test_indices, lag, horizon);
+  const auto first = n::ForecastWindows(normalized, {test_begin}, lag, horizon);
+  auto shifted = samples;
+  for (int t = test_begin; t < end; ++t) shifted[t] += 100;
+  const auto changed = n::ForecastWindows(normalize(n::from_vector(shifted)), {test_begin}, lag, horizon);
+  const auto baseline = n::forecast_baselines(series, test_indices, fit_end, 24, horizon, 6, 4);
+
+
+  n::ParameterStore parameters;
+  const auto model = [&](const n::Tensor& history) {
+    return n::autoformer_forecast(parameters, "autoformer", history, horizon);
+  };
+  (void)model(first.history);
+  parameters.load("fixtures/autoformer_init.npz", true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(fit_indices.size(), 32, 41381);
+  const auto in_units = [&](const n::Tensor& x) { return x.to(n::DType::Float64) * scale + center; };
+  const auto rmse = [&](const n::Tensor& output) {
+    return n::sqrt(n::mean(n::square(in_units(output) - baseline.actual))).item();
+  };
+  double initial;
+  {
+    n::NoGradGuard guard;
+    initial = rmse(model(test.history).forecast);
+  }
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto residual = model(n::take_rows(fit.history, rows)).forecast - n::take_rows(fit.target, rows);
+      optimizer.step(n::grad(n::mean(n::square(residual)), parameters.parameters()));
+    }
+  }
+  n::NoGradGuard guard;
+  if (first.target.to_vector<float>() == changed.target.to_vector<float>() ||
+      model(first.history).forecast.to_vector<float>() != model(changed.history).forecast.to_vector<float>())
+    throw std::runtime_error("Unexpected fixed-origin perturbation result");
+  const auto result = model(test.history);
+  const auto val_mse = n::mean(n::square(model(val.history).forecast - val.target)).item() * scale * scale;
+  std::println("The final validation MSE was {:.6f}. Test RMSE fell from {:.6f} to {:.6f} across {} origins.",
+               val_mse, initial, rmse(result.forecast), test_indices.size());
+
+  const std::string folder = "build/autoformer_forecast/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  n::NamedTensors trace{{"input", test.history}, {"total", result.forecast},
+      {"initial_trend", result.initial_trend}, {"seed", result.seed}, {"trend_seed", result.trend_seed},
+      {"seasonal", result.seasonal}, {"trend", result.trend}};
+  const auto save_trace = [&](const std::string& prefix, const n::AutoformerDelayTrace& x) {
+    trace.emplace_back(prefix + "_mixed", x.mixed);
+    trace.emplace_back(prefix + "_query", x.query);
+    trace.emplace_back(prefix + "_key", x.key);
+    trace.emplace_back(prefix + "_value", x.value);
+    trace.emplace_back(prefix + "_scores", x.scores);
+    trace.emplace_back(prefix + "_indices", x.indices);
+    trace.emplace_back(prefix + "_weights", x.weights);
+  };
+  save_trace("encoder", result.encoder);
+  save_trace("decoder", result.decoder);
+  save_trace("cross", result.cross);
+  n::save_npz(folder + "decomposition.npz", trace);
+  n::save_npz(folder + "forecast.npz", {{"prediction", in_units(result.forecast)}, {"actual", baseline.actual}});
+
+  const auto first_row = [](const n::Tensor& x) { return n::select(x, 0, 0).to_vector<double>(); };
+  std::vector<double> leads(horizon);
+  std::iota(leads.begin(), leads.end(), 1);
+  const auto future = [&](const n::Tensor& x) { return n::slice_axis(x, 1, horizon, 2 * horizon); };
+  auto components = dm::graphics::RPlot::create();
+  components.lines(leads, first_row(future(result.trend)), "Trend", {37,99,235})
+      .lines(leads, first_row(future(result.seasonal)), "Seasonal", {191,88,34})
+      .title("Future components at origin 960").x_label("Lead").y_label("Standardized level");
+  auto forecast = dm::graphics::RPlot::create();
+  forecast.lines(leads, first_row(baseline.actual), "Observed", {30,41,59}, 2)
+      .lines(leads, first_row(in_units(result.forecast)), "Autoformer", {37,99,235})
+      .title("Combined forecast at origin 960").x_label("Lead").y_label("Level");
+  auto layout = dm::graphics::RLayout::create(1, 2).size(1050, 410);
+  layout.add(components).add(forecast).save_svg(folder + "forecast.svg");
+  std::filesystem::copy_file(folder + "forecast.svg", "figures/autoformer_forecast.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+The final validation MSE was 0.380269. Test RMSE fell from 0.778503 to 0.621240 across 187 origins.
+\image(figures/autoformer_forecast.svg)
+// result_end
+
+The component panel shows the standardized decoder contributions.
+The forecast panel converts their sum back to the original data scale.
+
+The upstream TensorFlow run reached a test RMSE of 0.607907. The
+Datamunge run reaches 0.621240, with different selected delays after
+training. This example checks the decomposition and aggregation by
+replaying the fitted Datamunge traces. Seasonal naive has an RMSE of
+0.253051 on the same fixture.

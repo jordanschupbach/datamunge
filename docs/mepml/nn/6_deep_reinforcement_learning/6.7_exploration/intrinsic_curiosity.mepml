@@ -1,0 +1,75 @@
+//? Title: Intrinsic curiosity for sparse-grid Q-learning
+//? Lang: en
+
+> Intrinsic curiosity for sparse-grid Q-learning
+
+The [intrinsic curiosity model|curiosity_model.mepml] learns features
+that help identify the action between consecutive observations. A
+forward model predicts the next feature vector. Half the squared
+prediction error rewards surprising transitions.
+
+The experiment compares three seeded runs with and without the bonus.
+Both conditions use the [same exploration schedule|exploration_grid.mepml].
+The greedy test uses the extrinsic-only Q-table. The plot compares
+visited-cell counts, and the table reports the accuracy of the inverse
+head on the collected transitions. Datamunge initializes its native
+networks with the source seed and its own initializer.
+
+[Pathak et al. (2017)|https://proceedings.mlr.press/v70/pathak17a.html]
+
+```{cpp, results="markdown", file="figures/intrinsic_curiosity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto pack=[](std::span<const std::array<int,3>> batch) {
+    std::vector<int> values;
+    for (const auto& row:batch) values.insert(values.end(),row.begin(),row.end());
+    return n::from_vector(values,{std::ssize(batch),3});
+  };
+  std::vector<double> control,icm;
+  std::filesystem::create_directories("build");
+  std::print("| Seed | Mode | Visited | Training goals | Greedy success | Inverse accuracy |\n"
+             "|---:|:---|---:|---:|:---|---:|\n");
+  for (const auto seed:{43602u,43603u,43604u}) {
+    const auto [path,reward,visited,goals,success]=r::sparse_grid_experiment(seed);
+    control.push_back(visited);
+    std::print("| {} | Control | {} | {} | {} | |\n",seed,visited,goals,success);
+    n::save_npz(std::format("build/{}_control.npz",seed),{{"transitions",path},{"bonus",reward}});
+
+    r::IntrinsicCuriosity model(49,4,12,24);
+    const auto [rows,bonus,coverage,hits,solved]=r::sparse_grid_experiment(seed,
+        [&](const auto& step) {
+          return static_cast<float>(model.evaluate(pack(std::span{&step,1}))[0].item());
+        },
+        [&](const auto batch) { model.train(pack(batch)); });
+    icm.push_back(coverage);
+    const auto [error,prediction,target,logits]=model.evaluate(rows);
+    const auto actions=n::slice(rows,{0,1},{rows.size(0),1}).to_vector<int>();
+    const auto guesses=n::argmax(logits,1).to_vector<int>();
+    int correct=0;
+    for (std::size_t i=0;i<actions.size();++i) correct+=actions[i]==guesses[i];
+    std::print("| {} | ICM | {} | {} | {} | {:.3f} |\n",
+               seed,coverage,hits,solved,double(correct)/actions.size());
+    n::save_npz(std::format("build/{}_icm.npz",seed),{{"transitions",rows},{"bonus",bonus},
+        {"final_error",error},{"prediction",prediction},{"features",target},{"inverse_logits",logits}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({43602,43603,43604},control,"Task reward only",{217,96,26},7)
+      .points({43602,43603,43604},icm,"With ICM bonus",{37,99,235},7)
+      .title("Sparse-grid exploration coverage").x_label("Seed").y_label("Unique cells visited")
+      .ylim(0,49).size(820,460).save_svg("build/intrinsic_curiosity.svg");
+}
+```
+// result_begin: markdown
+| Seed | Mode | Visited | Training goals | Greedy success | Inverse accuracy |
+|---:|:---|---:|---:|:---|---:|
+| 43602 | Control | 18 | 0 | false | |
+| 43602 | ICM | 16 | 0 | false | 0.858 |
+| 43603 | Control | 17 | 0 | false | |
+| 43603 | ICM | 15 | 0 | false | 0.885 |
+| 43604 | Control | 15 | 0 | false | |
+| 43604 | ICM | 22 | 0 | false | 0.811 |
+\image(figures/intrinsic_curiosity.svg)
+// result_end

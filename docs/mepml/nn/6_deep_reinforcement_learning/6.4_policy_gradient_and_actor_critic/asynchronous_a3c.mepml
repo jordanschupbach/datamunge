@@ -1,0 +1,208 @@
+//? Title: Asynchronous advantage actor-critic on CartPole
+//? Lang: en
+
+> Asynchronous advantage actor-critic on CartPole
+
+Four worker threads independently sample CartPole actions and collect
+up to five transitions at a time. Each worker starts a rollout by
+copying the current shared policy and value parameters. It then
+computes discounted returns and a private gradient. Its objective
+combines a policy-gradient term weighted by the advantage, a squared
+value error, and an entropy bonus to encourage exploration.
+
+Workers apply their gradients to one shared Adam optimizer as soon
+as they finish, without a barrier between rollouts. A mutex protects
+the optimizer state and parameter copies. An update can use a snapshot
+that predates one or more commits by other workers. This schedule
+demonstrates asynchronous gradients while keeping tensor writes
+synchronized. The order of updates can vary between runs.
+
+The experiment budgets 100,000 total environment steps. It checks
+the shared policy on held-out seeds and records one final greedy
+rollout. CartPole returns one reward per step, so the greedy
+evaluation return is also the mean number of steps balanced.
+
+```{cpp, results="markdown", file="figures/asynchronous_a3c.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -pthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <atomic>
+#include <exception>
+#include <mutex>
+#include <thread>
+
+namespace n=dm::nn;
+namespace e=dm::rl::environments;
+
+int main() {
+  constexpr int budget=100000, workers=4, rollout=5;
+  n::set_num_threads(1);
+  const auto model=[](n::ParameterStore& store,const n::Tensor& x) {
+    return n::models::BuildActorCritic(store,x,2,64);
+  };
+  const auto init=[&](n::ParameterStore& store) {
+    n::NoGradGuard guard;
+    model(store,n::zeros({1,4}));
+  };
+  const auto infer=[&](n::ParameterStore& store,const e::Obs& obs) {
+    n::NoGradGuard guard;
+    return model(store,n::from_vector(obs,{1,4}));
+  };
+  n::ParameterStore shared(0);
+  init(shared);
+  n::Optimizer adam(shared,.0005,{.kind=n::OptimizerKind::Adam});
+  std::atomic<int> allocated{0};
+  std::atomic<bool> failed{false};
+  std::exception_ptr error;
+  std::mutex commit;
+  int completed=0, version=0, stale=0, next_eval=10000;
+  std::array<int,workers> steps{}, updates{};
+  std::vector<double> eval_steps{0};
+  std::vector<n::NamedTensors> snapshots;
+  const auto capture=[&] {
+    n::NoGradGuard guard;
+    n::NamedTensors copy;
+    for (const auto& name:shared.names()) copy.emplace_back(name,shared.at(name).detach().clone());
+    snapshots.push_back(std::move(copy));
+  };
+  capture();
+  const auto work=[&](int id) {
+    try {
+      e::CartPole env;
+      auto observation=env.reset(id);
+      std::mt19937_64 rng(id);
+      n::ParameterStore local(id);
+      init(local);
+      while (!failed.load()) {
+        int source_version;
+        {
+          const std::lock_guard lock(commit);
+          local.copy_from(shared,1.);
+          source_version=version;
+        }
+        std::vector<float> states,reward,terminal,value;
+        std::vector<int> chosen;
+        bool ended=false;
+        for (int i=0;i<rollout && !ended;++i) {
+          if (allocated.fetch_add(1)>=budget) break;
+          const auto inference=infer(local,observation);
+          const auto probability=inference.probs.to_vector<float>();
+          const auto draw=std::uniform_real_distribution<float>(0,1)(rng);
+          const int action=draw<probability[0]?0:1;
+          auto result=env.step(e::Action(action));
+          states.insert(states.end(),observation.begin(),observation.end());
+          chosen.push_back(action);
+          reward.push_back(result.reward);
+          terminal.push_back(result.terminated?1.f:0.f);
+          value.push_back(inference.value.item<float>());
+          observation=std::move(result.obs);
+          ended=result.done();
+        }
+        if (chosen.empty()) break;
+        const auto size=static_cast<int>(chosen.size());
+        const auto bootstrap=ended?0.f:infer(local,observation).value.item<float>();
+        const auto returns=dm::rl::returns::DiscountedReturns(reward,terminal,.99f,bootstrap);
+        const auto target=n::from_vector(returns);
+        const auto advantage=target-n::from_vector(value);
+        const auto ac=model(local,n::from_vector(states,{size,4}));
+        const auto logp=n::sum(ac.logp*n::one_hot(n::from_vector(chosen),2),{1});
+        const auto loss=-n::mean(logp*advantage)+.5f*n::mean(n::square(target-ac.value))-
+                        .01f*n::mean(ac.entropy);
+        const auto gradient=n::clip_by_global_norm(n::grad(loss,local.parameters()),.5);
+        if (!std::isfinite(loss.item()) || !std::isfinite(gradient.second))
+          throw std::runtime_error("nonfinite A3C update");
+        if (ended) observation=env.reset();
+        {
+          const std::lock_guard lock(commit);
+          stale+=source_version<version;
+          adam.step(gradient.first);
+          ++version;
+          ++updates[id];
+          steps[id]+=size;
+          completed+=size;
+          if (completed>=next_eval) {
+            eval_steps.push_back(completed);
+            capture();
+            next_eval+=10000;
+          }
+        }
+      }
+    } catch (...) {
+      const std::lock_guard lock(commit);
+      if (!error) error=std::current_exception();
+      failed.store(true);
+    }
+  };
+  std::vector<std::jthread> threads;
+  for (int i=0;i<workers;++i) threads.emplace_back(work,i);
+  for (auto& thread:threads) thread.join();
+  if (error) std::rethrow_exception(error);
+  if (completed!=budget || stale==0 ||
+      std::any_of(updates.begin(),updates.end(),[](int u){return u==0;}))
+    throw std::runtime_error("A3C workers did not complete asynchronous updates");
+
+  const auto play=[&](n::ParameterStore& policy,int seed,std::vector<std::array<float,3>>* poses=nullptr) {
+    e::CartPole env;
+    auto observation=env.reset(seed);
+    float total=0;
+    while (true) {
+      if (poses) poses->push_back({observation[0],observation[2],0});
+      const auto action=n::argmax(infer(policy,observation).probs,-1).item<int>();
+      auto result=env.step(e::Action(action));
+      total+=result.reward;
+      if (result.done()) return total;
+      observation=std::move(result.obs);
+    }
+  };
+  const auto score=[&](n::ParameterStore& policy,int seed,int count) {
+    double total=0;
+    for (int i=0;i<count;++i) total+=play(policy,seed+i);
+    return total/count;
+  };
+  n::ParameterStore evaluation(0);
+  init(evaluation);
+  std::vector<double> curve;
+  for (std::size_t i=0;i<snapshots.size();++i) {
+    for (const auto& [key,value]:snapshots[i]) evaluation.set(key,value);
+    curve.push_back(score(evaluation,1000+static_cast<int>(eval_steps[i]),5));
+  }
+  const auto final=score(shared,777,20);
+  std::print("| Worker | Transitions | Updates |\n|---:|---:|---:|\n");
+  for(int i=0;i<workers;++i) std::print("| {} | {} | {} |\n",i+1,steps[i],updates[i]);
+  std::print("\n{} of {} updates used earlier snapshots. Final 20-episode mean return {:.1f}.\n",
+             stale,version,final);
+  int best_seed=4242;
+  float best=-1;
+  for (int seed=4242;seed<4245;++seed)
+    if (const float result=play(shared,seed);result>best) { best=result; best_seed=seed; }
+  std::vector<std::array<float,3>> poses;
+  play(shared,best_seed,&poses);
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::graphics::RPlot::create().lines(eval_steps,curve,"Greedy evaluation",{37,99,235})
+      .points(eval_steps,curve,"",{37,99,235},4)
+      .title("CartPole evaluation during asynchronous training")
+      .x_label("Completed environment steps").y_label("Mean return")
+      .save_svg("build/asynchronous_a3c.svg");
+  const std::string clip="asynchronous_a3c_cartpole.mp4";
+  e::save_linkage_replay(e::LinkageReplay::CartPole,poses,"build/"+clip,50);
+  std::filesystem::copy_file("build/"+clip,"figures/"+clip,std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Worker | Transitions | Updates |
+|---:|---:|---:|
+| 1 | 25243 | 5270 |
+| 2 | 26040 | 5427 |
+| 3 | 21735 | 4514 |
+| 4 | 26982 | 5604 |
+
+20552 of 20815 updates used earlier snapshots. Final 20-episode mean return 151.7.
+\image(figures/asynchronous_a3c.svg)
+// result_end
+\caption(Five-episode greedy evaluation at saved versions of the shared actor.)
+
+\video(figures/asynchronous_a3c_cartpole.mp4)
+\caption(The fitted policy balances CartPole in a greedy rollout.)
+
+> Reference
+
+- [Mnih et al. (2016), Asynchronous Methods for Deep Reinforcement Learning](https://proceedings.mlr.press/v48/mniha16.html).

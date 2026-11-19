@@ -37,7 +37,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The benchmark compares the same three workloads at four thread counts. Throughput depends on the machine and its load.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -290,9 +290,9 @@ int main() {
 //
 // == Throughput: environment steps per second (64 envs, random actions)
 //                                  1 thread  2 threads  4 threads  8 threads
-//   CartPole (cheap)               19050621    6870312    5262301    2070206
-//   CartPole + 2000 sins             193780     326450     596115     959513
-//   CartPole + 20000 sins             19652      36074      68403     106442
+//   CartPole (cheap)               15909831    4149767    2752809    1630146
+//   CartPole + 2000 sins             117964     202914     284467     441825
+//   CartPole + 20000 sins             14585      23190      28824      53508
 //   Threads only help once a step costs more than the synchronisation.
 //
 //   4-thread rollout identical to the 1-thread rollout (64 envs, 300 steps): yes

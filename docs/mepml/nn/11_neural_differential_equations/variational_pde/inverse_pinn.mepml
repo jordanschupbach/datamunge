@@ -1,0 +1,116 @@
+//? Title: Identify heat diffusivity with an inverse PINN
+//? Lang: en
+
+> Identify heat diffusivity with an inverse PINN
+
+Two sine modes enforce the homogeneous temperature boundary on the
+unit interval. A neural network adjusts their amplitudes over time.
+The adjustment vanishes at time zero, so the initial temperature
+profile is prescribed. Applying softplus to the fitted diffusivity
+parameter keeps it positive.
+
+One quarter of the fitting points are noisy observations taken at four
+fixed sensors. The remaining points constrain the heat equation
+without temperature labels. The loss combines squared temperature
+errors at sensors and squared PDE residuals at the other points.
+The test points are independently sampled and use noiseless temperatures.
+
+```{cpp, results="markdown", file="figures/inverse_pinn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+
+namespace n=dm::nn;
+
+double exact(double x,double t) {
+  constexpr float pi=std::numbers::pi_v<float>, k=.18f;
+  return std::sin(pi*x)*std::exp((-k*pi*pi)*t)+
+         .35*std::sin(2*pi*x)*std::exp((-4*k*pi*pi)*t);
+}
+
+int main() {
+  const auto data=[](int count,unsigned seed,bool training) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(0,1);
+    std::normal_distribution<float> noise(0,.005f);
+    constexpr std::array sensors{.2f,.4f,.65f,.85f};
+    std::vector<float> input,target;
+    for(int i=0;i<count;++i) {
+      const bool observed=!training || i%4==0;
+      const float x=training && observed?sensors[(i/4)%4]:uniform(rng);
+      const float t=uniform(rng);
+      input.insert(input.end(),{x,t,float(observed)});
+      target.push_back(observed?exact(x,t)+(training?noise(rng):0.f):0.);
+    }
+    return std::pair{n::from_vector(input,{count,3}),n::from_vector(target,{count,1})};
+  };
+  const auto [fit_x,fit_y]=data(1024,92921,true);
+  const auto [test_x,test_y]=data(256,92922,false);
+  n::ParameterStore model(41380);
+  const auto field=[&](const n::Tensor& x) {return n::inverse_heat_field(model,n::slice_axis(x,1,0,2));};
+  const auto loss=[&](const n::Tensor& x,const n::Tensor& y) {
+    const auto out=field(x);
+    const auto mask=n::slice_axis(x,1,2,3);
+    return n::mean(20.*mask*n::square(out.temperature-y)+(1.-mask)*n::square(out.residual));
+  };
+  const auto estimate=[&] {
+    n::NoGradGuard guard;
+    return field(n::slice_axis(test_x,0,0,1)).diffusivity.item();
+  };
+  std::vector<double> epoch{0}, estimates{estimate()};
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(1024,16,92923);
+  int updates=0;
+  for(int i=1;i<=3;++i) {
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      optimizer.minimize(loss(n::take_rows(fit_x,rows),n::take_rows(fit_y,rows)));
+      ++updates;
+    }
+    epoch.push_back(i);
+    estimates.push_back(estimate());
+  }
+  n::NoGradGuard guard;
+  const auto out=field(test_x), fitted=field(fit_x);
+  const auto rmse=std::sqrt(n::mean(n::square(out.temperature-test_y)).item());
+  const auto residual=std::sqrt(n::mean(n::square(out.residual)).item());
+  if (updates!=192 || !(estimates.back()>0 && std::isfinite(rmse) && std::isfinite(residual)))
+    throw std::runtime_error("inverse heat fit failed");
+  std::print("| Updates | Initial diffusivity | Estimate | True diffusivity | Test RMSE | Residual RMS |\n|---:|---:|---:|---:|---:|---:|\n");
+  std::print("| {} | {:.6f} | {:.6f} | 0.18 | {:.6f} | {:.6f} |\n",
+             updates,estimates.front(),estimates.back(),rmse,residual);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/inverse_pinn.npz",{{"input",test_x.reshape({256,3,1})},{"target",test_y},
+      {"fit_input",fit_x.reshape({1024,3,1})},{"fit_target",fit_y},{"diffusivity",out.diffusivity},
+      {"prediction",n::concat({out.temperature,out.residual,n::slice_axis(test_x,1,2,3)},1)},
+      {"fit_prediction",n::concat({fitted.temperature,fitted.residual,n::slice_axis(fit_x,1,2,3)},1)},
+      {"fit_loss",loss(fit_x,fit_y)}});
+  std::vector<double> x, reference;
+  std::vector<float> xy;
+  for(int i=0;i<=64;++i) {
+    const auto z=i/64.;
+    x.push_back(z);
+    xy.insert(xy.end(),{float(z),.25f});
+    reference.push_back(exact(z,.25));
+  }
+  const auto curve=n::inverse_heat_field(model,n::from_vector(xy,{65,2})).temperature;
+  auto profile=dm::graphics::RPlot::create();
+  profile.lines(x,reference,"Analytic",{37,99,235}).points(x,curve.to_vector<double>(),"Fitted",{220,90,45},3)
+      .title("Temperature at time 0.25").x_label("Position").y_label("Temperature");
+  auto k=dm::graphics::RPlot::create();
+  k.lines(epoch,estimates,"Estimate",{220,90,45}).lines(epoch,std::vector<double>(4,.18),"True",{37,99,235})
+      .title("Inferred diffusivity").x_label("Epoch").y_label("Diffusivity");
+  dm::graphics::RLayout::create(1,2).add(profile).add(k).size(1090,420).fit_panels()
+      .save_svg("build/inverse_pinn.svg");
+}
+```
+// result_begin: markdown
+| Updates | Initial diffusivity | Estimate | True diffusivity | Test RMSE | Residual RMS |
+|---:|---:|---:|---:|---:|---:|
+| 192 | 0.060000 | 0.068015 | 0.18 | 0.081824 | 0.295259 |
+\image(figures/inverse_pinn.svg)
+// result_end
+\caption(The fitted temperature profile and diffusivity over the three training epochs.)
+
+After three epochs, the estimate has moved from 0.06 to 0.0680.
+It remains well below the true diffusivity of 0.18, while the fitted
+temperature has a held-out RMSE of 0.0818.

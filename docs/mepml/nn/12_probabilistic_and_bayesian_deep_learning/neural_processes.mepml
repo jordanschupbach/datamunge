@@ -1,0 +1,168 @@
+//? Title: Conditional and attentive neural processes for function regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Train two neural processes on random functions, then use eight observations
+of each unseen function to predict its values and uncertainty.
+)
+\toc
+
+A conditional neural process encodes each observed input-response pair and
+averages the encodings. The decoder uses this shared context summary and
+a query coordinate to predict Gaussian response parameters. The attentive
+variant uses a different context summary for each query via cross-attention.
+It also draws one Gaussian latent for the whole function, coupling the
+predictions at different query locations.
+
+During attentive training, the latent distribution sees the context and
+training responses. A KL penalty pulls it toward the distribution inferred
+from context alone. Predictions on new functions use only that context
+distribution. The held-out score averages pointwise negative log likelihoods
+after mixing 16 Gaussian predictions. The plotted band is one predictive
+standard deviation around the mixture mean and includes both sources of
+variation. Reversing the context rows checks that the prediction is
+independent of presentation order. Training uses Datamunge's native parameter
+initialization and the reference schedule of 576 task updates per model.
+
+```{cpp, results="markdown", file="figures/neural_process_cnp.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+constexpr int context_count = 8, target_count = 16, draws = 16, tests = 24;
+
+struct Task { n::Tensor context, query, y; };
+
+Task simulate(std::mt19937& rng) {
+  std::uniform_real_distribution<float> uniform(-1.f, 1.f);
+  const float phase = uniform(rng), slope = .3f * uniform(rng);
+  const float amplitude = 1.f + .3f * uniform(rng);
+  std::vector<float> context, query, y;
+  for (int i = 0; i < context_count + target_count; ++i) {
+    const float x = uniform(rng), value = amplitude * std::sin(3.f * x + phase) + slope * x;
+    if (i < context_count) context.insert(context.end(), {x, value});
+    else {
+      query.push_back(x);
+      y.push_back(value);
+    }
+  }
+  return {n::from_vector(context, {context_count,2}), n::from_vector(query, {target_count,1}),
+          n::from_vector(y, {target_count,1})};
+}
+
+void run(bool attentive) {
+  const std::string name = attentive ? "anp" : "cnp";
+  n::ParameterStore parameters(99120);
+  std::mt19937 fit_rng(99121), test_rng(99122), noise_rng(99123);
+  std::normal_distribution<float> normal;
+  const auto epsilon = [&] {
+    std::vector<float> sample(4);
+    for (auto& value : sample) value = normal(noise_rng);
+    return n::from_vector(sample, {1,4});
+  };
+  const auto predict = [&](const Task& task, const n::Tensor& noise, bool training = false) {
+    return n::neural_process(parameters, name, task.context, task.query, 24, attentive ? 4 : 0,
+                             noise, training && attentive ? task.y : n::Tensor{});
+  };
+  std::mt19937 initialization_rng(1);
+  predict(simulate(initialization_rng), n::zeros({1,4}), true);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .005, config);
+  for (int step = 0; step < 3 * 192; ++step) {
+    const auto task = simulate(fit_rng);
+    const auto loss = n::neural_process_loss(predict(task, epsilon(), true), task.y);
+    optimizer.step(n::grad(loss, parameters.parameters()));
+  }
+
+  n::NoGradGuard frozen;
+  std::vector<n::Tensor> truth, all_predictions, attentions;
+  double permutation_error = 0.;
+  for (int i = 0; i < tests; ++i) {
+    const auto task = simulate(test_rng);
+    std::vector<n::Tensor> samples;
+    for (int draw = 0; draw < draws; ++draw) {
+      const auto noise = epsilon();
+      const auto p = predict(task, noise);
+      samples.push_back(n::concat({p.mean, p.scale}, 1));
+      if (draw == 0) {
+        if (attentive) attentions.push_back(p.attention);
+        const Task reversed{n::gather(task.context, n::arange(context_count - 1, -1, -1, n::DType::Int64)), task.query, task.y};
+        const auto r = predict(reversed, noise);
+        permutation_error = std::max(permutation_error,
+           n::max(n::abs(n::concat({r.mean, r.scale}, 1) - samples.back())).item());
+      }
+    }
+    truth.push_back(task.y.reshape({target_count}));
+    all_predictions.push_back(n::stack(samples));
+    if (i != 0) continue;
+
+    const auto grid = n::arange(-1., 1.005, .02).reshape({101,1});
+    std::vector<n::Tensor> center, noise_variance;
+    std::mt19937 plot_rng(99124);
+    std::normal_distribution<float> plot_normal;
+    for (int draw = 0; draw < draws; ++draw) {
+      std::vector<float> sample(4);
+      for (auto& value : sample) value = plot_normal(plot_rng);
+      const auto p = predict({task.context, grid, {}}, n::from_vector(sample, {1,4}));
+      center.push_back(p.mean);
+      noise_variance.push_back(n::square(p.scale));
+    }
+    const auto means = n::stack(center);
+    const auto mean = n::mean(means, {0});
+    const auto spread = n::sqrt(n::mean(n::stack(noise_variance) + n::square(means - mean), {0}));
+    const auto coords = grid.to_vector<double>();
+    auto xs = coords;
+    xs.insert(xs.end(), coords.rbegin(), coords.rend());
+    auto ys = (mean - spread).to_vector<double>();
+    const auto upper = (mean + spread).to_vector<double>();
+    ys.insert(ys.end(), upper.rbegin(), upper.rend());
+    auto plot = dm::graphics::RPlot::create();
+    plot.polygon(xs, ys, {37, 99, 235, .16})
+        .lines(coords, mean.to_vector<double>(), "Predictive mean", {37, 99, 235})
+        .points(task.query.to_vector<double>(), task.y.to_vector<double>(), "Held-out responses", {100, 116, 139}, 3)
+        .points(n::slice(task.context, {0,0}, {context_count,1}).to_vector<double>(),
+                n::slice(task.context, {0,1}, {context_count,1}).to_vector<double>(),
+                "Context observations", {30, 41, 59}, 4)
+        .title(attentive ? "Attentive neural process" : "Conditional neural process")
+        .x_label("Input").y_label("Response").save_svg("build/neural_processes/" + name + ".svg");
+    std::filesystem::copy_file("build/neural_processes/" + name + ".svg",
+        "figures/neural_process_" + name + ".svg", std::filesystem::copy_options::overwrite_existing);
+  }
+  const auto predictions = n::stack(all_predictions).to(n::DType::Float64);
+  const auto y = n::stack(truth);
+  const auto mu = n::slice(predictions, {0,0,0,0}, {tests,draws,target_count,1});
+  const auto sd = n::slice(predictions, {0,0,0,1}, {tests,draws,target_count,1});
+  const auto labels = y.reshape({tests,1,target_count,1});
+  const auto logp = -.9189385332046727 - n::log(sd) - .5 * n::square((labels - mu) / sd);
+  const auto nll = std::log(double(draws)) - n::mean(n::logsumexp(logp, {1})).item();
+  if (!std::isfinite(nll) || permutation_error >= 1e-5)
+    throw std::runtime_error("nonfinite score or non-invariant prediction");
+  std::println("| {} | {:.5f} | {:.2e} |", name, nll, permutation_error);
+  n::NamedTensors arrays{{"y", y}, {"predictions", predictions},
+      {"nll", n::full({}, nll, n::DType::Float64)}};
+  if (attentive) arrays.emplace_back("attention", n::stack(attentions));
+  n::save_npz("build/neural_processes/" + name + ".npz", arrays);
+  parameters.save("build/neural_processes/" + name + "_weights.npz");
+}
+
+int main() {
+  std::filesystem::create_directories("build/neural_processes");
+  std::filesystem::create_directories("figures");
+  std::println("| Variant | Held-out NLL | Maximum order error |\n| --- | ---: | ---: |");
+  run(false);
+  run(true);
+}
+```
+// result_begin: markdown
+| Variant | Held-out NLL | Maximum order error |
+| --- | ---: | ---: |
+| cnp | 0.71928 | 0.00e+00 |
+| anp | 0.68880 | 1.19e-07 |
+\image(figures/neural_process_cnp.svg)
+// result_end
+
+\image(figures/neural_process_anp.svg)

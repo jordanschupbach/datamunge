@@ -23,14 +23,6 @@ int main(){std::filesystem::create_directories("build");dm::graphics::Diagram d(
 
 The native adapter follows the recovered upstream preparation script, including source checksums, source row identities, fitting-only vocabulary/palette selection and held-out boundaries. Runtime preparation calls no Python or another checkout. Native byte-valued image arrays are stored as Int32 with identical numeric values. Optional external TensorFlow recordings are separate; their absence does not establish external parity.
 
-```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){auto path=dm::datasets::prepare_example_data("image_gpt");std::print("Prepared original image_gpt protocol at {}\n",path);}
-```
-// result_begin: markdown
-Prepared original image_gpt protocol at /home/jordan/.cache/datamunge/datasets/image_gpt
-// result_end
-
 > A hand-checkable likelihood reference
 
 A uniform categorical distribution over16 classes gives negative log-likelihood log(16). For language/image models this is nats per predicted token; for a sequence tagger it is a single independent-token reference, not its CRF sequence likelihood.
@@ -2098,7 +2090,7 @@ int main(int argc, char** argv) {
 // epoch2:validationbits/PALETTEpixel=3.10506
 // epoch3:validationbits/PALETTEpixel=2.86394
 // test bits/PALETTEpixel=2.80982, unigram/transition NLL=2.59315/1.74546, palette RGB MSE=0.00344998; RMS-QuickGELU/BOS shift/causality/frozen palette/2304 ancestral/restore/immutable PASS
-// training 0.11755 s, wall 0.363794 s
+// training 0.179005 s, wall 0.525261 s
 // Artifacts:/mnt/projects/datamunge/docs/mepml/nn/3_generative_models/3.2_autoregressive_models/build/recovered-language/models/image_gpt/index.html
 // result_end
 

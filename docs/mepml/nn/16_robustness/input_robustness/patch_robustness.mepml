@@ -1,0 +1,76 @@
+//? Title: Shared patch robustness on synthetic stripes
+//? Lang: en
+
+> Shared patch robustness on synthetic stripes
+
+A fixed classifier distinguishes horizontal and vertical stripes in
+noisy 8-by-8 images. One class score also responds to a checkerboard
+texture. This fixture measures whether a small localized replacement
+can overwhelm the stripe evidence.
+
+A single 3-by-3 patch minimizes the target-class cross-entropy averaged
+over the four corner placements. Each update clips the patch values
+to the valid pixel range. Evaluation uses separately generated images
+and an interior placement excluded from fitting. Among class-zero
+images the classifier originally gets right, the report counts how many
+move to class one and plots changes in the target-class logit margin.
+
+```{cpp, results="markdown", file="figures/patch_robustness.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int rows=96, side=8, pixels=side*side;
+  const auto images=[](unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> noise(0,.2f);
+    std::vector<float> x(rows*pixels);
+    for (auto& value:x) value=noise(rng);
+    for (int row=0;row<rows;++row)
+      for (int i=0;i<side;++i)
+        x[row*pixels+(row%2 ? side*i+3 : side*4+i)]=.65f+noise(rng);
+    return n::from_vector(x,{rows,pixels});
+  };
+  const auto train=images(45701),test=images(45702);
+  std::vector<float> weights;
+  for (int y=0;y<side;++y) for (int x=0;x<side;++x) {
+    weights.push_back(y==4 ? .7f : -.12f);
+    weights.push_back((x==3 ? .7f : -.12f)+((x+y)%2==0 ? .6f : 0.f));
+  }
+  const auto kernel=n::from_vector(weights,{pixels,2});
+  const auto predict=[&](const n::Tensor& x) { return n::matmul(x,kernel); };
+  const auto objective=[&](const n::Tensor& x) {
+    return -n::mean(n::slice_axis(n::log_softmax(predict(x),1),1,1,2));
+  };
+  std::vector<n::Tensor> corners;
+  for (int top:{0,5}) for (int left:{0,5})
+    corners.push_back(n::patch_insertion(side,side,3,3,top,left));
+  const auto [patch,trace]=n::fit_shared_patch(train,corners,n::full({1,9},.5),objective,144,.35);
+  const auto patched=n::insert_shared_patch(test,patch,n::patch_insertion(side,side,3,3,2,2));
+  const auto clean=predict(test),changed=predict(patched);
+  const auto a=clean.to_vector<float>(),b=changed.to_vector<float>();
+  std::vector<double> index,before,after;
+  int flipped=0;
+  for (int row=0;row<rows;row+=2) {
+    if (a[2*row]<=a[2*row+1]) continue;
+    index.push_back(row);
+    before.push_back(a[2*row+1]-a[2*row]);
+    after.push_back(b[2*row+1]-b[2*row]);
+    flipped+=after.back()>0;
+  }
+  std::print("At the unseen placement, {} of {} originally correct class-zero images "
+             "switch to class one.\n",flipped,index.size());
+  std::filesystem::create_directories("build");
+  n::save_npz("build/patch_evaluation.npz",{{"train",train},{"test",test},{"kernel",kernel},
+      {"trajectory",trace},{"patched",patched},{"clean_logits",clean},{"patched_logits",changed}});
+  dm::graphics::RPlot::create().points(index,before,"Original",{37,99,235},4)
+      .points(index,after,"Patched",{217,96,26},4)
+      .lines({0,rows-1},{0,0},"Decision boundary",{90,90,90})
+      .title("Shared patch at an unseen placement").x_label("Held-out image index")
+      .y_label("Class-one minus class-zero logit").size(800,460).save_svg("build/patch_robustness.svg");
+}
+```
+// result_begin: markdown
+At the unseen placement, 43 of 43 originally correct class-zero images switch to class one.
+\image(figures/patch_robustness.svg)
+// result_end

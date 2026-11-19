@@ -36,7 +36,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The final three seeded games are recorded using the native board renderer.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -47,11 +47,8 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // (common/rl/board_games.hpp, copied from tflow) rather than rl::Env: two
 // players alternate, only legal actions may be applied, and the observation is
 // always from the current player's point of view (+1 own, -1 opponent), which
-// is what self-play algorithms need. tflow films one more random game per
-// board on vsim's 3D board; the film is omitted but that game is still played
-// (same moves, same RNG draws), so the Othello stone count printed after it
-// matches tflow. The port adds checks on the random-play statistics, the
-// observation perspective and Clone().
+// is what self-play algorithms need. This report records one more seeded
+// random game on each board and checks observation perspective and Clone().
 
 
 // Editable workflow support: checks.hpp
@@ -171,12 +168,24 @@ DemoStats Demo(rl::GridGame& game, uint64_t seed) {
               "mean length %.1f\n",
               games, 100.0 * wins[1] / games, 100.0 * wins[2] / games, 100.0 * wins[0] / games,
               static_cast<double>(total_moves) / games);
-  // One more random game (filmed on the 3D board in tflow; here only played).
+  // Record the next seeded game using the same random stream as the benchmark.
   game.Reset();
+  const auto initial = game.Clone();
+  std::vector<int> actions;
   while (!game.Terminal()) {
-    const std::vector<int> legal = game.LegalActions();
-    game.Apply(legal[rng() % legal.size()]);
+    const auto legal = game.LegalActions();
+    const int action = legal[rng() % legal.size()];
+    actions.push_back(action);
+    game.Apply(action);
   }
+  const auto name = game.name() + "_random_game";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::rl::environments::save_board_replay(dynamic_cast<const rl::GridGame&>(*initial),
+                                           actions, "build/" + name + ".mp4");
+  std::filesystem::copy_file("build/" + name + ".mp4", "figures/" + name + ".mp4",
+                             std::filesystem::copy_options::overwrite_existing);
+  dm::nn::save_npz("build/" + name + ".npz", {{"actions", dm::nn::from_vector(actions)}});
   return {100.0 * wins[1] / games, 100.0 * wins[2] / games, 100.0 * wins[0] / games,
           static_cast<double>(total_moves) / games};
 }
@@ -225,7 +234,7 @@ int main() {
                 c4.LegalActions().size(), copy->CurrentPlayer());
     check::Require(c4.LegalActions().size() == 7 && c4.CurrentPlayer() != copy->CurrentPlayer(),
                    "a move on the clone leaves the original untouched");
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -269,7 +278,7 @@ int main() {
 //
 //   Clone(): original has 7 legal moves and is at move 0; the clone has advanced (player 2 to move)
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > Inspect the actual board state
@@ -287,3 +296,16 @@ int main(){namespace e=dm::rl::environments;e::TicTacToe env;env.Reset();for(int
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+
+> Seeded random games
+
+Each replay is the next game from the same random stream after the
+2,000-game comparison. The renderer applies the recorded legal actions
+to a clone of the initial board.
+
+\video(figures/TicTacToe_random_game.mp4)
+
+\video(figures/ConnectFour_random_game.mp4)
+
+\video(figures/Othello_random_game.mp4)

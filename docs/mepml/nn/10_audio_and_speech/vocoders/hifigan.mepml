@@ -1,0 +1,106 @@
+//? Title: HiFi-GAN waveform synthesis
+//? Lang: en
+
+> HiFi-GAN waveform synthesis
+
+The generator turns pairs of log-mel frames into 128 waveform samples.
+Three nearest-neighbor upsampling stages each use residual branches
+with two kernel widths to refine the waveform at different scales.
+
+Two critics fold the waveform by periods of two and three samples.
+They score each phase column with convolutions along the time axis.
+Two other critics inspect the waveform at full and half sample rate.
+The discriminator uses least-squares targets of one for real samples
+and zero for generated samples. The generator targets one and also
+penalizes differences in critic features and log-mel magnitudes.
+
+This compact example fits 96 two-harmonic clips with random frequencies
+and phases. Held-out clips use a separate seed. Magnitude features
+discard phase, so the waveform overlay shows what the generator chose
+to synthesize for a given condition. Log-mel error measures how closely
+the output matches the conditioning features.
+
+```{cpp, results="markdown", file="figures/hifigan.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int samples = 128;
+  const auto fixture = [](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(0.f,1.f);
+    std::vector<float> values(count*samples);
+    for (int row=0; row<count; ++row) {
+      const double frequency = 280+620*uniform(rng);
+      const double phase = 2*std::numbers::pi*uniform(rng);
+      for (int t=0; t<samples; ++t) {
+        const double angle = 2*std::numbers::pi*frequency*t/8000+phase;
+        values[row*samples+t] = .5*std::sin(angle)+.15*std::sin(2*angle);
+      }
+    }
+    auto wave = n::from_vector(values,{count,samples,1});
+    return std::pair{wave,n::hifigan_log_mel(wave)};
+  };
+  const auto [fit,fit_mel] = fixture(96,71321);
+  const auto [test,test_mel] = fixture(16,71322);
+  n::ParameterStore generator(18321), critic(18322);
+  const auto initial = n::mean(n::abs(n::hifigan_log_mel(n::hifigan_generate(generator,test_mel))-test_mel)).item();
+  (void)n::hifigan_critics(critic,test);
+  n::Optimizer d_opt(critic,.002,{.kind=n::OptimizerKind::Adam});
+  n::Optimizer g_opt(generator,.002,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(96,8,18323);
+  for (int epoch=0; epoch<3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next(); !rows.empty(); rows=order.next()) {
+      const auto real = n::take_rows(fit,rows), condition = n::take_rows(fit_mel,rows);
+      const auto fake = n::hifigan_generate(generator,condition);
+      const auto d_real = n::hifigan_critics(critic,real);
+      const auto d_fake = n::hifigan_critics(critic,fake.detach());
+      d_opt.minimize(n::hifigan_objective(d_real,d_fake,fake.detach(),condition).discriminator);
+      const auto g_real = n::hifigan_critics(critic,real);
+      const auto g_fake = n::hifigan_critics(critic,fake);
+      g_opt.minimize(n::hifigan_objective(g_real,g_fake,fake,condition).generator);
+    }
+  }
+  n::NoGradGuard guard;
+  const auto wave = n::hifigan_generate(generator,test_mel);
+  const auto real = n::hifigan_critics(critic,test), fake = n::hifigan_critics(critic,wave);
+  const auto loss = n::hifigan_objective(real,fake,wave,test_mel);
+  if (!(loss.mel.item()<initial) || !std::isfinite(loss.generator.item()) ||
+      !std::isfinite(loss.discriminator.item())) return 1;
+  std::print("| Initial mel error | Fitted mel error | Generator loss | Discriminator loss |\n");
+  std::print("|---:|---:|---:|---:|\n| {:.5f} | {:.5f} | {:.5f} | {:.5f} |\n",
+      initial,loss.mel.item(),loss.generator.item(),loss.discriminator.item());
+  std::vector<double> milliseconds(samples);
+  for (int i=0;i<samples;++i) milliseconds[i]=i/8.;
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(milliseconds,n::select(test,0,0).to_vector<double>(),"Reference",{37,99,235})
+      .lines(milliseconds,n::select(wave,0,0).to_vector<double>(),"Synthesized",{234,88,12})
+      .title("Held-out harmonic waveform").x_label("Time (ms)").y_label("Amplitude");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/hifigan.svg");
+  n::NamedTensors artifacts{{"reference",test},{"generated",wave},{"condition",test_mel},
+      {"mel",n::hifigan_log_mel(wave)},{"g_loss",loss.generator},{"d_loss",loss.discriminator},{"mel_loss",loss.mel}};
+  for (int i=0;i<4;++i) {
+    const auto key = std::to_string(i);
+    artifacts.emplace_back("real"+key,real[i].score);
+    artifacts.emplace_back("fake"+key,fake[i].score);
+    artifacts.emplace_back("real_a"+key,real[i].first);
+    artifacts.emplace_back("real_b"+key,real[i].second);
+    artifacts.emplace_back("fake_a"+key,fake[i].first);
+    artifacts.emplace_back("fake_b"+key,fake[i].second);
+  }
+  n::save_npz("build/hifigan.npz",artifacts);
+}
+```
+// result_begin: markdown
+| Initial mel error | Fitted mel error | Generator loss | Discriminator loss |
+|---:|---:|---:|---:|
+| 5.98744 | 3.13192 | 143.25751 | 1.60194 |
+\image(figures/hifigan.svg)
+// result_end
+
+After 36 alternating updates, the mean held-out log-mel error falls
+from 5.98744 to 3.13192. This experiment uses 16 ms harmonic clips and
+provides a check on training and conditioning. Speech quality would
+require evaluation on longer utterances from a speech corpus.

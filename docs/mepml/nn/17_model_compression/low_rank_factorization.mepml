@@ -1,0 +1,101 @@
+//? Title: Compress a dense layer with truncated SVD
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Approximate a nearly rank-three weight matrix and measure how the
+retained rank changes storage and held-out prediction error.
+)
+\toc
+
+Write the dense weights as \(W=U\operatorname{diag}(s)V^\top\), with
+singular values in descending order. Keep the first \(r\) directions
+and fold their singular values into the left factor. The compressed
+prediction then uses two matrix products, \((XA)B\). The squared
+Frobenius error of the weight approximation equals the sum of squared
+omitted singular values. Output MSE also depends on how the input rows
+project onto the omitted directions.
+
+The simulated layer is a rank-three product plus Gaussian weight noise.
+A separate set of 64 rows measures output error. The dense matrix has
+120 weights, and the factors use \(22r\) weights. Rank five nearly
+eliminates the output error but saves only ten weights.
+
+```{cpp, results="markdown", file="figures/low_rank_factorization.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  std::mt19937 rng(11921);
+  std::normal_distribution<double> normal;
+  auto draw = [&](int rows, int columns) {
+    std::vector<double> values(rows * columns);
+    for (auto& value : values) value = normal(rng);
+    return n::from_vector(values, {rows, columns});
+  };
+  const auto left = draw(12, 3);
+  const auto right = draw(3, 10);
+  const auto noise = draw(12, 10);
+  const auto input = draw(64, 12);
+  const auto dense = n::matmul(left, right) + .035 * noise;
+  const auto full_output = n::matmul(input, dense);
+
+  n::NamedTensors archive{{"input", input}, {"dense", dense}, {"dense_output", full_output}};
+  std::vector<double> counts, log_errors;
+  std::println("| Rank | Stored weights | Discarded energy | Held-out MSE |");
+  std::println("| ---: | ---: | ---: | ---: |");
+  for (int rank : {1, 2, 3, 5}) {
+    const auto factors = n::factor_dense_weights(dense, rank);
+    const auto prediction = factors.predict(input);
+    const double mse = n::mse(prediction, full_output).item();
+    const auto diff = dense - n::matmul(factors.left, factors.right);
+    const double energy = n::sum(diff * diff).item();
+    if (std::abs(energy - factors.discarded_energy) > 1e-10 || !(mse > 0))
+      throw std::runtime_error("Truncated SVD energy or prediction check failed");
+    if (rank == 1) archive.emplace_back("singular", factors.singular_values);
+    const auto suffix = std::to_string(rank);
+    archive.emplace_back("left_" + suffix, factors.left);
+    archive.emplace_back("right_" + suffix, factors.right);
+    archive.emplace_back("output_" + suffix, prediction);
+    counts.push_back(factors.left.numel() + factors.right.numel());
+    log_errors.push_back(std::log10(mse));
+    std::println("| {} | {:.0f} / 120 | {:.8g} | {:.8g} |", rank, counts.back(), energy, mse);
+  }
+
+  const std::string directory = "build/low_rank_factorization/";
+  std::filesystem::create_directories(directory);
+  std::filesystem::create_directories("figures");
+  n::save_npz(directory + "factors.npz", archive);
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(counts, log_errors, "Truncated SVD", {37, 99, 235})
+      .points(counts, log_errors, "Ranks 1, 2, 3, 5", {37, 99, 235}, 5)
+      .title("Held-out prediction error at four storage budgets")
+      .x_label("Stored weights (full layer: 120)").y_label("log10 output MSE")
+      .save_svg(directory + "tradeoff.svg");
+  std::filesystem::copy_file(directory + "tradeoff.svg", "figures/low_rank_factorization.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Rank | Stored weights | Discarded energy | Held-out MSE |
+| ---: | ---: | ---: | ---: |
+| 1 | 22 / 120 | 127.92417 | 15.784215 |
+| 2 | 44 / 120 | 53.123355 | 6.4584942 |
+| 3 | 66 / 120 | 0.070023333 | 0.0070499834 |
+| 5 | 110 / 120 | 0.023972053 | 0.0027801927 |
+\image(figures/low_rank_factorization.svg)
+// result_end
+
+The largest drop in prediction error occurs when the third singular
+direction is retained. Additional directions model some of the weight
+noise and have a smaller effect.
+
+> Reference
+
+- [Eckart and Young, The approximation of one matrix by another of lower rank|https://doi.org/10.1007/BF02288367].

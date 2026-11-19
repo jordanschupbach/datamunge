@@ -362,9 +362,13 @@ int main() {
 
 > Regenerate adjacent views from this run
 
-```{cpp, results="markdown", file="figures/segmentation_losses_fields.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::copy_file("build/segmentation_losses_fields.png","build/export_segmentation_losses_fields.png",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/segmentation_losses_fields.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::copy_file("build/segmentation_losses_fields.png", "build/export_segmentation_losses_fields.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/segmentation_losses_fields.png)

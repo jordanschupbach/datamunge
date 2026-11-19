@@ -1,0 +1,84 @@
+//? Title: Independent Q-learning with a shared reward
+//? Lang: en
+
+> Independent Q-learning with a shared reward
+
+Two agents move along separate five-cell chains. Each policy observes
+its own position. Both receive a reward only when both agents have
+arrived at their absorbing goals. Each learner updates its own
+state-action table with a bootstrap from its private successor.
+
+The training schedule uses more exploration in the first 128 episodes,
+then reduces the random-action probability. The plot tracks joint
+arrivals during training. The final test runs the greedy policies
+from every ordered pair of nonterminal starting positions.
+
+```{cpp, results="markdown", file="figures/independent_q.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  constexpr int goal=4,horizon=20;
+  using Pair=std::array<int,2>;
+  constexpr Pair complete{goal,goal};
+  const auto move=[](int state,int action) {return state==4?4:std::clamp(state+(action?1:-1),0,4);};
+  std::array tables{r::foundations::QTable(5,2),r::foundations::QTable(5,2)};
+  std::mt19937 rng(45201);
+  std::vector<double> history;
+  std::vector<int> trace;
+  int hits=0;
+  std::print("| Phase | Joint goals |\n|---:|---:|\n");
+  for (int episode=0;episode<384;++episode) {
+    Pair states{int(rng()%goal),int(rng()%goal)};
+    for (int step=0;step<horizon;++step) {
+      Pair actions{},next{};
+      for (int i=0;i<2;++i) {
+        actions[i]=rng()%(episode<128?2:5)==0?int(rng()%2):tables[i].Greedy(states[i]);
+        next[i]=move(states[i],actions[i]);
+      }
+      const bool terminal=next==complete;
+      r::independent_q_update(tables,states,actions,next,terminal,terminal);
+      trace.insert(trace.end(),{episode,states[0],states[1],actions[0],actions[1],next[0],next[1],terminal});
+      states=next;
+      if (terminal) {
+        ++hits;
+        break;
+      }
+    }
+    if (episode%128==127) {
+      history.push_back(hits);
+      std::print("| {} | {} / 128 |\n",history.size(),hits);
+      hits=0;
+    }
+  }
+  int solved=0;
+  for (int a=0;a<goal;++a) {
+    for (int b=0;b<goal;++b) {
+      Pair states{a,b};
+      for (int step=0;step<horizon && states!=complete;++step) {
+        for (int i=0;i<2;++i) states[i]=move(states[i],tables[i].Greedy(states[i]));
+      }
+      solved+=states==complete;
+    }
+  }
+  std::print("\nGreedy evaluation solved {} of 16 start pairs.\n",solved);
+  const auto q=n::stack({tables[0].tensor(),tables[1].tensor()}).reshape({-1});
+  std::filesystem::create_directories("build");
+  n::save_npz("build/independent_q_audit.npz",{{"trace",n::from_vector(trace,{std::ssize(trace)/8,8})},{"q",q}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars({1,2,3},history,"Joint arrivals",{37,99,235})
+      .title("Independent Q-learning").x_label("Training phase").y_label("Joint goals out of 128")
+      .ylim(0,128).size(800,460).save_svg("build/independent_q.svg");
+}
+```
+// result_begin: markdown
+| Phase | Joint goals |
+|---:|---:|
+| 1 | 116 / 128 |
+| 2 | 128 / 128 |
+| 3 | 128 / 128 |
+
+Greedy evaluation solved 16 of 16 start pairs.
+\image(figures/independent_q.svg)
+// result_end

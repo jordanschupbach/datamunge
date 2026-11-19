@@ -43,23 +43,19 @@ Learned/moving scalar counts are 11689512/9600 and 21797672/17024, respectively.
 At constant width C, two 3×3 branch kernels cost 18 C² weights and O(NHW 18 C²) MACs,
 plus BN and any projection. BN learns gamma/beta with epsilon 1e-5; its moving mean and
 unbiased EMA variance live in a separate store. No dropout or pretrained weights are used.
-Full forward geometry/counts are checked without backward storage. All parameter gradients
-are checked separately at one-eighth widths on a two-image training batch, retaining depth.
+Both canonical models check their shape and parameter inventories and finite
+nonzero gradients through every learned tensor.
 
-The dataset fits use quarter widths and a 3×3 stride-one stem without pooling on original
-32×32 CIFAR-10 images. This four-stage adaptation is not the paper's three-stage CIFAR ResNet.
-Each complete depth trains for 4 epochs on the CPU with batch 32, Adam with a cosine learning
-rate from .002 to zero, explicit kernel L2=.0001/2 and independent padded crops/flips. The
-first training file supplies 8,000 fit and 2,000 validation rows; the test set is all 10,000
-official test images. Both fits together take about four minutes.
-Validation selects and restores both parameters and BN moving moments before test evaluation.
-Cached CIFAR-10 is required; these are bounded workflow demonstrations.
+The CIFAR-10 fits retain all four stages with quarter-width channels and a 3×3
+stride-one stem. A seeded holdout selects 12,000 fitting and 5,000 validation
+images from all five development files. Each model runs twelve epochs with
+batch size 128, Adam(.001), a .0001/2 kernel penalty, and independent crops
+and flips. The selected checkpoint includes parameters and BN moving moments.
+Both models score all 10,000 official test images after selection.
 
-All inference (per-epoch validation, the selected training NLL and the test predictions)
-runs on the first CUDA GPU when the linked datamunge has CUDA and cuBLAS. Parameter and
-moving-state stores are copied with `ParameterStore::to`, and images move in batches of 1,000.
-Without a usable GPU the same code runs on the CPU and gives the same table to four decimals,
-but scoring 10,000 test images per depth then takes minutes instead of seconds.
+Validation and test inference use the first CUDA device when the linked
+Datamunge supports it. The report records the device used and includes the
+same inference path on the CPU.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -222,7 +218,7 @@ Stride-two projection gives a 3x3x4 map; value/gradient error versus tensor subs
 
 > Checking full topology
 
-Full-width forward checks and complete compact backward checks have separate purposes and resource budgets.
+Both canonical models check full-width forward stages and parameter gradients. The compact fixtures also verify inference state immutability.
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -233,11 +229,11 @@ int main() {
   const std::vector<std::tuple<int, int64_t, int64_t>> settings{{18, 11689512, 9600},
                                                                 {34, 21797672, 17024}};
   for (auto [depth, expected_count, expected_state] : settings) {
-    n::NoGradGuard guard;
+    n::Generator fixture(23);
     n::ParameterStore p(17), state(17);
     n::models::ResNetConfig cfg;
     cfg.depth = depth;
-    const auto out = n::models::ResNet(p, state, n::zeros({1, 224, 224, 3}), cfg);
+    const auto out = n::models::ResNet(p, state, n::normal({1, 224, 224, 3}, 0., .2, fixture), cfg);
     const bool bottleneck = depth >= 50;
     if (p.count() != expected_count || state.count() != expected_state ||
         out.stem.shape() != n::Shape{1, 56, 56, 64} || out.logits.shape() != n::Shape{1, 1000})
@@ -249,6 +245,13 @@ int main() {
     }
     if ((bottleneck ? 3 : 2) * int(out.blocks.size()) + 2 != depth)
       return 1;
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    for (std::size_t i = 0; i < gradients.size(); ++i) {
+      const double magnitude = n::max(n::abs(gradients[i])).item();
+      if (!std::isfinite(magnitude) || magnitude <= 0.)
+        throw std::runtime_error("Expected a finite nonzero derivative through " + p.names()[i]);
+    }
+    std::println("ResNet-{} checked gradients through {} learned tensors.", depth, gradients.size());
     std::print("Full ResNet-{}: {} learned scalars, {} moving scalars; {} blocks and all "
                "stage shapes verified.\n",
                depth, p.count(), state.count(), out.blocks.size());
@@ -280,7 +283,9 @@ int main() {
 }
 ```
 // result_begin: markdown
+ResNet-18 checked gradients through 62 learned tensors.
 Full ResNet-18: 11689512 learned scalars, 9600 moving scalars; 8 blocks and all stage shapes verified.
+ResNet-34 checked gradients through 110 learned tensors.
 Full ResNet-34: 21797672 learned scalars, 17024 moving scalars; 16 blocks and all stage shapes verified.
 Compact ResNet-18: every one of 62 parameter-tensor gradients is finite; inference leaves moving state unchanged.
 Compact ResNet-34: every one of 110 parameter-tensor gradients is finite; inference leaves moving state unchanged.
@@ -340,15 +345,15 @@ One original cached training image per class, IDs 0..4 then 5..9.
 
 int main() {
   int rendered_confusions = 0;
-  namespace n             = dm::nn;
-  namespace c             = dm::compute;
-  using clock             = std::chrono::steady_clock;
+  namespace n = dm::nn;
+  namespace c = dm::compute;
+  using clock = std::chrono::steady_clock;
   n::set_num_threads(4);
 
   // Inference runs on the first CUDA GPU when this datamunge build has CUDA and
   // cuBLAS; otherwise the identical code runs on the CPU. Training stays on CPU.
   const c::Context host;
-  c::Context       device = host;
+  c::Context device = host;
   if (c::probe({c::Backend::CUDA, 0}).available) {
     const c::Context gpu({c::Backend::CUDA, 0});
     if (gpu.supports_matmul())
@@ -359,49 +364,47 @@ int main() {
                                : std::string("CPU (no usable CUDA device in this build)");
 
   std::filesystem::path cache;
-  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
     cache = p;
-  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
     cache = std::filesystem::path(p) / "datamunge/datasets";
   else
     cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
   dm::datasets::fetch("cifar10", (cache / "cifar10").string());
 
-  constexpr std::int64_t fit = 8000, held = 2000, batch = 32, epochs = 4;
-  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
-  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
-             labels = n::cast(raw.labels, n::DType::Int64);
-  const auto tx = n::slice_axis(images, 0, 0, fit), ty = n::slice_axis(labels, 0, 0, fit);
-  const auto vx = 2 * n::slice_axis(images, 0, fit, fit + held) - 1,
-             vy = n::slice_axis(labels, 0, fit, fit + held);
-  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
-  const auto qx = 2 * official.images - 1, qy = official.labels;
+  constexpr std::int64_t fit = 12000, held = 5000, batch = 128, epochs = 12;
+  const auto development = n::load_cifar10((cache / "cifar10").string(), "train");
+  if (development.images.shape() != n::Shape{50000, 32, 32, 3})
+    throw std::runtime_error("Expected all original development rows");
+  const auto split = n::split_image_holdout(development, held, 2026, fit);
+  const auto &tx = split.fit.images, &ty = split.fit.labels;
+  const auto vx = 2 * split.validation.images - 1, vy = split.validation.labels;
 
   // Batched inference on `device`; logits come back to the host.
-  auto infer = [&](const n::ParameterStore& p, const n::ParameterStore& state,
-                   const n::models::ResNetConfig& cfg, const n::Tensor& x) {
-    n::NoGradGuard         guard;
-    auto                   dp = p.to(device), ds = state.to(device);
+  auto infer = [&](const n::ParameterStore &p, const n::ParameterStore &state,
+                   const n::models::ResNetConfig &cfg, const n::Tensor &x) {
+    n::NoGradGuard guard;
+    auto dp = p.to(device), ds = state.to(device);
     std::vector<n::Tensor> logits;
-    for (std::int64_t i = 0; i < x.size(0); i += 1000) {
-      const auto rows = n::slice_axis(x, 0, i, std::min(i + 1000, x.size(0)));
+    for (std::int64_t i = 0; i < x.size(0); i += 128) {
+      const auto rows = n::slice_axis(x, 0, i, std::min(i + 128, x.size(0)));
       logits.push_back(n::models::ResNet(dp, ds, rows.to(device), cfg, false).logits.to(host));
     }
     return n::concat(logits, 0);
   };
 
   std::filesystem::create_directories("build");
-  auto                layout = dm::graphics::RLayout::create(1, 2);
-  std::vector<double> depths, counts, moving, selected, train_nll, validation_nll, test_nll, accuracy,
-      fit_seconds;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  std::vector<double> depths, counts, moving, selected, train_nll, validation_nll, test_nll,
+      accuracy, fit_seconds;
   double inference_seconds = 0;
   for (int depth : {18, 34}) {
     n::models::ResNetConfig cfg;
-    cfg.depth         = depth;
-    cfg.classes       = 10;
+    cfg.depth = depth;
+    cfg.classes = 10;
     cfg.width_divisor = 4;
-    cfg.small_stem    = true;
-    cfg.momentum      = .9;
+    cfg.small_stem = true;
+    cfg.momentum = .9;
     n::ParameterStore p(17), state(17);
     {
       n::NoGradGuard guard;
@@ -409,39 +412,33 @@ int main() {
     }
     n::OptimizerConfig config;
     config.kind = n::OptimizerKind::Adam;
-    n::Optimizer        optimizer(p, .002, config);
-    n::BatchOrder       batches(fit, batch, 2026);
-    n::Generator        augmentation(151);
-    const std::int64_t  steps      = epochs * ((fit + batch - 1) / batch);
-    const std::string   checkpoint = "build/resnet_basic_" + std::to_string(depth);
-    double              best       = std::numeric_limits<double>::infinity(), seconds = 0;
-    int                 best_epoch = 0;
+    n::Optimizer optimizer(p, .001, config);
+    n::BatchOrder batches(fit, batch, 29);
+    n::Generator augmentation(151);
+    const std::string checkpoint = "build/resnet_basic_" + std::to_string(depth);
+    double best = std::numeric_limits<double>::infinity(), seconds = 0;
+    int best_epoch = 0;
     std::vector<double> epoch_axis, train, validation;
     for (int epoch = 1; epoch <= epochs; ++epoch) {
       const auto start = clock::now();
       batches.begin_epoch();
       n::WeightedMean average;
       for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-        const auto             x = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
-        std::vector<n::Tensor> transformed;
-        for (int64_t row = 0; row < x.size(0); ++row) {
-          auto image =
-              n::pad(n::slice_axis(x, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
-          image = n::augment::random_crop(image, 32, 32, augmentation);
-          transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
-        }
-        const auto logits = n::models::ResNet(p, state, 2 * n::concat(transformed, 0) - 1, cfg, true).logits;
-        const auto nll    = n::sparse_softmax_cross_entropy(logits, target);
-        auto       objective = nll;
-        for (const auto& w : p.parameters())
+        const auto x = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+        const auto augmented = n::study::augment_cifar10(x, augmentation);
+        const auto logits = n::models::ResNet(p, state, 2 * augmented - 1, cfg, true).logits;
+        const auto nll = n::sparse_softmax_cross_entropy(logits, target);
+        auto objective = nll;
+        for (const auto &w : p.parameters())
           if (w.dim() >= 2)
             objective = objective + .00005 * n::sum(n::square(w));
-        optimizer.set_learning_rate(n::schedule::cosine(.002, 0, steps, optimizer.iterations()));
         optimizer.minimize(objective);
         average.add(nll.item(), rows.size());
       }
+      if (average.count() != fit)
+        throw std::runtime_error("Incomplete fitting epoch");
       seconds += std::chrono::duration<double>(clock::now() - start).count();
-      const auto   inferred = clock::now();
+      const auto inferred = clock::now();
       const double val = n::sparse_softmax_cross_entropy(infer(p, state, cfg, vx), vy).item();
       inference_seconds += std::chrono::duration<double>(clock::now() - inferred).count();
       if (!std::isfinite(val))
@@ -450,7 +447,7 @@ int main() {
       train.push_back(average.value());
       validation.push_back(val);
       if (val < best) {
-        best       = val;
+        best = val;
         best_epoch = epoch;
         p.save(checkpoint + "_params.npz");
         state.save(checkpoint + "_state.npz");
@@ -458,20 +455,29 @@ int main() {
     }
     p.load(checkpoint + "_params.npz");
     state.load(checkpoint + "_state.npz");
-    const auto inferred   = clock::now();
+    const double restored = n::sparse_softmax_cross_entropy(infer(p, state, cfg, vx), vy).item();
+    if (!std::isfinite(restored) || std::abs(restored - best) > 1e-6)
+      throw std::runtime_error("Restored validation loss differs");
+    const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+    if (official.images.shape() != n::Shape{10000, 32, 32, 3})
+      throw std::runtime_error("Expected all official CIFAR-10 test rows");
+    const auto qx = 2 * official.images - 1, qy = official.labels;
+    const auto inferred = clock::now();
     const auto prediction = infer(p, state, cfg, qx);
-    train_nll.push_back(n::sparse_softmax_cross_entropy(infer(p, state, cfg, 2 * tx - 1), ty).item());
+    train_nll.push_back(
+        n::sparse_softmax_cross_entropy(infer(p, state, cfg, 2 * tx - 1), ty).item());
     inference_seconds += std::chrono::duration<double>(clock::now() - inferred).count();
-    n::NoGradGuard     guard;
+    n::NoGradGuard guard;
     n::ConfusionMatrix native_confusion(10);
     native_confusion.add(qy, n::argmax(prediction, 1));
- n::save_npz("build/resnet_basic_heldout_"+std::to_string(rendered_confusions)+".npz",{{"truth",qy},{"logits",prediction},{"counts",native_confusion.to_tensor()}});
-    native_confusion.save_svg(
-        "build/resnet_basic_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
-        {.title = "resnet basic / selected-checkpoint test counts"});
+    n::save_npz("build/resnet_basic_heldout_" + std::to_string(rendered_confusions) + ".npz",
+                {{"truth", qy}, {"logits", prediction}, {"counts", native_confusion.to_tensor()}});
+    native_confusion.save_svg("build/resnet_basic_confusion_api_" +
+                                  std::to_string(rendered_confusions++) + ".svg",
+                              {.title = "resnet basic / selected-checkpoint test counts"});
 
     const double test_loss = n::sparse_softmax_cross_entropy(prediction, qy).item();
-    if (!std::isfinite(test_loss))
+    if (!std::isfinite(test_loss) || n::accuracy(prediction, qy) < .4)
       return 1;
     depths.push_back(depth);
     counts.push_back(p.count());
@@ -503,33 +509,29 @@ int main() {
   table.add_column("test_accuracy", accuracy);
   std::print("Inference device: {}; all inference took {:.1f} s.\n", device_name,
              inference_seconds);
-  std::print("{} fit / {} validation / {} official-test rows per depth.\n\n{}\n", fit, held,
-             qx.size(0), table.to_md(4));
+  std::print("{} fit / {} validation / {} official-test rows per depth.\n\n{}\n", fit, held, 10000,
+             table.to_md(4));
   layout.size(1100, 470).fit_panels().save_svg("build/resnet_basic_training.svg");
 }
 ```
 // result_begin: markdown
-ResNet-18: 1000 Adam updates in 23 s of CPU training.
-ResNet-34: 1000 Adam updates in 42 s of CPU training.
-Inference device: CPU (no usable CUDA device in this build); all inference took 33.2 s.
-8000 fit / 2000 validation / 10000 official-test rows per depth.
+ResNet-18: 1128 Adam updates in 223 s of CPU training.
+ResNet-34: 1128 Adam updates in 387 s of CPU training.
+Inference device: CPU (no usable CUDA device in this build); all inference took 104.3 s.
+12000 fit / 5000 validation / 10000 official-test rows per depth.
 
 | depth | parameters | moving_state | best_epoch | selected_train_NLL | validation_NLL | test_NLL | test_accuracy |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 18 | 701466 | 2400 | 4 | 1.0806 | 1.1604 | 1.1692 | 0.5827 |
-| 34 | 1334618 | 4256 | 4 | 1.1710 | 1.2469 | 1.2524 | 0.5470 |
+| 18 | 701466 | 2400 | 12 | 0.7955 | 0.9432 | 0.9565 | 0.6712 |
+| 34 | 1334618 | 4256 | 12 | 0.8537 | 0.9997 | 0.9999 | 0.6502 |
 
 \image(figures/resnet_basic_training.svg)
 // result_end
-\caption(Explicit compact-model Adam fits, retaining every block. Training uses independent crop/flip augmentation and batch BN moments; GPU inference validation selects paired parameter/moving-state checkpoints. The full official test set is used only after selection.)
-\alttext(Explicit compact-model Adam fits, retaining every block. Training uses independent crop/flip augmentation and batch BN moments; GPU inference validation selects paired parameter/moving-state checkpoints. The full official test set is used only after selection.)
+\caption(Explicit compact-model Adam fits, retaining every block. Training uses independent crop/flip augmentation and batch BN moments; Validation inference selects paired parameter/moving-state checkpoints. The full official test set is used only after selection.)
+\alttext(Explicit compact-model Adam fits, retaining every block. Training uses independent crop/flip augmentation and batch BN moments; Validation inference selects paired parameter/moving-state checkpoints. The full official test set is used only after selection.)
 
-The executed results above report the current selected checkpoint. These fixed small
-subsets and source budgets do not establish a ranking of architectures. Assess
-training, validation and test NLL together with the complete held-out confusion.
-Augmented or batch-moment training objectives and saved-state inference can differ;
-weak or below-chance outcomes remain part of the result. The independent geometry,
-parameter-count and derivative checks establish separate implementation claims.
+The learning curves show stochastic fitting NLL and unaugmented validation NLL.
+The table uses the checkpoint's moving moments for deterministic inference.
 
 > Native confusion matrices
 
@@ -550,17 +552,27 @@ running from top to bottom and predicted classes from left to right.
 
 Each alternate architecture or held-out confusion below is copied from this run's local build directory.
 
-```{cpp, results="markdown", file="figures/resnet_basic_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/resnet_basic_confusion_api_0.svg","build/export_resnet_basic_confusion_api_0.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/resnet_basic_confusion_api_0.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/resnet_basic_confusion_api_0.svg", "build/export_resnet_basic_confusion_api_0.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/resnet_basic_confusion_api_0.svg)
 // result_end
 
-```{cpp, results="markdown", file="figures/resnet_basic_confusion_api_1.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <dm/dm.hpp>
-int main(){std::filesystem::create_directories("build");std::filesystem::copy_file("build/resnet_basic_confusion_api_1.svg","build/export_resnet_basic_confusion_api_1.svg",std::filesystem::copy_options::overwrite_existing);}
+```{cpp, results="markdown", file="figures/resnet_basic_confusion_api_1.svg", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::filesystem::copy_file("build/resnet_basic_confusion_api_1.svg", "build/export_resnet_basic_confusion_api_1.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
 ```
 // result_begin: markdown
 \image(figures/resnet_basic_confusion_api_1.svg)
@@ -569,9 +581,8 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 > Conclusion
 
 The shortcut adds a direct path, while post-add ReLU still gates signed signals. Projection
-shortcuts change both sampling and channel count. Complete-depth checks and explicit subset
-fits make those details visible; separate moving-state checkpoints are part of reproducible
-inference. These small runs do not establish a depth advantage or ImageNet performance.
+shortcuts change both sampling and channel count. The canonical checks and the compact fits make those details visible.
+The saved moving moments are part of each selected checkpoint.
 
 > References
 

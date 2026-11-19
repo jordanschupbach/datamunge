@@ -1,0 +1,118 @@
+//? Title: Split-conformal intervals for nonlinear regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Calibrate a prediction interval around a nonlinear regressor using
+independent residuals. Evaluate marginal coverage and compare
+coverage across the two sides of the predictor range.
+)
+\toc
+
+> Separate fitting, calibration and test
+
+The data follow sin(3x) with Gaussian noise whose scale increases with x.
+Train a 24-feature tanh model by squared error on 1,024 observations.
+After fitting, hold the predictor fixed. Use the 360th smallest
+absolute residual among 399 calibration rows as the radius for 90%
+nominal coverage. In general the rank is the ceiling of
+(n + 1) × (1 − alpha). An unattainable rank yields an unbounded interval.
+
+Under exchangeability the guarantee is marginal. The band has a
+constant width, so the lower- and higher-noise regions can have
+different coverage. The 2,048 test rows are used only for evaluation.
+
+```{cpp, results="markdown", file="figures/conformal_prediction_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+
+std::pair<n::Tensor, n::Tensor> simulate(int count, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_real_distribution<float> uniform(-1.f, 1.f);
+  std::normal_distribution<float> normal;
+  std::vector<float> x(count), y(count);
+  for (int i = 0; i < count; ++i) {
+    x[i] = uniform(rng);
+    y[i] = std::sin(3.f * x[i]) + (.25f + .15f * x[i]) * normal(rng);
+  }
+  return {n::from_vector(x, {count, 1}), n::from_vector(y, {count, 1})};
+}
+
+int main() {
+  const auto [x_fit, y_fit] = simulate(1024, 117521);
+  const auto [x_cal, y_cal] = simulate(399, 117522);
+  const auto [x_test, y_test] = simulate(2048, 117523);
+  n::ParameterStore parameters(41380);
+  const auto predict = [&](const n::Tensor& x) {
+    return n::dense(parameters, "mean", n::dense(parameters, "hidden", x, 24, n::Activation::Tanh), 1);
+  };
+  predict(n::zeros({1, 1}));
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(x_fit.size(0), 16, 117524);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto prediction = predict(n::take_rows(x_fit, rows));
+      const auto observed = n::take_rows(y_fit, rows);
+      const auto loss = n::mean(n::square(prediction - observed));
+      optimizer.step(n::grad(loss, parameters.parameters()));
+    }
+  }
+
+  n::NoGradGuard frozen;
+  const std::string root = "build/conformal_prediction/";
+  std::filesystem::create_directories(root);
+  std::filesystem::create_directories("figures");
+  const auto query = n::linspace(-1, 1, 201).reshape({201, 1});
+  const auto t = query.to_vector<double>();
+  const auto calibration = predict(x_cal);
+  const double width = n::SplitConformalRadius(calibration, y_cal, .1);
+  if (!std::isinf(n::SplitConformalRadius(calibration, y_cal, .001)))
+    throw std::runtime_error("unattainable calibration rank");
+  const auto test = n::cast(predict(x_test), n::DType::Float64);
+  const auto hit = n::cast(n::less_equal(n::abs(test - y_test), width), n::DType::Float64);
+  const auto right = n::cast(n::greater(x_test, 0), n::DType::Float64), left = 1.0 - right;
+  std::println("| Test population | Coverage |\n| --- | ---: |");
+  std::println("| All test rows | {:.4f} |", n::mean(hit).item());
+  std::println("| x ≤ 0 | {:.4f} |", (n::sum(hit * left) / n::sum(left)).item());
+  std::println("| x > 0 | {:.4f} |", (n::sum(hit * right) / n::sum(right)).item());
+  std::println("\nCalibration rank 360 gives an interval width of {:.6f}.", 2 * width);
+  n::save_npz(root + "intervals.npz", {{"calibration_x", x_cal}, {"calibration_y", y_cal},
+                                  {"calibration_prediction", calibration}, {"x", x_test}, {"y", y_test},
+                                  {"prediction", test}, {"hit", hit}, {"radius", n::scalar(width, n::DType::Float64)},
+                                  {"intervals", n::concat({test - width, test + width}, 1)}});
+  const auto curve = n::cast(predict(query), n::DType::Float64);
+
+  const auto upper = (curve + width).to_vector<double>();
+  auto band = (curve - width).to_vector<double>();
+  auto band_x = t;
+  band.insert(band.end(), upper.rbegin(), upper.rend());
+  band_x.insert(band_x.end(), t.rbegin(), t.rend());
+  auto plot = dm::graphics::RPlot::create();
+  plot.polygon(band_x, band, {37, 99, 235, .16})
+      .points(x_test.to_vector<double>(), y_test.to_vector<double>(), "Held-out observations",
+              {100, 116, 139, .35}, 2)
+      .lines(t, curve.to_vector<double>(), "Fitted mean", {37, 99, 235})
+      .title("90% split-conformal prediction band").x_label("x").y_label("Response")
+      .save_svg(root + "fit.svg");
+  std::filesystem::copy_file(root + "fit.svg", "figures/conformal_prediction_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  parameters.save(root + "weights.npz");
+}
+```
+// result_begin: markdown
+| Test population | Coverage |
+| --- | ---: |
+| All test rows | 0.8955 |
+| x ≤ 0 | 0.9374 |
+| x > 0 | 0.8537 |
+
+Calibration rank 360 gives an interval width of 1.462916.
+\image(figures/conformal_prediction_fit.svg)
+// result_end

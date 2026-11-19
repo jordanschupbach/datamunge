@@ -1044,7 +1044,7 @@ int main(int argc, char** argv) {
 // epoch=2 validationMLMCE=3.70272
 // epoch=3 validationMLMCE=3.55161
 // testSelectedCE=3.50781 accuracy=23/130 rightContextEffect=0.000153184; 78 nativeFD max=0.000219411 padding/selectedOnly/labelFree/restore/immutable PASS
-// wall 0.113937 s
+// wall 0.395929 s
 // result_end
 
 > Publish this native prerequisite checkpoint

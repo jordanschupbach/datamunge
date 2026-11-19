@@ -1,0 +1,157 @@
+//? Title: CTC handwriting recognition on MNIST digit strings
+//? Lang: en
+
+> CTC handwriting recognition on MNIST digit strings
+
+Each strip shows one to three intact MNIST digits with small random gaps.
+Four-column frames feed a masked bidirectional LSTM. Connectionist temporal
+classification (CTC) sums the probabilities of frame paths that collapse
+to the target string. A blank separates repeated digits, and the loss and
+decoder ignore padded frames.
+
+The training and validation strips use separate glyphs from the official
+training split. Test strips use only the official test split. Set
+`DM_MNIST_DIR` to an existing IDX directory or let Datamunge fetch MNIST.
+The plot pairs the validation loss with the first held-out image and its
+greedy transcription.
+
+```{cpp, results="markdown", file="figures/handwriting_ctc_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n=dm::nn;
+
+int main() {
+  n::set_num_threads(2);
+  const char *configured=std::getenv("DM_MNIST_DIR");
+  const std::string path=configured?configured:dm::datasets::fetch("mnist");
+  const auto training=n::load_mnist(path,"train"), testing=n::load_mnist(path,"test");
+  if(training.labels.numel()!=60000 || testing.labels.numel()!=10000)
+    throw std::runtime_error("expected official MNIST splits");
+  std::vector<int> train_ids(60000), test_ids(10000);
+  std::iota(train_ids.begin(),train_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 split(41375);
+  std::shuffle(train_ids.begin(),train_ids.end(),split);
+  std::shuffle(test_ids.begin(),test_ids.end(),split);
+  const auto compose=[](const n::ImageDataset &data,const std::vector<int> &order,
+                         int start,int count,unsigned seed) {
+    const auto chosen=n::from_vector(std::vector<int>(order.begin()+start,order.begin()+start+3*count));
+    const auto glyph=n::gather(data.images,chosen).to_vector<float>();
+    const auto digit=n::gather(data.labels,chosen).to_vector<int>();
+    std::vector<float> pixels(count*28*96);
+    std::vector<int> labels(count*3,-1), ids(labels), offsets(labels), sizes, frames;
+    std::mt19937 rng(seed);
+    int next=0;
+    for(int row=0;row<count;++row) {
+      const int digits=1+rng()%3;
+      int x=rng()%5;
+      sizes.push_back(digits);
+      for(int j=0;j<digits;++j) {
+        ids[row*3+j]=order[start+next];
+        labels[row*3+j]=digit[next];
+        offsets[row*3+j]=x;
+        for(int y=0;y<28;++y)
+          std::copy_n(glyph.begin()+next*784+y*28,28,pixels.begin()+(row*28+y)*96+x);
+        ++next;
+        x+=28+rng()%3;
+      }
+      frames.push_back(std::min(24,(x+3)/4));
+    }
+    return std::array{n::from_vector(pixels,{count,28,96}),n::from_vector(labels,{count,3}),
+        n::from_vector(sizes),n::from_vector(frames),n::from_vector(ids,{count,3}),
+        n::from_vector(offsets,{count,3})};
+  };
+  const auto fit=compose(training,train_ids,0,768,41376);
+  const auto val=compose(training,train_ids,2304,96,41377);
+  const auto test=compose(testing,test_ids,0,96,41378);
+  n::ParameterStore model(41374);
+  const auto objective=[&](const auto &batch) {
+    return n::mean(n::ctc_loss(n::handwriting_ctc_logits(model,batch[0],batch[3]),
+                                batch[1],batch[2],batch[3]));
+  };
+  objective(val);
+  n::OptimizerConfig cfg;
+  cfg.kind=n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.003,cfg);
+  n::BatchOrder order(768,32,41379);
+  std::vector<double> history;
+  std::print("| Epoch | Validation CTC NLL |\n|---:|---:|\n");
+  for(int epoch=0;epoch<=3;++epoch) {
+    { n::NoGradGuard guard; history.push_back(objective(val).item()); }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if(epoch==3) break;
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto ids=n::from_vector(rows);
+      auto batch=fit;
+      for(int i=0;i<4;++i) batch[i]=n::gather(fit[i],ids);
+      adam.minimize(objective(batch));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto logits=n::handwriting_ctc_logits(model,test[0],test[3]);
+  const auto ctc=n::ctc_loss_with_gradient(logits,test[1],test[2],test[3]);
+  const auto decoded=n::ctc_greedy_decode(logits,test[3]);
+  const auto labels=test[1].to_vector<int>(), sizes=test[2].to_vector<int>();
+  int exact=0, edits=0, characters=0;
+  std::string first_target,first_prediction;
+  for(int i=0;i<96;++i) {
+    const std::vector<std::int64_t> expected(labels.begin()+3*i,labels.begin()+3*i+sizes[i]);
+    exact+=expected==decoded.sequences[i];
+    std::string target, prediction;
+    for(auto id:expected) target+=char('0'+id);
+    for(auto id:decoded.sequences[i]) prediction+=char('0'+id);
+    edits+=n::models::OcrDistance(target,prediction);
+    characters+=target.size();
+    if(i==0) {
+      first_target=target;
+      first_prediction=prediction;
+    }
+  }
+  const auto widths=test[3].reshape({96,1,1})*4.;
+  const auto valid=n::less(n::arange(0,96).reshape({1,1,96}),widths);
+  const auto altered=n::where(valid,test[0],1.);
+  const auto check=n::ctc_greedy_decode(n::handwriting_ctc_logits(model,altered,test[3]),test[3]);
+  if(check.sequences!=decoded.sequences)
+    throw std::runtime_error("CTC padding changed greedy output");
+  std::print("Held-out mean NLL {:.6f}, {}/96 exact strings, {}/{} character edits.\n",
+             n::mean(ctc.loss).item(),exact,edits,characters);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/handwriting_ctc.npz",{{"fit_ids",fit[4]},{"validation_ids",val[4]},
+      {"test_ids",test[4]},{"test_offsets",test[5]},{"pixels",test[0]},{"labels",test[1]},
+      {"label_lengths",test[2]},{"frame_lengths",test[3]},{"logits",logits},{"nll",ctc.loss},
+      {"gradient",ctc.gradient}});
+  auto learning=dm::graphics::RPlot::create();
+  learning.lines({0.,1.,2.,3.},history,"Validation",{37,99,235})
+      .title("CTC learning curve").x_label("Epoch").y_label("Validation NLL");
+  const auto image=n::select(test[0],0,0);
+  std::vector<std::vector<double>> columns;
+  for(int x=0;x<96;++x) columns.push_back(n::select(n::reverse(image,{0}),1,x).to_vector<double>());
+  auto strip=dm::graphics::RPlot::create();
+  strip.image(n::arange(0,96).to_vector<double>(),n::arange(0,28).to_vector<double>(),columns,
+              {{255,255,255},{5,5,5}},0.,1.)
+      .title("Target "+first_target+", predicted "+(first_prediction.empty()?"empty":first_prediction))
+      .x_label("Column").y_label("Row");
+  dm::graphics::RLayout::create(1,2).add(learning).add(strip).size(1070,420)
+      .fit_panels().save_svg("build/handwriting_ctc_fit.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation CTC NLL |
+|---:|---:|
+| 0 | 29.899820 |
+| 1 | 6.179780 |
+| 2 | 6.017833 |
+| 3 | 5.950790 |
+Held-out mean NLL 5.423085, 0/96 exact strings, 176/176 character edits.
+\image(figures/handwriting_ctc_fit.svg)
+// result_end
+\caption(Validation CTC loss and the first held-out digit strip with its target and greedy prediction.)
+\alttext(A line plot shows validation loss. A grayscale image displays the first held-out digit string.)
+
+Validation loss decreases, but the three-epoch checkpoint produces no
+exact strings under greedy decoding. The character error count is as
+large as the number of reference digits.
+
+> Reference
+
+- Graves et al. (2006), Connectionist Temporal Classification, doi:10.1145/1143844.1143891.

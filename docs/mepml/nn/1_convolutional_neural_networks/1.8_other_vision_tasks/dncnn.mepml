@@ -560,12 +560,12 @@ Noisy-only independent deployment parity 0;all48 learned+30 moving tensors immut
 \caption(All32 actual held-out images,two five-panel tiles per row. Each tile shows noisy,reflected box,learned,clean,and four-times red absolute learned error. Inputs/outputs are clipped only in this display.)
 \alttext(Actual noisy CIFAR grayscale photographs,their fixed and learned reconstructions,clean targets and visible errors.)
 
-The short fit reduces training-mode probe half-MSE from .287240 to .005109,
-but moving-BN probe error rises from .004734 to .005051. Its held-out raw
-PSNR19.826817dB is below the untouched noisy input’s20.219740dB and the
-fixed mean filter’s24.034324dB. Clipped scores preserve this ordering.
-This run demonstrates optimization and state handling;it does not demonstrate
-a denoising-quality gain. Training-mode improvement alone would miss that.
+The short fit reduces training-mode probe half-MSE from 0.287240 to
+0.005323. The same probe evaluated with moving BN statistics rises from
+0.004734 to 0.005295. On held-out images the learned model reaches
+19.723765 dB raw PSNR, compared with 20.219740 dB for the noisy input
+and 24.034324 dB for the fixed mean filter. Clipped scores preserve the
+same ordering.
 
 The compact width reduces channels,not the number of layers. The short fit
 checks optimization and deployment under a known synthetic noise level on

@@ -796,7 +796,7 @@ int main() {
 epoch 1: D/G=1.08634/-0.0425364, orthogonal=1.36838e-07
 epoch 2: D/G=1.04915/-0.0410348, orthogonal=1.38875e-07
 epoch 3: D/G=1.06327/-0.0560048, orthogonal=1.43595e-07
-fixed final=3, test D/G=1.05479/-0.0504587, class/projection effects=0.187669/0.465906; hierarchical/CCBN/residual/SN/projection/orthogonal/rejection/restore/immutable PASS (training 0.496623 s)
+fixed final=3, test D/G=1.05479/-0.0504587, class/projection effects=0.187669/0.465906; hierarchical/CCBN/residual/SN/projection/orthogonal/rejection/restore/immutable PASS (training 1.27995 s)
 Artifacts: build/big_gan
 All big_gan checks passed.
 \image(figures/big_gan_learning.svg)

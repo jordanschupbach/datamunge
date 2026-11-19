@@ -68,7 +68,21 @@ int main(){
  n::save_npz("build/checkpoint_state.npz",state);
  {n::NoGradGuard guard;w.copy_(n::full({2,2},-9));step.copy_(n::from_vector(std::vector<int64_t>{-1},{1}));}
  const auto saved=n::load_npz("build/checkpoint_state.npz");n::restore_tensors(state,saved);
- const auto words=n::decode_strings({saved[2],saved[3]});
+ auto fresh_weights=n::zeros({2,2},w.dtype());
+ auto fresh_step=n::zeros({1},n::DType::Int64);
+ auto fresh_text=n::encode_strings({"xxxxx","xxx",""});
+ n::NamedTensors fresh{{"weights",fresh_weights},{"step",fresh_step}};
+ fresh.insert(fresh.end(),fresh_text.begin(),fresh_text.end());
+ n::restore_tensors(fresh,saved);
+ for(std::size_t i=0;i<state.size();++i)
+   if(n::encode_npy(state[i].second)!=n::encode_npy(saved[i].second) ||
+      n::encode_npy(fresh[i].second)!=n::encode_npy(saved[i].second))
+     throw std::runtime_error("Existing or fresh checkpoint state differs");
+ const auto prediction=n::matmul(n::tensor({2,3},{1,2}),fresh_weights);
+ if(prediction.to_vector<double>()!=std::vector<double>{11,16})
+   throw std::runtime_error("Restored weights did not reproduce the reference prediction");
+ std::print("Fresh handles restored all stored arrays and produced prediction [11, 16].\n\n");
+ const auto words=n::decode_strings(fresh_text);
  if(step.item<int64_t>()!=(int64_t{1}<<40)+7||words[1]!=std::string("a\0b",3))return 1;
  dm::dstruct::DataFrame t;t.add_column("entry",std::vector<std::string>{"café","a-NUL-b","empty"});
  std::vector<double> lengths;for(const auto& s:words)lengths.push_back(s.size());t.add_column("byte_length",lengths);
@@ -79,6 +93,8 @@ int main(){
 }
 ```
 // result_begin: markdown
+Fresh handles restored all stored arrays and produced prediction [11, 16].
+
 Restored Int64 counter: 1099511627783.
 
 | entry | byte_length |
@@ -102,13 +118,15 @@ int main(){
  try{n::restore_tensors({{"a",a},{"b",b}},{{"a",n::tensor({9,9})},{"b",n::tensor({1})}});}catch(const std::invalid_argument&){++rejected;}
  if(n::encode_npy(a)!=before)return 1;
  try{n::restore_tensors({{"a",a}},{{"a",n::tensor({7,8},{2},n::DType::Float64)}});}catch(const std::invalid_argument&){++rejected;}
+ try{n::restore_tensors({{"a",a},{"b",b}},{{"a",n::tensor({9,9})},{"c",b}});}catch(const std::invalid_argument&){++rejected;}
+ if(n::encode_npy(a)!=before || b.to_vector<int>()!=std::vector<int>{3,4})return 1;
  n::restore_tensors({{"a",a},{"b",b}},{{"a",b},{"b",a}});
- if(rejected!=2||a.to_vector<int>()!=std::vector<int>({3,4})||b.to_vector<int>()!=std::vector<int>({1,2}))return 1;
- std::print("Shape/dtype mismatches rejected: {}; first assignment unchanged on failure.\n\nAliased source swap succeeds after staging deep copies.\n",rejected);
+ if(rejected!=3||a.to_vector<int>()!=std::vector<int>({3,4})||b.to_vector<int>()!=std::vector<int>({1,2}))return 1;
+ std::print("Shape, dtype and missing-name mismatches rejected: {}; first assignment unchanged on failure.\n\nAliased source swap succeeds after staging deep copies.\n",rejected);
 }
 ```
 // result_begin: markdown
-Shape/dtype mismatches rejected: 2; first assignment unchanged on failure.
+Shape, dtype and missing-name mismatches rejected: 3; first assignment unchanged on failure.
 
 Aliased source swap succeeds after staging deep copies.
 // result_end

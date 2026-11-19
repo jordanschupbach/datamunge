@@ -1,0 +1,102 @@
+//? Title: Locally conditioned WaveNet vocoder
+//? Lang: en
+
+> Locally conditioned WaveNet vocoder
+
+WaveNet predicts a distribution over the next 8-bit mu-law code.
+Dilated causal convolutions summarize previous codes, with a projected
+log-mel vector added to every gated block. Each mel frame is repeated
+over the 64 waveform positions it describes.
+
+During training, the previous reference code is the input and the
+current code is the target. During synthesis, the model starts from
+the silence code and feeds back its own greedy prediction. The report
+checks that changing a future code leaves earlier logits unchanged and
+that swapping the mel condition changes logits at fixed history.
+
+The fit uses synthetic 32 ms harmonic chirps. The waveform plot shows
+the resulting free-running synthesis. Teacher-forced loss measures
+next-code prediction with reference history, while the generated trace
+shows how errors can accumulate when the model uses its own history.
+
+```{cpp, results="markdown", file="figures/wavenet_vocoder.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int length=256;
+  const auto fixture=[](int rows,unsigned seed) {
+    std::vector<float> samples(rows*length);
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<double> random(0,1);
+    for (int row=0;row<rows;++row) {
+      double phase=0,base=250+650*random(rng);
+      for (int t=0;t<length;++t) {
+        phase+=2*std::numbers::pi*(base+180.*t/length)/8000;
+        samples[row*length+t]=(.15+.4*std::sin(std::numbers::pi*t/length))*
+            (.75*std::sin(phase)+.2*std::sin(2*phase));
+      }
+    }
+    const auto wave=n::from_vector(samples,{rows,length});
+    const auto codes=n::mu_law_encode(wave);
+    const auto history=n::concat({n::full({rows,1},128,n::DType::Int32),
+                                 n::slice_axis(codes,1,0,length-1)},1);
+    const auto frames=n::hifigan_log_mel(n::expand_dims(wave,2));
+    return std::tuple{wave,codes,history,n::repeat(frames,64,1)};
+  };
+  const auto [fit,target,history,condition]=fixture(160,33718);
+  const auto [test,truth,test_history,test_condition]=fixture(2,33719);
+  n::ParameterStore model(41380);
+  const auto loss=[](const n::Tensor& scores,const n::Tensor& target) {
+    return n::sparse_softmax_cross_entropy(scores.reshape({-1,256}),target.reshape({-1}));
+  };
+  const auto initial=loss(n::wavenet_vocoder_logits(model,test_history,test_condition),truth).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(160,16,33720);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto logits=n::wavenet_vocoder_logits(model,n::take_rows(history,rows),n::take_rows(condition,rows));
+      optimizer.minimize(loss(logits,n::take_rows(target,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto logits=n::wavenet_vocoder_logits(model,test_history,test_condition);
+  const auto final_loss=loss(logits,truth);
+  auto changed=test_history.to_vector<int>();
+  changed[length/2]=0;
+  const auto future=n::wavenet_vocoder_logits(model,n::from_vector(changed,{2,length}),test_condition);
+  const auto swapped=n::wavenet_vocoder_logits(model,test_history,n::take_rows(test_condition,{1,0}));
+  const auto prefix=n::max(n::abs(n::slice_axis(logits-future,1,0,length/2))).item();
+  const auto effect=n::sum(n::abs(n::select(n::select(logits-swapped,0,0),0,0))).item();
+  const auto codes=n::wavenet_vocoder_generate(model,test_condition);
+  const auto rollout=n::concat({n::full({2,1},128,n::DType::Int32),
+                               n::slice_axis(codes,1,0,length-1)},1);
+  const auto replay=n::argmax(n::wavenet_vocoder_logits(model,rollout,test_condition));
+  if (!(final_loss.item()<initial) || prefix!=0 || effect<=1e-4 ||
+      replay.to_vector<int>()!=codes.to_vector<int>()) return 1;
+  const auto wave=n::mu_law_decode(codes);
+  std::print("Held-out code loss {:.4f} → {:.4f}. Future-code effect {:.1f}. Mel-swap effect {:.4f}.\n",
+      initial,final_loss.item(),prefix,effect);
+  std::vector<double> ms(length);
+  for (int t=0;t<length;++t) ms[t]=t/8.;
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(ms,n::select(test,0,0).to_vector<double>(),"Reference",{37,99,235})
+      .lines(ms,n::select(wave,0,0).to_vector<double>(),"Generated",{234,88,12})
+      .title("Free-running WaveNet synthesis").x_label("Time (ms)").y_label("Amplitude");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/wavenet_vocoder.svg");
+  n::write_wav("build/wavenet_vocoder.wav",n::transpose(wave),8000);
+  n::save_npz("build/wavenet_vocoder.npz",{{"reference",test},{"target",truth},{"teacher",logits},
+      {"generated",codes},{"rollout",rollout},{"loss",final_loss}});
+}
+```
+// result_begin: markdown
+Held-out code loss 5.5470 → 4.9534. Future-code effect 0.0. Mel-swap effect 10.9529.
+\image(figures/wavenet_vocoder.svg)
+// result_end
+
+The greedy rollout uses only two distinct codes across both clips in
+this short run, as does the upstream run. The lower teacher-forced
+loss and conditioning check therefore establish prediction behavior
+while the waveform shows the limits of free-running synthesis.

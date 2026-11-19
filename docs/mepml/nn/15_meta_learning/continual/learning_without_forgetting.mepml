@@ -1,0 +1,127 @@
+//? Title: Learning without Forgetting with a frozen teacher
+//? Lang: en
+
+> Learning without Forgetting
+
+Two tasks label the same three input fields with different decision
+boundaries. First, fit a shared feature network and a binary head for
+task A. Cache that model's softened predictions on task-B inputs.
+Task-A training rows are no longer needed after this point.
+
+From the same checkpoint, compare training the trunk and new head on
+task B alone with training the trunk and both heads using distillation.
+The distillation loss compares the old head's softened outputs with
+the cache and multiplies cross-entropy by the square of the temperature.
+The plot compares retention and adaptation on two held-out sets.
+
+```{cpp, results="markdown", file="figures/learning_without_forgetting.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,unsigned seed,bool second) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(-1,1);
+    std::vector<float> x(count*3),y(count);
+    for (int i=0;i<count;++i) {
+      for (int j=0;j<3;++j) x[3*i+j]=uniform(rng);
+      const float curve=std::sin(3.f*x[3*i])+.7f*x[3*i+1]*x[3*i+2];
+      y[i]=second ? curve-.9f*x[3*i+2]>.15f : curve>0;
+    }
+    return std::pair{n::from_vector(x,{count,3}),n::from_vector(y,{count,1})};
+  };
+  const auto [a,ay]=draw(1024,35101,false);
+  const auto [b,by]=draw(1024,35102,true);
+  const auto [at,aty]=draw(256,35103,false);
+  const auto [bt,bty]=draw(256,35104,true);
+  const auto features=[](n::ParameterStore& trunk,const n::Tensor& x) {
+    return n::dense(trunk,"features",n::dense(trunk,"hidden",x,16,n::Activation::Tanh),
+                    16,n::Activation::Tanh);
+  };
+  const auto predict=[&](n::ParameterStore& trunk,n::ParameterStore& head,const n::Tensor& x) {
+    return n::dense(head,"logit",features(trunk,x),1);
+  };
+  const auto batches=[](const auto& step) {
+    n::BatchOrder order(1024,32,35108);
+    for (int e=0;e<3;++e) {
+      order.begin_epoch();
+      for (auto rows=order.next();!rows.empty();rows=order.next()) step(rows);
+    }
+  };
+  const auto parameters=[](n::ParameterStore& trunk,n::ParameterStore& head) {
+    auto weights=trunk.parameters();
+    const auto extra=head.parameters();
+    weights.insert(weights.end(),extra.begin(),extra.end());
+    return weights;
+  };
+  n::ParameterStore trunk(35105),old(35106),fresh(35107);
+  (void)predict(trunk,old,n::take_rows(a,{0}));
+  (void)predict(trunk,fresh,n::take_rows(b,{0}));
+  n::Optimizer source(parameters(trunk,old),.04,{.kind=n::OptimizerKind::Sgd});
+  batches([&](const auto& rows) {
+    source.minimize(n::sigmoid_cross_entropy(predict(trunk,old,n::take_rows(a,rows)),n::take_rows(ay,rows)));
+  });
+  const auto teacher=predict(trunk,old,b).detach();
+  const auto soft=n::sigmoid(teacher/2);
+  const auto prior=predict(trunk,old,at).detach();
+  n::NamedTensors saved{{"teacher_logits",teacher},{"teacher_probability",soft},{"fit_b",b},
+      {"fit_b_y",by},{"test_a_y",aty},{"test_b_y",bty},{"after_a_a",prior}};
+  const auto hits=[](const auto& x,const auto& y) {
+    return n::sum(n::equal(n::greater_equal(x,0).to(n::DType::Float32),y).to(n::DType::Int32)).item();
+  };
+  std::vector<double> old_score{hits(prior,aty)/256},new_score;
+  std::print("| Method | Task A correct | Task B correct |\n|---|---:|---:|\n");
+  std::print("| After task A | {:.0f}/256 | — |\n",old_score.front()*256);
+  for (bool distill:{false,true}) {
+    auto shared=trunk.clone(), head_a=old.clone(), head_b=fresh.clone();
+    auto active=parameters(shared,head_b);
+    if (distill) {
+      const auto extra=head_a.parameters();
+      active.insert(active.end(),extra.begin(),extra.end());
+    }
+    n::Optimizer opt(active,.04,{.kind=n::OptimizerKind::Sgd});
+    batches([&](const auto& rows) {
+      const auto h=features(shared,n::take_rows(b,rows));
+      auto loss=n::sigmoid_cross_entropy(n::dense(head_b,"logit",h,1),n::take_rows(by,rows));
+      if (distill) loss=loss+n::binary_distillation_loss(n::dense(head_a,"logit",h,1),n::take_rows(soft,rows));
+      opt.minimize(loss);
+    });
+    n::NoGradGuard guard;
+    const auto sa=predict(shared,head_a,at),sb=predict(shared,head_b,bt);
+    old_score.push_back(hits(sa,aty)/256);
+    new_score.push_back(hits(sb,bty)/256);
+    const std::string mode=distill?"lwf":"plain";
+    std::print("| {} | {:.0f}/256 | {:.0f}/256 |\n",mode,old_score.back()*256,new_score.back()*256);
+    saved.emplace_back(mode+"_a",sa);
+    saved.emplace_back(mode+"_b",sb);
+    if (distill) {
+      const auto student_a=predict(shared,head_a,b),student_b=predict(shared,head_b,b);
+      const auto ce=n::sigmoid_cross_entropy(student_b,by),kd=n::binary_distillation_loss(student_a,soft);
+      saved.emplace_back("student_a",student_a);
+      saved.emplace_back("student_b",student_b);
+      saved.emplace_back("new_loss",ce);
+      saved.emplace_back("distill",kd);
+      saved.emplace_back("combined",ce+kd);
+    }
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({0,1,2},old_score,"Task A",{37,99,235}).points({1,2},new_score,"Task B",{234,88,12})
+      .title("Retention after learning a new task").x_label("0 After A · 1 Plain · 2 Distillation")
+      .y_label("Accuracy").y_limits(0,1);
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/learning_without_forgetting.svg");
+  n::save_npz("build/learning_without_forgetting.npz",saved);
+}
+```
+// result_begin: markdown
+| Method | Task A correct | Task B correct |
+|---|---:|---:|
+| After task A | 248/256 | — |
+| plain | 247/256 | 220/256 |
+| lwf | 247/256 | 221/256 |
+\image(figures/learning_without_forgetting.svg)
+// result_end
+
+Both native variants retain 247 of 256 correct task-A predictions.
+The similar task boundaries and short training schedule leave little
+forgetting for distillation to recover in this fixture.

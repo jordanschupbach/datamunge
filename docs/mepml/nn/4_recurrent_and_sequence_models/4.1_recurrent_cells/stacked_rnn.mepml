@@ -1268,7 +1268,7 @@ epoch3 validationCE=0.579968 accuracy=0.726562
   confusion (truth rows):
     55 9
     26 38
-testCE=0.558454 accuracy=0.726562 cueFlip=0.710938 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0637439 s)
+testCE=0.558454 accuracy=0.726562 cueFlip=0.710938 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.149364 s)
 Artifacts:"build/recurrent-models/models/stacked_rnn/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/stacked_rnn" not found; skipping the comparison
 // result_end

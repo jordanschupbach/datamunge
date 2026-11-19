@@ -1269,7 +1269,7 @@ epoch3 validationCE=0.632875 accuracy=0.734375
   confusion (truth rows):
     40 24
     22 42
-testCE=0.657551 accuracy=0.640625 cueFlip=0.726562 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.094158 s)
+testCE=0.657551 accuracy=0.640625 cueFlip=0.726562 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.235252 s)
 Artifacts:"build/recurrent-models/models/sru/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/sru" not found; skipping the comparison
 // result_end

@@ -1,0 +1,115 @@
+//? Title: Explicit-rating matrix factorization with SGD and ALS
+//? Lang: en
+
+> Explicit-rating matrix factorization with SGD and ALS
+
+Represent each user and item by a three-dimensional factor vector and
+predict a rating by adding their dot product to the mean fitting rating.
+Only observed fitting pairs contribute to the objective. SGD shuffles
+them each epoch and updates both factors for each pair using the same
+pre-update residual. Alternating least squares holds one side fixed and
+solves one ridge system per row, then switches sides.
+
+Both methods start with the same factors. The simulator partitions the
+catalog into fitting pairs, held-out observed pairs, and unobserved pairs.
+The plot compares the final predictions with held-out ratings. The mean
+baseline gives a reference for how much the short training run generalizes.
+
+[Koren, Bell and Volinsky (2009)|https://doi.org/10.1109/MC.2009.263]
+
+```{cpp, results="markdown", file="figures/explicit_mf.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build");
+  using Rating = n::ExplicitRating;
+  constexpr int users = 32, items = 36, rank = 3;
+  constexpr double penalty = .06;
+  std::mt19937 rng(38732);
+  std::normal_distribution<double> noise(0,.07);
+  std::vector<Rating> fit, test;
+  for (int u = 0; u < users; ++u) {
+    for (int i = 0; i < items; ++i) {
+      const int bucket = (13*u + 7*i) % 11;
+      if (bucket > 7) continue;
+      const double signal = std::sin(.7*u)*std::cos(.39*i) + std::cos(.33*u)*std::sin(.51*i)
+          + .35*std::sin(.43*u)*std::sin(.27*i);
+      (bucket < 6 ? fit : test).push_back({u,i,std::clamp(3+.65*signal+noise(rng),1.,5.)});
+    }
+  }
+  double mean = 0;
+  for (const auto& r : fit) mean += r.value / fit.size();
+  const auto initialize = [&](int count) {
+    std::normal_distribution<double> normal(0,.2);
+    std::vector<double> values(count*rank);
+    for (double& value : values) value = normal(rng);
+    return n::from_vector(values,{count,rank});
+  };
+  const auto initial_users = initialize(users), initial_items = initialize(items);
+  auto su = initial_users, si = initial_items, au = initial_users, ai = initial_items;
+  auto centered = fit;
+  std::vector<Rating> transposed;
+  for (auto& r : centered) {
+    r.value -= mean;
+    transposed.push_back({r.column,r.row,r.value});
+  }
+  const auto fit_count = static_cast<std::int64_t>(fit.size());
+  n::BatchOrder batches(fit_count,fit_count,38733);
+  std::vector<std::int64_t> orders;
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    batches.begin_epoch();
+    const auto indices = batches.next();
+    orders.insert(orders.end(),indices.begin(),indices.end());
+    std::vector<Rating> ordered;
+    for (auto index : indices) ordered.push_back(centered[index]);
+    std::tie(su,si) = n::explicit_sgd_epoch(su,si,ordered,.06,penalty);
+    au = n::explicit_als_rows(ai,centered,users,penalty);
+    ai = n::explicit_als_rows(au,transposed,items,penalty);
+  }
+  const auto table = [](const std::vector<Rating>& data) {
+    std::vector<double> values;
+    for (const auto& r : data) values.insert(values.end(),{double(r.row),double(r.column),r.value});
+    return n::from_vector(values,{static_cast<std::int64_t>(data.size()),3});
+  };
+  n::NamedTensors arrays{{"fit",table(fit)},{"test",table(test)},
+      {"init_users",initial_users},{"init_items",initial_items},{"orders",n::from_vector(orders,{3,fit_count})},
+      {"sgd_users",su},{"sgd_items",si},{"als_users",au},{"als_items",ai}};
+  std::vector<double> observed;
+  for (const auto& r : test) observed.push_back(r.value);
+  const auto target = n::from_vector(observed);
+  const auto rmse = [&](const n::Tensor& prediction) {
+    return n::sqrt(n::mean(n::square(prediction-target))).item();
+  };
+  std::print("{} fitting ratings, {} held out.\n\n| Method | Test RMSE |\n|---|---:|\n",fit.size(),test.size());
+  std::print("| Mean baseline | {:.6f} |\n",rmse(n::from_scalar(mean)));
+  auto plot = dm::graphics::RPlot::create();
+  for (bool als : {false,true}) {
+    const std::string name = als ? "als" : "sgd";
+    const auto grid = n::matmul(als ? au : su, als ? ai : si, false, true).to_vector<double>();
+    std::vector<double> pred;
+    for (const auto& r : test) pred.push_back(mean+grid[r.row*items+r.column]);
+    const auto prediction = n::from_vector(pred);
+    const auto error = rmse(prediction);
+    if (!std::isfinite(error)) throw std::runtime_error("Nonfinite factorization error");
+    arrays.emplace_back(name+"_predicted",prediction);
+    std::print("| {} | {:.6f} |\n",name,error);
+    plot.points(observed,pred,name,als ? dm::graphics::RGBA{37,99,235} : dm::graphics::RGBA{234,88,12},2);
+  }
+  const auto [lo,hi] = std::minmax_element(observed.begin(),observed.end());
+  plot.lines({*lo,*hi},{*lo,*hi},"Perfect prediction",{100,116,139})
+      .title("Rating predictions on held-out pairs").x_label("Observed rating")
+      .y_label("Predicted rating").size(900,450).save_svg("build/explicit_mf.svg");
+  n::save_npz("build/explicit_ratings.npz",arrays);
+}
+```
+// result_begin: markdown
+628 fitting ratings, 210 held out.
+
+| Method | Test RMSE |
+|---|---:|
+| Mean baseline | 0.486300 |
+| sgd | 0.486492 |
+| als | 0.579280 |
+\image(figures/explicit_mf.svg)
+// result_end

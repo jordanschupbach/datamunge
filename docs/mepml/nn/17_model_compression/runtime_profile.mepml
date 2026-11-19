@@ -1,0 +1,118 @@
+//? Title: Profile a TensorFlow CPU graph across thread settings
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Measure untraced execution for two independent CPU matrix products, then
+capture a separate trace and export it for Chrome or Perfetto.
+)
+\toc
+
+The graph computes \(XY+YX\) for two fixed 256-by-256 matrices. The
+products can run concurrently. Intra-op threads are available to split
+work within an operation, while inter-op threads schedule independent
+operations. The benchmark creates a separate session for each thread
+configuration.
+
+After five warm-up calls, measure the median of 24 untraced calls. Each
+call includes the adapter's tensor copies. Request full runtime metadata
+only for a separate invocation so profiling overhead stays out of the
+timing samples. The trace uses complete events with a device group,
+thread ID, start time, and duration. Both products must appear.
+
+Compile Datamunge with `-DDATAMUNGE_ENABLE_TENSORFLOW=ON` and set
+`CMAKE_PREFIX_PATH` to a TensorFlow C++ SDK. Open the generated
+`build/runtime_profile/runtime_*.json` files in Chrome Trace Viewer
+or Perfetto to inspect operation overlap.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  if (!n::saved_model_runtime_available()) {
+    std::println("Runtime profiling requires DATAMUNGE_ENABLE_TENSORFLOW.");
+    return 0;
+  }
+  constexpr int side = 256;
+  std::vector<float> a(side*side), b(side*side);
+  for (int i = 0; i < side; ++i)
+    for (int j = 0; j < side; ++j) {
+      a[i*side+j] = ((i*3+j*5)%47-23)*.015625f;
+      b[i*side+j] = ((i*7+j*11)%53-26)*.015625f;
+    }
+  const n::NamedTensors feeds{{"x",n::from_vector(a,{side,side})},{"y",n::from_vector(b,{side,side})}};
+  const std::vector<std::string> fetches{"sum_products"};
+  const std::vector<n::NamedTensors> batches{feeds};
+  const std::string folder = "build/runtime_profile/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  std::vector<double> medians;
+  n::NamedTensors archive = feeds;
+  std::println("| Intra-op threads | Inter-op threads | Median µs | Trace events | Max reference error |");
+  std::println("| ---: | ---: | ---: | ---: | ---: |");
+  for (const auto [intra, inter] : std::array{std::pair{1,1},std::pair{2,2},std::pair{4,2}}) {
+    const n::GraphSession session("fixtures/runtime_products.pb", n::GraphOptimization::Grappler,
+                                   intra, inter);
+    const auto timing = n::benchmark_inference(
+        [&](const auto& batch) { return session.run(batch, fetches); }, batches, 1, 5, 24);
+    std::vector<n::GraphTraceEvent> events;
+    const auto output = session.run(feeds, fetches, nullptr, &events).front().second;
+    if (output.shape() != n::Shape{side,side}) throw std::runtime_error("Unexpected result shape");
+    const auto actual = output.to_vector<float>();
+    double max_error = 0.;
+    for (int i = 0; i < side; ++i) {
+      const int j = (i*13+9)%side;
+      double expected = 0.;
+      for (int k = 0; k < side; ++k)
+        expected += double(a[i*side+k])*b[k*side+j] + double(b[i*side+k])*a[k*side+j];
+      max_error = std::max(max_error,std::abs(expected-actual[i*side+j]));
+    }
+    for (const auto* name : {"product_xy", "product_yx"})
+      if (std::ranges::count(events, name, &n::GraphTraceEvent::name) != 1)
+        throw std::runtime_error("Trace did not include both CPU products");
+    if (!(max_error <= 1e-5)) throw std::runtime_error("Traced output differs from scalar reference");
+    const auto suffix = std::to_string(intra)+"_"+std::to_string(inter);
+    n::save_graph_trace(folder+"runtime_"+suffix+".json", events);
+    archive.emplace_back("out_"+suffix,output);
+    medians.push_back(timing.median_us);
+    std::println("| {} | {} | {:.1f} | {} | {:.3g} |",
+                 intra,inter,timing.median_us,events.size(),max_error);
+  }
+
+  n::save_npz(folder+"products.npz",archive);
+  auto plot = dm::graphics::RPlot::create();
+  plot.points({1.,2.,3.},medians,"Untraced median",{37,99,235},6)
+      .title("Warmed CPU graph execution")
+      .x_label("1: 1/1 threads · 2: 2/2 threads · 3: 4/2 threads").y_label("Microseconds")
+      .save_svg(folder+"latency.svg");
+  std::filesystem::copy_file(folder+"latency.svg","figures/runtime_profile.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::println("");
+  std::println("\\image(figures/runtime_profile.svg)");
+}
+```
+// result_begin: markdown
+| Intra-op threads | Inter-op threads | Median µs | Trace events | Max reference error |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 352.9 | 7 | 0 |
+| 2 | 2 | 224.0 | 7 | 0 |
+| 4 | 2 | 227.9 | 7 | 0 |
+
+\image(figures/runtime_profile.svg)
+// result_end
+
+Timing may improve or worsen as the thread counts increase. The trace
+and untraced timings answer different questions about the same graph.
+
+> Reference
+
+- [Perfetto documentation, importing Chrome JSON traces|https://perfetto.dev/docs/getting-started/other-formats].

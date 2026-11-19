@@ -190,6 +190,68 @@ int main() {
 | negative binomial | 2 | 0 | 1.703422192 |
 // result_end
 
+> Held-out log-link fits
+
+Use the same coefficient vector to generate conditional means for all
+three families. Fit each likelihood to 2,400 observations. Compare with a
+constant predictor on 1,000 new observations, using only the training
+response mean for the constant prediction.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  namespace m=n::ml;
+  constexpr auto type=n::DType::Float64;
+  const auto truth=n::tensor({.3,.55,-.4},{3,1},type);
+  const std::array families{m::GlmFamily::kPoisson,m::GlmFamily::kGamma,m::GlmFamily::kNegativeBinomial};
+  const std::array names{"Poisson","Gamma","Negative binomial"};
+  std::print("| Family | Held-out NLL | Null NLL | Relative mean error |\n| :--- | ---: | ---: | ---: |\n");
+  for(int i=0;i<3;++i) {
+    const auto family=families[i];
+    const double shape=i==0?1.:i==1?3.:2.;
+    std::mt19937 rng(107+static_cast<int>(family));
+    std::uniform_real_distribution<float> uniform(-1,1);
+    auto sample=[&](int size) {
+      std::vector<double> x,y;
+      for(int row=0;row<size;++row) {
+        const double a=uniform(rng),b=uniform(rng),mu=std::exp(.3+.55*a-.4*b);
+        x.insert(x.end(),{1.,a,b});
+        if(i==0) y.push_back(std::poisson_distribution<int>(mu)(rng));
+        else {
+          const double gamma=std::gamma_distribution<double>(shape,mu/shape)(rng);
+          y.push_back(i==1?gamma:std::poisson_distribution<int>(gamma)(rng));
+        }
+      }
+      return std::pair{n::from_vector(x,{size,3}),n::from_vector(y,{size,1})};
+    };
+    const auto [x,y]=sample(2400);
+    const auto [test,target]=sample(1000);
+    auto w=n::zeros_like(truth).requires_grad_();
+    n::Optimizer adam({w},.025,{.kind=n::OptimizerKind::Adam});
+    auto objective=[&]{return n::mean(m::GlmNll(n::matmul(x,w),y,family,shape));};
+    for(int step=0;step<500;++step) adam.minimize(objective());
+    const auto gradient=n::grad(objective(),{w}).front();
+    const auto eta=n::matmul(test,w);
+    const double loss=n::mean(m::GlmNll(eta,target,family,shape)).item();
+    const auto constant=n::full(target.shape(),std::log(n::mean(y).item()),type);
+    const double null=n::mean(m::GlmNll(constant,target,family,shape)).item();
+    const double relative=n::mean(n::abs(n::exp(eta-n::matmul(test,truth))-1)).item();
+    if(!(loss<null-.03&&relative<.1&&n::max(n::abs(w-truth)).item()<.12&&
+         n::max(n::abs(gradient)).item()<2e-5))
+      throw std::runtime_error("GLM fit failed recovery or held-out checks");
+    std::print("| {} | {:.5f} | {:.5f} | {:.5f} |\n",names[i],loss,null,relative);
+  }
+}
+```
+// result_begin: markdown
+| Family | Held-out NLL | Null NLL | Relative mean error |
+| :--- | ---: | ---: | ---: |
+| Poisson | 1.47542 | 1.58517 | 0.02064 |
+| Gamma | 1.07304 | 1.29241 | 0.02203 |
+| Negative binomial | 1.63957 | 1.72499 | 0.02119 |
+// result_end
+
 > Conclusion
 
 Analytic scores agree with differentiation across all three fixed-dispersion likelihoods.

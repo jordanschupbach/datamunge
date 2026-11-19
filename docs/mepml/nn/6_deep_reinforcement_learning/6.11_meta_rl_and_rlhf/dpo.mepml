@@ -1,0 +1,121 @@
+//? Title: Direct preference optimization of a bigram policy
+//? Lang: en
+
+> Direct preference optimization of a bigram policy
+
+Two synthetic prompts request either “cat rests” or “dog runs.”
+A stochastic oracle prefers completions using four features that
+describe the noun, verb, grammatical pattern and exact match. The
+split holds out entire unordered pairs, independent of which
+completion receives the preferred label.
+
+Direct preference optimization increases the preferred completion's
+log probability relative to the rejected completion, measured against
+a frozen bigram reference. Each completion score sums the two token
+log probabilities. The logistic loss penalizes a negative difference
+between the preferred and rejected log ratios.
+
+The plot tracks preference NLL on 512 held-out comparisons. The table
+also reports positive margins and the mean probability of the two
+requested completions.
+
+[Rafailov et al. (2023)|https://arxiv.org/abs/2305.18290]
+
+```{cpp, results="markdown", file="figures/dpo.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  std::vector<float> count(40);
+  for (int prompt=0;prompt<2;++prompt) {
+    for (int i=0;i<16;++i) {
+      const int first=i%2,second=2+(i/2)%2;
+      ++count[4*(5*prompt+4)+first];
+      ++count[4*(5*prompt+first)+second];
+    }
+  }
+  const auto reference=r::smoothed_bigram_logp(n::from_vector(count,{10,4}));
+  const auto describe=[](int prompt,int completion) {
+    const int first=completion/4,second=completion%4;
+    return std::array{float(first==prompt),float(second==2+prompt),float(first<2 && second>=2),
+                      float(first==prompt && second==2+prompt)};
+  };
+  const auto sample=[&](int size,bool held,std::mt19937& rng) {
+    constexpr std::array oracle{1.2f,1.f,.4f,.7f};
+    std::vector<int> prompts,tokens;
+    std::vector<float> draws;
+    for (int row=0;row<size;++row) {
+      const int prompt=row%2;
+      int left,right;
+      do {
+        left=rng()%16;
+        right=rng()%16;
+      } while (left==right || (((16*std::min(left,right)+std::max(left,right))%5==0)!=held));
+      const auto a=describe(prompt,left), b=describe(prompt,right);
+      float delta=0;
+      for (int i=0;i<4;++i) delta+=oracle[i]*(a[i]-b[i]);
+      const float draw=(rng()+.5)/4294967296.;
+      const bool prefer_left=draw<1.f/(1.f+std::exp(-delta));
+      prompts.push_back(prompt);
+      draws.push_back(prefer_left?draw:1.f-draw);
+      if (!prefer_left) std::swap(left,right);
+      tokens.insert(tokens.end(),{left/4,left%4,right/4,right%4});
+    }
+    return std::array{n::from_vector(prompts),n::from_vector(tokens,{size,2,2}),n::from_vector(draws)};
+  };
+  std::mt19937 training(47102),evaluation(47103);
+  std::vector<std::array<n::Tensor,3>> batches;
+  for (int i=0;i<16;++i) batches.push_back(sample(64,false,training));
+  const auto test=sample(512,true,evaluation);
+  n::ParameterStore params(47101);
+  params.set("logits",reference.clone());
+  const auto theta=params.at("logits");
+  n::Optimizer optimizer(params,.045,{.kind=n::OptimizerKind::Adam});
+  const auto evaluate=[&](const auto& data) {
+    const auto policy=n::log_softmax(theta,-1);
+    const auto current=r::bigram_completion_logp(policy,data[0],data[1]);
+    const auto frozen=r::bigram_completion_logp(reference,data[0],data[1]);
+    const auto [loss,margin]=r::dpo_loss(current,frozen);
+    return std::tuple{loss,margin,policy,current,frozen};
+  };
+  const auto request_prompts=n::from_vector<int>({0,1});
+  const auto request_tokens=n::from_vector<int>({0,2,1,3},{2,1,2});
+  std::vector<float> diagnostics;
+  std::vector<double> history;
+  std::print("| Epoch | Held-out NLL | Positive margins | Requested probability |\n|---:|---:|---:|---:|\n");
+  for (int epoch=0;epoch<=3;++epoch) {
+    {
+      const n::NoGradGuard guard;
+      const auto [loss,margin,policy,current,frozen]=evaluate(test);
+      const auto scores=margin.to_vector<float>();
+      const auto wins=std::count_if(scores.begin(),scores.end(),[](float score){return score>1e-6f;});
+      const float requested=n::mean(n::exp(r::bigram_completion_logp(
+          policy,request_prompts,request_tokens))).item();
+      history.push_back(loss.item());
+      diagnostics.insert(diagnostics.end(),{float(history.back()),float(wins)/512,requested});
+      std::print("| {} | {:.6f} | {} / 512 | {:.6f} |\n",epoch,history.back(),wins,requested);
+    }
+    if (epoch==3) break;
+    for (const auto& batch:batches) optimizer.step(n::grad(std::get<0>(evaluate(batch)),{theta}));
+  }
+  const auto [loss,margin,policy,current,frozen]=evaluate(test);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/dpo_evaluation.npz",{{"prompts",test[0]},{"tokens",test[1]},{"draws",test[2]},
+      {"reference",reference},{"history",n::from_vector(diagnostics,{4,3})},{"policy",policy},
+      {"sequence",current},{"baseline",frozen},{"margin",margin},{"gradient",n::grad(loss,{theta})[0]}});
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},history,"Held-out NLL",{37,99,235})
+      .title("Direct preference optimization").x_label("Epoch").y_label("Preference NLL")
+      .size(800,460).save_svg("build/dpo.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Held-out NLL | Positive margins | Requested probability |
+|---:|---:|---:|---:|
+| 0 | 0.693147 | 0 / 512 | 0.212500 |
+| 1 | 0.584646 | 352 / 512 | 0.331987 |
+| 2 | 0.567847 | 358 / 512 | 0.427419 |
+| 3 | 0.566060 | 352 / 512 | 0.482635 |
+\image(figures/dpo.svg)
+// result_end

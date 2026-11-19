@@ -1,0 +1,92 @@
+//? Title: Random network distillation for grid exploration
+//? Lang: en
+
+> Random network distillation for grid exploration
+
+Random network distillation (RND) assigns a novelty bonus to the
+successor state. A fixed random network embeds its one-hot state ID.
+A separate predictor learns to match that embedding from replay. Half
+the squared feature distance acts as the intrinsic reward, so repeated
+observations generally earn less reward as prediction improves.
+
+The exploration policy learns from the sum of the task reward and
+half the novelty bonus. A second Q-table learns only from task rewards
+on the same transitions. The control uses the same schedule with zero
+intrinsic reward. The final greedy test uses the task-only table and
+starts again in the upper-left cell. Increased coverage and successful
+task completion are measured separately.
+
+The plot compares coverage on three matched seeds. The table also
+shows predictor error before and after learning on the cells each RND
+run actually visited. Seeds reproduce the Datamunge runs. The initial
+network weights come from Datamunge's own seeded initializer.
+
+[Burda et al. (2019), Exploration by Random Network Distillation|https://arxiv.org/abs/1810.12894]
+
+```{cpp, results="markdown", file="figures/random_network_distillation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  namespace r=dm::rl;
+  const auto one_hot=[](const std::vector<int>& ids) {
+    return n::one_hot(n::from_vector(ids),49);
+  };
+  const auto probes=n::eye(49);
+  std::vector<double> control,rnd;
+  std::filesystem::create_directories("build");
+  std::print("| Seed | Mode | Visited | Training goals | Greedy success | Predictor MSE before | Predictor MSE after |\n"
+             "|---:|:---|---:|---:|:---|---:|---:|\n");
+  for (const auto seed:{43602u,43603u,43604u}) {
+    const auto [path,reward,visited,goals,success]=r::sparse_grid_experiment(seed);
+    control.push_back(visited);
+    std::print("| {} | Control | {} | {} | {} | | |\n",seed,visited,goals,success);
+    n::save_npz(std::format("build/{}_control.npz",seed),{{"transitions",path},{"bonus",reward}});
+
+    r::RandomNetworkDistillation model(49,24,12);
+    const auto before=model.evaluate(probes);
+    const auto [rows,bonus,coverage,hits,solved]=r::sparse_grid_experiment(seed,
+        [&](const auto& step) {
+          return static_cast<float>(model.evaluate(one_hot({step[2]}))[0].item());
+        },
+        [&](const auto batch) {
+          std::vector<int> ids;
+          for (const auto& step:batch) ids.push_back(step[2]);
+          model.train(one_hot(ids));
+        });
+    rnd.push_back(coverage);
+    const auto successors=n::slice(rows,{0,2},{rows.size(0),1}).to_vector<int>();
+    const auto [error,prediction,target]=model.evaluate(one_hot(successors));
+    const auto after=model.evaluate(probes);
+    if (before[2].to_vector<float>()!=after[2].to_vector<float>()) {
+      throw std::runtime_error("RND target changed during training");
+    }
+    const std::set<int> unique(successors.begin(),successors.end());
+    const auto ids=n::from_vector(std::vector<int>(unique.begin(),unique.end()));
+    const double prior=n::mean(n::gather(before[0],ids)).item()/6;
+    const double fitted=n::mean(n::gather(after[0],ids)).item()/6;
+    std::print("| {} | RND | {} | {} | {} | {:.6f} | {:.6f} |\n",
+               seed,coverage,hits,solved,prior,fitted);
+    n::save_npz(std::format("build/{}_rnd.npz",seed),{{"transitions",rows},{"bonus",bonus},
+        {"final_error",error},{"prediction",prediction},{"features",target},
+        {"probe_target_before",before[2]},{"probe_target_after",after[2]},
+        {"probe_prediction_before",before[1]},{"probe_prediction_after",after[1]}});
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.points({43602,43603,43604},control,"Task reward only",{217,96,26},7)
+      .points({43602,43603,43604},rnd,"With RND bonus",{37,99,235},7)
+      .title("Sparse-grid exploration coverage").x_label("Seed").y_label("Unique cells visited")
+      .ylim(0,49).size(820,460).save_svg("build/random_network_distillation.svg");
+}
+```
+// result_begin: markdown
+| Seed | Mode | Visited | Training goals | Greedy success | Predictor MSE before | Predictor MSE after |
+|---:|:---|---:|---:|:---|---:|---:|
+| 43602 | Control | 18 | 0 | false | | |
+| 43602 | RND | 24 | 0 | false | 0.045245 | 0.006308 |
+| 43603 | Control | 17 | 0 | false | | |
+| 43603 | RND | 17 | 0 | false | 0.044961 | 0.006764 |
+| 43604 | Control | 15 | 0 | false | | |
+| 43604 | RND | 17 | 0 | false | 0.040972 | 0.007285 |
+\image(figures/random_network_distillation.svg)
+// result_end

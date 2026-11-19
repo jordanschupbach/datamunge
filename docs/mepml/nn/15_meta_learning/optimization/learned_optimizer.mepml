@@ -1,0 +1,65 @@
+//? Title: Learning a recurrent update rule for quadratics
+//? Lang: en
+
+> Learning a recurrent update rule for quadratics
+
+Each task is a six-dimensional diagonal quadratic with a random
+minimum, curvature and starting point. At each step a recurrent
+network reads the current gradient and its previous memory. It
+adds a bounded learned correction to a gradient descent step.
+All coordinates use the same update rule and keep separate memory.
+
+The training objective averages the quadratic losses after all eight
+updates. Backpropagation through that trajectory trains the update
+rule. On 128 unseen quadratics, the plot compares its convergence
+with fixed-rate SGD starting from the same points.
+
+```{cpp, results="markdown", file="figures/learned_optimizer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto draw=[](int count,std::mt19937& rng) {
+    std::uniform_real_distribution<float> uniform(-1,1),positive(.3f,4);
+    std::vector<float> center(count*6),curve(count*6),initial(count*6);
+    for (int i=0;i<count*6;++i) {
+      center[i]=uniform(rng);
+      initial[i]=uniform(rng);
+      curve[i]=positive(rng);
+    }
+    return std::tuple{n::from_vector(center,{count,6}),n::from_vector(curve,{count,6}),
+                      n::from_vector(initial,{count,6})};
+  };
+  std::mt19937 train(28072),test(28073);
+  const auto [center,curve,start]=draw(128,test);
+  n::ParameterStore model(28071);
+  const auto before=n::learned_quadratic_rollout(model,center,curve,start).meta_loss.item();
+  n::Optimizer optimizer(model,.003,{.kind=n::OptimizerKind::Adam});
+  for (int i=0;i<288;++i) {
+    const auto [c,k,x]=draw(24,train);
+    optimizer.minimize(n::learned_quadratic_rollout(model,c,k,x).meta_loss);
+  }
+  n::NoGradGuard guard;
+  const auto result=n::learned_quadratic_rollout(model,center,curve,start);
+  const auto learned=n::mean(result.learned_loss,{0}).to_vector<double>();
+  const auto fixed=n::mean(result.sgd_loss,{0}).to_vector<double>();
+  if (!(result.meta_loss.item()<before)) return 1;
+  std::print("Held-out mean rollout objective {:.6f} → {:.6f}. Step eight, learned {:.6f}, fixed SGD {:.6f}.\n",
+      before,result.meta_loss.item(),learned.back(),fixed.back());
+  std::vector<double> steps(9);
+  std::iota(steps.begin(),steps.end(),0.);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(steps,learned,"Learned update",{37,99,235}).lines(steps,fixed,"Fixed SGD",{234,88,12})
+      .title("Convergence on unseen quadratics").x_label("Optimization step").y_label("Mean objective");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/learned_optimizer.svg");
+  n::save_npz("build/learned_optimizer.npz",{{"center",center},{"curvature",curve},{"initial",start},
+      {"states",result.states},{"learned_loss",result.learned_loss},{"sgd_loss",result.sgd_loss},
+      {"meta_loss",result.meta_loss},{"memory_W",model.at("memory/W")},{"memory_b",model.at("memory/b")},
+      {"update_W",model.at("update/W")},{"update_b",model.at("update/b")}});
+}
+```
+// result_begin: markdown
+Held-out mean rollout objective 1.062143 → 0.147597. Step eight, learned 0.000979, fixed SGD 0.029490.
+\image(figures/learned_optimizer.svg)
+// result_end

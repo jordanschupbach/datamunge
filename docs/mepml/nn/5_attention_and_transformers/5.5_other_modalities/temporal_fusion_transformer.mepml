@@ -1,0 +1,160 @@
+//? Title: Temporal Fusion Transformer for quantile forecasts
+//? Lang: en
+
+> Temporal Fusion Transformer for quantile forecasts
+
+Static group context helps select variables and initialize the recurrent
+state. The history encoder sees past observations and covariates. The
+forecast decoder receives only known covariates, here season and
+promotion indicators. Gated residual networks transform the inputs and
+use softmax weights to combine variables at each step.
+
+Two attention heads share a value projection and average their attention
+maps. Each forecast can attend to the history and to decoder positions
+through its own horizon. The output predicts the 0.1, 0.5, and 0.9 quantiles
+with pinball loss. The heads do not explicitly enforce quantile ordering.
+
+Train on simulated seasonal sequences with Datamunge initialization and
+the upstream Adam schedule. The report checks that changing covariates
+after the first horizon leaves the first forecast identical. It plots
+validation loss and all three quantile forecasts on one held-out series.
+
+[Lim et al. (2021)|https://arxiv.org/abs/1912.09363]
+
+```{cpp, results="markdown", file="figures/temporal_fusion_transformer.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int past=8, future=3, steps=past+future, width=12;
+  struct Batch {n::Tensor observed,known,group,target;};
+  const auto generate=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> phase(0,6.2831853f);
+    std::normal_distribution<float> noise(0,.08f);
+    std::vector<float> observed,known,group,target;
+    for (int row=0;row<count;++row) {
+      const float category=row%2, start=phase(rng), baseline=.45f*category+noise(rng);
+      group.push_back(category);
+      for (int t=0;t<steps;++t) {
+        const float season=std::sin(start+.4f*t), promo=rng()%4==0;
+        const float y=baseline+(.55f+.25f*category)*season+.65f*promo+noise(rng);
+        known.insert(known.end(),{season,promo});
+        (t<past ? observed : target).push_back(y);
+      }
+    }
+    return Batch{n::from_vector(observed,{count,past}),n::from_vector(known,{count,steps,2}),
+                 n::from_vector(group,{count,1}),n::from_vector(target,{count,future,1})};
+  };
+  const auto fit=generate(512,42801), valid=generate(128,42802), test=generate(128,42803);
+  n::ParameterStore params(42804);
+  const auto model=[&](const Batch& data) {
+    const auto count=data.group.size(0);
+    const auto context=n::dense(params,"static",data.group,width,n::Activation::Tanh);
+    const auto grn=[&](const n::Tensor& x,const std::string& key) {
+      const auto h=n::dense(params,key+"/hidden",x,width);
+      const auto c=n::dense(params,key+"/context",context,width).reshape({count,1,width});
+      const auto z=n::elu(h+c);
+      const auto value=n::dense(params,key+"/value",z,width);
+      const auto gate=n::dense(params,key+"/gate",z,width,n::Activation::Sigmoid);
+      return n::layer_norm(params,key+"/norm",x+value*gate);
+    };
+    const auto select=[&](const n::Tensor& x,const std::string& key) {
+      const auto length=x.size(1), vars=x.size(2);
+      const auto bias=n::dense(params,key+"/weights_context",context,vars).reshape({count,1,vars});
+      const auto weights=n::softmax(n::dense(params,key+"/weights",x,vars)+bias,-1);
+      auto selected=n::zeros({count,length,width});
+      for (int i=0;i<vars;++i) {
+        const auto field=std::format("{}/field{}",key,i);
+        const auto embedding=n::dense(params,field,n::slice(x,{0,0,i},{count,length,1}),width);
+        selected=selected+n::slice(weights,{0,0,i},{count,length,1})*grn(embedding,field+"/grn");
+      }
+      return std::pair{selected,weights};
+    };
+    const auto history=n::concat({data.observed.reshape({count,past,1}),
+        n::slice(data.known,{0,0,0},{count,past,2})},2);
+    const auto [encoder,past_weights]=select(history,"history");
+    const auto [decoder,future_weights]=select(n::slice(data.known,{0,past,0},{count,future,2}),"future");
+    n::LstmState state{n::dense(params,"init_h",context,width,n::Activation::Tanh),
+                       n::dense(params,"init_c",context,width,n::Activation::Tanh)};
+    std::vector<n::Tensor> sequence;
+    for (const auto& [input,key]:{std::pair{encoder,"encoder"},std::pair{decoder,"decoder"}}) {
+      for (const auto& x:n::time_steps(input)) {
+        state=n::lstm_step(params,key,x,state);
+        const auto gate=n::dense(params,"local_gate",state.h,width,n::Activation::Sigmoid);
+        sequence.push_back(n::layer_norm(params,"local_norm",x+gate*state.h));
+      }
+    }
+    const auto enriched=grn(n::stack_time(sequence),"enrich");
+    const auto value=n::dense(params,"attention/value",enriched,6);
+    const auto mask=n::slice(n::causal_keep_mask(steps),{past,0},{future,steps});
+    const auto query=n::slice(enriched,{0,past,0},{count,future,width});
+    std::array<n::Tensor,2> maps;
+    for (int i=0;i<2;++i) {
+      const auto name=std::format("attention/head{}",i);
+      const auto q=n::dense(params,name+"/q",query,6);
+      const auto k=n::dense(params,name+"/k",enriched,6);
+      maps[i]=n::scaled_dot_product_attention(q,k,value,mask).weights;
+    }
+    const auto attention=.5*(maps[0]+maps[1]);
+    const auto readout=n::dense(params,"attention/out",n::matmul(attention,value),width);
+    return std::array{n::dense(params,"quantile",grn(query+readout,"forecast"),3),
+                      attention,past_weights,future_weights};
+  };
+  const auto quantiles=n::from_vector<float>({.1f,.5f,.9f});
+  const auto loss=[&](const Batch& data) {
+    return n::quantile_forecast_loss(model(data)[0].reshape({-1,3}),data.target.reshape({-1,1}),quantiles);
+  };
+  const auto evaluate=[&](const Batch& data) {
+    const n::NoGradGuard no_grad;
+    return loss(data).item();
+  };
+  const auto initial=evaluate(test);
+  std::vector<double> validation{evaluate(valid)};
+  n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(512,32,42805);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto ids=order.next();!ids.empty();ids=order.next()) {
+      optimizer.minimize(loss({n::take_rows(fit.observed,ids),n::take_rows(fit.known,ids),
+          n::take_rows(fit.group,ids),n::take_rows(fit.target,ids)}));
+    }
+    validation.push_back(evaluate(valid));
+  }
+  const n::NoGradGuard no_grad;
+  const auto [prediction,attention,history_weights,future_weights]=model(test);
+  const auto final=n::quantile_forecast_loss(prediction.reshape({-1,3}),test.target.reshape({-1,1}),quantiles);
+  auto known=test.known.to_vector<float>();
+  for (int row=0;row<128;++row) {
+    for (int t=past+1;t<steps;++t) known[(row*steps+t)*2]+=3;
+  }
+  const auto edited=model({test.observed,n::from_vector(known,test.known.shape()),test.group,test.target})[0];
+  const auto first_error=n::max(n::abs(n::slice(prediction-edited,{0,0,0},{128,1,3}))).item();
+  if (!(final.item()<initial) || first_error!=0 || optimizer.iterations()!=48) {
+    throw std::runtime_error("TFT fit or first-horizon invariance failed");
+  }
+  std::filesystem::create_directories("build");
+  n::save_npz("build/tft.npz",{{"observed",test.observed},{"known",test.known},{"target",test.target},
+      {"prediction",prediction},{"attention",attention},{"history_selection",history_weights},
+      {"future_selection",future_weights},{"loss",final},{"edited",edited}});
+  std::print("Test pinball loss {:.6f} to {:.6f}. First-horizon predictions were unchanged.\n",initial,final.item());
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines({0,1,2,3},validation,"Validation pinball loss",{37,99,235})
+      .title("Validation loss").x_label("Epoch").y_label("Mean pinball loss");
+  auto forecast=dm::graphics::RPlot::create();
+  forecast.lines({1,2,3,4,5,6,7,8},n::slice(test.observed,{0,0},{1,past}).to_vector<double>(),
+                 "Observed history",{100,116,139})
+      .points({9,10,11},n::slice(test.target,{0,0,0},{1,future,1}).to_vector<double>(),"Target",{17,24,39});
+  const std::array names{"0.1 quantile","Median","0.9 quantile"};
+  for (int q=0;q<3;++q) {
+    forecast.lines({9,10,11},n::slice(prediction,{0,0,q},{1,future,1}).to_vector<double>(),names[q]);
+  }
+  forecast.title("Held-out multi-horizon forecast").x_label("Time step").y_label("Response");
+  dm::graphics::RLayout::create(1,2).add(plot).add(forecast).size(1060,430).fit_panels()
+      .save_svg("build/temporal_fusion_transformer.svg");
+}
+```
+// result_begin: markdown
+Test pinball loss 0.763691 to 0.070209. First-horizon predictions were unchanged.
+\image(figures/temporal_fusion_transformer.svg)
+// result_end

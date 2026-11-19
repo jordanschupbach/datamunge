@@ -1395,7 +1395,7 @@ truth/pred     0     1
   confusion (truth rows):
     42 22
     31 33
-testCE=0.658273 accuracy=0.585938 cueFlip=0.625 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0410111 s)
+testCE=0.658273 accuracy=0.585938 cueFlip=0.625 lastBaseline=0.5625;fullBPTT/masking/causality/zeroLength/restore/labelFree/immutable PASS (0.0896952 s)
 Artifacts:"build/recurrent-models/models/clockwork_rnn/index.html"
 tflow run "/mnt/projects/datamunge/docs/mepml/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/build/no-tflow-records/clockwork_rnn" not found; skipping the comparison
 // result_end

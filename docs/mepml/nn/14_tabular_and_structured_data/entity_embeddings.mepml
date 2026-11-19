@@ -1,0 +1,140 @@
+//? Title: Entity embeddings for categorical regression
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Learn a separate embedding table for each categorical field. Combine
+both lookups with a numeric feature and fit a nonlinear regression on
+simulated data.
+)
+\toc
+
+An embedding lookup selects the row for a category ID from a trainable
+matrix. The two fields here have 12 and 9 levels, each represented by four
+coordinates. Concatenate the two lookups with the numerical feature and
+feed the result into a 24-unit tanh layer. The network can learn category
+interactions and category-specific slopes, both present in the simulator.
+
+Train on 2,048 rows and evaluate on 512 independent rows drawn from the same
+category vocabulary. This tests generalization to new rows. Predictions for
+new category IDs would require a separate unknown-category policy. The
+embedding plot measures how far each table row moved during optimization.
+Distances from initialization describe training updates and depend on the
+parameterization.
+
+```{cpp, results="markdown", file="figures/entity_embeddings_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+constexpr std::array effects{-.9f,.7f,-.3f,1.2f,-.7f,.2f,.9f,-1.1f,.5f,-.4f,.1f,.6f};
+constexpr std::array offsets{.7f,-.2f,-.8f,.5f,0.f,-.6f,.4f,.9f,-.3f};
+
+std::pair<n::Tensor,n::Tensor> simulate(int rows, unsigned seed) {
+  std::mt19937 rng(seed);
+  std::uniform_int_distribution<int> first(0,11), second(0,8);
+  std::uniform_real_distribution<float> numeric(-1.f,1.f);
+  std::normal_distribution<float> noise(0.f,.08f);
+  std::vector<float> x, y;
+  for (int i = 0; i < rows; ++i) {
+    const int a = first(rng), b = second(rng);
+    const float z = numeric(rng);
+    x.insert(x.end(), {float(a), float(b), z});
+    y.push_back(effects[a] + offsets[b] + .7f * effects[a] * z +
+                .4f * offsets[b] * effects[a] + noise(rng));
+  }
+  return {n::from_vector(x, {rows,3}), n::from_vector(y, {rows,1})};
+}
+
+int main() {
+  const auto [x, y] = simulate(2048, 15191);
+  const auto [test, observed] = simulate(512, 15192);
+  n::ParameterStore parameters(41380);
+  const auto predict = [&](const n::Tensor& rows) {
+    const auto count = rows.size(0);
+    const auto column = [&](int i) { return n::slice(rows, {0,i}, {count,1}); };
+    const auto ids = [&](int i) { return column(i).reshape({count}).to(n::DType::Int64); };
+    const auto first = n::embedding(parameters, "first", ids(0), 12, 4, .2);
+    const auto second = n::embedding(parameters, "second", ids(1), 9, 4, .2);
+    const auto features = n::concat({first, second, column(2)}, 1);
+    return n::dense(parameters, "response",
+                    n::dense(parameters, "hidden", features, 24, n::Activation::Tanh), 1);
+  };
+  double initial;
+  n::Tensor first_initial, second_initial;
+  {
+    n::NoGradGuard no_grad;
+    initial = n::sqrt(n::mean(n::square(predict(test) - observed))).item();
+    first_initial = parameters.at("first/table").clone();
+    second_initial = parameters.at("second/table").clone();
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .01, config);
+  n::BatchOrder order(2048, 32, 15193);
+  for (int epoch = 0; epoch < 3; ++epoch) {
+    order.begin_epoch();
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto fit = predict(n::take_rows(x, rows));
+      optimizer.minimize(n::mean(n::square(fit - n::take_rows(y, rows))));
+    }
+  }
+  n::NoGradGuard no_grad;
+  const auto prediction = predict(test);
+  const auto loss = n::mean(n::square(prediction - observed));
+  const auto rmse = n::sqrt(loss).item();
+  if (optimizer.iterations() != 192 || !std::isfinite(rmse) || rmse >= initial)
+    throw std::runtime_error("entity embedding fit did not improve");
+
+  std::filesystem::create_directories("build/entity_embeddings");
+  std::filesystem::create_directories("figures");
+  const std::string folder = "build/entity_embeddings/";
+  n::save_npz(folder + "regression.npz",
+      {{"input", test.reshape({512,3,1})}, {"target", observed}, {"prediction", prediction},
+       {"loss", loss}, {"first_initial", first_initial}, {"second_initial", second_initial}});
+  parameters.save(folder + "weights.npz");
+  std::println("| Held-out RMSE | Value |\n| --- | ---: |\n| Before training | {:.5f} |\n| After training | {:.5f} |",
+               initial, rmse);
+  const auto truth = observed.to_vector<double>();
+  const auto fitted = prediction.to_vector<double>();
+  const double minimum = n::min(observed).item(), maximum = n::max(observed).item();
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(truth, fitted, "Held-out rows", {37,99,235}, 3)
+      .lines({minimum,maximum}, {minimum,maximum}, "Perfect prediction", {100,116,139})
+      .title("Entity embedding regression").x_label("Observed response").y_label("Predicted response")
+      .save_svg(folder + "fit.svg");
+
+  auto updates = dm::graphics::RPlot::create();
+  const auto movement = [&](const std::string& name, const n::Tensor& original) {
+    return n::sqrt(n::sum(n::square(parameters.at(name + "/table") - original), {1})).to_vector<double>();
+  };
+  updates.points(n::arange(0,12).to_vector<double>(), movement("first", first_initial),
+                 "First field", {37,99,235}, 5)
+      .points(n::arange(0,9).to_vector<double>(), movement("second", second_initial),
+              "Second field", {165,74,28}, 4)
+      .title("Change in embedding rows during training")
+      .x_label("Category ID within field").y_label("Euclidean distance from initialization")
+      .save_svg(folder + "updates.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/entity_embeddings_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::filesystem::copy_file(folder + "updates.svg", "figures/entity_embeddings_updates.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Held-out RMSE | Value |
+| --- | ---: |
+| Before training | 1.04337 |
+| After training | 0.24657 |
+\image(figures/entity_embeddings_fit.svg)
+// result_end
+
+\image(figures/entity_embeddings_updates.svg)
+
+> Reference
+
+Guo and Berkhahn (2016).
+[Entity Embeddings of Categorical Variables|https://arxiv.org/abs/1604.06737].

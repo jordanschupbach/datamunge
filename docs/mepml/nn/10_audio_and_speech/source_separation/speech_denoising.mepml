@@ -1,0 +1,112 @@
+//? Title: Residual CNN speech enhancement
+//? Lang: en
+
+> Residual CNN speech enhancement
+
+A dilated residual CNN estimates the noise waveform and subtracts
+it from the input. Its zero-initialized readout gives a passthrough
+baseline before training. The clean recordings provide the targets
+for mean squared error.
+
+Each clip receives Gaussian noise and a random high-frequency sinusoid.
+We rescale their sum to one of three input SNR levels. SNR is ten times
+the base-10 logarithm of clean energy divided by squared error energy.
+The held-out split uses unseen speakers and an independent noise seed.
+
+Prepare the spoken-digit fixtures with `python3 scripts/prepare_xvector.py`
+in the TensorFlow examples checkout. Set `DATAMUNGE_XVECTOR_DIR` to that
+checkout's prepared dataset directory if it lives outside the default location.
+
+```{cpp, results="markdown", file="figures/speech_denoising.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int length=3200;
+  const auto* configured=std::getenv("DATAMUNGE_XVECTOR_DIR");
+  const auto* home=std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_XVECTOR_DIR");
+  const auto root=configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/xvector";
+  const auto read=[&](const char* role,unsigned seed) {
+    const auto arrays=n::load_npz((root/(std::string(role)+".npz")).string());
+    const auto entry=std::ranges::find(arrays,"waveform",&n::NamedTensors::value_type::first);
+    if (entry==arrays.end() || entry->second.dim()!=2 || entry->second.size(1)!=length)
+      throw std::runtime_error("Unexpected spoken-digit fixture");
+    const auto clean=entry->second;
+    const auto x=clean.to_vector<float>();
+    std::vector<float> noisy(x.size());
+    std::mt19937 rng(seed);
+    std::normal_distribution<double> gaussian;
+    std::uniform_real_distribution<double> frequency(1400,3600),phase(0,2*std::numbers::pi);
+    for (std::int64_t row=0;row<clean.size(0);++row) {
+      const double omega=2*std::numbers::pi*frequency(rng)/8000, offset=phase(rng);
+      double power=0, noise_power=0;
+      std::array<double,length> noise;
+      for (int t=0;t<length;++t) {
+        const double sample=x[row*length+t];
+        power+=sample*sample;
+        noise[t]=gaussian(rng)+std::sin(omega*t+offset);
+        noise_power+=noise[t]*noise[t];
+      }
+      if (power==0) throw std::runtime_error("Silent clean fixture");
+      const double gain=std::sqrt(power/(noise_power*std::pow(10.,(5*(row%3)-5)/10.)));
+      for (int t=0;t<length;++t) noisy[row*length+t]=x[row*length+t]+gain*noise[t];
+    }
+    return std::pair{n::from_vector(noisy,{clean.size(0),length,1}),clean};
+  };
+  const auto [fit,target]=read("fit",6671);
+  const auto [test,truth]=read("verify",6672);
+  n::ParameterStore model(41380);
+  const auto initial=n::denoise_speech(model,n::take_rows(test,{0})).first;
+  if (initial.to_vector<float>()!=n::take_rows(test,{0}).to_vector<float>()) return 1;
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(fit.size(0),12,6673);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto enhanced=n::denoise_speech(model,n::take_rows(fit,rows)).first;
+      optimizer.minimize(n::mean(n::square(enhanced-n::take_rows(target,rows))));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto [enhanced,noise]=n::denoise_speech(model,test);
+  const auto noisy=n::squeeze(test,{2});
+  const auto loss=n::mean(n::square(enhanced-truth));
+  if (!(loss.item()<n::mean(n::square(noisy-truth)).item())) return 1;
+  const auto power=n::sum(n::square(truth),{1});
+  const auto snr=[&](const n::Tensor& estimate) {
+    return ((10/std::log(10.))*n::log(power/n::sum(n::square(estimate-truth),{1}))).to_vector<double>();
+  };
+  const auto before=snr(noisy),after=snr(enhanced);
+  std::array<double,3> input{},output{};
+  std::array<int,3> count{};
+  for (std::size_t i=0;i<before.size();++i) {
+    input[i%3]+=before[i];
+    output[i%3]+=after[i];
+    ++count[i%3];
+  }
+  std::print("| Input SNR (dB) | Enhanced SNR (dB) | Clips |\n|---:|---:|---:|\n");
+  for (int i=0;i<3;++i)
+    std::print("| {:.3f} | {:.3f} | {} |\n",input[i]/count[i],output[i]/count[i],count[i]);
+  std::vector<double> ms(length);
+  for (int t=0;t<length;++t) ms[t]=t/8.;
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(ms,n::select(noisy,0,0).to_vector<double>(),"Noisy",{148,163,184})
+      .lines(ms,n::select(truth,0,0).to_vector<double>(),"Clean",{37,99,235})
+      .lines(ms,n::select(enhanced,0,0).to_vector<double>(),"Enhanced",{234,88,12})
+      .title("Held-out speech at -5 dB input SNR").x_label("Time (ms)").y_label("Amplitude");
+  std::filesystem::create_directories("build");
+  plot.size(960,430).save_svg("build/speech_denoising.svg");
+  n::save_npz("build/speech_denoising.npz",{{"noisy",test},{"clean",truth},{"enhanced",enhanced},
+      {"estimated_noise",noise},{"loss",loss}});
+}
+```
+// result_begin: markdown
+| Input SNR (dB) | Enhanced SNR (dB) | Clips |
+|---:|---:|---:|
+| -5.000 | 3.318 | 20 |
+| -0.000 | 5.752 | 20 |
+| 5.000 | 6.267 | 20 |
+\image(figures/speech_denoising.svg)
+// result_end

@@ -1,0 +1,127 @@
+//? Title: Tacotron 2 text-to-mel synthesis
+//? Lang: en
+
+> Tacotron 2 text-to-mel synthesis
+
+A convolutional and bidirectional recurrent encoder reads digit prompts.
+Location-sensitive attention uses both the preceding alignment and its
+cumulative sum to score prompt positions. The decoder emits two mel
+frames and a stop logit at each step. A convolutional post-net predicts
+a residual correction over the full mel sequence.
+
+Training feeds back the preceding reference frames. Free-running
+decoding starts at zero and feeds back the preceding prediction.
+The first nonnegative stop logit determines the reported length,
+with a fourteen-group cap. One-digit prompts mask the second token
+and use zero targets after their seventh group.
+
+Prepare the spoken-digit fixture with `python3 scripts/prepare_xvector.py`
+in the TensorFlow examples checkout. Set `DATAMUNGE_XVECTOR_DIR` to its
+prepared dataset directory if the checkout lives elsewhere.
+
+```{cpp, results="markdown", file="figures/tacotron2.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int clip = 3200, length = 6800;
+  const auto* configured = std::getenv("DATAMUNGE_XVECTOR_DIR");
+  const auto* home = std::getenv("HOME");
+  if (!configured && !home) throw std::runtime_error("Set DATAMUNGE_XVECTOR_DIR");
+  const auto root = configured ? std::filesystem::path(configured)
+      : std::filesystem::path(home)/"projects/tflow_examples/output/datasets/xvector";
+  const auto mel_weights = n::linear_to_mel_weight_matrix(24,129,8000,60,3800);
+  const auto read = [&](const char* role, int count, int per_digit, int speakers, unsigned seed) {
+    const auto arrays = n::load_npz((root/(std::string(role)+".npz")).string());
+    const auto entry = std::ranges::find(arrays,"waveform",&n::NamedTensors::value_type::first);
+    if (entry == arrays.end() || entry->second.shape() != n::Shape{speakers*10*per_digit,clip})
+      throw std::runtime_error("Unexpected spoken-digit fixture shape");
+    const auto wave = entry->second.to_vector<float>();
+    std::vector<float> joined(count*length);
+    std::vector<std::int32_t> labels(count*2);
+    std::mt19937 rng(seed);
+    for (int row=0; row<count; ++row) {
+      const int speaker = rng()%speakers;
+      for (int segment=0; segment<2; ++segment) {
+        const int digit = rng()%10;
+        labels[2*row+segment] = digit;
+        const auto source = (speaker*10+digit)*per_digit+rng()%per_digit;
+        std::copy_n(wave.begin()+source*clip,clip,joined.begin()+row*length+segment*(length-clip));
+      }
+    }
+    const auto power = n::power_spectrogram(n::stft(n::from_vector(joined,{count,length}),200,240,256));
+    return std::pair{n::log_mel_spectrogram(power,mel_weights),n::from_vector(labels,{count,2})};
+  };
+  const auto [fit,target] = read("fit",768,6,4,61721);
+  const auto [test,truth] = read("verify",192,3,2,61722);
+  const auto prepare=[](const n::Tensor& audio,const n::Tensor& digits) {
+    const auto batch=audio.size(0);
+    std::vector<int> lengths(batch,28);
+    for (std::int64_t row=0;row<batch;row+=3) lengths[row]=14;
+    const auto limit=n::from_vector(lengths);
+    const auto single=n::equal(limit,14);
+    const auto second=n::where(single,10,n::select(digits,1,1));
+    const auto text=n::stack({n::select(digits,1,0),second},1).to(n::DType::Int32);
+    const auto frames=n::arange(0,28,1,n::DType::Int64).reshape({1,28,1});
+    const auto keep=n::less(frames,limit.reshape({batch,1,1})).to(n::DType::Float32);
+    const auto group=n::arange(0,14,1,n::DType::Int64).reshape({1,14});
+    const auto stop=n::greater_equal(group,(limit/2-1).reshape({batch,1})).to(n::DType::Float32);
+    return std::tuple{text,(audio+6)*.2*keep,stop};
+  };
+  const auto [text,mel,stop]=prepare(fit,target);
+  const auto [prompt,reference,end]=prepare(test,truth);
+  n::ParameterStore model(41380);
+  const auto initial=n::tacotron2_loss(n::tacotron2(model,prompt,reference),reference,end).item();
+  n::Optimizer optimizer(model,.01,{.kind=n::OptimizerKind::Adam});
+  n::BatchOrder order(768,24,61723);
+  for (int epoch=0;epoch<3;++epoch) {
+    order.begin_epoch();
+    for (auto rows=order.next();!rows.empty();rows=order.next()) {
+      const auto audio=n::take_rows(mel,rows);
+      optimizer.minimize(n::tacotron2_loss(n::tacotron2(model,n::take_rows(text,rows),audio),
+                                             audio,n::take_rows(stop,rows)));
+    }
+  }
+  n::NoGradGuard guard;
+  const auto teacher=n::tacotron2(model,prompt,reference);
+  const auto decoded=n::tacotron2(model,prompt);
+  const auto loss=n::tacotron2_loss(teacher,reference,end);
+  const auto rmse=n::sqrt(n::mean(n::square(decoded.refined-reference))).item();
+  const auto stops=decoded.stop.to_vector<float>();
+  std::vector<int> lengths(truth.size(0),14);
+  int exact=0;
+  for (std::size_t row=0;row<lengths.size();++row) {
+    for (int t=0;t<14;++t) {
+      if (stops[row*14+t]>=0) { lengths[row]=t+1; break; }
+    }
+    exact+=lengths[row]==(row%3==0 ? 7 : 14);
+  }
+  if (!(loss.item()<initial) || !std::isfinite(rmse)) return 1;
+  std::print("Teacher loss {:.4f} → {:.4f}. Free-running mel RMSE {:.4f}, exact stop lengths {}/{}.\n",
+      initial,loss.item(),rmse,exact,lengths.size());
+  std::vector<double> time(28);
+  std::iota(time.begin(),time.end(),0.);
+  const auto band=[](const n::Tensor& x) { return n::select(n::select(x,0,0),1,4).to_vector<double>(); };
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(time,band(reference),"Reference",{37,99,235})
+      .lines(time,band(decoded.refined),"Free-running post-net",{234,88,12})
+      .title("Held-out one-digit prompt, mel band 5").x_label("Mel frame").y_label("Normalized log power");
+  std::filesystem::create_directories("build");
+  plot.size(900,430).save_svg("build/tacotron2.svg");
+  const auto pack=[](const n::Tacotron2Result& x) {
+    return n::concat({x.raw.reshape({-1,672}),x.refined.reshape({-1,672}),x.stop},1);
+  };
+  n::save_npz("build/tacotron2.npz",{{"text",prompt},{"target",n::concat({reference.reshape({-1,672}),end},1)},
+      {"prediction",pack(decoded)},{"attention",decoded.attention},{"feedback",decoded.feedback},
+      {"stopping",n::from_vector(lengths)},{"teacher",pack(teacher)},{"loss",loss}});
+}
+```
+// result_begin: markdown
+Teacher loss 2.1286 → 0.5235. Free-running mel RMSE 0.9681, exact stop lengths 192/192.
+\image(figures/tacotron2.svg)
+// result_end
+
+The model detects every stop length in this split. The experiment
+defines duration by the number of input digits, so the stop result
+reflects this fixed grouping rule. The mel overlay measures a
+separate prediction task with variation between held-out speakers.

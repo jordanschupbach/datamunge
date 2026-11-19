@@ -1,0 +1,140 @@
+//? Title: Response-only character instruction fine-tuning
+//? Lang: en
+
+> Response-only character instruction fine-tuning
+
+A pretrained causal character decoder learns three instructions on
+three-letter strings. Copy preserves the string, Reverse reverses it,
+and First returns its first letter. The supervised loss covers the answer
+and its terminating newline. The prompt conditions the prediction,
+while its own next-token targets and the padding are outside the loss.
+
+For inference, greedy decoding starts from the prompt and feeds back
+generated tokens until newline or a four-character limit. Each split
+holds disjoint strings and includes all three commands for each string.
+The plots show validation response loss and complete-response accuracy.
+
+Set `DM_CHARACTER_DECODER_DIR` to a directory containing
+`model_arrays.npz` and `vocabulary.txt` from causal character
+pretraining. The default points to the Datamunge Transformer LM report's
+build outputs.
+
+```{cpp, results="markdown", file="figures/instruction_finetune.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace n=dm::nn;
+
+int main() {
+  n::set_num_threads(2);
+  const char *configured=std::getenv("DM_CHARACTER_DECODER_DIR");
+  const auto root=std::filesystem::path(configured?configured:
+      "../../3_generative_models/3.2_autoregressive_models/build/recovered-language/models/transformer_lm");
+  std::ifstream file(root/"vocabulary.txt",std::ios::binary);
+  const std::string alphabet{std::istreambuf_iterator<char>(file),{}};
+  if(alphabet.size()!=65 || alphabet.find('\n')>=65)
+    throw std::runtime_error("expected pretrained character vocabulary");
+  std::vector<int> ids(512);
+  std::iota(ids.begin(),ids.end(),0);
+  std::mt19937 split(41431);
+  std::shuffle(ids.begin(),ids.end(),split);
+  const std::array<std::string,3> commands{"Copy","Reverse","First"};
+  std::vector<int> inputs(480*64), targets(480*64), lengths;
+  std::vector<int> selected(480*64);
+  for(int row=0;row<480;++row) {
+    const int id=ids[row/3], task=row%3;
+    std::string value{char('a'+(id&7)),char('a'+((id>>3)&7)),char('a'+((id>>6)&7))};
+    const auto prompt=commands[task]+": "+value+"\nAnswer: ";
+    if(task==1) std::reverse(value.begin(),value.end());
+    if(task==2) value.resize(1);
+    const auto text=prompt+value+'\n';
+    lengths.push_back(prompt.size());
+    for(std::size_t t=0;t+1<text.size();++t) {
+      const auto a=alphabet.find(text[t]), b=alphabet.find(text[t+1]);
+      if(a>=65 || b>=65) throw std::runtime_error("unknown instruction character");
+      inputs[row*64+t]=a;
+      targets[row*64+t]=b;
+      selected[row*64+t]=t+1>=prompt.size();
+    }
+  }
+  const auto x=n::from_vector(inputs,{480,64}), y=n::from_vector(targets,{480,64});
+  const auto mask=n::from_vector(selected,{480,64}).to(n::DType::Bool);
+  const auto len=n::from_vector(lengths);
+  const auto val=n::arange(384,432,1,n::DType::Int64), held=n::arange(432,480,1,n::DType::Int64);
+  n::ParameterStore model(7);
+  model.load((root/"model_arrays.npz").string(),false);
+  const auto predict=[&](const n::Tensor &input) {
+    return n::models::DecoderTransformer(model,n::one_hot(input,65)).logits;
+  };
+  const auto objective=[&](const n::Tensor &rows) {
+    return n::response_token_nll(predict(n::gather(x,rows)),n::gather(y,rows),n::gather(mask,rows));
+  };
+  const auto hx=n::gather(x,held), hy=n::gather(y,held), hm=n::gather(mask,held), hl=n::gather(len,held);
+  const auto generate=[&](const n::Tensor &input) {
+    return n::greedy_character_response(model,input,hl,alphabet.find('\n'));
+  };
+  const auto initial=generate(hx);
+  n::OptimizerConfig config;
+  config.kind=n::OptimizerKind::Adam;
+  n::Optimizer adam(model,.003,config);
+  n::BatchOrder order(384,16,41432);
+  std::vector<double> history;
+  std::print("| Epoch | Validation response NLL |\n|---:|---:|\n");
+  for(int epoch=0;epoch<=3;++epoch) {
+    { n::NoGradGuard guard; history.push_back(objective(val).item()); }
+    std::print("| {} | {:.6f} |\n",epoch,history.back());
+    if(epoch==3) break;
+    order.begin_epoch();
+    for(auto rows=order.next();!rows.empty();rows=order.next())
+      adam.minimize(objective(n::from_vector(rows)));
+  }
+  n::NoGradGuard guard;
+  const auto z=predict(hx), greedy=generate(hx);
+  const auto loss=n::response_token_nll(z,hy,hm);
+  const auto valid=n::less(n::arange(0,64,1,n::DType::Int64),hl.reshape({48,1}));
+  if(n::response_token_nll(z,n::where(hm,hy,-1.),hm).item()!=loss.item() ||
+     n::count_nonzero(n::not_equal(greedy,generate(n::where(valid,hx,7.)))).item()!=0.)
+    throw std::runtime_error("response mask or prompt-only generation check");
+  const auto hits=[&](const n::Tensor &pred) {
+    const auto result=pred.to_vector<int>();
+    std::vector<double> exact(3);
+    for(int i=0;i<48;++i) {
+      const auto pos=(432+i)*64+lengths[432+i]-1;
+      bool match=true;
+      for(int t=0;t<4;++t) match&=result[i*4+t]==(selected[pos+t]?targets[pos+t]:-1);
+      exact[i%3]+=match;
+    }
+    return exact;
+  };
+  const auto before=hits(initial), after=hits(greedy);
+  std::print("Held-out response NLL {:.6f}. Exact Copy, Reverse, First responses after training: {}, {}, {} of 16 each.\n",
+             loss.item(),after[0],after[1],after[2]);
+  std::filesystem::create_directories("build");
+  n::save_npz("build/instruction_finetune.npz",{{"ids",n::from_vector(std::vector<int>(ids.begin(),ids.begin()+160))},
+      {"input",hx},{"target",hy},{"mask",hm.to(n::DType::Float32)},{"prompt_length",hl},
+      {"logits",z},{"greedy",greedy},{"initial_greedy",initial},{"nll",loss}});
+  auto curve=dm::graphics::RPlot::create();
+  curve.lines({0.,1.,2.,3.},history,"Validation",{37,99,235})
+    .title("Instruction tuning").x_label("Epoch").y_label("Validation response NLL");
+  auto acc=dm::graphics::RPlot::create();
+  acc.points({1.,2.,3.},before,"Before",{100,116,139}).points({1.,2.,3.},after,"After",{22,120,97})
+    .legend({"Before","After"},{{100,116,139},{22,120,97}})
+    .title("Exact held-out responses").x_label("1 Copy, 2 Reverse, 3 First")
+    .y_label("Correct out of 16").y_limits(0,16);
+  dm::graphics::RLayout::create(1,2).add(curve).add(acc).size(1090,430)
+    .fit_panels().save_svg("build/instruction_finetune.svg");
+}
+```
+// result_begin: markdown
+| Epoch | Validation response NLL |
+|---:|---:|
+| 0 | 3.682518 |
+| 1 | 2.128367 |
+| 2 | 1.590685 |
+| 3 | 1.521187 |
+Held-out response NLL 1.532980. Exact Copy, Reverse, First responses after training: 0, 0, 0 of 16 each.
+\image(figures/instruction_finetune.svg)
+// result_end
+\caption(Response-only validation loss and exact held-out generation before and after fine-tuning.)
+\alttext(A line chart shows validation loss by epoch. A point chart compares the number of exact responses for each instruction.)
+
+Validation response loss dropped after fine-tuning. The three-epoch
+run still produced zero complete correct responses on all three commands.

@@ -7,7 +7,8 @@
 A flattened digit image must be mapped to one of ten classes. A linear softmax readout provides
 a simple baseline with an explicit probability normalization and cross-entropy objective.
 We derive its score on three logits, then run a fixed offline demonstration on the bundled
-8×8 digits data. The original full 28×28 MNIST program remains available separately. The report shows every minibatch Adam update.
+8×8 digits data. A second experiment fits a linear head and a multilayer perceptron
+to the official 28×28 MNIST splits.
 )
 \toc
 
@@ -24,10 +25,9 @@ $$
 
 The linear model has DK+K learned scalars: 7850 for MNIST's 784 pixels and 10 classes,
 or 650 for 64 bundled digit pixels. Decision boundaries are affine in the pixel features.
-Training costs O(NDK) per epoch. The executed model creates a tensor ParameterStore and exposes its affine logits,
-minibatch Adam objective and every update. Pixel intensities divide by the known maximum 16. It is an offline
-method demonstration, not a reproduction of the original program's Adam/validation-selected
-MNIST benchmark. Use `just run-nn softmax_mnist` with prepared MNIST files for that workflow.
+Training costs O(NDK) per epoch. Both experiments use a tensor ParameterStore
+and minibatch Adam. Bundled digit intensities divide by 16. Original MNIST
+intensities divide by 255, and validation loss selects the checkpoint.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -235,11 +235,167 @@ Accuracy 0.951111; NLL 0.179803; maximum mass error 0.000000119.
 \alttext(Training loss on the bundled 8×8 digits; held-out scores are evaluated after the fixed training budget.)
 
 
+> Original MNIST benchmark
+
+The linear softmax model learns 7,850 parameters. The MLP adds ReLU
+layers of width 128 and 64 for 109,386 parameters. Both use the official
+28×28 images scaled to [0, 1]. Shuffle the 60,000 training rows once
+with seed 2026, keep 5,000 for validation, and fit for 12 epochs in
+batches of 256. After each epoch, measure validation negative log likelihood
+(NLL) and save a checkpoint if it improves. Restore that checkpoint before
+evaluating the 10,000 test rows.
+
+The program reads standard IDX files from `DM_MNIST_DIR` when set.
+Otherwise it uses Datamunge's MNIST dataset cache.
+
+```{cpp, results="markdown", file="figures/mnist_validation_parity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(4);
+  const char* configured = std::getenv("DM_MNIST_DIR");
+  const std::string directory = configured ? configured : dm::datasets::fetch("mnist");
+  const auto train = n::load_mnist(directory, "train");
+  const auto train_x = train.images.reshape({60000, 784});
+  if (train.images.shape() != n::Shape{60000,28,28,1} || train.labels.shape() != n::Shape{60000})
+    throw std::runtime_error("Expected the official 60,000 MNIST training rows");
+  std::vector<std::int64_t> order(60000);
+  std::iota(order.begin(), order.end(), 0);
+  std::mt19937_64 split(2026);
+  std::shuffle(order.begin(), order.end(), split);
+  const std::vector<std::int64_t> validation_rows(order.begin()+55000, order.end());
+  const auto validation_x = n::take_rows(train_x, validation_rows);
+  const auto validation_y = n::take_rows(train.labels, validation_rows);
+
+  std::filesystem::create_directories("build");
+  auto plot = dm::graphics::RPlot::create();
+  struct Experiment {
+    std::string name;
+    std::vector<int> hidden;
+    double rate, minimum_accuracy;
+    int parameters;
+    dm::graphics::RGB color;
+  };
+  const std::vector<Experiment> experiments{
+      {"Softmax", {}, .003, .90, 7850, {37,99,235}},
+      {"MLP", {128,64}, .001, .96, 109386, {234,88,12}}};
+  for (const auto& experiment : experiments) {
+    n::ParameterStore model(17,n::DType::Float32);
+    auto predict = [&](n::Tensor x) {
+      for (std::size_t i=0; i<experiment.hidden.size(); ++i)
+        x=n::dense(model,std::format("hidden{}",i),x,experiment.hidden[i],
+                   {.activation=n::Activation::Relu});
+      return n::dense(model,"output",x,10);
+    };
+    (void)predict(n::slice_axis(train_x,0,0,1));
+    if (model.count()!=experiment.parameters) throw std::runtime_error("Incorrect parameter count");
+    n::Optimizer optimizer(model,experiment.rate,{.kind=n::OptimizerKind::Adam});
+    std::vector<n::Tensor> kernels{model.at("output/W")};
+    for (std::size_t i=0;i<experiment.hidden.size();++i)
+      kernels.push_back(model.at(std::format("hidden{}/W",i)));
+
+    const auto checkpoint=std::format("build/mnist_parity_{}.npz",experiment.name);
+    n::BatchOrder batches(55000,256,29);
+    int best_epoch=0;
+    double best=std::numeric_limits<double>::infinity();
+    std::vector<double> epochs,losses;
+    for (int epoch=1;epoch<=12;++epoch) {
+      batches.begin_epoch();
+      std::size_t visited=0;
+      for (auto indices=batches.next();!indices.empty();indices=batches.next()) {
+        for (auto& index:indices) index=order[index];
+        visited+=indices.size();
+        const auto x=n::take_rows(train_x,indices), y=n::take_rows(train.labels,indices);
+        auto loss=n::sparse_softmax_cross_entropy(predict(x),y);
+        for (const auto& kernel:kernels) loss=loss+.5*.0001*n::sum(n::square(kernel));
+        optimizer.minimize(loss);
+      }
+      if (visited!=55000) throw std::runtime_error("Incomplete MNIST fit epoch");
+      n::NoGradGuard guard;
+      const double loss=n::sparse_softmax_cross_entropy(predict(validation_x),validation_y).item();
+      epochs.push_back(epoch);
+      losses.push_back(loss);
+      if (loss<best) {
+        best=loss;
+        best_epoch=epoch;
+        model.save(checkpoint);
+      }
+    }
+    n::NoGradGuard guard;
+    model.load(checkpoint);
+    const double restored=n::sparse_softmax_cross_entropy(predict(validation_x),validation_y).item();
+    if (!std::isfinite(restored)||std::abs(restored-best)>1e-7)
+      throw std::runtime_error("Restored checkpoint disagrees with validation selection");
+
+    const auto test=n::load_mnist(directory,"test");
+    if (test.images.shape()!=n::Shape{10000,28,28,1} || test.labels.shape()!=n::Shape{10000})
+      throw std::runtime_error("Expected all 10,000 official MNIST test rows");
+    const auto logits=predict(test.images.reshape({10000,784}));
+    const double accuracy=n::accuracy(logits,test.labels);
+    const double nll=n::sparse_softmax_cross_entropy(logits,test.labels).item();
+    if (!(accuracy>=experiment.minimum_accuracy&&std::isfinite(nll)))
+      throw std::runtime_error(std::format("{} missed the upstream test accuracy threshold: {}",experiment.name,accuracy));
+
+    plot.lines(epochs,losses,experiment.name,experiment.color,2.);
+    std::print("{} selected epoch {}, validation NLL {:.5f}, test NLL {:.5f}, test accuracy {:.2f}%.\n\n",
+               experiment.name,best_epoch,best,nll,100*accuracy);
+    const auto ids=n::argmax(logits,1).to_vector<int>(), truth=test.labels.to_vector<int>();
+    std::array<std::array<int,10>,10> confusion{};
+    for(std::size_t i=0;i<truth.size();++i) ++confusion.at(truth[i]).at(ids[i]);
+    std::print("| Truth | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+    for(int c=0;c<10;++c) {
+      std::print("| {} |",c);
+      for(int count:confusion[c]) std::print(" {} |",count);
+      std::print("\n");
+    }
+    std::print("\n");
+  }
+  plot.title("Validation NLL on original MNIST").x_label("Epoch").y_label("Validation NLL")
+      .size(850,420).save_svg("build/mnist_validation_parity.svg");
+}
+```
+// result_begin: markdown
+Softmax selected epoch 12, validation NLL 0.27416, test NLL 0.26428, test accuracy 92.70%.
+
+| Truth | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 964 | 0 | 1 | 2 | 0 | 5 | 6 | 1 | 1 | 0 |
+| 1 | 0 | 1112 | 3 | 2 | 0 | 1 | 4 | 2 | 11 | 0 |
+| 2 | 4 | 9 | 932 | 12 | 8 | 5 | 11 | 8 | 36 | 7 |
+| 3 | 2 | 0 | 21 | 916 | 1 | 26 | 2 | 10 | 24 | 8 |
+| 4 | 1 | 2 | 5 | 2 | 912 | 0 | 8 | 2 | 9 | 41 |
+| 5 | 10 | 3 | 8 | 27 | 9 | 778 | 10 | 6 | 34 | 7 |
+| 6 | 9 | 3 | 11 | 1 | 9 | 14 | 907 | 2 | 2 | 0 |
+| 7 | 1 | 6 | 23 | 8 | 8 | 1 | 0 | 934 | 2 | 45 |
+| 8 | 6 | 9 | 6 | 19 | 9 | 21 | 8 | 7 | 879 | 10 |
+| 9 | 9 | 7 | 2 | 8 | 22 | 7 | 0 | 9 | 9 | 936 |
+
+MLP selected epoch 12, validation NLL 0.08149, test NLL 0.07340, test accuracy 97.75%.
+
+| Truth | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 971 | 0 | 1 | 2 | 2 | 0 | 1 | 0 | 2 | 1 |
+| 1 | 0 | 1127 | 1 | 3 | 0 | 0 | 3 | 0 | 1 | 0 |
+| 2 | 5 | 4 | 1004 | 6 | 2 | 0 | 1 | 5 | 5 | 0 |
+| 3 | 0 | 0 | 2 | 993 | 0 | 2 | 0 | 4 | 3 | 6 |
+| 4 | 1 | 0 | 1 | 1 | 960 | 0 | 2 | 3 | 0 | 14 |
+| 5 | 3 | 0 | 0 | 11 | 2 | 863 | 5 | 1 | 4 | 3 |
+| 6 | 5 | 3 | 1 | 1 | 10 | 3 | 935 | 0 | 0 | 0 |
+| 7 | 0 | 3 | 8 | 3 | 2 | 0 | 0 | 999 | 0 | 13 |
+| 8 | 6 | 1 | 3 | 8 | 4 | 4 | 5 | 4 | 935 | 4 |
+| 9 | 3 | 3 | 0 | 2 | 6 | 2 | 0 | 3 | 2 | 988 |
+
+\image(figures/mnist_validation_parity.svg)
+// result_end
+\caption(Validation NLL determines the saved epoch for each architecture. The confusion tables use only official test images.)
+\alttext(Two curves trace validation negative log likelihood over 12 epochs for the linear softmax and multilayer perceptron.)
+
 > Conclusion
 
-The exact score and common-shift symmetry agree with the analytic softmax. The offline digits
-fit measures a linear baseline on a clearly specified dataset and split. A full MNIST result,
-validation-selected checkpoint or comparison with a nonlinear model requires that separate workflow.
+The exact score and common-shift symmetry agree with the analytic softmax.
+The original MNIST run compares two architectures under the same data split
+and validation criterion, with a single official test evaluation per model.
 
 > References
 

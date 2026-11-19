@@ -102,6 +102,22 @@ struct DeviceInfo {
 /// @endcode
 DeviceInfo probe(Device device = {});
 
+/// @brief Count physical devices visible to the selected Datamunge backend.
+///
+/// This queries the backend without opening a logical device. Each ordinal
+/// in [0, count) can be passed to probe() to check context availability.
+/// A physical Vulkan device may still lack the required compute features.
+/// @param backend Backend to enumerate, CPU by default.
+/// @return Number of visible physical devices. CPU always has one ordinal.
+/// @throws std::invalid_argument Unknown backend.
+/// @throws std::runtime_error Backend disabled, driver unavailable, or enumeration failed.
+/// @par Example
+/// @code
+/// std::println("{}", dm::compute::device_count()); // 1
+/// @endcode
+/// @see probe(), Context
+std::uint32_t device_count(Backend backend = Backend::CPU);
+
 /// @brief Private shared compute ownership and backend resources.
 namespace detail {
 /// @brief Private shared context state retained by buffers and copied contexts.

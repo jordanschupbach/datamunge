@@ -1,0 +1,143 @@
+//? Title: Fit quantile and Gaussian forecasts on an autoregressive series
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit one-step conditional forecasts from four recent observations.
+Compare a central 80% interval from ordered quantiles with one
+from a Gaussian model on a chronological held-out suffix.
+)
+\toc
+
+Both networks use a 16-unit tanh layer. The quantile head fits the
+0.1, 0.5, and 0.9 quantiles with pinball loss. Softplus gaps below
+and above the median keep the outputs ordered. The Gaussian head
+predicts a location and a standard deviation, with a positive floor.
+Its negative log-likelihood combines the standardized squared error
+and a penalty for increasing the scale.
+
+Training uses only windows with targets before observation 768. The
+test targets begin at 960. Both fits use three shuffled epochs of Adam.
+The initialization fixtures reproduce the upstream TensorFlow Glorot
+draws with seeds 41380001 and 41380002 for the hidden and output layers,
+respectively. The table reports the different losses separately and
+uses interval coverage as a common diagnostic.
+
+```{cpp, results="markdown", file="figures/forecast_losses.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <vector>
+
+int main() {
+  namespace n = dm::nn;
+  std::vector<double> series(1152);
+  std::mt19937 rng(51489);
+  std::normal_distribution<double> noise;
+  for (std::size_t t = 2; t < series.size(); ++t) {
+    const auto last = series[t-1];
+    const auto sigma = .12+.27*std::abs(std::tanh(1.6*last));
+    series[t] = .72*std::sin(1.4*last)-.22*series[t-2]+sigma*noise(rng);
+  }
+  const auto data = n::from_vector(series).to(n::DType::Float32);
+  std::vector<std::int64_t> fit_origins(764), test_origins(192);
+  std::iota(fit_origins.begin(),fit_origins.end(),4);
+  std::iota(test_origins.begin(),test_origins.end(),960);
+  const auto fit = n::ForecastWindows(data,fit_origins,4,1);
+  const auto test = n::ForecastWindows(data,test_origins,4,1);
+  const auto levels = n::tensor({.1,.5,.9});
+  const std::string folder = "build/forecast_losses/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+  auto figure = dm::graphics::RLayout::create(1,2).size(1000,400);
+  std::println("| Model | Initial fit loss | Final fit loss | Test loss | Central 80% coverage |");
+  std::println("| :--- | ---: | ---: | ---: | ---: |");
+
+  for (bool quantile : {true,false}) {
+    const std::string name = quantile ? "pinball" : "gaussian";
+    n::ParameterStore parameters(41380);
+    auto predict = [&](const n::Tensor& history) {
+      const auto h = n::tanh(n::dense(parameters,"hidden",history.reshape({-1,4}),16));
+      const auto raw = n::dense(parameters,"head",h,quantile?3:2);
+      if (quantile) return n::ordered_quantile_forecast(raw);
+      const auto center = n::slice(raw,{0,0},{raw.size(0),1});
+      const auto sd = n::softplus(n::slice(raw,{0,1},{raw.size(0),1}))+.01f;
+      return n::concat({center,sd},1);
+    };
+    auto objective = [&](const n::Tensor& prediction,const n::Tensor& target) {
+      if (quantile) return n::quantile_forecast_loss(prediction,target,levels);
+      const auto center = n::slice(prediction,{0,0},{prediction.size(0),1});
+      const auto sd = n::slice(prediction,{0,1},{prediction.size(0),1});
+      return n::GaussianRegressionNll({center,sd*sd},target);
+    };
+    (void)predict(fit.history);
+    parameters.load("fixtures/forecast_losses_"+name+"_init.npz",true);
+    n::OptimizerConfig cfg;
+    cfg.kind = n::OptimizerKind::Adam;
+    n::Optimizer adam(parameters,.01,cfg);
+    const auto initial = objective(predict(fit.history),fit.target).item();
+    n::BatchOrder order(fit_origins.size(),32,51490);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        const auto history = n::take_rows(fit.history,rows);
+        const auto target = n::take_rows(fit.target,rows);
+        adam.step(n::grad(objective(predict(history),target),parameters.parameters()));
+      }
+    }
+    n::NoGradGuard guard;
+    const auto final = objective(predict(fit.history),fit.target).item();
+    const auto values = predict(test.history);
+    const auto loss = objective(values,test.target);
+    const auto actual = test.target.to_vector<double>();
+    const auto prediction = values.to_vector<double>();
+    std::vector<double> lower, upper, center, axis;
+    int covered = 0;
+    for (std::size_t i = 0; i < actual.size(); ++i) {
+      const auto mean = prediction[i*(quantile?3:2)+(quantile?1:0)];
+      const auto lo = quantile ? prediction[i*3] : mean-1.281551566*prediction[i*2+1];
+      const auto hi = quantile ? prediction[i*3+2] : mean+1.281551566*prediction[i*2+1];
+      if (!(lo<hi)) throw std::runtime_error("Invalid forecast interval");
+      covered += lo<=actual[i] && actual[i]<=hi;
+      if (i < 64) {
+        axis.push_back(test_origins[i]);
+        lower.push_back(lo);
+        upper.push_back(hi);
+        center.push_back(mean);
+      }
+    }
+    if (!(final<initial) || !std::isfinite(loss.item()))
+      throw std::runtime_error("Forecast objective failed");
+    std::println("| {} | {:.7g} | {:.7g} | {:.7g} | {} / {} |",name,initial,final,loss.item(),covered,actual.size());
+    n::save_npz(folder+name+".npz",{{"actual",test.target},{"prediction",values},{"loss",loss}});
+    auto plot = dm::graphics::RPlot::create();
+    plot.lines(axis,lower,"Lower",{79,115,173}).lines(axis,upper,"Upper",{79,115,173})
+        .lines(axis,center,"Center",{191,88,34})
+        .points(axis,std::vector<double>(actual.begin(),actual.begin()+64),"Observed",{30,41,59},2)
+        .title(name).x_label("First 64 held-out targets").y_label("Forecast level");
+    figure.add(plot);
+  }
+  figure.save_svg(folder+"intervals.svg");
+  std::filesystem::copy_file(folder+"intervals.svg","figures/forecast_losses.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Model | Initial fit loss | Final fit loss | Test loss | Central 80% coverage |
+| :--- | ---: | ---: | ---: | ---: |
+| pinball | 0.1410328 | 0.05422085 | 0.05810222 | 141 / 192 |
+| gaussian | 0.7208874 | -0.1123476 | -0.065307 | 155 / 192 |
+\image(figures/forecast_losses.svg)
+// result_end
+
+On this series the Gaussian interval covers 155 of 192 targets, close
+to the nominal 80%, and the quantile interval covers 141. These are
+empirical results on one held-out suffix. The panels show the first 64
+targets so individual misses are visible.
+
+See [Regression Quantiles](https://doi.org/10.2307/1913643) for the
+asymmetric absolute loss underlying pinball regression.

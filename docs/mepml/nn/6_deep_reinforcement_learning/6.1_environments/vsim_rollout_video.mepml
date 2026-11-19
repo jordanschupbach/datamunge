@@ -1,0 +1,96 @@
+//? Title: Offscreen rollout recording with vsim and ffmpeg
+//? Lang: en
+
+> Offscreen rollout recording with vsim and ffmpeg
+
+The seeded CartPole controller pushes toward the lean. At reset and
+after each transition, the cart position and pole angle update a vsim
+scene. An offscreen Vulkan renderer captures that scene as RGBA. The
+Datamunge video writer sends each frame to ffmpeg and finalizes an H.264
+clip after the last transition.
+
+This report uses the 3D vsim SDK through the `vsim-renderer` pkg-config
+package. It also requires a Vulkan driver and ffmpeg with libx264.
+The [controller playback report|render_video.mepml] demonstrates all
+four seeded controllers and their episode metrics.
+
+```{cpp, results="markdown", file="figures/vsim_cartpole.mp4", flags="$(pkg-config --cflags --libs datamunge vsim-renderer) -std=c++23 -O2 -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <vsim/renderer.hpp>
+#include <vsim/scene.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+
+int main() {
+  constexpr int width=320,height=200,fps=50;
+  vsim::RendererConfig config;
+  config.width=width;
+  config.height=height;
+  config.offscreen=true;
+  vsim::Renderer renderer(config);
+  vsim::Scene scene;
+  const auto box=[&](const char* name,glm::vec3 position,glm::vec3 scale,glm::vec3 color) {
+    vsim::Entity item;
+    item.name=name;
+    item.transform.position=position;
+    item.transform.scale=scale;
+    item.mesh=vsim::Mesh{};
+    item.mesh->primitive="box";
+    item.mesh->color=color;
+    return scene.create(item);
+  };
+  box("floor",{0,-.3f,0},{14,.2f,6},{.25f,.27f,.3f});
+  box("rail",{0,.12f,0},{5.8f,.05f,.05f},{.3f,.4f,.6f});
+  const auto cart=box("cart",{0,.3f,0},{.5f,.3f,.36f},{.9f,.7f,.1f});
+  const auto pole=box("pole",{0,.95f,.22f},{.08f,1,.08f},{.9f,.1f,.15f});
+  vsim::RenderView view;
+  view.transform.position={0,1.8f,5.2f};
+  view.transform.rotation=glm::quat_cast(glm::inverse(
+      glm::lookAtRH(view.transform.position,glm::vec3{0,.7f,0},glm::vec3{0,1,0})));
+  view.camera.vertical_fov=40;
+  std::filesystem::create_directories("build");
+  dm::cad::VideoWriter video("build/vsim_cartpole.mp4",width,height,fps);
+  vsim::Image image{0,0,{}};
+  dm::cad::RenderResult frame;
+  frame.width=width;
+  frame.height=height;
+  const auto capture=[&](const auto& obs) {
+    auto body=scene.get(cart);
+    body.transform.position.x=obs[0];
+    scene.set(cart,body);
+    auto arm=scene.get(pole);
+    arm.transform.rotation=glm::angleAxis(-obs[2],glm::vec3{0,0,1});
+    arm.transform.position=glm::vec3{obs[0],.45f,.22f}+
+                           arm.transform.rotation*glm::vec3{0,.5f,0};
+    scene.set(pole,arm);
+    if (!renderer.draw(scene,&view)) throw std::runtime_error("vsim did not draw the rollout frame");
+    renderer.capture(image);
+    if (image.width!=width || image.height!=height) throw std::runtime_error("unexpected capture dimensions");
+    frame.rgba.swap(image.rgba);
+    video.append(frame);
+    frame.rgba.swap(image.rgba);
+  };
+  dm::rl::environments::CartPole env;
+  auto obs=env.reset(5);
+  capture(obs);
+  int steps=0;
+  double reward=0;
+  for (;;) {
+    const auto result=env.step(dm::rl::environments::Action(obs[2]+.5f*obs[3]>0 ? 1 : 0));
+    obs=result.obs;
+    reward+=result.reward;
+    ++steps;
+    capture(obs);
+    if (result.terminated || result.truncated) break;
+  }
+  video.finish();
+  if (steps!=500 || reward!=500 || video.frames_written()!=501)
+    throw std::runtime_error("unexpected CartPole replay or capture count");
+  std::print("vsim rendered {} frames on {}. The {} transitions earned return {:.0f}.\n",
+             video.frames_written(),renderer.device_name(),steps,reward);
+}
+```
+// result_begin: markdown
+vsim rendered 501 frames on NVIDIA GeForce RTX 5080 Laptop GPU. The 500 transitions earned return 500.
+\video(figures/vsim_cartpole.mp4)
+// result_end

@@ -1,0 +1,206 @@
+//? Title: Text-conditioned diffusion for a compositional image vocabulary
+//? Exports: both
+//? Lang: en
+
+\abstract(
+A small denoising network learns to draw bars from two-word prompts. Learned
+embeddings encode position and orientation separately. Deterministic DDIM
+runs all four combinations from matched noise so the effect of changing
+either word is visible in the fitted samples.
+)
+\toc
+
+> Fit a clean-image predictor
+
+The synthetic data consist of 8×8 images with either a short horizontal bar
+or a taller vertical bar. The first word selects the left or right column
+and each clean image receives a random vertical shift. At step `t`, add
+Gaussian noise to the scaled image with cumulative signal power
+`ᾱ(t) = exp(−6(t/24)²)`. The denoiser receives the result,
+normalized time and its square, and a learned embedding for each word slot.
+It minimizes mean squared error against the original pixels. All four prompts
+appear during training, so the experiment tests whether changing words
+steers generation within the fitted vocabulary.
+
+> Compare prompts under matched noise
+
+Each row of the gallery starts with one noise image repeated across four
+prompts. The deterministic DDIM step clips the clean prediction, infers
+the noise consistent with that clipped image, and carries it to the previous
+step without drawing another random sample. The report preserves the
+upstream architecture, schedule, training budget and noise seeds and uses
+Datamunge’s native parameter initialization and Adam implementation.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+namespace model = n::models;
+
+constexpr int side = 8, pixels = side * side, steps = 24, prompts = 4;
+constexpr int batch_size = 32, batches = 96, epochs = 3, sample_rows = 4;
+constexpr int samples = sample_rows * prompts;
+
+double signal_power(int step) {
+  return std::exp(-6.0 * std::pow(double(step) / steps, 2));
+}
+
+float bar_pixel(int prompt, int shift, int pixel) {
+  const int cx = prompt / 2 ? 5 : 2, cy = 3 + shift;
+  const int x = pixel % side, y = pixel / side;
+  const bool horizontal = prompt % 2;
+  const bool on = horizontal ? y == cy && std::abs(x - cx) <= 1
+                             : x == cx && std::abs(y - cy) <= 2;
+  return on ? 1.f : -1.f;
+}
+
+int main() {
+  std::filesystem::create_directories("build/text_image_diffusion");
+  n::ParameterStore parameters(14201);
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  const auto probe = n::from_vector(std::vector<std::int32_t>{0, 0}, {1, 2});
+  model::TokenConditionedDenoiser(parameters, n::zeros({1, pixels}), n::ones({1, 1}), probe, {2, 2});
+  n::Optimizer optimizer(parameters, .003, config);
+
+  std::mt19937 fit(14202), draw(14203);
+  std::normal_distribution<float> normal;
+  std::uniform_int_distribution<int> prompt_id(0, prompts - 1), level(1, steps), shift(-1, 1);
+  std::vector<float> losses;
+  for (int epoch = 0; epoch < epochs; ++epoch) {
+    for (int batch = 0; batch < batches; ++batch) {
+      std::vector<float> clean, noisy, time;
+      std::vector<std::int32_t> tokens;
+      for (int i = 0; i < batch_size; ++i) {
+        const int prompt = prompt_id(fit), step = level(fit), offset = shift(fit);
+        const double alpha = signal_power(step);
+        tokens.insert(tokens.end(), {prompt / 2, prompt % 2});
+        time.push_back(float(step) / steps);
+        for (int pixel = 0; pixel < pixels; ++pixel) {
+          const float target = bar_pixel(prompt, offset, pixel);
+          clean.push_back(target);
+          noisy.push_back(std::sqrt(alpha) * target + std::sqrt(1.0 - alpha) * normal(fit));
+        }
+      }
+      const auto prediction = model::TokenConditionedDenoiser(
+          parameters, n::from_vector(noisy, {batch_size, pixels}), n::from_vector(time, {batch_size, 1}),
+          n::from_vector(tokens, {batch_size, 2}), {2, 2});
+      const auto loss = n::mean(n::square(prediction - n::from_vector(clean, {batch_size, pixels})));
+      losses.push_back(loss.item<float>());
+      optimizer.step(n::grad(loss, parameters.parameters()));
+    }
+    std::println("Epoch {} last-batch clean-image MSE {:.6f}", epoch + 1, losses.back());
+  }
+
+  n::NoGradGuard no_grad;
+  std::vector<float> initial(samples * pixels);
+  std::vector<std::int32_t> tokens;
+  for (int row = 0; row < sample_rows; ++row) {
+    for (int pixel = 0; pixel < pixels; ++pixel) {
+      const float z = normal(draw);
+      for (int prompt = 0; prompt < prompts; ++prompt)
+        initial[(row * prompts + prompt) * pixels + pixel] = z;
+    }
+    for (int prompt = 0; prompt < prompts; ++prompt)
+      tokens.insert(tokens.end(), {prompt / 2, prompt % 2});
+  }
+  const auto codes = n::from_vector(tokens, {samples, 2});
+  auto state = n::from_vector(initial, {samples, pixels});
+  std::vector<n::Tensor> trajectory(steps + 1), epsilon(steps);
+  trajectory[steps] = n::reshape(state, {1, samples, pixels});
+  for (int step = steps; step > 0; --step) {
+    const auto time = n::full({samples, 1}, float(step) / steps);
+    const auto clean = model::TokenConditionedDenoiser(parameters, state, time, codes, {2, 2});
+    auto transition = model::DdimFromClean(state, clean, signal_power(step), signal_power(step - 1));
+    state = transition.value;
+    trajectory[step - 1] = n::reshape(state, {1, samples, pixels});
+    epsilon[step - 1] = n::reshape(transition.epsilon, {1, samples, pixels});
+  }
+  const auto result = state.to_vector<float>();
+  int recognized = 0;
+  for (int i = 0; i < samples; ++i) {
+    float best = std::numeric_limits<float>::infinity();
+    int nearest_prompt = -1;
+    for (int prompt = 0; prompt < prompts; ++prompt) {
+      for (int offset = -1; offset <= 1; ++offset) {
+        float distance = 0;
+        for (int pixel = 0; pixel < pixels; ++pixel) {
+          const float diff = result[i * pixels + pixel] - bar_pixel(prompt, offset, pixel);
+          distance += diff * diff;
+        }
+        if (distance < best) {
+          best = distance;
+          nearest_prompt = prompt;
+        }
+      }
+    }
+    recognized += nearest_prompt == i % prompts;
+  }
+  std::println("Nearest-template prompt agreement: {}/{}", recognized, samples);
+  const std::string root = "build/text_image_diffusion/";
+  parameters.save(root + "parameters.npz");
+  n::save_npz(root + "samples.npz", {{"tokens", codes}, {"states", n::concat(trajectory, 0)},
+                                    {"epsilon", n::concat(epsilon, 0)},
+                                    {"loss", n::from_vector(losses, {epochs * batches})}});
+  n::save_image_grid(n::reshape(state, {samples, side, side, 1}), root + "samples.png",
+                     prompts, -1, 1, 0, 0, 8);
+}
+```
+// result_begin:
+// Epoch 1 last-batch clean-image MSE 0.116350
+// Epoch 2 last-batch clean-image MSE 0.080467
+// Epoch 3 last-batch clean-image MSE 0.059900
+// Nearest-template prompt agreement: 16/16
+// result_end
+
+> Inspect the fitted samples and objective
+
+Columns show left vertical, left horizontal, right vertical and right
+horizontal. The template check compares each sample with the twelve clean
+bar patterns, allowing either orientation to shift vertically.
+
+```{cpp, results="markdown", file="figures/text_image_diffusion_samples.png", flags="-std=c++23"}
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/text_image_diffusion/samples.png",
+                             "figures/text_image_diffusion_samples.png",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+\image(figures/text_image_diffusion_samples.png)
+// result_end
+
+```{cpp, results="markdown", file="figures/text_image_diffusion_loss.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+
+int main() {
+  const auto fields = dm::nn::load_npz("build/text_image_diffusion/samples.npz");
+  for (const auto& [key, value] : fields) {
+    if (key == "loss") {
+      const auto loss = value.to_vector<double>();
+      std::vector<double> update(loss.size());
+      std::iota(update.begin(), update.end(), 1.0);
+      const auto output = "build/text_image_diffusion/loss.svg";
+      dm::graphics::RPlot::create()
+          .lines(update, loss, "Fitting batches", {37, 99, 235})
+          .title("Denoiser fitting loss")
+          .x_label("Adam update")
+          .y_label("Clean-image MSE")
+          .save_svg(output);
+      std::filesystem::copy_file(output, "figures/text_image_diffusion_loss.svg",
+                                 std::filesystem::copy_options::overwrite_existing);
+    }
+  }
+}
+```
+// result_begin: markdown
+\image(figures/text_image_diffusion_loss.svg)
+// result_end

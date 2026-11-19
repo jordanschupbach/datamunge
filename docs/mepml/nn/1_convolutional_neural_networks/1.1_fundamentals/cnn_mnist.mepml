@@ -28,10 +28,10 @@ $$
 Autograd computes parameter gradients; the explicit Adam optimizer updates all parameters
 created before its construction. The training loop, batching, loss and checkpoint selection
 remain in the report. Validation NLL chooses an epoch; test rows do not influence selection.
-Convolution work is O(B Ho Wo k² Cin Cout) per layer. The report uses 512 fitting rows,
-128 validation rows and 128 original test rows over three epochs, rather than claim the
-full 55000/5000/10000 benchmark. It requires cached MNIST under DATAMUNGE_DATA_DIR or the
-standard user dataset cache and performs no download.
+Convolution work is O(B Ho Wo k² Cin Cout) per layer. The benchmark uses
+55,000 fit rows, 5,000 validation rows and all 10,000 official test rows.
+It trains for six epochs and reads standard IDX files from the Datamunge
+dataset cache.
 
 The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
 source is the complete block below; regeneration uses the same datamunge toolchain
@@ -239,12 +239,14 @@ int main() {
 
   const auto training = n::load_mnist((cache / "mnist").string(), "train");
   const auto official = n::load_mnist((cache / "mnist").string(), "test");
-  const auto fit_x = n::slice_axis(training.images, 0, 0, 512),
-             fit_y = n::slice_axis(training.labels, 0, 0, 512);
-  const auto validation_x = n::slice_axis(training.images, 0, 512, 512 + 128),
-             validation_y = n::slice_axis(training.labels, 0, 512, 512 + 128);
-  const auto test_x = n::slice_axis(official.images, 0, 0, 128),
-             test_y = n::slice_axis(official.labels, 0, 0, 128);
+  if(training.images.shape()!=n::Shape{60000,28,28,1} ||
+     official.images.shape()!=n::Shape{10000,28,28,1})
+    throw std::runtime_error("Expected the original MNIST splits");
+  std::vector<std::int64_t> order(60000);
+  std::iota(order.begin(),order.end(),0);
+  std::mt19937_64 split_rng(2026);
+  std::shuffle(order.begin(),order.end(),split_rng);
+  const std::vector<std::int64_t> validation(order.begin()+55000,order.end());
 
   n::ParameterStore p(17);
   auto logits = [&](const n::Tensor &input) {
@@ -252,24 +254,36 @@ int main() {
   };
   {
     n::NoGradGuard guard;
-    logits(n::zeros_like(n::take_rows(fit_x, {0})));
+    (void)logits(n::zeros({1,28,28,1}));
   }
   n::OptimizerConfig config;
   config.kind = n::OptimizerKind::Adam;
   n::Optimizer optimizer(p, .001, config);
-  n::BatchOrder batches(fit_x.size(0), 16, 2026);
-  n::Generator augmentation_rng(151);
+  n::BatchOrder batches(55000,256,29);
   std::filesystem::create_directories("build");
   const std::string checkpoint = "build/cnn_mnist_best.npz";
   double best = std::numeric_limits<double>::infinity();
   std::vector<double> epoch, training_nll, validation_nll;
-  for (int e = 0; e < 3; ++e) {
+  auto validation_loss=[&] {
+    n::NoGradGuard guard;
+    n::WeightedMean mean;
+    for(std::size_t start=0;start<validation.size();start+=512) {
+      const std::vector<std::int64_t> rows(validation.begin()+start,
+          validation.begin()+std::min(start+512,validation.size()));
+      const auto values=logits(n::take_rows(training.images,rows));
+      const auto labels=n::take_rows(training.labels,rows);
+      mean.add(n::sparse_softmax_cross_entropy(values,labels).item(),rows.size());
+    }
+    return mean.value();
+  };
+  for (int e = 0; e < 6; ++e) {
     batches.begin_epoch();
     n::WeightedMean average;
     for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-      auto input = n::take_rows(fit_x, rows);
+      for(auto& row:rows) row=order[row];
+      auto input = n::take_rows(training.images, rows);
       const auto nll =
-          n::sparse_softmax_cross_entropy(logits(input), n::take_rows(fit_y, rows));
+          n::sparse_softmax_cross_entropy(logits(input), n::take_rows(training.labels, rows));
       auto loss = nll;
       for (const auto &weight : p.parameters())
         if (weight.dim() >= 2)
@@ -277,9 +291,8 @@ int main() {
       optimizer.minimize(loss);
       average.add(nll.item(), rows.size());
     }
-    n::NoGradGuard guard;
-    const double val =
-        n::sparse_softmax_cross_entropy(logits(validation_x), validation_y).item();
+    if(average.count()!=55000) throw std::runtime_error("Incomplete fitting epoch");
+    const double val=validation_loss();
     epoch.push_back(e + 1);
     training_nll.push_back(average.value());
     validation_nll.push_back(val);
@@ -290,34 +303,43 @@ int main() {
   }
   p.load(checkpoint);
   n::NoGradGuard guard;
-  const auto z = logits(test_x);
-  n::ConfusionMatrix cm(10);cm.add(test_y,n::argmax(z,1));cm.save_svg("build/cnn_mnist_confusion.svg",{.title="cnn_mnist: held-out official-test subset"});n::save_npz("build/cnn_mnist_confusion.npz",{{"truth",test_y},{"logits",z},{"counts",cm.to_tensor()}});
-  const double test_nll = n::sparse_softmax_cross_entropy(z, test_y).item(),
-               accuracy = n::accuracy(z, test_y);
-  if (!std::isfinite(test_nll) || training_nll.back() >= training_nll.front())
-    return 1;
+  const double restored=validation_loss();
+  if(!std::isfinite(restored)||std::abs(restored-best)>1e-7)
+    throw std::runtime_error("Restored validation loss differs");
+  std::vector<n::Tensor> test_logits;
+  for(int start=0;start<10000;start+=512)
+    test_logits.push_back(logits(n::slice_axis(official.images,0,start,std::min(start+512,10000))));
+  const auto z=n::concat(test_logits,0), test_y=official.labels;
+  n::ConfusionMatrix cm(10);
+  cm.add(test_y,n::argmax(z,1));
+  cm.save_svg("build/cnn_mnist_confusion.svg",{.title="CNN on all official MNIST test images"});
+  n::save_npz("build/cnn_mnist_confusion.npz",{{"truth",test_y},{"logits",z},{"counts",cm.to_tensor()}});
+  const double test_nll=n::sparse_softmax_cross_entropy(z,test_y).item(),
+               accuracy=n::accuracy(z,test_y);
+  if(!std::isfinite(test_nll)||accuracy<.98||training_nll.back()>=training_nll.front())
+    throw std::runtime_error(std::format("CNN held-out accuracy {:.5f}, NLL {:.5f}",accuracy,test_nll));
   auto plot = dm::graphics::RPlot::create();
   plot.lines(epoch, training_nll, "training", {37, 99, 235})
       .lines(epoch, validation_nll, "validation", {234, 88, 12})
-      .title("A short explicit Adam run; select on validation")
+      .title("Full MNIST CNN training and validation")
       .x_label("epoch")
       .y_label("mean NLL");
   std::filesystem::create_directories("build");
   plot.size(850, 420).save_svg("build/cnn_mnist_training.svg");
   std::print(
-      "{} fitted rows; 128 validation rows; 128 official-test rows; {} parameters; {} Adam "
+      "55000 fitted rows; 5000 validation rows; 10000 official-test rows; {} parameters; {} Adam "
       "steps.\n\nSelected validation NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
-      fit_x.size(0), p.count(), optimizer.iterations(), best, test_nll, accuracy);
+      p.count(), optimizer.iterations(), best, test_nll, accuracy);
 }
 ```
 // result_begin: markdown
-512 fitted rows; 128 validation rows; 128 official-test rows; 105866 parameters; 96 Adam steps.
+55000 fitted rows; 5000 validation rows; 10000 official-test rows; 105866 parameters; 1290 Adam steps.
 
-Selected validation NLL 0.634424; test NLL 0.458114; test accuracy 0.843750.
+Selected validation NLL 0.046861; test NLL 0.039052; test accuracy 0.987200.
 \image(figures/cnn_mnist_training.svg)
 // result_end
-\caption(Training and validation losses come from the visible minibatch loop; the official test subset is evaluated only after checkpoint selection.)
-\alttext(Training and validation losses come from the visible minibatch loop; the official test subset is evaluated only after checkpoint selection.)
+\caption(Training and validation losses come from the visible minibatch loop; the official test split is evaluated only after checkpoint selection.)
+\alttext(Training and validation losses come from the visible minibatch loop; the official test split is evaluated only after checkpoint selection.)
 
 
 > Fresh artifact and held-out checks
@@ -352,7 +374,7 @@ int main(){std::filesystem::create_directories("build");std::filesystem::copy_fi
 
 The architecture and parameter count are checked before fitting. The executed report
 exposes every Adam update and evaluates the selected checkpoint on untouched original-test
-rows. The small, three-epoch result is a reproducible demonstration, not a full MNIST score.
+rows. The saved checkpoint also supplies the trained-feature receptive-field experiment.
 
 > References
 

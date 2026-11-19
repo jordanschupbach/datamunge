@@ -36,7 +36,7 @@ int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("
 
 > Complete preserved experiment
 
-All source n-step and accumulating/replacing-trace sweeps retain150 episodes over20 runs. The13-step trace snapshot and final1000-episode policy remain visible. No episode or optimizer runner is extracted into the library. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+All source n-step and accumulating/replacing-trace sweeps retain150 episodes over20 runs. The13-step trace snapshot and final1000-episode policy remain visible. No episode or optimizer runner is extracted into the library. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. The seeded greedy rollouts are recorded with the native grid renderer.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -49,14 +49,13 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // CMD: just run-nn td_lambda
 // n-step methods and TD(lambda) with eligibility traces.
 //
-// Port of tflow's td_lambda (TF-free apart from the Q-table, so the numbers
-// match tflow exactly). One-step TD bootstraps immediately; Monte Carlo waits
+// Datamunge translation of tflow's td_lambda.
+// One-step TD bootstraps immediately; Monte Carlo waits
 // for the whole return. n-step SARSA sits in between by backing up n rewards
 // before bootstrapping. SARSA(lambda) blends all n in one pass with an
 // eligibility trace e(s, a): every visited pair keeps a decaying share of
 // each TD error. The experiment measures how fast each variant learns a
-// slippery grid. The vsim video of the final greedy policy is omitted: the
-// best of the same 3 seeded episodes is played and reported instead. The
+// slippery grid. The final seeded greedy episode is recorded.
 // port adds checks (exit 1 on failure).
 
 
@@ -133,8 +132,7 @@ using datamunge::rl::environments::CliffWalking;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy decisions and action values.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -315,19 +313,13 @@ struct Hud {
 // RecordBest plays `candidates` seeded episodes (seeds seed .. seed+candidates-1) without
 // filming, then films the one with the highest return. PlayBestOfSeeds runs the same candidate
 // episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
-// (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
+// (common/rl/playback.hpp), which records the episode and prints its return.
 
 
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// The native recorder saves the states from the original seeded episode.
 
 
 
@@ -355,18 +347,27 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<int> states{env.state()};
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
     const StepResult r = env.step(pb.hud.decision.action);
     pb.hud.Observe(r);
+    states.push_back(env.state());
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  const auto filename = name + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::rl::environments::save_grid_replay(env, states, "build/" + filename);
+  report_capture::Save("replay_" + filename.substr(0, filename.size() - 4), states);
+  std::filesystem::copy_file("build/" + filename, "figures/" + filename,
+                             std::filesystem::copy_options::overwrite_existing);
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -622,7 +623,7 @@ int main() {
     check::Near(max_trace, kGamma * 0.9f, 1e-6, "the last visited pair's replacing trace after one decay");
     check::Require(stats.mean_return() > -12.f, "greedy policy after SARSA(0.9) should average better than -12");
     std::vector<double> nval,nret,lval,accval,repval;for(auto [n,v]:nstep){nval.push_back(n);nret.push_back(v);}for(auto [l,v]:acc_ret){lval.push_back(l);accval.push_back(v);repval.push_back(rep_ret[l]);}report_capture::Save("n",nval);report_capture::Save("n_return",nret);report_capture::Save("lambda",lval);report_capture::Save("accumulating",accval);report_capture::Save("replacing",repval);report_capture::Save("trace",trace);report_capture::Table("q",Q);
-    std::cout << "\nchecks passed (vsim video omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -666,9 +667,9 @@ int main() {
 // > > > > > G 
 //   greedy policy, 200 episodes      return mean   -10.18  min   -16.00  max    -9.00   length mean   10.2
 //   best of 3 episodes (return -9.0):
-//   played td_lambda_sarsa_lambda_greedy (video omitted): 9 steps, return -9.0
+//   recorded td_lambda_sarsa_lambda_greedy: 9 steps, return -9.0
 //
-// checks passed (vsim video omitted)
+// checks passed
 // result_end
 
 > Inspect the actual experiment results
@@ -686,3 +687,9 @@ int main(){auto archive=dm::nn::load_npz("build/td_lambda_source.npz");auto get=
 > Interpretation and provenance
 
 Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.
+
+> Greedy policy replays
+
+The native grid renderer records the visited states of each seeded greedy episode.
+
+\video(figures/td_lambda_sarsa_lambda_greedy.mp4)

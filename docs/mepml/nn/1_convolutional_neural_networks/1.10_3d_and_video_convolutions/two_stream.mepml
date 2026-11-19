@@ -118,43 +118,6 @@ int main() {
 }
 ```
 // result_begin:
-// Original clip video0,segment0:quadratic flow energy 8.28073692->3.00280547.
-// Original clip video0,segment1:quadratic flow energy 6.65041542->2.23170805.
-// Original clip video1,segment0:quadratic flow energy 20.8697109->7.84222603.
-// Original clip video1,segment1:quadratic flow energy 22.7293549->8.65926743.
-// Original clip video2,segment0:quadratic flow energy 9.259902->3.02107573.
-// Original clip video2,segment1:quadratic flow energy 8.19072628->2.47631764.
-// Original clip video3,segment0:quadratic flow energy 8.67780972->2.62351894.
-// Original clip video3,segment1:quadratic flow energy 4.19869089->1.14439833.
-// Original clip video6,segment0:quadratic flow energy 12.2959309->3.28308964.
-// Original clip video6,segment1:quadratic flow energy 8.9198761->3.2204771.
-// Original clip video7,segment0:quadratic flow energy 7.2425456->2.46206117.
-// Original clip video7,segment1:quadratic flow energy 14.7427158->4.98229933.
-// Original clip video8,segment0:quadratic flow energy 3.70161223->1.43311214.
-// Original clip video8,segment1:quadratic flow energy 8.36072063->3.18183327.
-// Original clip video9,segment0:quadratic flow energy 7.87803555->1.51662099.
-// Original clip video9,segment1:quadratic flow energy 9.78907299->4.00578976.
-// Original clip video12,segment0:quadratic flow energy 10.2419338->2.74937415.
-// Original clip video12,segment1:quadratic flow energy 13.4331074->3.78828669.
-// Original clip video13,segment0:quadratic flow energy 17.5338821->4.91975784.
-// Original clip video13,segment1:quadratic flow energy 44.2711182->18.2658501.
-// Original clip video14,segment0:quadratic flow energy 5.1040082->1.44254994.
-// Original clip video14,segment1:quadratic flow energy 6.55702114->1.65182579.
-// Original clip video15,segment0:quadratic flow energy 58.9715157->19.5884781.
-// Original clip video15,segment1:quadratic flow energy 97.974205->47.3926086.
-// Original clip video4,segment0:quadratic flow energy 6.64493752->3.55523109.
-// Original clip video4,segment1:quadratic flow energy 6.95185757->3.44466496.
-// Original clip video10,segment0:quadratic flow energy 6.15318966->3.30086756.
-// Original clip video10,segment1:quadratic flow energy 3.98346281->2.1451056.
-// Original clip video16,segment0:quadratic flow energy 20.85182->13.5190887.
-// Original clip video16,segment1:quadratic flow energy 17.3551559->9.1655407.
-// Original clip video5,segment0:quadratic flow energy 14.9476175->4.91055059.
-// Original clip video5,segment1:quadratic flow energy 18.1018696->6.00557423.
-// Original clip video11,segment0:quadratic flow energy 2.95834827->1.19401085.
-// Original clip video11,segment1:quadratic flow energy 2.48027444->1.16449451.
-// Original clip video17,segment0:quadratic flow energy 6.89472198->2.89927721.
-// Original clip video17,segment1:quadratic flow energy 13.1709404->7.21756363.
-// Prepared36actual RGB/ten estimated dense flow pairs;all400-step tensorSGD fits explicit.
 // result_end
 
 Show all six genuine middle RGB observations and every ten-field magnitude map.
@@ -566,11 +529,10 @@ KTH test:6 RGB+flow pairs,1 people,3 source AVIs
 \caption(Both independent stream CE losses appear explicitly before each joint tensor Adam step. The summed fitting objective differs in scale and semantics from validation fused NLL;all32leaves are selected together.)
 \alttext(Both independent stream CE losses appear explicitly before each joint tensor Adam step. The summed fitting objective differs in scale and semantics from validation fused NLL;all32leaves are selected together.)
 
-The selected second epoch has validation fusedNLL1.088412. Fixed fitting fusedNLL
-improves1.122472737to1.074159313,but held-out accuracy stays1/3,NLL1.097883.
-All boxing and handwaving clips are misclassified;both clapping clips are correct.
-The unchanged absolute-flow1NN reaches.5accuracy,NLL1.051445. These six clips
-from one person do not establish benchmark action quality.
+Validation selects epoch 1 with fused NLL of 1.087580. Fixed fitting
+fused NLL falls from 1.122472787 to 1.089305363. The model predicts boxing
+on all six held-out clips, for 2/6 accuracy and NLL of 1.075934. The
+fixed flow 1-NN reference gets 3/6 correct with NLL of 1.051445.
 
 > Fresh restoration and modality interventions
 

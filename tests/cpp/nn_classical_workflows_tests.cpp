@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <datamunge/nn/nn.hpp>
+#include <numbers>
 #include <numeric>
 namespace n = datamunge::nn;
 namespace m = n::ml;
@@ -13,6 +14,68 @@ TEST(NnClassicalWorkflows, QrAndCholeskySatisfyExactNormalEquations) {
     EXPECT_LT(n::max(n::abs(n::matmul(x, n::matmul(x, w) - y, true, false))).item(), 1e-12);
   }
 }
+
+TEST(NnClassicalWorkflows, BayesianLinearRankDeficiencyEvidenceAndPredictiveNoise) {
+  auto x = n::ones({2, 2}).requires_grad_();
+  const auto y = n::tensor({1, 3});
+  const auto fit = m::FitBayesianLinear(x, y, 2., 2.);
+  EXPECT_EQ(fit.mean.shape(), (n::Shape{2, 1}));
+  EXPECT_EQ(fit.mean.dtype(), n::DType::Float64);
+  EXPECT_FALSE(fit.mean.requires_grad());
+  EXPECT_NEAR(fit.mean.at({0, 0}), .8, 1e-12);
+  EXPECT_NEAR(fit.mean.at({1, 0}), .8, 1e-12);
+  EXPECT_NEAR(fit.covariance.at({0, 0}), 1.2, 1e-12);
+  EXPECT_NEAR(fit.covariance.at({0, 1}), -.8, 1e-12);
+  EXPECT_NEAR(fit.log_evidence,
+              -.5 * (1.8 + std::log(20.) + 2 * std::log(2. * std::numbers::pi)), 1e-12);
+  const auto prediction = m::PredictBayesianLinear(fit, n::tensor({1, 1, 0, 0}, {2, 2}));
+  EXPECT_NEAR(prediction.mean.at({0}), 1.6, 1e-12);
+  EXPECT_NEAR(prediction.variance.at({0}), 2.8, 1e-12);
+  EXPECT_EQ(prediction.mean.at({1}), 0.);
+  EXPECT_EQ(prediction.variance.at({1}), 2.);
+  EXPECT_THROW(m::FitBayesianLinear(x, y, 0.), std::invalid_argument);
+  EXPECT_THROW(m::FitBayesianLinear(x, n::tensor({1, INFINITY}), 2.), std::invalid_argument);
+  EXPECT_THROW(m::PredictBayesianLinear(fit, n::ones({1, 3})), std::invalid_argument);
+}
+
+TEST(NnClassicalWorkflows, TemperatureOptimumBoundariesAndReliabilityBins) {
+  const auto logits = n::tensor({2, 0, 2, 0, 2, 0, 2, 0}, {4, 2});
+  const auto labels = n::from_vector<std::int64_t>({0, 0, 0, 1});
+  EXPECT_NEAR(n::fit_inverse_temperature(logits, labels), std::log(3.) / 2., 1e-12);
+  EXPECT_EQ(n::fit_inverse_temperature(logits, labels, .1), .1);
+  EXPECT_EQ(n::fit_inverse_temperature(logits, n::from_vector<std::int64_t>({1, 1, 1, 1})), 0.);
+  EXPECT_EQ(n::fit_inverse_temperature(n::zeros({4, 2}), labels), 1.);
+  EXPECT_THROW(n::fit_inverse_temperature(logits, labels, -1.), std::invalid_argument);
+
+  const auto p = n::tensor({1, 0, .5, .5, .1, .9}, {3, 2}, n::DType::Float64);
+  const auto truth = n::from_vector<std::int64_t>({0, 1, 1});
+  const auto bins = n::top_label_reliability(p, truth, 2);
+  EXPECT_EQ(bins.predictions.to_vector<std::int64_t>(), (std::vector<std::int64_t>{0, 0, 1}));
+  EXPECT_EQ(bins.bins.at({0, 0}), 0.);
+  EXPECT_EQ(bins.bins.at({1, 0}), 3.);
+  EXPECT_NEAR(bins.bins.at({1, 1}), .8, 1e-12);
+  EXPECT_NEAR(bins.bins.at({1, 2}), 2. / 3., 1e-12);
+  EXPECT_NEAR(bins.ece, .8 - 2. / 3., 1e-12);
+  EXPECT_THROW(n::top_label_reliability(p * .5, truth), std::invalid_argument);
+}
+
+TEST(NnClassicalWorkflows, GaussianConditioningKeepsJointCovarianceAndEvidence) {
+  const auto fit = n::fit_gaussian_covariance(n::tensor({2, 1, 1, 2}, {2, 2}),
+                                               n::tensor({1, 3}));
+  EXPECT_NEAR(fit.log_evidence,
+              -.5 * (14. / 3. + std::log(3.) + 2 * std::log(2. * std::numbers::pi)), 1e-12);
+  const auto prediction = n::condition_gaussian(
+      fit, n::tensor({.5, 0, .5, 0}, {2, 2}), n::tensor({1, .25, .25, 1}, {2, 2}));
+  EXPECT_NEAR(prediction.mean.at({0, 0}), 2. / 3., 1e-12);
+  EXPECT_EQ(prediction.mean.at({1, 0}), 0.);
+  EXPECT_NEAR(prediction.covariance.at({0, 0}), 5. / 6., 1e-12);
+  EXPECT_EQ(prediction.covariance.at({0, 1}), .25);
+  EXPECT_EQ(prediction.covariance.at({1, 0}), .25);
+  EXPECT_EQ(prediction.covariance.at({1, 1}), 1.);
+  EXPECT_THROW(n::fit_gaussian_covariance(n::eye(3), n::zeros({2})), std::invalid_argument);
+  EXPECT_THROW(n::condition_gaussian(fit, n::ones({2, 1}), n::eye(2)), std::invalid_argument);
+}
+
 TEST(NnClassicalWorkflows, LegendreValuesAndPolynomialRecovery) {
   const auto x = n::tensor({-1, 0, 1}, {3, 1}, n::DType::Float64), X = m::PolynomialFeatures(x, 2);
   EXPECT_EQ(X.to_vector<double>(), (std::vector<double>{1, -1, 1, 1, 0, -.5, 1, 1, 1}));

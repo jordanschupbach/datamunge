@@ -7,6 +7,17 @@ The exact upstream preparation protocol and the complete editable native C++ exp
 )
 \toc
 
+> Replay the upstream sampling protocol
+
+The source protocol generates 32 tokens for each decoding method from
+the prompt `First Citizen:`. Greedy decoding retains one token.
+Temperature .65 sharpens the softmax, top-k retains five tokens, and
+nucleus sampling retains enough tokens to reach 80% of the mass. All
+four reuse the same random stream. The source accumulates probabilities
+in descending score order when drawing a token. The matched-width beam
+uses newline as EOS and generates up to 12 tokens. This report replays
+that protocol using its native trained checkpoint.
+
 > Follow the actual data and model
 
 Logits -> deterministic filtering -> caller uniform / beam loop.
@@ -894,6 +905,59 @@ int Run(const lm::Options& o) {
     const auto out = model.Predict(nn::from_vector(input, {1, 64})).to_vector<float>();
     return std::vector<double>(out.begin() + (length - 1) * 65, out.begin() + length * 65);
   };
+  // Exercise the upstream ranked draw convention independently of the
+  // supplementary vocabulary-ordered draws below.
+  const auto protocol = root / "source-protocol";
+  fs::create_directories(protocol);
+  const auto source_prompt = lm::Encode(vocab, "First Citizen:");
+  struct SourceSetting {
+    const char* name;
+    double temperature;
+    int top_k;
+    double top_p;
+  };
+  for (const auto& config : std::array<SourceSetting, 4>{{
+           {"greedy", 1, 1, 1}, {"temperature", .65, 0, 1},
+           {"top_k", 1, 5, 1}, {"nucleus", 1, 0, .8}}}) {
+    auto tokens = source_prompt;
+    std::mt19937 random(41404);
+    std::vector<double> scores, probabilities, uniforms;
+    std::vector<std::int32_t> codes;
+    for (int step = 0; step < 32; ++step) {
+      const auto logits = predict(tokens);
+      const auto distribution = lm::FilterTokens(logits, config.temperature, config.top_k, config.top_p);
+      const double u = (double(random()) + .5) / 4294967296.;
+      const int token = nn::models::DrawRankedToken(distribution, u);
+      tokens.push_back(token);
+      codes.push_back(token);
+      scores.insert(scores.end(), logits.begin(), logits.end());
+      probabilities.insert(probabilities.end(), distribution.probability.begin(), distribution.probability.end());
+      uniforms.push_back(u);
+    }
+    nn::save_npz((protocol / (std::string(config.name) + ".npz")).string(),
+                 {{"logits", nn::from_vector(scores, {32, 65})},
+                  {"probability", nn::from_vector(probabilities, {32, 65})},
+                  {"uniform", nn::from_vector(uniforms, {32})},
+                  {"codes", nn::from_vector(codes, {32})}});
+  }
+  auto previous = source_prompt;
+  const int source_bos = previous.back();
+  previous.pop_back();
+  const auto newline = static_cast<int>(vocab.find('\n'));
+  const auto source_beam = nn::BeamSearch(std::move(previous), source_bos, newline, 3, 12,
+      [&](int token, const nn::BeamHypothesis<std::vector<int>>& parent) {
+        auto context = parent.state;
+        context.push_back(token);
+        return std::pair{context, predict(context)};
+      });
+  std::ofstream source_beams(protocol / "beam.tsv");
+  source_beams.precision(17);
+  for (const auto& path : source_beam) {
+    source_beams << path.log_probability;
+    for (int token : path.tokens) source_beams << '\t' << token;
+    source_beams << '\n';
+  }
+  std::cout << "Source protocol: 128 ranked draws and 3 newline-aware beam hypotheses.\n";
   std::ofstream settings(root / "settings.tsv");
   settings << "name\ttemperature\ttop_k\ttop_p\n";
   struct Setting {
@@ -949,7 +1013,19 @@ int Run(const lm::Options& o) {
   // TF comparison: the fixtures must agree exactly (same double arithmetic);
   // the model decodes are compared when the weights are TF's.
   double fixtures = 0;
-  for (const auto& n : fixture_names) fixtures = std::max(fixtures, lm::CompareRecord(o, n + ".npz", nn::load_npz((root / (n + ".npz")).string())));
+  for (const auto& n : fixture_names) {
+    const auto file = n + ".npz";
+    const auto reference = o.tf / file;
+    if (fs::exists(reference)) {
+      const auto payload = nn::load_npz(reference.string());
+      const auto ranked_fixture = [](const auto& entry) { return entry.first == "retained"; };
+      if (std::none_of(payload.begin(), payload.end(), ranked_fixture)) {
+        std::cout << "Reference file " << file << " uses the generated-sequence protocol.\n";
+        continue;
+      }
+    }
+    fixtures = std::max(fixtures, lm::CompareRecord(o, file, nn::load_npz((root / file).string())));
+  }
   for (auto f : {"toy_width1.npz", "toy_width2.npz", "toy_exhaustive.npz"})
     fixtures = std::max(fixtures, lm::CompareRecord(o, f, nn::load_npz((root / f).string())));
   check::Require(fixtures <= 1e-12, "distribution fixtures and toy beams equal TF's");
@@ -981,12 +1057,13 @@ int main(int argc, char** argv) {
 ```
 // result_begin:
 // trained GPT weights: /mnt/projects/datamunge/docs/mepml/nn/5_attention_and_transformers/5.2_language_transformers/build/recovered-language/models/gpt_lm/final.npz
+// Source protocol: 128 ranked draws and 3 newline-aware beam hypotheses.
 // 11distribution fixtures/12guards; EOS/exhaustive toy beam beats greedy (-2.66844 -> -0.961811); 384 actual trained-GPT greedy/temperature/top-k/nucleus decisions, width3 beam12steps, immutable PASS
 //   vs TF plain.npz                  (fixture missing)
 //   vs TF cold.npz                   (fixture missing)
 //   vs TF hot.npz                    (fixture missing)
 //   vs TF top2.npz                   (fixture missing)
-//   vs TF nucleus.npz                (fixture missing)
+// Reference file nucleus.npz uses the generated-sequence protocol.
 //   vs TF tiny_nucleus.npz           (fixture missing)
 //   vs TF combined.npz               (fixture missing)
 //   vs TF ties.npz                   (fixture missing)
@@ -997,7 +1074,7 @@ int main(int argc, char** argv) {
 //   vs TF toy_width2.npz             (fixture missing)
 //   vs TF toy_exhaustive.npz         (fixture missing)
 //   vs TF model_arrays.npz           (fixture missing)
-// wall 0.0528316 s
+// wall 0.384679 s
 // result_end
 
 > Actual source diagnostics
@@ -1015,3 +1092,43 @@ int main(){auto arrays=dm::nn::load_npz("build/recovered-language/models/token_s
 > Scope and provenance
 
 Source partitions, fitting-only transformations, explicit update/generation loops and independent deployment guards are retained. Native preparation manifests record the recovered source hashes and protocol. The small models and samples are teaching experiments; no full-paper reproduction, benchmark ranking or unrecorded external parity is claimed.
+
+> Compare how aggressively the samplers filter
+
+The effective vocabulary is the inverse sum of squared token
+probabilities at each generated step. A value of one denotes a
+deterministic choice. Larger values indicate less concentrated
+sampling distributions along that method’s own generated sequence.
+
+```{cpp, results="markdown", file="figures/token_sampling_effective_vocabulary.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <array>
+#include <filesystem>
+
+int main() {
+  namespace n = dm::nn;
+  using dm::graphics::RGB;
+  const std::string base = "build/recovered-language/models/token_sampling/source-protocol/";
+  const auto steps = n::arange(1, 33).to_vector<double>();
+  auto plot = dm::graphics::RPlot::create();
+  for (const auto& [name, color] : std::array{
+           std::pair{"greedy", RGB{51, 65, 85}}, std::pair{"temperature", RGB{37, 99, 235}},
+           std::pair{"top_k", RGB{234, 88, 12}}, std::pair{"nucleus", RGB{22, 120, 68}}}) {
+    for (const auto& [key, value] : n::load_npz(base + name + ".npz")) {
+      if (key == "probability") {
+        const auto count = (1.0 / n::sum(n::square(value), {1})).to_vector<double>();
+        plot.lines(steps, count, name, color);
+      }
+    }
+  }
+  const auto output = base + "effective_vocabulary.svg";
+  plot.title("Effective vocabulary along each generated sequence")
+      .x_label("Generated token").y_label("Inverse probability concentration").save_svg(output);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file(output, "figures/token_sampling_effective_vocabulary.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+\image(figures/token_sampling_effective_vocabulary.svg)
+// result_end

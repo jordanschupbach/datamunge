@@ -537,10 +537,10 @@ int main() {
 }
 ```
 // result_begin: markdown
-SqueezeNet v1.0: 2500 Adam updates in 71 s of CPU training.
-SqueezeNet v1.0 + bypass: 2500 Adam updates in 69 s of CPU training.
-SqueezeNet v1.1: 2500 Adam updates in 45 s of CPU training.
-Inference device: CPU (no usable CUDA device in this build); all inference took 41.7 s.
+SqueezeNet v1.0: 2500 Adam updates in 84 s of CPU training.
+SqueezeNet v1.0 + bypass: 2500 Adam updates in 72 s of CPU training.
+SqueezeNet v1.1: 2500 Adam updates in 43 s of CPU training.
+Inference device: CPU (no usable CUDA device in this build); all inference took 49.3 s.
 8000 fit / 2000 validation / 10000 official-test rows per configuration.
 
 | configuration | parameters | best_epoch | selected_train_NLL | validation_NLL | test_NLL | test_accuracy |

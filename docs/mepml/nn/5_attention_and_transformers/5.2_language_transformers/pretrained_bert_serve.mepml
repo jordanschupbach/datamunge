@@ -11,6 +11,14 @@ Authenticated Google Small BERT44 arrays -> ASCII WordPiece -> immutable serving
 
 The original preparation recipes and most external recordings are absent from the recovered checkout. This report uses `datamunge-nn-reconstruction-v1`, whose native manifest records the exact public sources, row choices, tokenization and limitations. Reconstructed data validation and native checkpoint restoration do not establish parity with the missing original run. Published Small BERT is the real Google checkpoint, authenticated independently.
 
+> Serve the reference text batch
+
+The reference requests are “Hello, world!”, “An unlikely tokenization
+example.” and “BERT reads both directions.” The serving program packs
+each request to 16 tokens with the published WordPiece vocabulary and
+records the pooled and per-token outputs. Additional requests exercise
+case folding, pair inputs and padding controls.
+
 > Follow the computation
 
 Authenticated Google Small BERT44 arrays -> ASCII WordPiece -> immutable serving.
@@ -554,6 +562,16 @@ void Run(const std::filesystem::path& arrays, const std::string& request) {
       std::cout << ' ' << pooled[i];
     std::cout << '\n';
   }
+  const auto reference_batch = Batch({
+      tokenizer.Pack("Hello, world!", {}, false, 16),
+      tokenizer.Pack("An unlikely tokenization example.", {}, false, 16),
+      tokenizer.Pack("BERT reads both directions.", {}, false, 16)});
+  const auto reference_output = model.Run(reference_batch);
+  A reference_record = reference_batch;
+  reference_record.emplace("sequence_output", reference_output.at("bert_encoder_2"));
+  reference_record.emplace("pooled_output", reference_output.at("bert_encoder"));
+  Save(root / "reference_requests.npz", reference_record);
+  std::cout << "Served three reference requests at width 16.\n";
   check::Require(replay::SameBits(frozen, model.Arrays()), "all44pretrained variables immutable");
   std::ofstream metrics(root / "metrics.json");
   metrics.precision(17);
@@ -598,6 +616,7 @@ int main(int argc, char** argv) {
 // result_begin:
 // Original TF tokenizer recording absent; fixed official-ID fixtures and native invariants are checked.
 // request pooled first4: -0.999992 0.10396 -0.996508 -0.0317283
+// Served three reference requests at width 16.
 // Published Small BERT NPZ:44vars/4433210params;8requests/10guards; TF recordings=0 TF max=unavailable batch=0 maskedValid=0 dynamicWidth=0; immutable/reload/tokenization/serving PASS
 // result_end
 

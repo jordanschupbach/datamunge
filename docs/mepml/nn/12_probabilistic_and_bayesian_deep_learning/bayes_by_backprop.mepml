@@ -1,0 +1,136 @@
+//? Title: Bayes by Backprop and local reparameterization
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit two diagonal-Gaussian approximations to a regression posterior.
+Sample weights in one fit and sample the equivalent activation
+marginals in the other. Compare with the exact conjugate posterior.
+)
+\toc
+
+> Fit the same objective with two stochastic parameterizations
+
+A linear readout uses the fixed features 1, x and x². Gaussian noise
+has standard deviation 0.35. Under independent standard Gaussian
+coefficient priors, the exact weight posterior is available.
+Fit a diagonal Gaussian with trainable means and log standard
+deviations by optimizing a minibatch estimate of the negative ELBO.
+
+Weight sampling draws one coefficient vector per minibatch and shares
+it across observations. Local reparameterization draws each activation
+from its Gaussian marginal. Both estimate the same expected sum of
+log likelihoods. Shared weights induce covariance between predictions
+at different inputs, while independent activation draws reproduce the
+marginals used inside the objective. For joint predictions from either
+fitted approximation, sample one coefficient vector per prediction draw.
+
+```{cpp, results="markdown", file="figures/bayes_by_backprop_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+#include <random>
+
+namespace n = dm::nn;
+constexpr int features = 3, fitting = 64, samples = 512;
+constexpr float noise_sd = .35f;
+
+n::Tensor normal_draw(int rows, std::mt19937& rng) {
+  std::normal_distribution<float> normal;
+  std::vector<float> values(rows);
+  for (auto& value : values)
+    value = normal(rng);
+  return n::from_vector(values, {rows, 1});
+}
+
+int main() {
+  std::mt19937 generator(76339);
+  const auto epsilon = normal_draw(fitting, generator).to_vector<float>();
+  std::vector<float> t, design, response;
+  for (int i = 0; i < fitting; ++i) {
+    const float x = -1.f + 2.f * i / (fitting - 1);
+    t.push_back(x);
+    design.insert(design.end(), {1.f, x, x * x});
+    response.push_back(.4f + 1.2f * x - .7f * x * x + noise_sd * epsilon[i]);
+  }
+  const auto x = n::from_vector(design, {fitting, features});
+  const auto y = n::from_vector(response, {fitting, 1});
+  const auto ex = n::ml::FitBayesianLinear(x, y, double(noise_sd) * noise_sd);
+  const auto exact = n::matmul(n::cast(x, n::DType::Float64), ex.mean);
+  const auto probes = n::tensor({1., -.5, .25, 1., .7, .49}, {2, features});
+  const std::string folder = "build/bayes_by_backprop/";
+  std::filesystem::create_directories(folder);
+  std::filesystem::create_directories("figures");
+
+  auto means = dm::graphics::RPlot::create(), joint = dm::graphics::RPlot::create();
+  const std::vector<double> coordinates(t.begin(), t.end());
+  means.points(coordinates,
+               y.to_vector<double>(), "Fitting observations", {100, 116, 139}, 3)
+       .lines(coordinates, exact.to_vector<double>(),
+              "Exact posterior mean", {17, 24, 39});
+  std::println("| Training estimator | Sampled negative ELBO per row | Prior KL |");
+  std::println("| --- | ---: | ---: |");
+  for (const bool local : {false, true}) {
+    const auto method = local ? n::LinearReparameterization::Activations : n::LinearReparameterization::Weights;
+    const std::string label = local ? "Local activations" : "Shared weights";
+    const auto color = local ? dm::RGBA{234, 88, 12, .5} : dm::RGBA{37, 99, 235, .5};
+    n::ParameterStore p(0);
+    const auto mu = p.get("mu", {features, 1}, n::init::zeros());
+    const auto log_sd = p.get("log_sd", {features, 1}, n::init::constant(-1.4f));
+    const auto objective = [&](const n::Tensor& d, const n::Tensor& target, const n::Tensor& noise) {
+      const auto trial = n::VariationalLinearReparameterize(d, mu, log_sd, noise, method);
+      const auto nll = n::mean(n::square(target - trial.value)) / (2.f * noise_sd * noise_sd);
+      return nll + trial.kl / double(fitting);
+    };
+
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer(p, .04, config);
+    n::BatchOrder order(fitting, 4, 76337);
+    std::mt19937 rng(76338);
+    for (int epoch = 0; epoch < 3; ++epoch) {
+      order.begin_epoch();
+      for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+        const auto eps = normal_draw(local ? int(rows.size()) : features, rng);
+        const auto loss = objective(n::take_rows(x, rows), n::take_rows(y, rows), eps);
+        optimizer.step(n::grad(loss, p.parameters()));
+      }
+    }
+
+    n::NoGradGuard frozen;
+    std::vector<n::Tensor> draws, draw_noise;
+    for (int draw = 0; draw < samples; ++draw) {
+      const auto eps = normal_draw(local ? 2 : features, rng);
+      draw_noise.push_back(eps.reshape({-1}));
+      const auto value = n::VariationalLinearReparameterize(probes, mu, log_sd, eps, method).value;
+      draws.push_back(value.reshape({2}));
+    }
+    const auto bank = n::stack(draws, 0);
+    const auto noise = normal_draw(local ? fitting : features, rng);
+    const auto value = objective(x, y, noise);
+    const auto kl = n::VariationalLinearReparameterize(x, mu, log_sd, noise, method).kl;
+    std::println("| {} | {:.6f} | {:.6f} |", label, value.item(), kl.item());
+    const auto x0 = n::select(bank, 1, 0).to_vector<double>(), x1 = n::select(bank, 1, 1).to_vector<double>();
+    joint.points(x0, x1, label, color, 2);
+    means.lines(coordinates, n::matmul(x, mu).to_vector<double>(), label, color);
+    n::save_npz(folder + (local ? "local.npz" : "global.npz"),
+                 {{"x", x}, {"y", y}, {"mu", mu}, {"sd", n::exp(log_sd)}, {"kl", kl},
+                  {"objective", value}, {"objective_noise", noise}, {"probes", probes},
+                  {"draw_noise", n::stack(draw_noise, 0)}, {"draws", bank}});
+  }
+  means.title("Fitted mean curves").x_label("x").y_label("Latent mean");
+  joint.title("Two probe predictions per draw").x_label("Latent readout at x = −0.5")
+       .y_label("Latent readout at x = 0.7");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(means).add(joint).size(1280, 510).fit_panels().save_svg(folder + "fit.svg");
+  std::filesystem::copy_file(folder + "fit.svg", "figures/bayes_by_backprop_fit.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Training estimator | Sampled negative ELBO per row | Prior KL |
+| --- | ---: | ---: |
+| Shared weights | 0.922097 | 4.622656 |
+| Local activations | 0.953369 | 5.208855 |
+\image(figures/bayes_by_backprop_fit.svg)
+// result_end

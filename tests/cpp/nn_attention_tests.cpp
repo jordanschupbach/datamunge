@@ -578,3 +578,35 @@ TEST(NnPositional, RelativePositionBuckets) {
   EXPECT_EQ(rb.shape(), (nn::Shape{4, 3, 5}));
   EXPECT_EQ(store.at("rel/rel_bias").shape(), (nn::Shape{32, 4}));
 }
+
+TEST(NnAttention, CausalPaddingMasksQueriesAndKeys) {
+  const auto lengths = nn::tensor({3, 1, 0}, {}, DType::Int32);
+  const auto mask = nn::causal_padding_keep_mask(lengths, 3);
+  ASSERT_EQ(mask.shape(), (nn::Shape{3, 1, 3, 3}));
+  EXPECT_EQ(mask.dtype(), DType::Bool);
+  EXPECT_EQ(mask.to_vector<int>(), (std::vector<int>{
+      1, 0, 0, 1, 1, 0, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0}));
+
+  const auto q = nn::zeros({3, 2, 3, 1}, DType::Float64).requires_grad_();
+  const auto k = nn::zeros({3, 2, 3, 1}, DType::Float64).requires_grad_();
+  const auto v = nn::ones({3, 2, 3, 1}, DType::Float64).requires_grad_();
+  const auto result = nn::scaled_dot_product_attention(q, k, v, mask);
+  const auto fused = nn::scaled_dot_product_attention(
+      q, k, v, {.mask = mask, .impl = nn::AttentionImpl::Fused});
+  EXPECT_EQ(result.output.to_vector<int>(), (std::vector<int>{
+      1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}));
+  EXPECT_EQ(fused.output.to_vector<double>(), result.output.to_vector<double>());
+  const auto gradients = nn::grad(nn::sum(result.output), {q, k, v});
+  EXPECT_DOUBLE_EQ(gradients[2].at({0, 0, 0, 0}), 1.0 + .5 + 1.0 / 3);
+  EXPECT_DOUBLE_EQ(gradients[2].at({1, 1, 0, 0}), 1);
+  EXPECT_DOUBLE_EQ(gradients[2].at({1, 1, 1, 0}), 0);
+  EXPECT_DOUBLE_EQ(gradients[2].at({2, 1, 0, 0}), 0);
+  EXPECT_THROW(nn::causal_padding_keep_mask(nn::tensor({4}, {}, DType::Int64), 3),
+               std::invalid_argument);
+  EXPECT_THROW(nn::causal_padding_keep_mask(nn::tensor({-1}, {}, DType::Int64), 3),
+               std::invalid_argument);
+  EXPECT_THROW(nn::causal_padding_keep_mask(nn::tensor({1.5}), 3), std::invalid_argument);
+  EXPECT_THROW(nn::causal_padding_keep_mask(lengths, 0), std::invalid_argument);
+}

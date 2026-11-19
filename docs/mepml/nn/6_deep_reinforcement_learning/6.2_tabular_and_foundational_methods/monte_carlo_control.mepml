@@ -35,7 +35,7 @@ int main(){namespace f=dm::rl::foundations;std::filesystem::create_directories("
 
 > Complete preserved experiment
 
-The original first/every-visit comparisons retain all episodes, decaying epsilon, evaluation and best-of-three seeded playback. First visits are identified by a forward scan before the backward return calculation. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. Playback retains the original seeded episode computations; external videos are omitted.
+The original first/every-visit comparisons retain all episodes, decaying epsilon, evaluation and best-of-three seeded playback. First visits are identified by a forward scan before the backward return calculation. All objectives, policy improvements, optimizer steps, collection and evaluation loops remain editable below. Additional checkpoint writes consume no RNG draws. The seeded greedy rollouts are recorded with the native grid renderer.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -48,14 +48,13 @@ struct Flush{~Flush(){if(!arrays.empty()){std::filesystem::create_directories("b
 // CMD: just run-nn monte_carlo_control
 // Monte Carlo control.
 //
-// Port of tflow's monte_carlo_control (TF-free apart from the Q-table, so the
-// numbers match tflow exactly). Learn Q(s, a) from complete episodes: every
+// Datamunge translation of tflow's monte_carlo_control.
+// Learn Q(s, a) from complete episodes: every
 // state-action pair visited gets the discounted return that followed it. No
 // model, no bootstrapping. Exploration comes from an epsilon-soft policy
 // whose epsilon decays, in place of the "exploring starts" assumption. Q lives
-// in the canonical native Float32 tensor-backed Q-table with deep-copy snapshots. The vsim videos of the greedy policy are
-// omitted: the best of the same 3 seeded episodes is played and reported
-// instead. The port adds checks on the learned policies (exit 1 on failure).
+// in the native Float32 tensor-backed Q-table with deep-copy snapshots. The
+// replay records the best of three seeded greedy episodes per experiment.
 
 
 // Editable workflow support: checks.hpp
@@ -131,8 +130,7 @@ using datamunge::rl::environments::CliffWalking;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy decisions and action values.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -313,19 +311,13 @@ struct Hud {
 // RecordBest plays `candidates` seeded episodes (seeds seed .. seed+candidates-1) without
 // filming, then films the one with the highest return. PlayBestOfSeeds runs the same candidate
 // episodes, prints the same "best of N" line, and replays the best one with PlayEpisode
-// (common/rl/playback.hpp), which prints its steps and return instead of writing a video.
+// (common/rl/playback.hpp), which records the episode and prints its return.
 
 
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// The native recorder saves the states from the original seeded episode.
 
 
 
@@ -353,18 +345,27 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<int> states{env.state()};
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
     const StepResult r = env.step(pb.hud.decision.action);
     pb.hud.Observe(r);
+    states.push_back(env.state());
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  const auto filename = name + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  dm::rl::environments::save_grid_replay(env, states, "build/" + filename);
+  report_capture::Save("replay_" + filename.substr(0, filename.size() - 4), states);
+  std::filesystem::copy_file("build/" + filename, "figures/" + filename,
+                             std::filesystem::copy_options::overwrite_existing);
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -572,7 +573,8 @@ Outcome Train(rl::GridBase& env, const Options& opt, uint64_t seed) {
   out.greedy_mean = stats.mean_return();
   rl::PlayBestOfSeeds(
       env, [&](const rl::Obs& o) { return rl::GreedyQ(Q.Row(static_cast<int>(o[0])), Q.A); },
-      "monte_carlo_control_greedy", 4242, 3);
+      env.name() == "CliffWalking" ? "monte_carlo_cliff"
+          : opt.first_visit ? "monte_carlo_first" : "monte_carlo_every", 4242, 3);
   static int index=0;auto tag=std::to_string(index++);report_capture::Save("return_"+tag,returns);report_capture::Table("q_"+tag,Q);
   return out;
 }
@@ -605,7 +607,7 @@ int main() {
     check::Require(cl.greedy_mean >= -25.f && cl.greedy_mean <= -13.f,
                    "CliffWalking greedy policy should reach the goal in 13-25 steps");
     check::Require(cl.last_block > cl.first_block + 100.f, "CliffWalking online return should improve with training");
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -637,7 +639,7 @@ int main() {
 //   -7.08  -5.58  -4.12  -2.70  -1.39   0.00
 //   greedy policy, 500 episodes      return mean   -12.20  min   -23.00  max    -9.00   length mean   12.2
 //   best of 3 episodes (return -9.0):
-//   played monte_carlo_control_greedy (video omitted): 9 steps, return -9.0
+//   recorded monte_carlo_first: 9 steps, return -9.0
 //
 // ==== GridWorld: every-visit MC control, 3000 episodes, gamma 0.95
 //   episodes    1- 500  eps 0.17  mean online return   -22.87
@@ -660,7 +662,7 @@ int main() {
 //   -7.52  -5.55  -4.30  -2.86  -1.45   0.00
 //   greedy policy, 500 episodes      return mean   -11.91  min   -32.00  max    -9.00   length mean   11.9
 //   best of 3 episodes (return -9.0):
-//   played monte_carlo_control_greedy (video omitted): 9 steps, return -9.0
+//   recorded monte_carlo_every: 9 steps, return -9.0
 //
 // ==== CliffWalking: first-visit MC control, 5000 episodes, gamma 1.00
 //   episodes    1- 500  eps 0.17  mean online return  -329.30
@@ -685,9 +687,9 @@ int main() {
 //  -52.70   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00
 //   greedy policy, 500 episodes      return mean   -19.00  min   -19.00  max   -19.00   length mean   19.0
 //   best of 3 episodes (return -19.0):
-//   played monte_carlo_control_greedy (video omitted): 19 steps, return -19.0
+//   recorded monte_carlo_cliff: 19 steps, return -19.0
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > Inspect the actual experiment results
@@ -705,3 +707,13 @@ int main(){auto archive=dm::nn::load_npz("build/monte_carlo_control_source.npz")
 > Interpretation and provenance
 
 Read online reward, greedy evaluation and any auxiliary bonus as separate quantities. The source checks remain part of the executable experiment; success means those particular seeded checks passed. No result here asserts TensorFlow equivalence without its recorded fixtures. Canonical APIs contain reusable state representations and mathematical operations; every fitting, episode and convergence loop is visible in this report.
+
+> Greedy policy replays
+
+The native grid renderer records the visited states of each seeded greedy episode.
+
+\video(figures/monte_carlo_first.mp4)
+
+\video(figures/monte_carlo_every.mp4)
+
+\video(figures/monte_carlo_cliff.mp4)

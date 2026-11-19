@@ -1,0 +1,51 @@
+//? Title: Coordinate-based imitation policy
+//? Lang: en
+
+> Coordinate-based imitation policy
+
+The shared grid policy uses normalized row and column coordinates,
+a tanh hidden layer and four action logits. A training batch contains
+coordinate rows and expert action IDs. Each update minimizes mean
+negative log-likelihood and retains Adam state for the next batch.
+The same policy can fit a fixed demonstration set or take new
+labels collected during a rollout.
+
+This small fit learns the change in expert action at the bottom row.
+The plot compares the probability of moving right before and after
+training down a single column. The [behavior cloning report|behavior_cloning.mepml]
+evaluates complete rollouts after fitting a larger demonstration set.
+
+```{cpp, results="markdown", file="figures/grid_imitation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  std::vector<float> positions;
+  std::vector<double> rows(7);
+  std::iota(rows.begin(),rows.end(),0.);
+  for (int row=0;row<7;++row) positions.insert(positions.end(),{float(row)/6,.5f});
+  const auto features=n::from_vector(positions,{7,2});
+  const auto actions=n::from_vector<int>({1,1,1,1,1,1,3});
+  dm::rl::ImitationPolicy policy(2,16,4);
+  const auto before=policy.predict(features);
+  for (int step=0;step<150;++step) policy.train(features,actions);
+  const auto after=policy.predict(features);
+  const double start=n::sparse_softmax_cross_entropy(before,actions).item();
+  const double finish=n::sparse_softmax_cross_entropy(after,actions).item();
+  if (!(finish<start)) throw std::runtime_error("Imitation loss did not improve");
+  std::print("Action NLL decreased from {:.6f} to {:.6f}.\n",start,finish);
+  const auto right=[](const auto& logits) {
+    return n::slice(n::softmax(logits,-1),{0,3},{7,1}).template to_vector<double>();
+  };
+  std::filesystem::create_directories("build");
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(rows,right(before),"Before fitting",{217,96,26})
+      .lines(rows,right(after),"After fitting",{37,99,235})
+      .title("Fitting a directional expert").x_label("Grid row").y_label("Probability of moving right")
+      .ylim(0,1).size(800,460).save_svg("build/grid_imitation.svg");
+}
+```
+// result_begin: markdown
+Action NLL decreased from 1.431187 to 0.064020.
+\image(figures/grid_imitation.svg)
+// result_end

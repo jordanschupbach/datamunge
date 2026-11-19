@@ -37,7 +37,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The two filmed policies use exactly the seeded discrete and continuous episodes described below.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -49,8 +49,7 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // within the step limit; a one-line energy-pumping controller (accelerate in
 // the direction you are already moving) does it in about 100 steps. The
 // environments are common/rl/classic_control.hpp (copied from tflow,
-// TF-free). The vsim videos are omitted: the filmed episodes are played
-// without a video (common/rl/playback.hpp) and checks are added.
+// TF-free). The native renderer records both seeded policies.
 
 
 // Editable workflow support: checks.hpp
@@ -131,8 +130,7 @@ using datamunge::rl::environments::Acrobot;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy choices and reward information.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -310,13 +308,7 @@ struct Hud {
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// Capture the actual position, velocity and reward trace for the native replay.
 
 
 
@@ -344,6 +336,7 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
   Playback pb;
   pb.hud.Reset(env.action_space(), env.action_names());
   Obs obs = env.reset(seed);
+  std::vector<float> positions{obs[0]}, velocities{obs[1]}, rewards;
   after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
   while (true) {
     pb.hud.Choose(Decide(policy, obs));
@@ -352,10 +345,23 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
     pb.ret += r.reward;
     ++pb.steps;
     obs = r.obs;
+    positions.push_back(obs[0]);
+    velocities.push_back(obs[1]);
+    rewards.push_back(r.reward);
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  const std::string filename = name + ".mp4";
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  const auto goal = std::is_same_v<Env, datamunge::rl::environments::MountainCarContinuous> ? .45f : .5f;
+  dm::rl::environments::save_mountain_car_replay(positions, "build/" + filename, goal);
+  std::filesystem::copy_file("build/" + filename, "figures/" + filename,
+                             std::filesystem::copy_options::overwrite_existing);
+  dm::nn::save_npz("build/" + name + "_replay.npz",
+      {{"position", dm::nn::from_vector(positions)}, {"velocity", dm::nn::from_vector(velocities)},
+       {"reward", dm::nn::from_vector(rewards)}});
+  std::printf("  recorded %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -496,7 +502,7 @@ int main() {
     std::cout << "    random: " << PositionTrace(env, [&](const rl::Obs&) { return env.action_space().Sample(rng); }, 1) << "\n";
     const std::string pump_trace = PositionTrace(env, pump, 1);
     std::cout << "    pump:   " << pump_trace << "\n";
-    std::cout << "  the pump controller on the hill (tflow films it in 3D; video omitted):\n";
+    std::cout << "  the pump controller on the hill:\n";
     const rl::Playback pb = rl::PlayEpisode(env, pump, "mountain_car_pump", 1);
 
     std::cout << "\n== MountainCarContinuous-v0: action in [-1, 1], reward -0.1 a^2 per step, "
@@ -513,7 +519,7 @@ int main() {
     const rl::EpisodeStats half = rl::RunEpisodes(cenv, 20, 0, gentle);
     rl::PrintStats("pump energy (half throttle)", half);
     std::cout << "    pump:   " << PositionTrace(cenv, cpump, 1) << "\n";
-    std::cout << "  half throttle (video omitted):\n";
+    std::cout << "  half throttle:\n";
     const rl::Playback cpb = rl::PlayEpisode(cenv, gentle, "mountain_car_continuous_half_throttle", 1);
 
     check::Require(random.max_return() == -200.f, "random actions should never reach the flag in 200 steps");
@@ -526,7 +532,7 @@ int main() {
     check::Require(full.min_return() > 80.f && half.min_return() > 80.f, "both pump throttles should reach the flag");
     check::Require(half.mean_return() > full.mean_return(), "half throttle should pay less fuel than full throttle");
     check::Require(cpb.ret > 90.f, "the played half-throttle episode should reach the flag");
-    std::cout << "\nchecks passed (vsim videos omitted)\n";
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -542,18 +548,18 @@ int main() {
 //   position over time, low ('.') to high ('^'):
 //     random: _____----__________________-____________
 //     pump:   ___--------__....._--=^
-//   the pump controller on the hill (tflow films it in 3D; video omitted):
-//   played mountain_car_pump (video omitted): 114 steps, return -114.0
+//   the pump controller on the hill:
+//   recorded mountain_car_pump: 114 steps, return -114.0
 //
 // == MountainCarContinuous-v0: action in [-1, 1], reward -0.1 a^2 per step, +100 at x=0.45, 999-step limit
 //   random, 20 episodes              return mean   -33.31  min   -34.65  max   -31.37   length mean  999.0
 //   pump energy (full throttle)      return mean    89.40  min    89.20  max    89.50   length mean  106.0
 //   pump energy (half throttle)      return mean    95.57  min    94.62  max    96.87   length mean  177.1
 //     pump:   __----=====--_...._-=^
-//   half throttle (video omitted):
-//   played mountain_car_continuous_half_throttle (video omitted): 125 steps, return 96.9
+//   half throttle:
+//   recorded mountain_car_continuous_half_throttle: 125 steps, return 96.9
 //
-// checks passed (vsim videos omitted)
+// checks passed
 // result_end
 
 > A fixed-action diagnostic trajectory
@@ -572,3 +578,13 @@ int main(){namespace e=dm::rl::environments;e::MountainCar env;auto observation=
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+> Policy replays
+
+The discrete pump pushes in the current direction of travel. The continuous
+controller follows the same rule at half throttle. Its finish flag is at
+0.45, the continuous task’s goal.
+
+\video(figures/mountain_car_pump.mp4)
+
+\video(figures/mountain_car_continuous_half_throttle.mp4)

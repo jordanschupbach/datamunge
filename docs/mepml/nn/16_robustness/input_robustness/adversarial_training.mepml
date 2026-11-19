@@ -1,0 +1,123 @@
+//? Title: Adversarial training on a synthetic classifier
+//? Lang: en
+
+> Adversarial training on a synthetic classifier
+
+A small classifier learns three labeled regions of the unit square.
+Four models share the initial parameters and training batches. The
+baseline minimizes clean cross-entropy. Fast gradient sign method
+(FGSM) training takes one input step that increases cross-entropy,
+then fits the resulting points. Projected gradient descent (PGD)
+training uses four such steps from a random start.
+
+TRADES chooses perturbed inputs by increasing the KL divergence from
+the clean prediction. Its training objective adds three times that
+divergence to clean cross-entropy. Every perturbation stays within
+0.12 per coordinate of its original input and inside the unit square.
+The plot compares clean accuracy and accuracy under a common 12-step
+PGD evaluation on separately drawn points.
+
+```{cpp, results="markdown", file="figures/adversarial_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  constexpr int training_rows=1024,test_rows=256,batch=32;
+  constexpr float radius=.12f;
+  const auto draw=[](int rows,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_real_distribution<float> uniform(0,1);
+    std::vector<float> x;
+    std::vector<int> y;
+    for (int row=0;row<rows;++row) {
+      const float a=uniform(rng),b=uniform(rng);
+      x.insert(x.end(),{a,b});
+      y.push_back(a+b<.8f ? 0 : (a>b ? 1 : 2));
+    }
+    return std::pair{n::from_vector(x,{rows,2}),n::from_vector(y)};
+  };
+  const auto [fit_x,fit_y]=draw(training_rows,42501);
+  const auto [test_x,test_y]=draw(test_rows,42502);
+  const auto ce=[](const n::Tensor& logits,const n::Tensor& y) {
+    return -n::mean(n::sum(n::log_softmax(logits,1)*n::one_hot(y,3),{1}));
+  };
+  std::vector<double> clean_accuracy, robust_accuracy;
+  std::filesystem::create_directories("build");
+  std::print("| Fit | Clean accuracy | PGD accuracy |\n|---|---:|---:|\n");
+  for (const std::string mode:{"clean","fgsm","pgd","trades"}) {
+    n::ParameterStore params(42503);
+    const auto predict=[&](const n::Tensor& input) {
+      return n::dense(params,"head",n::tanh(n::dense(params,"hidden",input,16)),3);
+    };
+    (void)predict(test_x);
+    n::Optimizer optimizer(params,.01,{.kind=n::OptimizerKind::Adam});
+    std::mt19937 rng(43401);
+    std::mt19937_64 shuffle(42504);
+    const auto perturb=[&](const n::Tensor& x,const n::Tensor& y,int steps,float rate,bool random,bool trades) {
+      auto start=x;
+      if (random) {
+        std::uniform_real_distribution<float> jitter(-radius,radius);
+        std::vector<float> noise(x.numel());
+        for (auto& value:noise) value=jitter(rng);
+        start=x+n::from_vector(noise,x.shape());
+      }
+      const auto clean=predict(x).detach();
+      const auto objective=[&](const n::Tensor& input) {
+        const auto logits=predict(input);
+        return trades ? n::categorical_logit_kl(clean,logits) : ce(logits,y);
+      };
+      return n::slice_axis(n::projected_sign_ascent(x,start,objective,radius,rate,steps).states,
+                           0,steps,steps+1).reshape(x.shape());
+    };
+    n::NamedTensors evidence;
+    for (int epoch=0;epoch<3;++epoch) {
+      std::vector<int> permutation(training_rows);
+      std::iota(permutation.begin(),permutation.end(),0);
+      std::ranges::shuffle(permutation,shuffle);
+      for (int i=0;i<training_rows;i+=batch) {
+        const auto ids=n::from_vector(std::vector<int>(permutation.begin()+i,permutation.begin()+i+batch));
+        const auto x=n::gather(fit_x,ids), y=n::gather(fit_y,ids);
+        auto shifted=x;
+        if (mode=="fgsm") shifted=perturb(x,y,1,radius,false,false);
+        if (mode=="pgd" || mode=="trades") shifted=perturb(x,y,4,.05f,true,mode=="trades");
+        const auto c=predict(x), a=predict(shifted);
+        const auto clean_ce=ce(c,y), adv_ce=ce(a,y), kl=n::categorical_logit_kl(c,a);
+        const auto loss=mode=="clean" ? clean_ce : (mode=="trades" ? clean_ce+3*kl : adv_ce);
+        if (epoch==0 && i==0) {
+          evidence={{"fit_clean",x},{"fit_shifted",shifted},{"fit_labels",y},
+              {"fit_clean_logits",c.detach()},{"fit_shifted_logits",a.detach()},{"objective",loss.detach()},
+              {"clean_ce",clean_ce.detach()},{"adv_ce",adv_ce.detach()},{"kl",kl.detach()}};
+        }
+        optimizer.step(n::grad(loss,optimizer.parameters()));
+      }
+    }
+    rng.seed(43402);
+    const auto shifted=perturb(test_x,test_y,12,.025f,true,false);
+    const n::NoGradGuard guard;
+    const auto clean=predict(test_x),robust=predict(shifted);
+    const auto accuracy=[&](const n::Tensor& logits) {
+      return n::mean(n::equal(n::argmax(logits,1),test_y).to(n::DType::Float32)).item();
+    };
+    clean_accuracy.push_back(accuracy(clean));
+    robust_accuracy.push_back(accuracy(robust));
+    std::print("| {} | {:.2f}% | {:.2f}% |\n",mode,100*clean_accuracy.back(),100*robust_accuracy.back());
+    for (const auto& entry:n::NamedTensors{{"test_clean",test_x},{"test_labels",test_y},
+        {"test_shifted",shifted},{"test_clean_logits",clean},{"test_shifted_logits",robust}})
+      evidence.push_back(entry);
+    n::save_npz("build/adversarial_"+mode+".npz",evidence);
+  }
+  dm::graphics::RPlot::create().points({1,2,3,4},clean_accuracy,"Clean",{37,99,235},6)
+      .points({1,2,3,4},robust_accuracy,"PGD evaluation",{217,96,26},6)
+      .title("Held-out classification accuracy").x_label("1 Clean    2 FGSM    3 PGD    4 TRADES")
+      .y_label("Fraction correct").size(800,460).save_svg("build/adversarial_training.svg");
+}
+```
+// result_begin: markdown
+| Fit | Clean accuracy | PGD accuracy |
+|---|---:|---:|
+| clean | 90.23% | 50.00% |
+| fgsm | 85.16% | 50.00% |
+| pgd | 84.77% | 50.39% |
+| trades | 85.94% | 51.95% |
+\image(figures/adversarial_training.svg)
+// result_end

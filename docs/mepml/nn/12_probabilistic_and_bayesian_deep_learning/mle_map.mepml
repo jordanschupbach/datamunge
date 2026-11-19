@@ -1,0 +1,124 @@
+//? Title: Maximum Likelihood and MAP Regression
+//? Subtitle: Gaussian coefficient shrinkage with correlated predictors
+//? Exports: both
+//? Lang: en
+
+\abstract(
+Fit the same Gaussian regression by maximum likelihood and by maximum
+a posteriori estimation. Sixteen fitting rows have eight correlated predictors.
+A separate test sample shows how the Gaussian coefficient prior changes prediction.
+)
+\toc
+
+> Likelihood and prior
+
+With known observation variance $\sigma^2$, the Gaussian negative log likelihood
+up to an additive constant is $\|y-Xw\|^2/(2\sigma^2)$. An isotropic Gaussian
+prior with variance $\tau^2$ adds $\|w\|^2/(2\tau^2)$ to the negative log
+posterior. Its mode is the same as its mean and solves the ridge system
+$(X^\top X+(\sigma^2/\tau^2)I)w=X^\top y$.
+
+The predictors share a large common component. The likelihood can fit that
+component while remaining weakly informative about individual coefficients.
+The Gaussian prior shrinks coefficients toward zero. This experiment measures
+the likelihood, posterior objective, coefficient norm and prediction error
+separately. The design omits an intercept and applies the prior to all eight
+coefficients.
+
+> Fit and evaluate
+
+The source generator uses one shared standard normal draw per row and adds
+independent noise at scale .25 to each predictor. The response noise has
+standard deviation .6. The coefficients alternate between .45 and -.25.
+The two fits share 16 generated observations and are scored on the same
+256 independently generated rows. The MAP fit uses prior SD .35.
+
+```{cpp, results="markdown", file="figures/mle_map_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  constexpr int features = 8;
+  constexpr double noise_sd = .6, prior_sd = .35;
+  const auto sample = [](int rows, unsigned seed) {
+    std::mt19937 generator(seed);
+    std::normal_distribution<double> normal;
+    std::vector<double> design, response;
+    for (int row = 0; row < rows; ++row) {
+      const double shared = normal(generator);
+      double y = noise_sd * normal(generator);
+      for (int col = 0; col < features; ++col) {
+        const double x = shared + .25 * normal(generator);
+        design.push_back(x);
+        y += x * (col % 2 == 0 ? .45 : -.25);
+      }
+      response.push_back(y);
+    }
+    return std::pair{n::from_vector(design, {rows, features}),
+                     n::from_vector(response, {rows, 1})};
+  };
+  const auto [x, y] = sample(16, 66213);
+  const auto [test_x, test_y] = sample(256, 66214);
+  const auto mle = n::ml::LeastSquaresQr(x, y);
+  const auto posterior = n::ml::FitBayesianLinear(x, y, noise_sd * noise_sd, prior_sd * prior_sd);
+  const auto map = posterior.mean;
+  const auto mle_prediction = n::matmul(test_x, mle);
+  const auto map_prediction = n::ml::PredictBayesianLinear(posterior, test_x).mean.reshape({256, 1});
+
+  const auto metrics = [&](const n::Tensor &coefficients, const n::Tensor &prediction) {
+    const double nll = n::sum(n::square(y - n::matmul(x, coefficients))).item() /
+                       (2 * noise_sd * noise_sd);
+    const double norm = n::sum(n::square(coefficients)).item();
+    const double rmse = n::sqrt(n::mean(n::square(test_y - prediction))).item();
+    return std::vector<double>{nll, nll + norm / (2 * prior_sd * prior_sd), norm, rmse};
+  };
+  const auto a = metrics(mle, mle_prediction), b = metrics(map, map_prediction);
+  if (!(a[0] < b[0] && b[1] < a[1] && b[2] < a[2] &&
+        std::isfinite(a[3]) && std::isfinite(b[3])))
+    throw std::runtime_error("Gaussian likelihood and prior checks failed");
+
+  const auto feature = n::arange(1, 9).to_vector<double>();
+  auto parameters = dm::graphics::RPlot::create();
+  parameters.lines(feature, mle.to_vector<double>(), "MLE", {185, 28, 28})
+      .lines(feature, map.to_vector<double>(), "MAP", {37, 99, 235})
+      .abline_h(0.).title("Coefficient estimates").x_label("predictor").y_label("weight");
+  const auto observed = test_y.to_vector<double>();
+  const double lo = n::min(test_y).item(), hi = n::max(test_y).item();
+  auto fitted = dm::graphics::RPlot::create();
+  fitted.lines({lo, hi}, {lo, hi}, "identity", {150, 150, 150})
+      .points(observed, mle_prediction.to_vector<double>(), "MLE", dm::RGBA{185, 28, 28, .4})
+      .points(observed, map_prediction.to_vector<double>(), "MAP", dm::RGBA{37, 99, 235, .4})
+      .title("Predictions on 256 independent rows").x_label("observed").y_label("predicted");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(parameters).add(fitted).fit_panels()
+      .size(1100, 465).save_svg("build/mle_map_fit.svg");
+  n::save_npz("build/mle_map_regression.npz", {{"train_x", x}, {"train_y", y},
+      {"test_x", test_x}, {"test_y", test_y}, {"mle", mle}, {"map", map},
+      {"mle_metrics", n::from_vector(a)}, {"map_metrics", n::from_vector(b)}});
+
+  dm::dstruct::DataFrame table;
+  table.add_column("method", std::vector<std::string>{"MLE", "MAP"});
+  table.add_column("negative log likelihood", std::vector<double>{a[0], b[0]});
+  table.add_column("negative log posterior", std::vector<double>{a[1], b[1]});
+  table.add_column("squared coefficient norm", std::vector<double>{a[2], b[2]});
+  table.add_column("test RMSE", std::vector<double>{a[3], b[3]});
+  std::print("{}", table.to_md(6));
+}
+```
+// result_begin: markdown
+| method | negative log likelihood | negative log posterior | squared coefficient norm | test RMSE |
+| :--- | ---: | ---: | ---: | ---: |
+| MLE | 3.386365 | 14.291094 | 2.671659 | 0.764283 |
+| MAP | 5.231199 | 6.257966 | 0.251558 | 0.677850 |
+\image(figures/mle_map_fit.svg)
+// result_end
+\alttext(The MAP coefficients stay closer to zero. The second panel compares both sets of predictions against the observed test values.)
+
+The unpenalized fit has the lower training negative log likelihood. The MAP
+fit has the lower negative log posterior and smaller coefficient norm. Its
+lower test error in this experiment reflects the small fitting sample and
+correlated design.
+
+> References
+
+- [Rasmussen and Williams, Gaussian Processes for Machine Learning, chapter 2](https://gaussianprocess.org/gpml/chapters/RW2.pdf).

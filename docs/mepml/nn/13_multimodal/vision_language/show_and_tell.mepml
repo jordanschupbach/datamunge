@@ -1,0 +1,103 @@
+//? Title: Show and Tell with global and spatial image features
+//? Lang: en
+
+> Show and Tell and Show, Attend and Tell
+
+Both captioners predict a color, a shape and an end token from an
+image. Show and Tell feeds a global CNN descriptor into an LSTM
+before the start token. Show, Attend and Tell uses the descriptor to
+initialize the hidden state and attends to a spatial feature grid
+again at every decoding step.
+
+The fit uses teacher forcing, giving the decoder the previous
+reference token. Evaluation starts with a start token and feeds back
+the model's own argmax. The plot shows how the spatial model allocates
+attention across columns for each token on a held-out scene.
+
+```{cpp, results="markdown", file="figures/show_and_tell.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto generate=[](int count,unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_int_distribution<int> type(0,2),center(4,7),radius(2,4);
+    std::uniform_real_distribution<float> background(0,.10f),brightness(.65f,1);
+    std::vector<float> image(count*432);
+    std::vector<int> tokens(count*3);
+    for (int i=0;i<count;++i) {
+      const int color=type(rng),shape=type(rng),cy=center(rng),cx=center(rng),r=radius(rng);
+      for (int y=0;y<12;++y)
+        for (int x=0;x<12;++x) {
+          const int v=y-cy,h=x-cx;
+          const bool inside=shape==0 ? std::max(std::abs(v),std::abs(h))<=r
+              : shape==1 ? v*v+h*h<=r*r : v>=-r && v<=r && 2*std::abs(h)<=v+r;
+          for (int c=0;c<3;++c)
+            image[i*432+(y*12+x)*3+c]=inside && c==color ? brightness(rng) : background(rng);
+        }
+      tokens[i*3]=2+color;
+      tokens[i*3+1]=5+shape;
+      tokens[i*3+2]=1;
+    }
+    return std::pair{n::from_vector(image,{count,12,12,3}),n::from_vector(tokens,{count,3})};
+  };
+  const auto [image,target]=generate(1536,130012);
+  const auto [test,truth]=generate(192,130013);
+  const auto loss=[](const auto& logits,const auto& tokens) {
+    return n::sparse_softmax_cross_entropy(logits.reshape({-1,8}),tokens.reshape({-1}));
+  };
+  std::filesystem::create_directories("build");
+  std::print("| Captioner | Initial NLL | Fitted NLL | Exact / 192 | Color | Shape | EOS |\n");
+  std::print("|---|---:|---:|---:|---:|---:|---:|\n");
+  for (bool attentive : {false,true}) {
+    const std::string name=attentive?"Show, Attend and Tell":"Show and Tell";
+    n::ParameterStore model(130011);
+    const auto initial=loss(n::image_caption(model,test,attentive,truth).logits,truth).item();
+    n::Optimizer optimizer(model,.008,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder order(1536,16,130014);
+    for (int epoch=0;epoch<3;++epoch) {
+      order.begin_epoch();
+      for (auto rows=order.next();!rows.empty();rows=order.next()) {
+        const auto ref=n::take_rows(target,rows);
+        const auto out=n::image_caption(model,n::take_rows(image,rows),attentive,ref);
+        optimizer.minimize(loss(out.logits,ref));
+      }
+    }
+    n::NoGradGuard guard;
+    const auto teacher=n::image_caption(model,test,attentive,truth);
+    const auto greedy=n::image_caption(model,test,attentive);
+    const auto final_loss=loss(teacher.logits,truth);
+    if (!(final_loss.item()<initial)) return 1;
+    const auto matching=n::equal(greedy.tokens,truth).to(n::DType::Int32);
+    const auto hits=n::sum(matching,{0}).to_vector<int>();
+    const auto exact=n::sum(n::equal(n::sum(matching,{1}),3).to(n::DType::Int32)).item();
+    std::print("| {} | {:.5f} | {:.5f} | {:.0f} | {} | {} | {} |\n",
+        name,initial,final_loss.item(),exact,hits[0],hits[1],hits[2]);
+    n::NamedTensors saved{{"images",test},{"reference",truth},{"decoded",greedy.tokens},
+        {"greedy_logits",greedy.logits},{"teacher_logits",teacher.logits},{"loss",final_loss}};
+    if (attentive) {
+      saved.emplace_back("attention",greedy.attention);
+      const auto mass=n::sum(n::select(greedy.attention,0,0).reshape({3,6,6}),{1});
+      auto plot=dm::graphics::RPlot::create();
+      const std::vector<double> columns{0,1,2,3,4,5};
+      plot.lines(columns,n::select(mass,0,0).to_vector<double>(),"Color",{37,99,235})
+          .lines(columns,n::select(mass,0,1).to_vector<double>(),"Shape",{234,88,12})
+          .lines(columns,n::select(mass,0,2).to_vector<double>(),"EOS",{22,163,74})
+          .title("Spatial caption attention on a held-out image")
+          .x_label("Image grid column").y_label("Attention mass");
+      plot.size(900,430).save_svg("build/show_and_tell.svg");
+    }
+    n::save_npz(attentive?"build/show_attend_and_tell.npz":"build/show_and_tell.npz",saved);
+  }
+}
+```
+// result_begin: markdown
+| Captioner | Initial NLL | Fitted NLL | Exact / 192 | Color | Shape | EOS |
+|---|---:|---:|---:|---:|---:|---:|
+| Show and Tell | 2.07925 | 0.31277 | 97 | 192 | 97 | 192 |
+| Show, Attend and Tell | 2.06843 | 0.31130 | 95 | 192 | 95 | 192 |
+\image(figures/show_and_tell.svg)
+// result_end
+
+Both fits recover every color and end token. Shape recognition
+accounts for all remaining caption errors on this synthetic split.

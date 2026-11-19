@@ -1,0 +1,157 @@
+//? Title: ALBERT, DistilBERT and masking schedules
+//? Lang: en
+
+> ALBERT, DistilBERT and masking schedules
+
+These compact models use the same 64-character corpus and ten selected
+tokens per sequence. ALBERT projects eight-dimensional embeddings to
+the encoder width and reuses the same block twice. DistilBERT fits one
+block against a frozen two-block teacher. Its objective adds temperature-two
+KL over output distributions and a cosine penalty over hidden states to
+the ordinary masked-token loss.
+
+The RoBERTa-style run regenerates masks each epoch, uses batches of 16,
+and warms up then decays the learning rate. The static control uses
+batches of eight, reuses each record's corruption, and keeps the
+learning rate constant. This comparison changes both the masking and
+optimization schedules. All curves use the same validation masks.
+
+Set `DM_CHARACTER_CORPUS` to use a prebuilt character archive. The report
+trains the base teacher as part of the experiment.
+
+```{cpp, results="markdown", file="figures/masked_character_variants.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n=dm::nn;
+
+int main() {
+  n::set_num_threads(2);
+  const char *configured=std::getenv("DM_CHARACTER_CORPUS");
+  const auto path=configured?std::filesystem::path(configured):
+      std::filesystem::path(dm::datasets::prepare_example_data("character_rnn"))/"character_rnn.npz";
+  std::map<std::string,n::Tensor> data;
+  for(const auto &entry:n::load_npz(path.string())) data.insert(entry);
+  const auto fit=data.at("fit_input"), val=data.at("validation_input"), gold=data.at("test_input");
+  std::mt19937 validation(41409), testing(41410);
+  const auto held=n::corrupt_mlm_characters(gold,testing);
+  const auto valid=n::corrupt_mlm_characters(val,validation);
+  const auto score=[](const n::Tensor &z,const n::Tensor &y,const n::Tensor &selected) {
+    return n::sum(selected*n::sparse_softmax_cross_entropy(z,y,n::Reduction::None))/n::sum(selected);
+  };
+  auto loss_plot=dm::graphics::RPlot::create();
+  loss_plot.title("Masked-character variants").x_label("Epoch").y_label("Validation masked NLL");
+  auto schedule=dm::graphics::RPlot::create();
+  schedule.title("Optimization schedules").x_label("Update").y_label("Adam learning rate");
+  const std::vector<std::string> names{"bert","albert","distilbert","roberta","static_mlm"};
+  const std::vector<dm::graphics::RGBA> colors{{100,116,139},{22,120,97},{37,99,235},{190,75,48},{107,60,152}};
+  n::ParameterStore teacher(41406);
+  std::filesystem::create_directories("build");
+  std::print("| Model | Parameters | Validation NLL at epoch 0 | Validation NLL at epoch 3 | Test NLL | Correct |\n"
+             "|---|---:|---:|---:|---:|---:|\n");
+  for(std::size_t kind=0;kind<names.size();++kind) {
+    const bool albert=kind==1, distill=kind==2, roberta=kind==3, fixed=kind==4;
+    const int batch_size=roberta?16:8, layers=distill?1:2;
+    const int total=3*((fit.shape()[0]+batch_size-1)/batch_size);
+    const int warmup=std::max(1,total/6);
+    n::ParameterStore model(41406);
+    const auto forward=[&](const n::Tensor &x) {return n::character_mlm(model,x,layers,albert);};
+    forward(valid[0]);
+    n::OptimizerConfig config;
+    config.kind=n::OptimizerKind::Adam;
+    n::Optimizer adam(model,.003,config);
+    n::BatchOrder order(fit.shape()[0],batch_size,41411);
+    std::mt19937 rng(41408);
+    std::array<n::Tensor,3> static_batch;
+    if(fixed) static_batch=n::corrupt_mlm_characters(fit,rng);
+    const auto teacher_before=distill?teacher.flatten():std::vector<double>{};
+    std::vector<int> operations(3*fit.numel()), sizes;
+    std::vector<float> rates;
+    std::vector<double> losses, update;
+    for(int epoch=0;epoch<=3;++epoch) {
+      {
+        n::NoGradGuard guard;
+        losses.push_back(score(std::get<0>(forward(valid[0])),val,valid[1]).item());
+      }
+      if(epoch==3) break;
+      order.begin_epoch();
+      for(auto rows=order.next();!rows.empty();rows=order.next()) {
+        const auto ids=n::from_vector(rows);
+        const auto y=n::gather(fit,ids);
+        const auto batch=fixed?std::array{n::gather(static_batch[0],ids),n::gather(static_batch[1],ids),
+                                         n::gather(static_batch[2],ids)}:n::corrupt_mlm_characters(y,rng);
+        const auto mask=batch[2].to_vector<int>();
+        for(std::size_t row=0;row<rows.size();++row)
+          std::copy_n(mask.begin()+row*64,64,operations.begin()+(epoch*fit.shape()[0]+rows[row])*64);
+        const int step=1+rates.size();
+        float rate=.003f;
+        if(roberta)
+          rate*=step<=warmup?float(step)/warmup:float(total-step+1)/(total-warmup+1);
+        adam.set_learning_rate(rate);
+        const auto [z,h,attention]=forward(batch[0]);
+        auto loss=score(z,y,batch[1]);
+        if(distill) {
+          n::Tensor teacher_logits, teacher_hidden;
+          {
+            n::NoGradGuard guard;
+            auto signals=n::character_mlm(teacher,batch[0]);
+            teacher_logits=std::get<0>(signals);
+            teacher_hidden=std::get<1>(signals);
+          }
+          loss=loss+n::character_distillation_loss(z,teacher_logits,h,teacher_hidden);
+        }
+        adam.minimize(loss);
+        rates.push_back(rate);
+        sizes.push_back(rows.size());
+        update.push_back(step);
+      }
+    }
+
+    n::NoGradGuard guard;
+    const auto [z,h,attention]=forward(held[0]);
+    const auto nll=score(z,gold,held[1]);
+    const auto correct=n::count_nonzero(n::logical_and(n::equal(n::argmax(z,2),gold),
+                                                       n::greater(held[1],0.))).item<int>();
+    n::NamedTensors evidence{{"operation",n::from_vector(operations,{3,fit.shape()[0],64})},
+        {"batch_sizes",n::from_vector(sizes)},{"rate",n::from_vector(rates)},{"nll",nll},{"logits",z}};
+    if(distill) {
+      const auto [tz,th,ta]=n::character_mlm(teacher,held[0]);
+      if(teacher.flatten()!=teacher_before) throw std::runtime_error("teacher parameters changed");
+      evidence.emplace_back("student_hidden",h);
+      evidence.emplace_back("teacher_logits",tz);
+      evidence.emplace_back("teacher_hidden",th);
+      evidence.emplace_back("objective",nll+n::character_distillation_loss(z,tz,h,th));
+    }
+    if(albert && (!model.contains("shared_block/attention/Wq") || model.contains("block1/attention/Wq")))
+      throw std::runtime_error("expected shared block");
+    std::print("| {} | {} | {:.6f} | {:.6f} | {:.6f} | {}/{} |\n",names[kind],model.count(),
+        losses.front(),losses.back(),nll.item(),correct,n::count_nonzero(held[1]).item<int>());
+    n::save_npz("build/character_"+names[kind]+".npz",evidence);
+    loss_plot.lines({0.,1.,2.,3.},losses,names[kind],colors[kind]);
+    if(roberta || fixed)
+      schedule.lines(update,std::vector<double>(rates.begin(),rates.end()),names[kind],colors[kind]);
+    if(kind==0) teacher=std::move(model);
+  }
+  loss_plot.legend(names,colors);
+  schedule.legend({"RoBERTa style","Static masking"},{colors[3],colors[4]});
+  dm::graphics::RLayout::create(1,2).add(loss_plot).add(schedule).size(1130,450)
+      .fit_panels().save_svg("build/masked_character_variants.svg");
+}
+```
+// result_begin: markdown
+| Model | Parameters | Validation NLL at epoch 0 | Validation NLL at epoch 3 | Test NLL | Correct |
+|---|---:|---:|---:|---:|---:|
+| bert | 13433 | 4.164522 | 3.430182 | 3.459945 | 53/320 |
+| albert | 6329 | 4.188380 | 3.472494 | 3.487129 | 53/320 |
+| distilbert | 8657 | 4.198501 | 3.434896 | 3.479108 | 53/320 |
+| roberta | 13433 | 4.164522 | 3.592222 | 3.610513 | 29/320 |
+| static_mlm | 13433 | 4.164522 | 3.436309 | 3.457510 | 53/320 |
+\image(figures/masked_character_variants.svg)
+// result_end
+\caption(Validation loss across five character models and the two explicitly compared optimizer schedules.)
+\alttext(A line plot shows five validation loss trajectories. A second plot compares a warm-up and decay schedule with a constant rate.)
+
+> References
+
+- [Lan et al. (2020), ALBERT](https://arxiv.org/abs/1909.11942).
+- [Sanh et al. (2019), DistilBERT](https://arxiv.org/abs/1910.01108).
+- [Liu et al. (2019), RoBERTa](https://arxiv.org/abs/1907.11692).

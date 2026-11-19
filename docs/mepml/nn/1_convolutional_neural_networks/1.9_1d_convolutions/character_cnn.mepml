@@ -107,9 +107,6 @@ int main() {
 }
 ```
 // result_begin:
-// Original MR fit:1000 aligned word/character observations
-// Original MR validation:200 aligned word/character observations
-// Original MR test:200 aligned word/character observations
 // result_end
 
 Take the last256 source bytes,reverse them,and lowercase ASCII letters only.

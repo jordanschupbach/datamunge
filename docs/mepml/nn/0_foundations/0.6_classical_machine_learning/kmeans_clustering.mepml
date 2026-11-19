@@ -155,6 +155,66 @@ First-start inertia 22.400716390; best of eight 22.400716390.
 // result_end
 
 
+> Seeded Lloyd restarts
+
+The upstream four-cloud fixture uses eight seeds per initialization rule.
+Compare inertia immediately after initialization and after Lloyd updates.
+For the best fit, match each learned center to its nearest generating
+center before checking assignments, since cluster IDs can be permuted.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  std::mt19937 rng(83);
+  std::normal_distribution<float> noise(0,.35f);
+  const std::array<std::array<float,2>,4> truth{{{-3,-3},{-3,3},{3,-3},{3,3}}};
+  std::vector<float> values;
+  for(int i=0;i<600;++i)
+    for(int j=0;j<2;++j) values.push_back(truth[i%4][j]+noise(rng));
+  const auto x=n::from_vector(values,{600,2});
+  n::ml::KMeans model(2);
+  std::array<double,2> initial{},best{1e100,1e100};
+  n::ml::KMeansStep selected;
+  for(bool plus:{false,true}) {
+    for(int seed=0;seed<8;++seed) {
+      auto fit=model.Step(x,model.Initialize(x,4,seed,plus));
+      initial[plus]+=fit.inertia/8.;
+      for(int step=0;step<30;++step) {
+        const auto next=model.Step(x,fit.centers);
+        if(!std::isfinite(next.inertia)||next.inertia>fit.inertia+1e-3)
+          throw std::runtime_error("Lloyd inertia increased");
+        fit=next;
+      }
+      if(fit.inertia<best[plus]) {
+        best[plus]=fit.inertia;
+        if(plus) selected=fit;
+      }
+    }
+  }
+  if(!(initial[1]<initial[0])||std::abs(best[1]-best[0])>.001)
+    throw std::runtime_error("Initialization comparison differs");
+  std::array<int,4> labels{};
+  for(int c=0;c<4;++c) {
+    double distance=1e100;
+    for(int j=0;j<4;++j) {
+      const double d=std::hypot(selected.centers.at({c,0})-truth[j][0],
+                                selected.centers.at({c,1})-truth[j][1]);
+      if(d<distance) { distance=d; labels[c]=j; }
+    }
+    if(distance>.15||selected.counts.at({c})!=150) throw std::runtime_error("Incorrect center or count");
+  }
+  const auto ids=selected.labels.to_vector<int>();
+  for(int i=0;i<600;++i)
+    if(labels.at(ids[i])!=i%4) throw std::runtime_error("Wrong cloud assignment");
+  std::print("Mean starting inertia: random {:.2f}, k-means++ {:.2f}. Best inertia {:.2f}; 600 cloud assignments correct.\n",
+             initial[0],initial[1],best[1]);
+}
+```
+// result_begin: markdown
+Mean starting inertia: random 7139.16, k-means++ 301.79. Best inertia 144.43; 600 cloud assignments correct.
+// result_end
+
 > Conclusion
 
 The tiny partition recovers the expected means and squared-distance total. Additional starts

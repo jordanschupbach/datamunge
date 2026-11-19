@@ -1,0 +1,87 @@
+//? Title: Longformer and BigBird window attention on MNIST
+//? Lang: en
+
+> Longformer and BigBird window attention on MNIST
+
+A global class token reads every patch. Each patch reads that global
+token and the nearby patches within two positions of itself.
+Longformer uses separate query, key and value projections for the
+global query. BigBird shares the projections and adds two distinct
+seeded random connections outside each patch's local window.
+
+The attention computations pack only candidate keys and values for the
+local rows. The saved traces contain the full global row followed by
+one fixed-width candidate row per patch. Invalid edge slots have zero
+probability. Both models train on the same MNIST split. The plot
+compares validation loss across three epochs.
+
+```{cpp, results="markdown", file="figures/window_attention_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n=dm::nn;
+  const auto root=std::filesystem::path(dm::datasets::prepare_example_data("mnist-assets"))/"mnist";
+  const auto train=n::load_mnist(root.string(),"train");
+  const auto test=n::load_mnist(root.string(),"test");
+  std::vector<int> train_ids(60000),test_ids(10000);
+  std::iota(train_ids.begin(),train_ids.end(),0);
+  std::iota(test_ids.begin(),test_ids.end(),0);
+  std::mt19937 rng(41434);
+  std::shuffle(train_ids.begin(),train_ids.end(),rng);
+  std::shuffle(test_ids.begin(),test_ids.end(),rng);
+  const auto ids=[](const std::vector<int>& order,int from,int count) {
+    return n::from_vector(std::vector<int>(order.begin()+from,order.begin()+from+count));
+  };
+  const auto fit=ids(train_ids,0,1024),valid=ids(train_ids,1024,256),held=ids(test_ids,0,256);
+  const auto x=n::gather(train.images,fit),y=n::gather(train.labels,fit);
+  const auto vx=n::gather(train.images,valid),vy=n::gather(train.labels,valid);
+  const auto tx=n::gather(test.images,held),ty=n::gather(test.labels,held);
+  auto plot=dm::graphics::RPlot::create();
+  std::print("| Model | Validation NLL, epochs 1–3 | Test NLL | Correct out of 256 |\n|---|---|---:|---:|\n");
+  for (bool big_bird:{false,true}) {
+    const std::string name=big_bird ? "big_bird" : "longformer";
+    n::ParameterStore params(41433);
+    const auto predict=[&](const n::Tensor& image) {
+      return big_bird ? n::mnist_big_bird(params,image) : n::mnist_longformer(params,image);
+    };
+    (void)predict(n::slice_axis(x,0,0,1));
+    n::Optimizer optimizer(params,.003,{.kind=n::OptimizerKind::Adam});
+    n::BatchOrder batches(1024,32,41435);
+    std::vector<double> curve;
+    for (int epoch=0;epoch<3;++epoch) {
+      batches.begin_epoch();
+      for (auto rows=batches.next();!rows.empty();rows=batches.next()) {
+        const auto batch=n::from_vector(rows);
+        const auto loss=n::sparse_softmax_cross_entropy(predict(n::gather(x,batch)).logits,n::gather(y,batch));
+        optimizer.step(n::grad(loss,optimizer.parameters()));
+      }
+      const n::NoGradGuard guard;
+      curve.push_back(n::sparse_softmax_cross_entropy(predict(vx).logits,vy).item());
+    }
+    const n::NoGradGuard guard;
+    const auto result=predict(tx);
+    const auto nll=n::sparse_softmax_cross_entropy(result.logits,ty);
+    const int correct=n::sum(n::equal(n::argmax(result.logits,1),ty).to(n::DType::Int32)).item<int>();
+    std::print("| {} | {:.6f}, {:.6f}, {:.6f} | {:.6f} | {} |\n",
+               name,curve[0],curve[1],curve[2],nll.item(),correct);
+    const std::filesystem::path out="build/window_attention_digits/"+name;
+    std::filesystem::create_directories(out);
+    params.save((out/"weights.npz").string());
+    n::save_npz((out/"audit.npz").string(),{{"fit_ids",fit},{"validation_ids",valid},{"test_ids",held},
+        {"pixels",tx},{"labels",ty},{"patches",result.patches},{"embedded",result.embedded},
+        {"logits",result.logits},{"nll",nll},
+        {"packed_attention0",result.attention[0]},{"packed_attention1",result.attention[1]}});
+    plot.lines({1,2,3},curve,big_bird ? "BigBird" : "Longformer",
+        big_bird ? dm::graphics::RGB{217,96,26} : dm::graphics::RGB{37,99,235});
+  }
+  plot.title("Window attention on MNIST").x_label("Epoch").y_label("Nats per image")
+      .size(800,460).save_svg("build/window_attention_digits.svg");
+}
+```
+// result_begin: markdown
+| Model | Validation NLL, epochs 1–3 | Test NLL | Correct out of 256 |
+|---|---|---:|---:|
+| longformer | 1.563956, 1.075274, 0.913595 | 1.038094 | 161 |
+| big_bird | 1.693242, 1.217948, 1.057618 | 1.039794 | 167 |
+\image(figures/window_attention_digits.svg)
+// result_end

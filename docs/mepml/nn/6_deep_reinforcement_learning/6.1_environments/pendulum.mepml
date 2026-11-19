@@ -37,7 +37,7 @@ int main(){namespace e=dm::rl::environments;std::filesystem::create_directories(
 
 > Complete source experiment
 
-The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. These are compact teaching simulations; throughput varies with machine load, and the source visual replay is represented by native figures and a Snake filmstrip rather than an external video recorder.
+The source seeds, episode counts, controls and checks are preserved. Every rollout and policy loop is visible here, using canonical C++ environment objects. The recorded demonstrations use the original policy and reset seed.
 
 ```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -lpthread -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -49,9 +49,7 @@ The source seeds, episode counts, controls and checks are preserved. Every rollo
 // by pushing along the current rotation, then catch it at the top. Reward is
 // minus a quadratic cost, so the best possible episode return is 0 and a
 // random policy scores around -1200. The environment is
-// common/rl/classic_control.hpp (copied from tflow, TF-free). The vsim video is
-// omitted: the filmed episode is played without a video
-// (common/rl/playback.hpp) and checks are added.
+// implemented by the native Pendulum environment. The swing-up is recorded below.
 
 
 // Editable workflow support: checks.hpp
@@ -132,8 +130,7 @@ using datamunge::rl::environments::Acrobot;
 
 // Editable workflow support: rl/hud.hpp
 // datamunge::nn port of tflow_examples src/common/rl/hud.h: Decision, its helpers and the Hud
-// state are copied unchanged; DrawHud (drawing onto a video::Canvas) is dropped, since video
-// recording is out of scope for the ports. Policies written for tflow's recorders still compile.
+// state retain the source policy choices and reward information.
 // The overlay on the videos: the move the agent makes and what it expects.
 //
 // A Decision is one move as the agent explains it: the action, the estimate
@@ -311,13 +308,7 @@ struct Hud {
 // Editable workflow support: rl/playback.hpp
 // datamunge::nn port helper standing in for tflow's src/common/rl/vsim_studio.h recorders.
 //
-// tflow films episodes with vsim's renderer and ffmpeg (RecordEpisode); both are out of scope
-// for the datamunge ports. PlayEpisode runs exactly the episode RecordEpisode would film (same
-// reset seed, the same Decide/Hud bookkeeping, one env step per loop) without a video and prints
-// the same summary line, so the steps and return can be compared with tflow's "recorded ..."
-// line. tflow's recorder also stops when the film reaches `max_frames`; frames are not steps
-// (they depend on the world's frame rate), so PlayEpisode ignores that cap: for every episode
-// the 6.1 examples film, the episode ends before the film is full.
+// This playback check independently re-runs the episode for its return.
 
 
 
@@ -356,7 +347,7 @@ Playback PlayEpisode(Env& env, PolicyFn&& policy, const std::string& name, uint6
     after_step(static_cast<const Env&>(env), static_cast<const Hud&>(pb.hud));
     if (r.done()) break;
   }
-  std::printf("  played %s (video omitted): %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
+  std::printf("  played %s: %d steps, return %.1f\n", name.c_str(), pb.steps, pb.ret);
   return pb;
 }
 
@@ -506,7 +497,7 @@ int main() {
     }
     std::printf("  return %.1f\n", ret);
     const float final_theta = std::atan2(obs[1], obs[0]);
-    std::cout << "\n-- The same episode replayed (tflow films it in the pendulum's 3D world; video omitted)\n";
+    std::cout << "\n-- The same episode replayed\n";
     const rl::Playback pb = rl::PlayEpisode(env, SwingUp, "pendulum_energy_swing_up", 2);
 
     check::Require(random.mean_return() < -900.f, "a random policy should score far below zero (about -1200)");
@@ -514,7 +505,33 @@ int main() {
                    "the swing-up controller should average above -300 and balance perfectly from some starts");
     check::Require(std::abs(final_theta) < 0.01f, "the traced episode should end upright");
     check::Require(pb.steps == 200 && std::abs(pb.ret - ret) < 1e-3f, "the replay should reproduce the traced episode");
-    std::cout << "\nchecks passed (vsim video omitted)\n";
+
+    {
+      const std::string name = "pendulum_energy_swing_up";
+      auto observation = env.reset(2);
+      const auto pose = [](const rl::Obs& o) -> std::array<float, 3> { return {0, std::atan2(o[1], o[0]), 0}; };
+      std::vector<std::array<float, 3>> samples{pose(observation)};
+      std::vector<float> observations = observation, rewards;
+      while (true) {
+        const auto result = env.step((SwingUp)(observation));
+        observation = result.obs;
+        samples.push_back(pose(observation));
+        observations.insert(observations.end(), observation.begin(), observation.end());
+        rewards.push_back(result.reward);
+        if (result.done()) break;
+      }
+      std::filesystem::create_directories("build");
+      std::filesystem::create_directories("figures");
+      dm::rl::environments::save_linkage_replay(
+          dm::rl::environments::LinkageReplay::Pendulum, samples, "build/" + name + ".mp4");
+      std::filesystem::copy_file("build/" + name + ".mp4", "figures/" + name + ".mp4",
+                                 std::filesystem::copy_options::overwrite_existing);
+      dm::nn::save_npz("build/" + name + "_replay.npz",
+          {{"observations", dm::nn::from_vector(observations,
+                 {static_cast<std::int64_t>(samples.size()), static_cast<std::int64_t>(observation.size())})},
+            {"reward", dm::nn::from_vector(rewards)}});
+    }
+    std::cout << "\nchecks passed\n";
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;
@@ -540,10 +557,10 @@ int main() {
 //   t=199 theta=+0.00 theta_dot=-0.00 reward=-0.000
 //   return -231.3
 //
-// -- The same episode replayed (tflow films it in the pendulum's 3D world; video omitted)
-//   played pendulum_energy_swing_up (video omitted): 200 steps, return -231.3
+// -- The same episode replayed
+//   played pendulum_energy_swing_up: 200 steps, return -231.3
 //
-// checks passed (vsim video omitted)
+// checks passed
 // result_end
 
 > A fixed-action diagnostic trajectory
@@ -562,3 +579,7 @@ int main(){namespace e=dm::rl::environments;e::Pendulum env;auto observation=env
 > Interpretation
 
 The source checks report reproducibility and the stated control comparisons. Distinguish the displayed fixed-action diagnostics from the original policies, MDP terminality from time-limit truncation, expected reward from sampled return, and a legal game move from an arbitrary action index. All policies and episode loops remain editable here.
+
+> Seeded policy replay
+
+\video(figures/pendulum_energy_swing_up.mp4)
