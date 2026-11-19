@@ -9,6 +9,12 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-19 — Native plotting gallery. Documented 18 RPlot layers with
+  compiled examples and verified their parameter descriptions in Doxygen XML.
+  The plotting regression suite passes 84 tests. Eight editable gallery
+  programs execute and export their SVGs through MEpML to HTML and Org.
+  See [the gallery plan and examples](mepml/graphics/plotting/gallery.mepml).
+
 - 2026-11-19 — RL² recurrent policy. The header documents 2/2
   definitions. Native checks verify output shapes and episode-boundary
   resets. The report independently reconstructs recurrent states,

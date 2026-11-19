@@ -676,3 +676,68 @@ TEST(Plot, LongManualAndAutomaticLegendsFitWithoutDroppingText) {
   }
   std::filesystem::remove(path);
 }
+
+TEST(Plot, ChartLayersPreserveStepsAndUncertaintyGeometry) {
+  auto plot = RPlot::create();
+  plot.steps({0, 2, 5}, {1, 3, 2})
+      .ribbon({0, 2}, {1, 2}, {3, 4})
+      .error_bars({2}, {1}, {4}, .5);
+  ASSERT_EQ(plot.series().size(), 3u);
+  EXPECT_EQ(plot.series()[0].x, (std::vector<double>{0, 2, 2, 5, 5}));
+  EXPECT_EQ(plot.series()[0].y, (std::vector<double>{1, 1, 3, 3, 2}));
+  EXPECT_EQ(plot.series()[1].y, (std::vector<double>{3, 4, 2, 1}));
+  EXPECT_EQ(plot.series()[2].x, (std::vector<double>{2, 2, 1.75, 2.25, 1.75, 2.25}));
+  EXPECT_THROW(plot.ribbon({0, 1}, {1, 4}, {3, 2}), std::invalid_argument);
+  EXPECT_THROW(plot.steps({0, 0}, {1, 2}), std::invalid_argument);
+  EXPECT_THROW(plot.error_bars({0, 1}, {0, 2}, {1, 1}), std::invalid_argument);
+  EXPECT_EQ(plot.series().size(), 3u);
+}
+
+TEST(Plot, ChartLayersKeepSignedBarBaselinesAndWaterfallTotals) {
+  auto plot = RPlot::create();
+  plot.stacked_bars({0}, {{4}, {-3}, {1}, {-2}}, {"A", "B", "C", "D"});
+  ASSERT_EQ(plot.series().size(), 4u);
+  EXPECT_EQ(plot.series()[1].y, (std::vector<double>{-3, -3, 0, 0}));
+  EXPECT_EQ(plot.series()[2].y, (std::vector<double>{4, 4, 5, 5}));
+  EXPECT_EQ(plot.series()[3].y, (std::vector<double>{-5, -5, -3, -3}));
+  EXPECT_EQ(plot.series()[3].label, "D");
+
+  auto waterfall = RPlot::create().waterfall({0, 1, 2}, {5, -2, 3});
+  EXPECT_EQ(waterfall.series()[1].y, (std::vector<double>{3, 3, 5, 5}));
+  EXPECT_EQ(waterfall.series()[2].y, (std::vector<double>{3, 3, 6, 6}));
+  EXPECT_THROW(plot.grouped_bars({0, 1}, {{1, 2}, {3}}), std::invalid_argument);
+  EXPECT_EQ(plot.series().size(), 4u);
+}
+
+TEST(Plot, DistributionLayersCombineTiesAndMirrorDensity) {
+  auto plot = RPlot::create().ecdf({3, 1, 3, 2});
+  EXPECT_EQ(plot.series()[0].x, (std::vector<double>{1, 1, 2, 2, 3, 3}));
+  EXPECT_EQ(plot.series()[0].y, (std::vector<double>{0, .25, .25, .5, .5, 1}));
+  plot.violin(5, {-1, 0, 1}, 2);
+  const auto& violin = plot.series()[1];
+  EXPECT_NEAR(*std::ranges::min_element(violin.x), 4, 1e-12);
+  EXPECT_NEAR(*std::ranges::max_element(violin.x), 6, 1e-12);
+  for (std::size_t i = 0; i < violin.x.size() / 2; ++i) {
+    const auto j = violin.x.size() - 1 - i;
+    EXPECT_NEAR(violin.x[i] + violin.x[j], 10, 1e-12);
+    EXPECT_EQ(violin.y[i], violin.y[j]);
+  }
+  EXPECT_THROW(plot.density({1}), std::invalid_argument);
+}
+
+TEST(Plot, FieldLayersMapNonuniformGridsAndIgnoreZeroSizeMarks) {
+  auto plot = RPlot::create().contour({10, 20, 40}, {-3, 5}, {{0, 2, 4}, {0, 2, 4}}, 3);
+  ASSERT_EQ(plot.series().size(), 1u);
+  EXPECT_EQ(plot.series()[0].x, (std::vector<double>{30, 30}));
+  EXPECT_EQ(std::minmax(plot.series()[0].y[0], plot.series()[0].y[1]).first, -3);
+  EXPECT_EQ(std::minmax(plot.series()[0].y[0], plot.series()[0].y[1]).second, 5);
+  plot.arrows({0, 1}, {0, 1}, {0, 2}, {0, 3})
+      .bubbles({1, 2}, {3, 4}, {0, 7}, "Size");
+  EXPECT_EQ(plot.series()[1].x.size(), 6u);
+  EXPECT_DOUBLE_EQ(plot.series()[2].marker_size, 7);
+  EXPECT_EQ(plot.series()[2].label, "Size");
+  EXPECT_NE(plot.to_svg().find("<circle"), std::string::npos);
+  EXPECT_FALSE(plot.to_png().empty());
+  EXPECT_FALSE(plot.to_pdf().empty());
+  EXPECT_THROW(plot.contour({0, 1}, {0, 1}, {{0, 1}}, 0), std::invalid_argument);
+}

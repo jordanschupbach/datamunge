@@ -150,7 +150,45 @@ std::pair<std::vector<double>, std::vector<double>> gaussian_kde(std::vector<dou
   return {grid, density};
 }
 
+/// @brief Evaluates the shared Gaussian KDE after checking the public RPlot input.
+/// @param sample At least two finite observations.
+/// @return Grid and density values in increasing grid order.
+/// @throws std::invalid_argument If the sample or computed estimate is invalid.
+std::pair<std::vector<double>, std::vector<double>> checked_density(const std::vector<double>& sample) {
+  if (sample.size() < 2 || !std::ranges::all_of(sample, [](double value) { return std::isfinite(value); })) {
+    throw std::invalid_argument("density: need at least two finite observations");
+  }
+  auto [grid, values] = gaussian_kde(sample);
+  if (!std::ranges::all_of(grid, [](double value) { return std::isfinite(value); }) ||
+      !std::ranges::all_of(values, [](double value) { return std::isfinite(value); })) {
+    throw std::invalid_argument("density: sample scale is outside the supported range");
+  }
+  return {std::move(grid), std::move(values)};
+}
+
 } // namespace
+
+RPlot& RPlot::density(const std::vector<double>& sample, std::string label, RGBA color) {
+  auto [grid, values] = checked_density(sample);
+  return line(std::move(grid), std::move(values), std::move(label), color);
+}
+
+RPlot& RPlot::violin(double position, const std::vector<double>& sample, double width, RGBA color) {
+  if (!std::isfinite(position) || !(width > 0) || !std::isfinite(width) ||
+      !std::isfinite(position + width / 2) || !std::isfinite(position - width / 2)) {
+    throw std::invalid_argument("violin: center and width must define finite bounds and width must be positive");
+  }
+  auto [grid, values] = checked_density(sample);
+  const double peak = *std::ranges::max_element(values);
+  if (!(peak > 0)) throw std::invalid_argument("violin: expected a positive density");
+  std::vector<double> px, py = grid;
+  for (const auto value : values) px.push_back(position + (value / peak) * (width / 2));
+  for (auto it = values.rbegin(); it != values.rend(); ++it) {
+    px.push_back(position - (*it / peak) * (width / 2));
+  }
+  py.insert(py.end(), grid.rbegin(), grid.rend());
+  return polygon(std::move(px), std::move(py), color);
+}
 
 GGPlot GGPlot::create(const dstruct::DataFrame& data, Aes mapping) {
   GGPlot g;

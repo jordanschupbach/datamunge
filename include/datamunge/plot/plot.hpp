@@ -2005,6 +2005,464 @@ class RPlot : public Plot {
                   std::vector<double> y1,
                   RGBA                 color = {0, 0, 0},
                   double              stroke_width = 1.0);
+
+  /// @brief Adds a right-continuous step line.
+  ///
+  /// Each interval holds its left value until the next x. Requires strictly increasing x.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates.
+  /// @param label Optional legend label.
+  /// @param color Mark color.
+  /// @param stroke_width Stroke width in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().steps({0, 1}, {2, 4});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  RPlot& steps(const std::vector<double>& x,
+               const std::vector<double>& y,
+               std::string label = "",
+               RGBA color = {37, 99, 235},
+               double stroke_width = 2.0);
+
+  /// @brief Adds vertical sticks from a baseline.
+  ///
+  /// One stick per (x, y) pair. Negative excursions are drawn below the baseline.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates.
+  /// @param baseline Baseline in y data units.
+  /// @param color Mark color.
+  /// @param stroke_width Stroke width in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().stems({0, 1}, {-2, 4});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  RPlot& stems(const std::vector<double>& x,
+               const std::vector<double>& y,
+               double baseline = 0.0,
+               RGBA color = {37, 99, 235},
+               double stroke_width = 2.0);
+
+  /// @brief Adds a stem and marker per observation.
+  ///
+  /// Markers sit at the observations and share the stem color.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates.
+  /// @param baseline Baseline in y data units.
+  /// @param color Mark color.
+  /// @param marker_size Marker radius in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().lollipop({0, 1}, {2, 4});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& lollipop(const std::vector<double>& x,
+                  const std::vector<double>& y,
+                  double baseline = 0.0,
+                  RGBA color = {37, 99, 235},
+                  double marker_size = 4.0);
+
+  /// @brief Fills the area between a curve and a baseline.
+  ///
+  /// Requires strictly increasing x and at least two samples. Supports excursions above and below the baseline.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates.
+  /// @param baseline Baseline in y data units.
+  /// @param color Fill color, including opacity.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().area({0, 1}, {2, 4});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://ggplot2.tidyverse.org/reference/geom_ribbon.html
+  RPlot& area(const std::vector<double>& x,
+              const std::vector<double>& y,
+              double baseline = 0.0,
+              RGBA color = {37, 99, 235, 0.35});
+
+  /// @brief Fills the band between lower and upper curves.
+  ///
+  /// Requires at least two strictly increasing x coordinates and lower <= upper at each x.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param lower Lower endpoint at each x.
+  /// @param upper Upper endpoint at each x.
+  /// @param color Fill color, including opacity.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().ribbon({0, 1}, {1, 2}, {3, 4});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://ggplot2.tidyverse.org/reference/geom_ribbon.html
+  RPlot& ribbon(const std::vector<double>& x,
+                const std::vector<double>& lower,
+                const std::vector<double>& upper,
+                RGBA color = {37, 99, 235, 0.35});
+
+  /// @brief Adds vertical intervals with horizontal end caps.
+  ///
+  /// A zero cap width draws plain intervals. Lower endpoints must be <= upper endpoints.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param lower Lower endpoint at each x.
+  /// @param upper Upper endpoint at each x.
+  /// @param cap_width Full cap width in x data units.
+  /// @param color Mark color.
+  /// @param stroke_width Stroke width in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().error_bars({1}, {2}, {4});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://ggplot2.tidyverse.org/reference/geom_linerange.html
+  RPlot& error_bars(const std::vector<double>& x,
+                    const std::vector<double>& lower,
+                    const std::vector<double>& upper,
+                    double cap_width = 0.12,
+                    RGBA color = {37, 99, 235},
+                    double stroke_width = 2.0);
+
+  /// @brief Adds filled rectangles defined by data-space bounds.
+  ///
+  /// One rectangle per matched row. Lower bounds must be <= corresponding upper bounds.
+  ///
+  /// @param left Left x bounds.
+  /// @param bottom Lower y bounds.
+  /// @param right Right x bounds.
+  /// @param top Upper y bounds.
+  /// @param label Optional legend label.
+  /// @param color Fill color, including opacity.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().rectangles({0}, {1}, {2}, {3});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+  RPlot& rectangles(const std::vector<double>& left,
+                    const std::vector<double>& bottom,
+                    const std::vector<double>& right,
+                    const std::vector<double>& top,
+                    std::string label = "",
+                    RGBA color = {37, 99, 235, 0.35});
+
+  /// @brief Adds horizontal bars anchored at x = 0.
+  ///
+  /// Positions are y centers. Negative values extend left of zero.
+  ///
+  /// @param positions Bar centers along y.
+  /// @param values Bar ends along x.
+  /// @param label Optional legend label.
+  /// @param color Mark color.
+  /// @param bar_height Bar height in y data units.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().horizontal_bars({0, 1}, {2, -4});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& horizontal_bars(const std::vector<double>& positions,
+                         const std::vector<double>& values,
+                         std::string label = "",
+                         RGBA color = {37, 99, 235},
+                         double bar_height = 0.8);
+
+  /// @brief Adds adjacent bars for multiple series at each category.
+  ///
+  /// Uses equal subdivisions of the group width. All rows must match the category count.
+  /// Labels, if supplied, must match the series count. An empty palette uses default colors.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param values One row per series, one column per category.
+  /// @param labels Optional series labels.
+  /// @param colors Optional palette, recycled across series.
+  /// @param group_width Total group width in x data units.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().grouped_bars({0, 1}, {{1, 2}, {3, 4}});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+  RPlot& grouped_bars(const std::vector<double>& x,
+                      const std::vector<std::vector<double>>& values,
+                      const std::vector<std::string>& labels = {},
+                      const std::vector<RGBA>& colors = {},
+                      double group_width = 0.8);
+
+  /// @brief Stacks positive and negative values separately from zero.
+  ///
+  /// All rows must match the category count. Labels, if supplied, must match the series count.
+  /// An empty palette uses default colors.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param values One row per series, one column per category.
+  /// @param labels Optional series labels.
+  /// @param colors Optional palette, recycled across series.
+  /// @param bar_width Stack width in x data units.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().stacked_bars({0}, {{2}, {-1}});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+  RPlot& stacked_bars(const std::vector<double>& x,
+                      const std::vector<std::vector<double>>& values,
+                      const std::vector<std::string>& labels = {},
+                      const std::vector<RGBA>& colors = {},
+                      double bar_width = 0.8);
+
+  /// @brief Adds floating bars for cumulative changes.
+  ///
+  /// Bars span the previous and next total in input order, starting at zero.
+  /// Requires strictly increasing x.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param changes Signed increments, in order.
+  /// @param bar_width Bar width in x data units.
+  /// @param increase Fill for nonnegative changes.
+  /// @param decrease Fill for negative changes.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().waterfall({0, 1}, {4, -2});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& waterfall(const std::vector<double>& x,
+                   const std::vector<double>& changes,
+                   double bar_width = 0.8,
+                   RGBA increase = {22, 163, 74},
+                   RGBA decrease = {220, 38, 38});
+
+  /// @brief Adds an empirical cumulative distribution step line.
+  ///
+  /// Sorts the sample and combines ties into one jump. The curve spans the sample extrema.
+  /// Its value after each jump is the fraction of observations at or below that sample value.
+  ///
+  /// @param sample Finite observations, in any order.
+  /// @param label Optional legend label.
+  /// @param color Mark color.
+  /// @param stroke_width Stroke width in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().ecdf({1, 1, 2});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ecdf.html
+  RPlot& ecdf(std::vector<double> sample,
+              std::string label = "",
+              RGBA color = {37, 99, 235},
+              double stroke_width = 2.0);
+
+  /// @brief Adds short vertical ticks at observed x values.
+  ///
+  /// Tick endpoints are in data coordinates and contribute to automatic limits.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param bottom Starting y coordinate.
+  /// @param top Ending y coordinate, which must differ from bottom.
+  /// @param color Mark color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().rug({1, 2});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rug.html
+  RPlot& rug(const std::vector<double>& x,
+             double bottom = 0.0,
+             double top = 0.05,
+             RGBA color = {37, 99, 235});
+
+  /// @brief Adds a Gaussian kernel density estimate.
+  ///
+  /// Uses the GGPlot density bandwidth rule and 200 equally spaced evaluation points.
+  /// Requires at least two observations.
+  ///
+  /// @param sample Finite observations, in any order.
+  /// @param label Optional legend label.
+  /// @param color Mark color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().density({1, 2, 3});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html
+  RPlot& density(const std::vector<double>& sample,
+                 std::string label = "",
+                 RGBA color = {37, 99, 235});
+
+  /// @brief Adds a vertical mirrored kernel density for one sample.
+  ///
+  /// Uses the same estimator as density(). Each violin is scaled to its own peak.
+  /// Requires at least two observations.
+  ///
+  /// @param position Center in x data units.
+  /// @param sample Finite observations, in any order.
+  /// @param width Full width at peak density, in x data units.
+  /// @param color Fill color, including opacity.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().violin(0, {1, 2, 3});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://ggplot2.tidyverse.org/reference/geom_violin.html
+  RPlot& violin(double position,
+                const std::vector<double>& sample,
+                double width = 0.8,
+                RGBA color = {37, 99, 235, 0.35});
+
+  /// @brief Adds markers with independently specified radii.
+  ///
+  /// Marker areas grow with radius squared. A radius of zero omits the observation.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates.
+  /// @param radii Nonnegative marker radii in pixels.
+  /// @param label Optional legend label.
+  /// @param color Fill color, including opacity.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().bubbles({1, 2}, {3, 4}, {5, 9});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& bubbles(const std::vector<double>& x,
+                 const std::vector<double>& y,
+                 const std::vector<double>& radii,
+                 std::string label = "",
+                 RGBA color = {37, 99, 235, 0.35});
+
+  /// @brief Adds one arrow for each data-space displacement vector.
+  ///
+  /// The two head strokes are computed in data coordinates, so axis scaling affects their
+  /// displayed angles. Zero-length arrows are omitted.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates.
+  /// @param dx Horizontal displacements.
+  /// @param dy Vertical displacements.
+  /// @param head_fraction Backward head length as a fraction of the shaft, in [0, 1].
+  /// @param color Mark color.
+  /// @param stroke_width Stroke width in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().arrows({0}, {0}, {1}, {2});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/arrows.html
+  RPlot& arrows(const std::vector<double>& x,
+                const std::vector<double>& y,
+                const std::vector<double>& dx,
+                const std::vector<double>& dy,
+                double head_fraction = 0.22,
+                RGBA color = {37, 99, 235},
+                double stroke_width = 2.0);
+
+  /// @brief Adds the contour of a sampled scalar field at a given level.
+  ///
+  /// Uses marching squares, mapping tile intersections to the supplied coordinates.
+  /// A level with no intersections adds no marks. Requires two increasing coordinates per axis.
+  ///
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates.
+  /// @param z Finite grid indexed as z[y index][x index].
+  /// @param level Scalar contour level.
+  /// @param color Mark color.
+  /// @param stroke_width Stroke width in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty, nonfinite, mismatched or invalid inputs.
+  /// @throws std::length_error If the grid geometry is unrepresentable.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().contour({0, 1}, {0, 1}, {{0, 1}, {0, 1}}, 0.5);
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/contour.html
+  RPlot& contour(const std::vector<double>& x,
+                 const std::vector<double>& y,
+                 const std::vector<std::vector<double>>& z,
+                 double level,
+                 RGBA color = {37, 99, 235},
+                 double stroke_width = 2.0);
 };
 
 /// @brief Tiles independently built plots into one multi-panel figure, like R's

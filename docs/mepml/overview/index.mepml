@@ -16,7 +16,7 @@ Open a title to visit its editable mepml source. The documentation website maps
 these links to generated report pages. Refresh navigation with
 `just docs-report-catalogue`; the website refreshes it before report discovery.
 
-Current inventory: 1311 sources, excluding this navigation page.
+Current inventory: 1312 sources, excluding this navigation page.
 
 > Documentation source: algebra/groups
 
@@ -913,6 +913,7 @@ Current inventory: 1311 sources, excluding this navigation page.
 > Documentation source: graphics/plotting
 
 - [Native plotting across language bindings|../graphics/plotting/plot.mepml] — `docs/mepml/graphics/plotting/plot.mepml`.
+- [Native plotting gallery|../graphics/plotting/gallery.mepml] — `docs/mepml/graphics/plotting/gallery.mepml`.
 
 > Documentation source: graphics/rasterization
 

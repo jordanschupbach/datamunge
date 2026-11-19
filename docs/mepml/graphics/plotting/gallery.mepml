@@ -1,0 +1,292 @@
+//? Title: Native plotting gallery
+//? Exports: both
+//? Lang: en
+
+> Plotting expansion plan
+
+The existing API covers scatter and line plots, categorical bars, histograms,
+box plots, pie charts, normal Q-Q plots, function curves, heatmaps, image grids,
+and scatterplot matrices. GGPlot adds data-frame mappings, faceting, density,
+smoothing, ribbons and areas. RLayout composes independent panels.
+
+- Add named RPlot layers for ordered data and uncertainty: steps, stems,
+  lollipops, areas, ribbons, and capped error bars.
+- Add horizontal, floating, grouped and diverging stacked bars, plus waterfall
+  charts for cumulative changes.
+- Extend distribution plotting with empirical CDFs, rugs, kernel density and
+  violins. Reuse the Gaussian density estimator already used by GGPlot.
+- Add bubble plots, vector arrows and scalar contours. Reuse the native
+  marching-squares algorithm on rectangular grids.
+- Exercise all chart families through complete, editable C++ programs and the
+  shared renderer. Check geometry, invalid inputs, and exported panels.
+
+Remaining gaps include equal-aspect and polar coordinates, transformed axes,
+interactive 3D surfaces, geographic projections and streaming dashboards.
+These need coordinate or rendering support beyond adding chart layers.
+
+\toc
+
+> Relationships, sequences and uncertainty
+
+Use points for paired observations, curves for a sampled function, steps for
+values held until the next time, and stems for discrete impulses. Areas fill
+to a baseline. Ribbons fill between two curves, and error bars show intervals
+at individual observations. Disconnected segments and text can annotate any
+of these plots.
+
+```{cpp, file="figures/plot_gallery_relationships.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datamunge.hpp>
+#include <cmath>
+#include <filesystem>
+
+struct Sine : datamunge::Callback {
+    double call(double x) override { return std::sin(x); }
+};
+
+int main() {
+    using datamunge::Plot;
+    using datamunge::graphics::RLayout;
+    const std::vector<double> x{0, 1, 2, 3, 4, 5};
+    const std::vector<double> y{0.8, 1.4, 1.1, 2.2, 2.6, 2.3};
+    Sine sine;
+    auto figure = RLayout::create(4, 2).size(1120, 1200);
+    figure.add(Plot().points_colored(x, y, {{37, 99, 235}, {234, 88, 12}})
+                    .abline(.8, .35, {100, 116, 139}).title("Scatter and reference line"))
+          .add(Plot::curve(sine, 0, 6.28).abline_h(0).title("Sampled function"))
+          .add(Plot().steps(x, y).title("Step series"))
+          .add(Plot().stems(x, {0.8, -1.4, 1.1, 2.2, -2.6, 2.3}).title("Impulse series"))
+          .add(Plot().area(x, y).lines(x, y).title("Filled area"))
+          .add(Plot().ribbon(x, {0.4, .9, .7, 1.7, 2.1, 1.9}, {1.2, 1.9, 1.5, 2.7, 3.1, 2.7})
+                    .lines(x, y).title("Uncertainty ribbon"))
+          .add(Plot().error_bars(x, {0.5, 1, .9, 1.9, 2, 2}, {1.2, 1.9, 1.7, 2.5, 3, 2.8})
+                    .points(x, y).title("Capped intervals"))
+          .add(Plot().segments({0, 1}, {0, 1}, {1, 2}, {1, 0})
+                    .text(1, 1.2, "Join").ylim(-.1, 1.4).title("Segments and annotation"));
+    std::filesystem::create_directories("build");
+    figure.fit_panels().save_svg("build/plot_gallery_relationships.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_relationships.svg)
+// result_end
+
+> Categories, composition and changes
+
+Grouped bars compare series side by side. Stacked bars accumulate positive
+and negative terms on opposite sides of zero. A waterfall displays consecutive
+changes in a running total. Floating rectangles can also represent time ranges
+in a schedule.
+
+```{cpp, file="figures/plot_gallery_categories.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datamunge.hpp>
+#include <filesystem>
+
+int main() {
+    using datamunge::Plot;
+    using datamunge::graphics::RLayout;
+    const std::vector<double> x{0, 1, 2, 3};
+    const std::vector<double> counts{6, 3, 8, 5};
+    const std::vector<std::string> labels{"North", "East", "South", "West"};
+    const std::vector<std::string> seasons{"Spring", "Autumn"};
+    auto figure = RLayout::create(4, 2).size(1120, 1200);
+    figure.add(Plot::barplot(counts, labels).title("Vertical bars"))
+          .add(Plot().horizontal_bars(x, {6, -3, 8, 5}).y_tick_labels(labels)
+                    .title("Horizontal bars"))
+          .add(Plot().grouped_bars(x, {counts, {4, 7, 5, 6}}, seasons)
+                    .x_tick_labels(labels).title("Grouped bars"))
+          .add(Plot().stacked_bars(x, {{3, -2, 5, -4}, {-2, 4, 2, -1}}, seasons)
+                    .x_tick_labels(labels).title("Diverging stacks"))
+          .add(Plot().waterfall(x, {8, -3, 5, -2})
+                    .x_tick_labels({"Start", "Cost", "Sales", "Fees"}).title("Waterfall"))
+          .add(Plot().lollipop(x, counts).x_tick_labels(labels).title("Lollipop"))
+          .add(Plot().rectangles({0, 1, 3}, {-.3, .7, 1.7}, {2, 4, 5}, {.3, 1.3, 2.3})
+                    .y_tick_labels({"Design", "Build", "Review"}).x_label("Week").title("Schedule"));
+    figure.fit_panels().add(Plot::pie({53, 29, 18}, {"Solar", "Wind", "Hydro"})
+                                .size(360, 360).title("Shares of a total"));
+    std::filesystem::create_directories("build");
+    figure.save_svg("build/plot_gallery_categories.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_categories.svg)
+// result_end
+
+> Distributions and diagnostics
+
+A histogram bins observations. A kernel density estimate smooths them.
+A box plot summarizes quartiles, whiskers and outliers. A violin mirrors a
+density around a category center. The empirical CDF shows the fraction of
+observations at or below each value. A Q-Q plot compares the sample with
+normal quantiles. Rug ticks keep individual observations visible.
+
+```{cpp, file="figures/plot_gallery_distributions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datamunge.hpp>
+#include <filesystem>
+
+int main() {
+    using datamunge::Plot;
+    using datamunge::graphics::RLayout;
+    datamunge::set_seed(207);
+    const auto a = datamunge::rnorm(0, 0.7, 65);
+    const auto b = datamunge::rnorm(0.8, 1.0, 65);
+    auto figure = RLayout::create(3, 2).size(1120, 900);
+    figure.add(Plot::hist(a, 12).title("Frequency histogram"))
+          .add(Plot().density(a).rug(a, 0, .025, {100, 116, 139, .45}).title("Density and rug"))
+          .add(Plot::boxplot({a, b}, {"A", "B"}).title("Box and whisker"))
+          .add(Plot().violin(0, a).violin(1, b, .8, {234, 88, 12, .45})
+                    .x_tick_labels({"A", "B"}).title("Violin distributions"))
+          .add(Plot().ecdf(a, "A").ecdf(b, "B", {234, 88, 12}).title("Empirical CDFs"))
+          .add(Plot::qqnorm(a).qqline(a).title("Normal Q-Q"));
+    std::filesystem::create_directories("build");
+    figure.fit_panels().save_svg("build/plot_gallery_distributions.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_distributions.svg)
+// result_end
+
+> Magnitudes, grids and fields
+
+Bubble radii are specified in pixels. To encode a quantity by marker area,
+pass its square root as the radius after choosing a display scale. A heatmap
+encodes scalar samples as color. A contour traces a level between samples.
+Arrows encode displacement in data coordinates.
+
+```{cpp, file="figures/plot_gallery_fields.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datamunge.hpp>
+#include <cmath>
+#include <filesystem>
+
+int main() {
+    using datamunge::Plot;
+    using datamunge::graphics::RLayout;
+    const auto grid = datamunge::seql(-2., 2., 21);
+    std::vector<std::vector<double>> z(grid.size(), std::vector<double>(grid.size()));
+    std::vector<std::vector<double>> cells = z;
+    for (std::size_t j = 0; j < grid.size(); ++j) {
+        for (std::size_t i = 0; i < grid.size(); ++i) {
+            z[j][i] = std::exp(-grid[i] * grid[i] - .5 * grid[j] * grid[j]);
+            cells[i][j] = z[j][i];
+        }
+    }
+    std::vector<double> x, y, u, v;
+    for (double yi : datamunge::seql(-1.5, 1.5, 7)) {
+        for (double xi : datamunge::seql(-1.5, 1.5, 7)) {
+            x.push_back(xi);
+            y.push_back(yi);
+            u.push_back(-yi / 5);
+            v.push_back(xi / 5);
+        }
+    }
+    auto figure = RLayout::create(2, 2).size(1120, 1000);
+    figure.add(Plot().bubbles({1, 2, 3, 4, 5}, {3, 2, 4, 3, 5}, {6, 9, 12, 16, 22})
+                    .title("Bubble magnitudes"))
+          .add(Plot().image(grid, grid, cells, datamunge::graphics::viridis_colors(32)).title("Scalar heatmap"))
+          .add(Plot().contour(grid, grid, z, .2).contour(grid, grid, z, .45)
+                    .contour(grid, grid, z, .75).xlim(-2, 2).ylim(-2, 2).title("Scalar contours"))
+          .add(Plot().arrows(x, y, u, v).xlim(-2, 2).ylim(-2, 2).title("Vector field"));
+    std::filesystem::create_directories("build");
+    figure.fit_panels().save_svg("build/plot_gallery_fields.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_fields.svg)
+// result_end
+
+> Data-frame mappings and facets
+
+Use GGPlot to name columns in a data frame. This example combines a
+fitted trend, connected observations and point marks, with a separate
+panel for each series. GGPlot also exposes histogram, box, count bar,
+value bar, density, area and ribbon geoms for the chart families above.
+
+```{cpp, file="figures/plot_gallery_facets.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datamunge.hpp>
+#include <filesystem>
+
+int main() {
+    datamunge::dstruct::DataFrame data;
+    data.add_column("time", std::vector<double>{1, 2, 3, 4, 5, 1, 2, 3, 4, 5});
+    data.add_column("value", std::vector<double>{3, 4, 3.8, 5, 5.2, 3.5, 3.8, 4.1, 4.0, 4.7});
+    data.add_column("series", std::vector<std::string>{"A", "A", "A", "A", "A", "B", "B", "B", "B", "B"});
+    auto plot = datamunge::graphics::GGPlot::create(data, {.x = "time", .y = "value"});
+    plot.geom_line({100, 116, 139}).geom_point().geom_smooth().facet_wrap("series", 2)
+        .theme_minimal().labs("Trends by series", "Time", "Value");
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/plot_gallery_facets.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_facets.svg)
+// result_end
+
+> Scatterplot matrices
+
+A mixed-type scatterplot matrix uses quantitative scatter and trend panels,
+categorical distributions and mixed-type violins. Diagonal panels summarize
+columns. Group colors can be mapped to a categorical column.
+
+```{cpp, file="figures/plot_gallery_matrix.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datamunge.hpp>
+#include <datamunge/plot/splom.hpp>
+#include <filesystem>
+
+int main() {
+    datamunge::set_seed(52);
+    auto x = datamunge::rnorm(0, 1, 70);
+    auto y = 1.2 * x + datamunge::rnorm(0, .55, 70);
+    std::vector<std::string> group;
+    for (double value : x) group.push_back(value < 0 ? "A" : "B");
+    datamunge::dstruct::DataFrame data;
+    data.add_column("Input", x);
+    data.add_column("Response", y);
+    data.add_column("Group", group);
+    auto plot = datamunge::graphics::Splom::create(data, {"Input", "Response", "Group"});
+    plot.group_by("Group").title("Mixed-type scatterplot matrix");
+    std::filesystem::create_directories("build");
+    plot.save("build/plot_gallery_matrix.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_matrix.svg)
+// result_end
+
+> Raster and label images
+
+Image diagrams preserve square pixels and align panels for comparison.
+Grayscale panels use fixed intensity values. Discrete label panels use one
+color per class, so adjacent integer labels remain visually distinct.
+
+```{cpp, file="figures/plot_gallery_pixels.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datamunge.hpp>
+#include <datamunge/plot/grayscale_images.hpp>
+#include <filesystem>
+
+int main() {
+    const auto image = datamunge::graphics::diagram_grayscale_images({
+        {{{0, 32, 120, 185, 255}, {32, 67, 130, 220, 255}, {100, 130, 170, 230, 255}}, "Intensity"},
+        {{{0, 0, 0, 255, 255}, {0, 0, 255, 255, 255}, {0, 255, 255, 255, 255}}, "Thresholded"}
+    }, true);
+    std::filesystem::create_directories("build");
+    image.save_svg("build/plot_gallery_pixels.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_pixels.svg)
+// result_end
+
+```{cpp, file="figures/plot_gallery_labels.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/label_images.hpp>
+#include <filesystem>
+
+int main() {
+    const auto labels = datamunge::graphics::diagram_label_images({
+        {{{0, 0, 0, 1, 1}, {0, 0, 2, 1, 1}, {0, 2, 2, 2, 1}}, "Segmentation"}
+    });
+    std::filesystem::create_directories("build");
+    labels.save_svg("build/plot_gallery_labels.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_labels.svg)
+// result_end
