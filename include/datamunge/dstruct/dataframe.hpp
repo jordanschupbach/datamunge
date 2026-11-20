@@ -33,6 +33,8 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <compare>
+#include <concepts>
 #include <cstdint>
 #include <initializer_list>
 #include <limits>
@@ -40,6 +42,7 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <sstream>
 #include <iomanip>
 #include <type_traits>
@@ -559,6 +562,142 @@ class DataFrame {
     std::string na{"NA"};  ///< Text for null cells.
   };
 
+  /// @brief A value a Cell compares with: a number (not bool) or anything convertible to
+  ///        `std::string_view` (`std::string`, a string literal, ...).
+  /// @tparam T  Candidate operand type.
+  template <typename T>
+  static constexpr bool cell_operand_v =
+      (std::is_arithmetic_v<T> && !std::is_same_v<T, bool>) || std::is_convertible_v<const T&, std::string_view>;
+
+  /// @brief A read-only view of one cell of a Row, made by `row["column"]`, that compares with
+  ///        numbers and strings, so filters read like dplyr's `filter(df, body_mass_g > 0)`.
+  ///
+  /// A numeric cell compares with any number and a string cell with any string-like value
+  /// (lexicographically, as std::string does), with every operator (`==`, `!=`, `<`, `<=`, `>`,
+  /// `>=`) in either order (`row["x"] > 0` or `0 < row["x"]`). As in dplyr::filter(), where a
+  /// comparison with `NA` drops the row, every comparison with a null cell is false, including
+  /// `!=`; a NaN cell behaves the same way. A Cell points into the Row it came from and is valid
+  /// only while that Row lives, so use it within the expression rather than storing it.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto penguins = dm::datasets::penguins();
+  /// const auto heavy = penguins.filter([](const auto& row) { return row["body_mass_g"] > 4000; });
+  /// const auto adelie = penguins.filter([](const auto& row) { return row["species"] == "Adelie"; });
+  /// std::print("{} {}\n", heavy.nrows(), adelie.nrows());   // 172 152
+  /// @endcode
+  ///
+  /// @par References
+  /// - dplyr filter (rows where a condition is NA are dropped):
+  ///   https://dplyr.tidyverse.org/reference/filter.html
+  ///
+  /// @see Row::operator[](), DataFrame::filter(), dm::has_na
+  struct Cell {
+    /// @brief The cell, owned by the Row it was read from.
+    const cell_type* value;
+
+    /// @brief The cell's column name, used in error messages; owned by the same Row.
+    std::string_view column;
+
+    /// @brief Whether the cell is null (R's `NA`).
+    /// @return  true for a null cell.
+    [[nodiscard]] bool is_null() const { return std::holds_alternative<null_type>(*value); }
+
+    /// @brief Three-way comparison of the cell with @p other.
+    ///
+    /// Numbers are compared as double. The result is `unordered` for a null or NaN cell (and a
+    /// NaN @p other), which makes `<`, `<=`, `>` and `>=` false.
+    ///
+    /// @tparam T  A number or a string-like type (see cell_operand_v).
+    /// @param other  Value to compare with.
+    /// @return  The ordering of the cell relative to @p other.
+    /// @throws std::invalid_argument  if a string cell is compared with a number or a numeric
+    ///         cell with a string.
+    template <typename T>
+      requires cell_operand_v<T>
+    [[nodiscard]] std::partial_ordering compare(const T& other) const {
+      if (is_null()) {
+        return std::partial_ordering::unordered;
+      }
+      if constexpr (std::is_arithmetic_v<T>) {
+        const auto* number = std::get_if<double>(value);
+        if (number == nullptr) {
+          throw std::invalid_argument("DataFrame::Cell: string column '" + std::string(column) +
+                                      "' compared with a number");
+        }
+        return *number <=> static_cast<double>(other);
+      } else {
+        const auto* text = std::get_if<std::string>(value);
+        if (text == nullptr) {
+          throw std::invalid_argument("DataFrame::Cell: numeric column '" + std::string(column) +
+                                      "' compared with a string");
+        }
+        return std::string_view(*text) <=> std::string_view(other);
+      }
+    }
+
+    /// @brief `cell <=> value`; also gives `<`, `<=`, `>`, `>=` in either operand order.
+    /// @tparam T  A number or a string-like type.
+    /// @param cell  The cell.
+    /// @param other  Value to compare with.
+    /// @return  cell.compare(other).
+    /// @throws std::invalid_argument  on a numeric/string mismatch (see compare()).
+    template <typename T>
+      requires cell_operand_v<T>
+    friend std::partial_ordering operator<=>(const Cell& cell, const T& other) {
+      return cell.compare(other);
+    }
+
+    /// @brief `cell == value`: false for a null or NaN cell.
+    /// @tparam T  A number or a string-like type.
+    /// @param cell  The cell.
+    /// @param other  Value to compare with.
+    /// @return  Whether the cell equals @p other.
+    /// @throws std::invalid_argument  on a numeric/string mismatch (see compare()).
+    template <typename T>
+      requires cell_operand_v<T>
+    friend bool operator==(const Cell& cell, const T& other) {
+      return cell.compare(other) == 0;
+    }
+
+    /// @brief `value == cell`; same as `cell == value`.
+    /// @tparam T  A number or a string-like type.
+    /// @param other  Value to compare with.
+    /// @param cell  The cell.
+    /// @return  Whether the cell equals @p other.
+    /// @throws std::invalid_argument  on a numeric/string mismatch (see compare()).
+    template <typename T>
+      requires cell_operand_v<T>
+    friend bool operator==(const T& other, const Cell& cell) {
+      return cell.compare(other) == 0;
+    }
+
+    /// @brief `cell != value`: false for a null or NaN cell, like R's `NA != x`.
+    /// @tparam T  A number or a string-like type.
+    /// @param cell  The cell.
+    /// @param other  Value to compare with.
+    /// @return  Whether the cell is known to differ from @p other.
+    /// @throws std::invalid_argument  on a numeric/string mismatch (see compare()).
+    template <typename T>
+      requires cell_operand_v<T>
+    friend bool operator!=(const Cell& cell, const T& other) {
+      const auto order = cell.compare(other);
+      return order != std::partial_ordering::unordered && order != 0;
+    }
+
+    /// @brief `value != cell`; same as `cell != value`.
+    /// @tparam T  A number or a string-like type.
+    /// @param other  Value to compare with.
+    /// @param cell  The cell.
+    /// @return  Whether the cell is known to differ from @p other.
+    /// @throws std::invalid_argument  on a numeric/string mismatch (see compare()).
+    template <typename T>
+      requires cell_operand_v<T>
+    friend bool operator!=(const T& other, const Cell& cell) {
+      return cell != other;
+    }
+  };
+
   /// @brief A snapshot of one row: each column name mapped to its cell (null, double or
   ///        string).
   ///
@@ -596,6 +735,31 @@ class DataFrame {
         throw std::out_of_range("DataFrame::Row missing column: " + column_name);
       }
       return it->second;
+    }
+
+    /// @brief The cell in @p column_name as a comparable Cell, for filters such as
+    ///        `row["body_mass_g"] > 0` or `row["species"] == "Adelie"`.
+    ///
+    /// A null cell compares false with everything, so such a filter drops rows with a missing
+    /// value, as dplyr::filter() does. The Cell is valid only while this Row lives.
+    ///
+    /// @param column_name  Column name.
+    /// @return  A Cell viewing the value.
+    /// @throws std::out_of_range  if the row has no such column.
+    ///
+    /// @par Example
+    /// @code
+    /// const auto penguins = dm::datasets::penguins();
+    /// const auto heavy = penguins.filter([](const auto& row) { return row["body_mass_g"] > 4000; });
+    /// std::print("{}\n", heavy.nrows());   // 172
+    /// @endcode
+    /// @see Cell, at(), get_double()
+    [[nodiscard]] Cell operator[](const std::string& column_name) const {
+      const auto it = values.find(column_name);
+      if (it == values.end()) {
+        throw std::out_of_range("DataFrame::Row missing column: " + column_name);
+      }
+      return Cell{&it->second, it->first};
     }
 
     /// @brief Whether the cell in @p column_name is null (R's `NA`).

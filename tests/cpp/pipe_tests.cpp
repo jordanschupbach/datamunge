@@ -6,6 +6,7 @@
 #include <numeric>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace dm = datamunge;
@@ -246,4 +247,31 @@ TEST(Pipe, HasNaSelectsRowsWithNullsAndItsNegationSelectsCompleteRows) {
   EXPECT_EQ((frame | dm::filter_rows(!dm::has_na)).nrows(), 2U);
   EXPECT_EQ(frame.filter(!!dm::has_na).nrows(), 2U);
   EXPECT_FALSE(dm::has_na(DataFrame::Row{}));
+}
+
+TEST(Pipe, RowCellsCompareWithNumbersAndStringsAndNullsCompareFalse) {
+  const DataFrame frame{{{"x", DataFrame::numeric_column_type(std::vector<std::optional<double>>{1, std::nullopt, 3, std::nan("")})},
+                         {"g", DataFrame::string_column_type(std::vector<std::optional<std::string>>{"a", "b", std::nullopt, "d"})}}};
+  const auto count = [&](auto predicate) { return frame.filter(predicate).nrows(); };
+
+  EXPECT_EQ(count([](const auto& row) { return row["x"] > 0; }), 2U);
+  EXPECT_EQ(count([](const auto& row) { return row["x"] >= 3.0; }), 1U);
+  EXPECT_EQ(count([](const auto& row) { return 2 < row["x"]; }), 1U);
+  EXPECT_EQ(count([](const auto& row) { return row["x"] == 1; }), 1U);
+  EXPECT_EQ(count([](const auto& row) { return 1 == row["x"]; }), 1U);
+  // Null and NaN cells compare false, even with !=.
+  EXPECT_EQ(count([](const auto& row) { return row["x"] != 1; }), 1U);
+  EXPECT_EQ(count([](const auto& row) { return 1 != row["x"]; }), 1U);
+
+  EXPECT_EQ(count([](const auto& row) { return row["g"] == "b"; }), 1U);
+  EXPECT_EQ(count([](const auto& row) { return row["g"] != std::string("b"); }), 2U);
+  EXPECT_EQ(count([](const auto& row) { return row["g"] >= std::string_view("b"); }), 2U);
+  EXPECT_EQ(count([](const auto& row) { return row["g"].is_null(); }), 1U);
+
+  EXPECT_EQ((frame | dm::filter_rows([](const auto& row) { return row["x"] < 2; })).nrows(), 1U);
+
+  const auto first = frame.row(0);
+  EXPECT_THROW((void)(first["g"] > 1), std::invalid_argument);
+  EXPECT_THROW((void)(first["x"] == "a"), std::invalid_argument);
+  EXPECT_THROW((void)first["missing"], std::out_of_range);
 }
