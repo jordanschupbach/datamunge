@@ -49,14 +49,25 @@ constexpr double kGlyphPx = 5.0;
 constexpr std::size_t kMaxYLabelChars = 10;
 /// @brief Text color for names and annotations, matching the default axis color.
 constexpr RGB kLabelColor{55, 65, 81};
-/// @brief Outline and marker color for violins and bars.
+/// @brief Outline and marker color for rainclouds and bars.
 constexpr RGB kInkColor{31, 41, 55};
-/// @brief Opacity of violin and stacked-bar fills.
+/// @brief Opacity of raincloud and stacked-bar fills.
 constexpr double kFillAlpha = 0.75;
-/// @brief Half the width of the widest violin, in level units (levels sit one unit apart).
-constexpr double kViolinHalfWidth = 0.42;
-/// @brief Points at which each violin's density is evaluated.
-constexpr std::size_t kViolinGrid = 64;
+/// @brief Raincloud layout across one level's slot, as offsets from the level's position in
+///        level units (levels sit one unit apart): the half-violin "cloud" grows from
+///        kCloudBase up to kCloudBase + kCloudHeight at its peak density, the box plot is
+///        centred on kBoxCentre, and the jittered "rain" points fall in [kRainLo, kRainHi].
+constexpr double kCloudBase = -0.06;
+constexpr double kCloudHeight = 0.46;
+constexpr double kBoxCentre = -0.16;
+constexpr double kBoxHalfWidth = 0.05;
+constexpr double kRainLo = -0.42;
+constexpr double kRainHi = -0.26;
+/// @brief Radius and opacity of the rain points.
+constexpr double kRainMarkerSize = 1.6;
+constexpr double kRainAlpha = 0.55;
+/// @brief Points at which each cloud's density is evaluated.
+constexpr std::size_t kCloudGrid = 64;
 /// @brief Gap between mosaic tiles as a fraction of the unit square.
 constexpr double kMosaicGap = 0.02;
 
@@ -132,6 +143,16 @@ RGB mosaic_shade(double residual) {
 /// @brief Adds the axis-aligned rectangle [x0, x1] x [y0, y1] as a filled polygon.
 void add_rect(RPlot& p, double x0, double x1, double y0, double y1, RGB fill) {
   p.polygon({x0, x1, x1, x0}, {y0, y0, y1, y1}, fill, true);
+}
+
+/// @brief Stroke width of mosaic tile outlines, in pixels.
+constexpr double kMosaicOutlineWidth = 1.0;
+
+/// @brief Outlines the rectangle [x0, x1] x [y0, y1] in the ink color, so a mosaic tile stays
+///        visible even when its fill is the pale neutral shade (R's mosaicplot() borders every
+///        tile the same way).
+void outline_rect(RPlot& p, double x0, double x1, double y0, double y1) {
+  p.lines({x0, x1, x1, x0, x0}, {y0, y0, y1, y1, y0}, kInkColor, kMosaicOutlineWidth);
 }
 
 /// @brief Points at which smooths and one-dimensional densities are evaluated.
@@ -696,8 +717,8 @@ RPlot Splom::panel(std::size_t row, std::size_t col) const {
     return row < col ? smooth_panel(row, col, std::move(p)) : density2d_panel(row, col, std::move(p));
   }
   if (x_cat && y_cat) return mosaic_panel(row, col, std::move(p));
-  if (x_cat) return violin_panel(col, row, true, std::move(p));
-  return violin_panel(row, col, false, std::move(p));
+  if (x_cat) return raincloud_panel(col, row, true, std::move(p));
+  return raincloud_panel(row, col, false, std::move(p));
 }
 
 RPlot Splom::diagonal_panel(std::size_t var, RPlot p) const {
@@ -977,7 +998,7 @@ RPlot Splom::density2d_panel(std::size_t row, std::size_t col, RPlot p) const {
   return p;
 }
 
-RPlot Splom::violin_panel(std::size_t cat, std::size_t num, bool vertical, RPlot p) const {
+RPlot Splom::raincloud_panel(std::size_t cat, std::size_t num, bool vertical, RPlot p) const {
   const auto& levels = levels_[cat];
   const auto& codes = codes_[cat];
   const auto& values = values_[num];
@@ -988,29 +1009,29 @@ RPlot Splom::violin_panel(std::size_t cat, std::size_t num, bool vertical, RPlot
     groups[static_cast<std::size_t>(codes[i])].push_back(values[i]);
   }
 
-  // Evaluate every density first so all violins share one width scale (equal peak density,
-  // equal width), which keeps their shapes comparable across levels.
-  struct Violin {
+  // Evaluate every density first so all clouds share one height scale (equal peak density,
+  // equal height), which keeps their shapes comparable across levels.
+  struct Cloud {
     std::vector<double> at;      ///< evaluation points along the value axis
     std::vector<double> density; ///< kernel density at each point
   };
-  std::vector<Violin> violins(levels.size());
-  double              peak = 0.0;
-  bool                any = false;
+  std::vector<Cloud> clouds(levels.size());
+  double             peak = 0.0;
+  bool               any = false;
   for (std::size_t k = 0; k < levels.size(); ++k) {
-    auto& group = groups[k];
-    if (group.empty()) continue;
+    if (groups[k].empty()) continue;
     any = true;
-    std::sort(group.begin(), group.end());
-    const double bw = silverman_bandwidth(group);
+    std::vector<double> sorted = groups[k];
+    std::sort(sorted.begin(), sorted.end());
+    const double bw = silverman_bandwidth(sorted);
     if (!(bw > 0.0)) continue; // constant group: drawn as a flat bar below
-    const double lo = group.front();
-    const double hi = group.back();
-    for (std::size_t g = 0; g < kViolinGrid; ++g) {
-      const double at = lo + (hi - lo) * static_cast<double>(g) / static_cast<double>(kViolinGrid - 1);
-      const double d = kernel_density(group, bw, at);
-      violins[k].at.push_back(at);
-      violins[k].density.push_back(d);
+    const double lo = sorted.front();
+    const double hi = sorted.back();
+    for (std::size_t g = 0; g < kCloudGrid; ++g) {
+      const double at = lo + (hi - lo) * static_cast<double>(g) / static_cast<double>(kCloudGrid - 1);
+      const double d = kernel_density(sorted, bw, at);
+      clouds[k].at.push_back(at);
+      clouds[k].density.push_back(d);
       peak = std::max(peak, d);
     }
   }
@@ -1026,40 +1047,81 @@ RPlot Splom::violin_panel(std::size_t cat, std::size_t num, bool vertical, RPlot
       p.polygon(std::move(along), std::move(across), color, filled);
     }
   };
-  std::vector<double> centres;
-  std::vector<double> q1s;
-  std::vector<double> q3s;
-  std::vector<double> medians;
+  // Box-plot strokes (whiskers and medians), collected and drawn in one series.
+  std::vector<double> seg_a0;
+  std::vector<double> seg_v0;
+  std::vector<double> seg_a1;
+  std::vector<double> seg_v1;
+  const auto add_segment = [&](double a0, double v0, double a1, double v1) {
+    seg_a0.push_back(a0);
+    seg_v0.push_back(v0);
+    seg_a1.push_back(a1);
+    seg_v1.push_back(v1);
+  };
+
   for (std::size_t k = 0; k < levels.size(); ++k) {
     const auto& group = groups[k];
     if (group.empty()) continue;
     const double centre = static_cast<double>(k);
+    const double base = centre + kCloudBase;
+    const RGB    color = level_color(cat, k);
+
+    // Cloud: a half violin standing on the base line.
     std::vector<double> across;
     std::vector<double> along;
-    if (violins[k].at.empty() || !(peak > 0.0)) {
+    if (clouds[k].at.empty() || !(peak > 0.0)) {
       // A single value (or a constant group) has no spread: draw a thin flat bar.
       const double v = group.front();
       const double thickness = 0.01 * std::max(1.0, std::abs(v));
-      across = {centre - kViolinHalfWidth, centre + kViolinHalfWidth, centre + kViolinHalfWidth,
-                centre - kViolinHalfWidth};
+      across = {base, base + kCloudHeight, base + kCloudHeight, base};
       along = {v - thickness, v - thickness, v + thickness, v + thickness};
     } else {
-      const auto& v = violins[k];
-      for (std::size_t g = 0; g < v.at.size(); ++g) {
-        across.push_back(centre + kViolinHalfWidth * v.density[g] / peak);
-        along.push_back(v.at[g]);
+      const auto& c = clouds[k];
+      for (std::size_t g = 0; g < c.at.size(); ++g) {
+        across.push_back(base + kCloudHeight * c.density[g] / peak);
+        along.push_back(c.at[g]);
       }
-      for (std::size_t g = v.at.size(); g-- > 0;) {
-        across.push_back(centre - kViolinHalfWidth * v.density[g] / peak);
-        along.push_back(v.at[g]);
-      }
+      across.push_back(base);
+      along.push_back(c.at.back());
+      across.push_back(base);
+      along.push_back(c.at.front());
     }
-    add_polygon(across, along, level_color(cat, k), true);
+    add_polygon(across, along, with_alpha(color, kFillAlpha), true);
     add_polygon(std::move(across), std::move(along), kInkColor, false);
-    centres.push_back(centre);
-    q1s.push_back(quantile7(group, 0.25));
-    q3s.push_back(quantile7(group, 0.75));
-    medians.push_back(quantile7(group, 0.5));
+
+    // Rain: every observation, jittered across its strip by a fixed low-discrepancy sequence
+    // (fractional parts of i times the golden ratio) so renders are reproducible.
+    std::vector<double> rain_across;
+    rain_across.reserve(group.size());
+    for (std::size_t i = 0; i < group.size(); ++i) {
+      const double u = std::fmod(static_cast<double>(i + 1) * 0.6180339887498949, 1.0);
+      rain_across.push_back(centre + kRainLo + (kRainHi - kRainLo) * u);
+    }
+    std::vector<double> rain_along = group;
+    if (vertical) {
+      p.points(std::move(rain_across), std::move(rain_along), with_alpha(color, kRainAlpha), kRainMarkerSize);
+    } else {
+      p.points(std::move(rain_along), std::move(rain_across), with_alpha(color, kRainAlpha), kRainMarkerSize);
+    }
+
+    // Box: quartiles, median, and Tukey whiskers (the most extreme values within 1.5 IQR).
+    std::vector<double> sorted = group;
+    std::sort(sorted.begin(), sorted.end());
+    const double q1 = quantile7(sorted, 0.25);
+    const double q3 = quantile7(sorted, 0.75);
+    const double median = quantile7(sorted, 0.5);
+    const double fence = 1.5 * (q3 - q1);
+    const auto   lo_it = std::lower_bound(sorted.begin(), sorted.end(), q1 - fence);
+    const auto   hi_it = std::upper_bound(sorted.begin(), sorted.end(), q3 + fence);
+    const double whisker_lo = lo_it != sorted.end() ? std::min(*lo_it, q1) : q1;
+    const double whisker_hi = hi_it != sorted.begin() ? std::max(*std::prev(hi_it), q3) : q3;
+    const double b0 = centre + kBoxCentre - kBoxHalfWidth;
+    const double b1 = centre + kBoxCentre + kBoxHalfWidth;
+    add_polygon({b0, b1, b1, b0}, {q1, q1, q3, q3}, RGB{255, 255, 255}, true);
+    add_polygon({b0, b1, b1, b0}, {q1, q1, q3, q3}, kInkColor, false);
+    add_segment(b0, median, b1, median);
+    add_segment(centre + kBoxCentre, whisker_lo, centre + kBoxCentre, q1);
+    add_segment(centre + kBoxCentre, q3, centre + kBoxCentre, whisker_hi);
   }
 
   const double      plot_w = static_cast<double>(p.width()) - p.margin_left() - p.margin_right();
@@ -1073,18 +1135,14 @@ RPlot Splom::violin_panel(std::size_t cat, std::size_t num, bool vertical, RPlot
   }
   const double lo = -0.6;
   const double hi = static_cast<double>(levels.size()) - 0.4;
-  // Interquartile range as a thick bar, median as a white dot, like a box plot inside each violin.
+  const auto [v_lo, v_hi] = axis_range(num);
   if (vertical) {
-    p.segments(centres, q1s, centres, q3s, kInkColor, 3.0);
-    p.points(centres, medians, RGB{255, 255, 255}, 2.0);
+    p.segments(std::move(seg_a0), std::move(seg_v0), std::move(seg_a1), std::move(seg_v1), kInkColor, 1.5);
     p.x_limits(lo, hi).x_ticks(std::move(positions), std::move(labels));
-    const auto [v_lo, v_hi] = axis_range(num);
     p.y_limits(v_lo, v_hi);
   } else {
-    p.segments(q1s, centres, q3s, centres, kInkColor, 3.0);
-    p.points(medians, centres, RGB{255, 255, 255}, 2.0);
+    p.segments(std::move(seg_v0), std::move(seg_a0), std::move(seg_v1), std::move(seg_a1), kInkColor, 1.5);
     p.y_limits(lo, hi).y_ticks(std::move(positions), std::move(labels));
-    const auto [v_lo, v_hi] = axis_range(num);
     p.x_limits(v_lo, v_hi);
   }
   return p;
@@ -1157,6 +1215,7 @@ RPlot Splom::mosaic_panel(std::size_t row, std::size_t col, RPlot p) const {
       const double      residual = (table[a][b] - expected) / std::sqrt(expected);
       if (table[a][b] > 0.0) {
         add_rect(p, x0, x0 + width, y0, y0 + height, std::isnan(p_value) ? kMosaicNeutral : mosaic_shade(residual));
+        outline_rect(p, x0, x0 + width, y0, y0 + height);
       }
       y0 += height + kMosaicGap;
     }

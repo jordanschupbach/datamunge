@@ -5,6 +5,7 @@
 #include <datamunge/plot/splom.hpp>
 
 #include <algorithm>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -221,23 +222,39 @@ TEST(Splom, CategoricalDiagonalIsStackedBar) {
   EXPECT_EQ(count_kind(density, Kind::Line), 1U);
 }
 
-TEST(Splom, NumericVersusCategoricalIsViolin) {
+TEST(Splom, NumericVersusCategoricalIsRaincloud) {
   const auto matrix = Splom::create(datamunge::datasets::iris());
-  // Species (col 4) on x, Sepal.Length (row 0) on y: vertical violins at x = 0, 1, 2.
+  // Species (col 4) on x, Sepal.Length (row 0) on y: vertical rainclouds at x = 0, 1, 2.
   const RPlot vertical = matrix.panel(0, 4);
-  EXPECT_EQ(count_kind(vertical, Kind::Polygon, true), 3U);
+  // Per level: a filled cloud and a filled box.
+  EXPECT_EQ(count_kind(vertical, Kind::Polygon, true), 6U);
   EXPECT_EQ(vertical.x_tick_label_list(), (std::vector<std::string>{"setosa", "versico", "virgini"}));
   EXPECT_TRUE(vertical.y_tick_label_list().empty());
   for (const auto& s : vertical.series()) {
     if (s.kind != Kind::Polygon || !s.filled) continue;
     const auto [lo, hi] = std::minmax_element(s.x.begin(), s.x.end());
-    EXPECT_LT(*hi - *lo, 0.85); // every violin stays inside its own level slot
+    EXPECT_LT(*hi - *lo, 0.85); // every cloud and box stays inside its own level slot
   }
-  // Swapped: Species on y gives horizontal violins labelled on the vertical axis.
+  // Rain: every observation once, jittered beside (left of) its level's cloud.
+  std::size_t rain = 0;
+  for (const auto& s : vertical.series()) {
+    if (s.kind != Kind::Scatter) continue;
+    rain += s.x.size();
+    const double level = std::round(s.x.front() + 0.34);
+    for (double x : s.x) {
+      EXPECT_GE(x, level - 0.43);
+      EXPECT_LE(x, level - 0.25);
+    }
+  }
+  EXPECT_EQ(rain, 150U);
+  EXPECT_EQ(count_kind(vertical, Kind::Scatter), 3U);
+  // Swapped: Species on y gives horizontal rainclouds labelled on the vertical axis.
   const RPlot horizontal = matrix.panel(4, 0);
-  EXPECT_EQ(count_kind(horizontal, Kind::Polygon, true), 3U);
+  EXPECT_EQ(count_kind(horizontal, Kind::Polygon, true), 6U);
   EXPECT_EQ(horizontal.y_tick_label_list(), (std::vector<std::string>{"setosa", "versicolor", "virginica"}));
   EXPECT_TRUE(horizontal.x_tick_label_list().empty());
+  // Rendering twice gives identical jitter.
+  EXPECT_EQ(matrix.panel(4, 0).to_svg(), horizontal.to_svg());
 }
 
 TEST(Splom, CategoricalPairIsShadedMosaic) {
@@ -253,6 +270,7 @@ TEST(Splom, CategoricalPairIsShadedMosaic) {
   const auto  matrix = Splom::create(df);
   const RPlot mosaic = matrix.panel(1, 0);
   EXPECT_EQ(count_kind(mosaic, Kind::Polygon, true), 3U); // the (p, v) cell is empty
+  EXPECT_EQ(count_kind(mosaic, Kind::Line), 3U);           // every tile is outlined
   EXPECT_EQ(mosaic.x_tick_label_list(), (std::vector<std::string>{"p", "q"}));
   EXPECT_EQ(mosaic.y_tick_label_list(), (std::vector<std::string>{"u", "v"}));
   bool shaded = false;
@@ -268,8 +286,14 @@ TEST(Splom, CategoricalPairIsShadedMosaic) {
   datamunge::dstruct::DataFrame flat;
   flat.add_column("a", std::vector<std::string>{"p", "p", "q", "q"});
   flat.add_column("b", std::vector<std::string>{"u", "v", "u", "v"});
-  for (const auto& s : Splom::create(flat).panel(0, 1).series()) {
+  const RPlot neutral = Splom::create(flat).panel(0, 1);
+  for (const auto& s : neutral.series()) {
     if (s.kind == Kind::Polygon) EXPECT_EQ(s.color.r, 226);
+  }
+  // All-neutral tiles are pale, so each one still gets a dark outline to stay visible.
+  EXPECT_EQ(count_kind(neutral, Kind::Line), count_kind(neutral, Kind::Polygon, true));
+  for (const auto& s : neutral.series()) {
+    if (s.kind == Kind::Line) EXPECT_LT(s.color.r, 100);
   }
 }
 
@@ -357,10 +381,10 @@ TEST(Splom, ColorByFactorUsesPaletteForPointsAndMatchingColumn) {
   ASSERT_EQ(colors.size(), 150U);
   EXPECT_EQ(colors[0].b, 80);    // setosa
   EXPECT_EQ(colors[149].r, 220); // virginica
-  // Species encodes to the same codes, so its violins and bar reuse the palette.
-  const RPlot violin = facade.panel(0, 4);
-  ASSERT_FALSE(violin.series().empty());
-  EXPECT_EQ(violin.series()[0].color.b, 80);
+  // Species encodes to the same codes, so its rainclouds and bar reuse the palette.
+  const RPlot raincloud = facade.panel(0, 4);
+  ASSERT_FALSE(raincloud.series().empty());
+  EXPECT_EQ(raincloud.series()[0].color.b, 80);
   EXPECT_EQ(facade.panel(4, 4).series()[0].color.g, 255);
 
   auto core = Splom::create(iris);

@@ -27,8 +27,10 @@ namespace datamunge::graphics {
 /// - quantitative vs quantitative, below the diagonal: contours of a bivariate Gaussian kernel
 ///   density estimate (MASS's `kde2d()`), one set per group in the group's color, drawn at the
 ///   levels enclosing 25%, 50%, 75% and 95% of the estimated probability;
-/// - categorical vs quantitative: one violin (kernel density) per level, with the interquartile
-///   range and median marked; vertical when the categorical variable is on x, horizontal otherwise;
+/// - categorical vs quantitative: one raincloud per level (Allen et al. 2019): a half violin
+///   (kernel density) "cloud", a narrow box plot (quartiles, median, and whiskers to the most
+///   extreme values within 1.5 IQR), and every observation as a jittered "rain" point; vertical
+///   when the categorical variable is on x, horizontal otherwise;
 /// - categorical vs categorical: a mosaic plot whose tiles are shaded by the Pearson residuals of
 ///   a chi-squared test of independence (blue: more rows than expected, red: fewer; darker past
 ///   |residual| 2 and 4, as in R's `mosaicplot(shade = TRUE)`), with the test's p-value on top.
@@ -126,7 +128,7 @@ class Splom final {
   ///
   /// Each group gets its own color for points, its own density on the diagonal, its own smooth
   /// and prediction band above the diagonal, and its own density contours below it. When @p column
-  /// is also a panel variable, its violins, bars and mosaic axis share these colors. The column
+  /// is also a panel variable, its rainclouds, bars and mosaic axis share these colors. The column
   /// must have been present in the frame passed to create(); rows with a missing group value are
   /// left out of the quantitative panels. Pass "" to clear the grouping. Clears point_colors().
   /// @throws std::invalid_argument If the column was not a string column of the source frame.
@@ -138,12 +140,12 @@ class Splom final {
   ///        one-based level code per data row, as returned by `factor()`, and each point takes
   ///        `palette[code - 1]` (recycled); a code below 1 marks a missing value and uses color().
   ///        Categorical variables whose levels encode exactly to @p factor (e.g. the column the
-  ///        factor was built from) also fill their violins and stacked bar with @p palette.
+  ///        factor was built from) also fill their rainclouds and stacked bar with @p palette.
   ///        Clears group_by() and point_colors().
   /// @throws std::invalid_argument If @p factor does not have one code per data row or
   ///         @p palette is empty.
   Splom& color_by_factor(std::vector<int> factor, std::vector<RGB> palette);
-  /// @brief Sets the colors cycled over the levels of categorical variables in violins and
+  /// @brief Sets the colors cycled over the levels of categorical variables in rainclouds and
   ///        stacked bars; an empty vector restores the default. group_by() overrides it for its
   ///        own column.
   Splom& level_palette(std::vector<RGB> colors);
@@ -162,7 +164,7 @@ class Splom final {
   /// @brief Sets the coverage of the prediction band above the diagonal (default 0.95).
   /// @throws std::invalid_argument If @p value is not in (0, 1).
   Splom& prediction_level(double value);
-  /// @brief Toggles the light grid drawn behind scatter and violin panels (default on).
+  /// @brief Toggles the light grid drawn behind scatter and raincloud panels (default on).
   Splom& show_grid(bool enabled = true);
 
   /// @brief Variable names in panel order.
@@ -234,7 +236,9 @@ class Splom final {
   std::pair<double, double> axis_range(std::size_t var) const;
   /// @brief Color of group @p g, or color() without grouping.
   RGB group_color(std::size_t g) const;
-  RPlot violin_panel(std::size_t cat, std::size_t num, bool vertical, RPlot p) const;
+  /// @brief Raincloud panel of quantitative variable @p num by the levels of categorical
+  ///        variable @p cat; @p vertical puts the levels on x.
+  RPlot raincloud_panel(std::size_t cat, std::size_t num, bool vertical, RPlot p) const;
   RPlot mosaic_panel(std::size_t row, std::size_t col, RPlot p) const;
 
   std::vector<std::string>              names_;        ///< variable names in panel order
@@ -263,7 +267,7 @@ class Splom final {
   std::size_t                           bins_{10};     ///< histogram bins on the diagonal
   double                                span_{0.75};   ///< smoother span, fraction of a group's points
   double                                level_{0.95};  ///< prediction band coverage
-  bool                                  show_grid_{true}; ///< whether scatter/violin panels draw a grid
+  bool                                  show_grid_{true}; ///< whether scatter/raincloud panels draw a grid
 };
 
 } // namespace datamunge::graphics

@@ -828,7 +828,7 @@ class GGPlot {
 /// - numeric vs numeric above the diagonal: the points with a local linear smooth of the mean and
 ///   a 95% prediction band, one per group; point colors follow set_col() or group_by();
 /// - numeric vs numeric below the diagonal: bivariate kernel density contours, one set per group;
-/// - string vs numeric: one violin per level with the median and interquartile range marked;
+/// - string vs numeric: one raincloud per level (half violin, box plot, and jittered points);
 /// - string vs string: a mosaic shaded by chi-squared Pearson residuals, with its p-value.
 ///
 /// Values are copied at construction, so the frame need not outlive the matrix. Rows with a
@@ -878,7 +878,7 @@ class Splom {
   /// @brief R's `col = palette[f]`: colors scatter points by @p factor (one-based codes from
   ///        `dm::factor()`, one per row) using @p palette, e.g.
   ///        `dm::Splom(iris).set_col(dm::factor(species), palette)`. The categorical column the
-  ///        factor came from fills its violins and stacked bar with the same palette.
+  ///        factor came from fills its rainclouds and stacked bar with the same palette.
   ///
   /// Row i takes `palette[(factor[i] - 1) % palette.size()]`; a code below 1 (missing) uses
   /// the single color(). Replaces any earlier group_by()/point_colors()/set_col() choice.
@@ -903,7 +903,7 @@ class Splom {
   ///
   /// Row i takes `colors[i % colors.size()]`. Same as point_colors(): clears group_by()
   /// grouping, and an empty vector restores the single color(). Unlike the factor overload,
-  /// violins and stacked bars keep their default level colors.
+  /// rainclouds and stacked bars keep their default level colors.
   ///
   /// @param colors  Per-row colors, recycled when shorter than the frame.
   /// @return This matrix, for chaining.
@@ -973,7 +973,7 @@ class Splom {
   /// frame. Groups are its sorted distinct non-missing values, and group k takes
   /// `palette[k % palette.size()]`. Each group gets its own points, diagonal density, smooth
   /// and prediction band, and density contours; rows with a missing group are left out of
-  /// those panels. When the column is also a panel variable its violins, bars, and mosaic axis
+  /// those panels. When the column is also a panel variable its rainclouds, bars, and mosaic axis
   /// share the colors. Pass "" to clear the grouping. Clears point_colors().
   ///
   /// @param column  String column to group by, or "" to clear.
@@ -1003,7 +1003,7 @@ class Splom {
   ///                  .point_colors({dm::RGB{0, 0, 0}, dm::RGB{255, 0, 0}});  // alternate rows
   /// @endcode
   Splom& point_colors(const std::vector<datamunge::graphics::RGB>& colors);
-  /// @brief Sets the fills cycled over categorical levels in violins and stacked bars.
+  /// @brief Sets the fills cycled over categorical levels in rainclouds and stacked bars.
   ///
   /// An empty vector restores the default palette. group_by() and the factor form of
   /// set_col() override it for their own column. Scatter points are unaffected.
@@ -1051,7 +1051,7 @@ class Splom {
   /// @return This matrix, for chaining.
   /// @throws std::invalid_argument  If @p value is zero.
   Splom& bins(std::size_t value);
-  /// @brief Toggles the light background grid of the scatter and violin panels (default on).
+  /// @brief Toggles the light background grid of the scatter and raincloud panels (default on).
   /// @param enabled  True draws the grid.
   /// @return This matrix, for chaining.
   ///
