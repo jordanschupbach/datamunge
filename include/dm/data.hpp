@@ -4,6 +4,9 @@
 /// @brief R-style named dataset lookup and the legacy C++ dataset facade.
 #include <datamunge/datamunge.hpp>
 
+#include <string>
+#include <type_traits>
+
 /// @brief Short public namespace for the canonical datamunge C++ API.
 namespace dm {
 using namespace datamunge;
@@ -94,6 +97,57 @@ struct data {
 [[nodiscard]] inline Vector<std::string> dataset_names() {
   const auto catalog = datamunge::datasets::catalog();
   return catalog.get_column<std::string>("name").values();
+}
+
+/// @brief A DataFrame cell as text, for row functions such as
+///        `mutate({{"year", [](auto& row) { return dm::to_string(row["year"]); }}})`.
+///
+/// The datamunge counterpart of `std::to_string`, which cannot take a cell (the standard does
+/// not allow adding overloads to `std`). A string cell is returned as is and a number is
+/// formatted by DataFrame::format_number(), so whole numbers carry no trailing zeros (`2007`,
+/// not `std::to_string`'s `2007.000000`). A null cell gives `"NA"`, as R prints it; to keep
+/// nulls as nulls in a new column, return `row["col"].as_string()` instead, or use
+/// DataFrame::as_string().
+///
+/// @param cell  A cell of a row, e.g. `row["year"]`.
+/// @return  The cell's text, or `"NA"` for a null.
+///
+/// @par Example
+/// @code
+/// const auto penguins = dm::datasets::penguins().mutate(
+///   {{"year", [](const auto& row) { return dm::to_string(row["year"]); }}});
+/// std::print("{} {}\n", penguins.string_at("year", 0), dm::to_string(penguins.row(3)["sex"]));   // 2007 NA
+/// @endcode
+///
+/// @par References
+/// - R as.character: https://stat.ethz.ch/R-manual/R-devel/library/base/html/character.html
+///
+/// @see datamunge::dstruct::DataFrame::Cell::as_string(), datamunge::dstruct::DataFrame::as_string()
+[[nodiscard]] inline std::string to_string(const datamunge::dstruct::DataFrame::Cell& cell) {
+  return cell.as_string().value_or("NA");
+}
+
+/// @brief A number as text, matching to_string(const Cell&): integers exactly (as
+///        `std::to_string`), floating-point values in their shortest exact form (`2007`, `0.1`,
+///        `NaN`, `Inf`) rather than `std::to_string`'s six fixed decimals.
+///
+/// @tparam T  Arithmetic type other than bool.
+/// @param value  Number to format.
+/// @return  Its text.
+///
+/// @par Example
+/// @code
+/// std::print("{} {} {}\n", dm::to_string(2007), dm::to_string(2007.0), dm::to_string(0.1));   // 2007 2007 0.1
+/// @endcode
+/// @see datamunge::dstruct::DataFrame::format_number()
+template <typename T>
+  requires(std::is_arithmetic_v<T> && !std::is_same_v<T, bool>)
+[[nodiscard]] std::string to_string(T value) {
+  if constexpr (std::is_integral_v<T>) {
+    return std::to_string(value);
+  } else {
+    return datamunge::dstruct::DataFrame::format_number(static_cast<double>(value));
+  }
 }
 
 } // namespace dm
