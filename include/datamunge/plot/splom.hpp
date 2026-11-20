@@ -60,6 +60,63 @@ class Splom final {
   /// @brief Sets the overall figure size in pixels (default 960 by 960); panels share it equally.
   /// @throws std::invalid_argument If either dimension is zero.
   Splom& size(std::size_t width, std::size_t height);
+#ifndef SWIG
+  /// @brief Sets the figure width in physical units, keeping the height; e.g.
+  ///        `.width(dm::units::inch{8})` (96 px per inch, see units::Length).
+  /// @param value  Width in px, inch, cm, mm or pt.
+  /// @return This figure, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  ///
+  /// @par Example
+  /// @code
+  /// auto splom = dm::graphics::Splom::create(dm::datasets::penguins())
+  ///                .width(dm::units::inch{8}).height(dm::units::inch{8});
+  /// std::print("{}x{}\n", splom.width(), splom.height());  // 768x768
+  /// @endcode
+  /// @see size(), height(units::Length), units::Length
+  Splom& width(units::Length value) { return size(value.to_pixels(), height()); }
+  /// @brief Sets the figure height in physical units, keeping the width; e.g.
+  ///        `.height(dm::units::inch{6})` (96 px per inch, see units::Length).
+  /// @param value  Height in px, inch, cm, mm or pt.
+  /// @return This figure, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  /// @see size(), width(units::Length), units::Length
+  Splom& height(units::Length value) { return size(width(), value.to_pixels()); }
+  /// @brief Sets the resolution PNG and PDF output is rasterized at, like R's
+  ///        `png(res = )` and ggsave()'s `dpi =` (default 96).
+  ///
+  /// The layout, text and line widths keep their size relative to the figure; only the pixel
+  /// count changes: a figure of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+  /// and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+  /// other programs show it at its physical size; a PDF keeps its page size and gains detail.
+  /// SVG output is vector and is unaffected.
+  ///
+  /// @param value  Dots per inch; finite and positive.
+  /// @return This figure, for chaining.
+  /// @throws std::invalid_argument  If @p value is not finite and positive.
+  ///
+  /// @par Example
+  /// @code
+  /// auto splom = dm::graphics::Splom::create(dm::datasets::iris()).width(dm::units::inch{8}).dpi(300);
+  /// std::print("{} {}\n", splom.width(), splom.dpi());   // 768 300
+  /// @endcode
+  ///
+  /// @par References
+  /// - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+  /// - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+  ///
+  /// @see width(units::Length), height(units::Length), save()
+  Splom& dpi(double value) {
+    if (!(std::isfinite(value) && value > 0.0)) {
+      throw std::invalid_argument("dpi: resolution must be finite and positive");
+    }
+    dpi_ = value;
+    return *this;
+  }
+  /// @brief The resolution PNG and PDF output is rasterized at (default 96).
+  /// @return Dots per inch.
+  [[nodiscard]] double dpi() const noexcept { return dpi_; }
+#endif
   /// @brief Sets one color for every point, density and smooth, clearing group_by() and
   ///        point_colors().
   Splom& color(RGB value);
@@ -199,6 +256,7 @@ class Splom final {
   std::string                           title_;        ///< figure heading; empty draws no band
   std::size_t                           width_{960};   ///< figure width in pixels
   std::size_t                           height_{960};  ///< figure height in pixels
+  double                                dpi_{96.0};    ///< PNG/PDF raster resolution in dots per inch
   RGB                                   color_{37, 99, 235}; ///< point/bar color without grouping
   double                                marker_size_{2.5};   ///< point radius in pixels
   Diagonal                              diagonal_{Diagonal::Density}; ///< diagonal panel style

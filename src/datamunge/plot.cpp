@@ -27,6 +27,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -95,14 +96,37 @@ constexpr double kButtonFontPx = 13.0;
 /// @brief Baseline of x-axis tick labels: a 6px gap below the axis plus room for @p px-sized text.
 double x_tick_baseline(const Layout& layout, double px) { return layout.top + layout.plot_h + 6.0 + 1.5 * px; }
 
+/// @brief An RGB raster. Drawing helpers (draw_line(), draw_text(), fill_rect(), ...) take
+///        logical coordinates, which are multiplied by `scale` to reach device pixels; width,
+///        height, set_pixel() and blend_pixel() are in device pixels. A plot saved at `dpi`
+///        rasterizes with scale dpi / 96, so the same layout gets more pixels, as R's
+///        `png(res = )` does.
 struct Image {
-  std::size_t               width{0};
-  std::size_t               height{0};
-  std::vector<std::uint8_t> pixels;
+  std::size_t               width{0};   ///< Device width in pixels.
+  std::size_t               height{0};  ///< Device height in pixels.
+  std::vector<std::uint8_t> pixels;     ///< Row-major RGB bytes, width * height * 3.
+  double                    scale{1.0}; ///< Device pixels per logical pixel.
 
-  Image(std::size_t w, std::size_t h, RGB background)
-      : width(w), height(h), pixels(w * h * 3U, 0U) {
+  /// @brief A @p w by @p h logical raster filled with @p background, with @p device_scale
+  ///        device pixels per logical pixel (sizes round to the nearest pixel, at least 1).
+  Image(std::size_t w, std::size_t h, RGB background, double device_scale = 1.0)
+      : width(scaled_size(w, device_scale)),
+        height(scaled_size(h, device_scale)),
+        pixels(width * height * 3U, 0U),
+        scale(device_scale) {
     fill(background);
+  }
+
+  /// @brief @p logical pixels at @p device_scale, rounded, and never below one pixel.
+  static std::size_t scaled_size(std::size_t logical, double device_scale) {
+    if (device_scale == 1.0) return logical;
+    return std::max<std::size_t>(1, static_cast<std::size_t>(std::lround(static_cast<double>(logical) * device_scale)));
+  }
+
+  /// @brief The device-pixel span covering logical pixels @p lo..@p hi inclusive.
+  std::pair<int, int> device_span(int lo, int hi) const {
+    if (scale == 1.0) return {lo, hi};
+    return {static_cast<int>(std::floor(lo * scale)), static_cast<int>(std::ceil((hi + 1) * scale)) - 1};
   }
 
   void fill(RGB color) {
@@ -155,6 +179,8 @@ struct Image {
     pixels[idx + 2U] = blend(pixels[idx + 2U], color.b);
   }
 
+  /// @brief Fills the logical rectangle with corners (@p x0, @p y0) and (@p x1, @p y1),
+  ///        inclusive, with @p color (blended when it is translucent).
   void fill_rect(int x0, int y0, int x1, int y1, RGB color) {
     if (x0 > x1) {
       std::swap(x0, x1);
@@ -162,9 +188,23 @@ struct Image {
     if (y0 > y1) {
       std::swap(y0, y1);
     }
+    std::tie(x0, x1) = device_span(x0, x1);
+    std::tie(y0, y1) = device_span(y0, y1);
     for (int y = y0; y <= y1; ++y) {
       for (int x = x0; x <= x1; ++x) {
         set_pixel(x, y, color);
+      }
+    }
+  }
+
+  /// @brief Blends @p color at @p opacity over the logical rectangle with corners (@p x0,
+  ///        @p y0) and (@p x1, @p y1), inclusive.
+  void blend_rect(int x0, int y0, int x1, int y1, RGB color, double opacity) {
+    std::tie(x0, x1) = device_span(std::min(x0, x1), std::max(x0, x1));
+    std::tie(y0, y1) = device_span(std::min(y0, y1), std::max(y0, y1));
+    for (int y = y0; y <= y1; ++y) {
+      for (int x = x0; x <= x1; ++x) {
+        blend_pixel(x, y, color, opacity);
       }
     }
   }
@@ -869,9 +909,9 @@ std::string svg_string(const Plot& plot) {
   return out.str();
 }
 
-void draw_circle(Image& image, double cx, double cy, double radius, RGB color) {
+/// @brief Anti-aliased disc in device pixels (4 x 4 supersampling per pixel).
+void draw_circle_device(Image& image, double cx, double cy, double radius, RGB color) {
   constexpr int samples_per_axis = 4;
-  radius = std::max(radius, 1.0);
   const double radius_squared = radius * radius;
   const int x_begin = static_cast<int>(std::floor(cx - radius - 0.5));
   const int x_end = static_cast<int>(std::ceil(cx + radius + 0.5));
@@ -902,16 +942,28 @@ void draw_circle(Image& image, double cx, double cy, double radius, RGB color) {
   }
 }
 
+/// @brief Disc of logical @p radius (at least one logical pixel) centred at logical (@p cx, @p cy).
+void draw_circle(Image& image, double cx, double cy, double radius, RGB color) {
+  const double s = image.scale;
+  draw_circle_device(image, cx * s, cy * s, std::max(radius, 1.0) * s, color);
+}
+
+/// @brief Line of logical stroke @p width between logical points, drawn as a run of discs.
 void draw_line(Image& image, double x0, double y0, double x1, double y1, RGB color, double width) {
+  const double s = image.scale;
+  x0 *= s;
+  y0 *= s;
+  x1 *= s;
+  y1 *= s;
   const double dx = x1 - x0;
   const double dy = y1 - y0;
   const int steps = std::max(1, static_cast<int>(std::ceil(std::max(std::abs(dx), std::abs(dy)))));
-  const double radius = std::max(1.0, std::round(width / 2.0));
+  const double radius = std::max(1.0, std::round(width / 2.0)) * s;
   for (int i = 0; i <= steps; ++i) {
     const double t = static_cast<double>(i) / static_cast<double>(steps);
     const double px = x0 + dx * t;
     const double py = y0 + dy * t;
-    draw_circle(image, px, py, radius, color);
+    draw_circle_device(image, px, py, radius, color);
   }
 }
 
@@ -1002,6 +1054,10 @@ void draw_text(Image&             image,
                TextAnchor         anchor = TextAnchor::Start,
                bool               vertical = false) {
   if (text.empty() || px <= 0.0) return;
+  // Logical position and size to device pixels; everything below works in device pixels.
+  x *= image.scale;
+  y *= image.scale;
+  px *= image.scale;
   std::vector<std::size_t> indices;
   std::vector<double>      offsets;
   const double             scale = px / font::units_per_em;
@@ -1110,8 +1166,8 @@ void draw_legend(Image& image, const Plot& plot, const Layout& layout) {
     // Translucent backing so the legend stays readable over data.
     const RGB bg = plot.background_color();
     const int right = static_cast<int>(legend.backing_x + legend.backing_width);
-    for (int y = legend_y - 18; y < legend_y - 18 + 20 * static_cast<int>(rows) + 6; ++y)
-      for (int x = static_cast<int>(legend.backing_x); x < right; ++x) image.blend_pixel(x, y, bg, 0.85);
+    image.blend_rect(static_cast<int>(legend.backing_x), legend_y - 18, right - 1,
+                     legend_y - 18 + 20 * static_cast<int>(rows) + 5, bg, 0.85);
   }
   if (!plot.legend_entries().empty()) {
     for (const auto& entry : plot.legend_entries()) draw_entry(entry.label, entry.color);
@@ -1125,8 +1181,14 @@ void draw_legend(Image& image, const Plot& plot, const Layout& layout) {
 
 /// @brief Fills a simple or self-intersecting polygon (even-odd rule) given in pixel space,
 ///        sampling each pixel at its centre and blending with the color's alpha.
-void fill_polygon(Image& image, const std::vector<double>& px, const std::vector<double>& py, RGB color) {
-  if (px.size() < 3) return;
+void fill_polygon(Image& image, const std::vector<double>& logical_x, const std::vector<double>& logical_y, RGB color) {
+  if (logical_x.size() < 3) return;
+  // Logical vertices to device pixels.
+  std::vector<double> px(logical_x), py(logical_y);
+  if (image.scale != 1.0) {
+    for (auto& v : px) v *= image.scale;
+    for (auto& v : py) v *= image.scale;
+  }
   const auto [y_lo, y_hi] = std::minmax_element(py.begin(), py.end());
   const int  row_begin = std::max(0, static_cast<int>(std::floor(*y_lo)));
   const int  row_end = std::min(static_cast<int>(image.height) - 1, static_cast<int>(std::ceil(*y_hi)));
@@ -1148,10 +1210,11 @@ void fill_polygon(Image& image, const std::vector<double>& px, const std::vector
   }
 }
 
-Image rasterize(const Plot& plot, Bounds bounds) {
+/// @brief Rasterizes @p plot over @p bounds with @p scale device pixels per logical pixel.
+Image rasterize(const Plot& plot, Bounds bounds, double scale = 1.0) {
   const Layout layout = compute_layout(plot, bounds);
   const double tick_px = plot.tick_font_px();
-  Image image(plot.width(), plot.height(), plot.background_color());
+  Image image(plot.width(), plot.height(), plot.background_color(), scale);
   const RGB axis_color = plot.axes_color();
 
   if (!plot.axes_hidden()) {
@@ -1291,7 +1354,8 @@ Image rasterize(const Plot& plot, Bounds bounds) {
   return image;
 }
 
-Image rasterize(const Plot& plot) { return rasterize(plot, compute_bounds(plot)); }
+/// @brief Rasterizes @p plot over its own bounds at @p scale device pixels per logical pixel.
+Image rasterize(const Plot& plot, double scale = 1.0) { return rasterize(plot, compute_bounds(plot), scale); }
 
 
 void write_be32(std::ostream& out, std::uint32_t value) {
@@ -1380,6 +1444,19 @@ void write_png_image(const Image& image, std::ostream& out) {
   ihdr[8] = 8U;
   ihdr[9] = 2U;
   write_png_chunk(out, "IHDR", ihdr);
+  if (image.scale != 1.0) {
+    // pHYs: the resolution in pixels per metre, so viewers and word processors size the
+    // image at its physical size (dpi = 96 * scale).
+    const auto per_metre = static_cast<std::uint32_t>(std::lround(units::pixels_per_inch * image.scale / 0.0254));
+    std::vector<std::uint8_t> phys(9U, 0U);
+    for (int axis = 0; axis < 2; ++axis) {
+      for (int b = 0; b < 4; ++b) {
+        phys[static_cast<std::size_t>(axis * 4 + b)] = static_cast<std::uint8_t>((per_metre >> (24U - 8U * static_cast<unsigned>(b))) & 0xFFU);
+      }
+    }
+    phys[8] = 1U;  // unit: metre
+    write_png_chunk(out, "pHYs", phys);
+  }
 
   std::vector<std::uint8_t> raw;
   raw.reserve(image.height * (1U + image.width * 3U));
@@ -1408,9 +1485,13 @@ std::string hex_encode(const std::vector<std::uint8_t>& bytes) {
 
 void write_pdf_image(const Image& image, std::ostream& out) {
   const std::string image_hex = hex_encode(image.pixels);
+  // The page keeps the logical size (one point per logical pixel); a higher dpi() packs more
+  // image pixels into it rather than enlarging the page.
+  const auto page_w = Image::scaled_size(image.width, 1.0 / image.scale);
+  const auto page_h = Image::scaled_size(image.height, 1.0 / image.scale);
   std::ostringstream content_stream;
   content_stream << "q\n"
-                 << image.width << " 0 0 " << image.height << " 0 0 cm\n"
+                 << page_w << " 0 0 " << page_h << " 0 0 cm\n"
                  << "/Im0 Do\n"
                  << "Q\n";
   const std::string content = content_stream.str();
@@ -1431,7 +1512,7 @@ void write_pdf_image(const Image& image, std::ostream& out) {
   out << "<< /Type /Pages /Count 1 /Kids [3 0 R] >>\nendobj\n";
 
   begin_object(3);
-  out << "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " << image.width << " " << image.height
+  out << "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " << page_w << " " << page_h
       << "] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n";
 
   begin_object(4);
@@ -1566,8 +1647,9 @@ Image tile_panels(const std::vector<Image>& panels,
                   std::size_t               cols,
                   std::size_t               width,
                   std::size_t               height,
-                  const std::string&        title) {
-  Image     out(width, height, {255, 255, 255});
+                  const std::string&        title,
+                  double                    scale = 1.0) {
+  Image     out(width, height, {255, 255, 255}, scale);
   const int band = title.empty() ? 0 : static_cast<int>(RLayout::title_band_px);
   if (band > 0) {
     draw_text(out, static_cast<double>(width) / 2.0, band * 0.7, title, {55, 65, 81}, 24.0, TextAnchor::Middle);
@@ -1577,18 +1659,23 @@ Image tile_panels(const std::vector<Image>& panels,
   for (std::size_t i = 0; i < panels.size(); ++i) {
     const int col = static_cast<int>(i % cols);
     const int row = static_cast<int>(i / cols);
-    blit_scaled_image(panels[i], out, col * cell_w, band + row * cell_h, cell_w, cell_h, 1.0, 0.0, 0.0);
+    // Cells are laid out in logical pixels; blit into their device-pixel rectangles.
+    const auto [x0, x1] = out.device_span(col * cell_w, (col + 1) * cell_w - 1);
+    const auto [y0, y1] = out.device_span(band + row * cell_h, band + (row + 1) * cell_h - 1);
+    blit_scaled_image(panels[i], out, x0, y0, x1 - x0 + 1, y1 - y0 + 1, 1.0, 0.0, 0.0);
   }
   return out;
 }
 
-/// @brief Rasterizes every panel of @p layout and tiles them into one image.
+/// @brief Rasterizes every panel of @p layout and tiles them into one image, at the layout's
+///        dpi() (scale dpi / 96).
 Image rasterize_layout(const RLayout& layout) {
+  const double scale = layout.dpi() / units::pixels_per_inch;
   std::vector<Image> images;
   images.reserve(layout.panel_count());
-  for (std::size_t i = 0; i < layout.panel_count(); ++i) images.push_back(rasterize(layout.panel(i)));
+  for (std::size_t i = 0; i < layout.panel_count(); ++i) images.push_back(rasterize(layout.panel(i), scale));
   return tile_panels(images, layout.rows(), layout.cols(), layout.width(), layout.height(),
-                     layout.title_text());
+                     layout.title_text(), scale);
 }
 
 #if defined(DATAMUNGE_HAVE_X11)
@@ -2115,9 +2202,9 @@ void Plot::save(const std::string& path) const {
   throw std::invalid_argument("Plot::save: unsupported extension");
 }
 
-std::vector<std::uint8_t> Plot::to_png() const { return encode_png(rasterize(*this)); }
+std::vector<std::uint8_t> Plot::to_png() const { return encode_png(rasterize(*this, dpi_ / units::pixels_per_inch)); }
 
-std::vector<std::uint8_t> Plot::to_pdf() const { return encode_pdf(rasterize(*this)); }
+std::vector<std::uint8_t> Plot::to_pdf() const { return encode_pdf(rasterize(*this, dpi_ / units::pixels_per_inch)); }
 
 void Plot::save_png(const std::string& path) const { write_bytes(to_png(), path, "Plot::save_png"); }
 
@@ -3039,7 +3126,7 @@ Figure& Figure::title(std::string value) {
     auto& layout = std::get<RLayout>(content_);
     Plot inner = layout.panel(0);
     inner.title(std::move(value));
-    content_ = RLayout::create(1, 1).add(inner).size(layout.width(), layout.height()).fit_panels();
+    content_ = RLayout::create(1, 1).add(inner).size(layout.width(), layout.height()).dpi(layout.dpi()).fit_panels();
   } else {
     std::get<RLayout>(content_).title(std::move(value)).fit_panels();
   }
@@ -3050,7 +3137,7 @@ Figure& Figure::size(std::size_t width, std::size_t height) {
   if (auto* plot = std::get_if<Plot>(&content_)) {
     // A small single plot is drawn as a 1 x 1 grid so its canvas can stay min_panel_px or more.
     if (std::min(width, height) < RLayout::min_panel_px) {
-      content_ = RLayout::create(1, 1).add(*plot).size(width, height).fit_panels();
+      content_ = RLayout::create(1, 1).add(*plot).size(width, height).dpi(plot->dpi()).fit_panels();
       single_ = true;
       return *this;
     }

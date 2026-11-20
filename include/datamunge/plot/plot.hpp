@@ -22,6 +22,8 @@
 ///
 /// @see RPlot, RLayout, compose.hpp
 
+#include <datamunge/plot/units.hpp>
+
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -274,6 +276,62 @@ class Plot {
   /// @return This plot, for chaining.
   /// @see RPlot::size()
   Plot& size(std::size_t width, std::size_t height);
+#ifndef SWIG
+  /// @brief Sets the plot width in physical units, keeping the height; e.g.
+  ///        `.width(dm::units::inch{8})` (96 px per inch, see units::Length).
+  /// @param value  Width in px, inch, cm, mm or pt.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).width(dm::units::inch{5}).height(dm::units::inch{4});
+  /// std::print("{}x{}\n", plt.width(), plt.height());  // 480x384
+  /// @endcode
+  /// @see size(), height(units::Length), units::Length
+  Plot& width(units::Length value) { return size(value.to_pixels(), height()); }
+  /// @brief Sets the plot height in physical units, keeping the width; e.g.
+  ///        `.height(dm::units::inch{6})` (96 px per inch, see units::Length).
+  /// @param value  Height in px, inch, cm, mm or pt.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  /// @see size(), width(units::Length), units::Length
+  Plot& height(units::Length value) { return size(width(), value.to_pixels()); }
+  /// @brief Sets the resolution PNG and PDF output is rasterized at, like R's
+  ///        `png(res = )` and ggsave()'s `dpi =` (default 96).
+  ///
+  /// The layout, text and line widths keep their size relative to the plot; only the pixel
+  /// count changes: a plot of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+  /// and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+  /// other programs show it at its physical size; a PDF keeps its page size and gains detail.
+  /// SVG output is vector and is unaffected.
+  ///
+  /// @param value  Dots per inch; finite and positive.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument  If @p value is not finite and positive.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).width(dm::units::inch{2}).dpi(300);
+  /// std::print("{} {}\n", plt.width(), plt.dpi());   // 192 300
+  /// @endcode
+  ///
+  /// @par References
+  /// - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+  /// - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+  ///
+  /// @see width(units::Length), height(units::Length), save()
+  Plot& dpi(double value) {
+    if (!(std::isfinite(value) && value > 0.0)) {
+      throw std::invalid_argument("dpi: resolution must be finite and positive");
+    }
+    dpi_ = value;
+    return *this;
+  }
+  /// @brief The resolution PNG and PDF output is rasterized at (default 96).
+  /// @return Dots per inch.
+  [[nodiscard]] double dpi() const noexcept { return dpi_; }
+#endif
   /// @brief Base-class form of RPlot::title(): sets the main heading; empty removes it.
   /// @param value  Heading text (moved into the plot).
   /// @return This plot, for chaining.
@@ -597,6 +655,7 @@ class Plot {
 
   std::size_t width_{960};                ///< Canvas width in pixels.
   std::size_t height_{640};               ///< Canvas height in pixels.
+  double      dpi_{96.0};                 ///< PNG/PDF raster resolution in dots per inch.
   std::string title_{"datamunge plot"};   ///< Main heading; empty draws none.
 
   /// @brief Optional second heading; empty suppresses the subtitle and its extra margin.
@@ -742,6 +801,59 @@ class RPlot : public Plot {
   /// @endcode
   /// @see margins()
   RPlot& size(std::size_t width, std::size_t height);
+#ifndef SWIG
+  using Plot::dpi;
+  using Plot::height;
+  using Plot::width;
+  /// @brief Sets the plot width in physical units, keeping the height; e.g.
+  ///        `.width(dm::units::inch{8})` (96 px per inch, see units::Length).
+  /// @param value  Width in px, inch, cm, mm or pt.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).width(dm::units::inch{5}).height(dm::units::inch{4});
+  /// std::print("{}x{}\n", plt.width(), plt.height());  // 480x384
+  /// @endcode
+  /// @see size(), height(units::Length), units::Length
+  RPlot& width(units::Length value) { return size(value.to_pixels(), height()); }
+  /// @brief Sets the plot height in physical units, keeping the width; e.g.
+  ///        `.height(dm::units::inch{6})` (96 px per inch, see units::Length).
+  /// @param value  Height in px, inch, cm, mm or pt.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  /// @see size(), width(units::Length), units::Length
+  RPlot& height(units::Length value) { return size(width(), value.to_pixels()); }
+  /// @brief Sets the resolution PNG and PDF output is rasterized at, like R's
+  ///        `png(res = )` and ggsave()'s `dpi =` (default 96).
+  ///
+  /// The layout, text and line widths keep their size relative to the plot; only the pixel
+  /// count changes: a plot of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+  /// and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+  /// other programs show it at its physical size; a PDF keeps its page size and gains detail.
+  /// SVG output is vector and is unaffected.
+  ///
+  /// @param value  Dots per inch; finite and positive.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument  If @p value is not finite and positive.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).width(dm::units::inch{2}).dpi(300);
+  /// std::print("{} {}\n", plt.width(), plt.dpi());   // 192 300
+  /// @endcode
+  ///
+  /// @par References
+  /// - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+  /// - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+  ///
+  /// @see width(units::Length), height(units::Length), save()
+  RPlot& dpi(double value) {
+    Plot::dpi(value);
+    return *this;
+  }
+#endif
   /// @brief Sets the main heading, like R's `main =`; an empty string removes it.
   /// @param value  Heading text (copied).
   /// @return This plot, for chaining.
@@ -2978,6 +3090,62 @@ class RLayout final {
   /// See RLayout.
   /// @see title()
   RLayout& size(std::size_t width, std::size_t height);
+#ifndef SWIG
+  /// @brief Sets the layout width in physical units, keeping the height; e.g.
+  ///        `.width(dm::units::inch{8})` (96 px per inch, see units::Length).
+  /// @param value  Width in px, inch, cm, mm or pt.
+  /// @return This layout, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plt = dm::graphics::RLayout::create(1, 2).width(dm::units::inch{5}).height(dm::units::inch{4});
+  /// std::print("{}x{}\n", plt.width(), plt.height());  // 480x384
+  /// @endcode
+  /// @see size(), height(units::Length), units::Length
+  RLayout& width(units::Length value) { return size(value.to_pixels(), height()); }
+  /// @brief Sets the layout height in physical units, keeping the width; e.g.
+  ///        `.height(dm::units::inch{6})` (96 px per inch, see units::Length).
+  /// @param value  Height in px, inch, cm, mm or pt.
+  /// @return This layout, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  /// @see size(), width(units::Length), units::Length
+  RLayout& height(units::Length value) { return size(width(), value.to_pixels()); }
+  /// @brief Sets the resolution PNG and PDF output is rasterized at, like R's
+  ///        `png(res = )` and ggsave()'s `dpi =` (default 96).
+  ///
+  /// The layout, text and line widths keep their size relative to the layout; only the pixel
+  /// count changes: a layout of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+  /// and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+  /// other programs show it at its physical size; a PDF keeps its page size and gains detail.
+  /// SVG output is vector and is unaffected.
+  ///
+  /// @param value  Dots per inch; finite and positive.
+  /// @return This layout, for chaining.
+  /// @throws std::invalid_argument  If @p value is not finite and positive.
+  ///
+  /// @par Example
+  /// @code
+  /// auto grid = dm::graphics::RLayout::create(1, 2).width(dm::units::inch{6}).dpi(300);
+  /// std::print("{} {}\n", grid.width(), grid.dpi());   // 576 300
+  /// @endcode
+  ///
+  /// @par References
+  /// - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+  /// - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+  ///
+  /// @see width(units::Length), height(units::Length), save()
+  RLayout& dpi(double value) {
+    if (!(std::isfinite(value) && value > 0.0)) {
+      throw std::invalid_argument("dpi: resolution must be finite and positive");
+    }
+    dpi_ = value;
+    return *this;
+  }
+  /// @brief The resolution PNG and PDF output is rasterized at (default 96).
+  /// @return Dots per inch.
+  [[nodiscard]] double dpi() const noexcept { return dpi_; }
+#endif
   /// @brief Sets an optional figure-level heading drawn in a band above the panels, like R's
   ///        `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.
   /// @param value  Heading text; the band is title_band_px pixels tall.
@@ -3131,6 +3299,7 @@ class RLayout final {
   std::size_t cols_{1};         ///< Panel columns.
   std::size_t width_{960};      ///< Figure width in pixels.
   std::size_t height_{640};     ///< Figure height in pixels, including the title band.
+  double      dpi_{96.0};       ///< PNG/PDF raster resolution in dots per inch.
   std::string title_;           ///< Figure heading; empty reserves no band.
   std::vector<Panel> panels_;   ///< Added panels, in row-major cell order.
 };

@@ -1185,7 +1185,7 @@ RPlot Splom::mosaic_panel(std::size_t row, std::size_t col, RPlot p) const {
 RLayout Splom::layout() const {
   const std::size_t n = names_.size();
   RLayout           grid = RLayout::create(n, n);
-  grid.size(width_, height_).title(title_);
+  grid.size(width_, height_).title(title_).dpi(dpi_);
   for (std::size_t row = 0; row < n; ++row) {
     for (std::size_t col = 0; col < n; ++col) {
       grid.add(panel(row, col));

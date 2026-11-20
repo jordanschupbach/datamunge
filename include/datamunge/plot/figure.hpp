@@ -99,6 +99,62 @@ class Figure {
   /// @par Example
   /// See Figure.
   Figure& size(std::size_t width, std::size_t height);
+#ifndef SWIG
+  /// @brief Sets the figure width in physical units, keeping the height; e.g.
+  ///        `.width(dm::units::inch{8})` (96 px per inch, see units::Length).
+  /// @param value  Width in px, inch, cm, mm or pt.
+  /// @return This figure, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  ///
+  /// @par Example
+  /// @code
+  /// auto fig = dm::graphics::Figure(dm::graphics::Splom::create(dm::datasets::iris()))
+  ///              .width(dm::units::inch{6}).height(dm::units::inch{4});
+  /// std::print("{}x{}\n", fig.width(), fig.height());  // 576x384
+  /// @endcode
+  /// @see size(), height(units::Length), units::Length
+  Figure& width(units::Length value) { return size(value.to_pixels(), height()); }
+  /// @brief Sets the figure height in physical units, keeping the width; e.g.
+  ///        `.height(dm::units::inch{6})` (96 px per inch, see units::Length).
+  /// @param value  Height in px, inch, cm, mm or pt.
+  /// @return This figure, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  /// @see size(), width(units::Length), units::Length
+  Figure& height(units::Length value) { return size(width(), value.to_pixels()); }
+  /// @brief Sets the resolution PNG and PDF output is rasterized at, like R's
+  ///        `png(res = )` and ggsave()'s `dpi =` (default 96).
+  ///
+  /// The layout, text and line widths keep their size relative to the figure; only the pixel
+  /// count changes: a figure of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+  /// and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+  /// other programs show it at its physical size; a PDF keeps its page size and gains detail.
+  /// SVG output is vector and is unaffected.
+  ///
+  /// @param value  Dots per inch; finite and positive.
+  /// @return This figure, for chaining.
+  /// @throws std::invalid_argument  If @p value is not finite and positive.
+  ///
+  /// @par Example
+  /// @code
+  /// auto fig = dm::graphics::Figure(dm::graphics::Splom::create(dm::datasets::iris())).dpi(300);
+  /// std::print("{}\n", fig.dpi());   // 300
+  /// @endcode
+  ///
+  /// @par References
+  /// - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+  /// - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+  ///
+  /// @see width(units::Length), height(units::Length), save()
+  Figure& dpi(double value) {
+    std::visit([value](auto& content) { content.dpi(value); }, content_);
+    return *this;
+  }
+  /// @brief The resolution PNG and PDF output is rasterized at (default 96).
+  /// @return Dots per inch.
+  [[nodiscard]] double dpi() const noexcept {
+    return std::visit([](const auto& content) { return content.dpi(); }, content_);
+  }
+#endif
 
   /// @brief Returns the figure width in pixels.
   /// @return The current width.

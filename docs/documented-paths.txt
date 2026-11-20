@@ -8,6 +8,7 @@ include/datamunge/plot/compose.hpp
 include/datamunge/plot/figure.hpp
 include/datamunge/plot/histogram.hpp
 include/datamunge/plot/plot.hpp
+include/datamunge/plot/units.hpp
 include/datamunge/format.hpp
 include/datamunge/format
 include/datamunge/info.hpp

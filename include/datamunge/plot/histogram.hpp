@@ -122,6 +122,59 @@ class Histogram final : public graphics::RPlot {
     RPlot::size(width, height);
     return *this;
   }
+#ifndef SWIG
+  using RPlot::dpi;
+  using RPlot::height;
+  using RPlot::width;
+  /// @brief Sets the histogram width in physical units, keeping the height; e.g.
+  ///        `.width(dm::units::inch{8})` (96 px per inch, see units::Length).
+  /// @param value  Width in px, inch, cm, mm or pt.
+  /// @return This histogram, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  ///
+  /// @par Example
+  /// @code
+  /// auto hist = dm::Histogram({1.0, 2.0, 2.0, 3.0}).width(dm::units::cm{12});
+  /// std::print("{}\n", hist.width());  // 454
+  /// @endcode
+  /// @see size(), height(units::Length), units::Length
+  Histogram& width(units::Length value) { return size(value.to_pixels(), height()); }
+  /// @brief Sets the histogram height in physical units, keeping the width; e.g.
+  ///        `.height(dm::units::inch{6})` (96 px per inch, see units::Length).
+  /// @param value  Height in px, inch, cm, mm or pt.
+  /// @return This histogram, for chaining.
+  /// @throws std::invalid_argument  If @p value rounds to less than one pixel.
+  /// @see size(), width(units::Length), units::Length
+  Histogram& height(units::Length value) { return size(width(), value.to_pixels()); }
+  /// @brief Sets the resolution PNG and PDF output is rasterized at, like R's
+  ///        `png(res = )` and ggsave()'s `dpi =` (default 96).
+  ///
+  /// The layout, text and line widths keep their size relative to the histogram; only the pixel
+  /// count changes: a histogram of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+  /// and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+  /// other programs show it at its physical size; a PDF keeps its page size and gains detail.
+  /// SVG output is vector and is unaffected.
+  ///
+  /// @param value  Dots per inch; finite and positive.
+  /// @return This histogram, for chaining.
+  /// @throws std::invalid_argument  If @p value is not finite and positive.
+  ///
+  /// @par Example
+  /// @code
+  /// auto hist = dm::Histogram({1.0, 2.0, 2.0, 3.0}).dpi(300);
+  /// std::print("{}\n", hist.dpi());   // 300
+  /// @endcode
+  ///
+  /// @par References
+  /// - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+  /// - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+  ///
+  /// @see width(units::Length), height(units::Length), save()
+  Histogram& dpi(double value) {
+    RPlot::dpi(value);
+    return *this;
+  }
+#endif
   /// @brief Same as RPlot::title(), returning this histogram so chains keep the Histogram type.
   Histogram& title(std::string value) {
     RPlot::title(std::move(value));
