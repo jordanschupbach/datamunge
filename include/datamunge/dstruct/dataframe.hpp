@@ -31,11 +31,13 @@
 /// @see pipe.hpp, format.hpp, info.hpp
 
 #include <algorithm>
+#include <charconv>
 #include <cmath>
 #include <cstddef>
 #include <compare>
 #include <concepts>
 #include <cstdint>
+#include <functional>
 #include <initializer_list>
 #include <limits>
 #include <map>
@@ -562,6 +564,35 @@ class DataFrame {
     std::string na{"NA"};  ///< Text for null cells.
   };
 
+  /// @brief Formats @p value as a short, exact label: the shortest decimal that reads back as
+  ///        the same double (`2007`, `3.5`, `0.1`, `1e+21`), with R's `NaN`, `Inf` and `-Inf`.
+  ///
+  /// This is how as_string() and Cell::as_string() turn numbers into categories, so whole
+  /// numbers carry no trailing zeros (unlike `std::to_string(2007.0)`, which gives
+  /// `"2007.000000"`).
+  ///
+  /// @param value  Number to format.
+  /// @return  Its label.
+  ///
+  /// @par Example
+  /// @code
+  /// std::print("{} {} {}\n", dm::dstruct::DataFrame::format_number(2007), dm::dstruct::DataFrame::format_number(0.1),
+  ///            dm::dstruct::DataFrame::format_number(-1.0 / 0.0));   // 2007 0.1 -Inf
+  /// @endcode
+  ///
+  /// @par References
+  /// - C++ std::to_chars (shortest round-trip form): https://en.cppreference.com/w/cpp/utility/to_chars
+  /// - R as.character: https://stat.ethz.ch/R-manual/R-devel/library/base/html/character.html
+  ///
+  /// @see as_string(), Cell::as_string()
+  [[nodiscard]] static std::string format_number(double value) {
+    if (std::isnan(value)) return "NaN";
+    if (std::isinf(value)) return value > 0 ? "Inf" : "-Inf";
+    char buffer[32];
+    const auto result = std::to_chars(buffer, buffer + sizeof(buffer), value);
+    return std::string(buffer, result.ptr);
+  }
+
   /// @brief A value a Cell compares with: a number (not bool) or anything convertible to
   ///        `std::string_view` (`std::string`, a string literal, ...).
   /// @tparam T  Candidate operand type.
@@ -602,6 +633,25 @@ class DataFrame {
     /// @brief Whether the cell is null (R's `NA`).
     /// @return  true for a null cell.
     [[nodiscard]] bool is_null() const { return std::holds_alternative<null_type>(*value); }
+
+    /// @brief The cell as a category label: a string cell as is, a number formatted by
+    ///        DataFrame::format_number() (`2007`, not `2007.000000`), and `std::nullopt` for a
+    ///        null, which mutate() keeps as a null rather than an `"NA"` level.
+    ///
+    /// @return  The label, or `std::nullopt` for a null cell.
+    ///
+    /// @par Example
+    /// @code
+    /// const auto penguins = dm::datasets::penguins().mutate(
+    ///   {{"year", [](const auto& row) { return row["year"].as_string(); }}});
+    /// std::print("{}\n", penguins.string_at("year", 0));   // 2007
+    /// @endcode
+    /// @see DataFrame::as_string(), DataFrame::format_number()
+    [[nodiscard]] std::optional<std::string> as_string() const {
+      if (is_null()) return std::nullopt;
+      if (const auto* number = std::get_if<double>(value)) return format_number(*number);
+      return std::get<std::string>(*value);
+    }
 
     /// @brief Three-way comparison of the cell with @p other.
     ///
@@ -696,6 +746,49 @@ class DataFrame {
     friend bool operator!=(const T& other, const Cell& cell) {
       return cell != other;
     }
+  };
+
+  /// @brief A value a mutate() row function may return: a number, a string, a `std::optional`
+  ///        of either, `std::nullopt` (a null), or a Cell copied from the row.
+  ///
+  /// Converts implicitly from each of these, so row functions return plain values.
+  /// @see mutate(std::initializer_list<std::pair<std::string, RowFunction>>) const
+  class MutateValue {
+   public:
+    /// @brief A null cell.
+    MutateValue(std::nullopt_t /*null*/) noexcept {}  // NOLINT(google-explicit-constructor)
+    /// @brief A number (any arithmetic type but bool), stored as double.
+    /// @tparam T  Arithmetic type.
+    /// @param number  The value.
+    template <typename T>
+      requires(std::is_arithmetic_v<T> && !std::is_same_v<T, bool>)
+    MutateValue(T number) noexcept : value_(static_cast<double>(number)) {}  // NOLINT(google-explicit-constructor)
+    /// @brief A string.
+    /// @param text  The value.
+    MutateValue(std::string text) : value_(std::move(text)) {}  // NOLINT(google-explicit-constructor)
+    /// @brief A string from a C string.
+    /// @param text  The value; must not be null.
+    MutateValue(const char* text) : value_(std::string(text)) {}  // NOLINT(google-explicit-constructor)
+    /// @brief A number, or a null for `std::nullopt`.
+    /// @param number  The value.
+    MutateValue(const std::optional<double>& number) {  // NOLINT(google-explicit-constructor)
+      if (number) value_ = *number;
+    }
+    /// @brief A string, or a null for `std::nullopt`.
+    /// @param text  The value.
+    MutateValue(const std::optional<std::string>& text) {  // NOLINT(google-explicit-constructor)
+      if (text) value_ = *text;
+    }
+    /// @brief A copy of @p cell's value (null, number or string).
+    /// @param cell  A cell from the row, e.g. `row["year"]`.
+    MutateValue(const Cell& cell) : value_(*cell.value) {}  // NOLINT(google-explicit-constructor)
+
+    /// @brief The stored cell.
+    /// @return  Null, a number or a string.
+    [[nodiscard]] const cell_type& cell() const noexcept { return value_; }
+
+   private:
+    cell_type value_{};  ///< The value; null by default.
   };
 
   /// @brief A snapshot of one row: each column name mapped to its cell (null, double or
@@ -837,6 +930,10 @@ class DataFrame {
       return std::get<std::string>(at(column_name));
     }
   };
+
+  /// @brief A mutate() row function: takes a Row and returns a MutateValue (a number, a string,
+  ///        an optional of either, or a Cell).
+  using RowFunction = std::function<MutateValue(const Row&)>;
 
   /// @brief Summary statistics of one numeric column, returned by describe_numeric().
   ///
@@ -1315,6 +1412,126 @@ class DataFrame {
       values.push_back(fn(row(row_index)));
     }
     return mutate(column_name, std::move(values));
+  }
+
+  /// @brief Adds or replaces several columns, each computed row by row, like
+  ///        `dplyr::mutate(df, a = ..., b = ...)`.
+  ///
+  /// Columns are computed in the order given, and each sees the columns before it, so a later
+  /// function can use an earlier result. Each function takes a Row and may return a number, a
+  /// string, a `std::optional` of either, `std::nullopt` or a Cell (see MutateValue); the column
+  /// is numeric when it returns numbers and string (categorical) when it returns strings, with
+  /// nulls allowed in either. A new column is appended last; a replaced column keeps its
+  /// position and takes the new type.
+  ///
+  /// @param columns  `{name, function}` pairs.
+  /// @return  A new DataFrame with the columns added or replaced.
+  /// @throws std::invalid_argument  if a name is empty or one function returns both numbers and
+  ///         strings.
+  /// @throws std::bad_function_call  if a function is empty.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto penguins = dm::datasets::penguins().mutate({
+  ///   {"year", [](const auto& row) { return row["year"].as_string(); }},
+  ///   {"mass_kg", [](const auto& row) { return row.get_optional_double("body_mass_g").transform(
+  ///                                       [](double g) { return g / 1000; }); }},
+  /// });
+  /// std::print("{} {}\n", penguins.string_at("year", 0), penguins.double_at("mass_kg", 0));   // 2007 3.75
+  /// @endcode
+  ///
+  /// @par References
+  /// - dplyr mutate: https://dplyr.tidyverse.org/reference/mutate.html
+  ///
+  /// @see as_string(), mutate_with(), dm::mutate(), MutateValue
+  [[nodiscard]] DataFrame mutate(std::initializer_list<std::pair<std::string, RowFunction>> columns) const {
+    DataFrame result = *this;
+    for (const auto& [name, fn] : columns) {
+      std::vector<cell_type> cells;
+      cells.reserve(result.row_count_);
+      bool has_number = false;
+      bool has_string = false;
+      for (size_type row_index = 0; row_index < result.row_count_; ++row_index) {
+        cells.push_back(fn(result.row(row_index)).cell());
+        has_number = has_number || std::holds_alternative<double>(cells.back());
+        has_string = has_string || std::holds_alternative<std::string>(cells.back());
+      }
+      if (has_number && has_string) {
+        throw std::invalid_argument("DataFrame::mutate: column '" + name +
+                                    "' function returned both numbers and strings");
+      }
+      if (has_string) {
+        std::vector<std::optional<std::string>> values;
+        values.reserve(cells.size());
+        for (auto& cell : cells) {
+          values.push_back(std::holds_alternative<std::string>(cell)
+                               ? std::optional<std::string>(std::move(std::get<std::string>(cell)))
+                               : std::nullopt);
+        }
+        result = result.mutate(name, values);
+      } else {
+        std::vector<std::optional<double>> values;
+        values.reserve(cells.size());
+        for (const auto& cell : cells) {
+          values.push_back(std::holds_alternative<double>(cell) ? std::optional<double>(std::get<double>(cell))
+                                                               : std::nullopt);
+        }
+        result = result.mutate(name, values);
+      }
+    }
+    return result;
+  }
+
+  /// @brief Converts columns to string (categorical) columns, like R's `factor()` /
+  ///        `as.character()` or pandas' `astype(str)`, e.g. `penguins.as_string("year")`.
+  ///
+  /// Numbers become labels through format_number() (`2007`, `3.5`; never `2007.000000`), nulls
+  /// stay null, and a column that is already a string column is left as is. Each column keeps
+  /// its position. Plots and models treat string columns as categorical, so a converted
+  /// numeric code (a year, a cluster id) becomes a grouping variable.
+  ///
+  /// @param column_names  Columns to convert.
+  /// @return  A new DataFrame with those columns as string columns.
+  /// @throws std::out_of_range  if a column does not exist.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto penguins = dm::datasets::penguins().as_string({"year"});
+  /// std::print("{} {}\n", penguins.string_at("year", 0),
+  ///            penguins.column_type("year") == dm::dstruct::DataFrame::ColumnType::String);   // 2007 true
+  /// @endcode
+  ///
+  /// @par References
+  /// - R factor: https://stat.ethz.ch/R-manual/R-devel/library/base/html/factor.html
+  /// - pandas DataFrame.astype:
+  ///   https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.astype.html
+  ///
+  /// @see format_number(), Cell::as_string(), mutate()
+  [[nodiscard]] DataFrame as_string(const std::vector<std::string>& column_names) const {
+    DataFrame result = *this;
+    for (const auto& name : column_names) {
+      if (column_type(name) == ColumnType::String) continue;
+      const auto& source = numeric_column(name);
+      std::vector<std::optional<std::string>> labels;
+      labels.reserve(row_count_);
+      for (size_type row_index = 0; row_index < row_count_; ++row_index) {
+        const auto number = source.optional_at(row_index);
+        labels.push_back(number ? std::optional<std::string>(format_number(*number)) : std::nullopt);
+      }
+      result = result.mutate(name, labels);
+    }
+    return result;
+  }
+
+  /// @brief as_string() for columns named one by one: `df.as_string("year", "island")`.
+  /// @tparam Names  String-like types.
+  /// @param column_names  Columns to convert.
+  /// @return  A new DataFrame with those columns as string columns.
+  /// @throws std::out_of_range  if a column does not exist.
+  template <typename... Names>
+    requires(sizeof...(Names) > 0 && (std::is_convertible_v<const Names&, std::string> && ...))
+  [[nodiscard]] DataFrame as_string(const Names&... column_names) const {
+    return as_string(std::vector<std::string>{std::string(column_names)...});
   }
 
   /// @brief Deletes a column in place (mutating), like pandas' `df.drop(columns=...)`.

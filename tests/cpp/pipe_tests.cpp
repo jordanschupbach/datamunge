@@ -275,3 +275,48 @@ TEST(Pipe, RowCellsCompareWithNumbersAndStringsAndNullsCompareFalse) {
   EXPECT_THROW((void)(first["x"] == "a"), std::invalid_argument);
   EXPECT_THROW((void)first["missing"], std::out_of_range);
 }
+
+TEST(Pipe, AsStringMakesNumericColumnsCategoricalWithShortLabels) {
+  const DataFrame frame{{{"year", DataFrame::numeric_column_type(std::vector<std::optional<double>>{2007, std::nullopt, 2.5, std::nan("")})},
+                         {"g", DataFrame::string_column_type(std::vector<std::optional<std::string>>{"a", "b", std::nullopt, "d"})}}};
+
+  const auto converted = frame.as_string("year", "g");
+  EXPECT_EQ(converted.columns(), frame.columns());
+  EXPECT_EQ(converted.column_type("year"), DataFrame::ColumnType::String);
+  EXPECT_EQ(converted.string_at("year", 0), "2007");
+  EXPECT_TRUE(converted.is_null("year", 1));
+  EXPECT_EQ(converted.string_at("year", 2), "2.5");
+  EXPECT_EQ(converted.string_at("year", 3), "NaN");
+  EXPECT_TRUE(converted.is_null("g", 2));  // string columns are left as they are
+  EXPECT_EQ(frame.as_string({"year"}).string_at("year", 0), "2007");
+  EXPECT_THROW((void)frame.as_string("missing"), std::out_of_range);
+
+  EXPECT_EQ(DataFrame::format_number(0.1), "0.1");
+  EXPECT_EQ(DataFrame::format_number(-1.0 / 0.0), "-Inf");
+  EXPECT_EQ(DataFrame::format_number(1e21), "1e+21");
+}
+
+TEST(Pipe, MutateListComputesColumnsInOrderAndInfersTheirType) {
+  const DataFrame frame{{{"year", DataFrame::numeric_column_type(std::vector<std::optional<double>>{2007, std::nullopt, 2009})},
+                         {"len", DataFrame::numeric_column_type(std::vector<std::optional<double>>{1, 2, 3})}}};
+
+  const auto result = frame.mutate({
+      {"year", [](const auto& row) { return row["year"].as_string(); }},
+      {"double_len", [](const auto& row) { return 2 * row.get_double("len"); }},
+      {"label", [](const auto& row) { return row["year"].as_string().value_or("none"); }},
+      {"copy", [](const auto& row) { return row["double_len"]; }},
+  });
+  EXPECT_EQ(result.columns(), (std::vector<std::string>{"year", "len", "double_len", "label", "copy"}));
+  EXPECT_EQ(result.column_type("year"), DataFrame::ColumnType::String);
+  EXPECT_EQ(result.string_at("year", 0), "2007");
+  EXPECT_TRUE(result.is_null("year", 1));
+  EXPECT_EQ(result.column_type("double_len"), DataFrame::ColumnType::Numeric);
+  EXPECT_EQ(result.string_at("label", 1), "none");
+  EXPECT_DOUBLE_EQ(result.double_at("copy", 2), 6.0);  // sees the earlier column
+
+  EXPECT_THROW((void)frame.mutate({{"x", [](const auto& row) -> DataFrame::MutateValue {
+                                      if (row["len"] == 1) return "one";
+                                      return 1;
+                                    }}}),
+               std::invalid_argument);
+}
