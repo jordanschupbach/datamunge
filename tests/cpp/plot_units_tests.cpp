@@ -74,30 +74,29 @@ bool has_chunk(const std::vector<std::uint8_t>& bytes, const std::string& name) 
 }  // namespace
 
 TEST(PlotUnits, DpiScalesRasterPixelsButNotTheLayout) {
-  auto splom = graphics::Splom::create(datamunge::datasets::iris()).width(units::inch{2}).height(units::inch{2});
+  auto splom = graphics::Splom::create(datamunge::datasets::iris()).width(units::inch{4}).height(units::inch{4});
   EXPECT_DOUBLE_EQ(splom.dpi(), 96.0);
   const auto plain = splom.layout().to_png();
-  EXPECT_EQ(png_size(plain), (std::pair<std::uint32_t, std::uint32_t>{192, 192}));
+  EXPECT_EQ(png_size(plain), (std::pair<std::uint32_t, std::uint32_t>{384, 384}));
   EXPECT_FALSE(has_chunk(plain, "pHYs"));
 
   splom.dpi(300);
-  EXPECT_EQ(splom.width(), 192U);  // layout size is unchanged
+  EXPECT_EQ(splom.width(), 384U);  // layout size is unchanged
   const auto sharp = splom.layout().to_png();
-  EXPECT_EQ(png_size(sharp), (std::pair<std::uint32_t, std::uint32_t>{600, 600}));
+  EXPECT_EQ(png_size(sharp), (std::pair<std::uint32_t, std::uint32_t>{1200, 1200}));
   EXPECT_TRUE(has_chunk(sharp, "pHYs"));
 
-  graphics::Plot base;
-  base.size(100, 50).dpi(192);
-  EXPECT_EQ(png_size(base.to_png()), (std::pair<std::uint32_t, std::uint32_t>{200, 100}));
+  auto base = datamunge::Plot(datamunge::c(1.0, 2.0), datamunge::c(1.0, 2.0)).size(400, 300).dpi(192);
+  EXPECT_EQ(png_size(base.to_png()), (std::pair<std::uint32_t, std::uint32_t>{800, 600}));
   // The PDF page keeps the logical size; only the embedded image gains pixels.
   const auto pdf = base.to_pdf();
   const std::string text(pdf.begin(), pdf.end());
-  EXPECT_NE(text.find("/MediaBox [0 0 100 50]"), std::string::npos);
-  EXPECT_NE(text.find("/Width 200 /Height 100"), std::string::npos);
+  EXPECT_NE(text.find("/MediaBox [0 0 400 300]"), std::string::npos);
+  EXPECT_NE(text.find("/Width 800 /Height 600"), std::string::npos);
 
-  auto hist = datamunge::Histogram({1.0, 2.0, 2.0, 3.0}).size(100, 80).dpi(48);
+  auto hist = datamunge::Histogram({1.0, 2.0, 2.0, 3.0}).size(400, 300).dpi(48);
   EXPECT_DOUBLE_EQ(hist.dpi(), 48.0);
-  EXPECT_EQ(png_size(hist.to_png()), (std::pair<std::uint32_t, std::uint32_t>{50, 40}));
+  EXPECT_EQ(png_size(hist.to_png()), (std::pair<std::uint32_t, std::uint32_t>{200, 150}));
 
   EXPECT_THROW(base.dpi(0), std::invalid_argument);
   EXPECT_THROW(base.dpi(-72), std::invalid_argument);
@@ -105,8 +104,7 @@ TEST(PlotUnits, DpiScalesRasterPixelsButNotTheLayout) {
 }
 
 TEST(PlotUnits, FigureForwardsDpiAndKeepsItThroughResizing) {
-  graphics::Plot base;
-  auto fig = graphics::Figure(base).dpi(192);
+  auto fig = graphics::Figure(datamunge::Plot(datamunge::c(1.0, 2.0), datamunge::c(1.0, 2.0))).dpi(192);
   EXPECT_DOUBLE_EQ(fig.dpi(), 192.0);
   fig.size(100, 100);  // small: becomes a 1 x 1 grid internally
   EXPECT_DOUBLE_EQ(fig.dpi(), 192.0);
@@ -114,6 +112,6 @@ TEST(PlotUnits, FigureForwardsDpiAndKeepsItThroughResizing) {
   fig.title("t");
   EXPECT_DOUBLE_EQ(fig.dpi(), 192.0);
 
-  auto from_splom = graphics::Figure(graphics::Splom::create(datamunge::datasets::iris()).size(100, 100).dpi(192));
+  auto from_splom = graphics::Figure(graphics::Splom::create(datamunge::datasets::iris()).size(400, 400).dpi(192));
   EXPECT_DOUBLE_EQ(from_splom.dpi(), 192.0);
 }
