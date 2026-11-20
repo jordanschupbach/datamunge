@@ -32,6 +32,7 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <variant>
 #include <vector>
 
 /// @brief Core library APIs and their algorithm, data, and numerical submodules.
@@ -234,6 +235,83 @@ template <typename Predicate>
 [[nodiscard]] Filter<std::decay_t<Predicate>> filter_rows(Predicate&& predicate) {
   return Filter<std::decay_t<Predicate>>{std::forward<Predicate>(predicate)};
 }
+
+/// @brief The negation of a row predicate, made by `!predicate` on a negatable predicate
+///        such as dm::has_na.
+///
+/// Calling it returns `!predicate(row)`. Negating it again gives back the original predicate,
+/// so `!!dm::has_na` is dm::has_na itself. Holds a copy of the predicate.
+///
+/// @tparam Predicate  Row predicate type; called with `const dstruct::DataFrame::Row&`.
+///
+/// @par Example
+/// @code
+/// const auto penguins = dm::datasets::penguins();
+/// std::print("{}\n", penguins.filter(!dm::has_na).nrows());   // 333
+/// @endcode
+/// @see dm::has_na, DataFrame::filter()
+template <typename Predicate>
+struct NotRow {
+  /// @brief The predicate being negated.
+  Predicate predicate;
+
+  /// @brief Whether @p predicate is false for @p row.
+  /// @param row  Row snapshot, as DataFrame::filter() passes it.
+  /// @return  `!predicate(row)`.
+  [[nodiscard]] bool operator()(const dstruct::DataFrame::Row& row) const {
+    return !static_cast<bool>(predicate(row));
+  }
+
+  /// @brief Undoes the negation.
+  /// @return  A copy of the original predicate.
+  [[nodiscard]] constexpr Predicate operator!() const { return predicate; }
+};
+
+/// @brief Row predicate type of dm::has_na; use the dm::has_na object rather than this type.
+///
+/// @see dm::has_na
+struct HasNa {
+  /// @brief Whether any cell of @p row is null (R's `NA`).
+  ///
+  /// Only null cells count: a numeric NaN is a value, not a missing one, matching
+  /// DataFrame::drop_nulls() and DataFrame::null_count().
+  ///
+  /// @param row  Row snapshot, as DataFrame::filter() passes it.
+  /// @return  true if at least one cell is null; false for a row with no columns.
+  [[nodiscard]] bool operator()(const dstruct::DataFrame::Row& row) const {
+    return std::ranges::any_of(row.values, [](const auto& entry) {
+      return std::holds_alternative<dstruct::DataFrame::null_type>(entry.second);
+    });
+  }
+
+  /// @brief The complete-row predicate: true when no cell of the row is null.
+  /// @return  A NotRow wrapping this predicate.
+  [[nodiscard]] constexpr NotRow<HasNa> operator!() const { return NotRow<HasNa>{*this}; }
+};
+
+/// @brief Row predicate: true when the row has a null (R's `NA`) in any column, like
+///        `!complete.cases(df)` in R.
+///
+/// Pass it to DataFrame::filter() or dm::filter_rows(). `!dm::has_na` is its negation, true for
+/// complete rows, so `df.filter(!dm::has_na)` keeps the same rows as `df.drop_nulls()` (R's
+/// `df[complete.cases(df), ]`, tidyr's `drop_na()`). Only nulls count as missing; a numeric
+/// NaN does not, as in drop_nulls().
+///
+/// @par Example
+/// @code
+/// const auto penguins = dm::datasets::penguins();
+/// std::print("{} {}\n", penguins.filter(dm::has_na).nrows(),
+///            penguins.filter(!dm::has_na).nrows());   // 11 333
+/// const auto complete = penguins | dm::filter_rows(!dm::has_na);
+/// std::print("{}\n", complete.nrows());               // 333
+/// @endcode
+///
+/// @par References
+/// - R complete.cases: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/complete.cases.html
+/// - tidyr drop_na: https://tidyr.tidyverse.org/reference/drop_na.html
+///
+/// @see DataFrame::drop_nulls(), DataFrame::filter(), dm::filter_rows(), NotRow
+inline constexpr HasNa has_na{};
 
 /// @brief Adds `column_name`, or replaces it if it exists, like dplyr::mutate().
 ///

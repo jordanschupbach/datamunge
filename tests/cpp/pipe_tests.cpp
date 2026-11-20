@@ -2,6 +2,7 @@
 
 #include <datamunge/pipe.hpp>
 
+#include <cmath>
 #include <numeric>
 #include <optional>
 #include <string>
@@ -224,4 +225,25 @@ TEST(PipeVerbs, PivotLongerThenWiderWithFill) {
   const auto longer = sample_frame() | dm::pivot_longer({"len", "dose"}, "what", "value");
   EXPECT_EQ(longer.nrows(), 12U);
   EXPECT_EQ(longer.columns(), (std::vector<std::string>{"supp", "what", "value"}));
+}
+
+TEST(Pipe, HasNaSelectsRowsWithNullsAndItsNegationSelectsCompleteRows) {
+  const DataFrame frame{{{"x", DataFrame::numeric_column_type(std::vector<std::optional<double>>{1, std::nullopt, 3, std::nan("")})},
+                         {"g", DataFrame::string_column_type(std::vector<std::optional<std::string>>{"a", "b", std::nullopt, "d"})}}};
+
+  const auto incomplete = frame.filter(dm::has_na);
+  ASSERT_EQ(incomplete.nrows(), 2U);
+  EXPECT_TRUE(incomplete.is_null("x", 0));
+  EXPECT_TRUE(incomplete.is_null("g", 1));
+
+  // NaN is a value, not a missing one, as in drop_nulls().
+  const auto complete = frame.filter(!dm::has_na);
+  ASSERT_EQ(complete.nrows(), 2U);
+  EXPECT_EQ(complete.string_at("g", 0), "a");
+  EXPECT_EQ(complete.string_at("g", 1), "d");
+  EXPECT_EQ(complete.nrows(), frame.drop_nulls().nrows());
+
+  EXPECT_EQ((frame | dm::filter_rows(!dm::has_na)).nrows(), 2U);
+  EXPECT_EQ(frame.filter(!!dm::has_na).nrows(), 2U);
+  EXPECT_FALSE(dm::has_na(DataFrame::Row{}));
 }
