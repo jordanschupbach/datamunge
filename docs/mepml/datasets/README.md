@@ -5,6 +5,10 @@ workflow: provenance, exploratory analysis, an explicit fitting/validation/test
 policy, model selection, convergence, held-out performance and failure analysis.
 Numerical results come from executed native datamunge programs.
 
+The [dataset catalogue](catalogue.mepml) lists the bundled teaching tables and
+the on-demand loaders, with examples of `dm::data(name)` and the local cache.
+The [UCI catalogue](uci.mepml) explains the audited UCI selection and attribution.
+
 | Dataset | Report | Reproduction |
 | --- | --- | --- |
 | CIFAR-10 | [Compact ResNet-18, calibration and interpretability](cifar10/cifar10.mepml) | `cifar10/run.sh`; add `--train` to repeat tuning and training |

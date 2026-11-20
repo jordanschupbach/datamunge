@@ -1,0 +1,69 @@
+name	r_object	transform	description	string_columns
+anscombe	anscombe	frame	Four regression examples with similar summary statistics	
+attenu	attenu	frame	Peak ground acceleration from California earthquakes	station
+attitude	attitude	frame	Employee survey ratings across departments	
+austres	austres	series	Quarterly Australian population	
+beaver1	beaver1	frame	Body temperature of the first beaver	
+beaver2	beaver2	frame	Body temperature of the second beaver	
+bj_sales	BJsales	series	Box–Jenkins sales series	
+bod	BOD	frame	Oxygen demand by incubation time	
+cars	cars	frame	Car speed and stopping distance	
+chick_weight	ChickWeight	frame	Repeated chick weights by diet	Chick|Diet
+chickwts	chickwts	frame	Final chick weights by feed type	feed
+co2	co2	series	Atmospheric carbon dioxide at Mauna Loa	
+co2_uptake	CO2	frame	Carbon dioxide uptake by grass plants	Plant|Type|Treatment
+cod_parasites	CodParasites	countreg	Parasite infection in cod from the Finnmark coast	prevalence|area|year|sex|stage
+crab_satellites	CrabSatellites	countreg	Horseshoe crab mating and satellite male counts	color|spine
+discoveries	discoveries	series	Annual counts of major discoveries	
+dnase	DNase	frame	DNase assay calibration curves by run	Run
+esoph	esoph	frame	Alcohol and tobacco exposure in an esophageal cancer case-control study	agegp|alcgp|tobgp
+formaldehyde	Formaldehyde	frame	Calibration measurements for formaldehyde	
+freeny	freeny	rownames:period	Freeny regression data on quarterly revenue	period
+hair_eye_color	HairEyeColor	counts	Cross-tabulated hair color, eye color and sex	Hair|Eye|Sex
+indometh	Indometh	frame	Indomethacin concentrations by subject and time	Subject
+infert	infert	frame	Infertility case-control data after spontaneous or induced abortion	education
+insect_sprays	InsectSprays	frame	Insect counts after six spray treatments	spray
+islands	islands	named:island:area	Areas of major landmasses	island
+johnson_johnson	JohnsonJohnson	series	Quarterly Johnson and Johnson earnings per share	
+lake_huron	LakeHuron	series	Annual water levels of Lake Huron	
+life_cycle_savings	LifeCycleSavings	rownames:country	Intercountry savings and demographic variables	country
+loblolly	Loblolly	frame	Repeated heights of loblolly pine trees	Seed
+longley	longley	frame	Longley macroeconomic regression benchmark	
+lynx	lynx	series	Annual Canadian lynx trapping counts	
+morley	morley	frame	Michelson speed-of-light experiments	
+nhtemp	nhtemp	series	Annual New Haven temperatures	
+nile	Nile	series	Annual flow of the Nile at Aswan	
+nottem	nottem	series	Monthly temperatures at Nottingham Castle	
+npk	npk	frame	Nitrogen, phosphate and potassium fertilizer factorial experiment	block|N|P|K
+occupational_status	occupationalStatus	counts	Occupation categories of fathers and sons	origin|destination
+orange	Orange	frame	Repeated orange tree circumference measurements	Tree
+orchard_sprays	OrchardSprays	frame	Honeybee response to orchard sprays	treatment
+plant_growth	PlantGrowth	frame	Plant dry weights under control and two treatments	group
+precip	precip	named:city:precipitation	Annual precipitation across US cities	city
+presidents	presidents	series	Quarterly US presidential approval ratings	
+pressure	pressure	frame	Mercury vapor pressure by temperature	
+puromycin	Puromycin	frame	Reaction velocity by concentration and enzyme treatment	state
+quakes	quakes	frame	Fiji-region earthquake locations, depths and magnitudes	
+rivers	rivers	vector:length	Lengths of major North American rivers	
+rock	rock	frame	Rock-core image measurements and permeability	
+seatbelts	Seatbelts	multiseries	UK road casualties and related time series	
+sleep	sleep	frame	Extra sleep under two drugs for ten patients	group|ID
+stackloss	stackloss	frame	Chemical plant operating variables and stack loss	
+state_x77	state.x77	rownames:state	US state socioeconomic and geographic indicators	state
+sunspots	sunspots	series	Monthly sunspot counts	
+swiss	swiss	rownames:district	Swiss fertility and socioeconomic indicators	district
+theoph	Theoph	frame	Theophylline pharmacokinetics by subject and time	Subject
+titanic_survival	Titanic	counts	Aggregated R Titanic survival counts	Class|Sex|Age|Survived
+trees	trees	frame	Girth, height and volume of black cherry trees	
+ucb_admissions	UCBAdmissions	counts	Berkeley graduate admissions by department and sex	Admit|Gender|Dept
+uk_gas	UKgas	series	Quarterly UK gas consumption	
+us_acc_deaths	USAccDeaths	series	Monthly accidental deaths in the United States	
+us_arrests	USArrests	rownames:state	US state arrest rates and urban population	state
+us_judge_ratings	USJudgeRatings	rownames:judge	Lawyer ratings of US Superior Court judges	judge
+us_personal_expenditure	USPersonalExpenditure	rownames:category	US personal expenditures by category and year	category
+us_pop	uspop	series	US population by decennial census	
+va_deaths	VADeaths	rownames:age	Death rates in Virginia by age, residence and sex	age
+warpbreaks	warpbreaks	frame	Warp break counts by wool type and tension	wool|tension
+women	women	frame	Average heights and weights of American women	
+world_phones	WorldPhones	rownames:year	Telephones by region and year	year
+www_usage	WWWusage	series	Internet usage per minute	

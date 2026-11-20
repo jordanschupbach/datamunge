@@ -2463,6 +2463,430 @@ class RPlot : public Plot {
                  double level,
                  RGBA color = {37, 99, 235},
                  double stroke_width = 2.0);
+
+  /// @brief Draws open-to-close bodies with low-to-high wicks.
+  ///
+  /// Positions must strictly increase. If open equals close, draws a horizontal doji mark.
+  ///
+  /// @param x Positions in x data units.
+  /// @param open Opening values.
+  /// @param high Upper endpoints.
+  /// @param low Lower endpoints.
+  /// @param close Closing values.
+  /// @param width Full body or tick span in x data units.
+  /// @param rising Color when close is at or above open.
+  /// @param falling Color when close is below open.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument If data or geometry is empty, mismatched, nonfinite or invalid.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().candlesticks({0}, {2}, {4}, {1}, {3});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://plotly.com/python/candlestick-charts/
+  RPlot& candlesticks(const std::vector<double>& x,
+                      const std::vector<double>& open,
+                      const std::vector<double>& high,
+                      const std::vector<double>& low,
+                      const std::vector<double>& close,
+                      double width = 0.6,
+                      RGBA rising = {22, 163, 74},
+                      RGBA falling = {220, 38, 38});
+
+  /// @brief Draws low-to-high bars with a left opening tick and a right closing tick.
+  ///
+  /// Positions must strictly increase.
+  ///
+  /// @param x Positions in x data units.
+  /// @param open Opening values.
+  /// @param high Upper endpoints.
+  /// @param low Lower endpoints.
+  /// @param close Closing values.
+  /// @param width Full body or tick span in x data units.
+  /// @param rising Color when close is at or above open.
+  /// @param falling Color when close is below open.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument If data or geometry is empty, mismatched, nonfinite or invalid.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().ohlc({0}, {2}, {4}, {1}, {3});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://plotly.com/python/ohlc-charts/
+  RPlot& ohlc(const std::vector<double>& x,
+              const std::vector<double>& open,
+              const std::vector<double>& high,
+              const std::vector<double>& low,
+              const std::vector<double>& close,
+              double width = 0.6,
+              RGBA rising = {22, 163, 74},
+              RGBA falling = {220, 38, 38});
+
+  /// @brief Connects two observations along each horizontal category row.
+  ///
+  /// Start and end may appear in either order. Both endpoints are retained when they coincide.
+  ///
+  /// @param positions Category centers on y.
+  /// @param start First observations on x.
+  /// @param end Second observations on x.
+  /// @param first First marker color.
+  /// @param second Second marker color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument If data or geometry is empty, mismatched, nonfinite or invalid.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().dumbbell({0}, {2}, {4});
+  /// std::print("{}\n", plot.series().size());  // 3
+  /// @endcode
+  RPlot& dumbbell(const std::vector<double>& positions,
+                  const std::vector<double>& start,
+                  const std::vector<double>& end,
+                  RGBA first = {37, 99, 235},
+                  RGBA second = {234, 88, 12});
+
+  /// @brief Stacks one dot per observation at each distinct sample value.
+  ///
+  /// Exact ties stack vertically at integer heights starting at one. The sample is sorted internally.
+  ///
+  /// @param sample Finite observations.
+  /// @param color Marker color.
+  /// @param marker_size Marker radius in pixels.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument If data or geometry is empty, mismatched, nonfinite or invalid.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().dot_stack({1, 1, 2});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  RPlot& dot_stack(std::vector<double> sample,
+                   RGBA color = {37, 99, 235},
+                   double marker_size = 4.0);
+
+  /// @brief Draws two nonnegative populations on opposite sides of zero.
+  ///
+  /// The first group extends left and the second group extends right. Set y tick labels for age bands.
+  ///
+  /// @param positions Category centers on y.
+  /// @param left Nonnegative first group magnitudes.
+  /// @param right Nonnegative second group magnitudes.
+  /// @param left_label Optional first group legend label.
+  /// @param right_label Optional second group legend label.
+  /// @param bar_height Bar height in y data units.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument If data or geometry is empty, mismatched, nonfinite or invalid.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().population_pyramid({0}, {3}, {4});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& population_pyramid(const std::vector<double>& positions,
+                            const std::vector<double>& left,
+                            const std::vector<double>& right,
+                            std::string left_label = "",
+                            std::string right_label = "",
+                            double bar_height = 0.8);
+
+  /// @brief Connects the centers of equal-width histogram bins.
+  ///
+  /// Uses the same counts and boundary convention as hist(). Adds zero-count endpoints one bin outside the first and last centers.
+  ///
+  /// @param sample Finite sample.
+  /// @param bins Positive bin count.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().frequency_polygon({0, 1, 2}, 2);
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://ggplot2.tidyverse.org/reference/geom_histogram.html
+  RPlot& frequency_polygon(const std::vector<double>& sample,
+                           std::size_t bins = 10,
+                           RGBA color = {37, 99, 235});
+
+  /// @brief Plots the empirical quantiles of two samples.
+  ///
+  /// Uses the shorter sample size as the number of equally spaced probabilities including 0 and 1. Interpolates between ordered values. Each sample must have at least two observations.
+  ///
+  /// @param x Sample for the horizontal axis.
+  /// @param y Sample for the vertical axis.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().qqplot({1, 2, 3}, {2, 4});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+  RPlot& qqplot(std::vector<double> x,
+                std::vector<double> y,
+                RGBA color = {37, 99, 235});
+
+  /// @brief Plots paired differences against paired means.
+  ///
+  /// Adds the mean difference and limits at mean difference ± 1.96 sample standard deviations. Requires two or more pairs.
+  ///
+  /// @param first First measurements.
+  /// @param second Second measurements, subtracted from the first.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().bland_altman({1, 2}, {1, 3});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://doi.org/10.1016/S0140-6736(86)90837-8
+  RPlot& bland_altman(const std::vector<double>& first,
+                      const std::vector<double>& second,
+                      RGBA color = {37, 99, 235});
+
+  /// @brief Plots sample autocorrelations as vertical stems.
+  ///
+  /// Full autocorrelation starts at lag zero. Partial autocorrelation starts at lag one. Uses the core time-series estimators.
+  ///
+  /// @param sample Finite, nonconstant series with at least two samples.
+  /// @param max_lag Largest lag, less than the series length.
+  /// @param partial Draw the partial autocorrelation when true.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().autocorrelation({1, 4, 2, 1}, 2);
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/acf.html
+  RPlot& autocorrelation(const std::vector<double>& sample,
+                         std::size_t max_lag,
+                         bool partial = false,
+                         RGBA color = {37, 99, 235});
+
+  /// @brief Plots point estimates with horizontal intervals.
+  ///
+  /// Requires lower <= estimate <= upper for each row. Labels can be added with y_ticks() and a reference value with abline_v().
+  ///
+  /// @param positions Row positions along y.
+  /// @param estimate Point estimates.
+  /// @param lower Lower interval ends.
+  /// @param upper Upper interval ends.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().forest({0}, {1}, {0.5}, {2});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& forest(const std::vector<double>& positions,
+                const std::vector<double>& estimate,
+                const std::vector<double>& lower,
+                const std::vector<double>& upper,
+                RGBA color = {37, 99, 235});
+
+  /// @brief Draws descending category shares and their cumulative share.
+  ///
+  /// Bars and cumulative line share a 0–100 percent scale. Stable sorting preserves input order among ties.
+  ///
+  /// @param counts Nonnegative finite weights, with a positive finite total.
+  /// @param labels Optional category labels in input order.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().pareto({1, 2, 3});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& pareto(const std::vector<double>& counts,
+                const std::vector<std::string>& labels = {},
+                RGBA color = {37, 99, 235});
+
+  /// @brief Fills cumulative bands above a common zero baseline.
+  ///
+  /// Rows are series, and corresponding columns share x positions. Requires at least two strictly increasing x values and finite nonnegative heights.
+  ///
+  /// @param x Ordered horizontal coordinates.
+  /// @param values One row of heights per series.
+  /// @param colors Optional palette, recycled. An empty palette uses built-in categorical colors.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().stacked_area({0, 1}, {{1, 2}, {3, 4}});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  ///
+  /// @par References
+  /// - https://ggplot2.tidyverse.org/reference/geom_ribbon.html
+  RPlot& stacked_area(const std::vector<double>& x,
+                      const std::vector<std::vector<double>>& values,
+                      const std::vector<RGBA>& colors = {});
+
+  /// @brief Connects one normalized observation across parallel axes.
+  ///
+  /// Draws a [0, 1] vertical scale for each column. Caller chooses the normalization (for example per-column min–max).
+  ///
+  /// @param rows Observation rows, each with the same two or more values in [0, 1].
+  /// @param labels Optional axis labels, one per column.
+  /// @param color Observation-line color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().parallel_coordinates({{0.1, 0.8}, {0.4, 0.9}});
+  /// std::print("{}\n", plot.series().size());  // 3
+  /// @endcode
+  RPlot& parallel_coordinates(const std::vector<std::vector<double>>& rows,
+                              const std::vector<std::string>& labels = {},
+                              RGBA color = {37, 99, 235, 0.4});
+
+  /// @brief Plots nonnegative triples using barycentric coordinates.
+  ///
+  /// Each row is divided by its positive total. Components map to the left, right and top vertex in that order. Uses Cartesian axes hidden by the caller for a clean diagram.
+  ///
+  /// @param values One triple of finite nonnegative values per point.
+  /// @param labels Optional labels for the three vertices.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().ternary({{1, 2, 3}});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& ternary(const std::vector<std::vector<double>>& values,
+                 const std::vector<std::string>& labels = {},
+                 RGBA color = {37, 99, 235});
+
+  /// @brief Projects the rows and columns of a sampled height field.
+  ///
+  /// Uses an oblique projection (x − 0.5 y, z + 0.5 y). Draws all edges without hidden-line removal. Requires at least two strictly increasing coordinates per axis.
+  ///
+  /// @param x Column coordinates.
+  /// @param y Row coordinates.
+  /// @param z Finite grid indexed as z[row][column].
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().wireframe({0, 1}, {0, 1}, {{0, 1}, {1, 0}});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  RPlot& wireframe(const std::vector<double>& x,
+                   const std::vector<double>& y,
+                   const std::vector<std::vector<double>>& z,
+                   RGBA color = {37, 99, 235});
+
+  /// @brief Partitions a rectangle into area-proportional tiles.
+  ///
+  /// Recursively splits the longer side, keeping input order and choosing the split nearest half the weight. Tiles occupy [0, 1] on both axes.
+  ///
+  /// @param weights Strictly positive finite weights, with a finite sum.
+  /// @param labels Optional centered labels in input order.
+  /// @param colors Optional palette, recycled. An empty palette uses built-in categorical colors.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().treemap({1, 3});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& treemap(const std::vector<double>& weights,
+                 const std::vector<std::string>& labels = {},
+                 const std::vector<RGBA>& colors = {});
+
+  /// @brief Connects nodes on a single horizontal baseline with semicircular arcs.
+  ///
+  /// Positions must strictly increase. Edges are pairs of zero-based indices. Self-loops are invalid.
+  ///
+  /// @param positions Node positions.
+  /// @param from First endpoint index per edge.
+  /// @param to Second endpoint index per edge.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().arc_diagram({0, 1}, {0}, {1});
+  /// std::print("{}\n", plot.series().size());  // 2
+  /// @endcode
+  RPlot& arc_diagram(const std::vector<double>& positions,
+                     const std::vector<std::size_t>& from,
+                     const std::vector<std::size_t>& to,
+                     RGBA color = {37, 99, 235});
+
+  /// @brief Colors region polygons on one shared numeric scale.
+  ///
+  /// Coordinates are supplied in the desired projection. Each polygon is an outer ring. Provide separate rings with the same value for disconnected parts of a region.
+  ///
+  /// @param x One horizontal coordinate vector per ring.
+  /// @param y One vertical coordinate vector per ring.
+  /// @param values One finite numeric value per ring.
+  /// @param palette Optional low-to-high palette; empty uses viridis.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().choropleth({{0, 1, 0}}, {{0, 0, 1}}, {2});
+  /// std::print("{}\n", plot.series().size());  // 1
+  /// @endcode
+  RPlot& choropleth(const std::vector<std::vector<double>>& x,
+                    const std::vector<std::vector<double>>& y,
+                    const std::vector<double>& values,
+                    std::vector<RGBA> palette = {});
+
+  /// @brief Connects normalized values on evenly spaced radial spokes.
+  ///
+  /// The first spoke points up and the remaining spokes proceed clockwise. Draws a unit frame and quarter-scale guides. Values must be in [0, 1].
+  ///
+  /// @param values At least three normalized values.
+  /// @param labels Optional labels, one per spoke.
+  /// @param color Layer color.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument On empty, mismatched, nonfinite or invalid input.
+  ///
+  /// @par Example
+  /// @code
+  /// auto plot = dm::Plot().radar({0.2, 0.5, 0.8});
+  /// std::print("{}\n", plot.series().size());  // 6
+  /// @endcode
+  RPlot& radar(const std::vector<double>& values,
+               const std::vector<std::string>& labels = {},
+               RGBA color = {37, 99, 235});
 };
 
 /// @brief Tiles independently built plots into one multi-panel figure, like R's

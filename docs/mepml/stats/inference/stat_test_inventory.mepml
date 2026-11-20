@@ -1,0 +1,222 @@
+//? Title: Classical statistical tests by design
+//? Exports: both
+//? Lang: en
+
+This report exercises every entry in the statistical test plan. Each table names
+the native C++ entry point and records its statistic and p-value. The examples
+are small synthetic fixtures. They illustrate the choice of test and calibration,
+so compare p-values only within the same test and null hypothesis.
+
+\toc
+
+> Means, paired differences and regression breaks
+
+Use pooled Student only when the groups share a population variance. Welch
+estimates separate variances. The two z tests instead take the population
+standard deviations as inputs. A paired difference test starts with one
+difference per matched row. The table shows both the paired t procedure and the
+distribution-free sign alternative. The independent-sample F test compares
+variances under normality. The Chow test compares separate coefficient vectors
+with a pooled fit, assuming a common residual variance and a prespecified split.
+
+```{cpp, id=mean-tests, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/additional_tests.hpp>
+#include <datamunge/stats/nonparametric.hpp>
+#include <datamunge/stats/t_test.hpp>
+#include <datamunge/stats/variance_test.hpp>
+#include <print>
+#include <string_view>
+#include <vector>
+
+namespace s = datamunge::stats;
+
+int main() {
+    const std::vector<double> x{3, 4, 6, 7, 8}, y{2, 5, 4, 5, 6};
+    const auto row = [](std::string_view test, std::string_view api, const s::HypothesisTestResult& result) {
+        std::println("| {} | `{}` | {:.7g} | {:.7g} |", test, api, result.statistic, result.p_value);
+    };
+    std::println("| Test | Native entry point | Statistic | p-value |\n| --- | --- | ---: | ---: |");
+    row("One-sample t", "t_test_one_sample", s::t_test_one_sample(x, 4));
+    row("Paired difference (sign)", "paired_sign_test", s::paired_sign_test(x, y));
+    row("Unpaired pooled t", "t_test_two_sample(x, y, true)", s::t_test_two_sample(x, y, true));
+    row("Welch t", "t_test_two_sample", s::t_test_two_sample(x, y));
+    row("Paired t", "t_test_paired", s::t_test_paired(x, y));
+    row("Independent variance F", "f_test_variance", s::f_test_variance(x, y));
+    row("One-mean z", "z_test_one_sample", s::z_test_one_sample(x, 2.0, 4));
+    row("Two-mean z", "z_test_two_sample", s::z_test_two_sample(x, y, 2.0, 1.5));
+    const datamunge::linalg::DenseMatrix<double> design(4, 2, {1, 0, 1, 1, 1, 2, 1, 3});
+    row("Chow", "chow_test", s::chow_test(design, {0, 1, 3, 3}, design, {1, 3, 6, 7}));
+}
+```
+// result_begin: markdown
+| Test | Native entry point | Statistic | p-value |
+| --- | --- | ---: | ---: |
+| One-sample t | `t_test_one_sample` | 1.725324 | 0.1595529 |
+| Paired difference (sign) | `paired_sign_test` | 4 | 0.375 |
+| Unpaired pooled t | `t_test_two_sample(x, y, true)` | 1.044466 | 0.3268003 |
+| Welch t | `t_test_two_sample` | 1.044466 | 0.3294993 |
+| Paired t | `t_test_paired` | 2.057983 | 0.108701 |
+| Independent variance F | `f_test_variance` | 1.869565 | 0.5593678 |
+| One-mean z | `z_test_one_sample` | 1.788854 | 0.07363827 |
+| Two-mean z | `z_test_two_sample` | 1.073313 | 0.2831309 |
+| Chow | `chow_test` | 21.42857 | 0.007287329 |
+// result_end
+
+> Relabeling, ranks and signs
+
+For small independent groups, the exhaustive permutation and exact
+Kruskal–Wallis variants enumerate allocations of observation identities,
+preserving group sizes. The former uses the between-group sum of squares.
+The latter ranks the pooled observations with midranks for ties. For larger
+groups there are separate Monte Carlo permutation and asymptotic Kruskal–Wallis
+APIs. Friedman ranks treatments within a matched block. Mann–Whitney uses pooled
+ranks, Wilcoxon signed-rank uses signed ranks of differences, and Siegel–Tukey
+orders observations from the pooled extremes inward to test scale. The sign
+test uses only the direction of each nonzero difference.
+
+```{cpp, id=rank-tests, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/additional_tests.hpp>
+#include <datamunge/stats/classical_tests.hpp>
+#include <datamunge/stats/nonparametric.hpp>
+#include <print>
+#include <string_view>
+#include <vector>
+
+namespace s = datamunge::stats;
+
+int main() {
+    const std::vector<double> x{1, 2, 3}, y{5, 6, 7};
+    const auto row = [](std::string_view test, std::string_view api, const s::HypothesisTestResult& result) {
+        std::println("| {} | `{}` | {:.7g} | {:.7g} |", test, api, result.statistic, result.p_value);
+    };
+    std::println("| Test | Native entry point | Statistic | p-value |\n| --- | --- | ---: | ---: |");
+    row("Permutation", "permutation_test_exact", s::permutation_test_exact({x, y, {4, 8}}));
+    row("Kruskal–Wallis H", "kruskal_wallis_test_exact", s::kruskal_wallis_test_exact({x, y, {4, 8}}));
+    row("Mann–Whitney U", "mann_whitney_test", s::mann_whitney_test(x, y));
+    row("Wilcoxon signed-rank", "wilcoxon_signed_rank_exact_test", s::wilcoxon_signed_rank_exact_test({1, 3, 5, 8}));
+    row("Sign", "sign_test", s::sign_test({1, 3, 5, 8}));
+    row("Friedman", "friedman_test", s::friedman_test({{1, 4, 5}, {3, 2, 4}, {2, 5, 7}, {4, 3, 6}}));
+    row("Mood median", "median_test", s::median_test({x, y, {4, 8}}));
+    row("Siegel–Tukey", "siegel_tukey_test", s::siegel_tukey_test({0, 1, 9, 10}, {3, 4, 6, 7}));
+}
+```
+// result_begin: markdown
+| Test | Native entry point | Statistic | p-value |
+| --- | --- | ---: | ---: |
+| Permutation | `permutation_test_exact` | 30 | 0.075 |
+| Kruskal–Wallis H | `kruskal_wallis_test_exact` | 5 | 0.075 |
+| Mann–Whitney U | `mann_whitney_test` | 0 | 0.0808556 |
+| Wilcoxon signed-rank | `wilcoxon_signed_rank_exact_test` | 10 | 0.125 |
+| Sign | `sign_test` | 4 | 0.125 |
+| Friedman | `friedman_test` | 6 | 0.04978707 |
+| Mood median | `median_test` | 6 | 0.04978707 |
+| Siegel–Tukey | `siegel_tukey_test` | 10 | 0.02092134 |
+// result_end
+
+> Counts, matched outcomes and contingency tables
+
+Pearson's chi-square statistic compares observed and expected counts in
+goodness-of-fit and independence problems. Both use asymptotic references.
+For matched binary observations, McNemar conditions on discordant pairs and
+Cochran's Q extends the comparison to multiple treatments in each block.
+Binomial and multinomial goodness-of-fit use exact discrete null probabilities.
+
+Fisher conditions on both margins. The rectangular version extends the
+two-by-two test to a bounded exhaustive enumeration. Barnard and Boschloo
+fix only the two sample sizes and maximize their rejection probability over
+the common success probability. Barnard orders tables by a pooled score.
+Boschloo orders by a one-sided Fisher probability, with twice the smaller
+unconditional tail for the two-sided test. The rectangular Fisher,
+multinomial and group enumeration APIs have work limits for large supports.
+
+```{cpp, id=count-tests, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/additional_tests.hpp>
+#include <datamunge/stats/chi_squared_test.hpp>
+#include <datamunge/stats/classical_tests.hpp>
+#include <datamunge/stats/fisher_exact_test.hpp>
+#include <datamunge/stats/proportion_test.hpp>
+#include <print>
+#include <string_view>
+
+namespace s = datamunge::stats;
+
+int main() {
+    const auto row = [](std::string_view test, std::string_view api, const s::HypothesisTestResult& result) {
+        std::println("| {} | `{}` | {:.7g} | {:.7g} |", test, api, result.statistic, result.p_value);
+    };
+    std::println("| Test | Native entry point | Statistic | p-value |\n| --- | --- | ---: | ---: |");
+    row("Chi-square independence", "chi_squared_test_independence", s::chi_squared_test_independence({18, 32, 30, 20}, 2, 2, false));
+    row("Pearson chi-square goodness-of-fit", "chi_squared_goodness_of_fit", s::chi_squared_goodness_of_fit({20, 28, 12}));
+    row("Multinomial", "multinomial_test", s::multinomial_test({4, 2, 0}, {.5, .3, .2}));
+    row("McNemar", "mcnemar_test", s::mcnemar_test(12, 3));
+    row("Cochran Q", "cochran_q_test", s::cochran_q_test({{0, 1, 1}, {0, 0, 1}, {1, 1, 1}, {0, 1, 0}}));
+    row("Binomial", "binomial_test", s::binomial_test(8, 10));
+    row("Fisher 2×2", "fisher_exact_test_2x2", s::fisher_exact_test_2x2(7, 12, 8, 3));
+    row("Fisher rectangular", "fisher_exact_test", s::fisher_exact_test({{1, 3, 2}, {4, 0, 2}}));
+    row("Barnard", "barnard_exact_test", s::barnard_exact_test(7, 12, 8, 3));
+    row("Boschloo", "boschloo_exact_test", s::boschloo_exact_test(7, 12, 8, 3));
+}
+```
+// result_begin: markdown
+| Test | Native entry point | Statistic | p-value |
+| --- | --- | ---: | ---: |
+| Chi-square independence | `chi_squared_test_independence` | 5.769231 | 0.01630917 |
+| Pearson chi-square goodness-of-fit | `chi_squared_goodness_of_fit` | 6.4 | 0.0407622 |
+| Multinomial | `multinomial_test` | 0.084375 | 0.6625 |
+| McNemar | `mcnemar_test` | 12 | 0.03515625 |
+| Cochran Q | `cochran_q_test` | 2.666667 | 0.2635971 |
+| Binomial | `binomial_test` | 8 | 0.109375 |
+| Fisher 2×2 | `fisher_exact_test_2x2` | 7 | 0.1281359 |
+| Fisher rectangular | `fisher_exact_test` | 0.03246753 | 0.1341991 |
+| Barnard | `barnard_exact_test` | -1.894338 | 0.06821831 |
+| Boschloo | `boschloo_exact_test` | 0.06406797 | 0.06821831 |
+// result_end
+
+> Normality with specified or fitted parameters
+
+Shapiro–Wilk and Shapiro–Francia test composite normality with different
+order-statistic weights. Shapiro–Wilk uses an exact tail for three observations
+and Royston's approximation for larger supported samples. The one-sample
+Kolmogorov–Smirnov test in the table uses a normal distribution with mean zero
+and standard deviation one specified in advance. If the normal mean and variance
+are estimated from the same data, use Lilliefors calibration. The Lilliefors
+implementation refits both quantities for each standard-normal simulation,
+using a seeded plus-one Monte Carlo p-value.
+
+```{cpp, id=shape-tests, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/additional_tests.hpp>
+#include <datamunge/stats/ks_test.hpp>
+#include <datamunge/stats/normality_test.hpp>
+#include <print>
+#include <string_view>
+#include <vector>
+
+namespace s = datamunge::stats;
+
+int main() {
+    const std::vector<double> sample{-1.5, -.8, -.3, -.1, .2, .4, .7, 1.7, 2.3};
+    const auto row = [](std::string_view test, std::string_view api, const s::HypothesisTestResult& result) {
+        std::println("| {} | `{}` | {:.7g} | {:.7g} |", test, api, result.statistic, result.p_value);
+    };
+    std::println("| Test | Native entry point | Statistic | p-value |\n| --- | --- | ---: | ---: |");
+    row("Shapiro–Wilk", "shapiro_wilk_test", s::shapiro_wilk_test(sample));
+    row("Kolmogorov–Smirnov", "ks_test_one_sample_normal", s::ks_test_one_sample_normal(sample, 0, 1));
+    row("Shapiro–Francia", "shapiro_francia_test", s::shapiro_francia_test(sample));
+    row("Lilliefors", "lilliefors_test", s::lilliefors_test(sample, 9999, 42));
+}
+```
+// result_begin: markdown
+| Test | Native entry point | Statistic | p-value |
+| --- | --- | ---: | ---: |
+| Shapiro–Wilk | `shapiro_wilk_test` | 0.9763523 | 0.9429426 |
+| Kolmogorov–Smirnov | `ks_test_one_sample_normal` | 0.1776568 | 0.9115581 |
+| Shapiro–Francia | `shapiro_francia_test` | 0.9761857 | 0.9556392 |
+| Lilliefors | `lilliefors_test` | 0.1413696 | 0.8633 |
+// result_end
+
+> References
+
+- [Royston, algorithm AS R94|https://doi.org/10.2307/2986146]
+- [Lilliefors, normality with estimated mean and variance|https://doi.org/10.1080/01621459.1967.10482916]
+- [Chow, equality of regression coefficients|https://doi.org/10.2307/1910133]
+- [Barnard's exact test|https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.barnard_exact.html] and [Boschloo's exact test|https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.boschloo_exact.html]

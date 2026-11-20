@@ -26,6 +26,37 @@ These need coordinate or rendering support beyond adding chart layers.
 
 \toc
 
+> Chart inventory and implementation order
+
+This inventory covers the major chart families and names representative
+variants. A compound chart can combine existing layers even when it has no
+dedicated constructor. The first batch adds candlestick, OHLC, dumbbell,
+stacked-dot and population-pyramid layers. The following batches add
+statistical diagnostics, part-to-whole charts, multivariate coordinates and
+projected height fields. The inventory marks the remaining work by family.
+
+| Family | Methods available or composition shown here | Additional chart types to implement |
+| --- | --- | --- |
+| Relationships | Scatter, colored scatter, bubbles, line, function curve, segments, scatterplot matrix, dumbbell, Bland–Altman | Jittered scatter, connected scatter, hexbin, rectangular bin counts, bivariate density, residual-versus-fit, scale–location, leverage, influence, added-variable and coefficient plots |
+| Ordered data | Line, step, area, stem, lollipop, waterfall, stacked area, ACF and PACF | Indexed series, percent stacked area, streamgraph, horizon, sparkline, control chart, run chart, calendar heatmap, cycle plot, lag plot, seasonal subseries |
+| Categories | Vertical bars, horizontal bars, grouped bars, diverging stacks, floating bars, schedule, pie, population pyramid, Pareto | Cleveland dot plot, slopegraph, bump chart, percent stacked bars, diverging Likert, mosaic, spine, Marimekko, waffle, funnel, bullet, gauge, donut and radial bars |
+| Distributions | Histogram, Gaussian density, rug, violin, box, normal Q-Q, empirical CDF, stacked dots, frequency polygon, two-sample Q-Q | Weighted histogram, cumulative histogram, jittered strip, beeswarm, boxen, raincloud, ridgeline, stem-and-leaf, P-P, normal probability and return-level plots |
+| Intervals and studies | Ribbons, capped errors, interval bars, forest, Kaplan–Meier | Caterpillar, fan, interval dot, prediction calibration, reliability, ROC, precision–recall, lift, gains, decision curve, cumulative incidence and cumulative hazard |
+| Finance | Candlestick, OHLC, waterfall | Volume panels, drawdown, equity curve, Heikin–Ashi, Renko, Kagi, point-and-figure, depth and order-book imbalance |
+| Matrices and fields | Heatmap, raster, label grid, contours, vectors | Clustered heatmap, correlogram, confusion matrix, correlogram glyphs, Hinton matrix, spectrogram, filled contours, streamlines, wind barbs and vector magnitude maps |
+| Radial and directional | Pie, normalized radar | Polar scatter and line, rose histogram, wind rose, polar heatmap, radial dendrogram and circular timeline |
+| Hierarchy and flows | Node and edge diagram primitives, area-proportional treemap | Sunburst, icicle, dendrogram, packed circles, Sankey, alluvial, parallel sets and chord diagram |
+| Multivariate and sets | Scatterplot matrix, facets, parallel coordinates, ternary | Andrews curves, biplot, glyph matrix, Venn, Euler, UpSet and dissimilarity ordination |
+| Networks | Arc diagrams, node and edge primitives | Force-directed, layered, circular, bipartite, adjacency matrix and edge-bundled networks |
+| Geography | Choropleth with projected rings | Proportional symbols, dot density, cartogram, flow map, geographic hexbin, route, isochrone and gridded map |
+| Three-dimensional | Oblique height-field wireframe | 3D scatter and line, surface, mesh, 3D bars, isosurface, slice plot, volume render and terrain |
+
+Implement direct 2D layers first. Add reusable statistical transforms for
+diagnostics, survival and density before writing their renderers. Then add
+coordinate transforms and equal aspect for radial and geographic charts, layout
+algorithms for networks and flows, and camera/depth support for 3D charts.
+Prioritize geometry and data tests before renderer snapshots for each batch.
+
 > Relationships, sequences and uncertainty
 
 Use points for paired observations, curves for a sampled function, steps for
@@ -289,4 +320,191 @@ int main() {
 ```
 // result_begin:
 // \image(figures/plot_gallery_labels.svg)
+// result_end
+
+> Financial ranges, paired comparisons and counts
+
+Candles and OHLC bars share the same data. Candles show the opening-to-closing
+range as a filled body. OHLC bars show the open on the left and the close on
+the right. Dumbbells compare two measurements in each category. Stacked dots
+retain each observation, and a population pyramid compares two groups around
+a common baseline.
+
+```{cpp, file="figures/plot_gallery_specialized.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+
+int main() {
+    using datamunge::graphics::RLayout;
+    using datamunge::graphics::RPlot;
+    const std::vector<double> day{1, 2, 3, 4, 5};
+    const std::vector<double> open{50, 52, 51, 55, 54};
+    const std::vector<double> high{54, 54, 56, 57, 59};
+    const std::vector<double> low{49, 50, 50, 52, 53};
+    const std::vector<double> close{53, 51, 55, 55, 58};
+    auto gallery = RLayout::create(3, 2).size(1120, 930);
+    gallery.add(RPlot().candlesticks(day, open, high, low, close)
+                    .title("Candlestick").x_label("Session").y_label("Price"))
+           .add(RPlot().ohlc(day, open, high, low, close)
+                    .title("OHLC bars").x_label("Session").y_label("Price"))
+           .add(RPlot().dumbbell({0, 1, 2, 3}, {24, 33, 27, 32}, {31, 39, 25, 43})
+                    .y_tick_labels({"North", "East", "South", "West"})
+                    .legend({"Before", "After"}, {{37, 99, 235}, {234, 88, 12}})
+                    .ylim(-.5, 4.1).title("Paired comparisons").x_label("Score"))
+           .add(RPlot().dot_stack({1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 5})
+                    .title("Stacked dots").x_label("Value").y_label("Stack height"))
+           .add(RPlot().population_pyramid({0, 1, 2, 3, 4}, {920, 850, 735, 550, 310},
+                                           {880, 840, 780, 625, 405}, "Group A", "Group B")
+                    .y_tick_labels({"0–19", "20–39", "40–59", "60–79", "80+"})
+                    .x_ticks({-1000, -500, 0, 500, 1000}, {"1000", "500", "0", "500", "1000"})
+                    .xlim(-1150, 1150).title("Population pyramid").x_label("People").y_label("Age"));
+    std::filesystem::create_directories("build");
+    gallery.fit_panels().save_svg("build/plot_gallery_specialized.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_specialized.svg)
+// result_end
+
+> Distribution, agreement and model diagnostics
+
+Frequency polygons connect histogram counts at their bin centers. Two-sample
+Q-Q plots align empirical quantiles, including when sample sizes differ.
+Bland–Altman plots show pairwise differences and limits of agreement. ACF and
+PACF plots show the canonical time-series estimators at integer lags. Forest
+plots display estimates and their supplied uncertainty intervals.
+
+```{cpp, file="figures/plot_gallery_diagnostics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+
+int main() {
+    using datamunge::graphics::RLayout;
+    using datamunge::graphics::RPlot;
+    const std::vector<double> sample{1, 1.2, 1.8, 2, 2.1, 2.4, 2.7, 2.8, 3.2, 4.2, 4.8};
+    const std::vector<double> reference{1, 1.4, 1.6, 2.5, 2.7, 3, 3.1, 3.5, 4};
+    const std::vector<double> series{1, 2, 4, 5, 3, 1, -2, -1, 2, 4, 5, 4, 0, -1, 2, 3};
+    auto gallery = RLayout::create(3, 2).size(1120, 930);
+    gallery.add(RPlot().frequency_polygon(sample, 6).title("Frequency polygon")
+                    .x_label("Observation").y_label("Bin count"))
+           .add(RPlot().qqplot(reference, sample).abline(0, 1, {148, 163, 184})
+                    .title("Two-sample Q-Q").x_label("Reference quantile").y_label("Sample quantile"))
+           .add(RPlot().bland_altman({1.1, 2.4, 3.3, 4.6, 5.9, 6.4}, {1.4, 2.2, 3.5, 4.2, 5.4, 6.5})
+                    .ylim(-1, 1.1).title("Bland–Altman agreement").x_label("Pair mean").y_label("Difference"))
+           .add(RPlot().forest({0, 1, 2, 3}, {.2, .4, -.15, .25}, {-.1, .23, -.42, .11}, {.5, .6, .12, .39})
+                    .abline_v(0, {148, 163, 184}).y_tick_labels({"A", "B", "C", "Pooled"})
+                    .title("Forest plot").x_label("Effect").y_label(""))
+           .add(RPlot().autocorrelation(series, 8).abline_h(0).title("Autocorrelation").x_label("Lag"))
+           .add(RPlot().autocorrelation(series, 8, true).abline_h(0).title("Partial autocorrelation").x_label("Lag"));
+    std::filesystem::create_directories("build");
+    gallery.fit_panels().save_svg("build/plot_gallery_diagnostics.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_diagnostics.svg)
+// result_end
+
+> Multivariate coordinates, group shares and height fields
+
+Pareto charts put individual and cumulative shares on the same percent axis.
+Stacked areas add nonnegative series over a common grid. Parallel coordinates
+use explicitly normalized rows. Ternary coordinates divide by each row total
+and use barycentric positions. The treemap uses a binary area partition, and
+the wireframe projects grid edges without visibility testing.
+
+```{cpp, file="figures/plot_gallery_coordinates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <cmath>
+#include <filesystem>
+
+int main() {
+    using datamunge::graphics::RLayout;
+    using datamunge::graphics::RPlot;
+    const std::vector<double> grid{-2, -1.5, -1, -.5, 0, .5, 1, 1.5, 2};
+    std::vector<std::vector<double>> z(grid.size(), std::vector<double>(grid.size()));
+    for (std::size_t j = 0; j < grid.size(); ++j) {
+        for (std::size_t i = 0; i < grid.size(); ++i) {
+            z[j][i] = 2 * std::exp(-.6 * (grid[i] * grid[i] + grid[j] * grid[j]));
+        }
+    }
+    auto gallery = RLayout::create(3, 2).size(1120, 990);
+    gallery.add(RPlot().pareto({7, 32, 12, 45, 4}, {"Pack", "Inspect", "Paint", "Cut", "Other"})
+                    .title("Pareto shares").x_label("Source"))
+           .add(RPlot().stacked_area({1, 2, 3, 4, 5}, {{2, 3, 4, 3, 4}, {1, 2, 3, 2, 2}, {2, 2, 1, 2, 4}})
+                    .title("Stacked area").x_label("Period").y_label("Total"))
+           .add(RPlot().parallel_coordinates({{.2, .4, .7, .5}, {.3, .35, .55, .8},
+                                              {.8, .5, .2, .41}, {.6, .35, .3, .7}},
+                                            {"Weight", "Length", "Width", "Height"})
+                    .title("Parallel coordinates").y_label("Normalized value"))
+           .add(RPlot().treemap({36, 18, 12, 8, 6}, {"A", "B", "C", "D", "E"})
+                    .title("Area-proportional treemap"))
+           .add(RPlot().wireframe(grid, grid, z).hide_axes().title("Oblique wireframe"));
+    gallery.fit_panels().add(RPlot().ternary({{5, 3, 2}, {1, 2, 7}, {2, 7, 1}, {3, 3, 4}, {8, 1, 1}},
+                                            {"A", "B", "C"})
+                                .hide_axes().size(360, 360).title("Ternary compositions"));
+    std::filesystem::create_directories("build");
+    gallery.save_svg("build/plot_gallery_coordinates.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_coordinates.svg)
+// result_end
+
+> Survival curves
+
+The statistics API already estimates Kaplan–Meier survival curves and draws
+their steps and censoring marks. The plotting gallery uses that estimator and
+renderer directly.
+
+```{cpp, file="figures/plot_gallery_survival.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survival.hpp>
+#include <filesystem>
+
+int main() {
+    using datamunge::stats::kaplan_meier;
+    using datamunge::stats::kaplan_meier_plot;
+    const auto first = kaplan_meier({{1, true}, {2, true}, {3, false}, {4, true}, {6, false}});
+    const auto second = kaplan_meier({{2, false}, {3, true}, {4, true}, {5, true}, {6, true}});
+    std::filesystem::create_directories("build");
+    kaplan_meier_plot({first, second}, {"Group A", "Group B"}).title("Kaplan–Meier survival")
+        .save_svg("build/plot_gallery_survival.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_survival.svg)
+// result_end
+
+> Radial profiles, regional values and networks
+
+Radar charts compare normalized quantities on radial spokes. Choropleths
+reuse the continuous palette across supplied projected regions. The three
+example shapes are synthetic, and their labels show the values driving the
+colors. Arc diagrams place ordered nodes on a line and draw their edges above
+it.
+
+```{cpp, file="figures/plot_gallery_geometry.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <filesystem>
+
+int main() {
+    using datamunge::graphics::RLayout;
+    using datamunge::graphics::RPlot;
+    auto gallery = RLayout::create(1, 3).size(1200, 410);
+    gallery.add(RPlot().radar({.9, .55, .7, .4, .8}, {"Range", "Speed", "Lift", "Cost", "Life"})
+                    .title("Radar profile"))
+           .add(RPlot().choropleth({{0, 1, 1, 0}, {1, 2, 2.15, 1}, {0, 1, 2.15, 1.85, .25}},
+                                    {{0, 0, 1, 1.15}, {0, 0, 1.15, 1}, {1.15, 1, 1.15, 2.1, 2}},
+                                    {12, 28, 43})
+                    .text(.5, .5, "12", {255, 255, 255}).text(1.54, .5, "28", {255, 255, 255})
+                    .text(1.1, 1.55, "43").hide_axes().title("Regional values"))
+           .add(RPlot().arc_diagram({0, 1, 2, 3, 4}, {0, 0, 1, 2}, {1, 4, 3, 4})
+                    .x_tick_labels({"A", "B", "C", "D", "E"}).show_grid(false)
+                    .x_label("Node").y_label("").title("Network arcs"));
+    std::filesystem::create_directories("build");
+    gallery.fit_panels().save_svg("build/plot_gallery_geometry.svg");
+}
+```
+// result_begin:
+// \image(figures/plot_gallery_geometry.svg)
 // result_end

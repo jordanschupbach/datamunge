@@ -1,0 +1,319 @@
+//? Title: Built-in datasets and the local download cache
+//? Exports: both
+//? Lang: en
+
+Use `dm::data("iris")` to load a fresh table by name. The same lookup covers
+the small tables embedded in the library and larger tabular datasets that
+are downloaded on demand. `dm::dataset_names()` returns the canonical names as a
+`dm::Vector<std::string>` in lexical order. `dm::datasets::catalog()` adds
+dimensions, storage modes and approximate download sizes.
+Existing calls such as `dm::data::iris()` still work. C++ code that imports the
+legacy dataset namespace can use `datamunge::data`.
+
+> Load familiar teaching data
+
+The classic collection includes experimental designs, repeated measurements,
+count and categorical examples, regression benchmarks, and historical time
+series. Source spelling such as `ToothGrowth`, `CodParasites` and
+`CrabSatellites` works alongside the canonical names. Exact spelling matters
+for the two pairs of distinct data sources: `CO2` is plant uptake and `co2` is
+atmospheric CO2, while `Titanic` is R's contingency table and `titanic` is the
+passenger-level table.
+
+Numerically coded factors in the added snapshots keep their labels as strings.
+Missing cells remain null. Contingency arrays have one row per combination
+of levels and a count column. Time series include the original observation
+time. The `cod_parasites` table includes counts, prevalence and the sampling
+covariates from the original countreg data. The `crab_satellites` table
+records color and spine condition, carapace width in cm, weight in kg and
+the satellite count.
+
+```{cpp, id=named-loaders, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/data.hpp>
+#include <print>
+
+int main() {
+    std::println("| Lookup | Rows | Columns |\n| --- | ---: | ---: |");
+    for (const auto* name : {"iris", "penguins", "ToothGrowth", "CodParasites", "CrabSatellites"}) {
+        const auto table = dm::data(name);
+        std::println("| `{}` | {} | {} |", name, table.nrows(), table.ncols());
+    }
+}
+```
+// result_begin: markdown
+| Lookup | Rows | Columns |
+| --- | ---: | ---: |
+| `iris` | 150 | 5 |
+| `penguins` | 344 | 8 |
+| `ToothGrowth` | 60 | 3 |
+| `CodParasites` | 1254 | 10 |
+| `CrabSatellites` | 173 | 5 |
+// result_end
+
+> Storage and discovery
+
+Embedded tables work offline. Each added CSV is at most 64 KiB, and the
+additions together use at most 256 KiB of CSV payload before compilation.
+Large tabular data such as diamonds and California housing are fetched on the
+first lookup and reused from the verified cache. Set `DATAMUNGE_DATA_DIR` to
+choose the cache root and `DATAMUNGE_DATA_OFFLINE=1` to disable downloads.
+MNIST, Fashion-MNIST, CIFAR-10 and CIFAR-100 use
+`dm::datasets::ImageLoader("mnist", "train")` and its corresponding dataset
+names to fetch and read batches. The Karate Club graph has a typed loader.
+
+```{cpp, id=registered-datasets, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/data.hpp>
+#include <print>
+
+int main() {
+    const dm::Vector<std::string> names = dm::dataset_names();
+    std::println("Registered datasets — {}.\n", names.size());
+    const auto catalogue = dm::datasets::catalog();
+    std::print("{}", catalogue.to_md());
+}
+```
+// result_begin: markdown
+Registered datasets — 234.
+
+| name | rows | columns | storage | size_mb | description |
+| :--- | ---: | ---: | :--- | ---: | :--- |
+| air_passengers | 144 | 3 | built-in | 0.000 | Monthly airline passengers, 1949-1960 (Box & Jenkins, R) |
+| airquality | 153 | 6 | built-in | 0.000 | New York daily air quality, May-Sep 1973 (R) |
+| anscombe | 11 | 8 | built-in | 0.000 | Four regression examples with similar summary statistics |
+| attenu | 182 | 5 | built-in | 0.000 | Peak ground acceleration from California earthquakes |
+| attitude | 30 | 7 | built-in | 0.000 | Employee survey ratings across departments |
+| austres | 89 | 2 | built-in | 0.000 | Quarterly Australian population |
+| beaver1 | 114 | 4 | built-in | 0.000 | Body temperature of the first beaver |
+| beaver2 | 100 | 4 | built-in | 0.000 | Body temperature of the second beaver |
+| bj_sales | 150 | 2 | built-in | 0.000 | Box–Jenkins sales series |
+| bod | 6 | 2 | built-in | 0.000 | Oxygen demand by incubation time |
+| breast_cancer | 569 | 31 | built-in | 0.000 | Wisconsin diagnostic breast cancer, malignant vs benign |
+| california_housing | 20640 | 10 | download | 1.400 | 1990 California census housing by block group |
+| cars | 50 | 2 | built-in | 0.000 | Car speed and stopping distance |
+| chick_weight | 578 | 4 | built-in | 0.000 | Repeated chick weights by diet |
+| chickwts | 71 | 2 | built-in | 0.000 | Final chick weights by feed type |
+| cifar10 | 60000 | 3072 | stream | 163.000 | 32x32 color images in 10 classes |
+| cifar100 | 60000 | 3072 | stream | 161.000 | 32x32 color images in 100 fine / 20 coarse classes |
+| co2 | 468 | 2 | built-in | 0.000 | Atmospheric carbon dioxide at Mauna Loa |
+| co2_uptake | 84 | 5 | built-in | 0.000 | Carbon dioxide uptake by grass plants |
+| cod_parasites | 1254 | 10 | built-in | 0.000 | Parasite infection in cod from the Finnmark coast |
+| crab_satellites | 173 | 5 | built-in | 0.000 | Horseshoe crab mating and satellite male counts |
+| diabetes | 442 | 11 | built-in | 0.000 | Diabetes progression after one year (Efron et al. 2004) |
+| diamonds | 53940 | 10 | download | 2.700 | Price, carat, cut, color and clarity of diamonds (ggplot2) |
+| digits | 1797 | 65 | built-in | 0.000 | 8x8 handwritten digit images (UCI) |
+| discoveries | 100 | 2 | built-in | 0.000 | Annual counts of major discoveries |
+| dnase | 176 | 3 | built-in | 0.000 | DNase assay calibration curves by run |
+| eight_schools | 8 | 3 | built-in | 0.000 | SAT coaching effects in 8 schools (Rubin 1981) |
+| esoph | 88 | 5 | built-in | 0.000 | Alcohol and tobacco exposure in an esophageal cancer case-control study |
+| faithful | 272 | 2 | built-in | 0.000 | Old Faithful geyser eruption and waiting times (R) |
+| fashion_mnist | 70000 | 784 | stream | 30.000 | 28x28 grayscale clothing images in 10 classes |
+| formaldehyde | 6 | 2 | built-in | 0.000 | Calibration measurements for formaldehyde |
+| freeny | 39 | 6 | built-in | 0.000 | Freeny regression data on quarterly revenue |
+| hair_eye_color | 32 | 4 | built-in | 0.000 | Cross-tabulated hair color, eye color and sex |
+| indometh | 66 | 3 | built-in | 0.000 | Indomethacin concentrations by subject and time |
+| infert | 248 | 8 | built-in | 0.000 | Infertility case-control data after spontaneous or induced abortion |
+| insect_sprays | 72 | 2 | built-in | 0.000 | Insect counts after six spray treatments |
+| iris | 150 | 5 | built-in | 0.000 | Fisher's iris flower measurements, 3 species (R) |
+| islands | 48 | 2 | built-in | 0.000 | Areas of major landmasses |
+| johnson_johnson | 84 | 2 | built-in | 0.000 | Quarterly Johnson and Johnson earnings per share |
+| karate_club | 78 | 2 | graph | 0.001 | Zachary friendship topology:34nodes/78edges; karate_club(), no faction labels |
+| lake_huron | 98 | 2 | built-in | 0.000 | Annual water levels of Lake Huron |
+| life_cycle_savings | 50 | 6 | built-in | 0.000 | Intercountry savings and demographic variables |
+| loblolly | 84 | 3 | built-in | 0.000 | Repeated heights of loblolly pine trees |
+| longley | 16 | 7 | built-in | 0.000 | Longley macroeconomic regression benchmark |
+| lynx | 114 | 2 | built-in | 0.000 | Annual Canadian lynx trapping counts |
+| misra1a | 14 | 2 | built-in | 0.000 | NIST Misra1a monomolecular adsorption, observed pressure and volume |
+| mnist | 70000 | 784 | stream | 11.000 | 28x28 grayscale handwritten digits |
+| morley | 100 | 3 | built-in | 0.000 | Michelson speed-of-light experiments |
+| mtcars | 32 | 12 | built-in | 0.000 | Motor Trend 1974 road tests of 32 cars (R) |
+| nhtemp | 60 | 2 | built-in | 0.000 | Annual New Haven temperatures |
+| nile | 100 | 2 | built-in | 0.000 | Annual flow of the Nile at Aswan |
+| nottem | 240 | 2 | built-in | 0.000 | Monthly temperatures at Nottingham Castle |
+| npk | 24 | 5 | built-in | 0.000 | Nitrogen, phosphate and potassium fertilizer factorial experiment |
+| occupational_status | 64 | 3 | built-in | 0.000 | Occupation categories of fathers and sons |
+| orange | 35 | 3 | built-in | 0.000 | Repeated orange tree circumference measurements |
+| orchard_sprays | 64 | 4 | built-in | 0.000 | Honeybee response to orchard sprays |
+| orthodont | 108 | 4 | built-in | 0.000 | Orthodontic growth of 27 children, ages 8-14 (Potthoff & Roy 1964) |
+| penguins | 344 | 8 | built-in | 0.000 | Palmer Archipelago penguin measurements, 3 species |
+| plant_growth | 30 | 2 | built-in | 0.000 | Plant dry weights under control and two treatments |
+| precip | 70 | 2 | built-in | 0.000 | Annual precipitation across US cities |
+| presidents | 120 | 2 | built-in | 0.000 | Quarterly US presidential approval ratings |
+| pressure | 19 | 2 | built-in | 0.000 | Mercury vapor pressure by temperature |
+| puromycin | 23 | 3 | built-in | 0.000 | Reaction velocity by concentration and enzyme treatment |
+| quakes | 1000 | 5 | built-in | 0.000 | Fiji-region earthquake locations, depths and magnitudes |
+| rivers | 141 | 1 | built-in | 0.000 | Lengths of major North American rivers |
+| rock | 48 | 4 | built-in | 0.000 | Rock-core image measurements and permeability |
+| seatbelts | 192 | 9 | built-in | 0.000 | UK road casualties and related time series |
+| sleep | 20 | 3 | built-in | 0.000 | Extra sleep under two drugs for ten patients |
+| stackloss | 21 | 4 | built-in | 0.000 | Chemical plant operating variables and stack loss |
+| state_x77 | 50 | 9 | built-in | 0.000 | US state socioeconomic and geographic indicators |
+| sudoku | 156 | 4 | download | 0.014 | Norvig's Sudoku puzzles: easy, hard and hardest |
+| sunspots | 2820 | 2 | built-in | 0.000 | Monthly sunspot counts |
+| swiss | 47 | 7 | built-in | 0.000 | Swiss fertility and socioeconomic indicators |
+| theoph | 132 | 5 | built-in | 0.000 | Theophylline pharmacokinetics by subject and time |
+| titanic | 891 | 12 | built-in | 0.000 | Titanic passengers and survival (Kaggle training set) |
+| titanic_survival | 32 | 5 | built-in | 0.000 | Aggregated R Titanic survival counts |
+| tooth_growth | 60 | 3 | built-in | 0.000 | Guinea pig tooth growth vs vitamin C dose (R) |
+| trees | 31 | 3 | built-in | 0.000 | Girth, height and volume of black cherry trees |
+| ucb_admissions | 24 | 4 | built-in | 0.000 | Berkeley graduate admissions by department and sex |
+| uci_1 | 4177 | 9 | download | 0.196 | Abalone |
+| uci_10 | 205 | 26 | download | 0.024 | Automobile |
+| uci_101 | 958 | 10 | download | 0.026 | Tic-Tac-Toe Endgame |
+| uci_107 | 5000 | 22 | download | 0.556 | Waveform Database Generator (Version 1) |
+| uci_109 | 178 | 14 | download | 0.011 | Wine |
+| uci_110 | 1484 | 10 | download | 0.076 | Yeast |
+| uci_111 | 101 | 18 | download | 0.004 | Zoo |
+| uci_116 | 2458285 | 69 | download | 361.344 | US Census Data (1990) |
+| uci_12 | 625 | 5 | download | 0.006 | Balance Scale |
+| uci_13 | 16 | 5 | download | 0.000 | Balloons |
+| uci_14 | 286 | 10 | download | 0.019 | Breast Cancer |
+| uci_143 | 690 | 15 | download | 0.029 | Statlog (Australian Credit Approval) |
+| uci_144 | 1000 | 21 | download | 0.081 | Statlog (German Credit Data) |
+| uci_146 | 6435 | 37 | download | 0.769 | Statlog (Landsat Satellite) |
+| uci_15 | 699 | 11 | download | 0.021 | Breast Cancer Wisconsin (Original) |
+| uci_151 | 208 | 61 | download | 0.088 | Connectionist Bench (Sonar, Mines vs. Rocks) |
+| uci_158 | 1025010 | 11 | download | 25.152 | Poker Hand |
+| uci_159 | 19020 | 11 | download | 1.496 | MAGIC Gamma Telescope |
+| uci_16 | 198 | 35 | download | 0.045 | Breast Cancer Wisconsin (Prognostic) |
+| uci_161 | 961 | 6 | download | 0.014 | Mammographic Mass |
+| uci_162 | 517 | 13 | download | 0.025 | Forest Fires |
+| uci_165 | 1030 | 9 | download | 0.041 | Concrete Compressive Strength |
+| uci_17 | 569 | 32 | download | 0.125 | Breast Cancer Wisconsin (Diagnostic) |
+| uci_176 | 748 | 5 | download | 0.011 | Blood Transfusion Service Center |
+| uci_179 | 1567 | 592 | download | 5.431 | SECOM |
+| uci_18 | 108 | 13 | download | 0.007 | Pittsburgh Bridges |
+| uci_183 | 1994 | 128 | download | 1.105 | Communities and Crime |
+| uci_184 | 120 | 8 | download | 0.004 | Acute Inflammations |
+| uci_188 | 16772 | 5409 | download | 586.478 | p53 Mutants |
+| uci_189 | 5875 | 22 | download | 0.907 | Parkinsons Telemonitoring |
+| uci_19 | 1728 | 7 | download | 0.052 | Car Evaluation |
+| uci_193 | 2126 | 23 | download | 0.190 | Cardiotocography |
+| uci_198 | 1941 | 34 | download | 0.300 | Steel Plates Faults |
+| uci_2 | 48842 | 15 | download | 5.347 | Adult |
+| uci_20 | 48842 | 15 | download | 5.347 | Census Income |
+| uci_211 | 2215 | 147 | download | 1.647 | Communities and Crime Unnormalized |
+| uci_212 | 310 | 7 | download | 0.026 | Vertebral Column |
+| uci_221 | 65554 | 29 | download | 11.816 | KEGG Metabolic Reaction Network (Undirected) |
+| uci_222 | 45211 | 17 | download | 3.543 | Bank Marketing |
+| uci_225 | 583 | 11 | download | 0.024 | ILPD (Indian Liver Patient Dataset) |
+| uci_229 | 245057 | 4 | download | 3.401 | Skin Segmentation |
+| uci_23 | 28056 | 7 | download | 0.560 | Chess (King-Rook vs. King) |
+| uci_235 | 2075259 | 9 | download | 132.961 | Individual Household Electric Power Consumption |
+| uci_242 | 768 | 10 | download | 0.040 | Energy Efficiency |
+| uci_244 | 100 | 10 | download | 0.003 | Fertility |
+| uci_257 | 403 | 6 | download | 0.013 | User Knowledge Modeling |
+| uci_26 | 67557 | 43 | download | 5.968 | Connect-4 |
+| uci_264 | 14980 | 15 | download | 1.696 | EEG Eye State |
+| uci_267 | 1372 | 5 | download | 0.046 | Banknote Authentication |
+| uci_27 | 690 | 16 | download | 0.032 | Credit Approval |
+| uci_277 | 470 | 17 | download | 0.024 | Thoracic Surgery Data |
+| uci_29 | 209 | 10 | download | 0.009 | Computer Hardware |
+| uci_291 | 1503 | 6 | download | 0.060 | Airfoil Self-Noise |
+| uci_292 | 440 | 8 | download | 0.015 | Wholesale customers |
+| uci_294 | 9568 | 5 | download | 0.309 | Combined Cycle Power Plant |
+| uci_296 | 101766 | 50 | download | 19.545 | Diabetes 130-US Hospitals for Years 1999-2008 |
+| uci_30 | 1473 | 10 | download | 0.031 | Contraceptive Method Choice |
+| uci_31 | 581012 | 55 | download | 75.751 | Covertype |
+| uci_312 | 750 | 16 | download | 0.089 | Dow Jones Index |
+| uci_320 | 649 | 33 | download | 0.093 | Student Performance |
+| uci_327 | 11055 | 31 | download | 0.800 | Phishing Websites |
+| uci_33 | 366 | 35 | download | 0.027 | Dermatology |
+| uci_336 | 400 | 25 | download | 0.045 | Chronic Kidney Disease |
+| uci_342 | 1080 | 82 | download | 1.014 | Mice Protein Expression |
+| uci_350 | 30000 | 25 | download | 2.897 | Default of Credit Card Clients |
+| uci_352 | 541909 | 8 | download | 45.039 | Online Retail |
+| uci_367 | 102944 | 117 | download | 24.962 | Dota2 Games Results |
+| uci_368 | 500 | 19 | download | 0.038 | Facebook Metrics |
+| uci_372 | 17898 | 9 | download | 1.748 | HTRU2 |
+| uci_373 | 1885 | 32 | download | 0.346 | Drug Consumption (Quantified) |
+| uci_374 | 19735 | 29 | download | 4.490 | Appliances Energy Prediction |
+| uci_379 | 1353 | 10 | download | 0.033 | Website Phishing |
+| uci_380 | 1956 | 6 | download | 0.358 | YouTube Spam Collection |
+| uci_381 | 43824 | 13 | download | 2.013 | Beijing PM2.5 |
+| uci_383 | 858 | 36 | download | 0.109 | Cervical Cancer (Risk Factors) |
+| uci_39 | 336 | 9 | download | 0.016 | Ecoli |
+| uci_396 | 811 | 107 | download | 0.317 | Sales Transactions Weekly |
+| uci_409 | 60 | 13 | download | 0.005 | Daily Demand Forecasting Orders |
+| uci_419 | 292 | 21 | download | 0.024 | Autistic Spectrum Disorder Screening Data for Children |
+| uci_42 | 214 | 11 | download | 0.011 | Glass Identification |
+| uci_426 | 704 | 21 | download | 0.058 | Autism Screening Adult |
+| uci_43 | 306 | 4 | download | 0.003 | Haberman's Survival |
+| uci_445 | 740 | 21 | download | 0.045 | Absenteeism at work |
+| uci_45 | 303 | 14 | download | 0.011 | Heart Disease |
+| uci_451 | 116 | 10 | download | 0.008 | Breast Cancer Coimbra |
+| uci_461 | 4143 | 9 | download | 3.089 | Drug Reviews (Druglib.com) |
+| uci_464 | 21263 | 82 | download | 23.860 | Superconductivty Data |
+| uci_468 | 12330 | 18 | download | 1.072 | Online Shoppers Purchasing Intention Dataset |
+| uci_47 | 368 | 28 | download | 0.031 | Horse Colic |
+| uci_471 | 10000 | 14 | download | 2.398 | Electrical Grid Stability Simulated Data |
+| uci_477 | 414 | 8 | download | 0.022 | Real Estate Valuation |
+| uci_484 | 980 | 11 | download | 0.057 | Travel Reviews |
+| uci_485 | 5456 | 25 | download | 0.632 | Travel Review Ratings |
+| uci_492 | 48204 | 9 | download | 3.237 | Metro Interstate Traffic Volume |
+| uci_503 | 1385 | 29 | download | 0.162 | Hepatitis C Virus (HCV) for Egyptian patients |
+| uci_52 | 351 | 35 | download | 0.077 | Ionosphere |
+| uci_53 | 150 | 5 | download | 0.005 | Iris |
+| uci_54 | 7797 | 618 | download | 35.754 | ISOLET |
+| uci_547 | 244 | 15 | download | 0.017 | Algerian Forest Fires |
+| uci_560 | 8760 | 14 | download | 0.599 | Seoul Bike Sharing Demand |
+| uci_565 | 187 | 37 | download | 0.022 | Bone marrow transplant: children |
+| uci_571 | 615 | 14 | download | 0.042 | HCV data |
+| uci_579 | 1700 | 124 | download | 0.485 | Myocardial infarction complications |
+| uci_59 | 20000 | 17 | download | 0.713 | Letter Recognition |
+| uci_62 | 32 | 57 | download | 0.004 | Lung Cancer |
+| uci_697 | 4424 | 37 | download | 0.496 | Predict Students' Dropout and Academic Success |
+| uci_70 | 432 | 8 | download | 0.010 | MONK's Problems |
+| uci_713 | 2043 | 9 | download | 0.076 | Auction Verification |
+| uci_728 | 171 | 1204 | download | 1.245 | Toxicity |
+| uci_732 | 174 | 452 | download | 0.740 | DARWIN |
+| uci_74 | 476 | 169 | download | 0.330 | Musk (Version 1) |
+| uci_75 | 6598 | 169 | download | 4.591 | Musk (Version 2) |
+| uci_755 | 31991 | 8 | download | 2.135 | Accelerometer Gyro Mobile Phone |
+| uci_759 | 839 | 25 | download | 0.060 | Glioma Grading Clinical and Mutation Features |
+| uci_76 | 12960 | 9 | download | 1.059 | Nursery |
+| uci_760 | 181800 | 7 | download | 5.502 | Multivariate Gait Data |
+| uci_763 | 338 | 4 | download | 0.010 | Land Mines |
+| uci_78 | 5473 | 11 | download | 0.242 | Page Blocks Classification |
+| uci_80 | 5620 | 65 | download | 0.835 | Optical Recognition of Handwritten Digits |
+| uci_81 | 10992 | 17 | download | 0.540 | Pen-Based Recognition of Handwritten Digits |
+| uci_82 | 90 | 9 | download | 0.004 | Post-Operative Patient |
+| uci_827 | 110341 | 4 | download | 1.098 | Sepsis Survival Minimal Clinical Records |
+| uci_83 | 339 | 18 | download | 0.013 | Primary Tumor |
+| uci_850 | 900 | 8 | download | 0.069 | Raisin |
+| uci_851 | 35040 | 11 | download | 2.731 | Steel Industry Energy Consumption |
+| uci_856 | 145 | 33 | download | 0.012 | Higher Education Students Performance Evaluation |
+| uci_857 | 200 | 29 | download | 0.034 | Risk Factor Prediction of Chronic Kidney Disease |
+| uci_864 | 10129 | 19 | download | 0.932 | Room Occupancy Estimation |
+| uci_87 | 167 | 5 | download | 0.003 | Servo |
+| uci_878 | 418 | 20 | download | 0.033 | Cirrhosis Patient Survival Prediction |
+| uci_9 | 398 | 9 | download | 0.019 | Auto MPG |
+| uci_90 | 307 | 36 | download | 0.028 | Soybean (Large) |
+| uci_91 | 47 | 36 | download | 0.004 | Soybean (Small) |
+| uci_911 | 18182 | 15 | download | 6.071 | Recipe Reviews and User Feedback |
+| uci_913 | 320 | 11 | download | 0.023 | Forty Soybean Cultivars from Subsequent Harvests |
+| uci_915 | 383 | 17 | download | 0.044 | Differentiated Thyroid Cancer Recurrence |
+| uci_92 | 23 | 5 | download | 0.000 | Challenger USA Space Shuttle O-Ring |
+| uci_94 | 4601 | 58 | download | 0.704 | Spambase |
+| uci_942 | 123117 | 85 | download | 43.442 | RT-IoT2022 |
+| uci_95 | 267 | 23 | download | 0.013 | SPECT Heart |
+| uci_96 | 267 | 45 | download | 0.036 | SPECTF Heart |
+| uci_967 | 235795 | 56 | download | 56.854 | PhiUSIIL Phishing URL (Website) |
+| uk_gas | 108 | 2 | built-in | 0.000 | Quarterly UK gas consumption |
+| us_acc_deaths | 72 | 2 | built-in | 0.000 | Monthly accidental deaths in the United States |
+| us_arrests | 50 | 5 | built-in | 0.000 | US state arrest rates and urban population |
+| us_judge_ratings | 43 | 13 | built-in | 0.000 | Lawyer ratings of US Superior Court judges |
+| us_personal_expenditure | 5 | 6 | built-in | 0.000 | US personal expenditures by category and year |
+| us_pop | 19 | 2 | built-in | 0.000 | US population by decennial census |
+| va_deaths | 5 | 5 | built-in | 0.000 | Death rates in Virginia by age, residence and sex |
+| volcano | 5307 | 3 | built-in | 0.000 | Maunga Whau (Mt Eden) elevations on a 10 m grid (R) |
+| warpbreaks | 54 | 3 | built-in | 0.000 | Warp break counts by wool type and tension |
+| wine | 178 | 14 | built-in | 0.000 | Chemical analysis of wines from 3 cultivars (UCI) |
+| women | 15 | 2 | built-in | 0.000 | Average heights and weights of American women |
+| world_phones | 7 | 8 | built-in | 0.000 | Telephones by region and year |
+| www_usage | 100 | 2 | built-in | 0.000 | Internet usage per minute |
+// result_end
+
+> Sources
+
+- [Base R datasets|https://search.r-project.org/R/refmans/datasets/html/00Index.html]
+- [countreg data and documentation|https://zeileis.codeberg.page/countreg/]

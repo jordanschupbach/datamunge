@@ -4,13 +4,16 @@
 #include <datamunge/datasets/datasets.hpp>
 
 #include "embedded_csv.hpp"
+#include "uci_sources.hpp"
 
 #include <algorithm>
+#include <array>
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
 #include <utility>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace datamunge::datasets {
@@ -80,64 +83,104 @@ struct Entry {
   const char* storage;      ///< "built-in", "download", "stream" or "graph".
   double size_mb;           ///< Approximate download size.
   const char* description;  ///< One-line summary.
+  dstruct::DataFrame (*table)() = nullptr; ///< Existing typed table loader, when used.
+  std::string (*csv)() = nullptr; ///< Generated CSV accessor, when used.
+  std::string_view string_columns{}; ///< Pipe-delimited column names whose source type is categorical/text.
+  std::string_view alias{}; ///< Exact spelling of the source R object, if distinct.
 };
 
 /// @brief Every dataset, sorted by name.
-const std::vector<Entry> kEntries = {
-    {"air_passengers", 144, 3, "built-in", 0, "Monthly airline passengers, 1949-1960 (Box & Jenkins, R)"},
-    {"airquality", 153, 6, "built-in", 0, "New York daily air quality, May-Sep 1973 (R)"},
-    {"breast_cancer", 569, 31, "built-in", 0, "Wisconsin diagnostic breast cancer, malignant vs benign"},
-    {"california_housing", 20640, 10, "download", 1.4, "1990 California census housing by block group"},
+constexpr auto kEntries = [] {
+  auto entries = std::to_array<Entry>({
+    {"air_passengers", 144, 3, "built-in", 0, "Monthly airline passengers, 1949-1960 (Box & Jenkins, R)", air_passengers, nullptr, {}, "AirPassengers"},
+    {"airquality", 153, 6, "built-in", 0, "New York daily air quality, May-Sep 1973 (R)", airquality},
+    {"breast_cancer", 569, 31, "built-in", 0, "Wisconsin diagnostic breast cancer, malignant vs benign", breast_cancer},
+    {"california_housing", 20640, 10, "download", 1.4, "1990 California census housing by block group", california_housing},
     {"cifar10", 60000, 3072, "stream", 163, "32x32 color images in 10 classes"},
     {"cifar100", 60000, 3072, "stream", 161, "32x32 color images in 100 fine / 20 coarse classes"},
-    {"diabetes", 442, 11, "built-in", 0, "Diabetes progression after one year (Efron et al. 2004)"},
-    {"diamonds", 53940, 10, "download", 2.7, "Price, carat, cut, color and clarity of diamonds (ggplot2)"},
-    {"digits", 1797, 65, "built-in", 0, "8x8 handwritten digit images (UCI)"},
-    {"eight_schools", 8, 3, "built-in", 0, "SAT coaching effects in 8 schools (Rubin 1981)"},
-    {"faithful", 272, 2, "built-in", 0, "Old Faithful geyser eruption and waiting times (R)"},
+    {"diabetes", 442, 11, "built-in", 0, "Diabetes progression after one year (Efron et al. 2004)", diabetes},
+    {"diamonds", 53940, 10, "download", 2.7, "Price, carat, cut, color and clarity of diamonds (ggplot2)", diamonds},
+    {"digits", 1797, 65, "built-in", 0, "8x8 handwritten digit images (UCI)", digits},
+    {"eight_schools", 8, 3, "built-in", 0, "SAT coaching effects in 8 schools (Rubin 1981)", eight_schools},
+    {"faithful", 272, 2, "built-in", 0, "Old Faithful geyser eruption and waiting times (R)", faithful},
     {"fashion_mnist", 70000, 784, "stream", 30, "28x28 grayscale clothing images in 10 classes"},
-    {"iris", 150, 5, "built-in", 0, "Fisher's iris flower measurements, 3 species (R)"},
+    {"iris", 150, 5, "built-in", 0, "Fisher's iris flower measurements, 3 species (R)", iris},
     {"karate_club", 78, 2, "graph", 0.000970, "Zachary friendship topology:34nodes/78edges; karate_club(), no faction labels"},
     {"mnist", 70000, 784, "stream", 11, "28x28 grayscale handwritten digits"},
-    {"misra1a", 14, 2, "built-in", 0, "NIST Misra1a monomolecular adsorption, observed pressure and volume"},
-    {"mtcars", 32, 12, "built-in", 0, "Motor Trend 1974 road tests of 32 cars (R)"},
-    {"orthodont", 108, 4, "built-in", 0, "Orthodontic growth of 27 children, ages 8-14 (Potthoff & Roy 1964)"},
-    {"penguins", 344, 8, "built-in", 0, "Palmer Archipelago penguin measurements, 3 species"},
-    {"sudoku", 156, 4, "download", 0.014, "Norvig's Sudoku puzzles: easy, hard and hardest"},
-    {"titanic", 891, 12, "built-in", 0, "Titanic passengers and survival (Kaggle training set)"},
-    {"tooth_growth", 60, 3, "built-in", 0, "Guinea pig tooth growth vs vitamin C dose (R)"},
-    {"volcano", 5307, 3, "built-in", 0, "Maunga Whau (Mt Eden) elevations on a 10 m grid (R)"},
-    {"wine", 178, 14, "built-in", 0, "Chemical analysis of wines from 3 cultivars (UCI)"},
-};
+    {"misra1a", 14, 2, "built-in", 0, "NIST Misra1a monomolecular adsorption, observed pressure and volume", misra1a},
+    {"mtcars", 32, 12, "built-in", 0, "Motor Trend 1974 road tests of 32 cars (R)", mtcars},
+    {"orthodont", 108, 4, "built-in", 0, "Orthodontic growth of 27 children, ages 8-14 (Potthoff & Roy 1964)", orthodont, nullptr, {}, "Orthodont"},
+    {"penguins", 344, 8, "built-in", 0, "Palmer Archipelago penguin measurements, 3 species", penguins},
+    {"sudoku", 156, 4, "download", 0.014, "Norvig's Sudoku puzzles: easy, hard and hardest", sudoku},
+    {"titanic", 891, 12, "built-in", 0, "Titanic passengers and survival (Kaggle training set)", titanic},
+    {"tooth_growth", 60, 3, "built-in", 0, "Guinea pig tooth growth vs vitamin C dose (R)", tooth_growth, nullptr, {}, "ToothGrowth"},
+    {"volcano", 5307, 3, "built-in", 0, "Maunga Whau (Mt Eden) elevations on a 10 m grid (R)", volcano},
+    {"wine", 178, 14, "built-in", 0, "Chemical analysis of wines from 3 cultivars (UCI)", wine},
+#include "classic_catalog.inc"
+  });
+  std::ranges::sort(entries, {}, [](const Entry& entry) { return std::string_view(entry.name); });
+  return entries;
+}();
+
+/// @brief Makes lookup case-insensitive and ignores separators such as underscores and spaces.
+/// @param name Dataset spelling supplied by the caller.
+/// @return ASCII lower-case letters and digits, with common naming separators omitted.
+std::string normalize_name(std::string_view name) {
+  std::string key;
+  for (char c : name) {
+    if (c == '_' || c == '-' || c == ' ' || c == '.') continue;
+    key.push_back(c >= 'A' && c <= 'Z' ? static_cast<char>(c + ('a' - 'A')) : c);
+  }
+  return key;
+}
+
+/// @brief Resolves an exact dataset id, an exact source alias, or a normalized id.
+/// @param name Canonical id or alternate spelling.
+/// @return Pointer into the static registry, or nullptr for an unknown name.
+const Entry* find_entry(std::string_view name) {
+  const auto find = [](const auto& predicate) -> const Entry* {
+    const auto it = std::ranges::find_if(kEntries, predicate);
+    return it == kEntries.end() ? nullptr : &*it;
+  };
+  if (const auto* entry = find([=](const Entry& value) { return name == value.name; })) return entry;
+  if (name.empty()) return nullptr;
+  if (const auto* entry = find([=](const Entry& value) { return name == value.alias; })) return entry;
+  const auto key = normalize_name(name);
+  return find([&](const Entry& value) { return key == normalize_name(value.name); });
+}
 
 } // namespace
 
 dstruct::DataFrame load(const std::string& name) {
-  if (name == "air_passengers") return air_passengers();
-  if (name == "airquality") return airquality();
-  if (name == "breast_cancer") return breast_cancer();
-  if (name == "california_housing") return california_housing();
-  if (name == "diabetes") return diabetes();
-  if (name == "diamonds") return diamonds();
-  if (name == "digits") return digits();
-  if (name == "eight_schools") return eight_schools();
-  if (name == "faithful") return faithful();
-  if (name == "iris") return iris();
-  if (name == "misra1a") return misra1a();
-  if (name == "mtcars") return mtcars();
-  if (name == "orthodont") return orthodont();
-  if (name == "penguins") return penguins();
-  if (name == "sudoku") return sudoku();
-  if (name == "titanic") return titanic();
-  if (name == "tooth_growth") return tooth_growth();
-  if (name == "volcano") return volcano();
-  if (name == "wine") return wine();
-  if (name == "karate_club")
+  if (const auto* source = detail::find_uci(name)) {
+    CsvOptions options;
+    options.na_values = {""};
+    if (!source->missing.empty()) options.na_values.emplace_back(source->missing);
+    auto frame = read_csv(fetch(name), options);
+    if (frame.nrows() != source->rows || frame.ncols() != source->columns)
+      throw std::runtime_error("UCI table shape differs from the catalogue: " + detail::uci_name(*source));
+    return frame;
+  }
+  const auto* entry = find_entry(name);
+  if (!entry)
+    throw std::invalid_argument("unknown dataset \"" + name + "\"; see datasets::catalog() for the list");
+  if (entry->table) return entry->table();
+  if (entry->csv) {
+    CsvOptions options;
+    auto columns = entry->string_columns;
+    while (!columns.empty()) {
+      const auto separator = columns.find('|');
+      options.string_columns.emplace_back(columns.substr(0, separator));
+      if (separator == std::string_view::npos) break;
+      columns.remove_prefix(separator + 1);
+    }
+    return parse_csv(entry->csv(), options);
+  }
+  if (std::string_view(entry->storage) == "graph")
     throw std::invalid_argument("karate_club is a graph dataset; read it with datasets::karate_club()");
-  if (name == "mnist" || name == "fashion_mnist" || name == "cifar10" || name == "cifar100")
-    throw std::invalid_argument("\"" + name + "\" is an image dataset; read it in batches with ImageLoader(\"" +
-                                name + "\")");
-  throw std::invalid_argument("unknown dataset \"" + name + "\"; see datasets::catalog() for the list");
+  const std::string id = entry->name;
+  throw std::invalid_argument("\"" + id + "\" is an image dataset; read it in batches with ImageLoader(\"" +
+                              id + "\")");
 }
 
 dstruct::DataFrame to_dataframe(const ImageBatch& batch) {
@@ -166,6 +209,14 @@ dstruct::DataFrame catalog() {
     sizes.push_back(e.size_mb);
     descriptions.emplace_back(e.description);
   }
+  for (const auto& source : detail::uci_sources()) {
+    names.push_back(detail::uci_name(source));
+    rows.push_back(static_cast<double>(source.rows));
+    columns.push_back(static_cast<double>(source.columns));
+    storage.emplace_back("download");
+    sizes.push_back(static_cast<double>(source.bytes) / 1000000.0);
+    descriptions.emplace_back(source.title);
+  }
   dstruct::DataFrame frame;
   frame.add_column("name", names);
   frame.add_column("rows", rows);
@@ -173,7 +224,7 @@ dstruct::DataFrame catalog() {
   frame.add_column("storage", storage);
   frame.add_column("size_mb", sizes);
   frame.add_column("description", descriptions);
-  return frame;
+  return frame.arrange({"name"});
 }
 
 } // namespace datamunge::datasets

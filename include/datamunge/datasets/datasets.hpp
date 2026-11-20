@@ -396,15 +396,18 @@ dstruct::DataFrame california_housing();
 /// @see algorithms::sudoku::propagate()
 dstruct::DataFrame sudoku();
 
-/// @brief Any table-shaped dataset by name: "air_passengers", "airquality", "breast_cancer",
-///        "california_housing", "diabetes", "diamonds", "digits", "eight_schools", "faithful",
-///        "iris", "mtcars", "orthodont", "penguins", "sudoku", "titanic", "tooth_growth", "volcano"
-///        or "wine".
+/// @brief Loads any registered table by name from the catalog().
 ///
-/// The image datasets are not tables; open them with ImageLoader instead.
-/// The karate_club graph is not a DataFrame; use karate_club() for topology and original ids.
+/// Bundled tables need no disk or network I/O. Downloaded tables use fetch() and
+/// its local verified cache. Exact canonical names win, then exact source aliases,
+/// then canonical names matched without ASCII case, spaces, periods, hyphens or
+/// underscores. In particular "CO2" is plant uptake, "co2" is atmospheric CO2,
+/// "Titanic" selects R's contingency table, and "titanic" selects passenger records.
+/// UCI tables accept canonical names such as "uci_53" and aliases such as "uci_iris".
+/// See uci_catalog() for attribution. Image datasets use ImageLoader, and
+/// the karate_club graph uses karate_club().
 ///
-/// @param name A dataset name as listed in catalog().
+/// @param name A canonical name from catalog() or recognized source spelling.
 /// @return A new DataFrame, as the dataset's own function returns it.
 /// @throws std::invalid_argument for an unknown name, an image dataset's name or karate_club.
 /// @throws std::runtime_error if a downloaded dataset cannot be fetched.
@@ -432,6 +435,26 @@ dstruct::DataFrame load(const std::string& name);
 /// @endcode
 /// @see load(), ImageLoader, karate_club()
 dstruct::DataFrame catalog();
+
+/// @brief Lists the licensed UCI tables registered for verified on-demand download.
+///
+/// Rows follow ascending UCI id. Columns are name (stable uci_<id>), alias,
+/// title, rows, columns, bytes, license, doi, creators, url, sha256 and missing.
+/// An empty missing field means no extra marker beyond empty cells. Reading the
+/// catalogue needs no files or network. Use DOI and creator fields to
+/// attribute these unmodified source snapshots in downstream work.
+///
+/// @return A fresh, owning DataFrame of catalogue metadata.
+///
+/// @par Example
+/// @code
+/// const auto sources = dm::datasets::uci_catalog();
+/// std::print("{}\n", sources.columns().size());  // 12
+/// @endcode
+/// @par References
+/// - https://archive.ics.uci.edu/datasets
+/// @see load(), fetch(), catalog()
+dstruct::DataFrame uci_catalog();
 
 /// @brief An ImageBatch as a DataFrame: one row per image, columns `pixel_0`.. (each image's
 ///        values in the batch's layout order) followed by `label` and `index`.

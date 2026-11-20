@@ -4,6 +4,7 @@
 #include <bit>
 #include <datamunge/algorithms/hex_encoding.hpp>
 #include <datamunge/algorithms/sha256.hpp>
+#include <istream>
 #include <limits>
 #include <stdexcept>
 #include <utility>
@@ -37,17 +38,20 @@ std::uint32_t sha256_rotr(std::uint32_t x, int c) {
 
 } // namespace detail
 /// @brief Execute one complete checked actual digest, optionally retaining real rounds.
-/// @param message Borrowed raw bytes.
+/// @tparam Read Sequential block reader.
+/// @param n Total input byte count.
+/// @param read Reads up to one block of input bytes into the supplied buffer.
 /// @param options Complete bounds.
 /// @param capture Retain actual schedules and rounds.
 /// @return Owned actual digest/work/history.
-SHA256Run produce(const std::string& message, const SHAOptions& options, bool capture) {
-  const auto n = message.size(), max = std::numeric_limits<std::size_t>::max();
+template <typename Read>
+SHA256Run produce(std::size_t n, Read read, const SHAOptions& options, bool capture) {
+  const auto max = std::numeric_limits<std::size_t>::max();
   if ((options.max_bytes && n > options.max_bytes) ||
       n > std::numeric_limits<std::uint64_t>::max() / 8 || n > max - 72)
     throw std::length_error("sha256: complete input capacity/policy");
   const auto blocks = n / 64 + 1 + (n % 64 >= 56);
-  if (blocks > max / 64 || blocks > max / 64 || blocks > max / 1233)
+  if (blocks > max / 1233)
     throw std::length_error("sha256: work/capture capacity");
   const auto padded = 64 * blocks;
   if (padded > std::string().max_size() ||
@@ -64,29 +68,31 @@ SHA256Run produce(const std::string& message, const SHAOptions& options, bool ca
       0x1f83d9abu,
       0x5be0cd19u};
 
-  std::string msg;
-  msg.reserve(padded);
-  msg                         = message;
-  const std::uint64_t bit_len = static_cast<std::uint64_t>(message.size()) * 8u;
-  msg.push_back(static_cast<char>(0x80));
-  while (msg.size() % 64 != 56)
-    msg.push_back(0);
-  for (int i = 7; i >= 0; --i)
-    msg.push_back(static_cast<char>((bit_len >> (8 * i)) & 0xFF));
-
+  const auto bit_len = static_cast<std::uint64_t>(n) * 8u;
   SHA256Run out;
-  out.message_bytes = message.size();
-  out.padded_bytes  = msg.size();
-  for (std::size_t off = 0; off < msg.size(); off += 64) {
+  out.message_bytes = n;
+  out.padded_bytes = padded;
+  for (std::size_t off = 0; off < padded; off += 64) {
+    std::array<char, 64> block_bytes{};
+    if (off < n) {
+      const auto count = std::min(block_bytes.size(), n - off);
+      read(off, block_bytes.data(), count);
+    }
+    if (off <= n && n - off < block_bytes.size())
+      block_bytes[n - off] = static_cast<char>(0x80);
+    if (padded - off == block_bytes.size())
+      for (int i = 0; i < 8; ++i)
+        block_bytes[63 - i] = static_cast<char>((bit_len >> (8 * i)) & 0xFF);
+
     ++out.compression_blocks;
     SHA256Block block;
     block.offset = off;
     std::uint32_t w[64];
     for (int i = 0; i < 16; ++i) {
-      w[i] = (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i])) << 24) |
-             (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i + 1])) << 16) |
-             (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i + 2])) << 8) |
-             (static_cast<std::uint32_t>(static_cast<std::uint8_t>(msg[off + 4 * i + 3])));
+      w[i] = (static_cast<std::uint32_t>(static_cast<std::uint8_t>(block_bytes[4 * i])) << 24) |
+             (static_cast<std::uint32_t>(static_cast<std::uint8_t>(block_bytes[4 * i + 1])) << 16) |
+             (static_cast<std::uint32_t>(static_cast<std::uint8_t>(block_bytes[4 * i + 2])) << 8) |
+             (static_cast<std::uint32_t>(static_cast<std::uint8_t>(block_bytes[4 * i + 3])));
     }
     for (int i = 16; i < 64; ++i) {
       std::uint32_t s0 =
@@ -153,6 +159,16 @@ SHA256Run produce(const std::string& message, const SHAOptions& options, bool ca
   out.digest = digest;
   return out;
 }
+/// @brief Adapts a borrowed in-memory message to the block digest producer.
+/// @param message Raw bytes.
+/// @param options Complete bounds.
+/// @param capture Retain actual schedules and rounds.
+/// @return Digest, work counts and optional history.
+SHA256Run produce(const std::string& message, const SHAOptions& options, bool capture) {
+  return produce(message.size(), [&](std::size_t off, char* buffer, std::size_t count) {
+    std::copy_n(message.data() + off, count, buffer);
+  }, options, capture);
+}
 } // namespace
 SHA256Run sha256_run(const std::string& m, const SHAOptions& o) {
   return produce(m, o, false);
@@ -165,6 +181,15 @@ std::array<std::uint8_t, 32> sha256(const std::string& m) {
 }
 std::string sha256_hex(const std::string& m) {
   return to_hex(sha256(m));
+}
+std::string sha256_stream_hex(std::istream& stream, std::size_t bytes) {
+  SHAOptions options;
+  options.max_bytes = 0;
+  const auto result = produce(bytes, [&](std::size_t, char* buffer, std::size_t count) {
+    if (!stream.read(buffer, static_cast<std::streamsize>(count)))
+      throw std::runtime_error("sha256: incomplete input stream");
+  }, options, false);
+  return to_hex(result.digest);
 }
 HashAvalanche sha256_avalanche(const std::string& m, std::size_t cap, const SHAOptions& o) {
   const auto max = std::numeric_limits<std::size_t>::max();

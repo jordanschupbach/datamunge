@@ -44,5 +44,141 @@ std::string titanic_csv();
 std::string volcano_csv();
 /// @brief The CSV text of data-raw/datasets/wine.csv.
 std::string wine_csv();
+/// @brief The CSV text of data-raw/datasets/anscombe.csv.
+std::string anscombe_csv();
+/// @brief The CSV text of data-raw/datasets/attenu.csv.
+std::string attenu_csv();
+/// @brief The CSV text of data-raw/datasets/attitude.csv.
+std::string attitude_csv();
+/// @brief The CSV text of data-raw/datasets/austres.csv.
+std::string austres_csv();
+/// @brief The CSV text of data-raw/datasets/beaver1.csv.
+std::string beaver1_csv();
+/// @brief The CSV text of data-raw/datasets/beaver2.csv.
+std::string beaver2_csv();
+/// @brief The CSV text of data-raw/datasets/bj_sales.csv.
+std::string bj_sales_csv();
+/// @brief The CSV text of data-raw/datasets/bod.csv.
+std::string bod_csv();
+/// @brief The CSV text of data-raw/datasets/cars.csv.
+std::string cars_csv();
+/// @brief The CSV text of data-raw/datasets/chick_weight.csv.
+std::string chick_weight_csv();
+/// @brief The CSV text of data-raw/datasets/chickwts.csv.
+std::string chickwts_csv();
+/// @brief The CSV text of data-raw/datasets/co2.csv.
+std::string co2_csv();
+/// @brief The CSV text of data-raw/datasets/co2_uptake.csv.
+std::string co2_uptake_csv();
+/// @brief The CSV text of data-raw/datasets/cod_parasites.csv.
+std::string cod_parasites_csv();
+/// @brief The CSV text of data-raw/datasets/crab_satellites.csv.
+std::string crab_satellites_csv();
+/// @brief The CSV text of data-raw/datasets/discoveries.csv.
+std::string discoveries_csv();
+/// @brief The CSV text of data-raw/datasets/dnase.csv.
+std::string dnase_csv();
+/// @brief The CSV text of data-raw/datasets/esoph.csv.
+std::string esoph_csv();
+/// @brief The CSV text of data-raw/datasets/formaldehyde.csv.
+std::string formaldehyde_csv();
+/// @brief The CSV text of data-raw/datasets/freeny.csv.
+std::string freeny_csv();
+/// @brief The CSV text of data-raw/datasets/hair_eye_color.csv.
+std::string hair_eye_color_csv();
+/// @brief The CSV text of data-raw/datasets/indometh.csv.
+std::string indometh_csv();
+/// @brief The CSV text of data-raw/datasets/infert.csv.
+std::string infert_csv();
+/// @brief The CSV text of data-raw/datasets/insect_sprays.csv.
+std::string insect_sprays_csv();
+/// @brief The CSV text of data-raw/datasets/islands.csv.
+std::string islands_csv();
+/// @brief The CSV text of data-raw/datasets/johnson_johnson.csv.
+std::string johnson_johnson_csv();
+/// @brief The CSV text of data-raw/datasets/lake_huron.csv.
+std::string lake_huron_csv();
+/// @brief The CSV text of data-raw/datasets/life_cycle_savings.csv.
+std::string life_cycle_savings_csv();
+/// @brief The CSV text of data-raw/datasets/loblolly.csv.
+std::string loblolly_csv();
+/// @brief The CSV text of data-raw/datasets/longley.csv.
+std::string longley_csv();
+/// @brief The CSV text of data-raw/datasets/lynx.csv.
+std::string lynx_csv();
+/// @brief The CSV text of data-raw/datasets/morley.csv.
+std::string morley_csv();
+/// @brief The CSV text of data-raw/datasets/nhtemp.csv.
+std::string nhtemp_csv();
+/// @brief The CSV text of data-raw/datasets/nile.csv.
+std::string nile_csv();
+/// @brief The CSV text of data-raw/datasets/nottem.csv.
+std::string nottem_csv();
+/// @brief The CSV text of data-raw/datasets/npk.csv.
+std::string npk_csv();
+/// @brief The CSV text of data-raw/datasets/occupational_status.csv.
+std::string occupational_status_csv();
+/// @brief The CSV text of data-raw/datasets/orange.csv.
+std::string orange_csv();
+/// @brief The CSV text of data-raw/datasets/orchard_sprays.csv.
+std::string orchard_sprays_csv();
+/// @brief The CSV text of data-raw/datasets/plant_growth.csv.
+std::string plant_growth_csv();
+/// @brief The CSV text of data-raw/datasets/precip.csv.
+std::string precip_csv();
+/// @brief The CSV text of data-raw/datasets/presidents.csv.
+std::string presidents_csv();
+/// @brief The CSV text of data-raw/datasets/pressure.csv.
+std::string pressure_csv();
+/// @brief The CSV text of data-raw/datasets/puromycin.csv.
+std::string puromycin_csv();
+/// @brief The CSV text of data-raw/datasets/quakes.csv.
+std::string quakes_csv();
+/// @brief The CSV text of data-raw/datasets/rivers.csv.
+std::string rivers_csv();
+/// @brief The CSV text of data-raw/datasets/rock.csv.
+std::string rock_csv();
+/// @brief The CSV text of data-raw/datasets/seatbelts.csv.
+std::string seatbelts_csv();
+/// @brief The CSV text of data-raw/datasets/sleep.csv.
+std::string sleep_csv();
+/// @brief The CSV text of data-raw/datasets/stackloss.csv.
+std::string stackloss_csv();
+/// @brief The CSV text of data-raw/datasets/state_x77.csv.
+std::string state_x77_csv();
+/// @brief The CSV text of data-raw/datasets/sunspots.csv.
+std::string sunspots_csv();
+/// @brief The CSV text of data-raw/datasets/swiss.csv.
+std::string swiss_csv();
+/// @brief The CSV text of data-raw/datasets/theoph.csv.
+std::string theoph_csv();
+/// @brief The CSV text of data-raw/datasets/titanic_survival.csv.
+std::string titanic_survival_csv();
+/// @brief The CSV text of data-raw/datasets/trees.csv.
+std::string trees_csv();
+/// @brief The CSV text of data-raw/datasets/ucb_admissions.csv.
+std::string ucb_admissions_csv();
+/// @brief The CSV text of data-raw/datasets/uk_gas.csv.
+std::string uk_gas_csv();
+/// @brief The CSV text of data-raw/datasets/us_acc_deaths.csv.
+std::string us_acc_deaths_csv();
+/// @brief The CSV text of data-raw/datasets/us_arrests.csv.
+std::string us_arrests_csv();
+/// @brief The CSV text of data-raw/datasets/us_judge_ratings.csv.
+std::string us_judge_ratings_csv();
+/// @brief The CSV text of data-raw/datasets/us_personal_expenditure.csv.
+std::string us_personal_expenditure_csv();
+/// @brief The CSV text of data-raw/datasets/us_pop.csv.
+std::string us_pop_csv();
+/// @brief The CSV text of data-raw/datasets/va_deaths.csv.
+std::string va_deaths_csv();
+/// @brief The CSV text of data-raw/datasets/warpbreaks.csv.
+std::string warpbreaks_csv();
+/// @brief The CSV text of data-raw/datasets/women.csv.
+std::string women_csv();
+/// @brief The CSV text of data-raw/datasets/world_phones.csv.
+std::string world_phones_csv();
+/// @brief The CSV text of data-raw/datasets/www_usage.csv.
+std::string www_usage_csv();
 
 } // namespace datamunge::datasets::detail

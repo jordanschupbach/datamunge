@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <datamunge/algorithms/hex_encoding.hpp>
 #include <datamunge/algorithms/sha_types.hpp>
+#include <iosfwd>
 /// @brief Canonical checked native producers and owned algorithm values.
 namespace datamunge::algorithms {
 /// @brief One actual producing sha256 working-state round.
@@ -49,7 +50,7 @@ struct SHA256Run {
   std::vector<SHA256Block> blocks;   ///< Actual optional same-execution blocks and their rounds.
 };
 /// @brief Compute checked sha256 on complete raw bytes.
-/// Follows FIPS180-4 SHA256 padding, schedule, modulo2^32 round updates and block feed-forward. Empty and embedded-NUL messages are supported. Checks original length fits the FIPS64-bit bit-length field, padded container geometry, selected counters and complete optional capture before allocation or compression. Captured logical units per block are one block header+64 scheduled words+16 chain words+64*(one round header+16 working words+one scheduled-word copy). Does not retain a second padded-message copy in the result. O(bytes) time/intrinsic padded storage; optional history proportional to actual blocks with the stated fixed constants. Borrowed input unchanged; output owns its bytes/history; no shared state. Digest conformance and avalanche diagnostics do not establish resistance to attacks.
+/// Follows FIPS180-4 SHA256 padding, schedule, modulo2^32 round updates and block feed-forward. Empty and embedded-NUL messages are supported. Checks original length fits the FIPS64-bit bit-length field, padded container geometry, selected counters and complete optional capture before allocation or compression. Captured logical units per block are one block header+64 scheduled words+16 chain words+64*(one round header+16 working words+one scheduled-word copy). Runs in O(bytes) time with constant working storage; optional history proportional to actual blocks with the stated fixed constants. Borrowed input unchanged; output owns its bytes/history; no shared state. Digest conformance and avalanche diagnostics do not establish resistance to attacks.
 /// @param message Borrowed complete raw bytes, including empty/binary strings.
 /// @param options Complete raw-byte and optional retained-history bounds.
 /// @return Owned actual digest, selected work and optional producing histories.
@@ -64,7 +65,7 @@ struct SHA256Run {
 /// @see sha256_hex()
 SHA256Run sha256_run(const std::string& message, const SHAOptions& options = {});
 /// @brief Compute checked sha256 on complete raw bytes retaining actual schedules and rounds.
-/// Follows FIPS180-4 SHA256 padding, schedule, modulo2^32 round updates and block feed-forward. Empty and embedded-NUL messages are supported. Checks original length fits the FIPS64-bit bit-length field, padded container geometry, selected counters and complete optional capture before allocation or compression. Captured logical units per block are one block header+64 scheduled words+16 chain words+64*(one round header+16 working words+one scheduled-word copy). Does not retain a second padded-message copy in the result. O(bytes) time/intrinsic padded storage; optional history proportional to actual blocks with the stated fixed constants. Borrowed input unchanged; output owns its bytes/history; no shared state. Digest conformance and avalanche diagnostics do not establish resistance to attacks.
+/// Follows FIPS180-4 SHA256 padding, schedule, modulo2^32 round updates and block feed-forward. Empty and embedded-NUL messages are supported. Checks original length fits the FIPS64-bit bit-length field, padded container geometry, selected counters and complete optional capture before allocation or compression. Captured logical units per block are one block header+64 scheduled words+16 chain words+64*(one round header+16 working words+one scheduled-word copy). Runs in O(bytes) time with constant working storage; optional history proportional to actual blocks with the stated fixed constants. Borrowed input unchanged; output owns its bytes/history; no shared state. Digest conformance and avalanche diagnostics do not establish resistance to attacks.
 /// @param message Borrowed complete raw bytes, including empty/binary strings.
 /// @param options Complete raw-byte and optional retained-history bounds.
 /// @return Owned actual digest, selected work and optional producing histories.
@@ -104,6 +105,25 @@ std::array<std::uint8_t, 32> sha256(const std::string& message);
 /// - NIST FIPS180-4. https://csrc.nist.gov/pubs/fips/180-4/upd1/final
 /// @see sha256()
 std::string sha256_hex(const std::string& message);
+/// @brief Hash a fixed byte range from a stream with constant working storage.
+///
+/// Reads bytes from the current position, leaving the stream just past the range.
+/// @param stream Open input stream, advanced by the read.
+/// @param bytes Exact number of bytes to hash.
+/// @return Owned lowercase hexadecimal digest.
+/// @throws std::runtime_error If the stream cannot provide the requested bytes.
+/// @throws std::length_error If the byte count exceeds the digest capacity.
+///
+/// @par Example
+/// @code
+/// std::istringstream input("abc");
+/// const auto checksum = dm::algorithms::sha256_stream_hex(input, 3);
+/// @endcode
+/// @par References
+/// - NIST FIPS 180-4. https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+/// @see sha256_hex()
+std::string sha256_stream_hex(std::istream& stream, std::size_t bytes);
+
 /// @brief Measure actual sha256 output changes for every single input-bit flip.
 /// Hashes the unchanged baseline once, then one same-length message per input bit in byte order and least-significant-bit-first order. Native digest-Hamming popcounts feed a full support histogram, without the historical clipped tail bins. Empty input still hashes the baseline once and returns a zero mean and empty flip history. Complete bit count and requested flip cap checked before any hashing. Retains only current message/digest plus owned O(bits+digest_bits) summary. This fixed-message diagnostic is not a security proof or statistical independence test.
 /// @param message Borrowed complete raw baseline message.

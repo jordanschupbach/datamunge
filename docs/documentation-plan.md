@@ -9,6 +9,32 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-20 — Added offline dataset name discovery and lifted the size limit
+  for verified UCI downloads. The scoped Doxygen audit covered 56 definitions
+  in the dataset facade and SHA-256 implementation. The
+  [dataset catalogue](mepml/datasets/catalogue.mepml) and
+  [UCI report](mepml/datasets/uci.mepml) executed offline and exported to HTML
+  and Org.
+
+- 2026-11-20 — Named dataset registry. Added 68 classic tables with
+  254,117 bytes of CSV payload. The registry lists 92 entries and preserves
+  the verified cache for downloads and image streams. All 21 focused dataset
+  tests passed, including loading every embedded table offline. The two
+  [catalogue report](mepml/datasets/catalogue.mepml) chunks ran offline and
+  exported to HTML and Org.
+
+- 2026-11-19 — Classical statistical test inventory. The
+  [MEpML report](mepml/stats/inference/stat_test_inventory.mepml) executes all 30
+  plan entries and both Fisher variants. Documented and compiled 11 new native
+  entry-point examples. All 65 focused inference tests passed. The four
+  report chunks ran fresh and exported to HTML and Org.
+
+- 2026-11-19 — Plotting roadmap continuation. Added 14 documented native chart
+  methods across diagnostics, part-to-whole, multivariate, radial, geographic,
+  network and projected height-field plots. All 89 focused tests passed, and the
+  13 gallery programs generated SVGs referenced by both HTML and Org exports.
+  The [gallery inventory](mepml/graphics/plotting/gallery.mepml) tracks open chart types.
+
 - 2026-11-19 — Native plotting gallery. Documented 18 RPlot layers with
   compiled examples and verified their parameter descriptions in Doxygen XML.
   The plotting regression suite passes 84 tests. Eight editable gallery

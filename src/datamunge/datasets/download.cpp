@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "rebot_sources.hpp"
+#include "uci_sources.hpp"
 
 #ifdef _WIN32
 #include <process.h>
@@ -134,10 +135,17 @@ void require_online(const fs::path& missing) {
 }
 
 /// @brief Runs curl with an argument vector (never a shell) to save @p url as @p file.
-void curl(const std::string& url, const fs::path& file) {
+/// @param url Source URL.
+/// @param file Staged local output.
+/// @param max_bytes Optional transfer limit, zero for the existing unrestricted callers.
+void curl(const std::string& url, const fs::path& file, std::size_t max_bytes = 0) {
   std::vector<std::string> args{"curl", "--fail", "--location", "--silent", "--show-error", "--retry", "2",
                                 "--connect-timeout", "20", "--max-time", "1800", "--proto", "=https,http,file",
                                 "--proto-redir", "=https,http", "--output", file.string(), "--url", url};
+  if (max_bytes) {
+    args.emplace_back("--max-filesize");
+    args.push_back(std::to_string(max_bytes));
+  }
   std::vector<char*> argv;
   for (auto& arg : args) argv.push_back(arg.data());
   argv.push_back(nullptr);
@@ -182,6 +190,33 @@ void ensure_file(const std::string& dataset, const Remote& remote, const fs::pat
   std::clog << "datamunge: downloading " << dataset << " from " << url << std::endl;
   download_verified(url, stage.path / target.filename(), remote.md5);
   publish(stage.path / target.filename(), target);
+}
+
+/// @brief Fetches a UCI CSV and verifies the exact length and SHA-256 on every access.
+/// @param source Registry entry identifying the pinned snapshot.
+/// @param directory Output directory, or empty to use the shared cache.
+/// @return Path to the verified local CSV.
+/// @throws std::runtime_error On offline misses, transfer errors or invalid cached bytes.
+std::string ensure_uci(const detail::UciSource& source, const std::string& directory) {
+  const auto name = detail::uci_name(source);
+  const auto dir = directory.empty() ? fs::path(data_home()) / name : fs::path(directory);
+  const auto target = dir / "data.csv";
+  const auto verify = [&](const fs::path& path) {
+    std::ifstream stream(path, std::ios::binary);
+    if (!stream || fs::file_size(path) != source.bytes ||
+        algorithms::sha256_stream_hex(stream, source.bytes) != source.sha256)
+      throw std::runtime_error("UCI dataset fingerprint mismatch: " + path.string());
+  };
+  if (!fs::is_regular_file(target)) {
+    require_online(target);
+    Staging stage(dir);
+    const auto staged = stage.path / target.filename();
+    curl(source_url(name, Remote{detail::uci_url(source), ""}), staged, source.bytes);
+    verify(staged);
+    publish(staged, target);
+  }
+  verify(target);
+  return target.string();
 }
 
 /// @brief Verify all pinned DevArm assets, fetching missing files through the native cache.
@@ -343,10 +378,15 @@ std::string data_home() {
 }
 
 std::vector<std::string> downloadable() {
-  return {"california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku"};
+  std::vector<std::string> names{
+      "california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku"};
+  for (const auto& source : detail::uci_sources()) names.push_back(detail::uci_name(source));
+  std::ranges::sort(names);
+  return names;
 }
 
 std::string fetch(const std::string& name, const std::string& directory) {
+  if (const auto* source = detail::find_uci(name)) return ensure_uci(*source, directory);
   const fs::path dir = directory.empty() ? fs::path(data_home()) / name : fs::path(directory);
   if (name == "karate_club") return detail::fetch_karate_source(dir.string());
   if (name == "rebot_devarm") {
@@ -371,8 +411,7 @@ std::string fetch(const std::string& name, const std::string& directory) {
   } else if (name == "cifar10" || name == "cifar100") {
     ensure_cifar(name == "cifar100", dir);
   } else {
-    throw std::invalid_argument("unknown downloadable dataset \"" + name +
-                                "\"; expected california_housing, cifar10, cifar100, diamonds, fashion_mnist, karate_club, mnist, rebot_devarm or sudoku");
+    throw std::invalid_argument("unknown downloadable dataset \"" + name + "\"; see datasets::downloadable()");
   }
   return dir.string();
 }

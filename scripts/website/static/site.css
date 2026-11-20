@@ -41,6 +41,7 @@ code, pre, kbd { font-family: var(--mono); font-size: .875em; }
 pre { background: var(--pre-bg); border: 1px solid var(--rule); border-radius: 8px; padding: .85em 1em; margin: 0 0 1.1em;
   overflow-x: auto; line-height: 1.5; tab-size: 4; position: relative; }
 pre code { font-size: 1em; background: none; padding: 0; }
+pre.hl { border-color: var(--rule-strong); }
 h1, h2, h3, h4 { line-height: 1.25; margin: 1.9em 0 .6em; text-wrap: balance; }
 h1 { font-size: 2rem; margin-top: 0; letter-spacing: -.01em; }
 h2 { font-size: 1.4rem; padding-bottom: .3em; border-bottom: 1px solid var(--rule); }
@@ -226,11 +227,14 @@ pre:hover .copy-btn, .copy-btn:focus { opacity: 1; }
 .report .model-diagram img { max-width: none; max-height: none; width: auto; height: auto; margin: 0; }
 .report .model-diagram:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .report figcaption { font-size: .86rem; color: var(--muted); max-width: 40rem; margin: .7rem auto 0; line-height: 1.5; }
-.report figure.code { text-align: left; margin: 1.3rem 0; }
-.report figure.code figcaption.lang { font: 600 .68rem var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--faint);
-  margin: 0 0 .25rem; max-width: none; }
-.report figure.code > pre:last-child { margin-bottom: 0; }
-.report figure.code pre { font-size: .95rem; }
+.report figure.code { text-align: left; margin: 1.3rem 0; border: 1px solid var(--rule-strong);
+  border-radius: 8px; background: var(--pre-bg); }
+.report figure.code > figcaption.lang { font: 600 .72rem var(--sans); letter-spacing: .07em;
+  text-transform: uppercase; color: var(--muted); text-align: left; background: var(--bg-soft);
+  border-bottom: 1px solid var(--rule); border-radius: 7px 7px 0 0;
+  margin: 0; max-width: none; padding: .5rem 1rem; }
+.report figure.code > pre { font-size: .95rem; border: 0; margin: 0; border-radius: 0 0 7px 7px; }
+.report figure.code > pre:first-child { border-radius: 7px; }
 .report pre.results, .report .results pre { background: var(--results-bg); border-color: var(--results-rule); border-left-width: 3px; }
 .report table { margin: 0 auto; font-variant-numeric: lining-nums tabular-nums; border-top: 2px solid var(--rule-strong); border-bottom: 2px solid var(--rule-strong); }
 .report caption { caption-side: top; padding-bottom: .6em; font-size: .86rem; color: var(--muted); }

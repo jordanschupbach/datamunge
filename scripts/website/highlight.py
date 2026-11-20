@@ -14,8 +14,9 @@ from pygments.token import STANDARD_TYPES, Name, Operator, Punctuation, Token
 from pygments.util import ClassNotFound
 
 # mepml/Markdown language names Pygments spells differently.
-LANG_ALIASES = {"c++": "cpp", "sh": "bash", "shell": "bash", "r": "r", "py": "python", "js": "javascript"}
-C_LIKE = {"cpp", "c", "c++", "cxx", "hpp"}
+LANG_ALIASES = {"c++": "cpp", "cxx": "cpp", "hpp": "cpp", "sh": "bash", "shell": "bash",
+                "py": "python", "js": "javascript"}
+C_LIKE = {"cpp", "c"}
 
 
 def token_class(ttype):
@@ -134,4 +135,6 @@ def stylesheet():
         "/* Generated from Pygments' 'default' and '" + dark + "' styles. */\n"
         + rules("default", ".hl") + "\n"
         + rules(dark, ':root[data-theme="dark"] .hl') + "\n"
+        + "@media (prefers-color-scheme: dark) {\n"
+        + rules(dark, ":root:not([data-theme]) .hl") + "\n}\n"
     )

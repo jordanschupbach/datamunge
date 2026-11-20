@@ -48,7 +48,8 @@ struct CsvOptions {
 
 /// @brief Parses CSV text into a new DataFrame, typing each column from all of its cells.
 ///
-/// @param text The whole CSV document; `\n` and `\r\n` line ends are both accepted.
+/// @param text The whole CSV document, with an optional UTF-8 byte order mark.
+///        Both `\n` and `\r\n` line ends are accepted.
 /// @param options Delimiter, header, missing-value and typing rules.
 /// @return A DataFrame with one column per field, in file order.
 /// @throws std::runtime_error if a record has a different number of fields than the header,

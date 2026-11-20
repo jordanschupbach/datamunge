@@ -19,6 +19,7 @@ src/datamunge/datasets/image_loader.cpp
 src/datamunge/datasets/catalog.cpp
 src/datamunge/datasets/embedded
 src/datamunge/datasets/embedded_csv.hpp
+include/dm/data.hpp
 include/dm/dm.hpp
 include/datamunge/nn/dtype.hpp
 include/datamunge/nn/tensor.hpp

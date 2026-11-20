@@ -225,7 +225,7 @@ extensions = [
             p.as_posix()
             for root in (Path("include"), Path("src/datamunge"), Path("src/pydatamunge/rosetta"))
             for p in root.rglob("*")
-            if p.suffix in (".hpp", ".h")
+            if p.suffix in (".hpp", ".h", ".inc")
         ),
     )
 ]

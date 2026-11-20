@@ -12,6 +12,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <system_error>
 #include <unordered_set>
 #include <utility>
@@ -23,6 +24,21 @@ namespace datamunge::datasets {
 /// @brief Record parsing and typing helpers shared by parse_csv(), read_csv() and CsvReader.
 namespace {
 
+/// @brief Skips an optional UTF-8 byte order mark at the beginning of a CSV stream.
+/// @param input Seekable file or string stream positioned at its first byte.
+/// @throws std::runtime_error If a non-BOM prefix cannot be restored.
+void skip_utf8_bom(std::istream& input) {
+  auto* buffer = input.rdbuf();
+  if (buffer->sgetc() != 0xef) return;
+  const auto mode = std::ios_base::in;
+  const auto start = buffer->pubseekoff(0, std::ios_base::cur, mode);
+  char prefix[3];
+  const auto count = buffer->sgetn(prefix, sizeof(prefix));
+  if (count == sizeof(prefix) && std::string_view(prefix, sizeof(prefix)) == "\xef\xbb\xbf") return;
+  if (buffer->pubseekpos(start, mode) == std::streampos(-1))
+    throw std::runtime_error("cannot restore CSV stream after checking its UTF-8 marker");
+}
+
 /// @brief One parsed CSV field: its text and whether it was wrapped in quotes.
 struct Field {
   std::string text;     ///< The unquoted cell text.
@@ -33,7 +49,9 @@ struct Field {
 class RecordParser {
  public:
   /// @brief Parses @p input with @p delimiter; the stream must outlive the parser.
-  RecordParser(std::istream& input, char delimiter) : input_(&input), delimiter_(delimiter) {}
+  RecordParser(std::istream& input, char delimiter) : input_(&input), delimiter_(delimiter) {
+    skip_utf8_bom(input);
+  }
 
   /// @brief Reads the next record into @p fields. Returns false at end of input. Blank lines
   ///        are skipped. Throws std::runtime_error for an unterminated quoted field.
@@ -107,6 +125,7 @@ class RecordParser {
   /// @brief Rebinds to a (rewound) stream and resets line counting.
   void restart(std::istream& input) {
     input_ = &input;
+    skip_utf8_bom(input);
     line_ = 0;
     record_line_ = 0;
   }

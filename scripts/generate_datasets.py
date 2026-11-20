@@ -6,6 +6,9 @@ text as raw string literals, plus a shared declarations header. The library
 parses the text with datasets::parse_csv() at call time, so the CSV files stay
 the single source of truth. Output is deterministic; run `just generate-datasets`.
 """
+import csv
+import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -40,11 +43,14 @@ def chunks(text):
     piece = []
     size = 0
     for line in text.splitlines(keepends=True):
-        if piece and size + len(line) > CHUNK_BYTES:
+        line_bytes = len(line.encode("utf-8"))
+        if line_bytes > CHUNK_BYTES:
+            raise ValueError("a CSV line exceeds the literal byte budget")
+        if piece and size + line_bytes > CHUNK_BYTES:
             yield "".join(piece)
             piece, size = [], 0
         piece.append(line)
-        size += len(line)
+        size += line_bytes
     if piece:
         yield "".join(piece)
 
@@ -73,7 +79,7 @@ def source(name, text):
     )
 
 
-def header():
+def header(names):
     """Returns the header declaring every embedded dataset's CSV accessor."""
     lines = [
         HEADER,
@@ -90,20 +96,106 @@ def header():
         "  return text;\n",
         "}\n\n",
     ]
-    for name in DATASETS:
+    for name in names:
         lines.append(f"/// @brief The CSV text of data-raw/datasets/{name}.csv.\n")
         lines.append(f"std::string {name}_csv();\n")
     lines.append("\n} // namespace datamunge::datasets::detail\n")
     return "".join(lines)
 
 
+def classic_catalog():
+    """Read and validate the checked-in classic dataset manifest and CSV snapshots."""
+    with (RAW / "classic_catalog.tsv").open(encoding="utf-8", newline="") as stream:
+        entries = list(csv.DictReader(stream, delimiter="\t"))
+    names = set(DATASETS)
+    size = 0
+    rows = []
+    for entry in entries:
+        name = entry["name"]
+        if not re.fullmatch(r"[a-z][a-z0-9_]*", name) or name in names:
+            raise ValueError(f"invalid or duplicate classic dataset name: {name}")
+        names.add(name)
+        path = RAW / f"{name}.csv"
+        size_bytes = path.stat().st_size
+        if size_bytes > 64 * 1024:
+            raise ValueError(f"{name} exceeds the 64 KiB embedded dataset budget")
+        size += size_bytes
+        with path.open(encoding="utf-8", newline="") as stream:
+            csv_rows = csv.reader(stream)
+            columns = next(csv_rows)
+            if any(c not in columns for c in entry["string_columns"].split("|") if c):
+                raise ValueError(f"{name} has an unknown string column")
+            count = 0
+            for row in csv_rows:
+                if len(row) != len(columns):
+                    raise ValueError(f"{name} has a ragged CSV row")
+                count += 1
+        if not count or not columns or len(set(columns)) != len(columns):
+            raise ValueError(f"{name} has no rows or invalid column names")
+        rows.append((name, count, len(columns), entry))
+    if size > 256 * 1024:
+        raise ValueError(f"classic datasets exceed the 256 KiB combined budget ({size} bytes)")
+    return sorted(rows), size
+
+
+def catalog_entries(entries):
+    """Render rows consumed by the same C++ registry used for loading and discovery."""
+    lines = [HEADER]
+    for name, rows, columns, entry in entries:
+        description, strings, alias = (
+            json.dumps(entry[key], ensure_ascii=False)
+            for key in ("description", "string_columns", "r_object")
+        )
+        lines.append(
+            f'    {{"{name}", {rows}, {columns}, "built-in", 0, {description}, '
+            f'nullptr, detail::{name}_csv, {strings}, {alias}}},\n'
+        )
+    return "".join(lines)
+
+
+def uci_catalog_entries():
+    """Render the frozen UCI metadata without adding any remotely hosted payload."""
+    with (RAW / "uci_catalog.tsv").open(encoding="utf-8", newline="") as stream:
+        entries = list(csv.DictReader(stream, delimiter="\t"))
+    lines = [HEADER]
+    previous = 0
+    slugs = set()
+    for entry in entries:
+        ident, rows, columns, size = (int(entry[k]) for k in ("id", "rows", "columns", "bytes"))
+        slug = entry["slug"]
+        if ident <= previous or not re.fullmatch(r"[a-z0-9]+(?:_[a-z0-9]+)*", slug):
+            raise ValueError(f"invalid UCI id/order or alias for {ident}")
+        if slug in slugs or slug.isdecimal() or not rows > 0 or not columns > 0 or not size > 0:
+            raise ValueError(f"invalid UCI dimensions, size or duplicate alias for {ident}")
+        previous = ident
+        slugs.add(slug)
+        if not re.fullmatch(r"[0-9a-f]{64}", entry["sha256"]):
+            raise ValueError(f"invalid UCI checksum for {ident}")
+        if entry["license"] not in {"CC BY 4.0", "CC0 1.0"} or not entry["title"]:
+            raise ValueError(f"invalid UCI license or attribution for {ident}")
+        strings = {key: json.dumps(entry[key], ensure_ascii=False) for key in
+                   ("slug", "title", "sha256", "missing", "license", "doi", "creators")}
+        lines.append(
+            f'    {{{ident}, {strings["slug"]}, {strings["title"]}, {rows}, {columns}, {size}, '
+            + ", ".join(strings[key] for key in ("sha256", "missing", "license", "doi", "creators"))
+            + "},\n"
+        )
+    return "".join(lines)
+
+
+
 def main():
+    entries, size = classic_catalog()
+    names = DATASETS + [entry[0] for entry in entries]
+    uci = uci_catalog_entries()
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT.parent / "embedded_csv.hpp").write_text(header())
-    for name in DATASETS:
-        text = (RAW / f"{name}.csv").read_text().replace("\r\n", "\n")
-        (OUT / f"{name}.cpp").write_text(source(name, text))
-    print(f"Embedded {len(DATASETS)} datasets into {OUT.relative_to(ROOT)}")
+    (OUT.parent / "embedded_csv.hpp").write_text(header(names), encoding="utf-8")
+    (OUT.parent / "classic_catalog.inc").write_text(catalog_entries(entries), encoding="utf-8")
+    (OUT.parent / "uci_catalog.inc").write_text(uci, encoding="utf-8")
+    for name in names:
+        text = (RAW / f"{name}.csv").read_text(encoding="utf-8").replace("\r\n", "\n")
+        (OUT / f"{name}.cpp").write_text(source(name, text), encoding="utf-8")
+    print(f"Embedded {len(names)} datasets into {OUT.relative_to(ROOT)} ({size} new classic CSV bytes)")
 
 
 if __name__ == "__main__":

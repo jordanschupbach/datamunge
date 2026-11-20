@@ -16,7 +16,7 @@ Open a title to visit its editable mepml source. The documentation website maps
 these links to generated report pages. Refresh navigation with
 `just docs-report-catalogue`; the website refreshes it before report discovery.
 
-Current inventory: 1312 sources, excluding this navigation page.
+Current inventory: 1315 sources, excluding this navigation page.
 
 > Documentation source: algebra/groups
 
@@ -684,6 +684,11 @@ Current inventory: 1312 sources, excluding this navigation page.
 > Documentation source: cryptography/block_ciphers
 
 - [TEA: actual modular cycles, round trips and bit sensitivity|../cryptography/block_ciphers/tea.mepml] — `docs/mepml/cryptography/block_ciphers/tea.mepml`.
+
+> Documentation source: datasets
+
+- [Built-in datasets and the local download cache|../datasets/catalogue.mepml] — `docs/mepml/datasets/catalogue.mepml`.
+- [UCI Machine Learning Repository datasets|../datasets/uci.mepml] — `docs/mepml/datasets/uci.mepml`.
 
 > Documentation source: datasets/cifar10
 
@@ -2275,6 +2280,7 @@ Current inventory: 1312 sources, excluding this navigation page.
 
 > Documentation source: stats/inference
 
+- [Classical statistical tests by design|../stats/inference/stat_test_inventory.mepml] — `docs/mepml/stats/inference/stat_test_inventory.mepml`.
 - [Conformal Prediction: Coverage Without Assumptions|../stats/inference/conformal_prediction.mepml] — `docs/mepml/stats/inference/conformal_prediction.mepml`.
 - [Hypothesis Tests: Null Models, Effects and Calibration|../stats/inference/hypothesis_tests.mepml] — `docs/mepml/stats/inference/hypothesis_tests.mepml`.
 - [Jackknife: Actual Deletions, Bias Identities and Median Limits|../stats/inference/jackknife.mepml] — `docs/mepml/stats/inference/jackknife.mepml`.

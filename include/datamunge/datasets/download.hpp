@@ -39,8 +39,10 @@ namespace datamunge::datasets {
 /// @see fetch()
 std::string data_home();
 
-/// @brief The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100",
-///        "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".
+/// @brief Sorted canonical names accepted by fetch(), including audited UCI tables.
+///
+/// UCI aliases are listed by datasets::uci_catalog().
+/// @return An owned list of names, with no network or filesystem access.
 ///
 /// @par Example
 /// @code
@@ -50,7 +52,9 @@ std::vector<std::string> downloadable();
 
 /// @brief Makes sure a downloadable dataset is on disk and returns where it is.
 ///
-/// For the tabular datasets ("diamonds", "california_housing") this is the CSV file. For the
+/// For tabular datasets this is the CSV file. UCI names such as "uci_53"
+/// and "uci_iris" point to the same cache. UCI verifies size and SHA-256 on
+/// every access and stages complete bytes before publishing them. For the
 /// image datasets it is a directory: "mnist" and "fashion_mnist" hold the four uncompressed
 /// IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
 /// `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
@@ -67,9 +71,9 @@ std::vector<std::string> downloadable();
 /// Approximate download sizes: diamonds 2.7 MB, california_housing 1.4 MB, MNIST 11 MB,
 /// Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB, DevArm 56 MB.
 ///
-/// @param name One of downloadable().
+/// @param name One of downloadable() or a registered UCI alias.
 /// @param directory Where the files live; empty means `data_home() + "/" + name`. Files
-///        already present there are used as they are, except DevArm and karate_club's verified files.
+///        already present there are used as they are, except UCI, DevArm and karate_club's verified files.
 /// @return The local path of the CSV file or the dataset directory.
 /// @throws std::invalid_argument for an unknown name.
 /// @throws std::runtime_error if files are missing and downloading is disabled or fails, or

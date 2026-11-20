@@ -3,6 +3,7 @@
 /// @file stats.hpp
 /// @brief Convenience umbrella header that includes every stats component.
 
+#include <datamunge/stats/additional_tests.hpp>
 #include <datamunge/stats/agglomerative_clustering.hpp>
 #include <datamunge/stats/anova_test.hpp>
 #include <datamunge/stats/arima.hpp>
@@ -59,6 +60,7 @@
 #include <datamunge/stats/mlp_classifier.hpp>
 #include <datamunge/stats/naive_bayes_classifier.hpp>
 #include <datamunge/stats/adaboost_classifier.hpp>
+#include <datamunge/stats/additional_tests.hpp>
 #include <datamunge/stats/train_test_split.hpp>
 #include <datamunge/stats/almeida_pineda_classifier.hpp>
 #include <datamunge/stats/pca.hpp>

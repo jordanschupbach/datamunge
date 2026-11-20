@@ -11,6 +11,7 @@
 #include <datamunge/algorithms/sha256.hpp>
 #include <datamunge/algorithms/shamir_secret_sharing.hpp>
 
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -43,6 +44,17 @@ TEST(Sha1, Fips180Vectors) {
 }
 
 // ---------------------------------------------------------------------------- SHA-256
+TEST(Sha256, StreamsAcrossPaddingBoundaries) {
+    for (const auto count : {0u, 1u, 55u, 56u, 63u, 64u, 65u, 128u}) {
+        const std::string bytes(count, '\0');
+        std::istringstream input("x" + bytes + "y");
+        input.get();
+        EXPECT_EQ(sha256_stream_hex(input, count), sha256_hex(bytes));
+        EXPECT_EQ(input.get(), 'y');
+        EXPECT_THROW(sha256_stream_hex(input, 1), std::runtime_error);
+    }
+}
+
 TEST(Sha256, Fips1804Vectors) {
     EXPECT_EQ(sha256_hex(""),
               "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");

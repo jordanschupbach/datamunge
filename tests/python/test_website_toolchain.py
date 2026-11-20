@@ -25,6 +25,34 @@ def document(path, code="#include <dm/dm.hpp>\nint main() {}"):
     return str(path)
 
 
+def test_report_highlights_code_and_preserves_result_blocks(tmp_path, monkeypatch):
+    pytest.importorskip("pygments")
+    spec = importlib.util.spec_from_file_location("website_highlight_check", ROOT / "scripts/website/highlight.py")
+    highlight = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(highlight)
+    source = tmp_path / "code.mepml"
+    source.write_text("Fixture")
+
+    def convert(command, **kwargs):
+        Path(command[-1]).write_text(
+            '<body><figure class="code"><figcaption class="lang">cpp</figcaption>\n'
+            '<pre>\n<code data-line="2" class="example language-cxx another">int x = 1 &lt; 2;</code>\n</pre>'
+            '</figure><pre><code class="language-python">return "hello"</code></pre>'
+            '<pre class="results"><code>literal &lt;html&gt;</code></pre></body>'
+        )
+
+    monkeypatch.setattr(reports.subprocess, "run", convert)
+    report = reports.Report(str(source), "code.mepml")
+    reports.export("fixture", report, str(tmp_path / "site"), highlight.highlight)
+    assert '<pre class="hl"><code class="language-cxx"><span class="kt">int</span>' in report.body
+    assert '<code class="language-python"><span class="k">return</span>' in report.body
+    assert '&lt;' in report.body
+    assert '<pre class="results"><code>literal &lt;html&gt;</code></pre>' in report.body
+    css = highlight.stylesheet()
+    assert ':root[data-theme="dark"] .hl .k' in css
+    assert ':root:not([data-theme]) .hl .k' in css
+
+
 def test_report_collection_keeps_stable_urls_and_discovers_topics(tmp_path):
     current, = map(Path, reports.example_roots(tmp_path))
     for name in ["graph/search/new", "math/old"]:

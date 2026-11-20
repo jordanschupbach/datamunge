@@ -3,6 +3,7 @@
 // image tests write small synthetic MNIST/CIFAR files.
 #include <datamunge/algorithms/md5.hpp>
 #include <datamunge/datasets/datasets.hpp>
+#include <dm/data.hpp>
 
 #include <gtest/gtest.h>
 
@@ -186,12 +187,25 @@ TEST(Datasets, BuiltInValuesMatchTheirSources) {
 
 TEST(Datasets, CatalogListsEveryDatasetAndLoadRejectsOthers) {
   const auto catalog = ds::catalog();
-  EXPECT_EQ(catalog.nrows(), 24u);
+  EXPECT_EQ(catalog.nrows(), 92u + ds::uci_catalog().nrows());
+  TempDir cache;
+  EnvGuard data_dir("DATAMUNGE_DATA_DIR", cache.path.string().c_str());
+  EnvGuard offline("DATAMUNGE_DATA_OFFLINE", "1");
+  const dm::Vector<std::string> names = dm::dataset_names();
+  ASSERT_EQ(names.size(), catalog.nrows());
   std::set<std::string> storage;
+  std::string previous;
   for (std::size_t i = 0; i < catalog.nrows(); ++i) {
     storage.insert(catalog.string_at("storage", i));
     const std::string name = catalog.string_at("name", i);
-    if (catalog.string_at("storage", i) == "built-in") EXPECT_NO_THROW((void)ds::load(name)) << name;
+    EXPECT_EQ(names[i], name);
+    EXPECT_LT(previous, name);
+    previous = name;
+    if (catalog.string_at("storage", i) != "built-in") continue;
+    SCOPED_TRACE(name);
+    const auto frame = dm::data(name);
+    EXPECT_EQ(frame.nrows(), static_cast<std::size_t>(catalog.double_at("rows", i)));
+    EXPECT_EQ(frame.ncols(), static_cast<std::size_t>(catalog.double_at("columns", i)));
   }
   EXPECT_EQ(storage, (std::set<std::string>{"built-in", "download", "graph", "stream"}));
   EXPECT_THROW((void)ds::load("nope"), std::invalid_argument);
@@ -199,7 +213,66 @@ TEST(Datasets, CatalogListsEveryDatasetAndLoadRejectsOthers) {
   EXPECT_THROW((void)ds::load("karate_club"), std::invalid_argument);
 }
 
+TEST(Datasets, UciAliasesShareTheVerifiedCacheAndRetainAttribution) {
+  const auto sources = ds::uci_catalog();
+  const auto iris = sources.filter([](const auto& row) {
+    return row.get_string("name") == "uci_53";
+  });
+  ASSERT_EQ(iris.nrows(), 1u);
+  EXPECT_EQ(iris.string_at("alias", 0), "uci_iris");
+  EXPECT_EQ(iris.string_at("license", 0), "CC BY 4.0");
+  EXPECT_EQ(iris.string_at("doi", 0), "10.24432/C56C76");
+  const auto names = ds::downloadable();
+  EXPECT_NE(std::ranges::find(names, "uci_53"), names.end());
+
+  TempDir cache;
+  EnvGuard data_dir("DATAMUNGE_DATA_DIR", cache.path.string().c_str());
+  EnvGuard offline("DATAMUNGE_DATA_OFFLINE", "1");
+  EXPECT_THROW((void)dm::data("uci_iris"), std::runtime_error);
+  EXPECT_FALSE(fs::exists(cache.path / "uci_53"));
+  const auto path = cache.path / "uci_53" / "data.csv";
+  fs::create_directories(path.parent_path());
+  write_text(path, std::string(static_cast<std::size_t>(iris.double_at("bytes", 0)), 'x'));
+  EXPECT_THROW((void)ds::fetch("uci_iris"), std::runtime_error);
+  EXPECT_THROW((void)ds::fetch("uci_53"), std::runtime_error);
+  EXPECT_THROW((void)ds::fetch("uci_unregistered_fixture"), std::invalid_argument);
+}
+
+TEST(Datasets, NamedLookupPreservesLegacyApisAndOriginalObservations) {
+  const auto iris = dm::data("iris");
+  const std::unique_ptr<dm::DataFrame> legacy(dm::data::iris());
+  EXPECT_EQ(iris.nrows(), legacy->nrows());
+  EXPECT_EQ(dm::data("ToothGrowth").nrows(), 60u);
+  EXPECT_EQ(dm::data("CO2").nrows(), 84u);
+  EXPECT_EQ(dm::data("co2").nrows(), 468u);
+  EXPECT_EQ(dm::data("Titanic").nrows(), 32u);
+  EXPECT_EQ(dm::data("titanic").nrows(), 891u);
+  const auto cod = dm::data("CodParasites");
+  EXPECT_EQ(cod.nrows(), 1254u);
+  EXPECT_EQ(cod.ncols(), 10u);
+  EXPECT_EQ(cod.null_count("intensity"), 57u);
+  EXPECT_EQ(cod.string_at("year", 0), "1999");
+  EXPECT_EQ(cod.string_at("area", 0), "mageroya");
+  const auto crabs = dm::data("crab satellites");
+  EXPECT_EQ(crabs.nrows(), 173u);
+  EXPECT_EQ(crabs.string_at("spine", 0), "bothbroken");
+  EXPECT_DOUBLE_EQ(crabs.double_at("width", 0), 28.3);
+  EXPECT_DOUBLE_EQ(crabs.double_at("satellites", 0), 8);
+  EXPECT_EQ(dm::data("USArrests").string_at("state", 0), "Alabama");
+}
+
 // ---------------------------------------------------------------------------- CSV
+
+TEST(DatasetsCsv, AcceptsUtf8ByteOrderMarkBeforeQuotedHeader) {
+  const std::string text = "\xef\xbb\xbf\"name\",value\nalpha,3\n";
+  const auto frame = ds::parse_csv(text);
+  EXPECT_EQ(frame.columns(), (std::vector<std::string>{"name", "value"}));
+  TempDir temp;
+  const auto path = temp.path / "bom.csv";
+  write_text(path, text);
+  ds::CsvReader reader(path.string(), 1);
+  EXPECT_EQ(reader.next().string_at("name", 0), "alpha");
+}
 
 TEST(DatasetsCsv, InfersTypesAndMissingValues) {
   const auto frame = ds::parse_csv("x,label,empty\n1.5,a,\nNA,\"b, c\",\n-2e3,\"say \"\"hi\"\"\",\n");
@@ -324,7 +397,7 @@ TEST(DatasetsDownload, OfflineModeAndDataHome) {
     EXPECT_EQ(ds::diamonds().nrows(), 1u);
   }
   EXPECT_THROW((void)ds::fetch("not-a-dataset"), std::invalid_argument);
-  EXPECT_EQ(ds::downloadable().size(), 9u);
+  EXPECT_EQ(ds::downloadable().size(), 9u + ds::uci_catalog().nrows());
 }
 
 TEST(DatasetsDownload, RebotRejectsCorruptCacheAndOfflineMisses) {

@@ -28,7 +28,8 @@ from pathlib import Path
 from urllib.parse import quote, unquote, urlsplit, urlunsplit
 
 BODY = re.compile(r"<body[^>]*>(.*)</body>", re.S)
-CODE = re.compile(r'<pre><code class="language-([\w+#-]+)">(.*?)</code></pre>', re.S)
+CODE = re.compile(r'<pre>\s*<code\b[^>]*\sclass="(?:[^"]*?\s)?language-([\w+.#-]+)(?:\s[^"]*)?"[^>]*>'
+                  r'(.*?)</code>\s*</pre>', re.S)
 CODE_PLAIN = re.compile(r"<pre><code>(.*?)</code></pre>", re.S)
 TITLE = re.compile(r'<h1 class="title">(.*?)</h1>', re.S)
 SUBTITLE = re.compile(r'<p class="subtitle">(.*?)</p>', re.S)
@@ -602,7 +603,7 @@ def export(mep_mepml, report, out_root, highlight, link=None):
 
         def code(match):
             lang, text = match.group(1), html.unescape(match.group(2))
-            return f'<pre class="hl"><code>{highlight(text, lang)}</code></pre>'
+            return f'<pre class="hl"><code class="language-{lang}">{highlight(text, lang)}</code></pre>'
 
         body = CODE.sub(code, body)
         body = CODE_PLAIN.sub(lambda mm: f'<pre class="hl"><code>{mm.group(1)}</code></pre>', body)

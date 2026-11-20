@@ -741,3 +741,90 @@ TEST(Plot, FieldLayersMapNonuniformGridsAndIgnoreZeroSizeMarks) {
   EXPECT_FALSE(plot.to_pdf().empty());
   EXPECT_THROW(plot.contour({0, 1}, {0, 1}, {{0, 1}}, 0), std::invalid_argument);
 }
+
+TEST(Plot, FinancialLayersDrawQuoteRangesAndRejectInvalidQuotesBeforeAppending) {
+  auto candles = RPlot::create().candlesticks({1, 2}, {3, 5}, {6, 7}, {2, 4}, {5, 5}, 1);
+  ASSERT_EQ(candles.series().size(), 2u);
+  EXPECT_EQ(candles.series()[0].x, (std::vector<double>{1, 1, 2, 2, 1.5, 2.5}));
+  EXPECT_EQ(candles.series()[0].y, (std::vector<double>{2, 6, 4, 7, 5, 5}));
+  EXPECT_EQ(candles.series()[1].y, (std::vector<double>{3, 3, 5, 5}));
+  EXPECT_THROW(candles.candlesticks({1, 2}, {3, 5}, {6, 4}, {2, 3}, {5, 6}), std::invalid_argument);
+  EXPECT_EQ(candles.series().size(), 2u);
+
+  auto quotes = RPlot::create().ohlc({1}, {5}, {6}, {2}, {3}, 1);
+  ASSERT_EQ(quotes.series().size(), 1u);
+  EXPECT_EQ(quotes.series()[0].x, (std::vector<double>{1, 1, .5, 1, 1, 1.5}));
+  EXPECT_EQ(quotes.series()[0].y, (std::vector<double>{2, 6, 5, 5, 3, 3}));
+  EXPECT_EQ(quotes.series()[0].color.r, 220);
+  EXPECT_THROW(quotes.ohlc({1, 1}, {3, 3}, {6, 6}, {2, 2}, {4, 4}), std::invalid_argument);
+}
+
+TEST(Plot, ComparisonLayersKeepPairsTiesAndPopulationSigns) {
+  auto pairs = RPlot::create().dumbbell({1, 2}, {4, 1}, {3, 5});
+  ASSERT_EQ(pairs.series().size(), 3u);
+  EXPECT_EQ(pairs.series()[0].x, (std::vector<double>{4, 3, 1, 5}));
+  EXPECT_EQ(pairs.series()[0].y, (std::vector<double>{1, 1, 2, 2}));
+  auto dots = RPlot::create().dot_stack({2, 1, 1, 2, 1});
+  EXPECT_EQ(dots.series()[0].x, (std::vector<double>{1, 1, 1, 2, 2}));
+  EXPECT_EQ(dots.series()[0].y, (std::vector<double>{1, 2, 3, 1, 2}));
+  auto pyramid = RPlot::create().population_pyramid({1}, {4}, {2}, "Left", "Right");
+  ASSERT_EQ(pyramid.series().size(), 2u);
+  EXPECT_EQ(pyramid.series()[0].x, (std::vector<double>{-4, 0, 0, -4}));
+  EXPECT_EQ(pyramid.series()[1].x, (std::vector<double>{0, 2, 2, 0}));
+  EXPECT_THROW(pyramid.population_pyramid({1}, {2}, {-1}), std::invalid_argument);
+  EXPECT_EQ(pyramid.series().size(), 2u);
+}
+
+TEST(Plot, DiagnosticLayersRetainQuantilesAgreementAndHistogramCounts) {
+  auto qq = RPlot::create().qqplot({0, 1, 2}, {0, 2, 8, 10});
+  EXPECT_EQ(qq.series()[0].y, (std::vector<double>{0, 5, 10}));
+  auto agreement = RPlot::create().bland_altman({4, 7, 10}, {3, 5, 7});
+  EXPECT_EQ(agreement.series()[0].x, (std::vector<double>{3.5, 6, 8.5}));
+  EXPECT_EQ(agreement.series()[0].y, (std::vector<double>{1, 2, 3}));
+  ASSERT_EQ(agreement.reference_lines().size(), 3u);
+  EXPECT_DOUBLE_EQ(agreement.reference_lines()[0].value, 2.0);
+  EXPECT_DOUBLE_EQ(agreement.reference_lines()[2].value, 3.96);
+  auto frequency = RPlot::create().frequency_polygon({0, 1, 1, 2}, 2);
+  EXPECT_EQ(frequency.series()[0].x, (std::vector<double>{-.5, .5, 1.5, 2.5}));
+  EXPECT_EQ(frequency.series()[0].y, (std::vector<double>{0, 1, 3, 0}));
+  EXPECT_THROW(qq.forest({0, 1}, {1, 3}, {0, 0}, {2, 2}), std::invalid_argument);
+  EXPECT_EQ(qq.series().size(), 1u);
+}
+
+TEST(Plot, PartToWholeLayersPreservePercentagesAndRelativeArea) {
+  auto pareto = RPlot::create().pareto({2, 10, 8}, {"A", "B", "C"});
+  EXPECT_EQ(pareto.series()[0].y, (std::vector<double>{50, 40, 10}));
+  EXPECT_EQ(pareto.series()[1].y, (std::vector<double>{50, 90, 100}));
+  auto stack = RPlot::create().stacked_area({1, 2}, {{1, 2}, {3, 4}});
+  EXPECT_EQ(stack.series()[1].y, (std::vector<double>{4, 6, 2, 1}));
+  EXPECT_THROW(stack.stacked_area({1, 2}, {{1, 2}, {3, -1}}), std::invalid_argument);
+  EXPECT_EQ(stack.series().size(), 2u);
+
+  auto treemap = RPlot::create().treemap({2, 3, 5, 11});
+  ASSERT_EQ(treemap.series().size(), 4u);
+  const std::vector<double> weights{2, 3, 5, 11};
+  for (std::size_t i = 0; i < weights.size(); ++i) {
+    const auto& tile = treemap.series()[i];
+    EXPECT_NEAR((tile.x[1] - tile.x[0]) * (tile.y[2] - tile.y[0]), weights[i] / 21, 1e-14);
+  }
+  EXPECT_THROW(treemap.treemap({1, 0}), std::invalid_argument);
+}
+
+TEST(Plot, GeometryLayersValidateCoordinatesAndKeepEndpoints) {
+  auto plot = RPlot::create().ternary({{1, 0, 0}, {0, 1, 0}, {0, 0, 1}});
+  EXPECT_EQ(plot.series()[1].x, (std::vector<double>{0, 1, .5}));
+  EXPECT_NEAR(plot.series()[1].y[2], std::sqrt(3.0) / 2, 1e-14);
+  auto wireframe = RPlot::create().wireframe({0, 1}, {0, 1}, {{0, 1}, {1, 0}});
+  ASSERT_EQ(wireframe.series()[0].x.size(), 8u);
+  EXPECT_EQ(wireframe.series()[0].x, (std::vector<double>{0, 1, 0, -.5, -.5, .5, 1, .5}));
+  auto arcs = RPlot::create().arc_diagram({0, 2}, {0}, {1});
+  EXPECT_EQ(arcs.series()[0].x.front(), 0);
+  EXPECT_EQ(arcs.series()[0].x.back(), 2);
+  EXPECT_NEAR(*std::ranges::max_element(arcs.series()[0].y), 1, 1e-14);
+  EXPECT_THROW(arcs.arc_diagram({0, 2}, {0, 1}, {1, 2}), std::invalid_argument);
+  EXPECT_EQ(arcs.series().size(), 2u);
+  auto radar = RPlot::create().radar({.5, .75, 1, .25});
+  EXPECT_NEAR(radar.series().back().y[0], .5, 1e-14);
+  EXPECT_NEAR(radar.series().back().x[1], .75, 1e-14);
+  EXPECT_THROW(radar.choropleth({{0, 1}}, {{0, 1}}, {2}), std::invalid_argument);
+}

@@ -1,0 +1,82 @@
+//? Title: UCI Machine Learning Repository datasets
+//? Exports: both
+//? Lang: en
+
+> Discover and load UCI tables
+
+The UCI catalog records publisher IDs, names, shapes, exact file sizes, licenses,
+creators, DOIs and source URLs. Discovery is offline. The first named load
+downloads the original CSV. Later loads use the same local file and verify its
+size and SHA-256 before parsing. The CSV payloads stay out of the binary.
+
+```{cpp, id=uci-discovery, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/data.hpp>
+#include <print>
+
+int main() {
+    const auto sources = dm::datasets::uci_catalog();
+    std::println("Registered UCI tables: {}.\n", sources.nrows());
+    const auto examples = sources.filter([](const auto& row) {
+        const auto name = row.get_string("name");
+        return name == "uci_1" || name == "uci_31" || name == "uci_53" || name == "uci_109";
+    });
+    std::print("{}", examples.select({"name", "alias", "title", "rows", "columns", "bytes", "license", "doi"}).to_md());
+}
+```
+// result_begin: markdown
+Registered UCI tables: 142.
+
+| name | alias | title | rows | columns | bytes | license | doi |
+| :--- | :--- | :--- | ---: | ---: | ---: | :--- | :--- |
+| uci_1 | uci_abalone | Abalone | 4177 | 9 | 196140 | CC BY 4.0 | 10.24432/C55C7W |
+| uci_31 | uci_covertype | Covertype | 581012 | 55 | 75751077 | CC BY 4.0 | 10.24432/C50K5N |
+| uci_53 | uci_iris | Iris | 150 | 5 | 4615 | CC BY 4.0 | 10.24432/C56C76 |
+| uci_109 | uci_wine | Wine | 178 | 14 | 11480 | CC BY 4.0 | 10.24432/C5PC7J |
+// result_end
+
+> Work with the local cache
+
+`dm::data("uci_abalone")` and `dm::data("uci_1")` select the same source and
+cache entry. `dm::data("iris")` continues to return the bundled R-style iris
+table. `dm::data("uci_iris")` uses UCI's original CSV schema and class labels.
+
+```{cpp, id=uci-cache, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/data.hpp>
+#include <print>
+
+int main() {
+    const auto frame = dm::data("uci_iris");
+    std::println("The UCI iris snapshot has {} rows and {} columns.", frame.nrows(), frame.ncols());
+    std::print("{}", frame.head(3).to_md());
+}
+```
+// result_begin: markdown
+The UCI iris snapshot has 150 rows and 5 columns.
+| sepal length | sepal width | petal length | petal width | class |
+| ---: | ---: | ---: | ---: | :--- |
+| 5.1 | 3.5 | 1.4 | 0.2 | Iris-setosa |
+| 4.9 | 3.0 | 1.4 | 0.2 | Iris-setosa |
+| 4.7 | 3.2 | 1.3 | 0.2 | Iris-setosa |
+// result_end
+
+Set `DATAMUNGE_DATA_DIR` to choose the cache root. UCI sources live under
+`uci_<id>/data.csv`. Set `DATAMUNGE_DATA_OFFLINE=1` to require a local copy,
+or use `DATAMUNGE_DATA_MIRROR` for a mirror with the same layout and bytes.
+`dm::data()` loads a complete table into memory. To work in batches, pass
+the path from `dm::datasets::fetch()` to `dm::datasets::CsvReader`. For
+example, use `dm::datasets::fetch("uci_covertype")` for Covertype. The
+catalog's `missing` column lists each source's missing-value marker.
+
+> Selection and attribution
+
+The audit starts with UCI's API index. A registered entry has an official,
+single, rectangular UTF-8 CSV, an explicit CC BY 4.0 or CC0 1.0 notice,
+and publisher attribution metadata. Large CSVs download at runtime using
+the same verified cache. Archive-only and multi-file sources require
+separate loaders. Dataset
+names and citations come from the publisher. For downstream reuse, cite
+the creators and DOI in `dm::datasets::uci_catalog()`.
+
+- [UCI Machine Learning Repository|https://archive.ics.uci.edu/datasets]
+- [UCI's API client|https://github.com/uci-ml-repo/ucimlrepo]
+- [CC BY 4.0 license|https://creativecommons.org/licenses/by/4.0/]

@@ -16,9 +16,17 @@
   var navBtn = document.querySelector(".nav-toggle");
   var scrim = document.querySelector(".scrim");
   function setNav(open) {
+    var wasOpen = document.body.classList.contains("nav-open");
     document.body.classList.toggle("nav-open", open);
     if (navBtn) navBtn.setAttribute("aria-expanded", String(open));
     if (scrim) scrim.hidden = !open;
+    if (open || wasOpen) {
+      var region = open ? document.querySelector(".sidebar") : content;
+      if (region) {
+        setRegion(region);
+        region.focus({ preventScroll: true });
+      }
+    }
   }
   if (navBtn) navBtn.addEventListener("click", function () { setNav(!document.body.classList.contains("nav-open")); });
   if (scrim) scrim.addEventListener("click", function () { setNav(false); });
@@ -275,10 +283,15 @@
   document.addEventListener("pointerdown", trackRegion);
 
   function scrollRegion(key) {
-    if (activeRegion && !regionRect(activeRegion)) setRegion(content);
-    var scroller = activeRegion && activeRegion.querySelector(".sidebar-inner, .pagetoc-inner");
-    if (!scroller && activeRegion && activeRegion !== content) return;
-    (scroller || window).scrollBy({ top: key === "j" ? 60 : -60, behavior: "instant" });
+    // Directional focus uses viewport geometry. Scrolling follows the selected
+    // pane even while its drawer is sliding into view or it reaches a scroll limit.
+    var closedDrawer = activeRegion && activeRegion.matches(".sidebar") &&
+      navBtn && navBtn.getClientRects().length && !document.body.classList.contains("nav-open");
+    if (!activeRegion || !activeRegion.getClientRects().length || closedDrawer) setRegion(content);
+    if (!activeRegion) return;
+    var scroller = activeRegion === content ? document.scrollingElement :
+      activeRegion.querySelector(":scope > .sidebar-inner, :scope > .pagetoc-inner");
+    if (scroller) scroller.scrollBy({ top: key === "j" ? 60 : -60, behavior: "instant" });
   }
 
   // -- Follow links and controls ----------------------------------------------------

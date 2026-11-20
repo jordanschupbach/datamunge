@@ -118,8 +118,7 @@
 #include <datamunge/format.hpp>
 #endif
 
-/// @brief Short public namespace spelling for the canonical library API.
-namespace dm = datamunge;
+#include <dm/data.hpp>
 
 #include <datamunge/rl/environments.hpp>
 

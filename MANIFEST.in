@@ -4,6 +4,8 @@ include src/datamunge_python_wrap*.cpp
 recursive-include src/pydatamunge/rosetta *.hpp *.json
 recursive-include include *.h *.hpp *.i
 recursive-include src/datamunge *.h *.hpp *.c *.cc *.cpp *.cxx
+include src/datamunge/datasets/classic_catalog.inc
+include src/datamunge/datasets/uci_catalog.inc
 recursive-include src/pydatamunge *.py *.i
 # Optional, native-backed NN example extension (built only on explicit request).
 include scripts/prebuild_nn_examples.py
