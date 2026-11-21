@@ -1,7 +1,7 @@
 #pragma once
 
 /// @file survival.hpp
-/// @brief Nonparametric right-censored survival estimates and rank scores.
+/// @brief Right-censored survival estimates, rank scores and proportional hazards regression.
 
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/stats/hypothesis_test_result.hpp>
@@ -129,5 +129,77 @@ std::vector<double> prentice_wilcoxon_scores(const std::vector<SurvivalObservati
 HypothesisTestResult prentice_wilcoxon_test(const std::vector<SurvivalObservation>& x,
                                            const std::vector<SurvivalObservation>& y,
                                            Alternative alternative = Alternative::TwoSided);
+
+/// @brief Approximation used when multiple events share the same time.
+/// @par Example
+/// @code
+/// const auto ties = dm::stats::CoxTies::breslow;
+/// @endcode
+/// @see cox_ph()
+enum class CoxTies {
+    efron, ///< Progressively removes fractions of the observed deaths from the risk set.
+    breslow, ///< Uses the full risk set for every event at the same time.
+};
+
+/// @brief Fitted Cox regression and its baseline hazard at the covariate means.
+/// @par Example
+/// @code
+/// const auto fit = dm::stats::cox_ph({{1, true}, {2, true}, {3, false}, {4, true}},
+///                                    {{1}, {0}, {1}, {0}});
+/// const auto survival = fit.predict_survival(2, {1});
+/// @endcode
+/// @see cox_ph()
+struct CoxPHFit {
+    CoxTies ties{}; ///< Approximation used for tied events and baseline increments.
+    std::vector<double> coefficients; ///< Log hazard ratios per unit increase in each input column.
+    std::vector<double> standard_errors; ///< Model-based standard errors in original covariate units.
+    std::vector<double> reference; ///< Training covariate means defining the baseline.
+    std::vector<double> event_times; ///< Distinct event times in ascending order.
+    std::vector<double> log_baseline_cumulative_hazard; ///< Log cumulative hazard at each event time.
+    double log_likelihood{}; ///< Maximized partial log likelihood.
+    double null_log_likelihood{}; ///< Partial log likelihood with all coefficients zero.
+    std::size_t iterations{}; ///< Number of accepted Newton updates.
+
+    /// @brief Predicts the right-continuous survival probability for one profile.
+    /// Returns one before the first event and uses the last estimated hazard after the last event.
+    /// @param time Finite nonnegative follow-up time.
+    /// @param covariates Finite values in training column order and original units.
+    /// @return Predicted probability of surviving beyond time.
+    /// @throws std::invalid_argument If time or covariates are invalid.
+    /// @par Example
+    /// @code
+    /// const auto fit = dm::stats::cox_ph({{1, true}, {2, true}, {3, false}, {4, true}},
+    ///                                    {{1}, {0}, {1}, {0}});
+    /// std::println("{}", fit.predict_survival(0, {1})); // 1
+    /// @endcode
+    /// @see cox_ph()
+    double predict_survival(double time, const std::vector<double>& covariates) const;
+};
+
+/// @brief Fits a Cox proportional hazards regression to right-censored observations, like R's coxph().
+///
+/// Each subject enters the risk set at time zero and has fixed covariates.
+/// Subjects censored at an event time remain at risk at that time. Supply
+/// numeric columns with no intercept. The likelihood is optimized by damped
+/// Newton iteration and the standard errors use the inverse observed information.
+/// @param observations Nonempty follow-up records with finite nonnegative times and at least one event.
+/// @param covariates One finite numeric row per observation, with a common positive column count.
+/// @param ties Efron by default or Breslow for ties and baseline hazard increments.
+/// @return Owned fit in the original covariate units, with a baseline at the column means.
+/// @throws std::invalid_argument For malformed input or absent events.
+/// @throws std::runtime_error For singular information or failure to find a finite optimum within 50 updates.
+///
+/// @par Example
+/// @code
+/// const auto fit = dm::stats::cox_ph({{1, true}, {2, true}, {3, false}, {4, true}},
+///                                    {{1}, {0}, {1}, {0}});
+/// const auto hazard_ratio = std::exp(fit.coefficients[0]);
+/// @endcode
+/// @par References
+/// - Cox (1972), Regression Models and Life-Tables. https://doi.org/10.1111/j.2517-6161.1972.tb00899.x
+/// - Efron (1977), The Efficiency of Cox's Likelihood Function for Censored Data. https://doi.org/10.1080/01621459.1977.10480613
+/// @see CoxPHFit, kaplan_meier()
+CoxPHFit cox_ph(const std::vector<SurvivalObservation>& observations,
+                const std::vector<std::vector<double>>& covariates, CoxTies ties = CoxTies::efron);
 
 } // namespace datamunge::stats

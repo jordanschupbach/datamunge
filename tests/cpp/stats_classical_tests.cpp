@@ -168,3 +168,42 @@ TEST(ClassicalTests, CompositeNormalityMatchesReferenceAndRefitsSimulatedSamples
     EXPECT_THROW(sp::shapiro_wilk_test({0, 0, 0}), std::invalid_argument);
     EXPECT_THROW(sp::lilliefors_test({0, 0, 0, 0}, 19, 42), std::invalid_argument);
 }
+
+TEST(ClassicalTests, CoxProportionalHazardsMatchesRWithTiesAndCensoring) {
+    using namespace datamunge::stats;
+    const std::vector<SurvivalObservation> records{{4, true}, {1, true}, {2, true},
+        {2, true}, {2, false}, {3, false}, {5, false}, {6, true}, {4, true}, {5, true}};
+    const std::vector<std::vector<double>> x{{1,1}, {0,3}, {1,2}, {0,1}, {1,4},
+        {0,2}, {1,0}, {0,4}, {0,0}, {1,3}};
+    const auto fit = cox_ph(records, x);
+    EXPECT_EQ(fit.event_times, (std::vector<double>{1, 2, 4, 5, 6}));
+    EXPECT_NEAR(fit.coefficients[0], -0.4330709957886695, 1e-8);
+    EXPECT_NEAR(fit.coefficients[1], -0.1356783709942335, 1e-8);
+    EXPECT_NEAR(fit.standard_errors[0], 0.8432649967327909, 1e-8);
+    EXPECT_NEAR(fit.standard_errors[1], 0.2640846469999394, 1e-8);
+    EXPECT_NEAR(fit.null_log_likelihood, -10.67359577423220, 1e-10);
+    EXPECT_NEAR(fit.log_likelihood, -10.45145219750248, 1e-10);
+    EXPECT_DOUBLE_EQ(fit.predict_survival(0, {1, 2}), 1);
+    EXPECT_NEAR(fit.predict_survival(2, {1, 2}), 0.7700089224246324, 1e-8);
+    EXPECT_DOUBLE_EQ(fit.predict_survival(2, {1, 2}), fit.predict_survival(3, {1, 2}));
+    EXPECT_NEAR(fit.predict_survival(8, {1, 2}), 0.1711785227419683, 1e-8);
+    const auto breslow = cox_ph(records, x, CoxTies::breslow);
+    EXPECT_NEAR(breslow.coefficients[0], -0.3813170228002272, 1e-8);
+    EXPECT_NEAR(breslow.standard_errors[1], 0.2669431025158630, 1e-8);
+    EXPECT_NEAR(breslow.log_likelihood, -10.85061129364356, 1e-10);
+    EXPECT_NEAR(breslow.predict_survival(4, {1, 2}), 0.5604708101183196, 1e-8);
+
+    auto scaled = x;
+    for (auto& row : scaled) row[1] = 200 + 10 * row[1];
+    const auto refit = cox_ph(records, scaled);
+    EXPECT_NEAR(refit.coefficients[1] * 10, fit.coefficients[1], 1e-10);
+    EXPECT_NEAR(refit.predict_survival(4, {1, 220}), fit.predict_survival(4, {1, 2}), 1e-10);
+}
+
+TEST(ClassicalTests, CoxRejectsAbsentEventsSingularityAndMonotoneLikelihood) {
+    using namespace datamunge::stats;
+    EXPECT_THROW(cox_ph({{1, false}, {2, false}}, {{0}, {1}}), std::invalid_argument);
+    EXPECT_THROW(cox_ph({{1, true}, {2, true}}, {{0}, {1, 2}}), std::invalid_argument);
+    EXPECT_THROW(cox_ph({{1, true}, {2, true}, {3, false}}, {{1}, {1}, {1}}), std::runtime_error);
+    EXPECT_THROW(cox_ph({{1, true}, {2, true}, {3, false}}, {{2}, {1}, {0}}), std::runtime_error);
+}

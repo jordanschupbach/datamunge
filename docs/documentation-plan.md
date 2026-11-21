@@ -9,6 +9,13 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-20 — Added Cox proportional hazards regression. Coefficients,
+  standard errors, partial likelihoods and survival estimates agree with
+  R's `survival` package for both Efron and Breslow ties. All 11 focused
+  classical tests passed. Doxygen covered 51 survival definitions. The
+  [Cox report](mepml/stats/survival/cox_proportional_hazards.mepml) ran
+  its cached example, rendered its native SVG and exported to HTML and Org.
+
 - 2026-11-20 — Added offline dataset name discovery and lifted the size limit
   for verified UCI downloads. The scoped Doxygen audit covered 56 definitions
   in the dataset facade and SHA-256 implementation. The

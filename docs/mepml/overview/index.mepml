@@ -16,7 +16,7 @@ Open a title to visit its editable mepml source. The documentation website maps
 these links to generated report pages. Refresh navigation with
 `just docs-report-catalogue`; the website refreshes it before report discovery.
 
-Current inventory: 1315 sources, excluding this navigation page.
+Current inventory: 1316 sources, excluding this navigation page.
 
 > Documentation source: algebra/groups
 
@@ -2323,6 +2323,7 @@ Current inventory: 1315 sources, excluding this navigation page.
 
 > Documentation source: stats/survival
 
+- [Cox proportional hazards regression|../stats/survival/cox_proportional_hazards.mepml] — `docs/mepml/stats/survival/cox_proportional_hazards.mepml`.
 - [Kaplan–Meier estimates and Prentice–Wilcoxon scores|../stats/survival/kaplan_meier_prentice.mepml] — `docs/mepml/stats/survival/kaplan_meier_prentice.mepml`.
 
 > Documentation source: stats/time_series

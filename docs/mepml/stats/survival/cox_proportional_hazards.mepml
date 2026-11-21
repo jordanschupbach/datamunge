@@ -1,0 +1,94 @@
+//? Title: Cox proportional hazards regression
+//? Exports: both
+//? Lang: en
+
+The Cox model describes the event hazard for a covariate profile as an
+unspecified baseline hazard multiplied by an exponential function of the
+covariates. A one-unit increase in a covariate multiplies the hazard by the
+exponential of its coefficient, with the other covariates held fixed.
+The proportional hazards assumption keeps that ratio constant over time.
+
+> Fit right-censored follow-up
+
+Each row records one subject's event or censoring time and two fixed
+covariates. The example uses a small illustrative cohort with two events
+and a censoring at time 2. Subjects censored at that time still contribute
+to its risk set. The Efron approximation progressively removes
+fractions of the deaths across the tied events. The Breslow approximation
+uses the full risk set for each of them.
+
+```{cpp, id=cox-followup, cache=yes, results="markdown", file="figures/cox_proportional_hazards.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace dm::stats;
+    const std::vector<SurvivalObservation> followup{
+        {4, true}, {1, true}, {2, true}, {2, true}, {2, false},
+        {3, false}, {5, false}, {6, true}, {4, true}, {5, true}};
+    const std::vector<std::vector<double>> covariates{
+        {1, 1}, {0, 3}, {1, 2}, {0, 1}, {1, 4},
+        {0, 2}, {1, 0}, {0, 4}, {0, 0}, {1, 3}};
+
+    const auto fit = cox_ph(followup, covariates);
+    const auto breslow = cox_ph(followup, covariates, CoxTies::breslow);
+    std::println("| Covariate | Efron log hazard ratio | Standard error | Efron hazard ratio | Breslow hazard ratio |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const char* names[] = {"Group (1 vs 0)", "Score (per unit)"};
+    for (std::size_t j = 0; j < fit.coefficients.size(); ++j)
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", names[j],
+                     fit.coefficients[j], fit.standard_errors[j],
+                     std::exp(fit.coefficients[j]), std::exp(breslow.coefficients[j]));
+
+    auto plot = dm::Plot().title("Cox survival estimates at a score of 2")
+                         .x_label("Follow-up time").y_label("Survival probability")
+                         .y_limits(0, 1);
+    for (int group : {0, 1}) {
+        const std::vector<double> profile{static_cast<double>(group), 2};
+        std::vector<double> time{0}, survival{fit.predict_survival(0, profile)};
+        for (const double event : fit.event_times) {
+            time.push_back(event);
+            survival.push_back(survival.back());
+            time.push_back(event);
+            survival.push_back(fit.predict_survival(event, profile));
+        }
+        time.push_back(7);
+        survival.push_back(fit.predict_survival(7, profile));
+        plot.line(time, survival, group ? "Group 1" : "Group 0",
+                  group ? dm::RGBA{200, 85, 35} : dm::RGBA{35, 95, 160});
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    plot.save_svg("build/cox_proportional_hazards.svg");
+    std::filesystem::copy_file("build/cox_proportional_hazards.svg",
+                               "figures/cox_proportional_hazards.svg",
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Covariate | Efron log hazard ratio | Standard error | Efron hazard ratio | Breslow hazard ratio |
+| --- | ---: | ---: | ---: | ---: |
+| Group (1 vs 0) | -0.433 | 0.843 | 0.649 | 0.683 |
+| Score (per unit) | -0.136 | 0.264 | 0.873 | 0.896 |
+\image(figures/cox_proportional_hazards.svg)
+// result_end
+\caption(Fitted Cox survival curves for both groups at the same score.)
+\alttext(Two descending step curves for groups 0 and 1. The estimate for group 1 is above group 0 at each event time.)
+
+> Read the estimates
+
+At score 2, group 1 has a lower fitted hazard than group 0. The table gives
+model-based standard errors from the observed information. This small
+cohort illustrates the calculations. Assess the proportional hazards
+assumption and uncertainty before interpreting estimates from a real study.
+
+The fitted baseline is the cumulative hazard at the training covariate
+means. For another profile the model scales that hazard by its relative
+hazard, then takes the exponential of the negative cumulative hazard to
+obtain survival. Curves step at observed event times, and the last step
+is carried forward beyond the last event.
+
+- [Cox (1972), Regression Models and Life-Tables|https://doi.org/10.1111/j.2517-6161.1972.tb00899.x]
+- [Efron (1977), The Efficiency of Cox's Likelihood Function for Censored Data|https://doi.org/10.1080/01621459.1977.10480613]
