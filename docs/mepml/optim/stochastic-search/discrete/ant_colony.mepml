@@ -1,0 +1,155 @@
+//? Title: Ant colony systems for tour construction
+//? Exports: both
+//? Lang: en-GB
+
+> Standard, elitist and rank-based Ant Systems
+
+All ants sample a feasible tour using the current trail matrix. After each
+batch, all trails evaporate and every tour deposits pheromone inversely
+proportional to its length. Elitist Ant System adds a best-overall deposit.
+Rank-based Ant System limits ordinary deposits to the strongest tours,
+weighting their deposits by rank and giving the best-overall tour the largest
+weight. See [Dorigo, Maniezzo and Colorni|https://doi.org/10.1109/3477.484436].
+
+> Ant Colony System
+
+The Ant Colony System makes a greedy choice with probability 0.9 and otherwise
+samples proportionally. It applies a local update as soon as each edge is
+traversed, including the closing edge, and reinforces only best-overall edges
+globally. The nearest-neighbor initialization is charged to the budget.
+See [Dorigo and Gambardella|https://doi.org/10.1109/4235.585892].
+
+> MAX–MIN Ant System
+
+The best ant in each batch deposits pheromone, and trails are constrained
+relative to a ceiling derived from the best tour. After four non-improving
+batches, the experiment resets trails to the ceiling. The table reports these
+resets in the Updates column. The curve is reconstructed by replaying budget
+prefixes from each fixed seed. See
+[Stützle and Hoos|https://doi.org/10.1016/S0167-739X(00)00043-1].
+
+> Tour benchmark
+
+The same eight workbench cities are used for every setting. Enumerating every
+tour with city zero fixed gives an exact reference length outside the search
+budget. Each setting uses seeds 1, 7, 42 and 123 with a cap of 192 scored tours.
+The figure averages percentage gaps across the four seeds and carries forward
+the last observation when a search exhausts its neighborhood.
+
+```{cpp, id=ant-colony, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <variant>
+
+namespace o = dm::optim;
+using Tour = std::vector<std::size_t>;
+constexpr std::size_t budget = 192;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+constexpr std::array<std::array<double, 2>, 8> cities{{
+    {0, 0}, {2, 1}, {5, 0}, {7, 2}, {6, 6}, {3, 4}, {1, 7}, {0, 3},
+}};
+
+double length(const std::vector<std::vector<double>>& edges, const Tour& tour) {
+    double sum = 0;
+    for (std::size_t i = 0; i < tour.size(); ++i) sum += edges[tour[i]][tour[(i + 1) % tour.size()]];
+    return sum;
+}
+
+int main() {
+    std::vector edges(cities.size(), std::vector<double>(cities.size()));
+    for (std::size_t i = 0; i < cities.size(); ++i) {
+        for (std::size_t j = 0; j < i; ++j) {
+            edges[i][j] = edges[j][i] = std::hypot(cities[i][0] - cities[j][0], cities[i][1] - cities[j][1]);
+        }
+    }
+    Tour order(cities.size());
+    std::iota(order.begin(), order.end(), 0);
+    double optimum = std::numeric_limits<double>::infinity();
+    do {
+        optimum = std::min(optimum, length(edges, order));
+    } while (std::next_permutation(order.begin() + 1, order.end()));
+    std::print("The exact optimum is {:.8f}. All seeds follow.\n\n", optimum);
+    std::print("| Setting | Seed | Calls | Final gap (%) | Updates |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<dm::graphics::RGBA> colors{{30,99,168}, {205,99,31}, {45,138,83},
+                                          {137,72,155}, {155,99,55}, {71,125,132}};
+
+    const std::vector<std::string> labels{"Ant System", "ACS", "MAX–MIN", "Rank-based", "Elitist"};
+    const std::array policies{o::AntColonyPolicy::ant_system, o::AntColonyPolicy::ant_colony_system,
+        o::AntColonyPolicy::max_min, o::AntColonyPolicy::rank_based, o::AntColonyPolicy::elitist};
+    const std::vector<double> steps{1, 8, 16, 24, 32, 48, 64, 96, 128, 160, 192};
+    for (std::size_t setting = 0; setting < labels.size(); ++setting) {
+        std::vector<double> means(steps.size());
+        for (const auto seed : seeds) {
+            o::AntColonyOptions options;
+            options.seed = seed;
+            options.ants = 8;
+            options.policy = policies[setting];
+            options.restart_after = 4;
+            for (std::size_t i = 0; i < steps.size(); ++i) {
+                options.evaluations = static_cast<std::size_t>(steps[i]);
+                const auto result = o::ant_colony_tour(edges, options);
+                if (result.evaluations != options.evaluations ||
+                    std::abs(result.length - length(edges, result.tour)) > 1e-10 ||
+                    result.length < optimum - 1e-10) {
+                    throw std::runtime_error("Inconsistent ant colony result");
+                }
+                const double gap = 100 * (result.length / optimum - 1);
+                means[i] += gap / seeds.size();
+                if (options.evaluations == budget) {
+                    std::print("| {} | {} | {} | {:.5f} | {} |\n", labels[setting], seed,
+                               result.evaluations, gap, result.restarts);
+                }
+            }
+        }
+        plot.line(steps, means, labels[setting], colors[setting]);
+    }
+
+    colors.resize(labels.size());
+    plot.title("Eight-city symmetric tour").x_label("Tour evaluations")
+        .y_label("Mean incumbent gap (%)").legend(labels, colors).size(850, 480);
+    std::filesystem::create_directories("build");
+    const auto file = "build/ant_colony.svg";
+    plot.save_svg(file);
+    std::filesystem::create_directories("figures");
+    std::filesystem::copy_file(file, "figures/ant_colony.svg", std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+The exact optimum is 26.68408656. All seeds follow.
+
+| Setting | Seed | Calls | Final gap (%) | Updates |
+| --- | ---: | ---: | ---: | ---: |
+| Ant System | 1 | 192 | 0.00000 | 0 |
+| Ant System | 7 | 192 | 0.00000 | 0 |
+| Ant System | 42 | 192 | 0.00000 | 0 |
+| Ant System | 123 | 192 | 0.00000 | 0 |
+| ACS | 1 | 192 | 0.00000 | 0 |
+| ACS | 7 | 192 | 0.00000 | 0 |
+| ACS | 42 | 192 | 0.00000 | 0 |
+| ACS | 123 | 192 | 0.00000 | 0 |
+| MAX–MIN | 1 | 192 | 0.00000 | 3 |
+| MAX–MIN | 7 | 192 | 0.00000 | 5 |
+| MAX–MIN | 42 | 192 | 0.00000 | 4 |
+| MAX–MIN | 123 | 192 | 0.00000 | 4 |
+| Rank-based | 1 | 192 | 0.00000 | 0 |
+| Rank-based | 7 | 192 | 0.00000 | 0 |
+| Rank-based | 42 | 192 | 0.00000 | 0 |
+| Rank-based | 123 | 192 | 0.00000 | 0 |
+| Elitist | 1 | 192 | 0.00000 | 0 |
+| Elitist | 7 | 192 | 0.00000 | 0 |
+| Elitist | 42 | 192 | 0.00000 | 0 |
+| Elitist | 123 | 192 | 0.00000 | 0 |
+// result_end
+
+\image(figures/ant_colony.svg)
+\alttext(Mean incumbent percentage gap from the exact tour length by objective-call count.)

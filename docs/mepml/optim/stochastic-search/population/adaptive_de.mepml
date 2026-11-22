@@ -1,0 +1,184 @@
+//? Title: Adaptive differential evolution from jDE to L-SHADE
+//? Exports: both
+//? Lang: en-GB
+
+> jDE, SaDE, JADE, SHADE and L-SHADE
+
+jDE inherits successful mutation and crossover parameters on each population
+member and randomly tests changes. SaDE gives each of four strategies a
+selection weight based on recent success and draws crossover around its
+recent successful median. JADE attracts the target toward a randomly chosen
+elite, can use a discarded parent for a difference vector, and updates the
+center of its parameter distributions from successes. SHADE keeps multiple
+success-history centers. L-SHADE uses gain-weighted Lehmer crossover
+updates and removes the weakest population members as evaluations accrue.
+
+See [Brest et al.|https://doi.org/10.1109/TEVC.2006.872133],
+[Qin, Huang and Suganthan|https://doi.org/10.1109/TEVC.2008.927706],
+[Zhang and Sanderson|https://doi.org/10.1109/TEVC.2009.2014613],
+and [Tanabe and Fukunaga|https://doi.org/10.1109/CEC.2014.6900380].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=adaptive-de, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"jDE", "SaDE", "JADE", "SHADE", "L-SHADE"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}, {155, 99, 55}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    const std::array methods{o::AdaptiveDEMethod::jde, o::AdaptiveDEMethod::sade,
+                                             o::AdaptiveDEMethod::jade, o::AdaptiveDEMethod::shade,
+                                             o::AdaptiveDEMethod::lshade};
+                    o::AdaptiveDEOptions options{budget, seed, methods[variant], 16};
+                    options.learning_period = 4;
+                    value = o::AdaptiveDifferentialEvolution(options).optimize(f, x, lower, upper);
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("adaptive_de_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | jDE | 1 | 256 | 1.3874243 |
+| Rastrigin | jDE | 7 | 256 | 1.0851993 |
+| Rastrigin | jDE | 42 | 256 | 1.7002736 |
+| Rastrigin | jDE | 123 | 256 | 1.7129575 |
+| Rastrigin | SaDE | 1 | 256 | 2.1142136 |
+| Rastrigin | SaDE | 7 | 256 | 2.686269 |
+| Rastrigin | SaDE | 42 | 256 | 0.60553183 |
+| Rastrigin | SaDE | 123 | 256 | 0.99590686 |
+| Rastrigin | JADE | 1 | 256 | 1.0289737 |
+| Rastrigin | JADE | 7 | 256 | 0.024180029 |
+| Rastrigin | JADE | 42 | 256 | 1.5563965 |
+| Rastrigin | JADE | 123 | 256 | 1.0340739 |
+| Rastrigin | SHADE | 1 | 256 | 0.90529961 |
+| Rastrigin | SHADE | 7 | 256 | 1.1377752 |
+| Rastrigin | SHADE | 42 | 256 | 0.80921592 |
+| Rastrigin | SHADE | 123 | 256 | 0.070820933 |
+| Rastrigin | L-SHADE | 1 | 256 | 1.0979935 |
+| Rastrigin | L-SHADE | 7 | 256 | 0.0015755283 |
+| Rastrigin | L-SHADE | 42 | 256 | 0.054862749 |
+| Rastrigin | L-SHADE | 123 | 256 | 1.3259262 |
+| Rotated quadratic | jDE | 1 | 256 | 0.0055918084 |
+| Rotated quadratic | jDE | 7 | 256 | 0.0057602041 |
+| Rotated quadratic | jDE | 42 | 256 | 0.0073900667 |
+| Rotated quadratic | jDE | 123 | 256 | 0.026045902 |
+| Rotated quadratic | SaDE | 1 | 256 | 0.096788023 |
+| Rotated quadratic | SaDE | 7 | 256 | 0.015244892 |
+| Rotated quadratic | SaDE | 42 | 256 | 0.0017520597 |
+| Rotated quadratic | SaDE | 123 | 256 | 0.0043241396 |
+| Rotated quadratic | JADE | 1 | 256 | 0.01308355 |
+| Rotated quadratic | JADE | 7 | 256 | 0.056591889 |
+| Rotated quadratic | JADE | 42 | 256 | 0.1138282 |
+| Rotated quadratic | JADE | 123 | 256 | 0.19275021 |
+| Rotated quadratic | SHADE | 1 | 256 | 0.0369279 |
+| Rotated quadratic | SHADE | 7 | 256 | 0.018258251 |
+| Rotated quadratic | SHADE | 42 | 256 | 0.10700242 |
+| Rotated quadratic | SHADE | 123 | 256 | 0.70990747 |
+| Rotated quadratic | L-SHADE | 1 | 256 | 0.01158777 |
+| Rotated quadratic | L-SHADE | 7 | 256 | 0.00078413281 |
+| Rotated quadratic | L-SHADE | 42 | 256 | 0.00066392978 |
+| Rotated quadratic | L-SHADE | 123 | 256 | 0.0021866576 |
+// result_end
+
+\image(figures/adaptive_de_0.svg)
+\alttext(Mean incumbent loss by evaluation count on the Rastrigin surface.)
+
+\image(figures/adaptive_de_1.svg)
+\alttext(Mean incumbent loss by evaluation count on the rotated quadratic.)

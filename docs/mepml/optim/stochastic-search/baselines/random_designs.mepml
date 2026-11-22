@@ -1,0 +1,173 @@
+//? Title: Randomized designs for boxed search
+//? Exports: both
+//? Lang: en-GB
+
+> Search mechanism
+
+Uniform search draws each point independently. A randomized Latin hypercube
+permutes the equal-width strata independently on each axis and then jitters
+within each assigned stratum. The Sobol sequence uses a base-two digital shift
+and retains dyadic balance at powers of two. Shifted Halton reverses the digits
+of the evaluation index in distinct prime bases and adds one random shift
+modulo one on each axis.
+
+References include [Solis and Wets|https://doi.org/10.1287/moor.6.1.19],
+[McKay, Beckman and Conover|https://doi.org/10.1080/00401706.1979.10489755],
+[Halton|https://doi.org/10.1007/BF01386213], and
+[Joe and Kuo|https://web.maths.unsw.edu.au/~fkuo/sobol/joe-kuo-notes.pdf].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=random-designs, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    std::vector<std::vector<double>> points;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        points.push_back(x);
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Uniform", "Latin hypercube", "Sobol", "Halton"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    const auto designs = std::array{o::RandomDesign::uniform, o::RandomDesign::latin_hypercube,
+                                                    o::RandomDesign::sobol, o::RandomDesign::halton};
+                    value = o::RandomSearch({budget, seed, designs[variant]}).optimize(f, x, lower, upper);
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("random_designs_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | Uniform | 1 | 256 | 2.0882977 |
+| Rastrigin | Uniform | 7 | 256 | 1.2368699 |
+| Rastrigin | Uniform | 42 | 256 | 6.1830774 |
+| Rastrigin | Uniform | 123 | 256 | 3.2867619 |
+| Rastrigin | Latin hypercube | 1 | 256 | 2.5518287 |
+| Rastrigin | Latin hypercube | 7 | 256 | 3.0406598 |
+| Rastrigin | Latin hypercube | 42 | 256 | 4.2556627 |
+| Rastrigin | Latin hypercube | 123 | 256 | 2.107685 |
+| Rastrigin | Sobol | 1 | 256 | 6.1041443 |
+| Rastrigin | Sobol | 7 | 256 | 2.4065538 |
+| Rastrigin | Sobol | 42 | 256 | 3.855738 |
+| Rastrigin | Sobol | 123 | 256 | 8.0144166 |
+| Rastrigin | Halton | 1 | 256 | 2.6043693 |
+| Rastrigin | Halton | 7 | 256 | 4.8047661 |
+| Rastrigin | Halton | 42 | 256 | 2.6370967 |
+| Rastrigin | Halton | 123 | 256 | 4.4945567 |
+| Rotated quadratic | Uniform | 1 | 256 | 0.28094362 |
+| Rotated quadratic | Uniform | 7 | 256 | 0.49234342 |
+| Rotated quadratic | Uniform | 42 | 256 | 2.243481 |
+| Rotated quadratic | Uniform | 123 | 256 | 0.80268756 |
+| Rotated quadratic | Latin hypercube | 1 | 256 | 0.77000502 |
+| Rotated quadratic | Latin hypercube | 7 | 256 | 1.077408 |
+| Rotated quadratic | Latin hypercube | 42 | 256 | 0.61513903 |
+| Rotated quadratic | Latin hypercube | 123 | 256 | 0.97087743 |
+| Rotated quadratic | Sobol | 1 | 256 | 0.37467131 |
+| Rotated quadratic | Sobol | 7 | 256 | 1.5930369 |
+| Rotated quadratic | Sobol | 42 | 256 | 0.86549186 |
+| Rotated quadratic | Sobol | 123 | 256 | 3.241895 |
+| Rotated quadratic | Halton | 1 | 256 | 3.3701847 |
+| Rotated quadratic | Halton | 7 | 256 | 1.4270129 |
+| Rotated quadratic | Halton | 42 | 256 | 0.02820903 |
+| Rotated quadratic | Halton | 123 | 256 | 2.4420002 |
+// result_end
+
+\image(figures/random_designs_0.svg)
+\alttext(Objective-call history for comparison panel 1.)
+
+\image(figures/random_designs_1.svg)
+\alttext(Objective-call history for comparison panel 2.)

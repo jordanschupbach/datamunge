@@ -2,12 +2,16 @@
 /// @brief Cholesky-based Gaussian-process regression, profile marginal-likelihood fitting of
 ///        the length scale (and optionally the nugget), and the acquisition functions.
 
-#include <datamunge/optim/rbf_gaussian_process_surrogate.hpp>
+#include <datamunge/optim/joint_bayesian_search.hpp>
+
+#include "boxed_search_detail.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <limits>
 #include <numbers>
+#include <numeric>
+#include <random>
 #include <stdexcept>
 
 namespace datamunge::optim {
@@ -218,7 +222,7 @@ void RBFGaussianProcessSurrogate::fit(const std::vector<std::vector<double>>& p,
     log_marginal_likelihood_ = -0.5 * quad - 0.5 * logdet - 0.5 * nn * std::log(2.0 * std::numbers::pi) - nn * std::log(scale_);
 }
 
-void RBFGaussianProcessSurrogate::latent(const std::vector<double>& x, double& mean, double& var) const {
+std::vector<double> RBFGaussianProcessSurrogate::conditional_column(const std::vector<double>& x, double& mean) const {
     if (x.size() != points_.front().size()) throw std::invalid_argument("GP query dimension mismatch");
     const std::size_t   n = values_.size();
     std::vector<double> z(n);
@@ -230,6 +234,11 @@ void RBFGaussianProcessSurrogate::latent(const std::vector<double>& x, double& m
         for (std::size_t q = 0; q < i; ++q) z[i] -= cholesky_[i * n + q] * z[q];
         z[i] /= cholesky_[i * n + i];
     }
+    return z;
+}
+
+void RBFGaussianProcessSurrogate::latent(const std::vector<double>& x, double& mean, double& var) const {
+    const auto z = conditional_column(x, mean);
     var = signal_variance_;
     for (const double q : z) var -= q * q;
 }
@@ -239,6 +248,36 @@ SurrogatePrediction RBFGaussianProcessSurrogate::predict(const std::vector<doubl
     double m = 0.0, var = 0.0;
     latent(x, m, var);
     return {offset_ + scale_ * m, scale_ * std::sqrt(std::max(0.0, var))};
+}
+
+GaussianJointPosterior RBFGaussianProcessSurrogate::joint_posterior(
+    const std::vector<std::vector<double>>& queries) const {
+    if (values_.empty()) throw std::logic_error("Call fit() before querying the joint GP posterior");
+    const auto count = queries.size();
+    if (count != 0 && count > std::vector<double>().max_size() / count) {
+        throw std::length_error("Joint posterior covariance dimensions exceed storage limits");
+    }
+    GaussianJointPosterior out{std::vector<double>(count), std::vector<double>(count * count)};
+    std::vector<std::vector<double>> columns;
+    columns.reserve(count);
+    for (std::size_t i = 0; i < count; ++i) {
+        if (!std::ranges::all_of(queries[i], [](double x) { return std::isfinite(x); })) {
+            throw std::invalid_argument("GP posterior queries must be finite");
+        }
+        double mean = 0;
+        columns.push_back(conditional_column(queries[i], mean));
+        out.mean[i] = offset_ + scale_ * mean;
+        for (std::size_t j = 0; j <= i; ++j) {
+            double variance = signal_variance_ *
+                std::exp(-squared_distance(queries[i], queries[j]) / (2.0 * length_scale_ * length_scale_));
+            for (std::size_t k = 0; k < columns[i].size(); ++k) variance -= columns[i][k] * columns[j][k];
+            if (queries[i] == queries[j]) variance = std::max(0.0, variance);
+            const double covariance = (variance * scale_) * scale_;
+            out.covariance[i * count + j] = covariance;
+            out.covariance[j * count + i] = covariance;
+        }
+    }
+    return out;
 }
 
 double RBFGaussianProcessSurrogate::acquisition(const std::vector<double>& x, double incumbent) {
@@ -253,6 +292,140 @@ double RBFGaussianProcessSurrogate::acquisition(const std::vector<double>& x, do
     case Acquisition::ExpectedImprovement: break;
     }
     return expected_improvement(mean, sd, incumbent, options_.exploration);
+}
+
+/// @brief Internal correlated posterior sampling and acquisition helpers.
+namespace {
+
+/// @brief Factor a positive semidefinite latent covariance with a small diagonal jitter.
+/// @param posterior Joint posterior returned by the fitted model.
+/// @return Lower triangular factor in dense row-major storage.
+/// @throws std::runtime_error The matrix remains numerically indefinite after jitter.
+std::vector<double> posterior_factor(const GaussianJointPosterior& posterior) {
+    const auto n = posterior.mean.size();
+    double largest = 0;
+    for (std::size_t i = 0; i < n; ++i) largest = std::max(largest, posterior.covariance[i * n + i]);
+    std::vector<double> factor = posterior.covariance;
+    if (largest == 0) return std::vector<double>(factor.size());
+    double jitter = std::max(1e-300, largest * 1e-12);
+    for (int attempt = 0; attempt < 7; ++attempt) {
+        factor = posterior.covariance;
+        for (std::size_t i = 0; i < n; ++i) factor[i * n + i] += jitter;
+        if (cholesky_in_place(factor, n)) return factor;
+        jitter *= 10;
+    }
+    throw std::runtime_error("Joint GP posterior covariance could not be factored");
+}
+
+/// @brief Rank latent samples by Thompson or noisy expected improvement.
+/// @param posterior Joint latent posterior, with baseline positions first.
+/// @param baseline Baseline prefix length, zero for Thompson.
+/// @param draws Positive number of Monte Carlo draws.
+/// @param rng Borrowed independent random engine.
+/// @return Larger-is-better acquisition scores for candidates.
+std::vector<double> joint_scores(const GaussianJointPosterior& posterior, std::size_t baseline,
+                                 std::size_t draws, std::mt19937_64& rng) {
+    const auto n = posterior.mean.size();
+    const auto factor = posterior_factor(posterior);
+    std::normal_distribution<double> normal;
+    std::vector<double> z(n), draw(n), scores(n - baseline);
+    for (std::size_t k = 0; k < draws; ++k) {
+        for (auto& value : z) value = normal(rng);
+        for (std::size_t i = 0; i < n; ++i) {
+            draw[i] = posterior.mean[i];
+            for (std::size_t j = 0; j <= i; ++j) draw[i] += factor[i * n + j] * z[j];
+        }
+        const double reference = baseline == 0 ? 0 : *std::min_element(draw.begin(), draw.begin() + baseline);
+        for (std::size_t i = baseline; i < n; ++i) {
+            scores[i - baseline] += (baseline == 0 ? -draw[i] : std::max(0.0, reference - draw[i])) / draws;
+        }
+    }
+    return scores;
+}
+
+} // namespace
+
+JointBayesianResult joint_bayesian_search(ArbitraryFunction& function, const std::vector<double>& lower,
+                                           const std::vector<double>& upper,
+                                           const JointBayesianOptions& options) {
+    const auto dimension = lower.size();
+    detail::validate_box(dimension, lower, upper, options.evaluations);
+    const bool noisy = options.acquisition == JointAcquisition::noisy_improvement;
+    if (options.initial_samples == 0 || options.candidates == 0 ||
+        (noisy && options.posterior_draws == 0) ||
+        (!noisy && options.acquisition != JointAcquisition::thompson)) {
+        throw std::invalid_argument("Invalid joint Bayesian search controls");
+    }
+
+    RBFGaussianProcessSurrogate gp(options.gaussian);
+    JointBayesianResult result;
+    auto& observed = result.observed;
+    std::vector<std::vector<double>> points;
+    std::mt19937_64 rng(options.seed);
+    std::uniform_real_distribution<double> uniform;
+    /// Draw in normalized coordinates, with zero on fixed axes.
+    const auto propose = [&] {
+        std::vector<double> coordinates(dimension);
+        for (std::size_t j = 0; j < dimension; ++j) {
+            if (lower[j] != upper[j]) coordinates[j] = uniform(rng);
+        }
+        return coordinates;
+    };
+    /// Score and record one observation.
+    const auto observe = [&](std::vector<double> unit) {
+        std::vector<double> point(dimension);
+        for (std::size_t j = 0; j < dimension; ++j) point[j] = std::lerp(lower[j], upper[j], unit[j]);
+        const auto loss = detail::score(function, point);
+        observed.best_values.push_back(observed.best_values.empty() ? loss : std::min(observed.best_values.back(), loss));
+        points.push_back(std::move(unit));
+        observed.points.push_back(std::move(point));
+        observed.values.push_back(loss);
+    };
+    /// Recommend one previously measured point by its latent posterior mean.
+    const auto recommend = [&] {
+        std::size_t best = 0;
+        double mean = gp.predict(points.front()).mean;
+        for (std::size_t i = 1; i < points.size(); ++i) {
+            const double candidate = gp.predict(points[i]).mean;
+            if (candidate < mean) {
+                mean = candidate;
+                best = i;
+            }
+        }
+        return std::pair{best, mean};
+    };
+    const auto design = std::min(options.initial_samples, options.evaluations);
+    while (points.size() < design) observe(propose());
+    while (points.size() < options.evaluations) {
+        gp.fit(points, observed.values);
+        const auto iteration = points.size() - design + 1;
+        if (options.replicate_every != 0 && iteration % options.replicate_every == 0) {
+            observe(points[recommend().first]);
+            ++result.replicates;
+            observed.acquisition_values.push_back(std::numeric_limits<double>::quiet_NaN());
+            continue;
+        }
+
+        auto joint = noisy ? points : std::vector<std::vector<double>>{};
+        const auto baseline = joint.size();
+        if (options.candidates > joint.max_size() - baseline) throw std::length_error("Joint candidate count overflows");
+        joint.reserve(baseline + options.candidates);
+        for (std::size_t i = 0; i < options.candidates; ++i) joint.push_back(propose());
+        const auto posterior = gp.joint_posterior(joint);
+        const auto scores = joint_scores(posterior, baseline, noisy ? options.posterior_draws : 1, rng);
+        const auto winner = std::max_element(scores.begin(), scores.end());
+        observed.acquisition_values.push_back(*winner);
+        observe(std::move(joint[baseline + (winner - scores.begin())]));
+    }
+
+    gp.fit(points, observed.values);
+    const auto [chosen, mean] = recommend();
+    result.recommended_point = observed.points[chosen];
+    result.recommended_mean = mean;
+    const auto best = std::min_element(observed.values.begin(), observed.values.end());
+    observed.best_value = *best;
+    observed.best_point = observed.points[best - observed.values.begin()];
+    return result;
 }
 
 } // namespace datamunge::optim

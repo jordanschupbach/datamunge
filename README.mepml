@@ -4,9 +4,17 @@
 
 \image(assets/datamunge.png)
 \alttext(Datamunge logo)
+\color(Warning! This repo is under construction. The API is not stable and may change
+without notice. Use at your own risk.)
 
-Garbage in -> Garbage out, but Datamunge helps you clean it up.
+Datamunge is a library for those who go rummaging around in the datas. It
+provides datastructures and algorithms for manipulating and analyzing data and
+provides bindings from it's C++ api to a large collection of languages. It's a
+one-stop shop for data munging, providing everything you need from dataframes to
+machine learning. It is designed to be fast, efficient, and easy to use.
 
+>> Demo
 
+// To see Datamunge in action, check out
 
 

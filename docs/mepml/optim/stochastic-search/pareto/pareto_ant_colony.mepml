@@ -1,0 +1,137 @@
+//? Title: Pareto-ranked ant colony search for tours
+//? Exports: both
+//? Lang: en-GB
+
+> Pareto-ranked construction and reinforcement
+
+Each ant constructs a closed tour using pheromone and a weighted combination
+of edge costs. The objective weights vary between ants. A bounded archive
+keeps distinct nondominated objective vectors, and the pheromone update
+reinforces tours from the archive. This is an archive-ranked ant system
+for symmetric tours. See [García-Martínez, Cordón and Herrera|https://doi.org/10.1016/j.ins.2006.05.006].
+
+> Exhaustive reference
+
+The two objectives are Manhattan lengths under different placements of the
+same six vertices. Fixing vertex 0 leaves 120 tours to enumerate. The
+experiment measures the fraction of exact Pareto outcomes recovered by seeds
+1, 7, 42 and 123. Enumeration is a separate check. The search budgets count
+each complete tour once, even though its evaluation returns two costs.
+
+```{cpp, id=pareto-ant-colony, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cstdlib>
+#include <filesystem>
+#include <print>
+#include <set>
+#include <stdexcept>
+
+namespace o = dm::optim;
+
+int main() {
+    using Coordinates = std::array<std::array<int, 2>, 6>;
+    const std::array placements{Coordinates{{{0,0},{1,4},{4,5},{6,3},{5,0},{2,1}}},
+                                Coordinates{{{0,0},{6,0},{1,4},{5,3},{4,5},{2,1}}}};
+    std::vector costs(2, std::vector(6, std::vector<double>(6)));
+    for (std::size_t k = 0; k < 2; ++k) {
+        for (std::size_t i = 0; i < 6; ++i) {
+            for (std::size_t j = 0; j < 6; ++j) {
+                costs[k][i][j] = std::abs(placements[k][i][0] - placements[k][j][0]) +
+                                 std::abs(placements[k][i][1] - placements[k][j][1]);
+            }
+        }
+    }
+    const auto score = [&](const auto& route) {
+        std::vector<double> value(2);
+        for (std::size_t k = 0; k < 2; ++k) {
+            for (std::size_t j = 0; j < route.size(); ++j) {
+                value[k] += costs[k][route[j]][route[(j + 1) % route.size()]];
+            }
+        }
+        return value;
+    };
+    std::array<std::size_t, 6> route{0,1,2,3,4,5};
+    std::set<std::vector<double>> outcomes;
+    do {
+        outcomes.insert(score(route));
+    } while (std::next_permutation(route.begin() + 1, route.end()));
+    std::set<std::vector<double>> reference;
+    for (const auto& point : outcomes) {
+        if (std::ranges::none_of(outcomes, [&](const auto& other) { return o::dominates(other, point); })) {
+            reference.insert(point);
+        }
+    }
+    const std::vector<double> budgets{8, 24, 48, 96, 192, 384};
+    const std::array<std::uint64_t, 4> seeds{1,7,42,123};
+    std::vector<double> means(budgets.size());
+    std::print("The exact front has {} distinct objective vectors.\n\n", reference.size());
+    std::print("| Seed | Calls | Archive size | Exact front recovered |\n| ---: | ---: | ---: | ---: |\n");
+    for (auto seed : seeds) {
+        for (std::size_t j = 0; j < budgets.size(); ++j) {
+            const auto calls = static_cast<std::size_t>(budgets[j]);
+            const o::ParetoAntOptions options{calls, seed, 8, 64};
+            const auto result = o::pareto_ant_colony_tour(costs, options);
+            const auto replay = o::pareto_ant_colony_tour(costs, options);
+            if (result.evaluations != calls || replay.front.size() != result.front.size()) {
+                throw std::runtime_error("Unexpected budget or replay");
+            }
+            std::size_t recovered = 0;
+            for (std::size_t i = 0; i < result.front.size(); ++i) {
+                const auto& point = result.front[i];
+                if (point.tour != replay.front[i].tour || point.objectives != score(point.tour) ||
+                    !outcomes.contains(point.objectives)) {
+                    throw std::runtime_error("Invalid tour or replay");
+                }
+                recovered += reference.contains(point.objectives);
+            }
+            const auto recall = static_cast<double>(recovered) / reference.size();
+            means[j] += recall / seeds.size();
+            std::print("| {} | {} | {} | {:.3f} |\n", seed, calls, result.front.size(), recall);
+        }
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    const auto path = "pareto_ant_colony.svg";
+    dm::graphics::RPlot::create().line(budgets, means, "Mean recall", {30,99,168})
+        .title("Recovery of the exhaustive Pareto front").x_label("Tour objective calls")
+        .y_label("Mean exact front recall").size(850, 475).save_svg(std::string("build/") + path);
+    std::filesystem::copy_file(std::string("build/") + path, std::string("figures/") + path,
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+The exact front has 3 distinct objective vectors.
+
+| Seed | Calls | Archive size | Exact front recovered |
+| ---: | ---: | ---: | ---: |
+| 1 | 8 | 2 | 0.333 |
+| 1 | 24 | 3 | 0.667 |
+| 1 | 48 | 3 | 0.667 |
+| 1 | 96 | 3 | 1.000 |
+| 1 | 192 | 3 | 1.000 |
+| 1 | 384 | 3 | 1.000 |
+| 7 | 8 | 2 | 0.333 |
+| 7 | 24 | 2 | 0.667 |
+| 7 | 48 | 3 | 1.000 |
+| 7 | 96 | 3 | 1.000 |
+| 7 | 192 | 3 | 1.000 |
+| 7 | 384 | 3 | 1.000 |
+| 42 | 8 | 2 | 0.000 |
+| 42 | 24 | 3 | 0.667 |
+| 42 | 48 | 3 | 1.000 |
+| 42 | 96 | 3 | 1.000 |
+| 42 | 192 | 3 | 1.000 |
+| 42 | 384 | 3 | 1.000 |
+| 123 | 8 | 2 | 0.333 |
+| 123 | 24 | 3 | 1.000 |
+| 123 | 48 | 3 | 1.000 |
+| 123 | 96 | 3 | 1.000 |
+| 123 | 192 | 3 | 1.000 |
+| 123 | 384 | 3 | 1.000 |
+// result_end
+
+\image(figures/pareto_ant_colony.svg)
+\alttext(Fraction of the exhaustive front found across the four seeds.)

@@ -1,0 +1,112 @@
+//? Title: MAP-Elites and novelty with local competition
+//? Exports: both
+//? Lang: en-GB
+
+> MAP-Elites, novelty and local competition
+
+MAP-Elites stores the lowest-loss point in each behavior cell and mutates
+a parent drawn uniformly from occupied cells. Novelty search instead uses
+average distance to nearby behaviors as its selection criterion.
+Novelty with local competition uses nondominated ranking on novelty and
+the proportion of those neighbors it beats on loss. The novelty archive
+uses random admission and keeps its most recent entries.
+
+See [Mouret and Clune|https://arxiv.org/abs/1504.04909]
+and [Lehman and Stanley|https://doi.org/10.1162/EVCO_a_00025].
+
+> Coverage and quality under a common budget
+
+Each method samples the bounded unit square. The descriptor is the
+actual position; coverage counts occupied cells in a shared eight by
+eight grid. Lower squared distance to (0.2, 0.8) means higher quality.
+Every method uses the same Gaussian mutation kernel and the same four
+declared seeds. The table includes every final coverage and loss.
+
+```{cpp, id=quality-diversity, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+int main() {
+    namespace o = dm::optim;
+    using Point = std::array<double, 2>;
+    constexpr std::size_t budget = 256;
+    constexpr std::array<std::uint64_t, 4> seeds{1,7,42,123};
+    const std::vector<std::string> labels{"MAP-Elites", "Novelty", "Novelty + local competition"};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168},{205,99,31},{45,138,83}};
+    const auto generate = [](auto& rng) {
+        std::uniform_real_distribution<double> uniform;
+        return Point{uniform(rng), uniform(rng)};
+    };
+    const auto mutate = [](Point& point, auto& rng) {
+        std::normal_distribution<double> perturb(0, 0.12);
+        for (auto& value : point) value = std::clamp(value + perturb(rng), 0.0, 1.0);
+    };
+    const auto describe = [](const Point& point) { return point; };
+    const auto distance = [](const Point& a, const Point& b) { return std::hypot(a[0]-b[0], a[1]-b[1]); };
+    const auto cell = [](const Point& point) {
+        return 8 * std::min(std::size_t{7}, std::size_t(8 * point[0])) +
+                   std::min(std::size_t{7}, std::size_t(8 * point[1]));
+    };
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<double> steps(budget);
+    std::iota(steps.begin(), steps.end(), 1);
+    std::print("| Method | Seed | Calls | Cells visited | Best loss |\n| --- | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t method = 0; method < labels.size(); ++method) {
+        std::vector<double> means(budget);
+        for (const auto seed : seeds) {
+            std::array<bool,64> seen{};
+            std::size_t calls = 0, covered = 0;
+            const auto score = [&](const Point& point) {
+                const auto index = cell(point);
+                if (!seen[index]) { ++covered; seen[index] = true; }
+                means[calls++] += static_cast<double>(covered) / seeds.size();
+                return std::pow(point[0] - 0.2, 2) + std::pow(point[1] - 0.8, 2);
+            };
+            double value;
+            if (method == 0) {
+                const auto run = o::map_elites_search(generate, mutate, score, cell, {budget, seed, 64, 24});
+                value = run.cells[run.best_cell]->loss;
+            } else {
+                const auto run = o::novelty_search(generate, mutate, score, describe, distance,
+                                                  {budget, seed, 24, 7, 128, 0.2, method == 2});
+                value = run.loss;
+            }
+            if (calls != budget) throw std::runtime_error("Incorrect objective-call budget");
+            std::print("| {} | {} | {} | {} | {:.6g} |\n", labels[method], seed, calls, covered, value);
+        }
+        plot.line(steps, means, labels[method], colors[method]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    plot.title("Behavioral coverage during search").x_label("Objective calls").y_label("Mean occupied cells")
+        .legend(labels, colors).size(850,470).save_svg("build/quality_diversity.svg");
+    std::filesystem::copy_file("build/quality_diversity.svg", "figures/quality_diversity.svg",
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Method | Seed | Calls | Cells visited | Best loss |
+| --- | ---: | ---: | ---: | ---: |
+| MAP-Elites | 1 | 256 | 61 | 0.00423129 |
+| MAP-Elites | 7 | 256 | 59 | 0.000698422 |
+| MAP-Elites | 42 | 256 | 59 | 0.00171656 |
+| MAP-Elites | 123 | 256 | 61 | 0.00180617 |
+| Novelty | 1 | 256 | 63 | 0.000160292 |
+| Novelty | 7 | 256 | 63 | 0.00142085 |
+| Novelty | 42 | 256 | 63 | 0.000956846 |
+| Novelty | 123 | 256 | 60 | 0.000915131 |
+| Novelty + local competition | 1 | 256 | 63 | 0.000160292 |
+| Novelty + local competition | 7 | 256 | 63 | 0.000862697 |
+| Novelty + local competition | 42 | 256 | 63 | 0.000525275 |
+| Novelty + local competition | 123 | 256 | 61 | 0.000858109 |
+// result_end
+
+\image(figures/quality_diversity.svg)
+\alttext(Number of behavior bins visited by MAP-Elites and novelty search over objective evaluations.)

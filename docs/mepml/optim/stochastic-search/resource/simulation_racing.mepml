@@ -1,0 +1,213 @@
+//? Title: Simulation ranking, budget allocation and racing
+//? Exports: both
+//? Lang: en-GB
+
+> Ranking, allocation and finite-list racing
+
+Kim–Nelson estimates the variance of paired differences in the pilot
+and screens on a shrinking indifference-zone boundary. OCBA directs the
+next simulation toward candidates whose empirical allocation is below
+a target derived from gaps and variances. Confidence-bound racing uses
+bounded observations and a time-uniform error allocation across rounds.
+Friedman racing screens on within-block ranks, then uses a post-hoc
+comparison with the leading mean rank.
+
+See [Kim and Nelson|https://users.iems.northwestern.edu/~nelsonb/Publications/KimNelsonKN.pdf]
+and [Birattari et al.|https://www.metaheuristics.org/downloads/BirStuPaqVar2002_gecco.pdf].
+
+> Iterated racing
+
+Iterated racing searches a configuration domain. It runs repeated Friedman
+races with fresh scenarios, carries the winner forward and challenges it
+with newly generated configurations. The same global replication cap
+covers all stages and their pilot blocks.
+
+> Known mean benchmark
+
+Five synthetic choices have known means. All five methods use seeds 1, 7,
+42 and 123. Iterated racing generates configurations from a categorical
+parameter with those five choices. OCBA gives each replication a fresh seed. The racing methods
+share a seed within each block, so the common offset cancels in paired
+differences. The evaluation axis includes the pilot and all replications.
+Early stopping is reflected in the table's Used column. Each plotted
+budget is a separate run.
+
+```{cpp, id=simulation-racing, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+int main() {
+    namespace o = dm::optim;
+    constexpr std::array means{0.27, 0.30, 0.45, 0.55, 0.72};
+    constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+    const std::vector<double> allowances{20, 40, 80, 160, 320};
+    const std::vector<std::string> labels{"Kim–Nelson", "OCBA", "Confidence bound", "Friedman race", "Iterated racing"};
+    const std::array methods{o::SimulationSearchMethod::kim_nelson, o::SimulationSearchMethod::ocba,
+                             o::SimulationSearchMethod::confidence_race, o::SimulationSearchMethod::friedman_race};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168},{205,99,31},{45,138,83},{137,72,155},{91,116,130}};
+    const std::vector<o::MixedParameter> domain{{o::ParameterKind::categorical, 0, 1, means.size()}};
+    auto plot = dm::graphics::RPlot::create();
+    std::print("| Method | Seed | Budget | Used | Selected | Regret |\n"
+               "| --- | ---: | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t method = 0; method < labels.size(); ++method) {
+        std::vector<double> regret(allowances.size());
+        for (std::size_t i = 0; i < allowances.size(); ++i) {
+            for (const auto seed : seeds) {
+                std::size_t calls = 0;
+                auto simulate = [&](std::size_t trial, std::uint64_t seed) {
+                    ++calls;
+                    std::mt19937_64 rng(seed);
+                    std::uniform_real_distribution<double> uniform(-0.1, 0.1);
+                    const auto shared = uniform(rng);
+                    std::mt19937_64 idiosyncratic(seed ^ (trial + 1) * 0x9e3779b97f4a7c15ULL);
+                    return means[trial] + shared + uniform(idiosyncratic);
+                };
+                const auto budget = static_cast<std::size_t>(allowances[i]);
+                std::size_t selected, evaluations;
+                if (method < methods.size()) {
+                    o::SimulationSearchOptions options;
+                    options.seed = seed;
+                    options.evaluations = budget;
+                    options.method = methods[method];
+                    options.indifference = 0.02;
+                    const auto result = o::simulation_search(simulate, means.size(), options);
+                    if (!result.selected) throw std::runtime_error("No selected candidate");
+                    selected = *result.selected;
+                    evaluations = result.evaluations;
+                } else {
+                    const auto result = o::iterated_racing([&](const auto& point, std::uint64_t block_seed) {
+                        return simulate(std::get<std::size_t>(point[0]), block_seed);
+                    }, domain, {budget, seed, 5, 25});
+                    selected = std::get<std::size_t>(result.point[0]);
+                    evaluations = result.evaluations;
+                }
+                if (evaluations != calls || calls > budget) throw std::runtime_error("Invalid replication count");
+                const auto gap = means.at(selected) - means.front();
+                regret[i] += gap / seeds.size();
+                std::print("| {} | {} | {} | {} | {} | {:.4f} |\n", labels[method], seed,
+                           budget, calls, selected, gap);
+            }
+        }
+        plot.line(allowances, regret, labels[method], colors[method]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    plot.title("Regret of the selected candidate").x_label("Replication budget")
+        .y_label("Mean excess expected loss").legend(labels, colors).size(850, 470)
+        .save_svg("build/simulation_racing.svg");
+    std::filesystem::copy_file("build/simulation_racing.svg", "figures/simulation_racing.svg",
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Method | Seed | Budget | Used | Selected | Regret |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Kim–Nelson | 1 | 20 | 20 | 0 | 0.0000 |
+| Kim–Nelson | 7 | 20 | 20 | 0 | 0.0000 |
+| Kim–Nelson | 42 | 20 | 20 | 1 | 0.0300 |
+| Kim–Nelson | 123 | 20 | 20 | 1 | 0.0300 |
+| Kim–Nelson | 1 | 40 | 40 | 0 | 0.0000 |
+| Kim–Nelson | 7 | 40 | 40 | 0 | 0.0000 |
+| Kim–Nelson | 42 | 40 | 40 | 0 | 0.0000 |
+| Kim–Nelson | 123 | 40 | 40 | 0 | 0.0000 |
+| Kim–Nelson | 1 | 80 | 80 | 0 | 0.0000 |
+| Kim–Nelson | 7 | 80 | 59 | 0 | 0.0000 |
+| Kim–Nelson | 42 | 80 | 80 | 0 | 0.0000 |
+| Kim–Nelson | 123 | 80 | 67 | 0 | 0.0000 |
+| Kim–Nelson | 1 | 160 | 157 | 0 | 0.0000 |
+| Kim–Nelson | 7 | 160 | 59 | 0 | 0.0000 |
+| Kim–Nelson | 42 | 160 | 80 | 0 | 0.0000 |
+| Kim–Nelson | 123 | 160 | 67 | 0 | 0.0000 |
+| Kim–Nelson | 1 | 320 | 157 | 0 | 0.0000 |
+| Kim–Nelson | 7 | 320 | 59 | 0 | 0.0000 |
+| Kim–Nelson | 42 | 320 | 80 | 0 | 0.0000 |
+| Kim–Nelson | 123 | 320 | 67 | 0 | 0.0000 |
+| OCBA | 1 | 20 | 20 | 0 | 0.0000 |
+| OCBA | 7 | 20 | 20 | 0 | 0.0000 |
+| OCBA | 42 | 20 | 20 | 0 | 0.0000 |
+| OCBA | 123 | 20 | 20 | 0 | 0.0000 |
+| OCBA | 1 | 40 | 40 | 0 | 0.0000 |
+| OCBA | 7 | 40 | 40 | 1 | 0.0300 |
+| OCBA | 42 | 40 | 40 | 0 | 0.0000 |
+| OCBA | 123 | 40 | 40 | 0 | 0.0000 |
+| OCBA | 1 | 80 | 80 | 0 | 0.0000 |
+| OCBA | 7 | 80 | 80 | 0 | 0.0000 |
+| OCBA | 42 | 80 | 80 | 0 | 0.0000 |
+| OCBA | 123 | 80 | 80 | 0 | 0.0000 |
+| OCBA | 1 | 160 | 160 | 0 | 0.0000 |
+| OCBA | 7 | 160 | 160 | 0 | 0.0000 |
+| OCBA | 42 | 160 | 160 | 0 | 0.0000 |
+| OCBA | 123 | 160 | 160 | 0 | 0.0000 |
+| OCBA | 1 | 320 | 320 | 0 | 0.0000 |
+| OCBA | 7 | 320 | 320 | 0 | 0.0000 |
+| OCBA | 42 | 320 | 320 | 0 | 0.0000 |
+| OCBA | 123 | 320 | 320 | 0 | 0.0000 |
+| Confidence bound | 1 | 20 | 20 | 0 | 0.0000 |
+| Confidence bound | 7 | 20 | 20 | 0 | 0.0000 |
+| Confidence bound | 42 | 20 | 20 | 1 | 0.0300 |
+| Confidence bound | 123 | 20 | 20 | 1 | 0.0300 |
+| Confidence bound | 1 | 40 | 40 | 0 | 0.0000 |
+| Confidence bound | 7 | 40 | 40 | 0 | 0.0000 |
+| Confidence bound | 42 | 40 | 40 | 1 | 0.0300 |
+| Confidence bound | 123 | 40 | 40 | 0 | 0.0000 |
+| Confidence bound | 1 | 80 | 80 | 0 | 0.0000 |
+| Confidence bound | 7 | 80 | 80 | 0 | 0.0000 |
+| Confidence bound | 42 | 80 | 80 | 1 | 0.0300 |
+| Confidence bound | 123 | 80 | 80 | 0 | 0.0000 |
+| Confidence bound | 1 | 160 | 160 | 0 | 0.0000 |
+| Confidence bound | 7 | 160 | 160 | 0 | 0.0000 |
+| Confidence bound | 42 | 160 | 160 | 0 | 0.0000 |
+| Confidence bound | 123 | 160 | 160 | 0 | 0.0000 |
+| Confidence bound | 1 | 320 | 320 | 0 | 0.0000 |
+| Confidence bound | 7 | 320 | 320 | 0 | 0.0000 |
+| Confidence bound | 42 | 320 | 320 | 0 | 0.0000 |
+| Confidence bound | 123 | 320 | 320 | 0 | 0.0000 |
+| Friedman race | 1 | 20 | 20 | 0 | 0.0000 |
+| Friedman race | 7 | 20 | 20 | 0 | 0.0000 |
+| Friedman race | 42 | 20 | 20 | 1 | 0.0300 |
+| Friedman race | 123 | 20 | 20 | 1 | 0.0300 |
+| Friedman race | 1 | 40 | 32 | 0 | 0.0000 |
+| Friedman race | 7 | 40 | 40 | 0 | 0.0000 |
+| Friedman race | 42 | 40 | 32 | 1 | 0.0300 |
+| Friedman race | 123 | 40 | 40 | 0 | 0.0000 |
+| Friedman race | 1 | 80 | 32 | 0 | 0.0000 |
+| Friedman race | 7 | 80 | 44 | 0 | 0.0000 |
+| Friedman race | 42 | 80 | 32 | 1 | 0.0300 |
+| Friedman race | 123 | 80 | 80 | 0 | 0.0000 |
+| Friedman race | 1 | 160 | 32 | 0 | 0.0000 |
+| Friedman race | 7 | 160 | 44 | 0 | 0.0000 |
+| Friedman race | 42 | 160 | 32 | 1 | 0.0300 |
+| Friedman race | 123 | 160 | 88 | 0 | 0.0000 |
+| Friedman race | 1 | 320 | 32 | 0 | 0.0000 |
+| Friedman race | 7 | 320 | 44 | 0 | 0.0000 |
+| Friedman race | 42 | 320 | 32 | 1 | 0.0300 |
+| Friedman race | 123 | 320 | 88 | 0 | 0.0000 |
+| Iterated racing | 1 | 20 | 20 | 0 | 0.0000 |
+| Iterated racing | 7 | 20 | 20 | 0 | 0.0000 |
+| Iterated racing | 42 | 20 | 20 | 0 | 0.0000 |
+| Iterated racing | 123 | 20 | 20 | 1 | 0.0300 |
+| Iterated racing | 1 | 40 | 40 | 0 | 0.0000 |
+| Iterated racing | 7 | 40 | 40 | 1 | 0.0300 |
+| Iterated racing | 42 | 40 | 40 | 0 | 0.0000 |
+| Iterated racing | 123 | 40 | 40 | 1 | 0.0300 |
+| Iterated racing | 1 | 80 | 80 | 0 | 0.0000 |
+| Iterated racing | 7 | 80 | 80 | 0 | 0.0000 |
+| Iterated racing | 42 | 80 | 80 | 0 | 0.0000 |
+| Iterated racing | 123 | 80 | 80 | 0 | 0.0000 |
+| Iterated racing | 1 | 160 | 160 | 0 | 0.0000 |
+| Iterated racing | 7 | 160 | 160 | 1 | 0.0300 |
+| Iterated racing | 42 | 160 | 160 | 1 | 0.0300 |
+| Iterated racing | 123 | 160 | 160 | 0 | 0.0000 |
+| Iterated racing | 1 | 320 | 320 | 0 | 0.0000 |
+| Iterated racing | 7 | 320 | 320 | 0 | 0.0000 |
+| Iterated racing | 42 | 320 | 320 | 1 | 0.0300 |
+| Iterated racing | 123 | 320 | 320 | 0 | 0.0000 |
+// result_end
+
+\image(figures/simulation_racing.svg)
+\alttext(Mean known expected-loss regret for four allocation rules versus replication budget.)

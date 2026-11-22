@@ -1,0 +1,184 @@
+//? Title: Discrete distribution search and binary particle swarm
+//? Exports: both
+//? Lang: en-GB
+
+> Independent categorical and binary models
+
+Cross-entropy refits a product of categorical distributions from the best
+fraction of samples and smooths the new probabilities with the previous
+ones. UMDA refits independent binary marginals from its selected subset.
+PBIL updates probabilities toward the batch winner and sometimes mutates
+them toward random bits. The compact GA learns from a winner–loser pair
+at a time, moving each probability where the two solutions differ.
+
+Binary GA evolves a population of bit vectors. Uniform crossover chooses
+parental bits independently and mutation flips individual bits. One
+elite survives each generation.
+
+> Dependency chains and binary particle trajectories
+
+MIMIC starts its chain at a low-entropy coordinate and adds the coordinate
+with lowest entropy conditional on the previous one. Its sampler can then
+express dependencies that independent marginals cannot. Binary PSO keeps
+a swarm of bit vectors. Each bit is sampled from a sigmoid probability
+whose logit changes according to its personal and social guides.
+
+See [Rubinstein|https://doi.org/10.1023/A:1010091220143],
+[Baluja|https://publications.ri.cmu.edu/population-based-incremental-learning-a-method-for-integrating-genetic-search-based-function-optimization-and-competitive-learning],
+[Harik, Lobo and Goldberg|https://doi.org/10.1109/4235.797971],
+[De Bonet, Isbell and Viola|https://papers.neurips.cc/paper_files/paper/1996/hash/4c22bd444899d3b6047a10b20a2f26db-Abstract.html]
+and [Kennedy and Eberhart|https://doi.org/10.1109/ICSMC.1997.637339].
+
+> Bayesian networks and linkage trees
+
+BOA fits a directed Bayesian network and uses the learned conditional
+probabilities to generate offspring. LTGA learns a mutual-information
+linkage tree and tries copying each linked subset from a paired parent.
+GOMEA draws donors from the population for each subset. Both linkage
+variants evaluate a changed proposal before deciding whether to keep the
+transferred genes.
+
+See [Pelikan, Goldberg and Cantú-Paz|https://citeseerx.ist.psu.edu/document?doi=6ec551ca5b03432ce6b4795f6a99dbf074a94b17&repid=rep1&type=pdf]
+and [Thierens and Bosman|https://ir.cwi.nl/pub/18916/].
+
+> Exact binary benchmark
+
+The 16-bit test has four independent 4-bit blocks. Each block has zero
+loss at either 1100 or 0011 and otherwise costs the smaller Hamming
+distance to those patterns. Thus a zero loss is known to be optimal.
+Every setting uses seeds 1, 7, 42 and 123 with exactly 511 evaluations,
+including duplicate points and a final partial batch or sweep.
+The table reports every seed and the figure summarizes the four traces.
+
+```{cpp, id=binary-distributions, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <bit>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+
+namespace o = dm::optim;
+
+double loss(const o::CategoricalPoint& point) {
+    double result = 0;
+    for (std::size_t i = 0; i < point.size(); i += 4) {
+        const auto bits = point[i]*8 + point[i+1]*4 + point[i+2]*2 + point[i+3];
+        const auto distance = std::popcount(bits ^ std::size_t{12});
+        result += std::min(distance, 4 - distance);
+    }
+    return result;
+}
+
+int main() {
+    constexpr std::size_t calls = 511;
+    constexpr std::size_t dimension = 16;
+    constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+    const std::vector<std::size_t> sizes(dimension, 2);
+    const std::vector<std::string> labels{"Categorical CE", "UMDA", "PBIL", "Compact GA", "MIMIC", "BOA", "Binary PSO", "Binary GA", "LTGA", "GOMEA"};
+    const std::array methods{o::DiscreteDistributionMethod::cross_entropy, o::DiscreteDistributionMethod::umda,
+                             o::DiscreteDistributionMethod::pbil, o::DiscreteDistributionMethod::compact_ga,
+                             o::DiscreteDistributionMethod::mimic, o::DiscreteDistributionMethod::boa};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168}, {205,99,31}, {45,138,83},
+                                                 {137,72,155}, {155,99,55}, {90,90,90}, {71,125,132}, {185,58,96},
+                                                 {60,127,175}, {122,125,55}};
+    std::vector<double> steps(calls);
+    std::iota(steps.begin(), steps.end(), 1);
+    auto plot = dm::graphics::RPlot::create();
+    std::print("| Method | Seed | Calls | Incumbent loss |\n| --- | ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < labels.size(); ++i) {
+        std::vector<double> means(calls);
+        for (const auto seed : seeds) {
+            std::vector<double> history;
+            const auto score = [&](const o::CategoricalPoint& point) {
+                const auto value = loss(point);
+                history.push_back(history.empty() ? value : std::min(history.back(), value));
+                return value;
+            };
+            o::DiscreteDistributionResult result;
+            if (i < methods.size()) {
+                result = o::discrete_distribution_search(score, sizes, {calls, seed, methods[i], 24});
+            } else if (i == methods.size()) {
+                result = o::binary_particle_swarm(score, dimension, {calls, seed, 24});
+            } else if (i == methods.size() + 1) {
+                result = o::discrete_genetic_search(score, dimension, {calls, seed, o::GeneticEncoding::binary, 24});
+            } else {
+                const auto method = i == methods.size() + 2 ? o::LinkageMixingMethod::parent_pair :
+                                                             o::LinkageMixingMethod::gene_pool;
+                result = o::linkage_search(score, dimension, {calls, seed, 24, method});
+            }
+            if (history.size() != calls || result.evaluations != calls ||
+                result.value != loss(result.point) || result.value != history.back()) {
+                throw std::runtime_error("Inconsistent categorical search result");
+            }
+            for (std::size_t j = 0; j < calls; ++j) means[j] += history[j] / seeds.size();
+            std::print("| {} | {} | {} | {} |\n", labels[i], seed, result.evaluations, result.value);
+        }
+        plot.line(steps, means, labels[i], colors[i]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    const auto file = "distribution_search.svg";
+    plot.title("Four complementary binary blocks").x_label("Objective calls")
+        .y_label("Mean incumbent loss").legend(labels, colors).size(850, 475)
+        .save_svg(std::string("build/") + file);
+    std::filesystem::copy_file(std::string("build/") + file, std::string("figures/") + file,
+                               std::filesystem::copy_options::overwrite_existing);
+    const auto mixed = o::discrete_distribution_search(
+        [](const auto& point) { return static_cast<double>((point[1] != 2) + (point[2] != 4)); },
+        {1,3,5}, {120, 7});
+    std::print("\nThe Cartesian product with 1, 3 and 5 choices attained loss {} in {} calls.\n",
+               mixed.value, mixed.evaluations);
+}
+```
+// result_begin: markdown
+| Method | Seed | Calls | Incumbent loss |
+| --- | ---: | ---: | ---: |
+| Categorical CE | 1 | 511 | 0 |
+| Categorical CE | 7 | 511 | 0 |
+| Categorical CE | 42 | 511 | 0 |
+| Categorical CE | 123 | 511 | 0 |
+| UMDA | 1 | 511 | 0 |
+| UMDA | 7 | 511 | 0 |
+| UMDA | 42 | 511 | 1 |
+| UMDA | 123 | 511 | 0 |
+| PBIL | 1 | 511 | 0 |
+| PBIL | 7 | 511 | 0 |
+| PBIL | 42 | 511 | 0 |
+| PBIL | 123 | 511 | 0 |
+| Compact GA | 1 | 511 | 0 |
+| Compact GA | 7 | 511 | 0 |
+| Compact GA | 42 | 511 | 0 |
+| Compact GA | 123 | 511 | 0 |
+| MIMIC | 1 | 511 | 0 |
+| MIMIC | 7 | 511 | 0 |
+| MIMIC | 42 | 511 | 0 |
+| MIMIC | 123 | 511 | 0 |
+| BOA | 1 | 511 | 0 |
+| BOA | 7 | 511 | 0 |
+| BOA | 42 | 511 | 0 |
+| BOA | 123 | 511 | 0 |
+| Binary PSO | 1 | 511 | 0 |
+| Binary PSO | 7 | 511 | 0 |
+| Binary PSO | 42 | 511 | 0 |
+| Binary PSO | 123 | 511 | 1 |
+| Binary GA | 1 | 511 | 0 |
+| Binary GA | 7 | 511 | 0 |
+| Binary GA | 42 | 511 | 0 |
+| Binary GA | 123 | 511 | 0 |
+| LTGA | 1 | 511 | 0 |
+| LTGA | 7 | 511 | 0 |
+| LTGA | 42 | 511 | 0 |
+| LTGA | 123 | 511 | 0 |
+| GOMEA | 1 | 511 | 0 |
+| GOMEA | 7 | 511 | 0 |
+| GOMEA | 42 | 511 | 0 |
+| GOMEA | 123 | 511 | 0 |
+
+The Cartesian product with 1, 3 and 5 choices attained loss 0 in 120 calls.
+// result_end
+
+\image(figures/distribution_search.svg)
+\alttext(Mean incumbent loss against evaluations for seven discrete population and distribution search methods.)

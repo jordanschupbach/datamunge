@@ -1,0 +1,107 @@
+//? Title: Correlated Bayesian acquisitions with observation noise
+//? Exports: both
+//? Lang: en-GB
+
+> Correlated Thompson sampling and noisy expected improvement
+
+Thompson sampling evaluates the candidate with smallest value in one
+correlated Gaussian-process posterior draw. Noisy expected improvement
+draws the latent function at the old observations and new candidates
+jointly. Each draw has its own baseline minimum, so one unusually low
+measurement cannot directly fix the improvement threshold. Repeating a
+location helps the fitted process separate observation noise from local
+structure. Scheduled repeats consume the same work budget.
+
+See [Russo et al.|https://arxiv.org/abs/1707.02038] and
+[Letham et al.|https://arxiv.org/abs/1706.07094].
+
+> Noisy quadratic
+
+The noise-free minimum of (x−0.4)² is zero. Each run observes independent
+Gaussian noise with standard deviation 0.07. Four seeds are declared in
+advance. The two methods use the same random design size and replicate
+every fifth model-driven call. Raw observed minima and final latent
+recommendation errors are reported separately.
+
+```{cpp, id=joint-bayesian-acquisition, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+struct NoisyBowl : dm::optim::ArbitraryFunction {
+    std::mt19937_64 rng;
+    std::normal_distribution<double> noise{0,0.07};
+    std::size_t calls = 0;
+    explicit NoisyBowl(std::uint64_t seed) : rng(seed ^ 0x8bcf6a91) {}
+    double evaluate(const std::vector<double>& point) override {
+        ++calls;
+        const auto delta = point[0] - 0.4;
+        return delta * delta + noise(rng);
+    }
+};
+
+int main() {
+    namespace o = dm::optim;
+    constexpr std::array<std::uint64_t, 4> seeds{1,7,42,123};
+    const std::vector<double> budgets{6,10,18,26,36};
+    const std::vector<std::string> names{"Thompson", "Noisy improvement"};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168},{205,99,31}};
+    auto plot = dm::graphics::RPlot::create();
+    std::print("| Method | Seed | Calls | Replicates | Raw best | Recommendation loss |\n"
+               "| --- | ---: | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t method = 0; method < names.size(); ++method) {
+        std::vector<double> loss(budgets.size());
+        for (const auto seed : seeds) {
+            for (std::size_t i = 0; i < budgets.size(); ++i) {
+                NoisyBowl function(seed);
+                o::JointBayesianOptions options;
+                options.seed = seed;
+                options.evaluations = static_cast<std::size_t>(budgets[i]);
+                options.candidates = 24;
+                options.replicate_every = 5;
+                options.gaussian.normalize_values = false;
+                options.gaussian.fit_hyperparameters = false;
+                options.gaussian.length_scale = 0.22;
+                options.gaussian.noise = 0.0049;
+                options.acquisition = method == 0 ? o::JointAcquisition::thompson : o::JointAcquisition::noisy_improvement;
+                const auto run = o::joint_bayesian_search(function, {0}, {1}, options);
+                if (function.calls != options.evaluations || run.observed.points.size() != function.calls)
+                    throw std::runtime_error("Invalid evaluation count");
+                const auto delta = run.recommended_point.front() - 0.4;
+                loss[i] += delta * delta / seeds.size();
+                if (i + 1 == budgets.size()) {
+                    std::print("| {} | {} | {} | {} | {:.6f} | {:.6f} |\n", names[method], seed, function.calls,
+                               run.replicates, run.observed.best_value, delta * delta);
+                }
+            }
+        }
+        plot.line(budgets, loss, names[method], colors[method]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    plot.title("Loss of the posterior recommendation").x_label("Objective calls")
+        .y_label("Mean noise-free loss").legend(names, colors).size(850, 470)
+        .save_svg("build/joint_bayesian_search.svg");
+    std::filesystem::copy_file("build/joint_bayesian_search.svg", "figures/joint_bayesian_search.svg",
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Method | Seed | Calls | Replicates | Raw best | Recommendation loss |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Thompson | 1 | 36 | 6 | -0.216795 | 0.028249 |
+| Thompson | 7 | 36 | 6 | -0.145583 | 0.000204 |
+| Thompson | 42 | 36 | 6 | -0.181491 | 0.001114 |
+| Thompson | 123 | 36 | 6 | -0.106525 | 0.002817 |
+| Noisy improvement | 1 | 36 | 6 | -0.172379 | 0.040461 |
+| Noisy improvement | 7 | 36 | 6 | -0.132925 | 0.003387 |
+| Noisy improvement | 42 | 36 | 6 | -0.200557 | 0.017197 |
+| Noisy improvement | 123 | 36 | 6 | -0.107601 | 0.003508 |
+// result_end
+
+\image(figures/joint_bayesian_search.svg)
+\alttext(Mean true loss of recommendations after Thompson or noisy-improvement search.)

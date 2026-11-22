@@ -1,0 +1,149 @@
+//? Title: Successive halving, Hyperband, ASHA and population-based training
+//? Exports: both
+//? Lang: en-GB
+
+> Successive halving, Hyperband and ASHA
+
+Successive halving promotes strong trials to larger fidelities. Hyperband
+varies the starting fidelity and cohort size across brackets. ASHA
+promotes from completed observations without a synchronized barrier.
+A promotion from fidelity r to s consumes s−r additional units and keeps
+the same trial. Its score is compared to other trials at fidelity s.
+
+> Population-based training
+
+Population-based training advances checkpoints in synchronous rounds.
+Weak workers inherit trained state from donors and explore new
+hyperparameters before the next round. Work used to train the donor
+checkpoint remains charged to the original trial.
+
+See [Li et al., Hyperband|https://jmlr.org/papers/v18/16-558.html],
+[Li et al., ASHA|https://arxiv.org/abs/1810.05934],
+and [Jaderberg et al.|https://arxiv.org/abs/1711.09846].
+
+> Stateful toy training
+
+Each checkpoint has a target parameter and an error that decays during
+training. The uniform starting draw determines the parameter, and every
+checkpoint exposes the actual cumulative resource at each callback.
+ASHA durations vary deterministically across workers. Four fixed seeds
+are used at each budget. The plotted metric is the selected checkpoint's
+observed loss at the highest fidelity reached. The table includes consumed
+resource, achieved fidelity and all four seeds at the largest budget.
+
+```{cpp, id=trial-schedulers, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+struct Worker {
+    double parameter;
+    double error{1};
+    std::size_t reached{};
+};
+
+double train(Worker& worker, std::size_t previous, std::size_t target) {
+    if (worker.reached != previous) throw std::runtime_error("Lost trial continuity");
+    const auto delta = worker.parameter - 0.4;
+    worker.error *= std::pow(0.82 + 0.14*std::abs(delta), target - previous);
+    worker.reached = target;
+    return worker.error + delta*delta;
+}
+
+int main() {
+    namespace o = dm::optim;
+    constexpr std::array<std::uint64_t, 4> seeds{1,7,42,123};
+    const std::vector<std::string> labels{"Successive halving","Hyperband","ASHA","PBT"};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168},{205,99,31},{45,138,83},{137,72,155}};
+    const std::array methods{o::ResourceSearchMethod::successive_halving, o::ResourceSearchMethod::hyperband,
+                             o::ResourceSearchMethod::asha};
+    const std::vector<double> budgets{24, 48, 96, 192};
+    auto plot = dm::graphics::RPlot::create();
+    std::print("| Method | Seed | Budget | Consumed | Fidelity | Loss |\n"
+               "| --- | ---: | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t method = 0; method < labels.size(); ++method) {
+        std::vector<double> mean(budgets.size());
+        for (const auto seed : seeds) {
+            for (std::size_t i = 0; i < budgets.size(); ++i) {
+                const auto budget = static_cast<std::size_t>(budgets[i]);
+                std::vector<Worker> checkpoints;
+                const auto start = [&](std::size_t id, std::uint64_t seed) {
+                    if (id != checkpoints.size()) throw std::runtime_error("Invalid trial ID");
+                    std::mt19937_64 rng(seed);
+                    checkpoints.push_back({std::uniform_real_distribution<double>()(rng)});
+                };
+                double loss;
+                std::size_t consumed, resource;
+                if (method < methods.size()) {
+                    o::ResourceSearchOptions options;
+                    options.method = methods[method];
+                    options.resource_budget = budget;
+                    options.seed = seed;
+                    options.trials = 16;
+                    options.maximum_resource = 16;
+                    const auto run = o::resource_search(start,
+                        [&](std::size_t id, std::size_t previous, std::size_t target) {
+                            return train(checkpoints[id], previous, target);
+                        }, options, [](std::size_t id, std::size_t added) { return (1 + id%3)*double(added); });
+                    loss = run.best->loss;
+                    consumed = run.consumed;
+                    resource = run.best->resource;
+                } else {
+                    std::mt19937_64 rng(seed);
+                    for (std::size_t w = 0; w < 6; ++w) start(w, rng());
+                    const auto explore = [](Worker& worker, auto& engine) {
+                        worker.parameter = std::clamp(worker.parameter + std::normal_distribution<double>(0, 0.1)(engine), 0.0, 1.0);
+                    };
+                    const auto run = o::population_based_training(std::move(checkpoints), train, explore,
+                                                                   {budget, seed, 2, 16, 1});
+                    loss = run.best->loss;
+                    consumed = run.consumed;
+                    resource = run.best->resource;
+                }
+                if (consumed > budget) throw std::runtime_error("Resource cap exceeded");
+                mean[i] += loss / seeds.size();
+                if (i + 1 == budgets.size()) {
+                    std::print("| {} | {} | {} | {} | {} | {:.6f} |\n", labels[method], seed,
+                               budget, consumed, resource, loss);
+                }
+            }
+        }
+        plot.line(budgets, mean, labels[method], colors[method]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    plot.title("Best observed checkpoint at highest fidelity").x_label("Total resource budget")
+        .y_label("Mean validation loss").legend(labels, colors).size(850,470)
+        .save_svg("build/trial_schedulers.svg");
+    std::filesystem::copy_file("build/trial_schedulers.svg", "figures/trial_schedulers.svg",
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Method | Seed | Budget | Consumed | Fidelity | Loss |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Successive halving | 1 | 192 | 48 | 16 | 0.044749 |
+| Successive halving | 7 | 192 | 48 | 16 | 0.049642 |
+| Successive halving | 42 | 192 | 48 | 16 | 0.043699 |
+| Successive halving | 123 | 192 | 48 | 16 | 0.064393 |
+| Hyperband | 1 | 192 | 48 | 16 | 0.044749 |
+| Hyperband | 7 | 192 | 48 | 16 | 0.049642 |
+| Hyperband | 42 | 192 | 48 | 16 | 0.043699 |
+| Hyperband | 123 | 192 | 48 | 16 | 0.064393 |
+| ASHA | 1 | 192 | 48 | 16 | 0.044749 |
+| ASHA | 7 | 192 | 48 | 16 | 0.049642 |
+| ASHA | 42 | 192 | 48 | 16 | 0.043699 |
+| ASHA | 123 | 192 | 48 | 16 | 0.064393 |
+| PBT | 1 | 192 | 96 | 16 | 0.044963 |
+| PBT | 7 | 192 | 96 | 16 | 0.044861 |
+| PBT | 42 | 192 | 96 | 16 | 0.044306 |
+| PBT | 123 | 192 | 96 | 16 | 0.091870 |
+// result_end
+
+\image(figures/trial_schedulers.svg)
+\alttext(Validation loss of each scheduler's highest-fidelity choice as total resource increases.)

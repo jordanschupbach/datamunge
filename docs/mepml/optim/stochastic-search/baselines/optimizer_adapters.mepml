@@ -1,0 +1,111 @@
+//? Title: Random-restart hill climbing and ALOPEX objective adapters
+//? Exports: both
+//? Lang: en-GB
+
+> Coordinate search and correlation search
+
+Random-restart hill climbing repeats coordinate ascent from independent
+box starts. Negating the loss adapts its maximization interface to a
+minimization objective. ALOPEX instead perturbs all coordinates at once,
+with direction probabilities driven by the previous cost change and
+coordinate displacements. It consumes the loss directly.
+
+See [Harth and Tzanakou|https://doi.org/10.1016/0042-6989(74)90024-8]
+and the [coordinate hill climbing report|../../../algorithm/optimization/random_restart_hill_climbing.mepml].
+
+> Rotated quadratic
+
+The minimum is zero at the origin. Coordinate search runs three restarts
+for each seed. ALOPEX runs a fixed number of iterations from `{1, 1}`.
+The figure uses the shared portion of the observed call traces. The table
+uses each solver's full run and gives the final value and actual calls
+for every seed.
+
+```{cpp, id=optimizer-adapters, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/alopex.hpp>
+#include <datamunge/algorithms/random_restart_hill_climbing.hpp>
+
+#include <array>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+
+double loss(const std::vector<double>& point) {
+    const double u = (point[0] + point[1]) / 2;
+    const double v = (point[0] - point[1]) / 2;
+    return u*u + 5*v*v;
+}
+
+int main() {
+    constexpr std::array<std::uint64_t, 4> seeds{1,7,42,123};
+    const std::vector<std::string> labels{"Restart hill climbing", "ALOPEX"};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168},{205,99,31}};
+    std::array<std::vector<std::vector<double>>, 2> traces;
+    std::size_t common = 100;
+    std::print("| Method | Seed | Calls | Final incumbent loss |\n| --- | ---: | ---: | ---: |\n");
+    for (const auto seed : seeds) {
+        for (std::size_t method = 0; method < traces.size(); ++method) {
+            auto& history = traces[method].emplace_back();
+            const auto evaluate = [&](const auto& point) {
+                const auto value = loss(point);
+                history.push_back(history.empty() ? value : std::min(value, history.back()));
+                return value;
+            };
+            double best;
+            if (method == 0) {
+                const auto run = dm::algorithms::random_restart_hill_climbing(
+                    [&](const auto& point) { return -evaluate(point); }, {-2,-2}, {2,2}, 3, seed);
+                best = -run.value;
+                if (loss(run.x) != best) throw std::runtime_error("Hill-climb point mismatch");
+            } else {
+                dm::algorithms::AlopexParameters options;
+                options.iterations = 240;
+                options.seed = seed;
+                const auto run = dm::algorithms::alopex_minimize(evaluate, 2, {1,1}, options);
+                best = run.best_cost;
+                if (history.size() != options.iterations + 1 || loss(run.best_parameters) != best) {
+                    throw std::runtime_error("ALOPEX call accounting mismatch");
+                }
+            }
+            if (history.empty() || best != history.back()) throw std::runtime_error("Incumbent mismatch");
+            common = std::min(common, history.size());
+            std::print("| {} | {} | {} | {:.7f} |\n", labels[method], seed, history.size(), best);
+        }
+    }
+    std::vector<double> axis(common);
+    std::iota(axis.begin(), axis.end(), 1);
+    auto plot = dm::graphics::RPlot::create();
+    for (std::size_t method = 0; method < traces.size(); ++method) {
+        std::vector<double> mean(common);
+        for (const auto& trace : traces[method]) {
+            for (std::size_t j = 0; j < common; ++j) mean[j] += trace[j] / seeds.size();
+        }
+        plot.line(axis, mean, labels[method], colors[method]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    const auto file = "optimizer_adapters.svg";
+    plot.title("Observed loss calls on a rotated quadratic").x_label("Objective calls")
+        .y_label("Mean incumbent loss").legend(labels, colors).size(850,475)
+        .save_svg(std::string("build/") + file);
+    std::filesystem::copy_file(std::string("build/") + file, std::string("figures/") + file,
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Method | Seed | Calls | Final incumbent loss |
+| --- | ---: | ---: | ---: |
+| Restart hill climbing | 1 | 753 | 0.0000000 |
+| ALOPEX | 1 | 241 | 0.9025000 |
+| Restart hill climbing | 7 | 755 | 0.0000000 |
+| ALOPEX | 7 | 241 | 0.8100000 |
+| Restart hill climbing | 42 | 719 | 0.0000000 |
+| ALOPEX | 42 | 241 | 0.8600000 |
+| Restart hill climbing | 123 | 734 | 0.0000000 |
+| ALOPEX | 123 | 241 | 0.1225000 |
+// result_end
+
+\image(figures/optimizer_adapters.svg)
+\alttext(Mean incumbent on the shared call range.)

@@ -1,0 +1,215 @@
+//? Title: Covariance adaptation and rotation in CMA-ES
+//? Exports: both
+//? Lang: en-GB
+
+> Search mechanism
+
+CMA-ES samples offspring from a Gaussian and uses ranked offspring to update
+the center. Evolution paths accumulate information from successive updates.
+The covariance matrix changes the lengths and orientation of search axes, and
+a separate global step size changes the overall sampling scale. Perturbations
+are unbounded.
+
+The axis-aligned and 45° experiments rotate both the quadratic and its initial
+coordinate, preserving the eigenvalues and initial loss. Individual seeded
+runs can differ after rotation because their sampling draws are expressed in
+different coordinates. See
+[Hansen and Ostermeier|https://doi.org/10.1162/106365601750190398].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=cma-es, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    std::vector<std::vector<double>> points;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        points.push_back(x);
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Eight offspring", "Sixteen offspring"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic", "Aligned quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    o::CMAESOptions options;
+                    options.seed = seed;
+                    options.population_size = variant == 0 ? 8 : 16;
+                    options.max_generations = (budget - 1) / options.population_size;
+                    options.initial_step_size = 1;
+                    options.tolerance = 0;
+                    value = o::CMAES(options).optimize(f, x);
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                if (surface == 1 && variant == 1 && seed == 42 && f.points.size() >= 33) {
+                    auto shape = dm::graphics::RPlot::create();
+                    const auto cloud = [&](std::size_t first, const std::string& label,
+                                           dm::graphics::RGBA color) {
+                        std::vector<double> u, v;
+                        for (std::size_t i = first; i < first + 16; ++i) {
+                            u.push_back(f.points[i][0]);
+                            v.push_back(f.points[i][1]);
+                        }
+                        const double mean_u = std::accumulate(u.begin(), u.end(), 0.0) / u.size();
+                        const double mean_v = std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+                        double squared = 0;
+                        for (std::size_t i = 0; i < u.size(); ++i) {
+                            u[i] -= mean_u;
+                            v[i] -= mean_v;
+                            squared += u[i] * u[i] + v[i] * v[i];
+                        }
+                        const double rms = std::sqrt(squared / u.size());
+                        for (auto& value : u) value /= rms;
+                        for (auto& value : v) value /= rms;
+                        shape.points(u, v, label, color, 4);
+                    };
+                    cloud(1, "First generation", {30, 99, 168});
+                    cloud(f.points.size() - 16, "Last generation", {205, 99, 31});
+                    shape.title("Sample covariance geometry, rotated bowl, seed 42")
+                         .x_label("Centered and scaled x").y_label("Centered and scaled y")
+                         .x_limits(-3, 3).y_limits(-3, 3)
+                         .legend({"First generation", "Last generation"}, {{30, 99, 168}, {205, 99, 31}})
+                         .size(670, 600).save_svg("build/cma_es_cloud.svg");
+                    std::filesystem::copy_file("build/cma_es_cloud.svg", "figures/cma_es_cloud.svg",
+                                               std::filesystem::copy_options::overwrite_existing);
+                }
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("cma_es_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | Eight offspring | 1 | 249 | 2.0583558 |
+| Rastrigin | Eight offspring | 7 | 249 | 0.99570025 |
+| Rastrigin | Eight offspring | 42 | 249 | 2.3740159 |
+| Rastrigin | Eight offspring | 123 | 249 | 1.227469 |
+| Rastrigin | Sixteen offspring | 1 | 241 | 1.1001748 |
+| Rastrigin | Sixteen offspring | 7 | 241 | 1.2370479 |
+| Rastrigin | Sixteen offspring | 42 | 241 | 0.4992942 |
+| Rastrigin | Sixteen offspring | 123 | 241 | 2.9356641 |
+| Rotated quadratic | Eight offspring | 1 | 249 | 0.00034365947 |
+| Rotated quadratic | Eight offspring | 7 | 249 | 0.047361183 |
+| Rotated quadratic | Eight offspring | 42 | 249 | 1.5752437e-05 |
+| Rotated quadratic | Eight offspring | 123 | 249 | 0.0038816508 |
+| Rotated quadratic | Sixteen offspring | 1 | 241 | 0.012067578 |
+| Rotated quadratic | Sixteen offspring | 7 | 241 | 0.13106667 |
+| Rotated quadratic | Sixteen offspring | 42 | 241 | 0.0007852075 |
+| Rotated quadratic | Sixteen offspring | 123 | 241 | 0.044017491 |
+| Aligned quadratic | Eight offspring | 1 | 249 | 0.00018934519 |
+| Aligned quadratic | Eight offspring | 7 | 249 | 0.0031240871 |
+| Aligned quadratic | Eight offspring | 42 | 249 | 0.00010838815 |
+| Aligned quadratic | Eight offspring | 123 | 249 | 0.039145911 |
+| Aligned quadratic | Sixteen offspring | 1 | 241 | 0.07292873 |
+| Aligned quadratic | Sixteen offspring | 7 | 241 | 0.0048645578 |
+| Aligned quadratic | Sixteen offspring | 42 | 241 | 0.067251409 |
+| Aligned quadratic | Sixteen offspring | 123 | 241 | 0.059486953 |
+// result_end
+
+\image(figures/cma_es_0.svg)
+\alttext(Objective-call history for comparison panel 1.)
+
+\image(figures/cma_es_1.svg)
+\alttext(Objective-call history for comparison panel 2.)
+
+\image(figures/cma_es_2.svg)
+\alttext(Objective-call history for comparison panel 3.)
+
+> Sampled covariance geometry
+
+The first and last complete offspring clouds are centered and scaled by
+their root mean squared radius to expose the direction of their spread.
+The plotted points are actual objective requests from the seed-42
+16-offspring run on the rotated bowl.
+
+\image(figures/cma_es_cloud.svg)
+\alttext(Initial and final offspring clouds after removing translation and common scale.)

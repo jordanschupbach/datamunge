@@ -55,6 +55,18 @@ enum class Acquisition {
     LowerConfidenceBound       ///< \f$-(\mu-\kappa\sigma)\f$: the most optimistic plausible value, negated.
 };
 
+/// @brief Joint noise-free Gaussian process posterior for an ordered set of queries.
+/// @par Example
+/// @code
+/// const dm::optim::GaussianJointPosterior posterior;
+/// std::print("{}\n", posterior.mean.size()); // 0
+/// @endcode
+/// @see RBFGaussianProcessSurrogate::joint_posterior()
+struct GaussianJointPosterior {
+    std::vector<double> mean; ///< Latent means in objective units, in query order.
+    std::vector<double> covariance; ///< Row-major latent covariance in squared objective units.
+};
+
 /// @brief Settings of an RBFGaussianProcessSurrogate built from options.
 ///
 /// With `normalize_values`, the values are centred at their mean (the prior mean) and divided
@@ -145,6 +157,28 @@ public:
     /// @throws std::logic_error      Before fit().
     /// @throws std::invalid_argument  If @p point has the wrong dimension.
     [[nodiscard]] SurrogatePrediction predict(const std::vector<double>& point) const;
+#ifndef SWIG
+    /// @brief Return the joint noise-free posterior over ordered query points.
+    /// Observation noise conditions the training fit and is excluded from
+    /// query covariance. Identical queries have the same latent variable.
+    /// An empty query list after fitting gives an empty posterior.
+    /// @param queries Finite coordinates matching the training dimension.
+    /// @return Owned means and square row-major covariance.
+    /// @throws std::logic_error The model has yet to be fitted.
+    /// @throws std::invalid_argument A query has nonfinite coordinates or the wrong shape.
+    /// @throws std::length_error Posterior matrix size exceeds representable range.
+    /// @par Example
+    /// @code
+    /// dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.1);
+    /// gp.fit({{0.0}}, {1.0});
+    /// const auto joint = gp.joint_posterior({{0.2}, {0.4}});
+    /// std::print("{}\n", joint.covariance.size()); // 4
+    /// @endcode
+    /// @see predict(), joint_bayesian_search()
+    [[nodiscard]] GaussianJointPosterior joint_posterior(
+        const std::vector<std::vector<double>>& queries) const;
+#endif
+
     /// @brief Log marginal likelihood of the values at the hyperparameters in use.
     ///
     /// The density of the raw values under the GP with the prior mean (and scale, when
@@ -188,6 +222,12 @@ private:
     std::vector<double>              values_;  ///< Training values (raw).
     std::vector<double>              alpha_;   ///< \f$(K+\sigma_n^2I)^{-1}(y-m)/\text{scale}\f$.
     std::vector<double>              cholesky_;  ///< Lower Cholesky factor, row-major \f$n\times n\f$.
+
+    /// @brief Compute normalized mean and forward-solved training covariances.
+    /// @param x Query coordinates matching training shape.
+    /// @param mean Output normalized latent mean.
+    /// @return Forward-solved kernel column for forming latent covariances.
+    [[nodiscard]] std::vector<double> conditional_column(const std::vector<double>& x, double& mean) const;
 
     /// @brief Normalised latent mean and variance at @p x.
     /// @param x  Query point.

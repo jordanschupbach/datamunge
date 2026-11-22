@@ -1,0 +1,150 @@
+//? Title: Charged system forces and boundary memory
+//? Exports: both
+//? Lang: en-GB
+
+> Search mechanism
+
+Objective-dependent charges determine attraction, with different
+field formulas inside and outside a characteristic radius. Inertial
+and force terms change their relative weights during the run.
+Boundary violations can reuse a previously successful coordinate.
+
+See [the original method|https://doi.org/10.1007/s00707-009-0270-4].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=charged-system, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Eight members", "Sixteen members"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    o::CollectiveSearchOptions options{budget, seed, o::CollectiveSearchMethod::charged_system};
+                    options.population = variant == 0 ? 8 : 16;
+                    value = o::CollectiveSearch(options).optimize(f, x, lower, upper);
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("charged_system_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | Eight members | 1 | 256 | 4.0542525 |
+| Rastrigin | Eight members | 7 | 256 | 6.0920754 |
+| Rastrigin | Eight members | 42 | 256 | 3.9919911 |
+| Rastrigin | Eight members | 123 | 256 | 4.8873198 |
+| Rastrigin | Sixteen members | 1 | 256 | 6.8249143 |
+| Rastrigin | Sixteen members | 7 | 256 | 6.2164121 |
+| Rastrigin | Sixteen members | 42 | 256 | 7.8887771 |
+| Rastrigin | Sixteen members | 123 | 256 | 5.0511417 |
+| Rotated quadratic | Eight members | 1 | 256 | 5.146546 |
+| Rotated quadratic | Eight members | 7 | 256 | 2.5085034 |
+| Rotated quadratic | Eight members | 42 | 256 | 2.0751599 |
+| Rotated quadratic | Eight members | 123 | 256 | 1.3857493 |
+| Rotated quadratic | Sixteen members | 1 | 256 | 0.80433294 |
+| Rotated quadratic | Sixteen members | 7 | 256 | 7.2608557 |
+| Rotated quadratic | Sixteen members | 42 | 256 | 7.2415813 |
+| Rotated quadratic | Sixteen members | 123 | 256 | 4.1070507 |
+// result_end
+
+\image(figures/charged_system_0.svg)
+\alttext(Mean incumbent loss by evaluation count on the Rastrigin surface.)
+
+\image(figures/charged_system_1.svg)
+\alttext(Mean incumbent loss by evaluation count on the rotated quadratic.)

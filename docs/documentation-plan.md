@@ -9,6 +9,13 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-21 — Completed the native [stochastic search inventory](stochastic-search-plan.md).
+  The new public examples cover continuous search, typed neighborhoods,
+  adaptive populations, Pareto and program search, simulation and fidelity
+  allocation. Compiled and ran 179 Doxygen blocks covering the new public
+  optimizer headers and the Gaussian-process surrogate. The scoped audit
+  covered 1,230 definitions.
+
 - 2026-11-20 — Added Cox proportional hazards regression. Coefficients,
   standard errors, partial likelihoods and survival estimates agree with
   R's `survival` package for both Efron and Breslow ties. All 11 focused

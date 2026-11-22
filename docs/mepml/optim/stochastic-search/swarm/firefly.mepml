@@ -1,0 +1,154 @@
+//? Title: Firefly search and distance-dependent attraction
+//? Exports: both
+//? Lang: en-GB
+
+> Search mechanism
+
+The search attracts a worse point toward a better point with a coefficient
+that decreases exponentially in the squared separation. Increasing light
+absorption shortens the range of strong attraction. Random displacements
+diversify the proposals and decay over successive iterations.
+The experiment varies the absorption coefficient.
+
+See [Yang|https://doi.org/10.1007/978-3-642-04944-6_14].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=firefly, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Absorption 0.1", "Absorption 1.0"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    o::FireflyAlgorithmOptions options;
+                    options.seed = seed;
+                    options.population_size = 12;
+                    options.max_iterations = budget;
+                    options.light_absorption = variant == 0 ? 0.1 : 1.0;
+                    value = o::FireflyAlgorithm(options).optimize(f, x, lower, upper);
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("firefly_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | Absorption 0.1 | 1 | 256 | 0.14993689 |
+| Rastrigin | Absorption 0.1 | 7 | 256 | 2.0695281 |
+| Rastrigin | Absorption 0.1 | 42 | 256 | 0.10128693 |
+| Rastrigin | Absorption 0.1 | 123 | 256 | 1.013577 |
+| Rastrigin | Absorption 1.0 | 1 | 256 | 3.9810318 |
+| Rastrigin | Absorption 1.0 | 7 | 256 | 2.6858499 |
+| Rastrigin | Absorption 1.0 | 42 | 256 | 2.0146583 |
+| Rastrigin | Absorption 1.0 | 123 | 256 | 9.0878559 |
+| Rotated quadratic | Absorption 0.1 | 1 | 256 | 0.00085572328 |
+| Rotated quadratic | Absorption 0.1 | 7 | 256 | 0.0058355537 |
+| Rotated quadratic | Absorption 0.1 | 42 | 256 | 0.00041653095 |
+| Rotated quadratic | Absorption 0.1 | 123 | 256 | 0.0021257156 |
+| Rotated quadratic | Absorption 1.0 | 1 | 256 | 0.32606878 |
+| Rotated quadratic | Absorption 1.0 | 7 | 256 | 8.5951676 |
+| Rotated quadratic | Absorption 1.0 | 42 | 256 | 0.26683975 |
+| Rotated quadratic | Absorption 1.0 | 123 | 256 | 11.682337 |
+// result_end
+
+\image(figures/firefly_0.svg)
+\alttext(Mean incumbent loss by evaluation count on the Rastrigin surface.)
+
+\image(figures/firefly_1.svg)
+\alttext(Mean incumbent loss by evaluation count on the rotated quadratic.)

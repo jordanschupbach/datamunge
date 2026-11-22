@@ -1,0 +1,174 @@
+//? Title: Particle swarm topology and inertia
+//? Exports: both
+//? Lang: en-GB
+
+> Search mechanism
+
+Each particle carries a position, a velocity, and its personal best. A
+randomized acceleration combines attraction to its personal best with
+attraction to the best particle previously seen within its neighborhood.
+The global topology shares one social target. A ring uses local neighbors,
+which allows different regions of the population to follow different targets.
+Linear inertia decay reduces velocity carryover as the iteration index grows.
+
+See [Kennedy and Eberhart|https://doi.org/10.1109/ICNN.1995.488968].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=particle-swarm, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    std::vector<std::vector<double>> points;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        points.push_back(x);
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Global, constant", "Ring, constant", "Global, decay", "Ring, decay"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    o::PSOOptions options;
+                    options.seed = seed;
+                    options.population_size = 16;
+                    options.max_iterations = budget / options.population_size - 1;
+                    options.topology = variant % 2 == 0 ? "global" : "ring";
+                    options.inertia_strategy = variant < 2 ? "constant" : "linear_decay";
+                    value = o::PSO(options).optimize(f, x, lower, upper);
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("particle_swarm_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | Global, constant | 1 | 256 | 0.14575548 |
+| Rastrigin | Global, constant | 7 | 256 | 0.031298083 |
+| Rastrigin | Global, constant | 42 | 256 | 1.0720171 |
+| Rastrigin | Global, constant | 123 | 256 | 1.0714435 |
+| Rastrigin | Ring, constant | 1 | 256 | 0.68601173 |
+| Rastrigin | Ring, constant | 7 | 256 | 2.5745647 |
+| Rastrigin | Ring, constant | 42 | 256 | 3.782635 |
+| Rastrigin | Ring, constant | 123 | 256 | 1.5500618 |
+| Rastrigin | Global, decay | 1 | 256 | 0.29781997 |
+| Rastrigin | Global, decay | 7 | 256 | 0.11406447 |
+| Rastrigin | Global, decay | 42 | 256 | 1.2030143 |
+| Rastrigin | Global, decay | 123 | 256 | 1.0378797 |
+| Rastrigin | Ring, decay | 1 | 256 | 0.11523131 |
+| Rastrigin | Ring, decay | 7 | 256 | 1.0992916 |
+| Rastrigin | Ring, decay | 42 | 256 | 2.0015899 |
+| Rastrigin | Ring, decay | 123 | 256 | 2.0216405 |
+| Rotated quadratic | Global, constant | 1 | 256 | 0.076596298 |
+| Rotated quadratic | Global, constant | 7 | 256 | 0.062604906 |
+| Rotated quadratic | Global, constant | 42 | 256 | 0.44323249 |
+| Rotated quadratic | Global, constant | 123 | 256 | 0.00095423989 |
+| Rotated quadratic | Ring, constant | 1 | 256 | 0.066415424 |
+| Rotated quadratic | Ring, constant | 7 | 256 | 4.1292498 |
+| Rotated quadratic | Ring, constant | 42 | 256 | 2.3000432 |
+| Rotated quadratic | Ring, constant | 123 | 256 | 0.026554059 |
+| Rotated quadratic | Global, decay | 1 | 256 | 0.037264582 |
+| Rotated quadratic | Global, decay | 7 | 256 | 0.21432883 |
+| Rotated quadratic | Global, decay | 42 | 256 | 0.14398135 |
+| Rotated quadratic | Global, decay | 123 | 256 | 0.0072101801 |
+| Rotated quadratic | Ring, decay | 1 | 256 | 0.0045302413 |
+| Rotated quadratic | Ring, decay | 7 | 256 | 3.1311181 |
+| Rotated quadratic | Ring, decay | 42 | 256 | 0.12875064 |
+| Rotated quadratic | Ring, decay | 123 | 256 | 0.04332109 |
+// result_end
+
+\image(figures/particle_swarm_0.svg)
+\alttext(Objective-call history for comparison panel 1.)
+
+\image(figures/particle_swarm_1.svg)
+\alttext(Objective-call history for comparison panel 2.)

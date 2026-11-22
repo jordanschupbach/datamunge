@@ -16,7 +16,7 @@ Open a title to visit its editable mepml source. The documentation website maps
 these links to generated report pages. Refresh navigation with
 `just docs-report-catalogue`; the website refreshes it before report discovery.
 
-Current inventory: 1316 sources, excluding this navigation page.
+Current inventory: 1382 sources, excluding this navigation page.
 
 > Documentation source: algebra/groups
 
@@ -2189,6 +2189,93 @@ Current inventory: 1316 sources, excluding this navigation page.
 
 - [SUS: one actual random offset and equally spaced pointers|../optim/selection/stochastic_universal_sampling.mepml] — `docs/mepml/optim/selection/stochastic_universal_sampling.mepml`.
 - [Tournament selection: actual contestant draws and first-tie winners|../optim/selection/tournament_selection.mepml] — `docs/mepml/optim/selection/tournament_selection.mepml`.
+
+> Documentation source: optim/stochastic-search/annealing
+
+- [Equi-energy optimization with cached warmer states|../optim/stochastic-search/annealing/equi_energy.mepml] — `docs/mepml/optim/stochastic-search/annealing/equi_energy.mepml`.
+- [Parallel tempering and the temperature ladder|../optim/stochastic-search/annealing/parallel_tempering.mepml] — `docs/mepml/optim/stochastic-search/annealing/parallel_tempering.mepml`.
+- [Reheating, tunneling and generalized annealing|../optim/stochastic-search/annealing/annealing_variants.mepml] — `docs/mepml/optim/stochastic-search/annealing/annealing_variants.mepml`.
+- [Simulated annealing and uphill moves|../optim/stochastic-search/annealing/simulated_annealing.mepml] — `docs/mepml/optim/stochastic-search/annealing/simulated_annealing.mepml`.
+
+> Documentation source: optim/stochastic-search/baselines
+
+- [Multistart, basin hopping and multilevel single linkage|../optim/stochastic-search/baselines/hybrid_local.mepml] — `docs/mepml/optim/stochastic-search/baselines/hybrid_local.mepml`.
+- [Random-restart hill climbing and ALOPEX objective adapters|../optim/stochastic-search/baselines/optimizer_adapters.mepml] — `docs/mepml/optim/stochastic-search/baselines/optimizer_adapters.mepml`.
+- [Randomized designs for boxed search|../optim/stochastic-search/baselines/random_designs.mepml] — `docs/mepml/optim/stochastic-search/baselines/random_designs.mepml`.
+- [Simultaneous perturbation and random-direction stochastic approximation|../optim/stochastic-search/baselines/stochastic_approximation.mepml] — `docs/mepml/optim/stochastic-search/baselines/stochastic_approximation.mepml`.
+- [Solis–Wets adaptive random search|../optim/stochastic-search/baselines/solis_wets.mepml] — `docs/mepml/optim/stochastic-search/baselines/solis_wets.mepml`.
+- [Stochastic hill climbing and adaptive local steps|../optim/stochastic-search/baselines/stochastic_local.mepml] — `docs/mepml/optim/stochastic-search/baselines/stochastic_local.mepml`.
+
+> Documentation source: optim/stochastic-search/discrete
+
+- [Ant colony systems for tour construction|../optim/stochastic-search/discrete/ant_colony.mepml] — `docs/mepml/optim/stochastic-search/discrete/ant_colony.mepml`.
+- [Discrete distribution search and binary particle swarm|../optim/stochastic-search/discrete/distribution_search.mepml] — `docs/mepml/optim/stochastic-search/discrete/distribution_search.mepml`.
+- [Discrete neighborhood acceptance rules|../optim/stochastic-search/discrete/acceptance_rules.mepml] — `docs/mepml/optim/stochastic-search/discrete/acceptance_rules.mepml`.
+- [Discrete replica exchange and temperature ladders|../optim/stochastic-search/discrete/replica_exchange.mepml] — `docs/mepml/optim/stochastic-search/discrete/replica_exchange.mepml`.
+- [GRASP, reactive construction and forward path relinking|../optim/stochastic-search/discrete/grasp_and_path_relink.mepml] — `docs/mepml/optim/stochastic-search/discrete/grasp_and_path_relink.mepml`.
+- [Guided local search with edge penalties|../optim/stochastic-search/discrete/guided_local_search.mepml] — `docs/mepml/optim/stochastic-search/discrete/guided_local_search.mepml`.
+- [Iterated greedy, large neighborhoods and adaptive repair|../optim/stochastic-search/discrete/large_neighborhood.mepml] — `docs/mepml/optim/stochastic-search/discrete/large_neighborhood.mepml`.
+- [Iterated Lin–Kernighan sequential tour exchanges|../optim/stochastic-search/discrete/iterated_lin_kernighan.mepml] — `docs/mepml/optim/stochastic-search/discrete/iterated_lin_kernighan.mepml`.
+- [Order crossover, steady-state replacement and genetic islands|../optim/stochastic-search/discrete/genetic_tour_search.mepml] — `docs/mepml/optim/stochastic-search/discrete/genetic_tour_search.mepml`.
+- [Tabu search and stochastic 2-opt and 3-opt|../optim/stochastic-search/discrete/tabu_and_opt_moves.mepml] — `docs/mepml/optim/stochastic-search/discrete/tabu_and_opt_moves.mepml`.
+- [Variable and iterated neighborhood search|../optim/stochastic-search/discrete/variable_neighborhoods.mepml] — `docs/mepml/optim/stochastic-search/discrete/variable_neighborhoods.mepml`.
+
+> Documentation source: optim/stochastic-search/pareto
+
+- [Adaptive-grid Pareto archives and generalized differential evolution|../optim/stochastic-search/pareto/grid_archive.mepml] — `docs/mepml/optim/stochastic-search/pareto/grid_archive.mepml`.
+- [MAP-Elites and novelty with local competition|../optim/stochastic-search/pareto/quality_diversity.mepml] — `docs/mepml/optim/stochastic-search/pareto/quality_diversity.mepml`.
+- [Pareto-ranked ant colony search for tours|../optim/stochastic-search/pareto/pareto_ant_colony.mepml] — `docs/mepml/optim/stochastic-search/pareto/pareto_ant_colony.mepml`.
+- [Reference directions and indicator-based Pareto selection|../optim/stochastic-search/pareto/reference_and_indicator.mepml] — `docs/mepml/optim/stochastic-search/pareto/reference_and_indicator.mepml`.
+- [Tree, Cartesian and gene-expression programming|../optim/stochastic-search/pareto/genetic_programming.mepml] — `docs/mepml/optim/stochastic-search/pareto/genetic_programming.mepml`.
+
+> Documentation source: optim/stochastic-search/population
+
+- [Adaptive differential evolution from jDE to L-SHADE|../optim/stochastic-search/population/adaptive_de.mepml] — `docs/mepml/optim/stochastic-search/population/adaptive_de.mepml`.
+- [Bare-bones and informed continuous particle swarms|../optim/stochastic-search/population/particle_swarm_variants.mepml] — `docs/mepml/optim/stochastic-search/population/particle_swarm_variants.mepml`.
+- [Classical evolution strategy survival and mutation scale|../optim/stochastic-search/population/evolution_strategy.mepml] — `docs/mepml/optim/stochastic-search/population/evolution_strategy.mepml`.
+- [Continuous ant search with a Gaussian archive|../optim/stochastic-search/population/acor.mepml] — `docs/mepml/optim/stochastic-search/population/acor.mepml`.
+- [Covariance adaptation and rotation in CMA-ES|../optim/stochastic-search/population/cma_es.mepml] — `docs/mepml/optim/stochastic-search/population/cma_es.mepml`.
+- [Cross-entropy search and elite Gaussian refits|../optim/stochastic-search/population/cross_entropy.mepml] — `docs/mepml/optim/stochastic-search/population/cross_entropy.mepml`.
+- [Differential evolution mutation and crossover|../optim/stochastic-search/population/differential_evolution.mepml] — `docs/mepml/optim/stochastic-search/population/differential_evolution.mepml`.
+- [Evolutionary programming and stochastic survivors|../optim/stochastic-search/population/evolutionary_programming.mepml] — `docs/mepml/optim/stochastic-search/population/evolutionary_programming.mepml`.
+- [Gaussian estimation of distribution with dependence|../optim/stochastic-search/population/gaussian_eda.mepml] — `docs/mepml/optim/stochastic-search/population/gaussian_eda.mepml`.
+- [Natural and antithetic evolutionary search|../optim/stochastic-search/population/natural_evolution.mepml] — `docs/mepml/optim/stochastic-search/population/natural_evolution.mepml`.
+- [Particle swarm topology and inertia|../optim/stochastic-search/population/particle_swarm.mepml] — `docs/mepml/optim/stochastic-search/population/particle_swarm.mepml`.
+- [Selection and crossover in a real-valued genetic algorithm|../optim/stochastic-search/population/genetic_algorithm.mepml] — `docs/mepml/optim/stochastic-search/population/genetic_algorithm.mepml`.
+- [Separable CMA-ES, IPOP and BIPOP restarts|../optim/stochastic-search/population/cma_es_variants.mepml] — `docs/mepml/optim/stochastic-search/population/cma_es_variants.mepml`.
+
+> Documentation source: optim/stochastic-search/resource
+
+- [Conditional mixed-parameter search and BOHB|../optim/stochastic-search/resource/mixed_models.mepml] — `docs/mepml/optim/stochastic-search/resource/mixed_models.mepml`.
+- [Correlated Bayesian acquisitions with observation noise|../optim/stochastic-search/resource/joint_bayesian_search.mepml] — `docs/mepml/optim/stochastic-search/resource/joint_bayesian_search.mepml`.
+- [Simulation ranking, budget allocation and racing|../optim/stochastic-search/resource/simulation_racing.mepml] — `docs/mepml/optim/stochastic-search/resource/simulation_racing.mepml`.
+- [Successive halving, Hyperband, ASHA and population-based training|../optim/stochastic-search/resource/trial_schedulers.mepml] — `docs/mepml/optim/stochastic-search/resource/trial_schedulers.mepml`.
+
+> Documentation source: optim/stochastic-search/swarm
+
+- [Artificial bee colony search phases|../optim/stochastic-search/swarm/artificial_bee_colony.mepml] — `docs/mepml/optim/stochastic-search/swarm/artificial_bee_colony.mepml`.
+- [Artificial fish preying, swarming and following|../optim/stochastic-search/swarm/artificial_fish.mepml] — `docs/mepml/optim/stochastic-search/swarm/artificial_fish.mepml`.
+- [Bacterial chemotaxis as random tumbles and swims|../optim/stochastic-search/swarm/bacterial_chemotaxis.mepml] — `docs/mepml/optim/stochastic-search/swarm/bacterial_chemotaxis.mepml`.
+- [Bacterial foraging with reproduction and dispersal|../optim/stochastic-search/swarm/bacterial_foraging.mepml] — `docs/mepml/optim/stochastic-search/swarm/bacterial_foraging.mepml`.
+- [Bat search frequency, loudness and pulse switching|../optim/stochastic-search/swarm/bat.mepml] — `docs/mepml/optim/stochastic-search/swarm/bat.mepml`.
+- [Biogeography-based migration and habitat mutation|../optim/stochastic-search/swarm/biogeography.mepml] — `docs/mepml/optim/stochastic-search/swarm/biogeography.mepml`.
+- [Charged system forces and boundary memory|../optim/stochastic-search/swarm/charged_system.mepml] — `docs/mepml/optim/stochastic-search/swarm/charged_system.mepml`.
+- [Clonal selection and inverse-affinity hypermutation|../optim/stochastic-search/swarm/clonal_selection.mepml] — `docs/mepml/optim/stochastic-search/swarm/clonal_selection.mepml`.
+- [Cuckoo search with Lévy flights and discovery|../optim/stochastic-search/swarm/cuckoo_search.mepml] — `docs/mepml/optim/stochastic-search/swarm/cuckoo_search.mepml`.
+- [Firefly search and distance-dependent attraction|../optim/stochastic-search/swarm/firefly.mepml] — `docs/mepml/optim/stochastic-search/swarm/firefly.mepml`.
+- [Flower pollination and Lévy proposals|../optim/stochastic-search/swarm/flower_pollination.mepml] — `docs/mepml/optim/stochastic-search/swarm/flower_pollination.mepml`.
+- [Gravitational search with decaying mass interactions|../optim/stochastic-search/swarm/gravitational.mepml] — `docs/mepml/optim/stochastic-search/swarm/gravitational.mepml`.
+- [Grey wolf search with three ranked leaders|../optim/stochastic-search/swarm/grey_wolf.mepml] — `docs/mepml/optim/stochastic-search/swarm/grey_wolf.mepml`.
+- [Harmony memory and pitch adjustment|../optim/stochastic-search/swarm/harmony_search.mepml] — `docs/mepml/optim/stochastic-search/swarm/harmony_search.mepml`.
+- [Imperialist competition and colony reassignment|../optim/stochastic-search/swarm/imperialist.mepml] — `docs/mepml/optim/stochastic-search/swarm/imperialist.mepml`.
+- [Invasive weed dispersal and competitive exclusion|../optim/stochastic-search/swarm/invasive_weed.mepml] — `docs/mepml/optim/stochastic-search/swarm/invasive_weed.mepml`.
+- [Krill herd motion, food and diffusion|../optim/stochastic-search/swarm/krill_herd.mepml] — `docs/mepml/optim/stochastic-search/swarm/krill_herd.mepml`.
+- [Opt-aiNet maturation and suppression|../optim/stochastic-search/swarm/artificial_immune_network.mepml] — `docs/mepml/optim/stochastic-search/swarm/artificial_immune_network.mepml`.
+- [Salp swarm and its following chain|../optim/stochastic-search/swarm/salp_swarm.mepml] — `docs/mepml/optim/stochastic-search/swarm/salp_swarm.mepml`.
+- [Shuffled frog-leaping and local groups|../optim/stochastic-search/swarm/shuffled_frog.mepml] — `docs/mepml/optim/stochastic-search/swarm/shuffled_frog.mepml`.
+- [Stochastic fractal diffusion and rank updates|../optim/stochastic-search/swarm/stochastic_fractal.mepml] — `docs/mepml/optim/stochastic-search/swarm/stochastic_fractal.mepml`.
+- [Teaching–learning-based optimization|../optim/stochastic-search/swarm/teaching_learning.mepml] — `docs/mepml/optim/stochastic-search/swarm/teaching_learning.mepml`.
+- [Whale optimization encircling, spiral and exploration|../optim/stochastic-search/swarm/whale_optimization.mepml] — `docs/mepml/optim/stochastic-search/swarm/whale_optimization.mepml`.
 
 > Documentation source: optimisation/linear-programming
 

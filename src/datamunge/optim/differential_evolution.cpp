@@ -2,6 +2,8 @@
 /// @brief DifferentialEvolution native update, trial and stopping implementation.
 #include <datamunge/optim/differential_evolution.hpp>
 
+#include "differential_evolution_detail.hpp"
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -36,26 +38,6 @@ void validate_bounds(const std::size_t n, const std::vector<double>& lower_bound
         if (!(lower_bound[j] < upper_bound[j]))
             throw std::invalid_argument(std::string("DifferentialEvolution::") + op +
                                          ": lower_bound must be < upper_bound in every dimension");
-}
-
-/// @brief Rejection-sample distinct population indices, excluding the target.
-/// @param rng Caller-owned local engine; advanced in place.
-/// @param population_size Population size, validated to allow count distinct candidates.
-/// @param exclude Target index that must not be selected.
-/// @param count Number of leading entries to fill, at most five.
-/// @return Fixed-size array with count distinct valid indices; unused entries remain zero.
-std::array<std::size_t, 5> random_distinct_indices(std::mt19937_64& rng, const std::size_t population_size,
-                                                   const std::size_t exclude, const std::size_t count) {
-    std::uniform_int_distribution<std::size_t> dist(0, population_size - 1);
-    std::array<std::size_t, 5> result{};
-    std::size_t used = 0;
-    while (used < count) {
-        const std::size_t r = dist(rng);
-        if (r == exclude) continue;
-        if (std::find(result.begin(), result.begin() + used, r) != result.begin() + used) continue;
-        result[used++] = r;
-    }
-    return result;
 }
 
 } // namespace
@@ -110,26 +92,26 @@ double DifferentialEvolution::optimize(ArbitraryFunction& function, std::vector<
         for (std::size_t i = 0; i < pop.size(); ++i) {
             switch (mutation) {
                 case Mutation::Rand1: {
-                    const auto idx = random_distinct_indices(rng, pop.size(), i, 3);
+                    const auto idx = detail::random_distinct_indices(rng, pop.size(), i, 3);
                     for (std::size_t j = 0; j < n; ++j)
                         mutant[j] = pop[idx[0]][j] + options_.differential_weight * (pop[idx[1]][j] - pop[idx[2]][j]);
                     break;
                 }
                 case Mutation::Best1: {
-                    const auto idx = random_distinct_indices(rng, pop.size(), i, 2);
+                    const auto idx = detail::random_distinct_indices(rng, pop.size(), i, 2);
                     for (std::size_t j = 0; j < n; ++j)
                         mutant[j] = pop[best_idx][j] + options_.differential_weight * (pop[idx[0]][j] - pop[idx[1]][j]);
                     break;
                 }
                 case Mutation::CurrentToBest1: {
-                    const auto idx = random_distinct_indices(rng, pop.size(), i, 2);
+                    const auto idx = detail::random_distinct_indices(rng, pop.size(), i, 2);
                     for (std::size_t j = 0; j < n; ++j)
                         mutant[j] = pop[i][j] + options_.differential_weight * (pop[best_idx][j] - pop[i][j]) +
                                     options_.differential_weight * (pop[idx[0]][j] - pop[idx[1]][j]);
                     break;
                 }
                 case Mutation::Rand2: {
-                    const auto idx = random_distinct_indices(rng, pop.size(), i, 5);
+                    const auto idx = detail::random_distinct_indices(rng, pop.size(), i, 5);
                     for (std::size_t j = 0; j < n; ++j)
                         mutant[j] = pop[idx[0]][j] + options_.differential_weight * (pop[idx[1]][j] - pop[idx[2]][j]) +
                                     options_.differential_weight * (pop[idx[3]][j] - pop[idx[4]][j]);

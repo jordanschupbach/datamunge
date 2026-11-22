@@ -1,0 +1,189 @@
+//? Title: Iterated greedy, large neighborhoods and adaptive repair
+//? Exports: both
+//? Lang: en-GB
+
+> Destroy and repair
+
+A destroy operator removes cities without disturbing the order of the
+remaining ones. The repair inserts each removed city into the gap with the
+smallest added distance. In the iterated greedy setting, construction
+uses one removal and one insertion policy. The large-neighborhood search
+mixes contiguous and randomly scattered removals, and tries both insertion
+orders.
+
+> Adaptive operator weights
+
+ALNS smooths each operator weight toward its mean reward every eight
+attempts. New best tours earn more than other accepted tours, which earn
+more than rejections. The tour objective is evaluated once after each
+repair. Insertion costs use edges directly to compare partial tours.
+Updates counts accepted repairs. See
+[Røpke and Pisinger|https://doi.org/10.1287/trsc.1050.0135].
+
+> Tour benchmark
+
+The same eight workbench cities are used for every setting. Enumerating every
+tour with city zero fixed gives an exact reference length outside the search
+budget. Each setting uses seeds 1, 7, 42 and 123 with a cap of 192 scored tours.
+The figure averages percentage gaps across the four seeds and carries forward
+the last observation when a search exhausts its neighborhood.
+
+```{cpp, id=large-neighborhood, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <variant>
+
+namespace o = dm::optim;
+using Tour = std::vector<std::size_t>;
+constexpr std::size_t budget = 192;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+constexpr std::array<std::array<double, 2>, 8> cities{{
+    {0, 0}, {2, 1}, {5, 0}, {7, 2}, {6, 6}, {3, 4}, {1, 7}, {0, 3},
+}};
+
+double length(const std::vector<std::vector<double>>& edges, const Tour& tour) {
+    double sum = 0;
+    for (std::size_t i = 0; i < tour.size(); ++i) sum += edges[tour[i]][tour[(i + 1) % tour.size()]];
+    return sum;
+}
+
+int main() {
+    std::vector edges(cities.size(), std::vector<double>(cities.size()));
+    for (std::size_t i = 0; i < cities.size(); ++i) {
+        for (std::size_t j = 0; j < i; ++j) {
+            edges[i][j] = edges[j][i] = std::hypot(cities[i][0] - cities[j][0], cities[i][1] - cities[j][1]);
+        }
+    }
+    Tour order(cities.size());
+    std::iota(order.begin(), order.end(), 0);
+    double optimum = std::numeric_limits<double>::infinity();
+    do {
+        optimum = std::min(optimum, length(edges, order));
+    } while (std::next_permutation(order.begin() + 1, order.end()));
+    std::print("The exact optimum is {:.8f}. All seeds follow.\n\n", optimum);
+    std::print("| Setting | Seed | Calls | Final gap (%) | Updates |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<dm::graphics::RGBA> colors{{30,99,168}, {205,99,31}, {45,138,83},
+                                          {137,72,155}, {155,99,55}, {71,125,132}};
+
+    const std::vector<std::string> labels{"Iterated greedy", "Uniform LNS", "ALNS"};
+    struct Partial {
+        Tour retained;
+        Tour removed;
+    };
+    const auto destroy = [](const Tour& tour, std::size_t op, auto& rng) -> std::optional<Partial> {
+        std::vector<std::size_t> indices(tour.size() - 1);
+        std::iota(indices.begin(), indices.end(), 1);
+        if (op == 0) {
+            const auto offset = std::uniform_int_distribution<std::size_t>(0, indices.size() - 1)(rng);
+            std::rotate(indices.begin(), indices.begin() + offset, indices.end());
+        } else {
+            std::shuffle(indices.begin(), indices.end(), rng);
+        }
+        const auto count = op == 0 ? 2u : 3u;
+        Partial partial;
+        for (std::size_t i = 0; i < tour.size(); ++i) {
+            if (std::find(indices.begin(), indices.begin() + count, i) == indices.begin() + count)
+                partial.retained.push_back(tour[i]);
+            else
+                partial.removed.push_back(tour[i]);
+        }
+        return partial;
+    };
+    const auto repair = [&](Partial partial, std::size_t op, auto&) -> std::optional<Tour> {
+        if (op != 0) std::ranges::reverse(partial.removed);
+        for (const auto city : partial.removed) {
+            auto best = std::numeric_limits<double>::infinity();
+            std::size_t insert = 1;
+            for (std::size_t i = 0; i < partial.retained.size(); ++i) {
+                const auto a = partial.retained[i], b = partial.retained[(i + 1) % partial.retained.size()];
+                const auto increment = edges[a][city] + edges[city][b] - edges[a][b];
+                if (increment < best) {
+                    insert = i + 1;
+                    best = increment;
+                }
+            }
+            partial.retained.insert(partial.retained.begin() + insert, city);
+        }
+        return std::move(partial.retained);
+    };
+
+    for (std::size_t setting = 0; setting < labels.size(); ++setting) {
+        std::vector<double> steps, means(budget);
+        for (const auto seed : seeds) {
+            std::mt19937_64 start_rng(seed);
+            auto initial = order;
+            std::shuffle(initial.begin() + 1, initial.end(), start_rng);
+            std::vector<double> best;
+            const auto score = [&](const Tour& tour) {
+                const double value = length(edges, tour);
+                best.push_back(best.empty() ? value : std::min(value, best.back()));
+                return value;
+            };
+
+            o::LargeNeighborhoodOptions options;
+            options.evaluations = budget;
+            options.seed = seed;
+            options.destroy_operators = options.repair_operators = setting == 0 ? 1 : 2;
+            options.temperature = 1;
+            options.cooling = 0.98;
+            options.reaction = setting == 2 ? 0.35 : 0;
+            options.reaction_interval = 8;
+            const auto run = o::large_neighborhood_search(initial, score, destroy, repair, options);
+            const auto& result = run.search;
+            const auto updates = result.accepted;
+            if (result.evaluations != best.size() || result.evaluations > budget ||
+                std::abs(result.value - length(edges, result.best)) > 1e-10 ||
+                std::abs(result.value - best.back()) > 1e-10 || result.value < optimum - 1e-10) {
+                throw std::runtime_error("Inconsistent discrete search result");
+            }
+            for (std::size_t i = 0; i < budget; ++i) {
+                means[i] += 100 * (best[std::min(i, best.size()-1)] / optimum - 1) / seeds.size();
+            }
+            std::print("| {} | {} | {} | {:.5f} | {} |\n", labels[setting], seed,
+                       result.evaluations, 100*(result.value/optimum-1), updates);
+        }
+        for (std::size_t i = 0; i < budget; ++i) steps.push_back(i + 1);
+        plot.line(steps, means, labels[setting], colors[setting]);
+    }
+
+    colors.resize(labels.size());
+    plot.title("Eight-city symmetric tour").x_label("Tour evaluations")
+        .y_label("Mean incumbent gap (%)").legend(labels, colors).size(850, 480);
+    std::filesystem::create_directories("build");
+    const auto file = "build/large_neighborhood.svg";
+    plot.save_svg(file);
+    std::filesystem::create_directories("figures");
+    std::filesystem::copy_file(file, "figures/large_neighborhood.svg", std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+The exact optimum is 26.68408656. All seeds follow.
+
+| Setting | Seed | Calls | Final gap (%) | Updates |
+| --- | ---: | ---: | ---: | ---: |
+| Iterated greedy | 1 | 192 | 0.00000 | 158 |
+| Iterated greedy | 7 | 192 | 0.00000 | 169 |
+| Iterated greedy | 42 | 192 | 0.00000 | 169 |
+| Iterated greedy | 123 | 192 | 0.00000 | 169 |
+| Uniform LNS | 1 | 192 | 0.00000 | 158 |
+| Uniform LNS | 7 | 192 | 0.00000 | 143 |
+| Uniform LNS | 42 | 192 | 0.00000 | 159 |
+| Uniform LNS | 123 | 192 | 0.00000 | 144 |
+| ALNS | 1 | 192 | 0.00000 | 162 |
+| ALNS | 7 | 192 | 0.00000 | 145 |
+| ALNS | 42 | 192 | 0.00000 | 163 |
+| ALNS | 123 | 192 | 0.00000 | 153 |
+// result_end
+
+\image(figures/large_neighborhood.svg)
+\alttext(Mean incumbent percentage gap from the exact tour length by objective-call count.)

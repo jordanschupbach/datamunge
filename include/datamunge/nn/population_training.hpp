@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "datamunge/nn/ops.hpp"
+#include "datamunge/optim/population_based_training.hpp"
 
 namespace datamunge::nn {
 
@@ -35,18 +36,7 @@ namespace datamunge::nn {
 /// @see inherit_population()
 inline std::vector<std::int64_t> population_donors(std::span<const double> losses,
                                                    std::size_t replacements) {
-  if (losses.empty() || replacements>losses.size()/2 ||
-      !std::all_of(losses.begin(),losses.end(),[](double loss){return std::isfinite(loss);})) {
-    throw std::invalid_argument("population_donors: invalid losses or replacement count");
-  }
-  std::vector<std::int64_t> order(losses.size());
-  std::iota(order.begin(),order.end(),0);
-  auto sources=order;
-  std::stable_sort(order.begin(),order.end(),[&](auto a,auto b){return losses[a]<losses[b];});
-  for (std::size_t i=0;i<replacements;++i) {
-    sources[order[order.size()-replacements+i]]=order[i];
-  }
-  return sources;
+  return optim::detail::population_sources<std::int64_t>(losses,replacements);
 }
 
 /// @brief Apply the same synchronous donor mapping to every checkpoint field.

@@ -1,0 +1,152 @@
+//? Title: Guided local search with edge penalties
+//? Exports: both
+//? Lang: en-GB
+
+A guided local search evaluates a tour under both its original length and
+a temporary penalty for each edge. A scan without improvement adds a
+penalty to the active edge or edges with the largest distance divided by
+one plus their existing penalty. This changes the next scan's preferences
+without changing the loss used to rank historical incumbents. A stronger
+penalty may escape a basin earlier but can also change which tour is
+explored next. Updates counts increments of edge penalties.
+
+See [Voudouris and Tsang|https://doi.org/10.1016/S0377-2217(98)00099-X].
+
+> Tour benchmark
+
+The same eight workbench cities are used for every setting. Enumerating every
+tour with city zero fixed gives an exact reference length outside the search
+budget. Each setting uses seeds 1, 7, 42 and 123 with a cap of 192 scored tours.
+The figure averages percentage gaps across the four seeds and carries forward
+the last observation when a search exhausts its neighborhood.
+
+```{cpp, id=guided-local-search, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <variant>
+
+namespace o = dm::optim;
+using Tour = std::vector<std::size_t>;
+constexpr std::size_t budget = 192;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+constexpr std::array<std::array<double, 2>, 8> cities{{
+    {0, 0}, {2, 1}, {5, 0}, {7, 2}, {6, 6}, {3, 4}, {1, 7}, {0, 3},
+}};
+
+double length(const std::vector<std::vector<double>>& edges, const Tour& tour) {
+    double sum = 0;
+    for (std::size_t i = 0; i < tour.size(); ++i) sum += edges[tour[i]][tour[(i + 1) % tour.size()]];
+    return sum;
+}
+
+int main() {
+    std::vector edges(cities.size(), std::vector<double>(cities.size()));
+    for (std::size_t i = 0; i < cities.size(); ++i) {
+        for (std::size_t j = 0; j < i; ++j) {
+            edges[i][j] = edges[j][i] = std::hypot(cities[i][0] - cities[j][0], cities[i][1] - cities[j][1]);
+        }
+    }
+    Tour order(cities.size());
+    std::iota(order.begin(), order.end(), 0);
+    double optimum = std::numeric_limits<double>::infinity();
+    do {
+        optimum = std::min(optimum, length(edges, order));
+    } while (std::next_permutation(order.begin() + 1, order.end()));
+    std::print("The exact optimum is {:.8f}. All seeds follow.\n\n", optimum);
+    std::print("| Setting | Seed | Calls | Final gap (%) | Updates |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<dm::graphics::RGBA> colors{{30,99,168}, {205,99,31}, {45,138,83},
+                                          {137,72,155}, {155,99,55}, {71,125,132}};
+
+    const auto moves = [](const Tour& t, auto&) {
+        std::vector<o::TwoOptMove> trials;
+        for (std::size_t a = 1; a <= t.size(); ++a) {
+            for (std::size_t b = a + 2; b <= t.size() && b - a <= t.size() - 2; ++b) {
+                trials.push_back({a, b});
+            }
+        }
+        return trials;
+    };
+
+    std::vector<double> costs(cities.size() * cities.size());
+    for (std::size_t i = 0; i < cities.size(); ++i) {
+        for (std::size_t j = i + 1; j < cities.size(); ++j) costs[i * cities.size() + j] = edges[i][j];
+    }
+    const auto features = [](const Tour& t) {
+        std::vector<std::size_t> used;
+        for (std::size_t i = 0; i < t.size(); ++i) {
+            const auto [lo, hi] = std::minmax(t[i], t[(i + 1) % t.size()]);
+            used.push_back(lo * t.size() + hi);
+        }
+        return used;
+    };
+    const std::vector<std::string> labels{"Penalty 0.5", "Penalty 2"};
+
+    for (std::size_t setting = 0; setting < labels.size(); ++setting) {
+        std::vector<double> steps, means(budget);
+        for (const auto seed : seeds) {
+            std::mt19937_64 start_rng(seed);
+            auto initial = order;
+            std::shuffle(initial.begin() + 1, initial.end(), start_rng);
+            std::vector<double> best;
+            const auto score = [&](const Tour& tour) {
+                const double value = length(edges, tour);
+                best.push_back(best.empty() ? value : std::min(value, best.back()));
+                return value;
+            };
+
+            const auto run = o::guided_local_search(initial, score, costs, features, moves, o::apply_two_opt,
+                                                    {budget, seed, setting == 0 ? 0.5 : 2.0});
+            const auto& result = run.search;
+            const auto updates = std::accumulate(run.penalties.begin(), run.penalties.end(), std::size_t{0});
+            if (result.evaluations != best.size() || result.evaluations > budget ||
+                std::abs(result.value - length(edges, result.best)) > 1e-10 ||
+                std::abs(result.value - best.back()) > 1e-10 || result.value < optimum - 1e-10) {
+                throw std::runtime_error("Inconsistent discrete search result");
+            }
+            for (std::size_t i = 0; i < budget; ++i) {
+                means[i] += 100 * (best[std::min(i, best.size()-1)] / optimum - 1) / seeds.size();
+            }
+            std::print("| {} | {} | {} | {:.5f} | {} |\n", labels[setting], seed,
+                       result.evaluations, 100*(result.value/optimum-1), updates);
+        }
+        for (std::size_t i = 0; i < budget; ++i) steps.push_back(i + 1);
+        plot.line(steps, means, labels[setting], colors[setting]);
+    }
+
+    colors.resize(labels.size());
+    plot.title("Eight-city symmetric tour").x_label("Tour evaluations")
+        .y_label("Mean incumbent gap (%)").legend(labels, colors).size(850, 480);
+    std::filesystem::create_directories("build");
+    const auto file = "build/guided_local_search.svg";
+    plot.save_svg(file);
+    std::filesystem::create_directories("figures");
+    std::filesystem::copy_file(file, "figures/guided_local_search.svg", std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+The exact optimum is 26.68408656. All seeds follow.
+
+| Setting | Seed | Calls | Final gap (%) | Updates |
+| --- | ---: | ---: | ---: | ---: |
+| Penalty 0.5 | 1 | 192 | 0.00000 | 8 |
+| Penalty 0.5 | 7 | 192 | 0.00000 | 7 |
+| Penalty 0.5 | 42 | 192 | 0.00000 | 8 |
+| Penalty 0.5 | 123 | 192 | 0.00000 | 8 |
+| Penalty 2 | 1 | 192 | 0.00000 | 8 |
+| Penalty 2 | 7 | 192 | 0.00000 | 7 |
+| Penalty 2 | 42 | 192 | 0.00000 | 7 |
+| Penalty 2 | 123 | 192 | 0.00000 | 7 |
+// result_end
+
+\image(figures/guided_local_search.svg)
+\alttext(Mean incumbent percentage gap from the exact tour length by objective-call count.)

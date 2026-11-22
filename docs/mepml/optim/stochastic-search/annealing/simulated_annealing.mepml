@@ -1,0 +1,206 @@
+//? Title: Simulated annealing and uphill moves
+//? Exports: both
+//? Lang: en-GB
+
+> Search mechanism
+
+Gaussian proposals are centered at the current state. An improving trial is
+accepted, and an uphill step of size Δ is accepted with probability exp(−Δ/T),
+where the temperature T decreases geometrically. Uphill acceptance lets the
+current state leave a basin while a separate best state retains the best
+objective evaluation across the run.
+
+The benchmark replays the Gaussian and uniform draws against the observed
+proposals to recover the current state and count accepted uphill steps. The
+assertions check proposals directly against the native implementation. See
+[Kirkpatrick, Gelatt and Vecchi|https://doi.org/10.1126/science.220.4598.671].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=simulated-annealing, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    std::vector<std::vector<double>> points;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        points.push_back(x);
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Starting temperature 1", "Starting temperature 10"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss | Uphill moves |\n"
+               "| --- | --- | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+            std::vector<double> current, first_best;
+            bool first_seed = true;
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+                std::size_t uphill = 0;
+                std::vector<double> current_history;
+                try {
+                    o::SimulatedAnnealingOptions options;
+                    options.seed = seed;
+                    options.initial_temperature = variant == 0 ? 1 : 10;
+                    options.max_iterations = budget - 1;
+                    value = o::SimulatedAnnealing(options).optimize(f, x);
+                    std::mt19937_64 rng(seed);
+                    std::normal_distribution<double> normal;
+                    std::uniform_real_distribution<double> uniform;
+                    double temperature = options.initial_temperature;
+                    auto current = f.points.front();
+                    double current_value = objective(current, surface);
+                    for (std::size_t i = 1; i < f.points.size(); ++i) {
+                        auto proposed = current;
+                        for (double& coordinate : proposed) coordinate += options.step_std_dev * normal(rng);
+                        if (proposed != f.points[i]) throw std::runtime_error("Proposal replay mismatch");
+                        const double loss = objective(proposed, surface);
+                        const double delta = loss - current_value;
+                        if (delta < 0 || uniform(rng) < std::exp(-delta / std::max(temperature, 1e-12))) {
+                            uphill += delta > 0;
+                            current = std::move(proposed);
+                            current_value = loss;
+                        }
+                        temperature *= options.cooling_rate;
+                        current_history.push_back(current_value);
+                    }
+                    current_history.insert(current_history.begin(), objective(f.points.front(), surface));
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} | {} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value, uphill);
+                if (first_seed) {
+                    for (double loss : current_history) current.push_back(std::log10(std::max(1e-14, loss)));
+                    for (double loss : f.best) first_best.push_back(std::log10(std::max(1e-14, loss)));
+                }
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+                first_seed = false;
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+            const auto name = std::format("simulated_annealing_states_{}_{}.svg", surface, variant);
+            auto trajectory = dm::graphics::RPlot::create();
+            trajectory.line(calls, current, "Current", {205, 99, 31})
+                .line(calls, first_best, "Best", {30, 99, 168})
+                .legend({"Current", "Best"}, {{205, 99, 31}, {30, 99, 168}})
+                .title(surfaces[surface] + ", " + variants[variant] + ", seed 1")
+                .x_label("Objective calls").y_label("Log10 loss").size(850, 470)
+                .save_svg("build/" + name);
+            std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                       std::filesystem::copy_options::overwrite_existing);
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("simulated_annealing_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss | Uphill moves |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Rastrigin | Starting temperature 1 | 1 | 256 | 2.1999101 | 1 |
+| Rastrigin | Starting temperature 1 | 7 | 256 | 2.7928561 | 1 |
+| Rastrigin | Starting temperature 1 | 42 | 256 | 1.0145959 | 1 |
+| Rastrigin | Starting temperature 1 | 123 | 256 | 4.8830073 | 1 |
+| Rastrigin | Starting temperature 10 | 1 | 256 | 1.6808822 | 7 |
+| Rastrigin | Starting temperature 10 | 7 | 256 | 0.88541473 | 9 |
+| Rastrigin | Starting temperature 10 | 42 | 256 | 3.124645 | 14 |
+| Rastrigin | Starting temperature 10 | 123 | 256 | 1.2852047 | 16 |
+| Rotated quadratic | Starting temperature 1 | 1 | 256 | 0.24726992 | 1 |
+| Rotated quadratic | Starting temperature 1 | 7 | 256 | 0.25311019 | 0 |
+| Rotated quadratic | Starting temperature 1 | 42 | 256 | 0.08679679 | 1 |
+| Rotated quadratic | Starting temperature 1 | 123 | 256 | 0.049699068 | 3 |
+| Rotated quadratic | Starting temperature 10 | 1 | 256 | 0.21564405 | 7 |
+| Rotated quadratic | Starting temperature 10 | 7 | 256 | 0.13277347 | 7 |
+| Rotated quadratic | Starting temperature 10 | 42 | 256 | 0.10908968 | 9 |
+| Rotated quadratic | Starting temperature 10 | 123 | 256 | 0.082576915 | 5 |
+// result_end
+
+\image(figures/simulated_annealing_0.svg)
+\alttext(Objective-call history for comparison panel 1.)
+
+\image(figures/simulated_annealing_1.svg)
+\alttext(Objective-call history for comparison panel 2.)
+
+\image(figures/simulated_annealing_states_0_0.svg)
+\alttext(Objective-call history for comparison panel 3.)
+
+\image(figures/simulated_annealing_states_0_1.svg)
+\alttext(Objective-call history for comparison panel 4.)
+
+\image(figures/simulated_annealing_states_1_0.svg)
+\alttext(Objective-call history for comparison panel 5.)
+
+\image(figures/simulated_annealing_states_1_1.svg)
+\alttext(Objective-call history for comparison panel 6.)

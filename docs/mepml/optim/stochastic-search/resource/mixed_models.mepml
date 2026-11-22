@@ -1,0 +1,158 @@
+//? Title: Conditional mixed-parameter search and BOHB
+//? Exports: both
+//? Lang: en-GB
+
+> TPE, SMAC and surrogate-assisted evolution
+
+TPE estimates separate conditional densities for elite and remaining
+observations and favours candidates with a high density ratio. SMAC uses
+a random forest to estimate improvement on proposed configurations.
+Surrogate-assisted evolution evolves a proposal pool using that same
+forest. The true objective is called once per selected candidate and
+the report counts model rankings separately.
+
+See [Bergstra et al.|https://papers.nips.cc/paper_files/paper/2011/hash/86e8f7ab32cfd12577bc2619bc635690-Abstract.html]
+and [Hutter, Hoos and Leyton-Brown|https://doi.org/10.1007/978-3-642-25566-3_40].
+
+> BOHB
+
+BOHB uses Hyperband to allocate resources and the highest sufficiently
+sampled fidelity to fit densities for new configurations. Each trial
+keeps its configuration through promotion. The fidelity score here adds
+a decaying, configuration-dependent offset to a known conditional
+objective. The table gives the selected trial's full objective separately
+from the resource accounting. See [Falkner, Klein and Hutter|https://proceedings.mlr.press/v80/falkner18a.html].
+
+> Conditional benchmark
+
+One branch activates a real coordinate with a zero-loss optimum at 0.23.
+The other activates an integer coordinate with a best loss of 0.15 at 3.
+The same four seeds, 1, 7, 42 and 123, are used throughout. The lines
+are mean incumbents over measured objective calls for the three
+single-fidelity methods.
+
+```{cpp, id=conditional-search, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+
+namespace o = dm::optim;
+
+double objective(const o::MixedConfiguration& config) {
+    if (std::get<std::size_t>(config[0]) == 0) {
+        if (!std::holds_alternative<std::monostate>(config[2])) throw std::runtime_error("Active integer");
+        const auto x = std::get<double>(config[1]) - 0.23;
+        return x*x;
+    }
+    if (!std::holds_alternative<std::monostate>(config[1])) throw std::runtime_error("Active real");
+    const auto x = static_cast<double>(std::get<std::int64_t>(config[2])) - 3;
+    return 0.15 + 0.04*x*x;
+}
+
+int main() {
+    const std::vector<o::MixedParameter> domain{
+        {o::ParameterKind::categorical, 0, 1, 2},
+        {o::ParameterKind::continuous, -1, 1, 2, o::ParameterCondition{0, 0}},
+        {o::ParameterKind::integer, -8, 8, 2, o::ParameterCondition{0, 1}}};
+    constexpr std::array<std::uint64_t, 4> seeds{1,7,42,123};
+    constexpr std::size_t calls = 96;
+    const std::vector<std::string> labels{"TPE","SMAC","Surrogate evolution"};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168},{205,99,31},{45,138,83}};
+    const std::array methods{o::MixedSearchMethod::tpe, o::MixedSearchMethod::smac,
+                             o::MixedSearchMethod::surrogate_evolution};
+    std::vector<double> axis(calls);
+    std::iota(axis.begin(), axis.end(), 1);
+    auto plot = dm::graphics::RPlot::create();
+    std::print("| Method | Seed | Calls | Model rankings | Loss |\n| --- | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t i = 0; i < methods.size(); ++i) {
+        std::vector<double> mean(calls);
+        for (const auto seed : seeds) {
+            std::vector<double> trace;
+            const auto run = o::mixed_search([&](const auto& config) {
+                const auto loss = objective(config);
+                trace.push_back(trace.empty() ? loss : std::min(trace.back(), loss));
+                return loss;
+            }, domain, {calls, seed, methods[i], 8, 32});
+            if (run.evaluations != calls || trace.size() != calls || objective(run.point) != trace.back()) {
+                throw std::runtime_error("Objective accounting mismatch");
+            }
+            for (std::size_t j = 0; j < calls; ++j) mean[j] += trace[j] / seeds.size();
+            std::print("| {} | {} | {} | {} | {:.7f} |\n", labels[i], seed, calls, run.model_evaluations, run.value);
+        }
+        plot.line(axis, mean, labels[i], colors[i]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    const auto file = "mixed_models.svg";
+    plot.title("Conditional mixed-parameter search").x_label("Objective calls")
+        .y_label("Mean incumbent loss").size(850,475).legend(labels, colors)
+        .save_svg(std::string("build/") + file);
+    std::filesystem::copy_file(std::string("build/") + file, std::string("figures/") + file,
+                               std::filesystem::copy_options::overwrite_existing);
+
+    std::print("\n| BOHB seed | Calls | Resource used | Model starts | Fidelity | Full loss |\n"
+               "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+    for (const auto seed : seeds) {
+        std::vector<o::MixedConfiguration> configurations;
+        std::vector<std::size_t> checkpoint;
+        std::size_t observed_resource = 0, observed_calls = 0;
+        o::ResourceSearchOptions scheduler;
+        scheduler.seed = seed;
+        scheduler.resource_budget = 160;
+        scheduler.trials = 32;
+        scheduler.maximum_resource = 8;
+        o::MixedSearchOptions model;
+        model.startup = 4;
+        model.candidates = 32;
+        const auto run = o::bohb_search([&](std::size_t id, const auto& config, std::uint64_t) {
+            if (id != configurations.size()) throw std::runtime_error("Invalid trial ID");
+            configurations.push_back(config);
+            checkpoint.push_back(0);
+        }, [&](std::size_t id, std::size_t previous, std::size_t target) {
+            if (checkpoint[id] != previous) throw std::runtime_error("Invalid checkpoint");
+            checkpoint[id] = target;
+            observed_resource += target - previous;
+            ++observed_calls;
+            return objective(configurations[id]) + (1.0 + double(id % 3)) / (8.0 * target);
+        }, domain, scheduler, model);
+        if (!run.schedule.best || run.schedule.consumed != observed_resource ||
+            observed_resource > scheduler.resource_budget || run.configurations != configurations) {
+            throw std::runtime_error("BOHB accounting mismatch");
+        }
+        const auto winner = *run.schedule.best;
+        std::print("| {} | {} | {} | {} | {} | {:.7f} |\n", seed, observed_calls, observed_resource,
+                   run.model_starts, winner.resource, objective(configurations[winner.trial]));
+    }
+}
+```
+// result_begin: markdown
+| Method | Seed | Calls | Model rankings | Loss |
+| --- | ---: | ---: | ---: | ---: |
+| TPE | 1 | 96 | 2528 | 0.0000019 |
+| TPE | 7 | 96 | 2656 | 0.0000019 |
+| TPE | 42 | 96 | 2464 | 0.0000038 |
+| TPE | 123 | 96 | 2656 | 0.0000180 |
+| SMAC | 1 | 96 | 2400 | 0.0025370 |
+| SMAC | 7 | 96 | 2560 | 0.0000467 |
+| SMAC | 42 | 96 | 2592 | 0.0071534 |
+| SMAC | 123 | 96 | 2624 | 0.0012604 |
+| Surrogate evolution | 1 | 96 | 7776 | 0.0000036 |
+| Surrogate evolution | 7 | 96 | 7968 | 0.0000072 |
+| Surrogate evolution | 42 | 96 | 7680 | 0.0000021 |
+| Surrogate evolution | 123 | 96 | 7872 | 0.0000232 |
+
+| BOHB seed | Calls | Resource used | Model starts | Fidelity | Full loss |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 35 | 98 | 18 | 8 | 0.0143410 |
+| 7 | 35 | 98 | 15 | 8 | 0.0001760 |
+| 42 | 35 | 98 | 16 | 8 | 0.0005407 |
+| 123 | 35 | 98 | 16 | 8 | 0.0011445 |
+// result_end
+
+\image(figures/mixed_models.svg)
+\alttext(Objective-call traces for single-fidelity mixed search.)

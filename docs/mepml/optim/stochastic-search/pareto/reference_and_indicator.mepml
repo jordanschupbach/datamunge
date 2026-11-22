@@ -1,0 +1,165 @@
+//? Title: Reference directions and indicator-based Pareto selection
+//? Exports: both
+//? Lang: en-GB
+
+> NSGA-III
+
+Nondominated sorting admits successive complete fronts. The splitting front
+is associated with reference directions after ideal-point translation and
+extreme-point normalization. Less occupied directions get priority.
+
+> IBEA, HypE and SMS-EMOA
+
+IBEA assigns pairwise additive epsilon fitness and updates the remaining
+fitness after each removal. HypE estimates shared hypervolume contributions
+by drawing uniformly from an objective-space box. SMS-EMOA evaluates
+one offspring at a time and deletes the least exact two-dimensional
+contributor in the worst front.
+
+See [Deb and Jain|https://doi.org/10.1109/TEVC.2013.2281535],
+[Zitzler and Künzli|https://doi.org/10.1007/978-3-540-30217-9_84],
+[Bader and Zitzler|https://doi.org/10.1162/EVCO_a_00009],
+and [Beume, Naujoks and Emmerich|https://doi.org/10.1016/j.ejor.2006.08.008].
+
+> Known Pareto front
+
+The experiment uses four-dimensional ZDT1 with its analytic front from
+(0, 1) to (1, 0). Each setting uses the declared seeds 1, 7, 42 and 123.
+Every point on the progress plot comes from an independent run with the
+indicated objective-call budget. The evaluation metric is exact
+two-objective hypervolume with reference (1.1, 1.1). The table gives
+every seed at the largest budget.
+
+```{cpp, id=reference-and-indicator, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+namespace o = dm::optim;
+
+struct Zdt1 final : o::MultiObjectiveFunction {
+    std::size_t calls = 0;
+    std::vector<double> evaluate(const std::vector<double>& x) override {
+        ++calls;
+        const auto g = 1 + 9 * (x[1] + x[2] + x[3]) / 3;
+        return {x[0], g * (1 - std::sqrt(x[0] / g))};
+    }
+};
+
+double hypervolume(const std::vector<o::ParetoPoint>& front) {
+    constexpr double reference = 1.1;
+    std::vector<std::pair<double, double>> accepted;
+    for (const auto& point : front) {
+        const auto& v = point.objectives;
+        if (v[0] < reference && v[1] < reference) accepted.emplace_back(v[0], v[1]);
+    }
+    std::ranges::sort(accepted);
+    double area = 0;
+    for (std::size_t i = 0; i < accepted.size(); ++i) {
+        const auto [x, y] = accepted[i];
+        const double right = i + 1 == accepted.size() ? reference : accepted[i + 1].first;
+        area += (right - x) * (reference - y);
+    }
+    return area;
+}
+
+int main() {
+    constexpr double true_area = 0.21 + 2.0 / 3;
+    constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+    const std::vector<double> steps{32, 64, 128, 256};
+    const std::vector<std::string> labels{"NSGA-III", "IBEA", "HypE", "SMS-EMOA"};
+    const std::array methods{o::ParetoSearchMethod::nsga3, o::ParetoSearchMethod::ibea, o::ParetoSearchMethod::hype, o::ParetoSearchMethod::sms_emoa};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168}, {205,99,31}, {45,138,83}, {137,72,155}};
+    auto progress = dm::graphics::RPlot::create();
+    auto geometry = dm::graphics::RPlot::create();
+    std::vector<double> exact_x, exact_y;
+    for (std::size_t i = 0; i <= 100; ++i) {
+        exact_x.push_back(static_cast<double>(i) / 100);
+        exact_y.push_back(1 - std::sqrt(exact_x.back()));
+    }
+    geometry.line(exact_x, exact_y, "Exact front", {80,80,80});
+    std::print("| Method | Seed | Calls | Front size | Hypervolume |\n| --- | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t method = 0; method < methods.size(); ++method) {
+        std::vector<double> means(steps.size());
+        for (const auto seed : seeds) {
+            for (std::size_t i = 0; i < steps.size(); ++i) {
+                o::ParetoSearchOptions options;
+                options.evaluations = static_cast<std::size_t>(steps[i]);
+                options.seed = seed;
+                options.method = methods[method];
+                options.population = options.capacity = 16;
+                options.hypervolume_samples = 512;
+                options.reference_divisions = 8;
+                Zdt1 f;
+                const auto run = o::pareto_search(f, {0,0,0,0}, {1,1,1,1}, options);
+                const double area = hypervolume(run.front);
+                if (f.calls != options.evaluations || run.evaluations != f.calls ||
+                    run.front.empty() || area > true_area + 1e-12) {
+                    throw std::runtime_error("Invalid evaluation count or Pareto result");
+                }
+                means[i] += area / seeds.size();
+                if (i + 1 == steps.size()) {
+                    std::print("| {} | {} | {} | {} | {:.6f} |\n", labels[method], seed,
+                               f.calls, run.front.size(), area);
+                    if (seed == 42) {
+                        std::vector<double> x, y;
+                        for (const auto& point : run.front) {
+                            x.push_back(point.objectives[0]);
+                            y.push_back(point.objectives[1]);
+                        }
+                        geometry.points(x, y, labels[method], colors[method], 3);
+                    }
+                }
+            }
+        }
+        progress.line(steps, means, labels[method], colors[method]);
+    }
+    progress.title("Hypervolume convergence on ZDT1").x_label("Evaluation budget")
+        .y_label("Mean exact hypervolume").legend(labels, colors).size(850, 470);
+    auto legend = labels;
+    legend.insert(legend.begin(), "Exact front");
+    auto legend_colors = colors;
+    legend_colors.insert(legend_colors.begin(), {80,80,80});
+    geometry.title("Objective geometry at 256 evaluations, seed 42").x_label("Objective 1")
+        .y_label("Objective 2").legend(legend, legend_colors).size(850,470);
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    progress.save_svg("build/reference_and_indicator_progress.svg");
+    geometry.save_svg("build/reference_and_indicator_front.svg");
+    for (const std::string name : {"reference_and_indicator_progress.svg", "reference_and_indicator_front.svg"}) {
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Method | Seed | Calls | Front size | Hypervolume |
+| --- | ---: | ---: | ---: | ---: |
+| NSGA-III | 1 | 256 | 14 | 0.686980 |
+| NSGA-III | 7 | 256 | 15 | 0.595528 |
+| NSGA-III | 42 | 256 | 11 | 0.638440 |
+| NSGA-III | 123 | 256 | 9 | 0.663857 |
+| IBEA | 1 | 256 | 16 | 0.787944 |
+| IBEA | 7 | 256 | 12 | 0.703932 |
+| IBEA | 42 | 256 | 12 | 0.711884 |
+| IBEA | 123 | 256 | 10 | 0.747294 |
+| HypE | 1 | 256 | 12 | 0.482503 |
+| HypE | 7 | 256 | 9 | 0.618461 |
+| HypE | 42 | 256 | 16 | 0.613520 |
+| HypE | 123 | 256 | 13 | 0.467264 |
+| SMS-EMOA | 1 | 256 | 16 | 0.643127 |
+| SMS-EMOA | 7 | 256 | 16 | 0.726408 |
+| SMS-EMOA | 42 | 256 | 16 | 0.637494 |
+| SMS-EMOA | 123 | 256 | 14 | 0.667573 |
+// result_end
+
+\image(figures/reference_and_indicator_progress.svg)
+\alttext(Mean exact hypervolume across four seeds at each evaluation budget.)
+
+\image(figures/reference_and_indicator_front.svg)
+\alttext(Approximated and exact ZDT1 Pareto fronts in objective coordinates.)

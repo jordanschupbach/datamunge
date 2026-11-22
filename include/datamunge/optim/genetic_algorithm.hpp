@@ -31,7 +31,7 @@ struct GAOptions {
   std::uint64_t seed{42}; ///< Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
 };
 /// @brief GeneticAlgorithm on the ArbitraryFunction callback interface.
-/// Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+/// Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best member of the final population. Retaining at least one elite ensures that this member ties the best visited loss. The solver can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
 /// The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
 /// coordinates mutate in place and can retain a partial state if a callback throws.
 /// Calls use local optimizer state and propagate callback exceptions; sharing a mutable
@@ -57,7 +57,7 @@ class GeneticAlgorithm {
   /// @see optimize()
   explicit GeneticAlgorithm(GAOptions options = {});
   /// @brief Run GeneticAlgorithm from the supplied point using the configured finite budget.
-  /// Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+  /// Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best member of the final population. Retaining at least one elite ensures that this member ties the best visited loss. The solver can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
   /// @param function Borrowed ArbitraryFunction with matching finite output shapes.
   /// @param coordinates Owned-by-caller finite start; overwritten with the native returned point.
   /// @param lower_bound Matching finite inclusive lower box limits.

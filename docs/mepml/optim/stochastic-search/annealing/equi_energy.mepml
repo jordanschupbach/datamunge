@@ -1,0 +1,157 @@
+//? Title: Equi-energy optimization with cached warmer states
+//? Exports: both
+//? Lang: en-GB
+
+> Search mechanism
+
+The optimizer maintains several Metropolis chains at fixed temperatures.
+After a local proposal, a cooler chain can draw a previously scored
+state from its warmer neighbor's matching energy ring. The exchange
+ratio controls acceptance. Finite FIFO histories constrain memory and
+jumps reuse their stored objective scores. This is the optimization
+variant of an equi-energy sampler.
+
+See [Kou, Zhou and Wong|https://doi.org/10.1214/009053606000000515].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=equi-energy, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Without jumps", "Jump probability 0.5"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    o::EquiEnergyOptions options{budget, seed};
+                    options.temperatures = {0.25, 2, 8};
+                    options.jump_probability = variant == 0 ? 0 : 0.5;
+                    const auto run = o::EquiEnergySearch(options).run(f, x, lower, upper);
+                    value = run.value;
+                    x = run.coordinates;
+                    if (run.evaluations != budget || (variant == 0 && run.jumps != 0))
+                        throw std::runtime_error("Invalid score or jump count");
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("equi_energy_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | Without jumps | 1 | 256 | 2.2760197 |
+| Rastrigin | Without jumps | 7 | 256 | 4.1910639 |
+| Rastrigin | Without jumps | 42 | 256 | 2.4310758 |
+| Rastrigin | Without jumps | 123 | 256 | 2.9785231 |
+| Rastrigin | Jump probability 0.5 | 1 | 256 | 1.274048 |
+| Rastrigin | Jump probability 0.5 | 7 | 256 | 1.6016557 |
+| Rastrigin | Jump probability 0.5 | 42 | 256 | 4.007648 |
+| Rastrigin | Jump probability 0.5 | 123 | 256 | 2.9785231 |
+| Rotated quadratic | Without jumps | 1 | 256 | 0.13933802 |
+| Rotated quadratic | Without jumps | 7 | 256 | 0.37704487 |
+| Rotated quadratic | Without jumps | 42 | 256 | 0.16462124 |
+| Rotated quadratic | Without jumps | 123 | 256 | 1.0479665 |
+| Rotated quadratic | Jump probability 0.5 | 1 | 256 | 0.13933802 |
+| Rotated quadratic | Jump probability 0.5 | 7 | 256 | 0.077865503 |
+| Rotated quadratic | Jump probability 0.5 | 42 | 256 | 0.16462124 |
+| Rotated quadratic | Jump probability 0.5 | 123 | 256 | 0.1210551 |
+// result_end
+
+\image(figures/equi_energy_0.svg)
+\alttext(Mean incumbent loss by evaluation count on the Rastrigin surface.)
+
+\image(figures/equi_energy_1.svg)
+\alttext(Mean incumbent loss by evaluation count on the rotated quadratic.)

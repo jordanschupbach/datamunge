@@ -1,0 +1,164 @@
+//? Title: Separable CMA-ES, IPOP and BIPOP restarts
+//? Exports: both
+//? Lang: en-GB
+
+> Separable covariance and IPOP and BIPOP restarts
+
+Separable CMA-ES stores only diagonal covariance and increases its
+learning rates relative to dense covariance adaptation. IPOP follows
+each dense local search by starting from a uniform center with twice
+the population. BIPOP tracks work in two regimes and adds small,
+random-population restarts with smaller initial sampling scales when
+that regime has spent less resource. All starts and partial populations
+are charged to the global budget.
+
+See [Ros and Hansen|https://cma-es.github.io/index.html] and
+[Auger and Hansen|https://www.cmap.polytechnique.fr/~nikolaus.hansen/cec2005ipopcmaes.pdf].
+
+> Evaluation-budget comparison
+
+Each setting uses seeds 1, 7, 42 and 123 on a two-dimensional Rastrigin
+surface and a quadratic with curvature ratio 100. The exact minimum is zero.
+The table gives every run's final incumbent and the observed call count.
+The plot reports the mean log10 of best observed loss, using a floor of
+10^−14. If a native run stops early, the plot holds its last observation.
+The objective callback enforces a common ceiling of 256 evaluations,
+including initialization.
+
+```{cpp, id=cma-es-variants, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numbers>
+#include <print>
+#include <random>
+#include <stdexcept>
+
+namespace o = dm::optim;
+constexpr std::size_t budget = 256;
+constexpr std::array<std::uint64_t, 4> seeds{1, 7, 42, 123};
+const std::vector<double> lower{-5, -5}, upper{5, 5};
+
+double objective(const std::vector<double>& x, std::size_t surface) {
+    if (surface == 0) {
+        double loss = 0;
+        for (double v : x) loss += v * v + 10 * (1 - std::cos(2 * std::numbers::pi * v));
+        return loss;
+    }
+    if (surface == 1) {
+        const double u = (x[0] + x[1]) / std::numbers::sqrt2;
+        const double v = (x[1] - x[0]) / std::numbers::sqrt2;
+        return u * u + 100 * v * v;
+    }
+    return x[0] * x[0] + 100 * x[1] * x[1];
+}
+
+struct BudgetReached {};
+
+struct Objective : o::ArbitraryFunction {
+    std::size_t surface;
+    std::vector<double> best;
+    explicit Objective(std::size_t selected) : surface(selected) {}
+    double evaluate(const std::vector<double>& x) override {
+        if (best.size() == budget) throw BudgetReached{};
+        const double value = objective(x, surface);
+        const double previous = best.empty() ? std::numeric_limits<double>::infinity() : best.back();
+        best.push_back(std::min(value, previous));
+        return value;
+    }
+};
+
+int main() {
+    const std::vector<std::string> variants{"Separable", "IPOP", "BIPOP"};
+    const std::vector<std::string> surfaces{"Rastrigin", "Rotated quadratic"};
+    std::vector<dm::graphics::RGBA> colors{{30, 99, 168}, {205, 99, 31},
+                                                 {45, 138, 83}, {137, 72, 155}};
+    colors.resize(variants.size());
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    std::print("| Surface | Setting | Seed | Calls | Best loss |\n"
+               "| --- | --- | ---: | ---: | ---: |\n");
+    for (std::size_t surface = 0; surface < surfaces.size(); ++surface) {
+        auto plot = dm::graphics::RPlot::create();
+        for (std::size_t variant = 0; variant < variants.size(); ++variant) {
+            std::vector<double> mean(budget), calls;
+
+            for (const auto seed : seeds) {
+                Objective f(surface);
+                std::vector<double> x{3.8, -2.7};
+                if (surface == 1) x = {(3.8 + 2.7) / std::numbers::sqrt2,
+                                        (3.8 - 2.7) / std::numbers::sqrt2};
+                double value;
+
+                try {
+                    const std::array methods{o::CMASearchMethod::separable, o::CMASearchMethod::ipop,
+                                             o::CMASearchMethod::bipop};
+                    o::CMASearchOptions options{budget, seed, methods[variant], 8};
+                    options.generations_per_restart = 5;
+                    value = o::CMASearch(options).optimize(f, x, lower, upper);
+                    if (std::abs(value - objective(x, surface)) > 1e-10 ||
+                        std::abs(value - f.best.back()) > 1e-10) {
+                        throw std::runtime_error("Inconsistent best point");
+                    }
+                } catch (const BudgetReached&) {
+                    value = f.best.back();
+                }
+                std::print("| {} | {} | {} | {} | {:.8g} |\n",
+                           surfaces[surface], variants[variant], seed, f.best.size(), value);
+
+                for (std::size_t i = 0; i < budget; ++i) {
+                    const double loss = f.best[std::min(i, f.best.size() - 1)];
+                    mean[i] += std::log10(std::max(1e-14, loss)) / seeds.size();
+                }
+            }
+            for (std::size_t i = 0; i < budget; ++i) calls.push_back(static_cast<double>(i + 1));
+            plot.line(calls, mean, variants[variant], colors[variant]);
+
+        }
+        plot.title(surfaces[surface]).x_label("Objective calls")
+            .y_label("Mean log10 incumbent loss").legend(variants, colors).size(850, 470);
+        const auto name = std::format("cma_es_variants_{}.svg", surface);
+        plot.save_svg("build/" + name);
+        std::filesystem::copy_file("build/" + name, "figures/" + name,
+                                   std::filesystem::copy_options::overwrite_existing);
+    }
+}
+```
+// result_begin: markdown
+| Surface | Setting | Seed | Calls | Best loss |
+| --- | --- | ---: | ---: | ---: |
+| Rastrigin | Separable | 1 | 256 | 1.9899949 |
+| Rastrigin | Separable | 7 | 256 | 2.0039934 |
+| Rastrigin | Separable | 42 | 256 | 0.2049598 |
+| Rastrigin | Separable | 123 | 256 | 0.00043568236 |
+| Rastrigin | IPOP | 1 | 256 | 4.171922 |
+| Rastrigin | IPOP | 7 | 256 | 5.3067127 |
+| Rastrigin | IPOP | 42 | 256 | 4.1079993 |
+| Rastrigin | IPOP | 123 | 256 | 3.4692307 |
+| Rastrigin | BIPOP | 1 | 256 | 4.171922 |
+| Rastrigin | BIPOP | 7 | 256 | 1.888906 |
+| Rastrigin | BIPOP | 42 | 256 | 3.4911872 |
+| Rastrigin | BIPOP | 123 | 256 | 3.3982728 |
+| Rotated quadratic | Separable | 1 | 256 | 4.6784021 |
+| Rotated quadratic | Separable | 7 | 256 | 1.3579286 |
+| Rotated quadratic | Separable | 42 | 256 | 0.099079573 |
+| Rotated quadratic | Separable | 123 | 256 | 0.00013896735 |
+| Rotated quadratic | IPOP | 1 | 256 | 0.58228046 |
+| Rotated quadratic | IPOP | 7 | 256 | 2.0263657 |
+| Rotated quadratic | IPOP | 42 | 256 | 0.97223384 |
+| Rotated quadratic | IPOP | 123 | 256 | 0.21151728 |
+| Rotated quadratic | BIPOP | 1 | 256 | 1.6438651 |
+| Rotated quadratic | BIPOP | 7 | 256 | 8.0582275 |
+| Rotated quadratic | BIPOP | 42 | 256 | 0.87365136 |
+| Rotated quadratic | BIPOP | 123 | 256 | 0.085738058 |
+// result_end
+
+\image(figures/cma_es_variants_0.svg)
+\alttext(Mean incumbent loss by evaluation count on the Rastrigin surface.)
+
+\image(figures/cma_es_variants_1.svg)
+\alttext(Mean incumbent loss by evaluation count on the rotated quadratic.)

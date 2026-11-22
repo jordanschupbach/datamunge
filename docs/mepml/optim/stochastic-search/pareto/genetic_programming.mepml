@@ -1,0 +1,106 @@
+//? Title: Tree, Cartesian and gene-expression programming
+//? Exports: both
+//? Lang: en-GB
+
+> Tree, Cartesian and gene-expression representations
+
+Tree genetic programming applies subtree recombination and mutations
+to variable-length expressions. Cartesian genetic programming
+mutates a directed feed-forward graph, retaining neutral offspring so
+inactive graph regions can drift before becoming expressed.
+Gene expression programming mutates a fixed-length gene with an
+operation-capable head and terminal tail, then decodes the
+expressed prefix breadth-first. The three representations compile
+to the same protected evaluator.
+
+See [Koza|https://mitpress.mit.edu/9780262527910/genetic-programming/],
+[Miller and Thomson|https://doi.org/10.1007/978-3-540-46239-2_9]
+and [Ferreira|https://arxiv.org/abs/cs/0102027].
+
+> Symbolic regression with an exact answer
+
+The target is x²+x. Each fitness call evaluates one program at
+eleven points between −1 and 1. Exact agreement is possible with
+multiplication and addition. Every method uses 512 program fitness
+calls and the predeclared seeds 1, 7, 42 and 123.
+
+```{cpp, id=genetic-programs, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    namespace o = dm::optim;
+    constexpr std::size_t budget = 512;
+    constexpr std::array<std::uint64_t, 4> seeds{1,7,42,123};
+    const std::array methods{o::ProgramSearchMethod::tree, o::ProgramSearchMethod::cartesian,
+                             o::ProgramSearchMethod::gene_expression};
+    const std::vector<std::string> labels{"Tree", "Cartesian", "Gene expression"};
+    const std::vector<dm::graphics::RGBA> colors{{30,99,168},{205,99,31},{45,138,83}};
+    const auto mse = [](const o::GeneticProgram& program) {
+        double sum = 0;
+        for (int i = -5; i <= 5; ++i) {
+            const auto x = i / 5.0;
+            const auto residual = std::clamp(program.evaluate(std::array{x}), -1e10, 1e10) - (x*x + x);
+            sum += residual * residual;
+        }
+        return sum / 11;
+    };
+    std::vector<double> steps(budget);
+    std::iota(steps.begin(), steps.end(), 1);
+    auto plot = dm::graphics::RPlot::create();
+    std::print("| Representation | Seed | Calls | MSE | Compiled nodes |\n"
+               "| --- | ---: | ---: | ---: | ---: |\n");
+    for (std::size_t method = 0; method < methods.size(); ++method) {
+        std::vector<double> mean(budget);
+        for (const auto seed : seeds) {
+            std::vector<double> best;
+            const auto loss = [&](const o::GeneticProgram& program) {
+                const auto value = mse(program);
+                best.push_back(best.empty() ? value : std::min(value, best.back()));
+                return value;
+            };
+            const auto run = o::genetic_programming_search(loss, {budget, seed, methods[method], 1, 6, 16, 0.2});
+            if (run.evaluations != budget || best.size() != budget || run.value != mse(run.program))
+                throw std::runtime_error("Program or budget inconsistency");
+            for (std::size_t i = 0; i < best.size(); ++i)
+                mean[i] += std::log10(std::max(1e-14, best[i])) / seeds.size();
+            std::print("| {} | {} | {} | {:.6g} | {} |\n", labels[method], seed,
+                       run.evaluations, run.value, run.program.instructions().size());
+        }
+        plot.line(steps, mean, labels[method], colors[method]);
+    }
+    std::filesystem::create_directories("build");
+    std::filesystem::create_directories("figures");
+    plot.title("Symbolic regression").x_label("Program fitness calls")
+        .y_label("Mean log10 incumbent MSE").legend(labels, colors).size(850,470)
+        .save_svg("build/genetic_programming.svg");
+    std::filesystem::copy_file("build/genetic_programming.svg", "figures/genetic_programming.svg",
+                               std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| Representation | Seed | Calls | MSE | Compiled nodes |
+| --- | ---: | ---: | ---: | ---: |
+| Tree | 1 | 512 | 0.0770255 | 12 |
+| Tree | 7 | 512 | 0.037888 | 3 |
+| Tree | 42 | 512 | 0.124805 | 10 |
+| Tree | 123 | 512 | 0.124804 | 2 |
+| Cartesian | 1 | 512 | 1.54074e-33 | 6 |
+| Cartesian | 7 | 512 | 0 | 6 |
+| Cartesian | 42 | 512 | 0 | 6 |
+| Cartesian | 123 | 512 | 0 | 6 |
+| Gene expression | 1 | 512 | 0.0242831 | 7 |
+| Gene expression | 7 | 512 | 0.0389252 | 4 |
+| Gene expression | 42 | 512 | 0.126875 | 2 |
+| Gene expression | 123 | 512 | 0 | 2 |
+// result_end
+
+\image(figures/genetic_programming.svg)
+\alttext(Mean log incumbent squared error over the same fitness-call budget for three program representations.)
